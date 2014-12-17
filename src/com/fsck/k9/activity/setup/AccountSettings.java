@@ -470,7 +470,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mLocalStorageProvider = (ListPreference) findPreference(PREFERENCE_LOCAL_STORAGE_PROVIDER);
         {
             final Map<String, String> providers;
-            providers = StorageManager.getInstance(K9.app).getAvailableProviders();
+            providers = StorageManager.getInstance(this).getAvailableProviders();
             int i = 0;
             final String[] providerLabels = new String[providers.size()];
             final String[] providerIds = new String[providers.size()];

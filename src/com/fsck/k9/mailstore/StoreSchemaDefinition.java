@@ -53,7 +53,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         Log.i(K9.LOG_TAG, String.format(Locale.US, "Upgrading database from version %d to version %d",
                                         db.getVersion(), LocalStore.DB_VERSION));
 
-        AttachmentProvider.clear(this.localStore.mApplication);
+        AttachmentProvider.clear(this.localStore.context);
 
         db.beginTransaction();
         try {
@@ -304,7 +304,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         }
 
                         // Check if old (pre v3.800) localized outbox folder exists
-                        String localizedOutbox = K9.app.getString(R.string.special_mailbox_name_outbox);
+                        String localizedOutbox = localStore.context.getString(R.string.special_mailbox_name_outbox);
                         LocalFolder obsoleteOutbox = new LocalFolder(this.localStore, localizedOutbox);
                         if (obsoleteOutbox.exists()) {
                             // Get all messages from the localized outbox ...

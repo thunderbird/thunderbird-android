@@ -68,7 +68,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
 
             if (searchAccount != null) {
                 account = searchAccount;
-                MessagingController controller = MessagingController.getInstance(K9.app);
+                MessagingController controller = MessagingController.getInstance(context);
                 stats = controller.getSearchAccountStatsSynchronous(searchAccount, null);
                 clickIntent = MessageList.intentDisplaySearch(context,
                         searchAccount.getRelatedSearch(), false, true, true);

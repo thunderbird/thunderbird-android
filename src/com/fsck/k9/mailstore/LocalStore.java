@@ -145,7 +145,7 @@ public class LocalStore extends Store implements Serializable {
 
     protected String uUid = null;
 
-    final Application mApplication;
+    final Context context;
 
     LockableDatabase database;
 
@@ -154,17 +154,17 @@ public class LocalStore extends Store implements Serializable {
 
     /**
      * local://localhost/path/to/database/uuid.db
-     * This constructor is only used by {@link Store#getLocalInstance(Account, Application)}
+     * This constructor is only used by {@link Store#getLocalInstance(Account, Context)}
      * @param account
-     * @param application
+     * @param context
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
-    public LocalStore(final Account account, final Application application) throws MessagingException {
+    public LocalStore(final Account account, final Context context) throws MessagingException {
         mAccount = account;
-        database = new LockableDatabase(application, account.getUuid(), new StoreSchemaDefinition(this));
+        database = new LockableDatabase(context, account.getUuid(), new StoreSchemaDefinition(this));
 
-        mApplication = application;
-        mContentResolver = application.getContentResolver();
+        this.context = context;
+        mContentResolver = context.getContentResolver();
         database.setStorageProviderId(account.getLocalStorageProviderId());
         uUid = account.getUuid();
 
@@ -177,7 +177,7 @@ public class LocalStore extends Store implements Serializable {
      * @throws UnavailableStorageException
      *          if not {@link StorageProvider#isReady(Context)}
      */
-    public static LocalStore getInstance(Account account, Application application)
+    public static LocalStore getInstance(Account account, Context context)
             throws MessagingException {
 
         String accountUuid = account.getUuid();
@@ -196,7 +196,7 @@ public class LocalStore extends Store implements Serializable {
             if (store == null) {
                 // Creating a LocalStore instance will create or upgrade the database if
                 // necessary. This could take some time.
-                store = new LocalStore(account, application);
+                store = new LocalStore(account, context);
 
                 sLocalStores.put(accountUuid, store);
             }
@@ -227,12 +227,12 @@ public class LocalStore extends Store implements Serializable {
     }
 
     protected SharedPreferences getPreferences() {
-        return Preferences.getPreferences(mApplication).getPreferences();
+        return Preferences.getPreferences(context).getPreferences();
     }
 
     public long getSize() throws MessagingException {
 
-        final StorageManager storageManager = StorageManager.getInstance(mApplication);
+        final StorageManager storageManager = StorageManager.getInstance(context);
 
         final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid,
                                          database.getStorageProviderId());
@@ -421,7 +421,7 @@ public class LocalStore extends Store implements Serializable {
                     cv.putNull("content_uri");
                     db.update("attachments", cv, null, null);
                 }
-                final StorageManager storageManager = StorageManager.getInstance(mApplication);
+                final StorageManager storageManager = StorageManager.getInstance(context);
                 File[] files = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId()).listFiles();
                 for (File file : files) {
                     if (file.exists()) {

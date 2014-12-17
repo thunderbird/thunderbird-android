@@ -107,7 +107,7 @@ public class Preferences {
     }
 
     public synchronized Account newAccount() {
-        newAccount = new Account(K9.app);
+        newAccount = new Account(mContext);
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
 

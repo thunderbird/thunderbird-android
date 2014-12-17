@@ -49,7 +49,7 @@ import android.widget.TextView;
  * Currently we make no attempts to stop the background code (e.g. {@link MessagingController}) from
  * opening the accounts' databases. If this happens the upgrade is performed in one of the
  * background threads and not by {@link DatabaseUpgradeService}. But this is not a problem. Due to
- * the locking in {@link Store#getLocalInstance(Account, android.app.Application)} the upgrade
+ * the locking in {@link Store#getLocalInstance(Account, Context)} the upgrade
  * service will block in the {@link Account#getLocalStore()} call and from the outside (especially
  * for this activity) it will appear as if {@link DatabaseUpgradeService} is performing the upgrade.
  * </p>

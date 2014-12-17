@@ -303,7 +303,7 @@ public class MessageProvider extends ContentProvider {
 
             // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
             final SearchAccount integratedInboxAccount = SearchAccount.createUnifiedInboxAccount(getContext());
-            final MessagingController msgController = MessagingController.getInstance(K9.app);
+            final MessagingController msgController = MessagingController.getInstance(getContext());
 
             msgController.searchLocalMessages(integratedInboxAccount.getRelatedSearch(),
                                               new MesssageInfoHolderRetrieverListener(queue));
@@ -1041,7 +1041,7 @@ public class MessageProvider extends ContentProvider {
         // get localstore parameter
         LocalMessage msg = null;
         try {
-            LocalFolder lf = LocalStore.getInstance(myAccount, K9.app).getFolder(folderName);
+            LocalFolder lf = LocalStore.getInstance(myAccount, getContext()).getFolder(folderName);
             int msgCount = lf.getMessageCount();
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "folder msg count = " + msgCount);
@@ -1053,7 +1053,7 @@ public class MessageProvider extends ContentProvider {
 
         // launch command to delete the message
         if ((myAccount != null) && (msg != null)) {
-            MessagingController controller = MessagingController.getInstance(K9.app);
+            MessagingController controller = MessagingController.getInstance(getContext());
             controller.deleteMessages(Collections.singletonList(msg), null);
         }
 
