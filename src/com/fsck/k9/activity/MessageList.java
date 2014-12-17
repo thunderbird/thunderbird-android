@@ -398,7 +398,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             // check if this intent comes from the system search ( remote )
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 //Query was received from Search Dialog
-                String query = intent.getStringExtra(SearchManager.QUERY);
+                String query = intent.getStringExtra(SearchManager.QUERY).trim();
 
                 mSearch = new LocalSearch(getString(R.string.search_results));
                 mSearch.setManualSearch(true);
