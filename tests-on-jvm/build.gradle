@@ -5,8 +5,8 @@ repositories {
 apply plugin: 'java'
 
 dependencies {
-    testCompile 'junit:junit:4.+'
-    testCompile fileTree(dir: '../libs', include: '*.jar')
+    testCompile project(':')
+    testCompile 'junit:junit:4.12'
 }
 
 sourceSets {
@@ -17,13 +17,16 @@ sourceSets {
     }
 
     test {
-        compileClasspath += files(['../build/intermediates/classes/debug'])
-        runtimeClasspath += files(['../build/intermediates/classes/debug'])
+        compileClasspath += files(rootProject.compileDebugJava.destinationDir)
+        runtimeClasspath += files(rootProject.compileDebugJava.destinationDir)
+        runtimeClasspath += rootProject.compileDebugJava.classpath
         java {
             srcDirs = ['src']
         }
     }
 }
+
+test.dependsOn ':compileDebugJava'
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.11'

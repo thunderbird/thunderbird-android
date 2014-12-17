@@ -77,7 +77,9 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if (project.hasProperty('storeFile')) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
@@ -103,11 +105,6 @@ task checkstyle(type: Checkstyle) {
     source 'src'
     include '**/*.java'
     classpath = files()
-}
-
-task testsOnJVM(type: GradleBuild, dependsOn: assembleDebug) {
-    buildFile = 'tests-on-jvm/build.gradle'
-    tasks = ['test']
 }
 
 if (project.hasProperty('keyAlias')) {
