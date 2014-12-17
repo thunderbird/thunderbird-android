@@ -107,6 +107,8 @@ task checkstyle(type: Checkstyle) {
     classpath = files()
 }
 
+task testOnJVM(dependsOn: 'tests-on-jvm:test')
+
 if (project.hasProperty('keyAlias')) {
     android.signingConfigs.release.keyAlias = keyAlias
 }
