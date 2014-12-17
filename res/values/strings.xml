@@ -349,6 +349,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_lock_screen_notification_visibility_senders">Message count and senders</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">Same as when screen unlocked</string>
 
+    <string name="global_settings_show_account_colors_title">Show account colors</string>
+    <string name="global_settings_show_account_colors_summary">Show account color chips</string>
+
     <string name="quiet_time">Quiet Time</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>
     <string name="quiet_time_starts">Quiet Time starts</string>

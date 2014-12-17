@@ -6,10 +6,8 @@
     android:orientation="horizontal"
     android:background="?attr/backgroundColorChooseAccountHeader"
     android:gravity="left|center_vertical">
-    <View
-        android:id="@+id/chip"
-        android:layout_height="fill_parent"
-        android:layout_width="6dp"/>
+
+    <include layout="@layout/account_chip"/>
 
     <TextView
         android:id="@+id/name"
