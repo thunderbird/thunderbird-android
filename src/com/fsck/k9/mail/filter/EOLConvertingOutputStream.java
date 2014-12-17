@@ -14,9 +14,12 @@ public class EOLConvertingOutputStream extends FilterOutputStream {
 
     @Override
     public void write(int oneByte) throws IOException {
-        if (!ignoreNextIfLF) {
+        boolean ignoreThisByte = (ignoreNextIfLF && oneByte == '\n');
+        if (!ignoreThisByte) {
             if ((oneByte == '\n') && (lastChar != '\r')) {
                 super.write('\r');
+            } else if ((lastChar == '\r') && (oneByte != '\n')) {
+                super.write('\n');
             }
             super.write(oneByte);
             lastChar = oneByte;
