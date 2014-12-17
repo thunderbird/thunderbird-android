@@ -30,6 +30,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.StorageManager;
@@ -888,6 +890,11 @@ public class Account implements BaseAccount, StoreConfig {
 
     public Uri getContentUri() {
         return Uri.parse("content://accounts/" + getUuid());
+    }
+
+    @Override
+    public TrustedSocketFactory trustedSocketFactory() {
+        return new DefaultTrustedSocketFactory(K9.app);
     }
 
     public synchronized String getStoreUri() {

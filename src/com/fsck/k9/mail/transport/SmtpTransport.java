@@ -12,8 +12,8 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.store.StoreConfig;
 
 import javax.net.ssl.SSLException;
 
@@ -30,6 +30,8 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 
 public class SmtpTransport extends Transport {
+    private TrustedSocketFactory mTrustedSocketFactory;
+
     public static final String TRANSPORT_TYPE = "SMTP";
 
     /**
@@ -201,6 +203,7 @@ public class SmtpTransport extends Transport {
         mUsername = settings.username;
         mPassword = settings.password;
         mClientCertificateAlias = settings.clientCertificateAlias;
+        mTrustedSocketFactory = storeConfig.trustedSocketFactory();
     }
 
     @Override
@@ -212,7 +215,7 @@ public class SmtpTransport extends Transport {
                 try {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
                     if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        mSocket = TrustedSocketFactory.createSocket(mHost, mPort, mClientCertificateAlias);
+                        mSocket = mTrustedSocketFactory.createSocket(null, mHost, mPort, mClientCertificateAlias);
                         mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                         secureConnection = true;
                     } else {
@@ -266,7 +269,10 @@ public class SmtpTransport extends Transport {
                 if (extensions.containsKey("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
-                    mSocket = TrustedSocketFactory.createSocket(mSocket, mHost, mPort,
+                    mSocket = mTrustedSocketFactory.createSocket(
+                            mSocket,
+                            mHost,
+                            mPort,
                             mClientCertificateAlias);
 
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),

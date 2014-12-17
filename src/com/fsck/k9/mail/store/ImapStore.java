@@ -84,10 +84,10 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
 import com.beetstra.jutf7.CharsetProvider;
 import com.jcraft.jzlib.JZlib;
@@ -682,7 +682,7 @@ public class ImapStore extends RemoteStore {
     @Override
     public void checkSettings() throws MessagingException {
         try {
-            ImapConnection connection = new ImapConnection(new StoreImapSettings());
+            ImapConnection connection = new ImapConnection(new StoreImapSettings(), mStoreConfig.trustedSocketFactory());
             connection.open();
             autoconfigureFolders(connection);
             connection.close();
@@ -697,7 +697,7 @@ public class ImapStore extends RemoteStore {
      */
     private ImapConnection getConnection() throws MessagingException {
         synchronized (mConnections) {
-            ImapConnection connection = null;
+            ImapConnection connection;
             while ((connection = mConnections.poll()) != null) {
                 try {
                     connection.executeSimpleCommand("NOOP");
@@ -707,7 +707,7 @@ public class ImapStore extends RemoteStore {
                 }
             }
             if (connection == null) {
-                connection = new ImapConnection(new StoreImapSettings());
+                connection = new ImapConnection(new StoreImapSettings(), mStoreConfig.trustedSocketFactory());
             }
             return connection;
         }
@@ -2315,6 +2315,7 @@ public class ImapStore extends RemoteStore {
      * A cacheable class that stores the details for a single IMAP connection.
      */
     public static class ImapConnection {
+        private final TrustedSocketFactory socketFactory;
         private Socket mSocket;
         private PeekableInputStream mIn;
         private OutputStream mOut;
@@ -2324,8 +2325,9 @@ public class ImapStore extends RemoteStore {
 
         private ImapSettings mSettings;
 
-        public ImapConnection(final ImapSettings settings) {
+        public ImapConnection(final ImapSettings settings, TrustedSocketFactory socketFactory) {
             this.mSettings = settings;
+            this.socketFactory = socketFactory;
         }
 
         protected String getLogId() {
@@ -2405,8 +2407,11 @@ public class ImapStore extends RemoteStore {
                                 mSettings.getPort());
 
                         if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                            mSocket = TrustedSocketFactory.createSocket(mSettings.getHost(),
-                                    mSettings.getPort(), mSettings.getClientCertificateAlias());
+                            mSocket = socketFactory.createSocket(
+                                    null,
+                                    mSettings.getHost(),
+                                    mSettings.getPort(),
+                                    mSettings.getClientCertificateAlias());
                         } else {
                             mSocket = new Socket();
                         }
@@ -2455,8 +2460,10 @@ public class ImapStore extends RemoteStore {
                         // STARTTLS
                         executeSimpleCommand("STARTTLS");
 
-                        mSocket = TrustedSocketFactory.createSocket(mSocket,
-                                mSettings.getHost(), mSettings.getPort(),
+                        mSocket = socketFactory.createSocket(
+                                mSocket,
+                                mSettings.getHost(),
+                                mSettings.getPort(),
                                 mSettings.getClientCertificateAlias());
                         mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
                         mIn = new PeekableInputStream(new BufferedInputStream(mSocket
