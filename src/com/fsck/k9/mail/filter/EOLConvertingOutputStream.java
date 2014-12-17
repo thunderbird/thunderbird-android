@@ -17,6 +17,8 @@ public class EOLConvertingOutputStream extends FilterOutputStream {
         if (!ignoreNextIfLF) {
             if ((oneByte == '\n') && (lastChar != '\r')) {
                 super.write('\r');
+            } else if ((lastChar == '\r') && (oneByte != '\n')) {
+                super.write('\n');
             }
             super.write(oneByte);
             lastChar = oneByte;
