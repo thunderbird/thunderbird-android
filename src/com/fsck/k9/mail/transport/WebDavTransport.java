@@ -9,7 +9,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.mail.store.webdav.WebDavStore;
 
 import java.util.Collections;
 

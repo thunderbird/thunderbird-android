@@ -1,21 +1,12 @@
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.imap;
 
 import android.text.TextUtils;
-import com.fsck.k9.mail.MessagingException;
+
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 class ImapResponseParser {
-    private static final SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z", Locale.US);
-    private static final SimpleDateFormat badDateTimeFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US);
-    private static final SimpleDateFormat badDateTimeFormat2 = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.US);
-    private static final SimpleDateFormat badDateTimeFormat3 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss", Locale.US);
 
     private PeekableInputStream mIn;
     private ImapResponse mResponse;
@@ -35,29 +26,27 @@ class ImapResponseParser {
      */
     public ImapResponse readResponse(IImapResponseCallback callback) throws IOException {
         try {
-            ImapResponse response = new ImapResponse();
-            mResponse = response;
-            mResponse.mCallback = callback;
+            mResponse = new ImapResponse(callback);
+            mResponse.setCallback(callback);
 
             int ch = mIn.peek();
             if (ch == '*') {
                 parseUntaggedResponse();
-                readTokens(response);
+                readTokens(mResponse);
             } else if (ch == '+') {
-                response.mCommandContinuationRequested = parseCommandContinuationRequest();
-                parseResponseText(response);
+                mResponse.mCommandContinuationRequested = parseCommandContinuationRequest();
+                parseResponseText(mResponse);
             } else {
-                response.mTag = parseTaggedResponse();
-                readTokens(response);
+                mResponse.mTag = parseTaggedResponse();
+                readTokens(mResponse);
             }
 
             if (mException != null) {
                 throw new RuntimeException("readResponse(): Exception in callback method", mException);
             }
 
-            return response;
+            return mResponse;
         } finally {
-            mResponse.mCallback = null;
             mResponse = null;
             mException = null;
         }
@@ -281,12 +270,12 @@ class ImapResponseParser {
             return "";
         }
 
-        if (mResponse.mCallback != null) {
+        if (mResponse.getCallback() != null) {
             FixedLengthInputStream fixed = new FixedLengthInputStream(mIn, size);
 
             Object result = null;
             try {
-                result = mResponse.mCallback.foundLiteral(mResponse, fixed);
+                result = mResponse.getCallback().foundLiteral(mResponse, fixed);
             } catch (IOException e) {
                 // Pass IOExceptions through
                 throw e;
@@ -365,160 +354,6 @@ class ImapResponseParser {
         return d;
     }
 
-    /**
-     * Represents an IMAP list response and is also the base class for the
-     * ImapResponse.
-     */
-    public static class ImapList extends ArrayList<Object> {
-        private static final long serialVersionUID = -4067248341419617583L;
-
-        public ImapList getList(int index) {
-            return (ImapList)get(index);
-        }
-
-        public Object getObject(int index) {
-            return get(index);
-        }
-
-        public String getString(int index) {
-            return (String)get(index);
-        }
-
-        public long getLong(int index) {
-            return Long.parseLong(getString(index));
-        }
-        
-        public int getNumber(int index) {
-            return Integer.parseInt(getString(index));
-        }
-
-        public Date getDate(int index) throws MessagingException {
-            return getDate(getString(index));
-        }
-
-        public Date getKeyedDate(Object key) throws MessagingException {
-            return getDate(getKeyedString(key));
-        }
-
-        private Date getDate(String value) throws MessagingException {
-            try {
-                if (value == null) {
-                    return null;
-                }
-                return parseDate(value);
-            } catch (ParseException pe) {
-                throw new MessagingException("Unable to parse IMAP datetime '" + value + "' ", pe);
-            }
-        }
-
-
-        public Object getKeyedValue(Object key) {
-            for (int i = 0, count = size() - 1; i < count; i++) {
-                if (equalsIgnoreCase(get(i), key)) {
-                    return get(i + 1);
-                }
-            }
-            return null;
-        }
-
-        public ImapList getKeyedList(Object key) {
-            return (ImapList)getKeyedValue(key);
-        }
-
-        public String getKeyedString(Object key) {
-            return (String)getKeyedValue(key);
-        }
-
-        public int getKeyedNumber(Object key) {
-            return Integer.parseInt(getKeyedString(key));
-        }
-
-        public boolean containsKey(Object key) {
-            if (key == null) {
-                return false;
-            }
-
-            for (int i = 0, count = size() - 1; i < count; i++) {
-                if (equalsIgnoreCase(key, get(i))) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public int getKeyIndex(Object key) {
-            for (int i = 0, count = size() - 1; i < count; i++) {
-                if (equalsIgnoreCase(key, get(i))) {
-                    return i;
-                }
-            }
-
-            throw new IllegalArgumentException("getKeyIndex() only works for keys that are in the collection.");
-        }
-
-        private Date parseDate(String value) throws ParseException {
-            //TODO: clean this up a bit
-            try {
-                synchronized (mDateTimeFormat) {
-                    return mDateTimeFormat.parse(value);
-                }
-            } catch (Exception e) {
-                try {
-                    synchronized (badDateTimeFormat) {
-                        return badDateTimeFormat.parse(value);
-                    }
-                } catch (Exception e2) {
-                    try {
-                        synchronized (badDateTimeFormat2) {
-                            return badDateTimeFormat2.parse(value);
-                        }
-                    } catch (Exception e3) {
-                        synchronized (badDateTimeFormat3) {
-                            return badDateTimeFormat3.parse(value);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Represents a single response from the IMAP server.
-     *
-     * <p>
-     * Tagged responses will have a non-null tag. Untagged responses will have a null tag. The
-     * object will contain all of the available tokens at the time the response is received.
-     * </p>
-     */
-    public class ImapResponse extends ImapList {
-        /**
-         *
-         */
-        private static final long serialVersionUID = 6886458551615975669L;
-        private IImapResponseCallback mCallback;
-
-        boolean mCommandContinuationRequested;
-        String mTag;
-
-        public String getAlertText() {
-            if (size() > 1 && equalsIgnoreCase("[ALERT]", get(1))) {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 2, count = size(); i < count; i++) {
-                    sb.append(get(i).toString());
-                    sb.append(' ');
-                }
-                return sb.toString();
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "#" + (mCommandContinuationRequested ? "+" : mTag) + "# " + super.toString();
-        }
-    }
-
     public boolean isStatusResponse(String symbol) {
         return symbol.equalsIgnoreCase("OK") ||
                symbol.equalsIgnoreCase("NO") ||
@@ -560,7 +395,6 @@ class ImapResponseParser {
          *                   and the exception will be thrown after the
          *                   complete IMAP response has been parsed.
          */
-        public Object foundLiteral(ImapResponse response, FixedLengthInputStream literal)
-        throws IOException, Exception;
+        public Object foundLiteral(ImapResponse response, FixedLengthInputStream literal) throws Exception;
     }
 }

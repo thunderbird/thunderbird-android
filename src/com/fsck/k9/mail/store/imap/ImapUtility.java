@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.imap;
 
 import android.util.Log;
 

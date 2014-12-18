@@ -8,13 +8,16 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.store.imap.ImapStore;
+import com.fsck.k9.mail.store.pop3.Pop3Store;
+import com.fsck.k9.mail.store.webdav.WebDavStore;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class RemoteStore extends Store {
-    protected static final int SOCKET_CONNECT_TIMEOUT = 30000;
-    protected static final int SOCKET_READ_TIMEOUT = 60000;
+    public static final int SOCKET_CONNECT_TIMEOUT = 30000;
+    public static final int SOCKET_READ_TIMEOUT = 60000;
 
     protected StoreConfig mStoreConfig;
     protected TrustedSocketFactory mTrustedSocketFactory;
@@ -89,9 +92,9 @@ public abstract class RemoteStore extends Store {
      *
      * @return A {@link com.fsck.k9.mail.ServerSettings} object holding the settings contained in the URI.
      *
-     * @see com.fsck.k9.mail.store.ImapStore#decodeUri(String)
-     * @see com.fsck.k9.mail.store.Pop3Store#decodeUri(String)
-     * @see com.fsck.k9.mail.store.WebDavStore#decodeUri(String)
+     * @see com.fsck.k9.mail.store.imap.ImapStore#decodeUri(String)
+     * @see com.fsck.k9.mail.store.pop3.Pop3Store#decodeUri(String)
+     * @see com.fsck.k9.mail.store.webdav.WebDavStore#decodeUri(String)
      */
     public static ServerSettings decodeStoreUri(String uri) {
         if (uri.startsWith("imap")) {
@@ -113,9 +116,9 @@ public abstract class RemoteStore extends Store {
      *
      * @return A store URI that holds the same information as the {@code server} parameter.
      *
-     * @see com.fsck.k9.mail.store.ImapStore#createUri(com.fsck.k9.mail.ServerSettings)
-     * @see com.fsck.k9.mail.store.Pop3Store#createUri(com.fsck.k9.mail.ServerSettings)
-     * @see com.fsck.k9.mail.store.WebDavStore#createUri(com.fsck.k9.mail.ServerSettings)
+     * @see com.fsck.k9.mail.store.imap.ImapStore#createUri(com.fsck.k9.mail.ServerSettings)
+     * @see com.fsck.k9.mail.store.pop3.Pop3Store#createUri(com.fsck.k9.mail.ServerSettings)
+     * @see com.fsck.k9.mail.store.webdav.WebDavStore#createUri(com.fsck.k9.mail.ServerSettings)
      */
     public static String createStoreUri(ServerSettings server) {
         if (ImapStore.STORE_TYPE.equals(server.type)) {

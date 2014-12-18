@@ -7,13 +7,13 @@ import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import android.content.Context;
 
 public interface PushReceiver {
-    public Context getContext();
-    public void syncFolder(Folder folder);
-    public void messagesArrived(Folder folder, List<Message> mess);
-    public void messagesFlagsChanged(Folder folder, List<Message> mess);
-    public void messagesRemoved(Folder folder, List<Message> mess);
-    public String getPushState(String folderName);
-    public void pushError(String errorMessage, Exception e);
-    public void setPushActive(String folderName, boolean enabled);
-    public void sleep(TracingWakeLock wakeLock, long millis);
+    Context getContext();
+    void syncFolder(Folder folder);
+    void messagesArrived(Folder folder, List<Message> mess);
+    void messagesFlagsChanged(Folder folder, List<Message> mess);
+    void messagesRemoved(Folder folder, List<Message> mess);
+    String getPushState(String folderName);
+    void pushError(String errorMessage, Exception e);
+    void setPushActive(String folderName, boolean enabled);
+    void sleep(TracingWakeLock wakeLock, long millis);
 }

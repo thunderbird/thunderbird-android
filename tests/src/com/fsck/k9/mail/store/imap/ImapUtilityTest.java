@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.imap;
 
 import java.util.List;
 import android.test.MoreAsserts;

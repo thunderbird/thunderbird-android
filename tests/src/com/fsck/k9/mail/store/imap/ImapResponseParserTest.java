@@ -1,10 +1,8 @@
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.imap;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import com.fsck.k9.mail.filter.PeekableInputStream;
-import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
-import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import junit.framework.TestCase;
 
 public class ImapResponseParserTest extends TestCase {

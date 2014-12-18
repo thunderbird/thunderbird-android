@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.imap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.store.RemoteStore;
 
 import junit.framework.TestCase;
 

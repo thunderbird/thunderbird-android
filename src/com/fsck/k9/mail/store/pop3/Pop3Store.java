@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.pop3;
 
 import android.util.Log;
 
@@ -10,6 +10,8 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.StoreConfig;
 
 import javax.net.ssl.SSLException;
 

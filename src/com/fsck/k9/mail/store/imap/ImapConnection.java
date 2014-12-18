@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store;
+package com.fsck.k9.mail.store.imap;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,6 +13,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
@@ -83,13 +84,13 @@ class ImapConnection {
         return "conn" + hashCode();
     }
 
-    private List<ImapResponseParser.ImapResponse> receiveCapabilities(List<ImapResponseParser.ImapResponse> responses) {
-        for (ImapResponseParser.ImapResponse response : responses) {
-            ImapResponseParser.ImapList capabilityList = null;
+    private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses) {
+        for (ImapResponse response : responses) {
+            ImapList capabilityList = null;
             if (!response.isEmpty() && ImapResponseParser.equalsIgnoreCase(response.get(0), "OK")) {
                 for (Object thisPart : response) {
-                    if (thisPart instanceof ImapResponseParser.ImapList) {
-                        ImapResponseParser.ImapList thisList = (ImapResponseParser.ImapList)thisPart;
+                    if (thisPart instanceof ImapList) {
+                        ImapList thisList = (ImapList)thisPart;
                         if (ImapResponseParser.equalsIgnoreCase(thisList.get(0), ImapCommands.CAPABILITY_CAPABILITY)) {
                             capabilityList = thisList;
                             break;
@@ -186,18 +187,18 @@ class ImapConnection {
             mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
 
             capabilities.clear();
-            ImapResponseParser.ImapResponse nullResponse = mParser.readResponse();
+            ImapResponse nullResponse = mParser.readResponse();
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP)
                 Log.v(LOG_TAG, getLogId() + "<<<" + nullResponse);
 
-            List<ImapResponseParser.ImapResponse> nullResponses = new LinkedList<ImapResponseParser.ImapResponse>();
+            List<ImapResponse> nullResponses = new LinkedList<ImapResponse>();
             nullResponses.add(nullResponse);
             receiveCapabilities(nullResponses);
 
             if (!hasCapability(ImapCommands.CAPABILITY_CAPABILITY)) {
                 if (K9MailLib.isDebug())
                     Log.i(LOG_TAG, "Did not get capabilities in banner, requesting CAPABILITY for " + getLogId());
-                List<ImapResponseParser.ImapResponse> responses = receiveCapabilities(executeSimpleCommand(ImapCommands.COMMAND_CAPABILITY));
+                List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(ImapCommands.COMMAND_CAPABILITY));
                 if (responses.size() != 2) {
                     throw new MessagingException("Invalid CAPABILITY response received");
                 }
@@ -223,7 +224,7 @@ class ImapConnection {
                     if (K9MailLib.isDebug())
                         Log.i(LOG_TAG, "Updating capabilities after STARTTLS for " + getLogId());
                     capabilities.clear();
-                    List<ImapResponseParser.ImapResponse> responses = receiveCapabilities(executeSimpleCommand(ImapCommands.COMMAND_CAPABILITY));
+                    List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(ImapCommands.COMMAND_CAPABILITY));
                     if (responses.size() != 2) {
                         throw new MessagingException("Invalid CAPABILITY response received");
                     }
@@ -319,23 +320,23 @@ class ImapConnection {
                 if (hasCapability(ImapCommands.CAPABILITY_NAMESPACE)) {
                     if (K9MailLib.isDebug())
                         Log.i(LOG_TAG, "mPathPrefix is unset and server has NAMESPACE capability");
-                    List<ImapResponseParser.ImapResponse> namespaceResponses =
+                    List<ImapResponse> namespaceResponses =
                         executeSimpleCommand(ImapCommands.COMMAND_NAMESPACE);
-                    for (ImapResponseParser.ImapResponse response : namespaceResponses) {
+                    for (ImapResponse response : namespaceResponses) {
                         if (ImapResponseParser.equalsIgnoreCase(response.get(0), ImapCommands.COMMAND_NAMESPACE)) {
                             if (K9MailLib.isDebug())
                                 Log.d(LOG_TAG, "Got NAMESPACE response " + response + " on " + getLogId());
 
                             Object personalNamespaces = response.get(1);
-                            if (personalNamespaces != null && personalNamespaces instanceof ImapResponseParser.ImapList) {
+                            if (personalNamespaces != null && personalNamespaces instanceof ImapList) {
                                 if (K9MailLib.isDebug())
                                     Log.d(LOG_TAG, "Got personal namespaces: " + personalNamespaces);
-                                ImapResponseParser.ImapList bracketed = (ImapResponseParser.ImapList)personalNamespaces;
+                                ImapList bracketed = (ImapList)personalNamespaces;
                                 Object firstNamespace = bracketed.get(0);
-                                if (firstNamespace != null && firstNamespace instanceof ImapResponseParser.ImapList) {
+                                if (firstNamespace != null && firstNamespace instanceof ImapList) {
                                     if (K9MailLib.isDebug())
                                         Log.d(LOG_TAG, "Got first personal namespaces: " + firstNamespace);
-                                    bracketed = (ImapResponseParser.ImapList)firstNamespace;
+                                    bracketed = (ImapList)firstNamespace;
                                     mSettings.setPathPrefix(bracketed.getString(0));
                                     mSettings.setPathDelimeter(bracketed.getString(1));
                                     mSettings.setCombinedPrefix(null);
@@ -353,9 +354,9 @@ class ImapConnection {
             }
             if (mSettings.getPathDelimeter() == null) {
                 try {
-                    List<ImapResponseParser.ImapResponse> nameResponses =
+                    List<ImapResponse> nameResponses =
                         executeSimpleCommand("LIST \"\" \"\"");
-                    for (ImapResponseParser.ImapResponse response : nameResponses) {
+                    for (ImapResponse response : nameResponses) {
                         if (ImapResponseParser.equalsIgnoreCase(response.get(0), "LIST")) {
                             mSettings.setPathDelimeter(response.getString(2));
                             mSettings.setCombinedPrefix(null);
@@ -380,7 +381,7 @@ class ImapConnection {
         } catch (ConnectException ce) {
             String ceMess = ce.getMessage();
             String[] tokens = ceMess.split("-");
-            if (tokens != null && tokens.length > 1 && tokens[1] != null) {
+            if (tokens.length > 1 && tokens[1] != null) {
                 Log.e(LOG_TAG, "Stripping host/port from ConnectionException for " + getLogId(), ce);
                 throw new ConnectException(tokens[1].trim());
             } else {
@@ -419,7 +420,7 @@ class ImapConnection {
     protected void authCramMD5() throws MessagingException, IOException {
         String command = "AUTHENTICATE CRAM-MD5";
         String tag = sendCommand(command, false);
-        ImapResponseParser.ImapResponse response = readContinuationResponse(tag);
+        ImapResponse response = readContinuationResponse(tag);
         if (response.size() != 1 || !(response.get(0) instanceof String)) {
             throw new MessagingException("Invalid Cram-MD5 nonce received");
         }
@@ -471,9 +472,9 @@ class ImapConnection {
         }
     }
 
-    protected ImapResponseParser.ImapResponse readContinuationResponse(String tag)
+    protected ImapResponse readContinuationResponse(String tag)
             throws IOException, MessagingException {
-        ImapResponseParser.ImapResponse response;
+        ImapResponse response;
         do {
             response = readResponse();
             if (response.mTag != null) {
@@ -490,11 +491,11 @@ class ImapConnection {
         return response;
     }
 
-    protected List<ImapResponseParser.ImapResponse> readStatusResponse(String tag,
+    protected List<ImapResponse> readStatusResponse(String tag,
             String commandToLog, ImapStore.UntaggedHandler untaggedHandler)
             throws IOException, MessagingException {
-        List<ImapResponseParser.ImapResponse> responses = new ArrayList<ImapResponseParser.ImapResponse>();
-        ImapResponseParser.ImapResponse response;
+        List<ImapResponse> responses = new ArrayList<ImapResponse>();
+        ImapResponse response;
         do {
             response = mParser.readResponse();
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP)
@@ -502,9 +503,9 @@ class ImapConnection {
 
             if (response.mTag != null && !response.mTag.equalsIgnoreCase(tag)) {
                 Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + getLogId());
-                Iterator<ImapResponseParser.ImapResponse> iter = responses.iterator();
+                Iterator<ImapResponse> iter = responses.iterator();
                 while (iter.hasNext()) {
-                    ImapResponseParser.ImapResponse delResponse = iter.next();
+                    ImapResponse delResponse = iter.next();
                     if (delResponse.mTag != null || delResponse.size() < 2
                             || (!ImapResponseParser.equalsIgnoreCase(delResponse.get(1), "EXISTS") && !ImapResponseParser.equalsIgnoreCase(delResponse.get(1), "EXPUNGE"))) {
                         iter.remove();
@@ -562,13 +563,13 @@ class ImapConnection {
         mSocket = null;
     }
 
-    public ImapResponseParser.ImapResponse readResponse() throws IOException, MessagingException {
+    public ImapResponse readResponse() throws IOException, MessagingException {
         return readResponse(null);
     }
 
-    public ImapResponseParser.ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException {
+    public ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException {
         try {
-            ImapResponseParser.ImapResponse response = mParser.readResponse(callback);
+            ImapResponse response = mParser.readResponse(callback);
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP)
                 Log.v(LOG_TAG, getLogId() + "<<<" + response);
 
@@ -621,17 +622,17 @@ class ImapConnection {
         }
     }
 
-    public List<ImapResponseParser.ImapResponse> executeSimpleCommand(String command) throws IOException,
+    public List<ImapResponse> executeSimpleCommand(String command) throws IOException,
             MessagingException {
         return executeSimpleCommand(command, false, null);
     }
 
-    public List<ImapResponseParser.ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
+    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
             MessagingException {
         return executeSimpleCommand(command, sensitive, null);
     }
 
-    public List<ImapResponseParser.ImapResponse> executeSimpleCommand(String command, boolean sensitive, ImapStore.UntaggedHandler untaggedHandler)
+    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, ImapStore.UntaggedHandler untaggedHandler)
     throws IOException, MessagingException {
         String commandToLog = command;
         if (sensitive && !K9MailLib.isDebugSensitive()) {
