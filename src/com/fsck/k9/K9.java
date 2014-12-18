@@ -542,6 +542,15 @@ public class K9 extends Application {
         app = this;
 
         sIsDebuggable = ((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
+        K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
+            @Override public boolean enabled() {
+                return DEBUG;
+            }
+
+            @Override public boolean debugSensitive() {
+                return DEBUG_SENSITIVE;
+            }
+        });
 
         checkCachedDatabaseVersion();
 

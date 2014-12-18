@@ -1,9 +1,7 @@
 package com.fsck.k9.mail;
 
-
-import com.fsck.k9.K9;
-
 public class K9MailLib {
+    private static DebugStatus debugStatus = new DefaultDebugStatus();
     private K9MailLib() {}
 
     public static final String LOG_TAG             = "k9";
@@ -35,10 +33,48 @@ public class K9MailLib {
     public static boolean DEBUG_PROTOCOL_WEBDAV = true;
 
     public static boolean isDebug() {
-        return K9.DEBUG;
+        return debugStatus.enabled();
     }
 
     public static boolean isDebugSensitive() {
-        return K9.DEBUG_SENSITIVE;
+        return debugStatus.debugSensitive();
+    }
+
+    public static void setDebugSensitive(boolean b) {
+        if (debugStatus instanceof WritableDebugStatus) {
+            ((WritableDebugStatus)debugStatus).setSensitive(b);
+        }
+    }
+
+    public static void setDebug(boolean b) {
+        if (debugStatus instanceof WritableDebugStatus) {
+            ((WritableDebugStatus)debugStatus).setEnabled(b);
+        }
+    }
+
+    public static interface DebugStatus {
+        boolean enabled();
+        boolean debugSensitive();
+    }
+
+    public static void setDebugStatus(DebugStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("status cannot be null");
+        }
+        debugStatus = status;
+    }
+
+    private static interface WritableDebugStatus extends DebugStatus {
+        void setEnabled(boolean enabled);
+        void setSensitive(boolean sensitive);
+    }
+
+    private static class DefaultDebugStatus implements WritableDebugStatus {
+        private boolean enabled;
+        private boolean sensitive;
+        @Override public boolean enabled() { return enabled; }
+        @Override public boolean debugSensitive() { return sensitive; }
+        @Override public void setEnabled(boolean enabled) { this.enabled = enabled; }
+        @Override public void setSensitive(boolean sensitive) { this.sensitive = sensitive; }
     }
 }
