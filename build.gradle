@@ -34,6 +34,7 @@ dependencies {
 }
 
 project.ext.preDexLibs = !project.hasProperty('disablePreDex')
+project.ext.testCoverage = project.hasProperty('testCoverage')
 
 subprojects {
     project.plugins.whenPluginAdded { plugin ->
@@ -46,7 +47,7 @@ subprojects {
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '20.0.0'
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         minSdkVersion 15
@@ -81,6 +82,10 @@ android {
             if (project.hasProperty('storeFile')) {
                 signingConfig signingConfigs.release
             }
+        }
+
+        debug {
+            testCoverageEnabled rootProject.testCoverage
         }
     }
 
