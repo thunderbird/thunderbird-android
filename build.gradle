@@ -12,6 +12,7 @@ buildscript {
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
 
 repositories {
     jcenter()
@@ -106,9 +107,23 @@ task checkstyle(type: Checkstyle) {
     ignoreFailures = true
     configFile file("config/checkstyle/checkstyle.xml")
 
-    source 'src'
+    source = project.android.sourceSets.main.java.getSrcDirs() +
+            project.android.sourceSets.androidTest.java.getSrcDirs()
     include '**/*.java'
     classpath = files()
+}
+
+check.dependsOn 'findbugs'
+task findbugs(type: FindBugs, dependsOn: [':compileDebugJava', ':compileDebugTestJava']) {
+    ignoreFailures = true
+    classes = fileTree('build/intermediates/classes/debug/') +
+            fileTree('build/intermediates/classes/test/debug/')
+    source = project.android.sourceSets.main.java.getSrcDirs() +
+            project.android.sourceSets.androidTest.java.getSrcDirs()
+    classpath = files()
+    effort = 'max'
+    includeFilter = file("$rootProject.projectDir/config/findbugs/include_filter.xml")
+    excludeFilter = file("$rootProject.projectDir/config/findbugs/exclude_filter.xml")
 }
 
 if (project.hasProperty('keyAlias')) {

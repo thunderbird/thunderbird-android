@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<FindBugsFilter>
+    <Match>
+        <Package name="~com\.fsck\.k9.*" />
+    </Match>
+</FindBugsFilter>
