@@ -1,10 +1,13 @@
 package com.fsck.k9.mail.internet;
 
-import junit.framework.TestCase;
 
-public class CharsetSupportTest extends TestCase {
+import org.junit.Test;
 
-    public void testFixupCharset() throws Exception {
+import static org.junit.Assert.assertEquals;
+
+public class CharsetSupportTest  {
+
+    @Test public void testFixupCharset() throws Exception {
         String charsetOnMail;
         String expect;
 
@@ -89,6 +92,5 @@ public class CharsetSupportTest extends TestCase {
         charsetOnMail = "shift_jis";
         expect = "x-kddi-shift_jis-2007";
         assertEquals(expect, CharsetSupport.fixupCharset(charsetOnMail, message));
-
     }
 }

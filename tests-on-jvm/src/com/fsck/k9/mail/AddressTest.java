@@ -1,13 +1,16 @@
 package com.fsck.k9.mail;
-import junit.framework.TestCase;
 
-public class AddressTest extends TestCase {
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
+public class AddressTest {
     /**
      * test the possibility to parse "From:" fields with no email.
      * for example: From: News for Vector Limited - Google Finance
      * http://code.google.com/p/k9mail/issues/detail?id=3814
      */
-    public void testParseWithMissingEmail() {
+    @Test public void testParseWithMissingEmail() {
         Address[] addresses =  Address.parse("NAME ONLY");
         assertEquals(1, addresses.length);
         assertEquals(null, addresses[0].getAddress());
@@ -17,7 +20,7 @@ public class AddressTest extends TestCase {
     /**
      * test name + valid email
      */
-    public void testPraseWithValidEmail() {
+    @Test public void testPraseWithValidEmail() {
         Address[] addresses =  Address.parse("Max Mustermann <maxmuster@mann.com>");
         assertEquals(1, addresses.length);
         assertEquals("maxmuster@mann.com", addresses[0].getAddress());
@@ -26,7 +29,7 @@ public class AddressTest extends TestCase {
     /**
      * test with multi email addresses
      */
-    public void testPraseWithValidEmailMulti() {
+    @Test public void testPraseWithValidEmailMulti() {
         Address[] addresses =  Address.parse("lorem@ipsum.us,mark@twain.com");
         assertEquals(2, addresses.length);
         assertEquals("lorem@ipsum.us", addresses[0].getAddress());

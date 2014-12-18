@@ -1,10 +1,13 @@
 package com.fsck.k9.mail.internet;
 
-import junit.framework.TestCase;
 
-public class DecoderUtilTest extends TestCase {
+import org.junit.Test;
 
-    public void testDecodeEncodedWords() {
+import static org.junit.Assert.assertEquals;
+
+public class DecoderUtilTest {
+
+    @Test public void testDecodeEncodedWords() {
         String body, expect;
         MimeMessage message;
 

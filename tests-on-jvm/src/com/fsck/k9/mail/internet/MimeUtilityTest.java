@@ -1,9 +1,12 @@
 package com.fsck.k9.mail.internet;
 
-import junit.framework.TestCase;
 
-public class MimeUtilityTest extends TestCase {
-    public void testGetHeaderParameter() {
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
+public class MimeUtilityTest  {
+    @Test public void testGetHeaderParameter() {
         String result;
 
         /* Test edge cases */

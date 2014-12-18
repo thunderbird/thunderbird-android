@@ -1,10 +1,13 @@
 package com.fsck.k9.mail;
 
-import junit.framework.TestCase;
 
-public class Address_quoteAtoms extends TestCase
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
+public class Address_quoteAtoms
 {
-    public void testNoQuote() {
+    @Test public void testNoQuote() {
         // Alpha
         noQuote("a");
         noQuote("aa");
@@ -47,6 +50,7 @@ public class Address_quoteAtoms extends TestCase
         noQuote("'-=+=-'");
     }
 
+    @Test
     public void testQuote() {
         assertEquals("\"bob s. barker\"", quote("bob s. barker"));
         assertEquals("\":(\"", quote(":("));

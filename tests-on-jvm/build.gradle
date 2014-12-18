@@ -18,6 +18,7 @@ sourceSets {
 
     test {
         compileClasspath += files(rootProject.compileDebugJava.destinationDir)
+        compileClasspath += rootProject.compileDebugJava.classpath
         runtimeClasspath += files(rootProject.compileDebugJava.destinationDir)
         runtimeClasspath += rootProject.compileDebugJava.classpath
         java {
