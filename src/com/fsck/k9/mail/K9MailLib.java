@@ -1,14 +1,14 @@
 package com.fsck.k9.mail;
 
+
 import com.fsck.k9.K9;
 
 public class K9MailLib {
     private K9MailLib() {}
 
-    public static final String LOG_TAG = K9.LOG_TAG;
-
-    public static final int PUSH_WAKE_LOCK_TIMEOUT = K9.PUSH_WAKE_LOCK_TIMEOUT;
-    public static final String IDENTITY_HEADER     = K9.IDENTITY_HEADER;
+    public static final String LOG_TAG             = "k9";
+    public static final int PUSH_WAKE_LOCK_TIMEOUT = 60000;
+    public static final String IDENTITY_HEADER     = "X-K9mail-Identity";
 
     /**
      * Should K-9 log the conversation it has over the wire with

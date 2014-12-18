@@ -33,6 +33,7 @@ import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
@@ -272,7 +273,7 @@ public class K9 extends Application {
 
     public static final String REMOTE_UID_PREFIX = "K9REMOTE:";
 
-    public static final String IDENTITY_HEADER = "X-K9mail-Identity";
+    public static final String IDENTITY_HEADER = K9MailLib.IDENTITY_HEADER;
 
     /**
      * Specifies how many messages will be shown in a folder by default. This number is set
@@ -303,7 +304,7 @@ public class K9 extends Application {
 
     public static final int MANUAL_WAKE_LOCK_TIMEOUT = 120000;
 
-    public static final int PUSH_WAKE_LOCK_TIMEOUT = 60000;
+    public static final int PUSH_WAKE_LOCK_TIMEOUT = K9MailLib.PUSH_WAKE_LOCK_TIMEOUT;
 
     public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000;
 
