@@ -4,6 +4,7 @@ repositories {
 
 apply plugin: 'java'
 apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
 
 dependencies {
     testCompile project(':')
@@ -28,6 +29,11 @@ sourceSets {
     }
 }
 
+checkstyle {
+    ignoreFailures = true
+    configFile file("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
+}
+
 findbugs {
     ignoreFailures = true
     effort = 'max'
@@ -35,10 +41,7 @@ findbugs {
     excludeFilter = file("$rootProject.projectDir/config/findbugs/exclude_filter.xml")
 }
 
+check.dependsOn 'checkstyleTest'
 check.dependsOn 'findbugsTest'
 
-test.dependsOn ':compileDebugJava'
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
-}
+compileTestJava.dependsOn ':compileDebugJava'
