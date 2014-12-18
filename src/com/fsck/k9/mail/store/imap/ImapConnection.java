@@ -33,9 +33,7 @@ import java.net.SocketException;
 import java.security.GeneralSecurityException;
 import java.security.Security;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -84,41 +82,6 @@ class ImapConnection {
         return "conn" + hashCode();
     }
 
-    private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses) {
-        for (ImapResponse response : responses) {
-            ImapList capabilityList = null;
-            if (!response.isEmpty() && ImapResponseParser.equalsIgnoreCase(response.get(0), "OK")) {
-                for (Object thisPart : response) {
-                    if (thisPart instanceof ImapList) {
-                        ImapList thisList = (ImapList)thisPart;
-                        if (ImapResponseParser.equalsIgnoreCase(thisList.get(0), ImapCommands.CAPABILITY_CAPABILITY)) {
-                            capabilityList = thisList;
-                            break;
-                        }
-                    }
-                }
-            } else if (response.mTag == null) {
-                capabilityList = response;
-            }
-
-            if (capabilityList != null && !capabilityList.isEmpty() &&
-                    ImapResponseParser.equalsIgnoreCase(capabilityList.get(0), ImapCommands.CAPABILITY_CAPABILITY)) {
-                if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
-                }
-                for (Object capability : capabilityList) {
-                    if (capability instanceof String) {
-//                            if (K9MailLib.isDebug())
-//                            {
-//                                Log.v(LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
-//                            }
-                        capabilities.add(((String)capability).toUpperCase(Locale.US));
-                    }
-                }
-            }
-        }
-        return responses;
-    }
 
     public void open() throws IOException, MessagingException {
         if (isOpen()) {
@@ -395,6 +358,14 @@ class ImapConnection {
         }
     }
 
+    private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses) {
+        capabilities = ImapResponseParser.parseCapabilities(responses);
+        if (K9MailLib.isDebug()) {
+            Log.d(LOG_TAG, "Saving " + capabilities + " capabilities for " + getLogId());
+        }
+        return responses;
+    }
+
     protected void login() throws IOException, MessagingException {
         /*
          * Use quoted strings which permit spaces and quotes. (Using IMAP
@@ -412,7 +383,7 @@ class ImapConnection {
         try {
             receiveCapabilities(executeSimpleCommand(
                     String.format("LOGIN \"%s\" \"%s\"", username, password), true));
-        } catch (ImapStore.ImapException e) {
+        } catch (ImapException e) {
             throw new AuthenticationFailedException(e.getMessage());
         }
     }
@@ -433,7 +404,7 @@ class ImapConnection {
         mOut.write('\n');
         mOut.flush();
         try {
-            receiveCapabilities(readStatusResponse(tag, command, null));
+            receiveCapabilities(mParser.readStatusResponse(tag, command, getLogId(), null));
         } catch (MessagingException e) {
             throw new AuthenticationFailedException(e.getMessage());
         }
@@ -449,7 +420,7 @@ class ImapConnection {
         mOut.write('\n');
         mOut.flush();
         try {
-            receiveCapabilities(readStatusResponse(tag, command, null));
+            receiveCapabilities(mParser.readStatusResponse(tag, command, getLogId(), null));
         } catch (MessagingException e) {
             throw new AuthenticationFailedException(e.getMessage());
         }
@@ -460,7 +431,7 @@ class ImapConnection {
             receiveCapabilities(executeSimpleCommand(
                     String.format("AUTHENTICATE EXTERNAL %s",
                             Base64.encode(mSettings.getUsername())), false));
-        } catch (ImapStore.ImapException e) {
+        } catch (ImapException e) {
             /*
              * Provide notification to the user of a problem authenticating
              * using client certificates. We don't use an
@@ -477,8 +448,8 @@ class ImapConnection {
         ImapResponse response;
         do {
             response = readResponse();
-            if (response.mTag != null) {
-                if (response.mTag.equalsIgnoreCase(tag)) {
+            if (response.getTag() != null) {
+                if (response.getTag().equalsIgnoreCase(tag)) {
                     throw new MessagingException(
                             "Command continuation aborted: " + response);
                 } else {
@@ -487,43 +458,10 @@ class ImapConnection {
                             + response + " for " + getLogId());
                 }
             }
-        } while (!response.mCommandContinuationRequested);
+        } while (!response.isContinuationRequested());
         return response;
     }
 
-    protected List<ImapResponse> readStatusResponse(String tag,
-            String commandToLog, ImapStore.UntaggedHandler untaggedHandler)
-            throws IOException, MessagingException {
-        List<ImapResponse> responses = new ArrayList<ImapResponse>();
-        ImapResponse response;
-        do {
-            response = mParser.readResponse();
-            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP)
-                Log.v(LOG_TAG, getLogId() + "<<<" + response);
-
-            if (response.mTag != null && !response.mTag.equalsIgnoreCase(tag)) {
-                Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + getLogId());
-                Iterator<ImapResponse> iter = responses.iterator();
-                while (iter.hasNext()) {
-                    ImapResponse delResponse = iter.next();
-                    if (delResponse.mTag != null || delResponse.size() < 2
-                            || (!ImapResponseParser.equalsIgnoreCase(delResponse.get(1), "EXISTS") && !ImapResponseParser.equalsIgnoreCase(delResponse.get(1), "EXPUNGE"))) {
-                        iter.remove();
-                    }
-                }
-                response.mTag = null;
-                continue;
-            }
-            if (untaggedHandler != null) {
-                untaggedHandler.handleAsyncUntaggedResponse(response);
-            }
-            responses.add(response);
-        } while (response.mTag == null);
-        if (response.size() < 1 || !ImapResponseParser.equalsIgnoreCase(response.get(0), "OK")) {
-            throw new ImapStore.ImapException("Command: " + commandToLog + "; response: " + response.toString(), response.getAlertText());
-        }
-        return responses;
-    }
 
     protected void setReadTimeout(int millis) throws SocketException {
         Socket sock = mSocket;
@@ -567,7 +505,7 @@ class ImapConnection {
         return readResponse(null);
     }
 
-    public ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException {
+    public ImapResponse readResponse(ImapResponseCallback callback) throws IOException {
         try {
             ImapResponse response = mParser.readResponse(callback);
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP)
@@ -591,8 +529,7 @@ class ImapConnection {
 
     }
 
-    public String sendCommand(String command, boolean sensitive)
-    throws MessagingException, IOException {
+    public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
         try {
             open();
             String tag = Integer.toString(mNextCommandTag++);
@@ -613,7 +550,7 @@ class ImapConnection {
         } catch (IOException ioe) {
             close();
             throw ioe;
-        } catch (ImapStore.ImapException ie) {
+        } catch (ImapException ie) {
             close();
             throw ie;
         } catch (MessagingException me) {
@@ -632,21 +569,18 @@ class ImapConnection {
         return executeSimpleCommand(command, sensitive, null);
     }
 
-    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, ImapStore.UntaggedHandler untaggedHandler)
+    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
     throws IOException, MessagingException {
         String commandToLog = command;
         if (sensitive && !K9MailLib.isDebugSensitive()) {
             commandToLog = "*sensitive*";
         }
-
-
         //if (K9MailLib.isDebug())
         //    Log.v(LOG_TAG, "Sending IMAP command " + commandToLog + " on connection " + getLogId());
-
         String tag = sendCommand(command, sensitive);
         //if (K9MailLib.isDebug())
         //    Log.v(LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
 
-        return readStatusResponse(tag, commandToLog, untaggedHandler);
+        return mParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
     }
 }

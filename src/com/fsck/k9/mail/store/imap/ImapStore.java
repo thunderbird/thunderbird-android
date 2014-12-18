@@ -789,7 +789,7 @@ public class ImapStore extends RemoteStore {
                             Object keyObj = bracketed.get(0);
                             if (keyObj instanceof String) {
                                 String key = (String) keyObj;
-                                if (response.mTag != null) {
+                                if (response.getTag() != null) {
 
                                     if ("READ-ONLY".equalsIgnoreCase(key)) {
                                         mMode = OPEN_MODE_RO;
@@ -1253,7 +1253,7 @@ public class ImapStore extends RemoteStore {
                 List<Long> uids = new ArrayList<Long>();
                 List<ImapResponse> responses = searcher.search(); //
                 for (ImapResponse response : responses) {
-                    if (response.mTag == null) {
+                    if (response.getTag() == null) {
                         if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
                             for (int i = 1, count = response.size(); i < count; i++) {
                                 uids.add(response.getLong(i));
@@ -1385,7 +1385,7 @@ public class ImapStore extends RemoteStore {
                     ImapResponse response;
                     int messageNumber = 0;
 
-                    ImapResponseParser.IImapResponseCallback callback = null;
+                    ImapResponseCallback callback = null;
                     if (fp.contains(FetchProfile.Item.BODY) || fp.contains(FetchProfile.Item.BODY_SANE)) {
                         callback = new FetchBodyCallback(messageMap);
                     }
@@ -1393,7 +1393,7 @@ public class ImapStore extends RemoteStore {
                     do {
                         response = mConnection.readResponse(callback);
 
-                        if (response.mTag == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
+                        if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
                             ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                             String uid = fetchList.getKeyedString("UID");
                             long msgSeq = response.getLong(0);
@@ -1444,7 +1444,7 @@ public class ImapStore extends RemoteStore {
                             handleUntaggedResponse(response);
                         }
 
-                    } while (response.mTag == null);
+                    } while (response.getTag() == null);
                 } catch (IOException ioe) {
                     throw ioExceptionHandler(mConnection, ioe);
                 }
@@ -1479,12 +1479,12 @@ public class ImapStore extends RemoteStore {
                 ImapResponse response;
                 int messageNumber = 0;
 
-                ImapResponseParser.IImapResponseCallback callback = new FetchPartCallback(part);
+                ImapResponseCallback callback = new FetchPartCallback(part);
 
                 do {
                     response = mConnection.readResponse(callback);
 
-                    if ((response.mTag == null) &&
+                    if ((response.getTag() == null) &&
                             (ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))) {
                         ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                         String uid = fetchList.getKeyedString("UID");
@@ -1531,7 +1531,7 @@ public class ImapStore extends RemoteStore {
                         handleUntaggedResponse(response);
                     }
 
-                } while (response.mTag == null);
+                } while (response.getTag() == null);
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
@@ -1643,7 +1643,7 @@ public class ImapStore extends RemoteStore {
          * @param response
          */
         protected void handleUntaggedResponse(ImapResponse response) {
-            if (response.mTag == null && response.size() > 1) {
+            if (response.getTag() == null && response.size() > 1) {
                 if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXISTS")) {
                     mMessageCount = response.getNumber(0);
                     if (K9MailLib.isDebug())
@@ -1873,14 +1873,14 @@ public class ImapStore extends RemoteStore {
                     do {
                         response = mConnection.readResponse();
                         handleUntaggedResponse(response);
-                        if (response.mCommandContinuationRequested) {
+                        if (response.isContinuationRequested()) {
                             EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(mConnection.getOutputStream());
                             message.writeTo(eolOut);
                             eolOut.write('\r');
                             eolOut.write('\n');
                             eolOut.flush();
                         }
-                    } while (response.mTag == null);
+                    } while (response.getTag() == null);
 
                     if (response.size() > 1) {
                         /*
@@ -1957,7 +1957,7 @@ public class ImapStore extends RemoteStore {
                     executeSimpleCommand(
                         String.format("UID SEARCH HEADER MESSAGE-ID %s", encodeString(messageId)));
                 for (ImapResponse response1 : responses) {
-                    if (response1.mTag == null && ImapResponseParser.equalsIgnoreCase(response1.get(0), "SEARCH")
+                    if (response1.getTag() == null && ImapResponseParser.equalsIgnoreCase(response1.get(0), "SEARCH")
                             && response1.size() > 1) {
                         return response1.getString(1);
                     }
@@ -2232,16 +2232,6 @@ public class ImapStore extends RemoteStore {
         }
     }
 
-    static class ImapException extends MessagingException {
-        private static final long serialVersionUID = 3725007182205882394L;
-        private final String mAlertText;
-
-        public ImapException(String message, String alertText) {
-            super(message, true);
-            this.mAlertText = alertText;
-        }
-    }
-
     public class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         private final PushReceiver receiver;
         private Thread listeningThread = null;
@@ -2459,7 +2449,7 @@ public class ImapStore extends RemoteStore {
 
         @Override
         protected void handleUntaggedResponse(ImapResponse response) {
-            if (response.mTag == null && response.size() > 1) {
+            if (response.getTag() == null && response.size() > 1) {
                 Object responseType = response.get(1);
                 if (ImapResponseParser.equalsIgnoreCase(responseType, "FETCH")
                         || ImapResponseParser.equalsIgnoreCase(responseType, "EXPUNGE")
@@ -2588,7 +2578,7 @@ public class ImapStore extends RemoteStore {
         protected int processUntaggedResponse(long oldMessageCount, ImapResponse response, List<Long> flagSyncMsgSeqs, List<String> removeMsgUids) {
             super.handleUntaggedResponse(response);
             int messageCountDelta = 0;
-            if (response.mTag == null && response.size() > 1) {
+            if (response.getTag() == null && response.size() > 1) {
                 try {
                     Object responseType = response.get(1);
                     if (ImapResponseParser.equalsIgnoreCase(responseType, "FETCH")) {
@@ -2703,7 +2693,7 @@ public class ImapStore extends RemoteStore {
                     Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
                 }
             } else {
-                if (response.mTag == null) {
+                if (response.getTag() == null) {
                     if (response.size() > 1) {
                         boolean started = false;
                         Object responseType = response.get(1);
@@ -2723,7 +2713,7 @@ public class ImapStore extends RemoteStore {
                                 Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
                             }
                         }
-                    } else if (response.mCommandContinuationRequested) {
+                    } else if (response.isContinuationRequested()) {
                         if (K9MailLib.isDebug())
                             Log.d(LOG_TAG, "Idling " + getLogId());
 
@@ -2812,10 +2802,6 @@ public class ImapStore extends RemoteStore {
         public void setLastRefresh(long lastRefresh) {
             this.lastRefresh = lastRefresh;
         }
-
-    }
-    public static interface UntaggedHandler {
-        void handleAsyncUntaggedResponse(ImapResponse respose);
     }
 
     protected static class ImapPushState {
@@ -2856,7 +2842,7 @@ public class ImapStore extends RemoteStore {
         List<ImapResponse> search() throws IOException, MessagingException;
     }
 
-    private static class FetchBodyCallback implements ImapResponseParser.IImapResponseCallback {
+    private static class FetchBodyCallback implements ImapResponseCallback {
         private Map<String, Message> mMessageMap;
 
         FetchBodyCallback(Map<String, Message> messageMap) {
@@ -2865,8 +2851,8 @@ public class ImapStore extends RemoteStore {
 
         @Override
         public Object foundLiteral(ImapResponse response,
-                                   FixedLengthInputStream literal) throws IOException, Exception {
-            if (response.mTag == null &&
+                                   FixedLengthInputStream literal) throws MessagingException, IOException {
+            if (response.getTag() == null &&
                     ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
                 ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                 String uid = fetchList.getKeyedString("UID");
@@ -2875,13 +2861,13 @@ public class ImapStore extends RemoteStore {
                 message.parse(literal);
 
                 // Return placeholder object
-                return Integer.valueOf(1);
+                return 1;
             }
             return null;
         }
     }
 
-    private static class FetchPartCallback implements ImapResponseParser.IImapResponseCallback {
+    private static class FetchPartCallback implements ImapResponseCallback {
         private Part mPart;
 
         FetchPartCallback(Part part) {
@@ -2890,8 +2876,8 @@ public class ImapStore extends RemoteStore {
 
         @Override
         public Object foundLiteral(ImapResponse response,
-                                   FixedLengthInputStream literal) throws IOException, Exception {
-            if (response.mTag == null &&
+                                   FixedLengthInputStream literal) throws MessagingException, IOException {
+            if (response.getTag() == null &&
                     ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
                 //TODO: check for correct UID
 

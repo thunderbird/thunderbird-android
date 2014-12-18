@@ -1,13 +1,25 @@
 package com.fsck.k9.mail.store.imap;
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
+import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_CAPABILITY;
 
 class ImapResponseParser {
-
     private PeekableInputStream mIn;
     private ImapResponse mResponse;
     private Exception mException;
@@ -24,20 +36,18 @@ class ImapResponseParser {
      * Reads the next response available on the stream and returns an
      * ImapResponse object that represents it.
      */
-    public ImapResponse readResponse(IImapResponseCallback callback) throws IOException {
+    public ImapResponse readResponse(ImapResponseCallback callback) throws IOException {
         try {
-            mResponse = new ImapResponse(callback);
-            mResponse.setCallback(callback);
-
             int ch = mIn.peek();
             if (ch == '*') {
                 parseUntaggedResponse();
+                mResponse = new ImapResponse(callback, false, null);
                 readTokens(mResponse);
             } else if (ch == '+') {
-                mResponse.mCommandContinuationRequested = parseCommandContinuationRequest();
+                mResponse = new ImapResponse(callback, parseCommandContinuationRequest(), null);
                 parseResponseText(mResponse);
             } else {
-                mResponse.mTag = parseTaggedResponse();
+                mResponse = new ImapResponse(callback, false, parseTaggedResponse());
                 readTokens(mResponse);
             }
 
@@ -50,6 +60,80 @@ class ImapResponseParser {
             mResponse = null;
             mException = null;
         }
+    }
+
+    protected List<ImapResponse> readStatusResponse(String tag,
+                                                    String commandToLog,
+                                                    String logId,
+                                                    UntaggedHandler untaggedHandler)
+            throws IOException, MessagingException {
+        List<ImapResponse> responses = new ArrayList<ImapResponse>();
+        ImapResponse response;
+        do {
+            response = readResponse();
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+                Log.v(LOG_TAG, logId + "<<<" + response);
+            }
+
+            if (response.getTag() != null && !response.getTag().equalsIgnoreCase(tag)) {
+                Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + logId);
+
+                Iterator<ImapResponse> iter = responses.iterator();
+
+                while (iter.hasNext()) {
+                    ImapResponse delResponse = iter.next();
+                    if (delResponse.getTag() != null
+                            || delResponse.size() < 2
+                            || (!equalsIgnoreCase(delResponse.get(1), "EXISTS") &&
+                                !equalsIgnoreCase(delResponse.get(1), "EXPUNGE"))) {
+                        iter.remove();
+                    }
+                }
+                response = null;
+                continue;
+            }
+            if (untaggedHandler != null) {
+                untaggedHandler.handleAsyncUntaggedResponse(response);
+            }
+            responses.add(response);
+
+        } while (response == null || response.getTag() == null);
+
+        if (response.size() < 1 || !equalsIgnoreCase(response.get(0), "OK")) {
+            throw new ImapException("Command: " + commandToLog + "; response: " + response.toString(), response.getAlertText());
+        }
+
+        return responses;
+    }
+
+    protected static Set<String> parseCapabilities(List<ImapResponse> responses) {
+        HashSet<String> capabilities = new HashSet<String>();
+        for (ImapResponse response : responses) {
+            ImapList list = null;
+            if (!response.isEmpty() && equalsIgnoreCase(response.get(0), "OK")) {
+                for (Object thisPart : response) {
+                    if (thisPart instanceof ImapList) {
+                        ImapList thisList = (ImapList)thisPart;
+                        if (equalsIgnoreCase(thisList.get(0), CAPABILITY_CAPABILITY)) {
+                            list = thisList;
+                            break;
+                        }
+                    }
+                }
+            } else if (response.getTag() == null) {
+                list = response;
+            }
+
+            if (list != null && list.size() > 1 &&
+                 equalsIgnoreCase(list.get(0), CAPABILITY_CAPABILITY)) {
+                for (Object capability : list.subList(1, list.size())) {
+                    if (capability instanceof String) {
+                        capabilities.add(((String)capability).toUpperCase(Locale.US));
+                    }
+                }
+            }
+        }
+        return capabilities;
     }
 
     private void readTokens(ImapResponse response) throws IOException {
@@ -184,8 +268,7 @@ class ImapResponseParser {
 
     // 3 OK [READ-WRITE] Select completed.
     private String parseTaggedResponse() throws IOException {
-        String tag = readStringUntil(' ');
-        return tag;
+        return readStringUntil(' ');
     }
 
     private ImapList parseList(ImapList parent) throws IOException {
@@ -377,24 +460,4 @@ class ImapResponseParser {
         }
     }
 
-    public interface IImapResponseCallback {
-        /**
-         * Callback method that is called by the parser when a literal string
-         * is found in an IMAP response.
-         *
-         * @param response ImapResponse object with the fields that have been
-         *                 parsed up until now (excluding the literal string).
-         * @param literal  FixedLengthInputStream that can be used to access
-         *                 the literal string.
-         *
-         * @return an Object that will be put in the ImapResponse object at the
-         *         place of the literal string.
-         *
-         * @throws IOException passed-through if thrown by FixedLengthInputStream
-         * @throws Exception if something goes wrong. Parsing will be resumed
-         *                   and the exception will be thrown after the
-         *                   complete IMAP response has been parsed.
-         */
-        public Object foundLiteral(ImapResponse response, FixedLengthInputStream literal) throws Exception;
-    }
 }

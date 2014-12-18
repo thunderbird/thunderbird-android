@@ -11,20 +11,32 @@ package com.fsck.k9.mail.store.imap;
 public class ImapResponse extends ImapList {
     private static final long serialVersionUID = 6886458551615975669L;
 
-    private ImapResponseParser.IImapResponseCallback mCallback;
+    private ImapResponseCallback mCallback;
 
-    boolean mCommandContinuationRequested;
-    String mTag;
+    private final boolean mCommandContinuationRequested;
+    private final String mTag;
 
-    public ImapResponse(ImapResponseParser.IImapResponseCallback mCallback) {
-        this.mCallback = mCallback;
+
+    public ImapResponse(ImapResponseCallback callback,
+                        boolean mCommandContinuationRequested, String mTag) {
+        this.mCallback = callback;
+        this.mCommandContinuationRequested = mCommandContinuationRequested;
+        this.mTag = mTag;
     }
 
-    public ImapResponseParser.IImapResponseCallback getCallback() {
+    public boolean isContinuationRequested() {
+        return mCommandContinuationRequested;
+    }
+
+    public String getTag() {
+        return mTag;
+    }
+
+    public ImapResponseCallback getCallback() {
         return mCallback;
     }
 
-    public void setCallback(ImapResponseParser.IImapResponseCallback mCallback) {
+    public void setCallback(ImapResponseCallback mCallback) {
         this.mCallback = mCallback;
     }
 
