@@ -5118,7 +5118,7 @@ public class MessagingController implements Runnable {
                     publicNotification.setContentText(formattedSender);
                 } else {
                     // Use a LinkedHashSet so that we preserve ordering (newest to oldest), but still remove duplicates
-                    Set<CharSequence> senders = new LinkedHashSet<>(NUM_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
+                    Set<CharSequence> senders = new LinkedHashSet<CharSequence>(NUM_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
                     for (Message message : messages) {
                         senders.add(getMessageSender(context, account, message));
                         if (senders.size() == NUM_SENDERS_IN_LOCK_SCREEN_NOTIFICATION) {

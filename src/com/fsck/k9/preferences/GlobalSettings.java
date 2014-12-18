@@ -252,7 +252,7 @@ public class GlobalSettings {
                 new V(32, new BooleanSetting(false))
             ));
         s.put("lockScreenNotificationVisibility", Settings.versions(
-            new V(37, new EnumSetting<>(LockScreenNotificationVisibility.class, LockScreenNotificationVisibility.MESSAGE_COUNT))
+            new V(37, new EnumSetting<LockScreenNotificationVisibility>(LockScreenNotificationVisibility.class, LockScreenNotificationVisibility.MESSAGE_COUNT))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);
