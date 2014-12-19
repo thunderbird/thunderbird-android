@@ -138,7 +138,7 @@ public abstract class Folder<T extends Message> {
      * @param listener Listener to notify as we fetch messages.
      * @throws MessagingException
      */
-    public abstract void fetch(List<? extends Message> messages, FetchProfile fp,
+    public abstract void fetch(List<T> messages, FetchProfile fp,
                                MessageRetrievalListener<T> listener) throws MessagingException;
 
     public void fetchPart(Message message, Part part,
@@ -162,7 +162,6 @@ public abstract class Folder<T extends Message> {
     protected boolean mCanCreateKeywords = false;
 
     /**
-     * 
      * @param oldPushState
      * @param message
      * @return empty string to clear the pushState, null to leave the state as-is

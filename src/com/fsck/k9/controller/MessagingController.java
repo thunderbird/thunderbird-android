@@ -1439,7 +1439,7 @@ public class MessagingController implements Runnable {
 
     private <T extends Message> void fetchUnsyncedMessages(final Account account, final Folder<T> remoteFolder,
                                        final LocalFolder localFolder,
-                                       List<Message> unsyncedMessages,
+                                       List<T> unsyncedMessages,
                                        final List<Message> smallMessages,
                                        final List<Message> largeMessages,
                                        final AtomicInteger progress,
@@ -1669,7 +1669,7 @@ public class MessagingController implements Runnable {
             Log.d(K9.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
 
         remoteFolder.fetch(largeMessages, fp, null);
-        for (Message message : largeMessages) {
+        for (T message : largeMessages) {
 
             if (!shouldImportMessage(account, folder, message, progress, earliestDate)) {
                 progress.incrementAndGet();
@@ -2959,7 +2959,7 @@ public class MessagingController implements Runnable {
             localFolder = localStore.getFolder(folder);
             localFolder.open(Folder.OPEN_MODE_RW);
 
-            Message message = localFolder.getMessage(uid);
+            LocalMessage message = localFolder.getMessage(uid);
 
             if (uid.startsWith(K9.LOCAL_UID_PREFIX)) {
                 Log.w(K9.LOG_TAG, "Message has local UID so cannot download fully.");

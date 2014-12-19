@@ -609,7 +609,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     @Override
-    public void fetch(final List<? extends Message> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)
+    public void fetch(final List<LocalMessage> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)
     throws MessagingException {
         try {
             this.localStore.database.execute(false, new DbCallback<Void>() {
@@ -785,8 +785,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                     // SpamAssassin rules.
                                     localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
                                     localMessage.setBody(new TextBody(""));
-                                } else if (mp.getCount() == 1 && (mp.getBodyPart(0) instanceof LocalAttachmentBodyPart) == false)
-
+                                } else if (mp.getCount() == 1 &&
+                                        !(mp.getBodyPart(0) instanceof LocalAttachmentBodyPart))
                                 {
                                     // If we have only one part, drop the MimeMultipart container.
                                     BodyPart part = mp.getBodyPart(0);
@@ -810,7 +810,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     @Override
-    public List<? extends Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
+    public List<LocalMessage> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<LocalMessage> listener)
     throws MessagingException {
         open(OPEN_MODE_RW);
         throw new MessagingException(
@@ -943,16 +943,16 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     @Override
-    public List<? extends Message> getMessages(MessageRetrievalListener listener) throws MessagingException {
+    public List<LocalMessage> getMessages(MessageRetrievalListener listener) throws MessagingException {
         return getMessages(listener, true);
     }
 
     @Override
-    public List<? extends Message> getMessages(final MessageRetrievalListener listener, final boolean includeDeleted) throws MessagingException {
+    public List<LocalMessage> getMessages(final MessageRetrievalListener listener, final boolean includeDeleted) throws MessagingException {
         try {
-            return this.localStore.database.execute(false, new DbCallback<List<? extends Message>>() {
+            return  localStore.database.execute(false, new DbCallback<List<LocalMessage>>() {
                 @Override
-                public List<? extends Message> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
                         open(OPEN_MODE_RW);
                         return LocalFolder.this.localStore.getMessages(
@@ -977,15 +977,15 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     @Override
-    public List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener)
+    public List<LocalMessage> getMessages(String[] uids, MessageRetrievalListener<LocalMessage> listener)
     throws MessagingException {
         open(OPEN_MODE_RW);
         if (uids == null) {
             return getMessages(listener);
         }
-        List<Message> messages = new ArrayList<Message>();
+        List<LocalMessage> messages = new ArrayList<LocalMessage>();
         for (String uid : uids) {
-            Message message = getMessage(uid);
+            LocalMessage message = getMessage(uid);
             if (message != null) {
                 messages.add(message);
             }
@@ -1231,7 +1231,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
      * message, retrieve the appropriate local message instance first (if it already exists).
      * @param messages
      * @param copy
-     * @return Map<String, String> uidMap of srcUids -> destUids
+     * @return uidMap of srcUids -> destUids
      */
     private Map<String, String> appendMessages(final List<? extends Message> messages, final boolean copy) throws MessagingException {
         open(OPEN_MODE_RW);
@@ -1242,10 +1242,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
                         for (Message message : messages) {
-                            if (!(message instanceof MimeMessage)) {
-                                throw new Error("LocalStore can only store Messages that extend MimeMessage");
-                            }
-
                             long oldMessageId = -1;
                             String uid = message.getUid();
                             if (uid == null || copy) {

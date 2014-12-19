@@ -151,7 +151,7 @@ public class Pop3Store extends RemoteStore {
      *
      * @return A Pop3Store URI that holds the same information as the {@code server} parameter.
      *
-     * @see Account#getStoreUri()
+     * @see StoreConfig#getStoreUri()
      * @see Pop3Store#decodeUri(String)
      */
     public static String createUri(ServerSettings server) {
@@ -572,7 +572,7 @@ public class Pop3Store extends RemoteStore {
         }
 
         @Override
-        public List<? extends Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
+        public List<Pop3Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<Pop3Message> listener)
         throws MessagingException {
             if (start < 1 || end < 1 || end < start) {
                 throw new MessagingException(String.format(Locale.US, "Invalid message set %d %d",
@@ -583,7 +583,7 @@ public class Pop3Store extends RemoteStore {
             } catch (IOException ioe) {
                 throw new MessagingException("getMessages", ioe);
             }
-            List<Message> messages = new ArrayList<Message>();
+            List<Pop3Message> messages = new ArrayList<Pop3Message>();
             int i = 0;
             for (int msgNum = start; msgNum <= end; msgNum++) {
                 Pop3Message message = mMsgNumToMsgMap.get(msgNum);
@@ -765,7 +765,7 @@ public class Pop3Store extends RemoteStore {
          * @throws MessagingException
          */
         @Override
-        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener<Pop3Message> listener)
+        public void fetch(List<Pop3Message> messages, FetchProfile fp, MessageRetrievalListener<Pop3Message> listener)
         throws MessagingException {
             if (messages == null || messages.isEmpty()) {
                 return;
@@ -793,11 +793,7 @@ public class Pop3Store extends RemoteStore {
                 throw new MessagingException("fetch", ioe);
             }
             for (int i = 0, count = messages.size(); i < count; i++) {
-                Message message = messages.get(i);
-                if (!(message instanceof Pop3Message)) {
-                    throw new MessagingException("Pop3Store.fetch called with non-Pop3 Message");
-                }
-                Pop3Message pop3Message = (Pop3Message)message;
+                Pop3Message pop3Message = messages.get(i);
                 try {
                     if (listener != null && !fp.contains(FetchProfile.Item.ENVELOPE)) {
                         listener.messageStarted(pop3Message.getUid(), i, count);
@@ -831,8 +827,8 @@ public class Pop3Store extends RemoteStore {
             }
         }
 
-        private void fetchEnvelope(List<? extends Message> messages,
-                                   MessageRetrievalListener listener)  throws IOException, MessagingException {
+        private void fetchEnvelope(List<Pop3Message> messages,
+                                   MessageRetrievalListener<Pop3Message> listener)  throws IOException, MessagingException {
             int unsizedMessages = 0;
             for (Message message : messages) {
                 if (message.getSize() == -1) {
@@ -848,22 +844,18 @@ public class Pop3Store extends RemoteStore {
                  * to hopefully save some time and bandwidth.
                  */
                 for (int i = 0, count = messages.size(); i < count; i++) {
-                    Message message = messages.get(i);
-                    if (!(message instanceof Pop3Message)) {
-                        throw new MessagingException("Pop3Store.fetch called with non-Pop3 Message");
-                    }
-                    Pop3Message pop3Message = (Pop3Message)message;
+                    Pop3Message message = messages.get(i);
                     if (listener != null) {
-                        listener.messageStarted(pop3Message.getUid(), i, count);
+                        listener.messageStarted(message.getUid(), i, count);
                     }
                     String response = executeSimpleCommand(String.format(Locale.US, LIST_COMMAND + " %d",
-                                                           mUidToMsgNumMap.get(pop3Message.getUid())));
+                                                           mUidToMsgNumMap.get(message.getUid())));
                     String[] listParts = response.split(" ");
                     //int msgNum = Integer.parseInt(listParts[1]);
                     int msgSize = Integer.parseInt(listParts[2]);
-                    pop3Message.setSize(msgSize);
+                    message.setSize(msgSize);
                     if (listener != null) {
-                        listener.messageFinished(pop3Message, i, count);
+                        listener.messageFinished(message, i, count);
                     }
                 }
             } else {

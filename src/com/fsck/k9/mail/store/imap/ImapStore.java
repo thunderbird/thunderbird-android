@@ -1326,7 +1326,7 @@ public class ImapStore extends RemoteStore {
         }
 
         @Override
-        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener<ImapMessage> listener)
+        public void fetch(List<ImapMessage> messages, FetchProfile fp, MessageRetrievalListener<ImapMessage> listener)
         throws MessagingException {
             if (messages == null || messages.isEmpty()) {
                 return;

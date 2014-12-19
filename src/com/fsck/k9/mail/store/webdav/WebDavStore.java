@@ -1459,9 +1459,8 @@ public class WebDavStore extends RemoteStore {
         }
 
         @Override
-        public List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
-            List<Message> messageList = new ArrayList<Message>();
-            List<? extends Message> messages;
+        public List<WebDavMessage> getMessages(String[] uids, MessageRetrievalListener<WebDavMessage> listener) throws MessagingException {
+            List<WebDavMessage> messageList = new ArrayList<WebDavMessage>();
 
             if (uids == null ||
                     uids.length == 0) {
@@ -1480,9 +1479,7 @@ public class WebDavStore extends RemoteStore {
                     listener.messageFinished(message, i, count);
                 }
             }
-            messages = messageList;
-
-            return messages;
+            return messageList;
         }
 
         private Map<String, String> getMessageUrls(String[] uids) throws MessagingException {
@@ -1494,13 +1491,12 @@ public class WebDavStore extends RemoteStore {
             headers.put("Brief", "t");
 
             DataSet dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-            Map<String, String> uidToUrl = dataset.getUidToUrl();
 
-            return uidToUrl;
+            return dataset.getUidToUrl();
         }
 
         @Override
-        public void fetch(List<? extends Message> messages, FetchProfile fp, MessageRetrievalListener<WebDavMessage> listener)
+        public void fetch(List<WebDavMessage> messages, FetchProfile fp, MessageRetrievalListener<WebDavMessage> listener)
         throws MessagingException {
             if (messages == null ||
                     messages.isEmpty()) {
@@ -1718,12 +1714,12 @@ public class WebDavStore extends RemoteStore {
          * that we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          * Call it a happy balance
          */
-        private void fetchEnvelope(List<? extends Message> startMessages, MessageRetrievalListener listener)
+        private void fetchEnvelope(List<WebDavMessage> startMessages, MessageRetrievalListener<WebDavMessage> listener)
         throws MessagingException {
             Map<String, String> headers = new HashMap<String, String>();
             String messageBody = "";
             String[] uids;
-            List<Message> messages = new ArrayList<Message>(10);
+            List<WebDavMessage> messages = new ArrayList<WebDavMessage>(10);
 
             if (startMessages == null ||
                     startMessages.isEmpty()) {
@@ -1731,7 +1727,7 @@ public class WebDavStore extends RemoteStore {
             }
 
             if (startMessages.size() > 10) {
-                List<Message> newMessages =  new ArrayList<Message>(startMessages.size() - 10);
+                List<WebDavMessage> newMessages =  new ArrayList<WebDavMessage>(startMessages.size() - 10);
                 for (int i = 0, count = startMessages.size(); i < count; i++) {
                     if (i < 10) {
                         messages.set(i, startMessages.get(i));
@@ -1759,21 +1755,17 @@ public class WebDavStore extends RemoteStore {
 
             int count = messages.size();
             for (int i = messages.size() - 1; i >= 0; i--) {
-                if (!(messages.get(i) instanceof WebDavMessage)) {
-                    throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
-                }
-                WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
-
+                WebDavMessage message = messages.get(i);
                 if (listener != null) {
                     listener.messageStarted(messages.get(i).getUid(), i, count);
                 }
 
-                ParsedMessageEnvelope envelope = envelopes.get(wdMessage.getUid());
+                ParsedMessageEnvelope envelope = envelopes.get(message.getUid());
                 if (envelope != null) {
-                    wdMessage.setNewHeaders(envelope);
-                    wdMessage.setFlagInternal(Flag.SEEN, envelope.getReadStatus());
+                    message.setNewHeaders(envelope);
+                    message.setFlagInternal(Flag.SEEN, envelope.getReadStatus());
                 } else {
-                    Log.e(LOG_TAG,"Asked to get metadata for a non-existent message: "+wdMessage.getUid());
+                    Log.e(LOG_TAG, "Asked to get metadata for a non-existent message: " + message.getUid());
                 }
 
                 if (listener != null) {
@@ -1801,7 +1793,7 @@ public class WebDavStore extends RemoteStore {
         }
 
         private void markServerMessagesRead(String[] uids, boolean read) throws MessagingException {
-            String messageBody = "";
+            String messageBody;
             Map<String, String> headers = new HashMap<String, String>();
             Map<String, String> uidToUrl = getMessageUrls(uids);
             String[] urls = new String[uids.length];
@@ -1842,9 +1834,8 @@ public class WebDavStore extends RemoteStore {
         private String generateDeleteUrl(String startUrl) {
             String[] urlParts = startUrl.split("/");
             String filename = urlParts[urlParts.length - 1];
-            String finalUrl = WebDavStore.this.mUrl + "Deleted%20Items/" + filename;
 
-            return finalUrl;
+            return WebDavStore.this.mUrl + "Deleted%20Items/" + filename;
         }
 
         @Override
@@ -2169,7 +2160,7 @@ public class WebDavStore extends RemoteStore {
 
         public void finish() {
             String uid = mUid.toString();
-            if (uid != null && mTempData != null) {
+            if (mTempData != null) {
                 mData.put(uid, mTempData);
             } else if (mTempData != null) {
                 /*
