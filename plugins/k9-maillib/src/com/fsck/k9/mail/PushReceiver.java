@@ -2,7 +2,7 @@ package com.fsck.k9.mail;
 
 import java.util.List;
 
-import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 
 import android.content.Context;
 

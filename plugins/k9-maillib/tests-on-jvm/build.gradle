@@ -1,0 +1,34 @@
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+
+dependencies {
+    testCompile project(':')
+    testCompile 'junit:junit:4.12'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = []
+        }
+    }
+
+    test {
+        compileClasspath += files(rootProject.compileDebugJava.destinationDir)
+        compileClasspath += rootProject.compileDebugJava.classpath
+        runtimeClasspath += files(rootProject.compileDebugJava.destinationDir)
+        runtimeClasspath += rootProject.compileDebugJava.classpath
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+test.dependsOn ':compileDebugJava'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
