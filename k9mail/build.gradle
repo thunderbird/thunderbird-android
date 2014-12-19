@@ -9,7 +9,6 @@ repositories {
 
 dependencies {
     compile project(':plugins:Android-PullToRefresh:library')
-    compile project(':plugins:ckChangeLog:library')
     compile project(':plugins:HoloColorPicker')
     compile project(':plugins:openpgp-api-library')
     compile 'org.apache.james:apache-mime4j-core:0.7.2'
@@ -20,6 +19,7 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.2'
     compile 'com.android.support:support-v13:21.0.2'
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
+    compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
 }
 
 android {
