@@ -506,7 +506,7 @@ public class ImapStore extends RemoteStore {
      * @throws MessagingException uh oh!
      */
     private void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
-        String commandResponse = null;
+        String commandResponse;
         String commandOptions = "";
 
         if (connection.getCapabilities().contains("XLIST")) {
@@ -581,10 +581,6 @@ public class ImapStore extends RemoteStore {
         }
     }
 
-    /**
-     * Gets a connection if one is available for reuse, or creates a new one if not.
-     * @return
-     */
     private ImapConnection getConnection() throws MessagingException {
         synchronized (mConnections) {
             ImapConnection connection;
@@ -669,7 +665,7 @@ public class ImapStore extends RemoteStore {
     }
 
 
-    class ImapFolder extends Folder<ImapMessage> {
+    protected class ImapFolder extends Folder<ImapMessage> {
         private String mName;
         protected volatile int mMessageCount = -1;
         protected volatile long uidNext = -1L;
@@ -689,7 +685,7 @@ public class ImapStore extends RemoteStore {
         public String getPrefixedName() throws MessagingException {
             String prefixedName = "";
             if (!mStoreConfig.getInboxFolderName().equalsIgnoreCase(mName)) {
-                ImapConnection connection = null;
+                ImapConnection connection;
                 synchronized (this) {
                     if (mConnection == null) {
                         connection = getConnection();
@@ -737,10 +733,9 @@ public class ImapStore extends RemoteStore {
                 // Make sure the connection is valid. If it's not we'll close it down and continue
                 // on to get a new one.
                 try {
-                    List<ImapResponse> responses = executeSimpleCommand("NOOP");
-                    return responses;
+                    return executeSimpleCommand("NOOP");
                 } catch (IOException ioe) {
-                    ioExceptionHandler(mConnection, ioe);
+                    /* don't throw */ ioExceptionHandler(mConnection, ioe);
                 }
             }
             releaseConnection(mConnection);
@@ -909,7 +904,7 @@ public class ImapStore extends RemoteStore {
              * so we must get the connection ourselves if it's not there. We are specifically
              * not calling checkOpen() since we don't care if the folder is open.
              */
-            ImapConnection connection = null;
+            ImapConnection connection;
             synchronized (this) {
                 if (mConnection == null) {
                     connection = getConnection();
@@ -941,7 +936,7 @@ public class ImapStore extends RemoteStore {
              * so we must get the connection ourselves if it's not there. We are specifically
              * not calling checkOpen() since we don't care if the folder is open.
              */
-            ImapConnection connection = null;
+            ImapConnection connection;
             synchronized (this) {
                 if (mConnection == null) {
                     connection = getConnection();
@@ -1191,12 +1186,12 @@ public class ImapStore extends RemoteStore {
 
 
         @Override
-        public List<ImapMessage> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
+        public List<ImapMessage> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<ImapMessage> listener)
         throws MessagingException {
             return getMessages(start, end, earliestDate, false, listener);
         }
 
-        protected List<ImapMessage> getMessages(final int start, final int end, Date earliestDate, final boolean includeDeleted, final MessageRetrievalListener listener)
+        protected List<ImapMessage> getMessages(final int start, final int end, Date earliestDate, final boolean includeDeleted, final MessageRetrievalListener<ImapMessage> listener)
         throws MessagingException {
             if (start < 1 || end < 1 || end < start) {
                 throw new MessagingException(
@@ -1223,7 +1218,7 @@ public class ImapStore extends RemoteStore {
         }
         protected List<ImapMessage> getMessages(final List<Long> mesgSeqs,
                                                       final boolean includeDeleted,
-                                                      final MessageRetrievalListener listener)
+                                                      final MessageRetrievalListener<ImapMessage> listener)
         throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
                 @Override
@@ -1236,7 +1231,7 @@ public class ImapStore extends RemoteStore {
 
         protected List<? extends Message> getMessagesFromUids(final List<String> mesgUids,
                                                               final boolean includeDeleted,
-                                                              final MessageRetrievalListener listener) throws MessagingException {
+                                                              final MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
             ImapSearcher searcher = new ImapSearcher() {
                 @Override
                 public List<ImapResponse> search() throws IOException, MessagingException {
@@ -1606,7 +1601,6 @@ public class ImapStore extends RemoteStore {
 
         /**
          * Handle any untagged responses that the caller doesn't care to handle themselves.
-         * @param responses
          */
         protected List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
             for (ImapResponse response : responses) {
@@ -1640,7 +1634,6 @@ public class ImapStore extends RemoteStore {
 
         /**
          * Handle an untagged response that the caller doesn't care to handle themselves.
-         * @param response
          */
         protected void handleUntaggedResponse(ImapResponse response) {
             if (response.getTag() == null && response.size() > 1) {
@@ -2205,7 +2198,7 @@ public class ImapStore extends RemoteStore {
         }
     }
 
-    static class ImapMessage extends MimeMessage {
+    protected static class ImapMessage extends MimeMessage {
         ImapMessage(String uid, Folder folder) {
             this.mUid = uid;
             this.mFolder = folder;
@@ -2232,7 +2225,7 @@ public class ImapStore extends RemoteStore {
         }
     }
 
-    public class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
+    protected class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         private final PushReceiver receiver;
         private Thread listeningThread = null;
         private final AtomicBoolean stop = new AtomicBoolean(false);
@@ -2395,7 +2388,7 @@ public class ImapStore extends RemoteStore {
                                 doneSent.set(false);
 
                                 conn.setReadTimeout((mStoreConfig.getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
-                                untaggedResponses = executeSimpleCommand(ImapCommands.COMMAND_IDLE, false, ImapFolderPusher.this);
+                                executeSimpleCommand(ImapCommands.COMMAND_IDLE, false, ImapFolderPusher.this);
                                 idling.set(false);
                                 delayTime.set(NORMAL_DELAY_TIME);
                                 idleFailureCount.set(0);

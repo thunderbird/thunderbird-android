@@ -747,12 +747,12 @@ public class Pop3Store extends RemoteStore {
         }
 
         @Override
-        public List<? extends Message> getMessages(MessageRetrievalListener listener) throws MessagingException {
+        public List<Pop3Message> getMessages(MessageRetrievalListener listener) throws MessagingException {
             throw new UnsupportedOperationException("Pop3: No getMessages");
         }
 
         @Override
-        public List<? extends Message> getMessages(String[] uids, MessageRetrievalListener listener)
+        public List<Pop3Message> getMessages(String[] uids, MessageRetrievalListener listener)
         throws MessagingException {
             throw new UnsupportedOperationException("Pop3: No getMessages by uids");
         }
