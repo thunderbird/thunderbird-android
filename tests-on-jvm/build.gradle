@@ -8,7 +8,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 
 dependencies {
-    testCompile project(':')
+    testCompile project(':k9mail')
     testCompile 'junit:junit:4.12'
 }
 
@@ -20,10 +20,10 @@ sourceSets {
     }
 
     test {
-        compileClasspath += files(rootProject.compileDebugJava.destinationDir)
-        compileClasspath += rootProject.compileDebugJava.classpath
-        runtimeClasspath += files(rootProject.compileDebugJava.destinationDir)
-        runtimeClasspath += rootProject.compileDebugJava.classpath
+        compileClasspath += files(project(':k9mail').compileDebugJava.destinationDir)
+        compileClasspath += project(':k9mail').compileDebugJava.classpath
+        runtimeClasspath += files(project(':k9mail').compileDebugJava.destinationDir)
+        runtimeClasspath += project(':k9mail').compileDebugJava.classpath
         java {
             srcDirs = ['src']
         }
@@ -45,4 +45,4 @@ findbugs {
 check.dependsOn 'checkstyleTest'
 check.dependsOn 'findbugsTest'
 
-compileTestJava.dependsOn ':compileDebugJava'
+compileTestJava.dependsOn ':k9mail:compileDebugJava'

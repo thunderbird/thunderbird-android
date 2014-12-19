@@ -1,0 +1,104 @@
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.application'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile project(':plugins:Android-PullToRefresh:library')
+    compile project(':plugins:ckChangeLog:library')
+    compile project(':plugins:HoloColorPicker')
+    compile project(':plugins:openpgp-api-library')
+    compile 'org.apache.james:apache-mime4j-core:0.7.2'
+    compile 'org.apache.james:apache-mime4j-dom:0.7.2'
+    compile 'commons-io:commons-io:2.0.1'
+    compile 'com.jcraft:jzlib:1.0.7'
+    compile 'com.beetstra.jutf7:jutf7:1.0.0'
+    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:support-v13:21.0.2'
+    compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 17
+    }
+
+    signingConfigs {
+        release
+    }
+
+    buildTypes {
+        release {
+            if (project.hasProperty('storeFile')) {
+                signingConfig signingConfigs.release
+            }
+        }
+
+        debug {
+            testCoverageEnabled rootProject.testCoverage
+        }
+    }
+
+    // Do not abort build if lint finds errors
+    lintOptions {
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+}
+
+check.dependsOn 'checkstyle'
+task checkstyle(type: Checkstyle) {
+    ignoreFailures = true
+    configFile file("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
+
+    source = project.android.sourceSets.main.java.getSrcDirs() +
+            project.android.sourceSets.androidTest.java.getSrcDirs()
+    include '**/*.java'
+    classpath = files()
+}
+
+check.dependsOn 'findbugs'
+task findbugs(type: FindBugs, dependsOn: ['compileDebugJava', 'compileDebugTestJava']) {
+    ignoreFailures = true
+    classes = fileTree('build/intermediates/classes/debug/') +
+            fileTree('build/intermediates/classes/test/debug/')
+    source = project.android.sourceSets.main.java.getSrcDirs() +
+            project.android.sourceSets.androidTest.java.getSrcDirs()
+    classpath = files()
+    effort = 'max'
+    includeFilter = file("$rootProject.projectDir/config/findbugs/include_filter.xml")
+    excludeFilter = file("$rootProject.projectDir/config/findbugs/exclude_filter.xml")
+}
+
+if (project.hasProperty('keyAlias')) {
+    android.signingConfigs.release.keyAlias = keyAlias
+}
+if (project.hasProperty('keyPassword')) {
+    android.signingConfigs.release.keyPassword = keyPassword
+}
+if (project.hasProperty('storeFile')) {
+    android.signingConfigs.release.storeFile = file(storeFile)
+}
+if (project.hasProperty('storePassword')) {
+    android.signingConfigs.release.storePassword = storePassword
+}

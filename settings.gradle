@@ -1,3 +1,4 @@
+include ':k9mail'
 include ':plugins:Android-PullToRefresh:library'
 include ':plugins:ckChangeLog:library'
 include ':plugins:HoloColorPicker'
