@@ -13,20 +13,11 @@ dependencies {
 }
 
 sourceSets {
-    main {
-        java {
-            srcDirs = []
-        }
-    }
-
     test {
         compileClasspath += files(project(':k9mail').compileDebugJava.destinationDir)
         compileClasspath += project(':k9mail').compileDebugJava.classpath
         runtimeClasspath += files(project(':k9mail').compileDebugJava.destinationDir)
         runtimeClasspath += project(':k9mail').compileDebugJava.classpath
-        java {
-            srcDirs = ['src']
-        }
     }
 }
 
