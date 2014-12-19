@@ -5,6 +5,7 @@ repositories {
 apply plugin: 'java'
 apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
+apply plugin: 'jacoco'
 
 dependencies {
     testCompile project(':')
