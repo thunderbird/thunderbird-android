@@ -28,9 +28,9 @@ public interface ImapSettings {
 
     void setPathPrefix(String prefix);
 
-    String getPathDelimeter();
+    String getPathDelimiter();
 
-    void setPathDelimeter(String delimeter);
+    void setPathDelimiter(String delimiter);
 
     String getCombinedPrefix();
 

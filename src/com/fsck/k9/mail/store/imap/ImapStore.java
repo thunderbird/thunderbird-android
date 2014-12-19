@@ -2945,13 +2945,13 @@ public class ImapStore extends RemoteStore {
         }
 
         @Override
-        public String getPathDelimeter() {
+        public String getPathDelimiter() {
             return mPathDelimiter;
         }
 
         @Override
-        public void setPathDelimeter(String delimeter) {
-            mPathDelimiter = delimeter;
+        public void setPathDelimiter(String delimiter) {
+            mPathDelimiter = delimiter;
         }
 
         @Override
