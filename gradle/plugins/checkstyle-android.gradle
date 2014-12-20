@@ -1,0 +1,12 @@
+apply plugin: 'checkstyle'
+
+check.dependsOn 'checkstyle'
+task checkstyle(type: Checkstyle) {
+    ignoreFailures = true
+    configFile file("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
+
+    source = project.android.sourceSets.main.java.getSrcDirs() +
+            project.android.sourceSets.androidTest.java.getSrcDirs()
+    include '**/*.java'
+    classpath = files()
+}
