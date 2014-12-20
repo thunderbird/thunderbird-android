@@ -14,8 +14,8 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
-
 public abstract class Message implements Part, CompositeBody {
+
     public enum RecipientType {
         TO, CC, BCC,
     }
@@ -117,7 +117,31 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract void setReferences(String references) throws MessagingException;
 
+    @Override
+    public abstract Body getBody();
+
+    @Override
+    public abstract String getContentType() throws MessagingException;
+
+    @Override
+    public abstract void addHeader(String name, String value) throws MessagingException;
+
+    @Override
+    public abstract void addRawHeader(String name, String raw) throws MessagingException;
+
+    @Override
+    public abstract void setHeader(String name, String value) throws MessagingException;
+
+    @Override
+    public abstract String[] getHeader(String name) throws MessagingException;
+
     public abstract Set<String> getHeaderNames() throws MessagingException;
+
+    @Override
+    public abstract void removeHeader(String name) throws MessagingException;
+
+    @Override
+    public abstract void setBody(Body body) throws MessagingException;
 
     public abstract long getId();
 

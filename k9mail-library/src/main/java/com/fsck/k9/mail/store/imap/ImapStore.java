@@ -37,6 +37,7 @@ import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.AuthType;
@@ -1501,7 +1502,7 @@ public class ImapStore extends RemoteStore {
                         if (literal != null) {
                             if (literal instanceof Body) {
                                 // Most of the work was done in FetchAttchmentCallback.foundLiteral()
-                                part.setBody((Body)literal);
+                                MimeMessageHelper.setBody(part, (Body) literal);
                             } else if (literal instanceof String) {
                                 String bodyString = (String)literal;
                                 InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
@@ -1510,7 +1511,7 @@ public class ImapStore extends RemoteStore {
                                         .getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
                                 String contentType = part
                                         .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
-                                part.setBody(MimeUtility.decodeBody(bodyStream,
+                                MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream,
                                         contentTransferEncoding, contentType));
                             } else {
                                 // This shouldn't happen
@@ -2878,7 +2879,7 @@ public class ImapStore extends RemoteStore {
                 String contentType = mPart
                         .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
 
-                return MimeUtility.decodeBody(literal, contentTransferEncoding,
+                return MimeUtility.createBody(literal, contentTransferEncoding,
                         contentType);
             }
             return null;

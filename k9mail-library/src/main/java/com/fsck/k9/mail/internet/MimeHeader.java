@@ -50,7 +50,13 @@ public class MimeHeader {
     }
 
     public void addHeader(String name, String value) {
-        mFields.add(new Field(name, MimeUtility.foldAndEncode(value)));
+        Field field = Field.newNameValueField(name, MimeUtility.foldAndEncode(value));
+        mFields.add(field);
+    }
+
+    void addRawHeader(String name, String raw) {
+        Field field = Field.newRawField(name, raw);
+        mFields.add(field);
     }
 
     public void setHeader(String name, String value) {
@@ -64,7 +70,7 @@ public class MimeHeader {
     public Set<String> getHeaderNames() {
         Set<String> names = new LinkedHashSet<String>();
         for (Field field : mFields) {
-            names.add(field.name);
+            names.add(field.getName());
         }
         return names;
     }
@@ -72,8 +78,8 @@ public class MimeHeader {
     public String[] getHeader(String name) {
         List<String> values = new ArrayList<String>();
         for (Field field : mFields) {
-            if (field.name.equalsIgnoreCase(name)) {
-                values.add(field.value);
+            if (field.getName().equalsIgnoreCase(name)) {
+                values.add(field.getValue());
             }
         }
         if (values.isEmpty()) {
@@ -85,7 +91,7 @@ public class MimeHeader {
     public void removeHeader(String name) {
         List<Field> removeFields = new ArrayList<Field>();
         for (Field field : mFields) {
-            if (field.name.equalsIgnoreCase(name)) {
+            if (field.getName().equalsIgnoreCase(name)) {
                 removeFields.add(field);
             }
         }
@@ -96,24 +102,32 @@ public class MimeHeader {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         for (Field field : mFields) {
             if (!Arrays.asList(writeOmitFields).contains(field.name)) {
-                String v = field.value;
-
-                if (hasToBeEncoded(v)) {
-                    Charset charset = null;
-
-                    if (mCharset != null) {
-                        charset = Charset.forName(mCharset);
-                    }
-                    v = EncoderUtil.encodeEncodedWord(field.value, charset);
+                if (field.hasRawData()) {
+                    writer.write(field.getRaw());
+                } else {
+                    writeNameValueField(writer, field);
                 }
-
-                writer.write(field.name);
-                writer.write(": ");
-                writer.write(v);
                 writer.write("\r\n");
             }
         }
         writer.flush();
+    }
+
+    private void writeNameValueField(BufferedWriter writer, Field field) throws IOException {
+        String value = field.getValue();
+
+        if (hasToBeEncoded(value)) {
+            Charset charset = null;
+
+            if (mCharset != null) {
+                charset = Charset.forName(mCharset);
+            }
+            value = EncoderUtil.encodeEncodedWord(field.getValue(), charset);
+        }
+
+        writer.write(field.getName());
+        writer.write(": ");
+        writer.write(value);
     }
 
     // encode non printable characters except LF/CR/TAB codes.
@@ -131,19 +145,67 @@ public class MimeHeader {
 
     private static class Field {
         private final String name;
-
         private final String value;
+        private final String raw;
 
-        public Field(String name, String value) {
+        public static Field newNameValueField(String name, String value) {
+            if (value == null) {
+                throw new NullPointerException("Argument 'value' cannot be null");
+            }
+
+            return new Field(name, value, null);
+        }
+
+        public static Field newRawField(String name, String raw) {
+            if (raw == null) {
+                throw new NullPointerException("Argument 'raw' cannot be null");
+            }
+            if (name != null && !raw.startsWith(name + ":")) {
+                throw new IllegalArgumentException("The value of 'raw' needs to start with the supplied field name " +
+                        "followed by a colon");
+            }
+
+            return new Field(name, null, raw);
+        }
+
+        private Field(String name, String value, String raw) {
+            if (name == null) {
+                throw new NullPointerException("Argument 'name' cannot be null");
+            }
+
             this.name = name;
             this.value = value;
+            this.raw = raw;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getValue() {
+            if (value != null) {
+                return value;
+            }
+
+            int delimiterIndex = raw.indexOf(':');
+            if (delimiterIndex == raw.length() - 1) {
+                return "";
+            }
+
+            return raw.substring(delimiterIndex + 1).trim();
+        }
+
+        public String getRaw() {
+            return raw;
+        }
+
+        public boolean hasRawData() {
+            return raw != null;
         }
 
         @Override
         public String toString() {
-            StringBuilder sb = new StringBuilder("(");
-            sb.append(name).append('=').append(value).append(')');
-            return sb.toString();
+            return (hasRawData()) ? getRaw() : getName() + ": " + getValue();
         }
     }
 

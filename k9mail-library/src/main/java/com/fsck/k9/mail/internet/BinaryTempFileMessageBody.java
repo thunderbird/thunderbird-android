@@ -18,6 +18,10 @@ import com.fsck.k9.mail.MessagingException;
  */
 public class BinaryTempFileMessageBody extends BinaryTempFileBody implements CompositeBody {
 
+    public BinaryTempFileMessageBody(String encoding) {
+        super(encoding);
+    }
+
     @Override
     public void setEncoding(String encoding) throws MessagingException {
         if (!MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding)
