@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.transport.imap;
+package com.fsck.k9.mail.store.imap;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -7,7 +7,7 @@ import com.fsck.k9.mail.store.imap.ImapStore;
 /**
  * Settings source for IMAP. Implemented in order to remove coupling between {@link ImapStore} and {@link com.fsck.k9.mail.store.ImapConnection}.
  */
-public interface ImapSettings {
+interface ImapSettings {
     String getHost();
 
     int getPort();

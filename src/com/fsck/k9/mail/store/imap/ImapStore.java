@@ -63,7 +63,6 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.mail.transport.imap.ImapSettings;
 
 import com.beetstra.jutf7.CharsetProvider;
 

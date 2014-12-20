@@ -14,7 +14,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.transport.imap.ImapSettings;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 
