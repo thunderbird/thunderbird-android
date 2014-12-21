@@ -78,6 +78,15 @@ public class ImapStoreUriTest  {
         assertNull(settings.getExtra().get("pathPrefix"));
     }
 
+    @Test public void testDecodeStoreUriWithColonsInUsernameAndPassword() {
+        String uri = "imap://PLAIN:a%3Auser:password%3Ahas%3Acolons@foo.com:993";
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
+        assertEquals("a:user", settings.username);
+        assertEquals("password:has:colons", settings.password);
+        assertEquals("foo.com", settings.host);
+        assertEquals(993, settings.port);
+    }
 
     @Test public void testCreateStoreUriImapPrefix() {
         Map<String, String> extra = new HashMap<String, String>();
