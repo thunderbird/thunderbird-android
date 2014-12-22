@@ -3,6 +3,7 @@ package com.fsck.k9.endtoend.pages;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.ConnectionSecurity;
 
+import static com.fsck.k9.activity.setup.ConnectionSecurityHolderMatcher.is;
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.onData;
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
 import static com.google.android.apps.common.testing.ui.espresso.action.ViewActions.clearText;
@@ -13,9 +14,6 @@ import static com.google.android.apps.common.testing.ui.espresso.assertion.ViewA
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.isClickable;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 
 public class IncomingServerSettingsPage extends AbstractPage {
 
@@ -31,7 +29,7 @@ public class IncomingServerSettingsPage extends AbstractPage {
         onView(withId(R.id.account_security_type))
                 .perform(scrollTo())
                 .perform(click());
-        onData(allOf(is(instanceOf(ConnectionSecurity.class)), is(security))).perform(click());
+        onData(is(security)).perform(click());
         return this;
     }
 
