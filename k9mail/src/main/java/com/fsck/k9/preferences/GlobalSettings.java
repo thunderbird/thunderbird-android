@@ -17,6 +17,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
+import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
@@ -252,8 +253,19 @@ public class GlobalSettings {
                 new V(32, new BooleanSetting(false))
             ));
         s.put("lockScreenNotificationVisibility", Settings.versions(
-            new V(37, new EnumSetting<LockScreenNotificationVisibility>(LockScreenNotificationVisibility.class, LockScreenNotificationVisibility.MESSAGE_COUNT))
-        ));
+                new V(37, new EnumSetting<LockScreenNotificationVisibility>(LockScreenNotificationVisibility.class,
+                        LockScreenNotificationVisibility.MESSAGE_COUNT))
+            ));
+        s.put("confirmDeleteFromNotification", Settings.versions(
+                new V(38, new BooleanSetting(true))
+            ));
+        s.put("messageListSenderAboveSubject", Settings.versions(
+                new V(38, new BooleanSetting(false))
+            ));
+        s.put("notificationQuickDelete", Settings.versions(
+                new V(38, new EnumSetting<NotificationQuickDelete>(NotificationQuickDelete.class,
+                        NotificationQuickDelete.NEVER))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
