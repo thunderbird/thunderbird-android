@@ -86,17 +86,6 @@ public class ImapStoreUriTest {
     }
 
     @Test
-    public void testDecodeStoreUriWithColonsInUsernameAndPassword() {
-        String uri = "imap://PLAIN:a%3Auser:password%3Ahas%3Acolons@foo.com:993";
-        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
-        assertEquals(AuthType.PLAIN, settings.authenticationType);
-        assertEquals("a:user", settings.username);
-        assertEquals("password:has:colons", settings.password);
-        assertEquals("foo.com", settings.host);
-        assertEquals(993, settings.port);
-    }
-
-    @Test
     public void testCreateStoreUriImapPrefix() {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("autoDetectNamespace", "false");
@@ -145,5 +134,19 @@ public class ImapStoreUriTest {
         String uri = RemoteStore.createStoreUri(settings);
 
         assertEquals("imap://PLAIN:user:pass@server:143/1%7C", uri);
+    }
+
+    @Test
+    public void testCreateDecodeStoreUriWithSpecialCharactersInUsernameAndPassword() {
+        ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user@doma:n", "p@ssw:rd%", null, null);
+
+        String uri = RemoteStore.createStoreUri(settings);
+
+        assertEquals("imap://PLAIN:user%2540doma%253An:p%2540ssw%253Ard%2525@server:143/1%7C", uri);
+
+        ServerSettings outSettings = RemoteStore.decodeStoreUri(uri);
+        assertEquals("user@doma:n", outSettings.username);
+        assertEquals("p@ssw:rd%", outSettings.password);
     }
 }
