@@ -3173,12 +3173,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
                 TagNode node = cleaner.clean(content);
                 SimpleHtmlSerializer htmlSerialized = new SimpleHtmlSerializer(properties);
-                try {
-                    content = htmlSerialized.getAsString(node, "UTF8");
-                } catch (java.io.IOException ioe) {
-                    // Can't imagine this happening.
-                    Log.e(K9.LOG_TAG, "Problem cleaning quoted message.", ioe);
-                }
+                content = htmlSerialized.getAsString(node, "UTF8");
             }
 
             // Add the HTML reply header to the top of the content.
