@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.store.imap;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +14,10 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class ImapStoreUriTest  {
-    @Test public void testDecodeStoreUriImapAllExtras() {
+
+public class ImapStoreUriTest {
+    @Test
+    public void testDecodeStoreUriImapAllExtras() {
         String uri = "imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix";
         ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
@@ -27,7 +30,8 @@ public class ImapStoreUriTest  {
         assertEquals("customPathPrefix", settings.getExtra().get("pathPrefix"));
     }
 
-    @Test public void testDecodeStoreUriImapNoExtras() {
+    @Test
+    public void testDecodeStoreUriImapNoExtras() {
         String uri = "imap://PLAIN:user:pass@server:143/";
         ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
@@ -39,7 +43,8 @@ public class ImapStoreUriTest  {
         assertEquals("true", settings.getExtra().get("autoDetectNamespace"));
     }
 
-    @Test public void testDecodeStoreUriImapPrefixOnly() {
+    @Test
+    public void testDecodeStoreUriImapPrefixOnly() {
         String uri = "imap://PLAIN:user:pass@server:143/customPathPrefix";
         ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
@@ -52,7 +57,8 @@ public class ImapStoreUriTest  {
         assertEquals("customPathPrefix", settings.getExtra().get("pathPrefix"));
     }
 
-    @Test public void testDecodeStoreUriImapEmptyPrefix() {
+    @Test
+    public void testDecodeStoreUriImapEmptyPrefix() {
         String uri = "imap://PLAIN:user:pass@server:143/0%7C";
         ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
@@ -65,7 +71,8 @@ public class ImapStoreUriTest  {
         assertEquals("", settings.getExtra().get("pathPrefix"));
     }
 
-    @Test public void testDecodeStoreUriImapAutodetectAndPrefix() {
+    @Test
+    public void testDecodeStoreUriImapAutodetectAndPrefix() {
         String uri = "imap://PLAIN:user:pass@server:143/1%7CcustomPathPrefix";
         ServerSettings settings = RemoteStore.decodeStoreUri(uri);
 
@@ -78,7 +85,8 @@ public class ImapStoreUriTest  {
         assertNull(settings.getExtra().get("pathPrefix"));
     }
 
-    @Test public void testDecodeStoreUriWithColonsInUsernameAndPassword() {
+    @Test
+    public void testDecodeStoreUriWithColonsInUsernameAndPassword() {
         String uri = "imap://PLAIN:a%3Auser:password%3Ahas%3Acolons@foo.com:993";
         ServerSettings settings = RemoteStore.decodeStoreUri(uri);
         assertEquals(AuthType.PLAIN, settings.authenticationType);
@@ -88,7 +96,8 @@ public class ImapStoreUriTest  {
         assertEquals(993, settings.port);
     }
 
-    @Test public void testCreateStoreUriImapPrefix() {
+    @Test
+    public void testCreateStoreUriImapPrefix() {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("autoDetectNamespace", "false");
         extra.put("pathPrefix", "customPathPrefix");
@@ -101,7 +110,8 @@ public class ImapStoreUriTest  {
         assertEquals("imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix", uri);
     }
 
-    @Test public void testCreateStoreUriImapEmptyPrefix() {
+    @Test
+    public void testCreateStoreUriImapEmptyPrefix() {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("autoDetectNamespace", "false");
         extra.put("pathPrefix", "");
@@ -114,7 +124,8 @@ public class ImapStoreUriTest  {
         assertEquals("imap://PLAIN:user:pass@server:143/0%7C", uri);
     }
 
-    @Test public void testCreateStoreUriImapNoExtra() {
+    @Test
+    public void testCreateStoreUriImapNoExtra() {
         ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null);
 
@@ -123,7 +134,8 @@ public class ImapStoreUriTest  {
         assertEquals("imap://PLAIN:user:pass@server:143/1%7C", uri);
     }
 
-    @Test public void testCreateStoreUriImapAutoDetectNamespace() {
+    @Test
+    public void testCreateStoreUriImapAutoDetectNamespace() {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("autoDetectNamespace", "true");
 
