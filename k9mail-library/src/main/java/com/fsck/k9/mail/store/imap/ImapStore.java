@@ -108,6 +108,9 @@ public class ImapStore extends RemoteStore {
      * imap+tls+://auth:user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
      * imap+ssl+://auth:user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
+     *
+     * @param uri the store uri. NOTE: this method expects the userinfo part of the uri to be
+     * encoded twice, due to a bug in {@link #createUri(ServerSettings)}.
      */
     public static ImapStoreSettings decodeUri(String uri) {
         String host;
