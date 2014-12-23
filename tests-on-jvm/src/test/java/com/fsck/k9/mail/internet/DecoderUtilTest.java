@@ -5,9 +5,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+
 public class DecoderUtilTest {
 
-    @Test public void testDecodeEncodedWords() {
+    @Test
+    public void testDecodeEncodedWords() {
         String body, expect;
         MimeMessage message;
 
@@ -47,7 +49,8 @@ public class DecoderUtilTest {
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
 
         body = "=??q??=";
-        expect = "=??q??=";;
+        expect = "=??q??=";
+        ;
         message = null;
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
 

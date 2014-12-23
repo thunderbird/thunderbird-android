@@ -8,7 +8,8 @@ import java.io.ByteArrayOutputStream;
 
 import static org.junit.Assert.assertEquals;
 
-public class EOLConvertingOutputStreamTest  {
+
+public class EOLConvertingOutputStreamTest {
     private EOLConvertingOutputStream subject;
     private ByteArrayOutputStream out;
 
@@ -18,37 +19,43 @@ public class EOLConvertingOutputStreamTest  {
         subject = new EOLConvertingOutputStream(out);
     }
 
-    @Test public void testFilterWithoutCRorLF() throws Exception {
+    @Test
+    public void testFilterWithoutCRorLF() throws Exception {
         subject.write("Unchanged".getBytes());
         subject.flush();
         assertEquals("Unchanged", out.toString());
     }
 
-    @Test public void testFilterWithCRLF() throws Exception {
+    @Test
+    public void testFilterWithCRLF() throws Exception {
         subject.write("Filter\r\nNext Line".getBytes());
         subject.flush();
         assertEquals("Filter\r\nNext Line", out.toString());
     }
 
-    @Test public void testFilterWithJustCR() throws Exception {
+    @Test
+    public void testFilterWithJustCR() throws Exception {
         subject.write("\n\n\n".getBytes());
         subject.flush();
         assertEquals("\r\n\r\n\r\n", out.toString());
     }
 
-    @Test public void testFilterWithCR() throws Exception {
+    @Test
+    public void testFilterWithCR() throws Exception {
         subject.write("Filter\rNext Line".getBytes());
         subject.flush();
         assertEquals("Filter\r\nNext Line", out.toString());
     }
 
-    @Test public void testFilterWithLF() throws Exception {
+    @Test
+    public void testFilterWithLF() throws Exception {
         subject.write("Filter\nNext Line".getBytes());
         subject.flush();
         assertEquals("Filter\r\nNext Line", out.toString());
     }
 
-    @Test public void testFlushWithCR() throws Exception {
+    @Test
+    public void testFlushWithCR() throws Exception {
         subject.write("Flush\r".getBytes());
         subject.flush();
         assertEquals("Flush\r\n", out.toString());
@@ -56,14 +63,16 @@ public class EOLConvertingOutputStreamTest  {
         assertEquals("Flush\r\n\r\n\r\n", out.toString());
     }
 
-    @Test public void testFlushWithCRNotFollowedByLF() throws Exception {
+    @Test
+    public void testFlushWithCRNotFollowedByLF() throws Exception {
         subject.write("Flush\r".getBytes());
         subject.flush();
         subject.write("Next line".getBytes());
         assertEquals("Flush\r\nNext line", out.toString());
     }
 
-    @Test public void testFlushWithLF() throws Exception {
+    @Test
+    public void testFlushWithLF() throws Exception {
         subject.write("Flush\n".getBytes());
         subject.flush();
         subject.write("\n".getBytes());

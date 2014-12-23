@@ -5,9 +5,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CharsetSupportTest  {
 
-    @Test public void testFixupCharset() throws Exception {
+public class CharsetSupportTest {
+
+    @Test
+    public void testFixupCharset() throws Exception {
         String charsetOnMail;
         String expect;
 
@@ -21,7 +23,7 @@ public class CharsetSupportTest  {
 
         MimeMessage message;
 
-        message= new MimeMessage();
+        message = new MimeMessage();
         message.setHeader("From", "aaa@docomo.ne.jp");
         charsetOnMail = "shift_jis";
         expect = "x-docomo-shift_jis-2007";

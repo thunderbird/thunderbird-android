@@ -5,8 +5,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class MimeUtilityTest  {
-    @Test public void testGetHeaderParameter() {
+
+public class MimeUtilityTest {
+    @Test
+    public void testGetHeaderParameter() {
         String result;
 
         /* Test edge cases */
@@ -32,7 +34,7 @@ public class MimeUtilityTest  {
         result = MimeUtility.getHeaderParameter("name=\"value\"", "name");
         assertEquals("value", result);
 
-        result = MimeUtility.getHeaderParameter("name = \"value\"" , "name");
+        result = MimeUtility.getHeaderParameter("name = \"value\"", "name");
         assertEquals("value", result);
 
         result = MimeUtility.getHeaderParameter("name=\"\"", "name");

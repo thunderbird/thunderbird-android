@@ -5,9 +5,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class Address_quoteAtoms
-{
-    @Test public void testNoQuote() {
+
+public class Address_quoteAtoms {
+    @Test
+    public void testNoQuote() {
         // Alpha
         noQuote("a");
         noQuote("aa");
