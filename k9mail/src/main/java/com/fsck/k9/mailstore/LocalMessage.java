@@ -130,7 +130,7 @@ public class LocalMessage extends MimeMessage {
             }
         } else {
             // We successfully found an HTML part; do the necessary character set decoding.
-            text = MessageExtractor.getTextFromPart(this);
+            text = MessageExtractor.getTextFromPart(part);
         }
         return text;
     }
