@@ -2508,11 +2508,19 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void onArchive(final List<LocalMessage> messages) {
         Map<Account, List<LocalMessage>> messagesByAccount = groupMessagesByAccount(messages);
 
-        for (Entry<Account, List<LocalMessage>> entry : messagesByAccount.entrySet()) {
-            Account account = entry.getKey();
-            String archiveFolder = account.getArchiveFolderName();
+        Map<Folder, List<LocalMessage>> messagesByFolder = groupMessagesByFolder(messages);
 
-            if (!K9.FOLDER_NONE.equals(archiveFolder)) {
+        for (Entry<Folder, List<LocalMessage>> entry : messagesByFolder.entrySet()) {
+            Folder folder  = entry.getKey();
+            Account account = folder.getAccount();
+            String archiveTopFolder = account.getArchiveFolderName();
+
+            String archiveFolder = archiveTopFolder;
+            if (!K9.FOLDER_NONE.equals(archiveTopFolder)) {
+                if (account.isUseFolderStructureWhenArchive()) {
+                    String archiveSubFolder = folder.getName();
+                    archiveFolder = archiveTopFolder + "." + archiveSubFolder;
+                }
                 move(entry.getValue(), archiveFolder);
             }
         }
@@ -2533,6 +2541,23 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
         return messagesByAccount;
     }
+
+    private Map<Folder, List<LocalMessage>> groupMessagesByFolder(final List<LocalMessage> messages) {
+        Map<Folder, List<LocalMessage>> messagesByFolder = new HashMap<Folder, List<LocalMessage>>();
+        for (LocalMessage message : messages) {
+            Folder folder = message.getFolder();
+
+            List<LocalMessage> msgList = messagesByFolder.get(folder);
+            if (msgList == null) {
+                msgList = new ArrayList<LocalMessage>();
+                messagesByFolder.put(folder, msgList);
+            }
+
+            msgList.add(message);
+        }
+        return messagesByFolder;
+    }
+
 
     private void onSpam(LocalMessage message) {
         onSpam(Collections.singletonList(message));
