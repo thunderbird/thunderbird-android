@@ -18,16 +18,8 @@ dependencies {
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.10'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
 
-    androidTestCompile ('com.jakewharton.espresso:espresso:1.1-r3' ) {
-        // Note: some of these exclusions may become necessary. See the
-        // github site https://github.com/JakeWharton/double-espresso
-        //exclude group: 'com.squareup.dagger'
-        //exclude group: 'javax.inject'
-        //exclude group: 'javax.annotation'
-        //exclude group: 'com.google.guava'
-        //exclude group: 'org.hamcrest'
-        exclude group: 'com.google.code.findbugs'
-    }
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
 
     androidTestCompile("com.icegreen:greenmail:1.3.1b") {
         // Use a better, later version
@@ -48,7 +40,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 17
 
-        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {

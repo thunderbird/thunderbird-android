@@ -2,11 +2,11 @@ package com.fsck.k9.activity.setup;
 
 
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.google.android.apps.common.testing.ui.espresso.matcher.BoundedMatcher;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import static com.google.android.apps.common.testing.testrunner.util.Checks.checkNotNull;
+import static com.android.support.test.deps.guava.base.Preconditions.checkNotNull;
 
 
 public class ConnectionSecurityHolderMatcher {

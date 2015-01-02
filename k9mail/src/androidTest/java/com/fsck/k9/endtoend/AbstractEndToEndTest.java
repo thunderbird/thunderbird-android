@@ -8,12 +8,12 @@ import com.fsck.k9.R;
 import com.fsck.k9.endtoend.framework.ApplicationState;
 import com.fsck.k9.endtoend.framework.StubMailServer;
 import com.fsck.k9.endtoend.pages.WelcomeMessagePage;
-import com.google.android.apps.common.testing.ui.espresso.assertion.ViewAssertions;
+import android.support.test.espresso.assertion.ViewAssertions;
 
 import junit.framework.AssertionFailedError;
 
-import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
-import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public abstract class AbstractEndToEndTest<T extends Activity> extends ActivityInstrumentationTestCase2<T> {
 
