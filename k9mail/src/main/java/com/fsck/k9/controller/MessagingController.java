@@ -80,6 +80,7 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.MessageRemovalListener;
@@ -2697,7 +2698,7 @@ public class MessagingController implements Runnable {
             LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
             MimeMessage message = new MimeMessage();
 
-            message.setBody(new TextBody(body));
+            MimeMessageHelper.setBody(message, new TextBody(body));
             message.setFlag(Flag.X_DOWNLOADED_FULL, true);
             message.setSubject(subject);
 
@@ -3190,7 +3191,7 @@ public class MessagingController implements Runnable {
 
                     //FIXME: This is an ugly hack that won't be needed once the Message objects have been united.
                     Message remoteMessage = remoteFolder.getMessage(message.getUid());
-                    remoteMessage.setBody(message.getBody());
+                    MimeMessageHelper.setBody(remoteMessage, message.getBody());
                     remoteFolder.fetchPart(remoteMessage, part, null);
 
                     localFolder.updateMessage((LocalMessage)message);

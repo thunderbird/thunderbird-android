@@ -7,6 +7,8 @@ import java.io.OutputStream;
 public interface Part {
     void addHeader(String name, String value) throws MessagingException;
 
+    void addRawHeader(String name, String raw) throws MessagingException;
+
     void removeHeader(String name) throws MessagingException;
 
     void setHeader(String name, String value) throws MessagingException;

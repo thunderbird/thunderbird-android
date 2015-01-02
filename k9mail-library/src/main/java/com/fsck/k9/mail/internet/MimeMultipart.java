@@ -10,7 +10,8 @@ import java.util.Locale;
 import java.util.Random;
 
 public class MimeMultipart extends Multipart {
-    private String mPreamble;
+    private byte[] mPreamble;
+    private byte[] mEpilogue;
 
     private String mContentType;
 
@@ -45,12 +46,12 @@ public class MimeMultipart extends Multipart {
         return sb.toString().toUpperCase(Locale.US);
     }
 
-    public String getPreamble() {
-        return mPreamble;
+    public void setPreamble(byte[] preamble) {
+        this.mPreamble = preamble;
     }
 
-    public void setPreamble(String preamble) {
-        this.mPreamble = preamble;
+    public void setEpilogue(byte[] epilogue) {
+        mEpilogue = epilogue;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class MimeMultipart extends Multipart {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
 
         if (mPreamble != null) {
-            writer.write(mPreamble);
+            out.write(mPreamble);
             writer.write("\r\n");
         }
 
@@ -90,6 +91,9 @@ public class MimeMultipart extends Multipart {
         writer.write(mBoundary);
         writer.write("--\r\n");
         writer.flush();
+        if (mEpilogue != null) {
+            out.write(mEpilogue);
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
 
@@ -26,7 +27,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
 
         // Create message
         MimeMessage message = new MimeMessage();
-        message.setBody(body);
+        MimeMessageHelper.setBody(message, body);
 
         // Extract text
         ViewableContainer container = extractTextAndAttachments(getContext(), message);
@@ -50,7 +51,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
         // Create message
         MimeMessage message = new MimeMessage();
         message.setHeader("Content-Type", "text/html");
-        message.setBody(body);
+        MimeMessageHelper.setBody(message, body);
 
         // Extract text
         ViewableContainer container = extractTextAndAttachments(getContext(), message);
@@ -80,7 +81,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
 
         // Create message
         MimeMessage message = new MimeMessage();
-        message.setBody(multipart);
+        MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
         ViewableContainer container = extractTextAndAttachments(getContext(), message);
@@ -124,7 +125,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
         innerMessage.setRecipients(RecipientType.TO, new Address[] { new Address("to@example.com") });
         innerMessage.setSubject("Subject");
         innerMessage.setFrom(new Address("from@example.com"));
-        innerMessage.setBody(innerBody);
+        MimeMessageHelper.setBody(innerMessage, innerBody);
 
         // Create multipart/mixed part
         MimeMultipart multipart = new MimeMultipart();
@@ -136,7 +137,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
 
         // Create message
         MimeMessage message = new MimeMessage();
-        message.setBody(multipart);
+        MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
         ViewableContainer container = extractTextAndAttachments(getContext(), message);

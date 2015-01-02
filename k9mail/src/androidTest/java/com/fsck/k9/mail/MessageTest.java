@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.TimeZone;
 
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -199,7 +200,8 @@ public class MessageTest extends AndroidTestCase {
             + "Content-Transfer-Encoding: 7bit\r\n"
             + "\r\n"
             + "------Boundary102\r\n"
-            + "Content-Type: text/plain; charset=utf-8\r\n"
+            + "Content-Type: text/plain;\r\n"
+            + " charset=utf-8\r\n"
             + "Content-Transfer-Encoding: quoted-printable\r\n"
             + "\r\n"
             + "Testing=2E\r\n"
@@ -208,7 +210,8 @@ public class MessageTest extends AndroidTestCase {
             + "End of test=2E\r\n"
             + "\r\n"
             + "------Boundary102\r\n"
-            + "Content-Type: text/plain; charset=utf-8\r\n"
+            + "Content-Type: text/plain;\r\n"
+            + " charset=utf-8\r\n"
             + "Content-Transfer-Encoding: quoted-printable\r\n"
             + "\r\n"
             + "Testing=2E\r\n"
@@ -236,7 +239,8 @@ public class MessageTest extends AndroidTestCase {
             + "Content-Transfer-Encoding: 7bit\r\n"
             + "\r\n"
             + "------Boundary101\r\n"
-            + "Content-Type: text/plain; charset=utf-8\r\n"
+            + "Content-Type: text/plain;\r\n"
+            + " charset=utf-8\r\n"
             + "Content-Transfer-Encoding: quoted-printable\r\n"
             + "\r\n"
             + "Testing=2E\r\n"
@@ -245,7 +249,8 @@ public class MessageTest extends AndroidTestCase {
             + "End of test=2E\r\n"
             + "\r\n"
             + "------Boundary101\r\n"
-            + "Content-Type: text/plain; charset=utf-8\r\n"
+            + "Content-Type: text/plain;\r\n"
+            + " charset=utf-8\r\n"
             + "Content-Transfer-Encoding: quoted-printable\r\n"
             + "\r\n"
             + "Testing=2E\r\n"
@@ -315,8 +320,7 @@ public class MessageTest extends AndroidTestCase {
 
     private MimeMessage nestedMessage(MimeMessage subMessage)
             throws MessagingException, IOException {
-        BinaryTempFileMessageBody tempMessageBody = new BinaryTempFileMessageBody();
-        tempMessageBody.setEncoding(MimeUtil.ENC_8BIT);
+        BinaryTempFileMessageBody tempMessageBody = new BinaryTempFileMessageBody(MimeUtil.ENC_8BIT);
 
         OutputStream out = tempMessageBody.getOutputStream();
         try {
@@ -348,7 +352,7 @@ public class MessageTest extends AndroidTestCase {
         multipartBody.addBodyPart(textBodyPart(MimeUtil.ENC_8BIT));
         multipartBody.addBodyPart(textBodyPart(MimeUtil.ENC_QUOTED_PRINTABLE));
         multipartBody.addBodyPart(binaryBodyPart());
-        message.setBody(multipartBody);
+        MimeMessageHelper.setBody(message, multipartBody);
 
         return message;
     }
@@ -356,12 +360,12 @@ public class MessageTest extends AndroidTestCase {
     private MimeBodyPart binaryBodyPart() throws IOException,
             MessagingException {
         String encodedTestString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "abcdefghijklmnopqrstuvwxyz0123456789+/";
+                + "abcdefghijklmnopqrstuvwxyz0123456789+/\r\n";
 
-        BinaryTempFileBody tempFileBody = new BinaryTempFileBody();
+        BinaryTempFileBody tempFileBody = new BinaryTempFileBody(MimeUtil.ENC_BASE64);
 
-        InputStream in = new Base64InputStream(new ByteArrayInputStream(
-                encodedTestString.getBytes("UTF-8")));
+        InputStream in = new ByteArrayInputStream(
+                encodedTestString.getBytes("UTF-8"));
 
         OutputStream out = tempFileBody.getOutputStream();
         try {
