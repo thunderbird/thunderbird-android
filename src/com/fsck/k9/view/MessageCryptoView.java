@@ -1,11 +1,16 @@
 package com.fsck.k9.view;
 
-import android.content.Context;
 import android.app.Fragment;
+import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.CryptoProvider;
@@ -36,6 +41,11 @@ public class MessageCryptoView extends LinearLayout {
   //workaround for pgp/mime
     public boolean pIsMime(){
     	return isMime;
+    }
+
+    //workaround for pgp/mime
+    public void setIsMime(boolean isMime){
+        this.isMime = isMime;
     }
 
     public MessageCryptoView(Context context, AttributeSet attrs) {
@@ -135,7 +145,7 @@ public class MessageCryptoView extends LinearLayout {
                     //PGP/MIME part
                     else{
                     	Log.i("PGP/MIME VIEW", "going pgp");
-                    	Part pgp = MimeUtility.findFirstPartByMimeType(message, "application/pgp-encrypted");
+                    	//Part pgp = MimeUtility.findFirstPartByMimeType(message, "application/pgp-encrypted");
                     	data = mPGPMIMEText;
                     	Log.i("PGP/MIME VIEW", "content: " + data);
                     }

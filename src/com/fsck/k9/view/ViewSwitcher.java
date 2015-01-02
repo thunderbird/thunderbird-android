@@ -1,12 +1,12 @@
 package com.fsck.k9.view;
 
-import com.fsck.k9.K9;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ViewAnimator;
+
+import com.fsck.k9.K9;
 
 /**
  * A {@link ViewAnimator} that animates between two child views using different animations

@@ -4052,7 +4052,8 @@ public class LocalStore extends Store implements Serializable {
                 	String messageid = contents.getInt(0) + "";
                 	Log.i("PGP/MIME Attachments", "Message id is: " + messageid);
                 	String[] args2 = {messageid};
-                	//get the correct attachments;                	
+                	//get the correct attachments;
+                    contents.close();
                 	contents = db.rawQuery("SELECT store_data, content_uri, name, mime_type, content_id, content_disposition FROM attachments WHERE message_id=?", args2);
                 	Log.i("PGP/MIME Attachments", "columns: " + contents.getColumnCount()+ " rows: " + contents.getCount());
                 	String attachmentUri ="";
