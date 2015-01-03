@@ -9,7 +9,6 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.MessagingException;
+
 
 public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseFolder_account";
@@ -266,7 +265,6 @@ public class ChooseFolder extends K9ListActivity {
                 return;
             }
             Account.FolderMode aMode = mMode;
-            Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
 
             List<String> newFolders = new ArrayList<String>();
             List<String> topFolders = new ArrayList<String>();

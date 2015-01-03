@@ -5267,7 +5267,6 @@ public class MessagingController implements Runnable {
             if (previousPusher != null) {
                 previousPusher.stop();
             }
-            Preferences prefs = Preferences.getPreferences(context);
 
             Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
             Account.FolderMode aPushMode = account.getFolderPushMode();
