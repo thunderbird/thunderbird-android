@@ -149,7 +149,7 @@ public class K9 extends Application {
      *
      * Feature is enabled when DEBUG == true
      */
-    public static String ERROR_FOLDER_NAME = "K9mail-errors";
+    public static final String ERROR_FOLDER_NAME = "K9mail-errors";
 
     /**
      * A reference to the {@link SharedPreferences} used for caching the last known database
@@ -280,7 +280,7 @@ public class K9 extends Application {
      * on each new folder and can be incremented with "Load more messages..." by the
      * VISIBLE_LIMIT_INCREMENT
      */
-    public static int DEFAULT_VISIBLE_LIMIT = 25;
+    public static final int DEFAULT_VISIBLE_LIMIT = 25;
 
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)
@@ -295,7 +295,7 @@ public class K9 extends Application {
      * until the app is killed and restarted
      */
 
-    public static int MAX_SEND_ATTEMPTS = 5;
+    public static final int MAX_SEND_ATTEMPTS = 5;
 
     /**
      * Max time (in millis) the wake lock will be held for when background sync is happening

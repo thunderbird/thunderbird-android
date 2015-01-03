@@ -115,7 +115,7 @@ public class K9RemoteControl {
     public final static String K9_THEME_LIGHT = "LIGHT";
     public final static String K9_THEME_DARK = "DARK";
 
-    protected static String LOG_TAG = "K9RemoteControl";
+    protected static final String LOG_TAG = "K9RemoteControl";
 
     public static void set(Context context, Intent broadcastIntent) {
         broadcastIntent.setAction(K9RemoteControl.K9_SET);

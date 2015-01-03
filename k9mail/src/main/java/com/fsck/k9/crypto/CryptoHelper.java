@@ -13,11 +13,11 @@ import com.fsck.k9.mail.internet.MimeUtility;
 
 public class CryptoHelper {
 
-    public static Pattern PGP_MESSAGE =
+    public static final Pattern PGP_MESSAGE =
             Pattern.compile(".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
                     Pattern.DOTALL);
 
-    public static Pattern PGP_SIGNED_MESSAGE =
+    public static final Pattern PGP_SIGNED_MESSAGE =
             Pattern.compile(
                     ".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
                     Pattern.DOTALL);

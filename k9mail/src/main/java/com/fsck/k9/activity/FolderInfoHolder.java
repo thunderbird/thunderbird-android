@@ -20,7 +20,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
 
     @Override
     public boolean equals(Object o) {
-        return this.name.equals(((FolderInfoHolder)o).name);
+        return o instanceof FolderInfoHolder && name.equals(((FolderInfoHolder) o).name);
     }
 
     @Override

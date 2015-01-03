@@ -139,6 +139,16 @@ public interface SearchSpecification extends Parcelable {
         }
 
         @Override
+        public int hashCode() {
+            int result = 1;
+            result = 31 * result + attribute.hashCode();
+            result = 31 * result + field.hashCode();
+            result = 31 * result + value.hashCode();
+
+            return result;
+        }
+
+        @Override
         public int describeContents() {
             return 0;
         }

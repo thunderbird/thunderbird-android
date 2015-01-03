@@ -2888,7 +2888,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         int cursorPosition = 0;
         if (k9identity.containsKey(IdentityField.CURSOR_POSITION)) {
             try {
-                cursorPosition = Integer.valueOf(k9identity.get(IdentityField.CURSOR_POSITION)).intValue();
+                cursorPosition = Integer.parseInt(k9identity.get(IdentityField.CURSOR_POSITION));
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Could not parse cursor position for MessageCompose; continuing.", e);
             }

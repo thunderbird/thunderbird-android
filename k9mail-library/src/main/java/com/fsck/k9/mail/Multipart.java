@@ -15,8 +15,6 @@ public abstract class Multipart implements CompositeBody {
 
     private final List<BodyPart> mParts = new ArrayList<BodyPart>();
 
-    private String mContentType;
-
     public void addBodyPart(BodyPart part) {
         mParts.add(part);
         part.setParent(this);
@@ -30,9 +28,7 @@ public abstract class Multipart implements CompositeBody {
         return Collections.unmodifiableList(mParts);
     }
 
-    public String getContentType() {
-        return mContentType;
-    }
+    public abstract String getContentType();
 
     public int getCount() {
         return mParts.size();
