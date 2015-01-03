@@ -4071,7 +4071,7 @@ public class LocalStore extends Store implements Serializable {
             String returnText = "no text";
             
            	//if attachment ist found
-        	if(attachmentUri!=""){
+        	if(attachmentUri!=null && !attachmentUri.isEmpty()){
         		//make sure to remove useless parts to work
         		attachmentUri.replace("content://com.fsck.k9.attachmentprovider/", "");
         		Uri uri = Uri.parse(attachmentUri);

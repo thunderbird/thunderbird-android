@@ -53,6 +53,7 @@ import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
@@ -66,6 +67,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.util.Random;
 
 
 public class SingleMessageView extends LinearLayout implements OnClickListener,
@@ -619,9 +621,43 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                 try {
                     mess = new MimeMessage(IOUtils.toInputStream(pgpData.getDecryptedData()));
                     MimeMultipart multi = (MimeMultipart) mess.getBody();
+
+
                     MimeBodyPart bodyPart0 = (MimeBodyPart) multi.getBodyPart(0);
                     BinaryTempFileBody tempFileBody = (BinaryTempFileBody) bodyPart0.getBody();
                     theString = IOUtils.toString(tempFileBody.getInputStream());
+                    tempFileBody.getInputStream().close();
+                    Log.i("pgpData.getDecryptedData()!!!!!!!!!!!!!!!!!!!!!!!!!!! =  ", pgpData.getDecryptedData());
+                    Log.i("theString!!!!!!!!!!!!!!!!!!!!!!!!!!! =  ", theString);
+
+                    Log.i("SinlgeViewMessage has attachments? ", String.valueOf(mess.hasAttachments()));
+                    Log.i("SinlgeViewMessage multi has parts =  ", String.valueOf(multi.getCount()));
+//                    if (multi.getCount() > 1) {
+//                        Log.i("SinlgeViewMessage ", "The message has attachments!!!");
+//                        for (int i = 1; i < multi.getCount(); i++) {
+//                            Random rnd = new Random();
+//                            TextBody tBody = new TextBody(IOUtils.toString(multi.getBodyPart(i).getBody().getInputStream()));
+//                            Log.i("LocalAttachmentBodyPart.getBody()getInputStream =  ", tBody.getText());
+//
+//                            LocalStore.LocalAttachmentBodyPart part = new LocalStore.LocalAttachmentBodyPart(tBody, rnd.nextLong());
+//
+//                            Log.i("LocalAttachmentBodyPart.getBody() =  ", String.valueOf(part.getBody()));
+//
+//
+//                            AttachmentView view = (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, null);
+//                            view.setCallback(attachmentCallback);
+//
+//                            try {
+//                                if (view.populateFromPart(part, mess, account, controller, listener)) {
+//                                    addAttachment(view);
+//                                } else {
+//                                    addHiddenAttachment(view);
+//                                }
+//                            } catch (Exception e) {
+//                                Log.e(K9.LOG_TAG, "Error adding attachment view", e);
+//                            }
+//                        }
+//                    }//
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -666,7 +702,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 //                            }
 //                        }
 
-
+//                loadBodyFromText(pgpData.getDecryptedData());
                 loadBodyFromText(theString);
                 updateCryptoLayout(account.getCryptoProvider(), pgpData, mess);
                 mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
@@ -763,7 +799,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
     public void renderAttachments(Part part, int depth, Message message, Account account,
                                   MessagingController controller, MessagingListener listener) throws MessagingException {
-
+        Log.i("Rendering Attachments part is ", String.valueOf(part.getClass()));
         if (part.getBody() instanceof Multipart) {
             Multipart mp = (Multipart) part.getBody();
             for (int i = 0; i < mp.getCount(); i++) {
