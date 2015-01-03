@@ -13,7 +13,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '20.0.0'
+    buildToolsVersion '21.1.2'
 
     // NOTE: We are using the old folder structure to also support Eclipse
     sourceSets {

@@ -1,0 +1,94 @@
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.application'
+apply from: '../gradle/plugins/checkstyle-android.gradle'
+apply from: '../gradle/plugins/findbugs-android.gradle'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile project(':k9mail-library')
+    compile project(':plugins:Android-PullToRefresh:library')
+    compile project(':plugins:HoloColorPicker')
+    compile project(':plugins:openpgp-api-library')
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:support-v13:21.0.2'
+    compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.10'
+    compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
+
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+
+    androidTestCompile("com.icegreen:greenmail:1.3.1b") {
+        // Use a better, later version
+        exclude group: "javax.mail"
+    }
+
+    // this version avoids some "Ignoring InnerClasses attribute for an anonymous inner class" warnings
+    androidTestCompile "javax.mail:javax.mail-api:1.5.2"
+
+    androidTestCompile "com.madgag.spongycastle:pg:1.51.0.0"
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 17
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release
+    }
+
+    buildTypes {
+        release {
+            if (project.hasProperty('storeFile')) {
+                signingConfig signingConfigs.release
+            }
+        }
+
+        debug {
+            testCoverageEnabled rootProject.testCoverage
+        }
+    }
+
+    // Do not abort build if lint finds errors
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'LICENSE.txt'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+}
+
+if (project.hasProperty('keyAlias')) {
+    android.signingConfigs.release.keyAlias = keyAlias
+}
+if (project.hasProperty('keyPassword')) {
+    android.signingConfigs.release.keyPassword = keyPassword
+}
+if (project.hasProperty('storeFile')) {
+    android.signingConfigs.release.storeFile = file(storeFile)
+}
+if (project.hasProperty('storePassword')) {
+    android.signingConfigs.release.storePassword = storePassword
+}
