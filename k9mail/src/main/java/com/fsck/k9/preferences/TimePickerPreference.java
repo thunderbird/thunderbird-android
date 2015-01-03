@@ -145,7 +145,7 @@ public class TimePickerPreference extends DialogPreference implements
             return -1;
         }
 
-        return Integer.valueOf(time.split(":")[0]);
+        return Integer.parseInt(time.split(":")[0]);
     }
 
     /**
@@ -159,7 +159,7 @@ public class TimePickerPreference extends DialogPreference implements
             return -1;
         }
 
-        return Integer.valueOf(time.split(":")[1]);
+        return Integer.parseInt(time.split(":")[1]);
     }
 
     /**
