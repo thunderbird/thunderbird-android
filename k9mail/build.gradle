@@ -49,11 +49,15 @@ android {
             if (project.hasProperty('storeFile')) {
                 signingConfig signingConfigs.release
             }
+
+            buildConfigField "boolean", "DEVELOPER_MODE", "false"
         }
 
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled rootProject.testCoverage
+
+            buildConfigField "boolean", "DEVELOPER_MODE", "true"
         }
     }
 
