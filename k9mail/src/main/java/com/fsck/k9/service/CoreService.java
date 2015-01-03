@@ -57,7 +57,7 @@ import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
  */
 public abstract class CoreService extends Service {
 
-    public static String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
+    public static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
 
     private static ConcurrentHashMap<Integer, TracingWakeLock> sWakeLocks =
         new ConcurrentHashMap<Integer, TracingWakeLock>();
