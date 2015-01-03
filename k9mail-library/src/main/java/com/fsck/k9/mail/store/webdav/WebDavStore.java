@@ -1906,7 +1906,10 @@ public class WebDavStore extends RemoteStore {
 
         @Override
         public boolean equals(Object o) {
-            return false;
+            if (o instanceof WebDavFolder) {
+                return ((WebDavFolder) o).mName.equals(mName);
+            }
+            return super.equals(o);
         }
 
         @Override
