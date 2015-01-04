@@ -84,7 +84,7 @@ public class MessageExtractor {
                      * Now we read the part into a buffer for further processing. Because
                      * the stream is now wrapped we'll remove any transfer encoding at this point.
                      */
-                    InputStream in = part.getBody().getInputStream();
+                    InputStream in = MimeUtility.decodeBody(body);
                     try {
                         String text = CharsetSupport.readToString(in, charset);
 
