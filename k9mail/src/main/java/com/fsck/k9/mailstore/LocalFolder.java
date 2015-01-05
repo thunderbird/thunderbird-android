@@ -1179,6 +1179,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private ThreadInfo getThreadInfo(SQLiteDatabase db, String messageId, boolean onlyEmpty) {
+        if (messageId == null) {
+            return null;
+        }
+
         String sql = "SELECT t.id, t.message_id, t.root, t.parent " +
                 "FROM messages m " +
                 "LEFT JOIN threads t ON (t.message_id = m.id) " +
@@ -1393,8 +1397,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
-                        message.buildMimeRepresentation();
-
                         ViewableContainer container =
                                 LocalMessageExtractor.extractTextAndAttachments(LocalFolder.this.localStore.context, message);
 

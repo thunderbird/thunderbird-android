@@ -308,13 +308,10 @@ public class MimeMessage extends Message {
         if (mMessageId == null) {
             mMessageId = getFirstHeader("Message-ID");
         }
-        if (mMessageId == null) { //  even after checking the header
-            setMessageId(generateMessageId());
-        }
         return mMessageId;
     }
 
-    private String generateMessageId() {
+    public void generateMessageId() throws MessagingException {
         String hostname = null;
 
         if (mFrom != null && mFrom.length >= 1) {
@@ -330,7 +327,9 @@ public class MimeMessage extends Message {
         }
 
         /* We use upper case here to match Apple Mail Message-ID format (for privacy) */
-        return "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
+        String messageId = "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
+
+        setMessageId(messageId);
     }
 
     public void setMessageId(String messageId) throws MessagingException {
