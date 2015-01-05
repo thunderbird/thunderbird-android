@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail.store.pop3;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.fsck.k9.mail.*;
@@ -278,6 +279,7 @@ public class Pop3Store extends RemoteStore {
         private InputStream mIn;
         private OutputStream mOut;
         private Map<String, Pop3Message> mUidToMsgMap = new HashMap<String, Pop3Message>();
+        @SuppressLint("UseSparseArrays")
         private Map<Integer, Pop3Message> mMsgNumToMsgMap = new HashMap<Integer, Pop3Message>();
         private Map<String, Integer> mUidToMsgNumMap = new HashMap<String, Integer>();
         private String mName;
