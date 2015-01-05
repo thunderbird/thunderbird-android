@@ -1,12 +1,13 @@
 
 package com.fsck.k9.mail.internet;
 
+import android.text.TextUtils;
 import android.util.Log;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.UnsupportedEncodingException;
 
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
@@ -32,7 +33,7 @@ class DecoderUtil {
      * @return the decoded string.
      */
     private static String decodeB(String encodedWord, String charset) {
-        byte[] bytes = encodedWord.getBytes(Charset.forName("US-ASCII"));
+        byte[] bytes = getBytes(encodedWord, "US-ASCII");
 
         Base64InputStream is = new Base64InputStream(new ByteArrayInputStream(bytes));
         try {
@@ -65,7 +66,7 @@ class DecoderUtil {
             }
         }
 
-        byte[] bytes = sb.toString().getBytes(Charset.forName("US-ASCII"));
+        byte[] bytes = getBytes(sb.toString(), "US-ASCII");
 
         QuotedPrintableInputStream is = new QuotedPrintableInputStream(new ByteArrayInputStream(bytes));
         try {
@@ -168,7 +169,7 @@ class DecoderUtil {
             return null;
         }
 
-        if (encodedText.isEmpty()) {
+        if (TextUtils.isEmpty(encodedText)) {
             Log.w(LOG_TAG, "Missing encoded text in encoded word: '" + body.substring(begin, end) + "'");
             return null;
         }
@@ -180,6 +181,14 @@ class DecoderUtil {
         } else {
             Log.w(LOG_TAG, "Warning: Unknown encoding in encoded word '" + body.substring(begin, end) + "'");
             return null;
+        }
+    }
+
+    public static byte[] getBytes(String s, String charset) {
+        try {
+            return s.getBytes(charset);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 }

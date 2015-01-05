@@ -1,6 +1,8 @@
 package com.fsck.k9.mail.ssl;
 
 import android.content.Context;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -142,7 +144,11 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         TrustManager[] trustManagers = new TrustManager[] { TrustManagerFactory.get(host, port) };
         KeyManager[] keyManagers = null;
         if (!TextUtils.isEmpty(clientCertificateAlias)) {
-            keyManagers = new KeyManager[] { new KeyChainKeyManager(context, clientCertificateAlias) };
+            if (VERSION.SDK_INT >= VERSION_CODES.ICE_CREAM_SANDWICH) {
+                keyManagers = new KeyManager[] { new KeyChainKeyManager(context, clientCertificateAlias) };
+            } else {
+                throw new KeyManagementException("clientCertificates are not supported with this version of Android");
+            }
         }
 
         SSLContext sslContext = SSLContext.getInstance("TLS");

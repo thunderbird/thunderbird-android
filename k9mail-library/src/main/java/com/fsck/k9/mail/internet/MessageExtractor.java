@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.internet;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.mail.Body;
@@ -54,7 +55,7 @@ public class MessageExtractor {
                             in.read(buf, 0, buf.length);
                             String str = new String(buf, "US-ASCII");
 
-                            if (str.isEmpty()) {
+                            if (TextUtils.isEmpty(str)) {
                                 return "";
                             }
                             Pattern p = Pattern.compile("<meta http-equiv=\"?Content-Type\"? content=\"text/html; charset=(.+?)\">", Pattern.CASE_INSENSITIVE);

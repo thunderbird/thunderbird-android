@@ -4,6 +4,7 @@ package com.fsck.k9.mail.store.imap;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
@@ -16,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Deque;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -308,7 +308,7 @@ public class ImapStore extends RemoteStore {
 
     protected static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
 
-    private final Deque<ImapConnection> mConnections =
+    private final LinkedList<ImapConnection> mConnections =
         new LinkedList<ImapConnection>();
 
     /**
@@ -634,17 +634,21 @@ public class ImapStore extends RemoteStore {
         ByteBuffer bb = mModifiedUtf7Charset.encode(name);
         byte[] b = new byte[bb.limit()];
         bb.get(b);
-        return new String(b, Charset.forName("US-ASCII"));
+        try {
+            return new String(b, "US-ASCII");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private String decodeFolderName(String name) throws CharacterCodingException {
+    private String decodeFolderName(String name) throws CharacterCodingException, UnsupportedEncodingException {
         /*
          * Convert the encoded name to US-ASCII, then pass it through the modified UTF-7
          * decoder and return the Unicode String.
          */
         // Make sure the decoder throws an exception if it encounters an invalid encoding.
         CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
-        CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes(Charset.forName("US-ASCII"))));
+        CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes("US-ASCII")));
         return cb.toString();
 
     }
