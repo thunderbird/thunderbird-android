@@ -37,7 +37,6 @@ public class LocalMessage extends MimeMessage {
     private String mPreview = "";
 
     private boolean mHeadersLoaded = false;
-    private boolean mMessageDirty = false;
 
     private long mThreadId;
     private long mRootId;
@@ -142,28 +141,11 @@ public class LocalMessage extends MimeMessage {
 
     @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
-        if (mMessageDirty) buildMimeRepresentation();
+        if (!mHeadersLoaded) {
+            loadHeaders();
+        }
+
         super.writeTo(out);
-    }
-
-    void buildMimeRepresentation() throws MessagingException {
-        if (!mMessageDirty) {
-            return;
-        }
-
-        super.setSubject(mSubject);
-        if (this.mFrom != null && this.mFrom.length > 0) {
-            super.setFrom(this.mFrom[0]);
-        }
-
-        super.setReplyTo(mReplyTo);
-        super.setSentDate(this.getSentDate(), K9.hideTimeZone());
-        super.setRecipients(RecipientType.TO, mTo);
-        super.setRecipients(RecipientType.CC, mCc);
-        super.setRecipients(RecipientType.BCC, mBcc);
-        if (mMessageId != null) super.setMessageId(mMessageId);
-
-        mMessageDirty = false;
     }
 
     @Override
@@ -180,14 +162,12 @@ public class LocalMessage extends MimeMessage {
     @Override
     public void setSubject(String subject) throws MessagingException {
         mSubject = subject;
-        mMessageDirty = true;
     }
 
 
     @Override
     public void setMessageId(String messageId) {
         mMessageId = messageId;
-        mMessageDirty = true;
     }
 
     @Override
@@ -208,7 +188,6 @@ public class LocalMessage extends MimeMessage {
     @Override
     public void setFrom(Address from) throws MessagingException {
         this.mFrom = new Address[] { from };
-        mMessageDirty = true;
     }
 
 
@@ -219,7 +198,6 @@ public class LocalMessage extends MimeMessage {
         } else {
             mReplyTo = replyTo;
         }
-        mMessageDirty = true;
     }
 
 
@@ -250,7 +228,6 @@ public class LocalMessage extends MimeMessage {
         } else {
             throw new MessagingException("Unrecognized recipient type.");
         }
-        mMessageDirty = true;
     }
 
     public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
@@ -557,7 +534,6 @@ public class LocalMessage extends MimeMessage {
         message.mSubject = mSubject;
         message.mPreview = mPreview;
         message.mHeadersLoaded = mHeadersLoaded;
-        message.mMessageDirty = mMessageDirty;
 
         return message;
     }
