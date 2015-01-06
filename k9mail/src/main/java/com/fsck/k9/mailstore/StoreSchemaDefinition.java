@@ -180,8 +180,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
 
                 db.execSQL("DROP TRIGGER IF EXISTS delete_message");
-                db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
-                           + "DELETE FROM headers where old.id = message_id; END;");
+                db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; END;");
             } else {
                 // in the case that we're starting out at 29 or newer, run all the needed updates
 

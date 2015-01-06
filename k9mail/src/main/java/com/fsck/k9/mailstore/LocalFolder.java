@@ -1472,7 +1472,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                 Part attachment = attachments.get(i);
                                 saveAttachment(message.getId(), attachment, false);
                             }
-                            saveHeaders(message.getId(), message);
+
+                            //FIXME
+                            //saveHeaders(message.getId(), message);
                         } catch (Exception e) {
                             throw new MessagingException("Error appending message", e);
                         }
@@ -1487,54 +1489,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         this.localStore.notifyChange();
-    }
-
-    /**
-     * Save the headers of the given message. Note that the message is not
-     * necessarily a {@link LocalMessage} instance.
-     * @param id
-     * @param message
-     * @throws com.fsck.k9.mail.MessagingException
-     */
-    private void saveHeaders(final long id, final MimeMessage message) throws MessagingException {
-        this.localStore.database.execute(true, new DbCallback<Void>() {
-            @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
-
-                deleteHeaders(id);
-                for (String name : message.getHeaderNames()) {
-                    String[] values = message.getHeader(name);
-                    for (String value : values) {
-                        ContentValues cv = new ContentValues();
-                        cv.put("message_id", id);
-                        cv.put("name", name);
-                        cv.put("value", value);
-                        db.insert("headers", "name", cv);
-                    }
-                }
-
-                // Remember that all headers for this message have been saved, so it is
-                // not necessary to download them again in case the user wants to see all headers.
-                List<Flag> appendedFlags = new ArrayList<Flag>();
-                appendedFlags.addAll(message.getFlags());
-                appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
-
-                db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
-                        new Object[] { LocalFolder.this.localStore.serializeFlags(appendedFlags), id });
-
-                return null;
-            }
-        });
-    }
-
-    void deleteHeaders(final long id) throws MessagingException {
-        this.localStore.database.execute(false, new DbCallback<Void>() {
-            @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                db.execSQL("DELETE FROM headers WHERE message_id = ?", new Object[] { id });
-                return null;
-            }
-        });
     }
 
     /**

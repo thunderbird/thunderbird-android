@@ -341,7 +341,6 @@ public class LocalMessage extends MimeMessage {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
-        ((LocalFolder)mFolder).deleteHeaders(mId);
 
         this.localStore.notifyChange();
     }
