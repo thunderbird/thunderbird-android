@@ -285,24 +285,16 @@ public class LocalStore extends Store implements Serializable {
 
             Log.i(K9.LOG_TAG, "After prune / before clear size = " + getSize());
         }
-        // don't delete messages that are Local, since there is no copy on the server.
-        // Don't delete deleted messages.  They are essentially placeholders for UIDs of messages that have
-        // been deleted locally.  They take up insignificant space
+
         database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) {
-                // Delete entries from 'threads' table
-                db.execSQL("DELETE FROM threads WHERE message_id IN " +
-                        "(SELECT id FROM messages WHERE deleted = 0 AND uid NOT LIKE 'Local%')");
+                // We don't care about threads of deleted messages, so delete the whole table.
+                db.delete("threads", null, null);
 
-                // Set 'root' and 'parent' of remaining entries in 'thread' table to 'NULL' to make
-                // sure the thread structure is in a valid state (this may destroy existing valid
-                // thread trees, but is much faster than adjusting the tree by removing messages
-                // one by one).
-                db.execSQL("UPDATE threads SET root=id, parent=NULL");
-
-                // Delete entries from 'messages' table
-                db.execSQL("DELETE FROM messages WHERE deleted = 0 AND uid NOT LIKE 'Local%'");
+                // Don't delete deleted messages. They are essentially placeholders for UIDs of messages that have
+                // been deleted locally.
+                db.delete("messages", "deleted = 0", null);
                 return null;
             }
         });
