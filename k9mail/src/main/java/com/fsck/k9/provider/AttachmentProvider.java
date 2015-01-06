@@ -146,12 +146,12 @@ public class AttachmentProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         List<String> segments = uri.getPathSegments();
-        String dbName = segments.get(0);
+        String accountUuid = segments.get(0);
         String id = segments.get(1);
         String format = segments.get(2);
         String mimeType = (segments.size() < 4) ? null : segments.get(3);
 
-        return getType(dbName, id, format, mimeType);
+        return getType(accountUuid, id, format, mimeType);
     }
 
     @Override
@@ -205,18 +205,12 @@ public class AttachmentProvider extends ContentProvider {
         String[] columnNames = (projection == null) ? DEFAULT_PROJECTION : projection;
 
         List<String> segments = uri.getPathSegments();
-        String dbName = segments.get(0);
+        String accountUuid = segments.get(0);
         String id = segments.get(1);
-
-        // Versions of K-9 before 3.400 had a database name here, not an
-        // account UID, so implement a bit of backcompat
-        if (dbName.endsWith(".db")) {
-            dbName = dbName.substring(0, dbName.length() - 3);
-        }
 
         final AttachmentInfo attachmentInfo;
         try {
-            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
             attachmentInfo = LocalStore.getInstance(account, getContext()).getAttachmentInfo(id);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to retrieve attachment info from local store for ID: " + id, e);
@@ -263,12 +257,12 @@ public class AttachmentProvider extends ContentProvider {
         return null;
     }
 
-    private String getType(String dbName, String id, String format, String mimeType) {
+    private String getType(String accountUuid, String id, String format, String mimeType) {
         String type;
         if (FORMAT_THUMBNAIL.equals(format)) {
             type = "image/png";
         } else {
-            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
 
             try {
                 final LocalStore localStore = LocalStore.getInstance(account, getContext());
@@ -288,10 +282,10 @@ public class AttachmentProvider extends ContentProvider {
         return type;
     }
 
-    private File getFile(String dbName, String id) throws FileNotFoundException {
-        Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+    private File getFile(String accountUuid, String id) throws FileNotFoundException {
+        Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
 
-        File attachmentsDir = StorageManager.getInstance(getContext()).getAttachmentDirectory(dbName,
+        File attachmentsDir = StorageManager.getInstance(getContext()).getAttachmentDirectory(accountUuid,
                 account.getLocalStorageProviderId());
 
         File file = new File(attachmentsDir, id);
