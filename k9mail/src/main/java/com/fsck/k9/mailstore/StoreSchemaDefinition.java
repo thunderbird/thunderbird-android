@@ -83,8 +83,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         "cc_list TEXT, " +
                         "bcc_list TEXT, " +
                         "reply_to_list TEXT, " +
-                        "html_content TEXT, " +
-                        "text_content TEXT, " +
                         "attachment_count INTEGER, " +
                         "internal_date INTEGER, " +
                         "message_id TEXT, " +
@@ -95,12 +93,36 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         "read INTEGER default 0, " +
                         "flagged INTEGER default 0, " +
                         "answered INTEGER default 0, " +
-                        "forwarded INTEGER default 0" +
+                        "forwarded INTEGER default 0, " +
+                        "message_part_id INTEGER" +
                         ")");
 
-                db.execSQL("DROP TABLE IF EXISTS headers");
-                db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
-                db.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
+                db.execSQL("CREATE TABLE message_parts (" +
+                        "id INTEGER PRIMARY KEY, " +
+                        "type INTEGER NOT NULL, " +
+                        "root INTEGER, " +
+                        "parent INTEGER NOT NULL, " +
+                        "seq INTEGER NOT NULL, " +
+                        "mime_type TEXT, " +
+                        "decoded_body_size INTEGER, " +
+                        "display_name TEXT, " +
+                        "header TEXT, " +
+                        "encoding TEXT, " +
+                        "charset TEXT, " +
+                        "data_location INTEGER NOT NULL, " +
+                        "data TEXT, " +
+                        "preamble TEXT, " +
+                        "epilogue TEXT, " +
+                        "boundary TEXT, " +
+                        "content_id TEXT, " +
+                        "server_extra TEXT" +
+                        ")");
+
+                db.execSQL("CREATE TRIGGER set_message_part_root " +
+                        "AFTER INSERT ON message_parts " +
+                        "BEGIN " +
+                        "UPDATE message_parts SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
+                        "END");
 
                 db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
                 db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
@@ -540,6 +562,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                     db.update("folders", cv, "name = ?",
                             new String[] { this.localStore.getAccount().getInboxFolderName() });
+                }
+                if (db.getVersion() < 51) {
+                    throw new IllegalStateException("Database upgrade not supported yet!");
                 }
             }
 

@@ -1338,7 +1338,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private MimeMessage createMessage(boolean isDraft) throws MessagingException {
         MimeMessage message = new MimeMessage();
         message.addSentDate(new Date(), K9.hideTimeZone());
-        message.generateMessageId();
         Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
         message.setFrom(from);
         message.setRecipients(RecipientType.TO, getAddresses(mToView));
@@ -1425,6 +1424,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // Add the identity to the message.
             message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
         }
+
+        message.generateMessageId();
 
         return message;
     }

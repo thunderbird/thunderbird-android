@@ -444,6 +444,11 @@ public class MimeMessage extends Message {
     }
 
     @Override
+    public void writeHeaderTo(OutputStream out) throws IOException, MessagingException {
+        mHeader.writeTo(out);
+    }
+
+    @Override
     public InputStream getInputStream() throws MessagingException {
         return null;
     }
@@ -518,7 +523,10 @@ public class MimeMessage extends Message {
 
             Part e = (Part)stack.peek();
             try {
-                MimeMultipart multiPart = new MimeMultipart(e.getContentType());
+                String contentType = e.getContentType();
+                String mimeType = MimeUtility.getHeaderParameter(contentType, null);
+                String boundary = MimeUtility.getHeaderParameter(contentType, "boundary");
+                MimeMultipart multiPart = new MimeMultipart(mimeType, boundary);
                 e.setBody(multiPart);
                 stack.addFirst(multiPart);
             } catch (MessagingException me) {

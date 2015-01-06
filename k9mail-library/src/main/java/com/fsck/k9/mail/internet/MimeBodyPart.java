@@ -5,7 +5,6 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -133,6 +132,11 @@ public class MimeBodyPart extends BodyPart {
         if (mBody != null) {
             mBody.writeTo(out);
         }
+    }
+
+    @Override
+    public void writeHeaderTo(OutputStream out) throws IOException, MessagingException {
+        mHeader.writeTo(out);
     }
 
     @Override

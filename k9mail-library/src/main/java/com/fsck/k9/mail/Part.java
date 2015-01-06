@@ -31,6 +31,8 @@ public interface Part {
 
     void writeTo(OutputStream out) throws IOException, MessagingException;
 
+    void writeHeaderTo(OutputStream out) throws IOException, MessagingException;
+
     /**
      * Called just prior to transmission, once the type of transport is known to
      * be 7bit.

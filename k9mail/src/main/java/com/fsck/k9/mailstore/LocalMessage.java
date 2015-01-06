@@ -2,9 +2,7 @@ package com.fsck.k9.mailstore;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import android.content.ContentValues;
@@ -40,6 +38,8 @@ public class LocalMessage extends MimeMessage {
 
     private long mThreadId;
     private long mRootId;
+    private long messagePartId;
+    private String mimeType;
 
     private LocalMessage(LocalStore localStore) {
         this.localStore = localStore;
@@ -110,6 +110,18 @@ public class LocalMessage extends MimeMessage {
         setFlagInternal(Flag.FLAGGED, flagged);
         setFlagInternal(Flag.ANSWERED, answered);
         setFlagInternal(Flag.FORWARDED, forwarded);
+
+        messagePartId = cursor.getLong(22);
+        mimeType = cursor.getString(23);
+    }
+
+    long getMessagePartId() {
+        return messagePartId;
+    }
+
+    @Override
+    public String getMimeType() {
+        return mimeType;
     }
 
     /**
@@ -477,23 +489,8 @@ public class LocalMessage extends MimeMessage {
     }
 
     private void loadHeaders() throws MessagingException {
-        List<LocalMessage> messages = new ArrayList<LocalMessage>();
-        messages.add(this);
-        mHeadersLoaded = true; // set true before calling populate headers to stop recursion
-        getFolder().populateHeaders(messages);
-
-    }
-
-    @Override
-    public void addHeader(String name, String value) throws MessagingException {
-        if (!mHeadersLoaded)
-            loadHeaders();
-        super.addHeader(name, value);
-    }
-
-    @Override
-    public void addRawHeader(String name, String raw) {
-        throw new RuntimeException("Not supported");
+        mHeadersLoaded = true;
+        getFolder().populateHeaders(this);
     }
 
     @Override
