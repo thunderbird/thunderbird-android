@@ -1,5 +1,6 @@
 package com.fsck.k9.provider;
 
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -22,9 +24,9 @@ import com.fsck.k9.mailstore.StorageManager;
 import java.io.*;
 import java.util.List;
 
+
 /**
  * A simple ContentProvider that allows file access to attachments.
- *
  * <p>
  * Warning! We make heavy assumptions about the Uris used by the {@link LocalStore} for an
  * {@link Account} here.
@@ -38,8 +40,8 @@ public class AttachmentProvider extends ContentProvider {
     private static final String FORMAT_THUMBNAIL = "THUMBNAIL";
 
     private static final String[] DEFAULT_PROJECTION = new String[] {
-        AttachmentProviderColumns._ID,
-        AttachmentProviderColumns.DATA,
+            AttachmentProviderColumns._ID,
+            AttachmentProviderColumns.DATA,
     };
 
     public static class AttachmentProviderColumns {
@@ -70,12 +72,12 @@ public class AttachmentProvider extends ContentProvider {
 
     public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height) {
         return CONTENT_URI.buildUpon()
-               .appendPath(account.getUuid())
-               .appendPath(Long.toString(id))
-               .appendPath(FORMAT_THUMBNAIL)
-               .appendPath(Integer.toString(width))
-               .appendPath(Integer.toString(height))
-               .build();
+                .appendPath(account.getUuid())
+                .appendPath(Long.toString(id))
+                .appendPath(FORMAT_THUMBNAIL)
+                .appendPath(Integer.toString(width))
+                .appendPath(Integer.toString(height))
+                .build();
     }
 
     public static void clear(Context context) {
@@ -111,8 +113,7 @@ public class AttachmentProvider extends ContentProvider {
         }
     }
 
-    private static File getThumbnailFile(Context context, String accountUuid,
-            String attachmentId) {
+    private static File getThumbnailFile(Context context, String accountUuid, String attachmentId) {
         String filename = "thmb_" + accountUuid + "_" + attachmentId + ".tmp";
         File dir = context.getCacheDir();
         return new File(dir, filename);
@@ -183,7 +184,9 @@ public class AttachmentProvider extends ContentProvider {
                             }
                         }
                     } finally {
-                        try { in.close(); } catch (Throwable ignore) { /* ignore */ }
+                        try {
+                            in.close();
+                        } catch (Throwable ignore) { /* ignore */ }
                     }
                 } catch (IOException ioe) {
                     return null;
@@ -197,8 +200,7 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                        String sortOrder) {
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
         String[] columnNames = (projection == null) ? DEFAULT_PROJECTION : projection;
 
@@ -309,8 +311,7 @@ public class AttachmentProvider extends ContentProvider {
 
     private Bitmap createImageThumbnail(InputStream data) {
         try {
-            Bitmap bitmap = BitmapFactory.decodeStream(data);
-            return bitmap;
+            return BitmapFactory.decodeStream(data);
         } catch (OutOfMemoryError oome) {
             /*
              * Improperly downloaded images, corrupt bitmaps and the like can commonly
