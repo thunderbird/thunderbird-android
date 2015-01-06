@@ -3194,7 +3194,7 @@ public class MessagingController implements Runnable {
                     MimeMessageHelper.setBody(remoteMessage, message.getBody());
                     remoteFolder.fetchPart(remoteMessage, part, null);
 
-                    localFolder.updateMessage((LocalMessage)message);
+                    localFolder.addPartToMessage((LocalMessage) message, part);
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadAttachmentFinished(account, message, part, tag);
                     }

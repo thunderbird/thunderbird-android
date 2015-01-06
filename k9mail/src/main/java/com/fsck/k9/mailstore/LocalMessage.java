@@ -290,23 +290,14 @@ public class LocalMessage extends MimeMessage {
     }
 
     /*
-     * If a message is being marked as deleted we want to clear out it's content
-     * and attachments as well. Delete will not actually remove the row since we need
-     * to retain the uid for synchronization purposes.
+     * If a message is being marked as deleted we want to clear out its content. Delete will not actually remove the
+     * row since we need to retain the UID for synchronization purposes.
      */
-    private void delete() throws MessagingException
-
-    {
-        /*
-         * Delete all of the message's content to save space.
-         */
+    private void delete() throws MessagingException {
         try {
-            this.localStore.database.execute(true, new DbCallback<Void>() {
+            localStore.database.execute(true, new DbCallback<Void>() {
                 @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                        UnavailableStorageException {
-                    String[] idArg = new String[] { Long.toString(mId) };
-
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     ContentValues cv = new ContentValues();
                     cv.put("deleted", 1);
                     cv.put("empty", 1);
@@ -320,29 +311,24 @@ public class LocalMessage extends MimeMessage {
                     cv.putNull("html_content");
                     cv.putNull("text_content");
                     cv.putNull("reply_to_list");
+                    cv.putNull("message_part_id");
 
-                    db.update("messages", cv, "id = ?", idArg);
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
 
-                    /*
-                     * Delete all of the message's attachments to save space.
-                     * We do this explicit deletion here because we're not deleting the record
-                     * in messages, which means our ON DELETE trigger for messages won't cascade
-                     */
                     try {
-                        ((LocalFolder) mFolder).deleteAttachments(mId);
+                        ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
 
-                    db.delete("attachments", "message_id = ?", idArg);
                     return null;
                 }
             });
         } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
+            throw (MessagingException) e.getCause();
         }
 
-        this.localStore.notifyChange();
+        localStore.notifyChange();
     }
 
     /*
@@ -360,7 +346,7 @@ public class LocalMessage extends MimeMessage {
                     try {
                         LocalFolder localFolder = (LocalFolder) mFolder;
 
-                        localFolder.deleteAttachments(mId);
+                        localFolder.deleteMessagePartsAndDataFromDisk(messagePartId);
 
                         if (hasThreadChildren(db, mId)) {
                             // This message has children in the thread structure so we need to
