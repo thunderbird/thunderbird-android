@@ -31,8 +31,15 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SqlQueryBuilder;
+import org.apache.james.mime4j.codec.Base64InputStream;
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+import org.apache.james.mime4j.util.MimeUtil;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -648,7 +655,7 @@ public class LocalStore extends Store implements Serializable {
                         return null;
                     }
                     String name = cursor.getString(0);
-                    int size = cursor.getInt(1);
+                    long size = cursor.getLong(1);
                     String mimeType = cursor.getString(2);
 
                     final AttachmentInfo attachmentInfo = new AttachmentInfo();
@@ -664,9 +671,72 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
+    public InputStream getAttachmentInputStream(final String attachmentId) throws MessagingException {
+        return database.execute(false, new DbCallback<InputStream>() {
+            @Override
+            public InputStream doDbWork(final SQLiteDatabase db) throws WrappedException {
+                Cursor cursor = db.query("message_parts",
+                        new String[] { "data_location", "data", "encoding" },
+                        "id = ?",
+                        new String[] { attachmentId },
+                        null, null, null);
+                try {
+                    if (!cursor.moveToFirst()) {
+                        return null;
+                    }
+
+                    int location = cursor.getInt(0);
+                    String encoding = cursor.getString(2);
+
+                    InputStream rawInputStream = getRawAttachmentInputStream(cursor, location, attachmentId);
+                    return getDecodingInputStream(rawInputStream, encoding);
+                } finally {
+                    cursor.close();
+                }
+            }
+        });
+    }
+
+    private InputStream getRawAttachmentInputStream(Cursor cursor, int location, String attachmentId) {
+        switch (location) {
+            case DataLocation.IN_DATABASE: {
+                byte[] data = cursor.getBlob(1);
+                return new ByteArrayInputStream(data);
+            }
+            case DataLocation.ON_DISK: {
+                File file = getAttachmentFile(attachmentId);
+                try {
+                    return new FileInputStream(file);
+                } catch (FileNotFoundException e) {
+                    throw new WrappedException(e);
+                }
+            }
+            default: {
+                throw new IllegalStateException("No attachment data available");
+            }
+        }
+    }
+
+    private InputStream getDecodingInputStream(InputStream rawInputStream, String encoding) {
+        if (MimeUtil.ENC_BASE64.equals(encoding)) {
+            return new Base64InputStream(rawInputStream);
+        }
+        if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(encoding)) {
+            return new QuotedPrintableInputStream(rawInputStream);
+        }
+
+        return rawInputStream;
+    }
+
+    private File getAttachmentFile(String attachmentId) {
+        final StorageManager storageManager = StorageManager.getInstance(context);
+        final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId());
+        return new File(attachmentDirectory, attachmentId);
+    }
+
     public static class AttachmentInfo {
         public String name;
-        public int size;    //FIXME: use long
+        public long size;
         public String type;
     }
 

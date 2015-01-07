@@ -19,7 +19,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
-import com.fsck.k9.mailstore.StorageManager;
+import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
 
 import java.io.*;
 import java.util.List;
@@ -156,8 +156,6 @@ public class AttachmentProvider extends ContentProvider {
 
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
-        File file;
-
         List<String> segments = uri.getPathSegments();
         String accountUuid = segments.get(0);
         String attachmentId = segments.get(1);
@@ -167,36 +165,10 @@ public class AttachmentProvider extends ContentProvider {
             int width = Integer.parseInt(segments.get(3));
             int height = Integer.parseInt(segments.get(4));
 
-            file = getThumbnailFile(getContext(), accountUuid, attachmentId);
-            if (!file.exists()) {
-                String type = getType(accountUuid, attachmentId, FORMAT_VIEW, null);
-                try {
-                    FileInputStream in = new FileInputStream(getFile(accountUuid, attachmentId));
-                    try {
-                        Bitmap thumbnail = createThumbnail(type, in);
-                        if (thumbnail != null) {
-                            thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
-                            FileOutputStream out = new FileOutputStream(file);
-                            try {
-                                thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
-                            } finally {
-                                out.close();
-                            }
-                        }
-                    } finally {
-                        try {
-                            in.close();
-                        } catch (Throwable ignore) { /* ignore */ }
-                    }
-                } catch (IOException ioe) {
-                    return null;
-                }
-            }
-        } else {
-            file = getFile(accountUuid, attachmentId);
+            return openThumbnail(accountUuid, attachmentId, width, height);
         }
 
-        return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
+        return openAttachment(accountUuid, attachmentId);
     }
 
     @Override
@@ -282,18 +254,60 @@ public class AttachmentProvider extends ContentProvider {
         return type;
     }
 
-    private File getFile(String accountUuid, String id) throws FileNotFoundException {
-        Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
+    private ParcelFileDescriptor openThumbnail(String accountUuid, String attachmentId, int width, int height)
+            throws FileNotFoundException {
 
-        File attachmentsDir = StorageManager.getInstance(getContext()).getAttachmentDirectory(accountUuid,
-                account.getLocalStorageProviderId());
-
-        File file = new File(attachmentsDir, id);
+        File file = getThumbnailFile(getContext(), accountUuid, attachmentId);
         if (!file.exists()) {
-            throw new FileNotFoundException(file.getAbsolutePath());
+            String type = getType(accountUuid, attachmentId, FORMAT_VIEW, null);
+            try {
+                InputStream in = getAttachmentInputStream(accountUuid, attachmentId);
+                try {
+                    Bitmap thumbnail = createThumbnail(type, in);
+                    if (thumbnail != null) {
+                        thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
+                        FileOutputStream out = new FileOutputStream(file);
+                        try {
+                            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        } finally {
+                            try {
+                                out.close();
+                            } catch (IOException e) {
+                                Log.e(K9.LOG_TAG, "Error saving thumbnail", e);
+                            }
+                        }
+                    }
+                } finally {
+                    try {
+                        in.close();
+                    } catch (Throwable ignore) { /* ignore */ }
+                }
+            } catch (MessagingException e) {
+                Log.e(K9.LOG_TAG, "Error getting InputStream for attachment", e);
+                return null;
+            }
         }
 
-        return file;
+        return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
+    }
+
+    private ParcelFileDescriptor openAttachment(String accountUuid, String attachmentId) {
+        try {
+            InputStream inputStream = getAttachmentInputStream(accountUuid, attachmentId);
+            return ParcelFileDescriptorUtil.pipeFrom(inputStream, null);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Error getting InputStream for attachment", e);
+            return null;
+        } catch (IOException e) {
+            Log.e(K9.LOG_TAG, "Error creating ParcelFileDescriptor", e);
+            return null;
+        }
+    }
+
+    private InputStream getAttachmentInputStream(String accountUuid, String attachmentId) throws MessagingException {
+        final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
+        LocalStore localStore = LocalStore.getInstance(account, getContext());
+        return localStore.getAttachmentInputStream(attachmentId);
     }
 
     private Bitmap createThumbnail(String type, InputStream data) {
