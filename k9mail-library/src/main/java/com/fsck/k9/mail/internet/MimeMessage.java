@@ -57,6 +57,7 @@ public class MimeMessage extends Message {
 
     private Body mBody;
     protected int mSize;
+    private String serverExtra;
 
     public MimeMessage() {
     }
@@ -693,4 +694,16 @@ public class MimeMessage extends Message {
             setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
         }
     }
+
+    @Override
+    public String getServerExtra() {
+        return serverExtra;
+    }
+
+    @Override
+    public void setServerExtra(String serverExtra) {
+        this.serverExtra = serverExtra;
+    }
+
+
 }

@@ -672,6 +672,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         long parentId = cursor.getLong(2);
         String mimeType = cursor.getString(3);
         byte[] header = cursor.getBlob(6);
+        String serverExtra = cursor.getString(15);
 
         final Part part;
         if (id == message.getMessagePartId()) {
@@ -698,6 +699,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             parseHeaderBytes(part, header);
         }
         partById.put(id, part);
+        part.setServerExtra(serverExtra);
 
         boolean isMultipart = mimeType.startsWith("multipart/");
         if (isMultipart) {
@@ -1322,14 +1324,22 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         Part part = partContainer.part;
 
-        byte[] headerBytes = getHeaderBytes(part);
-
         ContentValues cv = new ContentValues();
         if (rootMessagePartId != -1) {
             cv.put("root", rootMessagePartId);
         }
         cv.put("parent", partContainer.parent);
         cv.put("seq", order);
+        cv.put("server_extra", part.getServerExtra());
+
+        partToContentValues(cv, part);
+
+        return db.insertOrThrow("message_parts", null, cv);
+    }
+
+    private void partToContentValues(ContentValues cv, Part part) throws IOException, MessagingException {
+        byte[] headerBytes = getHeaderBytes(part);
+
         cv.put("mime_type", part.getMimeType());
         cv.put("header", headerBytes);
         cv.put("type", MessagePartType.UNKNOWN);
@@ -1355,8 +1365,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             cv.put("data", bodyData);
             cv.put("content_id", part.getContentId());
         }
-
-        return db.insertOrThrow("message_parts", null, cv);
     }
 
     private byte[] getHeaderBytes(Part part) throws IOException, MessagingException {
@@ -1403,9 +1411,39 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     public void addPartToMessage(final LocalMessage message, final Part part) throws MessagingException {
         open(OPEN_MODE_RW);
-        throw new RuntimeException("Not implemented yet");
 
-//        localStore.notifyChange();
+        localStore.database.execute(false, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                String messagePartId;
+
+                Cursor cursor = db.query("message_parts", new String[] { "id" }, "root = ? AND server_extra = ?",
+                        new String[] { Long.toString(message.getMessagePartId()), part.getServerExtra() },
+                        null, null, null);
+                try {
+                    if (!cursor.moveToFirst()) {
+                        throw new IllegalStateException("Message part not found");
+                    }
+
+                    messagePartId = cursor.getString(0);
+                } finally {
+                    cursor.close();
+                }
+
+                try {
+                    ContentValues cv = new ContentValues();
+                    partToContentValues(cv, part);
+
+                    db.update("message_parts", cv, "id = ?", new String[] { messagePartId });
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Error writing message part", e);
+                }
+
+                return null;
+            }
+        });
+
+        localStore.notifyChange();
     }
 
     /**
@@ -1422,7 +1460,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 db.update("messages", cv, "id = ?", new String[]
-                          { Long.toString(message.getId()) });
+                        { Long.toString(message.getId()) });
                 return null;
             }
         });

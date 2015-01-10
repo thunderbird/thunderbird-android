@@ -46,4 +46,8 @@ public interface Part {
      */
     //TODO perhaps it would be clearer to use a flag "force7bit" in writeTo
     void setUsing7bitTransport() throws MessagingException;
+
+    String getServerExtra();
+
+    void setServerExtra(String serverExtra);
 }

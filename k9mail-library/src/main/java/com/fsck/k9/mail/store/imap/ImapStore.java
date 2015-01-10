@@ -1455,13 +1455,9 @@ public class ImapStore extends RemoteStore {
         throws MessagingException {
             checkOpen(); //only need READ access
 
-            String[] parts = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA);
-            if (parts == null) {
-                return;
-            }
+            String partId = part.getServerExtra();
 
             String fetch;
-            String partId = parts[0];
             if ("TEXT".equalsIgnoreCase(partId)) {
                 fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>",
                         mStoreConfig.getMaximumAutoDownloadMessageSize());
@@ -1834,7 +1830,7 @@ public class ImapStore extends RemoteStore {
                 if (part instanceof ImapMessage) {
                     ((ImapMessage) part).setSize(size);
                 }
-                part.setHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA, id);
+                part.setServerExtra(id);
             }
 
         }
