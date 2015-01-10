@@ -13,10 +13,12 @@ import android.test.RenamingDelegatingContext;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
+import org.apache.james.mime4j.util.MimeUtil;
 
 
 public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> {
@@ -87,6 +89,39 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
         String reconstructedMessage = writeMessageToString(localMessage);
 
         assertEquals(MESSAGE_SOURCE, reconstructedMessage);
+    }
+
+    public void testAddMissingPart() throws MessagingException, IOException {
+        LocalFolder folder = createFolderInDatabase();
+
+        MimeMessage message = new MimeMessage();
+        message.addHeader("To", "to@example.com");
+        message.addHeader("MIME-Version", "1.0");
+        message.addHeader("Content-Type", "text/plain");
+        message.setServerExtra("text");
+
+        saveMessageToDatabase(folder, message);
+
+        LocalMessage localMessage = readMessageFromDatabase(folder, message);
+
+        assertEquals("to@example.com", localMessage.getHeader("To")[0]);
+        assertEquals("text/plain", localMessage.getMimeType());
+        assertEquals("text", localMessage.getServerExtra());
+        assertNull(localMessage.getBody());
+
+        Body body = new BinaryMemoryBody("Test message body".getBytes(), MimeUtil.ENC_7BIT);
+        localMessage.setBody(body);
+        folder.addPartToMessage(localMessage, localMessage);
+
+        LocalMessage completeLocalMessage = readMessageFromDatabase(folder, message);
+        String reconstructedMessage = writeMessageToString(completeLocalMessage);
+
+        assertEquals("To: to@example.com\r\n" +
+                "MIME-Version: 1.0\r\n" +
+                "Content-Type: text/plain\r\n" +
+                "\r\n" +
+                "Test message body",
+                reconstructedMessage);
     }
 
     protected MimeMessage parseMessage() throws IOException, MessagingException {

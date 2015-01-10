@@ -672,6 +672,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         long parentId = cursor.getLong(2);
         String mimeType = cursor.getString(3);
         byte[] header = cursor.getBlob(6);
+        int dataLocation = cursor.getInt(9);
         String serverExtra = cursor.getString(15);
 
         final Part part;
@@ -711,7 +712,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             part.setBody(multipart);
             multipart.setPreamble(preamble);
             multipart.setEpilogue(epilogue);
-        } else {
+        } else if (dataLocation != DataLocation.MISSING) {
             String encoding = cursor.getString(7);
             byte[] data = cursor.getBlob(10);
 
