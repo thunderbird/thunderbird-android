@@ -140,8 +140,7 @@ public class SqlQueryBuilder {
                 break;
             }
             case MESSAGE_CONTENTS: {
-                columnName = "text_content";
-                break;
+                throw new RuntimeException("Searching in message bodies is currently not supported");
             }
             case REPLY_TO: {
                 columnName = "reply_to_list";

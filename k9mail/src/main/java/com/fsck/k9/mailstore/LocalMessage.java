@@ -308,8 +308,6 @@ public class LocalMessage extends MimeMessage {
                     cv.putNull("cc_list");
                     cv.putNull("bcc_list");
                     cv.putNull("preview");
-                    cv.putNull("html_content");
-                    cv.putNull("text_content");
                     cv.putNull("reply_to_list");
                     cv.putNull("message_part_id");
 
