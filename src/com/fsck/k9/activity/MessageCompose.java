@@ -1400,105 +1400,107 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * into the final message here.
      * @param isDraft Indicates if this message is a draft or not. Drafts do not have signatures
      *  appended and have some extra metadata baked into their header for use during thawing.
+     * @param isPGPMime Indicates if this is supposed to create a message which will be encrypted.
      * @return Message to be sent.
      * @throws MessagingException
      */
-    private MimeMessage createMessage(boolean isDraft) throws MessagingException {
+    private MimeMessage createMessage(boolean isDraft, boolean isPGPMime) throws MessagingException {
         MimeMessage message = new MimeMessage();
-        message.addSentDate(new Date());
-        Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
-        message.setFrom(from);
-        message.setRecipients(RecipientType.TO, getAddresses(mToView));
-        message.setRecipients(RecipientType.CC, getAddresses(mCcView));
-        message.setRecipients(RecipientType.BCC, getAddresses(mBccView));
-        message.setSubject(mSubjectView.getText().toString());
-        if (mReadReceipt) {
-            message.setHeader("Disposition-Notification-To", from.toEncodedString());
-            message.setHeader("X-Confirm-Reading-To", from.toEncodedString());
-            message.setHeader("Return-Receipt-To", from.toEncodedString());
-        }
-
-        if (!K9.hideUserAgent()) {
-            message.setHeader("User-Agent", getString(R.string.message_header_mua));
-        }
-
-        final String replyTo = mIdentity.getReplyTo();
-        if (replyTo != null) {
-            message.setReplyTo(new Address[] { new Address(replyTo) });
-        }
-
-        if (mInReplyTo != null) {
-            message.setInReplyTo(mInReplyTo);
-        }
-
-        if (mReferences != null) {
-            message.setReferences(mReferences);
-        }
-
-        // Build the body.
-        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
-        // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
-        if (mPgpData.getEncryptedData() != null) {
-            if (!mAccount.isCryptoPGPMime()) {
-                String text = mPgpData.getEncryptedData();
-                body = new TextBody(text);
-            } else {
-            	MimeMultipart encrypted = new MimeMultipart();
-            	encrypted.addBodyPart(new MimeBodyPart(buildText(isDraft)));
-            	
-                MimeMultipart mp = createPGPMimeMultipart();
-                message.setBody(mp);
-            }
+        
+        if (!isPGPMime) {
+	        message.addSentDate(new Date());
+	        Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
+	        message.setFrom(from);
+	        message.setRecipients(RecipientType.TO, getAddresses(mToView));
+	        message.setRecipients(RecipientType.CC, getAddresses(mCcView));
+	        message.setRecipients(RecipientType.BCC, getAddresses(mBccView));
+	        message.setSubject(mSubjectView.getText().toString());
+	        if (mReadReceipt) {
+	            message.setHeader("Disposition-Notification-To", from.toEncodedString());
+	            message.setHeader("X-Confirm-Reading-To", from.toEncodedString());
+	            message.setHeader("Return-Receipt-To", from.toEncodedString());
+	        }
+	
+	        if (!K9.hideUserAgent()) {
+	            message.setHeader("User-Agent", getString(R.string.message_header_mua));
+	        }
+	
+	        final String replyTo = mIdentity.getReplyTo();
+	        if (replyTo != null) {
+	            message.setReplyTo(new Address[] { new Address(replyTo) });
+	        }
+	
+	        if (mInReplyTo != null) {
+	            message.setInReplyTo(mInReplyTo);
+	        }
+	
+	        if (mReferences != null) {
+	            message.setReferences(mReferences);
+	        }
+	
+	        // Build the body.
+	        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
+	        // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
+	        if (mPgpData.getEncryptedData() != null) {
+	            if (!mAccount.isCryptoPGPMime()) {
+	                String text = mPgpData.getEncryptedData();
+	                body = new TextBody(text);
+	            } else {
+	                MimeMultipart mp = createPGPMimeMultipart();
+	                message.setBody(mp);
+	                // attachments were already added in previous call for PGP/MIME
+	                return message;
+	            }
+	        } else {
+	            body = buildText(isDraft);
+	        }
+        
         } else {
-            body = buildText(isDraft);
+        	body = buildText(isDraft);
         }
 
         // text/plain part when mMessageFormat == MessageFormat.HTML
         TextBody bodyPlain = null;
 
-        // body for PGP/MIME messages has already been set (no support for PGP/MIME attachments yet)
-        if (mPgpData.getEncryptedData() == null || !mAccount.isCryptoPGPMime()) {
-        
-	        final boolean hasAttachments = mAttachments.getChildCount() > 0;
-	
-	        if (mMessageFormat == SimpleMessageFormat.HTML) {
-	            // HTML message (with alternative text part)
-	
-	            // This is the compiled MIME part for an HTML message.
-	            MimeMultipart composedMimeMessage = new MimeMultipart();
-	            composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
-	            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
-	            bodyPlain = buildText(isDraft, SimpleMessageFormat.TEXT);
-	            composedMimeMessage.addBodyPart(new MimeBodyPart(bodyPlain, "text/plain"));
-	
-	            if (hasAttachments) {
-	                // If we're HTML and have attachments, we have a MimeMultipart container to hold the
-	                // whole message (mp here), of which one part is a MimeMultipart container
-	                // (composedMimeMessage) with the user's composed messages, and subsequent parts for
-	                // the attachments.
-	                MimeMultipart mp = new MimeMultipart();
-	                mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
-	                addAttachmentsToMessage(mp);
-	                message.setBody(mp);
-	            } else {
-	                // If no attachments, our multipart/alternative part is the only one we need.
-	                message.setBody(composedMimeMessage);
-	            }
-	        } else if (mMessageFormat == SimpleMessageFormat.TEXT) {
-	            // Text-only message.
-	            if (hasAttachments) {
-	                MimeMultipart mp = new MimeMultipart();
-	                mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
-	                addAttachmentsToMessage(mp);
-	                message.setBody(mp);
-	            } else {
-	                // No attachments to include, just stick the text body in the message and call it good.
-	                message.setBody(body);
-	            }
-	        }
-        
+        final boolean hasAttachments = mAttachments.getChildCount() > 0;
+
+        if (mMessageFormat == SimpleMessageFormat.HTML) {
+            // HTML message (with alternative text part)
+
+            // This is the compiled MIME part for an HTML message.
+            MimeMultipart composedMimeMessage = new MimeMultipart();
+            composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
+            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
+            bodyPlain = buildText(isDraft, SimpleMessageFormat.TEXT);
+            composedMimeMessage.addBodyPart(new MimeBodyPart(bodyPlain, "text/plain"));
+
+            if (hasAttachments) {
+                // If we're HTML and have attachments, we have a MimeMultipart container to hold the
+                // whole message (mp here), of which one part is a MimeMultipart container
+                // (composedMimeMessage) with the user's composed messages, and subsequent parts for
+                // the attachments.
+                MimeMultipart mp = new MimeMultipart();
+                mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
+                addAttachmentsToMessage(mp);
+                message.setBody(mp);
+            } else {
+                // If no attachments, our multipart/alternative part is the only one we need.
+                message.setBody(composedMimeMessage);
+            }
+        } else if (mMessageFormat == SimpleMessageFormat.TEXT) {
+            // Text-only message.
+            if (hasAttachments) {
+                MimeMultipart mp = new MimeMultipart();
+                mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
+                addAttachmentsToMessage(mp);
+                message.setBody(mp);
+            } else {
+                // No attachments to include, just stick the text body in the message and call it good.
+                message.setBody(body);
+            }
         }
+        
 
         // If this is a draft, add metadata for thawing.
         if (isDraft) {
@@ -1881,12 +1883,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             if (mPgpData.hasEncryptionKeys() || mPgpData.hasSignatureKey()) {
                 if (mPgpData.getEncryptedData() == null) {
-                    String text = buildText(false).getText();
                     mPreventDraftSaving = true;
                     if (!mAccount.isCryptoPGPMime()) {
+                        String text = buildText(false).getText();
                     	crypto.encrypt(this, text, mPgpData);
                     } else {
-                    	String mimeMessage = createPGPMimeMessageString(text);
+                    	String mimeMessage = createPGPMimeMessageString();
 						crypto.encrypt(this, mimeMessage, mPgpData);
                     }
                     return;
@@ -1912,24 +1914,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     /**
-     * Create a new multipart Mime message with a text body and return its string representation.
+     * Create a new multipart Mime message and return its string representation.
      * This message can be used for encryption.
      * @param text Contents of the text body
      * @return string representation of a multipart Mime message
      */
-    private String createPGPMimeMessageString(String text) {
+    private String createPGPMimeMessageString() {
     	
     	ByteArrayOutputStream out = new ByteArrayOutputStream();
     	
 		try {
-			MimeMessage mm = new MimeMessage();
-			MimeMultipart mp = new MimeMultipart();
-			MimeBodyPart bp = new MimeBodyPart();
-			TextBody tb = new TextBody(text);
-			bp.setBody(tb);
-			mp.addBodyPart(bp);
-			mm.setBody(mp);
-			mm.writeTo(out);
+			MimeMessage mimeMessage = createMessage(false, true);
+			mimeMessage.writeTo(out);
 		} catch (MessagingException me) {
 			Log.e(K9.LOG_TAG, "Failed to create new PGP/MIME message.", me);
             throw new RuntimeException("Failed to create new PGP/MIME message.", me);
@@ -1942,14 +1938,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
     
     private InputStream getOpenPgpInputStream() {
-        String text = buildText(false).getText();
 
         InputStream is = null;
         try {
         	if (!mAccount.isCryptoPGPMime()) {
+                String text = buildText(false).getText();
         		is = new ByteArrayInputStream(text.getBytes("UTF-8"));
         	} else {
-        		String messageString = createPGPMimeMessageString(text);
+        		String messageString = createPGPMimeMessageString();
         		is = new ByteArrayInputStream(messageString.getBytes("UTF-8"));
         	}
         } catch (UnsupportedEncodingException e) {
@@ -3782,7 +3778,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              */
             MimeMessage message;
             try {
-                message = createMessage(false);  // isDraft = true
+                message = createMessage(false, false);  // isDraft = true
             } catch (MessagingException me) {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);
@@ -3815,7 +3811,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              */
             MimeMessage message;
             try {
-                message = createMessage(true);  // isDraft = true
+                message = createMessage(true, false);  // isDraft = true
             } catch (MessagingException me) {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);
