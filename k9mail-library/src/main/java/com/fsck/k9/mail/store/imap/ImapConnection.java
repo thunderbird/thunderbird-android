@@ -601,10 +601,18 @@ class ImapConnection {
     }
 
     private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses) {
-        capabilities = ImapResponseParser.parseCapabilities(responses);
+        Set<String> receivedCapabilities = ImapResponseParser.parseCapabilities(responses);
+        /* RFC 3501 6.2.3
+            A server MAY include a CAPABILITY response code in the tagged OK
+            response to a successful LOGIN command in order to send
+            capabilities automatically.  It is unnecessary for a client to
+            send a separate CAPABILITY command if it recognizes these
+            automatic capabilities.
+        */
         if (K9MailLib.isDebug()) {
-            Log.d(LOG_TAG, "Saving " + capabilities + " capabilities for " + getLogId());
+            Log.d(LOG_TAG, "Saving " + receivedCapabilities + " capabilities for " + getLogId());
         }
+        capabilities.addAll(receivedCapabilities);
         return responses;
     }
 }
