@@ -1,7 +1,5 @@
 package com.fsck.k9.view;
 
-import com.fsck.k9.R;
-
 import android.content.Context;
 import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
@@ -16,6 +14,8 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.fsck.k9.R;
 
 /**
  * Class representing a LinearLayout that can fold and hide it's content when

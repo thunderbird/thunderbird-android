@@ -208,6 +208,9 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
+    private boolean mCryptoAutoSignature;
+    private boolean mCryptoAutoEncrypt;
+    private boolean mCryptoPGPMime;
     private boolean mMarkMessageAsReadOnView;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
@@ -301,7 +304,10 @@ public class Account implements BaseAccount, StoreConfig {
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
-        mCryptoApp = NO_OPENPGP_PROVIDER;
+        mCryptoApp = Apg.NAME;
+        mCryptoAutoSignature = false;
+        mCryptoAutoEncrypt = false;
+        mCryptoPGPMime = false;
         mAllowRemoteSearch = false;
         mRemoteSearchFullText = false;
         mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
@@ -488,7 +494,10 @@ public class Account implements BaseAccount, StoreConfig {
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
 
-        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", NO_OPENPGP_PROVIDER);
+        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
+        mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
+        mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
+        mCryptoPGPMime = prefs.getBoolean(mUuid + ".cryptoPGPMime", false);
         mAllowRemoteSearch = prefs.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = prefs.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = prefs.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -750,6 +759,9 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
+        editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
+        editor.putBoolean(mUuid + ".cryptoAutoEncrypt", mCryptoAutoEncrypt);
+        editor.putBoolean(mUuid + ".cryptoPGPMime", mCryptoPGPMime);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1638,6 +1650,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setCryptoApp(String cryptoApp) {
         mCryptoApp = cryptoApp;
+    }
+    
+    public boolean isCryptoPGPMime() {
+        return mCryptoPGPMime;
+    }
+
+    public void setCryptoPGPMime(boolean cryptoPGPMime) {
+        mCryptoPGPMime = cryptoPGPMime;
     }
 
     public boolean allowRemoteSearch() {
