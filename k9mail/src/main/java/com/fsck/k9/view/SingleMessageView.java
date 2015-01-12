@@ -58,6 +58,8 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalAttachmentBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.LocalMessageExtractor;
+import com.fsck.k9.mailstore.ViewableContainer;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
 import org.apache.commons.io.IOUtils;
@@ -512,7 +514,9 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
 
         if (text == null) {
-            text = message.getTextForDisplay();
+            //FIXME: Run the text extraction in a background thread because it might involve disk I/O
+            ViewableContainer viewables = LocalMessageExtractor.extractTextAndAttachments(getContext(), message);
+            text = viewables.html;
         }
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
