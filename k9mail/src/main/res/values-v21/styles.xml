@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- On Lollipop, notifications are on white rather than on dark grey, making
+         the title too light. When using targetSdk 17, #ffffffff (which should be
+         white) is being used as a mask or inverted (not sure which). The net
+         effect is that specifying #ffffffff is resulting in black text. This
+         needs to change once we go to targetSdk 21. -->
+    <style name="TextAppearance.StatusBar.EventContent.Emphasized" parent="@android:style/TextAppearance.StatusBar.EventContent">
+        <item name="android:textColor">#ffffffff</item>
+    </style>
+</resources>

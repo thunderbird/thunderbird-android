@@ -1,0 +1,902 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--=== App-specific strings =============================================================-->
+  <!--This should make it easier for forks to change the branding-->
+  <!--Used in AndroidManifest.xml-->
+  <string name="app_name">K-9 Mail</string>
+  <string name="beta_app_name">K-9 Mail BETA</string>
+  <string name="shortcuts_title">K-9 Accounts</string>
+  <string name="unread_widget_label">K-9 Ongelezen</string>
+  <string name="remote_control_label">K-9 Mail bediening op afstand</string>
+  <string name="remote_control_desc">Sta deze applicatie toe om activiteiten en instellingen van K-9 Mail aan te passen.</string>
+  <!--Used in the about dialog-->
+  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+  <!--Welcome message-->
+  <string name="welcome_message_title">Welkom bij K-9 Mail</string>
+  <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail is een open source mail cliënt voor Android, gebaseerd op de standaard Android Mail cliënt.
+</p><p>
+Toevoegingen en verbeteringen omvatten:
+</p>
+<ul>
+  <li>Push mail die IMAP IDLE gebruikt</li>
+  <li>Betere prestaties</li>
+  <li>Bericht heropenen</li>
+  <li>E-mail handtekeningen</li>
+  <li>Bcc naar jezelf</li>
+  <li>Map abonnementen</li>
+  <li>Alle mappen synchronisatie</li>
+  <li>Return-adres configuratie</li>
+  <li>Toetsenbord snelkoppelingen</li>
+  <li>Betere IMAP ondersteuning</li>
+  <li>Bijlage opslaan naar SD</li>
+  <li>Prullenbak legen</li>
+  <li>Berichten sorteren</li>
+  <li>…en meer</li>
+</ul>
+<p>
+Houd er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange.
+</p><p>
+Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
+<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
+  <!--Default signature-->
+  <string name="default_signature">-- \nVerstuurd vanaf mijn Android apparaat met K-9 Mail. Excuseer mijn beknoptheid.</string>
+  <!--General strings that include the app name-->
+  <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail.</string>
+  <string name="account_recreate_dlg_instructions_fmt">Alle data voor \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail, maar account instellingen blijven behouden.</string>
+  <string name="account_clear_dlg_instructions_fmt">Alle berichten in \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van  K-9 Mail, maar account instellingen blijven behouden.</string>
+  <!--=== App Store-specific strings =======================================================-->
+  <string name="import_dialog_error_message">Installeer een bestandsbeheer-app om verder te gaan met deze import.</string>
+  <string name="open_market">Open Play Store</string>
+  <!--=== General strings ==================================================================-->
+  <string name="app_authors_fmt">Auteurs: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="app_revision_fmt">Revisie Informatie: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_libraries">De volgende externe bibliotheken worden gebruikt: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
+  <string name="read_attachment_label">Lees bijlage</string>
+  <string name="read_attachment_desc">Sta deze applicatie toe om bijlagen van e-mails te lezen.</string>
+  <string name="read_messages_label">Lees e-mails</string>
+  <string name="read_messages_desc">Sta deze aplicatie toe om je e-mails te lezen.</string>
+  <string name="delete_messages_label">Verwijder e-mails</string>
+  <string name="delete_messages_desc">Sta deze applicatie toe om je e-mails te verwijderen.</string>
+  <string name="about_title_fmt">Over <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="accounts_title">Accounts</string>
+  <string name="folders_title">Mappen</string>
+  <string name="advanced">Geavanceerd</string>
+  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
+  <string name="compose_title_compose">Ontwerp</string>
+  <string name="compose_title_reply">Antwoorden</string>
+  <string name="compose_title_reply_all">Allen antwoorden</string>
+  <string name="compose_title_forward">Doorsturen</string>
+  <string name="choose_folder_title">Kies een map</string>
+  <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_loading_account_folder_headers">Het ophalen van headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_sending_account">Verzenden <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="status_next_poll">Volgende poll <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_syncing_off">Synchroniseren uitgeschakeld</string>
+  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> geselecteerd</string>
+  <string name="next_action">Volgende</string>
+  <string name="previous_action">Vorige</string>
+  <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+  <string name="okay_action">OK</string>
+  <string name="cancel_action">Annuleren</string>
+  <string name="send_action">Verzenden</string>
+  <string name="send_again_action">Opnieuw Verzenden</string>
+  <string name="select_action">Selecteren</string>
+  <string name="deselect_action">Annuleer selectie</string>
+  <string name="reply_action">Antwoorden</string>
+  <string name="reply_all_action">Iedereen antwoorden</string>
+  <string name="delete_action">Verwijderen</string>
+  <string name="archive_action">Archief</string>
+  <string name="spam_action">Spam</string>
+  <string name="forward_action">Doorsturen</string>
+  <string name="move_action">Verplaatsen</string>
+  <string name="single_message_options_action">Verzend…</string>
+  <string name="refile_action">Opnieuw opslaan…</string>
+  <string name="done_action">Klaar</string>
+  <string name="discard_action">Vergeten</string>
+  <string name="save_draft_action">Opslaan als concept</string>
+  <string name="check_mail_action">Controleer mail</string>
+  <string name="send_messages_action">Verstuur bericht</string>
+  <string name="refresh_folders_action">Vernieuw mappen</string>
+  <string name="filter_folders_action">Vind map</string>
+  <string name="add_account_action">Voeg account toe</string>
+  <string name="compose_action">Nieuw bericht</string>
+  <string name="search_action">Zoeken</string>
+  <string name="search_results">Zoekresultaten</string>
+  <string name="preferences_action">Instellingen</string>
+  <string name="account_settings_action">Account instellingen</string>
+  <string name="folder_settings_action">Mappen instellingen</string>
+  <string name="global_settings_action">Algemene instellingen</string>
+  <string name="remove_account_action">Verwijder account</string>
+  <string name="clear_pending_action">Leeg maken in afwachting van acties (gevaar!)</string>
+  <string name="mark_as_read_action">Markeer als gelezen</string>
+  <string name="send_alternate_action">Doorsturen met een andere app</string>
+  <string name="send_alternate_chooser_title">Kies afzender</string>
+  <string name="flag_action">Voeg ster toe</string>
+  <string name="unflag_action">Verwijder ster</string>
+  <string name="copy_action">Kopieer</string>
+  <string name="select_text_action">Selecteer tekst</string>
+  <string name="show_headers_action">Laat koppen zien</string>
+  <string name="hide_headers_action">Verberg koppen</string>
+  <string name="message_view_theme_action_dark">Schakel naar donker thema</string>
+  <string name="message_view_theme_action_light">Schakel naar licht thema</string>
+  <string name="mark_as_unread_action">Markeer als ongelezen</string>
+  <string name="add_cc_bcc_action">Voeg Cc/Bcc toe</string>
+  <string name="read_receipt">Lees rapport</string>
+  <string name="read_receipt_enabled">Lees rapport vragen</string>
+  <string name="read_receipt_disabled">Geen lees rapport vragen</string>
+  <string name="add_attachment_action">Voeg bijlage toe</string>
+  <string name="empty_trash_action">Prullenbak legen</string>
+  <string name="expunge_action">Wissen</string>
+  <string name="clear_local_folder_action">Lokale berichten wissen</string>
+  <string name="about_action">Over</string>
+  <string name="prefs_title">Instellingen</string>
+  <string name="accounts_context_menu_title">Account opties</string>
+  <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+  <string name="general_no_subject">(Geen onderwerp)</string>
+  <string name="general_no_sender">Geen afzender</string>
+  <string name="status_loading">Polling</string>
+  <string name="status_loading_more">Berichten laden\u2026</string>
+  <string name="status_network_error">Netwerkfout</string>
+  <string name="status_invalid_id_error">Bericht niet gevonden</string>
+  <string name="status_loading_more_failed">Opnieuw meer berichten laden</string>
+  <string name="load_more_messages_fmt">Volgende <xliff:g id="messages_to_load">%d</xliff:g> berichten</string>
+  <string name="abbrev_gigabytes">GB</string>
+  <string name="abbrev_megabytes">MB</string>
+  <string name="abbrev_kilobytes">KB</string>
+  <string name="abbrev_bytes">B</string>
+  <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" shrunk van <xliff:g id="oldSize">%s</xliff:g> naar <xliff:g id="newSize">%s</xliff:g></string>
+  <string name="compacting_account">Account \"<xliff:g id="account">%s</xliff:g>\" comprimeren</string>
+  <string name="clearing_account">Account \"<xliff:g id="account">%s</xliff:g>\" wissen</string>
+  <string name="recreating_account">Account \"<xliff:g id="account">%s</xliff:g>\" opnieuw instellen</string>
+  <string name="notification_new_title">Nieuwe mail</string>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ongelezen (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> meer op <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_action_reply">Antwoorden</string>
+  <string name="notification_action_mark_as_read">Gelezen</string>
+  <string name="notification_action_delete">Verwijderen</string>
+  <string name="notification_certificate_error_title">Certificaat fout voor <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_certificate_error_text">Kijk de server instellingen na</string>
+  <string name="notification_bg_sync_ticker">Controleer mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_title">Controleren van mail</string>
+  <string name="notification_bg_send_ticker">Verzenden van mail: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_bg_send_title">Verzenden van mail</string>
+  <string name="notification_bg_title_separator">:</string>
+  <string name="special_mailbox_name_inbox">Postvak in</string>
+  <string name="special_mailbox_name_outbox">Postvak uit</string>
+  <string name="special_mailbox_name_drafts">Concepten</string>
+  <string name="special_mailbox_name_trash">Prullenbak</string>
+  <string name="special_mailbox_name_sent">Verzonden</string>
+  <string name="special_mailbox_name_archive">Archief</string>
+  <string name="special_mailbox_name_spam">Spam</string>
+  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Concepten)</string>
+  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Prullenbak)</string>
+  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Verzonden)</string>
+  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archief)</string>
+  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
+  <string name="send_failure_subject">Fout bij verzenden van berichten</string>
+  <string name="debug_version_fmt">Versie: <xliff:g id="version">%s</xliff:g></string>
+  <string name="debug_enable_debug_logging_title">Fouten loggen toestaan</string>
+  <string name="debug_enable_debug_logging_summary">Log extra diagnostische informatie</string>
+  <string name="debug_enable_sensitive_logging_title">Log gevoelige informatie</string>
+  <string name="debug_enable_sensitive_logging_summary">Kan wachtwoorden laten zien in logs.</string>
+  <string name="message_list_load_more_messages_action">Laad meer berichten</string>
+  <string name="message_to_fmt">Aan:</string>
+  <string name="message_compose_to_hint">Aan</string>
+  <string name="message_compose_cc_hint">Cc</string>
+  <string name="message_compose_bcc_hint">Bcc</string>
+  <string name="message_compose_subject_hint">Onderwerp</string>
+  <string name="message_compose_content_hint">Bericht tekst</string>
+  <string name="message_compose_signature_hint">Ondertekening</string>
+  <string name="message_compose_quote_header_separator">-------- Origineel bericht --------</string>
+  <string name="message_compose_quote_header_subject">Onderwerp:</string>
+  <string name="message_compose_quote_header_send_date">Verzonden:</string>
+  <string name="message_compose_quote_header_from">Van:</string>
+  <string name="message_compose_quote_header_to">Aan:</string>
+  <string name="message_compose_quote_header_cc">CC:</string>
+  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schreef:</string>
+  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sender">%2$s</xliff:g> schreef op <xliff:g id="sent_date">%1$s</xliff:g>:</string>
+  <string name="message_compose_error_no_recipients">Minimaal 1 ontvanger kiezen.</string>
+  <string name="error_contact_address_not_found">Geen e-mailadres gevonden.</string>
+  <string name="message_compose_attachments_skipped_toast">Sommige bijlagen kunnen niet worden doorgestuurd omdat ze niet zijn gedownload.</string>
+  <string name="message_compose_show_quoted_text_action">Bericht quoten</string>
+  <string name="message_compose_description_add_to">Ontvanger toevoegen (Aan)</string>
+  <string name="message_compose_description_add_cc">Ontvanger toevoegen (CC)</string>
+  <string name="message_compose_description_add_bcc">Ontvanger toevoegen (BCC)</string>
+  <string name="message_compose_description_delete_quoted_text">Gequote tekst verwijderen</string>
+  <string name="message_compose_description_edit_quoted_text">Gequote tekst bewerken</string>
+  <string name="message_view_from_format">Van: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_to_label">Aan:</string>
+  <string name="message_view_cc_label">Cc:</string>
+  <string name="message_view_attachment_view_action">Open</string>
+  <string name="message_view_attachment_download_action">Bewaar</string>
+  <string name="message_view_status_attachment_saved">Bijlage opgeslagen op SD-kaart als <xliff:g id="filename">%s</xliff:g>.</string>
+  <string name="message_view_status_attachment_not_saved">Opslaan bijlage op SD-kaart mislukt.</string>
+  <string name="message_view_show_pictures_action">Laat afbeeldingen zien</string>
+  <string name="message_view_show_message_action">Bericht laten zien</string>
+  <string name="message_view_show_attachments_action">Bijlage laten zien</string>
+  <string name="message_view_show_more_attachments_action">Meer…</string>
+  <string name="message_view_fetching_attachment_toast">Bijlage ophalen.</string>
+  <string name="message_view_no_viewer">Niet in staat viewer te vinden voor <xliff:g id="mimetype">%s</xliff:g>.</string>
+  <string name="message_view_download_remainder">Download compleet bericht</string>
+  <string name="message_view_downloading">Downloaden…</string>
+  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
+  <string name="message_additional_headers_not_downloaded">Niet alle headers zijn gedownload of opgeslagen. Selecteer \"Sla alle headers lokaal op\" in de account\'s inkomende server instellingen om dit in te schakelen voor de toekomst.</string>
+  <string name="message_no_additional_headers_available">Alle headers zijn gedownload, maar er zijn geen extra headers aan te tonen.</string>
+  <string name="message_additional_headers_retrieval_failed">Het ophalen van extra headers uit de database of e-mailserver is mislukt.</string>
+  <string name="from_same_sender">Meer van deze afzender</string>
+  <string name="message_discarded_toast">Bericht verwijderd</string>
+  <string name="message_saved_toast">Bericht opgeslagen als concept</string>
+  <string name="global_settings_flag_label">Bericht sterren</string>
+  <string name="global_settings_flag_summary">Sterren geven gemarkeerde berichten aan</string>
+  <string name="global_settings_checkbox_label">Multi-selecteer selectieboxen</string>
+  <string name="global_settings_checkbox_summary">Laat altijd multi-selecteer selectieboxen zien</string>
+  <string name="global_settings_preview_lines_label">Preview regels</string>
+  <string name="global_settings_show_correspondent_names_label">Toon naam bij bericht</string>
+  <string name="global_settings_show_correspondent_names_summary">Geef bij voorkeur naam van afzender/geadresseerde weer i.p.v. e-mailadres</string>
+  <string name="global_settings_sender_above_subject_label">Correspondent boven onderwerp</string>
+  <string name="global_settings_sender_above_subject_summary">Correspondent namen boven de onderwerp-regel, niet eronder</string>
+  <string name="global_settings_show_contact_name_label">Toon naam uit contactenlijst</string>
+  <string name="global_settings_show_contact_name_summary">Geef de naam weer uit het adresboek</string>
+  <string name="global_settings_registered_name_color_label">Kleuren contacten</string>
+  <string name="global_settings_registered_name_color_default">Niet kleuren van namen in uw lijst met contactpersonen</string>
+  <string name="global_settings_registered_name_color_changed">Kleuren van namen in uw lijst met contactpersonen</string>
+  <string name="global_settings_folderlist_wrap_folder_names_label">Lange mapnamen afbreken</string>
+  <string name="global_settings_folderlist_wrap_folder_names_summary">Gebruik meerdere regels voor lange mapnamen</string>
+  <string name="global_settings_messageview_fixedwidth_label">Vaste breedte lettertypen</string>
+  <string name="global_settings_messageview_fixedwidth_summary">Gebruik een lettertype met vaste breedte bij het weergeven van plain-tekstberichten</string>
+  <string name="global_settings_messageview_autofit_width_label">Berichten auto-passen</string>
+  <string name="global_settings_messageview_autofit_width_summary">Berichten passend maken op het scherm</string>
+  <string name="global_settings_messageview_return_to_list_label">Terug naar lijst na verwijderen</string>
+  <string name="global_settings_messageview_return_to_list_summary">Terug naar de berichtenlijst na bericht verwijderen</string>
+  <string name="global_settings_messageview_show_next_label">Volgend bericht laten zien na verwijderen</string>
+  <string name="global_settings_messageview_show_next_summary">Standaard volgend bericht laten zien na verwijderen</string>
+  <string name="global_settings_confirm_actions_title">Bevestig acties</string>
+  <string name="global_settings_confirm_actions_summary">Toon een dialoogvenster altijd wanneer u de geselecteerde acties uitvoert</string>
+  <string name="global_settings_confirm_action_delete">Verwijder</string>
+  <string name="global_settings_confirm_action_delete_starred">Gemarkeerd verwijderen (in bericht-view)</string>
+  <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_action_delete_notif">Verwijder (van notificaties)</string>
+  <string name="global_settings_privacy_hide_useragent">Verwijder K-9 User-Agent van de mail headers</string>
+  <string name="global_settings_privacy_hide_timezone">Gebruik UT als tijdzone in mail headers</string>
+  <string name="global_settings_notification_hide_subject_title">Verberg onderwerp in notificaties</string>
+  <string name="global_settings_notification_hide_subject_never">Nooit</string>
+  <string name="global_settings_notification_hide_subject_when_locked">Als toestel gelocked is</string>
+  <string name="global_settings_notification_hide_subject_always">Altijd</string>
+  <string name="global_settings_notification_quick_delete_title">Zien \'Verwijder\' knop</string>
+  <string name="global_settings_notification_quick_delete_never">Nooit</string>
+  <string name="global_settings_notification_quick_delete_when_single_msg">Notificatie voor los bericht</string>
+  <string name="global_settings_notification_quick_delete_always">Altijd</string>
+  <string name="global_settings_notification_quick_delete_description">Laat een knop in de notificatie zien om snel te verwijderen</string>
+  <string name="quiet_time">Stilteperiode</string>
+  <string name="quiet_time_description">Schakel beltoon, vibratie en leds uit gedurende de nacht</string>
+  <string name="quiet_time_starts">Stilteperiode start</string>
+  <string name="quiet_time_ends">Stilteperiode eindigt</string>
+  <string name="account_setup_basics_title">Een nieuwe account instellen</string>
+  <string name="account_setup_basics_email_hint">E-mailadres</string>
+  <string name="account_setup_basics_password_hint">Wachtwoord</string>
+  <string name="account_setup_basics_show_password">Toon wachtwoord</string>
+  <string name="account_setup_basics_manual_setup_action">Handmatige setup</string>
+  <string name="account_setup_check_settings_title"/>
+  <string name="account_setup_check_settings_retr_info_msg">Ophalen account informatie\u2026</string>
+  <string name="account_setup_check_settings_check_incoming_msg">Controleren van inkomende serverinstellingen\u2026</string>
+  <string name="account_setup_check_settings_check_outgoing_msg">Controleren van uitgaande serverinstellingen\u2026</string>
+  <string name="account_setup_check_settings_authenticate">Authenticatie\u2026</string>
+  <string name="account_setup_check_settings_fetch">Accountinstellingen worden opgehaald\u2026</string>
+  <string name="account_setup_check_settings_canceling_msg">Annuleren\u2026</string>
+  <string name="account_setup_names_title">Bijna klaar!</string>
+  <string name="account_setup_names_account_name_label">Geef deze account een naam (optioneel):</string>
+  <string name="account_setup_names_user_name_label">Typ je naam (zichtbaar bij uitgaande berichten):</string>
+  <string name="account_setup_account_type_title">Account type</string>
+  <string name="account_setup_account_type_instructions">Welk type account is dit?</string>
+  <string name="account_setup_account_type_pop_action">POP3</string>
+  <string name="account_setup_account_type_imap_action">IMAP</string>
+  <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
+  <string name="account_setup_auth_type_normal_password">Normaal wachtwoord</string>
+  <string name="account_setup_auth_type_insecure_password">Wachtwoord, onveilig verzonden</string>
+  <string name="account_setup_auth_type_encrypted_password">Versleuteld wachtwoord</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Cliënt certificaat</string>
+  <string name="account_setup_incoming_title">Inkomende server instellingen</string>
+  <string name="account_setup_incoming_username_label">Gebruikersnaam</string>
+  <string name="account_setup_incoming_password_label">Wachtwoord</string>
+  <string name="account_setup_incoming_client_certificate_label">Cliënt certificaat</string>
+  <string name="account_setup_incoming_pop_server_label">POP3 server</string>
+  <string name="account_setup_incoming_imap_server_label">IMAP server</string>
+  <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange) server</string>
+  <string name="account_setup_incoming_port_label">Port</string>
+  <string name="account_setup_incoming_security_label">Beveiligings type</string>
+  <string name="account_setup_incoming_auth_type_label">Authenticatie type</string>
+  <string name="account_setup_incoming_security_none_label">Geen</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" is niet geldig met \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
+  <string name="account_setup_incoming_delete_policy_label">Wanneer ik een bericht verwijder</string>
+  <string name="account_setup_incoming_delete_policy_never_label">Verwijder niet van server</string>
+  <string name="account_setup_incoming_delete_policy_delete_label">Verwijder van server</string>
+  <string name="account_setup_incoming_delete_policy_markread_label">Markeer als gelezen op server</string>
+  <string name="account_setup_incoming_compression_label">Gebruik compressie op het netwerk:</string>
+  <string name="account_setup_incoming_mobile_label">Mobiel</string>
+  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
+  <string name="account_setup_incoming_other_label">Anders</string>
+  <string name="local_storage_provider_external_label">Externe opslag (SD kaart)</string>
+  <string name="local_storage_provider_internal_label">Reguliere interne opslag</string>
+  <string name="local_storage_provider_samsunggalaxy_label">%1$s extra interne opslag</string>
+  <string name="local_storage_provider_label">Opslag locatie</string>
+  <string name="account_setup_expunge_policy_label">Wissen berichten</string>
+  <string name="account_setup_expunge_policy_immediately">Onmiddellijk na verwijderen of verplaatsen</string>
+  <string name="account_setup_expunge_policy_on_poll">Tijdens iedere poll</string>
+  <string name="account_setup_expunge_policy_manual">Alleen handmatig</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">IMAP namespace automatisch detecteren</string>
+  <string name="account_setup_incoming_imap_path_prefix_label">IMAP pad voorvoegsel</string>
+  <string name="drafts_folder_label">Ontwerpen map naam</string>
+  <string name="sent_folder_label">Verzonden map naam</string>
+  <string name="trash_folder_label">Prullenbak map naam</string>
+  <string name="archive_folder_label">Archief map naam</string>
+  <string name="spam_folder_label">Spam map naam</string>
+  <string name="account_setup_incoming_subscribed_folders_only_label">Laat alleen geabonneerde mappen zien</string>
+  <string name="account_setup_auto_expand_folder">Auto-uitbreiden mappen</string>
+  <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV (Exchange) path</string>
+  <string name="account_setup_incoming_webdav_path_prefix_hint">Optioneel</string>
+  <string name="account_setup_incoming_webdav_auth_path_label">Authenticatie pad</string>
+  <string name="account_setup_incoming_webdav_auth_path_hint">Optioneel</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox path</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_hint">Optioneel</string>
+  <string name="account_setup_outgoing_title">Uitgaande server instellingen</string>
+  <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
+  <string name="account_setup_outgoing_port_label">Poort</string>
+  <string name="account_setup_outgoing_security_label">Beveiligings type</string>
+  <string name="account_setup_outgoing_require_login_label">Inloggen vereist.</string>
+  <string name="account_setup_outgoing_username_label">Gebruikersnaam</string>
+  <string name="account_setup_outgoing_password_label">Wachtwoord</string>
+  <string name="account_setup_outgoing_authentication_label">Authenticatie type</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" is niet geldig met \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
+  <string name="account_setup_bad_uri">Ongeldige setup: <xliff:g id="err_mess">%s</xliff:g></string>
+  <string name="account_setup_options_title">Account opties</string>
+  <string name="compact_action">Compact</string>
+  <string name="clear_action">Clear berichten (gevaar!)</string>
+  <string name="recreate_action">Recreeren gegevens (Laatste mogelijkheid!)</string>
+  <string name="account_setup_options_mail_check_frequency_label">Map poll controleer frequentie</string>
+  <string name="account_setup_options_mail_check_frequency_never">Nooit</string>
+  <string name="account_setup_options_mail_check_frequency_1min">Elke minuut</string>
+  <string name="account_setup_options_mail_check_frequency_5min">Elke 5 minuten</string>
+  <string name="account_setup_options_mail_check_frequency_10min">Elke 10 minuten</string>
+  <string name="account_setup_options_mail_check_frequency_15min">Elke 15 minuten</string>
+  <string name="account_setup_options_mail_check_frequency_30min">Elke 30 minuten</string>
+  <string name="account_setup_options_mail_check_frequency_1hour">Elk uur</string>
+  <string name="account_setup_options_mail_check_frequency_2hour">Elke 2 uur</string>
+  <string name="account_setup_options_mail_check_frequency_3hour">Elke 3 uur</string>
+  <string name="account_setup_options_mail_check_frequency_6hour">Elke 6 uur</string>
+  <string name="account_setup_options_mail_check_frequency_12hour">Elke 12 uur</string>
+  <string name="account_setup_options_mail_check_frequency_24hour">Elke 24 uur</string>
+  <string name="push_poll_on_connect_label">Poll bij verbinden voor push</string>
+  <string name="account_setup_options_enable_push_label">Aanzetten push mail voor deze account</string>
+  <string name="account_setup_options_enable_push_summary">Als uw server dit ondersteunt, zullen nieuwe berichten direct verschijnen. Deze optie kan drastisch verbeteringen of verslechteringen van prestaties teweeg brengen.</string>
+  <string name="idle_refresh_period_label">Refresh actieve verbinding</string>
+  <string name="idle_refresh_period_1min">Elke minuut</string>
+  <string name="idle_refresh_period_2min">Elke 2 minuten</string>
+  <string name="idle_refresh_period_3min">Elke 3 minuten</string>
+  <string name="idle_refresh_period_6min">Elke 6 minuten</string>
+  <string name="idle_refresh_period_12min">Elke 12 minuten</string>
+  <string name="idle_refresh_period_24min">Elke 24 minuten</string>
+  <string name="idle_refresh_period_36min">Elke 36 minuten</string>
+  <string name="idle_refresh_period_48min">Elke 48 minuten</string>
+  <string name="idle_refresh_period_60min">Elke 60 minuten</string>
+  <string name="account_setup_options_notify_label">Waarschuw me wanneer nieuwe mail binnenkomt</string>
+  <string name="account_setup_options_notify_sync_label">Waarschuw me wanneer er op nieuwe mail wordt gecontroleerd</string>
+  <string name="account_setup_options_mail_display_count_label">Aantal berichten om te laten zien</string>
+  <string name="account_setup_options_mail_display_count_10">10 berichten</string>
+  <string name="account_setup_options_mail_display_count_25">25 berichten</string>
+  <string name="account_setup_options_mail_display_count_50">50 berichten</string>
+  <string name="account_setup_options_mail_display_count_100">100 berichten</string>
+  <string name="account_setup_options_mail_display_count_250">250 berichten</string>
+  <string name="account_setup_options_mail_display_count_500">500 berichten</string>
+  <string name="account_setup_options_mail_display_count_1000">1000 berichten</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 berichten</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 berichten</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 berichten</string>
+  <string name="account_setup_options_mail_display_count_all">alle berichten</string>
+  <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen omdat deze niet gesynchroniseerd is met de server</string>
+  <string name="account_setup_failed_dlg_title">Setup kon niet afronden</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">De server presenteerde een ongeldig SSL certificaat. Dit kan komen door een verkeerd geconfigureerde server. Dit kan ook komen doordat iemand U of Uw mailserver aan probeert te vallen. Als U niet zeker weet wat er aan de hand is klik dan op Reject en neem contact op met de beheerder van Uw mailserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding met server maken.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_edit_details_action">Aanpassen details</string>
+  <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
+  <string name="account_settings_push_advanced_title">Geavanceerd</string>
+  <string name="account_settings_title_fmt">Algemene instellingen</string>
+  <string name="account_settings_default_label">Standaard account</string>
+  <string name="account_settings_default_summary">Standaard mail verzenden vanaf deze account</string>
+  <string name="account_settings_notify_label">Nieuwe mail notificatie</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Notificatie mappen</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Alles</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Alleen 1e klas mappen</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1e en 2e klas mappen</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Alles behalve 2e klas mappen</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Geen</string>
+  <string name="account_settings_notify_sync_label">Sync notificatie</string>
+  <string name="account_settings_email_label">Je e-mailadres</string>
+  <string name="account_settings_notify_summary">Notificatie in statusbalk wanneer nieuwe mail binnenkomt</string>
+  <string name="account_settings_notify_sync_summary">Notificatie in statusbalk wanneer wordt gecontroleerd op nieuwe mail</string>
+  <string name="account_settings_notify_self_label">Notificatie voor mail welke ik verstuur</string>
+  <string name="account_settings_notify_self_summary">Notificatie ook voor mail verzonden vanaf een identiteit</string>
+  <string name="account_settings_notification_opens_unread_label">Notificatie opent ongelezen berichten</string>
+  <string name="account_settings_notification_opens_unread_summary">Zoekt voor ongelezen berichten wanneer Notificatie is geopend</string>
+  <string name="account_settings_mark_message_as_read_on_view_label">Markeer als gelezen als geopend</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">Markeer als gelezen wanneer ingezien</string>
+  <string name="account_settings_show_pictures_label">Laat afbeeldingen automatisch zien</string>
+  <string name="account_settings_show_pictures_never">Nooit</string>
+  <string name="account_settings_show_pictures_only_from_contacts">Alleen van contacten</string>
+  <string name="account_settings_show_pictures_always">Altijd</string>
+  <string name="account_settings_composition">Schrijven berichten</string>
+  <string name="account_settings_default_quoted_text_shown_label">Quote bericht bij antwoorden</string>
+  <string name="account_settings_default_quoted_text_shown_summary">Neem orginele bericht mee in het antwoord.</string>
+  <string name="account_settings_reply_after_quote_label">Antwoorden na quote</string>
+  <string name="account_settings_reply_after_quote_summary">Wanneer u antwoord op berichten, zal het originele bericht boven uw antwoord staan.</string>
+  <string name="account_settings_strip_signature_label">Verwijder onderschriften bij antwoorden</string>
+  <string name="account_settings_strip_signature_summary">Onderschriften zullen worden verwijderd bij gequote berichten</string>
+  <string name="account_settings_message_format_label">Berichtopmaak</string>
+  <string name="account_settings_message_format_text">Platte Tekst (plaatjes en formattering worden verwijderd)</string>
+  <string name="account_settings_message_format_html">HTML (plaatjes en formattering blijven behouden)</string>
+  <string name="account_settings_message_format_auto">Automatisch</string>
+  <string name="account_settings_always_show_cc_bcc_label">Altijd Cc/Bcc laten zien</string>
+  <string name="account_settings_message_read_receipt_label">Leesbevestiging</string>
+  <string name="account_settings_message_read_receipt_summary">Altijd een leesbevestiging vragen</string>
+  <string name="account_settings_quote_style_label">Quotestijl bij antwoorden</string>
+  <string name="account_settings_quote_style_prefix">Prefix (zoals Gmail, Pine)</string>
+  <string name="account_settings_quote_style_header">Header (zoals Outlook, Yahoo!, Hotmail)</string>
+  <string name="account_settings_general_title">Algemeen</string>
+  <string name="account_settings_reading_mail">Mail lezen</string>
+  <string name="account_settings_sync">Synchroniseren van mappen</string>
+  <string name="account_settings_folders">Mappen</string>
+  <string name="account_settings_quote_prefix_label">Quote voorvoegsel</string>
+  <string name="account_settings_crypto">Cryptografie</string>
+  <string name="account_settings_crypto_app">OpenPGP Provider</string>
+  <string name="account_settings_no_openpgp_provider_installed">Geen OpenPGP provider geïnstalleerd</string>
+  <string name="account_settings_mail_check_frequency_label">Mappen poll controleer frequentie</string>
+  <string name="account_settings_storage_title">Opslag</string>
+  <string name="account_settings_color_label">Account kleur</string>
+  <string name="account_settings_color_summary">Kies de kleur van het account gebruikt in mappen en account lijst</string>
+  <string name="account_settings_led_color_label">Notificatie LED kleur</string>
+  <string name="account_settings_led_color_summary">Kies de LED kleur van de telefoon, welke moet knipperen voor deze account</string>
+  <string name="account_settings_mail_display_count_label">Aantal berichten om te laten zien</string>
+  <string name="account_settings_autodownload_message_size_label">Automatisch berichten downloaden tot</string>
+  <string name="account_settings_autodownload_message_size_1">1Kb</string>
+  <string name="account_settings_autodownload_message_size_2">2Kb</string>
+  <string name="account_settings_autodownload_message_size_4">4Kb</string>
+  <string name="account_settings_autodownload_message_size_8">8Kb</string>
+  <string name="account_settings_autodownload_message_size_16">16Kb</string>
+  <string name="account_settings_autodownload_message_size_32">32Kb</string>
+  <string name="account_settings_autodownload_message_size_64">64Kb</string>
+  <string name="account_settings_autodownload_message_size_128">128Kb</string>
+  <string name="account_settings_autodownload_message_size_256">256Kb</string>
+  <string name="account_settings_autodownload_message_size_512">512Kb</string>
+  <string name="account_settings_autodownload_message_size_1024">1Mb</string>
+  <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+  <string name="account_settings_autodownload_message_size_5120">5Mb</string>
+  <string name="account_settings_autodownload_message_size_10240">10Mb</string>
+  <string name="account_settings_autodownload_message_size_any">elke grootte (geen limiet)</string>
+  <string name="account_settings_message_age_label">Sync berichten van</string>
+  <string name="account_settings_message_age_any">alles (geen limiet)</string>
+  <string name="account_settings_message_age_0">vandaag</string>
+  <string name="account_settings_message_age_1">laatste 2 dagen</string>
+  <string name="account_settings_message_age_2">laatste 3 dagen</string>
+  <string name="account_settings_message_age_7">afgelopen week</string>
+  <string name="account_settings_message_age_14">afgelopen 2 weken</string>
+  <string name="account_settings_message_age_21">afgelopen 3 weken</string>
+  <string name="account_settings_message_age_1_month">afgelopen maand</string>
+  <string name="account_settings_message_age_2_months">afgelopen 2 maanden</string>
+  <string name="account_settings_message_age_3_months">afgelopen 3 maanden</string>
+  <string name="account_settings_message_age_6_months">afgelopen 6 maanden</string>
+  <string name="account_settings_message_age_1_year">afgelopen jaar</string>
+  <string name="account_settings_folder_display_mode_label">Mappen om te laten zien</string>
+  <string name="account_settings_folder_display_mode_all">Alle</string>
+  <string name="account_settings_folder_display_mode_first_class">Alleen 1e klasse mappen</string>
+  <string name="account_settings_folder_display_mode_first_and_second_class">1e en 2e klasse mappen</string>
+  <string name="account_settings_folder_display_mode_not_second_class">Alle behalve 2e klasse mappen</string>
+  <string name="account_settings_folder_sync_mode_label">Mappen te controleren met poll</string>
+  <string name="account_settings_folder_sync_mode_all">Alle</string>
+  <string name="account_settings_folder_sync_mode_first_class">Alleen 1e klasse mappen</string>
+  <string name="account_settings_folder_sync_mode_first_and_second_class">1e en 2e klasse mappen</string>
+  <string name="account_settings_folder_sync_mode_not_second_class">Alle behalve 2e klasse mappen</string>
+  <string name="account_settings_folder_sync_mode_none">Geen</string>
+  <string name="account_settings_folder_push_mode_label">Mappen te controleren met push</string>
+  <string name="account_settings_folder_push_mode_all">Alle</string>
+  <string name="account_settings_folder_push_mode_first_class">Alleen 1e klasse mappen</string>
+  <string name="account_settings_folder_push_mode_first_and_second_class">1e en 2e klasse mappen</string>
+  <string name="account_settings_folder_push_mode_not_second_class">Alle behalve 2e klasse mappen</string>
+  <string name="account_settings_folder_push_mode_none">Geen</string>
+  <string name="account_settings_folder_target_mode_label">Verplaats/ kopieer bestemming mappen</string>
+  <string name="account_settings_folder_target_mode_all">Alle</string>
+  <string name="account_settings_folder_target_mode_first_class">Alleen 1e klasse mappen</string>
+  <string name="account_settings_folder_target_mode_first_and_second_class">1e en 2e klasse mappen</string>
+  <string name="account_settings_folder_target_mode_not_second_class">Alle behalve 2e klasse mappen</string>
+  <string name="account_settings_sync_remote_deletetions_label">Sync op afstand verwijderen</string>
+  <string name="account_settings_sync_remote_deletetions_summary">Verwijder berichten wanneer verwijderd van server</string>
+  <string name="folder_settings_title">Map instellingen</string>
+  <string name="folder_settings_in_top_group_label">Laat zien in kopgroep</string>
+  <string name="folder_settings_in_top_group_summary">Laat zien bij de top van de mappenlijst</string>
+  <string name="folder_settings_folder_display_mode_label">Map display klasse</string>
+  <string name="folder_settings_folder_display_mode_normal">Geen</string>
+  <string name="folder_settings_folder_display_mode_first_class">1e klasse</string>
+  <string name="folder_settings_folder_display_mode_second_class">2e klasse</string>
+  <string name="folder_settings_folder_sync_mode_label">Map sync klasse</string>
+  <string name="folder_settings_folder_sync_mode_normal">Geen</string>
+  <string name="folder_settings_folder_sync_mode_first_class">1e klasse</string>
+  <string name="folder_settings_folder_sync_mode_second_class">2e klasse</string>
+  <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
+  <string name="folder_settings_folder_push_mode_label">Map push klasse</string>
+  <string name="folder_settings_folder_push_mode_normal">Geen</string>
+  <string name="folder_settings_folder_push_mode_first_class">1e klasse</string>
+  <string name="folder_settings_folder_push_mode_second_class">2e klasse</string>
+  <string name="folder_settings_folder_push_mode_inherited">Zelfde als sync klasse</string>
+  <string name="folder_settings_folder_notify_mode_label">Map notificatie klas</string>
+  <string name="folder_settings_folder_notify_mode_normal">Geen</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1e klas</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2e klas</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Zelfde als push klas</string>
+  <string name="account_settings_incoming_label">Inkomende server</string>
+  <string name="account_settings_incoming_summary">Instellen van de inkomende mail server</string>
+  <string name="account_settings_outgoing_label">Uitgaande server</string>
+  <string name="account_settings_outgoing_summary">Configureren van de uitgaande (SMTP) server</string>
+  <string name="account_settings_description_label">Account naam</string>
+  <string name="account_settings_name_label">Jouw naam</string>
+  <string name="notifications_title">Waarschuwingen</string>
+  <string name="account_settings_vibrate_enable">Trillen</string>
+  <string name="account_settings_vibrate_summary">Trillen wanneer nieuwe mail binnenkomt</string>
+  <string name="account_settings_vibrate_pattern_label">Tril patronen</string>
+  <string name="account_settings_vibrate_pattern_default">standaard</string>
+  <string name="account_settings_vibrate_pattern_1">patroon 1</string>
+  <string name="account_settings_vibrate_pattern_2">patroon 2</string>
+  <string name="account_settings_vibrate_pattern_3">patroon 3</string>
+  <string name="account_settings_vibrate_pattern_4">patroon 4</string>
+  <string name="account_settings_vibrate_pattern_5">patroon 5</string>
+  <string name="account_settings_vibrate_times">Aantal trillingen</string>
+  <string name="account_settings_ringtone">Nieuwe mail beltoon</string>
+  <string name="account_settings_led_label">Knipper LED</string>
+  <string name="account_settings_led_summary">Knipper LED wanneer mail binnenkomt</string>
+  <string name="account_settings_composition_title">Bericht samenstelling opties</string>
+  <string name="account_settings_composition_label">Samenstelling standaarden</string>
+  <string name="account_settings_composition_summary">Stel standaard in voor: Van, Bcc en handtekening</string>
+  <string name="account_settings_identities_label">Beheer identiteiten</string>
+  <string name="account_settings_identities_summary">Instellen alternatief \'Van\' adressen en handtekeningen</string>
+  <string name="manage_identities_title">Beheer identiteiten</string>
+  <string name="manage_identities_context_menu_title">Beheer identiteiten</string>
+  <string name="edit_identity_title">Aanpassen identiteit</string>
+  <string name="new_identity_action">Nieuwe identiteit</string>
+  <string name="account_settings_always_bcc_label">Bcc alle berichten naar</string>
+  <string name="manage_identities_edit_action">Aanpassen</string>
+  <string name="manage_identities_move_up_action">Verplaats ophoog</string>
+  <string name="manage_identities_move_down_action">Verplaats omlaag</string>
+  <string name="manage_identities_move_top_action">Verplaats naar top / maak standaard</string>
+  <string name="manage_identities_remove_action">Verwijder</string>
+  <string name="edit_identity_description_label">Identiteit beschrijving</string>
+  <string name="edit_identity_description_hint">(Optioneel)</string>
+  <string name="edit_identity_name_label">Jou naam</string>
+  <string name="edit_identity_name_hint">(Optioneel)</string>
+  <string name="edit_identity_email_label">E-mailadres</string>
+  <string name="edit_identity_email_hint">(Vereist)</string>
+  <string name="edit_identity_reply_to_label">Reply-naar adres</string>
+  <string name="edit_identity_reply_to_hint">(Optioneel)</string>
+  <string name="edit_identity_signature_label">Handtekening</string>
+  <string name="edit_identity_signature_hint">(Optioneel)</string>
+  <string name="account_settings_signature_use_label">Gebruik handtekening</string>
+  <string name="account_settings_signature_label">Handtekening</string>
+  <string name="default_identity_description">Initiële identiteit</string>
+  <string name="choose_identity_title">Kies identiteit</string>
+  <string name="send_as">Verzenden als</string>
+  <string name="no_removable_identity">Je kan je eigen identiteit niet verwijderen</string>
+  <string name="identity_has_no_email">Je kan een identiteit niet gebruiken zonder e-mailadres</string>
+  <string name="sort_earliest_first">Oudste berichten eerst</string>
+  <string name="sort_latest_first">Nieuwste berichten eerst</string>
+  <string name="sort_subject_alpha">Onderwerp alfabetische volgorde</string>
+  <string name="sort_subject_re_alpha">Onderwerp omgekeerd alfabetische volgorde</string>
+  <string name="sort_sender_alpha">Verzender alfabetisch</string>
+  <string name="sort_sender_re_alpha">Verzender omgekeerd alfabetisch</string>
+  <string name="sort_flagged_first">Berichten met ster eerst</string>
+  <string name="sort_flagged_last">Berichten zonder ster eerst</string>
+  <string name="sort_unread_first">Ongelezen berichten eerst</string>
+  <string name="sort_unread_last">Gelezen berichten eerst</string>
+  <string name="sort_attach_first">Berichten met bijlage eerst</string>
+  <string name="sort_unattached_first">Berichten zonder bijlage eerst</string>
+  <string name="sort_by">Sorteer volgens…</string>
+  <string name="sort_by_date">Datum</string>
+  <string name="sort_by_arrival">Aankomst</string>
+  <string name="sort_by_subject">Onderwerp</string>
+  <string name="sort_by_sender">Verzender</string>
+  <string name="sort_by_flag">Ster</string>
+  <string name="sort_by_unread">Gelezen/ongelezen</string>
+  <string name="sort_by_attach">Bijlagen</string>
+  <string name="account_delete_dlg_title">Verwijder Account</string>
+  <string name="account_recreate_dlg_title">Opnieuw maken Account</string>
+  <string name="account_clear_dlg_title">Clear Account</string>
+  <string name="provider_note_auonejp">Zorg ervoor dat IMAP of POP3 in de au one mail instellingen pagina aan staan.</string>
+  <string name="provider_note_naver">Zorg ervoor dat IMAP of POP3 aan staan in de Naver mail instellingen pagina.</string>
+  <string name="provider_note_hanmail">Zorg ervoor dat IMAP of POP3 aan staan in de Hanmail(Daum) installingen pagina.</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_title">Onbekend Certificaat</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
+  <string name="message_list_help_key">Del (or D) - Verwijder\nR - Beantwoorden\nA - Alles Beantwoorden\nC - Opstellen\nF - Doorsturen\nM - Verplaatsen\nV - Archiveren\nY - Kopie\nZ - Markeer (niet)gelezen\nG - Ster\nO - Sorteer type\nI - Sorteer volgorde\nQ - Terug naar mappen\nS - Selecteer/deselecteer\nJ or P - Vorig bericht\nK or N - Volgende Bericht</string>
+  <string name="folder_list_help_key">1 - Laat alleen 1e klas mappen zien\n2 - Laat 1e en 2e klas mappen zien\n3 - Laat alles zien behalve 2e klas mappen\n4 - Laat alle mappen zien\nQ - Terug naar Accounts\nS - Aanpassen Account Instellingen</string>
+  <string name="folder_list_filter_hint">map naam bevat</string>
+  <string name="folder_list_display_mode_label">Mappen</string>
+  <string name="folder_list_display_mode_all">Laat alle mappen zien</string>
+  <string name="folder_list_display_mode_first_class">Laat alleen 1e klasse mappen zien</string>
+  <string name="folder_list_display_mode_first_and_second_class">Laat 1e en 2e klasse mappen zien</string>
+  <string name="folder_list_display_mode_not_second_class">Laat alles zien behalve 2e klasse mappen</string>
+  <string name="account_settings_signature__location_label">Positie handtekening</string>
+  <string name="account_settings_signature__location_before_quoted_text">Voor gequote berichten</string>
+  <string name="account_settings_signature__location_after_quoted_text">Na gequote berichten</string>
+  <string name="setting_theme_global">Gebruik app thema</string>
+  <string name="setting_theme_dark">Donker</string>
+  <string name="setting_theme_light">Licht</string>
+  <string name="display_preferences">Algemene instellingen</string>
+  <string name="global_preferences">Globaal</string>
+  <string name="debug_preferences">Verwijderen van fouten</string>
+  <string name="privacy_preferences">Privacy</string>
+  <string name="network_preferences">Netwerk</string>
+  <string name="interaction_preferences">Interactie</string>
+  <string name="accountlist_preferences">Account Lijst</string>
+  <string name="messagelist_preferences">Berichten Lijst</string>
+  <string name="messageview_preferences">Berichten</string>
+  <string name="folderlist_preferences">Map lijsten</string>
+  <string name="settings_theme_label">Thema</string>
+  <string name="settings_message_theme_label">Thema om berichten te zien</string>
+  <string name="settings_compose_theme_label">Thema om berichten te schrijven</string>
+  <string name="settings_language_label">Taal</string>
+  <string name="settings_message_theme_selection_label">Vast berichten thema</string>
+  <string name="settings_message_theme_selection_summary_off">Kies het thema tijdens het bekijken van het bericht</string>
+  <string name="settings_message_theme_selection_summary_on">Gebruik een vast thema om het bericht te bekijken</string>
+  <string name="setting_language_system">Volgens systeem</string>
+  <string name="background_ops_label">Achtergrond sync</string>
+  <string name="background_ops_never">Nooit</string>
+  <string name="background_ops_always">Altijd</string>
+  <string name="background_ops_auto_sync_only">Als \'Auto-sync\' geselecteerd is</string>
+  <string name="batch_select_all">Selecteer alle</string>
+  <string name="account_setup_push_limit_label">Max mappen om te controleren met push</string>
+  <string name="account_setup_push_limit_10">10 mappen</string>
+  <string name="account_setup_push_limit_25">25 mappen</string>
+  <string name="account_setup_push_limit_50">50 mappen</string>
+  <string name="account_setup_push_limit_100">100 mappen</string>
+  <string name="account_setup_push_limit_250">250 mappen</string>
+  <string name="account_setup_push_limit_500">500 mappen</string>
+  <string name="account_setup_push_limit_1000">1000 mappen</string>
+  <string name="animations_title">Animatie</string>
+  <string name="animations_summary">Gebruik opzichtige visuele effecten</string>
+  <string name="gestures_title">Gebaren</string>
+  <string name="gestures_summary">Accepteer gebaren sturing</string>
+  <string name="volume_navigation_title">Volume op/neer navigatie</string>
+  <string name="volume_navigation_message">Bericht beeld</string>
+  <string name="volume_navigation_list">Variabele lijst beelden</string>
+  <string name="start_integrated_inbox_title">Geïntegreerde Inbox bij start</string>
+  <string name="measure_accounts_title">Laat accountgrootte zien</string>
+  <string name="measure_accounts_summary">Zet uit voor sneller beeldscherm</string>
+  <string name="count_search_title">Tel zoek resultaten</string>
+  <string name="count_search_summary">Zet uit voor sneller beeldscherm</string>
+  <string name="hide_special_accounts_title">Verberg speciale accounts</string>
+  <string name="hide_special_accounts_summary">Verberg de gecombineerde inbox and alle berichtaccounts</string>
+  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
+  <string name="flagged_modifier"> - Starred</string>
+  <string name="unread_modifier"> - Ongelezen</string>
+  <string name="search_all_messages_title">Alle berichten</string>
+  <string name="search_all_messages_detail">Alle berichten in doorzoekbare mappen</string>
+  <string name="integrated_inbox_title">Geïntegreerde Inbox</string>
+  <string name="integrated_inbox_detail">Alle berichten in geïntegreerde mappen</string>
+  <string name="tap_hint">Tik envelop of ster voor ongelezen of berichten met sterren</string>
+  <string name="folder_settings_include_in_integrated_inbox_label">Integreer</string>
+  <string name="folder_settings_include_in_integrated_inbox_summary">Ongelezen berichten worden weergegeven in de geïntegreerde Inbox</string>
+  <string name="account_settings_searchable_label">Mappen om te doorzoeken</string>
+  <string name="account_settings_searchable_all">Alle</string>
+  <string name="account_settings_searchable_displayable">Zichtbare</string>
+  <string name="account_settings_searchable_none">Geen</string>
+  <string name="font_size_settings_title">Lettergrootte</string>
+  <string name="font_size_settings_description">Instellen lettergrootte</string>
+  <string name="font_size_account_list">Account lijst</string>
+  <string name="font_size_account_name">Account naam</string>
+  <string name="font_size_account_description">Account beschrijving</string>
+  <string name="font_size_folder_list">Mappen lijst</string>
+  <string name="font_size_folder_name">Map naam</string>
+  <string name="font_size_folder_status">Map status</string>
+  <string name="font_size_message_list">Berichten lijst</string>
+  <string name="font_size_message_list_subject">Bericht onderwerp</string>
+  <string name="font_size_message_list_sender">bericht afzender</string>
+  <string name="font_size_message_list_date">Bericht datum</string>
+  <string name="font_size_message_list_preview">Preview</string>
+  <string name="font_size_message_view">Beeld berichten</string>
+  <string name="font_size_message_view_sender">bericht afzender</string>
+  <string name="font_size_message_view_to">Bericht ontvanger (To)</string>
+  <string name="font_size_message_view_cc">Bericht ontvanger (CC)</string>
+  <string name="font_size_message_view_additional_headers">Extra koppen</string>
+  <string name="font_size_message_view_subject">Bericht onderwerp</string>
+  <string name="font_size_message_view_date">Bericht tijd en datum</string>
+  <string name="font_size_message_view_content">Bericht inhoud</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
+  <string name="font_size_message_compose">Bericht opstellen</string>
+  <string name="font_size_message_compose_input">Tekst input velden</string>
+  <string name="font_size_default">Standaard</string>
+  <string name="font_size_tiniest">Kleinste</string>
+  <string name="font_size_tiny">Heel klein</string>
+  <string name="font_size_smaller">Kleiner</string>
+  <string name="font_size_small">Klein</string>
+  <string name="font_size_medium">Gemiddeld</string>
+  <string name="font_size_large">Groot</string>
+  <string name="font_size_larger">Groter</string>
+  <string name="miscellaneous_preferences">Diversen</string>
+  <string name="error_activity_not_found">Geen geschikte applicatie gevonden voor deze aktie.</string>
+  <string name="btn_crypto_sign">Teken</string>
+  <string name="btn_encrypt">Versleutelen</string>
+  <string name="unknown_crypto_signature_user_id">&lt;onbekend&gt;</string>
+  <string name="pgp_mime_unsupported">PGP/MIME berichten zijn nog niet ondersteund.</string>
+  <string name="attachment_encryption_unsupported">Waarschuwing: bijlage zijn nog niet ondertekend of versleuteld.</string>
+  <string name="send_aborted">Verzenden geannuleerd.</string>
+  <string name="save_or_discard_draft_message_dlg_title">Ontwerp opslaan?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">Opslaan of negeren van dit bericht?</string>
+  <string name="confirm_discard_draft_message_title">Bericht afbreken?</string>
+  <string name="confirm_discard_draft_message">Weet je zeker dat je dit bericht wilt afbreken?</string>
+  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Weiger klad-bericht op te slaan.</string>
+  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Weiger klad-bericht op te slaan als het versleuteld is.</string>
+  <string name="select_text_now">Selecteer tekst om te kopieren.</string>
+  <string name="dialog_confirm_delete_title">Bevestig verwijderen</string>
+  <string name="dialog_confirm_delete_message">Wil je dit bericht verwijderen?</string>
+  <plurals name="dialog_confirm_delete_messages">
+    <item quantity="one">Wil je dit bericht echt verwijderen?</item>
+    <item quantity="other">Wil je echt <xliff:g id="message_count">%1$d</xliff:g> berichten verwijderen?</item>
+  </plurals>
+  <string name="dialog_confirm_delete_confirm_button">Verwijder</string>
+  <string name="dialog_confirm_delete_cancel_button">Niet verwijderen</string>
+  <string name="dialog_confirm_spam_title">Bevestig verplaatsing naar spam map</string>
+  <plurals name="dialog_confirm_spam_message">
+    <item quantity="one">Wil je dit bericht echt verplaatsen naar de spam map?</item>
+    <item quantity="other">Wil je dit bericht echt verplaatsen naar de spam map?</item>
+  </plurals>
+  <string name="dialog_confirm_spam_confirm_button">Ja</string>
+  <string name="dialog_confirm_spam_cancel_button">Nee</string>
+  <string name="dialog_attachment_progress_title">Bijlage wordt opgehaald</string>
+  <string name="debug_logging_enabled">Debug logging van Android logging systeem ingeschakeld</string>
+  <string name="messagelist_sent_to_me_sigil">»</string>
+  <string name="messagelist_sent_cc_me_sigil">›</string>
+  <string name="error_unable_to_connect">Kan geen verbinding maken.</string>
+  <string name="import_export_action">Import &amp; Export instellingen</string>
+  <string name="settings_export_account">Export account instellingen</string>
+  <string name="settings_export_all">Export instellingen en accounts</string>
+  <string name="settings_import_dialog_title">Import</string>
+  <string name="settings_export_dialog_title">Export</string>
+  <string name="settings_import">Import instellingen</string>
+  <string name="settings_import_selection">Import selectie</string>
+  <string name="settings_import_global_settings">Globale instellingen</string>
+  <string name="settings_exporting">Instellingen exporteren…</string>
+  <string name="settings_importing">Instellingen importeren…</string>
+  <string name="settings_import_scanning_file">Bestanden scannen…</string>
+  <string name="settings_export_success">Geexporteerde instellingen opgeslagen in <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_global_settings_success">Globale instellingen geimporteerd van <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> geimporteerd vanuit <xliff:g id="filename">%s</xliff:g></string>
+  <plurals name="settings_import_accounts">
+    <item quantity="one">1 account</item>
+    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
+  </plurals>
+  <string name="settings_export_failure">Instellingen exporteren mislukt</string>
+  <string name="settings_import_failure">Instellingen importeren mislukt vanuit <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_header">Export gelukt</string>
+  <string name="settings_export_failed_header">Export mislukt</string>
+  <string name="settings_import_success_header">Import gelukt</string>
+  <string name="settings_import_failed_header">Import mislukt</string>
+  <string name="settings_import_activate_account_header">Activeer account</string>
+  <string name="settings_import_activate_account_intro">Om het account \"<xliff:g id="account">%s</xliff:g>\" te kunnen gebruiken is de <xliff:g id="server_passwords">%s</xliff:g> nodig.</string>
+  <plurals name="settings_import_server_passwords">
+    <item quantity="one">server wachtwoord</item>
+    <item quantity="other">server wachtwoorden</item>
+  </plurals>
+  <string name="settings_import_incoming_server">Inkomende server (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <string name="settings_import_outgoing_server">Uitgaande server (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <plurals name="settings_import_setting_passwords">
+    <item quantity="one">Wachtwoord zetten…</item>
+    <item quantity="other">Wachtwoorden zetten…</item>
+  </plurals>
+  <string name="settings_import_use_incoming_server_password">Gebruik het inkomende server wachtwoord</string>
+  <string name="activate_account_action">Activeer</string>
+  <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is niet beschikbaar; controleer opslag</string>
+  <string name="settings_attachment_default_path">Sla bijlagen op naar…</string>
+  <string name="attachment_save_title">Sla bijlage op</string>
+  <string name="attachment_save_desc">Geen bestandsverkenner gevonden. Waar wil je deze bijlage opslaan?</string>
+  <string name="manage_accounts_move_up_action">Omhoog</string>
+  <string name="manage_accounts_move_down_action">Omlaag</string>
+  <string name="manage_accounts_moving_message">Account verhuizen…</string>
+  <string name="unread_widget_select_account">Laat ongelezen zien voor…</string>
+  <string name="import_dialog_error_title">Bestandsbeheer applicatie mist</string>
+  <string name="close">Sluiten</string>
+  <string name="webview_empty_message">Geen tekst</string>
+  <string name="webview_contextmenu_link_view_action">Open link</string>
+  <string name="webview_contextmenu_link_share_action">Deel link</string>
+  <string name="webview_contextmenu_link_copy_action">Kopieer link naar klembord</string>
+  <string name="webview_contextmenu_link_clipboard_label">Link</string>
+  <string name="webview_contextmenu_image_title">Afbeelding</string>
+  <string name="webview_contextmenu_image_view_action">Afbeelding laten zien</string>
+  <string name="webview_contextmenu_image_save_action">Afbeelding opslaan</string>
+  <string name="webview_contextmenu_image_download_action">Afbeelding downloaden</string>
+  <string name="webview_contextmenu_image_copy_action">Kopieer afbeelding-URL naar klembord</string>
+  <string name="webview_contextmenu_image_clipboard_label">Afbeelding-URL</string>
+  <string name="webview_contextmenu_phone_call_action">Bel nummer</string>
+  <string name="webview_contextmenu_phone_save_action">Opslaan in contacten</string>
+  <string name="webview_contextmenu_phone_copy_action">Kopieer nummer naar klembord</string>
+  <string name="webview_contextmenu_phone_clipboard_label">Telefoonnummer</string>
+  <string name="webview_contextmenu_email_send_action">Stuur mail</string>
+  <string name="webview_contextmenu_email_save_action">Opslaan in contacten</string>
+  <string name="webview_contextmenu_email_copy_action">Kopieer adres naar klembord</string>
+  <string name="webview_contextmenu_email_clipboard_label">Email adres</string>
+  <string name="image_saved_as">Afbeelding opgeslagen als \"<xliff:g id="filename">%s</xliff:g>\"</string>
+  <string name="image_saving_failed">Afbeelding opslaan mislukt.</string>
+  <string name="account_settings_remote_search_num_results_entries_all">Alle</string>
+  <string name="account_settings_remote_search_num_results_entries_10">10</string>
+  <string name="account_settings_remote_search_num_results_entries_25">25</string>
+  <string name="account_settings_remote_search_num_results_entries_50">50</string>
+  <string name="account_settings_remote_search_num_results_entries_100">100</string>
+  <string name="account_settings_remote_search_num_results_entries_250">250</string>
+  <string name="account_settings_remote_search_num_results_entries_500">500</string>
+  <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+  <string name="account_settings_remote_search_num_label">Server zoek limiet</string>
+  <string name="account_settings_remote_search_num_summary">Zoeken zal stoppen na het vinden van <xliff:g id="num_results">%s</xliff:g> resultaten.</string>
+  <string name="account_settings_remote_search_full_text">Ook zoeken in bericht teksten</string>
+  <string name="account_settings_remote_search_full_text_summary">Volledige tekst kan traag zoeken.</string>
+  <string name="remote_search_sending_query">Zoekopdracht naar server sturen</string>
+  <string name="remote_search_downloading">%d resultaten ophalen</string>
+  <string name="remote_search_downloading_limited">%1$d van %2$d resultaten ophalen</string>
+  <string name="remote_search_error">Zoekopdracht mislukt</string>
+  <string name="account_settings_search">Zoeken</string>
+  <string name="account_settings_remote_search_enabled">Server gebaseerd zoeken</string>
+  <string name="account_settings_remote_search_enabled_summary">Zoek berichten op de server en op je eigen toestel</string>
+  <string name="action_remote_search">Zoek berichten op server</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Duw naar zoekserver…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Laat los om op server te zoeken…</string>
+  <string name="remote_search_unavailable_no_network">Er is een netwerk verbinding nodig voor server zoeken.</string>
+  <string name="global_settings_background_as_unread_indicator_label">Dim berichten na lezen</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Een grijze achtergrond geeft aan dat een bericht gelezen is</string>
+  <string name="global_settings_threaded_view_label">Gesprek overzicht</string>
+  <string name="global_settings_threaded_view_summary">Groepeer berichten per gesprek</string>
+  <string name="upgrade_databases_title">Databases bijwerken</string>
+  <string name="upgrade_databases_unspecified">Databases bijwerken…</string>
+  <string name="upgrade_database_format">Database van account \"<xliff:g id="account">%s</xliff:g>\" bijwerken</string>
+  <string name="message_list_loading">Laden…</string>
+  <string name="global_settings_splitview_mode_label">Split-screen laten zien</string>
+  <string name="global_settings_splitview_always">Altijd</string>
+  <string name="global_settings_splitview_never">Nooit</string>
+  <string name="global_settings_splitview_when_in_landscape">In Landscape orientatie</string>
+  <string name="message_view_empty">Selecteer een bericht aan de linker kant</string>
+  <string name="global_settings_show_contact_picture_label">Laat contactafbeeldingen zien</string>
+  <string name="global_settings_show_contact_picture_summary">Laat contactafbeeldingen in de berichtenlijst zien</string>
+  <string name="last_refresh_time_format">Ververst <xliff:g id="formatted_time">%s</xliff:g></string>
+  <string name="last_refresh_time_format_with_push">Ververst <xliff:g id="time_with_preposition">%s</xliff:g> (Push actief)</string>
+  <string name="preposition_for_date">op <xliff:g id="date">%s</xliff:g></string>
+  <string name="mark_all_as_read">Markeer alles als gelezen</string>
+  <string name="global_settings_colorize_missing_contact_pictures_label">Contactafbeeldingen kleuren</string>
+  <string name="global_settings_colorize_missing_contact_pictures_summary">Voorzie afwezige contactafbeeldingen van een kleur</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">Zichtbare berichtacties</string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">Toon de geselecteerde acties in het Berichten-menu</string>
+  <string name="loading_attachment">Bijlage laden…</string>
+  <string name="fetching_attachment_dialog_title_send">Bericht wordt verstuurd</string>
+  <string name="fetching_attachment_dialog_title_save">Concept wordt opgeslagen</string>
+  <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
+  <string name="auth_external_error">Kan niet authenticeren. De server ondersteunt geen SASL EXTERNAL. Dit kan komen door een probleem met het client certificaat (verlopen of onbekende CA) of een ander configuratieprobleem.</string>
+  <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decrypting_verifying">Ontsleutelen/verificeren…</string>
+  <string name="openpgp_successful_decryption">Ontsleutelen succesvol</string>
+  <string name="openpgp_signature_valid_certified">Geldige handtekening (gecertificeerd)</string>
+  <string name="openpgp_signature_valid_uncertified">Geldige handtekening ongecertificeerd</string>
+  <string name="openpgp_signature_unknown">Onbekende ondertekenaar</string>
+  <string name="openpgp_signature_invalid">Ongeldige pgp handtekening</string>
+  <string name="openpgp_signature_unknown_text">Geen publieke sleutel voor deze handtekening</string>
+  <string name="openpgp_get_key">Zoek de missende sleutel</string>
+  <string name="openpgp_error">OpenPGP Fout:</string>
+  <string name="openpgp_user_id">Gebruikers-id</string>
+  <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Gebruik cliënt certificaat</string>
+  <string name="client_certificate_spinner_empty">Geen cliënt certificaat</string>
+  <string name="client_certificate_advanced_options">Geavanceerde opties</string>
+</resources>

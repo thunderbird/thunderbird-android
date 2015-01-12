@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply from: '../gradle/plugins/checkstyle-android.gradle'
+apply from: '../gradle/plugins/findbugs-android.gradle'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.apache.james:apache-mime4j-core:0.7.2'
+    compile 'org.apache.james:apache-mime4j-dom:0.7.2'
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.jcraft:jzlib:1.0.7'
+    compile 'com.beetstra.jutf7:jutf7:1.0.0'
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 21
+    }
+
+    lintOptions {
+        abortOnError true
+        warningsAsErrors true
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+    }
+}

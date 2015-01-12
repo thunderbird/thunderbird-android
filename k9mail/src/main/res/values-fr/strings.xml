@@ -1,0 +1,916 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--=== App-specific strings =============================================================-->
+  <!--This should make it easier for forks to change the branding-->
+  <!--Used in AndroidManifest.xml-->
+  <string name="app_name">K-9 Mail</string>
+  <string name="beta_app_name">K-9 Mail BÊTA</string>
+  <string name="shortcuts_title">Comptes K-9</string>
+  <string name="unread_widget_label">K-9 non lus</string>
+  <string name="remote_control_label">Contrôle à distance de K-9 Mail</string>
+  <string name="remote_control_desc">Permet à cette application de contrôler les activités et les paramètres de K-9 Mail</string>
+  <!--Used in the about dialog-->
+  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_copyright_fmt">Tous droits réservés 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Parties protégées par droits d\'auteur 2006-<xliff:g>%s</xliff:g> le projet libre Android.</string>
+  <string name="app_license">Sous licence Apache, version 2.0.</string>
+  <!--Welcome message-->
+  <string name="welcome_message_title">Bienvenue sur K-9 Mail</string>
+  <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail est un client de courriel libre puissant pour Android.
+</p><p>
+Ces fonctions améliorées incluent :
+</p>
+<ul>
+  <li>Courriel poussé utilisant IMAP IDLE</li>
+  <li>Meilleures performances</li>
+  <li>Signature des courriels</li>
+  <li>Cci à soi</li>
+  <li>Abonnement aux dossiers</li>
+  <li>Synchronisation de tous les dossiers</li>
+  <li>Configuration de l\'adresse de retour</li>
+  <li>Raccourcis clavier</li>
+  <li>Meilleure prise en charge IMAP</li>
+  <li>Enregistrement des pièces jointes sur la carte SD</li>
+  <li>Vider la corbeille</li>
+  <li>Tri des messages</li>
+  <li>…et plus</li>
+</ul>
+<p>
+Veuillez noter que K-9 Mail ne prend pas en charge la plupart des comptes gratuits Hotmail et a, comme beaucoup de courrielleurs, quelques ennuis à communiquer avec Microsoft Exchange.
+</p><p>
+Veuillez envoyer les rapports de bogues, suggérer de nouvelles fonctions et poser des questions (en anglais) sur <a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+</p>
+    ]]></string>
+  <!--Default signature-->
+  <string name="default_signature">-- \nEnvoyé de mon appareil Android avec K-9 Mail. Veuillez excuser ma brièveté.</string>
+  <!--General strings that include the app name-->
+  <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera enlevé de K-9 Mail.</string>
+  <string name="account_recreate_dlg_instructions_fmt">Toutes les données de  «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» seront enlevées. Les paramètres du compte seront conservés.</string>
+  <string name="account_clear_dlg_instructions_fmt">Les copies locales des messages de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» seront enlevées. Les paramètres du compte seront conservés.</string>
+  <!--=== App Store-specific strings =======================================================-->
+  <string name="import_dialog_error_message">Veuillez installer un gestionnaire de fichiers pour continuer cette importation.</string>
+  <string name="open_market">Ouvrir le Google Play Store</string>
+  <!--=== General strings ==================================================================-->
+  <string name="app_authors_fmt">Auteurs\u00A0: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="app_revision_fmt">Informations de révision\u00A0: %s</string>
+  <string name="app_libraries">Nous utilisons les bibliothèques tierces suivantes\u00A0: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="app_emoji_icons">Icônes Emoji\u00A0: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
+  <string name="read_attachment_label">lire les pièces jointes</string>
+  <string name="read_attachment_desc">Permet à cette application de lire vos pièces jointes.</string>
+  <string name="read_messages_label">lire les courriels</string>
+  <string name="read_messages_desc">Permet à cette application de lire vos courriels.</string>
+  <string name="delete_messages_label">Supprimer les courriels</string>
+  <string name="delete_messages_desc">Permet à cette application de supprimer vos courriels</string>
+  <string name="about_title_fmt">À propos de <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="accounts_title">Comptes</string>
+  <string name="folders_title">Dossiers</string>
+  <string name="advanced">Avancé</string>
+  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="compose_title_compose">Composer</string>
+  <string name="compose_title_reply">Répondre</string>
+  <string name="compose_title_reply_all">Répondre à tous</string>
+  <string name="compose_title_forward">Transférer</string>
+  <string name="choose_folder_title">Choisir un dossier</string>
+  <string name="status_loading_account_folder">Récup. <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_loading_account_folder_headers">Récup. entêtes <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_sending_account">Envoi <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_processing_account">Prép <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="status_next_poll">Prochaine récup. <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_syncing_off">Synchronisation désactivée</string>
+  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> sélectionné(s)</string>
+  <string name="next_action">Suivant</string>
+  <string name="previous_action">Précédent</string>
+  <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+  <string name="okay_action">OK</string>
+  <string name="cancel_action">Annuler</string>
+  <string name="send_action">Envoyer</string>
+  <string name="send_again_action">Envoyer à nouveau</string>
+  <string name="select_action">Sélectionner</string>
+  <string name="deselect_action">Dessélectionner</string>
+  <string name="reply_action">Répondre</string>
+  <string name="reply_all_action">Répondre à tous</string>
+  <string name="delete_action">Supprimer</string>
+  <string name="archive_action">Archiver</string>
+  <string name="spam_action">Pourriel</string>
+  <string name="forward_action">Transférer</string>
+  <string name="move_action">Déplacer</string>
+  <string name="single_message_options_action">Envoyer…</string>
+  <string name="refile_action">Reclasser…</string>
+  <string name="done_action">Terminé</string>
+  <string name="discard_action">Abandonner</string>
+  <string name="save_draft_action">Enregistrer comme brouillon</string>
+  <string name="check_mail_action">Vérif. courriels</string>
+  <string name="send_messages_action">Envoyer les messages</string>
+  <string name="refresh_folders_action">Rafraîchir la liste des dossiers</string>
+  <string name="filter_folders_action">Trouver un dossier</string>
+  <string name="add_account_action">Ajouter un compte</string>
+  <string name="compose_action">Composer</string>
+  <string name="search_action">Rechercher</string>
+  <string name="search_results">Résultats de la recherche</string>
+  <string name="preferences_action">Paramètres</string>
+  <string name="account_settings_action">Paramètres du compte</string>
+  <string name="folder_settings_action">Paramètres du dossier</string>
+  <string name="global_settings_action">Paramètres globaux</string>
+  <string name="remove_account_action">Enlever le compte</string>
+  <string name="clear_pending_action">Annuler les actions en attente (danger\u00A0!)</string>
+  <string name="mark_as_read_action">Marquer comme lu</string>
+  <string name="send_alternate_action">Partager</string>
+  <string name="send_alternate_chooser_title">Choisir l\'expéditeur</string>
+  <string name="flag_action">Ajouter une étoile</string>
+  <string name="unflag_action">Enlever l\'étoile</string>
+  <string name="copy_action">Copier</string>
+  <string name="select_text_action">Sélection de texte</string>
+  <string name="show_headers_action">Afficher les entêtes</string>
+  <string name="hide_headers_action">Masquer les entêtes</string>
+  <string name="message_view_theme_action_dark">Basculer vers le thème foncé</string>
+  <string name="message_view_theme_action_light">Basculer vers le thème clair</string>
+  <string name="mark_as_unread_action">Marquer comme non lu</string>
+  <string name="add_cc_bcc_action">Ajouter Cc/Cci</string>
+  <string name="read_receipt">Accusé de lecture</string>
+  <string name="read_receipt_enabled">Un accusé de lecture sera demandé</string>
+  <string name="read_receipt_disabled">Un accusé de lecture ne sera pas demandé</string>
+  <string name="add_attachment_action">Ajouter une pièce jointe</string>
+  <string name="empty_trash_action">Vider la corbeille</string>
+  <string name="expunge_action">Supprimer</string>
+  <string name="clear_local_folder_action">Effacer les messages locaux</string>
+  <string name="about_action">À propos de</string>
+  <string name="prefs_title">Paramètres</string>
+  <string name="accounts_context_menu_title">Options du compte</string>
+  <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+  <string name="general_no_subject">(Aucun objet)</string>
+  <string name="general_no_sender">Aucun expéditeur</string>
+  <string name="status_loading">Récupération</string>
+  <string name="status_loading_more">Chargement des messages\u2026</string>
+  <string name="status_network_error">Erreur de connexion</string>
+  <string name="status_invalid_id_error">Message introuvable</string>
+  <string name="status_loading_more_failed">Réessayer de charger plus de messages</string>
+  <string name="load_more_messages_fmt">Charger
+jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
+  <string name="abbrev_gigabytes">Go</string>
+  <string name="abbrev_megabytes">Mo</string>
+  <string name="abbrev_kilobytes">ko</string>
+  <string name="abbrev_bytes">o</string>
+  <string name="account_size_changed">Compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» rétréci de <xliff:g id="oldSize">%s</xliff:g> à <xliff:g id="newSize">%s</xliff:g></string>
+  <string name="compacting_account">Compactage du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
+  <string name="clearing_account">Effacement du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
+  <string name="recreating_account">Recréation du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
+  <string name="notification_new_title">Nouveau courriel</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nouveau message</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nouveaux messages</item>
+  </plurals>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> de plus sur <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_action_reply">Répondre</string>
+  <string name="notification_action_mark_as_read">Marquer comme lu</string>
+  <string name="notification_action_delete">Supprimer</string>
+  <string name="notification_certificate_error_title">Erreur de certificat pour (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_certificate_error_text">Vérifier vos paramètres de serveur</string>
+  <string name="notification_bg_sync_ticker">Vérification des courriels\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_title">Vérification des courriels</string>
+  <string name="notification_bg_send_ticker">Envoi du courriel\u00A0: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_bg_send_title">Envoi du courriel</string>
+  <string name="notification_bg_title_separator">:</string>
+  <string name="special_mailbox_name_inbox">Boîte de réception</string>
+  <string name="special_mailbox_name_outbox">Boîte d\'envoi</string>
+  <string name="special_mailbox_name_drafts">Brouillons</string>
+  <string name="special_mailbox_name_trash">Corbeille</string>
+  <string name="special_mailbox_name_sent">Envoyés</string>
+  <string name="special_mailbox_name_archive">Archive</string>
+  <string name="special_mailbox_name_spam">Pourriels</string>
+  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Brouillons)</string>
+  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Corbeille)</string>
+  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Envoyés)</string>
+  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archive)</string>
+  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
+  <string name="send_failure_subject">Échec lors de l\'envoi de certains messages</string>
+  <string name="debug_version_fmt">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
+  <string name="debug_enable_debug_logging_title">Activer le journal de débogage</string>
+  <string name="debug_enable_debug_logging_summary">Journaliser les informations de diagnostic supplémentaires</string>
+  <string name="debug_enable_sensitive_logging_title">Journaliser les informations sensibles</string>
+  <string name="debug_enable_sensitive_logging_summary">Pourrait montrer les mots de passe dans les journaux.</string>
+  <string name="message_list_load_more_messages_action">Charger plus de messages</string>
+  <string name="message_to_fmt">À\u00A0: <xliff:g id="counterParty">%s</xliff:g></string>
+  <string name="message_compose_to_hint">À</string>
+  <string name="message_compose_cc_hint">Cc</string>
+  <string name="message_compose_bcc_hint">Cci</string>
+  <string name="message_compose_subject_hint">Objet</string>
+  <string name="message_compose_content_hint">Texte du message</string>
+  <string name="message_compose_signature_hint">Signature</string>
+  <string name="message_compose_quote_header_separator">-------- Message d\'origine --------</string>
+  <string name="message_compose_quote_header_subject">Objet\u00A0:</string>
+  <string name="message_compose_quote_header_send_date">Envoyé\u00A0:</string>
+  <string name="message_compose_quote_header_from">De\u00A0:</string>
+  <string name="message_compose_quote_header_to">À\u00A0:</string>
+  <string name="message_compose_quote_header_cc">Cc\u00A0:</string>
+  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> a écrit\u00A0:</string>
+  <string name="message_compose_reply_header_fmt_with_date">Le <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> a écrit :</string>
+  <string name="message_compose_error_no_recipients">Vous devez ajouter au moins un destinataire.</string>
+  <string name="error_contact_address_not_found">Aucune adresse courriel de trouvée pour ce contact.</string>
+  <string name="message_compose_attachments_skipped_toast">Certaines pièces jointes ne peuvent pas être transférées car elles n\'ont pas été téléchargées.</string>
+  <string name="message_compose_show_quoted_text_action">Citer le message</string>
+  <string name="message_compose_description_add_to">Ajouter un destinataire (À)</string>
+  <string name="message_compose_description_add_cc">Ajouter un destinataire (Cc)</string>
+  <string name="message_compose_description_add_bcc">Ajouter un destinataire (Cci)</string>
+  <string name="message_compose_description_delete_quoted_text">Enlever le texte entre guillemets</string>
+  <string name="message_compose_description_edit_quoted_text">Modifier le texte entre guillemets</string>
+  <string name="message_view_from_format">De : <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_to_label">À\u00A0:</string>
+  <string name="message_view_cc_label">Cc\u00A0:</string>
+  <string name="message_view_attachment_view_action">Ouvrir</string>
+  <string name="message_view_attachment_download_action">Enregistrer</string>
+  <string name="message_view_status_attachment_saved">Pièce jointe enregistrée sur la carte SD en tant que <xliff:g id="filename">%s</xliff:g>.</string>
+  <string name="message_view_status_attachment_not_saved">Impossible d\'enregistrer la pièce jointe sur la carte SD.</string>
+  <string name="message_view_show_pictures_action">Afficher les images</string>
+  <string name="message_view_show_message_action">Afficher le message</string>
+  <string name="message_view_show_attachments_action">Afficher les pièces jointes</string>
+  <string name="message_view_show_more_attachments_action">Plus…</string>
+  <string name="message_view_fetching_attachment_toast">Récupération de la pièce jointe</string>
+  <string name="message_view_no_viewer">Impossible de trouver un visualiseur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
+  <string name="message_view_download_remainder">Télécharger le message complet</string>
+  <string name="message_view_downloading">Téléchargement…</string>
+  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
+  <string name="message_additional_headers_not_downloaded">Les entêtes n\'ont pas toutes été téléchargées ou enregistrées. Choisir «\u00A0Enregistrer toutes les entêtes localement\u00A0» dans les paramètres du serveur entrant du compte pour activer cette fonction pour le futur.</string>
+  <string name="message_no_additional_headers_available">Toutes les entêtes ont été téléchargées, mais il n\'y en a pas d\'autres à montrer.</string>
+  <string name="message_additional_headers_retrieval_failed">La récupération d\'entêtes supplémentaires de la base de données ou du serveur de courriel a échouée.</string>
+  <string name="from_same_sender">Plus de cet expéditeur</string>
+  <string name="message_discarded_toast">Message abandonné</string>
+  <string name="message_saved_toast">Message enregistré comme brouillon</string>
+  <string name="global_settings_flag_label">Montrer les étoiles</string>
+  <string name="global_settings_flag_summary">Les étoiles indiquent des messages suivis</string>
+  <string name="global_settings_checkbox_label">Cases à cocher à choix multiples</string>
+  <string name="global_settings_checkbox_summary">Toujours afficher les cases à cocher à choix multiples</string>
+  <string name="global_settings_preview_lines_label">Lignes dʼaperçu</string>
+  <string name="global_settings_show_correspondent_names_label">Afficher le nom des correspondants</string>
+  <string name="global_settings_show_correspondent_names_summary">Afficher le nom des correspondants plutôt que leurs adresses courriel</string>
+  <string name="global_settings_sender_above_subject_label">Correspondants au-dessus de l\'objet</string>
+  <string name="global_settings_sender_above_subject_summary">Afficher les noms des correspondants au dessus de la ligne d\'objet, plutôt qu\'en dessous</string>
+  <string name="global_settings_show_contact_name_label">Utiliser les noms des contacts</string>
+  <string name="global_settings_show_contact_name_summary">Utiliser en priorité les noms du carnet d\'adresses si disponibles</string>
+  <string name="global_settings_registered_name_color_label">Colorer les contacts</string>
+  <string name="global_settings_registered_name_color_default">Ne pas colorer les noms dans votre liste de contacts</string>
+  <string name="global_settings_registered_name_color_changed">Colorer les noms dans votre liste de contacts</string>
+  <string name="global_settings_folderlist_wrap_folder_names_label">Retour sur les noms de dossier longs</string>
+  <string name="global_settings_folderlist_wrap_folder_names_summary">Utiliser plusieurs lignes pour afficher les noms de dossier longs</string>
+  <string name="global_settings_messageview_fixedwidth_label">Polices à largeur fixe</string>
+  <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à largeur fixe pour les messages en clair</string>
+  <string name="global_settings_messageview_autofit_width_label">Ajustement auto des messages</string>
+  <string name="global_settings_messageview_autofit_width_summary">Réduire les messages pour les adapter à l\'écran</string>
+  <string name="global_settings_messageview_return_to_list_label">Retourner à la liste après suppression</string>
+  <string name="global_settings_messageview_return_to_list_summary">Retourner à la liste de messages après la suppression d\'un message</string>
+  <string name="global_settings_messageview_show_next_label">Afficher le message suivant après suppression</string>
+  <string name="global_settings_messageview_show_next_summary">Afficher le message suivant par défaut après la suppression d\'un message</string>
+  <string name="global_settings_confirm_actions_title">Confirmer les actions</string>
+  <string name="global_settings_confirm_actions_summary">Demander une confirmation lorsque vous effectuez des actions de choix</string>
+  <string name="global_settings_confirm_action_delete">Supprimer</string>
+  <string name="global_settings_confirm_action_delete_starred">Supprimer étoilé (en mode lecture)</string>
+  <string name="global_settings_confirm_action_spam">Pourriel</string>
+  <string name="global_settings_confirm_action_delete_notif">Supprimer (depuis notification)</string>
+  <string name="global_settings_privacy_hide_useragent">Enlever l\'agent utilisateur K-9 des en-têtes de courriels</string>
+  <string name="global_settings_privacy_hide_timezone">Utiliser UTC comme fuseau horaire dans les en-têtes de courriels</string>
+  <string name="global_settings_notification_hide_subject_title">Masquer le sujet du message dans les notifications</string>
+  <string name="global_settings_notification_hide_subject_never">Jamais</string>
+  <string name="global_settings_notification_hide_subject_when_locked">Lorsque l\'appareil est verrouillé</string>
+  <string name="global_settings_notification_hide_subject_always">Toujours</string>
+  <string name="global_settings_notification_quick_delete_title">Afficher le bouton «\u00A0Supprimer\u00A0»</string>
+  <string name="global_settings_notification_quick_delete_never">Jamais</string>
+  <string name="global_settings_notification_quick_delete_when_single_msg">Pour la notification de message unique</string>
+  <string name="global_settings_notification_quick_delete_always">Toujours</string>
+  <string name="global_settings_notification_quick_delete_description">Afficher un bouton dans les notification permettant la suppression rapide des messages</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Notifications d\'écran de verrouillage</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Aucune notification d\'écran de verrouillage</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Nom d\'application</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Nombre de messages non lus</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Nombre de messages et d\'expéditeurs</string>
+  <string name="quiet_time">Heures silencieuses</string>
+  <string name="quiet_time_description">Désactiver la sonnerie, la vibration et le clignotement pendant la nuit</string>
+  <string name="quiet_time_starts">Début des heures silencieuses</string>
+  <string name="quiet_time_ends">Fin des heures silencieuses</string>
+  <string name="account_setup_basics_title">Configurer un nouveau compte</string>
+  <string name="account_setup_basics_email_hint">Adresse courriel</string>
+  <string name="account_setup_basics_password_hint">Mot de passe</string>
+  <string name="account_setup_basics_show_password">Montrer le mot de passe</string>
+  <string name="account_setup_basics_manual_setup_action">Configuration manuelle</string>
+  <string name="account_setup_check_settings_title"/>
+  <string name="account_setup_check_settings_retr_info_msg">Récupération des informations de compte\u2026</string>
+  <string name="account_setup_check_settings_check_incoming_msg">Vérification des paramètres du serveur entrant\u2026</string>
+  <string name="account_setup_check_settings_check_outgoing_msg">Vérification des paramètres du serveur sortant\u2026</string>
+  <string name="account_setup_check_settings_authenticate">Authentification\u2026</string>
+  <string name="account_setup_check_settings_fetch">Récupération des paramètres du compte\u2026</string>
+  <string name="account_setup_check_settings_canceling_msg">Annulation\u2026</string>
+  <string name="account_setup_names_title">Vous avez presque terminé\u00A0!</string>
+  <string name="account_setup_names_account_name_label">Donner un nom à ce compte (facultatif)\u00A0:</string>
+  <string name="account_setup_names_user_name_label">Saisissez votre nom (s\'affiche sur les messages sortants)\u00A0:</string>
+  <string name="account_setup_account_type_title">Type de compte</string>
+  <string name="account_setup_account_type_instructions">Quel type de compte est-ce\u00A0?</string>
+  <string name="account_setup_account_type_pop_action">POP3</string>
+  <string name="account_setup_account_type_imap_action">IMAP</string>
+  <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+  <string name="account_setup_auth_type_normal_password">Mot de passe normal</string>
+  <string name="account_setup_auth_type_insecure_password">Mot de passe, envoyé sans sécurité</string>
+  <string name="account_setup_auth_type_encrypted_password">Mot de passe chiffré</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Certificat client</string>
+  <string name="account_setup_incoming_title">Paramètres du serveur entrant</string>
+  <string name="account_setup_incoming_username_label">Nom d\'utilisateur</string>
+  <string name="account_setup_incoming_password_label">Mot de passe</string>
+  <string name="account_setup_incoming_client_certificate_label">Certificat client</string>
+  <string name="account_setup_incoming_pop_server_label">Serveur POP3</string>
+  <string name="account_setup_incoming_imap_server_label">Serveur IMAP</string>
+  <string name="account_setup_incoming_webdav_server_label">Serveur Exchange (WebDAV)</string>
+  <string name="account_setup_incoming_port_label">Port</string>
+  <string name="account_setup_incoming_security_label">Sécurité</string>
+  <string name="account_setup_incoming_auth_type_label">Authentification</string>
+  <string name="account_setup_incoming_security_none_label">Aucun</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">« <xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g> » n\'est pas valide avec « <xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g> »</string>
+  <string name="account_setup_incoming_delete_policy_label">Quand je supprime un message</string>
+  <string name="account_setup_incoming_delete_policy_never_label">Ne pas effacer sur le serveur</string>
+  <string name="account_setup_incoming_delete_policy_delete_label">Supprimer du serveur</string>
+  <string name="account_setup_incoming_delete_policy_markread_label">Marquer comme lu sur le serveur</string>
+  <string name="account_setup_incoming_compression_label">Utiliser la compression sur le réseau\u00A0:</string>
+  <string name="account_setup_incoming_mobile_label">mobile</string>
+  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
+  <string name="account_setup_incoming_other_label">autre</string>
+  <string name="local_storage_provider_external_label">Stockage externe (carte SD)</string>
+  <string name="local_storage_provider_internal_label">Stockage interne habituel</string>
+  <string name="local_storage_provider_samsunggalaxy_label">Stockage interne additionnel %1$s</string>
+  <string name="local_storage_provider_label">Emplacement du stockage</string>
+  <string name="account_setup_expunge_policy_label">Effacer les messages supprimés du serveur</string>
+  <string name="account_setup_expunge_policy_immediately">Immédiatement</string>
+  <string name="account_setup_expunge_policy_on_poll">Lors de la récupération</string>
+  <string name="account_setup_expunge_policy_manual">Manuellement</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">Auto-détection des espaces de nommage IMAP</string>
+  <string name="account_setup_incoming_imap_path_prefix_label">Préfixe de chemin IMAP</string>
+  <string name="drafts_folder_label">Dossier des brouillons</string>
+  <string name="sent_folder_label">Dossier des envois</string>
+  <string name="trash_folder_label">Dossier de la corbeille</string>
+  <string name="archive_folder_label">Dossier des archives</string>
+  <string name="spam_folder_label">Dossier des pourriels</string>
+  <string name="account_setup_incoming_subscribed_folders_only_label">Afficher seulement les dossiers auxquels je suis abonné</string>
+  <string name="account_setup_auto_expand_folder">Ouvrir automatiquement le dossier</string>
+  <string name="account_setup_incoming_webdav_path_prefix_label">Chemin OWA</string>
+  <string name="account_setup_incoming_webdav_path_prefix_hint">Facultatif</string>
+  <string name="account_setup_incoming_webdav_auth_path_label">Chemin d\'authentification</string>
+  <string name="account_setup_incoming_webdav_auth_path_hint">Facultatif</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_label">Alias de la boîte de courriels</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_hint">Facultatif</string>
+  <string name="account_setup_outgoing_title">Paramètres du serveur sortant</string>
+  <string name="account_setup_outgoing_smtp_server_label">Serveur SMTP</string>
+  <string name="account_setup_outgoing_port_label">Port</string>
+  <string name="account_setup_outgoing_security_label">Sécurité</string>
+  <string name="account_setup_outgoing_require_login_label">Authentification exigée.</string>
+  <string name="account_setup_outgoing_username_label">Nom d\'utilisateur</string>
+  <string name="account_setup_outgoing_password_label">Mot de passe</string>
+  <string name="account_setup_outgoing_authentication_label">Authentification</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">« <xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g> » n\'est pas valide avec \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g> »</string>
+  <string name="account_setup_bad_uri">Paramétrage invalide\u00A0: <xliff:g id="err_mess">%s</xliff:g></string>
+  <string name="account_setup_options_title">Options du compte</string>
+  <string name="compact_action">Compacter le compte</string>
+  <string name="clear_action">Vider les messages (danger\u00A0!)</string>
+  <string name="recreate_action">Recréer les données (dernier recours\u00A0!)</string>
+  <string name="account_setup_options_mail_check_frequency_label">Fréquence de récupération du dossier</string>
+  <string name="account_setup_options_mail_check_frequency_never">Jamais</string>
+  <string name="account_setup_options_mail_check_frequency_1min">Toutes les minutes</string>
+  <string name="account_setup_options_mail_check_frequency_5min">Toutes les 5 minutes</string>
+  <string name="account_setup_options_mail_check_frequency_10min">Toutes les 10 minutes</string>
+  <string name="account_setup_options_mail_check_frequency_15min">Toutes les 15 minutes</string>
+  <string name="account_setup_options_mail_check_frequency_30min">Toutes les 30 minutes</string>
+  <string name="account_setup_options_mail_check_frequency_1hour">Toutes les heures</string>
+  <string name="account_setup_options_mail_check_frequency_2hour">Toutes les 2 heures</string>
+  <string name="account_setup_options_mail_check_frequency_3hour">Toutes les 3 heures</string>
+  <string name="account_setup_options_mail_check_frequency_6hour">Toutes les 6 heures</string>
+  <string name="account_setup_options_mail_check_frequency_12hour">Toutes les 12 heures</string>
+  <string name="account_setup_options_mail_check_frequency_24hour">Toutes les 24 heures</string>
+  <string name="push_poll_on_connect_label">Récupération lors d\'une connexion pour le pousser</string>
+  <string name="account_setup_options_enable_push_label">Activer le courriel poussé pour ce compte</string>
+  <string name="account_setup_options_enable_push_summary">Si votre serveur le prend an charge, les nouveaux messages apparaîtront instantanément. Cette option peut considérablement améliorer ou dégrader les performances.</string>
+  <string name="idle_refresh_period_label">Rafraîchir la connexion IDLE</string>
+  <string name="idle_refresh_period_1min">Toutes les minutes</string>
+  <string name="idle_refresh_period_2min">Toutes les 2 minutes</string>
+  <string name="idle_refresh_period_3min">Toutes les 3 minutes</string>
+  <string name="idle_refresh_period_6min">Toutes les 6 minutes</string>
+  <string name="idle_refresh_period_12min">Toutes les 12 minutes</string>
+  <string name="idle_refresh_period_24min">Toutes les 24 minutes</string>
+  <string name="idle_refresh_period_36min">Toutes les 36 minutes</string>
+  <string name="idle_refresh_period_48min">Toutes les 48 minutes</string>
+  <string name="idle_refresh_period_60min">Toutes les 60 minutes</string>
+  <string name="account_setup_options_notify_label">Me notifier à l\'arrivée de courriels</string>
+  <string name="account_setup_options_notify_sync_label">M\'avertir lors de la vérification des courriels</string>
+  <string name="account_setup_options_mail_display_count_label">Nombre de messages à afficher</string>
+  <string name="account_setup_options_mail_display_count_10">10 messages</string>
+  <string name="account_setup_options_mail_display_count_25">25 messages</string>
+  <string name="account_setup_options_mail_display_count_50">50 messages</string>
+  <string name="account_setup_options_mail_display_count_100">100 messages</string>
+  <string name="account_setup_options_mail_display_count_250">250 messages</string>
+  <string name="account_setup_options_mail_display_count_500">500 messages</string>
+  <string name="account_setup_options_mail_display_count_1000">1 000 messages</string>
+  <string name="account_setup_options_mail_display_count_2500">2 500 messages</string>
+  <string name="account_setup_options_mail_display_count_5000">5 000 messages</string>
+  <string name="account_setup_options_mail_display_count_10000">10 000 messages</string>
+  <string name="account_setup_options_mail_display_count_all">tous les messages</string>
+  <string name="move_copy_cannot_copy_unsynced_message">Impossible de copier ou déplacer un message qui n\'est pas synchronisé avec le serveur</string>
+  <string name="account_setup_failed_dlg_title">La configuration n\'a pas pu être terminée</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'utilisateur ou mot de passe incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Le serveur a présenté un certificat SSL invalide. Ceci est parfois causé par une mauvaise configuration du serveur. Parfois, quelqu\'un essaie de vous attaquer ou d\'attaquer votre serveur de courriel. Si vous n\'êtes pas sûr de ce qu\'il se passe, cliquez sur Rejeter et contactez les gestionnaires du serveur de courriel.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Impossible de se connecter au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_edit_details_action">Modifier les détails</string>
+  <string name="account_setup_failed_dlg_continue_action">Continuer</string>
+  <string name="account_settings_push_advanced_title">Avancé</string>
+  <string name="account_settings_title_fmt">Paramètres du compte</string>
+  <string name="account_settings_default_label">Compte par défaut</string>
+  <string name="account_settings_default_summary">Envoyer les courriels de ce compte par défaut</string>
+  <string name="account_settings_notify_label">Notifications de nouveaux courriels</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Dossiers des notifications</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Tous</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Seulement les dossiers de 1re classe</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Dossiers de 1re et 2e classes</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Aucun</string>
+  <string name="account_settings_notify_sync_label">Notifications de synchronisation</string>
+  <string name="account_settings_email_label">Votre adresse courriel</string>
+  <string name="account_settings_notify_summary">Notification dans la barre d\'état à la réception d\'un courriel</string>
+  <string name="account_settings_notify_sync_summary">Notification dans la barre d\'état lors de la vérification des courriels</string>
+  <string name="account_settings_notify_self_label">Inclure les courriels sortants</string>
+  <string name="account_settings_notify_self_summary">Afficher une notification pour les messages que j\'ai envoyés</string>
+  <string name="account_settings_notification_opens_unread_label">La notification ouvre les messages non lus</string>
+  <string name="account_settings_notification_opens_unread_summary">Recherche des messages non lus lors de l\'accès aux notifications</string>
+  <string name="account_settings_mark_message_as_read_on_view_label">Marquer comme lu à l\'ouverture</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">Marquer un message comme lu à quand il est ouvert pour être visualisé</string>
+  <string name="account_settings_show_pictures_label">Toujours afficher les images</string>
+  <string name="account_settings_show_pictures_never">Non</string>
+  <string name="account_settings_show_pictures_only_from_contacts">Pour les contacts uniquement</string>
+  <string name="account_settings_show_pictures_always">Pour tout le monde</string>
+  <string name="account_settings_composition">Envoi de courriel</string>
+  <string name="account_settings_default_quoted_text_shown_label">Citer le message lors de la réponse</string>
+  <string name="account_settings_default_quoted_text_shown_summary">Inclure le message original dans votre réponse.</string>
+  <string name="account_settings_reply_after_quote_label">Réponse après la citation</string>
+  <string name="account_settings_reply_after_quote_summary">Le message original apparaîtra en haut de votre réponse.</string>
+  <string name="account_settings_strip_signature_label">Retirer les signatures lors d\'une réponse</string>
+  <string name="account_settings_strip_signature_summary">Les signatures seront enlevées des messages cités</string>
+  <string name="account_settings_message_format_label">Format du message</string>
+  <string name="account_settings_message_format_text">Texte en clair (enlever les images et formatage)</string>
+  <string name="account_settings_message_format_html">HTML (garder les images et formatage)</string>
+  <string name="account_settings_message_format_auto">Automatique</string>
+  <string name="account_settings_always_show_cc_bcc_label">Toujours afficher Cc/Cci</string>
+  <string name="account_settings_message_read_receipt_label">Accusé de lecture</string>
+  <string name="account_settings_message_read_receipt_summary">Toujours demander un accusé de lecture</string>
+  <string name="account_settings_quote_style_label">Style de citation des réponses</string>
+  <string name="account_settings_quote_style_prefix">Préfixe (comme Gmail)</string>
+  <string name="account_settings_quote_style_header">En-tête (comme Outlook)</string>
+  <string name="account_settings_general_title">Paramètres généraux</string>
+  <string name="account_settings_reading_mail">Lecture des courriels</string>
+  <string name="account_settings_sync">Récupération des courriels</string>
+  <string name="account_settings_folders">Dossiers</string>
+  <string name="account_settings_quote_prefix_label">Préfixe de citation</string>
+  <string name="account_settings_crypto">Cryptographie</string>
+  <string name="account_settings_crypto_app">Fournisseur OpenPGP</string>
+  <string name="account_settings_no_openpgp_provider_installed">Aucun fournisseur OpnPGP installé</string>
+  <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
+  <string name="account_settings_storage_title">Stockage</string>
+  <string name="account_settings_color_label">Couleur du compte</string>
+  <string name="account_settings_color_summary">La note de couleur du compte tel qu\'affichée dans les listes de dossiers ou de comptes</string>
+  <string name="account_settings_led_color_label">Couleur de la DEL de notification</string>
+  <string name="account_settings_led_color_summary">La couleur de clignotement de la DEL de votre appareil</string>
+  <string name="account_settings_mail_display_count_label">Taille du fichier local</string>
+  <string name="account_settings_autodownload_message_size_label">Récupérer les messages jusqu\'à</string>
+  <string name="account_settings_autodownload_message_size_1">1\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_2">2\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_4">4\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_8">8\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_16">16\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_32">32\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_64">64\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_128">128\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_256">256\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_512">512\u00A0ko</string>
+  <string name="account_settings_autodownload_message_size_1024">1\u00A0Mo</string>
+  <string name="account_settings_autodownload_message_size_2048">2\u00A0Mo</string>
+  <string name="account_settings_autodownload_message_size_5120">5\u00A0Mo</string>
+  <string name="account_settings_autodownload_message_size_10240">10\u00A0Mo</string>
+  <string name="account_settings_autodownload_message_size_any">n\'importe quelle taille</string>
+  <string name="account_settings_message_age_label">Synchroniser les messages</string>
+  <string name="account_settings_message_age_any">pour toutes les dates</string>
+  <string name="account_settings_message_age_0">d\'aujourd\'hui</string>
+  <string name="account_settings_message_age_1">d\'il y a 2 jours</string>
+  <string name="account_settings_message_age_2">d\'il y a 3 jours</string>
+  <string name="account_settings_message_age_7">de la dernière semaine</string>
+  <string name="account_settings_message_age_14">des dernières 2 semaines</string>
+  <string name="account_settings_message_age_21">des dernières 3 semaines</string>
+  <string name="account_settings_message_age_1_month">du dernier mois</string>
+  <string name="account_settings_message_age_2_months">des derniers 2 mois</string>
+  <string name="account_settings_message_age_3_months">des derniers 3 mois</string>
+  <string name="account_settings_message_age_6_months">des derniers 6 mois</string>
+  <string name="account_settings_message_age_1_year">de la dernière année</string>
+  <string name="account_settings_folder_display_mode_label">Dossiers à afficher</string>
+  <string name="account_settings_folder_display_mode_all">Tous</string>
+  <string name="account_settings_folder_display_mode_first_class">Seulement les dossiers de 1re classe</string>
+  <string name="account_settings_folder_display_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
+  <string name="account_settings_folder_display_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+  <string name="account_settings_folder_sync_mode_label">Dossiers à récupérer</string>
+  <string name="account_settings_folder_sync_mode_all">Tous</string>
+  <string name="account_settings_folder_sync_mode_first_class">Seulement les dossiers de 1re classe</string>
+  <string name="account_settings_folder_sync_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
+  <string name="account_settings_folder_sync_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+  <string name="account_settings_folder_sync_mode_none">Aucun</string>
+  <string name="account_settings_folder_push_mode_label">Dossiers du pousser</string>
+  <string name="account_settings_folder_push_mode_all">Tous</string>
+  <string name="account_settings_folder_push_mode_first_class">Seulement les dossiers de 1re classe</string>
+  <string name="account_settings_folder_push_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
+  <string name="account_settings_folder_push_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+  <string name="account_settings_folder_push_mode_none">Aucun</string>
+  <string name="account_settings_folder_target_mode_label">Dossiers de destination déplacer/copier</string>
+  <string name="account_settings_folder_target_mode_all">Tous</string>
+  <string name="account_settings_folder_target_mode_first_class">Seulement les dossiers de 1e classe</string>
+  <string name="account_settings_folder_target_mode_first_and_second_class">Les dossiers de 1e et 2e classes</string>
+  <string name="account_settings_folder_target_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+  <string name="account_settings_sync_remote_deletetions_label">Synchroniser les suppression sur le serveur</string>
+  <string name="account_settings_sync_remote_deletetions_summary">Enlever les messages lorsqu\'ils sont supprimés sur le serveur</string>
+  <string name="folder_settings_title">Paramètres du dossier</string>
+  <string name="folder_settings_in_top_group_label">Afficher dans le groupe principal</string>
+  <string name="folder_settings_in_top_group_summary">Afficher dans le haut de la liste des dossiers</string>
+  <string name="folder_settings_folder_display_mode_label">Classe d\'affichage du dossier</string>
+  <string name="folder_settings_folder_display_mode_normal">Aucun</string>
+  <string name="folder_settings_folder_display_mode_first_class">1re classe</string>
+  <string name="folder_settings_folder_display_mode_second_class">2e classe</string>
+  <string name="folder_settings_folder_sync_mode_label">Classe de synchronisation des dossiers</string>
+  <string name="folder_settings_folder_sync_mode_normal">Aucun</string>
+  <string name="folder_settings_folder_sync_mode_first_class">1re classe</string>
+  <string name="folder_settings_folder_sync_mode_second_class">2e classe</string>
+  <string name="folder_settings_folder_sync_mode_inherited">Identique à la classe d\'affichage</string>
+  <string name="folder_settings_folder_push_mode_label">Classe de pousser du dossier</string>
+  <string name="folder_settings_folder_push_mode_normal">Aucun</string>
+  <string name="folder_settings_folder_push_mode_first_class">1re classe</string>
+  <string name="folder_settings_folder_push_mode_second_class">2e classe</string>
+  <string name="folder_settings_folder_push_mode_inherited">Identique à la classe de synchronisation</string>
+  <string name="folder_settings_folder_notify_mode_label">Classe de notification des dossiers</string>
+  <string name="folder_settings_folder_notify_mode_normal">Aucun</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1re classe</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2e classe</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Identique à la classe de pousser</string>
+  <string name="account_settings_incoming_label">Serveur entrant</string>
+  <string name="account_settings_incoming_summary">Configurer le serveur de courriel entrant</string>
+  <string name="account_settings_outgoing_label">Serveur sortant</string>
+  <string name="account_settings_outgoing_summary">Configurer le serveur de courriel (SMTP) sortant</string>
+  <string name="account_settings_description_label">Nom du compte</string>
+  <string name="account_settings_name_label">Votre nom</string>
+  <string name="notifications_title">Notifications</string>
+  <string name="account_settings_vibrate_enable">Vibration</string>
+  <string name="account_settings_vibrate_summary">Vibrer à la réception d\'un courriel</string>
+  <string name="account_settings_vibrate_pattern_label">Modèles de vibration</string>
+  <string name="account_settings_vibrate_pattern_default">par défaut</string>
+  <string name="account_settings_vibrate_pattern_1">modèle 1</string>
+  <string name="account_settings_vibrate_pattern_2">modèle 2</string>
+  <string name="account_settings_vibrate_pattern_3">modèle 3</string>
+  <string name="account_settings_vibrate_pattern_4">modèle 4</string>
+  <string name="account_settings_vibrate_pattern_5">modèle 5</string>
+  <string name="account_settings_vibrate_times">Nombre de vibrations</string>
+  <string name="account_settings_ringtone">Sonnerie pour un nouveau courriel</string>
+  <string name="account_settings_led_label">Clignotement DEL</string>
+  <string name="account_settings_led_summary">Clignotement de la DEL quand un courriel arrive</string>
+  <string name="account_settings_composition_title">Options de composition de message</string>
+  <string name="account_settings_composition_label">Valeurs par défaut pour la composition</string>
+  <string name="account_settings_composition_summary">Définir les valeurs par défaut pour De, Cci et la signature</string>
+  <string name="account_settings_identities_label">Gérer les identités</string>
+  <string name="account_settings_identities_summary">Définir des adresses «\u00A0De\u00A0» et des signatures alternatives</string>
+  <string name="manage_identities_title">Gérer les identités</string>
+  <string name="manage_identities_context_menu_title">Gérer l\'identité</string>
+  <string name="edit_identity_title">Modifier l\'identité</string>
+  <string name="new_identity_action">Nouvelle identité</string>
+  <string name="account_settings_always_bcc_label">Envoyer une copie CCi de tous les messages à</string>
+  <string name="manage_identities_edit_action">Modifier</string>
+  <string name="manage_identities_move_up_action">Monter</string>
+  <string name="manage_identities_move_down_action">Descendre</string>
+  <string name="manage_identities_move_top_action">Monter en haut / définir par défaut</string>
+  <string name="manage_identities_remove_action">Enlever</string>
+  <string name="edit_identity_description_label">Description de l\'identité</string>
+  <string name="edit_identity_description_hint">(Facultatif)</string>
+  <string name="edit_identity_name_label">Votre nom</string>
+  <string name="edit_identity_name_hint">(Facultatif)</string>
+  <string name="edit_identity_email_label">Adresse courriel</string>
+  <string name="edit_identity_email_hint">(Exigée)</string>
+  <string name="edit_identity_reply_to_label">Adresse de réponse</string>
+  <string name="edit_identity_reply_to_hint">(Facultative)</string>
+  <string name="edit_identity_signature_label">Signature</string>
+  <string name="edit_identity_signature_hint">(Facultative)</string>
+  <string name="account_settings_signature_use_label">Utiliser la signature</string>
+  <string name="account_settings_signature_label">Signature</string>
+  <string name="default_identity_description">Identité initiale</string>
+  <string name="choose_identity_title">Choisir l\'identité</string>
+  <string name="send_as">Envoyer en tant que</string>
+  <string name="no_removable_identity">Vous ne pouvez pas enlever votre seule identité</string>
+  <string name="identity_has_no_email">Vous ne pouvez pas utiliser une identité sans adresse courriel</string>
+  <string name="sort_earliest_first">Messages le plus anciens en premier</string>
+  <string name="sort_latest_first">Messages les plus récents en premier</string>
+  <string name="sort_subject_alpha">A-Z par sujet</string>
+  <string name="sort_subject_re_alpha">Z-A par sujet</string>
+  <string name="sort_sender_alpha">A-Z par expéditeur</string>
+  <string name="sort_sender_re_alpha">Z-A par expéditeur</string>
+  <string name="sort_flagged_first">Messages étoilés en premier</string>
+  <string name="sort_flagged_last">Messages sans étoiles en premier</string>
+  <string name="sort_unread_first">Messages non lus en premier</string>
+  <string name="sort_unread_last">Messages lus en premier</string>
+  <string name="sort_attach_first">Messages avec des pièces jointes en premier</string>
+  <string name="sort_unattached_first">Messages sans pièce jointe en premier</string>
+  <string name="sort_by">Trier par…</string>
+  <string name="sort_by_date">Date</string>
+  <string name="sort_by_arrival">Date de réception</string>
+  <string name="sort_by_subject">Sujet</string>
+  <string name="sort_by_sender">Expéditeur</string>
+  <string name="sort_by_flag">Étoile</string>
+  <string name="sort_by_unread">Lu/non lu</string>
+  <string name="sort_by_attach">Pièces jointes</string>
+  <string name="account_delete_dlg_title">Enlever le compte</string>
+  <string name="account_recreate_dlg_title">Recréer le compte</string>
+  <string name="account_clear_dlg_title">Vider le compte</string>
+  <string name="provider_note_auonejp">Assurez-vous d\'activer IMAP ou POP3 dans la page des paramètres du courriel au one.</string>
+  <string name="provider_note_naver">Assurez-vous d\'activer IMAP ou POP3 dans la page des paramètres du courriel Naver.</string>
+  <string name="provider_note_hanmail">Assurez-vous d\'activer IMAP ou POP3 dans la page des paramètres du courriel Hanmail (Daum).</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat non reconnu</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter la clé</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeter la clé</string>
+  <string name="message_list_help_key">Suppr (ou D) - Supprimer\nR - Répondre\nA - Répondre à tous\nC - Composer\nF - Transférer\nM - Déplacer\nV - Archive\nY - Copier\nZ - Marquer lu/non lu\nG - Étoile\nO - Type de tri\nI - Ordre de tri\nQ - Retourner aux dossiers\nS - Sélectionner/Dessélectionner\nJ ou P - Message précédent\nK ou N - Prochain message </string>
+  <string name="folder_list_help_key">1 - Afficher seulement les dossiers de 1re classe\n2 - Afficher les dossiers de 1re et 2e classe\n3 - Afficher tous les dossiers sauf 2e classe\n4 - Afficher tous les dossiers\nQ - Retourner aux Comptes\nS - Modifier les paramètres du compte</string>
+  <string name="folder_list_filter_hint">le nom de dossier contient</string>
+  <string name="folder_list_display_mode_label">Afficher les dossiers…</string>
+  <string name="folder_list_display_mode_all">Tous les dossiers</string>
+  <string name="folder_list_display_mode_first_class">Les dossiers de 1re classe</string>
+  <string name="folder_list_display_mode_first_and_second_class">Les dossiers de 1re et 2e classes</string>
+  <string name="folder_list_display_mode_not_second_class">Masquer les dossiers de 2e classe</string>
+  <string name="account_settings_signature__location_label">Position de la signature</string>
+  <string name="account_settings_signature__location_before_quoted_text">Avant le message cité</string>
+  <string name="account_settings_signature__location_after_quoted_text">Après le message cité</string>
+  <string name="setting_theme_global">Utiliser le thème de l\'appli</string>
+  <string name="setting_theme_dark">Foncé</string>
+  <string name="setting_theme_light">Clair</string>
+  <string name="display_preferences">Affichage</string>
+  <string name="global_preferences">Global</string>
+  <string name="debug_preferences">Déboguage</string>
+  <string name="privacy_preferences">Confidentialité</string>
+  <string name="network_preferences">Réseau</string>
+  <string name="interaction_preferences">Interaction</string>
+  <string name="accountlist_preferences">Liste des comptes</string>
+  <string name="messagelist_preferences">Liste des messages</string>
+  <string name="messageview_preferences">Messages</string>
+  <string name="folderlist_preferences">Liste des dossiers</string>
+  <string name="settings_theme_label">Thème</string>
+  <string name="settings_message_theme_label">Thème de vue des messages</string>
+  <string name="settings_compose_theme_label">Thème de composition</string>
+  <string name="settings_language_label">Langue</string>
+  <string name="settings_message_theme_selection_label">Thème de message fixe</string>
+  <string name="settings_message_theme_selection_summary_off">Choisir le thème de vue du message en regardant le message</string>
+  <string name="settings_message_theme_selection_summary_on">Utiliser un thème de vue de message fixe</string>
+  <string name="setting_language_system">Langue par défaut du système</string>
+  <string name="background_ops_label">Synchronisation en arrière-plan</string>
+  <string name="background_ops_never">Jamais</string>
+  <string name="background_ops_always">Toujours</string>
+  <string name="background_ops_auto_sync_only">Lorsque «\u00A0Synchronisation auto\u00A0» est activée</string>
+  <string name="batch_select_all">Sélectionner tout</string>
+  <string name="account_setup_push_limit_label">Maximum de dossiers avec le pousser à vérifier</string>
+  <string name="account_setup_push_limit_10">10 dossiers</string>
+  <string name="account_setup_push_limit_25">25 dossiers</string>
+  <string name="account_setup_push_limit_50">50 dossiers</string>
+  <string name="account_setup_push_limit_100">100 dossiers</string>
+  <string name="account_setup_push_limit_250">250 dossiers</string>
+  <string name="account_setup_push_limit_500">500 dossiers</string>
+  <string name="account_setup_push_limit_1000">1 000 dossiers</string>
+  <string name="animations_title">Animation</string>
+  <string name="animations_summary">Utiliser des effets visuels criards</string>
+  <string name="gestures_title">Interface gestuelle</string>
+  <string name="gestures_summary">Accepter le contrôle par gestes</string>
+  <string name="volume_navigation_title">Navigation à l\'aide de la touche de volume</string>
+  <string name="volume_navigation_message">Dans la visualisation des messages</string>
+  <string name="volume_navigation_list">Dans les vues en liste</string>
+  <string name="start_integrated_inbox_title">Démarrer dans la boîte de réception unifiée</string>
+  <string name="measure_accounts_title">Afficher la taille du compte</string>
+  <string name="measure_accounts_summary">Désactiver pour un affichage plus rapide</string>
+  <string name="count_search_title">Compter les résultats de recherche</string>
+  <string name="count_search_summary">Désactiver pour un affichage plus rapide</string>
+  <string name="hide_special_accounts_title">Masquer les comptes spéciaux</string>
+  <string name="hide_special_accounts_summary">Masquer la boîte de réception unifiée et tous les comptes de messages</string>
+  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
+  <string name="flagged_modifier"> - Étoilés</string>
+  <string name="unread_modifier"> - Non lus</string>
+  <string name="search_all_messages_title">Tous les messages</string>
+  <string name="search_all_messages_detail">Tous les messages dans les dossiers pouvant être recherchés</string>
+  <string name="integrated_inbox_title">Boîte de réception unifiée</string>
+  <string name="integrated_inbox_detail">Tous les messages dans les dossiers unifiés</string>
+  <string name="tap_hint">Toquer l\'enveloppe ou l\'étoile pour les messages non lus ou avec étoile</string>
+  <string name="folder_settings_include_in_integrated_inbox_label">Unifier</string>
+  <string name="folder_settings_include_in_integrated_inbox_summary">Tous les messages sont affichés dans la boîte de réception unifiée</string>
+  <string name="account_settings_searchable_label">Dossiers dans lesquels chercher</string>
+  <string name="account_settings_searchable_all">Tous</string>
+  <string name="account_settings_searchable_displayable">Affichables</string>
+  <string name="account_settings_searchable_none">Aucun</string>
+  <string name="font_size_settings_title">Taille de la police</string>
+  <string name="font_size_settings_description">Configurer la taille de la police</string>
+  <string name="font_size_account_list">Liste de comptes</string>
+  <string name="font_size_account_name">Nom du compte</string>
+  <string name="font_size_account_description">Description du compte</string>
+  <string name="font_size_folder_list">Listes des dossiers</string>
+  <string name="font_size_folder_name">Nom du dossier</string>
+  <string name="font_size_folder_status">État du dossier</string>
+  <string name="font_size_message_list">Listes de messages</string>
+  <string name="font_size_message_list_subject">Sujet</string>
+  <string name="font_size_message_list_sender">Expéditeur</string>
+  <string name="font_size_message_list_date">Date</string>
+  <string name="font_size_message_list_preview">Aperçu</string>
+  <string name="font_size_message_view">Messages</string>
+  <string name="font_size_message_view_sender">Expéditeur</string>
+  <string name="font_size_message_view_to">À</string>
+  <string name="font_size_message_view_cc">Cc</string>
+  <string name="font_size_message_view_additional_headers">Entêtes supplémentaires</string>
+  <string name="font_size_message_view_subject">Sujet</string>
+  <string name="font_size_message_view_date">Horodatage</string>
+  <string name="font_size_message_view_content">Corps du message</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
+  <string name="font_size_message_compose">Composition de message</string>
+  <string name="font_size_message_compose_input">Champ de saisie de texte</string>
+  <string name="font_size_default">Par défaut</string>
+  <string name="font_size_tiniest">Le plus minuscule</string>
+  <string name="font_size_tiny">Minuscule</string>
+  <string name="font_size_smaller">Plus petit</string>
+  <string name="font_size_small">Petit</string>
+  <string name="font_size_medium">Moyen</string>
+  <string name="font_size_large">Grand</string>
+  <string name="font_size_larger">Plus grand</string>
+  <string name="miscellaneous_preferences">Divers</string>
+  <string name="error_activity_not_found">Aucune application adéquate n\'a été trouvée pour cette action.</string>
+  <string name="btn_crypto_sign">Signer</string>
+  <string name="btn_encrypt">Chiffrer</string>
+  <string name="unknown_crypto_signature_user_id">«\u00A0inconnu\u00A0»</string>
+  <string name="pgp_mime_unsupported">Les messages PGP/MIME ne sont pas encore pris en charge</string>
+  <string name="attachment_encryption_unsupported">Avertissement\u00A0: La signature et le chiffrement des pièces jointes ne sont PAS encore pris en charge.</string>
+  <string name="send_aborted">Envoi interrompu.</string>
+  <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
+  <string name="confirm_discard_draft_message_title">Abandonner le message\u00A0?</string>
+  <string name="confirm_discard_draft_message">Êtes-vous sûr de vouloir abandonner ce message\u00A0?</string>
+  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuser d\'enregistrer les brouillons.</string>
+  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuser d\'enregistrer un message marqué comme étant chiffré.</string>
+  <string name="select_text_now">Sélectionner le texte à copier</string>
+  <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
+  <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
+  <plurals name="dialog_confirm_delete_messages">
+    <item quantity="one">Voulez-vous vraiment supprimer ce message\u00A0?</item>
+    <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> messages\u00A0?</item>
+  </plurals>
+  <string name="dialog_confirm_delete_confirm_button">Oui</string>
+  <string name="dialog_confirm_delete_cancel_button">Non</string>
+  <string name="dialog_confirm_spam_title">Confirmer le déplacement vers le dossier des pourriels</string>
+  <plurals name="dialog_confirm_spam_message">
+    <item quantity="one">Voulez-vous déplacer ce message vers le dossiers des pourriels\u00A0?</item>
+    <item quantity="other">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> messages vers le dossiers des pourriels\u00A0?</item>
+  </plurals>
+  <string name="dialog_confirm_spam_confirm_button">Oui</string>
+  <string name="dialog_confirm_spam_cancel_button">Non</string>
+  <string name="dialog_attachment_progress_title">Téléchargement de la pièce jointe</string>
+  <string name="debug_logging_enabled">Journalisation du débogage activée</string>
+  <string name="messagelist_sent_to_me_sigil">»</string>
+  <string name="messagelist_sent_cc_me_sigil">›</string>
+  <string name="error_unable_to_connect">Connexion impossible.</string>
+  <string name="import_export_action">Paramètres d\'importation &amp; d\'exportation</string>
+  <string name="settings_export_account">Exporter les paramètres du compte</string>
+  <string name="settings_export_all">Exporter les paramètres et les comptes</string>
+  <string name="settings_import_dialog_title">Importation</string>
+  <string name="settings_export_dialog_title">Exportation</string>
+  <string name="settings_import">Importer les paramètres</string>
+  <string name="settings_import_selection">Importer la sélection</string>
+  <string name="settings_import_global_settings">Paramètres globaux</string>
+  <string name="settings_exporting">Exportation des paramètres…</string>
+  <string name="settings_importing">Importation des paramètres…</string>
+  <string name="settings_import_scanning_file">Analyse du fichier…</string>
+  <string name="settings_export_success">Paramètres exportés vers <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_global_settings_success">Paramètres globaux importés depuis <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_success">Importé <xliff:g id="accounts">%s</xliff:g> depuis <xliff:g id="filename">%s</xliff:g></string>
+  <plurals name="settings_import_accounts">
+    <item quantity="one">1 compte</item>
+    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> comptes</item>
+  </plurals>
+  <string name="settings_export_failure">Échec lors de l\'exportation des paramètres</string>
+  <string name="settings_import_failure">Échec lors de l\'importation des paramètres de <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_header">Exportation réussie</string>
+  <string name="settings_export_failed_header">Exportation échouée</string>
+  <string name="settings_import_success_header">Importation réussie</string>
+  <string name="settings_import_failed_header">Importation échouée</string>
+  <string name="settings_import_activate_account_header">Activer le compte</string>
+  <string name="settings_import_activate_account_intro">Afin de pouvoir utiliser le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0», vous devez fournir <xliff:g id="server_passwords">%s</xliff:g>.</string>
+  <plurals name="settings_import_server_passwords">
+    <item quantity="one">le mot de passe du serveur</item>
+    <item quantity="other">les mots de passe du serveur</item>
+  </plurals>
+  <string name="settings_import_incoming_server">Serveur entrant (<xliff:g id="hostname">%s</xliff:g>)\u00A0:</string>
+  <string name="settings_import_outgoing_server">Serveur sortant (<xliff:g id="hostname">%s</xliff:g>)\u00A0:</string>
+  <plurals name="settings_import_setting_passwords">
+    <item quantity="one">Réglage du mot de passe…</item>
+    <item quantity="other">Réglages des mots de passe…</item>
+  </plurals>
+  <string name="settings_import_use_incoming_server_password">Utiliser le mot de passe du serveur entrant</string>
+  <string name="activate_account_action">Activer</string>
+  <string name="account_unavailable">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» n\'est pas disponible\u00A0; veuillez vérifier le stockage</string>
+  <string name="settings_attachment_default_path">Enregistrer les pièces jointes dans…</string>
+  <string name="attachment_save_title">Enregistrer les pièces jointes</string>
+  <string name="attachment_save_desc">Aucun gestionnaire de fichiers trouvé. Où voudriez-vous enregistrer cette pièce jointe\u00A0?</string>
+  <string name="manage_accounts_move_up_action">Déplacer vers le haut</string>
+  <string name="manage_accounts_move_down_action">Déplacer vers le bas</string>
+  <string name="manage_accounts_moving_message">Déplacement du compte…</string>
+  <string name="unread_widget_select_account">Afficher le nombre de non lus pour…</string>
+  <string name="import_dialog_error_title">L\'application de gestion de fichiers est manquante</string>
+  <string name="close">Fermer</string>
+  <string name="webview_empty_message">Aucun texte</string>
+  <string name="webview_contextmenu_link_view_action">Ouvrir le lien</string>
+  <string name="webview_contextmenu_link_share_action">Partager le lien</string>
+  <string name="webview_contextmenu_link_copy_action">Copier le lien dans le presse-papiers</string>
+  <string name="webview_contextmenu_link_clipboard_label">Lien</string>
+  <string name="webview_contextmenu_image_title">Image</string>
+  <string name="webview_contextmenu_image_view_action">Afficher l\'image</string>
+  <string name="webview_contextmenu_image_save_action">Enregistrer l\'image</string>
+  <string name="webview_contextmenu_image_download_action">Télécharger l\'image</string>
+  <string name="webview_contextmenu_image_copy_action">Copier l\'URL de l\'image dans le presse-papiers</string>
+  <string name="webview_contextmenu_image_clipboard_label">URL de l\'image</string>
+  <string name="webview_contextmenu_phone_call_action">Appeler le numéro</string>
+  <string name="webview_contextmenu_phone_save_action">Enregistrer dans mes contacts</string>
+  <string name="webview_contextmenu_phone_copy_action">Copier dans le presse-papier</string>
+  <string name="webview_contextmenu_phone_clipboard_label">Numéro de téléphone</string>
+  <string name="webview_contextmenu_email_send_action">Envoyer un courriel</string>
+  <string name="webview_contextmenu_email_save_action">Enregistrer dans mes contacts</string>
+  <string name="webview_contextmenu_email_copy_action">Copier dans le presse-papier</string>
+  <string name="webview_contextmenu_email_clipboard_label">Adresse courriel</string>
+  <string name="image_saved_as">Enregistrer l\'image en tant que «\u00A0<xliff:g id="filename">%s</xliff:g>\u00A0»</string>
+  <string name="image_saving_failed">Échec lors de la sauvegarde de l\'image.</string>
+  <string name="account_settings_remote_search_num_results_entries_all">Tout</string>
+  <string name="account_settings_remote_search_num_results_entries_10">10</string>
+  <string name="account_settings_remote_search_num_results_entries_25">25</string>
+  <string name="account_settings_remote_search_num_results_entries_50">50</string>
+  <string name="account_settings_remote_search_num_results_entries_100">100</string>
+  <string name="account_settings_remote_search_num_results_entries_250">250</string>
+  <string name="account_settings_remote_search_num_results_entries_500">500</string>
+  <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
+  <string name="account_settings_remote_search_num_label">Limite de recherche du serveur</string>
+  <string name="account_settings_remote_search_num_summary">La recherche s\'arrêtera après que <xliff:g id="num_results">%s</xliff:g> résultats aient été trouvés.</string>
+  <string name="account_settings_remote_search_full_text">Inclure le texte des messages à la recherche sur le serveur</string>
+  <string name="account_settings_remote_search_full_text_summary">Les recherches plein texte peuvent être lentes.</string>
+  <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
+  <string name="remote_search_downloading">Récupération de %d résultats</string>
+  <string name="remote_search_downloading_limited">Récupération de %1$d résultats sur %2$d</string>
+  <string name="remote_search_error">Échec lors de la recherche distante</string>
+  <string name="account_settings_search">Rechercher</string>
+  <string name="account_settings_remote_search_enabled">Activer la recherche sur le serveur</string>
+  <string name="account_settings_remote_search_enabled_summary">Rechercher des messages sur le serveur en plus de ceux sur votre appareil</string>
+  <string name="action_remote_search">Rechercher des messages sur le serveur</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tirer pour rechercher sur le serveur…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Relâchez pour rechercher sur le serveur…</string>
+  <string name="remote_search_unavailable_no_network">Une connexion réseau est exigée pour la recherche sur le serveur.</string>
+  <string name="global_settings_background_as_unread_indicator_label">Utiliser le fond comme indicateur de lecture</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Un arrière-plan gris montrera qu\'un message a été lu</string>
+  <string name="global_settings_threaded_view_label">Vue par fil</string>
+  <string name="global_settings_threaded_view_summary">Grouper les messages par conversations</string>
+  <string name="upgrade_databases_title">Mise à niveau des bases de données</string>
+  <string name="upgrade_databases_unspecified">Mise à niveau des bases de données…</string>
+  <string name="upgrade_database_format">Mise à niveau de la base de données du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
+  <string name="message_list_loading">Chargement…</string>
+  <string name="global_settings_splitview_mode_label">Afficher un écran partagé</string>
+  <string name="global_settings_splitview_always">Toujours</string>
+  <string name="global_settings_splitview_never">Jamais</string>
+  <string name="global_settings_splitview_when_in_landscape">En mode paysage</string>
+  <string name="message_view_empty">Veuillez choisir un message sur la gauche</string>
+  <string name="global_settings_show_contact_picture_label">Afficher les images des contacts</string>
+  <string name="global_settings_show_contact_picture_summary">Afficher les images des contacts dans la liste des messages</string>
+  <string name="last_refresh_time_format">Rafraîchi <xliff:g id="formatted_time">%s</xliff:g></string>
+  <string name="last_refresh_time_format_with_push">Rafraîchi <xliff:g id="time_with_preposition">%s</xliff:g> (pousser activé)</string>
+  <string name="preposition_for_date">le <xliff:g id="date">%s</xliff:g></string>
+  <string name="mark_all_as_read">Marquer tous comme lus</string>
+  <string name="global_settings_colorize_missing_contact_pictures_label">Colorier les images des contacts</string>
+  <string name="global_settings_colorize_missing_contact_pictures_summary">Colorier les images manquantes des contacts</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">Actions visibles dans les messages</string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">Afficher les actions choisies dans le menu de visualisation des messages</string>
+  <string name="loading_attachment">Chargement de la pièce jointe…</string>
+  <string name="fetching_attachment_dialog_title_send">Envoi du message</string>
+  <string name="fetching_attachment_dialog_title_save">Enregistrement du brouillon</string>
+  <string name="fetching_attachment_dialog_message">Récupération de la pièce jointe…</string>
+  <string name="auth_external_error">Authentification impossible. Le serveur n\'annonce pas la fonction SASL EXTERNE. Ceci pourrait être causé par un problème avec le certificat client (expiré, autorité de certification inconnue) ou quelque autre problème de configuration. </string>
+  <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decrypting_verifying">Déchiffrement/vérification…</string>
+  <string name="openpgp_successful_decryption">Déchiffrement réussi</string>
+  <string name="openpgp_signature_valid_certified">Signature valide (certifiée)</string>
+  <string name="openpgp_signature_valid_uncertified">Signature valide mais non certifiée</string>
+  <string name="openpgp_signature_unknown">Signataire inconnu</string>
+  <string name="openpgp_signature_invalid">Signature invalide</string>
+  <string name="openpgp_signature_unknown_text">Clef publique manquante pour cette signature</string>
+  <string name="openpgp_successful_decryption_valid_signature_certified">Déchiffrement réussi et signature valide (certifiée)</string>
+  <string name="openpgp_successful_decryption_valid_signature_uncertified">Déchiffrement réussi et signature valide mais non certifiée</string>
+  <string name="openpgp_successful_decryption_unknown_signature">Déchiffrement réussi mais clef publique manquante</string>
+  <string name="openpgp_get_key">Rechercher la clef manquante </string>
+  <string name="openpgp_error">Erreur OpenPGP :</string>
+  <string name="openpgp_user_id">ID utilisateur</string>
+  <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Utiliser le certificat client</string>
+  <string name="client_certificate_spinner_empty">Aucun certificat client</string>
+  <string name="client_certificate_spinner_delete">Enlever le choix de certificat client</string>
+  <string name="client_certificate_retrieval_failure">Impossible de d\'obtenir le certificat client pour l\'alias \« <xliff:g id="alias">%s</xliff:g>\ »</string>
+  <string name="client_certificate_advanced_options">Options avancées</string>
+  <string name="client_certificate_expired">Le certificat client \« <xliff:g id="certificate_alias">%1$s</xliff:g>\ » est expiré ou n\'est pas encore valide (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+</resources>

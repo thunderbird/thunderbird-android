@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<FindBugsFilter>
+    <Match>
+        <Package name="~com\.fsck\.k9.*" />
+        <Not>
+            <Bug pattern="VA_FORMAT_STRING_USES_NEWLINE" />
+        </Not>
+    </Match>
+</FindBugsFilter>

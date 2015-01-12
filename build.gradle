@@ -1,32 +1,16 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'com.android.tools.build:gradle:1.0.0'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
     }
 }
 
-apply plugin: 'android-sdk-manager'
-apply plugin: 'com.android.application'
-apply plugin: 'checkstyle'
-
-repositories {
-    jcenter()
-}
-
-dependencies {
-    compile project(':plugins:Android-PullToRefresh:library')
-    compile project(':plugins:ckChangeLog:library')
-    compile project(':plugins:HoloColorPicker')
-    compile project(':plugins:openpgp-api-library')
-    compile 'com.android.support:support-v13:19.1.0'
-    compile fileTree(dir: 'libs', include: '*.jar')
-}
-
 project.ext.preDexLibs = !project.hasProperty('disablePreDex')
+project.ext.testCoverage = project.hasProperty('testCoverage')
 
 subprojects {
     project.plugins.whenPluginAdded { plugin ->
@@ -35,82 +19,4 @@ subprojects {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
         }
     }
-}
-
-android {
-    compileSdkVersion 19
-    buildToolsVersion '20.0.0'
-
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 17
-    }
-
-    dexOptions {
-        preDexLibraries = rootProject.ext.preDexLibs
-    }
-
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }
-
-        androidTest {
-            manifest.srcFile 'tests/AndroidManifest.xml'
-            java.srcDirs = ['tests/src']
-            assets.srcDirs = ['tests/assets']
-        }
-    }
-
-    signingConfigs {
-        release
-    }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
-        }
-    }
-
-    // Do not abort build if lint finds errors
-    lintOptions {
-        abortOnError false
-    }
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-    }
-}
-
-check.dependsOn 'checkstyle'
-task checkstyle(type: Checkstyle) {
-    ignoreFailures = true
-    configFile file("config/checkstyle/checkstyle.xml")
-
-    source 'src'
-    include '**/*.java'
-    classpath = files()
-}
-
-task testsOnJVM(type: GradleBuild, dependsOn: assemble) {
-    buildFile = 'tests-on-jvm/build.gradle'
-    tasks = ['test']
-}
-
-if (project.hasProperty('keyAlias')) {
-    android.signingConfigs.release.keyAlias = keyAlias
-}
-if (project.hasProperty('keyPassword')) {
-    android.signingConfigs.release.keyPassword = keyPassword
-}
-if (project.hasProperty('storeFile')) {
-    android.signingConfigs.release.storeFile = file(storeFile)
-}
-if (project.hasProperty('storePassword')) {
-    android.signingConfigs.release.storePassword = storePassword
 }
