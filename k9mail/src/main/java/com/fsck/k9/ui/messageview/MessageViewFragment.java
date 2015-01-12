@@ -1,4 +1,4 @@
-package com.fsck.k9.fragment;
+package com.fsck.k9.ui.messageview;
 
 import java.io.File;
 import java.util.Collections;
@@ -31,7 +31,9 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
+import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.Flag;
@@ -42,7 +44,6 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
-import com.fsck.k9.view.SingleMessageView;
 
 import org.openintents.openpgp.OpenPgpSignatureResult;
 

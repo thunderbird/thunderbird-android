@@ -1,4 +1,4 @@
-package com.fsck.k9.view;
+package com.fsck.k9.ui.messageview;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +42,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
-import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.FileHelper;
@@ -62,11 +61,16 @@ import com.fsck.k9.mailstore.LocalMessageExtractor;
 import com.fsck.k9.mailstore.ViewableContainer;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
+import com.fsck.k9.view.AttachmentView;
+import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
+import com.fsck.k9.view.MessageHeader;
+import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
+import com.fsck.k9.view.MessageWebView;
 import org.apache.commons.io.IOUtils;
 
 
 public class SingleMessageView extends LinearLayout implements OnClickListener,
-        MessageHeader.OnLayoutChangedListener, OnCreateContextMenuListener {
+        OnLayoutChangedListener, OnCreateContextMenuListener {
     private static final int MENU_ITEM_LINK_VIEW = Menu.FIRST;
     private static final int MENU_ITEM_LINK_SHARE = Menu.FIRST + 1;
     private static final int MENU_ITEM_LINK_COPY = Menu.FIRST + 2;
@@ -104,7 +108,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private Button mDownloadRemainder;
     private LayoutInflater mInflater;
     private Contacts mContacts;
-    private AttachmentView.AttachmentFileDownloadCallback attachmentCallback;
+    private AttachmentFileDownloadCallback attachmentCallback;
     private View mAttachmentsContainer;
     private SavedState mSavedState;
     private ClipboardManager mClipboardManager;

@@ -1,5 +1,5 @@
 
-package com.fsck.k9.view;
+package com.fsck.k9.ui.messageview;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,7 +30,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.CryptoHelper;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
-import com.fsck.k9.fragment.MessageViewFragment;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
