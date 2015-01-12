@@ -124,29 +124,6 @@ public class LocalMessage extends MimeMessage {
         return mimeType;
     }
 
-    /**
-     * Fetch the message text for display. This always returns an HTML-ified version of the
-     * message, even if it was originally a text-only message.
-     * @return HTML version of message for display purposes or null.
-     * @throws MessagingException
-     */
-    public String getTextForDisplay() throws MessagingException {
-        String text = null;    // First try and fetch an HTML part.
-        Part part = MimeUtility.findFirstPartByMimeType(this, "text/html");
-        if (part == null) {
-            // If that fails, try and get a text part.
-            part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
-            if (part != null && part.getBody() instanceof LocalTextBody) {
-                text = ((LocalTextBody) part.getBody()).getBodyForDisplay();
-            }
-        } else {
-            // We successfully found an HTML part; do the necessary character set decoding.
-            text = MessageExtractor.getTextFromPart(part);
-        }
-        return text;
-    }
-
-
     /* Custom version of writeTo that updates the MIME message based on localMessage
      * changes.
      */
