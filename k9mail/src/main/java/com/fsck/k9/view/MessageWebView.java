@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.helper.HtmlSanitizer;
+
 
 public class MessageWebView extends RigidWebView {
 
@@ -123,7 +125,9 @@ public class MessageWebView extends RigidWebView {
         }
         content += HtmlConverter.cssStylePre();
         content += "</head><body>" + text + "</body></html>";
-        loadDataWithBaseURL("http://", content, "text/html", "utf-8", null);
+
+        String sanitizedContent = HtmlSanitizer.sanitize(content);
+        loadDataWithBaseURL("http://", sanitizedContent, "text/html", "utf-8", null);
         resumeTimers();
     }
 
