@@ -16,6 +16,8 @@ import static org.junit.Assert.assertArrayEquals;
 
 
 public class ImapConnectionTest extends TestCase {
+    private static final String[] CAPABILITIES = new String[] { "IMAP4REV1", "LITERAL+", "QUOTA" };
+    
     private StubMailServer stubMailServer;
     private ImapConnection connection;
     private TestImapSettings settings = new TestImapSettings(UserForImap.TEST_USER);
@@ -24,8 +26,7 @@ public class ImapConnectionTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         stubMailServer = new StubMailServer();
-        connection = new ImapConnection(settings, null,
-                null);
+        connection = new ImapConnection(settings, null, null);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class ImapConnectionTest extends TestCase {
         stubMailServer.stop();
     }
 
-    public void testOpenConnectionWithWrongCredentials() throws Exception {
+    public void testOpenConnectionWithWrongCredentialsThrowsAuthenticationFailedException() throws Exception {
         connection = new ImapConnection(new TestImapSettings("wrong", "password"), null, null);
         try {
             connection.open();
@@ -45,22 +46,34 @@ public class ImapConnectionTest extends TestCase {
         }
     }
 
-    public void testOpenConnection() throws Exception {
+    public void testSuccessfulOpenConnectionTogglesOpenState() throws Exception {
         connection.open();
         assertTrue(connection.isOpen());
     }
 
-    public void testOpenAndCloseConnection() throws Exception {
+    public void testSuccessfulOpenAndCloseConnectionTogglesOpenState() throws Exception {
         connection.open();
         connection.close();
         assertFalse(connection.isOpen());
     }
 
-    public void testCapabilities() throws Exception {
+    public void testCapabilitiesAreInitiallyEmpty() throws Exception {
+        assertTrue(connection.getCapabilities().isEmpty());
+    }
+
+    public void testCapabilitiesListGetsParsedCorrectly() throws Exception {
         connection.open();
         List<String> capabilities = new ArrayList<String>(connection.getCapabilities());
         Collections.sort(capabilities);
-        assertArrayEquals(new String[] { "IMAP4REV1", "LITERAL+", "QUOTA" }, capabilities.toArray());
+        assertArrayEquals(CAPABILITIES, capabilities.toArray());
+    }
+
+    public void testHasCapabilityChecks() throws Exception {
+        connection.open();
+        for (String capability : CAPABILITIES) {
+            assertTrue(connection.hasCapability(capability));
+        }
+        assertFalse(connection.hasCapability("FROBAZIFCATE"));
     }
 
     public void testPathPrefixGetsSetCorrectly() throws Exception {
@@ -73,11 +86,17 @@ public class ImapConnectionTest extends TestCase {
         assertEquals(".", settings.getPathDelimiter());
     }
 
+    public void testCombinedPrefixGetsSetCorrectly() throws Exception {
+        connection.open();
+        assertNull(settings.getCombinedPrefix());
+    }
+
     private class TestImapSettings implements ImapSettings {
         private String pathPrefix;
         private String pathDelimiter;
         private String username;
         private String password;
+        private String combinedPrefix;
 
         public TestImapSettings(UserForImap userForImap) {
             this(userForImap.loginUsername, userForImap.password);
@@ -150,11 +169,12 @@ public class ImapConnectionTest extends TestCase {
 
         @Override
         public String getCombinedPrefix() {
-            return null;
+            return combinedPrefix;
         }
 
         @Override
         public void setCombinedPrefix(String prefix) {
+            combinedPrefix = prefix;
         }
     }
 }
