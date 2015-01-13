@@ -17,15 +17,16 @@ import static org.junit.Assert.assertArrayEquals;
 
 public class ImapConnectionTest extends TestCase {
     private static final String[] CAPABILITIES = new String[] { "IMAP4REV1", "LITERAL+", "QUOTA" };
-    
+
     private StubMailServer stubMailServer;
     private ImapConnection connection;
-    private TestImapSettings settings = new TestImapSettings(UserForImap.TEST_USER);
+    private TestImapSettings settings;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         stubMailServer = new StubMailServer();
+        settings = new TestImapSettings(UserForImap.TEST_USER);
         connection = new ImapConnection(settings, null, null);
     }
 
@@ -44,6 +45,10 @@ public class ImapConnectionTest extends TestCase {
             assertTrue(e.getMessage().contains("Invalid login/password"));
             assertFalse(connection.isOpen());
         }
+    }
+
+    public void testConnectionIsInitiallyClosed() throws Exception {
+        assertFalse(connection.isOpen());
     }
 
     public void testSuccessfulOpenConnectionTogglesOpenState() throws Exception {
