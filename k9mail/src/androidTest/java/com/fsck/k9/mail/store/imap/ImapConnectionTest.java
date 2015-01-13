@@ -10,6 +10,7 @@ import com.fsck.k9.endtoend.framework.UserForImap;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.MessagingException;
 import junit.framework.TestCase;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -34,6 +35,16 @@ public class ImapConnectionTest extends TestCase {
     public void tearDown() throws Exception {
         super.tearDown();
         stubMailServer.stop();
+    }
+
+    public void testOpenConnectionWithoutRunningServerThrowsMessagingException() throws Exception {
+        stubMailServer.stop();
+        try {
+            connection.open();
+            fail("expected exception");
+        } catch (MessagingException e) {
+            assertFalse(connection.isOpen());
+        }
     }
 
     public void testOpenConnectionWithWrongCredentialsThrowsAuthenticationFailedException() throws Exception {
