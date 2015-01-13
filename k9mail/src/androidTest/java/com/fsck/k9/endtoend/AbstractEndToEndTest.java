@@ -32,12 +32,12 @@ public abstract class AbstractEndToEndTest<T extends Activity> extends ActivityI
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        state.stubMailServer = new StubMailServer();
         getActivity();
 
         if (bypassWelcome) {
             bypassWelcomeScreen();
         }
-        state.stubMailServer = new StubMailServer();
     }
 
     @Override
