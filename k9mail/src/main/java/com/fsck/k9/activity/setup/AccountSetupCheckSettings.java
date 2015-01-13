@@ -98,7 +98,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         new CheckAccountTask(mAccount).execute(mDirection);
     }
 
-
     private void handleCertificateValidationException(CertificateValidationException cve) {
         Log.e(K9.LOG_TAG, "Error while testing settings", cve);
 
@@ -394,9 +393,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Void> {
         private final Account account;
+
         CheckAccountTask(Account account) {
             this.account = account;
         }
+
         @Override
         protected Void doInBackground(CheckDirection... params) {
             final CheckDirection direction = params[0];
