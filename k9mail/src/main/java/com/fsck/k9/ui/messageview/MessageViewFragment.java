@@ -6,13 +6,16 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
@@ -41,6 +44,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.ui.message.LocalMessageLoader;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
@@ -59,6 +63,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
+
+    private static final int LOCAL_MESSAGE_LOADER_ID = 1;
 
 
     public static MessageViewFragment newInstance(MessageReference reference) {
@@ -105,6 +111,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
     private Context mContext;
 
+    private LoaderCallbacks<LocalMessage> localMessageLoaderCallback = new LocalMessageLoaderCallback();
+
 
     class MessageViewHandler extends Handler {
 
@@ -113,15 +121,6 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
                 @Override
                 public void run() {
                     setProgress(progress);
-                }
-            });
-        }
-
-        public void addAttachment(final View attachmentView) {
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    mMessageView.addAttachment(attachmentView);
                 }
             });
         }
@@ -145,16 +144,6 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
             showToast(context.getString(R.string.status_network_error), Toast.LENGTH_LONG);
         }
-
-        public void invalidIdError() {
-            Context context = getActivity();
-            if (context == null) {
-                return;
-            }
-
-            showToast(context.getString(R.string.status_invalid_id_error), Toast.LENGTH_LONG);
-        }
-
 
         public void fetchingAttachment() {
             Context context = getActivity();
@@ -230,7 +219,12 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
             };
         });
 
-        mMessageView.initialize(this);
+        mMessageView.initialize(this, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onToggleFlagged();
+            }
+        });
         mMessageView.downloadRemainderButton().setOnClickListener(this);
 
         mFragmentListener.messageHeaderViewAvailable(mMessageView.getMessageHeaderView());
@@ -261,10 +255,6 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
     }
 
-    public void displayMessage(MessageReference ref) {
-        displayMessage(ref, true);
-    }
-
     private void displayMessage(MessageReference ref, boolean resetPgpData) {
         mMessageReference = ref;
         if (K9.DEBUG) {
@@ -283,8 +273,47 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         mMessageView.resetView();
         mMessageView.resetHeaderView();
 
-        mController.loadMessageForView(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
+        startLoadingMessageFromDatabase();
 
+        mFragmentListener.updateMenu();
+    }
+
+    private void startLoadingMessageFromDatabase() {
+        getLoaderManager().initLoader(LOCAL_MESSAGE_LOADER_ID, null, localMessageLoaderCallback);
+    }
+
+    private void onLoadMessageFromDatabaseFinished(LocalMessage message) {
+        displayMessageHeader(message);
+
+        if (message.isBodyMissing()) {
+            startDownloadingMessageBody(message);
+        } else {
+            startExtractingTextAndAttachments(message);
+        }
+    }
+
+    private void onLoadMessageFromDatabaseFailed() {
+        mMessageView.showStatusMessage(mContext.getString(R.string.status_invalid_id_error));
+    }
+
+    private void startDownloadingMessageBody(LocalMessage message) {
+        throw new RuntimeException("Not implemented yet");
+    }
+
+    private void startExtractingTextAndAttachments(LocalMessage message) {
+        //TODO: extract in background thread
+        //TODO: handle decryption and signature verification
+        try {
+            mMessageView.setMessage(mAccount, message, mPgpData, mController, mListener);
+            mMessageView.setShowDownloadButton(message);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Error while trying to display message", e);
+        }
+    }
+
+    private void displayMessageHeader(LocalMessage message) {
+        mMessageView.setHeaders(message, mAccount);
+        displayMessageSubject(getSubjectForMessage(message));
         mFragmentListener.updateMenu();
     }
 
@@ -516,6 +545,15 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         }
     }
 
+    private String getSubjectForMessage(LocalMessage message) {
+        String subject = message.getSubject();
+        if (TextUtils.isEmpty(subject)) {
+            return mContext.getString(R.string.general_no_subject);
+        }
+
+        return subject;
+    }
+
     public void moveMessage(MessageReference reference, String destFolderName) {
         mController.moveMessage(mAccount, mMessageReference.folderName, mMessage,
                 destFolderName, null);
@@ -530,126 +568,28 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         @Override
         public void loadMessageForViewHeadersAvailable(final Account account, String folder, String uid,
                 final Message message) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
-                return;
-            }
-
-            /*
-             * Clone the message object because the original could be modified by
-             * MessagingController later. This could lead to a ConcurrentModificationException
-             * when that same object is accessed by the UI thread (below).
-             *
-             * See issue 3953
-             *
-             * This is just an ugly hack to get rid of the most pressing problem. A proper way to
-             * fix this is to make Message thread-safe. Or, even better, rewriting the UI code to
-             * access messages via a ContentProvider.
-             *
-             */
-            final Message clonedMessage = message.clone();
-
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (!clonedMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
-                            !clonedMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        String text = mContext.getString(R.string.message_view_downloading);
-                        mMessageView.showStatusMessage(text);
-                    }
-                    mMessageView.setHeaders(clonedMessage, account);
-                    final String subject = clonedMessage.getSubject();
-                    if (subject == null || subject.equals("")) {
-                        displayMessageSubject(mContext.getString(R.string.general_no_subject));
-                    } else {
-                        displayMessageSubject(clonedMessage.getSubject());
-                    }
-                    mMessageView.setOnFlagListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onToggleFlagged();
-                        }
-                    });
-                }
-            });
+            throw new IllegalStateException();
         }
 
         @Override
         public void loadMessageForViewBodyAvailable(final Account account, String folder,
                 String uid, final Message message) {
-            if (!(message instanceof LocalMessage) ||
-                    !mMessageReference.uid.equals(uid) ||
-                    !mMessageReference.folderName.equals(folder) ||
-                    !mMessageReference.accountUuid.equals(account.getUuid())) {
-                return;
-            }
-
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        mMessage = (LocalMessage) message;
-                        mMessageView.setMessage(account, (LocalMessage) message, mPgpData,
-                                mController, mListener);
-                        mFragmentListener.updateMenu();
-
-                    } catch (MessagingException e) {
-                        Log.v(K9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
-                    }
-                }
-            });
+            throw new IllegalStateException();
         }
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid, final Throwable t) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    setProgress(false);
-                    if (t instanceof IllegalArgumentException) {
-                        mHandler.invalidIdError();
-                    } else {
-                        mHandler.networkError();
-                    }
-                    if (mMessage == null || mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        mMessageView.showStatusMessage(
-                                mContext.getString(R.string.webview_empty_message));
-                    }
-                }
-            });
+            throw new IllegalStateException();
         }
 
         @Override
         public void loadMessageForViewFinished(Account account, String folder, String uid, final Message message) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    setProgress(false);
-                    mMessageView.setShowDownloadButton(message);
-                }
-            });
+            throw new IllegalStateException();
         }
 
         @Override
         public void loadMessageForViewStarted(Account account, String folder, String uid) {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
-                    || !mMessageReference.accountUuid.equals(account.getUuid())) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    setProgress(true);
-                }
-            });
+            throw new IllegalStateException();
         }
 
         @Override
@@ -864,5 +804,27 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
     public LayoutInflater getFragmentLayoutInflater() {
         return mLayoutInflater;
+    }
+
+    class LocalMessageLoaderCallback implements LoaderCallbacks<LocalMessage> {
+        @Override
+        public Loader<LocalMessage> onCreateLoader(int id, Bundle args) {
+            return new LocalMessageLoader(mContext, mController, mAccount, mMessageReference);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<LocalMessage> loader, LocalMessage message) {
+            mMessage = message;
+            if (message == null) {
+                onLoadMessageFromDatabaseFailed();
+            } else {
+                onLoadMessageFromDatabaseFinished(message);
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<LocalMessage> loader) {
+            // Do nothing
+        }
     }
 }

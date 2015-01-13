@@ -554,4 +554,8 @@ public class LocalMessage extends MimeMessage {
     private String getAccountUuid() {
         return getAccount().getUuid();
     }
+
+    public boolean isBodyMissing() {
+        return getBody() == null;
+    }
 }

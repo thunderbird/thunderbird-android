@@ -115,7 +115,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private String mText;
 
 
-    public void initialize(Fragment fragment) {
+    public void initialize(Fragment fragment, OnClickListener flagListener) {
         Activity activity = fragment.getActivity();
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mMessageContentView.configure();
@@ -124,6 +124,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
         mHeaderContainer.setOnLayoutChangedListener(this);
+        mHeaderContainer.setOnFlagListener(flagListener);
 
         mAttachmentsContainer = findViewById(R.id.attachments_container);
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
@@ -491,10 +492,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             mDownloadRemainder.setEnabled(true);
             mDownloadRemainder.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void setOnFlagListener(OnClickListener listener) {
-        mHeaderContainer.setOnFlagListener(listener);
     }
 
     public void showAllHeaders() {

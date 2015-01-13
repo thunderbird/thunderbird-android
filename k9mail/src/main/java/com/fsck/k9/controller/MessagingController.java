@@ -3113,27 +3113,34 @@ public class MessagingController implements Runnable {
         });
     }
 
-    /**
-     * Mark the provided message as read if not disabled by the account setting.
-     *
-     * @param account
-     *         The account the message belongs to.
-     * @param message
-     *         The message to mark as read. This {@link Message} instance will be modify by calling
-     *         {@link Message#setFlag(Flag, boolean)} on it.
-     *
-     * @throws MessagingException
-     *
-     * @see Account#isMarkMessageAsReadOnView()
-     */
-    private void markMessageAsReadOnView(Account account, Message message)
+    public LocalMessage loadMessage(Account account, String folderName, String uid) throws MessagingException {
+        LocalStore localStore = account.getLocalStore();
+        LocalFolder localFolder = localStore.getFolder(folderName);
+        localFolder.open(Folder.OPEN_MODE_RW);
+
+        LocalMessage message = localFolder.getMessage(uid);
+        if (message == null || message.getId() == 0) {
+            throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
+        }
+
+        FetchProfile fp = new FetchProfile();
+        fp.add(FetchProfile.Item.BODY);
+        localFolder.fetch(Collections.singletonList(message), fp, null);
+        localFolder.close();
+
+        markMessageAsReadOnView(account, message);
+
+        return message;
+    }
+
+    private void markMessageAsReadOnView(Account account, LocalMessage message)
             throws MessagingException {
 
         if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
             List<Long> messageIds = Collections.singletonList(message.getId());
             setFlag(account, messageIds, Flag.SEEN, true);
 
-            ((LocalMessage) message).setFlagInternal(Flag.SEEN, true);
+            message.setFlagInternal(Flag.SEEN, true);
         }
     }
 
@@ -4013,7 +4020,7 @@ public class MessagingController implements Runnable {
 
             @Override
             public void act(final Account account, final Folder folder,
-            final List<Message> accountMessages) {
+                    final List<Message> accountMessages) {
                 suppressMessages(account, messages);
 
                 putBackground("deleteMessages", null, new Runnable() {
