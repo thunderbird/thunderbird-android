@@ -37,6 +37,12 @@ public abstract class AbstractEndToEndTest<T extends Activity> extends ActivityI
         if (bypassWelcome) {
             bypassWelcomeScreen();
         }
+        state.stubMailServer = new StubMailServer();
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        state.stubMailServer.stop();
     }
 
     private void bypassWelcomeScreen() {
@@ -51,10 +57,7 @@ public abstract class AbstractEndToEndTest<T extends Activity> extends ActivityI
         }
     }
 
-    protected StubMailServer setupMailServer() {
-        if (null == state.stubMailServer) {
-            state.stubMailServer = new StubMailServer();
-        }
+    public StubMailServer stubMailServer() {
         return state.stubMailServer;
     }
 }

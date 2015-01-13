@@ -45,11 +45,9 @@ public class AccountSetupFlow {
 
         IncomingServerSettingsPage incoming = accountTypePage.clickImap();
 
-        StubMailServer stubMailServer = test.setupMailServer();
+        OutgoingServerSettingsPage outgoing = setupIncomingServerAndClickNext(incoming, test.stubMailServer());
 
-        OutgoingServerSettingsPage outgoing = setupIncomingServerAndClickNext(incoming, stubMailServer);
-
-        AccountOptionsPage accountOptionsPage = setupOutgoingServerAndClickNext(outgoing, stubMailServer);
+        AccountOptionsPage accountOptionsPage = setupOutgoingServerAndClickNext(outgoing, test.stubMailServer());
 
         AccountSetupNamesPage accountSetupNamesPage = accountOptionsPage.clickNext();
 
@@ -61,7 +59,7 @@ public class AccountSetupFlow {
 
         accountsPage.assertAccountExists(accountDescription);
 
-        ApplicationState.getInstance().accounts.add(new AccountForTest(ACCOUNT_NAME, accountDescription, stubMailServer));
+        ApplicationState.getInstance().accounts.add(new AccountForTest(ACCOUNT_NAME, accountDescription, test.stubMailServer()));
 
         return accountsPage;
     }
