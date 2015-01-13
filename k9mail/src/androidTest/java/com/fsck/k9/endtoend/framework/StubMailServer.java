@@ -37,5 +37,9 @@ public class StubMailServer {
     public int getImapPort() {
         return IMAP_SERVER_SETUP.getPort();
     }
+
+    public void stop() {
+        greenmail.stop();
+    }
 }
 
