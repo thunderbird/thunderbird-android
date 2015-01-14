@@ -1,9 +1,14 @@
 package com.fsck.k9.endtoend;
 
+import android.support.test.runner.AndroidJUnit4;
+
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.endtoend.framework.AccountForTest;
 import com.fsck.k9.endtoend.framework.ApplicationState;
 import com.fsck.k9.endtoend.pages.AccountsPage;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 
 /**
  * Creates and removes accounts.
@@ -11,19 +16,25 @@ import com.fsck.k9.endtoend.pages.AccountsPage;
  * Because of the way K-9 shows the start page, there must already be two accounts
  * in existence for this test to work.
  */
+@RunWith(AndroidJUnit4.class)
 public class A010_AccountIntegrationTest extends AbstractEndToEndTest<Accounts>{
 
     public A010_AccountIntegrationTest() {
         super(Accounts.class);
     }
 
-    public void testCreateAccountDirectly() throws Exception {
-        new AccountSetupFlow(this).setupAccountFromAccountsPage(new AccountsPage());
+    @Test
+    public void createAccountDirectly() throws Exception {
+        new AccountSetupFlow().setupAccountFromAccountsPage(new AccountsPage());
     }
 
-    public void testDeleteAccount() {
-
+    @Test
+    public void deleteAccount() {
         AccountsPage accountsPage = new AccountsPage();
+
+        // TODO should not have cross-test-dependencies
+        assertFalse("NB: this test is order dependent and requires A000_WelcomeAndSetupAccountIntegrationTest to run first",
+                ApplicationState.getInstance().accounts.isEmpty());
 
         AccountForTest accountForTest = ApplicationState.getInstance().accounts.get(0);
         accountsPage.assertAccountExists(accountForTest.description);

@@ -24,12 +24,6 @@ public class AccountSetupFlow {
 
     static final String ACCOUNT_NAME = "sendAndReceiveTestName";
 
-    private final AbstractEndToEndTest test;
-
-    public AccountSetupFlow(AbstractEndToEndTest test) {
-        this.test = test;
-    }
-
     public AccountsPage setupAccountFromWelcomePage(WelcomeMessagePage welcomeMessagePage) {
         AccountSetupPage accountSetupPage = welcomeMessagePage.clickNext();
         return setupAccountFromSetupNewAccountActivity(accountSetupPage);
@@ -45,9 +39,12 @@ public class AccountSetupFlow {
 
         IncomingServerSettingsPage incoming = accountTypePage.clickImap();
 
-        OutgoingServerSettingsPage outgoing = setupIncomingServerAndClickNext(incoming, test.stubMailServer());
 
-        AccountOptionsPage accountOptionsPage = setupOutgoingServerAndClickNext(outgoing, test.stubMailServer());
+        StubMailServer stubMailServer = ApplicationState.getInstance().stubMailServer;
+
+        OutgoingServerSettingsPage outgoing = setupIncomingServerAndClickNext(incoming, stubMailServer);
+
+        AccountOptionsPage accountOptionsPage = setupOutgoingServerAndClickNext(outgoing, stubMailServer);
 
         AccountSetupNamesPage accountSetupNamesPage = accountOptionsPage.clickNext();
 
@@ -59,7 +56,7 @@ public class AccountSetupFlow {
 
         accountsPage.assertAccountExists(accountDescription);
 
-        ApplicationState.getInstance().accounts.add(new AccountForTest(ACCOUNT_NAME, accountDescription, test.stubMailServer()));
+        ApplicationState.getInstance().accounts.add(new AccountForTest(ACCOUNT_NAME, accountDescription, stubMailServer));
 
         return accountsPage;
     }
