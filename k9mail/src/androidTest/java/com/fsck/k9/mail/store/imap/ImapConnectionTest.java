@@ -5,78 +5,83 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.support.test.runner.AndroidJUnit4;
+
 import com.fsck.k9.endtoend.framework.StubMailServer;
 import com.fsck.k9.endtoend.framework.UserForImap;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MessagingException;
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
 
 
-public class ImapConnectionTest extends TestCase {
+@RunWith(AndroidJUnit4.class)
+public class ImapConnectionTest  {
     private static final String[] CAPABILITIES = new String[] { "IMAP4REV1", "LITERAL+", "QUOTA" };
 
     private StubMailServer stubMailServer;
     private ImapConnection connection;
     private TestImapSettings settings;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         stubMailServer = new StubMailServer();
         settings = new TestImapSettings(UserForImap.TEST_USER);
         connection = new ImapConnection(settings, null, null);
     }
 
-    @Override
+    @After
     public void tearDown() throws Exception {
-        super.tearDown();
         stubMailServer.stop();
     }
 
+    @Test(expected = MessagingException.class)
     public void testOpenConnectionWithoutRunningServerThrowsMessagingException() throws Exception {
         stubMailServer.stop();
-        try {
-            connection.open();
-            fail("expected exception");
-        } catch (MessagingException e) {
-            assertFalse(connection.isOpen());
-        }
+        connection.open();
     }
 
+    @Test(expected = AuthenticationFailedException.class)
     public void testOpenConnectionWithWrongCredentialsThrowsAuthenticationFailedException() throws Exception {
         connection = new ImapConnection(new TestImapSettings("wrong", "password"), null, null);
-        try {
-            connection.open();
-            fail("expected exception");
-        } catch (AuthenticationFailedException e) {
-            assertTrue(e.getMessage().contains("Invalid login/password"));
-            assertFalse(connection.isOpen());
-        }
+        connection.open();
     }
 
+    @Test
     public void testConnectionIsInitiallyClosed() throws Exception {
         assertFalse(connection.isOpen());
     }
 
+    @Test
     public void testSuccessfulOpenConnectionTogglesOpenState() throws Exception {
         connection.open();
         assertTrue(connection.isOpen());
     }
 
+    @Test
     public void testSuccessfulOpenAndCloseConnectionTogglesOpenState() throws Exception {
         connection.open();
         connection.close();
         assertFalse(connection.isOpen());
     }
 
+    @Test
     public void testCapabilitiesAreInitiallyEmpty() throws Exception {
         assertTrue(connection.getCapabilities().isEmpty());
     }
 
+    @Test
     public void testCapabilitiesListGetsParsedCorrectly() throws Exception {
         connection.open();
         List<String> capabilities = new ArrayList<String>(connection.getCapabilities());
@@ -84,6 +89,7 @@ public class ImapConnectionTest extends TestCase {
         assertArrayEquals(CAPABILITIES, capabilities.toArray());
     }
 
+    @Test
     public void testHasCapabilityChecks() throws Exception {
         connection.open();
         for (String capability : CAPABILITIES) {
@@ -92,16 +98,19 @@ public class ImapConnectionTest extends TestCase {
         assertFalse(connection.hasCapability("FROBAZIFCATE"));
     }
 
+    @Test
     public void testPathPrefixGetsSetCorrectly() throws Exception {
         connection.open();
         assertEquals("", settings.getPathPrefix());
     }
 
+    @Test
     public void testPathDelimiterGetsParsedCorrectly() throws Exception {
         connection.open();
         assertEquals(".", settings.getPathDelimiter());
     }
 
+    @Test
     public void testCombinedPrefixGetsSetCorrectly() throws Exception {
         connection.open();
         assertNull(settings.getCombinedPrefix());
