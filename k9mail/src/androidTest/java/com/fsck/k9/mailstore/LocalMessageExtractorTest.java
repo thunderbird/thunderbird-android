@@ -3,22 +3,30 @@ package com.fsck.k9.mailstore;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-import android.test.AndroidTestCase;
+
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static com.fsck.k9.mailstore.LocalMessageExtractor.extractTextAndAttachments;
+import static junit.framework.Assert.assertEquals;
 
-public class LocalMessageExtractorTest extends AndroidTestCase {
 
+@RunWith(AndroidJUnit4.class)
+public class LocalMessageExtractorTest {
+
+    @Test
     public void testSimplePlainTextMessage() throws MessagingException {
         String bodyText = "K-9 Mail rocks :>";
 
@@ -30,7 +38,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
         MimeMessageHelper.setBody(message, body);
 
         // Extract text
-        ViewableContainer container = extractTextAndAttachments(getContext(), message);
+        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(), message);
 
         String expectedText = bodyText;
         String expectedHtml =
@@ -42,6 +50,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
         assertEquals(expectedHtml, container.html);
     }
 
+    @Test
     public void testSimpleHtmlMessage() throws MessagingException {
         String bodyText = "<strong>K-9 Mail</strong> rocks :&gt;";
 
@@ -54,7 +63,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
         MimeMessageHelper.setBody(message, body);
 
         // Extract text
-        ViewableContainer container = extractTextAndAttachments(getContext(), message);
+        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(), message);
 
         String expectedText = "K-9 Mail rocks :>";
         String expectedHtml =
@@ -64,6 +73,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
         assertEquals(expectedHtml, container.html);
     }
 
+    @Test
     public void testMultipartPlainTextMessage() throws MessagingException {
         String bodyText1 = "text body 1";
         String bodyText2 = "text body 2";
@@ -84,7 +94,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
         MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
-        ViewableContainer container = extractTextAndAttachments(getContext(), message);
+        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(), message);
 
         String expectedText =
                 bodyText1 + "\r\n\r\n" +
@@ -105,8 +115,9 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
         assertEquals(expectedHtml, container.html);
     }
 
+    @Test
     public void testTextPlusRfc822Message() throws MessagingException {
-        K9ActivityCommon.setLanguage(getContext(), "en");
+        K9ActivityCommon.setLanguage(InstrumentationRegistry.getTargetContext(), "en");
         Locale.setDefault(Locale.US);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"));
 
@@ -140,7 +151,7 @@ public class LocalMessageExtractorTest extends AndroidTestCase {
         MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
-        ViewableContainer container = extractTextAndAttachments(getContext(), message);
+        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(), message);
 
         String expectedText =
                 bodyText +
