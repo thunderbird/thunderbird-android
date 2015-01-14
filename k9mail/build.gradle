@@ -23,17 +23,10 @@ dependencies {
 
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
-
-    androidTestCompile("com.icegreen:greenmail:1.4.1-SNAPSHOT") {
-        // Use a better, later version
-        exclude group: "com.sun.mail"
-        exclude group: "junit"
+    androidTestCompile('com.icegreen:greenmail:1.4.1-SNAPSHOT') {
+        exclude group: 'junit'
     }
-
-    // this version avoids some "Ignoring InnerClasses attribute for an anonymous inner class" warnings
-    androidTestCompile "javax.mail:javax.mail-api:1.5.2"
-
-    androidTestCompile "com.madgag.spongycastle:pg:1.51.0.0"
+    androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
 }
 
 android {
