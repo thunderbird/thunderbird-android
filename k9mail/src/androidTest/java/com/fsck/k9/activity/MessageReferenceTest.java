@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class MessageReferenceTest
@@ -71,20 +70,13 @@ public class MessageReferenceTest
         assertNull(mr.accountUuid);
     }
 
-    @Test
+    @Test(expected = MessagingException.class)
     public void testNull() throws MessagingException
     {
-        try
-        {
-            new MessageReference(null);
-            assertTrue(false);
-        } catch (MessagingException e)
-        {
-            assertTrue(true);
-        }
+        new MessageReference(null);
     }
 
-    @Test
+    @Test(expected = MessagingException.class)
     public void testCorruption() throws MessagingException
     {
         MessageReference mr = new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWERED");
@@ -94,13 +86,6 @@ public class MessageReferenceTest
         assertNotNull(mr.uid);
 
         // Corruption in the Flag should throw MessagingException.
-        try
-        {
-            new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
-            assertTrue(false);
-        } catch (MessagingException e)
-        {
-            assertTrue(true);
-        }
+        new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
     }
 }
