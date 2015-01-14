@@ -44,6 +44,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import com.fsck.k9.view.AttachmentView;
 import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
@@ -65,6 +67,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
 
     private static final int LOCAL_MESSAGE_LOADER_ID = 1;
+    private static final int DECODE_MESSAGE_LOADER_ID = 2;
 
 
     public static MessageViewFragment newInstance(MessageReference reference) {
@@ -112,6 +115,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     private Context mContext;
 
     private LoaderCallbacks<LocalMessage> localMessageLoaderCallback = new LocalMessageLoaderCallback();
+    private LoaderCallbacks<MessageViewInfo> decodeMessageLoaderCallback = new DecodeMessageLoaderCallback();
+    private MessageViewInfo messageViewInfo;
 
 
     class MessageViewHandler extends Handler {
@@ -301,11 +306,19 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     }
 
     private void startExtractingTextAndAttachments(LocalMessage message) {
-        //TODO: extract in background thread
+        getLoaderManager().initLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
+    }
+
+    private void onDecodeMessageFinished(MessageViewInfo messageContainer) {
         //TODO: handle decryption and signature verification
+        this.messageViewInfo = messageContainer;
+        showMessage(messageContainer);
+    }
+
+    private void showMessage(MessageViewInfo messageContainer) {
         try {
-            mMessageView.setMessage(mAccount, message, mPgpData, mController, mListener);
-            mMessageView.setShowDownloadButton(message);
+            mMessageView.setMessage(mAccount, messageContainer, mPgpData, mController, mListener);
+            mMessageView.setShowDownloadButton(mMessage);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Error while trying to display message", e);
         }
@@ -656,7 +669,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
             PgpData data = new PgpData();
             data.setDecryptedData(decryptedData);
             data.setSignatureResult(signatureResult);
-            mMessageView.setMessage(mAccount, (LocalMessage) mMessage, data, mController, mListener);
+            mMessageView.setMessage(mAccount, messageViewInfo, data, mController, mListener);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }
@@ -809,11 +822,13 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     class LocalMessageLoaderCallback implements LoaderCallbacks<LocalMessage> {
         @Override
         public Loader<LocalMessage> onCreateLoader(int id, Bundle args) {
+            setProgress(true);
             return new LocalMessageLoader(mContext, mController, mAccount, mMessageReference);
         }
 
         @Override
         public void onLoadFinished(Loader<LocalMessage> loader, LocalMessage message) {
+            setProgress(false);
             mMessage = message;
             if (message == null) {
                 onLoadMessageFromDatabaseFailed();
@@ -824,6 +839,25 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
         @Override
         public void onLoaderReset(Loader<LocalMessage> loader) {
+            // Do nothing
+        }
+    }
+
+    class DecodeMessageLoaderCallback implements LoaderCallbacks<MessageViewInfo> {
+        @Override
+        public Loader<MessageViewInfo> onCreateLoader(int id, Bundle args) {
+            setProgress(true);
+            return new DecodeMessageLoader(mContext, mMessage);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<MessageViewInfo> loader, MessageViewInfo messageContainer) {
+            setProgress(false);
+            onDecodeMessageFinished(messageContainer);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<MessageViewInfo> loader) {
             // Do nothing
         }
     }

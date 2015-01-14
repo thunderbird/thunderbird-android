@@ -2,10 +2,7 @@ package com.fsck.k9.view;
 
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 import android.content.ActivityNotFoundException;
@@ -14,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -43,15 +39,12 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mailstore.LocalAttachmentBodyPart;
-import com.fsck.k9.provider.AttachmentProvider;
-import org.apache.commons.io.IOUtils;
 
 
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
     private Context context;
     private Message message;
-    private LocalAttachmentBodyPart part;
+    private Part part;
     private Account account;
     private MessagingController controller;
     private MessagingListener listener;
@@ -96,10 +89,10 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
      *
      * @return {@code true} for a regular attachment. {@code false} for attachments that should be initially hidden.
      */
-    public boolean populateFromPart(Part inputPart, Message message, Account account,
+    public boolean populateFromPart(Part part, Message message, Account account,
             MessagingController controller, MessagingListener listener) throws MessagingException {
 
-        part = (LocalAttachmentBodyPart) inputPart;
+        this.part = part;
         this.message = message;
         this.account = account;
         this.controller = controller;
@@ -247,19 +240,21 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     private void writeAttachmentToStorage(File file) throws IOException {
-        Uri uri = AttachmentProvider.getAttachmentUri(account, part.getAttachmentId());
-        InputStream in = context.getContentResolver().openInputStream(uri);
-        try {
-            OutputStream out = new FileOutputStream(file);
-            try {
-                IOUtils.copy(in, out);
-                out.flush();
-            } finally {
-                out.close();
-            }
-        } finally {
-            in.close();
-        }
+        //FIXME
+        throw new RuntimeException("temporarily disabled");
+//        Uri uri = AttachmentProvider.getAttachmentUri(account, part.getAttachmentId());
+//        InputStream in = context.getContentResolver().openInputStream(uri);
+//        try {
+//            OutputStream out = new FileOutputStream(file);
+//            try {
+//                IOUtils.copy(in, out);
+//                out.flush();
+//            } finally {
+//                out.close();
+//            }
+//        } finally {
+//            in.close();
+//        }
     }
 
     public void showFile() {
@@ -323,14 +318,16 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     private Intent createViewIntentForAttachmentProviderUri(String mimeType) {
-        Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(), mimeType, name);
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, mimeType);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        addUiIntentFlags(intent);
-
-        return intent;
+        //FIXME
+        throw new RuntimeException("temporarily disabled");
+//        Uri uri = AttachmentProvider.getAttachmentUriForViewing(account, part.getAttachmentId(), mimeType, name);
+//
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setDataAndType(uri, mimeType);
+//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        addUiIntentFlags(intent);
+//
+//        return intent;
     }
 
     private Intent createViewIntentForFileUri(String mimeType, Uri uri) {
@@ -422,20 +419,22 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
 
         private Bitmap getPreviewIcon() {
-            Bitmap icon = null;
-            try {
-                InputStream input = context.getContentResolver().openInputStream(
-                        AttachmentProvider.getAttachmentThumbnailUri(account,
-                                part.getAttachmentId(),
-                                62,
-                                62));
-                icon = BitmapFactory.decodeStream(input);
-                input.close();
-            } catch (Exception e) {
-                // We don't care what happened, we just return null for the preview icon.
-            }
-
-            return icon;
+            //FIXME - temporarily disabled
+            return null;
+//            Bitmap icon = null;
+//            try {
+//                InputStream input = context.getContentResolver().openInputStream(
+//                        AttachmentProvider.getAttachmentThumbnailUri(account,
+//                                part.getAttachmentId(),
+//                                62,
+//                                62));
+//                icon = BitmapFactory.decodeStream(input);
+//                input.close();
+//            } catch (Exception e) {
+//                // We don't care what happened, we just return null for the preview icon.
+//            }
+//
+//            return icon;
         }
 
         protected void onPostExecute(Bitmap previewIcon) {

@@ -52,13 +52,9 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mailstore.LocalAttachmentBodyPart;
-import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.LocalMessageExtractor;
-import com.fsck.k9.mailstore.ViewableContainer;
+import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
 import com.fsck.k9.view.AttachmentView;
@@ -502,7 +498,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         return mHeaderContainer.additionalHeadersVisible();
     }
     
-    public void setMessage(Account account, LocalMessage message, PgpData pgpData,
+    public void setMessage(Account account, MessageViewInfo messageViewInfo, PgpData pgpData,
             MessagingController controller, MessagingListener listener) throws MessagingException {
         resetView();
 
@@ -515,18 +511,16 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
 
         if (text == null) {
-            //FIXME: Run the text extraction in a background thread because it might involve disk I/O
-            ViewableContainer viewables = LocalMessageExtractor.extractTextAndAttachments(getContext(), message);
-            text = viewables.html;
+            text = messageViewInfo.text;
         }
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
         mText = text;
 
-        mHasAttachments = message.hasAttachments();
+        mHasAttachments = !messageViewInfo.attachments.isEmpty();
 
         if (mHasAttachments) {
-            renderAttachments(message, 0, message, account, controller, listener);
+            renderAttachments(messageViewInfo, account, controller, listener);
         }
 
         mHiddenAttachments.setVisibility(View.GONE);
@@ -558,7 +552,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             // button wasn't already pressed, see if the user's preferences has us
             // showing them anyway.
             if (Utility.hasExternalImages(text) && !showPictures()) {
-                Address[] from = message.getFrom();
+                Address[] from = messageViewInfo.message.getFrom();
                 if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                         ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
                          // Make sure we have at least one from address
@@ -574,7 +568,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (text != null) {
             loadBodyFromText(text);
             mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
-                    pgpData.getSignatureResult(), message);
+                    pgpData.getSignatureResult(), messageViewInfo.message);
         } else {
             showStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
@@ -613,26 +607,20 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
     }
 
-    public void renderAttachments(Part part, int depth, Message message, Account account,
-                                  MessagingController controller, MessagingListener listener) throws MessagingException {
+    public void renderAttachments(MessageViewInfo messageContainer, Account account, MessagingController controller,
+            MessagingListener listener) throws MessagingException {
 
-        if (part.getBody() instanceof Multipart) {
-            Multipart mp = (Multipart) part.getBody();
-            for (int i = 0; i < mp.getCount(); i++) {
-                renderAttachments(mp.getBodyPart(i), depth + 1, message, account, controller, listener);
-            }
-        } else if (part instanceof LocalAttachmentBodyPart) {
-            AttachmentView view = (AttachmentView)mInflater.inflate(R.layout.message_view_attachment, null);
+        for (Part attachment : messageContainer.attachments) {
+            AttachmentView view = (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);
 
-            try {
-                if (view.populateFromPart(part, message, account, controller, listener)) {
-                    addAttachment(view);
-                } else {
-                    addHiddenAttachment(view);
-                }
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Error adding attachment view", e);
+            boolean isFirstClassAttachment = view.populateFromPart(attachment, messageContainer.message, account,
+                    controller, listener);
+
+            if (isFirstClassAttachment) {
+                addAttachment(view);
+            } else {
+                addHiddenAttachment(view);
             }
         }
     }

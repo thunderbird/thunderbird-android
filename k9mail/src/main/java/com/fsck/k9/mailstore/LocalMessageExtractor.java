@@ -467,4 +467,10 @@ public class LocalMessageExtractor {
         }
         return new ViewableContainer(text, html, attachments);
     }
+
+    public static MessageViewInfo decodeMessageForView(Context context, Message message) throws MessagingException {
+        //TODO: Modify extractTextAndAttachments() to only extract the text type (plain vs. HTML) we currently need.
+        ViewableContainer viewable = LocalMessageExtractor.extractTextAndAttachments(context, message);
+        return new MessageViewInfo(viewable.html, viewable.attachments, message);
+    }
 }
