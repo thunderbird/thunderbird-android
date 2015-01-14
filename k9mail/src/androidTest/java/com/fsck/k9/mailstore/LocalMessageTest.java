@@ -1,24 +1,43 @@
 package com.fsck.k9.mailstore;
 
 
-import android.test.AndroidTestCase;
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMultipart;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static junit.framework.Assert.assertEquals;
 
 
-public class LocalMessageTest extends AndroidTestCase {
+@RunWith(AndroidJUnit4.class)
+public class LocalMessageTest {
     private LocalMessage message;
+    private Account account;
+    private Preferences preferences;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-        Preferences preferences = Preferences.getPreferences(getContext());
-        LocalStore store = LocalStore.getInstance(preferences.newAccount(), getContext());
+        Context targetContext = InstrumentationRegistry.getTargetContext();
+        preferences = Preferences.getPreferences(targetContext);
+        account = preferences.newAccount();
+        LocalStore store = LocalStore.getInstance(account, targetContext);
         message = new LocalMessage(store, "uid", new LocalFolder(store, "test"));
     }
 
+    @After
+    public void tearDown() throws Exception {
+        preferences.deleteAccount(account);
+    }
+
+    @Test
     public void testGetDisplayTextWithPlainTextPart() throws Exception {
         String textBodyText = "text body";
 
@@ -29,6 +48,7 @@ public class LocalMessageTest extends AndroidTestCase {
         assertEquals("text body", message.getTextForDisplay());
     }
 
+    @Test
     public void testGetDisplayTextWithHtmlPart() throws Exception {
         String htmlBodyText = "html body";
         String textBodyText = "text body";
