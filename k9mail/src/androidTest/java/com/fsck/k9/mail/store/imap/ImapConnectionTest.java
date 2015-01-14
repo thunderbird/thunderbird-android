@@ -15,7 +15,6 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MessagingException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
