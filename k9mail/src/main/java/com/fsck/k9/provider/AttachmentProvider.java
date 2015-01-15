@@ -52,9 +52,9 @@ public class AttachmentProvider extends ContentProvider {
     }
 
 
-    public static Uri getAttachmentUri(Account account, long id) {
+    public static Uri getAttachmentUri(String accountUuid, long id) {
         return CONTENT_URI.buildUpon()
-                .appendPath(account.getUuid())
+                .appendPath(accountUuid)
                 .appendPath(Long.toString(id))
                 .appendPath(FORMAT_RAW)
                 .build();

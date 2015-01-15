@@ -16,6 +16,7 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
+import com.fsck.k9.provider.AttachmentProvider;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -495,7 +496,10 @@ public class LocalMessageExtractor {
             } catch (NumberFormatException e) { /* ignore */ }
         }
 
-        Uri uri = Uri.parse("dummy://this.needs.fixing"); //FIXME
+        LocalPart localPart = (LocalPart) part;
+        String accountUuid = localPart.getAccountUuid();
+        long messagePartId = localPart.getId();
+        Uri uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
 
         return new AttachmentViewInfo(mimeType, name, size, uri, firstClassAttachment, part);
     }
