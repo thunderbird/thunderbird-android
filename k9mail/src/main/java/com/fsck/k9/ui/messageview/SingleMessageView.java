@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -39,8 +41,6 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
@@ -52,12 +52,11 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
-import com.fsck.k9.ui.messageview.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
@@ -103,11 +102,12 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private Button mDownloadRemainder;
     private LayoutInflater mInflater;
     private Contacts mContacts;
-    private AttachmentFileDownloadCallback attachmentCallback;
+    private AttachmentViewCallback attachmentCallback;
     private View mAttachmentsContainer;
     private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
     private String mText;
+    private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<AttachmentViewInfo, AttachmentView>();
 
 
     public void initialize(Fragment fragment, OnClickListener flagListener) {
@@ -497,8 +497,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         return mHeaderContainer.additionalHeadersVisible();
     }
     
-    public void setMessage(Account account, MessageViewInfo messageViewInfo, PgpData pgpData,
-            MessagingController controller, MessagingListener listener) throws MessagingException {
+    public void setMessage(Account account, MessageViewInfo messageViewInfo, PgpData pgpData)
+            throws MessagingException {
         resetView();
 
         String text = null;
@@ -517,9 +517,8 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mText = text;
 
         mHasAttachments = !messageViewInfo.attachments.isEmpty();
-
         if (mHasAttachments) {
-            renderAttachments(messageViewInfo, account, controller, listener);
+            renderAttachments(messageViewInfo);
         }
 
         mHiddenAttachments.setVisibility(View.GONE);
@@ -593,30 +592,15 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mMessageContentView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    public void setAttachmentsEnabled(boolean enabled) {
-        for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
-            AttachmentView attachment = (AttachmentView) mAttachments.getChildAt(i);
-            attachment.setButtonsEnabled(enabled);
-        }
-    }
-
-    public void removeAllAttachments() {
-        for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
-            mAttachments.removeView(mAttachments.getChildAt(i));
-        }
-    }
-
-    public void renderAttachments(MessageViewInfo messageContainer, Account account, MessagingController controller,
-            MessagingListener listener) throws MessagingException {
-
-        for (Part attachment : messageContainer.attachments) {
+    public void renderAttachments(MessageViewInfo messageContainer) throws MessagingException {
+        for (AttachmentViewInfo attachment : messageContainer.attachments) {
             AttachmentView view = (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);
+            view.setAttachment(attachment);
 
-            boolean isFirstClassAttachment = view.populateFromPart(attachment, messageContainer.message, account,
-                    controller, listener);
+            attachments.put(attachment, view);
 
-            if (isFirstClassAttachment) {
+            if (attachment.firstClassAttachment) {
                 addAttachment(view);
             } else {
                 addHiddenAttachment(view);
@@ -667,12 +651,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mHeaderContainer.setVisibility(View.GONE);
     }
 
-    public AttachmentView.AttachmentFileDownloadCallback getAttachmentCallback() {
-        return attachmentCallback;
-    }
-
-    public void setAttachmentCallback(
-        AttachmentView.AttachmentFileDownloadCallback attachmentCallback) {
+    public void setAttachmentCallback(AttachmentViewCallback attachmentCallback) {
         this.attachmentCallback = attachmentCallback;
     }
 
@@ -709,6 +688,18 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (mMessageContentView != null) {
             mMessageContentView.invalidate();
         }
+    }
+
+    public void enableAttachmentViewButton(AttachmentViewInfo attachment) {
+        getAttachmentView(attachment).enableViewButton();
+    }
+
+    public void disableAttachmentViewButton(AttachmentViewInfo attachment) {
+        getAttachmentView(attachment).disableViewButton();
+    }
+
+    private AttachmentView getAttachmentView(AttachmentViewInfo attachment) {
+        return attachments.get(attachment);
     }
 
     static class SavedState extends BaseSavedState {

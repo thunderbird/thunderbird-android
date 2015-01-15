@@ -1,20 +1,19 @@
 package com.fsck.k9.ui.messageview;
 
-import java.io.File;
+
 import java.util.Collections;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -32,7 +31,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
@@ -40,21 +38,18 @@ import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
+import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
-import com.fsck.k9.ui.messageview.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
-
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
-public class MessageViewFragment extends Fragment implements OnClickListener,
-        ConfirmationDialogFragmentListener {
+public class MessageViewFragment extends Fragment implements OnClickListener, ConfirmationDialogFragmentListener,
+        AttachmentViewCallback {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -86,15 +81,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     private MessageReference mMessageReference;
     private LocalMessage mMessage;
     private MessagingController mController;
-    private Listener mListener = new Listener();
-    private MessageViewHandler mHandler = new MessageViewHandler();
     private LayoutInflater mLayoutInflater;
-
-    /** this variable is used to save the calling AttachmentView
-     *  until the onActivityResult is called.
-     *  => with this reference we can identity the caller
-     */
-    private AttachmentView attachmentTmpStore;
 
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
@@ -116,48 +103,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
     private LoaderCallbacks<LocalMessage> localMessageLoaderCallback = new LocalMessageLoaderCallback();
     private LoaderCallbacks<MessageViewInfo> decodeMessageLoaderCallback = new DecodeMessageLoaderCallback();
     private MessageViewInfo messageViewInfo;
+    private AttachmentViewInfo currentAttachmentViewInfo;
 
-
-    class MessageViewHandler extends Handler {
-
-        public void progress(final boolean progress) {
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    setProgress(progress);
-                }
-            });
-        }
-
-        /* A helper for a set of "show a toast" methods */
-        private void showToast(final String message, final int toastLength)  {
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(getActivity(), message, toastLength).show();
-                }
-            });
-        }
-
-        public void networkError() {
-            // FIXME: This is a hack. Fix the Handler madness!
-            Context context = getActivity();
-            if (context == null) {
-                return;
-            }
-
-            showToast(context.getString(R.string.status_network_error), Toast.LENGTH_LONG);
-        }
-
-        public void fetchingAttachment() {
-            Context context = getActivity();
-            if (context == null) {
-                return;
-            }
-
-            showToast(context.getString(R.string.message_view_fetching_attachment_toast), Toast.LENGTH_SHORT);
-        }
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -195,33 +142,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
         mMessageView = (SingleMessageView) view.findViewById(R.id.message_view);
 
-        //set a callback for the attachment view. With this callback the attachmentview
-        //request the start of a filebrowser activity.
-        mMessageView.setAttachmentCallback(new AttachmentFileDownloadCallback() {
-
-            @Override
-            public void pickDirectoryToSaveAttachmentTo(final AttachmentView caller) {
-                FileBrowserHelper.getInstance()
-                .showFileBrowserActivity(MessageViewFragment.this,
-                                         null,
-                                         ACTIVITY_CHOOSE_DIRECTORY,
-                                         callback);
-                attachmentTmpStore = caller;
-            }
-
-            FileBrowserFailOverCallback callback = new FileBrowserFailOverCallback() {
-
-                @Override
-                public void onPathEntered(String path) {
-                    attachmentTmpStore.writeFile(new File(path));
-                }
-
-                @Override
-                public void onCancel() {
-                    // canceled, do nothing
-                }
-            };
-        });
+        mMessageView.setAttachmentCallback(this);
 
         mMessageView.initialize(this, new OnClickListener() {
             @Override
@@ -246,7 +167,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
             messageReference = (MessageReference) savedInstanceState.get(STATE_MESSAGE_REFERENCE);
         } else {
             Bundle args = getArguments();
-            messageReference = (MessageReference) args.getParcelable(ARG_REFERENCE);
+            messageReference = args.getParcelable(ARG_REFERENCE);
         }
 
         displayMessage(messageReference, (mPgpData == null));
@@ -316,7 +237,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
     private void showMessage(MessageViewInfo messageContainer) {
         try {
-            mMessageView.setMessage(mAccount, messageContainer, mPgpData, mController, mListener);
+            mMessageView.setMessage(mAccount, messageContainer, mPgpData);
             mMessageView.setShowDownloadButton(mMessage);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Error while trying to display message", e);
@@ -474,13 +395,13 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
 
         switch (requestCode) {
             case ACTIVITY_CHOOSE_DIRECTORY: {
-                if (resultCode == Activity.RESULT_OK && data != null) {
+                if (data != null) {
                     // obtain the filename
                     Uri fileUri = data.getData();
                     if (fileUri != null) {
                         String filePath = fileUri.getPath();
                         if (filePath != null) {
-                            attachmentTmpStore.writeFile(new File(filePath));
+                            getAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(filePath);
                         }
                     }
                 }
@@ -535,7 +456,8 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
             return;
         }
         mMessageView.downloadRemainderButton().setEnabled(false);
-        mController.loadMessageForViewRemote(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
+        //FIXME
+//        mController.loadMessageForViewRemote(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
     }
 
     @Override
@@ -576,89 +498,6 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
                 destFolderName, null);
     }
 
-    class Listener extends MessagingListener {
-        @Override
-        public void loadMessageForViewHeadersAvailable(final Account account, String folder, String uid,
-                final Message message) {
-            throw new IllegalStateException();
-        }
-
-        @Override
-        public void loadMessageForViewBodyAvailable(final Account account, String folder,
-                String uid, final Message message) {
-            throw new IllegalStateException();
-        }
-
-        @Override
-        public void loadMessageForViewFailed(Account account, String folder, String uid, final Throwable t) {
-            throw new IllegalStateException();
-        }
-
-        @Override
-        public void loadMessageForViewFinished(Account account, String folder, String uid, final Message message) {
-            throw new IllegalStateException();
-        }
-
-        @Override
-        public void loadMessageForViewStarted(Account account, String folder, String uid) {
-            throw new IllegalStateException();
-        }
-
-        @Override
-        public void loadAttachmentStarted(Account account, Message message, Part part, Object tag, final boolean requiresDownload) {
-            if (mMessage != message) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mMessageView.setAttachmentsEnabled(false);
-                    showDialog(R.id.dialog_attachment_progress);
-                    if (requiresDownload) {
-                        mHandler.fetchingAttachment();
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void loadAttachmentFinished(Account account, Message message, Part part, final Object tag) {
-            if (mMessage != message) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mMessageView.setAttachmentsEnabled(true);
-                    removeDialog(R.id.dialog_attachment_progress);
-                    Object[] params = (Object[]) tag;
-                    boolean download = (Boolean) params[0];
-                    AttachmentView attachment = (AttachmentView) params[1];
-                    if (download) {
-                        attachment.writeFile();
-                    } else {
-                        attachment.showFile();
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void loadAttachmentFailed(Account account, Message message, Part part, Object tag, String reason) {
-            if (mMessage != message) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mMessageView.setAttachmentsEnabled(true);
-                    removeDialog(R.id.dialog_attachment_progress);
-                    mHandler.networkError();
-                }
-            });
-        }
-    }
-    
     /**
      * Used by MessageOpenPgpView
      */
@@ -668,7 +507,7 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
             PgpData data = new PgpData();
             data.setDecryptedData(decryptedData);
             data.setSignatureResult(signatureResult);
-            mMessageView.setMessage(mAccount, messageViewInfo, data, mController, mListener);
+            mMessageView.setMessage(mAccount, messageViewInfo, data);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }
@@ -859,5 +698,42 @@ public class MessageViewFragment extends Fragment implements OnClickListener,
         public void onLoaderReset(Loader<MessageViewInfo> loader) {
             // Do nothing
         }
+    }
+
+    @Override
+    public void onViewAttachment(AttachmentViewInfo attachment) {
+        //TODO: check if we have to download the attachment first
+
+        getAttachmentController(attachment).viewAttachment();
+    }
+
+    @Override
+    public void onSaveAttachment(AttachmentViewInfo attachment) {
+        //TODO: check if we have to download the attachment first
+
+        getAttachmentController(attachment).saveAttachment();
+    }
+
+    @Override
+    public void onSaveAttachmentToUserProvidedDirectory(final AttachmentViewInfo attachment) {
+        //TODO: check if we have to download the attachment first
+
+        currentAttachmentViewInfo = attachment;
+        FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
+                ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
+                    @Override
+                    public void onPathEntered(String path) {
+                        getAttachmentController(attachment).saveAttachmentTo(path);
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // Do nothing
+                    }
+                });
+    }
+
+    private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
+        return new AttachmentController(mMessageView, attachment);
     }
 }

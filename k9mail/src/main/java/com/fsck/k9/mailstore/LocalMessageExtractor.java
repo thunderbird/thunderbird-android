@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Address;
@@ -11,7 +12,9 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
 
 import java.util.ArrayList;
@@ -116,35 +119,6 @@ public class LocalMessageExtractor {
         } catch (Exception e) {
             throw new MessagingException("Couldn't extract viewable parts", e);
         }
-    }
-
-    public static ViewableContainer extractPartsFromDraft(Message message)
-            throws MessagingException {
-
-        Body body = message.getBody();
-        if (message.isMimeType("multipart/mixed") && body instanceof MimeMultipart) {
-            MimeMultipart multipart = (MimeMultipart) body;
-
-            ViewableContainer container;
-            int count = multipart.getCount();
-            if (count >= 1) {
-                // The first part is either a text/plain or a multipart/alternative
-                BodyPart firstPart = multipart.getBodyPart(0);
-                container = extractTextual(firstPart);
-
-                // The rest should be attachments
-                for (int i = 1; i < count; i++) {
-                    BodyPart bodyPart = multipart.getBodyPart(i);
-                    container.attachments.add(bodyPart);
-                }
-            } else {
-                container = new ViewableContainer("", "", new ArrayList<Part>());
-            }
-
-            return container;
-        }
-
-        return extractTextual(message);
     }
 
     /**
@@ -471,6 +445,58 @@ public class LocalMessageExtractor {
     public static MessageViewInfo decodeMessageForView(Context context, Message message) throws MessagingException {
         //TODO: Modify extractTextAndAttachments() to only extract the text type (plain vs. HTML) we currently need.
         ViewableContainer viewable = LocalMessageExtractor.extractTextAndAttachments(context, message);
-        return new MessageViewInfo(viewable.html, viewable.attachments, message);
+        List<AttachmentViewInfo> attachments = extractAttachmentInfos(viewable.attachments);
+        return new MessageViewInfo(viewable.html, attachments, message);
+    }
+
+    private static List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)
+            throws MessagingException {
+
+        List<AttachmentViewInfo> attachments = new ArrayList<AttachmentViewInfo>();
+        for (Part part : attachmentParts) {
+            attachments.add(extractAttachmentInfo(part));
+        }
+
+        return attachments;
+    }
+
+    private static AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
+        boolean firstClassAttachment = true;
+
+        String mimeType = part.getMimeType();
+        String contentTypeHeader = MimeUtility.unfoldAndDecode(part.getContentType());
+        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
+
+        String name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
+        if (name == null) {
+            name = MimeUtility.getHeaderParameter(contentTypeHeader, "name");
+        }
+
+        if (name == null) {
+            firstClassAttachment = false;
+            String extension = MimeUtility.getExtensionByMimeType(mimeType);
+            name = "noname" + ((extension != null) ? "." + extension : "");
+        }
+
+        // Inline parts with a content-id are almost certainly components of an HTML message
+        // not attachments. Only show them if the user pressed the button to show more
+        // attachments.
+        if (contentDisposition != null &&
+                MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)") &&
+                part.getHeader(MimeHeader.HEADER_CONTENT_ID) != null) {
+            firstClassAttachment = false;
+        }
+
+        long size = 0;
+        String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
+        if (sizeParam != null) {
+            try {
+                size = Integer.parseInt(sizeParam);
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+
+        Uri uri = Uri.parse("dummy://this.needs.fixing"); //FIXME
+
+        return new AttachmentViewInfo(mimeType, name, size, uri, firstClassAttachment, part);
     }
 }
