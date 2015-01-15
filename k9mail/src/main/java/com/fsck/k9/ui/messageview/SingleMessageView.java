@@ -57,8 +57,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
-import com.fsck.k9.view.AttachmentView;
-import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
+import com.fsck.k9.ui.messageview.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;

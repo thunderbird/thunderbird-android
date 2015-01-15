@@ -47,8 +47,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
-import com.fsck.k9.view.AttachmentView;
-import com.fsck.k9.view.AttachmentView.AttachmentFileDownloadCallback;
+import com.fsck.k9.ui.messageview.AttachmentView.AttachmentFileDownloadCallback;
 import com.fsck.k9.view.MessageHeader;
 
 import org.openintents.openpgp.OpenPgpSignatureResult;

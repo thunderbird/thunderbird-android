@@ -1,4 +1,4 @@
-package com.fsck.k9.view;
+package com.fsck.k9.ui.messageview;
 
 
 import java.io.File;
