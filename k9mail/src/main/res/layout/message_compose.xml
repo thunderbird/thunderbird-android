@@ -24,13 +24,29 @@
                 android:orientation="vertical"
                 android:background="#45bcbcbc">
 
-                <Button
-                    android:id="@+id/identity"
+                <LinearLayout
+                    android:id="@+id/identity_container"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"/>
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/chip"
+                        android:layout_width="8dip"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="6dip"
+                        android:layout_marginRight="-4dip"
+                        android:layout_marginTop="4dip"
+                        android:layout_marginBottom="4dip" />
+
+                    <Button
+                        android:id="@+id/identity"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="6dip"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/to_wrapper"
