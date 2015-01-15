@@ -686,7 +686,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
             String parentMimeType = parentPart.getMimeType();
             if (parentMimeType.startsWith("multipart/")) {
-                BodyPart bodyPart = new MimeBodyPart();
+                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), id);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (parentMimeType.startsWith("message/")) {
