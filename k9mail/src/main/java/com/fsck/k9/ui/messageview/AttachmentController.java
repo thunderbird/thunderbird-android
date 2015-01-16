@@ -158,12 +158,24 @@ public class AttachmentController {
     }
 
     private Intent createViewIntentForAttachmentProviderUri(String mimeType) {
+        Uri uri = getAttachmentUriForMimeType(attachment, mimeType);
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(attachment.uri, mimeType);
+        intent.setDataAndType(uri, mimeType);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         addUiIntentFlags(intent);
 
         return intent;
+    }
+
+    private Uri getAttachmentUriForMimeType(AttachmentViewInfo attachment, String mimeType) {
+        if (attachment.mimeType.equals(mimeType)) {
+            return attachment.uri;
+        }
+
+        return attachment.uri.buildUpon()
+                .appendPath(mimeType)
+                .build();
     }
 
     private Intent createViewIntentForFileUri(String mimeType, Uri uri) {

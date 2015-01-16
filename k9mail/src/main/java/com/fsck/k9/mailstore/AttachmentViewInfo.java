@@ -12,6 +12,14 @@ public class AttachmentViewInfo {
     public final String mimeType;
     public final String displayName;
     public final long size;
+
+    /**
+     * A content provider URI that can be used to retrieve the decoded attachment.
+     * <p/>
+     * Note: All content providers must support an alternative MIME type appended as last URI segment.
+     *
+     * @see com.fsck.k9.ui.messageview.AttachmentController#getAttachmentUriForMimeType(AttachmentViewInfo, String)
+     */
     public final Uri uri;
     public final boolean firstClassAttachment;
     public final Part part;

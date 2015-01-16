@@ -18,6 +18,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
 import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
@@ -25,16 +26,9 @@ import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
 
 /**
  * A simple ContentProvider that allows file access to attachments.
- * <p>
- * Warning! We make heavy assumptions about the Uris used by the {@link LocalStore} for an
- * {@link Account} here.
- * </p>
  */
 public class AttachmentProvider extends ContentProvider {
     public static final Uri CONTENT_URI = Uri.parse("content://com.fsck.k9.attachmentprovider");
-
-    private static final String FORMAT_RAW = "RAW";
-    private static final String FORMAT_VIEW = "VIEW";
 
     private static final String[] DEFAULT_PROJECTION = new String[] {
             AttachmentProviderColumns._ID,
@@ -53,7 +47,6 @@ public class AttachmentProvider extends ContentProvider {
         return CONTENT_URI.buildUpon()
                 .appendPath(accountUuid)
                 .appendPath(Long.toString(id))
-                .appendPath(FORMAT_RAW)
                 .build();
     }
 
@@ -67,10 +60,9 @@ public class AttachmentProvider extends ContentProvider {
         List<String> segments = uri.getPathSegments();
         String accountUuid = segments.get(0);
         String id = segments.get(1);
-        String format = segments.get(2);
-        String mimeType = (segments.size() < 4) ? null : segments.get(3);
+        String mimeType = (segments.size() < 3) ? null : segments.get(2);
 
-        return getType(accountUuid, id, format, mimeType);
+        return getType(accountUuid, id, mimeType);
     }
 
     @Override
@@ -140,7 +132,7 @@ public class AttachmentProvider extends ContentProvider {
         return null;
     }
 
-    private String getType(String accountUuid, String id, String format, String mimeType) {
+    private String getType(String accountUuid, String id, String mimeType) {
         String type;
         final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
 
@@ -148,14 +140,14 @@ public class AttachmentProvider extends ContentProvider {
             final LocalStore localStore = LocalStore.getInstance(account, getContext());
 
             AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
-            if (FORMAT_VIEW.equals(format) && mimeType != null) {
+            if (mimeType != null) {
                 type = mimeType;
             } else {
                 type = attachmentInfo.type;
             }
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
-            type = null;
+            type = MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE;
         }
 
         return type;
