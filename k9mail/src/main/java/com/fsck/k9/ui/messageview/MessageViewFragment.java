@@ -48,7 +48,7 @@ import com.fsck.k9.view.MessageHeader;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
-public class MessageViewFragment extends Fragment implements OnClickListener, ConfirmationDialogFragmentListener,
+public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
         AttachmentViewCallback {
 
     private static final String ARG_REFERENCE = "reference";
@@ -144,13 +144,19 @@ public class MessageViewFragment extends Fragment implements OnClickListener, Co
 
         mMessageView.setAttachmentCallback(this);
 
-        mMessageView.initialize(this, new OnClickListener() {
+        mMessageView.initialize(this);
+        mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onToggleFlagged();
             }
         });
-        mMessageView.downloadRemainderButton().setOnClickListener(this);
+        mMessageView.setOnDownloadButtonClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDownloadRemainder();
+            }
+        });
 
         mFragmentListener.messageHeaderViewAvailable(mMessageView.getMessageHeaderView());
 
@@ -455,16 +461,9 @@ public class MessageViewFragment extends Fragment implements OnClickListener, Co
         if (mMessage.isSet(Flag.X_DOWNLOADED_FULL)) {
             return;
         }
-        mMessageView.downloadRemainderButton().setEnabled(false);
+        mMessageView.disableDownloadButton();
         //FIXME
 //        mController.loadMessageForViewRemote(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.download_remainder) {
-            onDownloadRemainder();
-        }
     }
 
     private void setProgress(boolean enable) {

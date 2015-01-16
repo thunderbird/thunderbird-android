@@ -110,7 +110,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<AttachmentViewInfo, AttachmentView>();
 
 
-    public void initialize(Fragment fragment, OnClickListener flagListener) {
+    public void initialize(Fragment fragment) {
         Activity activity = fragment.getActivity();
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mMessageContentView.configure();
@@ -119,7 +119,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
         mHeaderContainer.setOnLayoutChangedListener(this);
-        mHeaderContainer.setOnFlagListener(flagListener);
 
         mAttachmentsContainer = findViewById(R.id.attachments_container);
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
@@ -446,10 +445,6 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         showShowPicturesAction(false);
     }
 
-    public Button downloadRemainderButton() {
-        return  mDownloadRemainder;
-    }
-
     public void showShowPicturesAction(boolean show) {
         mShowPicturesAction.setVisibility(show ? View.VISIBLE : View.GONE);
     }
@@ -478,6 +473,18 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         } catch (Exception me) {
             Log.e(K9.LOG_TAG, "setHeaders - error", me);
         }
+    }
+
+    public void setOnToggleFlagClickListener(OnClickListener listener) {
+        mHeaderContainer.setOnFlagListener(listener);
+    }
+
+    public void setOnDownloadButtonClickListener(OnClickListener listener) {
+        mDownloadRemainder.setOnClickListener(listener);
+    }
+
+    public void disableDownloadButton() {
+        mDownloadRemainder.setEnabled(false);
     }
 
     public void setShowDownloadButton(Message message) {
