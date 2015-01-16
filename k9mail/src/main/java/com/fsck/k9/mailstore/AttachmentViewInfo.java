@@ -7,6 +7,8 @@ import com.fsck.k9.mail.Part;
 
 
 public class AttachmentViewInfo {
+    public static final long UNKNOWN_SIZE = -1;
+
     public final String mimeType;
     public final String displayName;
     public final long size;

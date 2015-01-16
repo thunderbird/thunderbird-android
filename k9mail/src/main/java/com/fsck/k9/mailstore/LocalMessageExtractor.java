@@ -462,6 +462,23 @@ public class LocalMessageExtractor {
     }
 
     private static AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
+        if (part instanceof LocalPart) {
+            LocalPart localPart = (LocalPart) part;
+            String accountUuid = localPart.getAccountUuid();
+            long messagePartId = localPart.getId();
+            String mimeType = part.getMimeType();
+            String displayName = localPart.getDisplayName();
+            long size = localPart.getSize();
+            boolean firstClassAttachment = localPart.isFirstClassAttachment();
+            Uri uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
+
+            return new AttachmentViewInfo(mimeType, displayName, size, uri, firstClassAttachment, part);
+        } else {
+            throw new IllegalStateException("Not supported yet");
+        }
+    }
+
+    public static AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri) throws MessagingException {
         boolean firstClassAttachment = true;
 
         String mimeType = part.getMimeType();
@@ -488,18 +505,13 @@ public class LocalMessageExtractor {
             firstClassAttachment = false;
         }
 
-        long size = 0;
+        long size = AttachmentViewInfo.UNKNOWN_SIZE;
         String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
         if (sizeParam != null) {
             try {
                 size = Integer.parseInt(sizeParam);
             } catch (NumberFormatException e) { /* ignore */ }
         }
-
-        LocalPart localPart = (LocalPart) part;
-        String accountUuid = localPart.getAccountUuid();
-        long messagePartId = localPart.getId();
-        Uri uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
 
         return new AttachmentViewInfo(mimeType, name, size, uri, firstClassAttachment, part);
     }

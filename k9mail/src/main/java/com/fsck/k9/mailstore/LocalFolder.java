@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -42,7 +43,6 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
@@ -61,6 +61,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
+    private static final Uri PLACEHOLDER_URI = Uri.EMPTY;
 
     private final LocalStore localStore;
 
@@ -669,11 +670,15 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             throws MessagingException {
 
         long id = cursor.getLong(0);
+        int type = cursor.getInt(1);
         long parentId = cursor.getLong(2);
         String mimeType = cursor.getString(3);
+        long size = cursor.getLong(4);
+        String displayName = cursor.getString(5);
         byte[] header = cursor.getBlob(6);
         int dataLocation = cursor.getInt(9);
         String serverExtra = cursor.getString(15);
+        boolean firstClassAttachment = (type != MessagePartType.HIDDEN_ATTACHMENT);
 
         final Part part;
         if (id == message.getMessagePartId()) {
@@ -686,7 +691,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
             String parentMimeType = parentPart.getMimeType();
             if (parentMimeType.startsWith("multipart/")) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), id);
+                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), id, displayName, size, firstClassAttachment);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (parentMimeType.startsWith("message/")) {
@@ -1353,18 +1358,32 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             cv.put("preamble", multipart.getPreamble());
             cv.put("epilogue", multipart.getEpilogue());
             cv.put("boundary", multipart.getBoundary());
-        } else if (body == null) {
-            //TODO: deal with missing parts
-            cv.put("data_location", DataLocation.MISSING);
         } else {
-            cv.put("data_location", DataLocation.IN_DATABASE);
+            AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part, PLACEHOLDER_URI);
 
-            byte[] bodyData = getBodyBytes(body);
-            String encoding = getTransferEncoding(part);
+            cv.put("display_name", attachment.displayName);
 
-            cv.put("encoding", encoding);
-            cv.put("data", bodyData);
-            cv.put("content_id", part.getContentId());
+            if (body == null) {
+                //TODO: deal with missing parts
+                cv.put("data_location", DataLocation.MISSING);
+                cv.put("decoded_body_size", attachment.size);
+            } else {
+                cv.put("data_location", DataLocation.IN_DATABASE);
+
+                byte[] bodyData = getBodyBytes(body);
+                String encoding = getTransferEncoding(part);
+
+                if (attachment.size == AttachmentViewInfo.UNKNOWN_SIZE) {
+                    //FIXME: Use size of content when transfer encoding is stripped
+                    cv.put("decoded_body_size", bodyData.length);
+                } else {
+                    cv.put("decoded_body_size", attachment.size);
+                }
+
+                cv.put("encoding", encoding);
+                cv.put("data", bodyData);
+                cv.put("content_id", part.getContentId());
+            }
         }
     }
 
@@ -1941,6 +1960,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         static final int TEXT = 3;
         static final int RELATED = 4;
         static final int ATTACHMENT = 5;
+        static final int HIDDEN_ATTACHMENT = 6;
     }
 
     // Note: The contents of the 'message_parts' table depend on these values.
