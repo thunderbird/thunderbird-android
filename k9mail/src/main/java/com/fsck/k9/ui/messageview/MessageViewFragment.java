@@ -8,12 +8,14 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -31,6 +33,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
@@ -82,6 +85,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private LocalMessage mMessage;
     private MessagingController mController;
     private LayoutInflater mLayoutInflater;
+    private Handler handler = new Handler();
+    private DownloadMessageListener downloadMessageListener = new DownloadMessageListener();
 
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
@@ -229,6 +234,27 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private void startDownloadingMessageBody(LocalMessage message) {
         throw new RuntimeException("Not implemented yet");
+    }
+
+    private void onMessageDownloadFinished(LocalMessage message) {
+        mMessage = message;
+
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.destroyLoader(LOCAL_MESSAGE_LOADER_ID);
+        loaderManager.destroyLoader(DECODE_MESSAGE_LOADER_ID);
+
+        onLoadMessageFromDatabaseFinished(mMessage);
+    }
+
+    private void onDownloadMessageFailed(Throwable t) {
+        mMessageView.enableDownloadButton();
+        String errorMessage;
+        if (t instanceof IllegalArgumentException) {
+            errorMessage = mContext.getString(R.string.status_invalid_id_error);
+        } else {
+            errorMessage = mContext.getString(R.string.status_network_error);
+        }
+        Toast.makeText(mContext, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     private void startExtractingTextAndAttachments(LocalMessage message) {
@@ -462,8 +488,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
         mMessageView.disableDownloadButton();
-        //FIXME
-//        mController.loadMessageForViewRemote(mAccount, mMessageReference.folderName, mMessageReference.uid, mListener);
+
+        mController.loadMessageForViewRemote(mAccount, mMessageReference.folderName, mMessageReference.uid,
+                downloadMessageListener);
     }
 
     private void setProgress(boolean enable) {
@@ -734,5 +761,27 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
         return new AttachmentController(mMessageView, attachment);
+    }
+
+    private class DownloadMessageListener extends MessagingListener {
+        @Override
+        public void loadMessageForViewFinished(Account account, String folder, String uid, final LocalMessage message) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    onMessageDownloadFinished(message);
+                }
+            });
+        }
+
+        @Override
+        public void loadMessageForViewFailed(Account account, String folder, String uid, final Throwable t) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    onDownloadMessageFailed(t);
+                }
+            });
+        }
     }
 }

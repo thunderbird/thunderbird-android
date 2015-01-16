@@ -3402,7 +3402,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         @Override
-        public void loadMessageForViewFinished(Account account, String folder, String uid, Message message) {
+        public void loadMessageForViewFinished(Account account, String folder, String uid, LocalMessage message) {
             if ((mMessageReference == null) || !mMessageReference.uid.equals(uid)) {
                 return;
             }

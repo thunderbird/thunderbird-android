@@ -483,6 +483,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mDownloadRemainder.setOnClickListener(listener);
     }
 
+    public void enableDownloadButton() {
+        mDownloadRemainder.setEnabled(true);
+    }
+
     public void disableDownloadButton() {
         mDownloadRemainder.setEnabled(false);
     }

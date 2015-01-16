@@ -91,7 +91,7 @@ public class MessagingListener {
             Message message) {}
 
     public void loadMessageForViewFinished(Account account, String folder, String uid,
-            Message message) {}
+            LocalMessage message) {}
 
     public void loadMessageForViewFailed(Account account, String folder, String uid,
             Throwable t) {}
