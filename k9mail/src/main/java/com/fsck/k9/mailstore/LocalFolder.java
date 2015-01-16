@@ -20,7 +20,6 @@ import java.util.Stack;
 import java.util.UUID;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -48,7 +47,6 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
-import com.fsck.k9.provider.AttachmentProvider;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.parser.ContentHandler;
 import org.apache.james.mime4j.parser.MimeStreamParser;
@@ -1651,7 +1649,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 deleteMessagePartsFromDisk(db, rootMessagePartId);
-                deleteAttachmentThumbnailsFromDisk(db, rootMessagePartId);
                 return null;
             }
         });
@@ -1673,23 +1670,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         Log.d(K9.LOG_TAG, "Couldn't delete message part file: " + file.getAbsolutePath());
                     }
                 }
-            }
-        } finally {
-            cursor.close();
-        }
-    }
-
-    private void deleteAttachmentThumbnailsFromDisk(SQLiteDatabase db, long rootMessagePartId) {
-        Context context = localStore.context;
-        String accountUuid = getAccountUuid();
-
-        Cursor cursor = db.query("message_parts", new String[] { "id" },
-                "root = ? AND type = " + MessagePartType.ATTACHMENT,
-                new String[] { Long.toString(rootMessagePartId) }, null, null, null);
-        try {
-            while (cursor.moveToNext()) {
-                String messagePartId = cursor.getString(0);
-                AttachmentProvider.deleteThumbnail(context, accountUuid, messagePartId);
             }
         } finally {
             cursor.close();

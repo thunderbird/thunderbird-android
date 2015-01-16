@@ -1,13 +1,15 @@
 package com.fsck.k9.provider;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -16,13 +18,9 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
 import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
-
-import java.io.*;
-import java.util.List;
 
 
 /**
@@ -37,7 +35,6 @@ public class AttachmentProvider extends ContentProvider {
 
     private static final String FORMAT_RAW = "RAW";
     private static final String FORMAT_VIEW = "VIEW";
-    private static final String FORMAT_THUMBNAIL = "THUMBNAIL";
 
     private static final String[] DEFAULT_PROJECTION = new String[] {
             AttachmentProviderColumns._ID,
@@ -60,86 +57,8 @@ public class AttachmentProvider extends ContentProvider {
                 .build();
     }
 
-    public static Uri getAttachmentUriForViewing(Account account, long id, String mimeType, String filename) {
-        return CONTENT_URI.buildUpon()
-                .appendPath(account.getUuid())
-                .appendPath(Long.toString(id))
-                .appendPath(FORMAT_VIEW)
-                .appendPath(mimeType)
-                .appendPath(filename)
-                .build();
-    }
-
-    public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height) {
-        return CONTENT_URI.buildUpon()
-                .appendPath(account.getUuid())
-                .appendPath(Long.toString(id))
-                .appendPath(FORMAT_THUMBNAIL)
-                .appendPath(Integer.toString(width))
-                .appendPath(Integer.toString(height))
-                .build();
-    }
-
-    public static void clear(Context context) {
-        /*
-         * We use the cache dir as a temporary directory (since Android doesn't give us one) so
-         * on startup we'll clean up any .tmp files from the last run.
-         */
-        File[] files = context.getCacheDir().listFiles();
-        for (File file : files) {
-            try {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Deleting file " + file.getCanonicalPath());
-                }
-            } catch (IOException ioe) { /* No need to log failure to log */ }
-            file.delete();
-        }
-    }
-
-    /**
-     * Delete the thumbnail of an attachment.
-     *
-     * @param context
-     *         The application context.
-     * @param accountUuid
-     *         The UUID of the account the attachment belongs to.
-     * @param attachmentId
-     *         The ID of the attachment the thumbnail was created for.
-     */
-    public static void deleteThumbnail(Context context, String accountUuid, String attachmentId) {
-        File file = getThumbnailFile(context, accountUuid, attachmentId);
-        if (file.exists()) {
-            file.delete();
-        }
-    }
-
-    private static File getThumbnailFile(Context context, String accountUuid, String attachmentId) {
-        String filename = "thmb_" + accountUuid + "_" + attachmentId + ".tmp";
-        File dir = context.getCacheDir();
-        return new File(dir, filename);
-    }
-
-
     @Override
     public boolean onCreate() {
-        /*
-         * We use the cache dir as a temporary directory (since Android doesn't give us one) so
-         * on startup we'll clean up any .tmp files from the last run.
-         */
-        final File cacheDir = getContext().getCacheDir();
-        if (cacheDir == null) {
-            return true;
-        }
-        File[] files = cacheDir.listFiles();
-        if (files == null) {
-            return true;
-        }
-        for (File file : files) {
-            if (file.getName().endsWith(".tmp")) {
-                file.delete();
-            }
-        }
-
         return true;
     }
 
@@ -159,14 +78,6 @@ public class AttachmentProvider extends ContentProvider {
         List<String> segments = uri.getPathSegments();
         String accountUuid = segments.get(0);
         String attachmentId = segments.get(1);
-        String format = segments.get(2);
-
-        if (FORMAT_THUMBNAIL.equals(format)) {
-            int width = Integer.parseInt(segments.get(3));
-            int height = Integer.parseInt(segments.get(4));
-
-            return openThumbnail(accountUuid, attachmentId, width, height);
-        }
 
         return openAttachment(accountUuid, attachmentId);
     }
@@ -231,64 +142,23 @@ public class AttachmentProvider extends ContentProvider {
 
     private String getType(String accountUuid, String id, String format, String mimeType) {
         String type;
-        if (FORMAT_THUMBNAIL.equals(format)) {
-            type = "image/png";
-        } else {
-            final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
+        final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
 
-            try {
-                final LocalStore localStore = LocalStore.getInstance(account, getContext());
+        try {
+            final LocalStore localStore = LocalStore.getInstance(account, getContext());
 
-                AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
-                if (FORMAT_VIEW.equals(format) && mimeType != null) {
-                    type = mimeType;
-                } else {
-                    type = attachmentInfo.type;
-                }
-            } catch (MessagingException e) {
-                Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
-                type = null;
+            AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
+            if (FORMAT_VIEW.equals(format) && mimeType != null) {
+                type = mimeType;
+            } else {
+                type = attachmentInfo.type;
             }
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
+            type = null;
         }
 
         return type;
-    }
-
-    private ParcelFileDescriptor openThumbnail(String accountUuid, String attachmentId, int width, int height)
-            throws FileNotFoundException {
-
-        File file = getThumbnailFile(getContext(), accountUuid, attachmentId);
-        if (!file.exists()) {
-            String type = getType(accountUuid, attachmentId, FORMAT_VIEW, null);
-            try {
-                InputStream in = getAttachmentInputStream(accountUuid, attachmentId);
-                try {
-                    Bitmap thumbnail = createThumbnail(type, in);
-                    if (thumbnail != null) {
-                        thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
-                        FileOutputStream out = new FileOutputStream(file);
-                        try {
-                            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
-                        } finally {
-                            try {
-                                out.close();
-                            } catch (IOException e) {
-                                Log.e(K9.LOG_TAG, "Error saving thumbnail", e);
-                            }
-                        }
-                    }
-                } finally {
-                    try {
-                        in.close();
-                    } catch (Throwable ignore) { /* ignore */ }
-                }
-            } catch (MessagingException e) {
-                Log.e(K9.LOG_TAG, "Error getting InputStream for attachment", e);
-                return null;
-            }
-        }
-
-        return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
     }
 
     private ParcelFileDescriptor openAttachment(String accountUuid, String attachmentId) {
@@ -308,28 +178,5 @@ public class AttachmentProvider extends ContentProvider {
         final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
         LocalStore localStore = LocalStore.getInstance(account, getContext());
         return localStore.getAttachmentInputStream(attachmentId);
-    }
-
-    private Bitmap createThumbnail(String type, InputStream data) {
-        if (MimeUtility.mimeTypeMatches(type, "image/*")) {
-            return createImageThumbnail(data);
-        }
-        return null;
-    }
-
-    private Bitmap createImageThumbnail(InputStream data) {
-        try {
-            return BitmapFactory.decodeStream(data);
-        } catch (OutOfMemoryError oome) {
-            /*
-             * Improperly downloaded images, corrupt bitmaps and the like can commonly
-             * cause OOME due to invalid allocation sizes. We're happy with a null bitmap in
-             * that case. If the system is really out of memory we'll know about it soon
-             * enough.
-             */
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

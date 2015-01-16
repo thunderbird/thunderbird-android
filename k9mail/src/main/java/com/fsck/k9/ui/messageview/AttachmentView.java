@@ -2,8 +2,6 @@ package com.fsck.k9.ui.messageview;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.SizeFormatter;
@@ -76,8 +75,12 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         attachmentName.setText(attachment.displayName);
         attachmentInfo.setText(SizeFormatter.formatSize(getContext(), attachment.size));
 
-        ImageView thumbnail = (ImageView) findViewById(R.id.attachment_icon);
-        new LoadAndDisplayThumbnailAsyncTask(thumbnail).execute();
+        ImageView thumbnailView = (ImageView) findViewById(R.id.attachment_icon);
+        Glide.with(getContext())
+                .load(attachment.uri)
+                .placeholder(R.drawable.attached_image_placeholder)
+                .centerCrop()
+                .into(thumbnailView);
     }
 
     @Override
@@ -118,44 +121,5 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     public void setCallback(AttachmentViewCallback callback) {
         this.callback = callback;
-    }
-
-    private class LoadAndDisplayThumbnailAsyncTask extends AsyncTask<Void, Void, Bitmap> {
-        private final ImageView thumbnail;
-
-        public LoadAndDisplayThumbnailAsyncTask(ImageView thumbnail) {
-            this.thumbnail = thumbnail;
-        }
-
-        protected Bitmap doInBackground(Void... asyncTaskArgs) {
-            return getPreviewIcon();
-        }
-
-        private Bitmap getPreviewIcon() {
-            //FIXME - temporarily disabled
-            return null;
-//            Bitmap icon = null;
-//            try {
-//                InputStream input = context.getContentResolver().openInputStream(
-//                        AttachmentProvider.getAttachmentThumbnailUri(account,
-//                                part.getAttachmentId(),
-//                                62,
-//                                62));
-//                icon = BitmapFactory.decodeStream(input);
-//                input.close();
-//            } catch (Exception e) {
-//                // We don't care what happened, we just return null for the preview icon.
-//            }
-//
-//            return icon;
-        }
-
-        protected void onPostExecute(Bitmap previewIcon) {
-            if (previewIcon != null) {
-                thumbnail.setImageBitmap(previewIcon);
-            } else {
-                thumbnail.setImageResource(R.drawable.attached_image_placeholder);
-            }
-        }
     }
 }
