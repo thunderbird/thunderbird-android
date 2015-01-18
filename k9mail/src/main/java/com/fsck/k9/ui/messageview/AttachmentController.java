@@ -19,29 +19,44 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.cache.TemporaryAttachmentStore;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.MediaScannerNotifier;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
+import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.LocalPart;
 import org.apache.commons.io.IOUtils;
 
 
 public class AttachmentController {
     private final Context context;
-    private final SingleMessageView messageView;
+    private final MessagingController controller;
+    private final MessageViewFragment messageViewFragment;
     private final AttachmentViewInfo attachment;
 
-    AttachmentController(SingleMessageView messageView, AttachmentViewInfo attachment) {
-        this.context = messageView.getContext();
-        this.messageView = messageView;
+    AttachmentController(MessagingController controller, MessageViewFragment messageViewFragment,
+            AttachmentViewInfo attachment) {
+        this.context = messageViewFragment.getContext();
+        this.controller = controller;
+        this.messageViewFragment = messageViewFragment;
         this.attachment = attachment;
     }
 
     public void viewAttachment() {
-        new ViewAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (needsDownloading()) {
+            downloadAndViewAttachment((LocalPart) attachment.part);
+        } else {
+            viewLocalAttachment();
+        }
     }
 
     public void saveAttachment() {
@@ -52,6 +67,60 @@ public class AttachmentController {
         saveAttachmentTo(new File(directory));
     }
 
+    private boolean needsDownloading() {
+        return isPartMissing() && isLocalPart();
+    }
+
+    private boolean isPartMissing() {
+        return attachment.part.getBody() == null;
+    }
+
+    private boolean isLocalPart() {
+        return attachment.part instanceof LocalPart;
+    }
+
+    private void downloadAndViewAttachment(LocalPart localPart) {
+        downloadAttachment(localPart, new Runnable() {
+            @Override
+            public void run() {
+                viewLocalAttachment();
+            }
+        });
+    }
+
+    private void downloadAndSaveAttachmentTo(LocalPart localPart, final File directory) {
+        downloadAttachment(localPart, new Runnable() {
+            @Override
+            public void run() {
+                saveAttachmentTo(directory);
+            }
+        });
+    }
+
+    private void downloadAttachment(LocalPart localPart, final Runnable attachmentDownloadedCallback) {
+        String accountUuid = localPart.getAccountUuid();
+        Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+        LocalMessage message = localPart.getMessage();
+
+        messageViewFragment.showAttachmentLoadingDialog();
+        controller.loadAttachment(account, message, attachment.part, new MessagingListener() {
+            @Override
+            public void loadAttachmentFinished(Account account, Message message, Part part) {
+                messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
+                messageViewFragment.runOnMainThread(attachmentDownloadedCallback);
+            }
+
+            @Override
+            public void loadAttachmentFailed(Account account, Message message, Part part, String reason) {
+                messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
+            }
+        });
+    }
+
+    private void viewLocalAttachment() {
+        new ViewAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     private void saveAttachmentTo(File directory) {
         boolean isExternalStorageMounted = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
         if (!isExternalStorageMounted) {
@@ -60,6 +129,14 @@ public class AttachmentController {
             return;
         }
 
+        if (needsDownloading()) {
+            downloadAndSaveAttachmentTo((LocalPart) attachment.part, directory);
+        } else {
+            saveLocalAttachmentTo(directory);
+        }
+    }
+
+    private void saveLocalAttachmentTo(File directory) {
         //FIXME: write file in background thread
         try {
             File file = saveAttachmentWithUniqueFileName(directory);
@@ -187,7 +264,7 @@ public class AttachmentController {
     }
 
     private void addUiIntentFlags(Intent intent) {
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
     }
 
     private int getResolvedIntentActivitiesCount(Intent intent) {
@@ -243,7 +320,7 @@ public class AttachmentController {
 
         @Override
         protected void onPreExecute() {
-            messageView.disableAttachmentViewButton(attachment);
+            messageViewFragment.disableAttachmentButtons(attachment);
         }
 
         @Override
@@ -254,7 +331,7 @@ public class AttachmentController {
         @Override
         protected void onPostExecute(Intent intent) {
             viewAttachment(intent);
-            messageView.enableAttachmentViewButton(attachment);
+            messageViewFragment.enableAttachmentButtons(attachment);
         }
 
         private void viewAttachment(Intent intent) {

@@ -43,12 +43,14 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         return attachment;
     }
 
-    public void enableViewButton() {
+    public void enableButtons() {
         viewButton.setEnabled(true);
+        downloadButton.setEnabled(true);
     }
 
-    public void disableViewButton() {
+    public void disableButtons() {
         viewButton.setEnabled(false);
+        downloadButton.setEnabled(false);
     }
 
     public void setAttachment(AttachmentViewInfo attachment) throws MessagingException {

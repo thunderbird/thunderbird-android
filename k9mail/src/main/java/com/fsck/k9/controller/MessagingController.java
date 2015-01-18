@@ -3144,40 +3144,8 @@ public class MessagingController implements Runnable {
         }
     }
 
-    /**
-     * Attempts to load the attachment specified by part from the given account and message.
-     * @param account
-     * @param message
-     * @param part
-     * @param listener
-     */
-    public void loadAttachment(
-        final Account account,
-        final Message message,
-        final Part part,
-        final Object tag,
-        final MessagingListener listener) {
-        /*
-         * Check if the attachment has already been downloaded. If it has there's no reason to
-         * download it, so we just tell the listener that it's ready to go.
-         */
-
-        if (part.getBody() != null) {
-            for (MessagingListener l : getListeners(listener)) {
-                l.loadAttachmentStarted(account, message, part, tag, false);
-            }
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.loadAttachmentFinished(account, message, part, tag);
-            }
-            return;
-        }
-
-
-
-        for (MessagingListener l : getListeners(listener)) {
-            l.loadAttachmentStarted(account, message, part, tag, true);
-        }
+    public void loadAttachment(final Account account, final LocalMessage message, final Part part,
+            final MessagingListener listener) {
 
         put("loadAttachment", listener, new Runnable() {
             @Override
@@ -3185,32 +3153,29 @@ public class MessagingController implements Runnable {
                 Folder remoteFolder = null;
                 LocalFolder localFolder = null;
                 try {
-                    LocalStore localStore = account.getLocalStore();
+                    String folderName = message.getFolder().getName();
 
-                    List<Part> attachments = MessageExtractor.collectAttachments(message);
-                    for (Part attachment : attachments) {
-                        attachment.setBody(null);
-                    }
+                    LocalStore localStore = account.getLocalStore();
+                    localFolder = localStore.getFolder(folderName);
+
                     Store remoteStore = account.getRemoteStore();
-                    localFolder = localStore.getFolder(message.getFolder().getName());
-                    remoteFolder = remoteStore.getFolder(message.getFolder().getName());
+                    remoteFolder = remoteStore.getFolder(folderName);
                     remoteFolder.open(Folder.OPEN_MODE_RW);
 
-                    //FIXME: This is an ugly hack that won't be needed once the Message objects have been united.
                     Message remoteMessage = remoteFolder.getMessage(message.getUid());
-                    MimeMessageHelper.setBody(remoteMessage, message.getBody());
                     remoteFolder.fetchPart(remoteMessage, part, null);
 
-                    localFolder.addPartToMessage((LocalMessage) message, part);
+                    localFolder.addPartToMessage(message, part);
+
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadAttachmentFinished(account, message, part, tag);
+                        l.loadAttachmentFinished(account, message, part);
                     }
                 } catch (MessagingException me) {
                     if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "Exception loading attachment", me);
 
                     for (MessagingListener l : getListeners(listener)) {
-                        l.loadAttachmentFailed(account, message, part, tag, me.getMessage());
+                        l.loadAttachmentFailed(account, message, part, me.getMessage());
                     }
                     notifyUserIfCertificateProblem(context, me, account, true);
                     addErrorMessage(account, null, me);

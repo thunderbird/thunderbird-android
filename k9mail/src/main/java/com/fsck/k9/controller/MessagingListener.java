@@ -133,13 +133,9 @@ public class MessagingListener {
     public void setPushActive(Account account, String folderName, boolean enabled) {}
 
 
-    public void loadAttachmentStarted(Account account, Message message, Part part, Object tag,
-            boolean requiresDownload) {}
+    public void loadAttachmentFinished(Account account, Message message, Part part) {}
 
-    public void loadAttachmentFinished(Account account, Message message, Part part, Object tag) {}
-
-    public void loadAttachmentFailed(Account account, Message message, Part part, Object tag,
-            String reason) {}
+    public void loadAttachmentFailed(Account account, Message message, Part part, String reason) {}
 
 
 

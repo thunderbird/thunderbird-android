@@ -663,6 +663,37 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
+    public void disableAttachmentButtons(AttachmentViewInfo attachment) {
+        mMessageView.disableAttachmentButtons(attachment);
+    }
+
+    public void enableAttachmentButtons(AttachmentViewInfo attachment) {
+        mMessageView.enableAttachmentButtons(attachment);
+    }
+
+    public void runOnMainThread(Runnable runnable) {
+        handler.post(runnable);
+    }
+
+    public void showAttachmentLoadingDialog() {
+        mMessageView.disableAttachmentButtons();
+        showDialog(R.id.dialog_attachment_progress);
+    }
+
+    public void hideAttachmentLoadingDialogOnMainThread() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                removeDialog(R.id.dialog_attachment_progress);
+                mMessageView.enableAttachmentButtons();
+            }
+        });
+    }
+
     public interface MessageViewFragmentListener {
         public void onForward(LocalMessage mMessage, PgpData mPgpData);
         public void disableDeleteAction();
@@ -760,7 +791,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
-        return new AttachmentController(mMessageView, attachment);
+        return new AttachmentController(mController, this, attachment);
     }
 
     private class DownloadMessageListener extends MessagingListener {

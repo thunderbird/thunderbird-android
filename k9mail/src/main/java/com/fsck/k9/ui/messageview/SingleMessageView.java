@@ -500,6 +500,18 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
     }
 
+    public void enableAttachmentButtons() {
+        for (AttachmentView attachmentView : attachments.values()) {
+            attachmentView.enableButtons();
+        }
+    }
+
+    public void disableAttachmentButtons() {
+        for (AttachmentView attachmentView : attachments.values()) {
+            attachmentView.disableButtons();
+        }
+    }
+
     public void showAllHeaders() {
         mHeaderContainer.onShowAdditionalHeaders();
     }
@@ -701,12 +713,12 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
     }
 
-    public void enableAttachmentViewButton(AttachmentViewInfo attachment) {
-        getAttachmentView(attachment).enableViewButton();
+    public void enableAttachmentButtons(AttachmentViewInfo attachment) {
+        getAttachmentView(attachment).enableButtons();
     }
 
-    public void disableAttachmentViewButton(AttachmentViewInfo attachment) {
-        getAttachmentView(attachment).disableViewButton();
+    public void disableAttachmentButtons(AttachmentViewInfo attachment) {
+        getAttachmentView(attachment).disableButtons();
     }
 
     private AttachmentView getAttachmentView(AttachmentViewInfo attachment) {
