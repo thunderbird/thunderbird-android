@@ -77,12 +77,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         attachmentName.setText(attachment.displayName);
         attachmentInfo.setText(SizeFormatter.formatSize(getContext(), attachment.size));
 
-        ImageView thumbnailView = (ImageView) findViewById(R.id.attachment_icon);
-        Glide.with(getContext())
-                .load(attachment.uri)
-                .placeholder(R.drawable.attached_image_placeholder)
-                .centerCrop()
-                .into(thumbnailView);
+        refreshThumbnail();
     }
 
     @Override
@@ -123,5 +118,14 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
     public void setCallback(AttachmentViewCallback callback) {
         this.callback = callback;
+    }
+
+    public void refreshThumbnail() {
+        ImageView thumbnailView = (ImageView) findViewById(R.id.attachment_icon);
+        Glide.with(getContext())
+                .load(attachment.uri)
+                .placeholder(R.drawable.attached_image_placeholder)
+                .centerCrop()
+                .into(thumbnailView);
     }
 }

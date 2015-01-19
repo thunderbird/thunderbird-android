@@ -721,6 +721,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         getAttachmentView(attachment).disableButtons();
     }
 
+    public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
+        getAttachmentView(attachment).refreshThumbnail();
+    }
+
     private AttachmentView getAttachmentView(AttachmentViewInfo attachment) {
         return attachments.get(attachment);
     }

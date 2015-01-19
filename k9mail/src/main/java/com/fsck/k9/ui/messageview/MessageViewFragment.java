@@ -694,6 +694,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         });
     }
 
+    public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
+        mMessageView.refreshAttachmentThumbnail(attachment);
+    }
+
     public interface MessageViewFragmentListener {
         public void onForward(LocalMessage mMessage, PgpData mPgpData);
         public void disableDeleteAction();
