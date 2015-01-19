@@ -138,19 +138,7 @@ public class AttachmentController {
     }
 
     private void saveLocalAttachmentTo(File directory) {
-        //FIXME: write file in background thread
-        try {
-            File file = saveAttachmentWithUniqueFileName(directory);
-
-            displayAttachmentSavedMessage(file.toString());
-
-            MediaScannerNotifier.notify(context, file);
-        } catch (IOException ioe) {
-            if (K9.DEBUG) {
-                Log.e(K9.LOG_TAG, "Error saving attachment", ioe);
-            }
-            displayAttachmentNotSavedMessage();
-        }
+        new SaveAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, directory);
     }
 
     private File saveAttachmentWithUniqueFileName(File directory) throws IOException {
@@ -343,6 +331,38 @@ public class AttachmentController {
 
                 String message = context.getString(R.string.message_view_no_viewer, attachment.mimeType);
                 displayMessageToUser(message);
+            }
+        }
+    }
+
+    private class SaveAttachmentAsyncTask extends AsyncTask<File, Void, File> {
+
+        @Override
+        protected void onPreExecute() {
+            messageViewFragment.disableAttachmentButtons(attachment);
+        }
+
+        @Override
+        protected File doInBackground(File... params) {
+            try {
+                File directory = params[0];
+                return saveAttachmentWithUniqueFileName(directory);
+            } catch (IOException e) {
+                if (K9.DEBUG) {
+                    Log.e(K9.LOG_TAG, "Error saving attachment", e);
+                }
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+            messageViewFragment.enableAttachmentButtons(attachment);
+            if (file != null) {
+                displayAttachmentSavedMessage(file.toString());
+                MediaScannerNotifier.notify(context, file);
+            } else {
+                displayAttachmentNotSavedMessage();
             }
         }
     }
