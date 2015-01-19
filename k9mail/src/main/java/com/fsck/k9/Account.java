@@ -304,7 +304,7 @@ public class Account implements BaseAccount, StoreConfig {
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
-        mCryptoApp = Apg.NAME;
+        mCryptoApp = NO_OPENPGP_PROVIDER;
         mCryptoAutoSignature = false;
         mCryptoAutoEncrypt = false;
         mCryptoPGPMime = false;
@@ -494,7 +494,7 @@ public class Account implements BaseAccount, StoreConfig {
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
 
-        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
+        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", NO_OPENPGP_PROVIDER);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
         mCryptoAutoEncrypt = prefs.getBoolean(mUuid + ".cryptoAutoEncrypt", false);
         mCryptoPGPMime = prefs.getBoolean(mUuid + ".cryptoPGPMime", false);

@@ -701,6 +701,8 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
 
+
+            /*TODO replace
             mCryptoAutoSignature = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_SIGNATURE);
             mCryptoAutoSignature.setChecked(mAccount.getCryptoAutoSignature());
 
@@ -711,6 +713,7 @@ public class AccountSettings extends K9PreferenceActivity {
             mCryptoPGPMime.setChecked(mAccount.isCryptoPGPMime());
 
             handleCryptoAppDependencies();
+            */
         } else {
             final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
             mCryptoMenu.setEnabled(false);
@@ -777,9 +780,11 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
         if (mHasCrypto) {
             mAccount.setCryptoApp(mCryptoApp.getValue());
+            /* TODO replace
             mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
             mAccount.setCryptoAutoEncrypt(mCryptoAutoEncrypt.isChecked());
             mAccount.setCryptoPGPMime(mCryptoPGPMime.isChecked());
+            */
         }
 
         // In webdav account we use the exact folder name also for inbox,

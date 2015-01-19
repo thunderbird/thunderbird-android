@@ -60,14 +60,12 @@ import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.internet.TextBody;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mailstore.LocalAttachmentBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
 import org.apache.commons.io.IOUtils;
+import org.openintents.openpgp.OpenPgpSignatureResult;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -104,6 +102,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private static final int DISPLAY_NAME_INDEX = 1;
 
 
+    private MessageOpenPgpView mCryptoView;
     private MessageOpenPgpView mOpenPgpView;
     private MessageWebView mMessageContentView;
     private MessageHeader mHeaderContainer;
@@ -624,7 +623,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
                 MimeMessage mess = null;
                 try {
-                    mess = new MimeMessage(IOUtils.toInputStream(pgpData.getDecryptedData()));
+                    mess = new MimeMessage(IOUtils.toInputStream(pgpData.getDecryptedData()), true);
                     MimeMultipart multi = (MimeMultipart) mess.getBody();
 
 
@@ -709,13 +708,13 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
 
 //                loadBodyFromText(pgpData.getDecryptedData());
                 loadBodyFromText(theString);
-                updateCryptoLayout(account.getCryptoProvider(), pgpData, mess);
+                updateCryptoLayout(account, pgpData, mess);
                 mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
                         pgpData.getSignatureResult(), mess);
             } else {
                 Log.i("SingleMessageView", "loading text, update cryptoLayout and pgpView");
                 loadBodyFromText(text);
-                updateCryptoLayout(account.getCryptoProvider(), pgpData, message);
+                updateCryptoLayout(account, pgpData, message);
                 mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
                         pgpData.getSignatureResult(), message);
             }
@@ -771,9 +770,11 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mMessageContentView.setText(emailText);
     }
 
-    public void updateCryptoLayout(CryptoProvider cp, PgpData pgpData, Message message) {
+    public void updateCryptoLayout(Account account, PgpData pgpData, Message message) {
         Log.i("PGP/MIME Replace", "updateCryptoLayout in SingleMessageView");
-        mCryptoView.updateLayout(cp, pgpData, message);
+        //TODO: fix this later
+        OpenPgpSignatureResult rs = new OpenPgpSignatureResult();
+        mCryptoView.updateLayout(account, pgpData.getDecryptedData(), rs,  message);
     }
 
     public void showAttachments(boolean show) {

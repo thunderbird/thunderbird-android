@@ -68,6 +68,27 @@ public class MessageOpenPgpView extends LinearLayout {
 
     private static final int REQUEST_CODE_DECRYPT_VERIFY = 12;
 
+    private String mPGPMIMEText = null;
+
+    public String getmPGPMIMEText() {
+        return mPGPMIMEText;
+    }
+
+    public void setmPGPMIMEText(String mPGPMIMEText) {
+        this.mPGPMIMEText = mPGPMIMEText;
+    }
+
+    private boolean isMime = false;
+
+    //workaround for pgp/mime
+    public boolean pIsMime(){
+        return isMime;
+    }
+    //workaround for pgp/mime
+    public void setIsMime(boolean isMime){
+        this.isMime = isMime;
+    }
+
     String mData;
     Account mAccount;
 

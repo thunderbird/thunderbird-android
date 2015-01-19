@@ -1,30 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -44,7 +20,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -95,7 +70,6 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.Utility;
@@ -107,6 +81,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -115,8 +90,6 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
-import com.fsck.k9.mail.internet.TextBodyBuilder;
-import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.mailstore.LocalAttachmentBody;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.TempFileBody;
@@ -132,6 +105,25 @@ import org.htmlcleaner.TagNode;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MessageCompose extends K9Activity implements OnClickListener,
         ProgressDialogFragment.CancelListener {
@@ -470,7 +462,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Compose a new message as a reply to the given message. If replyAll is true the function
      * is reply all instead of simply reply.
      * @param context
-     * @param account
      * @param message
      * @param replyAll
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
@@ -1363,7 +1354,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             message.setHeader("User-Agent", getString(R.string.message_header_mua));
         }
 
-        final String replyTo = mIdentity.getReplyTo();
+        String replyTo = mIdentity.getReplyTo();
         if (replyTo != null) {
             message.setReplyTo(new Address[] { new Address(replyTo) });
         }
@@ -1382,8 +1373,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         TextBody body = null;
         
         if (!isPGPMime) {
-	        message.addSentDate(new Date());
-	        Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
+	        message.addSentDate(new Date(), true);
+            from = new Address(mIdentity.getEmail(), mIdentity.getName());
 	        message.setFrom(from);
 	        message.setRecipients(RecipientType.TO, getAddresses(mToView));
 	        message.setRecipients(RecipientType.CC, getAddresses(mCcView));
@@ -1398,8 +1389,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 	        if (!K9.hideUserAgent()) {
 	            message.setHeader("User-Agent", getString(R.string.message_header_mua));
 	        }
-	
-	        final String replyTo = mIdentity.getReplyTo();
+
+            replyTo = mIdentity.getReplyTo();
 	        if (replyTo != null) {
 	            message.setReplyTo(new Address[] { new Address(replyTo) });
 	        }
@@ -1790,7 +1781,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void performSend() {
-        final CryptoProvider crypto = mAccount.getCryptoProvider();
+        //final CryptoHelper crypto = mAccount.getCryptoProvider();
         if (mOpenPgpProvider != null) {
             // OpenPGP Provider API
 
@@ -1825,7 +1816,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 // encryptedData set in pgpData!
                 return;
             }
-        } else if (crypto.isAvailable(this)) {
+        } /*else if (crypto.isAvailable(this)) {
             // Legacy APG API
 
             if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
@@ -1869,6 +1860,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
         }
+        */
         sendMessage();
 
         if (mMessageReference != null && mMessageReference.flag != null) {
@@ -1889,7 +1881,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     /**
      * Create a new multipart Mime message and return its string representation.
      * This message can be used for encryption.
-     * @param text Contents of the text body
      * @return string representation of a multipart Mime message
      */
     private String createPGPMimeMessageString() {
