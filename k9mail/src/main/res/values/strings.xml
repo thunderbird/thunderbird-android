@@ -1124,4 +1124,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="client_certificate_retrieval_failure">"Failed to retrieve client certificate for alias \"<xliff:g id="alias">%s</xliff:g>\""</string>
     <string name="client_certificate_advanced_options">Advanced options</string>
     <string name="client_certificate_expired">"Client certificate \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" has expired or is not yet valid (<xliff:g id="exception_message">%2$s</xliff:g>)"</string>
+
+    <string name="preview_inner_message">"Includes message titled \"%s\" containing: "</string>
+    <string name="preview_untitled_inner_message">"Includes untitled message containing: "</string>
 </resources>
