@@ -6,14 +6,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import android.test.AndroidTestCase;
 
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static junit.framework.Assert.assertEquals;
 
 
-public class ReconstructMessageTest extends AndroidTestCase {
+@RunWith(AndroidJUnit4.class)
+public class ReconstructMessageTest {
 
+    @Test
     public void testMessage() throws IOException, MessagingException {
         String messageSource =
                 "From: from@example.com\r\n" +
@@ -45,7 +53,7 @@ public class ReconstructMessageTest extends AndroidTestCase {
                 "------Boundary--\r\n" +
                 "Hi, I'm the epilogue";
 
-        BinaryTempFileBody.setTempDirectory(getContext().getCacheDir());
+        BinaryTempFileBody.setTempDirectory(InstrumentationRegistry.getTargetContext().getCacheDir());
 
         InputStream messageInputStream = new ByteArrayInputStream(messageSource.getBytes());
         MimeMessage message;

@@ -1,21 +1,31 @@
 package com.fsck.k9.helper;
 
 
+import android.content.Context;
 import android.graphics.Color;
-import android.test.AndroidTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import android.text.SpannableString;
 
 import com.fsck.k9.mail.Address;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class MessageHelperTest extends AndroidTestCase {
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
+
+@RunWith(AndroidJUnit4.class)
+public class MessageHelperTest {
     private Contacts contacts;
     private Contacts mockContacts;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-        contacts = new Contacts(getContext());
-        mockContacts = new Contacts(getContext()) {
+        Context context = InstrumentationRegistry.getTargetContext();
+        contacts = new Contacts(context);
+        mockContacts = new Contacts(context) {
             @Override public String getNameForAddress(String address) {
                 if ("test@testor.com".equals(address)) {
                     return "Tim Testor";
@@ -26,16 +36,19 @@ public class MessageHelperTest extends AndroidTestCase {
         };
     }
 
+    @Test
     public void testToFriendlyShowsPersonalPartIfItExists() throws Exception {
         Address address = new Address("test@testor.com", "Tim Testor");
         assertEquals("Tim Testor", MessageHelper.toFriendly(address, contacts));
     }
 
+    @Test
     public void testToFriendlyShowsEmailPartIfNoPersonalPartExists() throws Exception {
         Address address = new Address("test@testor.com");
         assertEquals("test@testor.com", MessageHelper.toFriendly(address, contacts));
     }
 
+    @Test
     public void testToFriendlyArray() throws Exception {
         Address address1 = new Address("test@testor.com", "Tim Testor");
         Address address2 = new Address("foo@bar.com", "Foo Bar");
@@ -43,11 +56,13 @@ public class MessageHelperTest extends AndroidTestCase {
         assertEquals("Tim Testor,Foo Bar", MessageHelper.toFriendly(addresses, contacts).toString());
     }
 
+    @Test
     public void testToFriendlyWithContactLookup() throws Exception {
         Address address = new Address("test@testor.com");
         assertEquals("Tim Testor", MessageHelper.toFriendly(address, mockContacts).toString());
     }
 
+    @Test
     public void testToFriendlyWithChangeContactColor() throws Exception {
         Address address = new Address("test@testor.com");
         CharSequence friendly = MessageHelper.toFriendly(address, mockContacts, true, true, Color.RED);
@@ -55,6 +70,7 @@ public class MessageHelperTest extends AndroidTestCase {
         assertEquals("Tim Testor", friendly.toString());
     }
 
+    @Test
     public void testToFriendlyWithoutCorrespondentNames() throws Exception {
         Address address = new Address("test@testor.com", "Tim Testor");
         CharSequence friendly = MessageHelper.toFriendly(address, mockContacts, false, false, 0);

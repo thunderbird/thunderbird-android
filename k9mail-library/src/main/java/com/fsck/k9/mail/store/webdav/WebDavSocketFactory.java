@@ -9,10 +9,8 @@ import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
@@ -32,7 +30,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, new TrustManager[] {
                 TrustManagerFactory.get(host, port)
-        }, new SecureRandom());
+        }, null);
         mSocketFactory = sslContext.getSocketFactory();
         mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();
         mSchemeSocketFactory.setHostnameVerifier(
@@ -41,7 +39,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
 
     public Socket connectSocket(Socket sock, String host, int port,
             InetAddress localAddress, int localPort, HttpParams params)
-            throws IOException, UnknownHostException, ConnectTimeoutException {
+            throws IOException, ConnectTimeoutException {
         return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
     }
 
@@ -57,7 +55,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
             final String host,
             final int port,
             final boolean autoClose
-    ) throws IOException, UnknownHostException {
+    ) throws IOException {
         SSLSocket sslSocket = (SSLSocket) mSocketFactory.createSocket(
                 socket,
                 host,

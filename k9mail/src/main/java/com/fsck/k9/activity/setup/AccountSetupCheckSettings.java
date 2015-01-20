@@ -8,13 +8,12 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Process;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -87,7 +86,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         setContentView(R.layout.account_setup_check_settings);
         mMessageView = (TextView)findViewById(R.id.message);
         mProgressBar = (ProgressBar)findViewById(R.id.progress);
-        ((Button)findViewById(R.id.cancel)).setOnClickListener(this);
+        findViewById(R.id.cancel).setOnClickListener(this);
 
         setMessage(R.string.account_setup_check_settings_retr_info_msg);
         mProgressBar.setIndeterminate(true);
@@ -96,82 +95,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mDirection = (CheckDirection) getIntent().getSerializableExtra(EXTRA_CHECK_DIRECTION);
 
-        new Thread() {
-            @Override
-            public void run() {
-                Store store = null;
-                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                try {
-                    if (mDestroyed) {
-                        return;
-                    }
-                    if (mCanceled) {
-                        finish();
-                        return;
-                    }
-
-                    final MessagingController ctrl = MessagingController.getInstance(getApplication());
-                    ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
-                            mAccount, mDirection);
-
-                    if (mDirection == CheckDirection.INCOMING) {
-                        store = mAccount.getRemoteStore();
-
-                        if (store instanceof WebDavStore) {
-                            setMessage(R.string.account_setup_check_settings_authenticate);
-                        } else {
-                            setMessage(R.string.account_setup_check_settings_check_incoming_msg);
-                        }
-                        store.checkSettings();
-
-                        if (store instanceof WebDavStore) {
-                            setMessage(R.string.account_setup_check_settings_fetch);
-                        }
-                        MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
-                        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mAccount.getInboxFolderName(), null, null);
-                    }
-                    if (mDestroyed) {
-                        return;
-                    }
-                    if (mCanceled) {
-                        finish();
-                        return;
-                    }
-                    if (mDirection == CheckDirection.OUTGOING) {
-                        if (!(mAccount.getRemoteStore() instanceof WebDavStore)) {
-                            setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
-                        }
-                        Transport transport = Transport.getInstance(K9.app, mAccount);
-                        transport.close();
-                        transport.open();
-                        transport.close();
-                    }
-                    if (mDestroyed) {
-                        return;
-                    }
-                    if (mCanceled) {
-                        finish();
-                        return;
-                    }
-                    setResult(RESULT_OK);
-                    finish();
-                } catch (final AuthenticationFailedException afe) {
-                    Log.e(K9.LOG_TAG, "Error while testing settings", afe);
-                    showErrorDialog(
-                        R.string.account_setup_failed_dlg_auth_message_fmt,
-                        afe.getMessage() == null ? "" : afe.getMessage());
-                } catch (final CertificateValidationException cve) {
-                    handleCertificateValidationException(cve);
-                } catch (final Throwable t) {
-                    Log.e(K9.LOG_TAG, "Error while testing settings", t);
-                    showErrorDialog(
-                        R.string.account_setup_failed_dlg_server_message_fmt,
-                        (t.getMessage() == null ? "" : t.getMessage()));
-                }
-            }
-
-        }
-        .start();
+        new CheckAccountTask(mAccount).execute(mDirection);
     }
 
     private void handleCertificateValidationException(CertificateValidationException cve) {
@@ -199,14 +123,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     }
 
     private void setMessage(final int resId) {
-        mHandler.post(new Runnable() {
-            public void run() {
-                if (mDestroyed) {
-                    return;
-                }
-                mMessageView.setText(getString(resId));
-            }
-        });
+        mMessageView.setText(getString(resId));
     }
 
     private void acceptKeyDialog(final int msgResId, final CertificateValidationException ex) {
@@ -266,7 +183,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             for (List<?> subjectAlternativeName : subjectAlternativeNames) {
                                 Integer type = (Integer)subjectAlternativeName.get(0);
                                 Object value = subjectAlternativeName.get(1);
-                                String name = "";
+                                String name;
                                 switch (type.intValue()) {
                                 case 0:
                                     Log.w(K9.LOG_TAG, "SubjectAltName of type OtherName not supported.");
@@ -471,6 +388,91 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             case UseMessage: return e.getMessage();
             case Unknown:
             default: return "";
+        }
+    }
+
+    class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Void> {
+        private final Account account;
+
+        CheckAccountTask(Account account) {
+            this.account = account;
+        }
+
+        @Override
+        protected Void doInBackground(CheckDirection... params) {
+            final CheckDirection direction = params[0];
+            try {
+                if (mDestroyed) {
+                    return null;
+                }
+                if (mCanceled) {
+                    finish();
+                    return null;
+                }
+                final MessagingController ctrl = MessagingController.getInstance(getApplication());
+                ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
+                        account, direction);
+
+                if (direction == CheckDirection.INCOMING) {
+                    Store store = account.getRemoteStore();
+                    if (store instanceof WebDavStore) {
+                        publishProgress(R.string.account_setup_check_settings_authenticate);
+                    } else {
+                        publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
+                    }
+                    store.checkSettings();
+
+                    if (store instanceof WebDavStore) {
+                        publishProgress(R.string.account_setup_check_settings_fetch);
+                    }
+                    MessagingController.getInstance(getApplication()).listFoldersSynchronous(account, true, null);
+                    MessagingController.getInstance(getApplication())
+                            .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
+                }
+                if (mDestroyed) {
+                    return null;
+                }
+                if (mCanceled) {
+                    finish();
+                    return null;
+                }
+                if (direction == CheckDirection.OUTGOING) {
+                    if (!(account.getRemoteStore() instanceof WebDavStore)) {
+                        publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
+                    }
+                    Transport transport = Transport.getInstance(K9.app, account);
+                    transport.close();
+                    transport.open();
+                    transport.close();
+                }
+                if (mDestroyed) {
+                    return null;
+                }
+                if (mCanceled) {
+                    finish();
+                    return null;
+                }
+                setResult(RESULT_OK);
+                finish();
+            } catch (AuthenticationFailedException afe) {
+                Log.e(K9.LOG_TAG, "Error while testing settings", afe);
+                showErrorDialog(
+                        R.string.account_setup_failed_dlg_auth_message_fmt,
+                        afe.getMessage() == null ? "" : afe.getMessage());
+            } catch (CertificateValidationException cve) {
+                handleCertificateValidationException(cve);
+            } catch (Throwable t) {
+                Log.e(K9.LOG_TAG, "Error while testing settings", t);
+                showErrorDialog(
+                        R.string.account_setup_failed_dlg_server_message_fmt,
+                        (t.getMessage() == null ? "" : t.getMessage()));
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            setMessage(values[0]);
         }
     }
 }

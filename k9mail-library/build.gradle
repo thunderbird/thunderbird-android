@@ -20,11 +20,12 @@ android {
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 17
+        targetSdkVersion 21
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError true
+        warningsAsErrors true
         lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
     }
 
