@@ -5,15 +5,12 @@ import android.net.Uri;
 
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.provider.AttachmentProvider;
@@ -412,35 +409,6 @@ public class LocalMessageExtractor {
         html.append("<td>");
         html.append(value);
         html.append("</td></tr>");
-    }
-
-    private static ViewableContainer extractTextual(Part part) throws MessagingException {
-        String text = "";
-        String html = "";
-        List<Part> attachments = new ArrayList<Part>();
-
-        Body firstBody = part.getBody();
-        if (part.isMimeType("text/plain")) {
-            String bodyText = MessageExtractor.getTextFromPart(part);
-            if (bodyText != null) {
-                text = bodyText;
-                html = HtmlConverter.textToHtml(text);
-            }
-        } else if (part.isMimeType("multipart/alternative") &&
-                firstBody instanceof MimeMultipart) {
-            MimeMultipart multipart = (MimeMultipart) firstBody;
-            for (BodyPart bodyPart : multipart.getBodyParts()) {
-                String bodyText = MessageExtractor.getTextFromPart(bodyPart);
-                if (bodyText != null) {
-                    if (text.isEmpty() && bodyPart.isMimeType("text/plain")) {
-                        text = bodyText;
-                    } else if (html.isEmpty() && bodyPart.isMimeType("text/html")) {
-                        html = bodyText;
-                    }
-                }
-            }
-        }
-        return new ViewableContainer(text, html, attachments);
     }
 
     public static MessageViewInfo decodeMessageForView(Context context, Message message) throws MessagingException {
