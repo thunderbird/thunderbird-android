@@ -1710,7 +1710,7 @@ public class ImapStore extends RemoteStore {
                         break;
                     }
                 }
-                part.setBody(mp);
+                MimeMessageHelper.setBody(part, mp);
             } else {
                 /*
                  * This is a body. We need to add as much information as we can find out about
