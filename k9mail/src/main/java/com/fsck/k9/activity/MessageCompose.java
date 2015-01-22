@@ -109,7 +109,6 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
-import com.fsck.k9.mailstore.LocalAttachmentBody;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.mailstore.TempFileMessageBody;
@@ -2624,17 +2623,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         String name = MimeUtility.getHeaderParameter(contentType, "name");
         if (name != null) {
             Body body = part.getBody();
-            if (body instanceof LocalAttachmentBody) {
-                final Uri uri = ((LocalAttachmentBody) body).getContentUri();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        addAttachment(uri);
-                    }
-                });
-            } else {
-                return false;
-            }
+            //FIXME
+//            if (body instanceof LocalAttachmentBody) {
+//                final Uri uri = ((LocalAttachmentBody) body).getContentUri();
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        addAttachment(uri);
+//                    }
+//                });
+//            } else {
+//                return false;
+//            }
+            return false;
         }
         return true;
     }
