@@ -48,7 +48,7 @@ public class MessageExtractor {
                      * determine the charset from HTML message.
                      */
                     if (mimeType.equalsIgnoreCase("text/html") && charset == null) {
-                        InputStream in = part.getBody().getInputStream();
+                        InputStream in = MimeUtility.decodeBody(body);
                         try {
                             byte[] buf = new byte[256];
                             in.read(buf, 0, buf.length);
@@ -64,18 +64,8 @@ public class MessageExtractor {
                             }
                         } finally {
                             try {
-                                if (in instanceof BinaryTempFileBody.BinaryTempFileBodyInputStream) {
-                                    /*
-                                     * If this is a BinaryTempFileBodyInputStream, calling close()
-                                     * will delete the file. But we can't let that happen because
-                                     * the file needs to be opened again by the code a few lines
-                                     * down.
-                                     */
-                                    ((BinaryTempFileBody.BinaryTempFileBodyInputStream) in).closeWithoutDeleting();
-                                } else {
-                                    in.close();
-                                }
-                            } catch (Exception e) { /* ignore */ }
+                                MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);
+                            } catch (IOException e) { /* ignore */ }
                         }
                     }
                     charset = fixupCharset(charset, getMessageFromPart(part));
@@ -86,20 +76,10 @@ public class MessageExtractor {
                      */
                     InputStream in = MimeUtility.decodeBody(body);
                     try {
-                        String text = CharsetSupport.readToString(in, charset);
-
-                        // Replace the body with a TextBody that already contains the decoded text
-                        part.setBody(new TextBody(text));
-
-                        return text;
+                        return CharsetSupport.readToString(in, charset);
                     } finally {
                         try {
-                            /*
-                             * This time we don't care if it's a BinaryTempFileBodyInputStream. We
-                             * replaced the body with a TextBody instance and hence don't need the
-                             * file anymore.
-                             */
-                            in.close();
+                            MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);
                         } catch (IOException e) { /* Ignore */ }
                     }
                 }
