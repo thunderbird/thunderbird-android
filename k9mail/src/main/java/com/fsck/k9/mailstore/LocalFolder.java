@@ -1247,10 +1247,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             parentId = threadInfo.parentId;
         }
 
-        //TODO: get attachment count
-
         try {
-            String preview = MessagePreviewExtractor.extractPreview(localStore.context, message);
+            MessageInfoExtractor messageExtractor = new MessageInfoExtractor(localStore.context, message);
+            String preview = messageExtractor.getMessageTextPreview();
+            int attachmentCount = messageExtractor.getAttachmentCount();
 
             long rootMessagePartId = saveMessageParts(db, message);
 
@@ -1273,7 +1273,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             cv.put("bcc_list", Address.pack(message.getRecipients(RecipientType.BCC)));
             cv.put("preview", preview);
             cv.put("reply_to_list", Address.pack(message.getReplyTo()));
-            cv.put("attachment_count", 0);  //FIXME
+            cv.put("attachment_count", attachmentCount);
             cv.put("internal_date", message.getInternalDate() == null
                     ? System.currentTimeMillis() : message.getInternalDate().getTime());
             cv.put("mime_type", message.getMimeType());

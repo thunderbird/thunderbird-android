@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 
 @RunWith(AndroidJUnit4.class)
-public class MessagePreviewExtractorTest {
+public class MessageInfoExtractorTest {
 
     @Test
     public void shouldExtractPreviewFromSinglePlainTextPart() throws MessagingException {
@@ -26,7 +26,7 @@ public class MessagePreviewExtractorTest {
         TextBody body = new TextBody("Message text ");
         message.setBody(body);
 
-        String preview = MessagePreviewExtractor.extractPreview(getContext(), message);
+        String preview = new MessageInfoExtractor(getContext(), message).getMessageTextPreview();
 
         assertEquals("Message text", preview);
     }
@@ -49,7 +49,7 @@ public class MessagePreviewExtractorTest {
                 "560-------570-------580-------590-------600-------");
         message.setBody(body);
 
-        String preview = MessagePreviewExtractor.extractPreview(getContext(), message);
+        String preview = new MessageInfoExtractor(getContext(), message).getMessageTextPreview();
 
         assertEquals(512, preview.length());
         assertEquals('…', preview.charAt(511));
@@ -62,7 +62,7 @@ public class MessagePreviewExtractorTest {
         TextBody body = new TextBody("<html><body><pre>Message text</pre></body></html>");
         message.setBody(body);
 
-        String preview = MessagePreviewExtractor.extractPreview(getContext(), message);
+        String preview = new MessageInfoExtractor(getContext(), message).getMessageTextPreview();
 
         assertEquals("Message text", preview);
     }
@@ -83,7 +83,7 @@ public class MessagePreviewExtractorTest {
         MimeBodyPart htmlPart = new MimeBodyPart(htmlBody, "text/html");
         multipart.addBodyPart(htmlPart);
 
-        String preview = MessagePreviewExtractor.extractPreview(getContext(), message);
+        String preview = new MessageInfoExtractor(getContext(), message).getMessageTextPreview();
 
         assertEquals("text", preview);
     }
@@ -104,7 +104,7 @@ public class MessagePreviewExtractorTest {
         MimeBodyPart htmlPart = new MimeBodyPart(htmlBody, "text/html");
         multipart.addBodyPart(htmlPart);
 
-        String preview = MessagePreviewExtractor.extractPreview(getContext(), message);
+        String preview = new MessageInfoExtractor(getContext(), message).getMessageTextPreview();
 
         assertEquals("text / html", preview);
     }
@@ -130,7 +130,7 @@ public class MessagePreviewExtractorTest {
         MimeBodyPart messagePart = new MimeBodyPart(innerMessage, "message/rfc822");
         multipart.addBodyPart(messagePart);
 
-        String preview = MessagePreviewExtractor.extractPreview(getContext(), message);
+        String preview = new MessageInfoExtractor(getContext(), message).getMessageTextPreview();
 
         assertEquals("text / Includes message titled \"inner message\" containing: html", preview);
     }

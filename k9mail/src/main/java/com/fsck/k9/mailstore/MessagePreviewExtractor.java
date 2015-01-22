@@ -1,7 +1,6 @@
 package com.fsck.k9.mailstore;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -9,8 +8,6 @@ import android.text.TextUtils;
 
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.Viewable;
@@ -20,22 +17,11 @@ import com.fsck.k9.mail.internet.Viewable.MessageHeader;
 import com.fsck.k9.mail.internet.Viewable.Textual;
 
 
-public class MessagePreviewExtractor {
+class MessagePreviewExtractor {
     private static final int MAX_PREVIEW_LENGTH = 512;
     private static final int MAX_CHARACTERS_CHECKED_FOR_PREVIEW = 8192;
 
-    public static String extractPreview(Context context, Message message) throws MessagingException {
-        try {
-            List<Part> attachments = new ArrayList<Part>();
-            List<Viewable> viewables = MessageExtractor.getViewables(message, attachments);
-
-            return buildPreview(context, viewables);
-        } catch (Exception e) {
-            throw new MessagingException("Couldn't extract viewable parts", e);
-        }
-    }
-
-    private static String buildPreview(Context context, List<Viewable> viewables) throws MessagingException {
+    public static String extractPreview(Context context, List<Viewable> viewables) {
         StringBuilder text = new StringBuilder();
         boolean divider = false;
 
