@@ -108,7 +108,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         "encoding TEXT, " +
                         "charset TEXT, " +
                         "data_location INTEGER NOT NULL, " +
-                        "data TEXT, " +
+                        "data BLOB, " +
                         "preamble TEXT, " +
                         "epilogue TEXT, " +
                         "boundary TEXT, " +
