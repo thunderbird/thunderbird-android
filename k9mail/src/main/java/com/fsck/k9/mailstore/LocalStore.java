@@ -717,7 +717,7 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    private InputStream getDecodingInputStream(InputStream rawInputStream, String encoding) {
+    InputStream getDecodingInputStream(InputStream rawInputStream, String encoding) {
         if (MimeUtil.ENC_BASE64.equals(encoding)) {
             return new Base64InputStream(rawInputStream);
         }

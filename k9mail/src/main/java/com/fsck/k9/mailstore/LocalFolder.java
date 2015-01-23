@@ -42,11 +42,13 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.parser.ContentHandler;
 import org.apache.james.mime4j.parser.MimeStreamParser;
@@ -1373,17 +1375,40 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 byte[] bodyData = getBodyBytes(body);
                 String encoding = getTransferEncoding(part);
 
-                if (attachment.size == AttachmentViewInfo.UNKNOWN_SIZE) {
-                    //FIXME: Use size of content when transfer encoding is stripped
+                long size = decodeAndCountBytes(bodyData, encoding);
+                if (size == AttachmentViewInfo.UNKNOWN_SIZE) {
                     cv.put("decoded_body_size", bodyData.length);
                 } else {
-                    cv.put("decoded_body_size", attachment.size);
+                    cv.put("decoded_body_size", size);
                 }
 
                 cv.put("encoding", encoding);
                 cv.put("data", bodyData);
                 cv.put("content_id", part.getContentId());
             }
+        }
+    }
+
+    private long decodeAndCountBytes(byte[] bodyData, String encoding) {
+        ByteArrayInputStream rawInputStream = new ByteArrayInputStream(bodyData);
+        return decodeAndCountBytes(encoding, rawInputStream);
+    }
+
+    private long decodeAndCountBytes(String encoding, ByteArrayInputStream rawInputStream) {
+        InputStream decodingInputStream = localStore.getDecodingInputStream(rawInputStream, encoding);
+        try {
+            CountingOutputStream countingOutputStream = new CountingOutputStream();
+            try {
+                IOUtils.copy(decodingInputStream, countingOutputStream);
+
+                return countingOutputStream.getCount();
+            } catch (IOException e) {
+                return AttachmentViewInfo.UNKNOWN_SIZE;
+            }
+        } finally {
+            try {
+                decodingInputStream.close();
+            } catch (IOException e) { /* ignore */ }
         }
     }
 
