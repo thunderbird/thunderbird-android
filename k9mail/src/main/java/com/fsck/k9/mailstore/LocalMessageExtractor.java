@@ -518,7 +518,7 @@ public class LocalMessageExtractor {
         return attachments;
     }
 
-    private static AttachmentViewInfo extractAttachmentInfo(Context context, Part part) throws MessagingException {
+    public static AttachmentViewInfo extractAttachmentInfo(Context context, Part part) throws MessagingException {
         if (part instanceof LocalPart) {
             LocalPart localPart = (LocalPart) part;
             String accountUuid = localPart.getAccountUuid();

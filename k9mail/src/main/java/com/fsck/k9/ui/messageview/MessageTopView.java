@@ -1,6 +1,5 @@
 package com.fsck.k9.ui.messageview;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -14,7 +13,6 @@ import android.widget.LinearLayout;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -67,11 +65,13 @@ public class MessageTopView extends LinearLayout {
             throws MessagingException {
         resetView();
 
+        Message message = messageViewInfo.message;
         for (MessageViewContainer container : messageViewInfo.containers) {
             MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container, null);
             view.initialize(fragment, attachmentCallback, openPgpHeaderViewCallback,
                     !Account.NO_OPENPGP_PROVIDER.equals(account.getOpenPgpProvider()));
-            view.setMessage(container);
+            view.setMessageViewContainer(message, container);
+
             containerViews.addView(view);
         }
 

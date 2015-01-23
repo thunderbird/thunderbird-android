@@ -96,7 +96,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public String getContentId() throws MessagingException {
+    public String getContentId() {
         String contentId = getFirstHeader(MimeHeader.HEADER_CONTENT_ID);
         if (contentId == null) {
             return null;

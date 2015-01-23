@@ -26,6 +26,7 @@ import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewStub;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -34,10 +35,12 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 
+import com.fsck.k9.view.K9WebViewClient;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
 import org.openintents.openpgp.OpenPgpError;
@@ -421,9 +424,12 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
     }
 
-    public void setMessage(MessageViewContainer messageViewContainer)
+    public void setMessageViewContainer(Message message, MessageViewContainer messageViewContainer)
             throws MessagingException {
         resetView();
+
+        WebViewClient webViewClient = K9WebViewClient.newInstance(message);
+        mMessageContentView.setWebViewClient(webViewClient);
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
         OpenPgpError error = messageViewContainer.pgpError;

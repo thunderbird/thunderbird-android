@@ -174,7 +174,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public String getContentId() throws MessagingException {
+    public String getContentId() {
         return null;
     }
 

@@ -20,7 +20,7 @@ public interface Part {
 
     String getDisposition() throws MessagingException;
 
-    String getContentId() throws MessagingException;
+    String getContentId();
 
     String[] getHeader(String name) throws MessagingException;
 
