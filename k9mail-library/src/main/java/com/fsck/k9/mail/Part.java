@@ -27,7 +27,7 @@ public interface Part {
 
     String getMimeType() throws MessagingException;
 
-    void setBody(Body body) throws MessagingException;
+    void setBody(Body body);
 
     void writeTo(OutputStream out) throws IOException, MessagingException;
 

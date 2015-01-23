@@ -72,7 +72,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public void setBody(Body body) throws MessagingException {
+    public void setBody(Body body) {
         this.mBody = body;
     }
 

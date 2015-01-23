@@ -394,7 +394,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setBody(Body body) throws MessagingException {
+    public void setBody(Body body) {
         this.mBody = body;
     }
 
@@ -492,13 +492,11 @@ public class MimeMessage extends Message {
                 stack.addFirst(MimeMessage.this);
             } else {
                 expect(Part.class);
-                try {
-                    MimeMessage m = new MimeMessage();
-                    ((Part)stack.peek()).setBody(m);
-                    stack.addFirst(m);
-                } catch (MessagingException me) {
-                    throw new Error(me);
-                }
+                Part part = (Part) stack.peek();
+
+                MimeMessage m = new MimeMessage();
+                part.setBody(m);
+                stack.addFirst(m);
             }
         }
 
@@ -548,7 +546,21 @@ public class MimeMessage extends Message {
 
         @Override
         public void endMultipart() {
-            stack.removeFirst();
+            expect(Multipart.class);
+            Multipart multipart = (Multipart) stack.removeFirst();
+
+            boolean hasNoBodyParts = multipart.getCount() == 0;
+            boolean hasNoEpilogue = multipart.getEpilogue() == null;
+            if (hasNoBodyParts && hasNoEpilogue) {
+                /*
+                 * The parser is calling startMultipart(), preamble(), and endMultipart() when all we have is
+                 * headers of a "multipart/*" part. But there's really no point in keeping a Multipart body if all
+                 * of the content is missing.
+                 */
+                expect(Part.class);
+                Part part = (Part) stack.peek();
+                part.setBody(null);
+            }
         }
 
         @Override

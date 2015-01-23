@@ -141,7 +141,7 @@ public abstract class Message implements Part, CompositeBody {
     public abstract void removeHeader(String name) throws MessagingException;
 
     @Override
-    public abstract void setBody(Body body) throws MessagingException;
+    public abstract void setBody(Body body);
 
     public abstract long getId();
 
