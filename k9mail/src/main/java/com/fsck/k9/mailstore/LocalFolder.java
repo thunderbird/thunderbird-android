@@ -1354,47 +1354,51 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         Body body = part.getBody();
         if (body instanceof Multipart) {
-            cv.put("data_location", DataLocation.IN_DATABASE);
-
-            Multipart multipart = (Multipart) body;
-            cv.put("preamble", multipart.getPreamble());
-            cv.put("epilogue", multipart.getEpilogue());
-            cv.put("boundary", multipart.getBoundary());
+            multipartToContentValues(cv, (Multipart) body);
+        } else if (body == null) {
+            missingPartToContentValues(cv, part);
         } else {
-            AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part, PLACEHOLDER_URI);
-
-            cv.put("display_name", attachment.displayName);
-
-            if (body == null) {
-                //TODO: deal with missing parts
-                cv.put("data_location", DataLocation.MISSING);
-                cv.put("decoded_body_size", attachment.size);
-            } else {
-                cv.put("data_location", DataLocation.IN_DATABASE);
-
-                byte[] bodyData = getBodyBytes(body);
-                String encoding = getTransferEncoding(part);
-
-                long size = decodeAndCountBytes(bodyData, encoding);
-                if (size == AttachmentViewInfo.UNKNOWN_SIZE) {
-                    cv.put("decoded_body_size", bodyData.length);
-                } else {
-                    cv.put("decoded_body_size", size);
-                }
-
-                cv.put("encoding", encoding);
-                cv.put("data", bodyData);
-                cv.put("content_id", part.getContentId());
-            }
+            leafPartToContentValues(cv, part, body);
         }
     }
 
-    private long decodeAndCountBytes(byte[] bodyData, String encoding) {
-        ByteArrayInputStream rawInputStream = new ByteArrayInputStream(bodyData);
-        return decodeAndCountBytes(encoding, rawInputStream);
+    private void multipartToContentValues(ContentValues cv, Multipart multipart) {
+        cv.put("data_location", DataLocation.IN_DATABASE);
+        cv.put("preamble", multipart.getPreamble());
+        cv.put("epilogue", multipart.getEpilogue());
+        cv.put("boundary", multipart.getBoundary());
     }
 
-    private long decodeAndCountBytes(String encoding, ByteArrayInputStream rawInputStream) {
+    private void missingPartToContentValues(ContentValues cv, Part part) throws MessagingException {
+        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part, PLACEHOLDER_URI);
+        cv.put("display_name", attachment.displayName);
+        cv.put("data_location", DataLocation.MISSING);
+        cv.put("decoded_body_size", attachment.size);
+    }
+
+    private void leafPartToContentValues(ContentValues cv, Part part, Body body)
+            throws MessagingException, IOException {
+        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part, PLACEHOLDER_URI);
+        cv.put("display_name", attachment.displayName);
+        cv.put("data_location", DataLocation.IN_DATABASE);
+
+        byte[] bodyData = getBodyBytes(body);
+        String encoding = getTransferEncoding(part);
+
+        long size = decodeAndCountBytes(bodyData, encoding, bodyData.length);
+        cv.put("decoded_body_size", size);
+
+        cv.put("encoding", encoding);
+        cv.put("data", bodyData);
+        cv.put("content_id", part.getContentId());
+    }
+
+    private long decodeAndCountBytes(byte[] bodyData, String encoding, long fallbackValue) {
+        ByteArrayInputStream rawInputStream = new ByteArrayInputStream(bodyData);
+        return decodeAndCountBytes(rawInputStream, encoding, fallbackValue);
+    }
+
+    private long decodeAndCountBytes(ByteArrayInputStream rawInputStream, String encoding, long fallbackValue) {
         InputStream decodingInputStream = localStore.getDecodingInputStream(rawInputStream, encoding);
         try {
             CountingOutputStream countingOutputStream = new CountingOutputStream();
@@ -1403,7 +1407,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
                 return countingOutputStream.getCount();
             } catch (IOException e) {
-                return AttachmentViewInfo.UNKNOWN_SIZE;
+                return fallbackValue;
             }
         } finally {
             try {
