@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
@@ -15,7 +14,7 @@ import java.io.*;
  * and writeTo one time. After writeTo is called, or the InputStream returned from
  * getInputStream is closed the file is deleted and the Body should be considered disposed of.
  */
-public class BinaryTempFileBody implements RawDataBody {
+public class BinaryTempFileBody implements RawDataBody, SizeAware {
     private static File mTempDirectory;
 
     private File mFile;
@@ -24,6 +23,10 @@ public class BinaryTempFileBody implements RawDataBody {
 
     public static void setTempDirectory(File tempDirectory) {
         mTempDirectory = tempDirectory;
+    }
+
+    public static File getTempDirectory() {
+        return mTempDirectory;
     }
 
     @Override
@@ -99,6 +102,15 @@ public class BinaryTempFileBody implements RawDataBody {
         } finally {
             in.close();
         }
+    }
+
+    @Override
+    public long getSize() {
+        return mFile.length();
+    }
+
+    public File getFile() {
+        return mFile;
     }
 
     class BinaryTempFileBodyInputStream extends FilterInputStream {

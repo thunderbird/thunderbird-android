@@ -4,8 +4,11 @@ package com.fsck.k9.mailstore;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,9 +46,11 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.filter.CountingOutputStream;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.SizeAware;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import org.apache.commons.io.IOUtils;
@@ -62,6 +67,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
     private static final Uri PLACEHOLDER_URI = Uri.EMPTY;
+    private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
+    private static final long INVALID_MESSAGE_PART_ID = -1;
 
     private final LocalStore localStore;
 
@@ -1340,26 +1347,48 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         cv.put("seq", order);
         cv.put("server_extra", part.getServerExtra());
 
-        partToContentValues(cv, part);
-
-        return db.insertOrThrow("message_parts", null, cv);
+        return updateOrInsertMessagePart(db, cv, part, INVALID_MESSAGE_PART_ID);
     }
 
-    private void partToContentValues(ContentValues cv, Part part) throws IOException, MessagingException {
+    private void renameTemporaryFile(File file, String messagePartId) {
+        File destination = localStore.getAttachmentFile(messagePartId);
+        if (!file.renameTo(destination)) {
+            Log.w(K9.LOG_TAG, "Couldn't rename temporary file " + file.getAbsolutePath() +
+                    " to " + destination.getAbsolutePath());
+        }
+    }
+
+    private long updateOrInsertMessagePart(SQLiteDatabase db, ContentValues cv, Part part, long existingMessagePartId)
+            throws IOException, MessagingException {
         byte[] headerBytes = getHeaderBytes(part);
 
         cv.put("mime_type", part.getMimeType());
         cv.put("header", headerBytes);
         cv.put("type", MessagePartType.UNKNOWN);
 
+        File file = null;
         Body body = part.getBody();
         if (body instanceof Multipart) {
             multipartToContentValues(cv, (Multipart) body);
         } else if (body == null) {
             missingPartToContentValues(cv, part);
         } else {
-            leafPartToContentValues(cv, part, body);
+            file = leafPartToContentValues(cv, part, body);
         }
+
+        long messagePartId;
+        if (existingMessagePartId != INVALID_MESSAGE_PART_ID) {
+            messagePartId = existingMessagePartId;
+            db.update("message_parts", cv, "id = ?", new String[] { Long.toString(messagePartId) });
+        } else {
+            messagePartId = db.insertOrThrow("message_parts", null, cv);
+        }
+
+        if (file != null) {
+            renameTemporaryFile(file, Long.toString(messagePartId));
+        }
+
+        return messagePartId;
     }
 
     private void multipartToContentValues(ContentValues cv, Multipart multipart) {
@@ -1376,21 +1405,64 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         cv.put("decoded_body_size", attachment.size);
     }
 
-    private void leafPartToContentValues(ContentValues cv, Part part, Body body)
+    private File leafPartToContentValues(ContentValues cv, Part part, Body body)
             throws MessagingException, IOException {
         AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part, PLACEHOLDER_URI);
         cv.put("display_name", attachment.displayName);
-        cv.put("data_location", DataLocation.IN_DATABASE);
 
-        byte[] bodyData = getBodyBytes(body);
         String encoding = getTransferEncoding(part);
 
-        long size = decodeAndCountBytes(bodyData, encoding, bodyData.length);
-        cv.put("decoded_body_size", size);
+        if (!(body instanceof SizeAware)) {
+            throw new IllegalStateException("Body needs to implement SizeAware");
+        }
 
+        SizeAware sizeAwareBody = (SizeAware) body;
+        long fileSize = sizeAwareBody.getSize();
+
+        File file = null;
+        int dataLocation;
+        if (fileSize > MAX_BODY_SIZE_FOR_DATABASE) {
+            dataLocation = DataLocation.ON_DISK;
+
+            file = writeBodyToDiskIfNecessary(part);
+
+            long size = decodeAndCountBytes(file, encoding, fileSize);
+            cv.put("decoded_body_size", size);
+        } else {
+            dataLocation = DataLocation.IN_DATABASE;
+
+            byte[] bodyData = getBodyBytes(body);
+            cv.put("data", bodyData);
+
+            long size = decodeAndCountBytes(bodyData, encoding, bodyData.length);
+            cv.put("decoded_body_size", size);
+        }
+        cv.put("data_location", dataLocation);
         cv.put("encoding", encoding);
-        cv.put("data", bodyData);
         cv.put("content_id", part.getContentId());
+
+        return file;
+    }
+
+    private File writeBodyToDiskIfNecessary(Part part) throws MessagingException, IOException {
+        Body body = part.getBody();
+        if (body instanceof BinaryTempFileBody) {
+            return ((BinaryTempFileBody) body).getFile();
+        } else {
+            return writeBodyToDisk(body);
+        }
+    }
+
+    private File writeBodyToDisk(Body body) throws IOException, MessagingException {
+        File file = File.createTempFile("body", null, BinaryTempFileBody.getTempDirectory());
+        OutputStream out = new FileOutputStream(file);
+        try {
+            body.writeTo(out);
+        } finally {
+            out.close();
+        }
+
+        return file;
     }
 
     private long decodeAndCountBytes(byte[] bodyData, String encoding, long fallbackValue) {
@@ -1398,7 +1470,17 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         return decodeAndCountBytes(rawInputStream, encoding, fallbackValue);
     }
 
-    private long decodeAndCountBytes(ByteArrayInputStream rawInputStream, String encoding, long fallbackValue) {
+    private long decodeAndCountBytes(File file, String encoding, long fallbackValue)
+            throws MessagingException, IOException {
+        InputStream inputStream = new FileInputStream(file);
+        try {
+            return decodeAndCountBytes(inputStream, encoding, fallbackValue);
+        } finally {
+            inputStream.close();
+        }
+    }
+
+    private long decodeAndCountBytes(InputStream rawInputStream, String encoding, long fallbackValue) {
         InputStream decodingInputStream = localStore.getDecodingInputStream(rawInputStream, encoding);
         try {
             CountingOutputStream countingOutputStream = new CountingOutputStream();
@@ -1464,7 +1546,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         localStore.database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                String messagePartId;
+                long messagePartId;
 
                 Cursor cursor = db.query("message_parts", new String[] { "id" }, "root = ? AND server_extra = ?",
                         new String[] { Long.toString(message.getMessagePartId()), part.getServerExtra() },
@@ -1474,16 +1556,13 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         throw new IllegalStateException("Message part not found");
                     }
 
-                    messagePartId = cursor.getString(0);
+                    messagePartId = cursor.getLong(0);
                 } finally {
                     cursor.close();
                 }
 
                 try {
-                    ContentValues cv = new ContentValues();
-                    partToContentValues(cv, part);
-
-                    db.update("message_parts", cv, "id = ?", new String[] { messagePartId });
+                    updateOrInsertMessagePart(db, new ContentValues(), part, messagePartId);
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "Error writing message part", e);
                 }
@@ -1686,16 +1765,13 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void deleteMessagePartsFromDisk(SQLiteDatabase db, long rootMessagePartId) {
-        File attachmentDirectory = StorageManager.getInstance(localStore.context)
-                .getAttachmentDirectory(getAccountUuid(), localStore.database.getStorageProviderId());
-
         Cursor cursor = db.query("message_parts", new String[] { "id" },
                 "root = ? AND data_location = " + DataLocation.ON_DISK,
                 new String[] { Long.toString(rootMessagePartId) }, null, null, null);
         try {
             while (cursor.moveToNext()) {
                 String messagePartId = cursor.getString(0);
-                File file = new File(attachmentDirectory, messagePartId);
+                File file = localStore.getAttachmentFile(messagePartId);
                 if (file.exists()) {
                     if (!file.delete() && K9.DEBUG) {
                         Log.d(K9.LOG_TAG, "Couldn't delete message part file: " + file.getAbsolutePath());

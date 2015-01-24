@@ -9,9 +9,10 @@ import java.io.OutputStream;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.RawDataBody;
+import com.fsck.k9.mail.internet.SizeAware;
 
 
-public class BinaryMemoryBody implements Body, RawDataBody {
+public class BinaryMemoryBody implements Body, RawDataBody, SizeAware {
     private final byte[] data;
     private final String encoding;
 
@@ -38,5 +39,10 @@ public class BinaryMemoryBody implements Body, RawDataBody {
     @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         out.write(data);
+    }
+
+    @Override
+    public long getSize() {
+        return data.length;
     }
 }

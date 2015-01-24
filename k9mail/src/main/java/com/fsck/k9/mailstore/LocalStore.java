@@ -728,7 +728,7 @@ public class LocalStore extends Store implements Serializable {
         return rawInputStream;
     }
 
-    private File getAttachmentFile(String attachmentId) {
+    File getAttachmentFile(String attachmentId) {
         final StorageManager storageManager = StorageManager.getInstance(context);
         final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId());
         return new File(attachmentDirectory, attachmentId);
