@@ -39,6 +39,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -717,12 +718,24 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    InputStream getDecodingInputStream(InputStream rawInputStream, String encoding) {
+    InputStream getDecodingInputStream(final InputStream rawInputStream, String encoding) {
         if (MimeUtil.ENC_BASE64.equals(encoding)) {
-            return new Base64InputStream(rawInputStream);
+            return new Base64InputStream(rawInputStream) {
+                @Override
+                public void close() throws IOException {
+                    super.close();
+                    rawInputStream.close();
+                }
+            };
         }
         if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(encoding)) {
-            return new QuotedPrintableInputStream(rawInputStream);
+            return new QuotedPrintableInputStream(rawInputStream) {
+                @Override
+                public void close() throws IOException {
+                    super.close();
+                    rawInputStream.close();
+                }
+            };
         }
 
         return rawInputStream;
