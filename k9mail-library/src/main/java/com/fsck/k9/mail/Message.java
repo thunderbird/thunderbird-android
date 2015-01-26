@@ -121,9 +121,6 @@ public abstract class Message implements Part, CompositeBody {
     public abstract Body getBody();
 
     @Override
-    public abstract String getContentType() throws MessagingException;
-
-    @Override
     public abstract void addHeader(String name, String value) throws MessagingException;
 
     @Override

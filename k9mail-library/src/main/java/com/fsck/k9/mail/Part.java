@@ -15,7 +15,7 @@ public interface Part {
 
     Body getBody();
 
-    String getContentType() throws MessagingException;
+    String getContentType();
 
     String getDisposition() throws MessagingException;
 
@@ -25,7 +25,7 @@ public interface Part {
 
     boolean isMimeType(String mimeType) throws MessagingException;
 
-    String getMimeType() throws MessagingException;
+    String getMimeType();
 
     void setBody(Body body);
 

@@ -85,7 +85,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public String getContentType() throws MessagingException {
+    public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
         return (contentType == null) ? "text/plain" : contentType;
     }
@@ -111,7 +111,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public String getMimeType() throws MessagingException {
+    public String getMimeType() {
         return MimeUtility.getHeaderParameter(getContentType(), null);
     }
 
