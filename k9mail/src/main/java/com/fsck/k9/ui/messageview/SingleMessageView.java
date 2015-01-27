@@ -533,13 +533,13 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
 
         if (text == null) {
-            text = messageViewInfo.text;
+            text = messageViewInfo.getText();
         }
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
         mText = text;
 
-        mHasAttachments = !messageViewInfo.attachments.isEmpty();
+        mHasAttachments = !messageViewInfo.getAttachments().isEmpty();
         if (mHasAttachments) {
             renderAttachments(messageViewInfo);
         }
@@ -616,7 +616,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     }
 
     public void renderAttachments(MessageViewInfo messageContainer) throws MessagingException {
-        for (AttachmentViewInfo attachment : messageContainer.attachments) {
+        for (AttachmentViewInfo attachment : messageContainer.getAttachments()) {
             AttachmentView view = (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);
             view.setAttachment(attachment);
