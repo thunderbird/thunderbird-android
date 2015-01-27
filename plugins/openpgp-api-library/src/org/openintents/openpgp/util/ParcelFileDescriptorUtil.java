@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 Dominik Schürmann <dominik@dominikschuermann.de>
- *               2013 Flow (http://stackoverflow.com/questions/18212152/transfer-inputstream-to-another-service-across-process-boundaries-with-parcelf)
+ *               2013 Florian Schmaus <flo@geekplace.eu>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * Partially based on <a href="http://stackoverflow.com/questions/18212152/">Stackoverflow: Transfer InputStream to another Service (across process boundaries)</a>
+ **/
 public class ParcelFileDescriptorUtil {
 
     public interface IThreadListener {

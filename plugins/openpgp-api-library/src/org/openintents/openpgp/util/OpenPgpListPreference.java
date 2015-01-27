@@ -16,9 +16,6 @@
 
 package org.openintents.openpgp.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,8 +31,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-
 import org.openintents.openpgp.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Does not extend ListPreference, but is very similar to it!
@@ -47,6 +46,7 @@ public class OpenPgpListPreference extends DialogPreference {
     private static final Intent MARKET_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse(
             String.format(MARKET_INTENT_URI_BASE, OPENKEYCHAIN_PACKAGE)));
 
+    private ArrayList<OpenPgpProviderEntry> mLegacyList = new ArrayList<OpenPgpProviderEntry>();
     private ArrayList<OpenPgpProviderEntry> mList = new ArrayList<OpenPgpProviderEntry>();
 
     private String mSelectedPackage;
@@ -59,6 +59,17 @@ public class OpenPgpListPreference extends DialogPreference {
         this(context, null);
     }
 
+    /**
+     * Public method to add new entries for legacy applications
+     *
+     * @param packageName
+     * @param simpleName
+     * @param icon
+     */
+    public void addLegacyProvider(int position, String packageName, String simpleName, Drawable icon) {
+        mLegacyList.add(position, new OpenPgpProviderEntry(packageName, simpleName, icon));
+    }
+
     @Override
     protected void onPrepareDialogBuilder(Builder builder) {
         mList.clear();
@@ -66,8 +77,11 @@ public class OpenPgpListPreference extends DialogPreference {
         // add "none"-entry
         mList.add(0, new OpenPgpProviderEntry("",
                 getContext().getString(R.string.openpgp_list_preference_none),
-                getContext().getResources().getDrawable(R.drawable.ic_action_cancel_launchersize_light)));
-
+                getContext().getResources().getDrawable(R.drawable.ic_action_cancel_launchersize)));
+        
+        // add all additional (legacy) providers
+        mList.addAll(mLegacyList);
+        
         // search for OpenPGP providers...
         ArrayList<OpenPgpProviderEntry> providerList = new ArrayList<OpenPgpProviderEntry>();
         Intent intent = new Intent(OpenPgpApi.SERVICE_INTENT);
