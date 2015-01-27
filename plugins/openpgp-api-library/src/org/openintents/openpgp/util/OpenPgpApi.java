@@ -23,10 +23,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+
 import org.openintents.openpgp.IOpenPgpService;
 import org.openintents.openpgp.OpenPgpError;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -34,9 +34,25 @@ public class OpenPgpApi {
 
     public static final String TAG = "OpenPgp API";
 
-    public static final int API_VERSION = 3;
     public static final String SERVICE_INTENT = "org.openintents.openpgp.IOpenPgpService";
-    
+
+    /**
+     * Version history
+     * ---------------
+     * <p/>
+     * 3:
+     * - first public stable version
+     * <p/>
+     * 4:
+     * - No changes to existing methods -> backward compatible
+     * - Introduction of ACTION_DECRYPT_METADATA, RESULT_METADATA, EXTRA_ORIGINAL_FILENAME, and OpenPgpMetadata parcel
+     * - Introduction of internal NFC extras: EXTRA_NFC_SIGNED_HASH, EXTRA_NFC_SIG_CREATION_TIMESTAMP
+     * 5:
+     * - OpenPgpSignatureResult: new consts SIGNATURE_KEY_REVOKED and SIGNATURE_KEY_EXPIRED
+     * - OpenPgpSignatureResult: ArrayList<String> userIds
+     */
+    public static final int API_VERSION = 5;
+
     /**
      * General extras
      * --------------
@@ -51,75 +67,116 @@ public class OpenPgpApi {
      */
 
     /**
-     * Sign only
-     *
+     * DEPRECATED
+     * Same as ACTION_CLEARTEXT_SIGN
+     * <p/>
      * optional extras:
-     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
+     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (DEPRECATED: this makes no sense here)
      * String        EXTRA_PASSPHRASE            (key passphrase)
      */
     public static final String ACTION_SIGN = "org.openintents.openpgp.action.SIGN";
 
     /**
+     * Sign text resulting in a cleartext signature
+     * Some magic pre-processing of the text is done to convert it to a format usable for
+     * cleartext signatures per RFC 4880 before the text is actually signed:
+     * - end cleartext with newline
+     * - remove whitespaces on line endings
+     * <p/>
+     * optional extras:
+     * String        EXTRA_PASSPHRASE            (key passphrase)
+     */
+    public static final String ACTION_CLEARTEXT_SIGN = "org.openintents.openpgp.action.CLEARTEXT_SIGN";
+
+    /**
+     * Sign text or binary data resulting in a detached signature.
+     * No OutputStream for ACTION_DETACHED_SIGN (No magic pre-processing like in ACTION_CLEARTEXT_SIGN)!
+     * The detached signature is returned separately in RESULT_DETACHED_SIGNATURE.
+     * <p/>
+     * optional extras:
+     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for detached signature)
+     * String        EXTRA_PASSPHRASE            (key passphrase)
+     * <p/>
+     * returned extras:
+     * byte[]        RESULT_DETACHED_SIGNATURE
+     */
+    public static final String ACTION_DETACHED_SIGN = "org.openintents.openpgp.action.DETACHED_SIGN";
+
+    /**
      * Encrypt
-     *
+     * <p/>
      * required extras:
      * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a user_id, a PendingIntent is returned via RESULT_INTENT)
      * or
      * long[]        EXTRA_KEY_IDS
-     *
+     * <p/>
      * optional extras:
-     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
+     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
      * String        EXTRA_PASSPHRASE            (key passphrase)
+     * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
      */
     public static final String ACTION_ENCRYPT = "org.openintents.openpgp.action.ENCRYPT";
 
     /**
      * Sign and encrypt
-     *
+     * <p/>
      * required extras:
      * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a user_id, a PendingIntent is returned via RESULT_INTENT)
      * or
      * long[]        EXTRA_KEY_IDS
-     *
+     * <p/>
      * optional extras:
-     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
+     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
      * String        EXTRA_PASSPHRASE            (key passphrase)
+     * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
      */
     public static final String ACTION_SIGN_AND_ENCRYPT = "org.openintents.openpgp.action.SIGN_AND_ENCRYPT";
 
     /**
      * Decrypts and verifies given input stream. This methods handles encrypted-only, signed-and-encrypted,
      * and also signed-only input.
-     *
-     * If OpenPgpSignatureResult.getStatus() == OpenPgpSignatureResult.SIGNATURE_UNKNOWN_PUB_KEY
+     * <p/>
+     * If OpenPgpSignatureResult.getStatus() == OpenPgpSignatureResult.SIGNATURE_KEY_MISSING
      * in addition a PendingIntent is returned via RESULT_INTENT to download missing keys.
-     *
+     * <p/>
      * optional extras:
-     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for ouput)
-     *
+     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
+     * byte[]        EXTRA_DETACHED_SIGNATURE    (detached signature)
+     * <p/>
      * returned extras:
      * OpenPgpSignatureResult   RESULT_SIGNATURE
+     * OpenPgpDecryptMetadata   RESULT_METADATA
      */
     public static final String ACTION_DECRYPT_VERIFY = "org.openintents.openpgp.action.DECRYPT_VERIFY";
 
     /**
+     * Decrypts the header of an encrypted file to retrieve metadata such as original filename.
+     * <p/>
+     * This does not decrypt the actual content of the file.
+     * <p/>
+     * returned extras:
+     * OpenPgpDecryptMetadata   RESULT_METADATA
+     */
+    public static final String ACTION_DECRYPT_METADATA = "org.openintents.openpgp.action.DECRYPT_METADATA";
+
+    /**
      * Get key ids based on given user ids (=emails)
-     *
+     * <p/>
      * required extras:
      * String[]      EXTRA_USER_IDS
-     *
+     * <p/>
      * returned extras:
-     * long[]        EXTRA_KEY_IDS
+     * long[]        RESULT_KEY_IDS
      */
     public static final String ACTION_GET_KEY_IDS = "org.openintents.openpgp.action.GET_KEY_IDS";
 
     /**
      * This action returns RESULT_CODE_SUCCESS if the OpenPGP Provider already has the key
      * corresponding to the given key id in its database.
-     *
+     * <p/>
      * It returns RESULT_CODE_USER_INTERACTION_REQUIRED if the Provider does not have the key.
      * The PendingIntent from RESULT_INTENT can be used to retrieve those from a keyserver.
-     *
+     * <p/>
      * required extras:
      * long        EXTRA_KEY_ID
      */
@@ -130,19 +187,29 @@ public class OpenPgpApi {
 
     public static final String EXTRA_ACCOUNT_NAME = "account_name";
 
-    // SIGN, ENCRYPT, SIGN_AND_ENCRYPT, DECRYPT_VERIFY
+    // ACTION_DETACHED_SIGN, ENCRYPT, SIGN_AND_ENCRYPT, DECRYPT_VERIFY
     // request ASCII Armor for output
     // OpenPGP Radix-64, 33 percent overhead compared to binary, see http://tools.ietf.org/html/rfc4880#page-53)
     public static final String EXTRA_REQUEST_ASCII_ARMOR = "ascii_armor";
+
+    // ACTION_DETACHED_SIGN
+    public static final String RESULT_DETACHED_SIGNATURE = "detached_signature";
 
     // ENCRYPT, SIGN_AND_ENCRYPT
     public static final String EXTRA_USER_IDS = "user_ids";
     public static final String EXTRA_KEY_IDS = "key_ids";
     // optional extras:
     public static final String EXTRA_PASSPHRASE = "passphrase";
+    public static final String EXTRA_ORIGINAL_FILENAME = "original_filename";
+
+    // internal NFC states
+    public static final String EXTRA_NFC_SIGNED_HASH = "nfc_signed_hash";
+    public static final String EXTRA_NFC_SIG_CREATION_TIMESTAMP = "nfc_sig_creation_timestamp";
+    public static final String EXTRA_NFC_DECRYPTED_SESSION_KEY = "nfc_decrypted_session_key";
 
     // GET_KEY
     public static final String EXTRA_KEY_ID = "key_id";
+    public static final String RESULT_KEY_IDS = "key_ids";
 
     /* Service Intent returns */
     public static final String RESULT_CODE = "result_code";
@@ -159,7 +226,12 @@ public class OpenPgpApi {
     public static final String RESULT_INTENT = "intent";
 
     // DECRYPT_VERIFY
+    public static final String EXTRA_DETACHED_SIGNATURE = "detached_signature";
+
     public static final String RESULT_SIGNATURE = "signature";
+    public static final String RESULT_METADATA = "metadata";
+    // This will be the charset which was specified in the headers of ascii armored input, if any
+    public static final String RESULT_CHARSET = "charset";
 
     IOpenPgpService mService;
     Context mContext;
@@ -211,17 +283,14 @@ public class OpenPgpApi {
     }
 
     public Intent executeApi(Intent data, InputStream is, OutputStream os) {
-        ParcelFileDescriptor input = null;
         try {
             data.putExtra(EXTRA_API_VERSION, OpenPgpApi.API_VERSION);
 
-            Intent result = null;
+            Intent result;
 
-            if (ACTION_GET_KEY_IDS.equals(data.getAction())) {
-                result = mService.execute(data, null, null);
-                return result;
-            } else {
-                // pipe the input and output
+            // pipe the input and output
+            ParcelFileDescriptor input = null;
+            if (is != null) {
                 input = ParcelFileDescriptorUtil.pipeFrom(is,
                         new ParcelFileDescriptorUtil.IThreadListener() {
 
@@ -229,43 +298,43 @@ public class OpenPgpApi {
                             public void onThreadFinished(Thread thread) {
                                 //Log.d(OpenPgpApi.TAG, "Copy to service finished");
                             }
-                        });
-                ParcelFileDescriptor output = ParcelFileDescriptorUtil.pipeTo(os,
+                        }
+                );
+            }
+            ParcelFileDescriptor output = null;
+            if (os != null) {
+                output = ParcelFileDescriptorUtil.pipeTo(os,
                         new ParcelFileDescriptorUtil.IThreadListener() {
 
                             @Override
                             public void onThreadFinished(Thread thread) {
                                 //Log.d(OpenPgpApi.TAG, "Service finished writing!");
                             }
-                        });
-
-                // blocks until result is ready
-                result = mService.execute(data, input, output);
-                // close() is required to halt the TransferThread
-                output.close();
-
-                // set class loader to current context to allow unparcelling
-                // of OpenPgpError and OpenPgpSignatureResult
-                // http://stackoverflow.com/a/3806769
-                result.setExtrasClassLoader(mContext.getClassLoader());
-
-                return result;
+                        }
+                );
             }
+
+            // blocks until result is ready
+            result = mService.execute(data, input, output);
+            // close() is required to halt the TransferThread
+            if (output != null) {
+                output.close();
+            }
+            // TODO: close input?
+
+            // set class loader to current context to allow unparcelling
+            // of OpenPgpError and OpenPgpSignatureResult
+            // http://stackoverflow.com/a/3806769
+            result.setExtrasClassLoader(mContext.getClassLoader());
+
+            return result;
         } catch (Exception e) {
-            Log.e(OpenPgpApi.TAG, "Exception", e);
+            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
                     new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
             return result;
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    Log.e(OpenPgpApi.TAG, "Failed to close input file descriptor", e);
-                }
-            }
         }
     }
 
