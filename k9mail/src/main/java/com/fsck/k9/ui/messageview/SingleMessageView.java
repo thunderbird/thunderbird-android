@@ -88,7 +88,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
     private static final int DISPLAY_NAME_INDEX = 1;
 
 
-    private MessageOpenPgpView mOpenPgpView;
+    private MessageOpenPgpViewOld mOpenPgpView;
     private MessageWebView mMessageContentView;
     private MessageHeader mHeaderContainer;
     private LinearLayout mAttachments;
@@ -126,7 +126,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         mHiddenAttachments.setVisibility(View.GONE);
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
-        mOpenPgpView = (MessageOpenPgpView) findViewById(R.id.layout_decrypt_openpgp);
+        mOpenPgpView = (MessageOpenPgpViewOld) findViewById(R.id.layout_decrypt_openpgp);
         mOpenPgpView.setFragment(fragment);
         mOpenPgpView.setupChildViews();
         mShowPicturesAction = findViewById(R.id.show_pictures);
