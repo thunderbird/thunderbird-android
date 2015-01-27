@@ -20,7 +20,6 @@ import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -55,9 +54,9 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
-import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
 import org.apache.commons.io.IOUtils;
@@ -90,7 +89,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     private MessageOpenPgpView mOpenPgpView;
     private MessageWebView mMessageContentView;
-    private MessageHeader mHeaderContainer;
     private LinearLayout mAttachments;
     private Button mShowHiddenAttachments;
     private LinearLayout mHiddenAttachments;
@@ -117,18 +115,12 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         activity.registerForContextMenu(mMessageContentView);
         mMessageContentView.setOnCreateContextMenuListener(this);
 
-        mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
-        mHeaderContainer.setOnLayoutChangedListener(this);
-
         mAttachmentsContainer = findViewById(R.id.attachments_container);
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
         mHiddenAttachments = (LinearLayout) findViewById(R.id.hidden_attachments);
         mHiddenAttachments.setVisibility(View.GONE);
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
-        mOpenPgpView = (MessageOpenPgpView) findViewById(R.id.layout_decrypt_openpgp);
-        mOpenPgpView.setFragment(fragment);
-        mOpenPgpView.setupChildViews();
         mShowPicturesAction = findViewById(R.id.show_pictures);
         mShowMessageAction = findViewById(R.id.show_message);
 
@@ -139,8 +131,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mContacts = Contacts.getInstance(activity);
 
         mInflater = ((MessageViewFragment) fragment).getFragmentLayoutInflater();
-        mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
-        mDownloadRemainder.setVisibility(View.GONE);
+        // mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
+        // mDownloadRemainder.setVisibility(View.GONE);
         mAttachmentsContainer.setVisibility(View.GONE);
         mMessageContentView.setVisibility(View.VISIBLE);
 
@@ -148,14 +140,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         // titlebar, which is really unfair.
         TypedValue outValue = new TypedValue();
         getContext().getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
-        mHeaderContainer.setBackgroundColor(outValue.data);
         // also set background of the whole view (including the attachments view)
         setBackgroundColor(outValue.data);
 
         mShowHiddenAttachments.setOnClickListener(this);
-        mShowMessageAction.setOnClickListener(this);
-        mShowAttachmentsAction.setOnClickListener(this);
-        mShowPicturesAction.setOnClickListener(this);
+        // mShowMessageAction.setOnClickListener(this);
+        // mShowAttachmentsAction.setOnClickListener(this);
+        // mShowPicturesAction.setOnClickListener(this);
 
         mClipboardManager = ClipboardManager.getInstance(activity);
     }
@@ -446,37 +437,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     }
 
     public void showShowPicturesAction(boolean show) {
-        mShowPicturesAction.setVisibility(show ? View.VISIBLE : View.GONE);
+        // mShowPicturesAction.setVisibility(show ? View.VISIBLE : View.GONE);
     }
     public void showShowMessageAction(boolean show) {
-        mShowMessageAction.setVisibility(show ? View.VISIBLE : View.GONE);
+        // mShowMessageAction.setVisibility(show ? View.VISIBLE : View.GONE);
     }
     public void showShowAttachmentsAction(boolean show) {
-        mShowAttachmentsAction.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    /**
-     * Fetch the message header view.  This is not the same as the message headers; this is the View shown at the top
-     * of messages.
-     * @return MessageHeader View.
-     */
-    public MessageHeader getMessageHeaderView() {
-        return mHeaderContainer;
-    }
-
-    public void setHeaders(final Message message, Account account) {
-        try {
-            mHeaderContainer.populate(message, account);
-            mHeaderContainer.setVisibility(View.VISIBLE);
-
-
-        } catch (Exception me) {
-            Log.e(K9.LOG_TAG, "setHeaders - error", me);
-        }
-    }
-
-    public void setOnToggleFlagClickListener(OnClickListener listener) {
-        mHeaderContainer.setOnFlagListener(listener);
+        // mShowAttachmentsAction.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     public void setOnDownloadButtonClickListener(OnClickListener listener) {
@@ -512,36 +479,16 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
     }
 
-    public void showAllHeaders() {
-        mHeaderContainer.onShowAdditionalHeaders();
-    }
-
-    public boolean additionalHeadersVisible() {
-        return mHeaderContainer.additionalHeadersVisible();
-    }
-    
-    public void setMessage(Account account, MessageViewInfo messageViewInfo, PgpData pgpData)
+    public void setMessage(MessageViewContainer messageViewContainer)
             throws MessagingException {
         resetView();
 
-        String text = null;
-        if (pgpData != null) {
-            text = pgpData.getDecryptedData();
-            if (text != null) {
-                text = HtmlConverter.textToHtml(text);
-            }
-        }
-
-        if (text == null) {
-            text = messageViewInfo.getText();
-        }
-
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
-        mText = text;
+        mText = messageViewContainer.text;
 
-        mHasAttachments = !messageViewInfo.getAttachments().isEmpty();
+        mHasAttachments = !messageViewContainer.attachments.isEmpty();
         if (mHasAttachments) {
-            renderAttachments(messageViewInfo);
+            renderAttachments(messageViewContainer);
         }
 
         mHiddenAttachments.setVisibility(View.GONE);
@@ -568,12 +515,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             onShowMessage();
         }
 
+        /*
         if (text != null && lookForImages) {
             // If the message contains external pictures and the "Show pictures"
             // button wasn't already pressed, see if the user's preferences has us
             // showing them anyway.
             if (Utility.hasExternalImages(text) && !showPictures()) {
-                Address[] from = messageViewInfo.message.getFrom();
+                Address[] from = messageViewContainer.message.getFrom();
                 if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                         ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
                          // Make sure we have at least one from address
@@ -585,11 +533,10 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                 }
             }
         }
+        */
 
-        if (text != null) {
-            loadBodyFromText(text);
-            mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
-                    pgpData.getSignatureResult(), messageViewInfo.message);
+        if (mText != null) {
+            loadBodyFromText(mText);
         } else {
             showStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
@@ -615,8 +562,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mMessageContentView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    public void renderAttachments(MessageViewInfo messageContainer) throws MessagingException {
-        for (AttachmentViewInfo attachment : messageContainer.getAttachments()) {
+    public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {
+        for (AttachmentViewInfo attachment : messageContainer.attachments) {
             AttachmentView view = (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, null);
             view.setCallback(attachmentCallback);
             view.setAttachment(attachment);
@@ -652,7 +599,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     }
 
     public void resetView() {
-        mDownloadRemainder.setVisibility(View.GONE);
+        // mDownloadRemainder.setVisibility(View.GONE);
         setLoadPictures(false);
         showShowAttachmentsAction(false);
         showShowMessageAction(false);
@@ -668,10 +615,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
          * is now hidden.
          */
         loadBodyFromText("");
-    }
-
-    public void resetHeaderView() {
-        mHeaderContainer.setVisibility(View.GONE);
     }
 
     public void setAttachmentCallback(AttachmentViewCallback attachmentCallback) {

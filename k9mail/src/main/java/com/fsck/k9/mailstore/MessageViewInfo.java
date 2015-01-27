@@ -17,17 +17,9 @@ public class MessageViewInfo {
     @Deprecated
     public MessageViewInfo(String text, List<AttachmentViewInfo> attachments, Message message) {
         containers.add(new MessageViewContainer(text, attachments));
+        // FIXME just display it twice, for testing only
+        containers.add(new MessageViewContainer(text, attachments));
         this.message = message;
-    }
-
-    @Deprecated
-    public String getText() {
-        return containers.get(0).text;
-    }
-
-    @Deprecated
-    public List<AttachmentViewInfo> getAttachments() {
-        return containers.get(0).attachments;
     }
 
     public static class MessageViewContainer {
