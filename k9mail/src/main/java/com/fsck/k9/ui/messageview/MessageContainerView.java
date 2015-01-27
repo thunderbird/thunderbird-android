@@ -63,7 +63,7 @@ import com.fsck.k9.view.MessageWebView;
 import org.apache.commons.io.IOUtils;
 
 
-public class SingleMessageView extends LinearLayout implements OnClickListener,
+public class MessageContainerView extends LinearLayout implements OnClickListener,
         OnLayoutChangedListener, OnCreateContextMenuListener {
     private static final int MENU_ITEM_LINK_VIEW = Menu.FIRST;
     private static final int MENU_ITEM_LINK_SHARE = Menu.FIRST + 1;
@@ -419,7 +419,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         showAttachments(true);
     }
 
-    public SingleMessageView(Context context, AttributeSet attrs) {
+    public MessageContainerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
