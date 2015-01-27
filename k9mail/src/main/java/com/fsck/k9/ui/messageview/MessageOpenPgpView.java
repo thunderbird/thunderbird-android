@@ -159,13 +159,13 @@ public class MessageOpenPgpView extends LinearLayout {
                             R.color.openpgp_green));
 
                     mGetKeyButton.setVisibility(View.GONE);
-                    mSignatureUserId.setText(signatureResult.getUserId());
+                    mSignatureUserId.setText(signatureResult.getPrimaryUserId());
                     mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
                     mSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
 
-                case OpenPgpSignatureResult.SIGNATURE_UNKNOWN_PUB_KEY:
+                case OpenPgpSignatureResult.SIGNATURE_KEY_MISSING:
                     if (signatureResult.isSignatureOnly()) {
                         mText.setText(R.string.openpgp_signature_unknown_text);
                     }
@@ -193,7 +193,7 @@ public class MessageOpenPgpView extends LinearLayout {
                             R.color.openpgp_orange));
 
                     mGetKeyButton.setVisibility(View.GONE);
-                    mSignatureUserId.setText(signatureResult.getUserId());
+                    mSignatureUserId.setText(signatureResult.getPrimaryUserId());
                     mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
                     mSignatureLayout.setVisibility(View.VISIBLE);
 
