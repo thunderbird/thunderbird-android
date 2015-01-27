@@ -97,7 +97,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private View mShowAttachmentsAction;
     private boolean mShowPictures;
     private boolean mHasAttachments;
-    private Button mDownloadRemainder;
     private LayoutInflater mInflater;
     private Contacts mContacts;
     private AttachmentViewCallback attachmentCallback;
@@ -108,7 +107,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<AttachmentViewInfo, AttachmentView>();
 
 
-    public void initialize(Fragment fragment) {
+    public void initialize(Fragment fragment, AttachmentViewCallback attachmentCallback) {
+        this.attachmentCallback = attachmentCallback;
+
         Activity activity = fragment.getActivity();
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mMessageContentView.configure();
@@ -131,9 +132,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mContacts = Contacts.getInstance(activity);
 
         mInflater = ((MessageViewFragment) fragment).getFragmentLayoutInflater();
-        // mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
-        // mDownloadRemainder.setVisibility(View.GONE);
-        mAttachmentsContainer.setVisibility(View.GONE);
         mMessageContentView.setVisibility(View.VISIBLE);
 
         // the HTC version of WebView tries to force the background of the
@@ -373,14 +371,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                 onShowHiddenAttachments();
                 break;
             }
-            case R.id.show_message: {
-                onShowMessage();
-                break;
-            }
-            case R.id.show_attachments: {
-                onShowAttachments();
-                break;
-            }
             case R.id.show_pictures: {
                 // Allow network access first...
                 setLoadPictures(true);
@@ -394,20 +384,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private void onShowHiddenAttachments() {
         mShowHiddenAttachments.setVisibility(View.GONE);
         mHiddenAttachments.setVisibility(View.VISIBLE);
-    }
-
-    public void onShowMessage() {
-        showShowMessageAction(false);
-        showAttachments(false);
-        showShowAttachmentsAction(mHasAttachments);
-        showMessageWebView(true);
-    }
-
-    public void onShowAttachments() {
-        showMessageWebView(false);
-        showShowAttachmentsAction(false);
-        showShowMessageAction(true);
-        showAttachments(true);
     }
 
     public MessageContainerView(Context context, AttributeSet attrs) {
@@ -438,33 +414,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     public void showShowPicturesAction(boolean show) {
         // mShowPicturesAction.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-    public void showShowMessageAction(boolean show) {
-        // mShowMessageAction.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-    public void showShowAttachmentsAction(boolean show) {
-        // mShowAttachmentsAction.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    public void setOnDownloadButtonClickListener(OnClickListener listener) {
-        mDownloadRemainder.setOnClickListener(listener);
-    }
-
-    public void enableDownloadButton() {
-        mDownloadRemainder.setEnabled(true);
-    }
-
-    public void disableDownloadButton() {
-        mDownloadRemainder.setEnabled(false);
-    }
-
-    public void setShowDownloadButton(Message message) {
-        if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
-            mDownloadRemainder.setVisibility(View.GONE);
-        } else {
-            mDownloadRemainder.setEnabled(true);
-            mDownloadRemainder.setVisibility(View.VISIBLE);
-        }
     }
 
     public void enableAttachmentButtons() {
@@ -500,19 +449,11 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                 lookForImages = false;
             }
 
-            if (mSavedState.attachmentViewVisible) {
-                onShowAttachments();
-            } else {
-                onShowMessage();
-            }
-
             if (mSavedState.hiddenAttachmentsVisible) {
                 onShowHiddenAttachments();
             }
 
             mSavedState = null;
-        } else {
-            onShowMessage();
         }
 
         /*
@@ -549,17 +490,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     private void loadBodyFromText(String emailText) {
         mMessageContentView.setText(emailText);
-    }
-
-    public void showAttachments(boolean show) {
-        mAttachmentsContainer.setVisibility(show ? View.VISIBLE : View.GONE);
-        boolean showHidden = (show && mHiddenAttachments.getVisibility() == View.GONE &&
-                mHiddenAttachments.getChildCount() > 0);
-        mShowHiddenAttachments.setVisibility(showHidden ? View.VISIBLE : View.GONE);
-    }
-
-    public void showMessageWebView(boolean show) {
-        mMessageContentView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {
@@ -599,10 +529,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     }
 
     public void resetView() {
-        // mDownloadRemainder.setVisibility(View.GONE);
         setLoadPictures(false);
-        showShowAttachmentsAction(false);
-        showShowMessageAction(false);
         showShowPicturesAction(false);
         mAttachments.removeAllViews();
         mHiddenAttachments.removeAllViews();
@@ -615,10 +542,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
          * is now hidden.
          */
         loadBodyFromText("");
-    }
-
-    public void setAttachmentCallback(AttachmentViewCallback attachmentCallback) {
-        this.attachmentCallback = attachmentCallback;
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.fsck.k9.mailstore;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.fsck.k9.mail.Message;
@@ -16,8 +15,6 @@ public class MessageViewInfo {
 
     @Deprecated
     public MessageViewInfo(String text, List<AttachmentViewInfo> attachments, Message message) {
-        containers.add(new MessageViewContainer(text, attachments));
-        // FIXME just display it twice, for testing only
         containers.add(new MessageViewContainer(text, attachments));
         this.message = message;
     }

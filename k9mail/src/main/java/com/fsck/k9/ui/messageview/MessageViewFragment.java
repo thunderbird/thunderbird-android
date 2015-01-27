@@ -147,9 +147,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
 
-        // mMessageView.setAttachmentCallback(this);
-
-        mMessageView.initialize(this);
+        mMessageView.initialize(this, this);
         mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,12 +155,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             }
         });
 
-        /*mMessageView.setOnDownloadButtonClickListener(new OnClickListener() {
+        mMessageView.setOnDownloadButtonClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDownloadRemainder();
             }
-        });*/
+        });
 
         mFragmentListener.messageHeaderViewAvailable(mMessageView.getMessageHeaderView());
 
@@ -248,7 +246,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void onDownloadMessageFailed(Throwable t) {
-        // mMessageView.enableDownloadButton();
+        mMessageView.enableDownloadButton();
         String errorMessage;
         if (t instanceof IllegalArgumentException) {
             errorMessage = mContext.getString(R.string.status_invalid_id_error);
@@ -271,7 +269,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private void showMessage(MessageViewInfo messageContainer) {
         try {
             mMessageView.setMessage(mAccount, messageContainer);
-            // mMessageView.setShowDownloadButton(mMessage);
+            mMessageView.setShowDownloadButton(mMessage);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Error while trying to display message", e);
         }
@@ -488,7 +486,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (mMessage.isSet(Flag.X_DOWNLOADED_FULL)) {
             return;
         }
-        // mMessageView.disableDownloadButton();
+        mMessageView.disableDownloadButton();
 
         mController.loadMessageForViewRemote(mAccount, mMessageReference.folderName, mMessageReference.uid,
                 downloadMessageListener);

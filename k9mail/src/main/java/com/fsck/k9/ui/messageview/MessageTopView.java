@@ -8,12 +8,14 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.MessageViewInfo;
@@ -27,14 +29,16 @@ public class MessageTopView extends LinearLayout {
     private LayoutInflater mInflater;
     private LinearLayout containerViews;
     private Fragment fragment;
+    private Button mDownloadRemainder;
+    private AttachmentViewCallback attachmentCallback;
 
     public MessageTopView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public void initialize (Fragment fragment) {
+    public void initialize (Fragment fragment, AttachmentViewCallback attachmentCallback) {
         this.fragment = fragment;
-        Activity activity = fragment.getActivity();
+        this.attachmentCallback = attachmentCallback;
 
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
         // mHeaderContainer.setOnLayoutChangedListener(this);
@@ -44,12 +48,15 @@ public class MessageTopView extends LinearLayout {
         getContext().getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
         mHeaderContainer.setBackgroundColor(outValue.data);
 
+        mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
+        mDownloadRemainder.setVisibility(View.GONE);
+
         containerViews = (LinearLayout) findViewById(R.id.message_containers);
 
     }
 
     public void resetView() {
-        // mDownloadRemainder.setVisibility(View.GONE);
+        mDownloadRemainder.setVisibility(View.GONE);
         containerViews.removeAllViews();
     }
 
@@ -59,7 +66,7 @@ public class MessageTopView extends LinearLayout {
 
         for (MessageViewContainer container : messageViewInfo.containers) {
             MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container, null);
-            view.initialize(fragment);
+            view.initialize(fragment, attachmentCallback);
             view.setMessage(container);
             containerViews.addView(view);
         }
@@ -100,6 +107,27 @@ public class MessageTopView extends LinearLayout {
 
     public void resetHeaderView() {
         mHeaderContainer.setVisibility(View.GONE);
+    }
+
+    public void setOnDownloadButtonClickListener(OnClickListener listener) {
+        mDownloadRemainder.setOnClickListener(listener);
+    }
+
+    public void enableDownloadButton() {
+        mDownloadRemainder.setEnabled(true);
+    }
+
+    public void disableDownloadButton() {
+        mDownloadRemainder.setEnabled(false);
+    }
+
+    public void setShowDownloadButton(Message message) {
+        if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
+            mDownloadRemainder.setVisibility(View.GONE);
+        } else {
+            mDownloadRemainder.setEnabled(true);
+            mDownloadRemainder.setVisibility(View.VISIBLE);
+        }
     }
 
 }
