@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -11,6 +12,8 @@ import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
@@ -38,7 +41,8 @@ public class LocalMessageExtractorTest {
         MimeMessageHelper.setBody(message, body);
 
         // Extract text
-        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(), message);
+        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(),
+                MessageExtractor.getViewables(message, attachments), new ArrayList<Part>());
 
         String expectedText = bodyText;
         String expectedHtml =
@@ -63,7 +67,8 @@ public class LocalMessageExtractorTest {
         MimeMessageHelper.setBody(message, body);
 
         // Extract text
-        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(), message);
+        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(),
+                MessageExtractor.getViewables(message, attachments), new ArrayList<Part>());
 
         String expectedText = "K-9 Mail rocks :>";
         String expectedHtml =
@@ -94,7 +99,8 @@ public class LocalMessageExtractorTest {
         MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
-        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(), message);
+        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(),
+                MessageExtractor.getViewables(message, attachments), new ArrayList<Part>());
 
         String expectedText =
                 bodyText1 + "\r\n\r\n" +
@@ -151,7 +157,8 @@ public class LocalMessageExtractorTest {
         MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
-        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(), message);
+        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(),
+                MessageExtractor.getViewables(message, attachments), new ArrayList<Part>());
 
         String expectedText =
                 bodyText +
