@@ -94,20 +94,18 @@ public class OpenPgpHeaderView extends LinearLayout {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_VERIFIED);
                     mResultSignatureText.setText(R.string.openpgp_result_signature_certified);
 
+                    setUserId(signatureResult);
                     mResultSignatureButton.setVisibility(View.VISIBLE);
-                    mResultSignatureName.setText(OpenPgpUtils.s);
-                    mResultSignatureEmail.setText(signatureResult.getUserId());
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
                 }
-                case OpenPgpSignatureResult.SIGNATURE_UNKNOWN_PUB_KEY: {
+                case OpenPgpSignatureResult.SIGNATURE_KEY_MISSING: {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_UNKNOWN_KEY);
                     mResultSignatureText.setText(R.string.openpgp_result_signature_missing_key);
 
-//                    mGetKeyButton.setVisibility(View.VISIBLE);
-//                    mSignatureUserId.setText(R.string.openpgp_signature_unknown);
-//                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                    setUserId(signatureResult);
+                    mResultSignatureButton.setVisibility(View.VISIBLE);
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
@@ -116,44 +114,51 @@ public class OpenPgpHeaderView extends LinearLayout {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_UNVERIFIED);
                     mResultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
 
-//                    if (signatureResult.isSignatureOnly()) {
-//                        mText.setText(R.string.openpgp_signature_valid_uncertified);
-//                    } else {
-//                        mText.setText(R.string.openpgp_successful_decryption_valid_signature_uncertified);
-//                    }
-//                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
-//                            R.color.openpgp_orange));
-//
-//                    mGetKeyButton.setVisibility(View.GONE);
-//                    mSignatureUserId.setText(signatureResult.getUserId());
-//                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
+                    setUserId(signatureResult);
+                    mResultSignatureButton.setVisibility(View.VISIBLE);
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
                 }
-//                case OpenPgpSignatureResult.SIGN:
-//                    setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_UNVERIFIED);
-//                    mResultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
-//
-////                    if (signatureResult.isSignatureOnly()) {
-////                        mText.setText(R.string.openpgp_signature_valid_uncertified);
-////                    } else {
-////                        mText.setText(R.string.openpgp_successful_decryption_valid_signature_uncertified);
-////                    }
-////                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
-////                            R.color.openpgp_orange));
-////
-////                    mGetKeyButton.setVisibility(View.GONE);
-////                    mSignatureUserId.setText(signatureResult.getUserId());
-////                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
-//                    mResultSignatureLayout.setVisibility(View.VISIBLE);
-//
-//                    break;
+                case OpenPgpSignatureResult.SIGNATURE_KEY_EXPIRED: {
+                    setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_EXPIRED);
+                    mResultSignatureText.setText(R.string.openpgp_result_signature_expired_key);
+
+                    setUserId(signatureResult);
+                    mResultSignatureButton.setVisibility(View.VISIBLE);
+                    mResultSignatureLayout.setVisibility(View.VISIBLE);
+
+                    break;
+                }
+                case OpenPgpSignatureResult.SIGNATURE_KEY_REVOKED: {
+                    setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_REVOKED);
+                    mResultSignatureText.setText(R.string.openpgp_result_signature_revoked_key);
+
+                    setUserId(signatureResult);
+                    mResultSignatureButton.setVisibility(View.VISIBLE);
+                    mResultSignatureLayout.setVisibility(View.VISIBLE);
+
+                    break;
+                }
 
                 default:
                     break;
             }
 
+        }
+    }
+
+    private void setUserId(OpenPgpSignatureResult signatureResult) {
+        String[] splitUserId = OpenPgpUtils.splitUserId(signatureResult.getPrimaryUserId());
+        if (splitUserId[0] != null) {
+            mResultSignatureName.setText(splitUserId[0]);
+        } else {
+            mResultSignatureName.setText("no name");
+        }
+        if (splitUserId[1] != null) {
+            mResultSignatureEmail.setText(splitUserId[1]);
+        } else {
+            mResultSignatureEmail.setText("no email");
         }
     }
 
@@ -229,9 +234,6 @@ public class OpenPgpHeaderView extends LinearLayout {
                 statusIcon.setImageDrawable(
                         context.getResources().getDrawable(R.drawable.status_signature_revoked_cutout));
                 int color = R.color.openpgp_red;
-//                if (unobtrusive) {
-//                    color = R.color.bg_gray;
-//                }
                 statusIcon.setColorFilter(context.getResources().getColor(color),
                         PorterDuff.Mode.SRC_IN);
                 if (statusText != null) {
@@ -243,9 +245,6 @@ public class OpenPgpHeaderView extends LinearLayout {
                 statusIcon.setImageDrawable(
                         context.getResources().getDrawable(R.drawable.status_signature_expired_cutout));
                 int color = R.color.openpgp_red;
-//                if (unobtrusive) {
-//                    color = R.color.bg_gray;
-//                }
                 statusIcon.setColorFilter(context.getResources().getColor(color),
                         PorterDuff.Mode.SRC_IN);
                 if (statusText != null) {
