@@ -2,6 +2,9 @@ package com.fsck.k9.view;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,6 +19,9 @@ import com.fsck.k9.helper.HtmlSanitizer;
 
 public class MessageWebView extends RigidWebView {
 
+    private Paint sidebarPaint = new Paint();
+    private boolean sidebarEnabled = false;
+    private int sidebarColor = 0;
 
     public MessageWebView(Context context) {
         super(context);
@@ -27,6 +33,22 @@ public class MessageWebView extends RigidWebView {
 
     public MessageWebView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    public void setSidebar(boolean enable, int color) {
+        sidebarEnabled = enable;
+        sidebarColor = color;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (sidebarEnabled) {
+            sidebarPaint.setColor(sidebarColor);
+            sidebarPaint.setStrokeWidth(40);
+            sidebarPaint.setStyle(Paint.Style.FILL);
+            canvas.drawLine(0, 0, 0, getHeight(), sidebarPaint);
+        }
     }
 
     /**

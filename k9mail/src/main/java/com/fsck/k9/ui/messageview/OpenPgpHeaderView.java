@@ -1,7 +1,6 @@
 
 package com.fsck.k9.ui.messageview;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
@@ -13,7 +12,9 @@ import com.fsck.k9.R;
 
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
-public class MessageOpenPgpView extends LinearLayout {
+public class OpenPgpHeaderView extends LinearLayout {
+    private OpenPgpSignatureResult signatureResult;
+    private boolean encrypted;
 
     private Context mContext;
 
@@ -26,15 +27,22 @@ public class MessageOpenPgpView extends LinearLayout {
     private TextView mResultSignatureEmail;
 
 //    private PendingIntent mMissingKeyPI;
+//    private static final int REQUEST_CODE_DECRYPT_VERIFY = 12;
 
-    private static final int REQUEST_CODE_DECRYPT_VERIFY = 12;
-
-    public MessageOpenPgpView(Context context, AttributeSet attrs) {
+    public OpenPgpHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
     }
 
-    public void setupChildViews() {
+    public void setOpenPgpData(OpenPgpSignatureResult signatureResult,
+                               boolean encrypted) {
+        this.signatureResult = signatureResult;
+        this.encrypted = encrypted;
+
+        displayOpenPgpView();
+    }
+
+    public void displayOpenPgpView() {
         mResultEncryptionIcon = (ImageView) findViewById(R.id.result_encryption_icon);
         mResultEncryptionText = (TextView) findViewById(R.id.result_encryption_text);
         mResultSignatureIcon = (ImageView) findViewById(R.id.result_signature_icon);
@@ -49,31 +57,25 @@ public class MessageOpenPgpView extends LinearLayout {
 //                getMissingKey();
 //            }
 //        });
-    }
 
 //    public void setFragment(Fragment fragment) {
 //        mFragment = (MessageViewFragment) fragment;
 //    }
 
-    /**
-     * Fill the decrypt layout with signature data, if known, make controls
-     * visible, if they should be visible.
-     */
-    public void updateLayout(final OpenPgpSignatureResult signatureResult,
-                             boolean decryptedData,
-                             PendingIntent getMissingKeyIntent) {
 
-        if (decryptedData) {
-            // encrypted-only
+        if (encrypted) {
             setStatusImage(mContext, mResultEncryptionIcon, mResultEncryptionText, STATE_ENCRYPTED);
 
 //            MessageOpenPgpView.this.setBackgroundColor(mContext.getResources().getColor(
 //                    R.color.openpgp_blue));
 //            mText.setText(R.string.openpgp_successful_decryption);
-
+        } else {
+            setStatusImage(mContext, mResultEncryptionIcon, mResultEncryptionText, STATE_NOT_ENCRYPTED);
         }
 
-        if (signatureResult != null) {
+        if (signatureResult == null) {
+            setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_NOT_SIGNED);
+        } else {
             switch (signatureResult.getStatus()) {
                 case OpenPgpSignatureResult.SIGNATURE_ERROR:
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_INVALID);

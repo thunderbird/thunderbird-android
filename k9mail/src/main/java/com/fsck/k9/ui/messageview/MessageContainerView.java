@@ -15,6 +15,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Parcel;
@@ -31,29 +32,24 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.ViewStub;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.FileHelper;
-import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 
@@ -86,8 +82,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     };
     private static final int DISPLAY_NAME_INDEX = 1;
 
-
-    private MessageOpenPgpViewOld mOpenPgpView;
+    private ViewStub mOpenPgpHeaderStub;
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
     private Button mShowHiddenAttachments;
@@ -97,6 +92,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private View mShowAttachmentsAction;
     private boolean mShowPictures;
     private boolean mHasAttachments;
+    private boolean mHasOpenPgpInfo;
     private LayoutInflater mInflater;
     private Contacts mContacts;
     private AttachmentViewCallback attachmentCallback;
@@ -109,6 +105,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     public void initialize(Fragment fragment, AttachmentViewCallback attachmentCallback) {
         this.attachmentCallback = attachmentCallback;
+
+        mOpenPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
 
         Activity activity = fragment.getActivity();
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
@@ -432,6 +430,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             throws MessagingException {
         resetView();
 
+//        mHasOpenPgpInfo = (messageViewContainer.signatureResult != null
+//                || messageViewContainer.encrypted);
+//        if (mHasOpenPgpInfo) {
+            renderOpenPgpHeader(messageViewContainer);
+            mMessageContentView.setSidebar(true, Color.parseColor("#ff444444"));
+//        }
+
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
         mText = messageViewContainer.text;
 
@@ -490,6 +495,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     private void loadBodyFromText(String emailText) {
         mMessageContentView.setText(emailText);
+    }
+
+    public void renderOpenPgpHeader(MessageViewContainer messageContainer) {
+        // inflate real header into stub
+        OpenPgpHeaderView view = (OpenPgpHeaderView) mOpenPgpHeaderStub.inflate();
+        //            view.setCallback(attachmentCallback);
+        view.setOpenPgpData(messageContainer.signatureResult, messageContainer.encrypted);
     }
 
     public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {

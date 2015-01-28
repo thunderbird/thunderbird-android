@@ -1,6 +1,8 @@
 package com.fsck.k9.mailstore;
 
 
+import android.app.PendingIntent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,19 +25,26 @@ public class MessageViewInfo {
 
         final public String text;
         final public List<AttachmentViewInfo> attachments;
+        final public boolean encrypted;
         final public OpenPgpSignatureResult signatureResult;
+        final public PendingIntent pgpPendingIntent;
 
         MessageViewContainer(String text, List<AttachmentViewInfo> attachments) {
             this.text = text;
             this.attachments = attachments;
             this.signatureResult = null;
+            this.encrypted = false;
+            this.pgpPendingIntent = null;
         }
 
         MessageViewContainer(String text, List<AttachmentViewInfo> attachments,
-                OpenPgpSignatureResult signatureResult) {
+                OpenPgpSignatureResult signatureResult, boolean encrypted,
+                PendingIntent pgpPendingIntent) {
             this.text = text;
             this.attachments = attachments;
             this.signatureResult = signatureResult;
+            this.encrypted = encrypted;
+            this.pgpPendingIntent = pgpPendingIntent;
         }
 
     }
