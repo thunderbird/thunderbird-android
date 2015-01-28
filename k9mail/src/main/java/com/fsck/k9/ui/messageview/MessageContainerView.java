@@ -103,10 +103,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private ClipboardManager mClipboardManager;
     private String mText;
     private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<AttachmentViewInfo, AttachmentView>();
+    private boolean displayPgpData;
+    private OpenPgpHeaderView openPgpHeaderView;
 
 
     public void initialize(Fragment fragment, AttachmentViewCallback attachmentCallback,
-                           OpenPgpHeaderViewCallback openPgpHeaderViewCallback) {
+                           OpenPgpHeaderViewCallback openPgpHeaderViewCallback,
+                            boolean displayPgpData) {
         this.attachmentCallback = attachmentCallback;
         this.openPgpHeaderViewCallback = openPgpHeaderViewCallback;
 
@@ -136,6 +139,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
         mInflater = ((MessageViewFragment) fragment).getFragmentLayoutInflater();
         mMessageContentView.setVisibility(View.VISIBLE);
+
+        this.displayPgpData = displayPgpData;
+
+        if (displayPgpData) {
+            openPgpHeaderView = (OpenPgpHeaderView) mOpenPgpHeaderStub.inflate();
+            openPgpHeaderView.initialize();
+        }
 
         // the HTC version of WebView tries to force the background of the
         // titlebar, which is really unfair.
@@ -435,14 +445,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             throws MessagingException {
         resetView();
 
-//        mHasOpenPgpInfo = (messageViewContainer.signatureResult != null
-//                || messageViewContainer.encrypted);
-//        if (mHasOpenPgpInfo) {
-            renderOpenPgpHeader(messageViewContainer);
-            mSidebar.setVisibility(View.VISIBLE);
-
-//        }
-
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
         mText = messageViewContainer.text;
 
@@ -487,6 +489,14 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
         */
 
+        if (displayPgpData) {
+            openPgpHeaderView.setOpenPgpData(messageViewContainer.signatureResult, messageViewContainer.encrypted,
+                    messageViewContainer.pgpPendingIntent);
+            openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
+        }
+
+        mSidebar.setVisibility(View.VISIBLE);
+
         if (mText != null) {
             loadBodyFromText(mText);
         } else {
@@ -501,14 +511,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     private void loadBodyFromText(String emailText) {
         mMessageContentView.setText(emailText);
-    }
-
-    public void renderOpenPgpHeader(MessageViewContainer messageContainer) {
-        // inflate real header into stub
-        OpenPgpHeaderView view = (OpenPgpHeaderView) mOpenPgpHeaderStub.inflate();
-        view.setCallback(openPgpHeaderViewCallback);
-        view.setOpenPgpData(messageContainer.signatureResult, messageContainer.encrypted,
-                messageContainer.pgpPendingIntent);
     }
 
     public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {

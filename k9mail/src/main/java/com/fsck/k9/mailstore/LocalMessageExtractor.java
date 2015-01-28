@@ -435,9 +435,7 @@ public class LocalMessageExtractor {
 
             // TODO correctly extract OpenPgpSignatureResult and add to MessageViewContainer
             OpenPgpSignatureResult result = null;
-            result = new OpenPgpSignatureResult(OpenPgpSignatureResult.SIGNATURE_SUCCESS_CERTIFIED, "lul", false, 0x123,
-                    new ArrayList<String>());
-            containers.add(new MessageViewContainer(viewable.html, attachmentInfos, result, true, null));
+            containers.add(new MessageViewContainer(viewable.html, attachmentInfos, result, false, null));
 
         }
 

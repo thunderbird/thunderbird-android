@@ -69,7 +69,8 @@ public class MessageTopView extends LinearLayout {
 
         for (MessageViewContainer container : messageViewInfo.containers) {
             MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container, null);
-            view.initialize(fragment, attachmentCallback, openPgpHeaderViewCallback);
+            view.initialize(fragment, attachmentCallback, openPgpHeaderViewCallback,
+                    !Account.NO_OPENPGP_PROVIDER.equals(account.getOpenPgpProvider()));
             view.setMessage(container);
             containerViews.addView(view);
         }

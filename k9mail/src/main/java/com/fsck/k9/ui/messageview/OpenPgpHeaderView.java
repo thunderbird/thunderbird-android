@@ -38,6 +38,17 @@ public class OpenPgpHeaderView extends LinearLayout {
         mContext = context;
     }
 
+    public void initialize () {
+        mResultEncryptionIcon = (ImageView) findViewById(R.id.result_encryption_icon);
+        mResultEncryptionText = (TextView) findViewById(R.id.result_encryption_text);
+        mResultSignatureIcon = (ImageView) findViewById(R.id.result_signature_icon);
+        mResultSignatureText = (TextView) findViewById(R.id.result_signature_text);
+        mResultSignatureLayout = (LinearLayout) findViewById(R.id.result_signature_layout);
+        mResultSignatureName = (TextView) findViewById(R.id.result_signature_name);
+        mResultSignatureEmail = (TextView) findViewById(R.id.result_signature_email);
+        mResultSignatureButton = (Button) findViewById(R.id.result_signature_button);
+    }
+
     public void setOpenPgpData(OpenPgpSignatureResult signatureResult,
                                boolean encrypted, PendingIntent pendingIntent) {
         this.signatureResult = signatureResult;
@@ -52,21 +63,17 @@ public class OpenPgpHeaderView extends LinearLayout {
     }
 
     public void displayOpenPgpView() {
-        mResultEncryptionIcon = (ImageView) findViewById(R.id.result_encryption_icon);
-        mResultEncryptionText = (TextView) findViewById(R.id.result_encryption_text);
-        mResultSignatureIcon = (ImageView) findViewById(R.id.result_signature_icon);
-        mResultSignatureText = (TextView) findViewById(R.id.result_signature_text);
-        mResultSignatureLayout = (LinearLayout) findViewById(R.id.result_signature_layout);
-        mResultSignatureName = (TextView) findViewById(R.id.result_signature_name);
-        mResultSignatureEmail = (TextView) findViewById(R.id.result_signature_email);
-        mResultSignatureButton = (Button) findViewById(R.id.result_signature_button);
 
-        mResultSignatureButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.onPgpSignatureButtonClick(pendingIntent);
-            }
-        });
+        if (pendingIntent != null) {
+            mResultSignatureButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onPgpSignatureButtonClick(pendingIntent);
+                }
+            });
+        } else {
+            mResultSignatureButton.setOnClickListener(null);
+        }
 
         if (encrypted) {
             setStatusImage(mContext, mResultEncryptionIcon, mResultEncryptionText, STATE_ENCRYPTED);
