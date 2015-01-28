@@ -725,11 +725,17 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             part.setBody(multipart);
             multipart.setPreamble(preamble);
             multipart.setEpilogue(epilogue);
-        } else if (dataLocation != DataLocation.MISSING) {
+        } else if (dataLocation == DataLocation.IN_DATABASE) {
             String encoding = cursor.getString(7);
             byte[] data = cursor.getBlob(10);
 
             Body body = new BinaryMemoryBody(data, encoding);
+            part.setBody(body);
+        } else if (dataLocation == DataLocation.ON_DISK) {
+            String encoding = cursor.getString(7);
+
+            File file = localStore.getAttachmentFile(Long.toString(id));
+            Body body = new FileBackedBody(file, encoding);
             part.setBody(body);
         }
     }
