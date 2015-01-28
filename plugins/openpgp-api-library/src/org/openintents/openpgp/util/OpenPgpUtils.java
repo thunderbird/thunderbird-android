@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Dominik Schürmann <dominik@dominikschuermann.de>
+ * Copyright (C) 2014-2015 Dominik Schürmann <dominik@dominikschuermann.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,5 +72,40 @@ public class OpenPgpUtils {
             hexString = "0" + hexString;
         }
         return hexString;
+    }
+
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("^(.*?)(?: \\((.*)\\))?(?: <(.*)>)?$");
+
+    /**
+     * Splits userId string into naming part, email part, and comment part
+     *
+     * @param userId
+     * @return array with naming (0), email (1), comment (2)
+     */
+    public static String[] splitUserId(String userId) {
+        String[] result = new String[]{null, null, null};
+
+        if (userId == null || userId.equals("")) {
+            return result;
+        }
+
+        /*
+         * User ID matching:
+         * http://fiddle.re/t4p6f
+         *
+         * test cases:
+         * "Max Mustermann (this is a comment) <max@example.com>"
+         * "Max Mustermann <max@example.com>"
+         * "Max Mustermann (this is a comment)"
+         * "Max Mustermann [this is nothing]"
+         */
+        Matcher matcher = USER_ID_PATTERN.matcher(userId);
+        if (matcher.matches()) {
+            result[0] = matcher.group(1);
+            result[1] = matcher.group(3);
+            result[2] = matcher.group(2);
+        }
+
+        return result;
     }
 }

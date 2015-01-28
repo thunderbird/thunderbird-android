@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Dominik Schürmann <dominik@dominikschuermann.de>
+ * Copyright (C) 2014-2015 Dominik Schürmann <dominik@dominikschuermann.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ public class OpenPgpApi {
      * ---------------
      * <p/>
      * 3:
-     * - first public stable version
+     * - First public stable version
      * <p/>
      * 4:
      * - No changes to existing methods -> backward compatible
@@ -50,8 +50,14 @@ public class OpenPgpApi {
      * 5:
      * - OpenPgpSignatureResult: new consts SIGNATURE_KEY_REVOKED and SIGNATURE_KEY_EXPIRED
      * - OpenPgpSignatureResult: ArrayList<String> userIds
+     * 6:
+     * - Deprecate ACTION_SIGN
+     * - Introduce ACTION_CLEARTEXT_SIGN and ACTION_DETACHED_SIGN
+     * - New extra for ACTION_DETACHED_SIGN: EXTRA_DETACHED_SIGNATURE
+     * - New result for ACTION_DECRYPT_VERIFY: RESULT_DETACHED_SIGNATURE
+     * - New result for ACTION_DECRYPT_VERIFY: RESULT_CHARSET
      */
-    public static final int API_VERSION = 5;
+    public static final int API_VERSION = 6;
 
     /**
      * General extras
@@ -90,7 +96,7 @@ public class OpenPgpApi {
 
     /**
      * Sign text or binary data resulting in a detached signature.
-     * No OutputStream for ACTION_DETACHED_SIGN (No magic pre-processing like in ACTION_CLEARTEXT_SIGN)!
+     * No OutputStream necessary for ACTION_DETACHED_SIGN (No magic pre-processing like in ACTION_CLEARTEXT_SIGN)!
      * The detached signature is returned separately in RESULT_DETACHED_SIGNATURE.
      * <p/>
      * optional extras:
@@ -135,17 +141,18 @@ public class OpenPgpApi {
     /**
      * Decrypts and verifies given input stream. This methods handles encrypted-only, signed-and-encrypted,
      * and also signed-only input.
+     * OutputStream is optional, e.g., for verifying detached signatures!
      * <p/>
      * If OpenPgpSignatureResult.getStatus() == OpenPgpSignatureResult.SIGNATURE_KEY_MISSING
      * in addition a PendingIntent is returned via RESULT_INTENT to download missing keys.
      * <p/>
      * optional extras:
-     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
      * byte[]        EXTRA_DETACHED_SIGNATURE    (detached signature)
      * <p/>
      * returned extras:
      * OpenPgpSignatureResult   RESULT_SIGNATURE
      * OpenPgpDecryptMetadata   RESULT_METADATA
+     * String                   RESULT_CHARSET   (charset which was specified in the headers of ascii armored input, if any)
      */
     public static final String ACTION_DECRYPT_VERIFY = "org.openintents.openpgp.action.DECRYPT_VERIFY";
 
@@ -156,6 +163,7 @@ public class OpenPgpApi {
      * <p/>
      * returned extras:
      * OpenPgpDecryptMetadata   RESULT_METADATA
+     * String                   RESULT_CHARSET   (charset which was specified in the headers of ascii armored input, if any)
      */
     public static final String ACTION_DECRYPT_METADATA = "org.openintents.openpgp.action.DECRYPT_METADATA";
 

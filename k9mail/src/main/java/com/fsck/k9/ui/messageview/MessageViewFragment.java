@@ -16,8 +16,10 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -74,7 +76,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback {
+        AttachmentViewCallback, OpenPgpHeaderViewCallback {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -100,7 +102,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
 
-    private SingleMessageView mMessageView;
+    private MessageTopView mMessageView;
     private PgpData mPgpData;
     private Account mAccount;
     private MessageReference mMessageReference;
@@ -170,17 +172,16 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         View view = mLayoutInflater.inflate(R.layout.message, container, false);
 
 
-        mMessageView = (SingleMessageView) view.findViewById(R.id.message_view);
+        mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
 
-        mMessageView.setAttachmentCallback(this);
-
-        mMessageView.initialize(this);
+        mMessageView.initialize(this, this, this);
         mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onToggleFlagged();
             }
         });
+
         mMessageView.setOnDownloadButtonClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -420,7 +421,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void onLoadMessageFromDatabaseFailed() {
-        mMessageView.showStatusMessage(mContext.getString(R.string.status_invalid_id_error));
+        // mMessageView.showStatusMessage(mContext.getString(R.string.status_invalid_id_error));
     }
 
     private void startDownloadingMessageBody(LocalMessage message) {
@@ -460,7 +461,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private void showMessage(MessageViewInfo messageContainer) {
         try {
-            mMessageView.setMessage(mAccount, messageContainer, mPgpData);
+            mMessageView.setMessage(mAccount, messageContainer);
             mMessageView.setShowDownloadButton(mMessage);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Error while trying to display message", e);
@@ -597,7 +598,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onSelectText() {
-        mMessageView.beginSelectingText();
+        // FIXME
+        // mMessageView.beginSelectingText();
     }
 
     private void startRefileActivity(int activity) {
@@ -608,7 +610,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
         startActivityForResult(intent, activity);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -724,7 +725,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             PgpData data = new PgpData();
             data.setDecryptedData(decryptedData);
             data.setSignatureResult(signatureResult);
-            mMessageView.setMessage(mAccount, messageViewInfo, data);
+            mMessageView.setMessage(mAccount, messageViewInfo);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
         }
@@ -791,7 +792,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void zoom(KeyEvent event) {
-        mMessageView.zoom(event);
+        // mMessageView.zoom(event);
     }
 
     @Override
@@ -859,11 +860,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void disableAttachmentButtons(AttachmentViewInfo attachment) {
-        mMessageView.disableAttachmentButtons(attachment);
+        // mMessageView.disableAttachmentButtons(attachment);
     }
 
     public void enableAttachmentButtons(AttachmentViewInfo attachment) {
-        mMessageView.enableAttachmentButtons(attachment);
+        // mMessageView.enableAttachmentButtons(attachment);
     }
 
     public void runOnMainThread(Runnable runnable) {
@@ -871,7 +872,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void showAttachmentLoadingDialog() {
-        mMessageView.disableAttachmentButtons();
+        // mMessageView.disableAttachmentButtons();
         showDialog(R.id.dialog_attachment_progress);
     }
 
@@ -880,13 +881,24 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             @Override
             public void run() {
                 removeDialog(R.id.dialog_attachment_progress);
-                mMessageView.enableAttachmentButtons();
+                // mMessageView.enableAttachmentButtons();
             }
         });
     }
 
     public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
-        mMessageView.refreshAttachmentThumbnail(attachment);
+        // mMessageView.refreshAttachmentThumbnail(attachment);
+    }
+
+    @Override
+    public void onPgpSignatureButtonClick(PendingIntent pendingIntent) {
+        try {
+            getActivity().startIntentSenderForResult(
+                    pendingIntent.getIntentSender(),
+                    42, null, 0, 0, 0);
+        } catch (IntentSender.SendIntentException e) {
+            Log.e(K9.LOG_TAG, "SendIntentException", e);
+        }
     }
 
     public interface MessageViewFragmentListener {

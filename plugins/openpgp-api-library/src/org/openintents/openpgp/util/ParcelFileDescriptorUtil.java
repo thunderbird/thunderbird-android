@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Dominik Schürmann <dominik@dominikschuermann.de>
+ * Copyright (C) 2014-2015 Dominik Schürmann <dominik@dominikschuermann.de>
  *               2013 Florian Schmaus <flo@geekplace.eu>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

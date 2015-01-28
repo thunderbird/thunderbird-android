@@ -42,7 +42,7 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
-public class MessageOpenPgpView extends LinearLayout {
+public class MessageOpenPgpViewOld extends LinearLayout {
 
     private Context mContext;
     private MessageViewFragment mFragment;
@@ -66,7 +66,7 @@ public class MessageOpenPgpView extends LinearLayout {
     String mData;
     Account mAccount;
 
-    public MessageOpenPgpView(Context context, AttributeSet attrs) {
+    public MessageOpenPgpViewOld(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
     }
@@ -127,7 +127,7 @@ public class MessageOpenPgpView extends LinearLayout {
         if (decryptedData != null && signatureResult == null) {
             // encrypted-only
 
-            MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+            MessageOpenPgpViewOld.this.setBackgroundColor(mFragment.getResources().getColor(
                     R.color.openpgp_blue));
             mText.setText(R.string.openpgp_successful_decryption);
 
@@ -140,7 +140,7 @@ public class MessageOpenPgpView extends LinearLayout {
                 case OpenPgpSignatureResult.SIGNATURE_ERROR:
                     // TODO: signature error but decryption works?
                     mText.setText(R.string.openpgp_signature_invalid);
-                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                    MessageOpenPgpViewOld.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_red));
 
                     mGetKeyButton.setVisibility(View.GONE);
@@ -155,7 +155,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     else {
                         mText.setText(R.string.openpgp_successful_decryption_valid_signature_certified);
                     }
-                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                    MessageOpenPgpViewOld.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_green));
 
                     mGetKeyButton.setVisibility(View.GONE);
@@ -172,7 +172,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     else {
                         mText.setText(R.string.openpgp_successful_decryption_unknown_signature);
                     }
-                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                    MessageOpenPgpViewOld.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_orange));
                     
                     mGetKeyButton.setVisibility(View.VISIBLE);
@@ -189,7 +189,7 @@ public class MessageOpenPgpView extends LinearLayout {
                     else {
                         mText.setText(R.string.openpgp_successful_decryption_valid_signature_uncertified);
                     }
-                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                    MessageOpenPgpViewOld.this.setBackgroundColor(mFragment.getResources().getColor(
                             R.color.openpgp_orange));
 
                     mGetKeyButton.setVisibility(View.GONE);
@@ -229,7 +229,7 @@ public class MessageOpenPgpView extends LinearLayout {
     private void decryptAndVerify(final Message message) {
         this.setVisibility(View.VISIBLE);
         mProgress.setVisibility(View.VISIBLE);
-        MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+        MessageOpenPgpViewOld.this.setBackgroundColor(mFragment.getResources().getColor(
                 R.color.openpgp_orange));
         mText.setText(R.string.openpgp_decrypting_verifying);
 
@@ -393,7 +393,7 @@ public class MessageOpenPgpView extends LinearLayout {
 
                 mText.setText(mFragment.getString(R.string.openpgp_error) + " "
                         + error.getMessage());
-                MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+                MessageOpenPgpViewOld.this.setBackgroundColor(mFragment.getResources().getColor(
                         R.color.openpgp_red));
             }
         });
