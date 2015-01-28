@@ -97,6 +97,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private LayoutInflater mInflater;
     private Contacts mContacts;
     private AttachmentViewCallback attachmentCallback;
+    private OpenPgpHeaderViewCallback openPgpHeaderViewCallback;
     private View mAttachmentsContainer;
     private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
@@ -104,8 +105,10 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<AttachmentViewInfo, AttachmentView>();
 
 
-    public void initialize(Fragment fragment, AttachmentViewCallback attachmentCallback) {
+    public void initialize(Fragment fragment, AttachmentViewCallback attachmentCallback,
+                           OpenPgpHeaderViewCallback openPgpHeaderViewCallback) {
         this.attachmentCallback = attachmentCallback;
+        this.openPgpHeaderViewCallback = openPgpHeaderViewCallback;
 
         mOpenPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
         mSidebar = findViewById(R.id.message_sidebar);
@@ -437,6 +440,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 //        if (mHasOpenPgpInfo) {
             renderOpenPgpHeader(messageViewContainer);
             mSidebar.setVisibility(View.VISIBLE);
+
 //        }
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
@@ -502,8 +506,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     public void renderOpenPgpHeader(MessageViewContainer messageContainer) {
         // inflate real header into stub
         OpenPgpHeaderView view = (OpenPgpHeaderView) mOpenPgpHeaderStub.inflate();
-        //            view.setCallback(attachmentCallback);
-        view.setOpenPgpData(messageContainer.signatureResult, messageContainer.encrypted);
+        view.setCallback(openPgpHeaderViewCallback);
+        view.setOpenPgpData(messageContainer.signatureResult, messageContainer.encrypted,
+                messageContainer.pgpPendingIntent);
     }
 
     public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {

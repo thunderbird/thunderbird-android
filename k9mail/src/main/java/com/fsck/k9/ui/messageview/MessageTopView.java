@@ -31,14 +31,17 @@ public class MessageTopView extends LinearLayout {
     private Fragment fragment;
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
+    private OpenPgpHeaderViewCallback openPgpHeaderViewCallback;
 
     public MessageTopView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public void initialize (Fragment fragment, AttachmentViewCallback attachmentCallback) {
+    public void initialize (Fragment fragment, AttachmentViewCallback attachmentCallback,
+                            OpenPgpHeaderViewCallback openPgpHeaderViewCallback) {
         this.fragment = fragment;
         this.attachmentCallback = attachmentCallback;
+        this.openPgpHeaderViewCallback = openPgpHeaderViewCallback;
 
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
         // mHeaderContainer.setOnLayoutChangedListener(this);
@@ -66,7 +69,7 @@ public class MessageTopView extends LinearLayout {
 
         for (MessageViewContainer container : messageViewInfo.containers) {
             MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container, null);
-            view.initialize(fragment, attachmentCallback);
+            view.initialize(fragment, attachmentCallback, openPgpHeaderViewCallback);
             view.setMessage(container);
             containerViews.addView(view);
         }

@@ -1127,7 +1127,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_result_encrypted">"Encrypted"</string>
     <string name="openpgp_result_not_encrypted">"Not Encrypted"</string>
     <string name="openpgp_result_action_show">"Show"</string>
-    <string name="openpgp_result_action_Lookup">"Lookup"</string>
+    <string name="openpgp_result_action_lookup">"Lookup"</string>
+    <string name="openpgp_result_no_name">"No name"</string>
+    <string name="openpgp_result_no_email">"No email"</string>
 
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>

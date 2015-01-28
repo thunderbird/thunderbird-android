@@ -10,8 +10,10 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,7 +54,7 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback {
+        AttachmentViewCallback, OpenPgpHeaderViewCallback {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -147,7 +149,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
 
-        mMessageView.initialize(this, this);
+        mMessageView.initialize(this, this, this);
         mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -695,6 +697,17 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
         // mMessageView.refreshAttachmentThumbnail(attachment);
+    }
+
+    @Override
+    public void onPgpSignatureButtonClick(PendingIntent pendingIntent) {
+        try {
+            getActivity().startIntentSenderForResult(
+                    pendingIntent.getIntentSender(),
+                    42, null, 0, 0, 0);
+        } catch (IntentSender.SendIntentException e) {
+            Log.e(K9.LOG_TAG, "SendIntentException", e);
+        }
     }
 
     public interface MessageViewFragmentListener {

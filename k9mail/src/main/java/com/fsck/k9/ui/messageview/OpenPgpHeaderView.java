@@ -1,6 +1,7 @@
 
 package com.fsck.k9.ui.messageview;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
@@ -16,10 +17,12 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 public class OpenPgpHeaderView extends LinearLayout {
+    private Context mContext;
+    private OpenPgpHeaderViewCallback callback;
+
     private OpenPgpSignatureResult signatureResult;
     private boolean encrypted;
-
-    private Context mContext;
+    private PendingIntent pendingIntent;
 
     private ImageView mResultEncryptionIcon;
     private TextView mResultEncryptionText;
@@ -30,20 +33,22 @@ public class OpenPgpHeaderView extends LinearLayout {
     private TextView mResultSignatureEmail;
     private Button mResultSignatureButton;
 
-//    private PendingIntent mMissingKeyPI;
-//    private static final int REQUEST_CODE_DECRYPT_VERIFY = 12;
-
     public OpenPgpHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
     }
 
     public void setOpenPgpData(OpenPgpSignatureResult signatureResult,
-                               boolean encrypted) {
+                               boolean encrypted, PendingIntent pendingIntent) {
         this.signatureResult = signatureResult;
         this.encrypted = encrypted;
+        this.pendingIntent = pendingIntent;
 
         displayOpenPgpView();
+    }
+
+    public void setCallback(OpenPgpHeaderViewCallback callback) {
+        this.callback = callback;
     }
 
     public void displayOpenPgpView() {
@@ -56,17 +61,12 @@ public class OpenPgpHeaderView extends LinearLayout {
         mResultSignatureEmail = (TextView) findViewById(R.id.result_signature_email);
         mResultSignatureButton = (Button) findViewById(R.id.result_signature_button);
 
-//        mGetKeyButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getMissingKey();
-//            }
-//        });
-
-//    public void setFragment(Fragment fragment) {
-//        mFragment = (MessageViewFragment) fragment;
-//    }
-
+        mResultSignatureButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.onPgpSignatureButtonClick(pendingIntent);
+            }
+        });
 
         if (encrypted) {
             setStatusImage(mContext, mResultEncryptionIcon, mResultEncryptionText, STATE_ENCRYPTED);
@@ -95,6 +95,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_certified);
 
                     setUserId(signatureResult);
+                    mResultSignatureButton.setText(R.string.openpgp_result_action_show);
                     mResultSignatureButton.setVisibility(View.VISIBLE);
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
@@ -105,6 +106,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_missing_key);
 
                     setUserId(signatureResult);
+                    mResultSignatureButton.setText(R.string.openpgp_result_action_lookup);
                     mResultSignatureButton.setVisibility(View.VISIBLE);
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
@@ -115,6 +117,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
 
                     setUserId(signatureResult);
+                    mResultSignatureButton.setText(R.string.openpgp_result_action_show);
                     mResultSignatureButton.setVisibility(View.VISIBLE);
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
@@ -125,6 +128,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_expired_key);
 
                     setUserId(signatureResult);
+                    mResultSignatureButton.setText(R.string.openpgp_result_action_show);
                     mResultSignatureButton.setVisibility(View.VISIBLE);
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
@@ -135,6 +139,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_revoked_key);
 
                     setUserId(signatureResult);
+                    mResultSignatureButton.setText(R.string.openpgp_result_action_show);
                     mResultSignatureButton.setVisibility(View.VISIBLE);
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
@@ -153,12 +158,12 @@ public class OpenPgpHeaderView extends LinearLayout {
         if (splitUserId[0] != null) {
             mResultSignatureName.setText(splitUserId[0]);
         } else {
-            mResultSignatureName.setText("no name");
+            mResultSignatureName.setText(R.string.openpgp_result_no_name);
         }
         if (splitUserId[1] != null) {
             mResultSignatureEmail.setText(splitUserId[1]);
         } else {
-            mResultSignatureEmail.setText("no email");
+            mResultSignatureEmail.setText(R.string.openpgp_result_no_email);
         }
     }
 
@@ -287,15 +292,5 @@ public class OpenPgpHeaderView extends LinearLayout {
             }
         }
     }
-
-//    private void getMissingKey() {
-//        try {
-//            mFragment.getActivity().startIntentSenderForResult(
-//                    mMissingKeyPI.getIntentSender(),
-//                    REQUEST_CODE_DECRYPT_VERIFY, null, 0, 0, 0);
-//        } catch (SendIntentException e) {
-//            Log.e(K9.LOG_TAG, "SendIntentException", e);
-//        }
-//    }
 
 }
