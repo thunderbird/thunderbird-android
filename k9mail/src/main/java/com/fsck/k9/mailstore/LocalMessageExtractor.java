@@ -442,7 +442,8 @@ public class LocalMessageExtractor {
 
             return new AttachmentViewInfo(mimeType, displayName, size, uri, firstClassAttachment, part);
         } else {
-            throw new IllegalStateException("Not supported yet");
+            //FIXME: The content provider URI thing needs to be reworked
+            return extractAttachmentInfo(part, null);
         }
     }
 

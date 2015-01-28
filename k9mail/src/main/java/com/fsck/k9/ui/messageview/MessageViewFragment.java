@@ -1,7 +1,13 @@
 package com.fsck.k9.ui.messageview;
 
 
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -14,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -27,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -34,21 +42,35 @@ import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.crypto.MessageDecryptor;
+import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
+import com.fsck.k9.helper.IdentityHelper;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
+import com.fsck.k9.mailstore.DecryptStreamParser;
+import com.fsck.k9.mailstore.DecryptStreamParser.DecryptedBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import com.fsck.k9.view.MessageHeader;
+import org.openintents.openpgp.IOpenPgpService;
 import org.openintents.openpgp.OpenPgpSignatureResult;
+import org.openintents.openpgp.util.OpenPgpApi;
+import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
+import org.openintents.openpgp.util.OpenPgpServiceConnection;
+import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
@@ -109,6 +131,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private LoaderCallbacks<MessageViewInfo> decodeMessageLoaderCallback = new DecodeMessageLoaderCallback();
     private MessageViewInfo messageViewInfo;
     private AttachmentViewInfo currentAttachmentViewInfo;
+    private Deque<Part> partsToDecrypt;
+    private OpenPgpApi openPgpApi;
+    private Part currentlyDecryptingPart;
 
 
     @Override
@@ -224,8 +249,174 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (message.isBodyMissing()) {
             startDownloadingMessageBody(message);
         } else {
+            decryptMessagePartsIfNecessary(message);
+        }
+    }
+
+    private void decryptMessagePartsIfNecessary(LocalMessage message) {
+        List<Part> encryptedParts = MessageDecryptor.findEncryptedParts(message);
+        if (!encryptedParts.isEmpty()) {
+            partsToDecrypt = new ArrayDeque<Part>(encryptedParts);
+            decryptNextPartOrStartExtractingTextAndAttachments();
+        } else {
             startExtractingTextAndAttachments(message);
         }
+    }
+
+    private void decryptNextPartOrStartExtractingTextAndAttachments() {
+        if (partsToDecrypt.isEmpty()) {
+            startExtractingTextAndAttachments(mMessage);
+            return;
+        }
+
+        Part part = partsToDecrypt.peekFirst();
+        if (MessageDecryptor.isPgpMimeEncryptedPart(part)) {
+            startDecryptingPart(part);
+        } else {
+            // Note: We currently only support PGP/MIME multipart/encrypted parts
+
+            partsToDecrypt.removeFirst();
+            decryptNextPartOrStartExtractingTextAndAttachments();
+        }
+    }
+
+    private void startDecryptingPart(Part part) {
+        Multipart multipart = (Multipart) part.getBody();
+        if (multipart == null) {
+            throw new RuntimeException("Downloading missing parts before decryption isn't supported yet");
+        }
+
+        if (!isBoundToCryptoProviderService()) {
+            connectToCryptoProviderService();
+        } else {
+            decryptPart(part);
+        }
+    }
+
+    private boolean isBoundToCryptoProviderService() {
+        return openPgpApi != null;
+    }
+
+    private void connectToCryptoProviderService() {
+        String openPgpProvider = mAccount.getOpenPgpProvider();
+        new OpenPgpServiceConnection(getContext(), openPgpProvider,
+                new OnBound() {
+            @Override
+            public void onBound(IOpenPgpService service) {
+                openPgpApi = new OpenPgpApi(getContext(), service);
+
+                decryptNextPartOrStartExtractingTextAndAttachments();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e(K9.LOG_TAG, "Couldn't connect to OpenPgpService", e);
+            }
+        }).bindToService();
+    }
+
+    private void decryptPart(Part part) {
+        currentlyDecryptingPart = part;
+        decryptVerify(new Intent());
+    }
+
+    private void decryptVerify(Intent intent) {
+        intent.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
+
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(mAccount, mMessage);
+        String accountName = OpenPgpApiHelper.buildAccountName(identity);
+        intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accountName);
+
+        try {
+            PipedInputStream pipedInputStream = getPipedInputStreamForEncryptedData();
+            PipedOutputStream decryptedOutputStream = getPipedOutputStreamForDecryptedData();
+
+            openPgpApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream, new IOpenPgpCallback() {
+                @Override
+                public void onReturn(Intent result) {
+                    //TODO: check result code
+                    //TODO: signal to AsyncTask in getPipedOutputStreamForDecryptedData() that we have a result code
+                    //TODO: handle RESULT_INTENT
+                }
+            });
+        } catch (IOException e) {
+            Log.e(K9.LOG_TAG, "IOException", e);
+        }
+    }
+
+    private PipedInputStream getPipedInputStreamForEncryptedData() throws IOException {
+        PipedInputStream pipedInputStream = new PipedInputStream();
+
+        final PipedOutputStream out = new PipedOutputStream(pipedInputStream);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Multipart multipartEncryptedMultipart = (Multipart) currentlyDecryptingPart.getBody();
+                    BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
+                    Body encryptionPayloadBody = encryptionPayloadPart.getBody();
+                    encryptionPayloadBody.writeTo(out);
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Exception while writing message to crypto provider", e);
+                }
+            }
+        }).start();
+
+        return pipedInputStream;
+    }
+
+    private PipedOutputStream getPipedOutputStreamForDecryptedData() throws IOException {
+        PipedOutputStream decryptedOutputStream = new PipedOutputStream();
+        final PipedInputStream decryptedInputStream = new PipedInputStream(decryptedOutputStream);
+        new AsyncTask<Void, Void, DecryptedBodyPart>() {
+            @Override
+            protected DecryptedBodyPart doInBackground(Void... params) {
+                try {
+                    DecryptedBodyPart decryptedPart =
+                            DecryptStreamParser.parse(currentlyDecryptingPart, decryptedInputStream);
+
+                    //TODO: wait for IOpenPgpCallback.onReturn() to get the result code and only use
+                    // decryptedPart when the decryption was successful
+
+                    return decryptedPart;
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Something went wrong while parsing the decrypted MIME part", e);
+                    //TODO: pass error to main thread and display error message to user
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(DecryptedBodyPart decryptedPart) {
+                if (decryptedPart == null) {
+                    onDecryptionFailed();
+                } else {
+                    onDecryptionSuccess(decryptedPart);
+                }
+            }
+        }.execute();
+        return decryptedOutputStream;
+    }
+
+    private void onDecryptionSuccess(DecryptedBodyPart decryptedPart) {
+        addDecryptedPartToMessage(decryptedPart);
+        onDecryptionFinished();
+    }
+
+    private void addDecryptedPartToMessage(DecryptedBodyPart decryptedPart) {
+        Multipart multipart = (Multipart) currentlyDecryptingPart.getBody();
+        multipart.addBodyPart(decryptedPart);
+    }
+
+    private void onDecryptionFailed() {
+        //TODO: display error to user?
+        onDecryptionFinished();
+    }
+
+    private void onDecryptionFinished() {
+        partsToDecrypt.removeFirst();
+        decryptNextPartOrStartExtractingTextAndAttachments();
     }
 
     private void onLoadMessageFromDatabaseFailed() {

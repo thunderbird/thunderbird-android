@@ -7,13 +7,15 @@ import java.util.Stack;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeUtility;
 
 
 public class MessageDecryptor {
     private static final String MULTIPART_ENCRYPTED = "multipart/encrypted";
+    private static final String PROTOCOL_PARAMETER = "protocol";
+    private static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
 
     public static List<Part> findEncryptedParts(Part startPart) {
         List<Part> encryptedParts = new ArrayList<Part>();
@@ -37,5 +39,13 @@ public class MessageDecryptor {
         }
 
         return encryptedParts;
+    }
+
+    public static boolean isPgpMimeEncryptedPart(Part part) {
+        //FIXME: Doesn't work right now because LocalMessage.getContentType() doesn't load headers from database
+//        String contentType = part.getContentType();
+//        String protocol = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);
+//        return APPLICATION_PGP_ENCRYPTED.equals(protocol);
+        return true;
     }
 }
