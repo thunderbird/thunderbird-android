@@ -83,6 +83,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private static final int DISPLAY_NAME_INDEX = 1;
 
     private ViewStub mOpenPgpHeaderStub;
+    private View mSidebar;
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
     private Button mShowHiddenAttachments;
@@ -107,6 +108,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         this.attachmentCallback = attachmentCallback;
 
         mOpenPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
+        mSidebar = findViewById(R.id.message_sidebar);
 
         Activity activity = fragment.getActivity();
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
@@ -434,7 +436,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 //                || messageViewContainer.encrypted);
 //        if (mHasOpenPgpInfo) {
             renderOpenPgpHeader(messageViewContainer);
-            mMessageContentView.setSidebar(true, Color.parseColor("#ff444444"));
+            mSidebar.setVisibility(View.VISIBLE);
 //        }
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
