@@ -23,7 +23,7 @@ import android.os.Parcelable;
  * Parcelable versioning has been copied from Dashclock Widget
  * https://code.google.com/p/dashclock/source/browse/api/src/main/java/com/google/android/apps/dashclock/api/ExtensionData.java
  */
-public class OpenPgpError implements Parcelable {
+public class OpenPgpMetadata implements Parcelable {
     /**
      * Since there might be a case where new versions of the client using the library getting
      * old versions of the protocol (and thus old versions of this class), we need a versioning
@@ -31,43 +31,43 @@ public class OpenPgpError implements Parcelable {
      */
     public static final int PARCELABLE_VERSION = 1;
 
-    // possible values for errorId
-    public static final int CLIENT_SIDE_ERROR = -1;
-    public static final int GENERIC_ERROR = 0;
-    public static final int INCOMPATIBLE_API_VERSIONS = 1;
-    public static final int NO_OR_WRONG_PASSPHRASE = 2;
-    public static final int NO_USER_IDS = 3;
+    String filename;
+    String mimeType;
+    long modificationTime;
+    long originalSize;
 
-    int errorId;
-    String message;
-
-    public OpenPgpError() {
+    public String getFilename() {
+        return filename;
     }
 
-    public OpenPgpError(int errorId, String message) {
-        this.errorId = errorId;
-        this.message = message;
+    public String getMimeType() {
+        return mimeType;
     }
 
-    public OpenPgpError(OpenPgpError b) {
-        this.errorId = b.errorId;
-        this.message = b.message;
+    public long getModificationTime() {
+        return modificationTime;
     }
 
-    public int getErrorId() {
-        return errorId;
+    public long getOriginalSize() {
+        return originalSize;
     }
 
-    public void setErrorId(int errorId) {
-        this.errorId = errorId;
+    public OpenPgpMetadata() {
     }
 
-    public String getMessage() {
-        return message;
+    public OpenPgpMetadata(String filename, String mimeType, long modificationTime,
+                           long originalSize) {
+        this.filename = filename;
+        this.mimeType = mimeType;
+        this.modificationTime = modificationTime;
+        this.originalSize = originalSize;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public OpenPgpMetadata(OpenPgpMetadata b) {
+        this.filename = b.filename;
+        this.mimeType = b.mimeType;
+        this.modificationTime = b.modificationTime;
+        this.originalSize = b.originalSize;
     }
 
     public int describeContents() {
@@ -86,8 +86,10 @@ public class OpenPgpError implements Parcelable {
         dest.writeInt(0);
         int startPosition = dest.dataPosition();
         // version 1
-        dest.writeInt(errorId);
-        dest.writeString(message);
+        dest.writeString(filename);
+        dest.writeString(mimeType);
+        dest.writeLong(modificationTime);
+        dest.writeLong(originalSize);
         // Go back and write the size
         int parcelableSize = dest.dataPosition() - startPosition;
         dest.setDataPosition(sizePosition);
@@ -95,24 +97,36 @@ public class OpenPgpError implements Parcelable {
         dest.setDataPosition(startPosition + parcelableSize);
     }
 
-    public static final Creator<OpenPgpError> CREATOR = new Creator<OpenPgpError>() {
-        public OpenPgpError createFromParcel(final Parcel source) {
+    public static final Creator<OpenPgpMetadata> CREATOR = new Creator<OpenPgpMetadata>() {
+        public OpenPgpMetadata createFromParcel(final Parcel source) {
             int parcelableVersion = source.readInt();
             int parcelableSize = source.readInt();
             int startPosition = source.dataPosition();
 
-            OpenPgpError error = new OpenPgpError();
-            error.errorId = source.readInt();
-            error.message = source.readString();
+            OpenPgpMetadata vr = new OpenPgpMetadata();
+            vr.filename = source.readString();
+            vr.mimeType = source.readString();
+            vr.modificationTime = source.readLong();
+            vr.originalSize = source.readLong();
 
             // skip over all fields added in future versions of this parcel
             source.setDataPosition(startPosition + parcelableSize);
 
-            return error;
+            return vr;
         }
 
-        public OpenPgpError[] newArray(final int size) {
-            return new OpenPgpError[size];
+        public OpenPgpMetadata[] newArray(final int size) {
+            return new OpenPgpMetadata[size];
         }
     };
+
+    @Override
+    public String toString() {
+        String out = "\nfilename: " + filename;
+        out += "\nmimeType: " + mimeType;
+        out += "\nmodificationTime: " + modificationTime;
+        out += "\noriginalSize: " + originalSize;
+        return out;
+    }
+
 }
