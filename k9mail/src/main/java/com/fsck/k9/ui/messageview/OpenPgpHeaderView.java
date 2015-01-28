@@ -4,6 +4,7 @@ package com.fsck.k9.ui.messageview;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,68 +66,52 @@ public class OpenPgpHeaderView extends LinearLayout {
 
         if (encrypted) {
             setStatusImage(mContext, mResultEncryptionIcon, mResultEncryptionText, STATE_ENCRYPTED);
-
-//            MessageOpenPgpView.this.setBackgroundColor(mContext.getResources().getColor(
-//                    R.color.openpgp_blue));
-//            mText.setText(R.string.openpgp_successful_decryption);
+            mResultEncryptionText.setText(R.string.openpgp_result_encrypted);
         } else {
             setStatusImage(mContext, mResultEncryptionIcon, mResultEncryptionText, STATE_NOT_ENCRYPTED);
+            mResultEncryptionText.setText(R.string.openpgp_result_not_encrypted);
         }
 
         if (signatureResult == null) {
             setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_NOT_SIGNED);
+            mResultSignatureText.setText(R.string.openpgp_result_no_signature);
+            mResultSignatureLayout.setVisibility(View.GONE);
         } else {
             switch (signatureResult.getStatus()) {
-                case OpenPgpSignatureResult.SIGNATURE_ERROR:
+                case OpenPgpSignatureResult.SIGNATURE_ERROR: {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_INVALID);
-//                    // TODO: signature error but decryption works?
-//                    mText.setText(R.string.openpgp_signature_invalid);
-//                    MessageOpenPgpView.this.setBackgroundColor(mContext.getResources().getColor(
-//                            R.color.openpgp_red));
-//
+                    mResultSignatureText.setText(R.string.openpgp_result_invalid_signature);
+
 //                    mGetKeyButton.setVisibility(View.GONE);
 //                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
-//                    mSignatureLayout.setVisibility(View.GONE);
+                    mResultSignatureLayout.setVisibility(View.GONE);
                     break;
-
-                case OpenPgpSignatureResult.SIGNATURE_SUCCESS_CERTIFIED:
+                }
+                case OpenPgpSignatureResult.SIGNATURE_SUCCESS_CERTIFIED: {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_VERIFIED);
+                    mResultSignatureText.setText(R.string.openpgp_result_signature_certified);
 
-//                    if (signatureResult.isSignatureOnly()) {
-//                        mText.setText(R.string.openpgp_signature_valid_certified);
-//                    } else {
-//                        mText.setText(R.string.openpgp_successful_decryption_valid_signature_certified);
-//                    }
-//                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
-//                            R.color.openpgp_green));
-//
 //                    mGetKeyButton.setVisibility(View.GONE);
 //                    mSignatureUserId.setText(signatureResult.getUserId());
 //                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
-//                    mSignatureLayout.setVisibility(View.VISIBLE);
+                    mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
-
-                case OpenPgpSignatureResult.SIGNATURE_UNKNOWN_PUB_KEY:
+                }
+                case OpenPgpSignatureResult.SIGNATURE_UNKNOWN_PUB_KEY: {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_UNKNOWN_KEY);
+                    mResultSignatureText.setText(R.string.openpgp_result_signature_missing_key);
 
-//                    if (signatureResult.isSignatureOnly()) {
-//                        mText.setText(R.string.openpgp_signature_unknown_text);
-//                    } else {
-//                        mText.setText(R.string.openpgp_successful_decryption_unknown_signature);
-//                    }
-//                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
-//                            R.color.openpgp_orange));
-//
 //                    mGetKeyButton.setVisibility(View.VISIBLE);
 //                    mSignatureUserId.setText(R.string.openpgp_signature_unknown);
 //                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
-//                    mSignatureLayout.setVisibility(View.VISIBLE);
+                    mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
-
-                case OpenPgpSignatureResult.SIGNATURE_SUCCESS_UNCERTIFIED:
+                }
+                case OpenPgpSignatureResult.SIGNATURE_SUCCESS_UNCERTIFIED: {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_UNVERIFIED);
+                    mResultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
 
 //                    if (signatureResult.isSignatureOnly()) {
 //                        mText.setText(R.string.openpgp_signature_valid_uncertified);
@@ -139,9 +124,28 @@ public class OpenPgpHeaderView extends LinearLayout {
 //                    mGetKeyButton.setVisibility(View.GONE);
 //                    mSignatureUserId.setText(signatureResult.getUserId());
 //                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
-//                    mSignatureLayout.setVisibility(View.VISIBLE);
+                    mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
+                }
+//                case OpenPgpSignatureResult.SIGN:
+//                    setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_UNVERIFIED);
+//                    mResultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
+//
+////                    if (signatureResult.isSignatureOnly()) {
+////                        mText.setText(R.string.openpgp_signature_valid_uncertified);
+////                    } else {
+////                        mText.setText(R.string.openpgp_successful_decryption_valid_signature_uncertified);
+////                    }
+////                    MessageOpenPgpView.this.setBackgroundColor(mFragment.getResources().getColor(
+////                            R.color.openpgp_orange));
+////
+////                    mGetKeyButton.setVisibility(View.GONE);
+////                    mSignatureUserId.setText(signatureResult.getUserId());
+////                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
+//                    mResultSignatureLayout.setVisibility(View.VISIBLE);
+//
+//                    break;
 
                 default:
                     break;

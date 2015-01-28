@@ -21,8 +21,8 @@
         <View
             android:id="@+id/message_sidebar"
             android:layout_width="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="4dp"
             android:layout_height="match_parent"
             android:background="@color/openpgp_sidebar"
             android:visibility="gone"/>
