@@ -63,8 +63,8 @@
             android:layout_height="wrap_content">
 
             <View
-                android:layout_width="8dp"
-                android:layout_marginLeft="6dp"
+                android:layout_width="4dp"
+                android:layout_marginLeft="8dp"
                 android:layout_height="match_parent"
                 android:background="@color/openpgp_sidebar" />
 
@@ -78,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="14dp"
                     android:paddingRight="4dp"
                     android:orientation="horizontal">
 
@@ -107,16 +107,8 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="1dip"
-                        android:layout_height="match_parent"
-                        android:gravity="right"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginTop="8dp"
-                        android:background="?android:attr/listDivider" />
-
                     <Button
-                        android:id="@+id/result_signature_action"
+                        android:id="@+id/result_signature_button"
                         android:paddingLeft="8dp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_width="wrap_content"
@@ -130,8 +122,8 @@
                 <View
                     android:id="@+id/result_signature_divider2"
                     android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:background="?android:attr/listDivider" />
+                    android:layout_height="2dp"
+                    android:background="@color/openpgp_sidebar" />
 
             </LinearLayout>
 

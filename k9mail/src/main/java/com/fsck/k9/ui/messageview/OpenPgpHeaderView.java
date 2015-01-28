@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.fsck.k9.R;
 
 import org.openintents.openpgp.OpenPgpSignatureResult;
+import org.openintents.openpgp.util.OpenPgpUtils;
 
 public class OpenPgpHeaderView extends LinearLayout {
     private OpenPgpSignatureResult signatureResult;
@@ -26,6 +28,7 @@ public class OpenPgpHeaderView extends LinearLayout {
     private LinearLayout mResultSignatureLayout;
     private TextView mResultSignatureName;
     private TextView mResultSignatureEmail;
+    private Button mResultSignatureButton;
 
 //    private PendingIntent mMissingKeyPI;
 //    private static final int REQUEST_CODE_DECRYPT_VERIFY = 12;
@@ -51,6 +54,7 @@ public class OpenPgpHeaderView extends LinearLayout {
         mResultSignatureLayout = (LinearLayout) findViewById(R.id.result_signature_layout);
         mResultSignatureName = (TextView) findViewById(R.id.result_signature_name);
         mResultSignatureEmail = (TextView) findViewById(R.id.result_signature_email);
+        mResultSignatureButton = (Button) findViewById(R.id.result_signature_button);
 
 //        mGetKeyButton.setOnClickListener(new OnClickListener() {
 //            @Override
@@ -82,8 +86,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_INVALID);
                     mResultSignatureText.setText(R.string.openpgp_result_invalid_signature);
 
-//                    mGetKeyButton.setVisibility(View.GONE);
-//                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                    mResultSignatureButton.setVisibility(View.GONE);
                     mResultSignatureLayout.setVisibility(View.GONE);
                     break;
                 }
@@ -91,9 +94,9 @@ public class OpenPgpHeaderView extends LinearLayout {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_VERIFIED);
                     mResultSignatureText.setText(R.string.openpgp_result_signature_certified);
 
-//                    mGetKeyButton.setVisibility(View.GONE);
-//                    mSignatureUserId.setText(signatureResult.getUserId());
-//                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
+                    mResultSignatureButton.setVisibility(View.VISIBLE);
+                    mResultSignatureName.setText(OpenPgpUtils.s);
+                    mResultSignatureEmail.setText(signatureResult.getUserId());
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
