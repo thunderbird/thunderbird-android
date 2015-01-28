@@ -13,11 +13,17 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 public class MessageViewInfo {
 
     public final Message message;
-    public final List<MessageViewContainer> containers = new ArrayList<MessageViewContainer>();
+    public final List<MessageViewContainer> containers;
 
     @Deprecated
     public MessageViewInfo(String text, List<AttachmentViewInfo> attachments, Message message) {
+        containers = new ArrayList<MessageViewContainer>();
         containers.add(new MessageViewContainer(text, attachments));
+        this.message = message;
+    }
+
+    public MessageViewInfo(List<MessageViewContainer> containers, Message message) {
+        this.containers = containers;
         this.message = message;
     }
 

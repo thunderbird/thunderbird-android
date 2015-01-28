@@ -13,7 +13,9 @@ import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
+import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider;
+import org.openintents.openpgp.OpenPgpSignatureResult;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,18 +42,19 @@ public class LocalMessageExtractor {
      * Extract the viewable textual parts of a message and return the rest as attachments.
      *
      * @param context A {@link android.content.Context} instance that will be used to get localized strings.
+     * @param viewables
+     * @param attachments
      * @return A {@link ViewableContainer} instance containing the textual parts of the message as
      *         plain text and HTML, and a list of message parts considered attachments.
      *
      * @throws com.fsck.k9.mail.MessagingException
      *          In case of an error.
      */
-    public static ViewableContainer extractTextAndAttachments(Context context, Message message) throws MessagingException {
+    public static ViewableContainer extractTextAndAttachments(Context context, List<Viewable> viewables,
+            List<Part> attachments) throws MessagingException {
         try {
-            List<Part> attachments = new ArrayList<Part>();
 
             // Collect all viewable parts
-            List<Viewable> viewables = MessageExtractor.getViewables(message, attachments);
 
             /*
              * Convert the tree of viewable parts into text and HTML
@@ -412,10 +415,32 @@ public class LocalMessageExtractor {
     }
 
     public static MessageViewInfo decodeMessageForView(Context context, Message message) throws MessagingException {
-        //TODO: Modify extractTextAndAttachments() to only extract the text type (plain vs. HTML) we currently need.
-        ViewableContainer viewable = LocalMessageExtractor.extractTextAndAttachments(context, message);
-        List<AttachmentViewInfo> attachments = extractAttachmentInfos(viewable.attachments);
-        return new MessageViewInfo(viewable.html, attachments, message);
+
+        // 1. break mime structure on encryption/signature boundaries
+        ArrayList<Part> parts = new ArrayList<Part>();
+        // TODO: actually break it down
+        parts.add(message);
+//        parts.add(message);
+
+        // 2. extract viewables/attachments of parts
+        ArrayList<MessageViewContainer> containers = new ArrayList<MessageViewContainer>();
+        for (Part part : parts) {
+            ArrayList<Part> attachments = new ArrayList<Part>();
+            List<Viewable> viewables = MessageExtractor.getViewables(part, attachments);
+
+            // 3. parse viewables into html string
+            ViewableContainer viewable = LocalMessageExtractor.extractTextAndAttachments(context, viewables,
+                    attachments);
+            List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(attachments);
+
+            // TODO correctly extract OpenPgpSignatureResult and add to MessageViewContainer
+            OpenPgpSignatureResult result = null;
+//            result = new OpenPgpSignatureResult(OpenPgpSignatureResult.SIGNATURE_SUCCESS_CERTIFIED, "lul", false, 0x123);
+            containers.add(new MessageViewContainer(viewable.html, attachmentInfos, result, true, null));
+
+        }
+
+        return new MessageViewInfo(containers, message);
     }
 
     private static List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)
