@@ -16,14 +16,15 @@
 
 package org.openintents.openpgp.util;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.text.TextUtils;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ResolveInfo;
 
 public class OpenPgpUtils {
 
@@ -55,11 +56,7 @@ public class OpenPgpUtils {
     public static boolean isAvailable(Context context) {
         Intent intent = new Intent(OpenPgpApi.SERVICE_INTENT);
         List<ResolveInfo> resInfo = context.getPackageManager().queryIntentServices(intent, 0);
-        if (!resInfo.isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
+        return !resInfo.isEmpty();
     }
 
     public static String convertKeyIdToHex(long keyId) {
@@ -74,38 +71,36 @@ public class OpenPgpUtils {
         return hexString;
     }
 
-    private static final Pattern USER_ID_PATTERN = Pattern.compile("^(.*?)(?: \\((.*)\\))?(?: <(.*)>)?$");
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("^(.*?)(?: (\\[.*\\]))?(?: \\((.*)\\))?(?: <(.*)>)?$");
 
     /**
      * Splits userId string into naming part, email part, and comment part
+     * <p/>
+     * User ID matching:
+     * http://fiddle.re/t4p6f
      *
      * @param userId
-     * @return array with naming (0), email (1), comment (2)
+     * @return theParsedUserInfo
      */
-    public static String[] splitUserId(String userId) {
-        String[] result = new String[]{null, null, null};
-
-        if (userId == null || userId.equals("")) {
-            return result;
+    public static UserInfo splitUserId(final String userId) {
+        if (!TextUtils.isEmpty(userId)) {
+            final Matcher matcher = USER_ID_PATTERN.matcher(userId);
+            if (matcher.matches()) {
+                return new UserInfo(matcher.group(1), matcher.group(4), matcher.group(3));
+            }
         }
+        return new UserInfo(null, null, null);
+    }
 
-        /*
-         * User ID matching:
-         * http://fiddle.re/t4p6f
-         *
-         * test cases:
-         * "Max Mustermann (this is a comment) <max@example.com>"
-         * "Max Mustermann <max@example.com>"
-         * "Max Mustermann (this is a comment)"
-         * "Max Mustermann [this is nothing]"
-         */
-        Matcher matcher = USER_ID_PATTERN.matcher(userId);
-        if (matcher.matches()) {
-            result[0] = matcher.group(1);
-            result[1] = matcher.group(3);
-            result[2] = matcher.group(2);
+    public static class UserInfo {
+        public final String name;
+        public final String email;
+        public final String comment;
+
+        public UserInfo(String name, String email, String comment) {
+            this.name = name;
+            this.email = email;
+            this.comment = comment;
         }
-
-        return result;
     }
 }
