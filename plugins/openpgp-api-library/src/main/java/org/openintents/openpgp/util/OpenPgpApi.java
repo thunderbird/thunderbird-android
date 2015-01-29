@@ -27,6 +27,7 @@ import android.util.Log;
 import org.openintents.openpgp.IOpenPgpService;
 import org.openintents.openpgp.OpenPgpError;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -290,14 +291,24 @@ public class OpenPgpApi {
         }
     }
 
+    /**
+     * InputStream and OutputStreams are always closed after operating on them!
+     *
+     * @param data
+     * @param is
+     * @param os
+     * @return
+     */
     public Intent executeApi(Intent data, InputStream is, OutputStream os) {
+        ParcelFileDescriptor input = null;
+        ParcelFileDescriptor output = null;
         try {
+            // always send version from client
             data.putExtra(EXTRA_API_VERSION, OpenPgpApi.API_VERSION);
 
             Intent result;
 
             // pipe the input and output
-            ParcelFileDescriptor input = null;
             if (is != null) {
                 input = ParcelFileDescriptorUtil.pipeFrom(is,
                         new ParcelFileDescriptorUtil.IThreadListener() {
@@ -309,7 +320,6 @@ public class OpenPgpApi {
                         }
                 );
             }
-            ParcelFileDescriptor output = null;
             if (os != null) {
                 output = ParcelFileDescriptorUtil.pipeTo(os,
                         new ParcelFileDescriptorUtil.IThreadListener() {
@@ -324,11 +334,6 @@ public class OpenPgpApi {
 
             // blocks until result is ready
             result = mService.execute(data, input, output);
-            // close() is required to halt the TransferThread
-            if (output != null) {
-                output.close();
-            }
-            // TODO: close input?
 
             // set class loader to current context to allow unparcelling
             // of OpenPgpError and OpenPgpSignatureResult
@@ -343,6 +348,22 @@ public class OpenPgpApi {
             result.putExtra(RESULT_ERROR,
                     new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
             return result;
+        } finally {
+            // close() is required to halt the TransferThread
+            if (output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
+                }
+            }
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
+                }
+            }
         }
     }
 

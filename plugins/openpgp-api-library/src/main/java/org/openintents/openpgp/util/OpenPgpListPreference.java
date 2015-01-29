@@ -46,6 +46,13 @@ public class OpenPgpListPreference extends DialogPreference {
     private static final Intent MARKET_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse(
             String.format(MARKET_INTENT_URI_BASE, OPENKEYCHAIN_PACKAGE)));
 
+    private static final ArrayList<String> PROVIDER_BLACKLIST = new ArrayList<String>();
+
+    static {
+        // Unfortunately, the current released version of APG includes a broken version of the API
+        PROVIDER_BLACKLIST.add("org.thialfihar.android.apg");
+    }
+
     private ArrayList<OpenPgpProviderEntry> mLegacyList = new ArrayList<OpenPgpProviderEntry>();
     private ArrayList<OpenPgpProviderEntry> mList = new ArrayList<OpenPgpProviderEntry>();
 
@@ -96,7 +103,9 @@ public class OpenPgpListPreference extends DialogPreference {
                         .getPackageManager()));
                 Drawable icon = resolveInfo.serviceInfo.loadIcon(getContext().getPackageManager());
 
-                providerList.add(new OpenPgpProviderEntry(packageName, simpleName, icon));
+                if (!PROVIDER_BLACKLIST.contains(packageName)) {
+                    providerList.add(new OpenPgpProviderEntry(packageName, simpleName, icon));
+                }
             }
         }
 
