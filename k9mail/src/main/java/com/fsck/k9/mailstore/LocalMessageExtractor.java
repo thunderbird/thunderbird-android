@@ -3,11 +3,9 @@ package com.fsck.k9.mailstore;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.crypto.MessageDecryptor;
+import com.fsck.k9.crypto.MessageDecryptVerifyer;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -20,7 +18,6 @@ import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
-import com.fsck.k9.mailstore.DecryptStreamParser.DecryptedBodyPart;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider;
 import org.openintents.openpgp.OpenPgpError;
@@ -443,7 +440,7 @@ public class LocalMessageExtractor {
             // TODO fill from part
             OpenPgpSignatureResult pgpResult = getSignatureResultForPart(part);
             OpenPgpError pgpError = null;
-            boolean wasEncrypted = false;
+            boolean wasEncrypted = getPartWasEncrypted(part);
             PendingIntent pendingIntent = null;
 
             containers.add(new MessageViewContainer(
@@ -452,6 +449,10 @@ public class LocalMessageExtractor {
         }
 
         return new MessageViewInfo(containers, message);
+    }
+
+    private static boolean getPartWasEncrypted(Part part) {
+        return (part instanceof OpenPgpResultBodyPart) && ((OpenPgpResultBodyPart) part).wasEncrypted();
     }
 
     public static List<Part> getCryptPieces(Part part) throws MessagingException {
@@ -477,6 +478,9 @@ public class LocalMessageExtractor {
                     parts.add(part);
                     return true;
                 }
+            } else if (MessageDecryptVerifyer.isPgpMimeSignedPart(part)) {
+                parts.add(part);
+                return true;
             } else if (isPgpMimeDecryptedPart(part)) {
                 parts.add(multi.getBodyPart(2));
                 return true;
@@ -488,14 +492,21 @@ public class LocalMessageExtractor {
     public static boolean isPgpMimeDecryptedPart (Part part) {
         Body body = part.getBody();
         return (body instanceof Multipart)
-                && MessageDecryptor.isPgpMimeEncryptedPart(part)
-                && ((Multipart) part.getBody()).getBodyParts().size() == 3;
+                && MessageDecryptVerifyer.isPgpMimeEncryptedPart(part)
+                && ((Multipart) part.getBody()).getCount() == 3;
     }
 
     private static OpenPgpSignatureResult getSignatureResultForPart(Part part) {
-        if (part instanceof DecryptedBodyPart) {
-            DecryptedBodyPart decryptedBodyPart = (DecryptedBodyPart) part;
-            return decryptedBodyPart.getSignatureResult();
+        if (part instanceof OpenPgpResultBodyPart) {
+            OpenPgpResultBodyPart openPgpResultBodyPart = (OpenPgpResultBodyPart) part;
+            return openPgpResultBodyPart.getSignatureResult();
+        }
+        if (MessageDecryptVerifyer.isPgpMimeSignedPart(part)) {
+            Multipart multi = (Multipart) part.getBody();
+            if (multi.getCount() == 3 && multi.getBodyPart(2) instanceof OpenPgpResultBodyPart) {
+                OpenPgpResultBodyPart openPgpResultBodyPart = (OpenPgpResultBodyPart) multi.getBodyPart(2);
+                return openPgpResultBodyPart.getSignatureResult();
+            }
         }
 
         return NO_SIGNATURE_RESULT;

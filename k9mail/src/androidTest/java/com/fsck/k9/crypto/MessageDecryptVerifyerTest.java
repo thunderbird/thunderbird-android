@@ -19,13 +19,13 @@ import static junit.framework.Assert.assertSame;
 
 
 @RunWith(AndroidJUnit4.class)
-public class MessageDecryptorTest {
+public class MessageDecryptVerifyerTest {
 
     @Test
     public void findEncryptedPartsShouldReturnEmptyListForEmptyMessage() throws Exception {
         MimeMessage emptyMessage = new MimeMessage();
 
-        List<Part> encryptedParts = MessageDecryptor.findEncryptedParts(emptyMessage);
+        List<Part> encryptedParts = MessageDecryptVerifyer.findEncryptedParts(emptyMessage);
         assertEquals(0, encryptedParts.size());
     }
 
@@ -34,7 +34,7 @@ public class MessageDecryptorTest {
         MimeMessage message = new MimeMessage();
         message.setBody(new TextBody("message text"));
 
-        List<Part> encryptedParts = MessageDecryptor.findEncryptedParts(message);
+        List<Part> encryptedParts = MessageDecryptVerifyer.findEncryptedParts(message);
         assertEquals(0, encryptedParts.size());
     }
 
@@ -45,7 +45,7 @@ public class MessageDecryptorTest {
         mulitpartEncrypted.setSubType("encrypted");
         MimeMessageHelper.setBody(message, mulitpartEncrypted);
 
-        List<Part> encryptedParts = MessageDecryptor.findEncryptedParts(message);
+        List<Part> encryptedParts = MessageDecryptVerifyer.findEncryptedParts(message);
         assertEquals(1, encryptedParts.size());
         assertSame(message, encryptedParts.get(0));
     }
@@ -70,7 +70,7 @@ public class MessageDecryptorTest {
         MimeBodyPart bodyPartThree = new MimeBodyPart(mulitpartEncryptedThree);
         multipartMixed.addBodyPart(bodyPartThree);
 
-        List<Part> encryptedParts = MessageDecryptor.findEncryptedParts(message);
+        List<Part> encryptedParts = MessageDecryptVerifyer.findEncryptedParts(message);
         assertEquals(2, encryptedParts.size());
         assertSame(bodyPartOne, encryptedParts.get(0));
         assertSame(bodyPartThree, encryptedParts.get(1));

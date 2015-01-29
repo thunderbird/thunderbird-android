@@ -47,7 +47,7 @@ import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.MessageDecryptor;
+import com.fsck.k9.crypto.MessageDecryptVerifyer;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -64,7 +64,7 @@ import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.DecryptStreamParser;
-import com.fsck.k9.mailstore.DecryptStreamParser.DecryptedBodyPart;
+import com.fsck.k9.mailstore.OpenPgpResultBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.message.DecodeMessageLoader;
@@ -139,10 +139,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private LoaderCallbacks<MessageViewInfo> decodeMessageLoaderCallback = new DecodeMessageLoaderCallback();
     private MessageViewInfo messageViewInfo;
     private AttachmentViewInfo currentAttachmentViewInfo;
-    private Deque<Part> partsToDecrypt;
+    private Deque<Part> partsToDecryptOrVerify;
     private OpenPgpApi openPgpApi;
-    private Part currentlyDecryptingPart;
-    private Intent currentDecryptingResult;
+    private Part currentlyDecrypringOrVerifyingPart;
+    private Intent currentCryptoResult;
 
 
     @Override
@@ -257,38 +257,42 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (message.isBodyMissing()) {
             startDownloadingMessageBody(message);
         } else {
-            decryptMessagePartsIfNecessary(message);
+            decryptOrVerifyMessagePartsIfNecessary(message);
         }
     }
 
-    private void decryptMessagePartsIfNecessary(LocalMessage message) {
-        List<Part> encryptedParts = MessageDecryptor.findEncryptedParts(message);
-        if (!encryptedParts.isEmpty()) {
-            partsToDecrypt = new ArrayDeque<Part>(encryptedParts);
-            decryptNextPartOrStartExtractingTextAndAttachments();
+    private void decryptOrVerifyMessagePartsIfNecessary(LocalMessage message) {
+        List<Part> encryptedParts = MessageDecryptVerifyer.findEncryptedParts(message);
+        List<Part> signedParts = MessageDecryptVerifyer.findSignedParts(message);
+        if (!encryptedParts.isEmpty() || !signedParts.isEmpty()) {
+            partsToDecryptOrVerify = new ArrayDeque<Part>();
+            partsToDecryptOrVerify.addAll(encryptedParts);
+            partsToDecryptOrVerify.addAll(signedParts);
+            decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
         } else {
             startExtractingTextAndAttachments(message);
         }
     }
 
-    private void decryptNextPartOrStartExtractingTextAndAttachments() {
-        if (partsToDecrypt.isEmpty()) {
-            startExtractingTextAndAttachments(mMessage);
+    private void decryptOrVerifyNextPartOrStartExtractingTextAndAttachments() {
+        if (!partsToDecryptOrVerify.isEmpty()) {
+
+            Part part = partsToDecryptOrVerify.peekFirst();
+            if (MessageDecryptVerifyer.isPgpMimePart(part)) {
+                startDecryptingOrVerifyingPart(part);
+            } else {
+                partsToDecryptOrVerify.removeFirst();
+                decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
+            }
+
             return;
         }
 
-        Part part = partsToDecrypt.peekFirst();
-        if (MessageDecryptor.isPgpMimeEncryptedPart(part)) {
-            startDecryptingPart(part);
-        } else {
-            // Note: We currently only support PGP/MIME multipart/encrypted parts
+        startExtractingTextAndAttachments(mMessage);
 
-            partsToDecrypt.removeFirst();
-            decryptNextPartOrStartExtractingTextAndAttachments();
-        }
     }
 
-    private void startDecryptingPart(Part part) {
+    private void startDecryptingOrVerifyingPart(Part part) {
         Multipart multipart = (Multipart) part.getBody();
         if (multipart == null) {
             throw new RuntimeException("Downloading missing parts before decryption isn't supported yet");
@@ -297,7 +301,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (!isBoundToCryptoProviderService()) {
             connectToCryptoProviderService();
         } else {
-            decryptPart(part);
+            decryptOrVerifyPart(part);
         }
     }
 
@@ -313,7 +317,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             public void onBound(IOpenPgpService service) {
                 openPgpApi = new OpenPgpApi(getContext(), service);
 
-                decryptNextPartOrStartExtractingTextAndAttachments();
+                decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
             }
 
             @Override
@@ -323,8 +327,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }).bindToService();
     }
 
-    private void decryptPart(Part part) {
-        currentlyDecryptingPart = part;
+    private void decryptOrVerifyPart(Part part) {
+        currentlyDecrypringOrVerifyingPart = part;
         decryptVerify(new Intent());
     }
 
@@ -336,22 +340,64 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accountName);
 
         try {
-            final CountDownLatch latch = new CountDownLatch(1);
 
-            PipedInputStream pipedInputStream = getPipedInputStreamForEncryptedData();
-            PipedOutputStream decryptedOutputStream = getPipedOutputStreamForDecryptedData(latch);
+            PipedInputStream pipedInputStream;
+            PipedOutputStream decryptedOutputStream;
+            final CountDownLatch latch;
+
+            if (MessageDecryptVerifyer.isPgpMimeSignedPart(currentlyDecrypringOrVerifyingPart)) {
+                pipedInputStream = getPipedInputStreamForSignedData();
+
+                byte[] signatureData = MessageDecryptVerifyer.getSignatureData(currentlyDecrypringOrVerifyingPart);
+                intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
+                decryptedOutputStream = null;
+                latch = null;
+            } else {
+                pipedInputStream = getPipedInputStreamForEncryptedData();
+                latch = new CountDownLatch(1);
+                decryptedOutputStream = getPipedOutputStreamForDecryptedData(latch);
+            }
 
             openPgpApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream, new IOpenPgpCallback() {
                 @Override
                 public void onReturn(Intent result) {
-                    Log.d(K9.LOG_TAG, "on result!");
-                    currentDecryptingResult = result;
-                    latch.countDown();
+                    currentCryptoResult = result;
+
+                    if (latch != null) {
+                        Log.d(K9.LOG_TAG, "on result!");
+                        latch.countDown();
+                        return;
+                    }
+
+                    onCryptoConverge(null);
                 }
             });
         } catch (IOException e) {
             Log.e(K9.LOG_TAG, "IOException", e);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "MessagingException", e);
         }
+    }
+
+    private PipedInputStream getPipedInputStreamForSignedData() throws IOException {
+        PipedInputStream pipedInputStream = new PipedInputStream();
+
+        final PipedOutputStream out = new PipedOutputStream(pipedInputStream);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Multipart multipartSignedMultipart = (Multipart) currentlyDecrypringOrVerifyingPart.getBody();
+                    BodyPart signatureBodyPart = multipartSignedMultipart.getBodyPart(0);
+                    Log.d(K9.LOG_TAG, "signed data type: " + signatureBodyPart.getMimeType());
+                    signatureBodyPart.writeTo(out);
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Exception while writing message to crypto provider", e);
+                }
+            }
+        }).start();
+
+        return pipedInputStream;
     }
 
     private PipedInputStream getPipedInputStreamForEncryptedData() throws IOException {
@@ -362,7 +408,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             @Override
             public void run() {
                 try {
-                    Multipart multipartEncryptedMultipart = (Multipart) currentlyDecryptingPart.getBody();
+                    Multipart multipartEncryptedMultipart = (Multipart) currentlyDecrypringOrVerifyingPart.getBody();
                     BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
                     Body encryptionPayloadBody = encryptionPayloadPart.getBody();
                     encryptionPayloadBody.writeTo(out);
@@ -378,10 +424,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private PipedOutputStream getPipedOutputStreamForDecryptedData(final CountDownLatch latch) throws IOException {
         PipedOutputStream decryptedOutputStream = new PipedOutputStream();
         final PipedInputStream decryptedInputStream = new PipedInputStream(decryptedOutputStream);
-        new AsyncTask<Void, Void, DecryptedBodyPart>() {
+        new AsyncTask<Void, Void, OpenPgpResultBodyPart>() {
             @Override
-            protected DecryptedBodyPart doInBackground(Void... params) {
-                DecryptedBodyPart decryptedPart = null;
+            protected OpenPgpResultBodyPart doInBackground(Void... params) {
+                OpenPgpResultBodyPart decryptedPart = null;
                 try {
                     decryptedPart = DecryptStreamParser.parse(decryptedInputStream);
 
@@ -396,21 +442,21 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             }
 
             @Override
-            protected void onPostExecute(DecryptedBodyPart decryptedPart) {
-                onDecryptionConverge(decryptedPart);
+            protected void onPostExecute(OpenPgpResultBodyPart decryptedPart) {
+                onCryptoConverge(decryptedPart);
             }
         }.execute();
         return decryptedOutputStream;
     }
 
-    private void onDecryptionConverge (DecryptedBodyPart decryptedPart) {
+    private void onCryptoConverge(OpenPgpResultBodyPart openPgpResultBodyPart) {
         try {
-            if (currentDecryptingResult == null) {
+            if (currentCryptoResult == null) {
                 Log.e(K9.LOG_TAG, "Internal error: we should have a result here!");
                 return;
             }
 
-            int resultCode = currentDecryptingResult.getIntExtra(OpenPgpApi.RESULT_CODE, INVALID_OPENPGP_RESULT_CODE);
+            int resultCode = currentCryptoResult.getIntExtra(OpenPgpApi.RESULT_CODE, INVALID_OPENPGP_RESULT_CODE);
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "OpenPGP API decryptVerify result code: " + resultCode);
             }
@@ -421,7 +467,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
-                    PendingIntent pendingIntent = currentDecryptingResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                    PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
                     if (pendingIntent == null) {
                         throw new AssertionError("Expecting PendingIntent on USER_INTERACTION_REQUIRED!");
                     }
@@ -435,62 +481,68 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_ERROR: {
-                    OpenPgpError error = currentDecryptingResult.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                    OpenPgpError error = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
 
                     if (K9.DEBUG) {
                         Log.w(K9.LOG_TAG, "OpenPGP API error: " + error.getMessage());
                     }
 
-                    onDecryptionFailed(error);
+                    onCryptoFailed(error);
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_SUCCESS: {
+                    if (openPgpResultBodyPart == null) {
+                        openPgpResultBodyPart = new OpenPgpResultBodyPart(false);
+                    }
                     OpenPgpSignatureResult signatureResult =
-                            currentDecryptingResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
-                    decryptedPart.setSignatureResult(signatureResult);
+                            currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
+                    openPgpResultBodyPart.setSignatureResult(signatureResult);
 
-                    onDecryptionSuccess(decryptedPart);
+                    onCryptoSuccess(openPgpResultBodyPart);
                     break;
                 }
             }
+        } catch (MessagingException e) {
+            // catching the empty OpenPgpResultBodyPart constructor above - this can't actually happen
+            Log.e(K9.LOG_TAG, "This shouldn't happen", e);
         } finally {
-            currentDecryptingResult = null;
+            currentCryptoResult = null;
         }
     }
 
     public void handleCryptoResult(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            decryptNextPartOrStartExtractingTextAndAttachments();
+            decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
         } else {
             //FIXME: don't pass null
-            onDecryptionFailed(null);
+            onCryptoFailed(null);
         }
     }
 
-    private void onDecryptionSuccess(DecryptedBodyPart decryptedPart) {
-        addDecryptedPartToMessage(decryptedPart);
-        onDecryptionFinished();
+    private void onCryptoSuccess(OpenPgpResultBodyPart decryptedPart) {
+        addOpenPgpResultPartToMessage(decryptedPart);
+        onCryptoFinished();
     }
 
-    private void addDecryptedPartToMessage(DecryptedBodyPart decryptedPart) {
-        Multipart multipart = (Multipart) currentlyDecryptingPart.getBody();
+    private void addOpenPgpResultPartToMessage(OpenPgpResultBodyPart decryptedPart) {
+        Multipart multipart = (Multipart) currentlyDecrypringOrVerifyingPart.getBody();
         multipart.addBodyPart(decryptedPart);
     }
 
-    private void onDecryptionFailed(OpenPgpError error) {
+    private void onCryptoFailed(OpenPgpError error) {
         try {
-            DecryptedBodyPart errorPart = new DecryptedBodyPart();
+            OpenPgpResultBodyPart errorPart = new OpenPgpResultBodyPart(false);
             errorPart.setError(error);
-            addDecryptedPartToMessage(errorPart);
+            addOpenPgpResultPartToMessage(errorPart);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "This shouldn't happen", e);
         }
-        onDecryptionFinished();
+        onCryptoFinished();
     }
 
-    private void onDecryptionFinished() {
-        partsToDecrypt.removeFirst();
-        decryptNextPartOrStartExtractingTextAndAttachments();
+    private void onCryptoFinished() {
+        partsToDecryptOrVerify.removeFirst();
+        decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
     }
 
     private void onLoadMessageFromDatabaseFailed() {
@@ -527,7 +579,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void onDecodeMessageFinished(MessageViewInfo messageContainer) {
-        //TODO: handle decryption and signature verification
         this.messageViewInfo = messageContainer;
         showMessage(messageContainer);
     }
