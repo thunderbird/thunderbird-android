@@ -71,8 +71,6 @@ import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import com.fsck.k9.view.MessageHeader;
 import org.openintents.openpgp.IOpenPgpService;
-import org.openintents.openpgp.OpenPgpError;
-import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
@@ -381,7 +379,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             protected DecryptedBodyPart doInBackground(Void... params) {
                 DecryptedBodyPart decryptedPart = null;
                 try {
-                    decryptedPart = DecryptStreamParser.parse(currentlyDecryptingPart, decryptedInputStream);
+                    decryptedPart = DecryptStreamParser.parse(decryptedInputStream);
 
                     latch.await();
                 } catch (InterruptedException e) {
