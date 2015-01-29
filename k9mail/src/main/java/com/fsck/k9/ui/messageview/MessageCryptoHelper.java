@@ -20,7 +20,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageList;
-import com.fsck.k9.crypto.MessageDecryptVerifyer;
+import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.mail.Body;
@@ -61,8 +61,8 @@ public class MessageCryptoHelper {
     void decryptOrVerifyMessagePartsIfNecessary(LocalMessage message) {
         this.message = message;
 
-        List<Part> encryptedParts = MessageDecryptVerifyer.findEncryptedParts(message);
-        List<Part> signedParts = MessageDecryptVerifyer.findSignedParts(message);
+        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
+        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
         if (!encryptedParts.isEmpty() || !signedParts.isEmpty()) {
             partsToDecryptOrVerify = new ArrayDeque<Part>();
             partsToDecryptOrVerify.addAll(encryptedParts);
@@ -77,7 +77,7 @@ public class MessageCryptoHelper {
         if (!partsToDecryptOrVerify.isEmpty()) {
 
             Part part = partsToDecryptOrVerify.peekFirst();
-            if (MessageDecryptVerifyer.isPgpMimePart(part)) {
+            if (MessageDecryptVerifier.isPgpMimePart(part)) {
                 startDecryptingOrVerifyingPart(part);
             } else {
                 partsToDecryptOrVerify.removeFirst();
@@ -139,7 +139,7 @@ public class MessageCryptoHelper {
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accountName);
 
         try {
-            if (MessageDecryptVerifyer.isPgpMimeSignedPart(currentlyDecrypringOrVerifyingPart)) {
+            if (MessageDecryptVerifier.isPgpMimeSignedPart(currentlyDecrypringOrVerifyingPart)) {
                 callAsyncDetachedVerify(intent);
             } else {
                 callAsyncDecrypt(intent);
@@ -168,7 +168,7 @@ public class MessageCryptoHelper {
     private void callAsyncDetachedVerify(Intent intent) throws IOException, MessagingException {
         PipedInputStream pipedInputStream = getPipedInputStreamForSignedData();
 
-        byte[] signatureData = MessageDecryptVerifyer.getSignatureData(currentlyDecrypringOrVerifyingPart);
+        byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentlyDecrypringOrVerifyingPart);
         intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
 
         openPgpApi.executeApiAsync(intent, pipedInputStream, null, new IOpenPgpCallback() {

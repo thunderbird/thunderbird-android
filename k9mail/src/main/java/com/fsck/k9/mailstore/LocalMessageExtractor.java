@@ -5,7 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.fsck.k9.R;
-import com.fsck.k9.crypto.MessageDecryptVerifyer;
+import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -478,7 +478,7 @@ public class LocalMessageExtractor {
                     parts.add(part);
                     return true;
                 }
-            } else if (MessageDecryptVerifyer.isPgpMimeSignedPart(part)) {
+            } else if (MessageDecryptVerifier.isPgpMimeSignedPart(part)) {
                 parts.add(part);
                 return true;
             } else if (isPgpMimeDecryptedPart(part)) {
@@ -492,7 +492,7 @@ public class LocalMessageExtractor {
     public static boolean isPgpMimeDecryptedPart (Part part) {
         Body body = part.getBody();
         return (body instanceof Multipart)
-                && MessageDecryptVerifyer.isPgpMimeEncryptedPart(part)
+                && MessageDecryptVerifier.isPgpMimeEncryptedPart(part)
                 && ((Multipart) part.getBody()).getCount() == 3;
     }
 
@@ -501,7 +501,7 @@ public class LocalMessageExtractor {
             OpenPgpResultBodyPart openPgpResultBodyPart = (OpenPgpResultBodyPart) part;
             return openPgpResultBodyPart;
         }
-        if (MessageDecryptVerifyer.isPgpMimeSignedPart(part)) {
+        if (MessageDecryptVerifier.isPgpMimeSignedPart(part)) {
             Multipart multi = (Multipart) part.getBody();
             if (multi.getCount() == 3 && multi.getBodyPart(2) instanceof OpenPgpResultBodyPart) {
                 OpenPgpResultBodyPart openPgpResultBodyPart = (OpenPgpResultBodyPart) multi.getBodyPart(2);

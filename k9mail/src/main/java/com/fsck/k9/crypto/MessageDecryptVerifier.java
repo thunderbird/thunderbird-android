@@ -14,7 +14,7 @@ import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 
 
-public class MessageDecryptVerifyer {
+public class MessageDecryptVerifier {
     private static final String MULTIPART_ENCRYPTED = "multipart/encrypted";
     private static final String MULTIPART_SIGNED = "multipart/signed";
     private static final String PROTOCOL_PARAMETER = "protocol";
