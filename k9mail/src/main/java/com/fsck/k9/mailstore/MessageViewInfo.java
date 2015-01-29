@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fsck.k9.mail.Message;
+import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
@@ -33,22 +34,25 @@ public class MessageViewInfo {
         final public List<AttachmentViewInfo> attachments;
         final public boolean encrypted;
         final public OpenPgpSignatureResult signatureResult;
+        final public OpenPgpError pgpError;
         final public PendingIntent pgpPendingIntent;
 
         MessageViewContainer(String text, List<AttachmentViewInfo> attachments) {
             this.text = text;
             this.attachments = attachments;
             this.signatureResult = null;
+            this.pgpError = null;
             this.encrypted = false;
             this.pgpPendingIntent = null;
         }
 
         MessageViewContainer(String text, List<AttachmentViewInfo> attachments,
-                OpenPgpSignatureResult signatureResult, boolean encrypted,
-                PendingIntent pgpPendingIntent) {
+                OpenPgpSignatureResult signatureResult, OpenPgpError pgpError,
+                boolean encrypted, PendingIntent pgpPendingIntent) {
             this.text = text;
             this.attachments = attachments;
             this.signatureResult = signatureResult;
+            this.pgpError = pgpError;
             this.encrypted = encrypted;
             this.pgpPendingIntent = pgpPendingIntent;
         }

@@ -1,12 +1,19 @@
 package com.fsck.k9.mailstore;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.crypto.MessageDecryptor;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.internet.MessageExtractor;
@@ -15,6 +22,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider;
+import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
 import java.util.ArrayList;
@@ -417,10 +425,7 @@ public class LocalMessageExtractor {
     public static MessageViewInfo decodeMessageForView(Context context, Message message) throws MessagingException {
 
         // 1. break mime structure on encryption/signature boundaries
-        ArrayList<Part> parts = new ArrayList<Part>();
-        // TODO: actually break it down
-        parts.add(message);
-//        parts.add(message);
+        List<Part> parts = getCryptPieces(message);
 
         // 2. extract viewables/attachments of parts
         ArrayList<MessageViewContainer> containers = new ArrayList<MessageViewContainer>();
@@ -433,13 +438,56 @@ public class LocalMessageExtractor {
                     attachments);
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(attachments);
 
-            // TODO correctly extract OpenPgpSignatureResult and add to MessageViewContainer
-            OpenPgpSignatureResult result = null;
-            containers.add(new MessageViewContainer(viewable.html, attachmentInfos, result, false, null));
+            // TODO fill from part
+            OpenPgpSignatureResult pgpResult = null;
+            OpenPgpError pgpError = null;
+            boolean wasEncrypted = false;
+            PendingIntent pendingIntent = null;
+
+            containers.add(new MessageViewContainer(
+                    viewable.html, attachmentInfos, pgpResult, pgpError, wasEncrypted, pendingIntent));
 
         }
 
         return new MessageViewInfo(containers, message);
+    }
+
+    public static List<Part> getCryptPieces(Part part) throws MessagingException {
+        ArrayList<Part> parts = new ArrayList<Part>();
+        if (!getCryptSubPieces(part, parts)) {
+            parts.add(part);
+        }
+
+        return parts;
+    }
+
+    public static boolean getCryptSubPieces(Part part, ArrayList<Part> parts) throws MessagingException {
+
+        Body body = part.getBody();
+        if (body instanceof Multipart) {
+            Multipart multi = (Multipart) body;
+            if ("multipart/mixed".equals(part.getMimeType())) {
+                boolean foundSome = false;
+                for (BodyPart sub : multi.getBodyParts()) {
+                    foundSome |= getCryptSubPieces(sub, parts);
+                }
+                if (!foundSome) {
+                    parts.add(part);
+                    return true;
+                }
+            } else if (isPgpMimeDecryptedPart(part)) {
+                parts.add(multi.getBodyPart(2));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isPgpMimeDecryptedPart (Part part) {
+        Body body = part.getBody();
+        return (body instanceof Multipart)
+                && MessageDecryptor.isPgpMimeEncryptedPart(part)
+                && ((Multipart) part.getBody()).getBodyParts().size() == 3;
     }
 
     private static List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)
