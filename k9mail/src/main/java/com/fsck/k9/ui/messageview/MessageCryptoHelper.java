@@ -194,6 +194,12 @@ public class MessageCryptoHelper {
                     signatureBodyPart.writeTo(out);
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "Exception while writing message to crypto provider", e);
+                } finally {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        // don't care
+                    }
                 }
             }
         }).start();
@@ -215,6 +221,12 @@ public class MessageCryptoHelper {
                     encryptionPayloadBody.writeTo(out);
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "Exception while writing message to crypto provider", e);
+                } finally {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        // don't care
+                    }
                 }
             }
         }).start();
