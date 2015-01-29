@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -20,6 +21,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.IntentSender.SendIntentException;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -41,6 +43,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
+import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
@@ -68,6 +71,7 @@ import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import com.fsck.k9.view.MessageHeader;
 import org.openintents.openpgp.IOpenPgpService;
+import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
@@ -136,6 +140,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private Deque<Part> partsToDecrypt;
     private OpenPgpApi openPgpApi;
     private Part currentlyDecryptingPart;
+    private Intent currentDecryptingResult;
 
 
     @Override
@@ -329,15 +334,17 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accountName);
 
         try {
+            final CountDownLatch latch = new CountDownLatch(1);
+
             PipedInputStream pipedInputStream = getPipedInputStreamForEncryptedData();
-            PipedOutputStream decryptedOutputStream = getPipedOutputStreamForDecryptedData();
+            PipedOutputStream decryptedOutputStream = getPipedOutputStreamForDecryptedData(latch);
 
             openPgpApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream, new IOpenPgpCallback() {
                 @Override
                 public void onReturn(Intent result) {
-                    //TODO: check result code
-                    //TODO: signal to AsyncTask in getPipedOutputStreamForDecryptedData() that we have a result code
-                    //TODO: handle RESULT_INTENT
+                    Log.d(K9.LOG_TAG, "on result!");
+                    currentDecryptingResult = result;
+                    latch.countDown();
                 }
             });
         } catch (IOException e) {
@@ -366,38 +373,87 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         return pipedInputStream;
     }
 
-    private PipedOutputStream getPipedOutputStreamForDecryptedData() throws IOException {
+    private PipedOutputStream getPipedOutputStreamForDecryptedData(final CountDownLatch latch) throws IOException {
         PipedOutputStream decryptedOutputStream = new PipedOutputStream();
         final PipedInputStream decryptedInputStream = new PipedInputStream(decryptedOutputStream);
         new AsyncTask<Void, Void, DecryptedBodyPart>() {
             @Override
             protected DecryptedBodyPart doInBackground(Void... params) {
+                DecryptedBodyPart decryptedPart = null;
                 try {
-                    DecryptedBodyPart decryptedPart =
-                            DecryptStreamParser.parse(currentlyDecryptingPart, decryptedInputStream);
+                    decryptedPart = DecryptStreamParser.parse(currentlyDecryptingPart, decryptedInputStream);
 
-                    //TODO: wait for IOpenPgpCallback.onReturn() to get the result code and only use
-                    // decryptedPart when the decryption was successful
-
-                    return decryptedPart;
+                    latch.await();
+                } catch (InterruptedException e) {
+                    Log.e(K9.LOG_TAG, "we were interrupted while waiting for onReturn!", e);
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "Something went wrong while parsing the decrypted MIME part", e);
                     //TODO: pass error to main thread and display error message to user
                 }
-
-                return null;
+                return decryptedPart;
             }
 
             @Override
             protected void onPostExecute(DecryptedBodyPart decryptedPart) {
-                if (decryptedPart == null) {
-                    onDecryptionFailed();
-                } else {
-                    onDecryptionSuccess(decryptedPart);
-                }
+                onDecryptionConverge(decryptedPart);
             }
         }.execute();
         return decryptedOutputStream;
+    }
+
+    private void onDecryptionConverge (DecryptedBodyPart decryptedPart) {
+
+        try {
+
+            if (currentDecryptingResult == null) {
+                Log.e(K9.LOG_TAG, "internal error, we should have a result here!");
+                return;
+            }
+
+            int resultCode = currentDecryptingResult.getIntExtra(OpenPgpApi.RESULT_CODE, -1);
+            Log.d(K9.LOG_TAG, "result: " + resultCode);
+
+            switch (resultCode) {
+                case -1:
+                    Log.e(K9.LOG_TAG, "internal error: no result code!");
+                    return;
+
+                case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
+                    PendingIntent pendingIntent = currentDecryptingResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                    if (pendingIntent == null) {
+                        throw new AssertionError("Expecting PendingIntent on USER_INTERACTION_REQUIRED!");
+                    }
+                    try {
+                        getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(),
+                                MessageList.REQUEST_CODE_CRYPTO, null, 0, 0, 0);
+                    } catch (SendIntentException e) {
+                        Log.e(K9.LOG_TAG, "internal error on starting pendingintent!", e);
+                    }
+                    return;
+                }
+
+                case OpenPgpApi.RESULT_CODE_ERROR: {
+                    Log.e(K9.LOG_TAG, "error msg: " + currentDecryptingResult.getStringExtra(OpenPgpApi.RESULT_ERROR));
+                    onDecryptionFailed();
+                    return;
+                }
+
+                case OpenPgpApi.RESULT_CODE_SUCCESS: {
+                    onDecryptionSuccess(decryptedPart);
+                }
+            }
+        } finally {
+            currentDecryptingResult = null;
+        }
+
+    }
+
+    public void handleCryptoResult(int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            decryptNextPartOrStartExtractingTextAndAttachments();
+        } else {
+            onDecryptionFailed();
+        }
     }
 
     private void onDecryptionSuccess(DecryptedBodyPart decryptedPart) {
@@ -411,7 +467,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void onDecryptionFailed() {
-        //TODO: display error to user?
+        // TODO: display error to user?
         onDecryptionFinished();
     }
 
@@ -714,21 +770,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void copyMessage(MessageReference reference, String destFolderName) {
         mController.copyMessage(mAccount, mMessageReference.folderName, mMessage,
                 destFolderName, null);
-    }
-
-    /**
-     * Used by MessageOpenPgpView
-     */
-    public void setMessageWithOpenPgp(String decryptedData, OpenPgpSignatureResult signatureResult) {
-        try {
-            // TODO: get rid of PgpData?
-            PgpData data = new PgpData();
-            data.setDecryptedData(decryptedData);
-            data.setSignatureResult(signatureResult);
-            mMessageView.setMessage(mAccount, messageViewInfo);
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "displayMessageBody failed", e);
-        }
     }
 
     private void showDialog(int dialogId) {

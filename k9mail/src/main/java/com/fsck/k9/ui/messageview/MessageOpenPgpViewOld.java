@@ -329,7 +329,7 @@ public class MessageOpenPgpViewOld extends LinearLayout {
                         mMissingKeyPI = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
 
                         mProgress.setVisibility(View.GONE);
-                        mFragment.setMessageWithOpenPgp(output, sigResult);
+//                        mFragment.setMessageWithOpenPgp(output, sigResult);
                     } catch (UnsupportedEncodingException e) {
                         Log.e(K9.LOG_TAG, "UnsupportedEncodingException", e);
                     }

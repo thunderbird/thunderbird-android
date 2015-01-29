@@ -51,7 +51,6 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.MessageHeader;
-import com.fsck.k9.ui.messageview.MessageOpenPgpViewOld;
 import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
@@ -87,6 +86,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     // Used for navigating to next/previous message
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
+
+    public static final int REQUEST_CODE_CRYPTO = 1;
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
@@ -1562,12 +1563,12 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // handle OpenPGP results from PendingIntents in OpenPGP view
-        // must be handled in this main activity, because startIntentSenderForResult() does not support Fragments
-        MessageOpenPgpViewOld openPgpView = (MessageOpenPgpViewOld) findViewById(R.id.layout_decrypt_openpgp);
-        if (openPgpView != null && openPgpView.handleOnActivityResult(requestCode, resultCode, data)) {
-            return;
+        switch (requestCode) {
+            case REQUEST_CODE_CRYPTO:
+                mMessageViewFragment.handleCryptoResult(resultCode, data);
+                break;
         }
+
     }
     
     
