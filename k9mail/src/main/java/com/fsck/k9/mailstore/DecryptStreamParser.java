@@ -24,11 +24,13 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import org.openintents.openpgp.OpenPgpError;
+import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
 public class DecryptStreamParser {
-    public static DecryptedBodyPart parse(Part multipartEncrypted, InputStream inputStream) throws MessagingException, IOException {
-        DecryptedBodyPart decryptedRootPart = new DecryptedBodyPart(multipartEncrypted);
+    public static DecryptedBodyPart parse(InputStream inputStream) throws MessagingException, IOException {
+        DecryptedBodyPart decryptedRootPart = new DecryptedBodyPart();
 
         MimeConfig parserConfig  = new MimeConfig();
         parserConfig.setMaxHeaderLen(-1);
@@ -36,7 +38,7 @@ public class DecryptStreamParser {
         parserConfig.setMaxHeaderCount(-1);
 
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
-        parser.setContentHandler(new PartBuilder(multipartEncrypted, decryptedRootPart));
+        parser.setContentHandler(new PartBuilder(decryptedRootPart));
         parser.setRecurse();
 
         try {
@@ -64,12 +66,10 @@ public class DecryptStreamParser {
 
 
     private static class PartBuilder  implements ContentHandler {
-        private final Part multipartEncrypted;
         private final DecryptedBodyPart decryptedRootPart;
         private final Stack<Object> stack = new Stack<Object>();
 
-        public PartBuilder(Part multipartEncrypted, DecryptedBodyPart decryptedRootPart) throws MessagingException {
-            this.multipartEncrypted = multipartEncrypted;
+        public PartBuilder(DecryptedBodyPart decryptedRootPart) throws MessagingException {
             this.decryptedRootPart = decryptedRootPart;
         }
 
@@ -80,7 +80,7 @@ public class DecryptStreamParser {
             } else {
                 Part part = (Part) stack.peek();
 
-                Message innerMessage = new DecryptedMimeMessage(multipartEncrypted);
+                Message innerMessage = new MimeMessage();
                 part.setBody(innerMessage);
 
                 stack.push(innerMessage);
@@ -97,7 +97,7 @@ public class DecryptStreamParser {
             try {
                 Multipart multipart = (Multipart) stack.peek();
 
-                BodyPart bodyPart = new DecryptedBodyPart(multipartEncrypted);
+                BodyPart bodyPart = new MimeBodyPart();
                 multipart.addBodyPart(bodyPart);
 
                 stack.push(bodyPart);
@@ -183,18 +183,27 @@ public class DecryptStreamParser {
     }
 
     public static class DecryptedBodyPart extends MimeBodyPart {
-        private final Part multipartEncrypted;
+        private OpenPgpSignatureResult signatureResult;
+        private OpenPgpError error;
 
-        public DecryptedBodyPart(Part multipartEncrypted) throws MessagingException {
-            this.multipartEncrypted = multipartEncrypted;
+        public DecryptedBodyPart() throws MessagingException {
+            // Do nothing
         }
-    }
 
-    public static class DecryptedMimeMessage extends MimeMessage {
-        private final Part multipartEncrypted;
+        public OpenPgpSignatureResult getSignatureResult() {
+            return signatureResult;
+        }
 
-        public DecryptedMimeMessage(Part multipartEncrypted) {
-            this.multipartEncrypted = multipartEncrypted;
+        public void setSignatureResult(OpenPgpSignatureResult signatureResult) {
+            this.signatureResult = signatureResult;
+        }
+
+        public OpenPgpError getError() {
+            return error;
+        }
+
+        public void setError(OpenPgpError error) {
+            this.error = error;
         }
     }
 }

@@ -20,6 +20,7 @@ import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
+import com.fsck.k9.mailstore.DecryptStreamParser.DecryptedBodyPart;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider;
 import org.openintents.openpgp.OpenPgpError;
@@ -44,6 +45,7 @@ public class LocalMessageExtractor {
     private static final int FILENAME_PREFIX_LENGTH = FILENAME_PREFIX.length();
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
+    private static final OpenPgpSignatureResult NO_SIGNATURE_RESULT = null;
 
     private LocalMessageExtractor() {}
     /**
@@ -439,7 +441,7 @@ public class LocalMessageExtractor {
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(attachments);
 
             // TODO fill from part
-            OpenPgpSignatureResult pgpResult = null;
+            OpenPgpSignatureResult pgpResult = getSignatureResultForPart(part);
             OpenPgpError pgpError = null;
             boolean wasEncrypted = false;
             PendingIntent pendingIntent = null;
@@ -488,6 +490,15 @@ public class LocalMessageExtractor {
         return (body instanceof Multipart)
                 && MessageDecryptor.isPgpMimeEncryptedPart(part)
                 && ((Multipart) part.getBody()).getBodyParts().size() == 3;
+    }
+
+    private static OpenPgpSignatureResult getSignatureResultForPart(Part part) {
+        if (part instanceof DecryptedBodyPart) {
+            DecryptedBodyPart decryptedBodyPart = (DecryptedBodyPart) part;
+            return decryptedBodyPart.getSignatureResult();
+        }
+
+        return NO_SIGNATURE_RESULT;
     }
 
     private static List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)

@@ -94,6 +94,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private static final int LOCAL_MESSAGE_LOADER_ID = 1;
     private static final int DECODE_MESSAGE_LOADER_ID = 2;
 
+    private static final int INVALID_OPENPGP_RESULT_CODE = -1;
+
 
     public static MessageViewFragment newInstance(MessageReference reference) {
         MessageViewFragment fragment = new MessageViewFragment();
@@ -381,7 +383,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             protected DecryptedBodyPart doInBackground(Void... params) {
                 DecryptedBodyPart decryptedPart = null;
                 try {
-                    decryptedPart = DecryptStreamParser.parse(currentlyDecryptingPart, decryptedInputStream);
+                    decryptedPart = DecryptStreamParser.parse(decryptedInputStream);
 
                     latch.await();
                 } catch (InterruptedException e) {
@@ -402,57 +404,66 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void onDecryptionConverge (DecryptedBodyPart decryptedPart) {
-
         try {
-
             if (currentDecryptingResult == null) {
-                Log.e(K9.LOG_TAG, "internal error, we should have a result here!");
+                Log.e(K9.LOG_TAG, "Internal error: we should have a result here!");
                 return;
             }
 
-            int resultCode = currentDecryptingResult.getIntExtra(OpenPgpApi.RESULT_CODE, -1);
-            Log.d(K9.LOG_TAG, "result: " + resultCode);
+            int resultCode = currentDecryptingResult.getIntExtra(OpenPgpApi.RESULT_CODE, INVALID_OPENPGP_RESULT_CODE);
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "OpenPGP API decryptVerify result code: " + resultCode);
+            }
 
             switch (resultCode) {
-                case -1:
-                    Log.e(K9.LOG_TAG, "internal error: no result code!");
-                    return;
-
+                case INVALID_OPENPGP_RESULT_CODE: {
+                    Log.e(K9.LOG_TAG, "Internal error: no result code!");
+                    break;
+                }
                 case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
                     PendingIntent pendingIntent = currentDecryptingResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
                     if (pendingIntent == null) {
                         throw new AssertionError("Expecting PendingIntent on USER_INTERACTION_REQUIRED!");
                     }
+
                     try {
                         getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(),
                                 MessageList.REQUEST_CODE_CRYPTO, null, 0, 0, 0);
                     } catch (SendIntentException e) {
-                        Log.e(K9.LOG_TAG, "internal error on starting pendingintent!", e);
+                        Log.e(K9.LOG_TAG, "Internal error on starting pendingintent!", e);
                     }
-                    return;
+                    break;
                 }
-
                 case OpenPgpApi.RESULT_CODE_ERROR: {
-                    Log.e(K9.LOG_TAG, "error msg: " + currentDecryptingResult.getStringExtra(OpenPgpApi.RESULT_ERROR));
-                    onDecryptionFailed();
-                    return;
-                }
+                    OpenPgpError error = currentDecryptingResult.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
 
+                    if (K9.DEBUG) {
+                        Log.w(K9.LOG_TAG, "OpenPGP API error: " + error.getMessage());
+                    }
+
+                    onDecryptionFailed(error);
+                    break;
+                }
                 case OpenPgpApi.RESULT_CODE_SUCCESS: {
+                    OpenPgpSignatureResult signatureResult =
+                            currentDecryptingResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
+                    decryptedPart.setSignatureResult(signatureResult);
+
                     onDecryptionSuccess(decryptedPart);
+                    break;
                 }
             }
         } finally {
             currentDecryptingResult = null;
         }
-
     }
 
     public void handleCryptoResult(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             decryptNextPartOrStartExtractingTextAndAttachments();
         } else {
-            onDecryptionFailed();
+            //FIXME: don't pass null
+            onDecryptionFailed(null);
         }
     }
 
@@ -466,8 +477,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         multipart.addBodyPart(decryptedPart);
     }
 
-    private void onDecryptionFailed() {
-        // TODO: display error to user?
+    private void onDecryptionFailed(OpenPgpError error) {
+        try {
+            DecryptedBodyPart errorPart = new DecryptedBodyPart();
+            errorPart.setError(error);
+            addDecryptedPartToMessage(errorPart);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "This shouldn't happen", e);
+        }
         onDecryptionFinished();
     }
 
