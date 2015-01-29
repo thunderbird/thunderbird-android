@@ -43,7 +43,6 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -112,6 +111,7 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.mailstore.TempFileMessageBody;
+import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
 
 import org.apache.james.mime4j.codec.EncoderUtil;
@@ -3950,35 +3950,4 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    /**
-     * An {@link EditText} extension with methods that convert line endings from
-     * {@code \r\n} to {@code \n} and back again when setting and getting text.
-     *
-     */
-    public static class EolConvertingEditText extends EditText {
-
-        public EolConvertingEditText(Context context, AttributeSet attrs) {
-            super(context, attrs);
-        }
-
-        /**
-         * Return the text the EolConvertingEditText is displaying.
-         *
-         * @return A string with any line endings converted to {@code \r\n}.
-         */
-        public String getCharacters() {
-            return getText().toString().replace("\n", "\r\n");
-        }
-
-        /**
-         * Sets the string value of the EolConvertingEditText. Any line endings
-         * in the string will be converted to {@code \n}.
-         *
-         * @param text
-         */
-        public void  setCharacters(CharSequence text) {
-            setText(text.toString().replace("\r\n", "\n"));
-        }
-
-    }
 }
