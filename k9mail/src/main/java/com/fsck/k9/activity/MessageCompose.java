@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.Loader;
 import android.content.pm.ActivityInfo;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -58,13 +59,14 @@ import android.webkit.WebViewClient;
 import android.widget.AutoCompleteTextView.Validator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -250,6 +252,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private boolean mSourceMessageProcessed = false;
     private int mMaxLoaderId = 0;
+    private ImageView signIndicator;
+    private ImageView encryptIndicator;
+    private Switch signatureSwitch;
+    private Switch encryptSwitch;
 
     enum Action {
         COMPOSE,
@@ -301,10 +307,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private EolConvertingEditText mQuotedText;
     private MessageWebView mQuotedHTML;
     private InsertableHtmlContent mQuotedHtmlContent;   // Container for HTML reply as it's being built.
-    private CheckBox mCryptoSignatureCheckbox;
-    private CheckBox mEncryptCheckbox;
-    private TextView mCryptoSignatureUserId;
-    private TextView mCryptoSignatureUserIdRest;
 
     private PgpData mPgpData = null;
     private String mOpenPgpProvider;
@@ -454,7 +456,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Compose a new message as a reply to the given message. If replyAll is true the function
      * is reply all instead of simply reply.
      * @param context
-     * @param account
      * @param message
      * @param replyAll
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
@@ -765,23 +766,36 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         mOpenPgpProvider = mAccount.getOpenPgpProvider();
         if (mOpenPgpProvider != null) {
-            mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
+
+            signatureSwitch = (Switch) findViewById(R.id.signature_switch);
+            signIndicator = (ImageView) findViewById(R.id.signature_indicator);
+
+            encryptSwitch = (Switch) findViewById(R.id.encrypt_switch);
+            encryptIndicator = (ImageView) findViewById(R.id.encrypt_indicator);
+
+            refreshPgpSwitchUIs();
+
+            final OnCheckedChangeListener refreshSwitchListener = new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    refreshPgpSwitchUIs();
+                    updateMessageFormat();
+                }
+            };
+            signatureSwitch.setOnCheckedChangeListener(refreshSwitchListener);
+            encryptSwitch.setOnCheckedChangeListener(refreshSwitchListener);
+
             final OnCheckedChangeListener updateListener = new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     updateMessageFormat();
                 }
             };
-            mCryptoSignatureCheckbox.setOnCheckedChangeListener(updateListener);
-            mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
-            mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
-            mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
-            mEncryptCheckbox.setOnCheckedChangeListener(updateListener);
 
             if (mSourceMessageBody != null) {
                 // mSourceMessageBody is set to something when replying to and forwarding decrypted
                 // messages, so the sender probably wants the message to be encrypted.
-                mEncryptCheckbox.setChecked(true);
+                encryptSwitch.setChecked(true);
             }
 
             // New OpenPGP Provider API
@@ -791,15 +805,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mOpenPgpServiceConnection.bindToService();
 
             mEncryptLayout.setVisibility(View.VISIBLE);
-            mCryptoSignatureCheckbox.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CheckBox checkBox = (CheckBox) v;
-                    if (checkBox.isChecked()) {
-                        mPreventDraftSaving = true;
-                    }
-                }
-            });
 
             updateMessageFormat();
         } else {
@@ -816,10 +821,24 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mFontSizes.setViewTextSize(mQuotedText, fontSize);
         mFontSizes.setViewTextSize(mSignatureView, fontSize);
 
-
         updateMessageFormat();
 
         setTitle();
+    }
+
+    private void refreshPgpSwitchUIs() {
+        final int encryptColor = signatureSwitch.isChecked()? R.color.openpgp_green:R.color.openpgp_orange;
+        signIndicator.setColorFilter(getResources().getColor(encryptColor),PorterDuff.Mode.SRC_IN);
+
+        final int signColor = encryptSwitch.isChecked()? R.color.openpgp_green:R.color.openpgp_orange;
+        encryptIndicator.setColorFilter(getResources().getColor(signColor), PorterDuff.Mode.SRC_IN);
+
+        final int res = encryptSwitch.isChecked() ? R.drawable.status_lock_closed : R.drawable.status_lock_open;
+        encryptIndicator.setImageResource(res);
+
+        if (encryptSwitch.isChecked()) {
+            mPreventDraftSaving = false;
+        }
     }
 
     @Override
@@ -893,7 +912,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             String type = intent.getType();
             if (Intent.ACTION_SEND.equals(action)) {
-                Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                Uri stream = intent.getParcelableExtra(Intent.EXTRA_STREAM);
                 if (stream != null) {
                     addAttachment(stream, type);
                 }
@@ -975,36 +994,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mPgpData = new PgpData();
     }
 
-    /**
-     * Fill the encrypt layout with the latest data about signature key and encryption keys.
-     */
-    public void updateEncryptLayout() {
-        if (!mPgpData.hasSignatureKey()) {
-            mCryptoSignatureCheckbox.setText(R.string.btn_crypto_sign);
-            mCryptoSignatureCheckbox.setChecked(false);
-            mCryptoSignatureUserId.setVisibility(View.INVISIBLE);
-            mCryptoSignatureUserIdRest.setVisibility(View.INVISIBLE);
-        } else {
-            // if a signature key is selected, then the checkbox itself has no text
-            mCryptoSignatureCheckbox.setText("");
-            mCryptoSignatureCheckbox.setChecked(true);
-            mCryptoSignatureUserId.setVisibility(View.VISIBLE);
-            mCryptoSignatureUserIdRest.setVisibility(View.VISIBLE);
-            mCryptoSignatureUserId.setText(R.string.unknown_crypto_signature_user_id);
-            mCryptoSignatureUserIdRest.setText("");
-
-            String userId = mPgpData.getSignatureUserId();
-            if (userId != null) {
-                String chunks[] = mPgpData.getSignatureUserId().split(" <", 2);
-                mCryptoSignatureUserId.setText(chunks[0]);
-                if (chunks.length > 1) {
-                    mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
-                }
-            }
-        }
-
-        updateMessageFormat();
-    }
 
     @Override
     public void onResume() {
@@ -1127,8 +1116,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         initializeCrypto();
         updateFrom();
         updateSignature();
-        updateEncryptLayout();
-
         updateMessageFormat();
     }
 
@@ -1634,7 +1621,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void saveIfNeeded() {
         if (!mDraftNeedsSaving || mPreventDraftSaving || mPgpData.hasEncryptionKeys() ||
-                mEncryptCheckbox.isChecked() || !mAccount.hasDraftsFolder()) {
+                encryptSwitch.isChecked() || !mAccount.hasDraftsFolder()) {
             return;
         }
 
@@ -1683,10 +1670,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             // If not already encrypted but user wants to encrypt...
             if (mPgpData.getEncryptedData() == null &&
-                    (mEncryptCheckbox.isChecked() || mCryptoSignatureCheckbox.isChecked())) {
+                    (encryptSwitch.isChecked() || signatureSwitch.isChecked())) {
 
                 String[] emailsArray = null;
-                if (mEncryptCheckbox.isChecked()) {
+                if (encryptSwitch.isChecked()) {
                     // get emails as array
                     List<String> emails = new ArrayList<String>();
 
@@ -1695,14 +1682,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     }
                     emailsArray = emails.toArray(new String[emails.size()]);
                 }
-                if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
+                if (encryptSwitch.isChecked() && signatureSwitch.isChecked()) {
                     Intent intent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
                     intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
                     executeOpenPgpMethod(intent);
-                } else if (mCryptoSignatureCheckbox.isChecked()) {
+                } else if (signatureSwitch.isChecked()) {
                     Intent intent = new Intent(OpenPgpApi.ACTION_SIGN);
                     executeOpenPgpMethod(intent);
-                } else if (mEncryptCheckbox.isChecked()) {
+                } else if (encryptSwitch.isChecked()) {
                     Intent intent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
                     intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
                     executeOpenPgpMethod(intent);
@@ -2350,7 +2337,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onSend();
                 break;
             case R.id.save:
-                if (mEncryptCheckbox.isChecked()) {
+                if (encryptSwitch.isChecked()) {
                     showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
                 } else {
                     onSave();
@@ -2400,7 +2387,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onBackPressed() {
         if (mDraftNeedsSaving) {
-            if (mEncryptCheckbox.isChecked()) {
+            if (encryptSwitch.isChecked()) {
                 showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
             } else if (!mAccount.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
@@ -3847,7 +3834,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // Right now we send a text/plain-only message when the quoted text was edited, no
             // matter what the user selected for the message format.
             messageFormat = SimpleMessageFormat.TEXT;
-        } else if (mEncryptCheckbox.isChecked() || mCryptoSignatureCheckbox.isChecked()) {
+        } else if (encryptSwitch.isChecked() || signatureSwitch.isChecked()) {
             // Right now we only support PGP inline which doesn't play well with HTML. So force
             // plain text in those cases.
             messageFormat = SimpleMessageFormat.TEXT;
