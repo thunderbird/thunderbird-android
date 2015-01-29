@@ -298,7 +298,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Button mQuotedTextShow;
     private View mQuotedTextBar;
     private ImageButton mQuotedTextEdit;
-    private ImageButton mQuotedTextDelete;
     private EolConvertingEditText mQuotedText;
     private MessageWebView mQuotedHTML;
     private InsertableHtmlContent mQuotedHtmlContent;   // Container for HTML reply as it's being built.
@@ -306,10 +305,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private CheckBox mEncryptCheckbox;
     private TextView mCryptoSignatureUserId;
     private TextView mCryptoSignatureUserIdRest;
-
-    private ImageButton mAddToFromContacts;
-    private ImageButton mAddCcFromContacts;
-    private ImageButton mAddBccFromContacts;
 
     private PgpData mPgpData = null;
     private String mOpenPgpProvider;
@@ -409,8 +404,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     };
 
     private Listener mListener = new Listener();
-    private EmailAddressAdapter mAddressAdapter;
-    private Validator mAddressValidator;
 
     private FontSizes mFontSizes = K9.getFontSizes();
     private ContextThemeWrapper mThemeContext;
@@ -564,8 +557,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         mContacts = Contacts.getInstance(MessageCompose.this);
 
-        mAddressAdapter = new EmailAddressAdapter(mThemeContext);
-        mAddressValidator = new EmailAddressValidator();
+        EmailAddressAdapter mAddressAdapter = new EmailAddressAdapter(mThemeContext);
+        Validator mAddressValidator = new EmailAddressValidator();
 
         mChooseIdentityButton = (Button) findViewById(R.id.identity);
         mChooseIdentityButton.setOnClickListener(this);
@@ -581,9 +574,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mSubjectView = (EditText) findViewById(R.id.subject);
         mSubjectView.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        mAddToFromContacts = (ImageButton) findViewById(R.id.add_to);
-        mAddCcFromContacts = (ImageButton) findViewById(R.id.add_cc);
-        mAddBccFromContacts = (ImageButton) findViewById(R.id.add_bcc);
+        ImageButton mAddToFromContacts = (ImageButton) findViewById(R.id.add_to);
+        ImageButton mAddCcFromContacts = (ImageButton) findViewById(R.id.add_cc);
+        ImageButton mAddBccFromContacts = (ImageButton) findViewById(R.id.add_bcc);
+
         mCcWrapper = (LinearLayout) findViewById(R.id.cc_wrapper);
         mBccWrapper = (LinearLayout) findViewById(R.id.bcc_wrapper);
 
@@ -601,7 +595,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mQuotedTextShow = (Button)findViewById(R.id.quoted_text_show);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
         mQuotedTextEdit = (ImageButton)findViewById(R.id.quoted_text_edit);
-        mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
+        ImageButton mQuotedTextDelete = (ImageButton) findViewById(R.id.quoted_text_delete);
         mQuotedText = (EolConvertingEditText)findViewById(R.id.quoted_text);
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
 
@@ -641,21 +635,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         /* Yes, there really are people who ship versions of android without a contact picker */
         if (mContacts.hasContactPicker()) {
-            mAddToFromContacts.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    doLaunchContactPicker(CONTACT_PICKER_TO);
-                }
-            });
-            mAddCcFromContacts.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    doLaunchContactPicker(CONTACT_PICKER_CC);
-                }
-            });
-            mAddBccFromContacts.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    doLaunchContactPicker(CONTACT_PICKER_BCC);
-                }
-            });
+            mAddToFromContacts.setOnClickListener(new DoLaunchOnClickListener(CONTACT_PICKER_TO));
+            mAddCcFromContacts.setOnClickListener(new DoLaunchOnClickListener(CONTACT_PICKER_CC));
+            mAddBccFromContacts.setOnClickListener(new DoLaunchOnClickListener(CONTACT_PICKER_BCC));
         } else {
             mAddToFromContacts.setVisibility(View.GONE);
             mAddCcFromContacts.setVisibility(View.GONE);
@@ -2195,11 +2177,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (uri != null) {
             addAttachment(uri);
         }
-    }
-
-    public void doLaunchContactPicker(int resultId) {
-        mIgnoreOnPause = true;
-        startActivityForResult(mContacts.contactPickerIntent(), resultId);
     }
 
     private void onAccountChosen(Account account, Identity identity) {
@@ -3916,4 +3893,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
+    class DoLaunchOnClickListener implements OnClickListener {
+
+        private final int resultId;
+
+        DoLaunchOnClickListener(int resultId) {
+            this.resultId = resultId;
+        }
+
+        @Override
+        public void onClick(View v) {
+            mIgnoreOnPause = true;
+            startActivityForResult(mContacts.contactPickerIntent(), resultId);
+        }
+    }
 }
