@@ -161,14 +161,14 @@ public class OpenPgpHeaderView extends LinearLayout {
     }
 
     private void setUserId(OpenPgpSignatureResult signatureResult) {
-        String[] splitUserId = OpenPgpUtils.splitUserId(signatureResult.getPrimaryUserId());
-        if (splitUserId[0] != null) {
-            mResultSignatureName.setText(splitUserId[0]);
+        final OpenPgpUtils.UserInfo userInfo = OpenPgpUtils.splitUserId(signatureResult.getPrimaryUserId());
+        if (userInfo.name != null) {
+            mResultSignatureName.setText(userInfo.name);
         } else {
             mResultSignatureName.setText(R.string.openpgp_result_no_name);
         }
-        if (splitUserId[1] != null) {
-            mResultSignatureEmail.setText(splitUserId[1]);
+        if (userInfo.email != null) {
+            mResultSignatureEmail.setText(userInfo.email);
         } else {
             mResultSignatureEmail.setText(R.string.openpgp_result_no_email);
         }
