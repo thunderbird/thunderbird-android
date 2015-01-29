@@ -24,6 +24,8 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import org.openintents.openpgp.OpenPgpError;
+import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
 public class DecryptStreamParser {
@@ -181,8 +183,27 @@ public class DecryptStreamParser {
     }
 
     public static class DecryptedBodyPart extends MimeBodyPart {
+        private OpenPgpSignatureResult signatureResult;
+        private OpenPgpError error;
+
         public DecryptedBodyPart() throws MessagingException {
             // Do nothing
+        }
+
+        public OpenPgpSignatureResult getSignatureResult() {
+            return signatureResult;
+        }
+
+        public void setSignatureResult(OpenPgpSignatureResult signatureResult) {
+            this.signatureResult = signatureResult;
+        }
+
+        public OpenPgpError getError() {
+            return error;
+        }
+
+        public void setError(OpenPgpError error) {
+            this.error = error;
         }
     }
 }

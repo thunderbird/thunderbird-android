@@ -4,15 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.fsck.k9.R;
+import com.fsck.k9.crypto.MessageDecryptor;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
+import com.fsck.k9.mailstore.DecryptStreamParser.DecryptedBodyPart;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -36,6 +41,7 @@ public class LocalMessageExtractor {
     private static final int FILENAME_PREFIX_LENGTH = FILENAME_PREFIX.length();
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
+    private static final OpenPgpSignatureResult NO_SIGNATURE_RESULT = null;
 
     private LocalMessageExtractor() {}
     /**
@@ -433,13 +439,36 @@ public class LocalMessageExtractor {
                     attachments);
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(attachments);
 
-            // TODO correctly extract OpenPgpSignatureResult and add to MessageViewContainer
-            OpenPgpSignatureResult result = null;
+            OpenPgpSignatureResult result = getSignatureResultForPart(part);
             containers.add(new MessageViewContainer(viewable.html, attachmentInfos, result, false, null));
 
         }
 
         return new MessageViewInfo(containers, message);
+    }
+
+    private static OpenPgpSignatureResult getSignatureResultForPart(Part part) {
+        if (!MessageDecryptor.isPgpMimeEncryptedPart(part)) {
+            return NO_SIGNATURE_RESULT;
+        }
+
+        Body body = part.getBody();
+        if (!(body instanceof Multipart)) {
+            return NO_SIGNATURE_RESULT;
+        }
+
+        Multipart multipart = (Multipart) body;
+        if (multipart.getCount() < 3) {
+            return NO_SIGNATURE_RESULT;
+        }
+
+        BodyPart bodyPart = multipart.getBodyPart(2);
+        if (!(bodyPart instanceof DecryptedBodyPart)) {
+            return NO_SIGNATURE_RESULT;
+        }
+
+        DecryptedBodyPart decryptedBodyPart = (DecryptedBodyPart) bodyPart;
+        return decryptedBodyPart.getSignatureResult();
     }
 
     private static List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)

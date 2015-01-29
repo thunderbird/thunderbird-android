@@ -71,6 +71,8 @@ import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import com.fsck.k9.view.MessageHeader;
 import org.openintents.openpgp.IOpenPgpService;
+import org.openintents.openpgp.OpenPgpError;
+import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
@@ -433,14 +435,20 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_ERROR: {
+                    OpenPgpError error = currentDecryptingResult.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+
                     if (K9.DEBUG) {
-                        String errorMessage = currentDecryptingResult.getStringExtra(OpenPgpApi.RESULT_ERROR);
-                        Log.w(K9.LOG_TAG, "OpenPGP API error: " + errorMessage);
+                        Log.w(K9.LOG_TAG, "OpenPGP API error: " + error.getMessage());
                     }
-                    onDecryptionFailed();
+
+                    onDecryptionFailed(error);
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_SUCCESS: {
+                    OpenPgpSignatureResult signatureResult =
+                            currentDecryptingResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
+                    decryptedPart.setSignatureResult(signatureResult);
+
                     onDecryptionSuccess(decryptedPart);
                     break;
                 }
@@ -454,7 +462,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (resultCode == Activity.RESULT_OK) {
             decryptNextPartOrStartExtractingTextAndAttachments();
         } else {
-            onDecryptionFailed();
+            //FIXME: don't pass null
+            onDecryptionFailed(null);
         }
     }
 
@@ -468,8 +477,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         multipart.addBodyPart(decryptedPart);
     }
 
-    private void onDecryptionFailed() {
-        // TODO: display error to user?
+    private void onDecryptionFailed(OpenPgpError error) {
+        try {
+            DecryptedBodyPart errorPart = new DecryptedBodyPart();
+            errorPart.setError(error);
+            addDecryptedPartToMessage(errorPart);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "This shouldn't happen", e);
+        }
         onDecryptionFinished();
     }
 
