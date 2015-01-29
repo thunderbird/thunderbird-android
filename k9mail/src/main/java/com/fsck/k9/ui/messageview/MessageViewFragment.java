@@ -340,43 +340,45 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accountName);
 
         try {
-
-            PipedInputStream pipedInputStream;
-            PipedOutputStream decryptedOutputStream;
-            final CountDownLatch latch;
-
             if (MessageDecryptVerifyer.isPgpMimeSignedPart(currentlyDecrypringOrVerifyingPart)) {
-                pipedInputStream = getPipedInputStreamForSignedData();
-
-                byte[] signatureData = MessageDecryptVerifyer.getSignatureData(currentlyDecrypringOrVerifyingPart);
-                intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
-                decryptedOutputStream = null;
-                latch = null;
+                callAsyncDetachedVerify(intent);
             } else {
-                pipedInputStream = getPipedInputStreamForEncryptedData();
-                latch = new CountDownLatch(1);
-                decryptedOutputStream = getPipedOutputStreamForDecryptedData(latch);
+                callAsyncDecrypt(intent);
             }
-
-            openPgpApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream, new IOpenPgpCallback() {
-                @Override
-                public void onReturn(Intent result) {
-                    currentCryptoResult = result;
-
-                    if (latch != null) {
-                        Log.d(K9.LOG_TAG, "on result!");
-                        latch.countDown();
-                        return;
-                    }
-
-                    onCryptoConverge(null);
-                }
-            });
         } catch (IOException e) {
             Log.e(K9.LOG_TAG, "IOException", e);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "MessagingException", e);
         }
+    }
+
+    private void callAsyncDecrypt(Intent intent) throws IOException {
+        final CountDownLatch latch = new CountDownLatch(1);
+        PipedInputStream pipedInputStream = getPipedInputStreamForEncryptedData();
+        PipedOutputStream decryptedOutputStream = getPipedOutputStreamForDecryptedData(latch);
+
+        openPgpApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream, new IOpenPgpCallback() {
+            @Override
+            public void onReturn(Intent result) {
+                currentCryptoResult = result;
+                latch.countDown();
+            }
+        });
+    }
+
+    private void callAsyncDetachedVerify(Intent intent) throws IOException, MessagingException {
+        PipedInputStream pipedInputStream = getPipedInputStreamForSignedData();
+
+        byte[] signatureData = MessageDecryptVerifyer.getSignatureData(currentlyDecrypringOrVerifyingPart);
+        intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
+
+        openPgpApi.executeApiAsync(intent, pipedInputStream, null, new IOpenPgpCallback() {
+            @Override
+            public void onReturn(Intent result) {
+                currentCryptoResult = result;
+                onCryptoConverge(null);
+            }
+        });
     }
 
     private PipedInputStream getPipedInputStreamForSignedData() throws IOException {
@@ -498,6 +500,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                             currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
                     openPgpResultBodyPart.setSignatureResult(signatureResult);
 
+                    PendingIntent pendingIntent =
+                            currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                    openPgpResultBodyPart.setPendingIntent(pendingIntent);
+
                     onCryptoSuccess(openPgpResultBodyPart);
                     break;
                 }
@@ -514,7 +520,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (resultCode == Activity.RESULT_OK) {
             decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
         } else {
-            //FIXME: don't pass null
+            // FIXME: don't pass null
             onCryptoFailed(null);
         }
     }

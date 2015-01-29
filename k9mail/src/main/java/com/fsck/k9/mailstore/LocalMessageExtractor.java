@@ -42,7 +42,7 @@ public class LocalMessageExtractor {
     private static final int FILENAME_PREFIX_LENGTH = FILENAME_PREFIX.length();
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
-    private static final OpenPgpSignatureResult NO_SIGNATURE_RESULT = null;
+    private static final OpenPgpResultBodyPart NO_SIGNATURE_RESULT = null;
 
     private LocalMessageExtractor() {}
     /**
@@ -437,22 +437,22 @@ public class LocalMessageExtractor {
                     attachments);
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(attachments);
 
-            // TODO fill from part
-            OpenPgpSignatureResult pgpResult = getSignatureResultForPart(part);
-            OpenPgpError pgpError = null;
-            boolean wasEncrypted = getPartWasEncrypted(part);
-            PendingIntent pendingIntent = null;
+            OpenPgpResultBodyPart resultBodyPart = getSignatureResultForPart(part);
+            if (resultBodyPart != NO_SIGNATURE_RESULT) {
+                OpenPgpSignatureResult pgpResult = resultBodyPart.getSignatureResult();
+                OpenPgpError pgpError = null;
+                boolean wasEncrypted = resultBodyPart.wasEncrypted();
+                PendingIntent pendingIntent = resultBodyPart.getPendingIntent();
 
-            containers.add(new MessageViewContainer(
-                    viewable.html, attachmentInfos, pgpResult, pgpError, wasEncrypted, pendingIntent));
+                containers.add(new MessageViewContainer(
+                        viewable.html, attachmentInfos, pgpResult, pgpError, wasEncrypted, pendingIntent));
+            } else {
+                containers.add(new MessageViewContainer(viewable.html, attachmentInfos));
+            }
 
         }
 
         return new MessageViewInfo(containers, message);
-    }
-
-    private static boolean getPartWasEncrypted(Part part) {
-        return (part instanceof OpenPgpResultBodyPart) && ((OpenPgpResultBodyPart) part).wasEncrypted();
     }
 
     public static List<Part> getCryptPieces(Part part) throws MessagingException {
@@ -496,16 +496,16 @@ public class LocalMessageExtractor {
                 && ((Multipart) part.getBody()).getCount() == 3;
     }
 
-    private static OpenPgpSignatureResult getSignatureResultForPart(Part part) {
+    private static OpenPgpResultBodyPart getSignatureResultForPart(Part part) {
         if (part instanceof OpenPgpResultBodyPart) {
             OpenPgpResultBodyPart openPgpResultBodyPart = (OpenPgpResultBodyPart) part;
-            return openPgpResultBodyPart.getSignatureResult();
+            return openPgpResultBodyPart;
         }
         if (MessageDecryptVerifyer.isPgpMimeSignedPart(part)) {
             Multipart multi = (Multipart) part.getBody();
             if (multi.getCount() == 3 && multi.getBodyPart(2) instanceof OpenPgpResultBodyPart) {
                 OpenPgpResultBodyPart openPgpResultBodyPart = (OpenPgpResultBodyPart) multi.getBodyPart(2);
-                return openPgpResultBodyPart.getSignatureResult();
+                return openPgpResultBodyPart;
             }
         }
 
