@@ -88,6 +88,7 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
@@ -615,63 +616,28 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         });
 
-        TextWatcher watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int before, int after) {
-                /* do nothing */
-            }
-
+        TextWatcher draftNeedsChangingTextWatcher = new SimpleTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mDraftNeedsSaving = true;
             }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) { /* do nothing */ }
         };
 
-        // For watching changes to the To:, Cc:, and Bcc: fields for auto-encryption on a matching
-        // address.
-        TextWatcher recipientWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int before, int after) {
-                /* do nothing */
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mDraftNeedsSaving = true;
-            }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) {
-                /* do nothing */
-            }
-        };
-
-        TextWatcher sigwatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int before, int after) {
-                /* do nothing */
-            }
-
+        TextWatcher signTextWatcher = new SimpleTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mDraftNeedsSaving = true;
                 mSignatureChanged = true;
             }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) { /* do nothing */ }
         };
 
-        mToView.addTextChangedListener(recipientWatcher);
-        mCcView.addTextChangedListener(recipientWatcher);
-        mBccView.addTextChangedListener(recipientWatcher);
-        mSubjectView.addTextChangedListener(watcher);
+        mToView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        mCcView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        mBccView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        mSubjectView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
-        mMessageContentView.addTextChangedListener(watcher);
-        mQuotedText.addTextChangedListener(watcher);
+        mMessageContentView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        mQuotedText.addTextChangedListener(draftNeedsChangingTextWatcher);
 
         /* Yes, there really are people who ship versions of android without a contact picker */
         if (mContacts.hasContactPicker()) {
@@ -759,7 +725,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mSignatureView = lowerSignature;
             upperSignature.setVisibility(View.GONE);
         }
-        mSignatureView.addTextChangedListener(sigwatcher);
+        mSignatureView.addTextChangedListener(signTextWatcher);
 
         if (!mIdentity.getSignatureUse()) {
             mSignatureView.setVisibility(View.GONE);
