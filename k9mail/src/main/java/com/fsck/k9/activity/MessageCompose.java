@@ -43,7 +43,6 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -89,6 +88,7 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
@@ -112,6 +112,7 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.mailstore.TempFileMessageBody;
+import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
 
 import org.apache.james.mime4j.codec.EncoderUtil;
@@ -297,19 +298,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Button mQuotedTextShow;
     private View mQuotedTextBar;
     private ImageButton mQuotedTextEdit;
-    private ImageButton mQuotedTextDelete;
     private EolConvertingEditText mQuotedText;
     private MessageWebView mQuotedHTML;
     private InsertableHtmlContent mQuotedHtmlContent;   // Container for HTML reply as it's being built.
-    private View mEncryptLayout;
     private CheckBox mCryptoSignatureCheckbox;
     private CheckBox mEncryptCheckbox;
     private TextView mCryptoSignatureUserId;
     private TextView mCryptoSignatureUserIdRest;
-
-    private ImageButton mAddToFromContacts;
-    private ImageButton mAddCcFromContacts;
-    private ImageButton mAddBccFromContacts;
 
     private PgpData mPgpData = null;
     private String mOpenPgpProvider;
@@ -409,8 +404,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     };
 
     private Listener mListener = new Listener();
-    private EmailAddressAdapter mAddressAdapter;
-    private Validator mAddressValidator;
 
     private FontSizes mFontSizes = K9.getFontSizes();
     private ContextThemeWrapper mThemeContext;
@@ -521,8 +514,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // theme the whole content according to the theme (except the action bar)
             mThemeContext = new ContextThemeWrapper(this,
                     K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
-            View v = ((LayoutInflater) mThemeContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
-                    inflate(R.layout.message_compose, null);
+            View v = LayoutInflater.from(mThemeContext).inflate(R.layout.message_compose, null);
             TypedValue outValue = new TypedValue();
             // background color needs to be forced
             mThemeContext.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
@@ -565,8 +557,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         mContacts = Contacts.getInstance(MessageCompose.this);
 
-        mAddressAdapter = new EmailAddressAdapter(mThemeContext);
-        mAddressValidator = new EmailAddressValidator();
+        EmailAddressAdapter mAddressAdapter = new EmailAddressAdapter(mThemeContext);
+        Validator mAddressValidator = new EmailAddressValidator();
 
         mChooseIdentityButton = (Button) findViewById(R.id.identity);
         mChooseIdentityButton.setOnClickListener(this);
@@ -582,9 +574,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mSubjectView = (EditText) findViewById(R.id.subject);
         mSubjectView.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        mAddToFromContacts = (ImageButton) findViewById(R.id.add_to);
-        mAddCcFromContacts = (ImageButton) findViewById(R.id.add_cc);
-        mAddBccFromContacts = (ImageButton) findViewById(R.id.add_bcc);
+        ImageButton mAddToFromContacts = (ImageButton) findViewById(R.id.add_to);
+        ImageButton mAddCcFromContacts = (ImageButton) findViewById(R.id.add_cc);
+        ImageButton mAddBccFromContacts = (ImageButton) findViewById(R.id.add_bcc);
+
         mCcWrapper = (LinearLayout) findViewById(R.id.cc_wrapper);
         mBccWrapper = (LinearLayout) findViewById(R.id.bcc_wrapper);
 
@@ -602,7 +595,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mQuotedTextShow = (Button)findViewById(R.id.quoted_text_show);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
         mQuotedTextEdit = (ImageButton)findViewById(R.id.quoted_text_edit);
-        mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
+        ImageButton mQuotedTextDelete = (ImageButton) findViewById(R.id.quoted_text_delete);
         mQuotedText = (EolConvertingEditText)findViewById(R.id.quoted_text);
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
 
@@ -617,81 +610,34 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         });
 
-        TextWatcher watcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int before, int after) {
-                /* do nothing */
-            }
-
+        TextWatcher draftNeedsChangingTextWatcher = new SimpleTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mDraftNeedsSaving = true;
             }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) { /* do nothing */ }
         };
 
-        // For watching changes to the To:, Cc:, and Bcc: fields for auto-encryption on a matching
-        // address.
-        TextWatcher recipientWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int before, int after) {
-                /* do nothing */
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mDraftNeedsSaving = true;
-            }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) {
-                /* do nothing */
-            }
-        };
-
-        TextWatcher sigwatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int before, int after) {
-                /* do nothing */
-            }
-
+        TextWatcher signTextWatcher = new SimpleTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mDraftNeedsSaving = true;
                 mSignatureChanged = true;
             }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) { /* do nothing */ }
         };
 
-        mToView.addTextChangedListener(recipientWatcher);
-        mCcView.addTextChangedListener(recipientWatcher);
-        mBccView.addTextChangedListener(recipientWatcher);
-        mSubjectView.addTextChangedListener(watcher);
+        mToView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        mCcView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        mBccView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        mSubjectView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
-        mMessageContentView.addTextChangedListener(watcher);
-        mQuotedText.addTextChangedListener(watcher);
+        mMessageContentView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        mQuotedText.addTextChangedListener(draftNeedsChangingTextWatcher);
 
-        /* Yes, there really are poeple who ship versions of android without a contact picker */
+        /* Yes, there really are people who ship versions of android without a contact picker */
         if (mContacts.hasContactPicker()) {
-            mAddToFromContacts.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    doLaunchContactPicker(CONTACT_PICKER_TO);
-                }
-            });
-            mAddCcFromContacts.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    doLaunchContactPicker(CONTACT_PICKER_CC);
-                }
-            });
-            mAddBccFromContacts.setOnClickListener(new OnClickListener() {
-                @Override public void onClick(View v) {
-                    doLaunchContactPicker(CONTACT_PICKER_BCC);
-                }
-            });
+            mAddToFromContacts.setOnClickListener(new DoLaunchOnClickListener(CONTACT_PICKER_TO));
+            mAddCcFromContacts.setOnClickListener(new DoLaunchOnClickListener(CONTACT_PICKER_CC));
+            mAddBccFromContacts.setOnClickListener(new DoLaunchOnClickListener(CONTACT_PICKER_BCC));
         } else {
             mAddToFromContacts.setVisibility(View.GONE);
             mAddCcFromContacts.setVisibility(View.GONE);
@@ -761,7 +707,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mSignatureView = lowerSignature;
             upperSignature.setVisibility(View.GONE);
         }
-        mSignatureView.addTextChangedListener(sigwatcher);
+        mSignatureView.addTextChangedListener(signTextWatcher);
 
         if (!mIdentity.getSignatureUse()) {
             mSignatureView.setVisibility(View.GONE);
@@ -813,34 +759,31 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mMessageReference.flag = Flag.FORWARDED;
         }
 
-        mEncryptLayout = findViewById(R.id.layout_encrypt);
-        mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
-        mCryptoSignatureCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateMessageFormat();
-            }
-        });
-        mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
-        mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
-        mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
-        mEncryptCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateMessageFormat();
-            }
-        });
-
-        if (mSourceMessageBody != null) {
-            // mSourceMessageBody is set to something when replying to and forwarding decrypted
-            // messages, so the sender probably wants the message to be encrypted.
-            mEncryptCheckbox.setChecked(true);
-        }
+        final View mEncryptLayout = findViewById(R.id.layout_encrypt);
 
         initializeCrypto();
 
         mOpenPgpProvider = mAccount.getOpenPgpProvider();
         if (mOpenPgpProvider != null) {
+            mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
+            final OnCheckedChangeListener updateListener = new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    updateMessageFormat();
+                }
+            };
+            mCryptoSignatureCheckbox.setOnCheckedChangeListener(updateListener);
+            mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
+            mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
+            mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
+            mEncryptCheckbox.setOnCheckedChangeListener(updateListener);
+
+            if (mSourceMessageBody != null) {
+                // mSourceMessageBody is set to something when replying to and forwarding decrypted
+                // messages, so the sender probably wants the message to be encrypted.
+                mEncryptCheckbox.setChecked(true);
+            }
+
             // New OpenPGP Provider API
 
             // bind to service
@@ -2234,11 +2177,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (uri != null) {
             addAttachment(uri);
         }
-    }
-
-    public void doLaunchContactPicker(int resultId) {
-        mIgnoreOnPause = true;
-        startActivityForResult(mContacts.contactPickerIntent(), resultId);
     }
 
     private void onAccountChosen(Account account, Identity identity) {
@@ -3955,34 +3893,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    /**
-     * An {@link EditText} extension with methods that convert line endings from
-     * {@code \r\n} to {@code \n} and back again when setting and getting text.
-     *
-     */
-    public static class EolConvertingEditText extends EditText {
+    class DoLaunchOnClickListener implements OnClickListener {
 
-        public EolConvertingEditText(Context context, AttributeSet attrs) {
-            super(context, attrs);
+        private final int resultId;
+
+        DoLaunchOnClickListener(int resultId) {
+            this.resultId = resultId;
         }
 
-        /**
-         * Return the text the EolConvertingEditText is displaying.
-         *
-         * @return A string with any line endings converted to {@code \r\n}.
-         */
-        public String getCharacters() {
-            return getText().toString().replace("\n", "\r\n");
-        }
-
-        /**
-         * Sets the string value of the EolConvertingEditText. Any line endings
-         * in the string will be converted to {@code \n}.
-         *
-         * @param text
-         */
-        public void  setCharacters(CharSequence text) {
-            setText(text.toString().replace("\r\n", "\n"));
+        @Override
+        public void onClick(View v) {
+            mIgnoreOnPause = true;
+            startActivityForResult(mContacts.contactPickerIntent(), resultId);
         }
     }
 }
