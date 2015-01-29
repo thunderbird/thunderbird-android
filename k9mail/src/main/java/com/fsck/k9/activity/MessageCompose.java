@@ -301,7 +301,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private EolConvertingEditText mQuotedText;
     private MessageWebView mQuotedHTML;
     private InsertableHtmlContent mQuotedHtmlContent;   // Container for HTML reply as it's being built.
-    private View mEncryptLayout;
     private CheckBox mCryptoSignatureCheckbox;
     private CheckBox mEncryptCheckbox;
     private TextView mCryptoSignatureUserId;
@@ -521,8 +520,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // theme the whole content according to the theme (except the action bar)
             mThemeContext = new ContextThemeWrapper(this,
                     K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
-            View v = ((LayoutInflater) mThemeContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
-                    inflate(R.layout.message_compose, null);
+            View v = LayoutInflater.from(mThemeContext).inflate(R.layout.message_compose, null);
             TypedValue outValue = new TypedValue();
             // background color needs to be forced
             mThemeContext.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
@@ -675,7 +673,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mMessageContentView.addTextChangedListener(watcher);
         mQuotedText.addTextChangedListener(watcher);
 
-        /* Yes, there really are poeple who ship versions of android without a contact picker */
+        /* Yes, there really are people who ship versions of android without a contact picker */
         if (mContacts.hasContactPicker()) {
             mAddToFromContacts.setOnClickListener(new OnClickListener() {
                 @Override public void onClick(View v) {
@@ -813,34 +811,31 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mMessageReference.flag = Flag.FORWARDED;
         }
 
-        mEncryptLayout = findViewById(R.id.layout_encrypt);
-        mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
-        mCryptoSignatureCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateMessageFormat();
-            }
-        });
-        mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
-        mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
-        mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
-        mEncryptCheckbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateMessageFormat();
-            }
-        });
-
-        if (mSourceMessageBody != null) {
-            // mSourceMessageBody is set to something when replying to and forwarding decrypted
-            // messages, so the sender probably wants the message to be encrypted.
-            mEncryptCheckbox.setChecked(true);
-        }
+        final View mEncryptLayout = findViewById(R.id.layout_encrypt);
 
         initializeCrypto();
 
         mOpenPgpProvider = mAccount.getOpenPgpProvider();
         if (mOpenPgpProvider != null) {
+            mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
+            final OnCheckedChangeListener updateListener = new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    updateMessageFormat();
+                }
+            };
+            mCryptoSignatureCheckbox.setOnCheckedChangeListener(updateListener);
+            mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
+            mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
+            mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
+            mEncryptCheckbox.setOnCheckedChangeListener(updateListener);
+
+            if (mSourceMessageBody != null) {
+                // mSourceMessageBody is set to something when replying to and forwarding decrypted
+                // messages, so the sender probably wants the message to be encrypted.
+                mEncryptCheckbox.setChecked(true);
+            }
+
             // New OpenPGP Provider API
 
             // bind to service
@@ -3984,5 +3979,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         public void  setCharacters(CharSequence text) {
             setText(text.toString().replace("\r\n", "\n"));
         }
+
     }
 }
