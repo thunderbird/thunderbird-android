@@ -29,6 +29,7 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mailstore.DecryptStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.OpenPgpResultBodyPart;
@@ -66,10 +67,12 @@ class MessageCryptoHelper {
 
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
         List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
-        if (!encryptedParts.isEmpty() || !signedParts.isEmpty()) {
+        List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(message);
+        if (!encryptedParts.isEmpty() || !signedParts.isEmpty() || !inlineParts.isEmpty()) {
             partsToDecryptOrVerify = new ArrayDeque<Part>();
             partsToDecryptOrVerify.addAll(encryptedParts);
             partsToDecryptOrVerify.addAll(signedParts);
+            partsToDecryptOrVerify.addAll(inlineParts);
             decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
         } else {
             returnResultToFragment();
@@ -80,7 +83,14 @@ class MessageCryptoHelper {
         if (!partsToDecryptOrVerify.isEmpty()) {
 
             Part part = partsToDecryptOrVerify.peekFirst();
-            if (MessageDecryptVerifier.isPgpMimePart(part)) {
+            if ("text/plain".equalsIgnoreCase(part.getMimeType())) {
+                startDecryptingOrVerifyingPart(part);
+            } else if (MessageDecryptVerifier.isPgpMimePart(part)) {
+                Multipart multipart = (Multipart) part.getBody();
+                if (multipart == null) {
+                    throw new RuntimeException("Downloading missing parts before decryption isn't supported yet");
+                }
+
                 startDecryptingOrVerifyingPart(part);
             } else {
                 partsToDecryptOrVerify.removeFirst();
@@ -95,11 +105,6 @@ class MessageCryptoHelper {
     }
 
     private void startDecryptingOrVerifyingPart(Part part) {
-        Multipart multipart = (Multipart) part.getBody();
-        if (multipart == null) {
-            throw new RuntimeException("Downloading missing parts before decryption isn't supported yet");
-        }
-
         if (!isBoundToCryptoProviderService()) {
             connectToCryptoProviderService();
         } else {
@@ -156,7 +161,7 @@ class MessageCryptoHelper {
 
     private void callAsyncDecrypt(Intent intent) throws IOException {
         final CountDownLatch latch = new CountDownLatch(1);
-        PipedInputStream pipedInputStream = getPipedInputStreamForEncryptedData();
+        PipedInputStream pipedInputStream = getPipedInputStreamForEncryptedOrInlineData();
         PipedOutputStream decryptedOutputStream = getPipedOutputStreamForDecryptedData(latch);
 
         openPgpApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream, new IOpenPgpCallback() {
@@ -210,7 +215,7 @@ class MessageCryptoHelper {
         return pipedInputStream;
     }
 
-    private PipedInputStream getPipedInputStreamForEncryptedData() throws IOException {
+    private PipedInputStream getPipedInputStreamForEncryptedOrInlineData() throws IOException {
         PipedInputStream pipedInputStream = new PipedInputStream();
 
         final PipedOutputStream out = new PipedOutputStream(pipedInputStream);
@@ -218,10 +223,16 @@ class MessageCryptoHelper {
             @Override
             public void run() {
                 try {
-                    Multipart multipartEncryptedMultipart = (Multipart) currentlyDecrypringOrVerifyingPart.getBody();
-                    BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
-                    Body encryptionPayloadBody = encryptionPayloadPart.getBody();
-                    encryptionPayloadBody.writeTo(out);
+                    if (currentlyDecrypringOrVerifyingPart instanceof Multipart) {
+                        Multipart multipartEncryptedMultipart =
+                                (Multipart) currentlyDecrypringOrVerifyingPart.getBody();
+                        BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
+                        Body encryptionPayloadBody = encryptionPayloadPart.getBody();
+                        encryptionPayloadBody.writeTo(out);
+                    } else {
+                        String text = MessageExtractor.getTextFromPart(currentlyDecrypringOrVerifyingPart);
+                        out.write(text.getBytes());
+                    }
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "Exception while writing message to crypto provider", e);
                 } finally {
@@ -345,6 +356,10 @@ class MessageCryptoHelper {
     }
 
     private void addOpenPgpResultPartToMessage(OpenPgpResultBodyPart decryptedPart) {
+        if ( ! (currentlyDecrypringOrVerifyingPart.getBody() instanceof Multipart)) {
+            // TODO this is a text/plain part - care about this later!
+            return;
+        }
         Multipart multipart = (Multipart) currentlyDecrypringOrVerifyingPart.getBody();
         multipart.addBodyPart(decryptedPart);
     }

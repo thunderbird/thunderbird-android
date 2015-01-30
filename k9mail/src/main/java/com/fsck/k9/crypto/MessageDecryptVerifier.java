@@ -12,6 +12,8 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MessageExtractor;
+import org.openintents.openpgp.util.OpenPgpUtils;
 
 
 public class MessageDecryptVerifier {
@@ -20,6 +22,8 @@ public class MessageDecryptVerifier {
     private static final String PROTOCOL_PARAMETER = "protocol";
     private static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
     private static final String APPLICATION_PGP_SIGNATURE = "application/pgp-signature";
+    private static final String TEXT_PLAIN = "text/plain";
+
 
     public static List<Part> findEncryptedParts(Part startPart) {
         List<Part> encryptedParts = new ArrayList<Part>();
@@ -67,6 +71,35 @@ public class MessageDecryptVerifier {
         }
 
         return signedParts;
+    }
+
+    public static List<Part> findPgpInlineParts(Part startPart) {
+        List<Part> inlineParts = new ArrayList<Part>();
+        Stack<Part> partsToCheck = new Stack<Part>();
+        partsToCheck.push(startPart);
+
+        while (!partsToCheck.isEmpty()) {
+            Part part = partsToCheck.pop();
+            String mimeType = part.getMimeType();
+            Body body = part.getBody();
+
+            if (TEXT_PLAIN.equals(mimeType)) {
+                String text = MessageExtractor.getTextFromPart(part);
+                switch (OpenPgpUtils.parseMessage(text)) {
+                    case OpenPgpUtils.PARSE_RESULT_MESSAGE:
+                    case OpenPgpUtils.PARSE_RESULT_SIGNED_MESSAGE:
+                        inlineParts.add(part);
+                }
+            } else if (body instanceof Multipart) {
+                Multipart multipart = (Multipart) body;
+                for (int i = multipart.getCount() - 1; i >= 0; i--) {
+                    BodyPart bodyPart = multipart.getBodyPart(i);
+                    partsToCheck.push(bodyPart);
+                }
+            }
+        }
+
+        return inlineParts;
     }
 
     public static byte[] getSignatureData(Part part) throws IOException, MessagingException {

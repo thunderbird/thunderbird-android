@@ -9,13 +9,13 @@ import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
-public class OpenPgpResultBodyPart extends MimeBodyPart {
+public class OpenPgpResultAnnotation extends MimeBodyPart {
     private boolean wasEncrypted;
     private OpenPgpSignatureResult signatureResult;
     private OpenPgpError error;
     private PendingIntent pendingIntent;
 
-    public OpenPgpResultBodyPart(boolean wasEncrypted) throws MessagingException {
+    public OpenPgpResultAnnotation(boolean wasEncrypted) throws MessagingException {
         this.wasEncrypted = wasEncrypted;
     }
 
