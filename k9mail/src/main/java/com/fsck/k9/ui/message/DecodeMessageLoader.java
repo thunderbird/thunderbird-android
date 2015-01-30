@@ -9,15 +9,18 @@ import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessageExtractor;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.ui.messageview.MessageCryptoHelper.MessageCryptoAnnotations;
 
 
 public class DecodeMessageLoader extends AsyncTaskLoader<MessageViewInfo> {
     private final Message message;
     private MessageViewInfo messageViewInfo;
+    private MessageCryptoAnnotations annotations;
 
-    public DecodeMessageLoader(Context context, Message message) {
+    public DecodeMessageLoader(Context context, Message message, MessageCryptoAnnotations annotations) {
         super(context);
         this.message = message;
+        this.annotations = annotations;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class DecodeMessageLoader extends AsyncTaskLoader<MessageViewInfo> {
     @Override
     public MessageViewInfo loadInBackground() {
         try {
-            return LocalMessageExtractor.decodeMessageForView(getContext(), message);
+            return LocalMessageExtractor.decodeMessageForView(getContext(), message, annotations);
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Error while decoding message", e);
             return null;

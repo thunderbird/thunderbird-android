@@ -6,7 +6,6 @@ import android.net.Uri;
 
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.DecryptedTempFileBody;
-import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -22,6 +21,7 @@ import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.provider.K9FileProvider;
+import com.fsck.k9.ui.messageview.MessageCryptoHelper.MessageCryptoAnnotations;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
@@ -45,7 +45,7 @@ public class LocalMessageExtractor {
     private static final int FILENAME_PREFIX_LENGTH = FILENAME_PREFIX.length();
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
-    private static final OpenPgpResultBodyPart NO_SIGNATURE_RESULT = null;
+    private static final OpenPgpResultAnnotation NO_ANNOTATIONS = null;
 
     private LocalMessageExtractor() {}
     /**
@@ -424,14 +424,22 @@ public class LocalMessageExtractor {
         html.append("</td></tr>");
     }
 
-    public static MessageViewInfo decodeMessageForView(Context context, Message message) throws MessagingException {
+    public static MessageViewInfo decodeMessageForView(Context context,
+            Message message, MessageCryptoAnnotations annotations) throws MessagingException {
 
         // 1. break mime structure on encryption/signature boundaries
-        List<Part> parts = getCryptPieces(message);
+        List<Part> parts = getCryptPieces(message, annotations);
 
         // 2. extract viewables/attachments of parts
         ArrayList<MessageViewContainer> containers = new ArrayList<MessageViewContainer>();
         for (Part part : parts) {
+            OpenPgpResultAnnotation pgpAnnotation = annotations.get(part);
+
+            // TODO properly handle decrypted data part - this just replaces the part
+            if (pgpAnnotation != NO_ANNOTATIONS && pgpAnnotation.hasOutputData()) {
+                part = pgpAnnotation.getOutputData();
+            }
+
             ArrayList<Part> attachments = new ArrayList<Part>();
             List<Viewable> viewables = MessageExtractor.getViewables(part, attachments);
 
@@ -440,12 +448,11 @@ public class LocalMessageExtractor {
                     attachments);
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
 
-            OpenPgpResultBodyPart resultBodyPart = getSignatureResultForPart(part);
-            if (resultBodyPart != NO_SIGNATURE_RESULT) {
-                OpenPgpSignatureResult pgpResult = resultBodyPart.getSignatureResult();
-                OpenPgpError pgpError = resultBodyPart.getError();
-                boolean wasEncrypted = resultBodyPart.wasEncrypted();
-                PendingIntent pendingIntent = resultBodyPart.getPendingIntent();
+            if (pgpAnnotation != NO_ANNOTATIONS) {
+                OpenPgpSignatureResult pgpResult = pgpAnnotation.getSignatureResult();
+                OpenPgpError pgpError = pgpAnnotation.getError();
+                boolean wasEncrypted = pgpAnnotation.wasEncrypted();
+                PendingIntent pendingIntent = pgpAnnotation.getPendingIntent();
 
                 containers.add(new MessageViewContainer(
                         viewable.html, attachmentInfos, pgpResult, pgpError, wasEncrypted, pendingIntent));
@@ -458,7 +465,7 @@ public class LocalMessageExtractor {
         return new MessageViewInfo(containers, message);
     }
 
-    public static List<Part> getCryptPieces(Part part) throws MessagingException {
+    public static List<Part> getCryptPieces(Message message, MessageCryptoAnnotations annotations) throws MessagingException {
 
         // TODO make sure this method does what it is supposed to
         /* This method returns a list of mime parts which are to be parsed into
@@ -470,14 +477,15 @@ public class LocalMessageExtractor {
 
 
         ArrayList<Part> parts = new ArrayList<Part>();
-        if (!getCryptSubPieces(part, parts)) {
-            parts.add(part);
+        if (!getCryptSubPieces(message, parts, annotations)) {
+            parts.add(message);
         }
 
         return parts;
     }
 
-    public static boolean getCryptSubPieces(Part part, ArrayList<Part> parts) throws MessagingException {
+    public static boolean getCryptSubPieces(Part part, ArrayList<Part> parts,
+            MessageCryptoAnnotations annotations) throws MessagingException {
 
         Body body = part.getBody();
         if (body instanceof Multipart) {
@@ -485,44 +493,18 @@ public class LocalMessageExtractor {
             if ("multipart/mixed".equals(part.getMimeType())) {
                 boolean foundSome = false;
                 for (BodyPart sub : multi.getBodyParts()) {
-                    foundSome |= getCryptSubPieces(sub, parts);
+                    foundSome |= getCryptSubPieces(sub, parts, annotations);
                 }
                 if (!foundSome) {
                     parts.add(part);
                     return true;
                 }
-            } else if (MessageDecryptVerifier.isPgpMimeSignedPart(part)) {
+            } else if (annotations.has(part)) {
                 parts.add(part);
-                return true;
-            } else if (isPgpMimeDecryptedPart(part)) {
-                parts.add(multi.getBodyPart(2));
                 return true;
             }
         }
         return false;
-    }
-
-    public static boolean isPgpMimeDecryptedPart (Part part) {
-        Body body = part.getBody();
-        return (body instanceof Multipart)
-                && MessageDecryptVerifier.isPgpMimeEncryptedPart(part)
-                && ((Multipart) part.getBody()).getCount() == 3;
-    }
-
-    private static OpenPgpResultBodyPart getSignatureResultForPart(Part part) {
-        if (part instanceof OpenPgpResultBodyPart) {
-            OpenPgpResultBodyPart openPgpResultBodyPart = (OpenPgpResultBodyPart) part;
-            return openPgpResultBodyPart;
-        }
-        if (MessageDecryptVerifier.isPgpMimeSignedPart(part)) {
-            Multipart multi = (Multipart) part.getBody();
-            if (multi.getCount() == 3 && multi.getBodyPart(2) instanceof OpenPgpResultBodyPart) {
-                OpenPgpResultBodyPart openPgpResultBodyPart = (OpenPgpResultBodyPart) multi.getBodyPart(2);
-                return openPgpResultBodyPart;
-            }
-        }
-
-        return NO_SIGNATURE_RESULT;
     }
 
     private static List<AttachmentViewInfo> extractAttachmentInfos(Context context, List<Part> attachmentParts)

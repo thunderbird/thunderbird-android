@@ -83,7 +83,7 @@ public class MessageDecryptVerifier {
             String mimeType = part.getMimeType();
             Body body = part.getBody();
 
-            if (TEXT_PLAIN.equals(mimeType)) {
+            if (TEXT_PLAIN.equalsIgnoreCase(mimeType)) {
                 String text = MessageExtractor.getTextFromPart(part);
                 switch (OpenPgpUtils.parseMessage(text)) {
                     case OpenPgpUtils.PARSE_RESULT_MESSAGE:
@@ -118,6 +118,12 @@ public class MessageDecryptVerifier {
         }
 
         return null;
+    }
+
+    // Note: This method should ONLY be used to differentiate parts
+    // already filtered with the methods above!
+    public static boolean isPgpInlinePart(Part part) {
+        return TEXT_PLAIN.equals(part.getMimeType());
     }
 
     public static boolean isPgpMimePart(Part part) {

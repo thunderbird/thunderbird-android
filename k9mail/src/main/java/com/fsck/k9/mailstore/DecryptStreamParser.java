@@ -35,15 +35,15 @@ import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.util.MimeUtil;
 
-
+// TODO rename this class? this class doesn't really bear any 'decrypted' semantics anymore...
 public class DecryptStreamParser {
 
     private static final String DECRYPTED_CACHE_DIRECTORY = "decrypted";
 
-    public static OpenPgpResultBodyPart parse(Context context, InputStream inputStream) throws MessagingException, IOException {
+    public static MimeBodyPart parse(Context context, InputStream inputStream) throws MessagingException, IOException {
         File decryptedTempDirectory = getDecryptedTempDirectory(context);
 
-        OpenPgpResultBodyPart decryptedRootPart = new OpenPgpResultBodyPart(true);
+        MimeBodyPart decryptedRootPart = new MimeBodyPart();
 
         MimeConfig parserConfig  = new MimeConfig();
         parserConfig.setMaxHeaderLen(-1);
@@ -111,10 +111,10 @@ public class DecryptStreamParser {
 
     private static class PartBuilder implements ContentHandler {
         private final File decryptedTempDirectory;
-        private final OpenPgpResultBodyPart decryptedRootPart;
+        private final MimeBodyPart decryptedRootPart;
         private final Stack<Object> stack = new Stack<Object>();
 
-        public PartBuilder(File decryptedTempDirectory, OpenPgpResultBodyPart decryptedRootPart)
+        public PartBuilder(File decryptedTempDirectory, MimeBodyPart decryptedRootPart)
                 throws MessagingException {
             this.decryptedTempDirectory = decryptedTempDirectory;
             this.decryptedRootPart = decryptedRootPart;

@@ -48,6 +48,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
+import com.fsck.k9.ui.messageview.MessageCryptoHelper.MessageCryptoAnnotations;
 import com.fsck.k9.view.MessageHeader;
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
@@ -80,6 +81,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private Account mAccount;
     private MessageReference mMessageReference;
     private LocalMessage mMessage;
+    private MessageCryptoAnnotations messageAnnotations;
     private MessagingController mController;
     private LayoutInflater mLayoutInflater;
     private Handler handler = new Handler();
@@ -258,7 +260,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         Toast.makeText(mContext, errorMessage, Toast.LENGTH_LONG).show();
     }
 
-    void startExtractingTextAndAttachments(LocalMessage message) {
+    void startExtractingTextAndAttachments(MessageCryptoAnnotations annotations) {
+        this.messageAnnotations = annotations;
         getLoaderManager().initLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
     }
 
@@ -742,7 +745,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         @Override
         public Loader<MessageViewInfo> onCreateLoader(int id, Bundle args) {
             setProgress(true);
-            return new DecodeMessageLoader(mContext, mMessage);
+            return new DecodeMessageLoader(mContext, mMessage, messageAnnotations);
         }
 
         @Override

@@ -3,21 +3,17 @@ package com.fsck.k9.mailstore;
 
 import android.app.PendingIntent;
 
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
-public class OpenPgpResultAnnotation extends MimeBodyPart {
+public class OpenPgpResultAnnotation {
     private boolean wasEncrypted;
     private OpenPgpSignatureResult signatureResult;
     private OpenPgpError error;
     private PendingIntent pendingIntent;
-
-    public OpenPgpResultAnnotation(boolean wasEncrypted) throws MessagingException {
-        this.wasEncrypted = wasEncrypted;
-    }
+    private MimeBodyPart outputData;
 
     public OpenPgpSignatureResult getSignatureResult() {
         return signatureResult;
@@ -43,7 +39,24 @@ public class OpenPgpResultAnnotation extends MimeBodyPart {
         this.error = error;
     }
 
+    public boolean hasOutputData() {
+        return outputData != null;
+    }
+
+    public void setOutputData(MimeBodyPart outputData) {
+        this.outputData = outputData;
+    }
+
+    public MimeBodyPart getOutputData() {
+        return outputData;
+    }
+
     public boolean wasEncrypted() {
         return wasEncrypted;
     }
+
+    public void setWasEncrypted(boolean wasEncrypted) {
+        this.wasEncrypted = wasEncrypted;
+    }
+
 }
