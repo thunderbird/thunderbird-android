@@ -250,6 +250,4 @@
 
     </LinearLayout>
 
-    <include layout="@layout/message_view_openpgp_layout_old"/>
-
 </com.fsck.k9.view.MessageHeader>

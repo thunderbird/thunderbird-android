@@ -440,7 +440,7 @@ public class LocalMessageExtractor {
             OpenPgpResultBodyPart resultBodyPart = getSignatureResultForPart(part);
             if (resultBodyPart != NO_SIGNATURE_RESULT) {
                 OpenPgpSignatureResult pgpResult = resultBodyPart.getSignatureResult();
-                OpenPgpError pgpError = null;
+                OpenPgpError pgpError = resultBodyPart.getError();
                 boolean wasEncrypted = resultBodyPart.wasEncrypted();
                 PendingIntent pendingIntent = resultBodyPart.getPendingIntent();
 
@@ -456,6 +456,16 @@ public class LocalMessageExtractor {
     }
 
     public static List<Part> getCryptPieces(Part part) throws MessagingException {
+
+        // TODO make sure this method does what it is supposed to
+        /* This method returns a list of mime parts which are to be parsed into
+         * individual MessageViewContainers for display, which each have their
+         * own crypto header. This means parts should be individual for each
+         * multipart/encrypted, multipart/signed, or a multipart/* which does
+         * not contain children of the former types.
+         */
+
+
         ArrayList<Part> parts = new ArrayList<Part>();
         if (!getCryptSubPieces(part, parts)) {
             parts.add(part);
