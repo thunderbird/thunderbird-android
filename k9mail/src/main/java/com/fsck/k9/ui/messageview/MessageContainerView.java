@@ -56,6 +56,7 @@ import com.fsck.k9.provider.AttachmentProvider.AttachmentProviderColumns;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
 import org.apache.commons.io.IOUtils;
+import org.openintents.openpgp.OpenPgpError;
 
 
 public class MessageContainerView extends LinearLayout implements OnClickListener,
@@ -446,7 +447,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         resetView();
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
-        mText = messageViewContainer.text;
+        OpenPgpError error = messageViewContainer.pgpError;
+        if (error != null) {
+            // TODO make a nice view for this
+            mText = error.getMessage();
+        } else {
+            mText = messageViewContainer.text;
+        }
 
         mHasAttachments = !messageViewContainer.attachments.isEmpty();
         if (mHasAttachments) {

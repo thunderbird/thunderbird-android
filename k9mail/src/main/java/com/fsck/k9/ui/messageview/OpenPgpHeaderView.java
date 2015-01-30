@@ -72,6 +72,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                 }
             });
         } else {
+            mResultSignatureButton.setVisibility(View.GONE);
             mResultSignatureButton.setOnClickListener(null);
         }
 
@@ -93,7 +94,6 @@ public class OpenPgpHeaderView extends LinearLayout {
                     setStatusImage(mContext, mResultSignatureIcon, mResultSignatureText, STATE_INVALID);
                     mResultSignatureText.setText(R.string.openpgp_result_invalid_signature);
 
-                    mResultSignatureButton.setVisibility(View.GONE);
                     mResultSignatureLayout.setVisibility(View.GONE);
                     break;
                 }
@@ -102,8 +102,10 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_certified);
 
                     setUserId(signatureResult);
-                    mResultSignatureButton.setText(R.string.openpgp_result_action_show);
-                    mResultSignatureButton.setVisibility(View.VISIBLE);
+                    if (pendingIntent != null) {
+                        mResultSignatureButton.setVisibility(View.VISIBLE);
+                        mResultSignatureButton.setText(R.string.openpgp_result_action_show);
+                    }
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
@@ -113,8 +115,10 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_missing_key);
 
                     setUserId(signatureResult);
-                    mResultSignatureButton.setText(R.string.openpgp_result_action_lookup);
-                    mResultSignatureButton.setVisibility(View.VISIBLE);
+                    if (pendingIntent != null) {
+                        mResultSignatureButton.setVisibility(View.VISIBLE);
+                        mResultSignatureButton.setText(R.string.openpgp_result_action_lookup);
+                    }
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
@@ -124,8 +128,10 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
 
                     setUserId(signatureResult);
-                    mResultSignatureButton.setText(R.string.openpgp_result_action_show);
-                    mResultSignatureButton.setVisibility(View.VISIBLE);
+                    if (pendingIntent != null) {
+                        mResultSignatureButton.setVisibility(View.VISIBLE);
+                        mResultSignatureButton.setText(R.string.openpgp_result_action_show);
+                    }
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
@@ -135,8 +141,10 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_expired_key);
 
                     setUserId(signatureResult);
-                    mResultSignatureButton.setText(R.string.openpgp_result_action_show);
-                    mResultSignatureButton.setVisibility(View.VISIBLE);
+                    if (pendingIntent != null) {
+                        mResultSignatureButton.setVisibility(View.VISIBLE);
+                        mResultSignatureButton.setText(R.string.openpgp_result_action_show);
+                    }
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
@@ -146,8 +154,10 @@ public class OpenPgpHeaderView extends LinearLayout {
                     mResultSignatureText.setText(R.string.openpgp_result_signature_revoked_key);
 
                     setUserId(signatureResult);
-                    mResultSignatureButton.setText(R.string.openpgp_result_action_show);
-                    mResultSignatureButton.setVisibility(View.VISIBLE);
+                    if (pendingIntent != null) {
+                        mResultSignatureButton.setVisibility(View.VISIBLE);
+                        mResultSignatureButton.setText(R.string.openpgp_result_action_show);
+                    }
                     mResultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;

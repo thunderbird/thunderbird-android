@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Not Encrypted (set in-code)"
+                android:text="Not Encrypted"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp" />
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Signed by (set in-code)"
+                android:text="Not signed"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp" />
@@ -95,14 +95,14 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Alice (set in-code)" />
+                            android:text="Alice" />
 
                         <TextView
                             android:id="@+id/result_signature_email"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="alice@example.com (set in-code)"
+                            android:text="alice@example.com"
                             android:gravity="center_vertical" />
 
                     </LinearLayout>
