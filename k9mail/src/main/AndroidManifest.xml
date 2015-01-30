@@ -415,5 +415,17 @@
             android:authorities="com.fsck.k9.provider.email"
             android:exported="false"/>
 
+        <provider
+            android:name=".provider.K9FileProvider"
+            android:authorities="com.fsck.k9.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/allowed_file_provider_paths" />
+
+        </provider>
+
     </application>
 </manifest>

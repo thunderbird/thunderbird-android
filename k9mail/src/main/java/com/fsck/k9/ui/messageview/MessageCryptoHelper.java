@@ -11,6 +11,7 @@ import java.util.concurrent.CountDownLatch;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.AsyncTask;
@@ -40,10 +41,11 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
-public class MessageCryptoHelper {
+class MessageCryptoHelper {
 
-    private MessageViewFragment fragment;
-    private Account account;
+    private final Context context;
+    private final MessageViewFragment fragment;
+    private final Account account;
     private LocalMessage message;
 
     private Deque<Part> partsToDecryptOrVerify;
@@ -53,12 +55,13 @@ public class MessageCryptoHelper {
 
     private static final int INVALID_OPENPGP_RESULT_CODE = -1;
 
-    MessageCryptoHelper(MessageViewFragment fragment, Account account) {
+    public MessageCryptoHelper(Context context, MessageViewFragment fragment, Account account) {
+        this.context = context;
         this.fragment = fragment;
         this.account = account;
     }
 
-    void decryptOrVerifyMessagePartsIfNecessary(LocalMessage message) {
+    public void decryptOrVerifyMessagePartsIfNecessary(LocalMessage message) {
         this.message = message;
 
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
@@ -242,7 +245,7 @@ public class MessageCryptoHelper {
             protected OpenPgpResultBodyPart doInBackground(Void... params) {
                 OpenPgpResultBodyPart decryptedPart = null;
                 try {
-                    decryptedPart = DecryptStreamParser.parse(decryptedInputStream);
+                    decryptedPart = DecryptStreamParser.parse(context, decryptedInputStream);
 
                     latch.await();
                 } catch (InterruptedException e) {

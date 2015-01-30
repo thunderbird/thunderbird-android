@@ -2,11 +2,17 @@ package com.fsck.k9.mailstore;
 
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Stack;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.fsck.k9.K9;
+import com.fsck.k9.crypto.DecryptedTempFileBody;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -19,16 +25,24 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
+import org.apache.james.mime4j.codec.Base64InputStream;
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.io.EOLConvertingInputStream;
 import org.apache.james.mime4j.parser.ContentHandler;
 import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import org.apache.james.mime4j.util.MimeUtil;
 
 
 public class DecryptStreamParser {
-    public static OpenPgpResultBodyPart parse(InputStream inputStream) throws MessagingException, IOException {
+
+    private static final String DECRYPTED_CACHE_DIRECTORY = "decrypted";
+
+    public static OpenPgpResultBodyPart parse(Context context, InputStream inputStream) throws MessagingException, IOException {
+        File decryptedTempDirectory = getDecryptedTempDirectory(context);
+
         OpenPgpResultBodyPart decryptedRootPart = new OpenPgpResultBodyPart(true);
 
         MimeConfig parserConfig  = new MimeConfig();
@@ -37,7 +51,7 @@ public class DecryptStreamParser {
         parserConfig.setMaxHeaderCount(-1);
 
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
-        parser.setContentHandler(new PartBuilder(decryptedRootPart));
+        parser.setContentHandler(new PartBuilder(decryptedTempDirectory, decryptedRootPart));
         parser.setRecurse();
 
         inputStream = new BufferedInputStream(inputStream, 4096);
@@ -51,26 +65,58 @@ public class DecryptStreamParser {
         return decryptedRootPart;
     }
 
-    private static Body createBody(InputStream inputStream, String transferEncoding) throws IOException {
-        //TODO: only read parts we're going to display into memory
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    private static Body createBody(InputStream inputStream, String transferEncoding, File decryptedTempDirectory)
+            throws IOException {
+        DecryptedTempFileBody body = new DecryptedTempFileBody(transferEncoding, decryptedTempDirectory);
+        OutputStream outputStream = body.getOutputStream();
         try {
-            IOUtils.copy(inputStream, byteArrayOutputStream);
+            InputStream decodingInputStream;
+            boolean closeStream;
+            if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(transferEncoding)) {
+                decodingInputStream = new QuotedPrintableInputStream(inputStream, false);
+                closeStream = true;
+            } else if (MimeUtil.ENC_BASE64.equals(transferEncoding)) {
+                decodingInputStream = new Base64InputStream(inputStream);
+                closeStream = true;
+            } else {
+                decodingInputStream = inputStream;
+                closeStream = false;
+            }
+
+            try {
+                IOUtils.copy(decodingInputStream, outputStream);
+            } finally {
+                if (closeStream) {
+                    decodingInputStream.close();
+                }
+            }
         } finally {
-            byteArrayOutputStream.close();
+            outputStream.close();
         }
 
-        byte[] data = byteArrayOutputStream.toByteArray();
+        return body;
+    }
 
-        return new BinaryMemoryBody(data, transferEncoding);
+    private static File getDecryptedTempDirectory(Context context) {
+        File directory = new File(context.getCacheDir(), DECRYPTED_CACHE_DIRECTORY);
+        if (!directory.exists()) {
+            if (!directory.mkdir()) {
+                Log.e(K9.LOG_TAG, "Error creating directory: " + directory.getAbsolutePath());
+            }
+        }
+
+        return directory;
     }
 
 
-    private static class PartBuilder  implements ContentHandler {
+    private static class PartBuilder implements ContentHandler {
+        private final File decryptedTempDirectory;
         private final OpenPgpResultBodyPart decryptedRootPart;
         private final Stack<Object> stack = new Stack<Object>();
 
-        public PartBuilder(OpenPgpResultBodyPart decryptedRootPart) throws MessagingException {
+        public PartBuilder(File decryptedTempDirectory, OpenPgpResultBodyPart decryptedRootPart)
+                throws MessagingException {
+            this.decryptedTempDirectory = decryptedTempDirectory;
             this.decryptedRootPart = decryptedRootPart;
         }
 
@@ -172,7 +218,7 @@ public class DecryptStreamParser {
             Part part = (Part) stack.peek();
 
             String transferEncoding = bd.getTransferEncoding();
-            Body body = createBody(inputStream, transferEncoding);
+            Body body = createBody(inputStream, transferEncoding, decryptedTempDirectory);
 
             part.setBody(body);
         }
@@ -182,5 +228,4 @@ public class DecryptStreamParser {
             throw new IllegalStateException("Not implemented");
         }
     }
-
 }

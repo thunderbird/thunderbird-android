@@ -195,7 +195,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         Context appContext = getActivity().getApplicationContext();
         mAccount = Preferences.getPreferences(appContext).getAccount(mMessageReference.accountUuid);
-        messageCryptoHelper = new MessageCryptoHelper(this, mAccount);
+        messageCryptoHelper = new MessageCryptoHelper(mContext, this, mAccount);
 
         if (resetPgpData) {
             // start with fresh, empty PGP data

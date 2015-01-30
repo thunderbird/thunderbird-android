@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.fsck.k9.R;
+import com.fsck.k9.crypto.DecryptedTempFileBody;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -20,9 +21,11 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider;
+import com.fsck.k9.provider.K9FileProvider;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -435,7 +438,7 @@ public class LocalMessageExtractor {
             // 3. parse viewables into html string
             ViewableContainer viewable = LocalMessageExtractor.extractTextAndAttachments(context, viewables,
                     attachments);
-            List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(attachments);
+            List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
 
             OpenPgpResultBodyPart resultBodyPart = getSignatureResultForPart(part);
             if (resultBodyPart != NO_SIGNATURE_RESULT) {
@@ -522,18 +525,18 @@ public class LocalMessageExtractor {
         return NO_SIGNATURE_RESULT;
     }
 
-    private static List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)
+    private static List<AttachmentViewInfo> extractAttachmentInfos(Context context, List<Part> attachmentParts)
             throws MessagingException {
 
         List<AttachmentViewInfo> attachments = new ArrayList<AttachmentViewInfo>();
         for (Part part : attachmentParts) {
-            attachments.add(extractAttachmentInfo(part));
+            attachments.add(extractAttachmentInfo(context, part));
         }
 
         return attachments;
     }
 
-    private static AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
+    private static AttachmentViewInfo extractAttachmentInfo(Context context, Part part) throws MessagingException {
         if (part instanceof LocalPart) {
             LocalPart localPart = (LocalPart) part;
             String accountUuid = localPart.getAccountUuid();
@@ -546,8 +549,15 @@ public class LocalMessageExtractor {
 
             return new AttachmentViewInfo(mimeType, displayName, size, uri, firstClassAttachment, part);
         } else {
-            //FIXME: The content provider URI thing needs to be reworked
-            return extractAttachmentInfo(part, null);
+            Body body = part.getBody();
+            if (body instanceof DecryptedTempFileBody) {
+                DecryptedTempFileBody decryptedTempFileBody = (DecryptedTempFileBody) body;
+                File file = decryptedTempFileBody.getFile();
+                Uri uri = K9FileProvider.getUriForFile(context, file, part.getMimeType());
+                return extractAttachmentInfo(part, uri);
+            } else {
+                throw new RuntimeException("Not supported");
+            }
         }
     }
 
