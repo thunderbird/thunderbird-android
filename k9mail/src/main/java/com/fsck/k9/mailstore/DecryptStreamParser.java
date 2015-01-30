@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore;
 
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +39,8 @@ public class DecryptStreamParser {
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
         parser.setContentHandler(new PartBuilder(decryptedRootPart));
         parser.setRecurse();
+
+        inputStream = new BufferedInputStream(inputStream, 4096);
 
         try {
             parser.parse(new EOLConvertingInputStream(inputStream));
