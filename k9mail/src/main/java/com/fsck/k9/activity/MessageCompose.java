@@ -979,6 +979,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Fill the encrypt layout with the latest data about signature key and encryption keys.
      */
     public void updateEncryptLayout() {
+        if (!isCryptoProviderEnabled()) {
+            return;
+        }
+
         if (!mPgpData.hasSignatureKey()) {
             mCryptoSignatureCheckbox.setText(R.string.btn_crypto_sign);
             mCryptoSignatureCheckbox.setChecked(false);
@@ -1634,7 +1638,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void saveIfNeeded() {
         if (!mDraftNeedsSaving || mPreventDraftSaving || mPgpData.hasEncryptionKeys() ||
-                mEncryptCheckbox.isChecked() || !mAccount.hasDraftsFolder()) {
+                shouldEncrypt() || !mAccount.hasDraftsFolder()) {
             return;
         }
 
@@ -2350,7 +2354,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onSend();
                 break;
             case R.id.save:
-                if (mEncryptCheckbox.isChecked()) {
+                if (shouldEncrypt()) {
                     showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
                 } else {
                     onSave();
@@ -2400,7 +2404,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onBackPressed() {
         if (mDraftNeedsSaving) {
-            if (mEncryptCheckbox.isChecked()) {
+            if (shouldEncrypt()) {
                 showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
             } else if (!mAccount.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
@@ -3847,7 +3851,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // Right now we send a text/plain-only message when the quoted text was edited, no
             // matter what the user selected for the message format.
             messageFormat = SimpleMessageFormat.TEXT;
-        } else if (mEncryptCheckbox.isChecked() || mCryptoSignatureCheckbox.isChecked()) {
+        } else if (shouldEncrypt() || shouldSign()) {
             // Right now we only support PGP inline which doesn't play well with HTML. So force
             // plain text in those cases.
             messageFormat = SimpleMessageFormat.TEXT;
@@ -3891,6 +3895,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } catch (Exception e) {
             return "";
         }
+    }
+
+    private boolean isCryptoProviderEnabled() {
+        return mOpenPgpProvider != null;
+    }
+
+    private boolean shouldEncrypt() {
+        return isCryptoProviderEnabled() && mEncryptCheckbox.isChecked();
+    }
+
+    private boolean shouldSign() {
+        return isCryptoProviderEnabled() && mCryptoSignatureCheckbox.isChecked();
     }
 
     class DoLaunchOnClickListener implements OnClickListener {
