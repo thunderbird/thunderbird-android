@@ -536,14 +536,19 @@ public class LocalMessageExtractor {
                 DecryptedTempFileBody decryptedTempFileBody = (DecryptedTempFileBody) body;
                 File file = decryptedTempFileBody.getFile();
                 Uri uri = K9FileProvider.getUriForFile(context, file, part.getMimeType());
-                return extractAttachmentInfo(part, uri);
+                long size = file.length();
+                return extractAttachmentInfo(part, uri, size);
             } else {
                 throw new RuntimeException("Not supported");
             }
         }
     }
 
-    public static AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri) throws MessagingException {
+    public static AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
+        return extractAttachmentInfo(part, Uri.EMPTY, AttachmentViewInfo.UNKNOWN_SIZE);
+    }
+
+    private static AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size) throws MessagingException {
         boolean firstClassAttachment = true;
 
         String mimeType = part.getMimeType();
@@ -570,14 +575,24 @@ public class LocalMessageExtractor {
             firstClassAttachment = false;
         }
 
-        long size = AttachmentViewInfo.UNKNOWN_SIZE;
+        long attachmentSize = extractAttachmentSize(contentDisposition, size);
+
+        return new AttachmentViewInfo(mimeType, name, attachmentSize, uri, firstClassAttachment, part);
+    }
+
+    private static long extractAttachmentSize(String contentDisposition, long size) {
+        if (size != AttachmentViewInfo.UNKNOWN_SIZE) {
+            return size;
+        }
+
+        long result = AttachmentViewInfo.UNKNOWN_SIZE;
         String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
         if (sizeParam != null) {
             try {
-                size = Integer.parseInt(sizeParam);
+                result = Integer.parseInt(sizeParam);
             } catch (NumberFormatException e) { /* ignore */ }
         }
 
-        return new AttachmentViewInfo(mimeType, name, size, uri, firstClassAttachment, part);
+        return result;
     }
 }

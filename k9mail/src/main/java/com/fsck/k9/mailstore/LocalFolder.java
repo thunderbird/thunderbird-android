@@ -26,7 +26,6 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -66,7 +65,6 @@ import org.apache.james.mime4j.util.MimeUtil;
 public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
-    private static final Uri PLACEHOLDER_URI = Uri.EMPTY;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     private static final long INVALID_MESSAGE_PART_ID = -1;
 
@@ -1405,7 +1403,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void missingPartToContentValues(ContentValues cv, Part part) throws MessagingException {
-        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part, PLACEHOLDER_URI);
+        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part);
         cv.put("display_name", attachment.displayName);
         cv.put("data_location", DataLocation.MISSING);
         cv.put("decoded_body_size", attachment.size);
@@ -1413,7 +1411,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private File leafPartToContentValues(ContentValues cv, Part part, Body body)
             throws MessagingException, IOException {
-        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part, PLACEHOLDER_URI);
+        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part);
         cv.put("display_name", attachment.displayName);
 
         String encoding = getTransferEncoding(part);
