@@ -60,8 +60,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     private void displayAttachmentInformation() {
-        TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
-        TextView attachmentInfo = (TextView) findViewById(R.id.attachment_info);
         viewButton = (Button) findViewById(R.id.view);
         downloadButton = (Button) findViewById(R.id.download);
 
@@ -74,10 +72,22 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         downloadButton.setOnClickListener(this);
         downloadButton.setOnLongClickListener(this);
 
+        TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
         attachmentName.setText(attachment.displayName);
-        attachmentInfo.setText(SizeFormatter.formatSize(getContext(), attachment.size));
+
+        setAttachmentSize(attachment.size);
 
         refreshThumbnail();
+    }
+
+    private void setAttachmentSize(long size) {
+        TextView attachmentSize = (TextView) findViewById(R.id.attachment_info);
+        if (size == AttachmentViewInfo.UNKNOWN_SIZE) {
+            attachmentSize.setText("");
+        } else {
+            String text = SizeFormatter.formatSize(getContext(), size);
+            attachmentSize.setText(text);
+        }
     }
 
     @Override
