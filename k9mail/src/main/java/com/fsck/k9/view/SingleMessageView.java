@@ -534,7 +534,10 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (text == null) {
             Log.i("PGP/MIME View", "SingleMessage entry point");
             text = message.getTextForDisplay();
-            mCryptoView.setmPGPMIMEText(text);
+            if(mCryptoView!=null) mCryptoView.setmPGPMIMEText(text);
+            else{
+                Log.e("PGP/MIME","mCryptoview is null but catched.");
+            }
         }
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
