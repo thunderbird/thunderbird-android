@@ -6,10 +6,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import android.test.AndroidTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.spongycastle.openpgp.PGPCompressedData;
 import org.spongycastle.openpgp.PGPException;
 import org.spongycastle.openpgp.PGPObjectFactory;
@@ -22,8 +25,11 @@ import org.spongycastle.openpgp.bc.BcPGPObjectFactory;
 import org.spongycastle.openpgp.bc.BcPGPPublicKeyRingCollection;
 import org.spongycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
 
+import static junit.framework.Assert.assertTrue;
 
-public class PgpMimeMessageTest extends AndroidTestCase {
+
+@RunWith(AndroidJUnit4.class)
+public class PgpMimeMessageTest  {
     private static final String PUBLIC_KEY = "-----BEGIN PGP PUBLIC KEY BLOCK-----\n" +
             "Version: GnuPG v1\n" +
             "\n" +
@@ -150,6 +156,7 @@ public class PgpMimeMessageTest extends AndroidTestCase {
             "-----END PGP PUBLIC KEY BLOCK-----\n";
 
 
+    @Test
     public void testSignedMessage() throws IOException, MessagingException, PGPException {
         String messageSource = "Date: Mon, 08 Dec 2014 17:44:18 +0100\r\n" +
                 "From: cketti <cketti@googlemail.com>\r\n" +
@@ -209,7 +216,7 @@ public class PgpMimeMessageTest extends AndroidTestCase {
                 "\r\n" +
                 "--24Bem7EnUI1Ipn9jNXuLgsetqa6wOkIxM--\r\n";
 
-        BinaryTempFileBody.setTempDirectory(getContext().getCacheDir());
+        BinaryTempFileBody.setTempDirectory(InstrumentationRegistry.getTargetContext().getCacheDir());
 
         InputStream messageInputStream = new ByteArrayInputStream(messageSource.getBytes());
         MimeMessage message;

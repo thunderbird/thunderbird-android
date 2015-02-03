@@ -1,18 +1,29 @@
 package com.fsck.k9.mail.ssl;
 
-import javax.net.ssl.X509TrustManager;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import android.test.AndroidTestCase;
+
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+
+import javax.net.ssl.X509TrustManager;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 
 /**
  * Test the functionality of {@link TrustManagerFactory}.
  */
-public class TrustManagerFactoryTest extends AndroidTestCase {
+@RunWith(AndroidJUnit4.class)
+public class TrustManagerFactoryTest {
     public static final String MATCHING_HOST = "k9.example.com";
     public static final String NOT_MATCHING_HOST = "bla.example.com";
     public static final int PORT1 = 993;
@@ -196,15 +207,16 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
                 new ByteArrayInputStream(encodedCert.getBytes()));
     }
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        mKeyStoreFile = File.createTempFile("localKeyStore", null, getContext().getCacheDir());
+        mKeyStoreFile = File.createTempFile("localKeyStore", null,
+                InstrumentationRegistry.getTargetContext().getCacheDir());
         mKeyStore = LocalKeyStore.getInstance();
         mKeyStore.setKeyStoreFile(mKeyStoreFile);
     }
 
-    @Override
-    protected void tearDown() {
+    @After
+    public void tearDown() {
         mKeyStoreFile.delete();
     }
 
@@ -220,6 +232,7 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
      * @throws Exception
      *         if anything goes wrong
      */
+    @Test
     public void testDifferentCertificatesOnSameServer() throws Exception {
         mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT1, mCert1);
         mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT2, mCert2);
@@ -230,24 +243,28 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         trustManager1.checkServerTrusted(new X509Certificate[] { mCert1 }, "authType");
     }
 
+    @Test
     public void testSelfSignedCertificateMatchingHost() throws Exception {
         mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
         trustManager.checkServerTrusted(new X509Certificate[] { mCert1 }, "authType");
     }
 
+    @Test
     public void testSelfSignedCertificateNotMatchingHost() throws Exception {
         mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT1, mCert1);
         X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1);
         trustManager.checkServerTrusted(new X509Certificate[] { mCert1 }, "authType");
     }
 
+    @Test
     public void testWrongCertificate() throws Exception {
         mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
         assertCertificateRejection(trustManager, new X509Certificate[] { mCert2 });
     }
 
+    @Test
     public void testCertificateOfOtherHost() throws Exception {
         mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
         mKeyStore.addCertificate(MATCHING_HOST, PORT2, mCert2);
@@ -256,11 +273,13 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         assertCertificateRejection(trustManager, new X509Certificate[] { mCert2 });
     }
 
+    @Test
     public void testUntrustedCertificateChain() throws Exception {
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
         assertCertificateRejection(trustManager, new X509Certificate[] { mCert3, mCaCert });
     }
 
+    @Test
     public void testLocallyTrustedCertificateChain() throws Exception {
         mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert3);
 
@@ -268,6 +287,7 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         trustManager.checkServerTrusted(new X509Certificate[] { mCert3, mCaCert }, "authType");
     }
 
+    @Test
     public void testLocallyTrustedCertificateChainNotMatchingHost() throws Exception {
         mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT1, mCert3);
 
@@ -275,17 +295,20 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         trustManager.checkServerTrusted(new X509Certificate[] { mCert3, mCaCert }, "authType");
     }
 
+    @Test
     public void testGloballyTrustedCertificateChain() throws Exception {
         X509TrustManager trustManager = TrustManagerFactory.get("www.linux.com", PORT1);
         X509Certificate[] certificates = new X509Certificate[] { mLinuxComCert, mLinuxComFirstParentCert};
         trustManager.checkServerTrusted(certificates, "authType");
     }
 
+    @Test
     public void testGloballyTrustedCertificateNotMatchingHost() throws Exception {
         X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1);
         assertCertificateRejection(trustManager, new X509Certificate[] { mLinuxComCert, mLinuxComFirstParentCert});
     }
 
+    @Test
     public void testGloballyTrustedCertificateNotMatchingHostOverride() throws Exception {
         mKeyStore.addCertificate(MATCHING_HOST, PORT1, mLinuxComCert);
 
@@ -306,6 +329,7 @@ public class TrustManagerFactoryTest extends AndroidTestCase {
         assertFalse("The certificate should have been rejected but wasn't", certificateValid);
     }
 
+    @Test
     public void testKeyStoreLoading() throws Exception {
         mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
         mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT2, mCert2);

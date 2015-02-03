@@ -4,6 +4,8 @@ import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.endtoend.framework.AccountForTest;
 import com.fsck.k9.endtoend.framework.ApplicationState;
 import com.fsck.k9.endtoend.pages.AccountsPage;
+import org.junit.Test;
+
 
 /**
  * Creates and removes accounts.
@@ -17,13 +19,18 @@ public class A010_AccountIntegrationTest extends AbstractEndToEndTest<Accounts>{
         super(Accounts.class);
     }
 
-    public void testCreateAccountDirectly() throws Exception {
-        new AccountSetupFlow(this).setupAccountFromAccountsPage(new AccountsPage());
+    @Test
+    public void createAccountDirectly() throws Exception {
+        new AccountSetupFlow().setupAccountFromAccountsPage(new AccountsPage());
     }
 
-    public void testDeleteAccount() {
-
+    @Test
+    public void deleteAccount() {
         AccountsPage accountsPage = new AccountsPage();
+
+        // TODO should not have cross-test-dependencies
+        assertFalse("NB: this test is order dependent and requires A000_WelcomeAndSetupAccountIntegrationTest to run first",
+                ApplicationState.getInstance().accounts.isEmpty());
 
         AccountForTest accountForTest = ApplicationState.getInstance().accounts.get(0);
         accountsPage.assertAccountExists(accountForTest.description);

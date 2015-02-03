@@ -1914,9 +1914,15 @@ public class Account implements BaseAccount, StoreConfig {
     public void deleteCertificates() {
         LocalKeyStore localKeyStore = LocalKeyStore.getInstance();
 
-        Uri uri = Uri.parse(getStoreUri());
-        localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
-        uri = Uri.parse(getTransportUri());
-        localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
+        String storeUri = getStoreUri();
+        if (storeUri != null) {
+            Uri uri = Uri.parse(storeUri);
+            localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
+        }
+        String transportUri = getTransportUri();
+        if (transportUri != null) {
+            Uri uri = Uri.parse(transportUri);
+            localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
+        }
     }
 }

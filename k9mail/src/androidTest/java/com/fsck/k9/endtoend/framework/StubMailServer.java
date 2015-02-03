@@ -1,5 +1,9 @@
 package com.fsck.k9.endtoend.framework;
 
+import android.util.Log;
+
+import com.fsck.k9.K9;
+import com.icegreen.greenmail.user.GreenMailUser;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 
@@ -18,7 +22,18 @@ public class StubMailServer {
     public StubMailServer() {
 
         greenmail = new GreenMail(new ServerSetup[]{IMAP_SERVER_SETUP, SMTP_SERVER_SETUP});
-        greenmail.setUser(UserForImap.TEST_USER.emailAddress, UserForImap.TEST_USER.loginUsername, UserForImap.TEST_USER.password);
+        GreenMailUser user = greenmail
+                .setUser(UserForImap.TEST_USER.emailAddress, UserForImap.TEST_USER.loginUsername,
+                        UserForImap.TEST_USER.password);
+
+        for (String mailbox : new String[] {"Drafts", "Spam"}) {
+            Log.d(K9.LOG_TAG, "creating mailbox "+mailbox);
+            try {
+                greenmail.getManagers().getImapHostManager().createMailbox(user, mailbox);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
         greenmail.start();
     }
 
@@ -36,6 +51,10 @@ public class StubMailServer {
 
     public int getImapPort() {
         return IMAP_SERVER_SETUP.getPort();
+    }
+
+    public void stop() {
+        greenmail.stop();
     }
 }
 

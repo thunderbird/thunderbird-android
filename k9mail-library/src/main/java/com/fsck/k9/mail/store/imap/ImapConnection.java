@@ -555,14 +555,14 @@ class ImapConnection {
     private static Socket connect(ImapSettings settings, TrustedSocketFactory socketFactory)
             throws GeneralSecurityException, MessagingException, IOException {
         // Try all IPv4 and IPv6 addresses of the host
-        InetAddress[] addresses = InetAddress.getAllByName(settings.getHost());
-        for (int i = 0; i < addresses.length; i++) {
+        Exception connectException = null;
+        for (InetAddress address : InetAddress.getAllByName(settings.getHost())) {
             try {
                 if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                    Log.d(LOG_TAG, "Connecting to " + settings.getHost() + " as " + addresses[i]);
+                    Log.d(LOG_TAG, "Connecting to " + settings.getHost() + " as " + address);
                 }
 
-                SocketAddress socketAddress = new InetSocketAddress(addresses[i], settings.getPort());
+                SocketAddress socketAddress = new InetSocketAddress(address, settings.getPort());
                 Socket socket;
                 if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
                     socket = socketFactory.createSocket(
@@ -576,15 +576,12 @@ class ImapConnection {
                 socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                 // Successfully connected to the server; don't try any other addresses
                 return socket;
-            } catch (SocketException e) {
-                if (i < (addresses.length - 1)) {
-                    // There are still other addresses for that host to try
-                    continue;
-                }
-                throw new MessagingException("Cannot connect to host", e);
+            } catch (IOException e) {
+                Log.w(LOG_TAG, "could not connect to "+address, e);
+                connectException = e;
             }
         }
-        throw new MessagingException("Cannot connect to host");
+        throw new MessagingException("Cannot connect to host", connectException);
     }
 
     private void adjustDNSCacheTTL() {
@@ -601,10 +598,18 @@ class ImapConnection {
     }
 
     private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses) {
-        capabilities = ImapResponseParser.parseCapabilities(responses);
+        Set<String> receivedCapabilities = ImapResponseParser.parseCapabilities(responses);
+        /* RFC 3501 6.2.3
+            A server MAY include a CAPABILITY response code in the tagged OK
+            response to a successful LOGIN command in order to send
+            capabilities automatically.  It is unnecessary for a client to
+            send a separate CAPABILITY command if it recognizes these
+            automatic capabilities.
+        */
         if (K9MailLib.isDebug()) {
-            Log.d(LOG_TAG, "Saving " + capabilities + " capabilities for " + getLogId());
+            Log.d(LOG_TAG, "Saving " + receivedCapabilities + " capabilities for " + getLogId());
         }
+        capabilities.addAll(receivedCapabilities);
         return responses;
     }
 }

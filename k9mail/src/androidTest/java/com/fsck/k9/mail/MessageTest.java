@@ -8,12 +8,8 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.TimeZone;
 
-import com.fsck.k9.mail.internet.MimeMessageHelper;
-import org.apache.commons.io.IOUtils;
-import org.apache.james.mime4j.codec.Base64InputStream;
-import org.apache.james.mime4j.util.MimeUtil;
-
-import android.test.AndroidTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
@@ -22,13 +18,23 @@ import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
+import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.util.MimeUtil;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class MessageTest extends AndroidTestCase {
-    @Override
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+
+@RunWith(AndroidJUnit4.class)
+public class MessageTest {
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"));
     }
 
@@ -272,10 +278,7 @@ public class MessageTest extends AndroidTestCase {
 
     private int mMimeBoundary;
 
-    public MessageTest() {
-        super();
-    }
-
+    @Test
     public void testSetSendDateSetsSentDate() throws Exception {
         Message message = sampleMessage();
         final int milliseconds = 0;
@@ -286,23 +289,26 @@ public class MessageTest extends AndroidTestCase {
         assertEquals(milliseconds, sentDate.getTime());
     }
 
+    @Test
     public void testSetSendDateFormatsHeaderCorrectlyWithCurrentTimeZone() throws Exception {
         Message message = sampleMessage();
         message.setSentDate(new Date(0), false);
         assertEquals("Thu, 01 Jan 1970 09:00:00 +0900", message.getHeader("Date")[0]);
     }
 
+    @Test
     public void testSetSendDateFormatsHeaderCorrectlyWithoutTimeZone() throws Exception {
         Message message = sampleMessage();
         message.setSentDate(new Date(0), true);
         assertEquals("Thu, 01 Jan 1970 00:00:00 +0000", message.getHeader("Date")[0]);
     }
 
+    @Test
     public void testMessage() throws MessagingException, IOException {
         MimeMessage message;
         ByteArrayOutputStream out;
 
-        BinaryTempFileBody.setTempDirectory(getContext().getCacheDir());
+        BinaryTempFileBody.setTempDirectory(InstrumentationRegistry.getTargetContext().getCacheDir());
 
         mMimeBoundary = 101;
         message = nestedMessage(nestedMessage(sampleMessage()));

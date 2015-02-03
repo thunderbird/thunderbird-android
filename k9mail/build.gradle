@@ -5,6 +5,9 @@ apply from: '../gradle/plugins/findbugs-android.gradle'
 
 repositories {
     jcenter()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
 
 dependencies {
@@ -20,16 +23,10 @@ dependencies {
 
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
-
-    androidTestCompile("com.icegreen:greenmail:1.3.1b") {
-        // Use a better, later version
-        exclude group: "javax.mail"
+    androidTestCompile('com.icegreen:greenmail:1.4.1-SNAPSHOT') {
+        exclude group: 'junit'
     }
-
-    // this version avoids some "Ignoring InnerClasses attribute for an anonymous inner class" warnings
-    androidTestCompile "javax.mail:javax.mail-api:1.5.2"
-
-    androidTestCompile "com.madgag.spongycastle:pg:1.51.0.0"
+    androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
 }
 
 android {

@@ -1,14 +1,23 @@
 package com.fsck.k9.activity;
 
+import android.support.test.runner.AndroidJUnit4;
+
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class MessageReferenceTest extends TestCase
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
+@RunWith(AndroidJUnit4.class)
+public class MessageReferenceTest
 {
     /**
      * Typically happens during forwards.  (You have a reference, but no flag since we don't currently consider FORWARDED a flag.)
      */
+    @Test
     public void testIdentityStringNoFlag()
     {
         MessageReference mr = new MessageReference();
@@ -22,6 +31,7 @@ public class MessageReferenceTest extends TestCase
     /**
      * Typically happens during replies.
      */
+    @Test
     public void testIdentityString()
     {
         MessageReference mr = new MessageReference();
@@ -33,6 +43,7 @@ public class MessageReferenceTest extends TestCase
         assertEquals("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED", mr.toIdentityString());
     }
 
+    @Test
     public void testParseIdentityStringNoFlag() throws MessagingException
     {
         MessageReference mr = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=");
@@ -42,6 +53,7 @@ public class MessageReferenceTest extends TestCase
         assertNull(mr.flag);
     }
 
+    @Test
     public void testParseIdentityString() throws MessagingException
     {
         MessageReference mr = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
@@ -51,24 +63,20 @@ public class MessageReferenceTest extends TestCase
         assertEquals(Flag.ANSWERED, mr.flag);
     }
 
+    @Test
     public void testBadVersion() throws MessagingException
     {
         MessageReference mr = new MessageReference("@:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
         assertNull(mr.accountUuid);
     }
 
+    @Test(expected = MessagingException.class)
     public void testNull() throws MessagingException
     {
-        try
-        {
-            new MessageReference(null);
-            assertTrue(false);
-        } catch (MessagingException e)
-        {
-            assertTrue(true);
-        }
+        new MessageReference(null);
     }
 
+    @Test(expected = MessagingException.class)
     public void testCorruption() throws MessagingException
     {
         MessageReference mr = new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWERED");
@@ -78,13 +86,6 @@ public class MessageReferenceTest extends TestCase
         assertNotNull(mr.uid);
 
         // Corruption in the Flag should throw MessagingException.
-        try
-        {
-            new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
-            assertTrue(false);
-        } catch (MessagingException e)
-        {
-            assertTrue(true);
-        }
+        new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
     }
 }
