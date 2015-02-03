@@ -1,5 +1,7 @@
 package com.fsck.k9.crypto;
 
+//openpgp replaces agp
+
 import android.text.TextUtils;
 
 import com.fsck.k9.Identity;
