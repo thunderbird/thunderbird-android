@@ -573,7 +573,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             onShowMessage();
         }
 
-        if (text != null && !mCryptoView.pIsMime() && lookForImages) {
+        if (text != null && mCryptoView!=null && !mCryptoView.pIsMime() && lookForImages) {
             // If the message contains external pictures and the "Show pictures"
             // button wasn't already pressed, see if the user's preferences has us
             // showing them anyway.
