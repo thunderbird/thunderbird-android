@@ -220,6 +220,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                                 break;
                             }
                             case MENU_ITEM_IMAGE_SAVE: {
+                                //TODO: Use download manager
                                 new DownloadImageTask(getContext()).execute(url);
                                 break;
                             }
