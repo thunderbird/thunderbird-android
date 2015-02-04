@@ -97,19 +97,7 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
                     in = contentResolver.openInputStream(uri);
                 }
 
-                // Do we still need an extension?
-                if (filename.indexOf('.') == -1) {
-                    // Use JPEG as fallback
-                    String extension = "jpeg";
-                    if (mimeType != null) {
-                        // Try to find an extension for the given MIME type
-                        String ext = MimeUtility.getExtensionByMimeType(mimeType);
-                        if (ext != null) {
-                            extension = ext;
-                        }
-                    }
-                    filename += "." + extension;
-                }
+                filename = getFileNameWithExtension(filename, mimeType);
 
                 String sanitized = FileHelper.sanitizeFilename(filename);
 
@@ -134,6 +122,23 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private String getFileNameWithExtension(String filename, String mimeType) {
+        if (filename.indexOf('.') != -1) {
+            return filename;
+        }
+
+        // Use JPEG as fallback
+        String extension = "jpeg";
+        if (mimeType != null) {
+            String extensionFromMimeType = MimeUtility.getExtensionByMimeType(mimeType);
+            if (extensionFromMimeType != null) {
+                extension = extensionFromMimeType;
+            }
+        }
+
+        return filename + "." + extension;
     }
 
     @Override
