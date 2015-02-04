@@ -30,6 +30,8 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
     };
     private static final int DISPLAY_NAME_INDEX = 1;
 
+    private static final String DEFAULT_FILE_NAME = "saved_image";
+
 
     private final Context context;
 
@@ -61,7 +63,7 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
                         filename = UrlEncodingHelper.decodeUtf8(path.substring(start + 1));
                     } else {
                         // Use a dummy filename if necessary
-                        filename = "saved_image";
+                        filename = DEFAULT_FILE_NAME;
                     }
 
                     // Get the MIME type if we couldn't find a file extension
@@ -86,7 +88,7 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
 
                     // Use a dummy filename if necessary
                     if (filename == null) {
-                        filename = "saved_image";
+                        filename = DEFAULT_FILE_NAME;
                     }
 
                     // Get the MIME type if we couldn't find a file extension
