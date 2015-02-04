@@ -3,6 +3,7 @@ package com.fsck.k9.ui.messageview;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -101,19 +102,7 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
 
                 filename = getFileNameWithExtension(filename, mimeType);
 
-                String sanitized = FileHelper.sanitizeFilename(filename);
-
-                File directory = new File(K9.getAttachmentDefaultPath());
-                File file = FileHelper.createUniqueFile(directory, sanitized);
-                FileOutputStream out = new FileOutputStream(file);
-                try {
-                    IOUtils.copy(in, out);
-                    out.flush();
-                } finally {
-                    out.close();
-                }
-
-                return file.getName();
+                return writeFileToStorage(filename, in);
 
             } finally {
                 if (in != null) {
@@ -141,6 +130,23 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
         }
 
         return filename + "." + extension;
+    }
+
+    private String writeFileToStorage(String filename, InputStream in) throws IOException {
+        String sanitized = FileHelper.sanitizeFilename(filename);
+
+        File directory = new File(K9.getAttachmentDefaultPath());
+        File file = FileHelper.createUniqueFile(directory, sanitized);
+
+        FileOutputStream out = new FileOutputStream(file);
+        try {
+            IOUtils.copy(in, out);
+            out.flush();
+        } finally {
+            out.close();
+        }
+
+        return file.getName();
     }
 
     @Override
