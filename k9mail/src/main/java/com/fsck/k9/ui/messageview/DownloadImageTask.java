@@ -13,6 +13,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.fsck.k9.K9;
@@ -42,82 +43,122 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String urlString = params[0];
+        String url = params[0];
         try {
-            boolean externalImage = urlString.startsWith("http");
+            boolean isExternalImage = url.startsWith("http");
 
-            String filename = null;
-            String mimeType = null;
-            InputStream in = null;
-
-            try {
-                if (externalImage) {
-                    URL url = new URL(urlString);
-                    URLConnection conn = url.openConnection();
-                    in = conn.getInputStream();
-
-                    String path = url.getPath();
-
-                    // Try to get the filename from the URL
-                    int start = path.lastIndexOf("/");
-                    if (start != -1 && start + 1 < path.length()) {
-                        filename = UrlEncodingHelper.decodeUtf8(path.substring(start + 1));
-                    } else {
-                        // Use a dummy filename if necessary
-                        filename = DEFAULT_FILE_NAME;
-                    }
-
-                    // Get the MIME type if we couldn't find a file extension
-                    if (filename.indexOf('.') == -1) {
-                        mimeType = conn.getContentType();
-                    }
-                } else {
-                    ContentResolver contentResolver = context.getContentResolver();
-                    Uri uri = Uri.parse(urlString);
-
-                    // Get the filename from AttachmentProvider
-                    Cursor cursor = contentResolver.query(uri, ATTACHMENT_PROJECTION, null, null, null);
-                    if (cursor != null) {
-                        try {
-                            if (cursor.moveToNext()) {
-                                filename = cursor.getString(DISPLAY_NAME_INDEX);
-                            }
-                        } finally {
-                            cursor.close();
-                        }
-                    }
-
-                    // Use a dummy filename if necessary
-                    if (filename == null) {
-                        filename = DEFAULT_FILE_NAME;
-                    }
-
-                    // Get the MIME type if we couldn't find a file extension
-                    if (filename.indexOf('.') == -1) {
-                        mimeType = contentResolver.getType(uri);
-                    }
-
-                    in = contentResolver.openInputStream(uri);
-                }
-
-                filename = getFileNameWithExtension(filename, mimeType);
-
-                return writeFileToStorage(filename, in);
-
-            } finally {
-                if (in != null) {
-                    in.close();
-                }
+            String fileName;
+            if (isExternalImage) {
+                fileName = downloadAndStoreImage(url);
+            } else {
+                fileName = fetchAndStoreImage(url);
             }
+
+            return fileName;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(K9.LOG_TAG, "Error while downloading image", e);
             return null;
         }
     }
 
-    private String getFileNameWithExtension(String filename, String mimeType) {
-        if (filename.indexOf('.') != -1) {
-            return filename;
+    @Override
+    protected void onPostExecute(String fileName) {
+        boolean errorSavingFile = (fileName == null);
+
+        String text;
+        if (errorSavingFile) {
+            text = context.getString(R.string.image_saving_failed);
+        } else {
+            text = context.getString(R.string.image_saved_as, fileName);
+        }
+
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+    }
+
+    private String downloadAndStoreImage(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        URLConnection conn = url.openConnection();
+
+        InputStream in = conn.getInputStream();
+        try {
+            String fileName = getFileNameFromUrl(url);
+            String mimeType = getMimeType(conn, fileName);
+
+            String fileNameWithExtension = getFileNameWithExtension(fileName, mimeType);
+            return writeFileToStorage(fileNameWithExtension, in);
+        } finally {
+            in.close();
+        }
+    }
+
+    private String getFileNameFromUrl(URL url) {
+        String fileName;
+
+        String path = url.getPath();
+        int start = path.lastIndexOf("/");
+        if (start != -1 && start + 1 < path.length()) {
+            fileName = UrlEncodingHelper.decodeUtf8(path.substring(start + 1));
+        } else {
+            fileName = DEFAULT_FILE_NAME;
+        }
+
+        return fileName;
+    }
+
+    private String getMimeType(URLConnection conn, String fileName) {
+        String mimeType = null;
+        if (fileName.indexOf('.') == -1) {
+            mimeType = conn.getContentType();
+        }
+
+        return mimeType;
+    }
+
+    private String fetchAndStoreImage(String urlString) throws IOException {
+        ContentResolver contentResolver = context.getContentResolver();
+        Uri uri = Uri.parse(urlString);
+
+        String fileName = getFileNameFromContentProvider(contentResolver, uri);
+        String mimeType = getMimeType(contentResolver, uri, fileName);
+
+        InputStream in = contentResolver.openInputStream(uri);
+        try {
+            String fileNameWithExtension = getFileNameWithExtension(fileName, mimeType);
+            return writeFileToStorage(fileNameWithExtension, in);
+        } finally {
+            in.close();
+        }
+    }
+
+    private String getMimeType(ContentResolver contentResolver, Uri uri, String fileName) {
+        String mimeType = null;
+        if (fileName.indexOf('.') == -1) {
+            mimeType = contentResolver.getType(uri);
+        }
+
+        return mimeType;
+    }
+
+    private String getFileNameFromContentProvider(ContentResolver contentResolver, Uri uri) {
+        String displayName = DEFAULT_FILE_NAME;
+
+        Cursor cursor = contentResolver.query(uri, ATTACHMENT_PROJECTION, null, null, null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToNext() && !cursor.isNull(DISPLAY_NAME_INDEX)) {
+                    displayName = cursor.getString(DISPLAY_NAME_INDEX);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
+        return displayName;
+    }
+
+    private String getFileNameWithExtension(String fileName, String mimeType) {
+        if (fileName.indexOf('.') != -1) {
+            return fileName;
         }
 
         // Use JPEG as fallback
@@ -129,11 +170,11 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
             }
         }
 
-        return filename + "." + extension;
+        return fileName + "." + extension;
     }
 
-    private String writeFileToStorage(String filename, InputStream in) throws IOException {
-        String sanitized = FileHelper.sanitizeFilename(filename);
+    private String writeFileToStorage(String fileName, InputStream in) throws IOException {
+        String sanitized = FileHelper.sanitizeFilename(fileName);
 
         File directory = new File(K9.getAttachmentDefaultPath());
         File file = FileHelper.createUniqueFile(directory, sanitized);
@@ -147,17 +188,5 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
         }
 
         return file.getName();
-    }
-
-    @Override
-    protected void onPostExecute(String filename) {
-        String text;
-        if (filename == null) {
-            text = context.getString(R.string.image_saving_failed);
-        } else {
-            text = context.getString(R.string.image_saved_as, filename);
-        }
-
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
 }
