@@ -15,7 +15,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Parcel;
@@ -37,7 +36,6 @@ import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fsck.k9.K9;
