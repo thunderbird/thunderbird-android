@@ -385,7 +385,11 @@ public class Pop3Store extends RemoteStore {
                             "Unhandled authentication method found in the server settings (bug).");
                 }
             } catch (SSLException e) {
-                throw new CertificateValidationException(e.getMessage(), e);
+            	  if (e.getCause() instanceof CertificateException) {
+                      throw new CertificateValidationException(e.getMessage(), e);
+                  } else {
+                      throw e;
+                  }
             } catch (GeneralSecurityException gse) {
                 throw new MessagingException(
                     "Unable to open connection to POP server due to security error.", gse);
