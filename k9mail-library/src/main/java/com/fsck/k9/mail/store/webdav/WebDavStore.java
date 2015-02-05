@@ -789,7 +789,11 @@ public class WebDavStore extends RemoteStore {
                                       response.getStatusLine().toString());
             }
         } catch (SSLException e) {
-            throw new CertificateValidationException(e.getMessage(), e);
+        	  if (e.getCause() instanceof CertificateException) {
+                  throw new CertificateValidationException(e.getMessage(), e);
+              } else {
+                  throw e;
+              }
         } catch (IOException ioe) {
             Log.e(LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
             throw new MessagingException("IOException", ioe);
