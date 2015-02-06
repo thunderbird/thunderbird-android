@@ -55,7 +55,7 @@ public class MessageCryptoHelper {
 
     private Deque<Part> partsToDecryptOrVerify;
     private OpenPgpApi openPgpApi;
-    private Part currentlyDecrypringOrVerifyingPart;
+    private Part currentlyDecryptingOrVerifyingPart;
     private Intent currentCryptoResult;
 
     private MessageCryptoAnnotations messageAnnotations;
@@ -143,7 +143,7 @@ public class MessageCryptoHelper {
     }
 
     private void decryptOrVerifyPart(Part part) {
-        currentlyDecrypringOrVerifyingPart = part;
+        currentlyDecryptingOrVerifyingPart = part;
         decryptVerify(new Intent());
     }
 
@@ -155,9 +155,9 @@ public class MessageCryptoHelper {
         intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accountName);
 
         try {
-            if (MessageDecryptVerifier.isPgpMimeSignedPart(currentlyDecrypringOrVerifyingPart)) {
+            if (MessageDecryptVerifier.isPgpMimeSignedPart(currentlyDecryptingOrVerifyingPart)) {
                 callAsyncDetachedVerify(intent);
-            } else if (MessageDecryptVerifier.isPgpInlinePart(currentlyDecrypringOrVerifyingPart)) {
+            } else if (MessageDecryptVerifier.isPgpInlinePart(currentlyDecryptingOrVerifyingPart)) {
                 callAsyncInlineOperation(intent);
             } else {
                 callAsyncDecrypt(intent);
@@ -209,7 +209,7 @@ public class MessageCryptoHelper {
     private void callAsyncDetachedVerify(Intent intent) throws IOException, MessagingException {
         PipedInputStream pipedInputStream = getPipedInputStreamForSignedData();
 
-        byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentlyDecrypringOrVerifyingPart);
+        byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentlyDecryptingOrVerifyingPart);
         intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
 
         openPgpApi.executeApiAsync(intent, pipedInputStream, null, new IOpenPgpCallback() {
@@ -229,7 +229,7 @@ public class MessageCryptoHelper {
             @Override
             public void run() {
                 try {
-                    Multipart multipartSignedMultipart = (Multipart) currentlyDecrypringOrVerifyingPart.getBody();
+                    Multipart multipartSignedMultipart = (Multipart) currentlyDecryptingOrVerifyingPart.getBody();
                     BodyPart signatureBodyPart = multipartSignedMultipart.getBodyPart(0);
                     Log.d(K9.LOG_TAG, "signed data type: " + signatureBodyPart.getMimeType());
                     signatureBodyPart.writeTo(out);
@@ -256,14 +256,14 @@ public class MessageCryptoHelper {
             @Override
             public void run() {
                 try {
-                    if (MessageDecryptVerifier.isPgpMimePart(currentlyDecrypringOrVerifyingPart)) {
+                    if (MessageDecryptVerifier.isPgpMimePart(currentlyDecryptingOrVerifyingPart)) {
                         Multipart multipartEncryptedMultipart =
-                                (Multipart) currentlyDecrypringOrVerifyingPart.getBody();
+                                (Multipart) currentlyDecryptingOrVerifyingPart.getBody();
                         BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
                         Body encryptionPayloadBody = encryptionPayloadPart.getBody();
                         encryptionPayloadBody.writeTo(out);
-                    } else if (MessageDecryptVerifier.isPgpInlinePart(currentlyDecrypringOrVerifyingPart)) {
-                        String text = MessageExtractor.getTextFromPart(currentlyDecrypringOrVerifyingPart);
+                    } else if (MessageDecryptVerifier.isPgpInlinePart(currentlyDecryptingOrVerifyingPart)) {
+                        String text = MessageExtractor.getTextFromPart(currentlyDecryptingOrVerifyingPart);
                         out.write(text.getBytes());
                     } else {
                         Log.wtf(K9.LOG_TAG, "No suitable data to stream found!");
@@ -393,7 +393,7 @@ public class MessageCryptoHelper {
     }
 
     private void addOpenPgpResultPartToMessage(OpenPgpResultAnnotation resultAnnotation) {
-        messageAnnotations.put(currentlyDecrypringOrVerifyingPart, resultAnnotation);
+        messageAnnotations.put(currentlyDecryptingOrVerifyingPart, resultAnnotation);
     }
 
     private void onCryptoFailed(OpenPgpError error) {
