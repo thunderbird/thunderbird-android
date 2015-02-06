@@ -1,10 +1,9 @@
 package com.fsck.k9.mailstore;
 
 
-import android.app.PendingIntent;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import android.app.PendingIntent;
 
 import com.fsck.k9.mail.Message;
 import org.openintents.openpgp.OpenPgpError;
@@ -12,7 +11,6 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
 public class MessageViewInfo {
-
     public final Message message;
     public final List<MessageViewContainer> containers;
 
@@ -22,27 +20,21 @@ public class MessageViewInfo {
         this.message = message;
     }
 
-    public static class MessageViewContainer {
 
-        final public String text;
-        final public List<AttachmentViewInfo> attachments;
-        final public boolean encrypted;
-        final public OpenPgpSignatureResult signatureResult;
-        final public OpenPgpError pgpError;
-        final public PendingIntent pgpPendingIntent;
+    public static class MessageViewContainer {
+        public final String text;
+        public final List<AttachmentViewInfo> attachments;
+        public final boolean encrypted;
+        public final OpenPgpSignatureResult signatureResult;
+        public final OpenPgpError pgpError;
+        public final PendingIntent pgpPendingIntent;
 
         MessageViewContainer(String text, List<AttachmentViewInfo> attachments) {
-            this.text = text;
-            this.attachments = attachments;
-            this.signatureResult = null;
-            this.pgpError = null;
-            this.encrypted = false;
-            this.pgpPendingIntent = null;
+            this(text, attachments, null, null, false, null);
         }
 
-        MessageViewContainer(String text, List<AttachmentViewInfo> attachments,
-                OpenPgpSignatureResult signatureResult, OpenPgpError pgpError,
-                boolean encrypted, PendingIntent pgpPendingIntent) {
+        MessageViewContainer(String text, List<AttachmentViewInfo> attachments, OpenPgpSignatureResult signatureResult,
+                OpenPgpError pgpError, boolean encrypted, PendingIntent pgpPendingIntent) {
             this.text = text;
             this.attachments = attachments;
             this.signatureResult = signatureResult;
@@ -50,7 +42,5 @@ public class MessageViewInfo {
             this.encrypted = encrypted;
             this.pgpPendingIntent = pgpPendingIntent;
         }
-
     }
-
 }
