@@ -35,7 +35,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
@@ -424,11 +423,10 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
     }
 
-    public void setMessageViewContainer(Message message, MessageViewContainer messageViewContainer)
-            throws MessagingException {
+    public void setMessageViewContainer(MessageViewContainer messageViewContainer) throws MessagingException {
         resetView();
 
-        WebViewClient webViewClient = K9WebViewClient.newInstance(message);
+        WebViewClient webViewClient = K9WebViewClient.newInstance(messageViewContainer.rootPart);
         mMessageContentView.setWebViewClient(webViewClient);
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
