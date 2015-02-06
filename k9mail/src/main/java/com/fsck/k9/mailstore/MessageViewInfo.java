@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.PendingIntent;
 
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Part;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
@@ -23,19 +24,22 @@ public class MessageViewInfo {
 
     public static class MessageViewContainer {
         public final String text;
+        public final Part rootPart;
         public final List<AttachmentViewInfo> attachments;
         public final boolean encrypted;
         public final OpenPgpSignatureResult signatureResult;
         public final OpenPgpError pgpError;
         public final PendingIntent pgpPendingIntent;
 
-        MessageViewContainer(String text, List<AttachmentViewInfo> attachments) {
-            this(text, attachments, null, null, false, null);
+        MessageViewContainer(String text, Part rootPart, List<AttachmentViewInfo> attachments) {
+            this(text, rootPart, attachments, null, null, false, null);
         }
 
-        MessageViewContainer(String text, List<AttachmentViewInfo> attachments, OpenPgpSignatureResult signatureResult,
-                OpenPgpError pgpError, boolean encrypted, PendingIntent pgpPendingIntent) {
+        MessageViewContainer(String text, Part rootPart, List<AttachmentViewInfo> attachments,
+                OpenPgpSignatureResult signatureResult, OpenPgpError pgpError, boolean encrypted,
+                PendingIntent pgpPendingIntent) {
             this.text = text;
+            this.rootPart = rootPart;
             this.attachments = attachments;
             this.signatureResult = signatureResult;
             this.pgpError = pgpError;

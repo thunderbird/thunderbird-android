@@ -450,15 +450,15 @@ public class LocalMessageExtractor {
 
             MessageViewContainer messageViewContainer;
             if (pgpAnnotation == NO_ANNOTATIONS) {
-                messageViewContainer = new MessageViewContainer(viewable.html, attachmentInfos);
+                messageViewContainer = new MessageViewContainer(viewable.html, part, attachmentInfos);
             } else {
                 OpenPgpSignatureResult pgpResult = pgpAnnotation.getSignatureResult();
                 OpenPgpError pgpError = pgpAnnotation.getError();
                 boolean wasEncrypted = pgpAnnotation.wasEncrypted();
                 PendingIntent pendingIntent = pgpAnnotation.getPendingIntent();
 
-                messageViewContainer = new MessageViewContainer(viewable.html, attachmentInfos, pgpResult, pgpError,
-                        wasEncrypted, pendingIntent);
+                messageViewContainer = new MessageViewContainer(viewable.html, part, attachmentInfos, pgpResult,
+                        pgpError, wasEncrypted, pendingIntent);
             }
 
             containers.add(messageViewContainer);
