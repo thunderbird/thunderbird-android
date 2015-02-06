@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -73,6 +74,11 @@ public class MessageCryptoHelper {
     public void decryptOrVerifyMessagePartsIfNecessary(LocalMessage message) {
         this.message = message;
 
+        if (!isCryptoProviderConfigured()) {
+            returnResultToFragment();
+            return;
+        }
+
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
         List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
         List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(message);
@@ -85,6 +91,10 @@ public class MessageCryptoHelper {
         } else {
             returnResultToFragment();
         }
+    }
+
+    private boolean isCryptoProviderConfigured() {
+        return !TextUtils.isEmpty(account.getCryptoApp());
     }
 
     private void decryptOrVerifyNextPartOrStartExtractingTextAndAttachments() {
