@@ -38,6 +38,7 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.DecryptStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
+import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import org.openintents.openpgp.IOpenPgpService;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -50,7 +51,8 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 public class MessageCryptoHelper {
 
     private final Context context;
-    private final MessageViewFragment fragment;
+    private final Activity activity;
+    private final MessageCryptoCallback callback;
     private final Account account;
     private LocalMessage message;
 
@@ -63,9 +65,10 @@ public class MessageCryptoHelper {
 
     private static final int INVALID_OPENPGP_RESULT_CODE = -1;
 
-    public MessageCryptoHelper(Context context, MessageViewFragment fragment, Account account) {
-        this.context = context;
-        this.fragment = fragment;
+    public MessageCryptoHelper(Activity activity, Account account, MessageCryptoCallback callback) {
+        this.context = activity.getApplicationContext();
+        this.activity = activity;
+        this.callback = callback;
         this.account = account;
 
         this.messageAnnotations = new MessageCryptoAnnotations();
@@ -133,11 +136,11 @@ public class MessageCryptoHelper {
 
     private void connectToCryptoProviderService() {
         String openPgpProvider = account.getOpenPgpProvider();
-        new OpenPgpServiceConnection(fragment.getContext(), openPgpProvider,
+        new OpenPgpServiceConnection(context, openPgpProvider,
                 new OnBound() {
                     @Override
                     public void onBound(IOpenPgpService service) {
-                        openPgpApi = new OpenPgpApi(fragment.getContext(), service);
+                        openPgpApi = new OpenPgpApi(context, service);
 
                         decryptOrVerifyNextPart();
                     }
@@ -342,7 +345,7 @@ public class MessageCryptoHelper {
                     }
 
                     try {
-                        fragment.getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(),
+                        activity.startIntentSenderForResult(pendingIntent.getIntentSender(),
                                 MessageList.REQUEST_CODE_CRYPTO, null, 0, 0, 0);
                     } catch (SendIntentException e) {
                         Log.e(K9.LOG_TAG, "Internal error on starting pendingintent!", e);
@@ -416,7 +419,7 @@ public class MessageCryptoHelper {
     }
 
     private void returnResultToFragment() {
-        fragment.startExtractingTextAndAttachments(messageAnnotations);
+        callback.onCryptoOperationsFinished(messageAnnotations);
     }
 
     public static class MessageCryptoAnnotations {

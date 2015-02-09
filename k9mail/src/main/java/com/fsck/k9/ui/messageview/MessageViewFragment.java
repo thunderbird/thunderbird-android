@@ -46,13 +46,14 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import com.fsck.k9.ui.messageview.MessageCryptoHelper.MessageCryptoAnnotations;
 import com.fsck.k9.view.MessageHeader;
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback, OpenPgpHeaderViewCallback {
+        AttachmentViewCallback, OpenPgpHeaderViewCallback, MessageCryptoCallback {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -197,7 +198,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         Context appContext = getActivity().getApplicationContext();
         mAccount = Preferences.getPreferences(appContext).getAccount(mMessageReference.accountUuid);
-        messageCryptoHelper = new MessageCryptoHelper(mContext, this, mAccount);
+        messageCryptoHelper = new MessageCryptoHelper(getActivity(), mAccount, this);
 
         if (resetPgpData) {
             // start with fresh, empty PGP data
@@ -260,7 +261,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         Toast.makeText(mContext, errorMessage, Toast.LENGTH_LONG).show();
     }
 
-    void startExtractingTextAndAttachments(MessageCryptoAnnotations annotations) {
+    @Override
+    public void onCryptoOperationsFinished(MessageCryptoAnnotations annotations) {
+        startExtractingTextAndAttachments(annotations);
+    }
+
+    private void startExtractingTextAndAttachments(MessageCryptoAnnotations annotations) {
         this.messageAnnotations = annotations;
         getLoaderManager().initLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
     }
