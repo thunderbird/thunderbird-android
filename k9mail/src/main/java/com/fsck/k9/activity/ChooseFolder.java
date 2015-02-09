@@ -31,14 +31,16 @@ import com.fsck.k9.mail.Folder;
 
 
 public class ChooseFolder extends K9ListActivity {
-    public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseFolder_account";
-    public static final String EXTRA_CUR_FOLDER = "com.fsck.k9.ChooseFolder_curfolder";
-    public static final String EXTRA_SEL_FOLDER = "com.fsck.k9.ChooseFolder_selfolder";
-    public static final String EXTRA_NEW_FOLDER = "com.fsck.k9.ChooseFolder_newfolder";
-    public static final String EXTRA_MESSAGE = "com.fsck.k9.ChooseFolder_message";
-    public static final String EXTRA_SHOW_CURRENT = "com.fsck.k9.ChooseFolder_showcurrent";
-    public static final String EXTRA_SHOW_FOLDER_NONE = "com.fsck.k9.ChooseFolder_showOptionNone";
-    public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
+    public static final String EXTRA_GENERIC_NAME = "com.fsck.k9";
+
+    public static final String EXTRA_ACCOUNT = EXTRA_GENERIC_NAME               +".ChooseFolder_account";
+    public static final String EXTRA_CUR_FOLDER = EXTRA_GENERIC_NAME            +".ChooseFolder_curfolder";
+    public static final String EXTRA_SEL_FOLDER = EXTRA_GENERIC_NAME            +".ChooseFolder_selfolder";
+    public static final String EXTRA_NEW_FOLDER = EXTRA_GENERIC_NAME            +".ChooseFolder_newfolder";
+    public static final String EXTRA_MESSAGE = EXTRA_GENERIC_NAME               +".ChooseFolder_message";
+    public static final String EXTRA_SHOW_CURRENT = EXTRA_GENERIC_NAME          +".ChooseFolder_showcurrent";
+    public static final String EXTRA_SHOW_FOLDER_NONE = EXTRA_GENERIC_NAME      +".ChooseFolder_showOptionNone";
+    public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = EXTRA_GENERIC_NAME +".ChooseFolder_showDisplayableOnly";
 
 
     String mFolder;

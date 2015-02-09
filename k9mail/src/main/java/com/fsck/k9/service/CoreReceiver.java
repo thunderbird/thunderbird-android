@@ -15,10 +15,10 @@ import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 
 public class CoreReceiver extends BroadcastReceiver {
+    public static final String GENERIC_STRING_NAME = "com.fsck.k9";
+    public static final String WAKE_LOCK_RELEASE =  GENERIC_STRING_NAME+    ".service.CoreReceiver.wakeLockRelease";
 
-    public static final String WAKE_LOCK_RELEASE = "com.fsck.k9.service.CoreReceiver.wakeLockRelease";
-
-    public static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreReceiver.wakeLockId";
+    public static final String WAKE_LOCK_ID = GENERIC_STRING_NAME+          ".service.CoreReceiver.wakeLockId";
 
     private static ConcurrentHashMap<Integer, TracingWakeLock> wakeLocks = new ConcurrentHashMap<Integer, TracingWakeLock>();
     private static AtomicInteger wakeLockSeq = new AtomicInteger(0);

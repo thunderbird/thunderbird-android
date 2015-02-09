@@ -134,12 +134,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int DIALOG_CHOOSE_IDENTITY = 4;
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
-
-    private static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
-    private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
-    private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
-    private static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
-    private static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
+    private static final String GENERIC_STRING_NAME = "com.fsck.k9";
+    private static final String ACTION_COMPOSE = GENERIC_STRING_NAME+   ".intent.action.COMPOSE";
+    private static final String ACTION_REPLY = GENERIC_STRING_NAME+     ".intent.action.REPLY";
+    private static final String ACTION_REPLY_ALL = GENERIC_STRING_NAME+ ".intent.action.REPLY_ALL";
+    private static final String ACTION_FORWARD = GENERIC_STRING_NAME+   ".intent.action.FORWARD";
+    private static final String ACTION_EDIT_DRAFT = GENERIC_STRING_NAME+".intent.action.EDIT_DRAFT";
 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MESSAGE_BODY  = "messageBody";
@@ -155,17 +155,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         "com.fsck.k9.activity.MessageCompose.QuotedTextShown";
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
         "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
-    private static final String STATE_KEY_DRAFT_ID = "com.fsck.k9.activity.MessageCompose.draftId";
-    private static final String STATE_KEY_HTML_QUOTE = "com.fsck.k9.activity.MessageCompose.HTMLQuote";
+    private static final String STATE_KEY_DRAFT_ID = GENERIC_STRING_NAME+   ".activity.MessageCompose.draftId";
+    private static final String STATE_KEY_HTML_QUOTE = GENERIC_STRING_NAME+ ".activity.MessageCompose.HTMLQuote";
     private static final String STATE_IDENTITY_CHANGED =
         "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
         "com.fsck.k9.activity.MessageCompose.identity";
     private static final String STATE_PGP_DATA = "pgpData";
-    private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
-    private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
-    private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
-    private static final String STATE_KEY_DRAFT_NEEDS_SAVING = "com.fsck.k9.activity.MessageCompose.mDraftNeedsSaving";
+    private static final String STATE_IN_REPLY_TO = GENERIC_STRING_NAME+        ".activity.MessageCompose.inReplyTo";
+    private static final String STATE_REFERENCES = GENERIC_STRING_NAME+         ".activity.MessageCompose.references";
+    private static final String STATE_KEY_READ_RECEIPT = GENERIC_STRING_NAME+   ".activity.MessageCompose.messageReadReceipt";
+    private static final String STATE_KEY_DRAFT_NEEDS_SAVING = GENERIC_STRING_NAME+".activity.MessageCompose.mDraftNeedsSaving";
     private static final String STATE_KEY_FORCE_PLAIN_TEXT =
             "com.fsck.k9.activity.MessageCompose.forcePlainText";
     private static final String STATE_KEY_QUOTED_TEXT_FORMAT =

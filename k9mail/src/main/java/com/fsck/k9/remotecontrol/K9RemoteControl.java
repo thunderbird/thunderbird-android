@@ -24,14 +24,15 @@ public class K9RemoteControl {
      * Permission that every application sending a broadcast to K-9 for Remote Control purposes should send on every broadcast.
      * Prevent other applications from intercepting the broadcasts.
      */
-    public final static String K9_REMOTE_CONTROL_PERMISSION = "com.fsck.k9.permission.REMOTE_CONTROL";
+    public final static String GENERIC_STRING_NAME = "com.fsck.k9";
+    public final static String K9_REMOTE_CONTROL_PERMISSION = GENERIC_STRING_NAME+".permission.REMOTE_CONTROL";
     /**
      * {@link Intent} Action to be sent to K-9 using {@link ContextWrapper.sendOrderedBroadcast} in order to fetch the list of configured Accounts.
      * The responseData will contain two String[] with keys K9_ACCOUNT_UUIDS and K9_ACCOUNT_DESCRIPTIONS
      */
-    public final static String K9_REQUEST_ACCOUNTS = "com.fsck.k9.K9RemoteControl.requestAccounts";
-    public final static String K9_ACCOUNT_UUIDS = "com.fsck.k9.K9RemoteControl.accountUuids";
-    public final static String K9_ACCOUNT_DESCRIPTIONS = "com.fsck.k9.K9RemoteControl.accountDescriptions";
+    public final static String K9_REQUEST_ACCOUNTS = GENERIC_STRING_NAME+   ".K9RemoteControl.requestAccounts";
+    public final static String K9_ACCOUNT_UUIDS = GENERIC_STRING_NAME+      ".K9RemoteControl.accountUuids";
+    public final static String K9_ACCOUNT_DESCRIPTIONS = GENERIC_STRING_NAME+".K9RemoteControl.accountDescriptions";
 
     /**
      * The {@link {@link Intent}} Action to set in order to cause K-9 to check mail.  (Not yet implemented)
@@ -41,17 +42,17 @@ public class K9RemoteControl {
     /**
      * The {@link {@link Intent}} Action to set when remotely changing K-9 Mail settings
      */
-    public final static String K9_SET = "com.fsck.k9.K9RemoteControl.set";
+    public final static String K9_SET = GENERIC_STRING_NAME+".K9RemoteControl.set";
     /**
      * The key of the {@link Intent} Extra to set to hold the UUID of a single Account's settings to change.  Used only if K9_ALL_ACCOUNTS
      * is absent or false.
      */
-    public final static String K9_ACCOUNT_UUID = "com.fsck.k9.K9RemoteControl.accountUuid";
+    public final static String K9_ACCOUNT_UUID = GENERIC_STRING_NAME+".K9RemoteControl.accountUuid";
     /**
      * The key of the {@link Intent} Extra to set to control if the settings will apply to all Accounts, or to the one
      * specified with K9_ACCOUNT_UUID
      */
-    public final static String K9_ALL_ACCOUNTS = "com.fsck.k9.K9RemoteControl.allAccounts";
+    public final static String K9_ALL_ACCOUNTS = GENERIC_STRING_NAME+".K9RemoteControl.allAccounts";
 
     public final static String K9_ENABLED = "true";
     public final static String K9_DISABLED = "false";

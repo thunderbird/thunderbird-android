@@ -339,18 +339,19 @@ public class K9 extends Application {
     public static class Intents {
 
         public static class EmailReceived {
-            public static final String ACTION_EMAIL_RECEIVED    = "com.fsck.k9.intent.action.EMAIL_RECEIVED";
-            public static final String ACTION_EMAIL_DELETED     = "com.fsck.k9.intent.action.EMAIL_DELETED";
-            public static final String ACTION_REFRESH_OBSERVER  = "com.fsck.k9.intent.action.REFRESH_OBSERVER";
-            public static final String EXTRA_ACCOUNT            = "com.fsck.k9.intent.extra.ACCOUNT";
-            public static final String EXTRA_FOLDER             = "com.fsck.k9.intent.extra.FOLDER";
-            public static final String EXTRA_SENT_DATE          = "com.fsck.k9.intent.extra.SENT_DATE";
-            public static final String EXTRA_FROM               = "com.fsck.k9.intent.extra.FROM";
-            public static final String EXTRA_TO                 = "com.fsck.k9.intent.extra.TO";
-            public static final String EXTRA_CC                 = "com.fsck.k9.intent.extra.CC";
-            public static final String EXTRA_BCC                = "com.fsck.k9.intent.extra.BCC";
-            public static final String EXTRA_SUBJECT            = "com.fsck.k9.intent.extra.SUBJECT";
-            public static final String EXTRA_FROM_SELF          = "com.fsck.k9.intent.extra.FROM_SELF";
+            public static final String GENERIC_PREFIX_STRING = "com.fsck.k9.intent";
+            public static final String ACTION_EMAIL_RECEIVED    = GENERIC_PREFIX_STRING +".action.EMAIL_RECEIVED";
+            public static final String ACTION_EMAIL_DELETED     = GENERIC_PREFIX_STRING +".action.EMAIL_DELETED";
+            public static final String ACTION_REFRESH_OBSERVER  = GENERIC_PREFIX_STRING +".action.REFRESH_OBSERVER";
+            public static final String EXTRA_ACCOUNT            = GENERIC_PREFIX_STRING +".extra.ACCOUNT";
+            public static final String EXTRA_FOLDER             = GENERIC_PREFIX_STRING +".extra.FOLDER";
+            public static final String EXTRA_SENT_DATE          = GENERIC_PREFIX_STRING +".extra.SENT_DATE";
+            public static final String EXTRA_FROM               = GENERIC_PREFIX_STRING +".extra.FROM";
+            public static final String EXTRA_TO                 = GENERIC_PREFIX_STRING +".extra.TO";
+            public static final String EXTRA_CC                 = GENERIC_PREFIX_STRING +".extra.CC";
+            public static final String EXTRA_BCC                = GENERIC_PREFIX_STRING +".extra.BCC";
+            public static final String EXTRA_SUBJECT            = GENERIC_PREFIX_STRING +".extra.SUBJECT";
+            public static final String EXTRA_FROM_SELF          = GENERIC_PREFIX_STRING +".extra.FROM_SELF";
         }
 
         public static class Share {

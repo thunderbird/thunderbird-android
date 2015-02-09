@@ -71,15 +71,15 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     // for this activity
     private static final String EXTRA_SEARCH = "search";
     private static final String EXTRA_NO_THREADING = "no_threading";
-
+    private static final String GENERIC_STRING_NAME = "com.fsck.k9";
     private static final String ACTION_SHORTCUT = "shortcut";
     private static final String EXTRA_SPECIAL_FOLDER = "special_folder";
 
     private static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
 
     // used for remote search
-    public static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
-    private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
+    public static final String EXTRA_SEARCH_ACCOUNT = GENERIC_STRING_NAME +".search_account";
+    private static final String EXTRA_SEARCH_FOLDER = GENERIC_STRING_NAME +".search_folder";
 
     private static final String STATE_DISPLAY_MODE = "displayMode";
     private static final String STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed";

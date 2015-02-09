@@ -20,14 +20,16 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Pusher;
 
 public class MailService extends CoreService {
-    private static final String ACTION_CHECK_MAIL = "com.fsck.k9.intent.action.MAIL_SERVICE_WAKEUP";
-    private static final String ACTION_RESET = "com.fsck.k9.intent.action.MAIL_SERVICE_RESET";
-    private static final String ACTION_RESCHEDULE_POLL = "com.fsck.k9.intent.action.MAIL_SERVICE_RESCHEDULE_POLL";
-    private static final String ACTION_CANCEL = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL";
-    private static final String ACTION_REFRESH_PUSHERS = "com.fsck.k9.intent.action.MAIL_SERVICE_REFRESH_PUSHERS";
-    private static final String ACTION_RESTART_PUSHERS = "com.fsck.k9.intent.action.MAIL_SERVICE_RESTART_PUSHERS";
-    private static final String CONNECTIVITY_CHANGE = "com.fsck.k9.intent.action.MAIL_SERVICE_CONNECTIVITY_CHANGE";
-    private static final String CANCEL_CONNECTIVITY_NOTICE = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
+    private static final String GENERIC_STRING_NAME = "com.fsck.k9";
+    private static final String GENERIC_STRING_NAME_MAIL_SERVICE = ".intent.action.MAIL_SERVICE_";
+    private static final String ACTION_CHECK_MAIL = GENERIC_STRING_NAME+            GENERIC_STRING_NAME_MAIL_SERVICE+   "WAKEUP";
+    private static final String ACTION_RESET = GENERIC_STRING_NAME+                 GENERIC_STRING_NAME_MAIL_SERVICE+   "RESET";
+    private static final String ACTION_RESCHEDULE_POLL = GENERIC_STRING_NAME+       GENERIC_STRING_NAME_MAIL_SERVICE+   "RESCHEDULE_POLL";
+    private static final String ACTION_CANCEL = GENERIC_STRING_NAME+                GENERIC_STRING_NAME_MAIL_SERVICE+   "CANCEL";
+    private static final String ACTION_REFRESH_PUSHERS = GENERIC_STRING_NAME+       GENERIC_STRING_NAME_MAIL_SERVICE+   "REFRESH_PUSHERS";
+    private static final String ACTION_RESTART_PUSHERS = GENERIC_STRING_NAME+       GENERIC_STRING_NAME_MAIL_SERVICE+   "RESTART_PUSHERS";
+    private static final String CONNECTIVITY_CHANGE = GENERIC_STRING_NAME+          GENERIC_STRING_NAME_MAIL_SERVICE+   "CONNECTIVITY_CHANGE";
+    private static final String CANCEL_CONNECTIVITY_NOTICE = GENERIC_STRING_NAME+   GENERIC_STRING_NAME_MAIL_SERVICE+   "CANCEL_CONNECTIVITY_NOTICE";
 
     private static long nextCheck = -1;
     private static boolean pushingRequested = false;
