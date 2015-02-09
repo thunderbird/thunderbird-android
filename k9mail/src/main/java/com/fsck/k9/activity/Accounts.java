@@ -91,8 +91,8 @@ import com.fsck.k9.preferences.SettingsImporter.ImportContents;
 import com.fsck.k9.preferences.SettingsImporter.ImportResults;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
+import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.view.ColorChip;
 
 import de.cketti.library.changelog.ChangeLog;
@@ -366,7 +366,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             realAccount.limitToDisplayableFolders(search);
         }
 
-        search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
+        search.and(SearchSpecification.SearchField.READ, "1", Attribute.NOT_EQUALS);
 
         return search;
     }
@@ -1864,7 +1864,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 realAccount.limitToDisplayableFolders(search);
             }
 
-            search.and(Searchfield.FLAGGED, "1", Attribute.EQUALS);
+            search.and(SearchSpecification.SearchField.FLAGGED, "1", Attribute.EQUALS);
 
             return new AccountClickListener(search);
         }

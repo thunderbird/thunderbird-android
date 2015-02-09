@@ -62,29 +62,38 @@ public interface SearchSpecification extends Parcelable {
      *      preview, mime_type
      *
      */
-    public enum Searchfield {
-        SUBJECT,
-        DATE,
-        UID,
-        FLAG,
-        SENDER,
-        TO,
-        CC,
-        FOLDER,
-        BCC,
-        REPLY_TO,
-        MESSAGE_CONTENTS,
-        ATTACHMENT_COUNT,
-        DELETED,
-        THREAD_ID,
-        ID,
-        INTEGRATE,
-        READ,
-        FLAGGED,
-        DISPLAY_CLASS,
-        SEARCHABLE
-    }
+    public enum SearchField {
+        SUBJECT("subject"),
+        DATE("date"),
+        UID("uid"),
+        FLAG("flags"),
+        SENDER("sender_list"),
+        TO("to_list"),
+        CC("cc_list"),
+        FOLDER(""),
+        BCC("bcc_list"),
+        REPLY_TO("reply_to_list"),
+        MESSAGE_CONTENTS("text_content"),
+        ATTACHMENT_COUNT("attachment_count"),
+        DELETED("deleted"),
+        THREAD_ID("threads.root"),
+        ID("id"),
+        INTEGRATE("integrate"),
+        READ("read"),
+        FLAGGED("flagged"),
+        DISPLAY_CLASS("display_class"),
+        SEARCHABLE("");
+        private String value;
 
+        SearchField(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+    }
 
     ///////////////////////////////////////////////////////////////
     // SearchCondition class
@@ -101,9 +110,9 @@ public interface SearchSpecification extends Parcelable {
     public class SearchCondition implements Parcelable {
         public final String value;
         public final Attribute attribute;
-        public final Searchfield field;
+        public final SearchField field;
 
-        public SearchCondition(Searchfield field, Attribute attribute, String value) {
+        public SearchCondition(SearchField field, Attribute attribute, String value) {
             this.value = value;
             this.attribute = attribute;
             this.field = field;
@@ -112,7 +121,7 @@ public interface SearchSpecification extends Parcelable {
         private SearchCondition(Parcel in) {
             this.value = in.readString();
             this.attribute = Attribute.values()[in.readInt()];
-            this.field = Searchfield.values()[in.readInt()];
+            this.field = SearchField.values()[in.readInt()];
         }
 
         @Override

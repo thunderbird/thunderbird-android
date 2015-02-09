@@ -9,7 +9,6 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
 
 
 public class SqlQueryBuilder {
@@ -110,85 +109,9 @@ public class SqlQueryBuilder {
 
     private static String getColumnName(SearchCondition condition) {
         String columnName = null;
-        switch (condition.field) {
-            case ATTACHMENT_COUNT: {
-                columnName = "attachment_count";
-                break;
-            }
-            case BCC: {
-                columnName = "bcc_list";
-                break;
-            }
-            case CC: {
-                columnName = "cc_list";
-                break;
-            }
-            case DATE: {
-                columnName = "date";
-                break;
-            }
-            case DELETED: {
-                columnName = "deleted";
-                break;
-            }
-            case FLAG: {
-                columnName = "flags";
-                break;
-            }
-            case ID: {
-                columnName = "id";
-                break;
-            }
-            case MESSAGE_CONTENTS: {
-                columnName = "text_content";
-                break;
-            }
-            case REPLY_TO: {
-                columnName = "reply_to_list";
-                break;
-            }
-            case SENDER: {
-                columnName = "sender_list";
-                break;
-            }
-            case SUBJECT: {
-                columnName = "subject";
-                break;
-            }
-            case TO: {
-                columnName = "to_list";
-                break;
-            }
-            case UID: {
-                columnName = "uid";
-                break;
-            }
-            case INTEGRATE: {
-                columnName = "integrate";
-                break;
-            }
-            case READ: {
-                columnName = "read";
-                break;
-            }
-            case FLAGGED: {
-                columnName = "flagged";
-                break;
-            }
-            case DISPLAY_CLASS: {
-                columnName = "display_class";
-                break;
-            }
-            case THREAD_ID: {
-                columnName = "threads.root";
-                break;
-            }
-            case FOLDER:
-            case SEARCHABLE: {
-                // Special cases handled in buildWhereClauseInternal()
-                break;
-            }
-        }
+
+        if(! (condition.field.equals(SearchSpecification.SearchField.FOLDER) || condition.field.equals(SearchSpecification.SearchField.SEARCHABLE)))
+            columnName = condition.field.getValue();
 
         if (columnName == null) {
             throw new RuntimeException("Unhandled case");
@@ -200,7 +123,7 @@ public class SqlQueryBuilder {
     private static void appendExprRight(SearchCondition condition, StringBuilder query,
             List<String> selectionArgs) {
         String value = condition.value;
-        Searchfield field = condition.field;
+        SearchSpecification.SearchField field = condition.field;
 
         query.append(" ");
         String selectionArg = null;
@@ -256,7 +179,7 @@ public class SqlQueryBuilder {
         selectionArgs.add(selectionArg);
     }
 
-    private static boolean isNumberColumn(Searchfield field) {
+    private static boolean isNumberColumn(SearchSpecification.SearchField field) {
         switch (field) {
             case ATTACHMENT_COUNT:
             case DATE:
