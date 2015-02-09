@@ -18,7 +18,7 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:background="@drawable/selectable_item_background"
             android:text="@string/settings_import" />
 
