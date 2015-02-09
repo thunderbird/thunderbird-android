@@ -87,7 +87,7 @@ public class MessageCryptoHelper {
             partsToDecryptOrVerify.addAll(encryptedParts);
             partsToDecryptOrVerify.addAll(signedParts);
             partsToDecryptOrVerify.addAll(inlineParts);
-            decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
+            decryptOrVerifyNextPart();
         } else {
             returnResultToFragment();
         }
@@ -97,7 +97,7 @@ public class MessageCryptoHelper {
         return !TextUtils.isEmpty(account.getCryptoApp());
     }
 
-    private void decryptOrVerifyNextPartOrStartExtractingTextAndAttachments() {
+    private void decryptOrVerifyNextPart() {
         if (partsToDecryptOrVerify.isEmpty()) {
             returnResultToFragment();
             return;
@@ -115,7 +115,7 @@ public class MessageCryptoHelper {
             startDecryptingOrVerifyingPart(part);
         } else {
             partsToDecryptOrVerify.removeFirst();
-            decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
+            decryptOrVerifyNextPart();
         }
     }
 
@@ -139,7 +139,7 @@ public class MessageCryptoHelper {
                     public void onBound(IOpenPgpService service) {
                         openPgpApi = new OpenPgpApi(fragment.getContext(), service);
 
-                        decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
+                        decryptOrVerifyNextPart();
                     }
 
                     @Override
@@ -387,7 +387,7 @@ public class MessageCryptoHelper {
 
     public void handleCryptoResult(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
+            decryptOrVerifyNextPart();
         } else {
             // FIXME: don't pass null
             onCryptoFailed(null);
@@ -412,7 +412,7 @@ public class MessageCryptoHelper {
 
     private void onCryptoFinished() {
         partsToDecryptOrVerify.removeFirst();
-        decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
+        decryptOrVerifyNextPart();
     }
 
     private void returnResultToFragment() {
