@@ -21,7 +21,7 @@ import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.provider.K9FileProvider;
-import com.fsck.k9.ui.crypto.MessageCryptoHelper.MessageCryptoAnnotations;
+import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
