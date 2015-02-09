@@ -22,7 +22,6 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
-import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.helper.IdentityHelper;
@@ -47,6 +46,9 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
 public class MessageCryptoHelper {
+    private static final int REQUEST_CODE_CRYPTO = 1000;
+    private static final int INVALID_OPENPGP_RESULT_CODE = -1;
+
 
     private final Context context;
     private final Activity activity;
@@ -61,7 +63,6 @@ public class MessageCryptoHelper {
 
     private MessageCryptoAnnotations messageAnnotations;
 
-    private static final int INVALID_OPENPGP_RESULT_CODE = -1;
 
     public MessageCryptoHelper(Activity activity, Account account, MessageCryptoCallback callback) {
         this.context = activity.getApplicationContext();
@@ -343,7 +344,7 @@ public class MessageCryptoHelper {
 
                     try {
                         activity.startIntentSenderForResult(pendingIntent.getIntentSender(),
-                                MessageList.REQUEST_CODE_CRYPTO, null, 0, 0, 0);
+                                REQUEST_CODE_CRYPTO, null, 0, 0, 0);
                     } catch (SendIntentException e) {
                         Log.e(K9.LOG_TAG, "Internal error on starting pendingintent!", e);
                     }
@@ -385,7 +386,11 @@ public class MessageCryptoHelper {
         }
     }
 
-    public void handleCryptoResult(int resultCode, Intent data) {
+    public void handleCryptoResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != REQUEST_CODE_CRYPTO) {
+            return;
+        }
+
         if (resultCode == Activity.RESULT_OK) {
             decryptOrVerifyNextPart();
         } else {

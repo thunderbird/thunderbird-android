@@ -87,7 +87,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
 
-    public static final int REQUEST_CODE_CRYPTO = 1;
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
@@ -1563,13 +1562,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case REQUEST_CODE_CRYPTO:
-                mMessageViewFragment.handleCryptoResult(resultCode, data);
-                break;
+        if (mMessageViewFragment != null) {
+            mMessageViewFragment.handleCryptoResult(requestCode, resultCode, data);
         }
-
     }
-    
-    
 }

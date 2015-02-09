@@ -215,8 +215,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         mFragmentListener.updateMenu();
     }
 
-    public void handleCryptoResult(int resultCode, Intent data) {
-        messageCryptoHelper.handleCryptoResult(resultCode, data);
+    public void handleCryptoResult(int requestCode, int resultCode, Intent data) {
+        if (messageCryptoHelper != null) {
+            messageCryptoHelper.handleCryptoResult(requestCode, resultCode, data);
+        }
     }
 
     private void startLoadingMessageFromDatabase() {
