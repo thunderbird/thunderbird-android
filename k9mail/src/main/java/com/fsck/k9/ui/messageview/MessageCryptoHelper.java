@@ -98,28 +98,25 @@ public class MessageCryptoHelper {
     }
 
     private void decryptOrVerifyNextPartOrStartExtractingTextAndAttachments() {
-        if (!partsToDecryptOrVerify.isEmpty()) {
-
-            Part part = partsToDecryptOrVerify.peekFirst();
-            if ("text/plain".equalsIgnoreCase(part.getMimeType())) {
-                startDecryptingOrVerifyingPart(part);
-            } else if (MessageDecryptVerifier.isPgpMimePart(part)) {
-                Multipart multipart = (Multipart) part.getBody();
-                if (multipart == null) {
-                    throw new RuntimeException("Downloading missing parts before decryption isn't supported yet");
-                }
-
-                startDecryptingOrVerifyingPart(part);
-            } else {
-                partsToDecryptOrVerify.removeFirst();
-                decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
-            }
-
+        if (partsToDecryptOrVerify.isEmpty()) {
+            returnResultToFragment();
             return;
         }
 
-        returnResultToFragment();
+        Part part = partsToDecryptOrVerify.peekFirst();
+        if ("text/plain".equalsIgnoreCase(part.getMimeType())) {
+            startDecryptingOrVerifyingPart(part);
+        } else if (MessageDecryptVerifier.isPgpMimePart(part)) {
+            Multipart multipart = (Multipart) part.getBody();
+            if (multipart == null) {
+                throw new RuntimeException("Downloading missing parts before decryption isn't supported yet");
+            }
 
+            startDecryptingOrVerifyingPart(part);
+        } else {
+            partsToDecryptOrVerify.removeFirst();
+            decryptOrVerifyNextPartOrStartExtractingTextAndAttachments();
+        }
     }
 
     private void startDecryptingOrVerifyingPart(Part part) {
