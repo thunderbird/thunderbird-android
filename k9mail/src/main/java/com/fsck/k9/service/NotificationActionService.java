@@ -19,10 +19,12 @@ import android.content.Intent;
 import android.util.Log;
 
 public class NotificationActionService extends CoreService {
-    private final static String REPLY_ACTION = "com.fsck.k9.service.NotificationActionService.REPLY_ACTION";
-    private final static String READ_ALL_ACTION = "com.fsck.k9.service.NotificationActionService.READ_ALL_ACTION";
-    private final static String DELETE_ALL_ACTION = "com.fsck.k9.service.NotificationActionService.DELETE_ALL_ACTION";
-    private final static String ACKNOWLEDGE_ACTION = "com.fsck.k9.service.NotificationActionService.ACKNOWLEDGE_ACTION";
+    private static final String GENERIC_STRING_NAME = "com.fsck.k9";
+    private static final String GENERIC_NOTIFICATION_NAME = ".service.NotificationActionService.";
+    private final static String REPLY_ACTION =          GENERIC_STRING_NAME + GENERIC_NOTIFICATION_NAME  + "REPLY_ACTION";
+    private final static String READ_ALL_ACTION =       GENERIC_STRING_NAME + GENERIC_NOTIFICATION_NAME  + "READ_ALL_ACTION";
+    private final static String DELETE_ALL_ACTION =     GENERIC_STRING_NAME + GENERIC_NOTIFICATION_NAME  + "DELETE_ALL_ACTION";
+    private final static String ACKNOWLEDGE_ACTION =    GENERIC_STRING_NAME + GENERIC_NOTIFICATION_NAME  + "ACKNOWLEDGE_ACTION";
 
     private final static String EXTRA_ACCOUNT = "account";
     private final static String EXTRA_MESSAGE = "message";

@@ -14,13 +14,14 @@ import android.util.Log;
 import com.fsck.k9.K9;
 
 public class BootReceiver extends CoreReceiver {
+    public static final String GENERIC_STRING_NAME = "com.fsck.k9";
+    public static final String GENERIC_BROADCAST_NAME = ".service.BroadcastReceiver.";
+    public static final String FIRE_INTENT =    GENERIC_STRING_NAME +  GENERIC_BROADCAST_NAME  +"fireIntent";
+    public static final String SCHEDULE_INTENT =GENERIC_STRING_NAME +  GENERIC_BROADCAST_NAME  +"scheduleIntent";
+    public static final String CANCEL_INTENT =  GENERIC_STRING_NAME +  GENERIC_BROADCAST_NAME  +"cancelIntent";
 
-    public static final String FIRE_INTENT = "com.fsck.k9.service.BroadcastReceiver.fireIntent";
-    public static final String SCHEDULE_INTENT = "com.fsck.k9.service.BroadcastReceiver.scheduleIntent";
-    public static final String CANCEL_INTENT = "com.fsck.k9.service.BroadcastReceiver.cancelIntent";
-
-    public static final String ALARMED_INTENT = "com.fsck.k9.service.BroadcastReceiver.pendingIntent";
-    public static final String AT_TIME = "com.fsck.k9.service.BroadcastReceiver.atTime";
+    public static final String ALARMED_INTENT = GENERIC_STRING_NAME +   GENERIC_BROADCAST_NAME  +"pendingIntent";
+    public static final String AT_TIME =        GENERIC_STRING_NAME +   GENERIC_BROADCAST_NAME  +"atTime";
 
     @Override
     public Integer receive(Context context, Intent intent, Integer tmpWakeLockId) {

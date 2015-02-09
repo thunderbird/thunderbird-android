@@ -20,6 +20,8 @@ import android.widget.Toast;
 import java.util.List;
 
 public class RemoteControlService extends CoreService {
+    private final static String GENERIC_STRING_NAME = "com.fsck.k9";
+    private final static String GENERIC_REMOTE_CONTROL_NAME = GENERIC_STRING_NAME  + ".service.RemoteControlService.";
     private final static String RESCHEDULE_ACTION = "com.fsck.k9.service.RemoteControlService.RESCHEDULE_ACTION";
     private final static String PUSH_RESTART_ACTION = "com.fsck.k9.service.RemoteControlService.PUSH_RESTART_ACTION";
 

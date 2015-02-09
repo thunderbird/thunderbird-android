@@ -1194,10 +1194,10 @@ public class Account implements BaseAccount, StoreConfig {
         FolderMode oldSyncMode = mFolderSyncMode;
         mFolderSyncMode = syncMode;
 
-        if (syncMode == FolderMode.NONE && oldSyncMode != FolderMode.NONE) {
+        if (syncMode == FolderMode.NONE && oldSyncMode != syncMode) {
             return true;
         }
-        if (syncMode != FolderMode.NONE && oldSyncMode == FolderMode.NONE) {
+        if (syncMode != oldSyncMode && oldSyncMode == FolderMode.NONE) {
             return true;
         }
         return false;
