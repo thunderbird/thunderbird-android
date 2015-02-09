@@ -178,7 +178,6 @@ public class MessageCryptoHelper {
     }
 
     private void callAsyncInlineOperation(Intent intent) throws IOException {
-        final CountDownLatch latch = new CountDownLatch(1);
         PipedInputStream pipedInputStream = getPipedInputStreamForEncryptedOrInlineData();
         final ByteArrayOutputStream decryptedOutputStream = new ByteArrayOutputStream();
 
