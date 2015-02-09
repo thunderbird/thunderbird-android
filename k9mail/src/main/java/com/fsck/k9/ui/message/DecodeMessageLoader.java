@@ -9,7 +9,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessageExtractor;
 import com.fsck.k9.mailstore.MessageViewInfo;
-import com.fsck.k9.ui.messageview.MessageCryptoHelper.MessageCryptoAnnotations;
+import com.fsck.k9.ui.crypto.MessageCryptoHelper.MessageCryptoAnnotations;
 
 
 public class DecodeMessageLoader extends AsyncTaskLoader<MessageViewInfo> {

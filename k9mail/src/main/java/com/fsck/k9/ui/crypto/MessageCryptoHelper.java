@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.messageview;
+package com.fsck.k9.ui.crypto;
 
 
 import java.io.ByteArrayOutputStream;
@@ -38,7 +38,6 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.DecryptStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
-import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import org.openintents.openpgp.IOpenPgpService;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
