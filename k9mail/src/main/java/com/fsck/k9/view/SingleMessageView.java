@@ -534,10 +534,12 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         if (text == null) {
             Log.i("PGP/MIME View", "SingleMessage entry point");
             text = message.getTextForDisplay();
+            //#####PGP/MIME insertion
             if(mCryptoView!=null) mCryptoView.setmPGPMIMEText(text);
             else{
                 Log.e("PGP/MIME","mCryptoview is null but catched.");
             }
+            //#####insertion end
         }
 
         // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
@@ -573,7 +575,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
             onShowMessage();
         }
 
-        if (text != null && mCryptoView!=null && !mCryptoView.pIsMime() && lookForImages) {
+        if (text != null && lookForImages) {
             // If the message contains external pictures and the "Show pictures"
             // button wasn't already pressed, see if the user's preferences has us
             // showing them anyway.
@@ -592,8 +594,13 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
         }
 
         if (text != null) {
+            loadBodyFromText(text);
+            mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
+                    pgpData.getSignatureResult(), message);
+
+            /* ##### PGP/MIME insertion
             Log.i("SingleMessageView", "loadBodyFromText.... " + text);
-            if ((pgpData != null) && (pgpData.getDecryptedData() != null) && (mCryptoView.pIsMime())) {
+            if ((pgpData != null) && (pgpData.getDecryptedData() != null) && (mCryptoView!= null) && (mCryptoView.pIsMime())) {
                 Log.i("SingleMessageView", "pgp/mime trying to replace the local message");
                 mCryptoView.setIsMime(false);
 
@@ -721,6 +728,7 @@ public class SingleMessageView extends LinearLayout implements OnClickListener,
                 mOpenPgpView.updateLayout(account, pgpData.getDecryptedData(),
                         pgpData.getSignatureResult(), message);
             }
+        ##### insertion ende */
         } else {
             Log.i("SingleMessageView", "showingStatusMessage.... ");
             showStatusMessage(getContext().getString(R.string.webview_empty_message));
