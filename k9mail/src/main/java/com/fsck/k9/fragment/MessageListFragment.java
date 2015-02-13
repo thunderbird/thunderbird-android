@@ -2285,11 +2285,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             mSelectedCount += selectedCountDelta;
         }
 
-        computeBatchDirection();
-        updateActionModeTitle();
-
         // make sure the onPrepareActionMode is called
         mActionMode.invalidate();
+
+        computeBatchDirection();
+        updateActionModeTitle();
 
         computeSelectAllVisibility();
 
