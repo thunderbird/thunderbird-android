@@ -1,6 +1,7 @@
 package com.fsck.k9.endtoend;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.runner.AndroidJUnit4;
@@ -11,6 +12,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.endtoend.framework.ApplicationState;
 import com.fsck.k9.endtoend.framework.StubMailServer;
 import com.fsck.k9.endtoend.pages.WelcomeMessagePage;
+import de.cketti.library.changelog.ChangeLog;
 import junit.framework.AssertionFailedError;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -50,6 +52,8 @@ public abstract class AbstractEndToEndTest<T extends Activity> extends ActivityI
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
 
+        skipChangeLogDialog();
+
         getActivity();
 
         if (bypassWelcome) {
@@ -61,6 +65,11 @@ public abstract class AbstractEndToEndTest<T extends Activity> extends ActivityI
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    private void skipChangeLogDialog() {
+        Context context = getInstrumentation().getTargetContext();
+        new ChangeLog(context).skipLogDialog();
     }
 
     private void bypassWelcomeScreen() {
