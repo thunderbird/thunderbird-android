@@ -42,6 +42,7 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.preferences.DeletePolicy;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
@@ -323,11 +324,9 @@ public class AccountSetupBasics extends K9Activity
 
             setupFolderNames(incomingUriTemplate.getHost().toLowerCase(Locale.US));
 
-            if (incomingUri.toString().startsWith("imap")) {
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
-            } else if (incomingUri.toString().startsWith("pop3")) {
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
-            }
+            ServerSettings incomingSettings = RemoteStore.decodeStoreUri(incomingUri.toString());
+            mAccount.setDeletePolicy(DeletePolicy.calculateDefaultDeletePolicy(incomingSettings, mAccount));
+
             // Check incoming here.  Then check outgoing in onActivityResult()
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
         } catch (URISyntaxException use) {
