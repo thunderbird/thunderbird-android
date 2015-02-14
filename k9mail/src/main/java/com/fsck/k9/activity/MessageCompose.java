@@ -286,6 +286,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private boolean mForcePlainText = false;
 
     private Button mChooseIdentityButton;
+    private View mChooseIdentityChip;
     private LinearLayout mCcWrapper;
     private LinearLayout mBccWrapper;
     private MultiAutoCompleteTextView mToView;
@@ -571,10 +572,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         mChooseIdentityButton = (Button) findViewById(R.id.identity);
         mChooseIdentityButton.setOnClickListener(this);
+        mChooseIdentityChip = findViewById(R.id.chip);
 
         if (mAccount.getIdentities().size() == 1 &&
                 Preferences.getPreferences(this).getAvailableAccounts().size() == 1) {
-            mChooseIdentityButton.setVisibility(View.GONE);
+            View IdentityContainer = findViewById(R.id.identity_container);
+            IdentityContainer.setVisibility(View.GONE);
         }
 
         mToView = (MultiAutoCompleteTextView) findViewById(R.id.to);
@@ -2305,6 +2308,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void updateFrom() {
         mChooseIdentityButton.setText(mIdentity.getEmail());
+        mChooseIdentityChip.setBackgroundColor(mAccount.getChipColor());
     }
 
     private void updateBcc() {
