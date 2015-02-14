@@ -14,7 +14,7 @@ import com.fsck.k9.mail.store.webdav.WebDavStore;
  */
 public class DeletePolicy {
 
-    public static int calculateDefaultDeletePolicy(ServerSettings settings, Account account) {
+    public static int calculateDefaultDeletePolicy(ServerSettings settings) {
 
         if (ImapStore.STORE_TYPE.equals(settings.type)) {
             return Account.DELETE_POLICY_ON_DELETE;

@@ -325,7 +325,7 @@ public class AccountSetupBasics extends K9Activity
             setupFolderNames(incomingUriTemplate.getHost().toLowerCase(Locale.US));
 
             ServerSettings incomingSettings = RemoteStore.decodeStoreUri(incomingUri.toString());
-            mAccount.setDeletePolicy(DeletePolicy.calculateDefaultDeletePolicy(incomingSettings, mAccount));
+            mAccount.setDeletePolicy(DeletePolicy.calculateDefaultDeletePolicy(incomingSettings));
 
             // Check incoming here.  Then check outgoing in onActivityResult()
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
