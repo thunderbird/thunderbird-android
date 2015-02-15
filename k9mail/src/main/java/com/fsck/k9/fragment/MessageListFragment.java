@@ -2072,7 +2072,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
 
             if (holder.from != null ) {
-                holder.from.setTypeface(Typeface.create(holder.from.getTypeface(), maybeBoldTypeface));
+                holder.from.setTypeface(holder.from.getTypeface(), maybeBoldTypeface);
                 if (mSenderAboveSubject) {
                     holder.from.setCompoundDrawablesWithIntrinsicBounds(
                             statusHolder, // left
@@ -2095,7 +2095,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                             null); // bottom
                 }
 
-                holder.subject.setTypeface(Typeface.create(holder.subject.getTypeface(), maybeBoldTypeface));
+                holder.subject.setTypeface(holder.subject.getTypeface(), maybeBoldTypeface);
                 holder.subject.setText(subject);
             }
 
