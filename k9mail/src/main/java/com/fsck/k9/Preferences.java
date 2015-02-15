@@ -165,16 +165,15 @@ public class Preferences {
         return mStorage;
     }
 
-    public static <T extends Enum<T>> T getEnumStringPref(SharedPreferences prefs, String key, Enum<T> defaultEnum) {
+    public static <T extends Enum<T>> T getEnumStringPref(SharedPreferences prefs, String key, T defaultEnum) {
         String stringPref = prefs.getString(key, defaultEnum.name());
         try {
             return Enum.valueOf(defaultEnum.getDeclaringClass(), stringPref);
         } catch (Exception ex) {
             Log.w(K9.LOG_TAG, "Unable to convert preference key [" + key +
-                    "] value [" + stringPref + "] to enum of type " + defaultEnum.getDeclaringClass());
+                    "] value [" + stringPref + "] to enum of type " + defaultEnum.getDeclaringClass(), ex);
 
-            // TODO This should be simple, why can't we just return defaultEnum?
-            return Enum.valueOf(defaultEnum.getDeclaringClass(), defaultEnum.name());
+            return defaultEnum;
         }
     }
 
