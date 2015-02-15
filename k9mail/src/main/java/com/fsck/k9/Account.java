@@ -101,7 +101,6 @@ public class Account implements BaseAccount, StoreConfig {
         TYPE_MOBILE,
         TYPE_OTHER
     }
-    private static final NetworkType[] networkTypes = { NetworkType.TYPE_WIFI, NetworkType.TYPE_MOBILE, NetworkType.TYPE_OTHER };
 
     public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
     public static final boolean DEFAULT_MESSAGE_FORMAT_AUTO = false;
@@ -428,7 +427,7 @@ public class Account implements BaseAccount, StoreConfig {
         mDefaultQuotedTextShown = prefs.getBoolean(mUuid + ".defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN);
         mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
         mStripSignature = prefs.getBoolean(mUuid + ".stripSignature", DEFAULT_STRIP_SIGNATURE);
-        for (NetworkType type : networkTypes) {
+        for (NetworkType type : NetworkType.values()) {
             Boolean useCompression = prefs.getBoolean(mUuid + ".useCompression." + type,
                                      true);
             compressionMap.put(type, useCompression);
@@ -571,7 +570,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".messageFormat");
         editor.remove(mUuid + ".messageReadReceipt");
         editor.remove(mUuid + ".notifyMailCheck");
-        for (NetworkType type : networkTypes) {
+        for (NetworkType type : NetworkType.values()) {
             editor.remove(mUuid + ".useCompression." + type.name());
         }
         deleteIdentities(preferences.getPreferences(), editor);
@@ -745,7 +744,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".led", mNotificationSetting.isLed());
         editor.putInt(mUuid + ".ledColor", mNotificationSetting.getLedColor());
 
-        for (NetworkType type : networkTypes) {
+        for (NetworkType type : NetworkType.values()) {
             Boolean useCompression = compressionMap.get(type);
             if (useCompression != null) {
                 editor.putBoolean(mUuid + ".useCompression." + type, useCompression);
