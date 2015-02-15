@@ -56,7 +56,7 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
             ));
         s.put("deletePolicy", Settings.versions(
-                new V(1, new DeletePolicySetting(Account.DELETE_POLICY_NEVER))
+                new V(1, new DeletePolicySetting(Account.DeletePolicy.DELETE_POLICY_NEVER))
             ));
         s.put("displayCount", Settings.versions(
                 new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
@@ -66,7 +66,8 @@ public class AccountSettings {
                 new V(1, new StringSetting("Drafts"))
             ));
         s.put("expungePolicy", Settings.versions(
-                new V(1, new StringResourceSetting(Account.EXPUNGE_IMMEDIATELY,
+                // Formerly a String, converted to an enum
+                new V(1, new StringResourceSetting(Account.Expunge.EXPUNGE_IMMEDIATELY.name(),
                         R.array.account_setup_expunge_policy_values))
             ));
         s.put("folderDisplayMode", Settings.versions(
@@ -365,16 +366,18 @@ public class AccountSettings {
 
     /**
      * The delete policy setting.
+     *
+     * Formerly an int, converted to an enum.
      */
     public static class DeletePolicySetting extends PseudoEnumSetting<Integer> {
         private Map<Integer, String> mMapping;
 
-        public DeletePolicySetting(int defaultValue) {
+        public DeletePolicySetting(Account.DeletePolicy defaultValue) {
             super(defaultValue);
             Map<Integer, String> mapping = new HashMap<Integer, String>();
-            mapping.put(Account.DELETE_POLICY_NEVER, "NEVER");
-            mapping.put(Account.DELETE_POLICY_ON_DELETE, "DELETE");
-            mapping.put(Account.DELETE_POLICY_MARK_AS_READ, "MARK_AS_READ");
+            mapping.put(Account.DeletePolicy.DELETE_POLICY_NEVER.setting, "NEVER");
+            mapping.put(Account.DeletePolicy.DELETE_POLICY_ON_DELETE.setting, "DELETE");
+            mapping.put(Account.DeletePolicy.DELETE_POLICY_MARK_AS_READ.setting, "MARK_AS_READ");
             mMapping = Collections.unmodifiableMap(mapping);
         }
 

@@ -331,9 +331,9 @@ public class AccountSetupBasics extends K9Activity
             }
             mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
             if (incomingUri.toString().startsWith("imap")) {
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
+                mAccount.setDeletePolicy(Account.DeletePolicy.DELETE_POLICY_ON_DELETE);
             } else if (incomingUri.toString().startsWith("pop3")) {
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
+                mAccount.setDeletePolicy(Account.DeletePolicy.DELETE_POLICY_NEVER);
             }
             // Check incoming here.  Then check outgoing in onActivityResult()
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);

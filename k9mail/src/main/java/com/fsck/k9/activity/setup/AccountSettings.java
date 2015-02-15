@@ -353,9 +353,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mDeletePolicy = (ListPreference) findPreference(PREFERENCE_DELETE_POLICY);
         if (!mIsSeenFlagSupported) {
-            removeListEntry(mDeletePolicy, Integer.toString(Account.DELETE_POLICY_MARK_AS_READ));
+            removeListEntry(mDeletePolicy, Account.DeletePolicy.DELETE_POLICY_MARK_AS_READ.preferenceString());
         }
-        mDeletePolicy.setValue(Integer.toString(mAccount.getDeletePolicy()));
+        mDeletePolicy.setValue(mAccount.getDeletePolicy().preferenceString());
         mDeletePolicy.setSummary(mDeletePolicy.getEntry());
         mDeletePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -370,7 +370,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mExpungePolicy = (ListPreference) findPreference(PREFERENCE_EXPUNGE_POLICY);
         if (mIsExpungeCapable) {
-            mExpungePolicy.setValue(mAccount.getExpungePolicy());
+            mExpungePolicy.setValue(mAccount.getExpungePolicy().name());
             mExpungePolicy.setSummary(mExpungePolicy.getEntry());
             mExpungePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -743,9 +743,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
-        mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
+        mAccount.setDeletePolicy(Account.DeletePolicy.fromInt(Integer.parseInt(mDeletePolicy.getValue())));
         if (mIsExpungeCapable) {
-            mAccount.setExpungePolicy(mExpungePolicy.getValue());
+            mAccount.setExpungePolicy(Account.Expunge.valueOf(mExpungePolicy.getValue()));
         }
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));

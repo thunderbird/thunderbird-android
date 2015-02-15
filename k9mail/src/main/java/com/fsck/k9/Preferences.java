@@ -164,4 +164,15 @@ public class Preferences {
     public SharedPreferences getPreferences() {
         return mStorage;
     }
+
+    public static <T extends Enum<T>> T getEnumStringPref(SharedPreferences prefs, String key, Enum<T> defaultEnum) {
+        String stringPref = prefs.getString(key, defaultEnum.name());
+        try {
+            return Enum.valueOf(defaultEnum.getDeclaringClass(), stringPref);
+        } catch (Exception ex) {
+            // TODO This should be simple, why can't we just return defaultEnum?
+            return Enum.valueOf(defaultEnum.getDeclaringClass(), defaultEnum.name());
+        }
+    }
+
 }

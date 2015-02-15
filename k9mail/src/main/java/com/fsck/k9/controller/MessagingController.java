@@ -1007,7 +1007,7 @@ public class MessagingController implements Runnable {
                     Log.v(K9.LOG_TAG, "SYNC: About to open remote folder " + folder);
 
                 remoteFolder.open(Folder.OPEN_MODE_RW);
-                if (Account.EXPUNGE_ON_POLL.equals(account.getExpungePolicy())) {
+                if (Account.Expunge.EXPUNGE_ON_POLL.equals(account.getExpungePolicy())) {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
                     remoteFolder.expunge();
@@ -2124,7 +2124,7 @@ public class MessagingController implements Runnable {
                     }
                     if (remoteDate != null) {
                         remoteMessage.setFlag(Flag.DELETED, true);
-                        if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
+                        if (Account.Expunge.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
                             remoteFolder.expunge();
                         }
                     }
@@ -2301,7 +2301,7 @@ public class MessagingController implements Runnable {
                     remoteUidMap = remoteSrcFolder.moveMessages(messages, remoteDestFolder);
                 }
             }
-            if (!isCopy && Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
+            if (!isCopy && Account.Expunge.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "processingPendingMoveOrCopy expunging folder " + account.getDescription() + ":" + srcFolder);
 
@@ -4088,14 +4088,14 @@ public class MessagingController implements Runnable {
                     queuePendingCommand(account, command);
                 }
                 processPendingCommands(account);
-            } else if (account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE) {
+            } else if (account.getDeletePolicy() == Account.DeletePolicy.DELETE_POLICY_ON_DELETE) {
                 if (folder.equals(account.getTrashFolderName())) {
                     queueSetFlag(account, folder, Boolean.toString(true), Flag.DELETED.toString(), uids);
                 } else {
                     queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids, uidMap);
                 }
                 processPendingCommands(account);
-            } else if (account.getDeletePolicy() == Account.DELETE_POLICY_MARK_AS_READ) {
+            } else if (account.getDeletePolicy() == Account.DeletePolicy.DELETE_POLICY_MARK_AS_READ) {
                 queueSetFlag(account, folder, Boolean.toString(true), Flag.SEEN.toString(), uids);
                 processPendingCommands(account);
             } else {
@@ -4133,7 +4133,7 @@ public class MessagingController implements Runnable {
             if (remoteFolder.exists()) {
                 remoteFolder.open(Folder.OPEN_MODE_RW);
                 remoteFolder.setFlags(Collections.singleton(Flag.DELETED), true);
-                if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
+                if (Account.Expunge.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
                     remoteFolder.expunge();
                 }
 
