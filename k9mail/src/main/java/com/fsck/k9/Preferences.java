@@ -170,6 +170,9 @@ public class Preferences {
         try {
             return Enum.valueOf(defaultEnum.getDeclaringClass(), stringPref);
         } catch (Exception ex) {
+            Log.w(K9.LOG_TAG, "Unable to convert preference key [" + key +
+                    "] value [" + stringPref + "] to enum of type " + defaultEnum.getDeclaringClass());
+
             // TODO This should be simple, why can't we just return defaultEnum?
             return Enum.valueOf(defaultEnum.getDeclaringClass(), defaultEnum.name());
         }

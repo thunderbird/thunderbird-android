@@ -440,21 +440,11 @@ public class Account implements BaseAccount, StoreConfig {
 
         mChipColor = prefs.getInt(mUuid + ".chipColor", ColorPicker.getRandomColor());
 
-        try {
-            mSortType = SortType.valueOf(prefs.getString(mUuid + ".sortTypeEnum",
-                                                 SortType.SORT_DATE.name()));
-        } catch (Exception e) {
-            mSortType = SortType.SORT_DATE;
-        }
+        mSortType = getEnumStringPref(prefs, mUuid + ".sortTypeEnum", SortType.SORT_DATE);
 
         mSortAscending.put(mSortType, prefs.getBoolean(mUuid + ".sortAscending", false));
 
-        try {
-            mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
-                                                 ShowPictures.NEVER.name()));
-        } catch (Exception e) {
-            mShowPictures = ShowPictures.NEVER;
-        }
+        mShowPictures = getEnumStringPref(prefs, mUuid + ".showPicturesEnum",ShowPictures.NEVER);
 
         mNotificationSetting.setVibrate(prefs.getBoolean(mUuid + ".vibrate", false));
         mNotificationSetting.setVibratePattern(prefs.getInt(mUuid + ".vibratePattern", 0));
@@ -465,40 +455,15 @@ public class Account implements BaseAccount, StoreConfig {
         mNotificationSetting.setLed(prefs.getBoolean(mUuid + ".led", true));
         mNotificationSetting.setLedColor(prefs.getInt(mUuid + ".ledColor", mChipColor));
 
-        try {
-            mFolderDisplayMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderDisplayMode",
-                                                    FolderMode.NOT_SECOND_CLASS.name()));
-        } catch (Exception e) {
-            mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
-        }
+        mFolderDisplayMode = getEnumStringPref(prefs, mUuid  + ".folderDisplayMode", FolderMode.NOT_SECOND_CLASS);
 
-        try {
-            mFolderSyncMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderSyncMode",
-                                                 FolderMode.FIRST_CLASS.name()));
-        } catch (Exception e) {
-            mFolderSyncMode = FolderMode.FIRST_CLASS;
-        }
+        mFolderSyncMode = getEnumStringPref(prefs, mUuid  + ".folderSyncMode", FolderMode.FIRST_CLASS);
 
-        try {
-            mFolderPushMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderPushMode",
-                                                 FolderMode.FIRST_CLASS.name()));
-        } catch (Exception e) {
-            mFolderPushMode = FolderMode.FIRST_CLASS;
-        }
+        mFolderPushMode = getEnumStringPref(prefs, mUuid  + ".folderPushMode", FolderMode.FIRST_CLASS);
 
-        try {
-            mFolderTargetMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderTargetMode",
-                                                   FolderMode.NOT_SECOND_CLASS.name()));
-        } catch (Exception e) {
-            mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
-        }
+        mFolderTargetMode = getEnumStringPref(prefs, mUuid  + ".folderTargetMode", FolderMode.NOT_SECOND_CLASS);
 
-        try {
-            searchableFolders = Searchable.valueOf(prefs.getString(mUuid  + ".searchableFolders",
-                                                   Searchable.ALL.name()));
-        } catch (Exception e) {
-            searchableFolders = Searchable.ALL;
-        }
+        searchableFolders = getEnumStringPref(prefs, mUuid  + ".searchableFolders", Searchable.ALL);
 
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
