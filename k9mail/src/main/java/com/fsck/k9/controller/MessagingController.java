@@ -1007,7 +1007,7 @@ public class MessagingController implements Runnable {
                     Log.v(K9.LOG_TAG, "SYNC: About to open remote folder " + folder);
 
                 remoteFolder.open(Folder.OPEN_MODE_RW);
-                if (Account.Expunge.EXPUNGE_ON_POLL.equals(account.getExpungePolicy())) {
+                if (Account.Expunge.EXPUNGE_ON_POLL == account.getExpungePolicy()) {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
                     remoteFolder.expunge();
@@ -2124,7 +2124,7 @@ public class MessagingController implements Runnable {
                     }
                     if (remoteDate != null) {
                         remoteMessage.setFlag(Flag.DELETED, true);
-                        if (Account.Expunge.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
+                        if (Account.Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
                             remoteFolder.expunge();
                         }
                     }
@@ -2301,7 +2301,7 @@ public class MessagingController implements Runnable {
                     remoteUidMap = remoteSrcFolder.moveMessages(messages, remoteDestFolder);
                 }
             }
-            if (!isCopy && Account.Expunge.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
+            if (!isCopy && Account.Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "processingPendingMoveOrCopy expunging folder " + account.getDescription() + ":" + srcFolder);
 
@@ -4133,7 +4133,7 @@ public class MessagingController implements Runnable {
             if (remoteFolder.exists()) {
                 remoteFolder.open(Folder.OPEN_MODE_RW);
                 remoteFolder.setFlags(Collections.singleton(Flag.DELETED), true);
-                if (Account.Expunge.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy())) {
+                if (Account.Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
                     remoteFolder.expunge();
                 }
 
