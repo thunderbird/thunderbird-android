@@ -4088,14 +4088,14 @@ public class MessagingController implements Runnable {
                     queuePendingCommand(account, command);
                 }
                 processPendingCommands(account);
-            } else if (account.getDeletePolicy() == Account.DeletePolicy.DELETE_POLICY_ON_DELETE) {
+            } else if (account.getDeletePolicy() == Account.DeletePolicy.ON_DELETE) {
                 if (folder.equals(account.getTrashFolderName())) {
                     queueSetFlag(account, folder, Boolean.toString(true), Flag.DELETED.toString(), uids);
                 } else {
                     queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids, uidMap);
                 }
                 processPendingCommands(account);
-            } else if (account.getDeletePolicy() == Account.DeletePolicy.DELETE_POLICY_MARK_AS_READ) {
+            } else if (account.getDeletePolicy() == Account.DeletePolicy.MARK_AS_READ) {
                 queueSetFlag(account, folder, Boolean.toString(true), Flag.SEEN.toString(), uids);
                 processPendingCommands(account);
             } else {

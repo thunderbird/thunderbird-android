@@ -353,7 +353,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mDeletePolicy = (ListPreference) findPreference(PREFERENCE_DELETE_POLICY);
         if (!mIsSeenFlagSupported) {
-            removeListEntry(mDeletePolicy, Account.DeletePolicy.DELETE_POLICY_MARK_AS_READ.preferenceString());
+            removeListEntry(mDeletePolicy, Account.DeletePolicy.MARK_AS_READ.preferenceString());
         }
         mDeletePolicy.setValue(mAccount.getDeletePolicy().preferenceString());
         mDeletePolicy.setSummary(mDeletePolicy.getEntry());

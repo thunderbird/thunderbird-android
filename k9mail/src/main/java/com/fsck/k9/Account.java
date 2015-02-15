@@ -71,10 +71,10 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public enum DeletePolicy {
-        DELETE_POLICY_NEVER(0),
-        DELETE_POLICY_7DAYS(1),
-        DELETE_POLICY_ON_DELETE(2),
-        DELETE_POLICY_MARK_AS_READ(3);
+        NEVER(0),
+        SEVEN_DAYS(1),
+        ON_DELETE(2),
+        MARK_AS_READ(3);
 
         public final int setting;
 
@@ -164,7 +164,7 @@ public class Account implements BaseAccount, StoreConfig {
     public static final boolean DEFAULT_SORT_ASCENDING = false;
     public static final String NO_OPENPGP_PROVIDER = "";
 
-    private DeletePolicy mDeletePolicy = DeletePolicy.DELETE_POLICY_NEVER;
+    private DeletePolicy mDeletePolicy = DeletePolicy.NEVER;
 
     private final String mUuid;
     private String mStoreUri;
@@ -400,7 +400,7 @@ public class Account implements BaseAccount, StoreConfig {
         mFolderNotifyNewMailMode = getEnumStringPref(prefs, mUuid + ".folderNotifyNewMailMode", FolderMode.ALL);
         mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
         mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
-        mDeletePolicy =  DeletePolicy.fromInt(prefs.getInt(mUuid + ".deletePolicy", DeletePolicy.DELETE_POLICY_NEVER.setting));
+        mDeletePolicy =  DeletePolicy.fromInt(prefs.getInt(mUuid + ".deletePolicy", DeletePolicy.NEVER.setting));
         mInboxFolderName = prefs.getString(mUuid  + ".inboxFolderName", INBOX);
         mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName", "Drafts");
         mSentFolderName = prefs.getString(mUuid  + ".sentFolderName", "Sent");

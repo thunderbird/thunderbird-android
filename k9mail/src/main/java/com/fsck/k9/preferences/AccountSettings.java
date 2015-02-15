@@ -9,10 +9,16 @@ import java.util.TreeMap;
 
 import android.content.SharedPreferences;
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.DeletePolicy;
+import com.fsck.k9.Account.Expunge;
+import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.Account.MessageFormat;
+import com.fsck.k9.Account.QuoteStyle;
+import com.fsck.k9.Account.Searchable;
+import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.Settings.*;
 
@@ -56,7 +62,7 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
             ));
         s.put("deletePolicy", Settings.versions(
-                new V(1, new DeletePolicySetting(Account.DeletePolicy.DELETE_POLICY_NEVER))
+                new V(1, new DeletePolicySetting(DeletePolicy.NEVER))
             ));
         s.put("displayCount", Settings.versions(
                 new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
@@ -67,7 +73,7 @@ public class AccountSettings {
             ));
         s.put("expungePolicy", Settings.versions(
                 // Formerly a String, converted to an enum
-                new V(1, new StringResourceSetting(Account.Expunge.EXPUNGE_IMMEDIATELY.name(),
+                new V(1, new StringResourceSetting(Expunge.EXPUNGE_IMMEDIATELY.name(),
                         R.array.account_setup_expunge_policy_values))
             ));
         s.put("folderDisplayMode", Settings.versions(
@@ -115,8 +121,8 @@ public class AccountSettings {
                         R.array.account_settings_message_age_values))
             ));
         s.put("messageFormat", Settings.versions(
-                new V(1, new EnumSetting<Account.MessageFormat>(
-                        Account.MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
+                new V(1, new EnumSetting<MessageFormat>(
+                        MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
             ));
         s.put("messageFormatAuto", Settings.versions(
                 new V(2, new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO))
@@ -143,8 +149,8 @@ public class AccountSettings {
                 new V(1, new StringSetting(Account.DEFAULT_QUOTE_PREFIX))
             ));
         s.put("quoteStyle", Settings.versions(
-                new V(1, new EnumSetting<Account.QuoteStyle>(
-                        Account.QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE))
+                new V(1, new EnumSetting<QuoteStyle>(
+                        QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE))
             ));
         s.put("replyAfterQuote", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE))
@@ -156,8 +162,8 @@ public class AccountSettings {
                 new V(1, new RingtoneSetting("content://settings/system/notification_sound"))
             ));
         s.put("searchableFolders", Settings.versions(
-                new V(1, new EnumSetting<Account.Searchable>(
-                        Account.Searchable.class, Account.Searchable.ALL))
+                new V(1, new EnumSetting<Searchable>(
+                        Searchable.class, Searchable.ALL))
             ));
         s.put("sentFolderName", Settings.versions(
                 new V(1, new StringSetting("Sent"))
@@ -169,8 +175,8 @@ public class AccountSettings {
                 new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
             ));
         s.put("showPicturesEnum", Settings.versions(
-                new V(1, new EnumSetting<Account.ShowPictures>(
-                        Account.ShowPictures.class, Account.ShowPictures.NEVER))
+                new V(1, new EnumSetting<ShowPictures>(
+                        ShowPictures.class, ShowPictures.NEVER))
             ));
         s.put("signatureBeforeQuotedText", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -372,12 +378,12 @@ public class AccountSettings {
     public static class DeletePolicySetting extends PseudoEnumSetting<Integer> {
         private Map<Integer, String> mMapping;
 
-        public DeletePolicySetting(Account.DeletePolicy defaultValue) {
+        public DeletePolicySetting(DeletePolicy defaultValue) {
             super(defaultValue);
             Map<Integer, String> mapping = new HashMap<Integer, String>();
-            mapping.put(Account.DeletePolicy.DELETE_POLICY_NEVER.setting, "NEVER");
-            mapping.put(Account.DeletePolicy.DELETE_POLICY_ON_DELETE.setting, "DELETE");
-            mapping.put(Account.DeletePolicy.DELETE_POLICY_MARK_AS_READ.setting, "MARK_AS_READ");
+            mapping.put(DeletePolicy.NEVER.setting, "NEVER");
+            mapping.put(DeletePolicy.ON_DELETE.setting, "DELETE");
+            mapping.put(DeletePolicy.MARK_AS_READ.setting, "MARK_AS_READ");
             mMapping = Collections.unmodifiableMap(mapping);
         }
 
