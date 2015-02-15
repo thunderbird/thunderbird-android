@@ -23,8 +23,13 @@ import android.preference.RingtonePreference;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.DeletePolicy;
+import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
+import com.fsck.k9.Account.Searchable;
+import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
@@ -353,9 +358,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mDeletePolicy = (ListPreference) findPreference(PREFERENCE_DELETE_POLICY);
         if (!mIsSeenFlagSupported) {
-            removeListEntry(mDeletePolicy, Integer.toString(Account.DELETE_POLICY_MARK_AS_READ));
+            removeListEntry(mDeletePolicy, DeletePolicy.MARK_AS_READ.preferenceString());
         }
-        mDeletePolicy.setValue(Integer.toString(mAccount.getDeletePolicy()));
+        mDeletePolicy.setValue(mAccount.getDeletePolicy().preferenceString());
         mDeletePolicy.setSummary(mDeletePolicy.getEntry());
         mDeletePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -370,7 +375,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mExpungePolicy = (ListPreference) findPreference(PREFERENCE_EXPUNGE_POLICY);
         if (mIsExpungeCapable) {
-            mExpungePolicy.setValue(mAccount.getExpungePolicy());
+            mExpungePolicy.setValue(mAccount.getExpungePolicy().name());
             mExpungePolicy.setSummary(mExpungePolicy.getEntry());
             mExpungePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -729,7 +734,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setMarkMessageAsReadOnView(mMarkMessageAsReadOnView.isChecked());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
-        mAccount.setFolderNotifyNewMailMode(Account.FolderMode.valueOf(mAccountNotifyNewMailMode.getValue()));
+        mAccount.setFolderNotifyNewMailMode(FolderMode.valueOf(mAccountNotifyNewMailMode.getValue()));
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
@@ -742,14 +747,14 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
-        mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
-        mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
+        mAccount.setFolderTargetMode(FolderMode.valueOf(mTargetMode.getValue()));
+        mAccount.setDeletePolicy(DeletePolicy.fromInt(Integer.parseInt(mDeletePolicy.getValue())));
         if (mIsExpungeCapable) {
-            mAccount.setExpungePolicy(mExpungePolicy.getValue());
+            mAccount.setExpungePolicy(Expunge.valueOf(mExpungePolicy.getValue()));
         }
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
-        mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
-        mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
+        mAccount.setSearchableFolders(Searchable.valueOf(mSearchableFolders.getValue()));
+        mAccount.setMessageFormat(MessageFormat.valueOf(mMessageFormat.getValue()));
         mAccount.setAlwaysShowCcBcc(mAlwaysShowCcBcc.isChecked());
         mAccount.setMessageReadReceipt(mMessageReadReceipt.isChecked());
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
@@ -788,9 +793,9 @@ public class AccountSettings extends K9PreferenceActivity {
         }
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
-        needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
+        needsRefresh |= mAccount.setFolderSyncMode(FolderMode.valueOf(mSyncMode.getValue()));
 
-        boolean displayModeChanged = mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
+        boolean displayModeChanged = mAccount.setFolderDisplayMode(FolderMode.valueOf(mDisplayMode.getValue()));
 
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
@@ -803,11 +808,11 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         }
 
-        mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
+        mAccount.setShowPictures(ShowPictures.valueOf(mAccountShowPictures.getValue()));
 
         //IMAP specific stuff
         if (mIsPushCapable) {
-            boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
+            boolean needsPushRestart = mAccount.setFolderPushMode(FolderMode.valueOf(mPushMode.getValue()));
             if (mAccount.getFolderPushMode() != FolderMode.NONE) {
                 needsPushRestart |= displayModeChanged;
                 needsPushRestart |= mIncomingChanged;

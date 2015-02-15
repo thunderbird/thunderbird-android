@@ -16,7 +16,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
+import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.Account.NetworkType;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
@@ -200,7 +202,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
+                mAccount.setDeletePolicy(DeletePolicy.NEVER);
             } else if (ImapStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
                 mDefaultPort = IMAP_PORT;
@@ -217,7 +219,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
+                mAccount.setDeletePolicy(DeletePolicy.ON_DELETE);
 
                 if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
@@ -251,7 +253,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (webDavSettings.mailboxPath != null) {
                     mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
                 }
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
+                mAccount.setDeletePolicy(DeletePolicy.ON_DELETE);
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
@@ -280,9 +282,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
-            mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
-            mCompressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
-            mCompressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
+            mCompressionMobile.setChecked(mAccount.useCompression(NetworkType.MOBILE));
+            mCompressionWifi.setChecked(mAccount.useCompression(NetworkType.WIFI));
+            mCompressionOther.setChecked(mAccount.useCompression(NetworkType.OTHER));
 
             if (settings.host != null) {
                 mServerView.setText(settings.host);
@@ -607,9 +609,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             mAccount.setStoreUri(RemoteStore.createStoreUri(settings));
 
-            mAccount.setCompression(Account.TYPE_MOBILE, mCompressionMobile.isChecked());
-            mAccount.setCompression(Account.TYPE_WIFI, mCompressionWifi.isChecked());
-            mAccount.setCompression(Account.TYPE_OTHER, mCompressionOther.isChecked());
+            mAccount.setCompression(NetworkType.MOBILE, mCompressionMobile.isChecked());
+            mAccount.setCompression(NetworkType.WIFI, mCompressionWifi.isChecked());
+            mAccount.setCompression(NetworkType.OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);

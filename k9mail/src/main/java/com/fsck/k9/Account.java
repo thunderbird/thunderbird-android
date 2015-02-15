@@ -47,6 +47,8 @@ import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
 
+import static com.fsck.k9.Preferences.getEnumStringPref;
+
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
@@ -62,19 +64,43 @@ public class Account implements BaseAccount, StoreConfig {
      */
     public static final String OUTBOX = "K9MAIL_INTERNAL_OUTBOX";
 
-    public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
-    public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
-    public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
+    public enum Expunge {
+        EXPUNGE_IMMEDIATELY,
+        EXPUNGE_MANUALLY,
+        EXPUNGE_ON_POLL
+    }
 
-    public static final int DELETE_POLICY_NEVER = 0;
-    public static final int DELETE_POLICY_7DAYS = 1;
-    public static final int DELETE_POLICY_ON_DELETE = 2;
-    public static final int DELETE_POLICY_MARK_AS_READ = 3;
+    public enum DeletePolicy {
+        NEVER(0),
+        SEVEN_DAYS(1),
+        ON_DELETE(2),
+        MARK_AS_READ(3);
 
-    public static final String TYPE_WIFI = "WIFI";
-    public static final String TYPE_MOBILE = "MOBILE";
-    public static final String TYPE_OTHER = "OTHER";
-    private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
+        public final int setting;
+
+        DeletePolicy(int setting) {
+            this.setting = setting;
+        }
+
+        public String preferenceString() {
+            return Integer.toString(setting);
+        }
+
+        public static DeletePolicy fromInt(int initialSetting) {
+            for (DeletePolicy policy: values()) {
+                if (policy.setting == initialSetting) {
+                    return policy;
+                }
+            }
+            throw new IllegalArgumentException("DeletePolicy " + initialSetting + " unknown");
+        }
+    }
+
+    public enum NetworkType {
+        WIFI,
+        MOBILE,
+        OTHER
+    }
 
     public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
     public static final boolean DEFAULT_MESSAGE_FORMAT_AUTO = false;
@@ -138,16 +164,7 @@ public class Account implements BaseAccount, StoreConfig {
     public static final boolean DEFAULT_SORT_ASCENDING = false;
     public static final String NO_OPENPGP_PROVIDER = "";
 
-
-    /**
-     * <pre>
-     * 0 - Never (DELETE_POLICY_NEVER)
-     * 1 - After 7 days (DELETE_POLICY_7DAYS)
-     * 2 - When I delete from inbox (DELETE_POLICY_ON_DELETE)
-     * 3 - Mark as read (DELETE_POLICY_MARK_AS_READ)
-     * </pre>
-     */
-    private int mDeletePolicy;
+    private DeletePolicy mDeletePolicy = DeletePolicy.NEVER;
 
     private final String mUuid;
     private String mStoreUri;
@@ -186,11 +203,11 @@ public class Account implements BaseAccount, StoreConfig {
     private Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
     private ShowPictures mShowPictures;
     private boolean mIsSignatureBeforeQuotedText;
-    private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
+    private Expunge mExpungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
     private int mIdleRefreshMinutes;
     private boolean goToUnreadMessageSearch;
-    private final Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
+    private final Map<NetworkType, Boolean> compressionMap = new ConcurrentHashMap<NetworkType, Boolean>();
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
     private int maximumPolledMessageAge;
@@ -283,7 +300,7 @@ public class Account implements BaseAccount, StoreConfig {
         mSortAscending.put(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING);
         mShowPictures = ShowPictures.NEVER;
         mIsSignatureBeforeQuotedText = false;
-        mExpungePolicy = EXPUNGE_IMMEDIATELY;
+        mExpungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = INBOX;
         mInboxFolderName = INBOX;
         mMaxPushFolders = 10;
@@ -379,22 +396,18 @@ public class Account implements BaseAccount, StoreConfig {
         mLastAutomaticCheckTime = prefs.getLong(mUuid + ".lastAutomaticCheckTime", 0);
         mLatestOldMessageSeenTime = prefs.getLong(mUuid + ".latestOldMessageSeenTime", 0);
         mNotifyNewMail = prefs.getBoolean(mUuid + ".notifyNewMail", false);
-        try {
-            mFolderNotifyNewMailMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderNotifyNewMailMode",
-                                                 FolderMode.ALL.name()));
-        } catch (Exception e) {
-            mFolderNotifyNewMailMode = FolderMode.ALL;
-        }
+
+        mFolderNotifyNewMailMode = getEnumStringPref(prefs, mUuid + ".folderNotifyNewMailMode", FolderMode.ALL);
         mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
         mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
-        mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
+        mDeletePolicy =  DeletePolicy.fromInt(prefs.getInt(mUuid + ".deletePolicy", DeletePolicy.NEVER.setting));
         mInboxFolderName = prefs.getString(mUuid  + ".inboxFolderName", INBOX);
         mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName", "Drafts");
         mSentFolderName = prefs.getString(mUuid  + ".sentFolderName", "Sent");
         mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName", "Trash");
         mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName", "Archive");
         mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName", "Spam");
-        mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
+        mExpungePolicy = getEnumStringPref(prefs, mUuid + ".expungePolicy", Expunge.EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
 
         mMaxPushFolders = prefs.getInt(mUuid + ".maxPushFolders", 10);
@@ -402,18 +415,18 @@ public class Account implements BaseAccount, StoreConfig {
         subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly", false);
         maximumPolledMessageAge = prefs.getInt(mUuid + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid + ".maximumAutoDownloadMessageSize", 32768);
-        mMessageFormat = MessageFormat.valueOf(prefs.getString(mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT.name()));
+        mMessageFormat =  getEnumStringPref(prefs, mUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT);
         mMessageFormatAuto = prefs.getBoolean(mUuid + ".messageFormatAuto", DEFAULT_MESSAGE_FORMAT_AUTO);
         if (mMessageFormatAuto && mMessageFormat == MessageFormat.TEXT) {
             mMessageFormat = MessageFormat.AUTO;
         }
         mMessageReadReceipt = prefs.getBoolean(mUuid + ".messageReadReceipt", DEFAULT_MESSAGE_READ_RECEIPT);
-        mQuoteStyle = QuoteStyle.valueOf(prefs.getString(mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE.name()));
+        mQuoteStyle = getEnumStringPref(prefs, mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE);
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         mDefaultQuotedTextShown = prefs.getBoolean(mUuid + ".defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN);
         mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
         mStripSignature = prefs.getBoolean(mUuid + ".stripSignature", DEFAULT_STRIP_SIGNATURE);
-        for (String type : networkTypes) {
+        for (NetworkType type : NetworkType.values()) {
             Boolean useCompression = prefs.getBoolean(mUuid + ".useCompression." + type,
                                      true);
             compressionMap.put(type, useCompression);
@@ -425,21 +438,11 @@ public class Account implements BaseAccount, StoreConfig {
 
         mChipColor = prefs.getInt(mUuid + ".chipColor", ColorPicker.getRandomColor());
 
-        try {
-            mSortType = SortType.valueOf(prefs.getString(mUuid + ".sortTypeEnum",
-                                                 SortType.SORT_DATE.name()));
-        } catch (Exception e) {
-            mSortType = SortType.SORT_DATE;
-        }
+        mSortType = getEnumStringPref(prefs, mUuid + ".sortTypeEnum", SortType.SORT_DATE);
 
         mSortAscending.put(mSortType, prefs.getBoolean(mUuid + ".sortAscending", false));
 
-        try {
-            mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
-                                                 ShowPictures.NEVER.name()));
-        } catch (Exception e) {
-            mShowPictures = ShowPictures.NEVER;
-        }
+        mShowPictures = getEnumStringPref(prefs, mUuid + ".showPicturesEnum", ShowPictures.NEVER);
 
         mNotificationSetting.setVibrate(prefs.getBoolean(mUuid + ".vibrate", false));
         mNotificationSetting.setVibratePattern(prefs.getInt(mUuid + ".vibratePattern", 0));
@@ -450,40 +453,15 @@ public class Account implements BaseAccount, StoreConfig {
         mNotificationSetting.setLed(prefs.getBoolean(mUuid + ".led", true));
         mNotificationSetting.setLedColor(prefs.getInt(mUuid + ".ledColor", mChipColor));
 
-        try {
-            mFolderDisplayMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderDisplayMode",
-                                                    FolderMode.NOT_SECOND_CLASS.name()));
-        } catch (Exception e) {
-            mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
-        }
+        mFolderDisplayMode = getEnumStringPref(prefs, mUuid  + ".folderDisplayMode", FolderMode.NOT_SECOND_CLASS);
 
-        try {
-            mFolderSyncMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderSyncMode",
-                                                 FolderMode.FIRST_CLASS.name()));
-        } catch (Exception e) {
-            mFolderSyncMode = FolderMode.FIRST_CLASS;
-        }
+        mFolderSyncMode = getEnumStringPref(prefs, mUuid  + ".folderSyncMode", FolderMode.FIRST_CLASS);
 
-        try {
-            mFolderPushMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderPushMode",
-                                                 FolderMode.FIRST_CLASS.name()));
-        } catch (Exception e) {
-            mFolderPushMode = FolderMode.FIRST_CLASS;
-        }
+        mFolderPushMode = getEnumStringPref(prefs, mUuid  + ".folderPushMode", FolderMode.FIRST_CLASS);
 
-        try {
-            mFolderTargetMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderTargetMode",
-                                                   FolderMode.NOT_SECOND_CLASS.name()));
-        } catch (Exception e) {
-            mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
-        }
+        mFolderTargetMode = getEnumStringPref(prefs, mUuid  + ".folderTargetMode", FolderMode.NOT_SECOND_CLASS);
 
-        try {
-            searchableFolders = Searchable.valueOf(prefs.getString(mUuid  + ".searchableFolders",
-                                                   Searchable.ALL.name()));
-        } catch (Exception e) {
-            searchableFolders = Searchable.ALL;
-        }
+        searchableFolders = getEnumStringPref(prefs, mUuid  + ".searchableFolders", Searchable.ALL);
 
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
@@ -591,8 +569,8 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".messageFormat");
         editor.remove(mUuid + ".messageReadReceipt");
         editor.remove(mUuid + ".notifyMailCheck");
-        for (String type : networkTypes) {
-            editor.remove(mUuid + ".useCompression." + type);
+        for (NetworkType type : NetworkType.values()) {
+            editor.remove(mUuid + ".useCompression." + type.name());
         }
         deleteIdentities(preferences.getPreferences(), editor);
         // TODO: Remove preference settings that may exist for individual
@@ -707,7 +685,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putString(mUuid + ".folderNotifyNewMailMode", mFolderNotifyNewMailMode.name());
         editor.putBoolean(mUuid + ".notifySelfNewMail", mNotifySelfNewMail);
         editor.putBoolean(mUuid + ".notifyMailCheck", mNotifySync);
-        editor.putInt(mUuid + ".deletePolicy", mDeletePolicy);
+        editor.putInt(mUuid + ".deletePolicy", mDeletePolicy.setting);
         editor.putString(mUuid + ".inboxFolderName", mInboxFolderName);
         editor.putString(mUuid + ".draftsFolderName", mDraftsFolderName);
         editor.putString(mUuid + ".sentFolderName", mSentFolderName);
@@ -724,7 +702,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putString(mUuid + ".folderPushMode", mFolderPushMode.name());
         editor.putString(mUuid + ".folderTargetMode", mFolderTargetMode.name());
         editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
-        editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
+        editor.putString(mUuid + ".expungePolicy", mExpungePolicy.name());
         editor.putBoolean(mUuid + ".syncRemoteDeletions", mSyncRemoteDeletions);
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
         editor.putString(mUuid + ".searchableFolders", searchableFolders.name());
@@ -765,7 +743,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".led", mNotificationSetting.isLed());
         editor.putInt(mUuid + ".ledColor", mNotificationSetting.getLedColor());
 
-        for (String type : networkTypes) {
+        for (NetworkType type : NetworkType.values()) {
             Boolean useCompression = compressionMap.get(type);
             if (useCompression != null) {
                 editor.putBoolean(mUuid + ".useCompression." + type, useCompression);
@@ -1056,11 +1034,11 @@ public class Account implements BaseAccount, StoreConfig {
         this.mFolderNotifyNewMailMode = folderNotifyNewMailMode;
     }
 
-    public synchronized int getDeletePolicy() {
+    public synchronized DeletePolicy getDeletePolicy() {
         return mDeletePolicy;
     }
 
-    public synchronized void setDeletePolicy(int deletePolicy) {
+    public synchronized void setDeletePolicy(DeletePolicy deletePolicy) {
         this.mDeletePolicy = deletePolicy;
     }
 
@@ -1273,11 +1251,11 @@ public class Account implements BaseAccount, StoreConfig {
         mNotifySelfNewMail = notifySelfNewMail;
     }
 
-    public synchronized String getExpungePolicy() {
+    public synchronized Expunge getExpungePolicy() {
         return mExpungePolicy;
     }
 
-    public synchronized void setExpungePolicy(String expungePolicy) {
+    public synchronized void setExpungePolicy(Expunge expungePolicy) {
         mExpungePolicy = expungePolicy;
     }
 
@@ -1312,11 +1290,11 @@ public class Account implements BaseAccount, StoreConfig {
         return mDescription;
     }
 
-    public synchronized void setCompression(String networkType, boolean useCompression) {
+    public synchronized void setCompression(NetworkType networkType, boolean useCompression) {
         compressionMap.put(networkType, useCompression);
     }
 
-    public synchronized boolean useCompression(String networkType) {
+    public synchronized boolean useCompression(NetworkType networkType) {
         Boolean useCompression = compressionMap.get(networkType);
         if (useCompression == null) {
             return true;
@@ -1326,13 +1304,13 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public boolean useCompression(int type) {
-        String networkType = TYPE_OTHER;
+        NetworkType networkType = NetworkType.OTHER;
         switch (type) {
         case ConnectivityManager.TYPE_MOBILE:
-            networkType = TYPE_MOBILE;
+            networkType = NetworkType.MOBILE;
             break;
         case ConnectivityManager.TYPE_WIFI:
-            networkType = TYPE_WIFI;
+            networkType = NetworkType.WIFI;
             break;
         }
         return useCompression(networkType);
