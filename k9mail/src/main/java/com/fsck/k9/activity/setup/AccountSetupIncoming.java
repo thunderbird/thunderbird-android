@@ -280,9 +280,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
-            mCompressionMobile.setChecked(mAccount.useCompression(Account.NetworkType.TYPE_MOBILE));
-            mCompressionWifi.setChecked(mAccount.useCompression(Account.NetworkType.TYPE_WIFI));
-            mCompressionOther.setChecked(mAccount.useCompression(Account.NetworkType.TYPE_OTHER));
+            mCompressionMobile.setChecked(mAccount.useCompression(Account.NetworkType.MOBILE));
+            mCompressionWifi.setChecked(mAccount.useCompression(Account.NetworkType.WIFI));
+            mCompressionOther.setChecked(mAccount.useCompression(Account.NetworkType.OTHER));
 
             if (settings.host != null) {
                 mServerView.setText(settings.host);
@@ -607,9 +607,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             mAccount.setStoreUri(RemoteStore.createStoreUri(settings));
 
-            mAccount.setCompression(Account.NetworkType.TYPE_MOBILE, mCompressionMobile.isChecked());
-            mAccount.setCompression(Account.NetworkType.TYPE_WIFI, mCompressionWifi.isChecked());
-            mAccount.setCompression(Account.NetworkType.TYPE_OTHER, mCompressionOther.isChecked());
+            mAccount.setCompression(Account.NetworkType.MOBILE, mCompressionMobile.isChecked());
+            mAccount.setCompression(Account.NetworkType.WIFI, mCompressionWifi.isChecked());
+            mAccount.setCompression(Account.NetworkType.OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);

@@ -97,9 +97,9 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public enum NetworkType {
-        TYPE_WIFI,
-        TYPE_MOBILE,
-        TYPE_OTHER
+        WIFI,
+        MOBILE,
+        OTHER
     }
 
     public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
@@ -422,7 +422,7 @@ public class Account implements BaseAccount, StoreConfig {
             mMessageFormat = MessageFormat.AUTO;
         }
         mMessageReadReceipt = prefs.getBoolean(mUuid + ".messageReadReceipt", DEFAULT_MESSAGE_READ_RECEIPT);
-        mQuoteStyle = getEnumStringPref(prefs,mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE);
+        mQuoteStyle = getEnumStringPref(prefs, mUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE);
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         mDefaultQuotedTextShown = prefs.getBoolean(mUuid + ".defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN);
         mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
@@ -1305,13 +1305,13 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public boolean useCompression(int type) {
-        NetworkType networkType = NetworkType.TYPE_OTHER;
+        NetworkType networkType = NetworkType.OTHER;
         switch (type) {
         case ConnectivityManager.TYPE_MOBILE:
-            networkType = NetworkType.TYPE_MOBILE;
+            networkType = NetworkType.MOBILE;
             break;
         case ConnectivityManager.TYPE_WIFI:
-            networkType = NetworkType.TYPE_WIFI;
+            networkType = NetworkType.WIFI;
             break;
         }
         return useCompression(networkType);
