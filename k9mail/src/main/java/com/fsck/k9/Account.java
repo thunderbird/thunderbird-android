@@ -164,7 +164,6 @@ public class Account implements BaseAccount, StoreConfig {
     public static final boolean DEFAULT_SORT_ASCENDING = false;
     public static final String NO_OPENPGP_PROVIDER = "";
 
-    // default to prevent NPEs. Before, when this was an int, it implicitly defaulted to 0.
     private DeletePolicy mDeletePolicy = DeletePolicy.DELETE_POLICY_NEVER;
 
     private final String mUuid;
@@ -398,7 +397,7 @@ public class Account implements BaseAccount, StoreConfig {
         mLatestOldMessageSeenTime = prefs.getLong(mUuid + ".latestOldMessageSeenTime", 0);
         mNotifyNewMail = prefs.getBoolean(mUuid + ".notifyNewMail", false);
 
-        mFolderNotifyNewMailMode = getEnumStringPref(prefs, mUuid  + ".folderNotifyNewMailMode",FolderMode.ALL);
+        mFolderNotifyNewMailMode = getEnumStringPref(prefs, mUuid + ".folderNotifyNewMailMode", FolderMode.ALL);
         mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail", true);
         mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck", false);
         mDeletePolicy =  DeletePolicy.fromInt(prefs.getInt(mUuid + ".deletePolicy", DeletePolicy.DELETE_POLICY_NEVER.setting));
