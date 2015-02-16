@@ -52,6 +52,7 @@ android {
         }
 
         debug {
+            applicationIdSuffix ".debug"
             testCoverageEnabled rootProject.testCoverage
         }
     }
