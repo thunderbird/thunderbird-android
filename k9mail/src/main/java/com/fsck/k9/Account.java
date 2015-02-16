@@ -442,7 +442,7 @@ public class Account implements BaseAccount, StoreConfig {
 
         mSortAscending.put(mSortType, prefs.getBoolean(mUuid + ".sortAscending", false));
 
-        mShowPictures = getEnumStringPref(prefs, mUuid + ".showPicturesEnum",ShowPictures.NEVER);
+        mShowPictures = getEnumStringPref(prefs, mUuid + ".showPicturesEnum", ShowPictures.NEVER);
 
         mNotificationSetting.setVibrate(prefs.getBoolean(mUuid + ".vibrate", false));
         mNotificationSetting.setVibratePattern(prefs.getInt(mUuid + ".vibratePattern", 0));
