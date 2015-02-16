@@ -31,8 +31,7 @@ public class SleepService extends CoreService {
         sleepDatum.reacquireLatch = new CountDownLatch(1);
         sleepData.put(id, sleepDatum);
 
-        Intent i = new Intent();
-        i.setClassName(context.getPackageName(), "com.fsck.k9.service.SleepService");
+        Intent i = new Intent(context, SleepService.class);
         i.putExtra(LATCH_ID, id);
         i.setAction(ALARM_FIRED + "." + id);
         long startTime = System.currentTimeMillis();

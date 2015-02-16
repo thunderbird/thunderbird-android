@@ -134,15 +134,13 @@ public class RemoteControlService extends CoreService {
                         editor.commit();
 
                         if (needsReschedule) {
-                            Intent i = new Intent();
-                            i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.RemoteControlService");
+                            Intent i = new Intent(RemoteControlService.this, RemoteControlService.class);
                             i.setAction(RESCHEDULE_ACTION);
                             long nextTime = System.currentTimeMillis() + 10000;
                             BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
                         }
                         if (needsPushRestart) {
-                            Intent i = new Intent();
-                            i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.RemoteControlService");
+                            Intent i = new Intent(RemoteControlService.this, RemoteControlService.class);
                             i.setAction(PUSH_RESTART_ACTION);
                             long nextTime = System.currentTimeMillis() + 10000;
                             BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);

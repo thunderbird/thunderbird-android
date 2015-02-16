@@ -163,8 +163,7 @@ public class MailService extends CoreService {
     }
 
     private void cancel() {
-        Intent i = new Intent();
-        i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
+        Intent i = new Intent(this, MailService.class);
         i.setAction(ACTION_CHECK_MAIL);
         BootReceiver.cancelIntent(this, i);
     }
@@ -304,8 +303,7 @@ public class MailService extends CoreService {
                 Log.e(K9.LOG_TAG, "Exception while logging", e);
             }
 
-            Intent i = new Intent();
-            i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
+            Intent i = new Intent(this, MailService.class);
             i.setAction(ACTION_CHECK_MAIL);
             BootReceiver.scheduleIntent(MailService.this, nextTime, i);
         }
@@ -410,8 +408,7 @@ public class MailService extends CoreService {
             long nextTime = System.currentTimeMillis() + minInterval;
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "Next pusher refresh scheduled for " + new Date(nextTime));
-            Intent i = new Intent();
-            i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
+            Intent i = new Intent(this, MailService.class);
             i.setAction(ACTION_REFRESH_PUSHERS);
             BootReceiver.scheduleIntent(MailService.this, nextTime, i);
         }
