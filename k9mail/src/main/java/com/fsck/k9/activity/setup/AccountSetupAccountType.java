@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -41,9 +40,9 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_account_type);
-        ((Button)findViewById(R.id.pop)).setOnClickListener(this);
-        ((Button)findViewById(R.id.imap)).setOnClickListener(this);
-        ((Button)findViewById(R.id.webdav)).setOnClickListener(this);
+        findViewById(R.id.pop).setOnClickListener(this);
+        findViewById(R.id.imap).setOnClickListener(this);
+        findViewById(R.id.webdav).setOnClickListener(this);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
