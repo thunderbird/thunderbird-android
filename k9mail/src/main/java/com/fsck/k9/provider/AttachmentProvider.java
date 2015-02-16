@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
@@ -31,7 +32,8 @@ import java.util.List;
  * </p>
  */
 public class AttachmentProvider extends ContentProvider {
-    public static final Uri CONTENT_URI = Uri.parse("content://com.fsck.k9.attachmentprovider");
+    private static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".attachmentprovider";
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     private static final String FORMAT_RAW = "RAW";
     private static final String FORMAT_VIEW = "VIEW";
