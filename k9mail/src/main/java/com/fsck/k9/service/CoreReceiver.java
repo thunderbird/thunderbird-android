@@ -10,15 +10,16 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 
 public class CoreReceiver extends BroadcastReceiver {
 
-    public static final String WAKE_LOCK_RELEASE = "com.fsck.k9.service.CoreReceiver.wakeLockRelease";
+    public static final String WAKE_LOCK_RELEASE = BuildConfig.APPLICATION_ID + ".service.CoreReceiver.wakeLockRelease";
 
-    public static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreReceiver.wakeLockId";
+    public static final String WAKE_LOCK_ID = BuildConfig.APPLICATION_ID + ".service.CoreReceiver.wakeLockId";
 
     private static ConcurrentHashMap<Integer, TracingWakeLock> wakeLocks = new ConcurrentHashMap<Integer, TracingWakeLock>();
     private static AtomicInteger wakeLockSeq = new AtomicInteger(0);

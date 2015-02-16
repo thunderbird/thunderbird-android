@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
@@ -78,8 +79,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
 
     // used for remote search
-    public static final String EXTRA_SEARCH_ACCOUNT = "com.fsck.k9.search_account";
-    private static final String EXTRA_SEARCH_FOLDER = "com.fsck.k9.search_folder";
+    public static final String EXTRA_SEARCH_ACCOUNT = BuildConfig.APPLICATION_ID + ".search_account";
+    private static final String EXTRA_SEARCH_FOLDER = BuildConfig.APPLICATION_ID + ".search_folder";
 
     private static final String STATE_DISPLAY_MODE = "displayMode";
     private static final String STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed";

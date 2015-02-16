@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 
 public class PushService extends CoreService {
-    private static String START_SERVICE = "com.fsck.k9.service.PushService.startService";
-    private static String STOP_SERVICE = "com.fsck.k9.service.PushService.stopService";
+    private static String START_SERVICE = BuildConfig.APPLICATION_ID + ".service.PushService.startService";
+    private static String STOP_SERVICE = BuildConfig.APPLICATION_ID + ".service.PushService.stopService";
 
     public static void startService(Context context) {
         Intent i = new Intent();

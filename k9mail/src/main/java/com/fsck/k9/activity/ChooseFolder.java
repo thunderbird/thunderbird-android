@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -31,14 +32,14 @@ import com.fsck.k9.mail.Folder;
 
 
 public class ChooseFolder extends K9ListActivity {
-    public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseFolder_account";
-    public static final String EXTRA_CUR_FOLDER = "com.fsck.k9.ChooseFolder_curfolder";
-    public static final String EXTRA_SEL_FOLDER = "com.fsck.k9.ChooseFolder_selfolder";
-    public static final String EXTRA_NEW_FOLDER = "com.fsck.k9.ChooseFolder_newfolder";
-    public static final String EXTRA_MESSAGE = "com.fsck.k9.ChooseFolder_message";
-    public static final String EXTRA_SHOW_CURRENT = "com.fsck.k9.ChooseFolder_showcurrent";
-    public static final String EXTRA_SHOW_FOLDER_NONE = "com.fsck.k9.ChooseFolder_showOptionNone";
-    public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
+    public static final String EXTRA_ACCOUNT = BuildConfig.APPLICATION_ID + ".ChooseFolder_account";
+    public static final String EXTRA_CUR_FOLDER = BuildConfig.APPLICATION_ID + ".ChooseFolder_curfolder";
+    public static final String EXTRA_SEL_FOLDER = BuildConfig.APPLICATION_ID + ".ChooseFolder_selfolder";
+    public static final String EXTRA_NEW_FOLDER = BuildConfig.APPLICATION_ID + ".ChooseFolder_newfolder";
+    public static final String EXTRA_MESSAGE = BuildConfig.APPLICATION_ID + ".ChooseFolder_message";
+    public static final String EXTRA_SHOW_CURRENT = BuildConfig.APPLICATION_ID + ".ChooseFolder_showcurrent";
+    public static final String EXTRA_SHOW_FOLDER_NONE = BuildConfig.APPLICATION_ID + ".ChooseFolder_showOptionNone";
+    public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = BuildConfig.APPLICATION_ID + ".ChooseFolder_showDisplayableOnly";
 
 
     String mFolder;

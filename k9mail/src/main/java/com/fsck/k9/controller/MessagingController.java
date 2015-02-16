@@ -43,6 +43,7 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.Intents;
@@ -140,15 +141,15 @@ public class MessagingController implements Runnable {
      * So 25k gives good performance and a reasonable data footprint. Sounds good to me.
      */
 
-    private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.fsck.k9.MessagingController.moveOrCopy";
-    private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.fsck.k9.MessagingController.moveOrCopyBulk";
-    private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW = "com.fsck.k9.MessagingController.moveOrCopyBulkNew";
-    private static final String PENDING_COMMAND_EMPTY_TRASH = "com.fsck.k9.MessagingController.emptyTrash";
-    private static final String PENDING_COMMAND_SET_FLAG_BULK = "com.fsck.k9.MessagingController.setFlagBulk";
-    private static final String PENDING_COMMAND_SET_FLAG = "com.fsck.k9.MessagingController.setFlag";
-    private static final String PENDING_COMMAND_APPEND = "com.fsck.k9.MessagingController.append";
-    private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
-    private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
+    private static final String PENDING_COMMAND_MOVE_OR_COPY = BuildConfig.APPLICATION_ID + ".MessagingController.moveOrCopy";
+    private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = BuildConfig.APPLICATION_ID + ".MessagingController.moveOrCopyBulk";
+    private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW = BuildConfig.APPLICATION_ID + ".MessagingController.moveOrCopyBulkNew";
+    private static final String PENDING_COMMAND_EMPTY_TRASH = BuildConfig.APPLICATION_ID + ".MessagingController.emptyTrash";
+    private static final String PENDING_COMMAND_SET_FLAG_BULK = BuildConfig.APPLICATION_ID + ".MessagingController.setFlagBulk";
+    private static final String PENDING_COMMAND_SET_FLAG = BuildConfig.APPLICATION_ID + ".MessagingController.setFlag";
+    private static final String PENDING_COMMAND_APPEND = BuildConfig.APPLICATION_ID + ".MessagingController.append";
+    private static final String PENDING_COMMAND_MARK_ALL_AS_READ = BuildConfig.APPLICATION_ID + ".MessagingController.markAllAsRead";
+    private static final String PENDING_COMMAND_EXPUNGE = BuildConfig.APPLICATION_ID + ".MessagingController.expunge";
 
     public static class UidReverseComparator implements Comparator<Message> {
         @Override

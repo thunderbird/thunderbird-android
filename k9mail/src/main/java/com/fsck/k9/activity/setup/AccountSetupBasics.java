@@ -27,6 +27,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -54,12 +55,12 @@ import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListe
  */
 public class AccountSetupBasics extends K9Activity
     implements OnClickListener, TextWatcher, OnCheckedChangeListener, OnClientCertificateChangedListener {
-    private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
+    private final static String EXTRA_ACCOUNT = BuildConfig.APPLICATION_ID + ".AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
-            "com.fsck.k9.AccountSetupBasics.provider";
+            BuildConfig.APPLICATION_ID + ".AccountSetupBasics.provider";
     private final static String STATE_KEY_CHECKED_INCOMING =
-            "com.fsck.k9.AccountSetupBasics.checkedIncoming";
+            BuildConfig.APPLICATION_ID + ".AccountSetupBasics.checkedIncoming";
 
     private EditText mEmailView;
     private EditText mPasswordView;

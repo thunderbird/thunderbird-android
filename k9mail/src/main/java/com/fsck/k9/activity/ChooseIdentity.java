@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -19,8 +20,8 @@ public class ChooseIdentity extends K9ListActivity {
     Account mAccount;
     ArrayAdapter<String> adapter;
 
-    public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseIdentity_account";
-    public static final String EXTRA_IDENTITY = "com.fsck.k9.ChooseIdentity_identity";
+    public static final String EXTRA_ACCOUNT = BuildConfig.APPLICATION_ID + ".ChooseIdentity_account";
+    public static final String EXTRA_IDENTITY = BuildConfig.APPLICATION_ID + ".ChooseIdentity_identity";
 
     protected List<Identity> identities = null;
 
