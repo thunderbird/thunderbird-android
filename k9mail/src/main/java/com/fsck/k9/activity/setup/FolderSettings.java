@@ -67,7 +67,7 @@ public class FolderSettings extends K9PreferenceActivity {
         }
 
         boolean isPushCapable = false;
-        Store store = null;
+        Store store;
         try {
             store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
