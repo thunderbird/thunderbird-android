@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.cache.EmailProviderCacheCursor;
 import com.fsck.k9.helper.Utility;
@@ -43,7 +44,7 @@ import android.text.TextUtils;
 public class EmailProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    public static final String AUTHORITY = "com.fsck.k9.provider.email";
+    public static final String AUTHORITY = BuildConfig.APPLICATION_ID +".provider.email";
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 

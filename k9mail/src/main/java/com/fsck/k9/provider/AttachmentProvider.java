@@ -15,6 +15,7 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
@@ -28,7 +29,8 @@ import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
  * A simple ContentProvider that allows file access to attachments.
  */
 public class AttachmentProvider extends ContentProvider {
-    public static final Uri CONTENT_URI = Uri.parse("content://com.fsck.k9.attachmentprovider");
+    private static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".attachmentprovider";
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     private static final String[] DEFAULT_PROJECTION = new String[] {
             AttachmentProviderColumns._ID,
