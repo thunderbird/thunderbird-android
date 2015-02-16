@@ -277,8 +277,8 @@ public class AccountSetupBasics extends K9Activity
         String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
-        URI incomingUri = null;
-        URI outgoingUri = null;
+        URI incomingUri;
+        URI outgoingUri;
         try {
             String userEnc = UrlEncodingHelper.encodeUtf8(user);
             String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
@@ -400,7 +400,7 @@ public class AccountSetupBasics extends K9Activity
 
         String password = null;
         String clientCertificateAlias = null;
-        AuthType authenticationType = null;
+        AuthType authenticationType;
         if (mClientCertificateCheckBox.isChecked()) {
             authenticationType = AuthType.EXTERNAL;
             clientCertificateAlias = mClientCertificateSpinner.getAlias();
