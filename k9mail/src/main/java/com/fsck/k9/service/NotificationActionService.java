@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
@@ -20,10 +19,10 @@ import android.content.Intent;
 import android.util.Log;
 
 public class NotificationActionService extends CoreService {
-    private final static String REPLY_ACTION = BuildConfig.APPLICATION_ID + ".service.NotificationActionService.REPLY_ACTION";
-    private final static String READ_ALL_ACTION = BuildConfig.APPLICATION_ID + ".service.NotificationActionService.READ_ALL_ACTION";
-    private final static String DELETE_ALL_ACTION = BuildConfig.APPLICATION_ID + ".service.NotificationActionService.DELETE_ALL_ACTION";
-    private final static String ACKNOWLEDGE_ACTION = BuildConfig.APPLICATION_ID + ".service.NotificationActionService.ACKNOWLEDGE_ACTION";
+    private final static String REPLY_ACTION = "com.fsck.k9.service.NotificationActionService.REPLY_ACTION";
+    private final static String READ_ALL_ACTION = "com.fsck.k9.service.NotificationActionService.READ_ALL_ACTION";
+    private final static String DELETE_ALL_ACTION = "com.fsck.k9.service.NotificationActionService.DELETE_ALL_ACTION";
+    private final static String ACKNOWLEDGE_ACTION = "com.fsck.k9.service.NotificationActionService.ACKNOWLEDGE_ACTION";
 
     private final static String EXTRA_ACCOUNT = "account";
     private final static String EXTRA_MESSAGE = "message";

@@ -3,8 +3,6 @@ package com.fsck.k9.service;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
-import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 
@@ -15,8 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SleepService extends CoreService {
 
-    private static String ALARM_FIRED = BuildConfig.APPLICATION_ID + ".service.SleepService.ALARM_FIRED";
-    private static String LATCH_ID = BuildConfig.APPLICATION_ID + ".SleepService.LATCH_ID_EXTRA";
+    private static String ALARM_FIRED = "com.fsck.k9.service.SleepService.ALARM_FIRED";
+    private static String LATCH_ID = "com.fsck.k9.service.SleepService.LATCH_ID_EXTRA";
 
 
     private static ConcurrentHashMap<Integer, SleepDatum> sleepData = new ConcurrentHashMap<Integer, SleepDatum>();
@@ -34,7 +32,7 @@ public class SleepService extends CoreService {
         sleepData.put(id, sleepDatum);
 
         Intent i = new Intent();
-        i.setClassName(context.getPackageName(), BuildConfig.APPLICATION_ID + ".service.SleepService");
+        i.setClassName(context.getPackageName(), "com.fsck.k9.service.SleepService");
         i.putExtra(LATCH_ID, id);
         i.setAction(ALARM_FIRED + "." + id);
         long startTime = System.currentTimeMillis();

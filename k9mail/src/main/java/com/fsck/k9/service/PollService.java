@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PollService extends CoreService {
-    private static String START_SERVICE = BuildConfig.APPLICATION_ID + ".service.PollService.startService";
-    private static String STOP_SERVICE = BuildConfig.APPLICATION_ID + ".service.PollService.stopService";
+    private static String START_SERVICE = "com.fsck.k9.service.PollService.startService";
+    private static String STOP_SERVICE = "com.fsck.k9.service.PollService.stopService";
 
     private Listener mListener = new Listener();
 

@@ -12,7 +12,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.UpgradeDatabases;
@@ -70,7 +69,7 @@ public class DatabaseUpgradeService extends Service {
      * Action used to start this service.
      */
     private static final String ACTION_START_SERVICE =
-            BuildConfig.APPLICATION_ID + ".service.DatabaseUpgradeService.startService";
+            "com.fsck.k9.service.DatabaseUpgradeService.startService";
 
     private static final String WAKELOCK_TAG = "DatabaseUpgradeService";
     private static final long WAKELOCK_TIMEOUT = 10 * 60 * 1000;    // 10 minutes

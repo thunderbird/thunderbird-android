@@ -7,7 +7,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import com.fsck.k9.Account;
-import com.fsck.k9.BuildConfig;
 import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -15,9 +14,9 @@ import java.util.List;
 
 public class EditIdentity extends K9Activity {
 
-    public static final String EXTRA_IDENTITY = BuildConfig.APPLICATION_ID + ".EditIdentity_identity";
-    public static final String EXTRA_IDENTITY_INDEX = BuildConfig.APPLICATION_ID + ".EditIdentity_identity_index";
-    public static final String EXTRA_ACCOUNT = BuildConfig.APPLICATION_ID + ".EditIdentity_account";
+    public static final String EXTRA_IDENTITY = "com.fsck.k9.EditIdentity_identity";
+    public static final String EXTRA_IDENTITY_INDEX = "com.fsck.k9.EditIdentity_identity_index";
+    public static final String EXTRA_ACCOUNT = "com.fsck.k9.EditIdentity_account";
 
     private Account mAccount;
     private Identity mIdentity;

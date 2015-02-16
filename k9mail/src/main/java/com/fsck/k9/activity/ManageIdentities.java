@@ -11,14 +11,12 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.fsck.k9.BuildConfig;
 import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
 public class ManageIdentities extends ChooseIdentity {
     private boolean mIdentitiesChanged = false;
-    public static final String EXTRA_IDENTITIES = BuildConfig.APPLICATION_ID + ".EditIdentity_identities";
 
     private static final int ACTIVITY_EDIT_IDENTITY = 1;
 

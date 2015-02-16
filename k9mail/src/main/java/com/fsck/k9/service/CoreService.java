@@ -12,8 +12,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
-
-import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.power.TracingPowerManager;
@@ -59,7 +57,7 @@ import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
  */
 public abstract class CoreService extends Service {
 
-    public static final String WAKE_LOCK_ID = BuildConfig.APPLICATION_ID + ".service.CoreService.wakeLockId";
+    public static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
 
     private static ConcurrentHashMap<Integer, TracingWakeLock> sWakeLocks =
         new ConcurrentHashMap<Integer, TracingWakeLock>();

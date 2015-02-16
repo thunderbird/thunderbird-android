@@ -22,8 +22,8 @@ import com.fsck.k9.service.MailService;
 
 public class FolderSettings extends K9PreferenceActivity {
 
-    private static final String EXTRA_FOLDER_NAME = BuildConfig.APPLICATION_ID + ".folderName";
-    private static final String EXTRA_ACCOUNT = BuildConfig.APPLICATION_ID + ".account";
+    private static final String EXTRA_FOLDER_NAME = "com.fsck.k9.folderName";
+    private static final String EXTRA_ACCOUNT = "com.fsck.k9.account";
 
     private static final String PREFERENCE_TOP_CATERGORY = "folder_settings";
     private static final String PREFERENCE_DISPLAY_CLASS = "folder_settings_folder_display_mode";

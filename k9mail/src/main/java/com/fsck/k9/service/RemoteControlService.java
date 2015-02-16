@@ -1,7 +1,6 @@
 package com.fsck.k9.service;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
@@ -21,10 +20,10 @@ import android.widget.Toast;
 import java.util.List;
 
 public class RemoteControlService extends CoreService {
-    private final static String RESCHEDULE_ACTION = BuildConfig.APPLICATION_ID + ".service.RemoteControlService.RESCHEDULE_ACTION";
-    private final static String PUSH_RESTART_ACTION = BuildConfig.APPLICATION_ID + ".service.RemoteControlService.PUSH_RESTART_ACTION";
+    private final static String RESCHEDULE_ACTION = "com.fsck.k9.service.RemoteControlService.RESCHEDULE_ACTION";
+    private final static String PUSH_RESTART_ACTION = "com.fsck.k9.service.RemoteControlService.PUSH_RESTART_ACTION";
 
-    private final static String SET_ACTION = BuildConfig.APPLICATION_ID + ".service.RemoteControlService.SET_ACTION";
+    private final static String SET_ACTION = "com.fsck.k9.service.RemoteControlService.SET_ACTION";
 
     public static void set(Context context, Intent i, Integer wakeLockId) {
         //  Intent i = new Intent();
@@ -136,14 +135,14 @@ public class RemoteControlService extends CoreService {
 
                         if (needsReschedule) {
                             Intent i = new Intent();
-                            i.setClassName(getApplication().getPackageName(), BuildConfig.APPLICATION_ID + ".service.RemoteControlService");
+                            i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.RemoteControlService");
                             i.setAction(RESCHEDULE_ACTION);
                             long nextTime = System.currentTimeMillis() + 10000;
                             BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
                         }
                         if (needsPushRestart) {
                             Intent i = new Intent();
-                            i.setClassName(getApplication().getPackageName(), BuildConfig.APPLICATION_ID + ".service.RemoteControlService");
+                            i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.RemoteControlService");
                             i.setAction(PUSH_RESTART_ACTION);
                             long nextTime = System.currentTimeMillis() + 10000;
                             BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);

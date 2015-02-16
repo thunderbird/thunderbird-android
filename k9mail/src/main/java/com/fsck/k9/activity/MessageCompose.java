@@ -72,7 +72,6 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.BuildConfig;
 import com.fsck.k9.EmailAddressAdapter;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.FontSizes;
@@ -136,41 +135,41 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
 
-    private static final String ACTION_COMPOSE = BuildConfig.APPLICATION_ID + ".intent.action.COMPOSE";
-    private static final String ACTION_REPLY = BuildConfig.APPLICATION_ID + ".intent.action.REPLY";
-    private static final String ACTION_REPLY_ALL = BuildConfig.APPLICATION_ID + ".intent.action.REPLY_ALL";
-    private static final String ACTION_FORWARD = BuildConfig.APPLICATION_ID + ".intent.action.FORWARD";
-    private static final String ACTION_EDIT_DRAFT = BuildConfig.APPLICATION_ID + ".intent.action.EDIT_DRAFT";
+    private static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
+    private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
+    private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
+    private static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
+    private static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MESSAGE_BODY  = "messageBody";
     private static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
 
     private static final String STATE_KEY_ATTACHMENTS =
-            BuildConfig.APPLICATION_ID + ".activity.MessageCompose.attachments";
+        "com.fsck.k9.activity.MessageCompose.attachments";
     private static final String STATE_KEY_CC_SHOWN =
-            BuildConfig.APPLICATION_ID + ".activity.MessageCompose.ccShown";
+        "com.fsck.k9.activity.MessageCompose.ccShown";
     private static final String STATE_KEY_BCC_SHOWN =
-            BuildConfig.APPLICATION_ID + ".activity.MessageCompose.bccShown";
+        "com.fsck.k9.activity.MessageCompose.bccShown";
     private static final String STATE_KEY_QUOTED_TEXT_MODE =
-            BuildConfig.APPLICATION_ID + ".activity.MessageCompose.QuotedTextShown";
+        "com.fsck.k9.activity.MessageCompose.QuotedTextShown";
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
-            BuildConfig.APPLICATION_ID + ".activity.MessageCompose.stateKeySourceMessageProced";
-    private static final String STATE_KEY_DRAFT_ID = BuildConfig.APPLICATION_ID + ".activity.MessageCompose.draftId";
-    private static final String STATE_KEY_HTML_QUOTE = BuildConfig.APPLICATION_ID + ".activity.MessageCompose.HTMLQuote";
+        "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
+    private static final String STATE_KEY_DRAFT_ID = "com.fsck.k9.activity.MessageCompose.draftId";
+    private static final String STATE_KEY_HTML_QUOTE = "com.fsck.k9.activity.MessageCompose.HTMLQuote";
     private static final String STATE_IDENTITY_CHANGED =
-            BuildConfig.APPLICATION_ID + ".activity.MessageCompose.identityChanged";
+        "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
-            BuildConfig.APPLICATION_ID + ".activity.MessageCompose.identity";
+        "com.fsck.k9.activity.MessageCompose.identity";
     private static final String STATE_PGP_DATA = "pgpData";
-    private static final String STATE_IN_REPLY_TO = BuildConfig.APPLICATION_ID + ".activity.MessageCompose.inReplyTo";
-    private static final String STATE_REFERENCES = BuildConfig.APPLICATION_ID + ".activity.MessageCompose.references";
-    private static final String STATE_KEY_READ_RECEIPT = BuildConfig.APPLICATION_ID + ".activity.MessageCompose.messageReadReceipt";
-    private static final String STATE_KEY_DRAFT_NEEDS_SAVING = BuildConfig.APPLICATION_ID + ".activity.MessageCompose.mDraftNeedsSaving";
+    private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
+    private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
+    private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
+    private static final String STATE_KEY_DRAFT_NEEDS_SAVING = "com.fsck.k9.activity.MessageCompose.mDraftNeedsSaving";
     private static final String STATE_KEY_FORCE_PLAIN_TEXT =
-            BuildConfig.APPLICATION_ID + ".activity.MessageCompose.forcePlainText";
+            "com.fsck.k9.activity.MessageCompose.forcePlainText";
     private static final String STATE_KEY_QUOTED_TEXT_FORMAT =
-            BuildConfig.APPLICATION_ID + ".activity.MessageCompose.quotedTextFormat";
+            "com.fsck.k9.activity.MessageCompose.quotedTextFormat";
     private static final String STATE_KEY_NUM_ATTACHMENTS_LOADING = "numAttachmentsLoading";
     private static final String STATE_KEY_WAITING_FOR_ATTACHMENTS = "waitingForAttachments";
 
