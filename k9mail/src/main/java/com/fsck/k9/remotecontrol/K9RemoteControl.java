@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.fsck.k9.BuildConfig;
+
 /**
  * Utillity definitions for Android applications to control the behavior of K-9 Mail.  All such applications must declare the following permission:
  * <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
@@ -24,14 +26,14 @@ public class K9RemoteControl {
      * Permission that every application sending a broadcast to K-9 for Remote Control purposes should send on every broadcast.
      * Prevent other applications from intercepting the broadcasts.
      */
-    public final static String K9_REMOTE_CONTROL_PERMISSION = "com.fsck.k9.permission.REMOTE_CONTROL";
+    public final static String K9_REMOTE_CONTROL_PERMISSION = BuildConfig.APPLICATION_ID + ".permission.REMOTE_CONTROL";
     /**
      * {@link Intent} Action to be sent to K-9 using {@link ContextWrapper.sendOrderedBroadcast} in order to fetch the list of configured Accounts.
      * The responseData will contain two String[] with keys K9_ACCOUNT_UUIDS and K9_ACCOUNT_DESCRIPTIONS
      */
-    public final static String K9_REQUEST_ACCOUNTS = "com.fsck.k9.K9RemoteControl.requestAccounts";
-    public final static String K9_ACCOUNT_UUIDS = "com.fsck.k9.K9RemoteControl.accountUuids";
-    public final static String K9_ACCOUNT_DESCRIPTIONS = "com.fsck.k9.K9RemoteControl.accountDescriptions";
+    public final static String K9_REQUEST_ACCOUNTS = BuildConfig.APPLICATION_ID + ".K9RemoteControl.requestAccounts";
+    public final static String K9_ACCOUNT_UUIDS = BuildConfig.APPLICATION_ID + ".K9RemoteControl.accountUuids";
+    public final static String K9_ACCOUNT_DESCRIPTIONS = BuildConfig.APPLICATION_ID + ".K9RemoteControl.accountDescriptions";
 
     /**
      * The {@link {@link Intent}} Action to set in order to cause K-9 to check mail.  (Not yet implemented)
@@ -41,17 +43,17 @@ public class K9RemoteControl {
     /**
      * The {@link {@link Intent}} Action to set when remotely changing K-9 Mail settings
      */
-    public final static String K9_SET = "com.fsck.k9.K9RemoteControl.set";
+    public final static String K9_SET = BuildConfig.APPLICATION_ID + ".K9RemoteControl.set";
     /**
      * The key of the {@link Intent} Extra to set to hold the UUID of a single Account's settings to change.  Used only if K9_ALL_ACCOUNTS
      * is absent or false.
      */
-    public final static String K9_ACCOUNT_UUID = "com.fsck.k9.K9RemoteControl.accountUuid";
+    public final static String K9_ACCOUNT_UUID = BuildConfig.APPLICATION_ID + ".K9RemoteControl.accountUuid";
     /**
      * The key of the {@link Intent} Extra to set to control if the settings will apply to all Accounts, or to the one
      * specified with K9_ACCOUNT_UUID
      */
-    public final static String K9_ALL_ACCOUNTS = "com.fsck.k9.K9RemoteControl.allAccounts";
+    public final static String K9_ALL_ACCOUNTS = BuildConfig.APPLICATION_ID + ".K9RemoteControl.allAccounts";
 
     public final static String K9_ENABLED = "true";
     public final static String K9_DISABLED = "false";
@@ -60,17 +62,17 @@ public class K9RemoteControl {
      * Key for the {@link Intent} Extra for controlling whether notifications will be generated for new unread mail.
      * Acceptable values are K9_ENABLED and K9_DISABLED
      */
-    public final static String K9_NOTIFICATION_ENABLED = "com.fsck.k9.K9RemoteControl.notificationEnabled";
+    public final static String K9_NOTIFICATION_ENABLED = BuildConfig.APPLICATION_ID + ".K9RemoteControl.notificationEnabled";
     /*
      * Key for the {@link Intent} Extra for controlling whether K-9 will sound the ringtone for new unread mail.
      * Acceptable values are K9_ENABLED and K9_DISABLED
      */
-    public final static String K9_RING_ENABLED = "com.fsck.k9.K9RemoteControl.ringEnabled";
+    public final static String K9_RING_ENABLED = BuildConfig.APPLICATION_ID + ".K9RemoteControl.ringEnabled";
     /*
      * Key for the {@link Intent} Extra for controlling whether K-9 will activate the vibrator for new unread mail.
      * Acceptable values are K9_ENABLED and K9_DISABLED
      */
-    public final static String K9_VIBRATE_ENABLED = "com.fsck.k9.K9RemoteControl.vibrateEnabled";
+    public final static String K9_VIBRATE_ENABLED = BuildConfig.APPLICATION_ID + ".K9RemoteControl.vibrateEnabled";
 
     public final static String K9_FOLDERS_NONE = "NONE";
     public final static String K9_FOLDERS_ALL = "ALL";
@@ -82,27 +84,27 @@ public class K9RemoteControl {
      * Acceptable values are K9_FOLDERS_ALL, K9_FOLDERS_FIRST_CLASS, K9_FOLDERS_FIRST_AND_SECOND_CLASS,
      * K9_FOLDERS_NOT_SECOND_CLASS, K9_FOLDERS_NONE
      */
-    public final static String K9_PUSH_CLASSES = "com.fsck.k9.K9RemoteControl.pushClasses";
+    public final static String K9_PUSH_CLASSES = BuildConfig.APPLICATION_ID + ".K9RemoteControl.pushClasses";
     /**
      * Key for the {@link Intent} Extra to set for controlling which folders to be synchronized with Poll.
      * Acceptable values are K9_FOLDERS_ALL, K9_FOLDERS_FIRST_CLASS, K9_FOLDERS_FIRST_AND_SECOND_CLASS,
      * K9_FOLDERS_NOT_SECOND_CLASS, K9_FOLDERS_NONE
      */
-    public final static String K9_POLL_CLASSES = "com.fsck.k9.K9RemoteControl.pollClasses";
+    public final static String K9_POLL_CLASSES = BuildConfig.APPLICATION_ID + ".K9RemoteControl.pollClasses";
 
     public final static String[] K9_POLL_FREQUENCIES = { "-1", "1", "5", "10", "15", "30", "60", "120", "180", "360", "720", "1440"};
     /**
      * Key for the {@link Intent} Extra to set with the desired poll frequency.  The value is a String representing a number of minutes.
      * Acceptable values are available in K9_POLL_FREQUENCIES
      */
-    public final static String K9_POLL_FREQUENCY = "com.fsck.k9.K9RemoteControl.pollFrequency";
+    public final static String K9_POLL_FREQUENCY = BuildConfig.APPLICATION_ID + ".K9RemoteControl.pollFrequency";
 
     /**
      * Key for the {@link Intent} Extra to set for controlling K-9's global "Background sync" setting.
      * Acceptable values are K9_BACKGROUND_OPERATIONS_ALWAYS, K9_BACKGROUND_OPERATIONS_NEVER
      * K9_BACKGROUND_OPERATIONS_WHEN_CHECKED_AUTO_SYNC
      */
-    public final static String K9_BACKGROUND_OPERATIONS = "com.fsck.k9.K9RemoteControl.backgroundOperations";
+    public final static String K9_BACKGROUND_OPERATIONS = BuildConfig.APPLICATION_ID + ".K9RemoteControl.backgroundOperations";
     public final static String K9_BACKGROUND_OPERATIONS_ALWAYS = "ALWAYS";
     public final static String K9_BACKGROUND_OPERATIONS_NEVER = "NEVER";
     public final static String K9_BACKGROUND_OPERATIONS_WHEN_CHECKED_AUTO_SYNC = "WHEN_CHECKED_AUTO_SYNC";
@@ -111,7 +113,7 @@ public class K9RemoteControl {
      * Key for the {@link Intent} Extra to set for controlling which display theme K-9 will use.  Acceptable values are
      * K9_THEME_LIGHT, K9_THEME_DARK
      */
-    public final static String K9_THEME = "com.fsck.k9.K9RemoteControl.theme";
+    public final static String K9_THEME = BuildConfig.APPLICATION_ID + ".K9RemoteControl.theme";
     public final static String K9_THEME_LIGHT = "LIGHT";
     public final static String K9_THEME_DARK = "DARK";
 
