@@ -70,6 +70,7 @@ public class Preferences {
     /**
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
+     *
      * @return all accounts
      */
     public synchronized List<Account> getAccounts() {
@@ -83,6 +84,7 @@ public class Preferences {
     /**
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
+     *
      * @return all accounts with {@link Account#isAvailable(Context)}
      */
     public synchronized Collection<Account> getAvailableAccounts() {
@@ -164,4 +166,22 @@ public class Preferences {
     public SharedPreferences getPreferences() {
         return mStorage;
     }
+
+    public static <T extends Enum<T>> T getEnumStringPref(SharedPreferences prefs, String key, T defaultEnum) {
+        String stringPref = prefs.getString(key, defaultEnum.name());
+
+        if (null == stringPref) {
+            return defaultEnum;
+        } else {
+            try {
+                return Enum.valueOf(defaultEnum.getDeclaringClass(), stringPref);
+            } catch (IllegalArgumentException ex) {
+                Log.w(K9.LOG_TAG, "Unable to convert preference key [" + key +
+                        "] value [" + stringPref + "] to enum of type " + defaultEnum.getDeclaringClass(), ex);
+
+                return defaultEnum;
+            }
+        }
+    }
+
 }
