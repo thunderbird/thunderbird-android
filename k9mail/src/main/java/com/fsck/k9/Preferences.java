@@ -169,7 +169,7 @@ public class Preferences {
         String stringPref = prefs.getString(key, defaultEnum.name());
         try {
             return Enum.valueOf(defaultEnum.getDeclaringClass(), stringPref);
-        } catch (Exception ex) {
+        } catch (IllegalArgumentException ex) {
             Log.w(K9.LOG_TAG, "Unable to convert preference key [" + key +
                     "] value [" + stringPref + "] to enum of type " + defaultEnum.getDeclaringClass(), ex);
 
