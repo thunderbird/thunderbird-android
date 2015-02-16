@@ -417,7 +417,7 @@
 
         <provider
             android:name=".provider.K9FileProvider"
-            android:authorities="com.fsck.k9.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
 

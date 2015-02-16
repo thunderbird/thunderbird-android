@@ -7,9 +7,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
 
+import com.fsck.k9.BuildConfig;
+
 
 public class K9FileProvider extends FileProvider {
-    private static final String AUTHORITY = "com.fsck.k9.fileprovider";
+    private static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider";
 
     public static Uri getUriForFile(Context context, File file, String mimeType) {
         Uri uri = FileProvider.getUriForFile(context, AUTHORITY, file);
