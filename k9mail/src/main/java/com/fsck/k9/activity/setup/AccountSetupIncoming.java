@@ -188,72 +188,76 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             mStoreType = settings.type;
-            if (Pop3Store.STORE_TYPE.equals(settings.type)) {
-                serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
-                mDefaultPort = POP3_PORT;
-                mDefaultSslPort = POP3_SSL_PORT;
-                findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
-                findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                findViewById(R.id.compression_section).setVisibility(View.GONE);
-                findViewById(R.id.compression_label).setVisibility(View.GONE);
-                mSubscribedFoldersOnly.setVisibility(View.GONE);
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
-            } else if (ImapStore.STORE_TYPE.equals(settings.type)) {
-                serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
-                mDefaultPort = IMAP_PORT;
-                mDefaultSslPort = IMAP_SSL_PORT;
+            switch (settings.type) {
+                case Pop3Store.STORE_TYPE:
+                    serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
+                    mDefaultPort = POP3_PORT;
+                    mDefaultSslPort = POP3_SSL_PORT;
+                    findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
+                    findViewById(R.id.compression_section).setVisibility(View.GONE);
+                    findViewById(R.id.compression_label).setVisibility(View.GONE);
+                    mSubscribedFoldersOnly.setVisibility(View.GONE);
+                    mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
+                    break;
+                case ImapStore.STORE_TYPE:
+                    serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
+                    mDefaultPort = IMAP_PORT;
+                    mDefaultSslPort = IMAP_SSL_PORT;
 
-                ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
+                    ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
 
-                mImapAutoDetectNamespaceView.setChecked(imapSettings.autoDetectNamespace);
-                if (imapSettings.pathPrefix != null) {
-                    mImapPathPrefixView.setText(imapSettings.pathPrefix);
-                }
+                    mImapAutoDetectNamespaceView.setChecked(imapSettings.autoDetectNamespace);
+                    if (imapSettings.pathPrefix != null) {
+                        mImapPathPrefixView.setText(imapSettings.pathPrefix);
+                    }
 
-                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
-                findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
+                    findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
+                    mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
 
-                if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                    findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
-                }
-            } else if (WebDavStore.STORE_TYPE.equals(settings.type)) {
-                serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
-                mDefaultPort = WEBDAV_PORT;
-                mDefaultSslPort = WEBDAV_SSL_PORT;
-                mConnectionSecurityChoices = new ConnectionSecurity[] {
-                        ConnectionSecurity.NONE,
-                        ConnectionSecurity.SSL_TLS_REQUIRED };
+                    if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
+                        findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
+                    }
+                    break;
+                case WebDavStore.STORE_TYPE:
+                    serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
+                    mDefaultPort = WEBDAV_PORT;
+                    mDefaultSslPort = WEBDAV_SSL_PORT;
+                    mConnectionSecurityChoices = new ConnectionSecurity[]{
+                            ConnectionSecurity.NONE,
+                            ConnectionSecurity.SSL_TLS_REQUIRED};
 
-                // Hide the unnecessary fields
-                findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type).setVisibility(View.GONE);
-                findViewById(R.id.compression_section).setVisibility(View.GONE);
-                findViewById(R.id.compression_label).setVisibility(View.GONE);
-                mSubscribedFoldersOnly.setVisibility(View.GONE);
+                    // Hide the unnecessary fields
+                    findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                    findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
+                    findViewById(R.id.account_auth_type).setVisibility(View.GONE);
+                    findViewById(R.id.compression_section).setVisibility(View.GONE);
+                    findViewById(R.id.compression_label).setVisibility(View.GONE);
+                    mSubscribedFoldersOnly.setVisibility(View.GONE);
 
-                WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
+                    WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
 
-                if (webDavSettings.path != null) {
-                    mWebdavPathPrefixView.setText(webDavSettings.path);
-                }
+                    if (webDavSettings.path != null) {
+                        mWebdavPathPrefixView.setText(webDavSettings.path);
+                    }
 
-                if (webDavSettings.authPath != null) {
-                    mWebdavAuthPathView.setText(webDavSettings.authPath);
-                }
+                    if (webDavSettings.authPath != null) {
+                        mWebdavAuthPathView.setText(webDavSettings.authPath);
+                    }
 
-                if (webDavSettings.mailboxPath != null) {
-                    mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
-                }
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
-            } else {
-                throw new Exception("Unknown account type: " + mAccount.getStoreUri());
+                    if (webDavSettings.mailboxPath != null) {
+                        mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
+                    }
+                    mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
+                    break;
+                default:
+                    throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
             // Note that mConnectionSecurityChoices is configured above based on server type
