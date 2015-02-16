@@ -86,7 +86,7 @@ public class ImapStore extends RemoteStore {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     private static final int FETCH_WINDOW_SIZE = 100;
-    private Set<Flag> mPermanentFlagsIndex = EnumSet.noneOf(Flag.class);
+    private Set<Flag> mPermanentFlagsIndex = new HashSet<Flag>();
     private ConnectivityManager mConnectivityManager;
 
     private String mHost;
@@ -2090,66 +2090,15 @@ public class ImapStore extends RemoteStore {
                 public List<ImapResponse> search() throws IOException, MessagingException {
                     String imapQuery = "UID SEARCH ";
                     if (requiredFlags != null) {
+                        /* TODO not sure of this: should probably use Flag.mName instead */
                         for (Flag f : requiredFlags) {
-                            switch (f) {
-                                case DELETED:
-                                    imapQuery += "DELETED ";
-                                    break;
-
-                                case SEEN:
-                                    imapQuery += "SEEN ";
-                                    break;
-
-                                case ANSWERED:
-                                    imapQuery += "ANSWERED ";
-                                    break;
-
-                                case FLAGGED:
-                                    imapQuery += "FLAGGED ";
-                                    break;
-
-                                case DRAFT:
-                                    imapQuery += "DRAFT ";
-                                    break;
-
-                                case RECENT:
-                                    imapQuery += "RECENT ";
-                                    break;
-
-                                default:
-                                    break;
-                            }
+                            imapQuery += f.toString() + " ";
                         }
                     }
                     if (forbiddenFlags != null) {
                         for (Flag f : forbiddenFlags) {
-                            switch (f) {
-                                case DELETED:
-                                    imapQuery += "UNDELETED ";
-                                    break;
-
-                                case SEEN:
-                                    imapQuery += "UNSEEN ";
-                                    break;
-
-                                case ANSWERED:
-                                    imapQuery += "UNANSWERED ";
-                                    break;
-
-                                case FLAGGED:
-                                    imapQuery += "UNFLAGGED ";
-                                    break;
-
-                                case DRAFT:
-                                    imapQuery += "UNDRAFT ";
-                                    break;
-
-                                case RECENT:
-                                    imapQuery += "UNRECENT ";
-                                    break;
-
-                                default:
-                                    break;
+                            if (!f.isCustom()) {
+                                imapQuery += "UN" + f.toString() + " ";
                             }
                         }
                     }
