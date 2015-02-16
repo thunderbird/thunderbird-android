@@ -39,7 +39,7 @@ import timber.log.Timber;
  * </pre>
  */
 public class ImapStore extends RemoteStore {
-    private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
+    private Set<Flag> mPermanentFlagsIndex = new HashSet<Flag>();
     private ConnectivityManager connectivityManager;
     private OAuth2TokenProvider oauthTokenProvider;
 

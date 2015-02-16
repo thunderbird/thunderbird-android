@@ -33,6 +33,7 @@ public class Flag {
 
     public static final Flag DRAFT = new Flag("DRAFT", "\\Draft");
     public static final Flag RECENT = new Flag("RECENT", "\\Recent");
+    public static final Flag FORWARDED = new Flag("FORWARDED", "$forwarded");
 
     /*
      * The following flags are for internal library use only.
@@ -206,6 +207,10 @@ public class Flag {
      */
     public String realName() {
         return mName;
+    }
+
+    public boolean isCustom() {
+        return mCustom;
     }
 
     @Override

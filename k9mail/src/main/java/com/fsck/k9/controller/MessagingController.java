@@ -1608,7 +1608,8 @@ public class MessagingController {
                 messageChanged = true;
             }
         } else {
-            for (Flag flag : MessagingController.SYNC_FLAGS) {
+            /* TODO should combine the local and remote flags, not just "server-wins" */
+            for (Flag flag : remoteMessage.getFlags()) {
                 if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                     localMessage.setFlag(flag, remoteMessage.isSet(flag));
                     messageChanged = true;
