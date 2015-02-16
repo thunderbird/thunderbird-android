@@ -70,7 +70,7 @@
 
         <meta-data
             android:name="android.app.default_searchable"
-            android:value=".activity.Search"/>
+            android:value="com.fsck.k9.activity.Search"/>
 
         <activity
             android:name=".activity.Accounts"
