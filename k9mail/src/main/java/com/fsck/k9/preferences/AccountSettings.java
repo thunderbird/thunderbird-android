@@ -72,7 +72,6 @@ public class AccountSettings {
                 new V(1, new StringSetting("Drafts"))
             ));
         s.put("expungePolicy", Settings.versions(
-                // Formerly a String, converted to an enum
                 new V(1, new StringResourceSetting(Expunge.EXPUNGE_IMMEDIATELY.name(),
                         R.array.account_setup_expunge_policy_values))
             ));
@@ -370,11 +369,6 @@ public class AccountSettings {
         }
     }
 
-    /**
-     * The delete policy setting.
-     *
-     * Formerly an int, converted to an enum.
-     */
     public static class DeletePolicySetting extends PseudoEnumSetting<Integer> {
         private Map<Integer, String> mMapping;
 
