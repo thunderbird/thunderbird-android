@@ -149,7 +149,7 @@ public class LocalSearch implements SearchSpecification {
      *
      * @throws IllegalConditionException
      */
-    public void and(Searchfield field, String value, Attribute attribute) {
+    public void and(SearchField field, String value, Attribute attribute) {
         and(new SearchCondition(field, attribute, value));
     }
 
@@ -243,7 +243,7 @@ public class LocalSearch implements SearchSpecification {
          *          - do and on root of it & rest of search
          *          - do or between folder nodes
          */
-        mConditions = and(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, name));
+        mConditions = and(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, name));
     }
 
     /*
@@ -254,7 +254,7 @@ public class LocalSearch implements SearchSpecification {
     public List<String> getFolderNames() {
         List<String> results = new ArrayList<String>();
         for (ConditionsTreeNode node : mLeafSet) {
-            if (node.mCondition.field == Searchfield.FOLDER &&
+            if (node.mCondition.field == SearchField.FOLDER &&
                     node.mCondition.attribute == Attribute.EQUALS) {
                 results.add(node.mCondition.value);
             }
@@ -285,8 +285,8 @@ public class LocalSearch implements SearchSpecification {
         }
 
         for (ConditionsTreeNode node : leafSet) {
-            if (node.getCondition().field == Searchfield.SUBJECT ||
-                    node.getCondition().field == Searchfield.SENDER ) {
+            if (node.getCondition().field == SearchField.SUBJECT ||
+                    node.getCondition().field == SearchField.SENDER ) {
                 return node.getCondition().value;
             }
         }
