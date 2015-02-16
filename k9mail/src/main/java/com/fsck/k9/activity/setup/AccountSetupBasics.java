@@ -42,6 +42,7 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.preferences.DeletePolicy;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
@@ -320,21 +321,12 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setEmail(email);
             mAccount.setStoreUri(incomingUri.toString());
             mAccount.setTransportUri(outgoingUri.toString());
-            mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
-            mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
-            mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
-            // Yahoo! has a special folder for Spam, called "Bulk Mail".
-            if (incomingUriTemplate.getHost().toLowerCase(Locale.US).endsWith(".yahoo.com")) {
-                mAccount.setSpamFolderName("Bulk Mail");
-            } else {
-                mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
-            }
-            mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
-            if (incomingUri.toString().startsWith("imap")) {
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
-            } else if (incomingUri.toString().startsWith("pop3")) {
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
-            }
+
+            setupFolderNames(incomingUriTemplate.getHost().toLowerCase(Locale.US));
+
+            ServerSettings incomingSettings = RemoteStore.decodeStoreUri(incomingUri.toString());
+            mAccount.setDeletePolicy(DeletePolicy.calculateDefaultDeletePolicy(incomingSettings));
+
             // Check incoming here.  Then check outgoing in onActivityResult()
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
         } catch (URISyntaxException use) {
@@ -426,21 +418,27 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setStoreUri(storeUri);
         mAccount.setTransportUri(transportUri);
 
+        setupFolderNames(domain);
+
+        AccountSetupAccountType.actionSelectAccountType(this, mAccount, false);
+
+        finish();
+    }
+
+    private void setupFolderNames(String domain) {
         mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
         mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
         mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
         mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
+
         // Yahoo! has a special folder for Spam, called "Bulk Mail".
         if (domain.endsWith(".yahoo.com")) {
             mAccount.setSpamFolderName("Bulk Mail");
         } else {
             mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
         }
-
-        AccountSetupAccountType.actionSelectAccountType(this, mAccount, false);
-
-        finish();
     }
+
 
     public void onClick(View v) {
         switch (v.getId()) {
