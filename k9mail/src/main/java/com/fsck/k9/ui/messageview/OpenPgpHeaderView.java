@@ -38,7 +38,8 @@ public class OpenPgpHeaderView extends LinearLayout {
         mContext = context;
     }
 
-    public void initialize () {
+    @Override
+    public void onFinishInflate() {
         mResultEncryptionIcon = (ImageView) findViewById(R.id.result_encryption_icon);
         mResultEncryptionText = (TextView) findViewById(R.id.result_encryption_text);
         mResultSignatureIcon = (ImageView) findViewById(R.id.result_signature_icon);

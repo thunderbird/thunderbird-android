@@ -61,7 +61,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private static final int MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1;
     private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
 
-    private ViewStub mOpenPgpHeaderStub;
     private View mSidebar;
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
@@ -72,7 +71,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private View mShowAttachmentsAction;
     private boolean mShowPictures;
     private boolean mHasAttachments;
-    private boolean mHasOpenPgpInfo;
     private LayoutInflater mInflater;
     private Contacts mContacts;
     private AttachmentViewCallback attachmentCallback;
@@ -94,7 +92,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         this.openPgpHeaderViewCallback = openPgpHeaderViewCallback;
         this.displayPgpHeader = displayPgpHeader;
 
-        mOpenPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
         mSidebar = findViewById(R.id.message_sidebar);
 
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
@@ -120,8 +117,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mMessageContentView.setVisibility(View.VISIBLE);
 
         if (displayPgpHeader) {
-            openPgpHeaderView = (OpenPgpHeaderView) mOpenPgpHeaderStub.inflate();
-            openPgpHeaderView.initialize();
+            ViewStub openPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
+            openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
         }
 
         // the HTC version of WebView tries to force the background of the
