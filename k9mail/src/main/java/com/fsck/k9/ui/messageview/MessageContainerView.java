@@ -67,34 +67,23 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private Button mShowHiddenAttachments;
     private LinearLayout mHiddenAttachments;
     private boolean showingPictures;
-    private boolean mHasAttachments;
     private LayoutInflater mInflater;
     private AttachmentViewCallback attachmentCallback;
-    private OpenPgpHeaderViewCallback openPgpHeaderViewCallback;
     private View mAttachmentsContainer;
     private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
     private String mText;
     private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<AttachmentViewInfo, AttachmentView>();
-    private boolean displayPgpHeader;
-    private OpenPgpHeaderView openPgpHeaderView;
-    private ShowPicturesController showPicturesController;
 
 
-    public void initialize(ShowPicturesController showPicturesController, AttachmentViewCallback attachmentCallback,
-            OpenPgpHeaderViewCallback openPgpHeaderViewCallback, boolean displayPgpHeader) {
-        Context context = getContext();
-
-        this.showPicturesController = showPicturesController;
-        this.attachmentCallback = attachmentCallback;
-        this.openPgpHeaderViewCallback = openPgpHeaderViewCallback;
-        this.displayPgpHeader = displayPgpHeader;
-
+    @Override
+    public void onFinishInflate() {
         mSidebar = findViewById(R.id.message_sidebar);
 
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mMessageContentView.configure();
         mMessageContentView.setOnCreateContextMenuListener(this);
+        mMessageContentView.setVisibility(View.VISIBLE);
 
         mAttachmentsContainer = findViewById(R.id.attachments_container);
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
@@ -102,19 +91,12 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mHiddenAttachments.setVisibility(View.GONE);
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
+        mShowHiddenAttachments.setOnClickListener(this);
 
         showingPictures = false;
 
+        Context context = getContext();
         mInflater = LayoutInflater.from(context);
-        mMessageContentView.setVisibility(View.VISIBLE);
-
-        if (displayPgpHeader) {
-            ViewStub openPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
-            openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
-        }
-
-        mShowHiddenAttachments.setOnClickListener(this);
-
         mClipboardManager = ClipboardManager.getInstance(context);
     }
 
@@ -380,8 +362,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
     }
 
-    public void setMessageViewContainer(MessageViewContainer messageViewContainer, boolean automaticallyLoadPictures)
-            throws MessagingException {
+    public void displayMessageViewContainer(MessageViewContainer messageViewContainer,
+            boolean automaticallyLoadPictures, ShowPicturesController showPicturesController,
+            AttachmentViewCallback attachmentCallback, OpenPgpHeaderViewCallback openPgpHeaderViewCallback,
+            boolean displayPgpHeader) throws MessagingException {
+
+        this.attachmentCallback = attachmentCallback;
+
         resetView();
 
         WebViewClient webViewClient = K9WebViewClient.newInstance(messageViewContainer.rootPart);
@@ -396,8 +383,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             mText = messageViewContainer.text;
         }
 
-        mHasAttachments = !messageViewContainer.attachments.isEmpty();
-        if (mHasAttachments) {
+        boolean hasAttachments = !messageViewContainer.attachments.isEmpty();
+        if (hasAttachments) {
             renderAttachments(messageViewContainer);
         }
 
@@ -428,6 +415,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
 
         if (displayPgpHeader) {
+            ViewStub openPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
+            OpenPgpHeaderView openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
+
             openPgpHeaderView.setOpenPgpData(messageViewContainer.signatureResult, messageViewContainer.encrypted,
                     messageViewContainer.pgpPendingIntent);
             openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
