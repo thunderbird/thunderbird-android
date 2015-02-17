@@ -3,8 +3,6 @@ package com.fsck.k9.ui.messageview;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -88,19 +86,18 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private OpenPgpHeaderView openPgpHeaderView;
 
 
-    public void initialize(Fragment fragment, AttachmentViewCallback attachmentCallback,
-                           OpenPgpHeaderViewCallback openPgpHeaderViewCallback,
-                            boolean displayPgpData) {
+    public void initialize(AttachmentViewCallback attachmentCallback,
+            OpenPgpHeaderViewCallback openPgpHeaderViewCallback, boolean displayPgpData) {
+        Context context = getContext();
+
         this.attachmentCallback = attachmentCallback;
         this.openPgpHeaderViewCallback = openPgpHeaderViewCallback;
 
         mOpenPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
         mSidebar = findViewById(R.id.message_sidebar);
 
-        Activity activity = fragment.getActivity();
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mMessageContentView.configure();
-        activity.registerForContextMenu(mMessageContentView);
         mMessageContentView.setOnCreateContextMenuListener(this);
 
         mAttachmentsContainer = findViewById(R.id.attachments_container);
@@ -116,9 +113,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
         mShowPictures = false;
 
-        mContacts = Contacts.getInstance(activity);
+        mContacts = Contacts.getInstance(context);
 
-        mInflater = ((MessageViewFragment) fragment).getFragmentLayoutInflater();
+        mInflater = LayoutInflater.from(context);
         mMessageContentView.setVisibility(View.VISIBLE);
 
         this.displayPgpData = displayPgpData;
@@ -131,7 +128,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         // the HTC version of WebView tries to force the background of the
         // titlebar, which is really unfair.
         TypedValue outValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+        context.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
         // also set background of the whole view (including the attachments view)
         setBackgroundColor(outValue.data);
 
@@ -140,7 +137,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         // mShowAttachmentsAction.setOnClickListener(this);
         // mShowPicturesAction.setOnClickListener(this);
 
-        mClipboardManager = ClipboardManager.getInstance(activity);
+        mClipboardManager = ClipboardManager.getInstance(context);
     }
 
     @Override
