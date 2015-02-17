@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -113,13 +112,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             ViewStub openPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
             openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
         }
-
-        // the HTC version of WebView tries to force the background of the
-        // titlebar, which is really unfair.
-        TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
-        // also set background of the whole view (including the attachments view)
-        setBackgroundColor(outValue.data);
 
         mShowHiddenAttachments.setOnClickListener(this);
 

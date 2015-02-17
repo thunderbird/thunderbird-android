@@ -7,7 +7,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -53,10 +52,6 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
         // mHeaderContainer.setOnLayoutChangedListener(this);
         mInflater = ((MessageViewFragment) fragment).getFragmentLayoutInflater();
-
-        TypedValue outValue = new TypedValue();
-        getContext().getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
-        mHeaderContainer.setBackgroundColor(outValue.data);
 
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);

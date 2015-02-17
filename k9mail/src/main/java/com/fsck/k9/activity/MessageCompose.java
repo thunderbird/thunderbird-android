@@ -517,7 +517,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             View v = LayoutInflater.from(mThemeContext).inflate(R.layout.message_compose, null);
             TypedValue outValue = new TypedValue();
             // background color needs to be forced
-            mThemeContext.getTheme().resolveAttribute(R.attr.messageViewHeaderBackgroundColor, outValue, true);
+            mThemeContext.getTheme().resolveAttribute(R.attr.messageViewBackgroundColor, outValue, true);
             v.setBackgroundColor(outValue.data);
             setContentView(v);
         } else {
