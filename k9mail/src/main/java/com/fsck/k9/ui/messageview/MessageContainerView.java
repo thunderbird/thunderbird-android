@@ -82,16 +82,17 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private ClipboardManager mClipboardManager;
     private String mText;
     private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<AttachmentViewInfo, AttachmentView>();
-    private boolean displayPgpData;
+    private boolean displayPgpHeader;
     private OpenPgpHeaderView openPgpHeaderView;
 
 
     public void initialize(AttachmentViewCallback attachmentCallback,
-            OpenPgpHeaderViewCallback openPgpHeaderViewCallback, boolean displayPgpData) {
+            OpenPgpHeaderViewCallback openPgpHeaderViewCallback, boolean displayPgpHeader) {
         Context context = getContext();
 
         this.attachmentCallback = attachmentCallback;
         this.openPgpHeaderViewCallback = openPgpHeaderViewCallback;
+        this.displayPgpHeader = displayPgpHeader;
 
         mOpenPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
         mSidebar = findViewById(R.id.message_sidebar);
@@ -118,9 +119,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mInflater = LayoutInflater.from(context);
         mMessageContentView.setVisibility(View.VISIBLE);
 
-        this.displayPgpData = displayPgpData;
-
-        if (displayPgpData) {
+        if (displayPgpHeader) {
             openPgpHeaderView = (OpenPgpHeaderView) mOpenPgpHeaderStub.inflate();
             openPgpHeaderView.initialize();
         }
@@ -476,7 +475,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
         */
 
-        if (displayPgpData) {
+        if (displayPgpHeader) {
             openPgpHeaderView.setOpenPgpData(messageViewContainer.signatureResult, messageViewContainer.encrypted,
                     messageViewContainer.pgpPendingIntent);
             openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
