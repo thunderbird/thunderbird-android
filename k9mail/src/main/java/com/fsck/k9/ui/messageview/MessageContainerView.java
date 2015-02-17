@@ -67,8 +67,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private Button mShowHiddenAttachments;
     private LinearLayout mHiddenAttachments;
     private View mShowPicturesAction;
-    private View mShowMessageAction;
-    private View mShowAttachmentsAction;
     private boolean mShowPictures;
     private boolean mHasAttachments;
     private LayoutInflater mInflater;
@@ -105,9 +103,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
         mShowPicturesAction = findViewById(R.id.show_pictures);
-        mShowMessageAction = findViewById(R.id.show_message);
-
-        mShowAttachmentsAction = findViewById(R.id.show_attachments);
 
         mShowPictures = false;
 
@@ -129,8 +124,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         setBackgroundColor(outValue.data);
 
         mShowHiddenAttachments.setOnClickListener(this);
-        // mShowMessageAction.setOnClickListener(this);
-        // mShowAttachmentsAction.setOnClickListener(this);
         // mShowPicturesAction.setOnClickListener(this);
 
         mClipboardManager = ClipboardManager.getInstance(context);
