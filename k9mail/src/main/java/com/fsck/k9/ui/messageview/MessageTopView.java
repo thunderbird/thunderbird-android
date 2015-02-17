@@ -3,7 +3,6 @@ package com.fsck.k9.ui.messageview;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -31,7 +30,6 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     private MessageHeader mHeaderContainer;
     private LayoutInflater mInflater;
     private LinearLayout containerViews;
-    private Fragment fragment;
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
     private OpenPgpHeaderViewCallback openPgpHeaderViewCallback;
@@ -43,15 +41,11 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         super(context, attrs);
     }
 
-    public void initialize (Fragment fragment, AttachmentViewCallback attachmentCallback,
-                            OpenPgpHeaderViewCallback openPgpHeaderViewCallback) {
-        this.fragment = fragment;
-        this.attachmentCallback = attachmentCallback;
-        this.openPgpHeaderViewCallback = openPgpHeaderViewCallback;
-
+    @Override
+    public void onFinishInflate() {
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
         // mHeaderContainer.setOnLayoutChangedListener(this);
-        mInflater = ((MessageViewFragment) fragment).getFragmentLayoutInflater();
+        mInflater = LayoutInflater.from(getContext());
 
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);
@@ -141,6 +135,14 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
     public void setOnDownloadButtonClickListener(OnClickListener listener) {
         mDownloadRemainder.setOnClickListener(listener);
+    }
+
+    public void setAttachmentCallback(AttachmentViewCallback callback) {
+        attachmentCallback = callback;
+    }
+
+    public void setOpenPgpHeaderViewCallback(OpenPgpHeaderViewCallback callback) {
+        openPgpHeaderViewCallback = callback;
     }
 
     public void enableDownloadButton() {

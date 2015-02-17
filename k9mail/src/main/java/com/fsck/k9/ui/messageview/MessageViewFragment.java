@@ -85,7 +85,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private LocalMessage mMessage;
     private MessageCryptoAnnotations messageAnnotations;
     private MessagingController mController;
-    private LayoutInflater mLayoutInflater;
     private Handler handler = new Handler();
     private DownloadMessageListener downloadMessageListener = new DownloadMessageListener();
     private MessageCryptoHelper messageCryptoHelper;
@@ -142,13 +141,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             Bundle savedInstanceState) {
         Context context = new ContextThemeWrapper(inflater.getContext(),
                 K9.getK9ThemeResourceId(K9.getK9MessageViewTheme()));
-        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = mLayoutInflater.inflate(R.layout.message, container, false);
-
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View view = layoutInflater.inflate(R.layout.message, container, false);
 
         mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
+        mMessageView.setAttachmentCallback(this);
+        mMessageView.setOpenPgpHeaderViewCallback(this);
 
-        mMessageView.initialize(this, this, this);
         mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -720,10 +719,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public boolean isInitialized() {
         return mInitialized ;
-    }
-
-    public LayoutInflater getFragmentLayoutInflater() {
-        return mLayoutInflater;
     }
 
     class LocalMessageLoaderCallback implements LoaderCallbacks<LocalMessage> {
