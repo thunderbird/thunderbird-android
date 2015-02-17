@@ -421,9 +421,10 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             openPgpHeaderView.setOpenPgpData(messageViewContainer.signatureResult, messageViewContainer.encrypted,
                     messageViewContainer.pgpPendingIntent);
             openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
+            mSidebar.setVisibility(View.VISIBLE);
+        } else {
+            mSidebar.setVisibility(View.GONE);
         }
-
-        mSidebar.setVisibility(View.VISIBLE);
 
         if (mText != null) {
             loadBodyFromText(mText);
