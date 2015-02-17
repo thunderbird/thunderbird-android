@@ -955,13 +955,14 @@ public class LocalStore extends Store implements Serializable {
                     flag == Flag.FLAGGED ||
                     flag == Flag.ANSWERED ||
                     flag == Flag.FORWARDED) {
-                break;
+                continue;
             } else {
                 extraFlags.add(flag);
             }
         }
 
-        return Utility.combine(extraFlags, ',').toUpperCase(Locale.US);
+        /* TODO does k-9/IMAP allow tags with commas in their names? */
+        return Utility.combine(extraFlags, ',');
     }
 
     // TODO: database should not be exposed!
