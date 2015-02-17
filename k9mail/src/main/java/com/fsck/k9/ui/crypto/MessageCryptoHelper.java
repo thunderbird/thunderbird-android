@@ -76,7 +76,7 @@ public class MessageCryptoHelper {
     public void decryptOrVerifyMessagePartsIfNecessary(LocalMessage message) {
         this.message = message;
 
-        if (!isCryptoProviderConfigured()) {
+        if (!account.isOpenPgpProviderConfigured()) {
             returnResultToFragment();
             return;
         }
@@ -93,10 +93,6 @@ public class MessageCryptoHelper {
         } else {
             returnResultToFragment();
         }
-    }
-
-    private boolean isCryptoProviderConfigured() {
-        return !TextUtils.isEmpty(account.getCryptoApp());
     }
 
     private void decryptOrVerifyNextPart() {

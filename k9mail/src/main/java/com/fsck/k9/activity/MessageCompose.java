@@ -764,7 +764,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         initializeCrypto();
 
         mOpenPgpProvider = mAccount.getOpenPgpProvider();
-        if (mOpenPgpProvider != null) {
+        if (isCryptoProviderEnabled()) {
             mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
             final OnCheckedChangeListener updateListener = new OnCheckedChangeListener() {
                 @Override
@@ -1682,7 +1682,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void performSend() {
-        if (mOpenPgpProvider != null) {
+        if (isCryptoProviderEnabled()) {
             // OpenPGP Provider API
 
             // If not already encrypted but user wants to encrypt...
@@ -1894,7 +1894,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     @SuppressLint("InlinedApi")
     private void onAddAttachment2(final String mime_type) {
-        if (mAccount.getOpenPgpProvider() != null) {
+        if (isCryptoProviderEnabled()) {
             Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
         }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
