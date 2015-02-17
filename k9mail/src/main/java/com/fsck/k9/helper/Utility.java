@@ -393,7 +393,8 @@ public class Utility {
     public static boolean hasExternalImages(final String message) {
         Matcher imgMatches = IMG_PATTERN.matcher(message);
         while (imgMatches.find()) {
-            if (!imgMatches.group(1).equals("content")) {
+            String uriScheme = imgMatches.group(1);
+            if (uriScheme.equals("http") || uriScheme.equals("https")) {
                 if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "External images found");
                 }
