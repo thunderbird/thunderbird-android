@@ -1,5 +1,8 @@
 package com.fsck.k9.ui.messageview;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Fragment;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,8 +14,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -21,7 +27,7 @@ import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.view.MessageHeader;
 
 
-public class MessageTopView extends LinearLayout {
+public class MessageTopView extends LinearLayout implements ShowPicturesController {
 
     private MessageHeader mHeaderContainer;
     private LayoutInflater mInflater;
@@ -30,6 +36,9 @@ public class MessageTopView extends LinearLayout {
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
     private OpenPgpHeaderViewCallback openPgpHeaderViewCallback;
+    private Button showPicturesButton;
+    private List<MessageContainerView> messageContainerViewsWithPictures = new ArrayList<MessageContainerView>();
+
 
     public MessageTopView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -52,8 +61,27 @@ public class MessageTopView extends LinearLayout {
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);
 
-        containerViews = (LinearLayout) findViewById(R.id.message_containers);
+        showPicturesButton = (Button) findViewById(R.id.show_pictures);
+        setShowPicturesButtonListener();
 
+        containerViews = (LinearLayout) findViewById(R.id.message_containers);
+    }
+
+    private void setShowPicturesButtonListener() {
+        showPicturesButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPicturesInAllContainerViews();
+            }
+        });
+    }
+
+    private void showPicturesInAllContainerViews() {
+        for (MessageContainerView containerView : messageContainerViewsWithPictures) {
+            containerView.showPictures();
+        }
+
+        hideShowPicturesButton();
     }
 
     public void resetView() {
@@ -65,11 +93,15 @@ public class MessageTopView extends LinearLayout {
             throws MessagingException {
         resetView();
 
+        ShowPictures showPicturesSetting = account.getShowPictures();
+        boolean automaticallyLoadPictures =
+                shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
+
         for (MessageViewContainer container : messageViewInfo.containers) {
             MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container, null);
             boolean displayPgpHeader = !Account.NO_OPENPGP_PROVIDER.equals(account.getOpenPgpProvider());
-            view.initialize(attachmentCallback, openPgpHeaderViewCallback, displayPgpHeader);
-            view.setMessageViewContainer(container);
+            view.initialize(this, attachmentCallback, openPgpHeaderViewCallback, displayPgpHeader);
+            view.setMessageViewContainer(container, automaticallyLoadPictures);
 
             containerViews.addView(view);
         }
@@ -133,4 +165,45 @@ public class MessageTopView extends LinearLayout {
         }
     }
 
+    private void showShowPicturesButton() {
+        showPicturesButton.setVisibility(View.VISIBLE);
+    }
+
+    private void hideShowPicturesButton() {
+        showPicturesButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void notifyMessageContainerContainsPictures(MessageContainerView messageContainerView) {
+        messageContainerViewsWithPictures.add(messageContainerView);
+
+        showShowPicturesButton();
+    }
+
+    private boolean shouldAutomaticallyLoadPictures(ShowPictures showPicturesSetting, Message message) {
+        return showPicturesSetting == ShowPictures.ALWAYS || shouldShowPicturesFromSender(showPicturesSetting, message);
+    }
+
+    private boolean shouldShowPicturesFromSender(ShowPictures showPicturesSetting, Message message) {
+        if (showPicturesSetting != ShowPictures.ONLY_FROM_CONTACTS) {
+            return false;
+        }
+
+        String senderEmailAddress = getSenderEmailAddress(message);
+        if (senderEmailAddress == null) {
+            return false;
+        }
+
+        Contacts contacts = Contacts.getInstance(getContext());
+        return contacts.isInContacts(senderEmailAddress);
+    }
+
+    private String getSenderEmailAddress(Message message) {
+        Address[] from = message.getFrom();
+        if (from == null || from.length == 0) {
+            return null;
+        }
+
+        return from[0].getAddress();
+    }
 }
