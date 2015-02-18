@@ -58,7 +58,7 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
  * </pre>
  */
 public class WebDavStore extends RemoteStore {
-    public static final String STORE_TYPE = "WebDAV";
+    public static final ServerSettings.Type STORE_TYPE = ServerSettings.Type.WebDAV;
 
     // Authentication types
     private static final short AUTH_TYPE_NONE = 0;

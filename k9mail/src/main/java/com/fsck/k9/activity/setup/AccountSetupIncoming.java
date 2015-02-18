@@ -16,7 +16,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
-import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Account.NetworkType;
 import com.fsck.k9.activity.K9Activity;
@@ -34,6 +33,7 @@ import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.mail.store.imap.ImapStore.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStore.WebDavStoreSettings;
 import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
@@ -56,7 +56,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String WEBDAV_PORT = "80";
     private static final String WEBDAV_SSL_PORT = "443";
 
-    private String mStoreType;
+    private ServerSettings.Type mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
     private ClientCertificateSpinner mClientCertificateSpinner;
@@ -202,7 +202,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
-                mAccount.setDeletePolicy(DeletePolicy.NEVER);
             } else if (ImapStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
                 mDefaultPort = IMAP_PORT;
@@ -219,7 +218,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                mAccount.setDeletePolicy(DeletePolicy.ON_DELETE);
 
                 if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
@@ -253,10 +251,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (webDavSettings.mailboxPath != null) {
                     mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
                 }
-                mAccount.setDeletePolicy(DeletePolicy.ON_DELETE);
-            } else {
+             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
+
+            mAccount.setDeletePolicy(AccountCreator.calculateDefaultDeletePolicy(settings.type));
 
             // Note that mConnectionSecurityChoices is configured above based on server type
             ConnectionSecurityAdapter securityTypesAdapter =

@@ -77,7 +77,7 @@ import static com.fsck.k9.mail.K9MailLib.PUSH_WAKE_LOCK_TIMEOUT;
  * </pre>
  */
 public class ImapStore extends RemoteStore {
-    public static final String STORE_TYPE = "IMAP";
+    public static final ServerSettings.Type STORE_TYPE = ServerSettings.Type.IMAP;
 
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
