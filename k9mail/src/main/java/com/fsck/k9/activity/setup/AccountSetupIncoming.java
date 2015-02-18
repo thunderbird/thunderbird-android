@@ -251,7 +251,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (webDavSettings.mailboxPath != null) {
                     mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
                 }
-             } else {
+            } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
