@@ -14,6 +14,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Prompts the user to select an account type. The account type, along with the
@@ -49,83 +50,57 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         mMakeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
     }
 
-    private void onPop() {
-        try {
-            URI uri = new URI(mAccount.getStoreUri());
-            uri = new URI("pop3+ssl+", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
-            mAccount.setStoreUri(uri.toString());
+    private void setupStoreAndSmtpTransport(String schemePrefix) throws URISyntaxException {
+        URI uri = new URI(mAccount.getStoreUri());
+        uri = new URI(schemePrefix, uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
+        mAccount.setStoreUri(uri.toString());
 
-            uri = new URI(mAccount.getTransportUri());
-            uri = new URI("smtp+tls+", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
-            mAccount.setTransportUri(uri.toString());
-
-            AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
-            finish();
-        } catch (Exception use) {
-            failure(use);
-        }
-
+        uri = new URI(mAccount.getTransportUri());
+        uri = new URI("smtp+tls+", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
+        mAccount.setTransportUri(uri.toString());
     }
 
-    private void onImap() {
-        try {
-            URI uri = new URI(mAccount.getStoreUri());
-            uri = new URI("imap+ssl+", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
-            mAccount.setStoreUri(uri.toString());
+    private void setupDav() throws URISyntaxException {
+        URI uri = new URI(mAccount.getStoreUri());
 
-            uri = new URI(mAccount.getTransportUri());
-            uri = new URI("smtp+tls+", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
-            mAccount.setTransportUri(uri.toString());
-
-            AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
-            finish();
-        } catch (Exception use) {
-            failure(use);
+        /*
+         * The user info we have been given from
+         * AccountSetupBasics.onManualSetup() is encoded as an IMAP store
+         * URI: AuthType:UserName:Password (no fields should be empty).
+         * However, AuthType is not applicable to WebDAV nor to its store
+         * URI. Re-encode without it, using just the UserName and Password.
+         */
+        String userPass = "";
+        String[] userInfo = uri.getUserInfo().split(":");
+        if (userInfo.length > 1) {
+            userPass = userInfo[1];
         }
-
-    }
-
-    private void onWebDav() {
-        try {
-            URI uri = new URI(mAccount.getStoreUri());
-
-            /*
-             * The user info we have been given from
-             * AccountSetupBasics.onManualSetup() is encoded as an IMAP store
-             * URI: AuthType:UserName:Password (no fields should be empty).
-             * However, AuthType is not applicable to WebDAV nor to its store
-             * URI. Re-encode without it, using just the UserName and Password.
-             */
-            String userPass = "";
-            String[] userInfo = uri.getUserInfo().split(":");
-            if (userInfo.length > 1) {
-                userPass = userInfo[1];
-            }
-            if (userInfo.length > 2) {
-                userPass = userPass + ":" + userInfo[2];
-            }
-            uri = new URI("webdav+ssl+", userPass, uri.getHost(), uri.getPort(), null, null, null);
-            mAccount.setStoreUri(uri.toString());
-            AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
-            finish();
-        } catch (Exception use) {
-            failure(use);
+        if (userInfo.length > 2) {
+            userPass = userPass + ":" + userInfo[2];
         }
-
+        uri = new URI("webdav+ssl+", userPass, uri.getHost(), uri.getPort(), null, null, null);
+        mAccount.setStoreUri(uri.toString());
     }
 
     public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.pop:
-            onPop();
-            break;
-        case R.id.imap:
-            onImap();
-            break;
-        case R.id.webdav:
-            onWebDav();
-            break;
+        try {
+            switch (v.getId()) {
+                case R.id.pop:
+                    setupStoreAndSmtpTransport("pop3+ssl+");
+                    break;
+                case R.id.imap:
+                    setupStoreAndSmtpTransport("imap+ssl+");
+                    break;
+                case R.id.webdav:
+                    setupDav();
+                    break;
+            }
+        } catch (Exception ex) {
+            failure(ex);
         }
+
+        AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
+        finish();
     }
 
     private void failure(Exception use) {
