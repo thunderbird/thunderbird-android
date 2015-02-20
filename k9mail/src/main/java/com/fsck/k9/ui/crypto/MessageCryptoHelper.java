@@ -34,7 +34,9 @@ import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.DecryptStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.MessageHelper;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
+import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
 import org.openintents.openpgp.IOpenPgpService;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -101,19 +103,22 @@ public class MessageCryptoHelper {
         }
 
         Part part = partsToDecryptOrVerify.peekFirst();
-        if ("text/plain".equalsIgnoreCase(part.getMimeType())) {
-            startDecryptingOrVerifyingPart(part);
-        } else if (MessageDecryptVerifier.isPgpMimePart(part)) {
-            Multipart multipart = (Multipart) part.getBody();
-            if (multipart == null) {
-                throw new RuntimeException("Downloading missing parts before decryption isn't supported yet");
-            }
-
-            startDecryptingOrVerifyingPart(part);
+        if (!MessageHelper.isCompletePartAvailable(part)) {
+            addErrorAnnotation(part);
         } else {
-            partsToDecryptOrVerify.removeFirst();
-            decryptOrVerifyNextPart();
+            startDecryptingOrVerifyingPart(part);
         }
+    }
+
+    private void addErrorAnnotation(Part part) {
+        OpenPgpResultAnnotation annotation = new OpenPgpResultAnnotation();
+        if (MessageDecryptVerifier.isPgpMimeSignedPart(part)) {
+            annotation.setErrorType(CryptoError.SIGNED_BUT_INCOMPLETE);
+        } else {
+            annotation.setErrorType(CryptoError.ENCRYPTED_BUT_INCOMPLETE);
+        }
+        messageAnnotations.put(part, annotation);
+        onCryptoFinished();
     }
 
     private void startDecryptingOrVerifyingPart(Part part) {

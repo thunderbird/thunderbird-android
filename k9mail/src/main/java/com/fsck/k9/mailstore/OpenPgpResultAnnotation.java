@@ -8,10 +8,11 @@ import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
-public class OpenPgpResultAnnotation {
+public final class OpenPgpResultAnnotation {
     private boolean wasEncrypted;
     private OpenPgpSignatureResult signatureResult;
     private OpenPgpError error;
+    private CryptoError errorType = CryptoError.NONE;
     private PendingIntent pendingIntent;
     private MimeBodyPart outputData;
 
@@ -37,6 +38,15 @@ public class OpenPgpResultAnnotation {
 
     public void setError(OpenPgpError error) {
         this.error = error;
+        setErrorType(CryptoError.CRYPTO_API_RETURNED_ERROR);
+    }
+
+    public CryptoError getErrorType() {
+        return errorType;
+    }
+
+    public void setErrorType(CryptoError errorType) {
+        this.errorType = errorType;
     }
 
     public boolean hasOutputData() {
@@ -59,4 +69,11 @@ public class OpenPgpResultAnnotation {
         this.wasEncrypted = wasEncrypted;
     }
 
+
+    public static enum CryptoError {
+        NONE,
+        CRYPTO_API_RETURNED_ERROR,
+        SIGNED_BUT_INCOMPLETE,
+        ENCRYPTED_BUT_INCOMPLETE
+    }
 }

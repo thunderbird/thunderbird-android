@@ -1,6 +1,5 @@
 package com.fsck.k9.mailstore;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.net.Uri;
 
@@ -22,8 +21,6 @@ import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.provider.K9FileProvider;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
-import org.openintents.openpgp.OpenPgpError;
-import org.openintents.openpgp.OpenPgpSignatureResult;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -448,18 +445,8 @@ public class LocalMessageExtractor {
                     attachments);
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
 
-            MessageViewContainer messageViewContainer;
-            if (pgpAnnotation == NO_ANNOTATIONS) {
-                messageViewContainer = new MessageViewContainer(viewable.html, part, attachmentInfos);
-            } else {
-                OpenPgpSignatureResult pgpResult = pgpAnnotation.getSignatureResult();
-                OpenPgpError pgpError = pgpAnnotation.getError();
-                boolean wasEncrypted = pgpAnnotation.wasEncrypted();
-                PendingIntent pendingIntent = pgpAnnotation.getPendingIntent();
-
-                messageViewContainer = new MessageViewContainer(viewable.html, part, attachmentInfos, pgpResult,
-                        pgpError, wasEncrypted, pendingIntent);
-            }
+            MessageViewContainer messageViewContainer =
+                    new MessageViewContainer(viewable.html, part, attachmentInfos, pgpAnnotation);
 
             containers.add(messageViewContainer);
         }

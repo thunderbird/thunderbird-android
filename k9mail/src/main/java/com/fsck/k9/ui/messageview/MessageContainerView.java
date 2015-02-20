@@ -37,10 +37,11 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 
+import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
+import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
 import com.fsck.k9.view.K9WebViewClient;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
-import org.openintents.openpgp.OpenPgpError;
 
 
 public class MessageContainerView extends LinearLayout implements OnClickListener,
@@ -374,15 +375,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         WebViewClient webViewClient = K9WebViewClient.newInstance(messageViewContainer.rootPart);
         mMessageContentView.setWebViewClient(webViewClient);
 
-        // Save the text so we can reset the WebView when the user clicks the "Show pictures" button
-        OpenPgpError error = messageViewContainer.pgpError;
-        if (error != null) {
-            // TODO make a nice view for this
-            mText = error.getMessage();
-        } else {
-            mText = messageViewContainer.text;
-        }
-
         boolean hasAttachments = !messageViewContainer.attachments.isEmpty();
         if (hasAttachments) {
             renderAttachments(messageViewContainer);
@@ -404,6 +396,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             mSavedState = null;
         }
 
+        mText = getTextToDisplay(messageViewContainer);
         if (mText != null && lookForImages) {
             if (Utility.hasExternalImages(mText) && !isShowingPictures()) {
                 if (automaticallyLoadPictures) {
@@ -418,24 +411,56 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             ViewStub openPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
             OpenPgpHeaderView openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
 
-            openPgpHeaderView.setOpenPgpData(messageViewContainer.signatureResult, messageViewContainer.encrypted,
-                    messageViewContainer.pgpPendingIntent);
+            OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
+            if (cryptoAnnotation == null) {
+                openPgpHeaderView.setOpenPgpData(null, false, null);
+            } else {
+                openPgpHeaderView.setOpenPgpData(cryptoAnnotation.getSignatureResult(), cryptoAnnotation.wasEncrypted(),
+                        cryptoAnnotation.getPendingIntent());
+            }
             openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
             mSidebar.setVisibility(View.VISIBLE);
         } else {
             mSidebar.setVisibility(View.GONE);
         }
 
+        String text;
         if (mText != null) {
-            loadBodyFromText(mText);
+            text = mText;
         } else {
-            showStatusMessage(getContext().getString(R.string.webview_empty_message));
+            text = wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
+
+        loadBodyFromText(text);
     }
 
-    public void showStatusMessage(String status) {
-        String text = "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
-        loadBodyFromText(text);
+    private String getTextToDisplay(MessageViewContainer messageViewContainer) {
+        OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
+        if (cryptoAnnotation == null) {
+            return messageViewContainer.text;
+        }
+
+        CryptoError errorType = cryptoAnnotation.getErrorType();
+        switch (errorType) {
+            case CRYPTO_API_RETURNED_ERROR: {
+                // TODO make a nice view for this
+                return wrapStatusMessage(cryptoAnnotation.getError().getMessage());
+            }
+            case ENCRYPTED_BUT_INCOMPLETE: {
+                //FIXME
+                return wrapStatusMessage("You need to download the complete message to be able to decrypt it.");
+            }
+            case NONE:
+            case SIGNED_BUT_INCOMPLETE: {
+                return messageViewContainer.text;
+            }
+        }
+
+        throw new IllegalStateException("Unknown error type: " + errorType);
+    }
+
+    public String wrapStatusMessage(String status) {
+        return "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
     }
 
     private void loadBodyFromText(String emailText) {
