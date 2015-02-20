@@ -16,7 +16,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -191,7 +190,7 @@ public class MessageCryptoHelper {
                     Log.e(K9.LOG_TAG, "MessagingException", e);
                 }
 
-                onCryptoConverge(decryptedPart);
+                onCryptoOperationReturned(decryptedPart);
             }
         });
     }
@@ -220,7 +219,7 @@ public class MessageCryptoHelper {
             @Override
             public void onReturn(Intent result) {
                 currentCryptoResult = result;
-                onCryptoConverge(null);
+                onCryptoOperationReturned(null);
             }
         });
     }
@@ -309,77 +308,89 @@ public class MessageCryptoHelper {
 
             @Override
             protected void onPostExecute(MimeBodyPart decryptedPart) {
-                onCryptoConverge(decryptedPart);
+                onCryptoOperationReturned(decryptedPart);
             }
         }.execute();
         return decryptedOutputStream;
     }
 
-    private void onCryptoConverge(MimeBodyPart outputPart) {
+    private void onCryptoOperationReturned(MimeBodyPart outputPart) {
+        if (currentCryptoResult == null) {
+            Log.e(K9.LOG_TAG, "Internal error: we should have a result here!");
+            return;
+        }
+
         try {
-            if (currentCryptoResult == null) {
-                Log.e(K9.LOG_TAG, "Internal error: we should have a result here!");
-                return;
-            }
-
-            int resultCode = currentCryptoResult.getIntExtra(OpenPgpApi.RESULT_CODE, INVALID_OPENPGP_RESULT_CODE);
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "OpenPGP API decryptVerify result code: " + resultCode);
-            }
-
-            switch (resultCode) {
-                case INVALID_OPENPGP_RESULT_CODE: {
-                    Log.e(K9.LOG_TAG, "Internal error: no result code!");
-                    break;
-                }
-                case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
-                    PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-                    if (pendingIntent == null) {
-                        throw new AssertionError("Expecting PendingIntent on USER_INTERACTION_REQUIRED!");
-                    }
-
-                    try {
-                        activity.startIntentSenderForResult(pendingIntent.getIntentSender(),
-                                REQUEST_CODE_CRYPTO, null, 0, 0, 0);
-                    } catch (SendIntentException e) {
-                        Log.e(K9.LOG_TAG, "Internal error on starting pendingintent!", e);
-                    }
-                    break;
-                }
-                case OpenPgpApi.RESULT_CODE_ERROR: {
-                    OpenPgpError error = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-
-                    if (K9.DEBUG) {
-                        Log.w(K9.LOG_TAG, "OpenPGP API error: " + error.getMessage());
-                    }
-
-                    onCryptoFailed(error);
-                    break;
-                }
-                case OpenPgpApi.RESULT_CODE_SUCCESS: {
-                    OpenPgpResultAnnotation resultAnnotation = new OpenPgpResultAnnotation();
-
-                    resultAnnotation.setOutputData(outputPart);
-
-                    // TODO if the data /was/ encrypted, we should set it here!
-                    // this is not easy to determine for inline data though
-                    resultAnnotation.setWasEncrypted(false);
-
-                    OpenPgpSignatureResult signatureResult =
-                            currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
-                    resultAnnotation.setSignatureResult(signatureResult);
-
-                    PendingIntent pendingIntent =
-                            currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-                    resultAnnotation.setPendingIntent(pendingIntent);
-
-                    onCryptoSuccess(resultAnnotation);
-                    break;
-                }
-            }
+            handleCryptoOperationResult(outputPart);
         } finally {
             currentCryptoResult = null;
         }
+    }
+
+    private void handleCryptoOperationResult(MimeBodyPart outputPart) {
+        int resultCode = currentCryptoResult.getIntExtra(OpenPgpApi.RESULT_CODE, INVALID_OPENPGP_RESULT_CODE);
+        if (K9.DEBUG) {
+            Log.d(K9.LOG_TAG, "OpenPGP API decryptVerify result code: " + resultCode);
+        }
+
+        switch (resultCode) {
+            case INVALID_OPENPGP_RESULT_CODE: {
+                Log.e(K9.LOG_TAG, "Internal error: no result code!");
+                break;
+            }
+            case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
+                handleUserInteractionRequest();
+                break;
+            }
+            case OpenPgpApi.RESULT_CODE_ERROR: {
+                handleCryptoOperationError();
+                break;
+            }
+            case OpenPgpApi.RESULT_CODE_SUCCESS: {
+                handleCryptoOperationSuccess(outputPart);
+                break;
+            }
+        }
+    }
+
+    private void handleUserInteractionRequest() {
+        PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+        if (pendingIntent == null) {
+            throw new AssertionError("Expecting PendingIntent on USER_INTERACTION_REQUIRED!");
+        }
+
+        try {
+            activity.startIntentSenderForResult(pendingIntent.getIntentSender(), REQUEST_CODE_CRYPTO, null, 0, 0, 0);
+        } catch (SendIntentException e) {
+            Log.e(K9.LOG_TAG, "Internal error on starting pendingintent!", e);
+        }
+    }
+
+    private void handleCryptoOperationError() {
+        OpenPgpError error = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+        if (K9.DEBUG) {
+            Log.w(K9.LOG_TAG, "OpenPGP API error: " + error.getMessage());
+        }
+
+        onCryptoFailed(error);
+    }
+
+    private void handleCryptoOperationSuccess(MimeBodyPart outputPart) {
+        OpenPgpResultAnnotation resultAnnotation = new OpenPgpResultAnnotation();
+
+        resultAnnotation.setOutputData(outputPart);
+
+        // TODO if the data /was/ encrypted, we should set it here!
+        // this is not easy to determine for inline data though
+        resultAnnotation.setWasEncrypted(false);
+
+        OpenPgpSignatureResult signatureResult = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
+        resultAnnotation.setSignatureResult(signatureResult);
+
+        PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+        resultAnnotation.setPendingIntent(pendingIntent);
+
+        onCryptoSuccess(resultAnnotation);
     }
 
     public void handleCryptoResult(int requestCode, int resultCode, Intent data) {
