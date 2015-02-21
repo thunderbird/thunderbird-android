@@ -120,16 +120,6 @@ public class MessageDecryptVerifier {
         return null;
     }
 
-    // Note: This method should ONLY be used to differentiate parts
-    // already filtered with the methods above!
-    public static boolean isPgpInlinePart(Part part) {
-        return TEXT_PLAIN.equals(part.getMimeType());
-    }
-
-    public static boolean isPgpMimePart(Part part) {
-        return isPgpMimeSignedPart(part) || isPgpMimeEncryptedPart(part);
-    }
-
     public static boolean isPgpMimeSignedPart(Part part) {
         return MULTIPART_SIGNED.equals(part.getMimeType());
     }
@@ -141,5 +131,4 @@ public class MessageDecryptVerifier {
 //        return APPLICATION_PGP_ENCRYPTED.equals(protocol);
         return MULTIPART_ENCRYPTED.equals(part.getMimeType());
     }
-
 }
