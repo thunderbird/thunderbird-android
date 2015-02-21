@@ -17,6 +17,18 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 public class OpenPgpHeaderView extends LinearLayout {
+    private static final int STATE_REVOKED = 1;
+    private static final int STATE_EXPIRED = 2;
+    private static final int STATE_VERIFIED = 3;
+    private static final int STATE_UNAVAILABLE = 4;
+    private static final int STATE_ENCRYPTED = 5;
+    private static final int STATE_NOT_ENCRYPTED = 6;
+    private static final int STATE_UNVERIFIED = 7;
+    private static final int STATE_UNKNOWN_KEY = 8;
+    private static final int STATE_INVALID = 9;
+    private static final int STATE_NOT_SIGNED = 10;
+
+
     private Context mContext;
     private OpenPgpHeaderViewCallback callback;
 
@@ -185,22 +197,7 @@ public class OpenPgpHeaderView extends LinearLayout {
         }
     }
 
-    public static final int STATE_REVOKED = 1;
-    public static final int STATE_EXPIRED = 2;
-    public static final int STATE_VERIFIED = 3;
-    public static final int STATE_UNAVAILABLE = 4;
-    public static final int STATE_ENCRYPTED = 5;
-    public static final int STATE_NOT_ENCRYPTED = 6;
-    public static final int STATE_UNVERIFIED = 7;
-    public static final int STATE_UNKNOWN_KEY = 8;
-    public static final int STATE_INVALID = 9;
-    public static final int STATE_NOT_SIGNED = 10;
-
-    /**
-     * Sets status image based on constant
-     */
-    public static void setStatusImage(Context context, ImageView statusIcon, TextView statusText,
-                                      int state) {
+    private void setStatusImage(Context context, ImageView statusIcon, TextView statusText, int state) {
         switch (state) {
             /** GREEN: everything is good **/
             case STATE_VERIFIED: {
