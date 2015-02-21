@@ -82,28 +82,28 @@ public class OpenPgpHeaderView extends LinearLayout {
         }
 
         if (encrypted) {
-            setStatusImageAndTextColor(context, resultEncryptionIcon, resultEncryptionText, CryptoState.ENCRYPTED);
+            setEncryptionImageAndTextColor(CryptoState.ENCRYPTED);
             resultEncryptionText.setText(R.string.openpgp_result_encrypted);
         } else {
-            setStatusImageAndTextColor(context, resultEncryptionIcon, resultEncryptionText, CryptoState.NOT_ENCRYPTED);
+            setEncryptionImageAndTextColor(CryptoState.NOT_ENCRYPTED);
             resultEncryptionText.setText(R.string.openpgp_result_not_encrypted);
         }
 
         if (signatureResult == null) {
-            setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.NOT_SIGNED);
+            setSignatureImageAndTextColor(CryptoState.NOT_SIGNED);
             resultSignatureText.setText(R.string.openpgp_result_no_signature);
             resultSignatureLayout.setVisibility(View.GONE);
         } else {
             switch (signatureResult.getStatus()) {
                 case OpenPgpSignatureResult.SIGNATURE_ERROR: {
-                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.INVALID);
+                    setSignatureImageAndTextColor(CryptoState.INVALID);
                     resultSignatureText.setText(R.string.openpgp_result_invalid_signature);
 
                     resultSignatureLayout.setVisibility(View.GONE);
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_SUCCESS_CERTIFIED: {
-                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.VERIFIED);
+                    setSignatureImageAndTextColor(CryptoState.VERIFIED);
                     resultSignatureText.setText(R.string.openpgp_result_signature_certified);
 
                     setUserId(signatureResult);
@@ -116,8 +116,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_KEY_MISSING: {
-                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText,
-                            CryptoState.UNKNOWN_KEY);
+                    setSignatureImageAndTextColor(CryptoState.UNKNOWN_KEY);
                     resultSignatureText.setText(R.string.openpgp_result_signature_missing_key);
 
                     setUserId(signatureResult);
@@ -130,8 +129,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_SUCCESS_UNCERTIFIED: {
-                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText,
-                            CryptoState.UNVERIFIED);
+                    setSignatureImageAndTextColor(CryptoState.UNVERIFIED);
                     resultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
 
                     setUserId(signatureResult);
@@ -144,7 +142,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_KEY_EXPIRED: {
-                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.EXPIRED);
+                    setSignatureImageAndTextColor(CryptoState.EXPIRED);
                     resultSignatureText.setText(R.string.openpgp_result_signature_expired_key);
 
                     setUserId(signatureResult);
@@ -157,7 +155,7 @@ public class OpenPgpHeaderView extends LinearLayout {
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_KEY_REVOKED: {
-                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.REVOKED);
+                    setSignatureImageAndTextColor(CryptoState.REVOKED);
                     resultSignatureText.setText(R.string.openpgp_result_signature_revoked_key);
 
                     setUserId(signatureResult);
@@ -191,9 +189,15 @@ public class OpenPgpHeaderView extends LinearLayout {
         }
     }
 
-    private void setStatusImageAndTextColor(Context context, ImageView statusIcon, TextView statusText,
-            CryptoState state) {
+    private void setEncryptionImageAndTextColor(CryptoState state) {
+        setStatusImageAndTextColor(resultEncryptionIcon, resultEncryptionText, state);
+    }
 
+    private void setSignatureImageAndTextColor(CryptoState state) {
+        setStatusImageAndTextColor(resultSignatureIcon, resultSignatureText, state);
+    }
+
+    private void setStatusImageAndTextColor(ImageView statusIcon, TextView statusText, CryptoState state) {
         Drawable statusImageDrawable = context.getResources().getDrawable(state.getDrawableId());
         statusIcon.setImageDrawable(statusImageDrawable);
 
