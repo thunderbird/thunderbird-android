@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -54,33 +57,20 @@ public class OpenPgpHeaderView extends LinearLayout {
         resultSignatureButton = (Button) findViewById(R.id.result_signature_button);
     }
 
-    public void setOpenPgpData(OpenPgpSignatureResult signatureResult,
-            boolean encrypted, PendingIntent pendingIntent) {
-        this.signatureResult = signatureResult;
-        this.encrypted = encrypted;
-        this.pendingIntent = pendingIntent;
-
-        displayOpenPgpView();
-    }
-
     public void setCallback(OpenPgpHeaderViewCallback callback) {
         this.callback = callback;
     }
 
-    public void displayOpenPgpView() {
+    public void setOpenPgpData(OpenPgpSignatureResult signatureResult, boolean encrypted, PendingIntent pendingIntent) {
+        this.signatureResult = signatureResult;
+        this.encrypted = encrypted;
+        this.pendingIntent = pendingIntent;
 
-        if (pendingIntent != null) {
-            resultSignatureButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callback.onPgpSignatureButtonClick(pendingIntent);
-                }
-            });
-        } else {
-            resultSignatureButton.setVisibility(View.GONE);
-            resultSignatureButton.setOnClickListener(null);
-        }
+        initializeEncryptionHeader();
+        initializeSignatureHeader();
+    }
 
+    private void initializeEncryptionHeader() {
         if (encrypted) {
             setEncryptionImageAndTextColor(CryptoState.ENCRYPTED);
             resultEncryptionText.setText(R.string.openpgp_result_encrypted);
@@ -88,91 +78,130 @@ public class OpenPgpHeaderView extends LinearLayout {
             setEncryptionImageAndTextColor(CryptoState.NOT_ENCRYPTED);
             resultEncryptionText.setText(R.string.openpgp_result_not_encrypted);
         }
+    }
+
+    private void initializeSignatureHeader() {
+        initializeSignatureButton();
 
         if (signatureResult == null) {
-            setSignatureImageAndTextColor(CryptoState.NOT_SIGNED);
-            resultSignatureText.setText(R.string.openpgp_result_no_signature);
-            resultSignatureLayout.setVisibility(View.GONE);
-        } else {
-            switch (signatureResult.getStatus()) {
-                case OpenPgpSignatureResult.SIGNATURE_ERROR: {
-                    setSignatureImageAndTextColor(CryptoState.INVALID);
-                    resultSignatureText.setText(R.string.openpgp_result_invalid_signature);
-
-                    resultSignatureLayout.setVisibility(View.GONE);
-                    break;
-                }
-                case OpenPgpSignatureResult.SIGNATURE_SUCCESS_CERTIFIED: {
-                    setSignatureImageAndTextColor(CryptoState.VERIFIED);
-                    resultSignatureText.setText(R.string.openpgp_result_signature_certified);
-
-                    setUserId(signatureResult);
-                    if (pendingIntent != null) {
-                        resultSignatureButton.setVisibility(View.VISIBLE);
-                        resultSignatureButton.setText(R.string.openpgp_result_action_show);
-                    }
-                    resultSignatureLayout.setVisibility(View.VISIBLE);
-
-                    break;
-                }
-                case OpenPgpSignatureResult.SIGNATURE_KEY_MISSING: {
-                    setSignatureImageAndTextColor(CryptoState.UNKNOWN_KEY);
-                    resultSignatureText.setText(R.string.openpgp_result_signature_missing_key);
-
-                    setUserId(signatureResult);
-                    if (pendingIntent != null) {
-                        resultSignatureButton.setVisibility(View.VISIBLE);
-                        resultSignatureButton.setText(R.string.openpgp_result_action_lookup);
-                    }
-                    resultSignatureLayout.setVisibility(View.VISIBLE);
-
-                    break;
-                }
-                case OpenPgpSignatureResult.SIGNATURE_SUCCESS_UNCERTIFIED: {
-                    setSignatureImageAndTextColor(CryptoState.UNVERIFIED);
-                    resultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
-
-                    setUserId(signatureResult);
-                    if (pendingIntent != null) {
-                        resultSignatureButton.setVisibility(View.VISIBLE);
-                        resultSignatureButton.setText(R.string.openpgp_result_action_show);
-                    }
-                    resultSignatureLayout.setVisibility(View.VISIBLE);
-
-                    break;
-                }
-                case OpenPgpSignatureResult.SIGNATURE_KEY_EXPIRED: {
-                    setSignatureImageAndTextColor(CryptoState.EXPIRED);
-                    resultSignatureText.setText(R.string.openpgp_result_signature_expired_key);
-
-                    setUserId(signatureResult);
-                    if (pendingIntent != null) {
-                        resultSignatureButton.setVisibility(View.VISIBLE);
-                        resultSignatureButton.setText(R.string.openpgp_result_action_show);
-                    }
-                    resultSignatureLayout.setVisibility(View.VISIBLE);
-
-                    break;
-                }
-                case OpenPgpSignatureResult.SIGNATURE_KEY_REVOKED: {
-                    setSignatureImageAndTextColor(CryptoState.REVOKED);
-                    resultSignatureText.setText(R.string.openpgp_result_signature_revoked_key);
-
-                    setUserId(signatureResult);
-                    if (pendingIntent != null) {
-                        resultSignatureButton.setVisibility(View.VISIBLE);
-                        resultSignatureButton.setText(R.string.openpgp_result_action_show);
-                    }
-                    resultSignatureLayout.setVisibility(View.VISIBLE);
-
-                    break;
-                }
-
-                default:
-                    break;
-            }
-
+            displayNotSigned();
+            return;
         }
+
+        switch (signatureResult.getStatus()) {
+            case OpenPgpSignatureResult.SIGNATURE_ERROR: {
+                displaySignatureError();
+                break;
+            }
+            case OpenPgpSignatureResult.SIGNATURE_SUCCESS_CERTIFIED: {
+                displaySignatureSuccessCertified();
+                break;
+            }
+            case OpenPgpSignatureResult.SIGNATURE_KEY_MISSING: {
+                displaySignatureKeyMissing();
+                break;
+            }
+            case OpenPgpSignatureResult.SIGNATURE_SUCCESS_UNCERTIFIED: {
+                displaySignatureSuccessUncertified();
+                break;
+            }
+            case OpenPgpSignatureResult.SIGNATURE_KEY_EXPIRED: {
+                displaySignatureKeyExpired();
+                break;
+            }
+            case OpenPgpSignatureResult.SIGNATURE_KEY_REVOKED: {
+                displaySignatureKeyRevoked();
+                break;
+            }
+        }
+    }
+
+    private void initializeSignatureButton() {
+        if (isSignatureButtonUsed()) {
+            setSignatureButtonClickListener();
+        } else {
+            hideSignatureButton();
+        }
+    }
+
+    private boolean isSignatureButtonUsed() {
+        return pendingIntent != null;
+    }
+
+    private void setSignatureButtonClickListener() {
+        resultSignatureButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.onPgpSignatureButtonClick(pendingIntent);
+            }
+        });
+    }
+
+    private void hideSignatureButton() {
+        resultSignatureButton.setVisibility(View.GONE);
+        resultSignatureButton.setOnClickListener(null);
+    }
+
+    private void showSignatureButtonWithTextIfNecessary(@StringRes int stringId) {
+        if (isSignatureButtonUsed()) {
+            resultSignatureButton.setVisibility(View.VISIBLE);
+            resultSignatureButton.setText(stringId);
+        }
+    }
+
+    private void displayNotSigned() {
+        setSignatureImageAndTextColor(CryptoState.NOT_SIGNED);
+        resultSignatureText.setText(R.string.openpgp_result_no_signature);
+        hideSignatureLayout();
+    }
+
+    private void displaySignatureError() {
+        setSignatureImageAndTextColor(CryptoState.INVALID);
+        resultSignatureText.setText(R.string.openpgp_result_invalid_signature);
+        hideSignatureLayout();
+    }
+
+    private void displaySignatureSuccessCertified() {
+        setSignatureImageAndTextColor(CryptoState.VERIFIED);
+        resultSignatureText.setText(R.string.openpgp_result_signature_certified);
+
+        displayUserIdAndSignatureButton();
+    }
+
+    private void displaySignatureKeyMissing() {
+        setSignatureImageAndTextColor(CryptoState.UNKNOWN_KEY);
+        resultSignatureText.setText(R.string.openpgp_result_signature_missing_key);
+
+        setUserId(signatureResult);
+        showSignatureButtonWithTextIfNecessary(R.string.openpgp_result_action_lookup);
+        showSignatureLayout();
+    }
+
+    private void displaySignatureSuccessUncertified() {
+        setSignatureImageAndTextColor(CryptoState.UNVERIFIED);
+        resultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
+
+        displayUserIdAndSignatureButton();
+    }
+
+    private void displaySignatureKeyExpired() {
+        setSignatureImageAndTextColor(CryptoState.EXPIRED);
+        resultSignatureText.setText(R.string.openpgp_result_signature_expired_key);
+
+        displayUserIdAndSignatureButton();
+    }
+
+    private void displaySignatureKeyRevoked() {
+        setSignatureImageAndTextColor(CryptoState.REVOKED);
+        resultSignatureText.setText(R.string.openpgp_result_signature_revoked_key);
+
+        displayUserIdAndSignatureButton();
+    }
+
+    private void displayUserIdAndSignatureButton() {
+        setUserId(signatureResult);
+        showSignatureButtonWithTextIfNecessary(R.string.openpgp_result_action_show);
+        showSignatureLayout();
     }
 
     private void setUserId(OpenPgpSignatureResult signatureResult) {
@@ -182,11 +211,20 @@ public class OpenPgpHeaderView extends LinearLayout {
         } else {
             resultSignatureName.setText(R.string.openpgp_result_no_name);
         }
+
         if (userInfo.email != null) {
             resultSignatureEmail.setText(userInfo.email);
         } else {
             resultSignatureEmail.setText(R.string.openpgp_result_no_email);
         }
+    }
+
+    private void hideSignatureLayout() {
+        resultSignatureLayout.setVisibility(View.GONE);
+    }
+
+    private void showSignatureLayout() {
+        resultSignatureLayout.setVisibility(View.VISIBLE);
     }
 
     private void setEncryptionImageAndTextColor(CryptoState state) {
@@ -223,18 +261,21 @@ public class OpenPgpHeaderView extends LinearLayout {
         NOT_SIGNED(R.drawable.status_signature_unknown_cutout, R.color.openpgp_red),
         INVALID(R.drawable.status_signature_invalid_cutout, R.color.openpgp_red);
 
+
         private final int drawableId;
         private final int colorId;
 
-        CryptoState(int drawableId, int colorId) {
+        CryptoState(@DrawableRes int drawableId, @ColorRes int colorId) {
             this.drawableId = drawableId;
             this.colorId = colorId;
         }
 
+        @DrawableRes
         public int getDrawableId() {
             return drawableId;
         }
 
+        @ColorRes
         public int getColorId() {
             return colorId;
         }
