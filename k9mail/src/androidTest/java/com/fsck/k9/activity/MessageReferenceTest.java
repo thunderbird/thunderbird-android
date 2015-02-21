@@ -8,8 +8,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class MessageReferenceTest
@@ -88,4 +90,76 @@ public class MessageReferenceTest
         // Corruption in the Flag should throw MessagingException.
         new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
     }
+
+    @Test
+    public void notAnInstanceOfMessageReferenceCantEquals()
+    {
+        // A MessageReference :
+        MessageReference m = new MessageReference();
+        // And another Object :
+        Object o = new Object();
+        // Asserting it is not equals, as not an instance of MessageReference:
+        assertFalse(m.equals(o));
+    }
+
+    @Test
+    public void sameMessageReferenceObjectsAreEquals()
+    {
+        // First MessageReference :
+        MessageReference m1 = new MessageReference();
+        m1.accountUuid = "acc1";
+        m1.folderName = "folder1";
+        m1.uid = "uid1";
+        // Same MessageReference than m1 :
+        MessageReference m2 = new MessageReference();
+        m2.accountUuid = "acc1";
+        m2.folderName = "folder1";
+        m2.uid = "uid1";
+
+        assertTrue(m1.equals(m2));
+        assertTrue(m2.equals(m1));
+    }
+
+    @Test
+    public void messageReferenceWithAnotherAccountUuidDontEquals()
+    {
+        // First MessageReference :
+        MessageReference m1 = new MessageReference();
+        m1.accountUuid = "acc1";
+        // A MessageReference with another accountUuid :
+        MessageReference m2 = new MessageReference();
+        m2.accountUuid = "acc2";
+
+        assertFalse(m1.equals(m2));
+        assertFalse(m2.equals(m1));
+    }
+
+    @Test
+    public void messageReferenceWithAnotherFolderNameDontEquals()
+    {
+        // First MessageReference :
+        MessageReference m1 = new MessageReference();
+        m1.folderName = "folder1";
+        // A MessageReference with another folderName :
+        MessageReference m2 = new MessageReference();
+        m2.folderName = "folder2";
+
+        assertFalse(m1.equals(m2));
+        assertFalse(m2.equals(m1));
+    }
+
+    @Test
+    public void messageReferenceWithAnotherUidDontEquals()
+    {
+        // First MessageReference :
+        MessageReference m1 = new MessageReference();
+        m1.uid = "uid1";
+        // A MessageReference with another uid :
+        MessageReference m2 = new MessageReference();
+        m2.uid = "uid2";
+
+        assertFalse(m1.equals(m2));
+        assertFalse(m2.equals(m1));
+    }
+
 }
