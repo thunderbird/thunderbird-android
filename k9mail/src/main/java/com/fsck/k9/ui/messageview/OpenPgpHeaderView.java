@@ -1,6 +1,7 @@
 
 package com.fsck.k9.ui.messageview;
 
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -17,42 +18,44 @@ import com.fsck.k9.R;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
+
 public class OpenPgpHeaderView extends LinearLayout {
-    private Context mContext;
+    private Context context;
     private OpenPgpHeaderViewCallback callback;
 
     private OpenPgpSignatureResult signatureResult;
     private boolean encrypted;
     private PendingIntent pendingIntent;
 
-    private ImageView mResultEncryptionIcon;
-    private TextView mResultEncryptionText;
-    private ImageView mResultSignatureIcon;
-    private TextView mResultSignatureText;
-    private LinearLayout mResultSignatureLayout;
-    private TextView mResultSignatureName;
-    private TextView mResultSignatureEmail;
-    private Button mResultSignatureButton;
+    private ImageView resultEncryptionIcon;
+    private TextView resultEncryptionText;
+    private ImageView resultSignatureIcon;
+    private TextView resultSignatureText;
+    private LinearLayout resultSignatureLayout;
+    private TextView resultSignatureName;
+    private TextView resultSignatureEmail;
+    private Button resultSignatureButton;
+
 
     public OpenPgpHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
+        this.context = context;
     }
 
     @Override
     public void onFinishInflate() {
-        mResultEncryptionIcon = (ImageView) findViewById(R.id.result_encryption_icon);
-        mResultEncryptionText = (TextView) findViewById(R.id.result_encryption_text);
-        mResultSignatureIcon = (ImageView) findViewById(R.id.result_signature_icon);
-        mResultSignatureText = (TextView) findViewById(R.id.result_signature_text);
-        mResultSignatureLayout = (LinearLayout) findViewById(R.id.result_signature_layout);
-        mResultSignatureName = (TextView) findViewById(R.id.result_signature_name);
-        mResultSignatureEmail = (TextView) findViewById(R.id.result_signature_email);
-        mResultSignatureButton = (Button) findViewById(R.id.result_signature_button);
+        resultEncryptionIcon = (ImageView) findViewById(R.id.result_encryption_icon);
+        resultEncryptionText = (TextView) findViewById(R.id.result_encryption_text);
+        resultSignatureIcon = (ImageView) findViewById(R.id.result_signature_icon);
+        resultSignatureText = (TextView) findViewById(R.id.result_signature_text);
+        resultSignatureLayout = (LinearLayout) findViewById(R.id.result_signature_layout);
+        resultSignatureName = (TextView) findViewById(R.id.result_signature_name);
+        resultSignatureEmail = (TextView) findViewById(R.id.result_signature_email);
+        resultSignatureButton = (Button) findViewById(R.id.result_signature_button);
     }
 
     public void setOpenPgpData(OpenPgpSignatureResult signatureResult,
-                               boolean encrypted, PendingIntent pendingIntent) {
+            boolean encrypted, PendingIntent pendingIntent) {
         this.signatureResult = signatureResult;
         this.encrypted = encrypted;
         this.pendingIntent = pendingIntent;
@@ -67,100 +70,102 @@ public class OpenPgpHeaderView extends LinearLayout {
     public void displayOpenPgpView() {
 
         if (pendingIntent != null) {
-            mResultSignatureButton.setOnClickListener(new OnClickListener() {
+            resultSignatureButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     callback.onPgpSignatureButtonClick(pendingIntent);
                 }
             });
         } else {
-            mResultSignatureButton.setVisibility(View.GONE);
-            mResultSignatureButton.setOnClickListener(null);
+            resultSignatureButton.setVisibility(View.GONE);
+            resultSignatureButton.setOnClickListener(null);
         }
 
         if (encrypted) {
-            setStatusImageAndTextColor(mContext, mResultEncryptionIcon, mResultEncryptionText, CryptoState.ENCRYPTED);
-            mResultEncryptionText.setText(R.string.openpgp_result_encrypted);
+            setStatusImageAndTextColor(context, resultEncryptionIcon, resultEncryptionText, CryptoState.ENCRYPTED);
+            resultEncryptionText.setText(R.string.openpgp_result_encrypted);
         } else {
-            setStatusImageAndTextColor(mContext, mResultEncryptionIcon, mResultEncryptionText, CryptoState.NOT_ENCRYPTED);
-            mResultEncryptionText.setText(R.string.openpgp_result_not_encrypted);
+            setStatusImageAndTextColor(context, resultEncryptionIcon, resultEncryptionText, CryptoState.NOT_ENCRYPTED);
+            resultEncryptionText.setText(R.string.openpgp_result_not_encrypted);
         }
 
         if (signatureResult == null) {
-            setStatusImageAndTextColor(mContext, mResultSignatureIcon, mResultSignatureText, CryptoState.NOT_SIGNED);
-            mResultSignatureText.setText(R.string.openpgp_result_no_signature);
-            mResultSignatureLayout.setVisibility(View.GONE);
+            setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.NOT_SIGNED);
+            resultSignatureText.setText(R.string.openpgp_result_no_signature);
+            resultSignatureLayout.setVisibility(View.GONE);
         } else {
             switch (signatureResult.getStatus()) {
                 case OpenPgpSignatureResult.SIGNATURE_ERROR: {
-                    setStatusImageAndTextColor(mContext, mResultSignatureIcon, mResultSignatureText, CryptoState.INVALID);
-                    mResultSignatureText.setText(R.string.openpgp_result_invalid_signature);
+                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.INVALID);
+                    resultSignatureText.setText(R.string.openpgp_result_invalid_signature);
 
-                    mResultSignatureLayout.setVisibility(View.GONE);
+                    resultSignatureLayout.setVisibility(View.GONE);
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_SUCCESS_CERTIFIED: {
-                    setStatusImageAndTextColor(mContext, mResultSignatureIcon, mResultSignatureText, CryptoState.VERIFIED);
-                    mResultSignatureText.setText(R.string.openpgp_result_signature_certified);
+                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.VERIFIED);
+                    resultSignatureText.setText(R.string.openpgp_result_signature_certified);
 
                     setUserId(signatureResult);
                     if (pendingIntent != null) {
-                        mResultSignatureButton.setVisibility(View.VISIBLE);
-                        mResultSignatureButton.setText(R.string.openpgp_result_action_show);
+                        resultSignatureButton.setVisibility(View.VISIBLE);
+                        resultSignatureButton.setText(R.string.openpgp_result_action_show);
                     }
-                    mResultSignatureLayout.setVisibility(View.VISIBLE);
+                    resultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_KEY_MISSING: {
-                    setStatusImageAndTextColor(mContext, mResultSignatureIcon, mResultSignatureText, CryptoState.UNKNOWN_KEY);
-                    mResultSignatureText.setText(R.string.openpgp_result_signature_missing_key);
+                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText,
+                            CryptoState.UNKNOWN_KEY);
+                    resultSignatureText.setText(R.string.openpgp_result_signature_missing_key);
 
                     setUserId(signatureResult);
                     if (pendingIntent != null) {
-                        mResultSignatureButton.setVisibility(View.VISIBLE);
-                        mResultSignatureButton.setText(R.string.openpgp_result_action_lookup);
+                        resultSignatureButton.setVisibility(View.VISIBLE);
+                        resultSignatureButton.setText(R.string.openpgp_result_action_lookup);
                     }
-                    mResultSignatureLayout.setVisibility(View.VISIBLE);
+                    resultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_SUCCESS_UNCERTIFIED: {
-                    setStatusImageAndTextColor(mContext, mResultSignatureIcon, mResultSignatureText, CryptoState.UNVERIFIED);
-                    mResultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
+                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText,
+                            CryptoState.UNVERIFIED);
+                    resultSignatureText.setText(R.string.openpgp_result_signature_uncertified);
 
                     setUserId(signatureResult);
                     if (pendingIntent != null) {
-                        mResultSignatureButton.setVisibility(View.VISIBLE);
-                        mResultSignatureButton.setText(R.string.openpgp_result_action_show);
+                        resultSignatureButton.setVisibility(View.VISIBLE);
+                        resultSignatureButton.setText(R.string.openpgp_result_action_show);
                     }
-                    mResultSignatureLayout.setVisibility(View.VISIBLE);
+                    resultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_KEY_EXPIRED: {
-                    setStatusImageAndTextColor(mContext, mResultSignatureIcon, mResultSignatureText, CryptoState.EXPIRED);
-                    mResultSignatureText.setText(R.string.openpgp_result_signature_expired_key);
+                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.EXPIRED);
+                    resultSignatureText.setText(R.string.openpgp_result_signature_expired_key);
 
                     setUserId(signatureResult);
                     if (pendingIntent != null) {
-                        mResultSignatureButton.setVisibility(View.VISIBLE);
-                        mResultSignatureButton.setText(R.string.openpgp_result_action_show);
+                        resultSignatureButton.setVisibility(View.VISIBLE);
+                        resultSignatureButton.setText(R.string.openpgp_result_action_show);
                     }
-                    mResultSignatureLayout.setVisibility(View.VISIBLE);
+                    resultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
                 }
                 case OpenPgpSignatureResult.SIGNATURE_KEY_REVOKED: {
-                    setStatusImageAndTextColor(mContext, mResultSignatureIcon, mResultSignatureText, CryptoState.REVOKED);
-                    mResultSignatureText.setText(R.string.openpgp_result_signature_revoked_key);
+                    setStatusImageAndTextColor(context, resultSignatureIcon, resultSignatureText, CryptoState.REVOKED);
+                    resultSignatureText.setText(R.string.openpgp_result_signature_revoked_key);
 
                     setUserId(signatureResult);
                     if (pendingIntent != null) {
-                        mResultSignatureButton.setVisibility(View.VISIBLE);
-                        mResultSignatureButton.setText(R.string.openpgp_result_action_show);
+                        resultSignatureButton.setVisibility(View.VISIBLE);
+                        resultSignatureButton.setText(R.string.openpgp_result_action_show);
                     }
-                    mResultSignatureLayout.setVisibility(View.VISIBLE);
+                    resultSignatureLayout.setVisibility(View.VISIBLE);
 
                     break;
                 }
@@ -175,14 +180,14 @@ public class OpenPgpHeaderView extends LinearLayout {
     private void setUserId(OpenPgpSignatureResult signatureResult) {
         final OpenPgpUtils.UserInfo userInfo = OpenPgpUtils.splitUserId(signatureResult.getPrimaryUserId());
         if (userInfo.name != null) {
-            mResultSignatureName.setText(userInfo.name);
+            resultSignatureName.setText(userInfo.name);
         } else {
-            mResultSignatureName.setText(R.string.openpgp_result_no_name);
+            resultSignatureName.setText(R.string.openpgp_result_no_name);
         }
         if (userInfo.email != null) {
-            mResultSignatureEmail.setText(userInfo.email);
+            resultSignatureEmail.setText(userInfo.email);
         } else {
-            mResultSignatureEmail.setText(R.string.openpgp_result_no_email);
+            resultSignatureEmail.setText(R.string.openpgp_result_no_email);
         }
     }
 
