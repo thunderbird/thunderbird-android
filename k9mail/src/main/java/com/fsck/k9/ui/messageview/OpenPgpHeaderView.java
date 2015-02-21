@@ -196,10 +196,6 @@ public class OpenPgpHeaderView extends LinearLayout {
     public static final int STATE_INVALID = 9;
     public static final int STATE_NOT_SIGNED = 10;
 
-    public static void setStatusImage(Context context, ImageView statusIcon, int state) {
-        setStatusImage(context, statusIcon, null, state);
-    }
-
     /**
      * Sets status image based on constant
      */
