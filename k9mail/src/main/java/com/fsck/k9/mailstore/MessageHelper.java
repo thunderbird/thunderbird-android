@@ -5,8 +5,10 @@ import java.util.Stack;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeBodyPart;
 
 
 public class MessageHelper {
@@ -33,5 +35,13 @@ public class MessageHelper {
         }
 
         return true;
+    }
+
+    public static MimeBodyPart createEmptyPart() {
+        try {
+            return new MimeBodyPart(null);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

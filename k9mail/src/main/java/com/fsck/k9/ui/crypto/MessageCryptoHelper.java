@@ -49,6 +49,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 public class MessageCryptoHelper {
     private static final int REQUEST_CODE_CRYPTO = 1000;
     private static final int INVALID_OPENPGP_RESULT_CODE = -1;
+    private static final MimeBodyPart NO_REPLACEMENT_PART = null;
 
 
     private final Context context;
@@ -83,10 +84,11 @@ public class MessageCryptoHelper {
         }
 
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
-        processFoundParts(encryptedParts, CryptoPartType.ENCRYPTED, CryptoError.ENCRYPTED_BUT_INCOMPLETE);
+        processFoundParts(encryptedParts, CryptoPartType.ENCRYPTED, CryptoError.ENCRYPTED_BUT_INCOMPLETE,
+                MessageHelper.createEmptyPart());
 
         List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
-        processFoundParts(signedParts, CryptoPartType.SIGNED, CryptoError.SIGNED_BUT_INCOMPLETE);
+        processFoundParts(signedParts, CryptoPartType.SIGNED, CryptoError.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
 
         List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(message);
         addFoundInlinePgpParts(inlineParts);
@@ -94,22 +96,22 @@ public class MessageCryptoHelper {
         decryptOrVerifyNextPart();
     }
 
-    private void processFoundParts(List<Part> foundParts, CryptoPartType cryptoPartType,
-            CryptoError errorIfIncomplete) {
-
+    private void processFoundParts(List<Part> foundParts, CryptoPartType cryptoPartType, CryptoError errorIfIncomplete,
+            MimeBodyPart replacementPart) {
         for (Part part : foundParts) {
             if (MessageHelper.isCompletePartAvailable(part)) {
                 CryptoPart cryptoPart = new CryptoPart(cryptoPartType, part);
                 partsToDecryptOrVerify.add(cryptoPart);
             } else {
-                addErrorAnnotation(part, errorIfIncomplete);
+                addErrorAnnotation(part, errorIfIncomplete, replacementPart);
             }
         }
     }
 
-    private void addErrorAnnotation(Part part, CryptoError error) {
+    private void addErrorAnnotation(Part part, CryptoError error, MimeBodyPart outputData) {
         OpenPgpResultAnnotation annotation = new OpenPgpResultAnnotation();
         annotation.setErrorType(error);
+        annotation.setOutputData(outputData);
         messageAnnotations.put(part, annotation);
     }
 
