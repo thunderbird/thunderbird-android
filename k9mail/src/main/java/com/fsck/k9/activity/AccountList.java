@@ -3,7 +3,10 @@ package com.fsck.k9.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.AsyncTask;
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
+import android.content.Loader;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +33,8 @@ import com.fsck.k9.search.SearchAccount;
  * method to perform an action when an account is selected.
  * </p>
  */
-public abstract class AccountList extends K9ListActivity implements OnItemClickListener {
+public abstract class AccountList extends K9ListActivity 
+    implements OnItemClickListener, LoaderManager.LoaderCallbacks<List<Account>>  {
     private FontSizes mFontSizes = K9.getFontSizes();
 
     @Override
@@ -52,7 +56,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
     @Override
     public void onResume() {
         super.onResume();
-        new LoadAccounts().execute();
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -83,6 +87,20 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
         ListView listView = getListView();
         listView.setAdapter(adapter);
         listView.invalidate();
+    }
+
+    @Override
+    public Loader<List<Account>> onCreateLoader(int id, Bundle args) {
+        return new LoadAccounts(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Account>> loader, List<Account> accounts) {
+        populateListView(accounts);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Account>> loader) {
     }
 
     /**
@@ -168,16 +186,20 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
     /**
      * Load accounts in a background thread
      */
-    class LoadAccounts extends AsyncTask<Void, Void, List<Account>> {
-        @Override
-        protected List<Account> doInBackground(Void... params) {
-            List<Account> accounts = Preferences.getPreferences(getApplicationContext()).getAccounts();
-            return accounts;
+    class LoadAccounts extends AsyncTaskLoader<List<Account>> {
+        LoadAccounts(Context context) {
+            super(context);
         }
 
         @Override
-        protected void onPostExecute(List<Account> accounts) {
-            populateListView(accounts);
+        protected void onStartLoading() {
+            forceLoad();
+        }
+
+        @Override
+        public List<Account> loadInBackground() {
+            List<Account> accounts = Preferences.getPreferences(getApplicationContext()).getAccounts();
+            return accounts;
         }
     }
 }
