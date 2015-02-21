@@ -902,7 +902,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Uspješna dekripcija i važeći potpis ali ne certificiran</string>
   <string name="openpgp_successful_decryption_unknown_signature">Uspješna dekripcija ali nedostaje javni kjuč</string>
   <string name="openpgp_get_key">Potraži nedostajući ključ</string>
-  <string name="openpgp_error">OpenPGP Greška:</string>
   <string name="openpgp_user_id">Korisnički ID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Koristi certifikat klijenta</string>

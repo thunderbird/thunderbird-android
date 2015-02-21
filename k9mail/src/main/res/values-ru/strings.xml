@@ -900,7 +900,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Дешифрование выполнено, подпись действительна, но не проверена</string>
   <string name="openpgp_successful_decryption_unknown_signature">Дешифрование выполнено, но отсутствует открытый ключ</string>
   <string name="openpgp_get_key">Поиск отсутствующего ключа</string>
-  <string name="openpgp_error">Ошибка OpenPGP:</string>
   <string name="openpgp_user_id">ID пользователя</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Использовать сертификат клиента</string>

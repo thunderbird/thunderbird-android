@@ -906,7 +906,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Salauksen purku onnistui ja kelvollinen, mutta varmentamaton allekirjoitus</string>
   <string name="openpgp_successful_decryption_unknown_signature">Salauksen purku onnistui, mutta julkinen avain puuttuu</string>
   <string name="openpgp_get_key">Etsi puuttuva avain</string>
-  <string name="openpgp_error">OpenPGP-virhe:</string>
   <string name="openpgp_user_id">Käyttäjätunniste</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Käytä asiakasvarmennetta</string>

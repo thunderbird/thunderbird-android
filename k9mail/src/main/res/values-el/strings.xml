@@ -870,7 +870,6 @@
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Επιτυχής αποκρυπτογράφηση και έγκυρη υπογραφή αλλά χωρίς πιστοποίηση</string>
   <string name="openpgp_successful_decryption_unknown_signature">Επιτυχής αποκρυπτογράφηση αλλά απόν δημόσιο κλειδί</string>
   <string name="openpgp_get_key">Εύρεση κλειδιού που λείπει</string>
-  <string name="openpgp_error">Σφάλμα OpenPGP:</string>
   <string name="openpgp_user_id">Ταυτότητα χρήστη</string>
   <!--=== Client certificates specific ==================================================================-->
 </resources>

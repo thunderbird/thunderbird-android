@@ -873,7 +873,6 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Lyckad dekryptering och giltig signatur men ocertifierad</string>
   <string name="openpgp_successful_decryption_unknown_signature">Lyckad dekryptering men offentlig nyckel saknas</string>
   <string name="openpgp_get_key">Sök nyckel som saknas</string>
-  <string name="openpgp_error">OpenPGP Error:</string>
   <string name="openpgp_user_id">Användar-ID</string>
   <!--=== Client certificates specific ==================================================================-->
 </resources>

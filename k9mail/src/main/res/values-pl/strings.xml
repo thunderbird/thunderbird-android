@@ -857,7 +857,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="fetching_attachment_dialog_title_save">Zapisywanie szkicu</string>
   <string name="fetching_attachment_dialog_message">Pobieranie załącznika…</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_error">Błąd OpenPGP:</string>
   <string name="openpgp_user_id">ID użytkownika</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="client_certificate_advanced_options">Zaawansowane ustawienia</string>

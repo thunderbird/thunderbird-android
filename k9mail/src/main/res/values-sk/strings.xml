@@ -889,7 +889,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Úspešne dešifrované a platný podpis, ale necertifikovaný</string>
   <string name="openpgp_successful_decryption_unknown_signature">Úspešne dešifrované, ale chýbajúci verejný kľúč</string>
   <string name="openpgp_get_key">Vyhľadať chýbajúci kľúč</string>
-  <string name="openpgp_error">Chyba OpenPGP:</string>
   <string name="openpgp_user_id">ID používateľa</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Použiť klientský certifikát</string>

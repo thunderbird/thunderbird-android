@@ -886,7 +886,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="openpgp_successful_decryption_valid_signature_uncertified">解読と署名確認(証明書なし)成功</string>
   <string name="openpgp_successful_decryption_unknown_signature">解読成功。ただし、公開鍵なし</string>
   <string name="openpgp_get_key">公開鍵調査</string>
-  <string name="openpgp_error">OpenPGP エラー:</string>
   <string name="openpgp_user_id">ユーザID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">クライアント証明書を使う</string>

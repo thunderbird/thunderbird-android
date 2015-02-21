@@ -890,7 +890,6 @@ K-9改进的功能包括：
   <string name="openpgp_successful_decryption_valid_signature_uncertified">已成功解密且签名有效，但未验证</string>
   <string name="openpgp_successful_decryption_unknown_signature">已成功解密，但没有公钥</string>
   <string name="openpgp_get_key">查找缺失的公钥</string>
-  <string name="openpgp_error">OpenPGP 错误:</string>
   <string name="openpgp_user_id">用户标识</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">使用客户端证书</string>

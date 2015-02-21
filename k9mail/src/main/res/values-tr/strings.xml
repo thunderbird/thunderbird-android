@@ -896,7 +896,6 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Şifre çözme başarılı ve imza geçerli ancak sertifikalı değil</string>
   <string name="openpgp_successful_decryption_unknown_signature">Şifre çözme başarılı ancak kamusal anahtar eksik</string>
   <string name="openpgp_get_key">Kayıp anahtarı bul</string>
-  <string name="openpgp_error">OpenPGP Hatası:</string>
   <string name="openpgp_user_id">Kullanıcı Kimliği</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">İstemci sertifikası kullan</string>

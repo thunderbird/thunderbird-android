@@ -1815,7 +1815,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 Log.e(K9.LOG_TAG, "OpenPGP Error Message:" + error.getMessage());
 
                 Toast.makeText(MessageCompose.this,
-                        getString(R.string.openpgp_error) + " " + error.getMessage(),
+                        getString(R.string.openpgp_error, error.getMessage()),
                         Toast.LENGTH_LONG).show();
             }
         });

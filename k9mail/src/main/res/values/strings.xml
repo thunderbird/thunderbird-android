@@ -1114,7 +1114,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_successful_decryption_valid_signature_uncertified">Successful decryption and valid signature but uncertified</string>
     <string name="openpgp_successful_decryption_unknown_signature">Successful decryption but missing public key</string>
     <string name="openpgp_get_key">Lookup missing key</string>
-    <string name="openpgp_error">OpenPGP Error:</string>
+    <string name="openpgp_error">OpenPGP Error: %s</string>
+    <string name="openpgp_unknown_error">Unknown OpenPGP Error</string>
     <string name="openpgp_user_id">User Id</string>
     
     <string name="openpgp_result_no_signature">"Not Signed"</string>
@@ -1141,4 +1142,8 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="preview_inner_message">"Includes message titled \"%s\" containing: "</string>
     <string name="preview_untitled_inner_message">"Includes untitled message containing: "</string>
+
+    <string name="crypto_incomplete_message">Incomplete message</string>
+    <!-- Note: This references message_view_download_remainder -->
+    <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
 </resources>

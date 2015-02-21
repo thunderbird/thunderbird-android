@@ -412,12 +412,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             OpenPgpHeaderView openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
 
             OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
-            if (cryptoAnnotation == null) {
-                openPgpHeaderView.setOpenPgpData(null, false, null);
-            } else {
-                openPgpHeaderView.setOpenPgpData(cryptoAnnotation.getSignatureResult(), cryptoAnnotation.wasEncrypted(),
-                        cryptoAnnotation.getPendingIntent());
-            }
+            openPgpHeaderView.setOpenPgpData(cryptoAnnotation);
             openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
             mSidebar.setVisibility(View.VISIBLE);
         } else {
@@ -447,8 +442,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                 return wrapStatusMessage(cryptoAnnotation.getError().getMessage());
             }
             case ENCRYPTED_BUT_INCOMPLETE: {
-                //FIXME
-                return wrapStatusMessage("You need to download the complete message to be able to decrypt it.");
+                return wrapStatusMessage(getContext().getString(R.string.crypto_download_complete_message_to_decrypt));
             }
             case NONE:
             case SIGNED_BUT_INCOMPLETE: {

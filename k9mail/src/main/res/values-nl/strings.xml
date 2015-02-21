@@ -893,7 +893,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="openpgp_signature_invalid">Ongeldige pgp handtekening</string>
   <string name="openpgp_signature_unknown_text">Geen publieke sleutel voor deze handtekening</string>
   <string name="openpgp_get_key">Zoek de missende sleutel</string>
-  <string name="openpgp_error">OpenPGP Fout:</string>
   <string name="openpgp_user_id">Gebruikers-id</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Gebruik cliënt certificaat</string>
