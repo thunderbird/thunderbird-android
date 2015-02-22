@@ -81,7 +81,6 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
 import com.fsck.k9.preferences.SettingsImporter;
@@ -779,7 +778,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
              * Also don't ask when the AuthType is EXTERNAL.
              */
             boolean configureOutgoingServer = AuthType.EXTERNAL != outgoing.authenticationType
-                    && !WebDavStore.STORE_TYPE.equals(outgoing.type)
+                    && !(ServerSettings.Type.WebDAV == outgoing.type)
                     && outgoing.username != null
                     && !outgoing.username.isEmpty()
                     && (outgoing.password == null || outgoing.password

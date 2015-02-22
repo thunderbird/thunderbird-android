@@ -13,19 +13,16 @@ import java.util.Map;
  */
 public class AccountCreator {
 
-    private static Map<Type, DeletePolicy> defaults;
+    private static Map<Type, DeletePolicy> defaults = new HashMap<Type, DeletePolicy>();
+
+    static {
+        defaults.put(Type.IMAP, DeletePolicy.ON_DELETE);
+        defaults.put(Type.POP3, DeletePolicy.NEVER);
+        defaults.put(Type.WebDAV, DeletePolicy.ON_DELETE);
+    }
 
     public static DeletePolicy calculateDefaultDeletePolicy(Type type) {
-        return getDefaults().get(type);
+        return defaults.get(type);
     }
 
-    private static synchronized Map<Type, DeletePolicy> getDefaults() {
-        if (null == defaults) {
-            defaults = new HashMap<Type, DeletePolicy>();
-            defaults.put(Type.IMAP, DeletePolicy.ON_DELETE);
-            defaults.put(Type.POP3, DeletePolicy.NEVER);
-            defaults.put(Type.WebDAV, DeletePolicy.ON_DELETE);
-        }
-        return defaults;
-    }
 }
