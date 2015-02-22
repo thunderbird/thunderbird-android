@@ -51,17 +51,17 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     }
 
     private void setupStoreAndSmtpTransport(String schemePrefix) throws URISyntaxException {
-        URI uri = new URI(mAccount.getStoreUri());
-        uri = new URI(schemePrefix, uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
-        mAccount.setStoreUri(uri.toString());
+        URI storeUriForDecode = new URI(mAccount.getStoreUri());
+        URI storeUri = new URI(schemePrefix, storeUriForDecode.getUserInfo(), storeUriForDecode.getHost(), storeUriForDecode.getPort(), null, null, null);
+        mAccount.setStoreUri(storeUri.toString());
 
-        uri = new URI(mAccount.getTransportUri());
-        uri = new URI("smtp+tls+", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
-        mAccount.setTransportUri(uri.toString());
+        URI transportUriForDecode = new URI(mAccount.getTransportUri());
+        URI transportUri = new URI("smtp+tls+", transportUriForDecode.getUserInfo(), transportUriForDecode.getHost(), transportUriForDecode.getPort(), null, null, null);
+        mAccount.setTransportUri(transportUri.toString());
     }
 
     private void setupDav() throws URISyntaxException {
-        URI uri = new URI(mAccount.getStoreUri());
+        URI uriForDecode = new URI(mAccount.getStoreUri());
 
         /*
          * The user info we have been given from
@@ -71,14 +71,14 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
          * URI. Re-encode without it, using just the UserName and Password.
          */
         String userPass = "";
-        String[] userInfo = uri.getUserInfo().split(":");
+        String[] userInfo = uriForDecode.getUserInfo().split(":");
         if (userInfo.length > 1) {
             userPass = userInfo[1];
         }
         if (userInfo.length > 2) {
             userPass = userPass + ":" + userInfo[2];
         }
-        uri = new URI("webdav+ssl+", userPass, uri.getHost(), uri.getPort(), null, null, null);
+        URI uri = new URI("webdav+ssl+", userPass, uriForDecode.getHost(), uriForDecode.getPort(), null, null, null);
         mAccount.setStoreUri(uri.toString());
     }
 
