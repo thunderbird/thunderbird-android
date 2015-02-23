@@ -347,7 +347,7 @@ public class AccountSetupBasics extends K9Activity
         }
     }
 
-    protected void onNext() {
+    private void onNext() {
         if (mClientCertificateCheckBox.isChecked()) {
 
             // Auto-setup doesn't support client certificates.
