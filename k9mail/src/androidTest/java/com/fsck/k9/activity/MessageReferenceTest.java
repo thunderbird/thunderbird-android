@@ -16,10 +16,7 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class MessageReferenceTest {
-    /**
-     * Typically happens during forwards.  (You have a reference, but no flag since we don't currently consider
-     * FORWARDED a flag.)
-     */
+
     @Test
     public void checkIdentityStringFromMessageReferenceWithoutFlag() {
         MessageReference mr = new MessageReference();
@@ -30,9 +27,6 @@ public class MessageReferenceTest {
         assertEquals("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=", mr.toIdentityString());
     }
 
-    /**
-     * Typically happens during replies.
-     */
     @Test
     public void checkIdentityStringFromMessageReferenceWithFlag() {
         MessageReference mr = new MessageReference();
@@ -75,28 +69,23 @@ public class MessageReferenceTest {
 
     @Test(expected = MessagingException.class)
     public void parseIdentityStringWithCorruptFlag() throws MessagingException {
-        // Corruption in the Flag should throw MessagingException.
         new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
     }
 
     @Test
     public void equalsWithAnObjectShouldReturnFalse() {
-        // A MessageReference :
         MessageReference m = new MessageReference();
-        // And another Object :
         Object o = new Object();
-        // Asserting it is not equals, as not an instance of MessageReference:
         assertFalse(m.equals(o));
     }
 
     @Test
     public void equalsWithMessageReferenceContainingSameDataShouldReturnTrue() {
-        // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.accountUuid = "acc1";
         m1.folderName = "folder1";
         m1.uid = "uid1";
-        // Same MessageReference than m1 :
+
         MessageReference m2 = new MessageReference();
         m2.accountUuid = "acc1";
         m2.folderName = "folder1";
@@ -108,10 +97,9 @@ public class MessageReferenceTest {
 
     @Test
     public void equalsWithMessageReferenceContainingDifferentAccountUuidShouldReturnFalse() {
-        // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.accountUuid = "acc1";
-        // A MessageReference with another accountUuid :
+
         MessageReference m2 = new MessageReference();
         m2.accountUuid = "acc2";
 
@@ -121,10 +109,9 @@ public class MessageReferenceTest {
 
     @Test
     public void equalsWithMessageReferenceContainingDifferentFolderNameShouldReturnFalse() {
-        // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.folderName = "folder1";
-        // A MessageReference with another folderName :
+
         MessageReference m2 = new MessageReference();
         m2.folderName = "folder2";
 
@@ -134,10 +121,9 @@ public class MessageReferenceTest {
 
     @Test
     public void equalsWithMessageReferenceContainingDifferentUidShouldReturnFalse() {
-        // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.uid = "uid1";
-        // A MessageReference with another uid :
+
         MessageReference m2 = new MessageReference();
         m2.uid = "uid2";
 
