@@ -1,5 +1,6 @@
 package com.fsck.k9.activity;
 
+
 import android.support.test.runner.AndroidJUnit4;
 
 import com.fsck.k9.mail.Flag;
@@ -13,15 +14,15 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
+
 @RunWith(AndroidJUnit4.class)
-public class MessageReferenceTest
-{
+public class MessageReferenceTest {
     /**
-     * Typically happens during forwards.  (You have a reference, but no flag since we don't currently consider FORWARDED a flag.)
+     * Typically happens during forwards.  (You have a reference, but no flag since we don't currently consider
+     * FORWARDED a flag.)
      */
     @Test
-    public void testIdentityStringNoFlag()
-    {
+    public void testIdentityStringNoFlag() {
         MessageReference mr = new MessageReference();
         mr.accountUuid = "o hai!";
         mr.folderName = "folder";
@@ -34,8 +35,7 @@ public class MessageReferenceTest
      * Typically happens during replies.
      */
     @Test
-    public void testIdentityString()
-    {
+    public void testIdentityString() {
         MessageReference mr = new MessageReference();
         mr.accountUuid = "o hai!";
         mr.folderName = "folder";
@@ -46,8 +46,7 @@ public class MessageReferenceTest
     }
 
     @Test
-    public void testParseIdentityStringNoFlag() throws MessagingException
-    {
+    public void testParseIdentityStringNoFlag() throws MessagingException {
         MessageReference mr = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=");
         assertEquals("o hai!", mr.accountUuid);
         assertEquals("folder", mr.folderName);
@@ -56,8 +55,7 @@ public class MessageReferenceTest
     }
 
     @Test
-    public void testParseIdentityString() throws MessagingException
-    {
+    public void testParseIdentityString() throws MessagingException {
         MessageReference mr = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
         assertEquals("o hai!", mr.accountUuid);
         assertEquals("folder", mr.folderName);
@@ -66,21 +64,18 @@ public class MessageReferenceTest
     }
 
     @Test
-    public void testBadVersion() throws MessagingException
-    {
+    public void testBadVersion() throws MessagingException {
         MessageReference mr = new MessageReference("@:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
         assertNull(mr.accountUuid);
     }
 
     @Test(expected = MessagingException.class)
-    public void testNull() throws MessagingException
-    {
+    public void testNull() throws MessagingException {
         new MessageReference(null);
     }
 
     @Test(expected = MessagingException.class)
-    public void testCorruption() throws MessagingException
-    {
+    public void testCorruption() throws MessagingException {
         MessageReference mr = new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWERED");
         // No idea what this is going to generate, but it should be non-null.
         assertNotNull(mr.accountUuid);
@@ -92,8 +87,7 @@ public class MessageReferenceTest
     }
 
     @Test
-    public void notAnInstanceOfMessageReferenceCantEquals()
-    {
+    public void notAnInstanceOfMessageReferenceCantEquals() {
         // A MessageReference :
         MessageReference m = new MessageReference();
         // And another Object :
@@ -103,8 +97,7 @@ public class MessageReferenceTest
     }
 
     @Test
-    public void sameMessageReferenceObjectsAreEquals()
-    {
+    public void sameMessageReferenceObjectsAreEquals() {
         // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.accountUuid = "acc1";
@@ -121,8 +114,7 @@ public class MessageReferenceTest
     }
 
     @Test
-    public void messageReferenceWithAnotherAccountUuidDontEquals()
-    {
+    public void messageReferenceWithAnotherAccountUuidDontEquals() {
         // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.accountUuid = "acc1";
@@ -135,8 +127,7 @@ public class MessageReferenceTest
     }
 
     @Test
-    public void messageReferenceWithAnotherFolderNameDontEquals()
-    {
+    public void messageReferenceWithAnotherFolderNameDontEquals() {
         // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.folderName = "folder1";
@@ -149,8 +140,7 @@ public class MessageReferenceTest
     }
 
     @Test
-    public void messageReferenceWithAnotherUidDontEquals()
-    {
+    public void messageReferenceWithAnotherUidDontEquals() {
         // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.uid = "uid1";
@@ -161,5 +151,4 @@ public class MessageReferenceTest
         assertFalse(m1.equals(m2));
         assertFalse(m2.equals(m1));
     }
-
 }
