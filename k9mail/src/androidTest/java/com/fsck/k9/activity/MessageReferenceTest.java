@@ -77,6 +77,21 @@ public class MessageReferenceTest {
         assertFalse(messageReference.equals(object));
     }
 
+    @SuppressWarnings("ObjectEqualsNull")
+    @Test
+    public void equalsWithNullShouldReturnFalse() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
+
+        assertFalse(messageReference.equals(null));
+    }
+
+    @Test
+    public void equalsWithSameMessageReferenceShouldReturnTrue() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
+
+        assertTrue(messageReference.equals(messageReference));
+    }
+
     @Test
     public void equalsWithMessageReferenceContainingSameDataShouldReturnTrue() {
         MessageReference messageReferenceOne = createMessageReference("account", "folder", "uid");
