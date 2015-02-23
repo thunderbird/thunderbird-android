@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
@@ -22,7 +21,7 @@ public class MessageReferenceTest {
      * FORWARDED a flag.)
      */
     @Test
-    public void testIdentityStringNoFlag() {
+    public void checkIdentityStringFromMessageReferenceWithoutFlag() {
         MessageReference mr = new MessageReference();
         mr.accountUuid = "o hai!";
         mr.folderName = "folder";
@@ -35,7 +34,7 @@ public class MessageReferenceTest {
      * Typically happens during replies.
      */
     @Test
-    public void testIdentityString() {
+    public void checkIdentityStringFromMessageReferenceWithFlag() {
         MessageReference mr = new MessageReference();
         mr.accountUuid = "o hai!";
         mr.folderName = "folder";
@@ -46,7 +45,7 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void testParseIdentityStringNoFlag() throws MessagingException {
+    public void parseIdentityStringWithoutFlag() throws MessagingException {
         MessageReference mr = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=");
         assertEquals("o hai!", mr.accountUuid);
         assertEquals("folder", mr.folderName);
@@ -55,7 +54,7 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void testParseIdentityString() throws MessagingException {
+    public void parseIdentityStringWithFlag() throws MessagingException {
         MessageReference mr = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
         assertEquals("o hai!", mr.accountUuid);
         assertEquals("folder", mr.folderName);
@@ -64,30 +63,24 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void testBadVersion() throws MessagingException {
+    public void parseIdentityStringContainingBadVersionNumber() throws MessagingException {
         MessageReference mr = new MessageReference("@:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
         assertNull(mr.accountUuid);
     }
 
     @Test(expected = MessagingException.class)
-    public void testNull() throws MessagingException {
+    public void parseNullIdentityString() throws MessagingException {
         new MessageReference(null);
     }
 
     @Test(expected = MessagingException.class)
-    public void testCorruption() throws MessagingException {
-        MessageReference mr = new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWERED");
-        // No idea what this is going to generate, but it should be non-null.
-        assertNotNull(mr.accountUuid);
-        assertNotNull(mr.folderName);
-        assertNotNull(mr.uid);
-
+    public void parseIdentityStringWithCorruptFlag() throws MessagingException {
         // Corruption in the Flag should throw MessagingException.
         new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
     }
 
     @Test
-    public void notAnInstanceOfMessageReferenceCantEquals() {
+    public void equalsWithAnObjectShouldReturnFalse() {
         // A MessageReference :
         MessageReference m = new MessageReference();
         // And another Object :
@@ -97,7 +90,7 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void sameMessageReferenceObjectsAreEquals() {
+    public void equalsWithMessageReferenceContainingSameDataShouldReturnTrue() {
         // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.accountUuid = "acc1";
@@ -114,7 +107,7 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void messageReferenceWithAnotherAccountUuidDontEquals() {
+    public void equalsWithMessageReferenceContainingDifferentAccountUuidShouldReturnFalse() {
         // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.accountUuid = "acc1";
@@ -127,7 +120,7 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void messageReferenceWithAnotherFolderNameDontEquals() {
+    public void equalsWithMessageReferenceContainingDifferentFolderNameShouldReturnFalse() {
         // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.folderName = "folder1";
@@ -140,7 +133,7 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void messageReferenceWithAnotherUidDontEquals() {
+    public void equalsWithMessageReferenceContainingDifferentUidShouldReturnFalse() {
         // First MessageReference :
         MessageReference m1 = new MessageReference();
         m1.uid = "uid1";
