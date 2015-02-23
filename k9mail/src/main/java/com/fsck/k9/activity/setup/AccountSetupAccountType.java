@@ -23,11 +23,9 @@ import java.net.URISyntaxException;
  */
 public class AccountSetupAccountType extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
-
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
     private Account mAccount;
-
     private boolean mMakeDefault;
 
     public static void actionSelectAccountType(Context context, Account account, boolean makeDefault) {
@@ -52,11 +50,13 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
 
     private void setupStoreAndSmtpTransport(String schemePrefix) throws URISyntaxException {
         URI storeUriForDecode = new URI(mAccount.getStoreUri());
-        URI storeUri = new URI(schemePrefix, storeUriForDecode.getUserInfo(), storeUriForDecode.getHost(), storeUriForDecode.getPort(), null, null, null);
+        URI storeUri = new URI(schemePrefix, storeUriForDecode.getUserInfo(), storeUriForDecode.getHost(),
+                storeUriForDecode.getPort(), null, null, null);
         mAccount.setStoreUri(storeUri.toString());
 
         URI transportUriForDecode = new URI(mAccount.getTransportUri());
-        URI transportUri = new URI("smtp+tls+", transportUriForDecode.getUserInfo(), transportUriForDecode.getHost(), transportUriForDecode.getPort(), null, null, null);
+        URI transportUri = new URI("smtp+tls+", transportUriForDecode.getUserInfo(), transportUriForDecode.getHost(),
+                transportUriForDecode.getPort(), null, null, null);
         mAccount.setTransportUri(transportUri.toString());
     }
 
@@ -85,15 +85,18 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     public void onClick(View v) {
         try {
             switch (v.getId()) {
-                case R.id.pop:
+                case R.id.pop: {
                     setupStoreAndSmtpTransport("pop3+ssl+");
                     break;
-                case R.id.imap:
+                }
+                case R.id.imap: {
                     setupStoreAndSmtpTransport("imap+ssl+");
                     break;
-                case R.id.webdav:
+                }
+                case R.id.webdav: {
                     setupDav();
                     break;
+                }
             }
         } catch (Exception ex) {
             failure(ex);
