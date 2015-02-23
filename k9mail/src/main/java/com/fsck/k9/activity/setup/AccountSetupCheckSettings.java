@@ -392,6 +392,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         }
     }
 
+    /**
+     * FIXME: Don't use an AsyncTask to perform network operations.
+     * See also discussion in https://github.com/k9mail/k-9/pull/560
+     */
     private class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Void> {
         private final Account account;
 
@@ -410,28 +414,18 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                  */
                 if (cancelled()) {
                     return null;
-                } else {
-                    final MessagingController ctrl = MessagingController.getInstance(getApplication());
-                    ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
-                            account, direction);
-
-                    if (direction == CheckDirection.INCOMING) {
-                        checkIncoming();
-                    }
                 }
+
+                clearCertificateErrorNotifications(direction);
+
+                checkServerSettings(direction);
 
                 if (cancelled()) {
                     return null;
-                } else if (direction == CheckDirection.OUTGOING) {
-                    checkOutgoing();
                 }
 
-                if (cancelled()) {
-                    return null;
-                } else {
-                    setResult(RESULT_OK);
-                    finish();
-                }
+                setResult(RESULT_OK);
+                finish();
 
             } catch (AuthenticationFailedException afe) {
                 Log.e(K9.LOG_TAG, "Error while testing settings", afe);
@@ -449,6 +443,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             return null;
         }
 
+        private void clearCertificateErrorNotifications(CheckDirection direction) {
+            final MessagingController ctrl = MessagingController.getInstance(getApplication());
+            ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
+                    account, direction);
+        }
+
         private boolean cancelled() {
             if (mDestroyed) {
                 return true;
@@ -458,6 +458,19 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 return true;
             }
             return false;
+        }
+
+        private void checkServerSettings(CheckDirection direction) throws MessagingException {
+            switch (direction) {
+                case INCOMING: {
+                    checkIncoming();
+                    break;
+                }
+                case OUTGOING: {
+                    checkOutgoing();
+                    break;
+                }
+            }
         }
 
         private void checkOutgoing() throws MessagingException {
