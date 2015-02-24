@@ -20,13 +20,13 @@ dependencies {
     compile 'com.android.support:support-v13:21.0.2'
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.10'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
-
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile('com.icegreen:greenmail:1.4.1-SNAPSHOT') {
         exclude group: 'junit'
     }
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
+    androidTestCompile 'nl.jqno.equalsverifier:equalsverifier:1.7'
 }
 
 android {
