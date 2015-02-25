@@ -6,7 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.PendingIntent;
@@ -43,6 +42,11 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+
 public class MessageOpenPgpView extends LinearLayout {
 
     private Context mContext;
@@ -63,6 +67,27 @@ public class MessageOpenPgpView extends LinearLayout {
     private PendingIntent mMissingKeyPI;
 
     private static final int REQUEST_CODE_DECRYPT_VERIFY = 12;
+
+    private String mPGPMIMEText = null;
+
+    public String getmPGPMIMEText() {
+        return mPGPMIMEText;
+    }
+
+    public void setmPGPMIMEText(String mPGPMIMEText) {
+        this.mPGPMIMEText = mPGPMIMEText;
+    }
+
+    private boolean isMime = false;
+
+    //workaround for pgp/mime
+    public boolean pIsMime(){
+        return isMime;
+    }
+    //workaround for pgp/mime
+    public void setIsMime(boolean isMime){
+        this.isMime = isMime;
+    }
 
     String mData;
     Account mAccount;

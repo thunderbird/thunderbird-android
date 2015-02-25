@@ -1,25 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -89,7 +70,6 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.Utility;
@@ -101,6 +81,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -124,6 +105,25 @@ import org.htmlcleaner.TagNode;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MessageCompose extends K9Activity implements OnClickListener,
         ProgressDialogFragment.CancelListener {
@@ -462,7 +462,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Compose a new message as a reply to the given message. If replyAll is true the function
      * is reply all instead of simply reply.
      * @param context
-     * @param account
      * @param message
      * @param replyAll
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
@@ -1332,10 +1331,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * into the final message here.
      * @param isDraft Indicates if this message is a draft or not. Drafts do not have signatures
      *  appended and have some extra metadata baked into their header for use during thawing.
+     * @param isPGPMime Indicates if this is supposed to create a message which will be encrypted.
      * @return Message to be sent.
      * @throws MessagingException
      */
-    private MimeMessage createMessage(boolean isDraft) throws MessagingException {
+    private MimeMessage createMessage(boolean isDraft, boolean isPGPMime) throws MessagingException {
         MimeMessage message = new MimeMessage();
         message.addSentDate(new Date(), K9.hideTimeZone());
         Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
@@ -1354,7 +1354,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             message.setHeader("User-Agent", getString(R.string.message_header_mua));
         }
 
-        final String replyTo = mIdentity.getReplyTo();
+        String replyTo = mIdentity.getReplyTo();
         if (replyTo != null) {
             message.setReplyTo(new Address[] { new Address(replyTo) });
         }
@@ -1371,11 +1371,57 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
         TextBody body = null;
-        if (mPgpData.getEncryptedData() != null) {
-            String text = mPgpData.getEncryptedData();
-            body = new TextBody(text);
+        
+        if (!isPGPMime) {
+	        message.addSentDate(new Date(), true);
+            from = new Address(mIdentity.getEmail(), mIdentity.getName());
+	        message.setFrom(from);
+	        message.setRecipients(RecipientType.TO, getAddresses(mToView));
+	        message.setRecipients(RecipientType.CC, getAddresses(mCcView));
+	        message.setRecipients(RecipientType.BCC, getAddresses(mBccView));
+	        message.setSubject(mSubjectView.getText().toString());
+	        if (mReadReceipt) {
+	            message.setHeader("Disposition-Notification-To", from.toEncodedString());
+	            message.setHeader("X-Confirm-Reading-To", from.toEncodedString());
+	            message.setHeader("Return-Receipt-To", from.toEncodedString());
+	        }
+	
+	        if (!K9.hideUserAgent()) {
+	            message.setHeader("User-Agent", getString(R.string.message_header_mua));
+	        }
+
+            replyTo = mIdentity.getReplyTo();
+	        if (replyTo != null) {
+	            message.setReplyTo(new Address[] { new Address(replyTo) });
+	        }
+	
+	        if (mInReplyTo != null) {
+	            message.setInReplyTo(mInReplyTo);
+	        }
+	
+	        if (mReferences != null) {
+	            message.setReferences(mReferences);
+	        }
+	
+	        // Build the body.
+	        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
+	        // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
+	        if (mPgpData.getEncryptedData() != null) {
+	            if (!mAccount.isCryptoPGPMime()) {
+	                String text = mPgpData.getEncryptedData();
+	                body = new TextBody(text);
+	            } else {
+	                MimeMultipart mp = createPGPMimeMultipart();
+	                message.setBody(mp);
+	                // attachments were already added in previous call for PGP/MIME
+	                return message;
+	            }
+	        } else {
+	            body = buildText(isDraft);
+	        }
+        
         } else {
-            body = buildText(isDraft);
+        	body = buildText(isDraft);
         }
 
         // text/plain part when mMessageFormat == MessageFormat.HTML
@@ -1418,6 +1464,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 MimeMessageHelper.setBody(message, body);
             }
         }
+        
 
         // If this is a draft, add metadata for thawing.
         if (isDraft) {
@@ -1734,6 +1781,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void performSend() {
+        //final CryptoHelper crypto = mAccount.getCryptoProvider();
         if (mOpenPgpProvider != null) {
             // OpenPGP Provider API
 
@@ -1768,7 +1816,51 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 // encryptedData set in pgpData!
                 return;
             }
+        } /*else if (crypto.isAvailable(this)) {
+            // Legacy APG API
+
+            if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys()) {
+                // key selection before encryption
+                StringBuilder emails = new StringBuilder();
+                for (Address address : getRecipientAddresses()) {
+                    if (emails.length() != 0) {
+                        emails.append(',');
+                    }
+                    emails.append(address.getAddress());
+                    if (!mContinueWithoutPublicKey &&
+                            !crypto.hasPublicKeyForEmail(this, address.getAddress())) {
+                        showDialog(DIALOG_CONTINUE_WITHOUT_PUBLIC_KEY);
+                        return;
+                    }
+                }
+                if (emails.length() != 0) {
+                    emails.append(',');
+                }
+                emails.append(mIdentity.getEmail());
+
+                mPreventDraftSaving = true;
+                if (!crypto.selectEncryptionKeys(MessageCompose.this, emails.toString(), mPgpData)) {
+                    mPreventDraftSaving = false;
+                }
+                return;
+            }
+
+            if (mPgpData.hasEncryptionKeys() || mPgpData.hasSignatureKey()) {
+                if (mPgpData.getEncryptedData() == null) {
+                    mPreventDraftSaving = true;
+                    if (!mAccount.isCryptoPGPMime()) {
+                        String text = buildText(false).getText();
+                    	crypto.encrypt(this, text, mPgpData);
+                    } else {
+                    	String mimeMessage = createPGPMimeMessageString();
+						crypto.encrypt(this, mimeMessage, mPgpData);
+                    }
+                    return;
+                }
+            }
+
         }
+        */
         sendMessage();
 
         if (mMessageReference != null && mMessageReference.flag != null) {
@@ -1786,10 +1878,44 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         finish();
     }
 
+    /**
+     * Create a new multipart Mime message and return its string representation.
+     * This message can be used for encryption.
+     * @return string representation of a multipart Mime message
+     */
+    private String createPGPMimeMessageString() {
+    	
+    	ByteArrayOutputStream out = new ByteArrayOutputStream();
+    	
+		try {
+			MimeMessage mimeMessage = createMessage(false, true);
+			mimeMessage.writeTo(out);
+		} catch (MessagingException me) {
+			Log.e(K9.LOG_TAG, "Failed to create new PGP/MIME message.", me);
+            throw new RuntimeException("Failed to create new PGP/MIME message.", me);
+		} catch (IOException me) {
+			Log.e(K9.LOG_TAG, "Failed to create new PGP/MIME message.", me);
+            throw new RuntimeException("Failed to create new PGP/MIME message.", me);
+		}
+		
+		return out.toString();
+    }
+    
     private InputStream getOpenPgpInputStream() {
-        String text = buildText(false).getText();
 
-        return new ByteArrayInputStream(text.getBytes(Charset.forName("UTF-8")));
+        InputStream is = null;
+        try {
+        	if (!mAccount.isCryptoPGPMime()) {
+                String text = buildText(false).getText();
+        		is = new ByteArrayInputStream(text.getBytes("UTF-8"));
+        	} else {
+        		String messageString = createPGPMimeMessageString();
+        		is = new ByteArrayInputStream(messageString.getBytes("UTF-8"));
+        	}
+        } catch (UnsupportedEncodingException e) {
+            Log.e(K9.LOG_TAG, "UnsupportedEncodingException.", e);
+        }
+        return is;
     }
 
     private void executeOpenPgpMethod(Intent intent) {
@@ -1957,9 +2083,44 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_ATTACHMENT);
     }
 
+    
+    /**
+     * Create a Mime multipart for PGP/MIME. This multipart contains two bodies for:
+     * 1. version identification
+     * 2. encrypted content
+     * @return Mime multipart
+     * @throws MessagingException
+     */
+    private MimeMultipart createPGPMimeMultipart() throws MessagingException {
+    	
+        MimeMultipart mp = new MimeMultipart();
+        mp.setProtocol("application/pgp-encrypted");
+        mp.setSubType("encrypted");
+        MimeBodyPart versionBody = new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted");
+        mp.addBodyPart(versionBody);
+
+        Body body = new TextBody(mPgpData.getEncryptedData());
+        MimeBodyPart bp = new MimeBodyPart(body, "application/octet-stream");
+        
+        bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
+        		"application/octet-stream",
+                EncoderUtil.encodeIfNecessary("encrypted.asc",
+                        EncoderUtil.Usage.WORD_ENTITY, 7)));
+
+        bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
+        		"inline;\r\n filename=\"%s\"",
+        		"encrypted.asc"));
+        
+        mp.addBodyPart(bp);
+       
+        return mp;
+    }
+    
+    
     private void addAttachment(Uri uri) {
         addAttachment(uri, null);
     }
+
 
     private void addAttachment(Uri uri, String contentType) {
         Attachment attachment = new Attachment();
@@ -3554,7 +3715,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              */
             MimeMessage message;
             try {
-                message = createMessage(false);  // isDraft = true
+                message = createMessage(false, false);  // isDraft = true
             } catch (MessagingException me) {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);
@@ -3587,7 +3748,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              */
             MimeMessage message;
             try {
-                message = createMessage(true);  // isDraft = true
+                message = createMessage(true, false);  // isDraft = true
             } catch (MessagingException me) {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);

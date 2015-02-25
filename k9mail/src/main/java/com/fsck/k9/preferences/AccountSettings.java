@@ -58,6 +58,9 @@ public class AccountSettings {
                 new V(1, new StringSetting("apg")),
                 new V(36, new StringSetting(Account.NO_OPENPGP_PROVIDER))
             ));
+        s.put("cryptoPGPMime", Settings.versions(
+                new V(36, new BooleanSetting(false))
+            ));
         s.put("defaultQuotedTextShown", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
             ));
