@@ -50,15 +50,10 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.SizeAware;
+import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import org.apache.commons.io.IOUtils;
-import org.apache.james.mime4j.MimeException;
-import org.apache.james.mime4j.parser.ContentHandler;
-import org.apache.james.mime4j.parser.MimeStreamParser;
-import org.apache.james.mime4j.stream.BodyDescriptor;
-import org.apache.james.mime4j.stream.Field;
-import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.util.MimeUtil;
 
 
@@ -738,68 +733,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    private void parseHeaderBytes(final Part part, byte[] header) throws MessagingException {
-        MimeConfig parserConfig  = new MimeConfig();
-        parserConfig.setMaxHeaderLen(-1);
-        parserConfig.setMaxLineLen(-1);
-        parserConfig.setMaxHeaderCount(-1);
-        MimeStreamParser parser = new MimeStreamParser(parserConfig);
-        parser.setContentHandler(new ContentHandler() {
-            @Override
-            public void field(Field rawField) throws MimeException {
-                String name = rawField.getName();
-                String raw = rawField.getRaw().toString();
-                try {
-                    part.addRawHeader(name, raw);
-                } catch (MessagingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            @Override
-            public void startMessage() throws MimeException { /* do nothing */ }
-
-            @Override
-            public void endMessage() throws MimeException { /* do nothing */ }
-
-            @Override
-            public void startBodyPart() throws MimeException { /* do nothing */ }
-
-            @Override
-            public void endBodyPart() throws MimeException { /* do nothing */ }
-
-            @Override
-            public void startHeader() throws MimeException { /* do nothing */ }
-
-            @Override
-            public void endHeader() throws MimeException { /* do nothing */ }
-
-            @Override
-            public void preamble(InputStream is) throws MimeException, IOException { /* do nothing */ }
-
-            @Override
-            public void epilogue(InputStream is) throws MimeException, IOException { /* do nothing */ }
-
-            @Override
-            public void startMultipart(BodyDescriptor bd) throws MimeException { /* do nothing */ }
-
-            @Override
-            public void endMultipart() throws MimeException { /* do nothing */ }
-
-            @Override
-            public void body(BodyDescriptor bd, InputStream is) throws MimeException, IOException { /* do nothing */ }
-
-            @Override
-            public void raw(InputStream is) throws MimeException, IOException { /* do nothing */ }
-        });
-
-        try {
-            parser.parse(new ByteArrayInputStream(header));
-        } catch (MimeException me) {
-            throw new MessagingException("Error parsing headers", me);
-        } catch (IOException e) {
-            throw new MessagingException("I/O error parsing headers", e);
-        }
+    private void parseHeaderBytes(Part part, byte[] header) throws MessagingException {
+        MessageHeaderParser.parse(part, new ByteArrayInputStream(header));
     }
 
     @Override
