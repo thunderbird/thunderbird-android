@@ -72,6 +72,14 @@ public class MessageBuilder {
         //FIXME: check arguments
 
         MimeMessage message = new MimeMessage();
+
+        buildHeader(message);
+        buildBody(message);
+
+        return message;
+    }
+
+    private void buildHeader(MimeMessage message) throws MessagingException {
         message.addSentDate(new Date(), K9.hideTimeZone());
         Address from = new Address(identity.getEmail(), identity.getName());
         message.setFrom(from);
@@ -103,6 +111,10 @@ public class MessageBuilder {
             message.setReferences(references);
         }
 
+        message.generateMessageId();
+    }
+
+    private void buildBody(MimeMessage message) throws MessagingException {
         // Build the body.
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
@@ -160,10 +172,6 @@ public class MessageBuilder {
             // Add the identity to the message.
             message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
         }
-
-        message.generateMessageId();
-
-        return message;
     }
 
     public TextBody buildText() {
