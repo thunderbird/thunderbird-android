@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -89,7 +88,6 @@ import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.SimpleTextWatcher;
-import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.Utility;
@@ -102,21 +100,19 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
-import com.fsck.k9.mail.internet.MimeBodyPart;
-import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.MimeMessageHelper;
-import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.TempFileBody;
-import com.fsck.k9.mailstore.TempFileMessageBody;
+import com.fsck.k9.message.IdentityField;
+import com.fsck.k9.message.IdentityHeaderParser;
+import com.fsck.k9.message.InsertableHtmlContent;
+import com.fsck.k9.message.MessageBuilder;
+import com.fsck.k9.message.QuotedTextMode;
+import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
 
-import org.apache.james.mime4j.codec.EncoderUtil;
-import org.apache.james.mime4j.util.MimeUtil;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
@@ -264,12 +260,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private Action mAction;
 
-    private enum QuotedTextMode {
-        NONE,
-        SHOW,
-        HIDE
-    }
-
     private boolean mReadReceipt = false;
 
     private QuotedTextMode mQuotedTextMode = QuotedTextMode.NONE;
@@ -315,11 +305,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Menu mMenu;
 
     private boolean mSourceProcessed = false;
-
-    enum SimpleMessageFormat {
-        TEXT,
-        HTML
-    }
 
     /**
      * The currently used message format.
@@ -454,7 +439,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Compose a new message as a reply to the given message. If replyAll is true the function
      * is reply all instead of simply reply.
      * @param context
-     * @param account
      * @param message
      * @param replyAll
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
@@ -1039,16 +1023,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ArrayList<Attachment> attachments = new ArrayList<Attachment>();
-        for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
-            View view = mAttachments.getChildAt(i);
-            Attachment attachment = (Attachment) view.getTag();
-            attachments.add(attachment);
-        }
 
         outState.putInt(STATE_KEY_NUM_ATTACHMENTS_LOADING, mNumAttachmentsLoading);
         outState.putString(STATE_KEY_WAITING_FOR_ATTACHMENTS, mWaitingForAttachments.name());
-        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, attachments);
+        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, createAttachmentList());
         outState.putBoolean(STATE_KEY_CC_SHOWN, mCcWrapper.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccWrapper.getVisibility() == View.VISIBLE);
         outState.putSerializable(STATE_KEY_QUOTED_TEXT_MODE, mQuotedTextMode);
@@ -1195,437 +1173,55 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return Address.parseUnencoded(addresses.trim());
     }
 
-    /*
-     * Build the Body that will contain the text of the message. We'll decide where to
-     * include it later. Draft messages are treated somewhat differently in that signatures are not
-     * appended and HTML separators between composed text and quoted text are not added.
-     * @param isDraft If we should build a message that will be saved as a draft (as opposed to sent).
-     */
     private TextBody buildText(boolean isDraft) {
-        return buildText(isDraft, mMessageFormat);
+        return createMessageBuilder(isDraft).buildText();
     }
 
-    /**
-     * Build the {@link Body} that will contain the text of the message.
-     *
-     * <p>
-     * Draft messages are treated somewhat differently in that signatures are not appended and HTML
-     * separators between composed text and quoted text are not added.
-     * </p>
-     *
-     * @param isDraft
-     *         If {@code true} we build a message that will be saved as a draft (as opposed to
-     *         sent).
-     * @param messageFormat
-     *         Specifies what type of message to build ({@code text/plain} vs. {@code text/html}).
-     *
-     * @return {@link TextBody} instance that contains the entered text and possibly the quoted
-     *         original message.
-     */
-    private TextBody buildText(boolean isDraft, SimpleMessageFormat messageFormat) {
-        String messageText = mMessageContentView.getCharacters();
-
-        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(messageText);
-
-        /*
-         * Find out if we need to include the original message as quoted text.
-         *
-         * We include the quoted text in the body if the user didn't choose to
-         * hide it. We always include the quoted text when we're saving a draft.
-         * That's so the user is able to "un-hide" the quoted text if (s)he
-         * opens a saved draft.
-         */
-        boolean includeQuotedText = (isDraft || mQuotedTextMode == QuotedTextMode.SHOW);
-        boolean isReplyAfterQuote = (mQuoteStyle == QuoteStyle.PREFIX && mAccount.isReplyAfterQuote());
-
-        textBodyBuilder.setIncludeQuotedText(false);
-        if (includeQuotedText) {
-            if (messageFormat == SimpleMessageFormat.HTML && mQuotedHtmlContent != null) {
-                textBodyBuilder.setIncludeQuotedText(true);
-                textBodyBuilder.setQuotedTextHtml(mQuotedHtmlContent);
-                textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
-            }
-
-            String quotedText = mQuotedText.getCharacters();
-            if (messageFormat == SimpleMessageFormat.TEXT && quotedText.length() > 0) {
-                textBodyBuilder.setIncludeQuotedText(true);
-                textBodyBuilder.setQuotedText(quotedText);
-                textBodyBuilder.setReplyAfterQuote(isReplyAfterQuote);
-            }
-        }
-
-        textBodyBuilder.setInsertSeparator(!isDraft);
-
-        boolean useSignature = (!isDraft && mIdentity.getSignatureUse());
-        if (useSignature) {
-            textBodyBuilder.setAppendSignature(true);
-            textBodyBuilder.setSignature(mSignatureView.getCharacters());
-            textBodyBuilder.setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText());
-        } else {
-            textBodyBuilder.setAppendSignature(false);
-        }
-
-        TextBody body;
-        if (messageFormat == SimpleMessageFormat.HTML) {
-            body = textBodyBuilder.buildTextHtml();
-        } else {
-            body = textBodyBuilder.buildTextPlain();
-        }
-        return body;
-    }
-    /**
-     * Build the final message to be sent (or saved). If there is another message quoted in this one, it will be baked
-     * into the final message here.
-     * @param isDraft Indicates if this message is a draft or not. Drafts do not have signatures
-     *  appended and have some extra metadata baked into their header for use during thawing.
-     * @return Message to be sent.
-     * @throws MessagingException
-     */
-    private MimeMessage createMessage(boolean isDraft) throws MessagingException {
-        MimeMessage message = new MimeMessage();
-        message.addSentDate(new Date(), K9.hideTimeZone());
-        Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
-        message.setFrom(from);
-        message.setRecipients(RecipientType.TO, getAddresses(mToView));
-        message.setRecipients(RecipientType.CC, getAddresses(mCcView));
-        message.setRecipients(RecipientType.BCC, getAddresses(mBccView));
-        message.setSubject(mSubjectView.getText().toString());
-        if (mReadReceipt) {
-            message.setHeader("Disposition-Notification-To", from.toEncodedString());
-            message.setHeader("X-Confirm-Reading-To", from.toEncodedString());
-            message.setHeader("Return-Receipt-To", from.toEncodedString());
-        }
-
-        if (!K9.hideUserAgent()) {
-            message.setHeader("User-Agent", getString(R.string.message_header_mua));
-        }
-
-        final String replyTo = mIdentity.getReplyTo();
-        if (replyTo != null) {
-            message.setReplyTo(new Address[] { new Address(replyTo) });
-        }
-
-        if (mInReplyTo != null) {
-            message.setInReplyTo(mInReplyTo);
-        }
-
-        if (mReferences != null) {
-            message.setReferences(mReferences);
-        }
-
-        // Build the body.
-        // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
-        // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
-        TextBody body = null;
-        if (mPgpData.getEncryptedData() != null) {
-            String text = mPgpData.getEncryptedData();
-            body = new TextBody(text);
-        } else {
-            body = buildText(isDraft);
-        }
-
-        // text/plain part when mMessageFormat == MessageFormat.HTML
-        TextBody bodyPlain = null;
-
-        final boolean hasAttachments = mAttachments.getChildCount() > 0;
-
-        if (mMessageFormat == SimpleMessageFormat.HTML) {
-            // HTML message (with alternative text part)
-
-            // This is the compiled MIME part for an HTML message.
-            MimeMultipart composedMimeMessage = new MimeMultipart();
-            composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
-            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
-            bodyPlain = buildText(isDraft, SimpleMessageFormat.TEXT);
-            composedMimeMessage.addBodyPart(new MimeBodyPart(bodyPlain, "text/plain"));
-
-            if (hasAttachments) {
-                // If we're HTML and have attachments, we have a MimeMultipart container to hold the
-                // whole message (mp here), of which one part is a MimeMultipart container
-                // (composedMimeMessage) with the user's composed messages, and subsequent parts for
-                // the attachments.
-                MimeMultipart mp = new MimeMultipart();
-                mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
-                addAttachmentsToMessage(mp);
-                MimeMessageHelper.setBody(message, mp);
-            } else {
-                // If no attachments, our multipart/alternative part is the only one we need.
-                MimeMessageHelper.setBody(message, composedMimeMessage);
-            }
-        } else if (mMessageFormat == SimpleMessageFormat.TEXT) {
-            // Text-only message.
-            if (hasAttachments) {
-                MimeMultipart mp = new MimeMultipart();
-                mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
-                addAttachmentsToMessage(mp);
-                MimeMessageHelper.setBody(message, mp);
-            } else {
-                // No attachments to include, just stick the text body in the message and call it good.
-                MimeMessageHelper.setBody(message, body);
-            }
-        }
-
-        // If this is a draft, add metadata for thawing.
-        if (isDraft) {
-            // Add the identity to the message.
-            message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
-        }
-
-        message.generateMessageId();
-
-        return message;
+    private MimeMessage createDraftMessage() throws MessagingException {
+        return createMessageBuilder(true).build();
     }
 
-    /**
-     * Add attachments as parts into a MimeMultipart container.
-     * @param mp MimeMultipart container in which to insert parts.
-     * @throws MessagingException
-     */
-    private void addAttachmentsToMessage(final MimeMultipart mp) throws MessagingException {
-        Body body;
+    private MimeMessage createMessage() throws MessagingException {
+        return createMessageBuilder(false).build();
+    }
+
+    private MessageBuilder createMessageBuilder(boolean isDraft) {
+        return new MessageBuilder(getApplicationContext())
+                .setSubject(mSubjectView.getText().toString())
+                .setTo(getAddresses(mToView))
+                .setCc(getAddresses(mCcView))
+                .setBcc(getAddresses(mBccView))
+                .setInReplyTo(mInReplyTo)
+                .setReferences(mReferences)
+                .setRequestReadReceipt(mReadReceipt)
+                .setIdentity(mIdentity)
+                .setMessageFormat(mMessageFormat)
+                .setText(mMessageContentView.getCharacters())
+                .setPgpData(mPgpData)
+                .setAttachments(createAttachmentList())
+                .setSignature(mSignatureView.getCharacters())
+                .setQuoteStyle(mQuoteStyle)
+                .setQuotedTextMode(mQuotedTextMode)
+                .setQuotedText(mQuotedText.getCharacters())
+                .setQuotedHtmlContent(mQuotedHtmlContent)
+                .setReplyAfterQuote(mAccount.isReplyAfterQuote())
+                .setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText())
+                .setIdentityChanged(mIdentityChanged)
+                .setSignatureChanged(mSignatureChanged)
+                .setCursorPosition(mMessageContentView.getSelectionStart())
+                .setMessageReference(mMessageReference)
+                .setDraft(isDraft);
+    }
+
+    private ArrayList<Attachment> createAttachmentList() {
+        ArrayList<Attachment> attachments = new ArrayList<Attachment>();
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
-            Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
-
-            if (attachment.state != Attachment.LoadingState.COMPLETE) {
-                continue;
-            }
-
-            String contentType = attachment.contentType;
-            if (MimeUtil.isMessage(contentType)) {
-                body = new TempFileMessageBody(attachment.filename);
-            } else {
-                body = new TempFileBody(attachment.filename);
-            }
-            MimeBodyPart bp = new MimeBodyPart(body);
-
-            /*
-             * Correctly encode the filename here. Otherwise the whole
-             * header value (all parameters at once) will be encoded by
-             * MimeHeader.writeTo().
-             */
-            bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
-                         contentType,
-                         EncoderUtil.encodeIfNecessary(attachment.name,
-                                 EncoderUtil.Usage.WORD_ENTITY, 7)));
-
-            bp.setEncoding(MimeUtility.getEncodingforType(contentType));
-
-            /*
-             * TODO: Oh the joys of MIME...
-             *
-             * From RFC 2183 (The Content-Disposition Header Field):
-             * "Parameter values longer than 78 characters, or which
-             *  contain non-ASCII characters, MUST be encoded as specified
-             *  in [RFC 2184]."
-             *
-             * Example:
-             *
-             * Content-Type: application/x-stuff
-             *  title*1*=us-ascii'en'This%20is%20even%20more%20
-             *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
-             *  title*3="isn't it!"
-             */
-            bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
-                    "attachment;\r\n filename=\"%s\";\r\n size=%d",
-                    attachment.name, attachment.size));
-
-            mp.addBodyPart(bp);
-        }
-    }
-
-    // FYI, there's nothing in the code that requires these variables to one letter. They're one
-    // letter simply to save space.  This name sucks.  It's too similar to Account.Identity.
-    private enum IdentityField {
-        LENGTH("l"),
-        OFFSET("o"),
-        FOOTER_OFFSET("fo"),
-        PLAIN_LENGTH("pl"),
-        PLAIN_OFFSET("po"),
-        MESSAGE_FORMAT("f"),
-        MESSAGE_READ_RECEIPT("r"),
-        SIGNATURE("s"),
-        NAME("n"),
-        EMAIL("e"),
-        // TODO - store a reference to the message being replied so we can mark it at the time of send.
-        ORIGINAL_MESSAGE("m"),
-        CURSOR_POSITION("p"),   // Where in the message your cursor was when you saved.
-        QUOTED_TEXT_MODE("q"),
-        QUOTE_STYLE("qs");
-
-        private final String value;
-
-        IdentityField(String value) {
-            this.value = value;
+            View view = mAttachments.getChildAt(i);
+            Attachment attachment = (Attachment) view.getTag();
+            attachments.add(attachment);
         }
 
-        public String value() {
-            return value;
-        }
-
-        /**
-         * Get the list of IdentityFields that should be integer values.
-         *
-         * <p>
-         * These values are sanity checked for integer-ness during decoding.
-         * </p>
-         *
-         * @return The list of integer {@link IdentityField}s.
-         */
-        public static IdentityField[] getIntegerFields() {
-            return new IdentityField[] { LENGTH, OFFSET, FOOTER_OFFSET, PLAIN_LENGTH, PLAIN_OFFSET };
-        }
-    }
-
-    // Version identifier for "new style" identity. ! is an impossible value in base64 encoding, so we
-    // use that to determine which version we're in.
-    private static final String IDENTITY_VERSION_1 = "!";
-
-    /**
-     * Build the identity header string. This string contains metadata about a draft message to be
-     * used upon loading a draft for composition. This should be generated at the time of saving a
-     * draft.<br>
-     * <br>
-     * This is a URL-encoded key/value pair string.  The list of possible values are in {@link IdentityField}.
-     * @param body {@link TextBody} to analyze for body length and offset.
-     * @param bodyPlain {@link TextBody} to analyze for body length and offset. May be null.
-     * @return Identity string.
-     */
-    private String buildIdentityHeader(final TextBody body, final TextBody bodyPlain) {
-        Uri.Builder uri = new Uri.Builder();
-        if (body.getComposedMessageLength() != null && body.getComposedMessageOffset() != null) {
-            // See if the message body length is already in the TextBody.
-            uri.appendQueryParameter(IdentityField.LENGTH.value(), body.getComposedMessageLength().toString());
-            uri.appendQueryParameter(IdentityField.OFFSET.value(), body.getComposedMessageOffset().toString());
-        } else {
-            // If not, calculate it now.
-            uri.appendQueryParameter(IdentityField.LENGTH.value(), Integer.toString(body.getText().length()));
-            uri.appendQueryParameter(IdentityField.OFFSET.value(), Integer.toString(0));
-        }
-        if (mQuotedHtmlContent != null) {
-            uri.appendQueryParameter(IdentityField.FOOTER_OFFSET.value(),
-                    Integer.toString(mQuotedHtmlContent.getFooterInsertionPoint()));
-        }
-        if (bodyPlain != null) {
-            if (bodyPlain.getComposedMessageLength() != null && bodyPlain.getComposedMessageOffset() != null) {
-                // See if the message body length is already in the TextBody.
-                uri.appendQueryParameter(IdentityField.PLAIN_LENGTH.value(), bodyPlain.getComposedMessageLength().toString());
-                uri.appendQueryParameter(IdentityField.PLAIN_OFFSET.value(), bodyPlain.getComposedMessageOffset().toString());
-            } else {
-                // If not, calculate it now.
-                uri.appendQueryParameter(IdentityField.PLAIN_LENGTH.value(), Integer.toString(body.getText().length()));
-                uri.appendQueryParameter(IdentityField.PLAIN_OFFSET.value(), Integer.toString(0));
-            }
-        }
-        // Save the quote style (useful for forwards).
-        uri.appendQueryParameter(IdentityField.QUOTE_STYLE.value(), mQuoteStyle.name());
-
-        // Save the message format for this offset.
-        uri.appendQueryParameter(IdentityField.MESSAGE_FORMAT.value(), mMessageFormat.name());
-
-        // If we're not using the standard identity of signature, append it on to the identity blob.
-        if (mIdentity.getSignatureUse() && mSignatureChanged) {
-            uri.appendQueryParameter(IdentityField.SIGNATURE.value(), mSignatureView.getCharacters());
-        }
-
-        if (mIdentityChanged) {
-            uri.appendQueryParameter(IdentityField.NAME.value(), mIdentity.getName());
-            uri.appendQueryParameter(IdentityField.EMAIL.value(), mIdentity.getEmail());
-        }
-
-        if (mMessageReference != null) {
-            uri.appendQueryParameter(IdentityField.ORIGINAL_MESSAGE.value(), mMessageReference.toIdentityString());
-        }
-
-        uri.appendQueryParameter(IdentityField.CURSOR_POSITION.value(), Integer.toString(mMessageContentView.getSelectionStart()));
-
-        uri.appendQueryParameter(IdentityField.QUOTED_TEXT_MODE.value(), mQuotedTextMode.name());
-
-        String k9identity = IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
-
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Generated identity: " + k9identity);
-        }
-
-        return k9identity;
-    }
-
-    /**
-     * Parse an identity string.  Handles both legacy and new (!) style identities.
-     *
-     * @param identityString
-     *         The encoded identity string that was saved in a drafts header.
-     *
-     * @return A map containing the value for each {@link IdentityField} in the identity string.
-     */
-    private Map<IdentityField, String> parseIdentityHeader(final String identityString) {
-        Map<IdentityField, String> identity = new HashMap<IdentityField, String>();
-
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Decoding identity: " + identityString);
-        }
-
-        if (identityString == null || identityString.length() < 1) {
-            return identity;
-        }
-
-        // Check to see if this is a "next gen" identity.
-        if (identityString.charAt(0) == IDENTITY_VERSION_1.charAt(0) && identityString.length() > 2) {
-            Uri.Builder builder = new Uri.Builder();
-            builder.encodedQuery(identityString.substring(1));  // Need to cut off the ! at the beginning.
-            Uri uri = builder.build();
-            for (IdentityField key : IdentityField.values()) {
-                String value = uri.getQueryParameter(key.value());
-                if (value != null) {
-                    identity.put(key, value);
-                }
-            }
-
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Decoded identity: " + identity.toString());
-            }
-
-            // Sanity check our Integers so that recipients of this result don't have to.
-            for (IdentityField key : IdentityField.getIntegerFields()) {
-                if (identity.get(key) != null) {
-                    try {
-                        Integer.parseInt(identity.get(key));
-                    } catch (NumberFormatException e) {
-                        Log.e(K9.LOG_TAG, "Invalid " + key.name() + " field in identity: " + identity.get(key));
-                    }
-                }
-            }
-        } else {
-            // Legacy identity
-
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Got a saved legacy identity: " + identityString);
-            }
-            StringTokenizer tokenizer = new StringTokenizer(identityString, ":", false);
-
-            // First item is the body length. We use this to separate the composed reply from the quoted text.
-            if (tokenizer.hasMoreTokens()) {
-                String bodyLengthS = Base64.decode(tokenizer.nextToken());
-                try {
-                    identity.put(IdentityField.LENGTH, Integer.valueOf(bodyLengthS).toString());
-                } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Unable to parse bodyLength '" + bodyLengthS + "'");
-                }
-            }
-            if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.SIGNATURE, Base64.decode(tokenizer.nextToken()));
-            }
-            if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.NAME, Base64.decode(tokenizer.nextToken()));
-            }
-            if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.EMAIL, Base64.decode(tokenizer.nextToken()));
-            }
-            if (tokenizer.hasMoreTokens()) {
-                identity.put(IdentityField.QUOTED_TEXT_MODE, Base64.decode(tokenizer.nextToken()));
-            }
-        }
-
-        return identity;
+        return attachments;
     }
 
     private void sendMessage() {
@@ -2786,7 +2382,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
         Map<IdentityField, String> k9identity = new HashMap<IdentityField, String>();
         if (message.getHeader(K9.IDENTITY_HEADER) != null && message.getHeader(K9.IDENTITY_HEADER).length > 0 && message.getHeader(K9.IDENTITY_HEADER)[0] != null) {
-            k9identity = parseIdentityHeader(message.getHeader(K9.IDENTITY_HEADER)[0]);
+            k9identity = IdentityHeaderParser.parse(message.getHeader(K9.IDENTITY_HEADER)[0]);
         }
 
         Identity newIdentity = new Identity();
@@ -3499,7 +3095,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              */
             MimeMessage message;
             try {
-                message = createMessage(false);  // isDraft = true
+                message = createMessage();
             } catch (MessagingException me) {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);
@@ -3532,7 +3128,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              */
             MimeMessage message;
             try {
-                message = createMessage(true);  // isDraft = true
+                message = createDraftMessage();
             } catch (MessagingException me) {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);

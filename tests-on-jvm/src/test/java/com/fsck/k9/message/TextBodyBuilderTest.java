@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.message;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.mail.internet.TextBody;
