@@ -2,6 +2,7 @@ package com.fsck.k9.message;
 
 
 import android.net.Uri;
+import android.net.Uri.Builder;
 import android.util.Log;
 
 import com.fsck.k9.Account.QuoteStyle;
@@ -25,6 +26,8 @@ public class IdentityHeaderBuilder {
     private TextBody bodyPlain;
     private int cursorPosition;
 
+    private Builder uri;
+
 
     /**
      * Build the identity header string. This string contains metadata about a draft message to be
@@ -38,54 +41,58 @@ public class IdentityHeaderBuilder {
     public String build() {
         //FIXME: check arguments
 
-        Uri.Builder uri = new Uri.Builder();
+        uri = new Uri.Builder();
+
         if (body.getComposedMessageLength() != null && body.getComposedMessageOffset() != null) {
             // See if the message body length is already in the TextBody.
-            uri.appendQueryParameter(IdentityField.LENGTH.value(), body.getComposedMessageLength().toString());
-            uri.appendQueryParameter(IdentityField.OFFSET.value(), body.getComposedMessageOffset().toString());
+            appendValue(IdentityField.LENGTH, body.getComposedMessageLength());
+            appendValue(IdentityField.OFFSET, body.getComposedMessageOffset());
         } else {
             // If not, calculate it now.
-            uri.appendQueryParameter(IdentityField.LENGTH.value(), Integer.toString(body.getText().length()));
-            uri.appendQueryParameter(IdentityField.OFFSET.value(), Integer.toString(0));
+            appendValue(IdentityField.LENGTH, body.getText().length());
+            appendValue(IdentityField.OFFSET, 0);
         }
+
         if (quotedHtmlContent != null) {
-            uri.appendQueryParameter(IdentityField.FOOTER_OFFSET.value(),
-                    Integer.toString(quotedHtmlContent.getFooterInsertionPoint()));
+            appendValue(IdentityField.FOOTER_OFFSET, quotedHtmlContent.getFooterInsertionPoint());
         }
+
         if (bodyPlain != null) {
-            if (bodyPlain.getComposedMessageLength() != null && bodyPlain.getComposedMessageOffset() != null) {
+            Integer composedMessageLength = bodyPlain.getComposedMessageLength();
+            Integer composedMessageOffset = bodyPlain.getComposedMessageOffset();
+            if (composedMessageLength != null && composedMessageOffset != null) {
                 // See if the message body length is already in the TextBody.
-                uri.appendQueryParameter(IdentityField.PLAIN_LENGTH.value(), bodyPlain.getComposedMessageLength().toString());
-                uri.appendQueryParameter(IdentityField.PLAIN_OFFSET.value(), bodyPlain.getComposedMessageOffset().toString());
+                appendValue(IdentityField.PLAIN_LENGTH, composedMessageLength);
+                appendValue(IdentityField.PLAIN_OFFSET, composedMessageOffset);
             } else {
                 // If not, calculate it now.
-                uri.appendQueryParameter(IdentityField.PLAIN_LENGTH.value(), Integer.toString(body.getText().length()));
-                uri.appendQueryParameter(IdentityField.PLAIN_OFFSET.value(), Integer.toString(0));
+                appendValue(IdentityField.PLAIN_LENGTH, body.getText().length());
+                appendValue(IdentityField.PLAIN_OFFSET, 0);
             }
         }
+
         // Save the quote style (useful for forwards).
-        uri.appendQueryParameter(IdentityField.QUOTE_STYLE.value(), quoteStyle.name());
+        appendValue(IdentityField.QUOTE_STYLE, quoteStyle);
 
         // Save the message format for this offset.
-        uri.appendQueryParameter(IdentityField.MESSAGE_FORMAT.value(), messageFormat.name());
+        appendValue(IdentityField.MESSAGE_FORMAT, messageFormat);
 
         // If we're not using the standard identity of signature, append it on to the identity blob.
         if (identity.getSignatureUse() && signatureChanged) {
-            uri.appendQueryParameter(IdentityField.SIGNATURE.value(), signature);
+            appendValue(IdentityField.SIGNATURE, signature);
         }
 
         if (identityChanged) {
-            uri.appendQueryParameter(IdentityField.NAME.value(), identity.getName());
-            uri.appendQueryParameter(IdentityField.EMAIL.value(), identity.getEmail());
+            appendValue(IdentityField.NAME, identity.getName());
+            appendValue(IdentityField.EMAIL, identity.getEmail());
         }
 
         if (messageReference != null) {
-            uri.appendQueryParameter(IdentityField.ORIGINAL_MESSAGE.value(), messageReference.toIdentityString());
+            appendValue(IdentityField.ORIGINAL_MESSAGE, messageReference.toIdentityString());
         }
 
-        uri.appendQueryParameter(IdentityField.CURSOR_POSITION.value(), Integer.toString(cursorPosition));
-
-        uri.appendQueryParameter(IdentityField.QUOTED_TEXT_MODE.value(), quotedTextMode.name());
+        appendValue(IdentityField.CURSOR_POSITION, cursorPosition);
+        appendValue(IdentityField.QUOTED_TEXT_MODE, quotedTextMode);
 
         String k9identity = IdentityField.IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
 
@@ -94,6 +101,22 @@ public class IdentityHeaderBuilder {
         }
 
         return k9identity;
+    }
+
+    private void appendValue(IdentityField field, int value) {
+        appendValue(field, Integer.toString(value));
+    }
+
+    private void appendValue(IdentityField field, Integer value) {
+        appendValue(field, value.toString());
+    }
+
+    private void appendValue(IdentityField field, Enum<?> value) {
+        appendValue(field, value.name());
+    }
+
+    private void appendValue(IdentityField field, String value) {
+        uri.appendQueryParameter(field.value(), value);
     }
 
     public IdentityHeaderBuilder setQuotedHtmlContent(InsertableHtmlContent quotedHtmlContent) {
