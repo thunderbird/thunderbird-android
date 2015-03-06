@@ -27,8 +27,8 @@ import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
 
 import java.io.File;
@@ -670,7 +670,7 @@ public class LocalStore extends Store implements Serializable {
         String rootIdString = Long.toString(rootId);
 
         LocalSearch search = new LocalSearch();
-        search.and(SearchSpecification.SearchField.THREAD_ID, rootIdString, Attribute.EQUALS);
+        search.and(SearchField.THREAD_ID, rootIdString, Attribute.EQUALS);
 
         return searchForMessages(null, search);
     }

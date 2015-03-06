@@ -57,8 +57,8 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.service.MailService;
 
 import de.cketti.library.changelog.ChangeLog;
@@ -1102,7 +1102,7 @@ public class FolderList extends K9ListActivity {
                     getString(R.string.flagged_modifier));
 
             LocalSearch search = new LocalSearch(searchTitle);
-            search.and(SearchSpecification.SearchField.FLAGGED, "1", Attribute.EQUALS);
+            search.and(SearchField.FLAGGED, "1", Attribute.EQUALS);
 
             search.addAllowedFolder(folder.name);
             search.addAccountUuid(account.getUuid());
@@ -1117,7 +1117,7 @@ public class FolderList extends K9ListActivity {
                     getString(R.string.unread_modifier));
 
             LocalSearch search = new LocalSearch(searchTitle);
-            search.and(SearchSpecification.SearchField.READ, "1", Attribute.NOT_EQUALS);
+            search.and(SearchField.READ, "1", Attribute.NOT_EQUALS);
 
             search.addAllowedFolder(folder.name);
             search.addAccountUuid(account.getUuid());

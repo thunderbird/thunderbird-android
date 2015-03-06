@@ -49,6 +49,7 @@ import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageOpenPgpView;
 import com.fsck.k9.view.MessageTitleView;
@@ -403,9 +404,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 mSearch.setManualSearch(true);
                 mNoThreading = true;
 
-                mSearch.or(new SearchCondition(SearchSpecification.SearchField.SENDER, Attribute.CONTAINS, query));
-                mSearch.or(new SearchCondition(SearchSpecification.SearchField.SUBJECT, Attribute.CONTAINS, query));
-                mSearch.or(new SearchCondition(SearchSpecification.SearchField.MESSAGE_CONTENTS, Attribute.CONTAINS, query));
+                mSearch.or(new SearchCondition(SearchField.SENDER, Attribute.CONTAINS, query));
+                mSearch.or(new SearchCondition(SearchField.SUBJECT, Attribute.CONTAINS, query));
+                mSearch.or(new SearchCondition(SearchField.MESSAGE_CONTENTS, Attribute.CONTAINS, query));
 
                 Bundle appData = intent.getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
@@ -1220,7 +1221,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public void showMoreFromSameSender(String senderAddress) {
         LocalSearch tmpSearch = new LocalSearch("From " + senderAddress);
         tmpSearch.addAccountUuids(mSearch.getAccountUuids());
-        tmpSearch.and(SearchSpecification.SearchField.SENDER, senderAddress, Attribute.CONTAINS);
+        tmpSearch.and(SearchField.SENDER, senderAddress, Attribute.CONTAINS);
 
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false, false);
 
@@ -1309,7 +1310,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         LocalSearch tmpSearch = new LocalSearch();
         tmpSearch.addAccountUuid(account.getUuid());
-        tmpSearch.and(SearchSpecification.SearchField.THREAD_ID, String.valueOf(threadRootId), Attribute.EQUALS);
+        tmpSearch.and(SearchField.THREAD_ID, String.valueOf(threadRootId), Attribute.EQUALS);
 
         MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, true, false);
         addMessageListFragment(fragment, true);
