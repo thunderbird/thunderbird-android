@@ -24,6 +24,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
@@ -391,10 +392,14 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         }
     }
 
-    class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Void> {
+    /**
+     * FIXME: Don't use an AsyncTask to perform network operations.
+     * See also discussion in https://github.com/k9mail/k-9/pull/560
+     */
+    private class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Void> {
         private final Account account;
 
-        CheckAccountTask(Account account) {
+        private CheckAccountTask(Account account) {
             this.account = account;
         }
 
@@ -402,58 +407,26 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         protected Void doInBackground(CheckDirection... params) {
             final CheckDirection direction = params[0];
             try {
-                if (mDestroyed) {
+                /*
+                 * This task could be interrupted at any point, but network operations can block,
+                 * so relying on InterruptedException is not enough. Instead, check after
+                 * each potentially long-running operation.
+                 */
+                if (cancelled()) {
                     return null;
                 }
-                if (mCanceled) {
-                    finish();
-                    return null;
-                }
-                final MessagingController ctrl = MessagingController.getInstance(getApplication());
-                ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
-                        account, direction);
 
-                if (direction == CheckDirection.INCOMING) {
-                    Store store = account.getRemoteStore();
-                    if (store instanceof WebDavStore) {
-                        publishProgress(R.string.account_setup_check_settings_authenticate);
-                    } else {
-                        publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
-                    }
-                    store.checkSettings();
+                clearCertificateErrorNotifications(direction);
 
-                    if (store instanceof WebDavStore) {
-                        publishProgress(R.string.account_setup_check_settings_fetch);
-                    }
-                    MessagingController.getInstance(getApplication()).listFoldersSynchronous(account, true, null);
-                    MessagingController.getInstance(getApplication())
-                            .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
-                }
-                if (mDestroyed) {
+                checkServerSettings(direction);
+
+                if (cancelled()) {
                     return null;
                 }
-                if (mCanceled) {
-                    finish();
-                    return null;
-                }
-                if (direction == CheckDirection.OUTGOING) {
-                    if (!(account.getRemoteStore() instanceof WebDavStore)) {
-                        publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
-                    }
-                    Transport transport = Transport.getInstance(K9.app, account);
-                    transport.close();
-                    transport.open();
-                    transport.close();
-                }
-                if (mDestroyed) {
-                    return null;
-                }
-                if (mCanceled) {
-                    finish();
-                    return null;
-                }
+
                 setResult(RESULT_OK);
                 finish();
+
             } catch (AuthenticationFailedException afe) {
                 Log.e(K9.LOG_TAG, "Error while testing settings", afe);
                 showErrorDialog(
@@ -468,6 +441,63 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         (t.getMessage() == null ? "" : t.getMessage()));
             }
             return null;
+        }
+
+        private void clearCertificateErrorNotifications(CheckDirection direction) {
+            final MessagingController ctrl = MessagingController.getInstance(getApplication());
+            ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
+                    account, direction);
+        }
+
+        private boolean cancelled() {
+            if (mDestroyed) {
+                return true;
+            }
+            if (mCanceled) {
+                finish();
+                return true;
+            }
+            return false;
+        }
+
+        private void checkServerSettings(CheckDirection direction) throws MessagingException {
+            switch (direction) {
+                case INCOMING: {
+                    checkIncoming();
+                    break;
+                }
+                case OUTGOING: {
+                    checkOutgoing();
+                    break;
+                }
+            }
+        }
+
+        private void checkOutgoing() throws MessagingException {
+            if (!(account.getRemoteStore() instanceof WebDavStore)) {
+                publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
+            }
+            Transport transport = Transport.getInstance(K9.app, account);
+            transport.close();
+            transport.open();
+            transport.close();
+        }
+
+        private void checkIncoming() throws MessagingException {
+            Store store = account.getRemoteStore();
+            if (store instanceof WebDavStore) {
+                publishProgress(R.string.account_setup_check_settings_authenticate);
+            } else {
+                publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
+            }
+            store.checkSettings();
+
+            if (store instanceof WebDavStore) {
+                publishProgress(R.string.account_setup_check_settings_fetch);
+            }
+            MessagingController.getInstance(getApplication()).listFoldersSynchronous(account, true, null);
+            MessagingController.getInstance(getApplication())
+                    .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
         }
 
         @Override
