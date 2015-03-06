@@ -58,7 +58,6 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
  * </pre>
  */
 public class WebDavStore extends RemoteStore {
-    public static final String STORE_TYPE = "WebDAV";
 
     // Authentication types
     private static final short AUTH_TYPE_NONE = 0;
@@ -248,7 +247,7 @@ public class WebDavStore extends RemoteStore {
         protected WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
                 AuthType authenticationType, String username, String password, String clientCertificateAlias, String alias,
                 String path, String authPath, String mailboxPath) {
-            super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
+            super(Type.WebDAV, host, port, connectionSecurity, authenticationType, username,
                     password, clientCertificateAlias);
             this.alias = alias;
             this.path = path;

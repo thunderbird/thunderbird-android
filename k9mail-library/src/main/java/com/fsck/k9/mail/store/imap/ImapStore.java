@@ -77,7 +77,6 @@ import static com.fsck.k9.mail.K9MailLib.PUSH_WAKE_LOCK_TIMEOUT;
  * </pre>
  */
 public class ImapStore extends RemoteStore {
-    public static final String STORE_TYPE = "IMAP";
 
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
@@ -284,7 +283,7 @@ public class ImapStore extends RemoteStore {
         protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
                 AuthType authenticationType, String username, String password, String clientCertificateAlias,
                 boolean autodetectNamespace, String pathPrefix) {
-            super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
+            super(Type.IMAP, host, port, connectionSecurity, authenticationType, username,
                     password, clientCertificateAlias);
             this.autoDetectNamespace = autodetectNamespace;
             this.pathPrefix = pathPrefix;

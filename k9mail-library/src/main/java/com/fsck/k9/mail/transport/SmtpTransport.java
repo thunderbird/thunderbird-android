@@ -32,8 +32,6 @@ import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapa
 public class SmtpTransport extends Transport {
     private TrustedSocketFactory mTrustedSocketFactory;
 
-    public static final String TRANSPORT_TYPE = "SMTP";
-
     /**
      * Decodes a SmtpTransport URI.
      *
@@ -115,7 +113,7 @@ public class SmtpTransport extends Transport {
             }
         }
 
-        return new ServerSettings(TRANSPORT_TYPE, host, port, connectionSecurity,
+        return new ServerSettings(ServerSettings.Type.SMTP, host, port, connectionSecurity,
                 authType, username, password, clientCertificateAlias);
     }
 

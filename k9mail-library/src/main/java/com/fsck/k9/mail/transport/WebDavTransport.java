@@ -16,7 +16,6 @@ import java.util.Collections;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public class WebDavTransport extends Transport {
-    public static final String TRANSPORT_TYPE = WebDavStore.STORE_TYPE;
 
     /**
      * Decodes a WebDavTransport URI.

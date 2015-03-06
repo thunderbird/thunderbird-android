@@ -38,7 +38,6 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 
 public class Pop3Store extends RemoteStore {
-    public static final String STORE_TYPE = "POP3";
 
     private static final String STLS_COMMAND = "STLS";
     private static final String USER_COMMAND = "USER";
@@ -140,7 +139,7 @@ public class Pop3Store extends RemoteStore {
             }
         }
 
-        return new ServerSettings(STORE_TYPE, host, port, connectionSecurity, authType, username,
+        return new ServerSettings(ServerSettings.Type.POP3, host, port, connectionSecurity, authType, username,
                 password, clientCertificateAlias);
     }
 

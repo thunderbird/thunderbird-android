@@ -91,7 +91,7 @@ public class ImapStoreUriTest {
         extra.put("autoDetectNamespace", "false");
         extra.put("pathPrefix", "customPathPrefix");
 
-        ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
+        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
         String uri = RemoteStore.createStoreUri(settings);
@@ -105,7 +105,7 @@ public class ImapStoreUriTest {
         extra.put("autoDetectNamespace", "false");
         extra.put("pathPrefix", "");
 
-        ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
+        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
         String uri = RemoteStore.createStoreUri(settings);
@@ -115,7 +115,7 @@ public class ImapStoreUriTest {
 
     @Test
     public void testCreateStoreUriImapNoExtra() {
-        ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
+        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null);
 
         String uri = RemoteStore.createStoreUri(settings);
@@ -128,7 +128,7 @@ public class ImapStoreUriTest {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("autoDetectNamespace", "true");
 
-        ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
+        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
         String uri = RemoteStore.createStoreUri(settings);
@@ -138,7 +138,7 @@ public class ImapStoreUriTest {
 
     @Test
     public void testCreateDecodeStoreUriWithSpecialCharactersInUsernameAndPassword() {
-        ServerSettings settings = new ServerSettings(ImapStore.STORE_TYPE, "server", 143,
+        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user@doma:n", "p@ssw:rd%", null, null);
 
         String uri = RemoteStore.createStoreUri(settings);

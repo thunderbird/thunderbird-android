@@ -16,10 +16,13 @@ import java.util.Map;
  * @see com.fsck.k9.mail.store.StoreConfig#getTransportUri()
  */
 public class ServerSettings {
+
+    public enum Type { IMAP, SMTP, WebDAV, POP3 }
+
     /**
-     * Name of the store or transport type (e.g. "IMAP").
+     * Name of the store or transport type (e.g. IMAP).
      */
-    public final String type;
+    public final Type type;
 
     /**
      * The host name of the server.
@@ -99,7 +102,7 @@ public class ServerSettings {
      * @param clientCertificateAlias
      *         see {@link ServerSettings#clientCertificateAlias}
      */
-    public ServerSettings(String type, String host, int port,
+    public ServerSettings(Type type, String host, int port,
             ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
             String password, String clientCertificateAlias) {
         this.type = type;
@@ -135,7 +138,7 @@ public class ServerSettings {
      * @param extra
      *         see {@link ServerSettings#extra}
      */
-    public ServerSettings(String type, String host, int port,
+    public ServerSettings(Type type, String host, int port,
             ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
             String password, String clientCertificateAlias, Map<String, String> extra) {
         this.type = type;
@@ -158,7 +161,7 @@ public class ServerSettings {
      * @param type
      *         see {@link ServerSettings#type}
      */
-    public ServerSettings(String type) {
+    public ServerSettings(Type type) {
         this.type = type;
         host = null;
         port = -1;
