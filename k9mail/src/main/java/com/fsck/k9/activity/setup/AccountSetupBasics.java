@@ -278,8 +278,6 @@ public class AccountSetupBasics extends K9Activity
         String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
-        URI incomingUri = null;
-        URI outgoingUri = null;
         try {
             String userEnc = UrlEncodingHelper.encodeUtf8(user);
             String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
@@ -290,15 +288,15 @@ public class AccountSetupBasics extends K9Activity
             incomingUsername = incomingUsername.replaceAll("\\$domain", domain);
 
             URI incomingUriTemplate = mProvider.incomingUriTemplate;
-            incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUsername + ":"
-                                  + passwordEnc, incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null,
-                                  null, null);
+            URI incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUsername + ":" + passwordEnc,
+                    incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null, null, null);
 
             String outgoingUsername = mProvider.outgoingUsernameTemplate;
 
             URI outgoingUriTemplate = mProvider.outgoingUriTemplate;
 
 
+            URI outgoingUri;
             if (outgoingUsername != null) {
                 outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
                 outgoingUsername = outgoingUsername.replaceAll("\\$user", userEnc);
@@ -401,7 +399,7 @@ public class AccountSetupBasics extends K9Activity
 
         String password = null;
         String clientCertificateAlias = null;
-        AuthType authenticationType = null;
+        AuthType authenticationType;
         if (mClientCertificateCheckBox.isChecked()) {
             authenticationType = AuthType.EXTERNAL;
             clientCertificateAlias = mClientCertificateSpinner.getAlias();
