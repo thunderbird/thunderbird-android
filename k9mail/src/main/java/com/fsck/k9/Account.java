@@ -42,7 +42,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
@@ -1732,17 +1732,17 @@ public class Account implements BaseAccount, StoreConfig {
         switch (displayMode) {
             case FIRST_CLASS: {
                 // Count messages in the INBOX and non-special first class folders
-                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                search.and(SearchField.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
                         Attribute.EQUALS);
                 break;
             }
             case FIRST_AND_SECOND_CLASS: {
                 // Count messages in the INBOX and non-special first and second class folders
-                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                search.and(SearchField.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
                         Attribute.EQUALS);
 
                 // TODO: Create a proper interface for creating arbitrary condition trees
-                SearchCondition searchCondition = new SearchCondition(Searchfield.DISPLAY_CLASS,
+                SearchCondition searchCondition = new SearchCondition(SearchField.DISPLAY_CLASS,
                         Attribute.EQUALS, FolderClass.SECOND_CLASS.name());
                 ConditionsTreeNode root = search.getConditions();
                 if (root.mRight != null) {
@@ -1754,7 +1754,7 @@ public class Account implements BaseAccount, StoreConfig {
             }
             case NOT_SECOND_CLASS: {
                 // Count messages in the INBOX and non-special non-second-class folders
-                search.and(Searchfield.DISPLAY_CLASS, FolderClass.SECOND_CLASS.name(),
+                search.and(SearchField.DISPLAY_CLASS, FolderClass.SECOND_CLASS.name(),
                         Attribute.NOT_EQUALS);
                 break;
             }
@@ -1792,7 +1792,7 @@ public class Account implements BaseAccount, StoreConfig {
         excludeSpecialFolder(search, getOutboxFolderName());
         excludeSpecialFolder(search, getSentFolderName());
         excludeSpecialFolder(search, getErrorFolderName());
-        search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderName()));
     }
 
     /**
@@ -1816,12 +1816,12 @@ public class Account implements BaseAccount, StoreConfig {
         excludeSpecialFolder(search, getTrashFolderName());
         excludeSpecialFolder(search, getSpamFolderName());
         excludeSpecialFolder(search, getOutboxFolderName());
-        search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderName()));
     }
 
     private void excludeSpecialFolder(LocalSearch search, String folderName) {
         if (!K9.FOLDER_NONE.equals(folderName)) {
-            search.and(Searchfield.FOLDER, folderName, Attribute.NOT_EQUALS);
+            search.and(SearchField.FOLDER, folderName, Attribute.NOT_EQUALS);
         }
     }
 

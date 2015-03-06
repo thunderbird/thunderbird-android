@@ -11,8 +11,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
+import com.fsck.k9.search.SearchSpecification.SearchField;
+
 
 /**
  * This class stores search conditions. It's basically a boolean expression binary tree.
@@ -96,7 +97,7 @@ public class ConditionsTreeNode implements Parcelable {
         Operator tmpValue = ConditionsTreeNode.Operator.valueOf(cursor.getString(5));
 
         if (tmpValue == Operator.CONDITION) {
-            condition = new SearchCondition(Searchfield.valueOf(cursor.getString(0)),
+            condition = new SearchCondition(SearchField.valueOf(cursor.getString(0)),
                     Attribute.valueOf(cursor.getString(2)), cursor.getString(1));
         }
 

@@ -9,7 +9,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 
 
 public class SqlQueryBuilder {
@@ -200,7 +200,7 @@ public class SqlQueryBuilder {
     private static void appendExprRight(SearchCondition condition, StringBuilder query,
             List<String> selectionArgs) {
         String value = condition.value;
-        Searchfield field = condition.field;
+        SearchField field = condition.field;
 
         query.append(" ");
         String selectionArg = null;
@@ -256,7 +256,7 @@ public class SqlQueryBuilder {
         selectionArgs.add(selectionArg);
     }
 
-    private static boolean isNumberColumn(Searchfield field) {
+    private static boolean isNumberColumn(SearchField field) {
         switch (field) {
             case ATTACHMENT_COUNT:
             case DATE:

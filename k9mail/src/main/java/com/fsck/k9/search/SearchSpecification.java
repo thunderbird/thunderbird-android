@@ -62,7 +62,7 @@ public interface SearchSpecification extends Parcelable {
      *      preview, mime_type
      *
      */
-    public enum Searchfield {
+    public enum SearchField {
         SUBJECT,
         DATE,
         UID,
@@ -101,9 +101,9 @@ public interface SearchSpecification extends Parcelable {
     public class SearchCondition implements Parcelable {
         public final String value;
         public final Attribute attribute;
-        public final Searchfield field;
+        public final SearchField field;
 
-        public SearchCondition(Searchfield field, Attribute attribute, String value) {
+        public SearchCondition(SearchField field, Attribute attribute, String value) {
             this.value = value;
             this.attribute = attribute;
             this.field = field;
@@ -112,7 +112,7 @@ public interface SearchSpecification extends Parcelable {
         private SearchCondition(Parcel in) {
             this.value = in.readString();
             this.attribute = Attribute.values()[in.readInt()];
-            this.field = Searchfield.values()[in.readInt()];
+            this.field = SearchField.values()[in.readInt()];
         }
 
         @Override

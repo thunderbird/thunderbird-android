@@ -99,7 +99,7 @@ import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
 
 import com.handmark.pulltorefresh.library.ILoadingLayout;
@@ -3360,7 +3360,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private String getThreadId(LocalSearch search) {
         for (ConditionsTreeNode node : search.getLeafSet()) {
             SearchCondition condition = node.mCondition;
-            if (condition.field == Searchfield.THREAD_ID) {
+            if (condition.field == SearchField.THREAD_ID) {
                 return condition.value;
             }
         }
