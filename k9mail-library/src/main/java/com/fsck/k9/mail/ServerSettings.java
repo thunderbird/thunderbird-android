@@ -20,9 +20,9 @@ public class ServerSettings {
     public enum Type {
 
         IMAP(143, 993),
-        SMTP(587,465),
-        WebDAV(80,443),
-        POP3(110,995);
+        SMTP(587, 465),
+        WebDAV(80, 443),
+        POP3(110, 995);
 
         public final int defaultPort;
 
