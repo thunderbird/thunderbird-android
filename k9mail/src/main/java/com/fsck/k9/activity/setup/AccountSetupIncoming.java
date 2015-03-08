@@ -473,20 +473,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(String.valueOf(getDefaultPort(securityType)));
+        mPortView.setText(String.valueOf(AccountCreator.getDefaultPort(securityType, mStoreType)));
         mPortView.addTextChangedListener(validationTextWatcher);
-    }
-
-    private int getDefaultPort(ConnectionSecurity securityType) {
-        switch (securityType) {
-        case NONE:
-        case STARTTLS_REQUIRED:
-            return mStoreType.defaultPort;
-        case SSL_TLS_REQUIRED:
-            return mStoreType.defaultTlsPort;
-        default:
-            throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
-        }
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {

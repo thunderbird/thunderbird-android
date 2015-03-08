@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
+import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
@@ -424,20 +425,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(String.valueOf(getDefaultSmtpPort(securityType)));
+        mPortView.setText(String.valueOf(AccountCreator.getDefaultPort(securityType, Type.SMTP)));
         mPortView.addTextChangedListener(validationTextWatcher);
-    }
-
-    private int getDefaultSmtpPort(ConnectionSecurity securityType) {
-        switch (securityType) {
-        case NONE:
-        case STARTTLS_REQUIRED:
-            return Type.SMTP.defaultPort;
-        case SSL_TLS_REQUIRED:
-            return Type.SMTP.defaultTlsPort;
-        default:
-            throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
-        }
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
