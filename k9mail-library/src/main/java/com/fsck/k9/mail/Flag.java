@@ -1,6 +1,9 @@
 
 package com.fsck.k9.mail;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Flags that can be applied to Messages.
  *
@@ -20,7 +23,7 @@ public final class Flag {
      *
      * DO NOT ADD STATIC FIELDS TO THIS CLASS UNLESS THEY ARE
      * NEW FLAGS THAT GET PREDEFINED. IF YOU DO ADD A NEW PREDEFINED
-     * FLAG ADD IT IN THE valueOfByRealName() METHOD BELOW TOO!
+     * FLAG ADD IT IN THE knownFlags() METHOD BELOW TOO!
      */
 
     /*
@@ -145,19 +148,43 @@ public final class Flag {
      * @throws IllegalArgumentException Thrown when the field is not accessible.
      */
     public static Flag valueOf(String internalName) throws IllegalArgumentException {
-        try {
-            // the argument being 'null' implies we look for a static field
-            return (Flag)(Flag.class.getField(internalName).get(null));
-        } catch (NoSuchFieldException e) {
-            // not a predefined flag
-            if (internalName.startsWith(USER_PREFIX)) {
-                return Flag.createFlag(internalName.substring(USER_PREFIX.length()));
-            } else {
-                return Flag.createFlag(internalName);
+
+        for (Flag f : knownFlags()) {
+            if (f.mName.equalsIgnoreCase(internalName)) {
+                return f;
             }
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException(e);
         }
+
+        if (internalName.startsWith(USER_PREFIX)) {
+            return Flag.createFlag(internalName.substring(USER_PREFIX.length()));
+        } else {
+            return Flag.createFlag(internalName);
+        }
+
+    }
+
+    /**
+     * Protected for unit-test access.
+     *
+     * If you add a new flag field, make sure you update this list.
+     *
+     * @return a list of all built-in flags that K-9 knows about.
+     */
+    protected static List<Flag> knownFlags() {
+        return Arrays.asList(DELETED,
+                SEEN,
+                ANSWERED,
+                FLAGGED,
+                DRAFT,
+                RECENT,
+                FORWARDED,
+                X_DESTROYED,
+                X_SEND_FAILED,
+                X_SEND_IN_PROGRESS,
+                X_DOWNLOADED_FULL,
+                X_DOWNLOADED_PARTIAL,
+                X_REMOTE_COPY_STARTED,
+                X_GOT_ALL_HEADERS);
     }
 
     /**
@@ -178,10 +205,7 @@ public final class Flag {
      * @return The flag that was found or created.
      */
     public static Flag valueOfByRealName(String name) {
-        for (Flag f : new Flag[] {DELETED, SEEN, ANSWERED, FLAGGED, DRAFT, RECENT,
-                                  X_DESTROYED, X_DOWNLOADED_FULL, X_DOWNLOADED_PARTIAL, X_GOT_ALL_HEADERS,
-                                  X_REMOTE_COPY_STARTED, X_SEND_FAILED, X_SEND_IN_PROGRESS
-                                 }) {
+        for (Flag f : knownFlags()) {
             if (f.mName.equalsIgnoreCase(name)) {
                 return f;
             }
