@@ -7,10 +7,8 @@ import org.junit.runner.RunWith;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,16 +18,9 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class FlagTest {
 
-    private static final Comparator<Flag> FLAG_COMPARATOR = new Comparator<Flag>() {
-        @Override
-        public int compare(Flag lhs, Flag rhs) {
-            return lhs.name().compareTo(rhs.name());
-        }
-    };
-
     @Test
     public void testValueOf() throws IllegalAccessException {
-        List<Flag> declaredFlagFields = new ArrayList<Flag>();
+        Set<Flag> declaredFlagFields = new HashSet<Flag>();
 
         for (Field field : Flag.class.getDeclaredFields()) {
             if (field.getType().equals(Flag.class) && Modifier.isStatic(field.getModifiers())) {
@@ -37,12 +28,6 @@ public class FlagTest {
             }
         }
 
-        Collections.sort(declaredFlagFields, FLAG_COMPARATOR);
-
-        List<Flag> methodFlagFields = Flag.knownFlags();
-
-        Collections.sort(methodFlagFields, FLAG_COMPARATOR);
-
-        assertEquals(declaredFlagFields, methodFlagFields);
+        assertEquals(declaredFlagFields, Flag.KNOWN_FLAGS);
     }
 }
