@@ -75,13 +75,13 @@ public class SmtpTransport extends Transport {
          */
         if (scheme.equals("smtp")) {
             connectionSecurity = ConnectionSecurity.NONE;
-            port = 587;
+            port = ServerSettings.Type.SMTP.defaultPort;
         } else if (scheme.startsWith("smtp+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = 587;
+            port = ServerSettings.Type.SMTP.defaultPort;
         } else if (scheme.startsWith("smtp+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 465;
+            port = ServerSettings.Type.SMTP.defaultTlsPort;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
         }

@@ -46,13 +46,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
-    private static final String POP3_PORT = "110";
-    private static final String POP3_SSL_PORT = "995";
-    private static final String IMAP_PORT = "143";
-    private static final String IMAP_SSL_PORT = "993";
-    private static final String WEBDAV_PORT = "80";
-    private static final String WEBDAV_SSL_PORT = "443";
-
     private Type mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -79,8 +72,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private CheckBox mCompressionOther;
     private CheckBox mSubscribedFoldersOnly;
     private AuthTypeAdapter mAuthTypeAdapter;
-    private String mDefaultPort = "";
-    private String mDefaultSslPort = "";
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
@@ -189,8 +180,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mStoreType = settings.type;
             if (Type.POP3 == settings.type) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
-                mDefaultPort = POP3_PORT;
-                mDefaultSslPort = POP3_SSL_PORT;
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
@@ -201,8 +190,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
             } else if (Type.IMAP == settings.type) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
-                mDefaultPort = IMAP_PORT;
-                mDefaultSslPort = IMAP_SSL_PORT;
 
                 ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
 
@@ -221,8 +208,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
             } else if (Type.WebDAV == settings.type) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
-                mDefaultPort = WEBDAV_PORT;
-                mDefaultSslPort = WEBDAV_SSL_PORT;
                 mConnectionSecurityChoices = new ConnectionSecurity[] {
                         ConnectionSecurity.NONE,
                         ConnectionSecurity.SSL_TLS_REQUIRED };
@@ -488,25 +473,20 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(getDefaultPort(securityType));
+        mPortView.setText(String.valueOf(getDefaultPort(securityType)));
         mPortView.addTextChangedListener(validationTextWatcher);
     }
 
-    private String getDefaultPort(ConnectionSecurity securityType) {
-        String port;
+    private int getDefaultPort(ConnectionSecurity securityType) {
         switch (securityType) {
         case NONE:
         case STARTTLS_REQUIRED:
-            port = mDefaultPort;
-            break;
+            return mStoreType.defaultPort;
         case SSL_TLS_REQUIRED:
-            port = mDefaultSslPort;
-            break;
+            return mStoreType.defaultTlsPort;
         default:
-            Log.e(K9.LOG_TAG, "Unhandled ConnectionSecurity type encountered");
-            port = "";
+            throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
         }
-        return port;
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {

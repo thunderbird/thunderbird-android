@@ -38,9 +38,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
-    private static final String SMTP_PORT = "587";
-    private static final String SMTP_SSL_PORT = "465";
-
     private EditText mUsernameView;
     private EditText mPasswordView;
     private ClientCertificateSpinner mClientCertificateSpinner;
@@ -427,25 +424,20 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(getDefaultSmtpPort(securityType));
+        mPortView.setText(String.valueOf(getDefaultSmtpPort(securityType)));
         mPortView.addTextChangedListener(validationTextWatcher);
     }
 
-    private String getDefaultSmtpPort(ConnectionSecurity securityType) {
-        String port;
+    private int getDefaultSmtpPort(ConnectionSecurity securityType) {
         switch (securityType) {
         case NONE:
         case STARTTLS_REQUIRED:
-            port = SMTP_PORT;
-            break;
+            return Type.SMTP.defaultPort;
         case SSL_TLS_REQUIRED:
-            port = SMTP_SSL_PORT;
-            break;
+            return Type.SMTP.defaultTlsPort;
         default:
-            port = "";
-            Log.e(K9.LOG_TAG, "Unhandled ConnectionSecurity type encountered");
+            throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
         }
-        return port;
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {

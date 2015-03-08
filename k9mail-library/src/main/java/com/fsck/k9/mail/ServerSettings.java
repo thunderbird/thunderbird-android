@@ -17,7 +17,30 @@ import java.util.Map;
  */
 public class ServerSettings {
 
-    public enum Type { IMAP, SMTP, WebDAV, POP3 }
+    public enum Type {
+
+        IMAP(143, 993),
+        SMTP(587,465),
+        WebDAV(80,443),
+        POP3(110,995);
+
+        public final int defaultPort;
+
+        /**
+         * Note: port for connections using TLS (=SSL) immediately
+         * from the initial TCP connection.
+         *
+         * STARTTLS uses the defaultPort, then upgrades.
+         *
+         * See https://www.fastmail.com/help/technical/ssltlsstarttls.html.
+         */
+        public final int defaultTlsPort;
+
+        private Type(int defaultPort, int defaultTlsPort) {
+            this.defaultPort = defaultPort;
+            this.defaultTlsPort = defaultTlsPort;
+        }
+    }
 
     /**
      * Name of the store or transport type (e.g. IMAP).
