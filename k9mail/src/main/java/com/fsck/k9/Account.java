@@ -27,6 +27,7 @@ import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.filter.Base64;
@@ -94,12 +95,6 @@ public class Account implements BaseAccount, StoreConfig {
             }
             throw new IllegalArgumentException("DeletePolicy " + initialSetting + " unknown");
         }
-    }
-
-    public enum NetworkType {
-        WIFI,
-        MOBILE,
-        OTHER
     }
 
     public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
@@ -1301,19 +1296,6 @@ public class Account implements BaseAccount, StoreConfig {
         }
 
         return useCompression;
-    }
-
-    public boolean useCompression(int type) {
-        NetworkType networkType = NetworkType.OTHER;
-        switch (type) {
-        case ConnectivityManager.TYPE_MOBILE:
-            networkType = NetworkType.MOBILE;
-            break;
-        case ConnectivityManager.TYPE_WIFI:
-            networkType = NetworkType.WIFI;
-            break;
-        }
-        return useCompression(networkType);
     }
 
     @Override

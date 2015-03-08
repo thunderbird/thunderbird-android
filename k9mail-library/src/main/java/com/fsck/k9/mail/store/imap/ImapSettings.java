@@ -2,6 +2,7 @@ package com.fsck.k9.mail.store.imap;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.NetworkType;
 
 /**
  * Settings source for IMAP. Implemented in order to remove coupling between {@link ImapStore} and {@link ImapConnection}.
@@ -21,7 +22,7 @@ interface ImapSettings {
 
     String getClientCertificateAlias();
 
-    boolean useCompression(int type);
+    boolean useCompression(NetworkType type);
 
     String getPathPrefix();
 
