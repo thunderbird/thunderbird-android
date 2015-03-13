@@ -2224,7 +2224,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
 
             if (mActionMode == null) {
-                mActionMode = getActivity().startActionMode(mActionModeCallback);
+                startAndPrepareActionMode();
             }
             computeBatchDirection();
             updateActionModeTitle();
@@ -2283,7 +2283,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 return;
             }
         } else {
-            mActionMode = getActivity().startActionMode(mActionModeCallback);
+            startAndPrepareActionMode();
         }
 
         if (selected) {
@@ -3542,11 +3542,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         if (mActionMode == null) {
-            mActionMode = getActivity().startActionMode(mActionModeCallback);
+            startAndPrepareActionMode();
         }
 
         recalculateSelectionCount();
         updateActionModeTitle();
+    }
+
+    private void startAndPrepareActionMode() {
+        mActionMode = getActivity().startActionMode(mActionModeCallback);
+        mActionMode.invalidate();
     }
 
     /**
