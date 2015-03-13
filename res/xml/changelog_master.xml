@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.003" versioncode="22003" >
+        <change>Fixed crash when selecting multiple messages on Android 5.1</change>
+    </release>
     <release version="5.002" versioncode="22002" >
         <change>Fixed a bug where a certificate error was wrongly reported</change>
     </release>
