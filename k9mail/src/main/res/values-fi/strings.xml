@@ -259,7 +259,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="global_settings_messageview_fixedwidth_label">Kiinteä kirjasinleveys</string>
   <string name="global_settings_messageview_fixedwidth_summary">Käytä kiinteää kirjasinleveyttä muotoilemattomille viesteille</string>
   <string name="global_settings_messageview_autofit_width_label">Sovita viestit automaattisesti</string>
-  <string name="global_settings_messageview_autofit_width_summary">Kutista viestit sopimaan ruudulle</string>
+  <string name="global_settings_messageview_autofit_width_summary">Kutista viestit sopimaan näytölle</string>
   <string name="global_settings_messageview_return_to_list_label">Palaa poiston jälkeen listanäkymään</string>
   <string name="global_settings_messageview_return_to_list_summary">Palaa viestilistaan viestin poiston jälkeen</string>
   <string name="global_settings_messageview_show_next_label">Näytä poiston jälkeen seuraava viesti</string>
@@ -281,11 +281,12 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="global_settings_notification_quick_delete_when_single_msg">Yksittäisen viestin ilmoituksessa</string>
   <string name="global_settings_notification_quick_delete_always">Aina</string>
   <string name="global_settings_notification_quick_delete_description">Näytä ilmoituksessa painike, joka mahdollistaa nopean viestin poistamisen</string>
-  <string name="global_settings_lock_screen_notification_visibility_title">Lukitusruudun ilmoitukset</string>
-  <string name="global_settings_lock_screen_notification_visibility_nothing">Ei lukitusruudun ilmoituksia</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Lukitusnäytön ilmoitukset</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Ei lukitusnäytön ilmoituksia</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Sovelluksen nimi</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Lukemattomien viestien määrä</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Viestien määrä ja lähettäjät</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Sama kuin näytön ollessa lukittuna</string>
   <string name="quiet_time">Hiljainen aika</string>
   <string name="quiet_time_description">Poista käytöstä soittoäänen pirinä, pärinä ja vilkkuminen yöllä</string>
   <string name="quiet_time_starts">Hiljainen aika alkaa</string>

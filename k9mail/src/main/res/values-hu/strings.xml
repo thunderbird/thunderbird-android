@@ -275,6 +275,10 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="global_settings_notification_quick_delete_when_single_msg">Egyszerű értesítés új levélnél</string>
   <string name="global_settings_notification_quick_delete_always">Mindig</string>
   <string name="global_settings_notification_quick_delete_description">Gomb mutatása az értesítések között a gyors üzenettörlés engedélyezéséhez</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Képernyőzár értesítések</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Nincsenek képernyőzár értesítések</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Alkalmazás neve</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Olvasatlan üzenetek száma</string>
   <string name="quiet_time">Csendes mód</string>
   <string name="quiet_time_description">Éjszakára kikapcsolja a jelzőhangokat, rezgést, villogást</string>
   <string name="quiet_time_starts">Csendes mód kezdete</string>

@@ -159,6 +159,11 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="clearing_account">Čišćenje računa \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Ponovno stvaranje računa \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nova pošta</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nova poruka</item>
+    <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> novih poruka</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novih poruka</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nepročitano (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> više na <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Odgovori</string>
@@ -277,6 +282,12 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="global_settings_notification_quick_delete_when_single_msg">Za pojedinačnu obavijest poruke</string>
   <string name="global_settings_notification_quick_delete_always">Uvijek</string>
   <string name="global_settings_notification_quick_delete_description">Prikaži gumb u traci obavijesti koji dozvoljava brzo brisanje poruke</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Obavijesti Zaključanog Zaslona</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Nema obavijesti zaključanog zaslona</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Naziv aplikacije</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Broj nepročitanih poruka</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Broj poruka i pošiljatelja</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Isto kao kod otključanog zaslona</string>
   <string name="quiet_time">Tiho Vrijeme</string>
   <string name="quiet_time_description">Onemogućava zvonjavu, vibriranje i blicanje noću</string>
   <string name="quiet_time_starts">Vrijeme Tišine započinje</string>

@@ -745,7 +745,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="error_unable_to_connect">Błąd połączenia.</string>
   <string name="import_export_action">Kopia zapasowa</string>
-  <string name="settings_export_account">Ustawienia konta</string>
+  <string name="settings_export_account">Eksportuj ustawienia konta</string>
   <string name="settings_export_all">Eksport</string>
   <string name="settings_import_dialog_title">Importuj</string>
   <string name="settings_export_dialog_title">Eksportuj</string>

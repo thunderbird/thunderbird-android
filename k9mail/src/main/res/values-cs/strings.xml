@@ -287,6 +287,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="global_settings_lock_screen_notification_visibility_app_name">Jméno aplikace</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Počet nepřečtených zpráv</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Počet zpráv a odesilatelů</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Stejné jako při odemčené obrazovce</string>
   <string name="quiet_time">Doba klidu</string>
   <string name="quiet_time_description">Zakázat v noci zvonění, vibrace a blikání</string>
   <string name="quiet_time_starts">Doba klidu začíná</string>

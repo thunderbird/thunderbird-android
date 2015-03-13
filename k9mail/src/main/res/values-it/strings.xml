@@ -280,9 +280,12 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="global_settings_notification_quick_delete_when_single_msg">Per la notifica di un singolo messaggio</string>
   <string name="global_settings_notification_quick_delete_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_description">Mostra un pulsante nella notifica che consente l\'eliminazione rapida</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Notifiche schermata di blocco</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Nessuna notifica sulla schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nome applicazione</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Numero messaggi non letti</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Numero messaggi e mittenti</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Come quando lo schermo è sbloccato</string>
   <string name="quiet_time">Silenzioso a tempo</string>
   <string name="quiet_time_description">Disabilita chiamata, vibrazione e lampeggi di notte</string>
   <string name="quiet_time_starts">Attiva alle</string>

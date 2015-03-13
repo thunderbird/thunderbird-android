@@ -44,6 +44,7 @@
 </p>
     ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \nΣταλμένο από τη συσκευή μου Android με το K-9 Mail. Παρακαλώ συγχωρήστε την ολιγολογία μου.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
@@ -157,6 +158,10 @@
   <string name="clearing_account">Καθαρισμός λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
   <string name="recreating_account">Ανακατασκευή λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
   <string name="notification_new_title">Νέο μήνυμα</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> νέο μήνυμα</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> νέα μηνύματα</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> μη αναγνωσμένα (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> περισσότερα στον <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Απάντηση</string>
@@ -264,6 +269,8 @@
   <string name="global_settings_confirm_action_delete_starred">Διαγραφή με αστέρι (προβολή μηνύματος μόνον)</string>
   <string name="global_settings_confirm_action_spam">Σκουπίδια</string>
   <string name="global_settings_confirm_action_delete_notif">Διαγραφή (από ειδιοποίηση)</string>
+  <string name="global_settings_privacy_hide_useragent">Αφαίρεση του User-Agent K-9 από την κεφαλίδα του mail</string>
+  <string name="global_settings_privacy_hide_timezone">Χρήση της UTC σαν ζώνη ώρας στην κεφαλίδα του mail</string>
   <string name="global_settings_notification_hide_subject_title">Απόκρυψη θέματος στις ειδοποιήσεις</string>
   <string name="global_settings_notification_hide_subject_never">Ποτέ</string>
   <string name="global_settings_notification_hide_subject_when_locked">Όταν το τηλέφωνο είναι κλειδωμένο</string>
@@ -273,6 +280,12 @@
   <string name="global_settings_notification_quick_delete_when_single_msg">Για ειδοποίηση ενός μηνύματος</string>
   <string name="global_settings_notification_quick_delete_always">Πάντοτε</string>
   <string name="global_settings_notification_quick_delete_description">Προβολή πλήκτρου στην ειδοποίηση που επιτρέπει τη γρήγορη διαγραφή του μηνύματος</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Ειδοποιήσεις οθόνης κλειδώματος</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Χωρίς ειδοποιήσεις οθόνης κλειδώματος</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Όνομα εφαρμογής</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Αριθμός μη αναγνωσμένων μηνυμάτων</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Αριθμός μηνυμάτων και αποστολείς</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Το ίδιο με όταν η οθόνη δεν είναι κλειδωμένη</string>
   <string name="quiet_time">Ώρες ησυχίας</string>
   <string name="quiet_time_description">Απενεργοποιεί κουδούνισμα και αναβοσβήσιμο τη νύχτα</string>
   <string name="quiet_time_starts">Έναρξη ωρών ησυχίας</string>
@@ -280,6 +293,7 @@
   <string name="account_setup_basics_title">Ρύθμιση νέου λογαριασμού</string>
   <string name="account_setup_basics_email_hint">Διεύθυνση email</string>
   <string name="account_setup_basics_password_hint">Συνθηματικό</string>
+  <string name="account_setup_basics_show_password">Εμφάνιση κωδικού πρόσβασης</string>
   <string name="account_setup_basics_manual_setup_action">Χειροκίνητη ρύθμιση</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Ανάκτηση πληροφοριών λογαριασμού\u2026</string>
@@ -299,9 +313,11 @@
   <string name="account_setup_auth_type_normal_password">Απλό συνθηματικό</string>
   <string name="account_setup_auth_type_insecure_password">Συνθηματικό, μεταβιβασμένο χωρίς ασφάλεια</string>
   <string name="account_setup_auth_type_encrypted_password">Κρυπτογραφημένο συνθηματικό</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Πιστοποιητικό πελάτη</string>
   <string name="account_setup_incoming_title">Ρυθμίσεις εισερχόμενης αλληλογραφίας</string>
   <string name="account_setup_incoming_username_label">Όνομα χρήστη</string>
   <string name="account_setup_incoming_password_label">Συνθηματικό</string>
+  <string name="account_setup_incoming_client_certificate_label">Πιστοποιητικό πελάτη</string>
   <string name="account_setup_incoming_pop_server_label">Εξυπηρέτης POP3</string>
   <string name="account_setup_incoming_imap_server_label">Εξυπηρέτης IMAP</string>
   <string name="account_setup_incoming_webdav_server_label">Exchange Server</string>
@@ -397,6 +413,9 @@
   <string name="account_setup_options_mail_display_count_all">Όλα τα μηνύματα</string>
   <string name="move_copy_cannot_copy_unsynced_message">Αδύνατη η αντιγραφή ή μετακίνηση μηνύματος που δεν έχει συγχρονιστεί με τον εξυπηρέτη</string>
   <string name="account_setup_failed_dlg_title">Οι ρυθμίσεις δεν μπόρεσαν να ολοκληρωθούν.</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Το όνομα χρήστη ή ο κωδικός πρόσβασης δεν είναι σωστά.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Ο διακομιστής παρουσίασε ένα μη εγκυρο πιστοποιητικό SSL. Κάποιες φορές αυτό συμβαίνει λόγω κακής ρύθμισής του. Άλλες φορές γιατί κάποιος προσπαθεί να επιτεθεί σε εσάς ή τον διακομιστή mail σας. Αν δεν είστε βέβαιοι τι συμβαίνει, επιλέξτε Απόρριψη και επικοινωνήστε με τους διαχειριστές του διακομιστή mail σας.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Αδύνατη η σύνδεση στον διακομιστή.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Διόρθωση λεπτομερειών</string>
   <string name="account_setup_failed_dlg_continue_action">Συνέχεια</string>
   <string name="account_settings_push_advanced_title">Προχωρημένα</string>
@@ -404,6 +423,12 @@
   <string name="account_settings_default_label">Εξ ορισμού λογαριασμός</string>
   <string name="account_settings_default_summary">Αποστολή ταχυδρομείου από αυτό το λογαριασμό εξ ορισμού</string>
   <string name="account_settings_notify_label">Ειδοποιήσεις νέων μηνυμάτων</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Φάκελοι ειδοποιήσεων</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Όλοι</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Μόνο φάκελοι 1ου επιπέδου</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Φάκελοι 1ου και 2ου επιπέδου</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Όλοι εκτός από του 2ου επιπέδου</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Κανένας</string>
   <string name="account_settings_notify_sync_label">Συγχρονισμός ειδοποιήσεων</string>
   <string name="account_settings_email_label">Η ηλεκτρονική σου διεύθυνση</string>
   <string name="account_settings_notify_summary">Ειδοποίηση στη γραμμή κατάστασης όταν φτάνει νέο μήνυμα</string>
@@ -442,6 +467,7 @@
   <string name="account_settings_quote_prefix_label">Πρόθεμα κειμένου παράθεσης</string>
   <string name="account_settings_crypto">Κρυπτογραφία</string>
   <string name="account_settings_crypto_app">Πάροχος OpenPGP</string>
+  <string name="account_settings_no_openpgp_provider_installed">Δεν υπάρχει εγκατεστημένος πάροχος OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
   <string name="account_settings_storage_title">Αποθήκευση</string>
   <string name="account_settings_color_label">Χρώμα λογαριασμού</string>
@@ -519,6 +545,10 @@
   <string name="folder_settings_folder_push_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_push_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="folder_settings_folder_push_mode_inherited">Όπως το επίπεδο συγχρονισμού</string>
+  <string name="folder_settings_folder_notify_mode_label">Επίπεδο ειδοποίησης φακέλου</string>
+  <string name="folder_settings_folder_notify_mode_normal">Κανένας</string>
+  <string name="folder_settings_folder_notify_mode_first_class">Πρώτο επίπεδο</string>
+  <string name="folder_settings_folder_notify_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="account_settings_incoming_label">Ρυθμίσεις εισερχομένων</string>
   <string name="account_settings_incoming_summary">Ρύθμιση εξυπηρέτη εισερχόμενης αλληλογραφίας</string>
   <string name="account_settings_outgoing_label">Ρυθμίσεις εξερχομένων</string>
@@ -858,6 +888,7 @@
   <string name="fetching_attachment_dialog_title_send">Αποστολή μηνύματος</string>
   <string name="fetching_attachment_dialog_title_save">Αποθήκευση πρόχειρου</string>
   <string name="fetching_attachment_dialog_message">Ανάκληση συνημμένων…</string>
+  <string name="auth_external_error">Αδύνατη η πιστοποίηση. Ο διακομιστής δεν διαφημίζει την ικανότητα SASL EXTERNAL. Αυτό μπορεί να συμβαίνει λόγω κάποιου προβληματος με το πιστοποιητικό του πελάτη (ληγμένο, άγνωστη αρχή πιστοποίησης) ή κάποιο άλλο πρόβλημα ρυθμίσεων.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">Αποκρυπτογράφηση/Επαλήθευση…</string>
   <string name="openpgp_successful_decryption">Επιτυχής αποκρυπτογράφηση</string>
@@ -873,4 +904,10 @@
   <string name="openpgp_error">Σφάλμα OpenPGP:</string>
   <string name="openpgp_user_id">Ταυτότητα χρήστη</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Χρήση πιστοποιητικού πελάτη</string>
+  <string name="client_certificate_spinner_empty">Χωρίς πιστοποιητικό πελάτη</string>
+  <string name="client_certificate_spinner_delete">Αφαίρεση επιλογής πιστοποιητικού πελάτη</string>
+  <string name="client_certificate_retrieval_failure">Αποτυχία ανάκτησης του πιστοποιητικού πελάτη για το ψευδώνυμο \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_advanced_options">Προχωρημένες ρυθμίσεις</string>
+  <string name="client_certificate_expired">Το πιστοποιητικό πελάτη \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" έχει λήξει ή δεν είναι ακόμα έγκυρο (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

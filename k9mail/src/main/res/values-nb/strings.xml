@@ -53,7 +53,7 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål på
   <string name="account_clear_dlg_instructions_fmt">Lokale kopier av meldinger i \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet. Kontoinnstillinger vil bli beholdt.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Du må ha installert en filbehandler for å importere.</string>
-  <string name="open_market">Åpne Play-butikken</string>
+  <string name="open_market">Åpne Play Butikk</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Utviklere: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Revisjonsinformasjon: <xliff:g id="app_revision_url">%s</xliff:g></string>
@@ -66,7 +66,7 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål på
   <string name="delete_messages_label">Slett e-poster</string>
   <string name="delete_messages_desc">Tillat denne applikasjon å slette dine e-poster.</string>
   <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
-  <string name="accounts_title">Konti</string>
+  <string name="accounts_title">Kontoer</string>
   <string name="folders_title">Mapper</string>
   <string name="advanced">Avansert</string>
   <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
@@ -189,7 +189,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="debug_enable_debug_logging_title">Aktiver feilsøkingslogg</string>
   <string name="debug_enable_debug_logging_summary">Logg ekstra diagnostisk informasjon</string>
   <string name="debug_enable_sensitive_logging_title">Logg sensitiv informasjon</string>
-  <string name="debug_enable_sensitive_logging_summary">Kan vise passord i logger.</string>
+  <string name="debug_enable_sensitive_logging_summary">Passord kan vises i logger.</string>
   <string name="message_list_load_more_messages_action">Last flere meldinger</string>
   <string name="message_to_fmt">Til:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_to_hint">Til</string>
@@ -627,7 +627,7 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Godta nøkkel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Avvis nøkkel</string>
   <string name="message_list_help_key">Del (eller D) - Slett\nR - Svar\nA - Svar alle\nC - Skriv\nF - Videresend\nM - Flytt\nV - Arkiver\nY - Kopier\nZ - Marker (U)leste\nG - Stjerne\nO - Sorteringstype\nI - Sorteringsrekkefølge\nQ - Tilbake til mapper\nS - Velg/fjern valg\nJ eller P - Forrige melding\nK eller N - Neste melding</string>
-  <string name="folder_list_help_key">1 - Vis bare 1. klasses mapper\n2 - Vis 1. og 2. klasses mapper\n3 - Vis alle utenom 1. og 2. klasses mapper\n4 - Vis alle mapper\nQ - Tilbake til Konti\nS - Rediger kontoinnstillinger</string>
+  <string name="folder_list_help_key">1 - Vis bare 1. klasses mapper\n2 - Vis 1. og 2. klasses mapper\n3 - Vis alle utenom 1. og 2. klasses mapper\n4 - Vis alle mapper\nQ - Tilbake til Kontoer\nS - Rediger kontoinnstillinger</string>
   <string name="folder_list_filter_hint">mappenavn inneholder</string>
   <string name="folder_list_display_mode_label">Vis mapper …</string>
   <string name="folder_list_display_mode_all">Alle mapper</string>
@@ -642,7 +642,7 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="setting_theme_light">Lys</string>
   <string name="display_preferences">Visning</string>
   <string name="global_preferences">Globalt</string>
-  <string name="debug_preferences">Feilretting</string>
+  <string name="debug_preferences">Feilsøking</string>
   <string name="privacy_preferences">Personvern</string>
   <string name="network_preferences">Nettverk</string>
   <string name="interaction_preferences">Samhandling</string>
@@ -683,7 +683,7 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="measure_accounts_summary">Slå av for raskere visning</string>
   <string name="count_search_title">Tell søkeresultater</string>
   <string name="count_search_summary">Slå av for raskere visning</string>
-  <string name="hide_special_accounts_title">Gjem spesialkonti</string>
+  <string name="hide_special_accounts_title">Skjul spesialkontoer</string>
   <string name="hide_special_accounts_summary">Skjul den samlede innboksen og alle meldingskontoer</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="flagged_modifier">- Stjernede</string>
