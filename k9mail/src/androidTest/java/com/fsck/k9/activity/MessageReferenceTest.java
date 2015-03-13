@@ -124,6 +124,18 @@ public class MessageReferenceTest {
         assertEqualsReturnsFalseSymmetrically(messageReferenceOne, messageReferenceTwo);
     }
 
+    @Test
+    public void equalsTransitivityTest() {
+        MessageReference messageReferenceOne = createMessageReference("account", "folder", "uid");
+        MessageReference messageReferenceTwo = createMessageReference("account", "folder", "uid");
+        MessageReference messageReferenceThree = createMessageReference("account", "folder", "uid");
+
+        assertEqualsReturnsTrueSymmetrically(messageReferenceOne, messageReferenceTwo);
+        assertEqualsReturnsTrueSymmetrically(messageReferenceTwo, messageReferenceThree);
+        assertEqualsReturnsTrueSymmetrically(messageReferenceOne, messageReferenceThree);
+
+    }
+
     private MessageReference createMessageReference(String accountUuid, String folderName, String uid) {
         MessageReference messageReference = new MessageReference();
         messageReference.accountUuid = accountUuid;
