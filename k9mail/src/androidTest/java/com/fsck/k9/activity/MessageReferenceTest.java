@@ -71,7 +71,8 @@ public class MessageReferenceTest {
 
     @Test
     public void equalsWithAnObjectShouldReturnFalse() {
-        MessageReference messageReference = new MessageReference();
+        // null : creating a new empty MessageReference
+        MessageReference messageReference = new MessageReference(null, null, null, null);
         Object object = new Object();
 
         assertFalse(messageReference.equals(object));
@@ -125,21 +126,14 @@ public class MessageReferenceTest {
     }
 
     private MessageReference createMessageReference(String accountUuid, String folderName, String uid) {
-        MessageReference messageReference = new MessageReference();
-        messageReference.accountUuid = accountUuid;
-        messageReference.folderName = folderName;
-        messageReference.uid = uid;
+        MessageReference messageReference = new MessageReference(accountUuid, folderName, uid, null);
 
         return messageReference;
     }
 
     private MessageReference createMessageReferenceWithFlag(String accountUuid, String folderName, String uid,
             Flag flag) {
-        MessageReference messageReference = new MessageReference();
-        messageReference.accountUuid = accountUuid;
-        messageReference.folderName = folderName;
-        messageReference.uid = uid;
-        messageReference.flag = flag;
+        MessageReference messageReference = new MessageReference(accountUuid, folderName, uid, flag);
 
         return messageReference;
     }

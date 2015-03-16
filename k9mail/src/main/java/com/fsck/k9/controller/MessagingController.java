@@ -4936,7 +4936,7 @@ public class MessagingController implements Runnable {
             String initialFolder = message.getFolder().getName();
             /* only go to folder if all messages are in the same folder, else go to folder list */
             for (MessageReference ref : allRefs) {
-                if (!TextUtils.equals(initialFolder, ref.folderName)) {
+                if (!TextUtils.equals(initialFolder, ref.getFolderName())) {
                     initialFolder = null;
                     break;
                 }
@@ -5008,8 +5008,8 @@ public class MessagingController implements Runnable {
     }
 
     private TaskStackBuilder buildMessageViewBackStack(Context context, MessageReference message) {
-        Account account = Preferences.getPreferences(context).getAccount(message.accountUuid);
-        TaskStackBuilder stack = buildMessageListBackStack(context, account, message.folderName);
+        Account account = Preferences.getPreferences(context).getAccount(message.getAccountUuid());
+        TaskStackBuilder stack = buildMessageListBackStack(context, account, message.getFolderName());
         stack.addNextIntent(MessageList.actionDisplayMessageIntent(context, message));
         return stack;
     }
