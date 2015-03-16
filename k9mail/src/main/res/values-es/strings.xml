@@ -902,7 +902,6 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Descifrado correctamente y firma válida pero sin certificar</string>
   <string name="openpgp_successful_decryption_unknown_signature">Descifrado correctamente pero no se encuentra la clave pública</string>
   <string name="openpgp_get_key">Buscar la clave no encontrada</string>
-  <string name="openpgp_error">Error OpenPGP:</string>
   <string name="openpgp_user_id">Id de usuario</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Usar certificado de cliente</string>

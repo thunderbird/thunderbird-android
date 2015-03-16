@@ -23,9 +23,10 @@ public class MimeMessageHelper {
         if (body instanceof Multipart) {
             Multipart multipart = ((Multipart) body);
             multipart.setParent(part);
-            String type = multipart.getContentType();
-            part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
-            if ("multipart/signed".equalsIgnoreCase(type)) {
+            String mimeType = multipart.getMimeType();
+            String contentType = String.format("%s; boundary=\"%s\"", mimeType, multipart.getBoundary());
+            part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
+            if ("multipart/signed".equalsIgnoreCase(mimeType)) {
                 setEncoding(part, MimeUtil.ENC_7BIT);
             } else {
                 setEncoding(part, MimeUtil.ENC_8BIT);

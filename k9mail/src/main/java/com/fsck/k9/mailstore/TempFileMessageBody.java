@@ -9,8 +9,7 @@ import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.MessagingException;
 
 /**
- * An attachment containing a body of type message/rfc822
- * whose contents are contained in a file.
+ * An attachment containing a body of type message/rfc822 whose contents are contained in a file.
  */
 public class TempFileMessageBody extends TempFileBody implements CompositeBody {
 
@@ -25,7 +24,12 @@ public class TempFileMessageBody extends TempFileBody implements CompositeBody {
 
     @Override
     public void setUsing7bitTransport() throws MessagingException {
-        // see LocalAttachmentMessageBody.setUsing7bitTransport()
+        /*
+         * There's nothing to recurse into here, so there's nothing to do.
+         * The enclosing BodyPart already called setEncoding(MimeUtil.ENC_7BIT).  Once
+         * writeTo() is called, the file with the rfc822 body will be opened
+         * for reading and will then be recursed.
+         */
     }
 
     @Override

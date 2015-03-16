@@ -874,7 +874,6 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Desencriptação realizada com sucesso e assinatura válida mas não certificada</string>
   <string name="openpgp_successful_decryption_unknown_signature">Desencriptação realizada mas falta chave pública</string>
   <string name="openpgp_get_key">Procurar chave faltando</string>
-  <string name="openpgp_error">Error do OpenPGP</string>
   <string name="openpgp_user_id">User Id</string>
   <!--=== Client certificates specific ==================================================================-->
 </resources>

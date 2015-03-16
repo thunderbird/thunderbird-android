@@ -11,28 +11,11 @@ import java.util.*;
 public class MimeHeader {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    /**
-     * Application specific header that contains Store specific information about an attachment.
-     * In IMAP this contains the IMAP BODYSTRUCTURE part id so that the ImapStore can later
-     * retrieve the attachment at will from the server.
-     * The info is recorded from this header on LocalStore.appendMessages and is put back
-     * into the MIME data by LocalStore.fetch.
-     */
-    public static final String HEADER_ANDROID_ATTACHMENT_STORE_DATA = "X-Android-Attachment-StoreData";
-
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_ID = "Content-ID";
 
-    /**
-     * Fields that should be omitted when writing the header using writeTo()
-     */
-    private static final String[] writeOmitFields = {
-//        HEADER_ANDROID_ATTACHMENT_DOWNLOADED,
-//        HEADER_ANDROID_ATTACHMENT_ID,
-        HEADER_ANDROID_ATTACHMENT_STORE_DATA
-    };
 
     private List<Field> mFields = new ArrayList<Field>();
     private String mCharset = null;
@@ -101,14 +84,12 @@ public class MimeHeader {
     public void writeTo(OutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         for (Field field : mFields) {
-            if (!Arrays.asList(writeOmitFields).contains(field.name)) {
-                if (field.hasRawData()) {
-                    writer.write(field.getRaw());
-                } else {
-                    writeNameValueField(writer, field);
-                }
-                writer.write("\r\n");
+            if (field.hasRawData()) {
+                writer.write(field.getRaw());
+            } else {
+                writeNameValueField(writer, field);
             }
+            writer.write("\r\n");
         }
         writer.flush();
     }

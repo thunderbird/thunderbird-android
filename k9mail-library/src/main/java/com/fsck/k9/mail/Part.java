@@ -2,6 +2,7 @@
 package com.fsck.k9.mail;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public interface Part {
@@ -15,21 +16,23 @@ public interface Part {
 
     Body getBody();
 
-    String getContentType() throws MessagingException;
+    String getContentType();
 
     String getDisposition() throws MessagingException;
 
-    String getContentId() throws MessagingException;
+    String getContentId();
 
     String[] getHeader(String name) throws MessagingException;
 
     boolean isMimeType(String mimeType) throws MessagingException;
 
-    String getMimeType() throws MessagingException;
+    String getMimeType();
 
-    void setBody(Body body) throws MessagingException;
+    void setBody(Body body);
 
     void writeTo(OutputStream out) throws IOException, MessagingException;
+
+    void writeHeaderTo(OutputStream out) throws IOException, MessagingException;
 
     /**
      * Called just prior to transmission, once the type of transport is known to
@@ -44,4 +47,8 @@ public interface Part {
      */
     //TODO perhaps it would be clearer to use a flag "force7bit" in writeTo
     void setUsing7bitTransport() throws MessagingException;
+
+    String getServerExtra();
+
+    void setServerExtra(String serverExtra);
 }

@@ -14,20 +14,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 21
     buildToolsVersion '21.1.2'
-
-    // NOTE: We are using the old folder structure to also support Eclipse
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }
-    }
-
+    
     // Do not abort build if lint finds errors
     lintOptions {
         abortOnError false

@@ -461,7 +461,8 @@ public class Account implements BaseAccount, StoreConfig {
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
 
-        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", NO_OPENPGP_PROVIDER);
+        String cryptoApp = prefs.getString(mUuid + ".cryptoApp", NO_OPENPGP_PROVIDER);
+        setCryptoApp(cryptoApp);
         mAllowRemoteSearch = prefs.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = prefs.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = prefs.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -1597,7 +1598,11 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public void setCryptoApp(String cryptoApp) {
-        mCryptoApp = cryptoApp;
+        if (cryptoApp == null || cryptoApp.equals("apg")) {
+            mCryptoApp = NO_OPENPGP_PROVIDER;
+        } else {
+            mCryptoApp = cryptoApp;
+        }
     }
 
     public boolean allowRemoteSearch() {
@@ -1641,11 +1646,14 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized String getOpenPgpProvider() {
-        // return null if set to "APG" or "None"
-        if (getCryptoApp().equals("apg") || getCryptoApp().equals("")) {
+        if (!isOpenPgpProviderConfigured()) {
             return null;
         }
         return getCryptoApp();
+    }
+
+    public synchronized boolean isOpenPgpProviderConfigured() {
+        return !NO_OPENPGP_PROVIDER.equals(getCryptoApp());
     }
 
     public synchronized NotificationSetting getNotificationSetting() {
