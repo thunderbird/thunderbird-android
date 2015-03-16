@@ -37,6 +37,7 @@ import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
@@ -2933,7 +2934,7 @@ public class ImapStore extends RemoteStore {
         }
 
         @Override
-        public boolean useCompression(final int type) {
+        public boolean useCompression(final NetworkType type) {
             return mStoreConfig.useCompression(type);
         }
 

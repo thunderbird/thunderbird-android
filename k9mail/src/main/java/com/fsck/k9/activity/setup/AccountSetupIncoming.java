@@ -17,7 +17,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.Account.NetworkType;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
