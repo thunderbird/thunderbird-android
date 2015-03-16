@@ -13,7 +13,7 @@ import com.fsck.k9.mail.ServerSettings.Type;
  */
 public class AccountCreator {
 
-    public static DeletePolicy calculateDefaultDeletePolicy(Type type) {
+    public static DeletePolicy getDefaultDeletePolicy(Type type) {
         switch (type) {
             case IMAP: {
                 return DeletePolicy.ON_DELETE;

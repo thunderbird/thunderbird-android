@@ -237,7 +237,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
-            mAccount.setDeletePolicy(AccountCreator.calculateDefaultDeletePolicy(settings.type));
+            mAccount.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(settings.type));
 
             // Note that mConnectionSecurityChoices is configured above based on server type
             ConnectionSecurityAdapter securityTypesAdapter =
