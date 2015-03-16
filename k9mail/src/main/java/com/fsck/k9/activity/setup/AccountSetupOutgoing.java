@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
+import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
@@ -37,9 +38,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
-
-    private static final String SMTP_PORT = "587";
-    private static final String SMTP_SSL_PORT = "465";
 
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -427,25 +425,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(getDefaultSmtpPort(securityType));
+        mPortView.setText(String.valueOf(AccountCreator.getDefaultPort(securityType, Type.SMTP)));
         mPortView.addTextChangedListener(validationTextWatcher);
-    }
-
-    private String getDefaultSmtpPort(ConnectionSecurity securityType) {
-        String port;
-        switch (securityType) {
-        case NONE:
-        case STARTTLS_REQUIRED:
-            port = SMTP_PORT;
-            break;
-        case SSL_TLS_REQUIRED:
-            port = SMTP_SSL_PORT;
-            break;
-        default:
-            port = "";
-            Log.e(K9.LOG_TAG, "Unhandled ConnectionSecurity type encountered");
-        }
-        return port;
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {

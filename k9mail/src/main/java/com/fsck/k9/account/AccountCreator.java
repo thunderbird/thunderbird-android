@@ -1,10 +1,13 @@
 package com.fsck.k9.account;
 
+
 import com.fsck.k9.Account.DeletePolicy;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings.Type;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * Deals with logic surrounding account creation.
@@ -25,4 +28,17 @@ public class AccountCreator {
         return defaults.get(type);
     }
 
+    public static int getDefaultPort(ConnectionSecurity securityType, Type storeType) {
+        switch (securityType) {
+            case NONE:
+            case STARTTLS_REQUIRED: {
+                return storeType.defaultPort;
+            }
+            case SSL_TLS_REQUIRED: {
+                return storeType.defaultTlsPort;
+            }
+        }
+
+        throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
+    }
 }

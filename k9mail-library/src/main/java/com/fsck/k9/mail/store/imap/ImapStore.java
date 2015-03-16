@@ -54,6 +54,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.internet.MimeBodyPart;
@@ -145,13 +146,13 @@ public class ImapStore extends RemoteStore {
          */
         if (scheme.equals("imap")) {
             connectionSecurity = ConnectionSecurity.NONE;
-            port = 143;
+            port = Type.IMAP.defaultPort;
         } else if (scheme.startsWith("imap+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = 143;
+            port = Type.IMAP.defaultPort;
         } else if (scheme.startsWith("imap+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 993;
+            port = Type.IMAP.defaultTlsPort;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
         }

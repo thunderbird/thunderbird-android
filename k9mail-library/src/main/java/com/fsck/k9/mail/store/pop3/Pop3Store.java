@@ -10,6 +10,7 @@ import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
@@ -100,13 +101,13 @@ public class Pop3Store extends RemoteStore {
          */
         if (scheme.equals("pop3")) {
             connectionSecurity = ConnectionSecurity.NONE;
-            port = 110;
+            port = Type.POP3.defaultPort;
         } else if (scheme.startsWith("pop3+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = 110;
+            port = Type.POP3.defaultPort;
         } else if (scheme.startsWith("pop3+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 995;
+            port = Type.POP3.defaultTlsPort;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
         }
