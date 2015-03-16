@@ -11,6 +11,7 @@ import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -471,7 +472,8 @@ class ImapConnection {
             if (K9MailLib.isDebug()) {
                 Log.d(LOG_TAG, "On network type " + type);
             }
-            useCompression = mSettings.useCompression(type);
+            useCompression = mSettings.useCompression(
+                    NetworkType.fromConnectivityManagerType(type));
         }
         if (K9MailLib.isDebug()) {
             Log.d(LOG_TAG, "useCompression " + useCompression);

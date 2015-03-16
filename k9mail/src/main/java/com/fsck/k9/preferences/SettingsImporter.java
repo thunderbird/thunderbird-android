@@ -28,7 +28,6 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 
 public class SettingsImporter {
@@ -384,7 +383,7 @@ public class SettingsImporter {
         boolean createAccountDisabled = AuthType.EXTERNAL != incoming.authenticationType &&
                 (incoming.password == null || incoming.password.isEmpty());
 
-        if (account.outgoing == null && !WebDavStore.STORE_TYPE.equals(account.incoming.type)) {
+        if (account.outgoing == null && !ServerSettings.Type.WebDAV.name().equals(account.incoming.type)) {
             // All account types except WebDAV need to provide outgoing server settings
             throw new InvalidSettingValueException();
         }
@@ -403,7 +402,7 @@ public class SettingsImporter {
              * password required if the AuthType is EXTERNAL.
              */
             boolean outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
-                    !WebDavStore.STORE_TYPE.equals(outgoing.type) &&
+                    !(ServerSettings.Type.WebDAV == outgoing.type) &&
                     outgoing.username != null &&
                     !outgoing.username.isEmpty() &&
                     (outgoing.password == null || outgoing.password.isEmpty());
@@ -1100,7 +1099,7 @@ public class SettingsImporter {
         private final ImportedServer mImportedServer;
 
         public ImportedServerSettings(ImportedServer server) {
-            super(server.type, server.host, convertPort(server.port),
+            super(ServerSettings.Type.valueOf(server.type), server.host, convertPort(server.port),
                     convertConnectionSecurity(server.connectionSecurity),
                     server.authenticationType, server.username, server.password,
                     server.clientCertificateAlias);

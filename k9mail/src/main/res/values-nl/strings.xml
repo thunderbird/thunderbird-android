@@ -158,6 +158,10 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="clearing_account">Account \"<xliff:g id="account">%s</xliff:g>\" wissen</string>
   <string name="recreating_account">Account \"<xliff:g id="account">%s</xliff:g>\" opnieuw instellen</string>
   <string name="notification_new_title">Nieuwe mail</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nieuwe berichten</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nieuwe berichten</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ongelezen (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> meer op <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Antwoorden</string>
@@ -276,6 +280,12 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="global_settings_notification_quick_delete_when_single_msg">Notificatie voor los bericht</string>
   <string name="global_settings_notification_quick_delete_always">Altijd</string>
   <string name="global_settings_notification_quick_delete_description">Laat een knop in de notificatie zien om snel te verwijderen</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Start scherm notificatie</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Geen start scherm notificatie</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">App naam</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Ongelezen berichten teller</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Berichten teller (ook verzonden)</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Het zelfde. Ook na schermontgrendeling</string>
   <string name="quiet_time">Stilteperiode</string>
   <string name="quiet_time_description">Schakel beltoon, vibratie en leds uit gedurende de nacht</string>
   <string name="quiet_time_starts">Stilteperiode start</string>
@@ -892,11 +902,16 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="openpgp_signature_unknown">Onbekende ondertekenaar</string>
   <string name="openpgp_signature_invalid">Ongeldige pgp handtekening</string>
   <string name="openpgp_signature_unknown_text">Geen publieke sleutel voor deze handtekening</string>
+  <string name="openpgp_successful_decryption_valid_signature_certified">Succesvolle decodering met geldige handtekening (gecertificeerd)</string>
+  <string name="openpgp_successful_decryption_valid_signature_uncertified">Succesvolle decodering met geldige handtekening (ongecertificeerd)</string>
+  <string name="openpgp_successful_decryption_unknown_signature">Succesvolle decodering ondanks dat de publieke sleutels mist</string>
   <string name="openpgp_get_key">Zoek de missende sleutel</string>
-  <string name="openpgp_error">OpenPGP Fout:</string>
   <string name="openpgp_user_id">Gebruikers-id</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Gebruik cliënt certificaat</string>
   <string name="client_certificate_spinner_empty">Geen cliënt certificaat</string>
+  <string name="client_certificate_spinner_delete">Verwijder cliënt certificaat selectie</string>
+  <string name="client_certificate_retrieval_failure">Alias client certificaat niet ontvangen \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Geavanceerde opties</string>
+  <string name="client_certificate_expired">Cliënt certificaat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" is verlopen of niet geldig (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

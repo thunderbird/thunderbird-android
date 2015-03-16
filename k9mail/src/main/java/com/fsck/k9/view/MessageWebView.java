@@ -16,7 +16,6 @@ import com.fsck.k9.helper.HtmlSanitizer;
 
 public class MessageWebView extends RigidWebView {
 
-
     public MessageWebView(Context context) {
         super(context);
     }

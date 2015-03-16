@@ -153,8 +153,6 @@ public class EmailProvider extends ContentProvider {
     private interface InternalMessageColumns extends MessageColumns {
         public static final String DELETED = "deleted";
         public static final String EMPTY = "empty";
-        public static final String TEXT_CONTENT = "text_content";
-        public static final String HTML_CONTENT = "html_content";
         public static final String MIME_TYPE = "mime_type";
     }
 

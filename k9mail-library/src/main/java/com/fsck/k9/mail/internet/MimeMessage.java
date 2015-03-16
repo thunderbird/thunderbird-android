@@ -57,6 +57,7 @@ public class MimeMessage extends Message {
 
     private Body mBody;
     protected int mSize;
+    private String serverExtra;
 
     public MimeMessage() {
     }
@@ -162,7 +163,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public String getContentType() throws MessagingException {
+    public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
         return (contentType == null) ? "text/plain" : contentType;
     }
@@ -171,12 +172,14 @@ public class MimeMessage extends Message {
     public String getDisposition() throws MessagingException {
         return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
+
     @Override
-    public String getContentId() throws MessagingException {
+    public String getContentId() {
         return null;
     }
+
     @Override
-    public String getMimeType() throws MessagingException {
+    public String getMimeType() {
         return MimeUtility.getHeaderParameter(getContentType(), null);
     }
 
@@ -308,13 +311,10 @@ public class MimeMessage extends Message {
         if (mMessageId == null) {
             mMessageId = getFirstHeader("Message-ID");
         }
-        if (mMessageId == null) { //  even after checking the header
-            setMessageId(generateMessageId());
-        }
         return mMessageId;
     }
 
-    private String generateMessageId() {
+    public void generateMessageId() throws MessagingException {
         String hostname = null;
 
         if (mFrom != null && mFrom.length >= 1) {
@@ -330,7 +330,9 @@ public class MimeMessage extends Message {
         }
 
         /* We use upper case here to match Apple Mail Message-ID format (for privacy) */
-        return "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
+        String messageId = "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
+
+        setMessageId(messageId);
     }
 
     public void setMessageId(String messageId) throws MessagingException {
@@ -394,7 +396,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setBody(Body body) throws MessagingException {
+    public void setBody(Body body) {
         this.mBody = body;
     }
 
@@ -445,6 +447,11 @@ public class MimeMessage extends Message {
     }
 
     @Override
+    public void writeHeaderTo(OutputStream out) throws IOException, MessagingException {
+        mHeader.writeTo(out);
+    }
+
+    @Override
     public InputStream getInputStream() throws MessagingException {
         return null;
     }
@@ -487,13 +494,11 @@ public class MimeMessage extends Message {
                 stack.addFirst(MimeMessage.this);
             } else {
                 expect(Part.class);
-                try {
-                    MimeMessage m = new MimeMessage();
-                    ((Part)stack.peek()).setBody(m);
-                    stack.addFirst(m);
-                } catch (MessagingException me) {
-                    throw new Error(me);
-                }
+                Part part = (Part) stack.peek();
+
+                MimeMessage m = new MimeMessage();
+                part.setBody(m);
+                stack.addFirst(m);
             }
         }
 
@@ -519,7 +524,10 @@ public class MimeMessage extends Message {
 
             Part e = (Part)stack.peek();
             try {
-                MimeMultipart multiPart = new MimeMultipart(e.getContentType());
+                String contentType = e.getContentType();
+                String mimeType = MimeUtility.getHeaderParameter(contentType, null);
+                String boundary = MimeUtility.getHeaderParameter(contentType, "boundary");
+                MimeMultipart multiPart = new MimeMultipart(mimeType, boundary);
                 e.setBody(multiPart);
                 stack.addFirst(multiPart);
             } catch (MessagingException me) {
@@ -540,7 +548,21 @@ public class MimeMessage extends Message {
 
         @Override
         public void endMultipart() {
-            stack.removeFirst();
+            expect(Multipart.class);
+            Multipart multipart = (Multipart) stack.removeFirst();
+
+            boolean hasNoBodyParts = multipart.getCount() == 0;
+            boolean hasNoEpilogue = multipart.getEpilogue() == null;
+            if (hasNoBodyParts && hasNoEpilogue) {
+                /*
+                 * The parser is calling startMultipart(), preamble(), and endMultipart() when all we have is
+                 * headers of a "multipart/*" part. But there's really no point in keeping a Multipart body if all
+                 * of the content is missing.
+                 */
+                expect(Part.class);
+                Part part = (Part) stack.peek();
+                part.setBody(null);
+            }
         }
 
         @Override
@@ -686,4 +708,16 @@ public class MimeMessage extends Message {
             setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
         }
     }
+
+    @Override
+    public String getServerExtra() {
+        return serverExtra;
+    }
+
+    @Override
+    public void setServerExtra(String serverExtra) {
+        this.serverExtra = serverExtra;
+    }
+
+
 }

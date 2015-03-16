@@ -275,6 +275,10 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="global_settings_notification_quick_delete_when_single_msg">Egyszerű értesítés új levélnél</string>
   <string name="global_settings_notification_quick_delete_always">Mindig</string>
   <string name="global_settings_notification_quick_delete_description">Gomb mutatása az értesítések között a gyors üzenettörlés engedélyezéséhez</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Képernyőzár értesítések</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Nincsenek képernyőzár értesítések</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Alkalmazás neve</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Olvasatlan üzenetek száma</string>
   <string name="quiet_time">Csendes mód</string>
   <string name="quiet_time_description">Éjszakára kikapcsolja a jelzőhangokat, rezgést, villogást</string>
   <string name="quiet_time_starts">Csendes mód kezdete</string>
@@ -882,7 +886,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Titkosítás sikeresen feloldva és az aláírás érvényes, de nem tanúsított</string>
   <string name="openpgp_successful_decryption_unknown_signature">Titkosítás sikeresen feloldva, de hiányzik a nyilvános kulcs</string>
   <string name="openpgp_get_key">Hiányzó kulcs keresése</string>
-  <string name="openpgp_error">OpenPGP hiba:</string>
   <string name="openpgp_user_id">Felhasználói Id</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Ügyfél tanúsítvány használata</string>

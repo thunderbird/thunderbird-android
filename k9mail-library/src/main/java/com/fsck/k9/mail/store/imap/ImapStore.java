@@ -37,6 +37,7 @@ import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
@@ -54,6 +55,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.internet.MimeBodyPart;
@@ -77,7 +79,6 @@ import static com.fsck.k9.mail.K9MailLib.PUSH_WAKE_LOCK_TIMEOUT;
  * </pre>
  */
 public class ImapStore extends RemoteStore {
-    public static final String STORE_TYPE = "IMAP";
 
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
@@ -146,13 +147,13 @@ public class ImapStore extends RemoteStore {
          */
         if (scheme.equals("imap")) {
             connectionSecurity = ConnectionSecurity.NONE;
-            port = 143;
+            port = Type.IMAP.defaultPort;
         } else if (scheme.startsWith("imap+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = 143;
+            port = Type.IMAP.defaultPort;
         } else if (scheme.startsWith("imap+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 993;
+            port = Type.IMAP.defaultTlsPort;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
         }
@@ -284,7 +285,7 @@ public class ImapStore extends RemoteStore {
         protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
                 AuthType authenticationType, String username, String password, String clientCertificateAlias,
                 boolean autodetectNamespace, String pathPrefix) {
-            super(STORE_TYPE, host, port, connectionSecurity, authenticationType, username,
+            super(Type.IMAP, host, port, connectionSecurity, authenticationType, username,
                     password, clientCertificateAlias);
             this.autoDetectNamespace = autodetectNamespace;
             this.pathPrefix = pathPrefix;
@@ -1455,13 +1456,9 @@ public class ImapStore extends RemoteStore {
         throws MessagingException {
             checkOpen(); //only need READ access
 
-            String[] parts = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA);
-            if (parts == null) {
-                return;
-            }
+            String partId = part.getServerExtra();
 
             String fetch;
-            String partId = parts[0];
             if ("TEXT".equalsIgnoreCase(partId)) {
                 fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>",
                         mStoreConfig.getMaximumAutoDownloadMessageSize());
@@ -1714,7 +1711,7 @@ public class ImapStore extends RemoteStore {
                         break;
                     }
                 }
-                part.setBody(mp);
+                MimeMessageHelper.setBody(part, mp);
             } else {
                 /*
                  * This is a body. We need to add as much information as we can find out about
@@ -1834,7 +1831,7 @@ public class ImapStore extends RemoteStore {
                 if (part instanceof ImapMessage) {
                     ((ImapMessage) part).setSize(size);
                 }
-                part.setHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA, id);
+                part.setServerExtra(id);
             }
 
         }
@@ -2933,7 +2930,7 @@ public class ImapStore extends RemoteStore {
         }
 
         @Override
-        public boolean useCompression(final int type) {
+        public boolean useCompression(final NetworkType type) {
             return mStoreConfig.useCompression(type);
         }
 

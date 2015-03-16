@@ -27,6 +27,7 @@ import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.filter.Base64;
@@ -42,7 +43,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
@@ -94,12 +95,6 @@ public class Account implements BaseAccount, StoreConfig {
             }
             throw new IllegalArgumentException("DeletePolicy " + initialSetting + " unknown");
         }
-    }
-
-    public enum NetworkType {
-        WIFI,
-        MOBILE,
-        OTHER
     }
 
     public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
@@ -466,7 +461,8 @@ public class Account implements BaseAccount, StoreConfig {
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
 
-        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", NO_OPENPGP_PROVIDER);
+        String cryptoApp = prefs.getString(mUuid + ".cryptoApp", NO_OPENPGP_PROVIDER);
+        setCryptoApp(cryptoApp);
         mAllowRemoteSearch = prefs.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = prefs.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = prefs.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -1303,19 +1299,6 @@ public class Account implements BaseAccount, StoreConfig {
         return useCompression;
     }
 
-    public boolean useCompression(int type) {
-        NetworkType networkType = NetworkType.OTHER;
-        switch (type) {
-        case ConnectivityManager.TYPE_MOBILE:
-            networkType = NetworkType.MOBILE;
-            break;
-        case ConnectivityManager.TYPE_WIFI:
-            networkType = NetworkType.WIFI;
-            break;
-        }
-        return useCompression(networkType);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o instanceof Account) {
@@ -1615,7 +1598,11 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public void setCryptoApp(String cryptoApp) {
-        mCryptoApp = cryptoApp;
+        if (cryptoApp == null || cryptoApp.equals("apg")) {
+            mCryptoApp = NO_OPENPGP_PROVIDER;
+        } else {
+            mCryptoApp = cryptoApp;
+        }
     }
 
     public boolean allowRemoteSearch() {
@@ -1659,11 +1646,14 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized String getOpenPgpProvider() {
-        // return null if set to "APG" or "None"
-        if (getCryptoApp().equals("apg") || getCryptoApp().equals("")) {
+        if (!isOpenPgpProviderConfigured()) {
             return null;
         }
         return getCryptoApp();
+    }
+
+    public synchronized boolean isOpenPgpProviderConfigured() {
+        return !NO_OPENPGP_PROVIDER.equals(getCryptoApp());
     }
 
     public synchronized NotificationSetting getNotificationSetting() {
@@ -1732,17 +1722,17 @@ public class Account implements BaseAccount, StoreConfig {
         switch (displayMode) {
             case FIRST_CLASS: {
                 // Count messages in the INBOX and non-special first class folders
-                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                search.and(SearchField.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
                         Attribute.EQUALS);
                 break;
             }
             case FIRST_AND_SECOND_CLASS: {
                 // Count messages in the INBOX and non-special first and second class folders
-                search.and(Searchfield.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
+                search.and(SearchField.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
                         Attribute.EQUALS);
 
                 // TODO: Create a proper interface for creating arbitrary condition trees
-                SearchCondition searchCondition = new SearchCondition(Searchfield.DISPLAY_CLASS,
+                SearchCondition searchCondition = new SearchCondition(SearchField.DISPLAY_CLASS,
                         Attribute.EQUALS, FolderClass.SECOND_CLASS.name());
                 ConditionsTreeNode root = search.getConditions();
                 if (root.mRight != null) {
@@ -1754,7 +1744,7 @@ public class Account implements BaseAccount, StoreConfig {
             }
             case NOT_SECOND_CLASS: {
                 // Count messages in the INBOX and non-special non-second-class folders
-                search.and(Searchfield.DISPLAY_CLASS, FolderClass.SECOND_CLASS.name(),
+                search.and(SearchField.DISPLAY_CLASS, FolderClass.SECOND_CLASS.name(),
                         Attribute.NOT_EQUALS);
                 break;
             }
@@ -1792,7 +1782,7 @@ public class Account implements BaseAccount, StoreConfig {
         excludeSpecialFolder(search, getOutboxFolderName());
         excludeSpecialFolder(search, getSentFolderName());
         excludeSpecialFolder(search, getErrorFolderName());
-        search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderName()));
     }
 
     /**
@@ -1816,12 +1806,12 @@ public class Account implements BaseAccount, StoreConfig {
         excludeSpecialFolder(search, getTrashFolderName());
         excludeSpecialFolder(search, getSpamFolderName());
         excludeSpecialFolder(search, getOutboxFolderName());
-        search.or(new SearchCondition(Searchfield.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderName()));
     }
 
     private void excludeSpecialFolder(LocalSearch search, String folderName) {
         if (!K9.FOLDER_NONE.equals(folderName)) {
-            search.and(Searchfield.FOLDER, folderName, Attribute.NOT_EQUALS);
+            search.and(SearchField.FOLDER, folderName, Attribute.NOT_EQUALS);
         }
     }
 

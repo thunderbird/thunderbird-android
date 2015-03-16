@@ -5,7 +5,6 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -73,7 +72,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public void setBody(Body body) throws MessagingException {
+    public void setBody(Body body) {
         this.mBody = body;
     }
 
@@ -86,7 +85,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public String getContentType() throws MessagingException {
+    public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
         return (contentType == null) ? "text/plain" : contentType;
     }
@@ -97,7 +96,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public String getContentId() throws MessagingException {
+    public String getContentId() {
         String contentId = getFirstHeader(MimeHeader.HEADER_CONTENT_ID);
         if (contentId == null) {
             return null;
@@ -112,7 +111,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public String getMimeType() throws MessagingException {
+    public String getMimeType() {
         return MimeUtility.getHeaderParameter(getContentType(), null);
     }
 
@@ -133,6 +132,11 @@ public class MimeBodyPart extends BodyPart {
         if (mBody != null) {
             mBody.writeTo(out);
         }
+    }
+
+    @Override
+    public void writeHeaderTo(OutputStream out) throws IOException, MessagingException {
+        mHeader.writeTo(out);
     }
 
     @Override

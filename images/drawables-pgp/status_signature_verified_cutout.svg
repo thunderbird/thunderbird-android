@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.0.4 (8053) - http://www.bohemiancoding.com/sketch -->
+    <title>signature-verified-cutout</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="signature-verified-cutout" sketch:type="MSArtboardGroup" transform="translate(0.110156, 0.000000)" fill="#000000">
+            <path d="M50,97 C75.9573832,97 97,75.9573832 97,50 C97,24.0426168 75.9573832,3 50,3 C24.0426168,3 3,24.0426168 3,50 C3,75.9573832 24.0426168,97 50,97 Z M46.2732912,77.5085 L20,57.830916 L27.9184401,47.6349702 L43.3096859,59.5152262 L70.31112,23 L80.867825,30.7782191 L46.2732912,77.5085 Z" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

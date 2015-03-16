@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -121,11 +122,11 @@ public abstract class RemoteStore extends Store {
      * @see com.fsck.k9.mail.store.webdav.WebDavStore#createUri(com.fsck.k9.mail.ServerSettings)
      */
     public static String createStoreUri(ServerSettings server) {
-        if (ImapStore.STORE_TYPE.equals(server.type)) {
+        if (Type.IMAP == server.type) {
             return ImapStore.createUri(server);
-        } else if (Pop3Store.STORE_TYPE.equals(server.type)) {
+        } else if (Type.POP3 == server.type) {
             return Pop3Store.createUri(server);
-        } else if (WebDavStore.STORE_TYPE.equals(server.type)) {
+        } else if (Type.WebDAV == server.type) {
             return WebDavStore.createUri(server);
         } else {
             throw new IllegalArgumentException("Not a valid store URI");

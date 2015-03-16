@@ -287,6 +287,7 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="global_settings_lock_screen_notification_visibility_app_name">Jméno aplikace</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Počet nepřečtených zpráv</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Počet zpráv a odesilatelů</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Stejné jako při odemčené obrazovce</string>
   <string name="quiet_time">Doba klidu</string>
   <string name="quiet_time_description">Zakázat v noci zvonění, vibrace a blikání</string>
   <string name="quiet_time_starts">Doba klidu začíná</string>
@@ -912,7 +913,6 @@ Posílejte prosím chybová hlášení, přispívejte novými funkcemi a ptejte 
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Úspěšné dešifrování a platný podpis ale bez certifikátu</string>
   <string name="openpgp_successful_decryption_unknown_signature">Úspěšné dešifrování, ale chybí veřejný klíč</string>
   <string name="openpgp_get_key">Vyhledávám chybějící klíč</string>
-  <string name="openpgp_error">Chyba OpenPGP:</string>
   <string name="openpgp_user_id">Id uživatele</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Použít klientský certifikát</string>

@@ -16,10 +16,36 @@ import java.util.Map;
  * @see com.fsck.k9.mail.store.StoreConfig#getTransportUri()
  */
 public class ServerSettings {
+
+    public enum Type {
+
+        IMAP(143, 993),
+        SMTP(587, 465),
+        WebDAV(80, 443),
+        POP3(110, 995);
+
+        public final int defaultPort;
+
+        /**
+         * Note: port for connections using TLS (=SSL) immediately
+         * from the initial TCP connection.
+         *
+         * STARTTLS uses the defaultPort, then upgrades.
+         *
+         * See https://www.fastmail.com/help/technical/ssltlsstarttls.html.
+         */
+        public final int defaultTlsPort;
+
+        private Type(int defaultPort, int defaultTlsPort) {
+            this.defaultPort = defaultPort;
+            this.defaultTlsPort = defaultTlsPort;
+        }
+    }
+
     /**
-     * Name of the store or transport type (e.g. "IMAP").
+     * Name of the store or transport type (e.g. IMAP).
      */
-    public final String type;
+    public final Type type;
 
     /**
      * The host name of the server.
@@ -99,7 +125,7 @@ public class ServerSettings {
      * @param clientCertificateAlias
      *         see {@link ServerSettings#clientCertificateAlias}
      */
-    public ServerSettings(String type, String host, int port,
+    public ServerSettings(Type type, String host, int port,
             ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
             String password, String clientCertificateAlias) {
         this.type = type;
@@ -135,7 +161,7 @@ public class ServerSettings {
      * @param extra
      *         see {@link ServerSettings#extra}
      */
-    public ServerSettings(String type, String host, int port,
+    public ServerSettings(Type type, String host, int port,
             ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
             String password, String clientCertificateAlias, Map<String, String> extra) {
         this.type = type;
@@ -158,7 +184,7 @@ public class ServerSettings {
      * @param type
      *         see {@link ServerSettings#type}
      */
-    public ServerSettings(String type) {
+    public ServerSettings(Type type) {
         this.type = type;
         host = null;
         port = -1;

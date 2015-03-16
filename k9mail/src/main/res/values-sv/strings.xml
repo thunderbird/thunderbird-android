@@ -45,6 +45,7 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
 </p>
     ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \nSkickat från min Android-enhet med K-9 E-post. Ursäkta min fåordighet.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas från K-9 E-post.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alla lokala data för \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas. Kontoinställningar behålls.</string>
@@ -158,6 +159,10 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="clearing_account">Rensar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Återskapar konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny e-post</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nytt meddelande</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> olästa (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> ytterligare på <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Svara</string>
@@ -276,6 +281,12 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="global_settings_notification_quick_delete_when_single_msg">För borttagning av enstaka meddelande</string>
   <string name="global_settings_notification_quick_delete_always">Alltid</string>
   <string name="global_settings_notification_quick_delete_description">Visa en knapp i aviseringen som möjliggör snabb borttagning av meddelandet</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Aviseringar på låsskärm</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Inga aviseringar på låsskärm</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Applikationsnamn</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Antal olästa meddelanden</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Meddelandeantal och avsändare</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Samma som när skärmen är olåst</string>
   <string name="quiet_time">Tyst tid</string>
   <string name="quiet_time_description">Inaktivera ringsignaler, vibration och blinkande på natten</string>
   <string name="quiet_time_starts">Tyst tid börjar</string>
@@ -283,6 +294,7 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_setup_basics_title">Konfigurera ett nytt konto</string>
   <string name="account_setup_basics_email_hint">e-postadress</string>
   <string name="account_setup_basics_password_hint">Lösenord</string>
+  <string name="account_setup_basics_show_password">Visa lösenord</string>
   <string name="account_setup_basics_manual_setup_action">Konfigurera manuellt</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Hämtar kontoinformation\u2026</string>
@@ -302,9 +314,11 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_setup_auth_type_normal_password">Normalt lösenord</string>
   <string name="account_setup_auth_type_insecure_password">Lösenord som skickas oskyddat</string>
   <string name="account_setup_auth_type_encrypted_password">Krypterat lösenord</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Klientcertifikat</string>
   <string name="account_setup_incoming_title">Inställningar för inkommande server</string>
   <string name="account_setup_incoming_username_label">Användarnanm</string>
   <string name="account_setup_incoming_password_label">Lösenord</string>
+  <string name="account_setup_incoming_client_certificate_label">Klientcertifikat</string>
   <string name="account_setup_incoming_pop_server_label">POP3-server</string>
   <string name="account_setup_incoming_imap_server_label">IMAP-server</string>
   <string name="account_setup_incoming_webdav_server_label">Exchange-server</string>
@@ -314,7 +328,8 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_setup_incoming_security_none_label">Ingen</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
-  <string name="account_setup_incoming_delete_policy_label">När jag tar bort meddelanden</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" är inte giltigt tillsammans med \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
+  <string name="account_setup_incoming_delete_policy_label">När jag raderar ett meddelande</string>
   <string name="account_setup_incoming_delete_policy_never_label">Radera inte på servern</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Radera på servern</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Markera som läst på servern</string>
@@ -353,6 +368,7 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_setup_outgoing_username_label">Användarnamn</string>
   <string name="account_setup_outgoing_password_label">Lösenord</string>
   <string name="account_setup_outgoing_authentication_label">Autentiseringstyp</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" är inte giltigt tillsammans med \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Ogiltig konfiguration: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Kontoinställningar</string>
   <string name="compact_action">Komprimera konto</string>
@@ -400,6 +416,9 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_setup_options_mail_display_count_all">alla brev</string>
   <string name="move_copy_cannot_copy_unsynced_message">Kan inte kopiera eller flytta ett brev som inte är synkroniserat med servern</string>
   <string name="account_setup_failed_dlg_title">Kunde inte fullborda konfigurationen</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Felaktigt användarnamn eller lösenord.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Servern skickade ett ogiltigt SSL-certifikat. Det kan bero på en felaktigt konfigurerad server. Det kan också bero på att någon försöker attackera dig eller din epostserver. Om du inte vet vad som pågår, välj Avvisa och kontakta personerna som sköter epostservern.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Kan inte ansluta till servern.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Redigera detaljer</string>
   <string name="account_setup_failed_dlg_continue_action">Fortsätt</string>
   <string name="account_settings_push_advanced_title">Avancerat</string>
@@ -407,6 +426,12 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_settings_default_label">Standardkonto</string>
   <string name="account_settings_default_summary">Skicka e-post från detta konto som standard</string>
   <string name="account_settings_notify_label">Avisering för ny e-post</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Aviseringskataloger</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Alla</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Bara första klassens mappar</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Första och andra klassens mappar</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Allt utom andra klassens mappar</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Inga</string>
   <string name="account_settings_notify_sync_label">Avisering vid synkronisering</string>
   <string name="account_settings_email_label">Din e-postadress</string>
   <string name="account_settings_notify_summary">Visa avisering i statusraden vid ny e-post</string>
@@ -445,6 +470,7 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_settings_quote_prefix_label">Citatprefix</string>
   <string name="account_settings_crypto">Kryptering</string>
   <string name="account_settings_crypto_app">OpenPGP-leverantör</string>
+  <string name="account_settings_no_openpgp_provider_installed">Ingen OpenPGP-leverantör installerad</string>
   <string name="account_settings_mail_check_frequency_label">Frekvens för att kontrollera mappar</string>
   <string name="account_settings_storage_title">Lagring</string>
   <string name="account_settings_color_label">Kontofärg</string>
@@ -522,6 +548,11 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="folder_settings_folder_push_mode_first_class">1:a klassen</string>
   <string name="folder_settings_folder_push_mode_second_class">2:a klassen</string>
   <string name="folder_settings_folder_push_mode_inherited">Samma som synkroniseringsklass</string>
+  <string name="folder_settings_folder_notify_mode_label">Aviseringsklass för mapp</string>
+  <string name="folder_settings_folder_notify_mode_normal">Inga</string>
+  <string name="folder_settings_folder_notify_mode_first_class">Första klass</string>
+  <string name="folder_settings_folder_notify_mode_second_class">Andra klass</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Samma som push-klass</string>
   <string name="account_settings_incoming_label">Inkommande server</string>
   <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
   <string name="account_settings_outgoing_label">Utgående server</string>
@@ -603,6 +634,8 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt certifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Neka nyckel</string>
+  <string name="message_list_help_key">Del (eller D) - Ta bort\nR - Svara\nA - Svara alla\nC - Skriv nytt\nF - Vidarebefordra\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Markera som (o)läst\nG - Stjärnmärk\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Tillbaka till mappar\nS - Markera/avmarkera\nJ eller P - Föregående meddelande\nK eller N - Nästa meddelande</string>
+  <string name="folder_list_help_key">1 - Visa endast första klassens mappar\n2 - Visa första och andra klassens mappar\n3 - Visa alla utom andra klassens mappar\n4 - Visa alla mappar\nQ - Återvänd till konton\nS - Redigera kontoinställningar</string>
   <string name="folder_list_filter_hint">mappnamnet innehåller</string>
   <string name="folder_list_display_mode_label">Visa mappar…</string>
   <string name="folder_list_display_mode_all">Alla mappar</string>
@@ -861,6 +894,7 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="fetching_attachment_dialog_title_send">Skickar meddelande</string>
   <string name="fetching_attachment_dialog_title_save">Sparar utkast</string>
   <string name="fetching_attachment_dialog_message">Hämtar bilaga…</string>
+  <string name="auth_external_error">Misslyckades med att autentisera. Servern annonserar inte SASL EXTERNAL-förmågan. Det kan bero på ett problem med klientcertifikatet (utgånget, okänd certifikatutfärdare) eller något annat konfigurationsproblem.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">Dekrypterar/verifierar…</string>
   <string name="openpgp_successful_decryption">Slutförd dekryptering</string>
@@ -868,12 +902,17 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="openpgp_signature_valid_uncertified">Giltig signatur men ej certifierad</string>
   <string name="openpgp_signature_unknown">Signerad av okänd</string>
   <string name="openpgp_signature_invalid">Ogiltig signatur</string>
-  <string name="openpgp_signature_unknown_text">Offentlig nyckel saknas för denna signatur</string>
+  <string name="openpgp_signature_unknown_text">Publik nyckel saknas för denna signatur</string>
   <string name="openpgp_successful_decryption_valid_signature_certified">Lyckad dekryptering och giltig signatur (certifierad)</string>
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Lyckad dekryptering och giltig signatur men ocertifierad</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Lyckad dekryptering men offentlig nyckel saknas</string>
+  <string name="openpgp_successful_decryption_unknown_signature">Lyckad dekryptering men publik nyckel saknas</string>
   <string name="openpgp_get_key">Sök nyckel som saknas</string>
-  <string name="openpgp_error">OpenPGP Error:</string>
   <string name="openpgp_user_id">Användar-ID</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Använd klientcertifikat</string>
+  <string name="client_certificate_spinner_empty">Inget klientcertifikat</string>
+  <string name="client_certificate_spinner_delete">Ta bort klientcertifikat val</string>
+  <string name="client_certificate_retrieval_failure">Kunde inte hitta klientcertifikat för \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_advanced_options">Avancerade inställningar</string>
+  <string name="client_certificate_expired">Klientcertifikatet \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" har gått ut eller är inte giltigt ännu (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
 </resources>

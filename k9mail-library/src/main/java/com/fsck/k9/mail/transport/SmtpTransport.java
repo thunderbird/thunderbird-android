@@ -32,8 +32,6 @@ import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapa
 public class SmtpTransport extends Transport {
     private TrustedSocketFactory mTrustedSocketFactory;
 
-    public static final String TRANSPORT_TYPE = "SMTP";
-
     /**
      * Decodes a SmtpTransport URI.
      *
@@ -77,13 +75,13 @@ public class SmtpTransport extends Transport {
          */
         if (scheme.equals("smtp")) {
             connectionSecurity = ConnectionSecurity.NONE;
-            port = 587;
+            port = ServerSettings.Type.SMTP.defaultPort;
         } else if (scheme.startsWith("smtp+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = 587;
+            port = ServerSettings.Type.SMTP.defaultPort;
         } else if (scheme.startsWith("smtp+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = 465;
+            port = ServerSettings.Type.SMTP.defaultTlsPort;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
         }
@@ -115,7 +113,7 @@ public class SmtpTransport extends Transport {
             }
         }
 
-        return new ServerSettings(TRANSPORT_TYPE, host, port, connectionSecurity,
+        return new ServerSettings(ServerSettings.Type.SMTP, host, port, connectionSecurity,
                 authType, username, password, clientCertificateAlias);
     }
 

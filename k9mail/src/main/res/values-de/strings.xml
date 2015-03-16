@@ -906,7 +906,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Erfolgreiche Entschlüsselung und gültige, aber nicht beglaubigte Signatur</string>
   <string name="openpgp_successful_decryption_unknown_signature">Erfolgreiche Entschlüsselung, aber fehlender öffentlicher Schlüssel</string>
   <string name="openpgp_get_key">Schlage fehlenden Schlüssel nach</string>
-  <string name="openpgp_error">OpenPGP Fehler:</string>
   <string name="openpgp_user_id">Benutzer-ID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Client-Zertifikat verwenden</string>
