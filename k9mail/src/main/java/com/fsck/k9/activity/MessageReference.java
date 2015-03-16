@@ -20,12 +20,29 @@ public class MessageReference implements Parcelable {
     public String accountUuid;
     public String folderName;
     public String uid;
-    public Flag flag = null;
+    public Flag flag;
 
     /**
+     * @deprecated MessageReference should be immutable now, and this way, it won't be possible to modify it anymore
+     *
      * Initialize an empty MessageReference.
      */
+    @Deprecated
     public MessageReference() {
+        this.accountUuid = null;
+        this.folderName = null;
+        this.uid = null;
+        this.flag = null;
+    }
+
+    /**
+     * Initialize a new MessageReference.
+     */
+    public MessageReference(String accountUuid, String folderName, String uid, Flag flag) {
+        this.accountUuid = accountUuid;
+        this.folderName = folderName;
+        this.uid = uid;
+        this.flag = flag;
     }
 
     // Version identifier for use when serializing. This will allow us to introduce future versions
@@ -34,7 +51,7 @@ public class MessageReference implements Parcelable {
     private static final String IDENTITY_SEPARATOR = ":";
 
     /**
-     * Initialize a MessageReference from a seraialized identity.
+     * Initialize a MessageReference from a serialized identity.
      * @param identity Serialized identity.
      * @throws MessagingException On missing or corrupted identity.
      */
@@ -60,6 +77,9 @@ public class MessageReference implements Parcelable {
                     } catch (IllegalArgumentException ie) {
                         throw new MessagingException("Could not thaw message flag '" + flagString + "'", ie);
                     }
+                }
+                else {
+                    flag = null;
                 }
 
                 if (K9.DEBUG)
@@ -156,12 +176,17 @@ public class MessageReference implements Parcelable {
     public static final Creator<MessageReference> CREATOR = new Creator<MessageReference>() {
         @Override
         public MessageReference createFromParcel(Parcel source) {
-            MessageReference ref = new MessageReference();
-            ref.uid = source.readString();
-            ref.accountUuid = source.readString();
-            ref.folderName = source.readString();
+            MessageReference ref;
+            String uid = source.readString();
+            String accountUuid = source.readString();
+            String folderName = source.readString();
             String flag = source.readString();
-            if (flag != null) ref.flag = Flag.valueOf(flag);
+            if (flag != null){
+                ref = new MessageReference(uid, accountUuid, folderName, Flag.valueOf(flag));
+            }
+            else {
+                ref = new MessageReference(uid, accountUuid, folderName, null);
+            }
             return ref;
         }
 
@@ -182,5 +207,29 @@ public class MessageReference implements Parcelable {
         dest.writeString(accountUuid);
         dest.writeString(folderName);
         dest.writeString(flag == null ? null : flag.name());
+    }
+
+    public String getAccountUuid(){
+        return accountUuid;
+    }
+
+    public String getFolderName(){
+        return folderName;
+    }
+
+    public String getUid(){
+        return uid;
+    }
+
+    public MessageReference withModifiedUid(String newUid){
+        return new MessageReference(accountUuid, folderName, newUid, flag);
+    }
+
+    public MessageReference withModifiedFlag(Flag newFlag){
+        return new MessageReference(accountUuid, folderName, uid, newFlag);
+    }
+
+    public Flag getFlag(){
+        return flag;
     }
 }
