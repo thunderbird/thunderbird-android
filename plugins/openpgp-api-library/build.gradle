@@ -14,6 +14,11 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 21
     buildToolsVersion '21.1.2'
+
+    defaultConfig {
+        // Turns out a lint check crashes when we don't specify minSdkVersion
+        minSdkVersion 15
+    }
     
     // Do not abort build if lint finds errors
     lintOptions {
