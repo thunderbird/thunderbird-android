@@ -37,9 +37,8 @@ public class AccountCreator {
             case SSL_TLS_REQUIRED: {
                 return storeType.defaultTlsPort;
             }
-            default: {
-                throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
-            }
         }
+
+        throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
     }
 }
