@@ -71,7 +71,8 @@ public class OpenPgpUtils {
         return hexString;
     }
 
-    private static final Pattern USER_ID_PATTERN = Pattern.compile("^(.*?)(?: (\\[.*\\]))?(?: \\((.*)\\))?(?: <(.*)>)?$");
+
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("^(.*?)(?: \\((.*)\\))?(?: <(.*)>)?$");
 
     /**
      * Splits userId string into naming part, email part, and comment part
@@ -82,22 +83,42 @@ public class OpenPgpUtils {
      * @param userId
      * @return theParsedUserInfo
      */
-    public static UserInfo splitUserId(final String userId) {
+    public static UserId splitUserId(final String userId) {
         if (!TextUtils.isEmpty(userId)) {
             final Matcher matcher = USER_ID_PATTERN.matcher(userId);
             if (matcher.matches()) {
-                return new UserInfo(matcher.group(1), matcher.group(4), matcher.group(3));
+                return new UserId(matcher.group(1), matcher.group(3), matcher.group(2));
             }
         }
-        return new UserInfo(null, null, null);
+        return new UserId(null, null, null);
     }
 
-    public static class UserInfo {
+    /**
+     * Returns a composed user id. Returns null if name is null!
+     *
+     * @param name
+     * @param email
+     * @param comment
+     * @return
+     */
+    public static String createUserId(UserId userId) {
+        String userIdString = userId.name; // consider name a required value
+        if (userIdString != null && !TextUtils.isEmpty(userId.comment)) {
+            userIdString += " (" + userId.comment + ")";
+        }
+        if (userIdString != null && !TextUtils.isEmpty(userId.email)) {
+            userIdString += " <" + userId.email + ">";
+        }
+
+        return userIdString;
+    }
+
+    public static class UserId {
         public final String name;
         public final String email;
         public final String comment;
 
-        public UserInfo(String name, String email, String comment) {
+        public UserId(String name, String email, String comment) {
             this.name = name;
             this.email = email;
             this.comment = comment;

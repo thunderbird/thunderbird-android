@@ -57,8 +57,15 @@ public class OpenPgpApi {
      * - New extra for ACTION_DETACHED_SIGN: EXTRA_DETACHED_SIGNATURE
      * - New result for ACTION_DECRYPT_VERIFY: RESULT_DETACHED_SIGNATURE
      * - New result for ACTION_DECRYPT_VERIFY: RESULT_CHARSET
+     * 7:
+     * - Deprecation of ACCOUNT_NAME, please use ACTION_GET_SIGN_KEY_ID to get key id
+     * - Introduce EXTRA_SIGN_KEY_ID
+     * - New extra for ACTION_ENCRYPT and ACTION_SIGN_AND_ENCRYPT: EXTRA_ENABLE_COMPRESSION (default to true)
+     * - Return PendingIntent to view key for signatures
+     * - New result for ACTION_DECRYPT_VERIFY: RESULT_TYPE
+     * - New ACTION_GET_SIGN_KEY_ID
      */
-    public static final int API_VERSION = 6;
+    public static final int API_VERSION = 7;
 
     /**
      * General extras
@@ -90,6 +97,9 @@ public class OpenPgpApi {
      * - end cleartext with newline
      * - remove whitespaces on line endings
      * <p/>
+     * required extras:
+     * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
+     * <p/>
      * optional extras:
      * String        EXTRA_PASSPHRASE            (key passphrase)
      */
@@ -99,6 +109,9 @@ public class OpenPgpApi {
      * Sign text or binary data resulting in a detached signature.
      * No OutputStream necessary for ACTION_DETACHED_SIGN (No magic pre-processing like in ACTION_CLEARTEXT_SIGN)!
      * The detached signature is returned separately in RESULT_DETACHED_SIGNATURE.
+     * <p/>
+     * required extras:
+     * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
      * <p/>
      * optional extras:
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for detached signature)
@@ -121,6 +134,7 @@ public class OpenPgpApi {
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
      * String        EXTRA_PASSPHRASE            (key passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
+     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
      */
     public static final String ACTION_ENCRYPT = "org.openintents.openpgp.action.ENCRYPT";
 
@@ -133,9 +147,11 @@ public class OpenPgpApi {
      * long[]        EXTRA_KEY_IDS
      * <p/>
      * optional extras:
+     * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
      * String        EXTRA_PASSPHRASE            (key passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
+     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
      */
     public static final String ACTION_SIGN_AND_ENCRYPT = "org.openintents.openpgp.action.SIGN_AND_ENCRYPT";
 
@@ -146,6 +162,8 @@ public class OpenPgpApi {
      * <p/>
      * If OpenPgpSignatureResult.getStatus() == OpenPgpSignatureResult.SIGNATURE_KEY_MISSING
      * in addition a PendingIntent is returned via RESULT_INTENT to download missing keys.
+     * On all other status, in addition a PendingIntent is returned via RESULT_INTENT to open
+     * the key view in OpenKeychain.
      * <p/>
      * optional extras:
      * byte[]        EXTRA_DETACHED_SIGNATURE    (detached signature)
@@ -154,6 +172,7 @@ public class OpenPgpApi {
      * OpenPgpSignatureResult   RESULT_SIGNATURE
      * OpenPgpDecryptMetadata   RESULT_METADATA
      * String                   RESULT_CHARSET   (charset which was specified in the headers of ascii armored input, if any)
+     * int                      RESULT_TYPE
      */
     public static final String ACTION_DECRYPT_VERIFY = "org.openintents.openpgp.action.DECRYPT_VERIFY";
 
@@ -167,6 +186,17 @@ public class OpenPgpApi {
      * String                   RESULT_CHARSET   (charset which was specified in the headers of ascii armored input, if any)
      */
     public static final String ACTION_DECRYPT_METADATA = "org.openintents.openpgp.action.DECRYPT_METADATA";
+
+    /**
+     * Select key id for signing
+     * <p/>
+     * optional extras:
+     * String      EXTRA_USER_ID
+     * <p/>
+     * returned extras:
+     * long        EXTRA_SIGN_KEY_ID
+     */
+    public static final String ACTION_GET_SIGN_KEY_ID = "org.openintents.openpgp.action.GET_SIGN_KEY_ID";
 
     /**
      * Get key ids based on given user ids (=emails)
@@ -191,9 +221,11 @@ public class OpenPgpApi {
      */
     public static final String ACTION_GET_KEY = "org.openintents.openpgp.action.GET_KEY";
 
+
     /* Intent extras */
     public static final String EXTRA_API_VERSION = "api_version";
 
+    // DEPRECATED!!!
     public static final String EXTRA_ACCOUNT_NAME = "account_name";
 
     // ACTION_DETACHED_SIGN, ENCRYPT, SIGN_AND_ENCRYPT, DECRYPT_VERIFY
@@ -207,14 +239,19 @@ public class OpenPgpApi {
     // ENCRYPT, SIGN_AND_ENCRYPT
     public static final String EXTRA_USER_IDS = "user_ids";
     public static final String EXTRA_KEY_IDS = "key_ids";
+    public static final String EXTRA_SIGN_KEY_ID = "sign_key_id";
     // optional extras:
     public static final String EXTRA_PASSPHRASE = "passphrase";
     public static final String EXTRA_ORIGINAL_FILENAME = "original_filename";
+    public static final String EXTRA_ENABLE_COMPRESSION = "enable_compression";
 
     // internal NFC states
     public static final String EXTRA_NFC_SIGNED_HASH = "nfc_signed_hash";
     public static final String EXTRA_NFC_SIG_CREATION_TIMESTAMP = "nfc_sig_creation_timestamp";
     public static final String EXTRA_NFC_DECRYPTED_SESSION_KEY = "nfc_decrypted_session_key";
+
+    // GET_SIGN_KEY_ID
+    public static final String EXTRA_USER_ID = "user_id";
 
     // GET_KEY
     public static final String EXTRA_KEY_ID = "key_id";
@@ -236,11 +273,15 @@ public class OpenPgpApi {
 
     // DECRYPT_VERIFY
     public static final String EXTRA_DETACHED_SIGNATURE = "detached_signature";
-
     public static final String RESULT_SIGNATURE = "signature";
     public static final String RESULT_METADATA = "metadata";
     // This will be the charset which was specified in the headers of ascii armored input, if any
     public static final String RESULT_CHARSET = "charset";
+
+    public static final String RESULT_TYPE = "type";
+    public static final int RESULT_TYPE_UNENCRYPTED_UNSIGNED = 0;
+    public static final int RESULT_TYPE_ENCRYPTED = 1;
+    public static final int RESULT_TYPE_SIGNED = 2;
 
     IOpenPgpService mService;
     Context mContext;

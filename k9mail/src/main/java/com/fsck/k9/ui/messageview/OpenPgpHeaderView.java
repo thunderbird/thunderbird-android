@@ -285,7 +285,7 @@ public class OpenPgpHeaderView extends LinearLayout {
     }
 
     private void setUserId(OpenPgpSignatureResult signatureResult) {
-        final OpenPgpUtils.UserInfo userInfo = OpenPgpUtils.splitUserId(signatureResult.getPrimaryUserId());
+        final OpenPgpUtils.UserId userInfo = OpenPgpUtils.splitUserId(signatureResult.getPrimaryUserId());
         if (userInfo.name != null) {
             resultSignatureName.setText(userInfo.name);
         } else {

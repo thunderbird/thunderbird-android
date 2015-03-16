@@ -45,7 +45,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 
-import org.openintents.openpgp.util.OpenPgpListPreference;
+import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 
@@ -174,7 +174,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mIdleRefreshPeriod;
     private ListPreference mMaxPushFolders;
     private boolean mHasCrypto = false;
-    private OpenPgpListPreference mCryptoApp;
+    private OpenPgpAppPreference mCryptoApp;
 
     private PreferenceScreen mSearchScreen;
     private CheckBoxPreference mCloudSearchEnabled;
@@ -687,7 +687,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mHasCrypto = OpenPgpUtils.isAvailable(this);
         if (mHasCrypto) {
-            mCryptoApp = (OpenPgpListPreference) findPreference(PREFERENCE_CRYPTO_APP);
+            mCryptoApp = (OpenPgpAppPreference) findPreference(PREFERENCE_CRYPTO_APP);
 
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
             mCryptoApp.setSummary(mCryptoApp.getEntry());
