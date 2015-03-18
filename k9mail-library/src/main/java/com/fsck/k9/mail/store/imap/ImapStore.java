@@ -1967,8 +1967,9 @@ public class ImapStore extends RemoteStore {
             List<String> flagNames = new ArrayList<String>();
             for (Flag flag : flags) {
             	// client's can't add the RECENT flag!
-            	if( !flag.equals(Flag.RECENT) )
-            		flagNames.add(flag.realName());
+                if (!flag.equals(Flag.RECENT)) {
+                    flagNames.add(flag.realName());
+                }
             }
             return combine(flagNames.toArray(new String[flagNames.size()]), ' ');
         }
