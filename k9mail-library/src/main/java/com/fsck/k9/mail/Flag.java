@@ -100,7 +100,7 @@ public final class Flag {
     /**
      * When a Flag is created dynamically we know it's a custom flag.
      *
-     * @param mName Internal name of the flag.
+     * @param name Internal name of the flag.
      * @return Newly created Flag object.
      */
     public static Flag createFlag(String name) {
@@ -140,7 +140,7 @@ public final class Flag {
      * IMPORTANT remember the name of the field of predefined flags must equal the
      * internal name!
      *
-     * @param mName Name of Flag wanted.
+     * @param internalName Name of Flag wanted.
      * @return  Predefined Flag object if any otherwise new custom Flag.
      * @throws IllegalArgumentException Thrown when the field is not accessible.
      */
@@ -174,7 +174,7 @@ public final class Flag {
      * http://java.dzone.com/articles/enum-tricks-customized-valueof
      * Since it's only used once I don't see the point.
      *
-     * @param real_name Real name to look for.
+     * @param name Real name to look for.
      * @return The flag that was found or created.
      */
     public static Flag valueOfByRealName(String name) {
