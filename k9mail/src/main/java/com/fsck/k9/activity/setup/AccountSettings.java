@@ -39,6 +39,7 @@ import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
+import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -46,6 +47,7 @@ import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 
 import org.openintents.openpgp.util.OpenPgpAppPreference;
+import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 
@@ -110,6 +112,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
+    private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -175,6 +178,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMaxPushFolders;
     private boolean mHasCrypto = false;
     private OpenPgpAppPreference mCryptoApp;
+    private OpenPgpKeyPreference mCryptoKey;
 
     private PreferenceScreen mSearchScreen;
     private CheckBoxPreference mCloudSearchEnabled;
@@ -688,14 +692,27 @@ public class AccountSettings extends K9PreferenceActivity {
         mHasCrypto = OpenPgpUtils.isAvailable(this);
         if (mHasCrypto) {
             mCryptoApp = (OpenPgpAppPreference) findPreference(PREFERENCE_CRYPTO_APP);
+            mCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
 
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
-            mCryptoApp.setSummary(mCryptoApp.getEntry());
             mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String value = newValue.toString();
-                    mCryptoApp.setSummary(mCryptoApp.getEntryByValue(value));
                     mCryptoApp.setValue(value);
+
+                    mCryptoKey.setOpenPgpProvider(value);
+                    return false;
+                }
+            });
+
+            mCryptoKey.setValue(mAccount.getCryptoKey());
+            mCryptoKey.setOpenPgpProvider(mCryptoApp.getValue());
+            // TODO: other identities?
+            mCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(mAccount.getIdentity(0)));
+            mCryptoKey.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    long value = (Long) newValue;
+                    mCryptoKey.setValue(value);
                     return false;
                 }
             });
@@ -765,6 +782,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
         if (mHasCrypto) {
             mAccount.setCryptoApp(mCryptoApp.getValue());
+            mAccount.setCryptoKey(mCryptoKey.getValue());
         }
 
         // In webdav account we use the exact folder name also for inbox,
@@ -832,6 +850,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mCryptoKey != null && mCryptoKey.handleOnActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
             case SELECT_AUTO_EXPAND_FOLDER:

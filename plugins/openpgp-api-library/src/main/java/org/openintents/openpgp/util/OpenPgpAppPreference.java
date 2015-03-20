@@ -201,14 +201,23 @@ public class OpenPgpAppPreference extends DialogPreference {
         return 0;
     }
 
+    /**
+     * Public API
+     */
     public String getEntry() {
         return getEntryByValue(mSelectedPackage);
     }
 
+    /**
+     * Public API
+     */
     public String getValue() {
         return mSelectedPackage;
     }
 
+    /**
+     * Public API
+     */
     public void setValue(String packageName) {
         setAndPersist(packageName);
     }

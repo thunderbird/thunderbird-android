@@ -16,7 +16,7 @@ public class OpenPgpApiHelper {
      *
      * @see org.openintents.openpgp.util.OpenPgpApi#EXTRA_ACCOUNT_NAME
      */
-    public static String buildAccountName(Identity identity) {
+    public static String buildUserId(Identity identity) {
         StringBuilder sb = new StringBuilder();
 
         String name = identity.getName();

@@ -170,10 +170,6 @@ public class MessageCryptoHelper {
     private void decryptVerify(Intent intent) {
         intent.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
 
-        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, message);
-        String accountName = OpenPgpApiHelper.buildAccountName(identity);
-        intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accountName);
-
         try {
             CryptoPartType cryptoPartType = currentCryptoPart.type;
             switch (cryptoPartType) {

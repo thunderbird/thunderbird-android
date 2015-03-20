@@ -145,6 +145,20 @@ public class OpenPgpKeyPreference extends Preference {
         setAndPersist(newValue);
     }
 
+    /**
+     * Public API
+     */
+    public void setValue(long keyId) {
+        setAndPersist(keyId);
+    }
+
+    /**
+     * Public API
+     */
+    public long getValue() {
+        return mKeyId;
+    }
+
     private void setAndPersist(long newValue) {
         mKeyId = newValue;
 

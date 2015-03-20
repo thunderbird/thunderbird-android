@@ -220,6 +220,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
+    private long mCryptoKey;
     private boolean mMarkMessageAsReadOnView;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
@@ -314,6 +315,7 @@ public class Account implements BaseAccount, StoreConfig {
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
         mCryptoApp = NO_OPENPGP_PROVIDER;
+        mCryptoKey = 0;
         mAllowRemoteSearch = false;
         mRemoteSearchFullText = false;
         mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
@@ -724,6 +726,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
+        editor.putLong(mUuid + ".cryptoKey", mCryptoKey);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1603,6 +1606,14 @@ public class Account implements BaseAccount, StoreConfig {
         } else {
             mCryptoApp = cryptoApp;
         }
+    }
+
+    public long getCryptoKey() {
+        return mCryptoKey;
+    }
+
+    public void setCryptoKey(long keyId) {
+        mCryptoKey = keyId;
     }
 
     public boolean allowRemoteSearch() {

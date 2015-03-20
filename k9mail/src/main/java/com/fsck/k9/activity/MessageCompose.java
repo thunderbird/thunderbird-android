@@ -1298,9 +1298,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
                     Intent intent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
                     intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
+                    intent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, mAccount.getCryptoKey());
                     executeOpenPgpMethod(intent);
                 } else if (mCryptoSignatureCheckbox.isChecked()) {
                     Intent intent = new Intent(OpenPgpApi.ACTION_SIGN);
+                    intent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, mAccount.getCryptoKey());
                     executeOpenPgpMethod(intent);
                 } else if (mEncryptCheckbox.isChecked()) {
                     Intent intent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
@@ -1338,10 +1340,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void executeOpenPgpMethod(Intent intent) {
         intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-        // this follows user id format of OpenPGP to allow key generation based on it
-        // includes account number to make it unique
-        String accName = OpenPgpApiHelper.buildAccountName(mIdentity);
-        intent.putExtra(OpenPgpApi.EXTRA_ACCOUNT_NAME, accName);
 
         final InputStream is = getOpenPgpInputStream();
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
