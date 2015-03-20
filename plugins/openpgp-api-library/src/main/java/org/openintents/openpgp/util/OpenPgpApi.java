@@ -64,6 +64,7 @@ public class OpenPgpApi {
      * - Return PendingIntent to view key for signatures
      * - New result for ACTION_DECRYPT_VERIFY: RESULT_TYPE
      * - New ACTION_GET_SIGN_KEY_ID
+     * - EXTRA_PASSPHRASE changed from String to char[]
      */
     public static final int API_VERSION = 7;
 
@@ -86,7 +87,7 @@ public class OpenPgpApi {
      * <p/>
      * optional extras:
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (DEPRECATED: this makes no sense here)
-     * String        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (key passphrase)
      */
     public static final String ACTION_SIGN = "org.openintents.openpgp.action.SIGN";
 
@@ -101,7 +102,7 @@ public class OpenPgpApi {
      * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
      * <p/>
      * optional extras:
-     * String        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (key passphrase)
      */
     public static final String ACTION_CLEARTEXT_SIGN = "org.openintents.openpgp.action.CLEARTEXT_SIGN";
 
@@ -115,7 +116,7 @@ public class OpenPgpApi {
      * <p/>
      * optional extras:
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for detached signature)
-     * String        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (key passphrase)
      * <p/>
      * returned extras:
      * byte[]        RESULT_DETACHED_SIGNATURE
@@ -132,7 +133,7 @@ public class OpenPgpApi {
      * <p/>
      * optional extras:
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
-     * String        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (key passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
      * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
      */
@@ -149,7 +150,7 @@ public class OpenPgpApi {
      * optional extras:
      * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
-     * String        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (key passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
      * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
      */
