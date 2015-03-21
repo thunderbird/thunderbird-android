@@ -914,7 +914,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Atkodēšana sekmīga un paraksts derīgs, bet nesertificēts</string>
   <string name="openpgp_successful_decryption_unknown_signature">Atkodēšana sekmīga bet trūkst publiskās atslēgas</string>
   <string name="openpgp_get_key">Meklēt trūkstošo atslēgu</string>
-  <string name="openpgp_error">OpenPGP kļūda:</string>
   <string name="openpgp_user_id">Lietotāja ID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Izmantot klienta sertifikātu</string>

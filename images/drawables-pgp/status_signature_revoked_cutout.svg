@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="101px" height="100px" viewBox="0 0 101 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.0.4 (8053) - http://www.bohemiancoding.com/sketch -->
+    <title>signature-revoked-cutout</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="signature-revoked-cutout" sketch:type="MSArtboardGroup" transform="translate(0.915625, 0.000000)" fill="#000000">
+            <path d="M50.1457786,95.2902674 C25.2543974,95.2902674 5,75.0407401 5,50.1451337 C5,25.252107 25.2556872,5 50.1457786,5 C75.03587,5 95.2902674,25.252107 95.2902674,50.1451337 C95.2902674,75.0394503 75.0371599,95.2902674 50.1457786,95.2902674 Z M35.5297191,75.6701923 C39.8404345,78.1467253 44.8296167,79.569442 50.1464236,79.569442 C66.3793238,79.569442 79.5862102,66.3638454 79.5862102,50.1296554 C79.5862102,44.8115586 78.1622037,39.8223764 75.6843808,35.5116611 L35.5297191,75.6701923 Z M50.1464236,20.6911586 C33.9135233,20.6911586 20.7066369,33.8967551 20.7066369,50.1309452 C20.7066369,55.3523024 22.0803389,60.2563538 24.473031,64.512895 L64.5296632,24.4575526 C60.2718321,22.0635707 55.3690706,20.6911586 50.1464236,20.6911586 Z" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

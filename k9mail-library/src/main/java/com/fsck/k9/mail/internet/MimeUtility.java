@@ -16,10 +16,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 
@@ -1029,7 +1026,7 @@ public class MimeUtility {
                     @Override
                     public void close() throws IOException {
                         super.close();
-                        rawInputStream.close();
+                        closeInputStreamWithoutDeletingTemporaryFiles(rawInputStream);
                     }
                 };
             } else if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(encoding)) {
@@ -1037,7 +1034,7 @@ public class MimeUtility {
                     @Override
                     public void close() throws IOException {
                         super.close();
-                        rawInputStream.close();
+                        closeInputStreamWithoutDeletingTemporaryFiles(rawInputStream);
                     }
                 };
             } else {
@@ -1048,6 +1045,14 @@ public class MimeUtility {
         }
 
         return inputStream;
+    }
+
+    public static void closeInputStreamWithoutDeletingTemporaryFiles(InputStream rawInputStream) throws IOException {
+        if (rawInputStream instanceof BinaryTempFileBody.BinaryTempFileBodyInputStream) {
+            ((BinaryTempFileBody.BinaryTempFileBodyInputStream) rawInputStream).closeWithoutDeleting();
+        } else {
+            rawInputStream.close();
+        }
     }
 
     public static String getMimeTypeByExtension(String filename) {

@@ -10,10 +10,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
+import com.fsck.k9.mail.filter.CountingOutputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 
-public class TextBody implements Body {
+public class TextBody implements Body, SizeAware {
 
     /**
      * Immutable empty byte array
@@ -97,5 +98,34 @@ public class TextBody implements Body {
 
     public void setComposedMessageOffset(Integer composedMessageOffset) {
         this.mComposedMessageOffset = composedMessageOffset;
+    }
+
+    @Override
+    public long getSize() {
+        try {
+            byte[] bytes = mBody.getBytes(mCharset);
+
+            if (MimeUtil.ENC_8BIT.equalsIgnoreCase(mEncoding)) {
+                return bytes.length;
+            } else {
+                return getLengthWhenQuotedPrintableEncoded(bytes);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't get body size", e);
+        }
+    }
+
+    private long getLengthWhenQuotedPrintableEncoded(byte[] bytes) throws IOException {
+        CountingOutputStream countingOutputStream = new CountingOutputStream();
+        OutputStream quotedPrintableOutputStream = new QuotedPrintableOutputStream(countingOutputStream, false);
+        try {
+            quotedPrintableOutputStream.write(bytes);
+        } finally {
+            try {
+                quotedPrintableOutputStream.close();
+            } catch (IOException e) { /* ignore */ }
+        }
+
+        return countingOutputStream.getCount();
     }
 }

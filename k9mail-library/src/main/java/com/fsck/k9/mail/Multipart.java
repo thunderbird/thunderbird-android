@@ -28,7 +28,9 @@ public abstract class Multipart implements CompositeBody {
         return Collections.unmodifiableList(mParts);
     }
 
-    public abstract String getContentType();
+    public abstract String getMimeType();
+
+    public abstract String getBoundary();
 
     public int getCount() {
         return mParts.size();
@@ -64,4 +66,7 @@ public abstract class Multipart implements CompositeBody {
             ((TextBody)body).setCharset(charset);
         }
     }
+
+    public abstract byte[] getPreamble();
+    public abstract byte[] getEpilogue();
 }

@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @see LocalMessageExtractor#extractTextAndAttachments(android.content.Context, com.fsck.k9.mail.Message)
  */
-class ViewableContainer {
+public class ViewableContainer {
     /**
      * The viewable text of the message in plain text.
      */

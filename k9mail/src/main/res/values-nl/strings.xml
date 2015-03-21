@@ -906,7 +906,6 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Succesvolle decodering met geldige handtekening (ongecertificeerd)</string>
   <string name="openpgp_successful_decryption_unknown_signature">Succesvolle decodering ondanks dat de publieke sleutels mist</string>
   <string name="openpgp_get_key">Zoek de missende sleutel</string>
-  <string name="openpgp_error">OpenPGP Fout:</string>
   <string name="openpgp_user_id">Gebruikers-id</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Gebruik cliënt certificaat</string>

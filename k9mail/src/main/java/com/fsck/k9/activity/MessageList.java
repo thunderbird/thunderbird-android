@@ -40,8 +40,8 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
-import com.fsck.k9.fragment.MessageViewFragment;
-import com.fsck.k9.fragment.MessageViewFragment.MessageViewFragmentListener;
+import com.fsck.k9.ui.messageview.MessageViewFragment;
+import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.search.LocalSearch;
@@ -51,7 +51,6 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.view.MessageHeader;
-import com.fsck.k9.view.MessageOpenPgpView;
 import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
@@ -87,6 +86,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     // Used for navigating to next/previous message
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
+
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
@@ -1559,13 +1559,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // handle OpenPGP results from PendingIntents in OpenPGP view
-        // must be handled in this main activity, because startIntentSenderForResult() does not support Fragments
-        MessageOpenPgpView openPgpView = (MessageOpenPgpView) findViewById(R.id.layout_decrypt_openpgp);
-        if (openPgpView != null && openPgpView.handleOnActivityResult(requestCode, resultCode, data)) {
-            return;
+        if (mMessageViewFragment != null) {
+            mMessageViewFragment.handleCryptoResult(requestCode, resultCode, data);
         }
     }
-    
-    
 }

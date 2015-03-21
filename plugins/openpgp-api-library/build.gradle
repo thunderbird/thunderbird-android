@@ -15,19 +15,11 @@ android {
     compileSdkVersion 21
     buildToolsVersion '21.1.2'
 
-    // NOTE: We are using the old folder structure to also support Eclipse
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }
+    defaultConfig {
+        // Turns out a lint check crashes when we don't specify minSdkVersion
+        minSdkVersion 15
     }
-
+    
     // Do not abort build if lint finds errors
     lintOptions {
         abortOnError false

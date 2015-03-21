@@ -886,7 +886,6 @@ Hibajelentéseivel hozzájárul az újabb verziók tökéletesítéséhez, kérd
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Titkosítás sikeresen feloldva és az aláírás érvényes, de nem tanúsított</string>
   <string name="openpgp_successful_decryption_unknown_signature">Titkosítás sikeresen feloldva, de hiányzik a nyilvános kulcs</string>
   <string name="openpgp_get_key">Hiányzó kulcs keresése</string>
-  <string name="openpgp_error">OpenPGP hiba:</string>
   <string name="openpgp_user_id">Felhasználói Id</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Ügyfél tanúsítvány használata</string>

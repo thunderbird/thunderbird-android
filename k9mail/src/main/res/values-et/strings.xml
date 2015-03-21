@@ -845,7 +845,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Edukalt dekrüpteeritud ja kehtiv allkiri kuid sertifitseerimata</string>
   <string name="openpgp_successful_decryption_unknown_signature">Edukalt dekrüpteeritud kuid puudub avalik võti</string>
   <string name="openpgp_get_key">Otsi puuduvat võtit</string>
-  <string name="openpgp_error">OpenPGP viga:</string>
   <string name="openpgp_user_id">Kasutaja Id</string>
   <!--=== Client certificates specific ==================================================================-->
 </resources>

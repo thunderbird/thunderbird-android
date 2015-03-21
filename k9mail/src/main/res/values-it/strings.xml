@@ -906,7 +906,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Decifratura avvenuta e firma valida ma non certificata</string>
   <string name="openpgp_successful_decryption_unknown_signature">Decifratura avvenuta ma chiave pubblica mancante</string>
   <string name="openpgp_get_key">Cerca chiave mancante</string>
-  <string name="openpgp_error">Errore OpenPGP:</string>
   <string name="openpgp_user_id">ID utente</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Usa certificato client</string>

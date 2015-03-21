@@ -1,10 +1,10 @@
 package com.fsck.k9.account;
 
+
 import com.fsck.k9.Account.DeletePolicy;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings.Type;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Deals with logic surrounding account creation.
@@ -13,16 +13,36 @@ import java.util.Map;
  */
 public class AccountCreator {
 
-    private static Map<Type, DeletePolicy> defaults = new HashMap<Type, DeletePolicy>();
+    public static DeletePolicy getDefaultDeletePolicy(Type type) {
+        switch (type) {
+            case IMAP: {
+                return DeletePolicy.ON_DELETE;
+            }
+            case POP3: {
+                return DeletePolicy.NEVER;
+            }
+            case WebDAV: {
+                return DeletePolicy.ON_DELETE;
+            }
+            case SMTP: {
+                throw new IllegalStateException("Delete policy doesn't apply to SMTP");
+            }
+        }
 
-    static {
-        defaults.put(Type.IMAP, DeletePolicy.ON_DELETE);
-        defaults.put(Type.POP3, DeletePolicy.NEVER);
-        defaults.put(Type.WebDAV, DeletePolicy.ON_DELETE);
+        throw new AssertionError("Unhandled case: " + type);
     }
 
-    public static DeletePolicy calculateDefaultDeletePolicy(Type type) {
-        return defaults.get(type);
-    }
+    public static int getDefaultPort(ConnectionSecurity securityType, Type storeType) {
+        switch (securityType) {
+            case NONE:
+            case STARTTLS_REQUIRED: {
+                return storeType.defaultPort;
+            }
+            case SSL_TLS_REQUIRED: {
+                return storeType.defaultTlsPort;
+            }
+        }
 
+        throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
+    }
 }

@@ -899,7 +899,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Vellykket dekryptering og gyldig signatur, men ikke sertifisert</string>
   <string name="openpgp_successful_decryption_unknown_signature">Vellykket dekryptering, men mangler offentlig nøkkel</string>
   <string name="openpgp_get_key">Se etter manglende nøkkel</string>
-  <string name="openpgp_error">OpenPGP feil:</string>
   <string name="openpgp_user_id">BrukerID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Bruk klientsertifikat</string>

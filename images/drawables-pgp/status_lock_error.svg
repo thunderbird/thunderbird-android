@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.0.4 (8053) - http://www.bohemiancoding.com/sketch -->
+    <title>lock-error</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="lock-error" sketch:type="MSArtboardGroup" fill="#000000">
+            <path d="M80.459,45.474 L78.533,45.474 L78.533,29.826 C78.435,10.633 65.344,0.183 49.433,0.183 C33.527,0.183 19.265,11.128 19.761,29.826 L19.745,45.454 C19.745,45.454 19.985,45.475 18.784,45.475 C17.514,45.475 9.145,46.946 9.145,54.407 L9.145,90.228 C9.145,98.187 18.565,100.171 18.784,100.171 L79.984,100.171 C80.203,100.171 89.138,99.178 89.138,90.228 L89.138,54.901 C89.139,46.452 80.684,45.474 80.459,45.474 L80.459,45.474 Z M33.234,30.033 C33.234,20.084 39.304,12.131 49.14,12.131 C58.881,12.131 65.045,19.088 65.045,30.033 L65.055,45.474 L33.218,45.474 L33.234,30.033 L33.234,30.033 Z M59.4033767,90.873 L48.4582822,79.9279055 L38.2296593,90.3644491 L31.6365,83.7568884 L42.5824946,72.8153942 L32.3439707,62.5939721 L38.7544118,56.1079235 L49.7013065,67.0503177 L60.1234487,56.7100837 L66.6365,63.2240351 L55.6896053,74.1673294 L66.0091373,84.4778605 L59.4033767,90.873 Z" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>
