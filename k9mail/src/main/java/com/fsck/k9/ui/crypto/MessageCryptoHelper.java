@@ -403,12 +403,18 @@ public class MessageCryptoHelper {
 
         resultAnnotation.setOutputData(outputPart);
 
-        // TODO if the data /was/ encrypted, we should set it here!
-        // this is not easy to determine for inline data though
-        resultAnnotation.setWasEncrypted(false);
-
-        OpenPgpSignatureResult signatureResult = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
-        resultAnnotation.setSignatureResult(signatureResult);
+        int resultType = currentCryptoResult.getIntExtra(OpenPgpApi.RESULT_TYPE,
+                OpenPgpApi.RESULT_TYPE_UNENCRYPTED_UNSIGNED);
+        if ((resultType & OpenPgpApi.RESULT_TYPE_ENCRYPTED) == OpenPgpApi.RESULT_TYPE_ENCRYPTED) {
+            resultAnnotation.setWasEncrypted(true);
+        } else {
+            resultAnnotation.setWasEncrypted(false);
+        }
+        if ((resultType & OpenPgpApi.RESULT_TYPE_SIGNED) == OpenPgpApi.RESULT_TYPE_SIGNED) {
+            OpenPgpSignatureResult signatureResult =
+                    currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
+            resultAnnotation.setSignatureResult(signatureResult);
+        }
 
         PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
         resultAnnotation.setPendingIntent(pendingIntent);
