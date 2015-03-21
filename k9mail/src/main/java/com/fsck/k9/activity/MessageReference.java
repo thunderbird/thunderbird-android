@@ -17,10 +17,10 @@ import com.fsck.k9.mail.filter.Base64;
 import java.util.StringTokenizer;
 
 public class MessageReference implements Parcelable {
-    public String accountUuid;
-    public String folderName;
-    public String uid;
-    public Flag flag;
+    protected final String accountUuid;
+    protected final String folderName;
+    protected final String uid;
+    protected final Flag flag;
 
     /**
      * @deprecated MessageReference should be immutable now, and this way, it won't be possible to modify it anymore
@@ -60,7 +60,11 @@ public class MessageReference implements Parcelable {
         if (identity == null || identity.length() < 1) {
             throw new MessagingException("Null or truncated MessageReference identity.");
         }
-
+        // Some temp variables
+        String accountUuid = null;
+        String folderName = null;
+        String uid = null;
+        Flag flag = null;
         // Version check.
         if (identity.charAt(0) == IDENTITY_VERSION_1.charAt(0)) {
             // Split the identity, stripping away the first two characters representing the version and delimiter.
@@ -78,9 +82,6 @@ public class MessageReference implements Parcelable {
                         throw new MessagingException("Could not thaw message flag '" + flagString + "'", ie);
                     }
                 }
-                else {
-                    flag = null;
-                }
 
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Thawed " + toString());
@@ -88,6 +89,10 @@ public class MessageReference implements Parcelable {
                 throw new MessagingException("Invalid MessageReference in " + identity + " identity.");
             }
         }
+        this.accountUuid = accountUuid;
+        this.folderName = folderName;
+        this.uid = uid;
+        this.flag = flag;
     }
 
     /**
@@ -221,15 +226,15 @@ public class MessageReference implements Parcelable {
         return uid;
     }
 
+    public Flag getFlag(){
+        return flag;
+    }
+
     public MessageReference withModifiedUid(String newUid){
         return new MessageReference(accountUuid, folderName, newUid, flag);
     }
 
     public MessageReference withModifiedFlag(Flag newFlag){
         return new MessageReference(accountUuid, folderName, uid, newFlag);
-    }
-
-    public Flag getFlag(){
-        return flag;
     }
 }
