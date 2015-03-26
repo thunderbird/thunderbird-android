@@ -5,11 +5,14 @@ import java.io.InputStream;
 import java.util.Stack;
 
 import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
+import android.provider.Browser;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebResourceRequest;
@@ -46,6 +49,30 @@ public abstract class K9WebViewClient extends WebViewClient {
 
     private K9WebViewClient(Part part) {
         this.part = part;
+    }
+
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+        Context context = webView.getContext();
+        Uri uri = Uri.parse(url);
+        if (!CID_SCHEME.equals(uri.getScheme())) {
+            // Replicate Android 4 android.webkit.CallbackProxy.uiOverrideUrlLoading()
+            // default behavior to open clicked links in external applications.
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            // If another application is running a WebView and launches the
+            // Browser through this Intent, we want to reuse the same window if
+            // possible.
+            intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+            try {
+                context.startActivity(intent);
+                return true;
+            } catch (ActivityNotFoundException ex) {
+                // If no application can handle the URL, assume that the
+                // WebView can handle it.
+            }
+        }
+        return false;
     }
 
     protected WebResourceResponse shouldInterceptRequest(WebView webView, Uri uri) {
