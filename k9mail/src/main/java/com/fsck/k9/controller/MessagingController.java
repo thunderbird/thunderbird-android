@@ -5126,6 +5126,11 @@ public class MessagingController implements Runnable {
         notificationData.remove(account.getAccountNumber());
     }
 
+    public void deleteAccount(Context context, Account account) {
+        notifyAccountCancel(context, account);
+        memorizingListener.removeAccount(account);
+    }
+
     /**
      * Save a draft message.
      * @param account Account we are saving for.
@@ -5462,6 +5467,20 @@ public class MessagingController implements Runnable {
                 memories.put(memory.getKey(), memory);
             }
             return memory;
+        }
+
+        synchronized void removeAccount(Account account) {
+            Iterator<Entry<String, Memory>> memIt = memories.entrySet().iterator();
+
+            while (memIt.hasNext()) {
+                Entry<String, Memory> memoryEntry = memIt.next();
+
+                String uuidForMemory = memoryEntry.getValue().account.getUuid();
+
+                if (uuidForMemory.equals(account.getUuid())) {
+                    memIt.remove();
+                }
+            }
         }
 
         @Override
