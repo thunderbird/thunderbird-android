@@ -99,6 +99,9 @@ public class Preferences {
         return retval;
     }
 
+    /**
+     * @return the Account associated with the given uuid, or null if there is no such account.
+     */
     public synchronized Account getAccount(String uuid) {
         if (accounts == null) {
             loadAccounts();
@@ -146,7 +149,7 @@ public class Preferences {
      */
     public Account getDefaultAccount() {
         String defaultAccountUuid = getPreferences().getString("defaultAccountUuid", null);
-        Account defaultAccount = getAccount(defaultAccountUuid);
+        Account defaultAccount = defaultAccountUuid == null ? null: getAccount(defaultAccountUuid);
 
         if (defaultAccount == null) {
             Collection<Account> accounts = getAvailableAccounts();
