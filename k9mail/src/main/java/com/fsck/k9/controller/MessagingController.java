@@ -5475,7 +5475,9 @@ public class MessagingController implements Runnable {
             while (memIt.hasNext()) {
                 Entry<String, Memory> memoryEntry = memIt.next();
 
-                if (memoryEntry.getValue().account.getUuid().equals(account.getUuid())) {
+                String uuidForMemory = memoryEntry.getValue().account.getUuid();
+
+                if (uuidForMemory.equals(account.getUuid())) {
                     memIt.remove();
                 }
             }
