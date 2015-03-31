@@ -40,7 +40,7 @@ public class AccountSetupFlow {
         IncomingServerSettingsPage incoming = accountTypePage.clickImap();
 
 
-        StubMailServer stubMailServer = ApplicationState.getInstance().stubMailServer;
+        StubMailServer stubMailServer = new StubMailServer();
 
         OutgoingServerSettingsPage outgoing = setupIncomingServerAndClickNext(incoming, stubMailServer);
 

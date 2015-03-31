@@ -8,6 +8,7 @@ repositories {
     maven {
         url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
+    mavenLocal()
 }
 
 dependencies {
@@ -26,7 +27,17 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile('com.icegreen:greenmail:1.4.1-SNAPSHOT') {
         exclude group: 'junit'
+
+        // stock JavaMail does not work on Android
+        exclude group: 'com.sun.mail'
+        exclude group: 'javax.mail'
+        exclude group: 'javax.activation'
     }
+
+    // Forked version of javax.mail required to run Greenmail on Android
+    androidTestCompile 'eu.ocathain.com.sun.mail:javax.mail:1.5.3-SNAPSHOT'
+    androidTestCompile 'eu.ocathain.javax.activation:activation:1.1.1-SNAPSHOT'
+
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
 }
 
@@ -75,6 +86,7 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
         exclude 'LICENSE.txt'
+        exclude 'LICENSE'
     }
 
     compileOptions {
