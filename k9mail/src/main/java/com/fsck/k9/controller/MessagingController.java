@@ -476,7 +476,8 @@ public class MessagingController implements Runnable {
 
     public void refreshListener(MessagingListener listener) {
         if (memorizingListener != null && listener != null) {
-            memorizingListener.refreshOther(listener);
+            memorizingListener.refreshOther(listener,
+                Preferences.getPreferences(context));
         }
     }
 
@@ -3588,6 +3589,8 @@ public class MessagingController implements Runnable {
     public void getAccountStats(final Context context, final Account account,
             final MessagingListener listener) {
 
+        final Exception eCallingThread = new RuntimeException("Exception in getAccountStats");
+
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -3597,6 +3600,9 @@ public class MessagingController implements Runnable {
                 } catch (MessagingException me) {
                     Log.e(K9.LOG_TAG, "Count not get unread count for account " +
                             account.getDescription(), me);
+                } catch (RuntimeException e) {
+                    e.addSuppressed(eCallingThread);
+                    throw e;
                 }
 
             }
@@ -5489,7 +5495,7 @@ public class MessagingController implements Runnable {
             memory.syncingState = MemorizingState.FAILED;
             memory.failureMessage = message;
         }
-        synchronized void refreshOther(MessagingListener other) {
+        synchronized void refreshOther(MessagingListener other, Preferences preferences) {
             if (other != null) {
 
                 Memory syncStarted = null;
@@ -5498,56 +5504,60 @@ public class MessagingController implements Runnable {
 
                 for (Memory memory : memories.values()) {
 
-                    if (memory.syncingState != null) {
-                        switch (memory.syncingState) {
-                        case STARTED:
-                            syncStarted = memory;
-                            break;
-                        case FINISHED:
-                            other.synchronizeMailboxFinished(memory.account, memory.folderName,
-                                                             memory.syncingTotalMessagesInMailbox, memory.syncingNumNewMessages);
-                            break;
-                        case FAILED:
-                            other.synchronizeMailboxFailed(memory.account, memory.folderName,
-                                                           memory.failureMessage);
-                            break;
-                        }
-                    }
+                    // Account may have been deleted in the meantime, so check first
+                    if (preferences.getAccount(memory.account.getUuid()) != null) {
 
-                    if (memory.sendingState != null) {
-                        switch (memory.sendingState) {
-                        case STARTED:
-                            sendStarted = memory;
-                            break;
-                        case FINISHED:
-                            other.sendPendingMessagesCompleted(memory.account);
-                            break;
-                        case FAILED:
-                            other.sendPendingMessagesFailed(memory.account);
-                            break;
+                        if (memory.syncingState != null) {
+                            switch (memory.syncingState) {
+                                case STARTED:
+                                    syncStarted = memory;
+                                    break;
+                                case FINISHED:
+                                    other.synchronizeMailboxFinished(memory.account, memory.folderName,
+                                            memory.syncingTotalMessagesInMailbox, memory.syncingNumNewMessages);
+                                    break;
+                                case FAILED:
+                                    other.synchronizeMailboxFailed(memory.account, memory.folderName,
+                                            memory.failureMessage);
+                                    break;
+                            }
                         }
-                    }
-                    if (memory.pushingState != null) {
-                        switch (memory.pushingState) {
-                        case STARTED:
-                            other.setPushActive(memory.account, memory.folderName, true);
-                            break;
-                        case FINISHED:
-                            other.setPushActive(memory.account, memory.folderName, false);
-                            break;
-                        case FAILED:
-                            break;
+
+                        if (memory.sendingState != null) {
+                            switch (memory.sendingState) {
+                                case STARTED:
+                                    sendStarted = memory;
+                                    break;
+                                case FINISHED:
+                                    other.sendPendingMessagesCompleted(memory.account);
+                                    break;
+                                case FAILED:
+                                    other.sendPendingMessagesFailed(memory.account);
+                                    break;
+                            }
                         }
-                    }
-                    if (memory.processingState != null) {
-                        switch (memory.processingState) {
-                        case STARTED:
-                            processingStarted = memory;
-                            break;
-                        case FINISHED:
-                        case FAILED:
-                            other.pendingCommandsFinished(memory.account);
-                            break;
+                        if (memory.pushingState != null) {
+                            switch (memory.pushingState) {
+                                case STARTED:
+                                    other.setPushActive(memory.account, memory.folderName, true);
+                                    break;
+                                case FINISHED:
+                                    other.setPushActive(memory.account, memory.folderName, false);
+                                    break;
+                                case FAILED:
+                                    break;
+                            }
+                        }
+                        if (memory.processingState != null) {
+                            switch (memory.processingState) {
+                                case STARTED:
+                                    processingStarted = memory;
+                                    break;
+                                case FINISHED:
+                                case FAILED:
+                                    other.pendingCommandsFinished(memory.account);
+                                    break;
+                            }
                         }
                     }
                 }
