@@ -36,27 +36,27 @@ public class MessageReferenceTest {
     public void parseIdentityStringWithoutFlag() throws MessagingException {
         MessageReference messageReference = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=");
 
-        assertEquals("o hai!", messageReference.accountUuid);
-        assertEquals("folder", messageReference.folderName);
-        assertEquals("10101010", messageReference.uid);
-        assertNull(messageReference.flag);
+        assertEquals("o hai!", messageReference.getAccountUuid());
+        assertEquals("folder", messageReference.getFolderName());
+        assertEquals("10101010", messageReference.getUid());
+        assertNull(messageReference.getFlag());
     }
 
     @Test
     public void parseIdentityStringWithFlag() throws MessagingException {
         MessageReference messageReference = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
 
-        assertEquals("o hai!", messageReference.accountUuid);
-        assertEquals("folder", messageReference.folderName);
-        assertEquals("10101010", messageReference.uid);
-        assertEquals(Flag.ANSWERED, messageReference.flag);
+        assertEquals("o hai!", messageReference.getAccountUuid());
+        assertEquals("folder", messageReference.getFolderName());
+        assertEquals("10101010", messageReference.getUid());
+        assertEquals(Flag.ANSWERED, messageReference.getFlag());
     }
 
     @Test
     public void parseIdentityStringContainingBadVersionNumber() throws MessagingException {
         MessageReference messageReference = new MessageReference("@:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
 
-        assertNull(messageReference.accountUuid);
+        assertNull(messageReference.getAccountUuid());
     }
 
     @Test(expected = MessagingException.class)
@@ -71,7 +71,7 @@ public class MessageReferenceTest {
 
     @Test
     public void equalsWithAnObjectShouldReturnFalse() {
-        MessageReference messageReference = new MessageReference();
+        MessageReference messageReference = new MessageReference(null, null, null, null);
         Object object = new Object();
 
         assertFalse(messageReference.equals(object));
@@ -125,21 +125,14 @@ public class MessageReferenceTest {
     }
 
     private MessageReference createMessageReference(String accountUuid, String folderName, String uid) {
-        MessageReference messageReference = new MessageReference();
-        messageReference.accountUuid = accountUuid;
-        messageReference.folderName = folderName;
-        messageReference.uid = uid;
+        MessageReference messageReference = new MessageReference(accountUuid, folderName, uid, null);
 
         return messageReference;
     }
 
     private MessageReference createMessageReferenceWithFlag(String accountUuid, String folderName, String uid,
             Flag flag) {
-        MessageReference messageReference = new MessageReference();
-        messageReference.accountUuid = accountUuid;
-        messageReference.folderName = folderName;
-        messageReference.uid = uid;
-        messageReference.flag = flag;
+        MessageReference messageReference = new MessageReference(accountUuid, folderName, uid, flag);
 
         return messageReference;
     }

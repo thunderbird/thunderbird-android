@@ -197,9 +197,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         Context appContext = getActivity().getApplicationContext();
-        mAccount = Preferences.getPreferences(appContext).getAccount(mMessageReference.accountUuid);
+        mAccount = Preferences.getPreferences(appContext).getAccount(mMessageReference.getAccountUuid());
         messageCryptoHelper = new MessageCryptoHelper(getActivity(), mAccount, this);
-
         if (resetPgpData) {
             // start with fresh, empty PGP data
             mPgpData = new PgpData();
@@ -346,7 +345,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void refileMessage(String dstFolder) {
-        String srcFolder = mMessageReference.folderName;
+        String srcFolder = mMessageReference.getFolderName();
         LocalMessage messageToMove = mMessage;
         mFragmentListener.showNextMessageOrReturn();
         mController.moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
@@ -424,7 +423,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private void startRefileActivity(int activity) {
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderName());
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
         startActivityForResult(intent, activity);
@@ -499,8 +498,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
         mMessageView.disableDownloadButton();
-
-        mController.loadMessageForViewRemote(mAccount, mMessageReference.folderName, mMessageReference.uid,
+        mController.loadMessageForViewRemote(mAccount, mMessageReference.getFolderName(), mMessageReference.getUid(),
                 downloadMessageListener);
     }
 
@@ -526,12 +524,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void moveMessage(MessageReference reference, String destFolderName) {
-        mController.moveMessage(mAccount, mMessageReference.folderName, mMessage,
+        mController.moveMessage(mAccount, mMessageReference.getFolderName(), mMessage,
                 destFolderName, null);
     }
 
     public void copyMessage(MessageReference reference, String destFolderName) {
-        mController.copyMessage(mAccount, mMessageReference.folderName, mMessage,
+        mController.copyMessage(mAccount, mMessageReference.getFolderName(), mMessage,
                 destFolderName, null);
     }
 
@@ -644,12 +642,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public boolean canMessageBeArchived() {
-        return (!mMessageReference.folderName.equals(mAccount.getArchiveFolderName())
+        return (!mMessageReference.getFolderName().equals(mAccount.getArchiveFolderName())
                 && mAccount.hasArchiveFolder());
     }
 
     public boolean canMessageBeMovedToSpam() {
-        return (!mMessageReference.folderName.equals(mAccount.getSpamFolderName())
+        return (!mMessageReference.getFolderName().equals(mAccount.getSpamFolderName())
                 && mAccount.hasSpamFolder());
     }
 

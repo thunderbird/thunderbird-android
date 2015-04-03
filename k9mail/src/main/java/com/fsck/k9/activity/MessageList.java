@@ -379,10 +379,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             Collection<Account> accounts = Preferences.getPreferences(this).getAvailableAccounts();
             for (Account account : accounts) {
                 if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
-                    mMessageReference = new MessageReference();
-                    mMessageReference.accountUuid = account.getUuid();
-                    mMessageReference.folderName = segmentList.get(1);
-                    mMessageReference.uid = segmentList.get(2);
+                    String folderName = segmentList.get(1);
+                    String messageUid = segmentList.get(2);
+                    mMessageReference = new MessageReference(account.getUuid(), folderName, messageUid, null);
                     break;
                 }
             }
@@ -431,8 +430,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         if (mMessageReference != null) {
             mSearch = new LocalSearch();
-            mSearch.addAccountUuid(mMessageReference.accountUuid);
-            mSearch.addAllowedFolder(mMessageReference.folderName);
+            mSearch.addAccountUuid(mMessageReference.getAccountUuid());
+            mSearch.addAllowedFolder(mMessageReference.getFolderName());
         }
 
         if (mSearch == null) {
@@ -1168,8 +1167,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void openMessage(MessageReference messageReference) {
         Preferences prefs = Preferences.getPreferences(getApplicationContext());
-        Account account = prefs.getAccount(messageReference.accountUuid);
-        String folderName = messageReference.folderName;
+        Account account = prefs.getAccount(messageReference.getAccountUuid());
+        String folderName = messageReference.getFolderName();
 
         if (folderName.equals(account.getDraftsFolderName())) {
             MessageCompose.actionEditDraft(this, messageReference);

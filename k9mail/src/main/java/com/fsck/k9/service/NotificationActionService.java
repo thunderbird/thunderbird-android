@@ -80,7 +80,7 @@ public class NotificationActionService extends CoreService {
                 List<MessageReference> refs =
                         intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
                 for (MessageReference ref : refs) {
-                    controller.setFlag(account, ref.folderName, ref.uid, Flag.SEEN, true);
+                    controller.setFlag(account, ref.getFolderName(), ref.getUid(), Flag.SEEN, true);
                 }
             } else if (DELETE_ALL_ACTION.equals(action)) {
                 if (K9.DEBUG)

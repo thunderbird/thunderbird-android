@@ -519,7 +519,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         final String accountUuid = (mMessageReference != null) ?
-                                   mMessageReference.accountUuid :
+                                   mMessageReference.getAccountUuid() :
                                    intent.getStringExtra(EXTRA_ACCOUNT);
 
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -715,9 +715,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                  */
                 MessagingController.getInstance(getApplication()).addListener(mListener);
 
-                final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-                final String folderName = mMessageReference.folderName;
-                final String sourceMessageUid = mMessageReference.uid;
+                final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.getAccountUuid());
+                final String folderName = mMessageReference.getFolderName();
+                final String sourceMessageUid = mMessageReference.getUid();
                 MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
             }
 
@@ -727,7 +727,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
-            mMessageReference.flag = Flag.ANSWERED;
+            mMessageReference = mMessageReference.withModifiedFlag(Flag.ANSWERED);
         }
 
         if (mAction == Action.REPLY || mAction == Action.REPLY_ALL ||
@@ -740,7 +740,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         if (mAction == Action.FORWARD) {
-            mMessageReference.flag = Flag.FORWARDED;
+            mMessageReference = mMessageReference.withModifiedFlag(Flag.FORWARDED);
         }
 
         final View mEncryptLayout = findViewById(R.id.layout_encrypt);
@@ -1317,15 +1317,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
         sendMessage();
 
-        if (mMessageReference != null && mMessageReference.flag != null) {
+        if (mMessageReference != null && mMessageReference.getFlag() != null) {
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Setting referenced message (" + mMessageReference.folderName + ", " + mMessageReference.uid + ") flag to " + mMessageReference.flag);
+                Log.d(K9.LOG_TAG, "Setting referenced message (" + mMessageReference.getFolderName() + ", " + mMessageReference.getUid() + ") flag to " + mMessageReference.getFlag());
             }
 
-            final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-            final String folderName = mMessageReference.folderName;
-            final String sourceMessageUid = mMessageReference.uid;
-            MessagingController.getInstance(getApplication()).setFlag(account, folderName, sourceMessageUid, mMessageReference.flag, true);
+            final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.getAccountUuid());
+            final String folderName = mMessageReference.getFolderName();
+            final String sourceMessageUid = mMessageReference.getUid();
+            MessagingController.getInstance(getApplication()).setFlag(account, folderName, sourceMessageUid, mMessageReference.getFlag(), true);
         }
 
         mDraftNeedsSaving = false;
@@ -1888,9 +1888,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (mMessageReference != null) { // shouldn't happen...
                     // TODO - Should we check if mSourceMessageBody is already present and bypass the MessagingController call?
                     MessagingController.getInstance(getApplication()).addListener(mListener);
-                    final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
-                    final String folderName = mMessageReference.folderName;
-                    final String sourceMessageUid = mMessageReference.uid;
+                    final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.getAccountUuid());
+                    final String folderName = mMessageReference.getFolderName();
+                    final String sourceMessageUid = mMessageReference.getUid();
                     MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
                 }
                 break;
@@ -2415,7 +2415,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
                 // Check if this is a valid account in our database
                 Preferences prefs = Preferences.getPreferences(getApplicationContext());
-                Account account = prefs.getAccount(messageReference.accountUuid);
+                Account account = prefs.getAccount(messageReference.getAccountUuid());
                 if (account != null) {
                     mMessageReference = messageReference;
                 }
@@ -2931,7 +2931,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     class Listener extends MessagingListener {
         @Override
         public void loadMessageForViewStarted(Account account, String folder, String uid) {
-            if ((mMessageReference == null) || !mMessageReference.uid.equals(uid)) {
+            if ((mMessageReference == null) || !mMessageReference.getUid().equals(uid)) {
                 return;
             }
 
@@ -2940,7 +2940,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         @Override
         public void loadMessageForViewFinished(Account account, String folder, String uid, LocalMessage message) {
-            if ((mMessageReference == null) || !mMessageReference.uid.equals(uid)) {
+            if ((mMessageReference == null) || !mMessageReference.getUid().equals(uid)) {
                 return;
             }
 
@@ -2949,7 +2949,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid, final Message message) {
-            if ((mMessageReference == null) || !mMessageReference.uid.equals(uid)) {
+            if ((mMessageReference == null) || !mMessageReference.getUid().equals(uid)) {
                 return;
             }
 
@@ -2980,7 +2980,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t) {
-            if ((mMessageReference == null) || !mMessageReference.uid.equals(uid)) {
+            if ((mMessageReference == null) || !mMessageReference.getUid().equals(uid)) {
                 return;
             }
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
@@ -2991,13 +2991,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
             // Track UID changes of the source message
             if (mMessageReference != null) {
-                final Account sourceAccount = Preferences.getPreferences(MessageCompose.this).getAccount(mMessageReference.accountUuid);
-                final String sourceFolder = mMessageReference.folderName;
-                final String sourceMessageUid = mMessageReference.uid;
+                final Account sourceAccount = Preferences.getPreferences(MessageCompose.this).getAccount(mMessageReference.getAccountUuid());
+                final String sourceFolder = mMessageReference.getFolderName();
+                final String sourceMessageUid = mMessageReference.getUid();
 
                 if (account.equals(sourceAccount) && (folder.equals(sourceFolder))) {
                     if (oldUid.equals(sourceMessageUid)) {
-                        mMessageReference.uid = newUid;
+                        mMessageReference = mMessageReference.withModifiedUid(newUid);
                     }
                     if ((mSourceMessage != null) && (oldUid.equals(mSourceMessage.getUid()))) {
                         mSourceMessage.setUid(newUid);
@@ -3141,7 +3141,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                  * to the old message's uid.
                  */
                 if (mMessageReference != null) {
-                    message.setUid(mMessageReference.uid);
+                    message.setUid(mMessageReference.getUid());
                 }
             }
 
