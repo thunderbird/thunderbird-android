@@ -17,10 +17,10 @@ import com.fsck.k9.mail.filter.Base64;
 import java.util.StringTokenizer;
 
 public class MessageReference implements Parcelable {
-    protected final String accountUuid;
-    protected final String folderName;
-    protected final String uid;
-    protected final Flag flag;
+    private final String accountUuid;
+    private final String folderName;
+    private final String uid;
+    private final Flag flag;
 
 
     /**
