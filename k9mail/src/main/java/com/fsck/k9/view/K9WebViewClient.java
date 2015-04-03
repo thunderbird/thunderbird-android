@@ -56,13 +56,8 @@ public abstract class K9WebViewClient extends WebViewClient {
         Context context = webView.getContext();
         Uri uri = Uri.parse(url);
         if (!CID_SCHEME.equals(uri.getScheme())) {
-            // Replicate Android 4 android.webkit.CallbackProxy.uiOverrideUrlLoading()
-            // default behavior to open clicked links in external applications.
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            // If another application is running a WebView and launches the
-            // Browser through this Intent, we want to reuse the same window if
-            // possible.
             intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
             try {
                 context.startActivity(intent);
