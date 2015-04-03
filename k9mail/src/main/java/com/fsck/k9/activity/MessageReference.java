@@ -60,7 +60,7 @@ public class MessageReference implements Parcelable {
         if (identity == null || identity.length() < 1) {
             throw new MessagingException("Null or truncated MessageReference identity.");
         }
-        // Some temp variables
+
         String accountUuid = null;
         String folderName = null;
         String uid = null;

@@ -71,7 +71,6 @@ public class MessageReferenceTest {
 
     @Test
     public void equalsWithAnObjectShouldReturnFalse() {
-        // null : creating a new empty MessageReference
         MessageReference messageReference = new MessageReference(null, null, null, null);
         Object object = new Object();
 
