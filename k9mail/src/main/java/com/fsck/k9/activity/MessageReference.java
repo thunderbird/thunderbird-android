@@ -22,18 +22,6 @@ public class MessageReference implements Parcelable {
     protected final String uid;
     protected final Flag flag;
 
-    /**
-     * @deprecated MessageReference should be immutable now, and this way, it won't be possible to modify it anymore
-     *
-     * Initialize an empty MessageReference.
-     */
-    @Deprecated
-    public MessageReference() {
-        this.accountUuid = null;
-        this.folderName = null;
-        this.uid = null;
-        this.flag = null;
-    }
 
     /**
      * Initialize a new MessageReference.
