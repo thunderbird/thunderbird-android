@@ -60,6 +60,7 @@ public abstract class K9WebViewClient extends WebViewClient {
 
         Context context = webView.getContext();
         Intent intent = createBrowserViewIntent(uri, context);
+        addActivityFlags(intent);
 
         boolean overridingUrlLoading = false;
         try {
@@ -79,6 +80,8 @@ public abstract class K9WebViewClient extends WebViewClient {
         intent.putExtra(Browser.EXTRA_CREATE_NEW_TAB, true);
         return intent;
     }
+
+    protected abstract void addActivityFlags(Intent intent);
 
     protected WebResourceResponse shouldInterceptRequest(WebView webView, Uri uri) {
         if (!CID_SCHEME.equals(uri.getScheme())) {
@@ -131,15 +134,20 @@ public abstract class K9WebViewClient extends WebViewClient {
     }
 
 
+    @SuppressWarnings("deprecation")
     private static class PreLollipopWebViewClient extends K9WebViewClient {
         protected PreLollipopWebViewClient(Part part) {
             super(part);
         }
 
-        @SuppressWarnings("deprecation")
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, String url) {
             return shouldInterceptRequest(webView, Uri.parse(url));
+        }
+
+        @Override
+        protected void addActivityFlags(Intent intent) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         }
     }
 
@@ -152,6 +160,11 @@ public abstract class K9WebViewClient extends WebViewClient {
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest request) {
             return shouldInterceptRequest(webView, request.getUrl());
+        }
+
+        @Override
+        protected void addActivityFlags(Intent intent) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         }
     }
 }
