@@ -2992,7 +2992,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         for (int i = 0, len = mAdapter.getCount(); i < len; i++) {
             Cursor cursor = (Cursor) mAdapter.getItem(i);
 
-            MessageReference ref = new MessageReference(cursor.getString(ACCOUNT_UUID_COLUMN), cursor.getString(FOLDER_NAME_COLUMN), cursor.getString(UID_COLUMN), null);
+            String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+            String folderName = cursor.getString(FOLDER_NAME_COLUMN);
+            String messageUid = cursor.getString(UID_COLUMN);
+            MessageReference ref = new MessageReference(accountUuid, folderName, messageUid, null);
+
             messageRefs.add(ref);
         }
 
@@ -3054,9 +3058,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private MessageReference getReferenceForPosition(int position) {
         Cursor cursor = (Cursor) mAdapter.getItem(position);
-        MessageReference ref = new MessageReference(cursor.getString(ACCOUNT_UUID_COLUMN), cursor.getString(FOLDER_NAME_COLUMN), cursor.getString(UID_COLUMN), null);
 
-        return ref;
+        String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+        String folderName = cursor.getString(FOLDER_NAME_COLUMN);
+        String messageUid = cursor.getString(UID_COLUMN);
+        return new MessageReference(accountUuid, folderName, messageUid, null);
     }
 
     private void openMessageAtPosition(int position) {

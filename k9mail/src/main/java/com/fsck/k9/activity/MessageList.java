@@ -379,7 +379,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             Collection<Account> accounts = Preferences.getPreferences(this).getAvailableAccounts();
             for (Account account : accounts) {
                 if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
-                    mMessageReference = new MessageReference(account.getUuid(), segmentList.get(1), segmentList.get(2), null);
+                    String folderName = segmentList.get(1);
+                    String messageUid = segmentList.get(2);
+                    mMessageReference = new MessageReference(account.getUuid(), folderName, messageUid, null);
                     break;
                 }
             }
