@@ -71,8 +71,9 @@ public class MessageReference implements Parcelable {
                     }
                 }
 
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.d(K9.LOG_TAG, "Thawed " + toString());
+                }
             } else {
                 throw new MessagingException("Invalid MessageReference in " + identity + " identity.");
             }
@@ -111,7 +112,7 @@ public class MessageReference implements Parcelable {
         if (o instanceof MessageReference == false) {
             return false;
         }
-        MessageReference other = (MessageReference)o;
+        MessageReference other = (MessageReference) o;
         if ((accountUuid == other.accountUuid || (accountUuid != null && accountUuid.equals(other.accountUuid)))
                 && (folderName == other.folderName || (folderName != null && folderName.equals(other.folderName)))
                 && (uid == other.uid || (uid != null && uid.equals(other.uid)))) {
@@ -174,10 +175,9 @@ public class MessageReference implements Parcelable {
             String accountUuid = source.readString();
             String folderName = source.readString();
             String flag = source.readString();
-            if (flag != null){
+            if (flag != null) {
                 ref = new MessageReference(uid, accountUuid, folderName, Flag.valueOf(flag));
-            }
-            else {
+            } else {
                 ref = new MessageReference(uid, accountUuid, folderName, null);
             }
             return ref;
@@ -202,27 +202,27 @@ public class MessageReference implements Parcelable {
         dest.writeString(flag == null ? null : flag.name());
     }
 
-    public String getAccountUuid(){
+    public String getAccountUuid() {
         return accountUuid;
     }
 
-    public String getFolderName(){
+    public String getFolderName() {
         return folderName;
     }
 
-    public String getUid(){
+    public String getUid() {
         return uid;
     }
 
-    public Flag getFlag(){
+    public Flag getFlag() {
         return flag;
     }
 
-    public MessageReference withModifiedUid(String newUid){
+    public MessageReference withModifiedUid(String newUid) {
         return new MessageReference(accountUuid, folderName, newUid, flag);
     }
 
-    public MessageReference withModifiedFlag(Flag newFlag){
+    public MessageReference withModifiedFlag(Flag newFlag) {
         return new MessageReference(accountUuid, folderName, uid, newFlag);
     }
 }
