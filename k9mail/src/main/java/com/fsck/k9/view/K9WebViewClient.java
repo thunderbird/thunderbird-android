@@ -5,11 +5,14 @@ import java.io.InputStream;
 import java.util.Stack;
 
 import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
+import android.provider.Browser;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebResourceRequest;
@@ -47,6 +50,38 @@ public abstract class K9WebViewClient extends WebViewClient {
     private K9WebViewClient(Part part) {
         this.part = part;
     }
+
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+        Uri uri = Uri.parse(url);
+        if (CID_SCHEME.equals(uri.getScheme())) {
+            return false;
+        }
+
+        Context context = webView.getContext();
+        Intent intent = createBrowserViewIntent(uri, context);
+        addActivityFlags(intent);
+
+        boolean overridingUrlLoading = false;
+        try {
+            context.startActivity(intent);
+            overridingUrlLoading = true;
+        } catch (ActivityNotFoundException ex) {
+            // If no application can handle the URL, assume that the WebView can handle it.
+        }
+
+        return overridingUrlLoading;
+    }
+
+    private Intent createBrowserViewIntent(Uri uri, Context context) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+        intent.putExtra(Browser.EXTRA_CREATE_NEW_TAB, true);
+        return intent;
+    }
+
+    protected abstract void addActivityFlags(Intent intent);
 
     protected WebResourceResponse shouldInterceptRequest(WebView webView, Uri uri) {
         if (!CID_SCHEME.equals(uri.getScheme())) {
@@ -99,15 +134,20 @@ public abstract class K9WebViewClient extends WebViewClient {
     }
 
 
+    @SuppressWarnings("deprecation")
     private static class PreLollipopWebViewClient extends K9WebViewClient {
         protected PreLollipopWebViewClient(Part part) {
             super(part);
         }
 
-        @SuppressWarnings("deprecation")
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, String url) {
             return shouldInterceptRequest(webView, Uri.parse(url));
+        }
+
+        @Override
+        protected void addActivityFlags(Intent intent) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         }
     }
 
@@ -120,6 +160,11 @@ public abstract class K9WebViewClient extends WebViewClient {
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest request) {
             return shouldInterceptRequest(webView, request.getUrl());
+        }
+
+        @Override
+        protected void addActivityFlags(Intent intent) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         }
     }
 }
