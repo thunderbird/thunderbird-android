@@ -53,21 +53,30 @@ public abstract class K9WebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-        Context context = webView.getContext();
         Uri uri = Uri.parse(url);
-        if (!CID_SCHEME.equals(uri.getScheme())) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            intent.addCategory(Intent.CATEGORY_BROWSABLE);
-            intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
-            try {
-                context.startActivity(intent);
-                return true;
-            } catch (ActivityNotFoundException ex) {
-                // If no application can handle the URL, assume that the
-                // WebView can handle it.
-            }
+        if (CID_SCHEME.equals(uri.getScheme())) {
+            return false;
         }
-        return false;
+
+        Context context = webView.getContext();
+        Intent intent = createBrowserViewIntent(uri, context);
+
+        boolean overridingUrlLoading = false;
+        try {
+            context.startActivity(intent);
+            overridingUrlLoading = true;
+        } catch (ActivityNotFoundException ex) {
+            // If no application can handle the URL, assume that the WebView can handle it.
+        }
+
+        return overridingUrlLoading;
+    }
+
+    private Intent createBrowserViewIntent(Uri uri, Context context) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+        return intent;
     }
 
     protected WebResourceResponse shouldInterceptRequest(WebView webView, Uri uri) {
