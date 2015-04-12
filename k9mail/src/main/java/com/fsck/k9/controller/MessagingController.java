@@ -1610,16 +1610,23 @@ public class MessagingController {
         } else {
             /* TODO should synchronize the local and remote flags, not just do "server-wins" */
 
-            /* TODO should be compatible with previous implementation:
-             * SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
-             */
-
             /* Aggregate local and remote flags here before testing which one goes where */
             Set<Flag> allFlags = new HashSet<Flag>(remoteMessage.getFlags());
             allFlags.addAll(localMessage.getFlags());
 
+            /* Filter out the non-custom ones */
+            Iterator<Flag> it = allFlags.iterator();
+            while (it.hasNext()) {
+                if (!it.next().isCustom()) {
+                    it.remove();
+                }
+            }
+
+            /* add the "system" flags */
+            allFlags.addAll(Flag.SYNC_FLAGS);
+
             for (Flag flag : allFlags) {
-                if (flag.isCustom() && remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
+                if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                     localMessage.setFlag(flag, remoteMessage.isSet(flag));
                     messageChanged = true;
                 }

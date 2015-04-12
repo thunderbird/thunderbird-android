@@ -113,6 +113,15 @@ public final class Flag {
             X_REMOTE_COPY_STARTED,
             X_GOT_ALL_HEADERS));
 
+    /**
+     * flags that K-9 will always sync with the server
+     */
+    public static final Set<Flag> SYNC_FLAGS = new HashSet<Flag>(Arrays.asList(
+            SEEN,
+            FLAGGED,
+            ANSWERED,
+            FORWARDED));
+
     /*
      * Predefined Prefixes
      */
