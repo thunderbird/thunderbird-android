@@ -210,6 +210,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_action_reply">Reply</string>
     <string name="notification_action_mark_as_read">Mark Read</string>
     <string name="notification_action_delete">Delete</string>
+    <string name="notification_action_archive">Archive</string>
+    <string name="notification_action_spam">Spam</string>
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
 
@@ -1147,4 +1149,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_incomplete_message">Incomplete message</string>
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
+
 </resources>

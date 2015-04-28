@@ -211,8 +211,8 @@ public class MessagingController implements Runnable {
         /**
          * List of messages that should be used for the inbox-style overview.
          * It's sorted from newest to oldest message.
-         * Don't modify this list directly, but use {@link addMessage} and
-         * {@link removeMatchingMessage} instead.
+         * Don't modify this list directly, but use {@link #addMessage(com.fsck.k9.mailstore.LocalMessage)} and
+         * {@link #removeMatchingMessage(android.content.Context, com.fsck.k9.activity.MessageReference)} instead.
          */
         LinkedList<LocalMessage> messages;
         /**
@@ -4853,6 +4853,7 @@ public class MessagingController implements Runnable {
                     NotificationActionService.getReplyIntent(context, account, message.makeMessageReference()));
             }
 
+            // Mark Read on phone
             builder.addAction(
                 platformSupportsLockScreenNotifications()
                     ? R.drawable.ic_action_mark_as_read_dark_vector
@@ -4864,15 +4865,51 @@ public class MessagingController implements Runnable {
             boolean showDeleteAction = deleteOption == NotificationQuickDelete.ALWAYS ||
                     (deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG && newMessages == 1);
 
+            NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
             if (showDeleteAction) {
                 // we need to pass the action directly to the activity, otherwise the
                 // status bar won't be pulled up and we won't see the confirmation (if used)
+
+                // Delete on phone
                 builder.addAction(
                     platformSupportsLockScreenNotifications()
                         ? R.drawable.ic_action_delete_dark_vector
                         : R.drawable.ic_action_delete_dark,
                     context.getString(R.string.notification_action_delete),
                     NotificationDeleteConfirmation.getIntent(context, account, allRefs));
+
+                // Delete on wear only if no confirmation is required
+                if (!K9.confirmDeleteFromNotification()) {
+                    NotificationCompat.Action wearActionDelete =
+                            new NotificationCompat.Action.Builder(
+                                    R.drawable.ic_action_delete_dark,
+                                    context.getString(R.string.notification_action_delete),
+                                    NotificationDeleteConfirmation.getIntent(context, account, allRefs))
+                                    .build();
+                    builder.extend(wearableExtender.addAction(wearActionDelete));
+                }
+            }
+            if (NotificationActionService.isArchiveAllMessagesWearAvaliable(context, account, data.messages)) {
+
+                // Archive on wear
+                NotificationCompat.Action wearActionArchive =
+                        new NotificationCompat.Action.Builder(
+                                R.drawable.ic_action_delete_dark,
+                                context.getString(R.string.notification_action_archive),
+                                NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs))
+                                .build();
+                builder.extend(wearableExtender.addAction(wearActionArchive));
+            }
+            if (NotificationActionService.isSpamAllMessagesWearAvaliable(context, account, data.messages)) {
+
+                // Archive on wear
+                NotificationCompat.Action wearActionSpam =
+                        new NotificationCompat.Action.Builder(
+                                R.drawable.ic_action_delete_dark,
+                                context.getString(R.string.notification_action_spam),
+                                NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs))
+                                .build();
+                builder.extend(wearableExtender.addAction(wearActionSpam));
             }
         } else {
             String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
