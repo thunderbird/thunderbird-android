@@ -176,9 +176,9 @@ public class MessageReference implements Parcelable {
             String folderName = source.readString();
             String flag = source.readString();
             if (flag != null) {
-                ref = new MessageReference(uid, accountUuid, folderName, Flag.valueOf(flag));
+                ref = new MessageReference(accountUuid, folderName, uid, Flag.valueOf(flag));
             } else {
-                ref = new MessageReference(uid, accountUuid, folderName, null);
+                ref = new MessageReference(accountUuid, folderName, uid, null);
             }
             return ref;
         }
