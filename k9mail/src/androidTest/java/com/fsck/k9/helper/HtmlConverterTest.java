@@ -1,8 +1,5 @@
 package com.fsck.k9.helper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 
 import android.support.test.runner.AndroidJUnit4;
 
@@ -14,9 +11,6 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class HtmlConverterTest {
-    // Useful if you want to write stuff to a file for debugging in a browser.
-    private static final boolean WRITE_TO_FILE = Boolean.parseBoolean(System.getProperty("k9.htmlConverterTest.writeToFile", "false"));
-    private static final String OUTPUT_FILE = "C:/temp/parse.html";
 
     @Test
     public void testTextQuoteToHtmlBlockquote() {
@@ -32,7 +26,7 @@ public class HtmlConverterTest {
             "Nice job :)\r\n" +
             ">> Guess!";
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + "Panama!<br />"
                 + "<br />"
@@ -71,7 +65,7 @@ public class HtmlConverterTest {
             ">\r\n" +
             "> :)";
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + "*facepalm*<br />"
                 + "<br />"
@@ -106,7 +100,7 @@ public class HtmlConverterTest {
             ">>>>> five\r\n" +
             ">>>>>> six";
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + "zero<br />"
                 + "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
@@ -130,32 +124,13 @@ public class HtmlConverterTest {
                 + "</pre>", result);
     }
 
-    private void writeToFile(final String content) {
-        if (!WRITE_TO_FILE) {
-            return;
-        }
-        try {
-            System.err.println(content);
-
-            File f = new File(OUTPUT_FILE);
-            f.delete();
-
-            FileWriter fstream = new FileWriter(OUTPUT_FILE);
-            BufferedWriter out = new BufferedWriter(fstream);
-            out.write(content);
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Test
     public void testPreserveSpacesAtFirst() {
         String message = "foo\r\n"
                 + " bar\r\n"
                 + "  baz\r\n";
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + "foo<br />"
                 + " bar<br />"
@@ -172,7 +147,7 @@ public class HtmlConverterTest {
                 + "   <\r\n"
                 + "  > \r\n";
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + " <br />"
                 + "  &amp;<br />"
