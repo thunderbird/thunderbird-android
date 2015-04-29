@@ -18,6 +18,7 @@
 package com.fsck.k9.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.WebView;
@@ -45,6 +46,7 @@ public class RigidWebView extends WebView {
         super(context, attrs, defStyle);
     }
 
+    private boolean noThrottle = Build.VERSION.SDK_INT >= 21; //Build.VERSION_CODES.LOLLIPOP
     private static final int MIN_RESIZE_INTERVAL = 200;
     private static final int MAX_RESIZE_INTERVAL = 300;
     private final Clock mClock = Clock.INSTANCE;
@@ -66,6 +68,13 @@ public class RigidWebView extends WebView {
     protected void onSizeChanged(int w, int h, int ow, int oh) {
         mRealWidth = w;
         mRealHeight = h;
+
+        // Don't throttle resizes on Android 5 or higher.
+        if (noThrottle) {
+            performSizeChange(ow, oh);
+            return;
+        }
+
         long now = mClock.getTime();
         boolean recentlySized = (now - mLastSizeChangeTime < MIN_RESIZE_INTERVAL);
 
