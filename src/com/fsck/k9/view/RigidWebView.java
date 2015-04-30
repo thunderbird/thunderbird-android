@@ -35,6 +35,7 @@ import com.fsck.k9.helper.Utility;
  * contents with percent-based height will force the WebView to infinitely expand (or shrink).
  */
 public class RigidWebView extends WebView {
+    private static final boolean NO_THROTTLE = Build.VERSION.SDK_INT >= 21; //Build.VERSION_CODES.LOLLIPOP
 
     public RigidWebView(Context context) {
         super(context);
@@ -46,7 +47,6 @@ public class RigidWebView extends WebView {
         super(context, attrs, defStyle);
     }
 
-    private boolean noThrottle = Build.VERSION.SDK_INT >= 21; //Build.VERSION_CODES.LOLLIPOP
     private static final int MIN_RESIZE_INTERVAL = 200;
     private static final int MAX_RESIZE_INTERVAL = 300;
     private final Clock mClock = Clock.INSTANCE;
@@ -66,14 +66,13 @@ public class RigidWebView extends WebView {
 
     @Override
     protected void onSizeChanged(int w, int h, int ow, int oh) {
-        mRealWidth = w;
-        mRealHeight = h;
-
-        // Don't throttle resizes on Android 5 or higher.
-        if (noThrottle) {
-            performSizeChange(ow, oh);
+        if (NO_THROTTLE) {
+            super.onSizeChanged(w, h, ow, oh);
             return;
         }
+
+        mRealWidth = w;
+        mRealHeight = h;
 
         long now = mClock.getTime();
         boolean recentlySized = (now - mLastSizeChangeTime < MIN_RESIZE_INTERVAL);
