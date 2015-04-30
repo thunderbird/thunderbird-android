@@ -205,7 +205,7 @@ Please submit bug reports, contribute new features and ask questions at
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> new messages</item>
     </plurals>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string>
-    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>
     <string name="notification_action_mark_as_read">Mark Read</string>
