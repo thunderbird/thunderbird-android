@@ -5,9 +5,6 @@ apply from: '../gradle/plugins/findbugs-android.gradle'
 
 repositories {
     jcenter()
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots/"
-    }
 }
 
 dependencies {
@@ -24,7 +21,7 @@ dependencies {
 
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
-    androidTestCompile('com.icegreen:greenmail:1.4.1-SNAPSHOT') {
+    androidTestCompile('com.icegreen:greenmail:1.4.1') {
         exclude group: 'junit'
     }
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
