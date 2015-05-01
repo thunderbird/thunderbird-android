@@ -220,6 +220,10 @@ public class MessagingController implements Runnable {
          */
         LinkedList<LocalMessage> messages;
         /**
+         * Stacked notifications that share this notification as ther summary-notification.
+         */
+        List<Integer> stackdNotifications;
+        /**
          * List of references for messages that the user is still to be notified of,
          * but which don't fit into the inbox style anymore. It's sorted from newest
          * to oldest message.
@@ -260,6 +264,16 @@ public class MessagingController implements Runnable {
             }
             messages.addFirst(m);
         }
+
+        public void addStackedChildNotification(final int notificationId) {
+            if (stackdNotifications == null) {
+                stackdNotifications = new LinkedList<Integer>();
+            }
+            stackdNotifications.add(new Integer(notificationId));
+        }
+        public List<Integer> getStackedChildNotifications() {
+            return stackdNotifications;
+        };
 
         /**
          * Remove a certain message from the message list.
@@ -4770,21 +4784,27 @@ public class MessagingController implements Runnable {
     /**
      * Build the specific notification actions for a single message on Android Wear.
      */
-    private void addWearActions(final NotificationCompat.WearableExtender wearableExtender, final NotificationCompat.Builder builder, Account account, Message messages) {
+    private void addWearActions(final NotificationCompat.Builder builder, final Account account, final Message messages) {
         ArrayList<MessageReference> subAllRefs = new ArrayList<MessageReference>();
         subAllRefs.add(new MessageReference(account.getUuid(), messages.getFolder().getName(), messages.getUid(), messages.getFlags().size()==0?null:messages.getFlags().iterator().next()));
         LinkedList<Message> msgList = new LinkedList<Message>();
         msgList.add(messages);
-        addWearActions(wearableExtender, builder, 1, account, subAllRefs, msgList);
+        addWearActions(builder, 1, account, subAllRefs, msgList);
     }
     /**
      * Build the specific notification actions for a single or multiple message on Android Wear.
      */
-    private void addWearActions(final NotificationCompat.WearableExtender wearableExtender, final NotificationCompat.Builder builder, int msgCount, Account account, ArrayList<MessageReference> allRefs, List<? extends Message> messages) {
+    private void addWearActions(final NotificationCompat.Builder builder, final int msgCount, final Account account, final ArrayList<MessageReference> allRefs, final List<? extends Message> messages) {
+        // we need a new wearableExtender for each notification
+        final NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
+
         NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
         boolean showDeleteAction = deleteOption == NotificationQuickDelete.ALWAYS ||
                 (deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG && msgCount == 1);
 
+        // note: while we are limited to 3 actions on the phone,
+        // this does not seem to be a limit on Android Wear devices.
+        // Tested on Moto 360, 8 actions seem to be no problem.
 
         if (showDeleteAction) {
             // Delete on wear only if no confirmation is required
@@ -4875,7 +4895,6 @@ public class MessagingController implements Runnable {
         data.supplyAllMessageRefs(allRefs);
 
         if (platformSupportsExtendedNotifications() && !privacyModeEnabled) {
-            NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
             if (newMessages > 1) {
 
                 //TODO: Stacked notifications for Android Wear
@@ -4883,6 +4902,7 @@ public class MessagingController implements Runnable {
 
                 // multiple messages pending, show inbox style
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
+                int nID = account.getAccountNumber();
                 for (Message m : data.messages) {
                     style.addLine(buildMessageSummary(context,
                             getMessageSender(context, account, m),
@@ -4900,8 +4920,9 @@ public class MessagingController implements Runnable {
                     // set content
                     setNotificationContent(context, m, getMessageSender(context, account, message), getMessageSubject(context, message), subBuilder, accountDescr);
 
+
                     // set actions
-                    addWearActions(wearableExtender, subBuilder, account, m);
+                    addWearActions(subBuilder, account, m);
                     if (m.isSet(Flag.FLAGGED)) {
                         subBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
                     }
@@ -4909,7 +4930,9 @@ public class MessagingController implements Runnable {
                     // and depend on quiet time and user settings
 
                     // this must be done before the summary notification
-                    notifMgr.notify(account.getAccountNumber(), subBuilder.build());
+                    nID = 1000 + nID;
+                    notifMgr.notify(nID, subBuilder.build());
+                    data.addStackedChildNotification(nID);
                 }
                 if (!data.droppedMessages.isEmpty()) {
                     style.setSummaryText(context.getString(R.string.notification_additional_messages,
@@ -4946,7 +4969,7 @@ public class MessagingController implements Runnable {
                     (deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG && newMessages == 1);
 
             // add /different) actions to show on connected Android Wear devices
-            addWearActions(wearableExtender, builder, newMessages, account, allRefs, data.messages);
+            addWearActions(builder, newMessages, account, allRefs, data.messages);
 
             if (showDeleteAction) {
                 // we need to pass the action directly to the activity, otherwise the
@@ -5251,12 +5274,27 @@ public class MessagingController implements Runnable {
         }
     }
 
-    /** Cancel a notification of new email messages */
+    /**
+     * Cancel a notification of new email messages
+     * @param  account all notifications for this account will be canceled and removed
+     */
     public void notifyAccountCancel(final Context context, final Account account) {
-        NotificationManager notifMgr =
+        NotificationManager notificationManager =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notifMgr.cancel(account.getAccountNumber());
-        notifMgr.cancel(-1000 - account.getAccountNumber());
+        notificationManager.cancel(account.getAccountNumber());
+        notificationManager.cancel(-1000 - account.getAccountNumber());
+
+        // cancel stacked notifications on Android Wear that share this as a summary notification
+        NotificationData data = notificationData.get(account.getAccountNumber());
+        if (data != null) {
+            List<Integer> stackedChildNotifications = data.getStackedChildNotifications();
+            if (stackedChildNotifications != null) {
+                for (Integer stackedNotificationId : stackedChildNotifications) {
+                    notificationManager.cancel(stackedNotificationId);
+                }
+            }
+        }
+
         notificationData.remove(account.getAccountNumber());
     }
 
