@@ -153,6 +153,10 @@ public class MessagingController implements Runnable {
     private static final String PENDING_COMMAND_APPEND = "com.fsck.k9.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
     private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
+    /**
+     * Key to group stacked notifications on Android Wear.
+     */
+    private static final String NOTIFICATION_GROUP_KEY = "com.fsck.k9.MessagingController.notificationGroup";
 
     public static class UidReverseComparator implements Comparator<Message> {
         @Override
@@ -218,6 +222,10 @@ public class MessagingController implements Runnable {
          */
         LinkedList<LocalMessage> messages;
         /**
+         * Stacked notifications that share this notification as ther summary-notification.
+         */
+        Map<String, Integer> stackedNotifications = new HashMap<String, Integer>();
+        /**
          * List of references for messages that the user is still to be notified of,
          * but which don't fit into the inbox style anymore. It's sorted from newest
          * to oldest message.
@@ -260,8 +268,48 @@ public class MessagingController implements Runnable {
         }
 
         /**
+         * Add a stacked notification that this is a summary notification for.
+         * @param ref the message to add a stacked notification for
+         * @param notificationId the id of the stacked notification
+         */
+        public void addStackedChildNotification(final MessageReference ref, final int notificationId) {
+            stackedNotifications.put(ref.getUid(), new Integer(notificationId));
+        }
+        /**
+         * Add a stacked notification that this is a summary notification for.
+         * @param msg the message to add a stacked notification for
+         * @param notificationId the id of the stacked notification
+         */
+        public void addStackedChildNotification(final Message msg, final int notificationId) {
+            stackedNotifications.put(msg.getUid(), new Integer(notificationId));
+        }
+
+        /**
+         * @return the IDs of all stacked notifications this is a summary notification for.
+         */
+        public Collection<Integer> getStackedChildNotifications() {
+            return stackedNotifications.values();
+        }
+
+        /**
+         * @param ref the message to check for
+         * @return null or the notification ID of a stacked notification for the given message
+         */
+        public Integer getStackedChildNotification(final MessageReference ref) {
+            return stackedNotifications.get(ref.getUid());
+        }
+        /**
+         * @param msg the message to check for
+         * @return null or the notification ID of a stacked notification for the given message
+         */
+        public Integer getStackedChildNotification(final Message msg) {
+            return stackedNotifications.get(msg.getUid());
+        }
+
+        /**
          * Remove a certain message from the message list.
-         *
+         * @see #getStackedChildNotification(com.fsck.k9.activity.MessageReference) for stacked
+         * notifications you may consider to cancel.
          * @param context A context.
          * @param ref Reference of the message to remove
          * @return true if message was found and removed, false otherwise
@@ -309,7 +357,7 @@ public class MessagingController implements Runnable {
         public int getNewMessageCount() {
             return messages.size() + droppedMessages.size();
         }
-    };
+    }
 
     // Key is accountNumber
     private final ConcurrentMap<Integer, NotificationData> notificationData = new ConcurrentHashMap<Integer, NotificationData>();
@@ -1785,7 +1833,18 @@ public class MessagingController implements Runnable {
                             synchronized (data) {
                                 MessageReference ref = localMessage.makeMessageReference();
                                 if (data.removeMatchingMessage(context, ref)) {
-                                    notifyAccountWithDataLocked(context, account, null, data);
+                                    synchronized (data) {
+                                        // if we remove a single message from the notification,
+                                        // maybe there is a stacked notification active for that one message
+                                        Integer childNotification = data.getStackedChildNotification(ref);
+                                        if (childNotification != null) {
+                                            NotificationManager notificationManager =
+                                                    (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                                            notificationManager.cancel(childNotification);
+                                        }
+                                        // update the (summary-) notification
+                                        notifyAccountWithDataLocked(context, account, null, data);
+                                    }
                                 }
                             }
                         }
@@ -4661,6 +4720,7 @@ public class MessagingController implements Runnable {
         return null;
     }
 
+
     private CharSequence getMessageSubject(Context context, Message message) {
         String subject = message.getSubject();
         if (!TextUtils.isEmpty(subject)) {
@@ -4745,6 +4805,7 @@ public class MessagingController implements Runnable {
         }
 
         final NotificationData data = getNotificationData(account, previousUnreadMessageCount);
+        //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (data) {
             notifyAccountWithDataLocked(context, account, message, data);
         }
@@ -4753,7 +4814,89 @@ public class MessagingController implements Runnable {
     // Maximum number of senders to display in a lock screen notification.
     private static final int NUM_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5;
 
-    private void notifyAccountWithDataLocked(Context context, Account account,
+    /**
+     * Build the specific notification actions for a single message on Android Wear.
+     * @param builder NotificationBuilder to add actions to
+     * @param totalMsgCount if this is a stacked notification, how many other messages are there?
+     * @param account the account we intent to act on
+     * @param message the single message we intent to act on (in a stacked notification or a summary notification about a single message)
+     * @param notificationID the id of the future notification. Will be used in the intents, so afterwards the correct notification gets closed.
+     */
+    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final Account account, final Message message, final int notificationID) {
+        ArrayList<MessageReference> subAllRefs = new ArrayList<MessageReference>();
+        subAllRefs.add(new MessageReference(account.getUuid(), message.getFolder().getName(), message.getUid(), message.getFlags().size()==0?null:message.getFlags().iterator().next()));
+        LinkedList<Message> msgList = new LinkedList<Message>();
+        msgList.add(message);
+        addWearActions(builder, totalMsgCount, 1, account, subAllRefs, msgList, notificationID);
+    }
+    /**
+     * Build the specific notification actions for a single or multiple message on Android Wear.
+     * @param builder NotificationBuilder to add actions to
+     * @param totalMsgCount total message count (may be different from msgCount if this is a stacked notification)
+     * @param msgCount message count to be handled in this (stacked or summary) notification
+     * @param account the account we intent to act on
+     * @param allRefs the messages we intent to act on
+     * @param messages the messages we intent to act on
+     * @param notificationID the id of the future notification. Will be used in the intents, so afterwards the correct notification gets closed.
+     */
+    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final int msgCount, final Account account, final ArrayList<MessageReference> allRefs, final List<? extends Message> messages, final int notificationID) {
+        // we need a new wearableExtender for each notification
+        final NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
+
+        NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
+        boolean showDeleteAction = deleteOption == NotificationQuickDelete.ALWAYS ||
+                (deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG && msgCount == 1);
+
+        // note: while we are limited to 3 actions on the phone,
+        // this does not seem to be a limit on Android Wear devices.
+        // Tested on Moto 360, 8 actions seem to be no problem.
+
+        if (showDeleteAction) {
+            // Delete on wear only if no confirmation is required
+            // because they would have to be confirmed on the phone, not the wear device
+            if (!K9.confirmDeleteFromNotification()) {
+                NotificationCompat.Action wearActionDelete =
+                        new NotificationCompat.Action.Builder(
+                                R.drawable.ic_action_delete_dark,
+                                context.getString(R.string.notification_action_delete),
+                                NotificationDeleteConfirmation.getIntent(context, account, allRefs, notificationID))
+                                .build();
+                builder.extend(wearableExtender.addAction(wearActionDelete));
+            }
+        }
+        if (NotificationActionService.isArchiveAllMessagesWearAvaliable(context, account, messages)) {
+
+            // Archive on wear
+            NotificationCompat.Action wearActionArchive =
+                    new NotificationCompat.Action.Builder(
+                            R.drawable.ic_action_archive_dark,
+                            context.getString(R.string.notification_action_archive),
+                            NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs, totalMsgCount > msgCount, notificationID))
+                            .build();
+            builder.extend(wearableExtender.addAction(wearActionArchive));
+        }
+        if (NotificationActionService.isSpamAllMessagesWearAvaliable(context, account, messages)) {
+
+            // Spam on wear
+            NotificationCompat.Action wearActionSpam =
+                    new NotificationCompat.Action.Builder(
+                            R.drawable.ic_action_delete_dark,
+                            context.getString(R.string.notification_action_spam),
+                            NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs, totalMsgCount > msgCount, notificationID))
+                            .build();
+            builder.extend(wearableExtender.addAction(wearActionSpam));
+        }
+    }
+
+    /**
+     * Create/Upate and show notifications about new messages
+     * or that there suddenly are no longer any new messages on an account
+     * @param context used to create the notification and it's intents
+     * @param account the account that has new messages
+     * @param message the message (if it's just one)
+     * @param data all the details
+     */
+    private void notifyAccountWithDataLocked(Context context, final Account account,
             LocalMessage message, NotificationData data) {
         boolean updateSilently = false;
 
@@ -4807,13 +4950,63 @@ public class MessagingController implements Runnable {
 
         if (platformSupportsExtendedNotifications() && !privacyModeEnabled) {
             if (newMessages > 1) {
+
+                // Stacked notifications for Android Wear
+                // https://developer.android.com/training/wearables/notifications/stacks.html
+
                 // multiple messages pending, show inbox style
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
+                int nID = account.getAccountNumber();
                 for (Message m : data.messages) {
                     style.addLine(buildMessageSummary(context,
                             getMessageSender(context, account, m),
                             getMessageSubject(context, m)));
+
+                    // build child-notifications for Android Wear,
+                    // so the grouped notification can be opened to
+                    // reveal the individual messages and their actions.
+                    NotificationCompat.Builder subBuilder = new NotificationCompat.Builder(context);
+                    subBuilder.setSmallIcon(R.drawable.ic_notify_new_mail);
+                    subBuilder.setWhen(System.currentTimeMillis());
+                    subBuilder.setGroup(NOTIFICATION_GROUP_KEY); // same group as summary
+                    subBuilder.setAutoCancel(true); // summary closes all, stacked only itself
+
+                    nID = 1000 + nID;
+                    // reuse existing notification IDs if some of the stacked messages
+                    // are already shown on the wear device.
+                    Integer realnID = data.getStackedChildNotification(m);
+                    if (realnID == null) {
+                        realnID = nID;
+                    }
+
+                    // set content
+                    setNotificationContent(context, m, getMessageSender(context, account, m), getMessageSubject(context, m), subBuilder, accountDescr);
+
+
+                    // set actions
+                    addWearActions(subBuilder, newMessages, account, m, realnID);
+                    if (m.isSet(Flag.FLAGGED)) {
+                        subBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                    }
+
+                    // no sound, no vibrate, no LED because these are for the summary notification only
+                    // and depend on quiet time and user settings
+
+                    // this must be done before the summary notification
+                    notifMgr.notify(realnID, subBuilder.build());
+                    data.addStackedChildNotification(m, realnID);
                 }
+                // go on configuring the summary notification on the phone
+                // The phone will only show the summary
+                // the wear device will show the stacked notifications
+                builder.setGroup(NOTIFICATION_GROUP_KEY);
+                builder.setGroupSummary(true);
+
+                //do not set summary notification to localOnly.
+                //Wear devices use the vibrate pattern of the summary
+                //despite not displaying the summary
+                builder.setLocalOnly(true);
+
                 if (!data.droppedMessages.isEmpty()) {
                     style.setSummaryText(context.getString(R.string.notification_additional_messages,
                             data.droppedMessages.size(), accountDescr));
@@ -4826,22 +5019,19 @@ public class MessagingController implements Runnable {
                 builder.setStyle(style);
             } else {
                 // single message pending, show big text
-                NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle(builder);
-                CharSequence preview = getMessagePreview(context, message);
-                if (preview != null) {
-                    style.bigText(preview);
-                }
-                builder.setContentText(subject);
-                builder.setSubText(accountDescr);
-                builder.setContentTitle(sender);
-                builder.setStyle(style);
+                setNotificationContent(context, message, sender, subject, builder, accountDescr);
 
                 builder.addAction(
                     platformSupportsLockScreenNotifications()
                         ? R.drawable.ic_action_single_message_options_dark_vector
                         : R.drawable.ic_action_single_message_options_dark,
                     context.getString(R.string.notification_action_reply),
-                    NotificationActionService.getReplyIntent(context, account, message.makeMessageReference()));
+                    NotificationActionService.getReplyIntent(context, account, message.makeMessageReference(), account.getAccountNumber()));
+
+                // add /different) actions to show on connected Android Wear devices
+                // do not add these to the a summary notification or they will affect all stacked
+                // notifications
+                addWearActions(builder, newMessages, newMessages, account, allRefs, data.messages, account.getAccountNumber());
             }
 
             // Mark Read on phone
@@ -4850,59 +5040,27 @@ public class MessagingController implements Runnable {
                     ? R.drawable.ic_action_mark_as_read_dark_vector
                     : R.drawable.ic_action_mark_as_read_dark,
                 context.getString(R.string.notification_action_mark_as_read),
-                NotificationActionService.getReadAllMessagesIntent(context, account, allRefs));
+                NotificationActionService.getReadAllMessagesIntent(context, account, allRefs, account.getAccountNumber()));
 
             NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
             boolean showDeleteAction = deleteOption == NotificationQuickDelete.ALWAYS ||
                     (deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG && newMessages == 1);
 
-            NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
+
             if (showDeleteAction) {
                 // we need to pass the action directly to the activity, otherwise the
                 // status bar won't be pulled up and we won't see the confirmation (if used)
 
                 // Delete on phone
                 builder.addAction(
-                    platformSupportsLockScreenNotifications()
-                        ? R.drawable.ic_action_delete_dark_vector
-                        : R.drawable.ic_action_delete_dark,
-                    context.getString(R.string.notification_action_delete),
-                    NotificationDeleteConfirmation.getIntent(context, account, allRefs));
-
-                // Delete on wear only if no confirmation is required
-                if (!K9.confirmDeleteFromNotification()) {
-                    NotificationCompat.Action wearActionDelete =
-                            new NotificationCompat.Action.Builder(
-                                    R.drawable.ic_action_delete_dark,
-                                    context.getString(R.string.notification_action_delete),
-                                    NotificationDeleteConfirmation.getIntent(context, account, allRefs))
-                                    .build();
-                    builder.extend(wearableExtender.addAction(wearActionDelete));
-                }
+                        platformSupportsLockScreenNotifications()
+                                ? R.drawable.ic_action_delete_dark_vector
+                                : R.drawable.ic_action_delete_dark,
+                        context.getString(R.string.notification_action_delete),
+                        NotificationDeleteConfirmation.getIntent(context, account, allRefs, account.getAccountNumber()));
             }
-            if (NotificationActionService.isArchiveAllMessagesWearAvaliable(context, account, data.messages)) {
 
-                // Archive on wear
-                NotificationCompat.Action wearActionArchive =
-                        new NotificationCompat.Action.Builder(
-                                R.drawable.ic_action_delete_dark,
-                                context.getString(R.string.notification_action_archive),
-                                NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs))
-                                .build();
-                builder.extend(wearableExtender.addAction(wearActionArchive));
-            }
-            if (NotificationActionService.isSpamAllMessagesWearAvaliable(context, account, data.messages)) {
-
-                // Archive on wear
-                NotificationCompat.Action wearActionSpam =
-                        new NotificationCompat.Action.Builder(
-                                R.drawable.ic_action_delete_dark,
-                                context.getString(R.string.notification_action_spam),
-                                NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs))
-                                .build();
-                builder.extend(wearableExtender.addAction(wearActionSpam));
-            }
-        } else {
+        } else { // no extended notifications supported
             String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
                     unreadCount, accountDescr);
             builder.setContentTitle(accountNotice);
@@ -4916,6 +5074,49 @@ public class MessagingController implements Runnable {
             }
         }
 
+        TaskStackBuilder stack = buildNotificationNavigationStack(context, account, message, newMessages, unreadCount, allRefs);
+
+        builder.setContentIntent(stack.getPendingIntent(
+                account.getAccountNumber(),
+                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT));
+        builder.setDeleteIntent(NotificationActionService.getAcknowledgeIntent(context, account, account.getAccountNumber()));
+
+        // Only ring or vibrate if we have not done so already on this account and fetch
+        boolean ringAndVibrate = false;
+        if (!updateSilently && !account.isRingNotified()) {
+            account.setRingNotified(true);
+            ringAndVibrate = true;
+        }
+
+        NotificationSetting n = account.getNotificationSetting();
+
+        configureLockScreenNotification(builder, context, account, newMessages, unreadCount, accountDescr, sender, data.messages);
+
+        configureNotification(
+                builder,
+                (n.shouldRing()) ? n.getRingtone() : null,
+                (n.shouldVibrate()) ? n.getVibration() : null,
+                (n.isLed()) ? Integer.valueOf(n.getLedColor()) : null,
+                K9.NOTIFICATION_LED_BLINK_SLOW,
+                ringAndVibrate);
+
+        notifMgr.notify(account.getAccountNumber(), builder.build());
+    }
+
+
+    /**
+     * Builds the TaskStack of a notification using either buildMessageViewBackStack
+     * or buildUnreadBackStack or buildMessageListBackStack depending on the
+     * behavior we have on this device generation.
+     * @param context
+     * @param account
+     * @param message (only used if there is only 1 new message)
+     * @param newMessages (used on newer platforms)
+     * @param unreadCount (used on platforms that support no extended notifications)
+     * @param allRefs
+     * @return
+     */
+    private TaskStackBuilder buildNotificationNavigationStack(Context context, Account account, LocalMessage message, int newMessages, int unreadCount, ArrayList<MessageReference> allRefs) {
         TaskStackBuilder stack;
         boolean treatAsSingleMessageNotification;
 
@@ -4944,32 +5145,30 @@ public class MessagingController implements Runnable {
 
             stack = buildMessageListBackStack(context, account, initialFolder);
         }
+        return stack;
+    }
 
-        builder.setContentIntent(stack.getPendingIntent(
-                account.getAccountNumber(),
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT));
-        builder.setDeleteIntent(NotificationActionService.getAcknowledgeIntent(context, account));
-
-        // Only ring or vibrate if we have not done so already on this account and fetch
-        boolean ringAndVibrate = false;
-        if (!updateSilently && !account.isRingNotified()) {
-            account.setRingNotified(true);
-            ringAndVibrate = true;
+    /**
+     * Set the content of a notification for a single message.
+     * @see #getMessagePreview(android.content.Context, com.fsck.k9.mail.Message)
+     * @param context
+     * @param message
+     * @param sender
+     * @param subject
+     * @param builder
+     * @param accountDescr
+     */
+    private NotificationCompat.Builder setNotificationContent(final Context context, final Message message, final CharSequence sender, final CharSequence subject, final NotificationCompat.Builder builder, final String accountDescr) {
+        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle(builder);
+        CharSequence preview = getMessagePreview(context, message);
+        if (preview != null) {
+            style.bigText(preview);
         }
-
-        NotificationSetting n = account.getNotificationSetting();
-
-        configureLockScreenNotification(builder, context, account, newMessages, unreadCount, accountDescr, sender, data.messages);
-
-        configureNotification(
-                builder,
-                (n.shouldRing()) ?  n.getRingtone() : null,
-                (n.shouldVibrate()) ? n.getVibration() : null,
-                (n.isLed()) ? Integer.valueOf(n.getLedColor()) : null,
-                K9.NOTIFICATION_LED_BLINK_SLOW,
-                ringAndVibrate);
-
-        notifMgr.notify(account.getAccountNumber(), builder.build());
+        builder.setContentText(subject);
+        builder.setSubText(accountDescr);
+        builder.setContentTitle(sender);
+        builder.setStyle(style);
+        return builder;
     }
 
     private TaskStackBuilder buildAccountsBackStack(Context context) {
@@ -5145,12 +5344,16 @@ public class MessagingController implements Runnable {
         }
     }
 
-    /** Cancel a notification of new email messages */
-    public void notifyAccountCancel(Context context, Account account) {
-        NotificationManager notifMgr =
+    /**
+     * Cancel a notification of new email messages
+     * @param  account all notifications for this account will be canceled and removed
+     */
+    public void notifyAccountCancel(final Context context, final Account account) {
+        NotificationManager notificationManager =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notifMgr.cancel(account.getAccountNumber());
-        notifMgr.cancel(-1000 - account.getAccountNumber());
+        notificationManager.cancel(account.getAccountNumber());
+        notificationManager.cancel(-1000 - account.getAccountNumber());
+
         notificationData.remove(account.getAccountNumber());
     }
 
