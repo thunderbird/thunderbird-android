@@ -12,6 +12,7 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessage;
 
 import android.app.PendingIntent;
@@ -80,7 +81,7 @@ public class NotificationActionService extends CoreService {
      * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
      * @return true if the ArchiveAllMessages intent is available for the given messages
      */
-    public static boolean isArchiveAllMessagesWearAvaliable(Context context, final Account account, final LinkedList<LocalMessage> messages) {
+    public static boolean isArchiveAllMessagesWearAvaliable(Context context, final Account account, final List<? extends Message> messages) {
         final MessagingController controller = MessagingController.getInstance(context);
         return (account.getArchiveFolderName() != null && !(account.getArchiveFolderName().equals(account.getSpamFolderName()) && K9.confirmSpam()) && isMovePossible(controller, account, account.getSentFolderName(), messages));
     }
@@ -105,7 +106,7 @@ public class NotificationActionService extends CoreService {
      * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
      * @return true if the SpamAllMessages intent is available for the given messages
      */
-    public static boolean isSpamAllMessagesWearAvaliable(Context context, final Account account, final LinkedList<LocalMessage> messages) {
+    public static boolean isSpamAllMessagesWearAvaliable(Context context, final Account account, final List<? extends Message> messages) {
         final MessagingController controller = MessagingController.getInstance(context);
         return (account.getSpamFolderName() != null && !K9.confirmSpam() && isMovePossible(controller, account, account.getSentFolderName(), messages));
     }
@@ -119,14 +120,14 @@ public class NotificationActionService extends CoreService {
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private static boolean isMovePossible(MessagingController controller, Account account, String dstFolder, List<LocalMessage> messages) {
+    private static boolean isMovePossible(MessagingController controller, Account account, String dstFolder, List<? extends Message> messages) {
         if (!controller.isMoveCapable(account)) {
             return false;
         }
         if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
             return false;
         }
-        for(LocalMessage messageToMove : messages) {
+        for(Message messageToMove : messages) {
             if (!controller.isMoveCapable(messageToMove)) {
                 return false;
             }
