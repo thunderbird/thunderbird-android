@@ -22,16 +22,38 @@ import com.fsck.k9.service.NotificationActionService;
 public class NotificationDeleteConfirmation extends Activity {
     private final static String EXTRA_ACCOUNT = "account";
     private final static String EXTRA_MESSAGE_LIST = "messages";
+    private final static String EXTRA_NOTIFICATION_ID = NotificationActionService.EXTRA_NOTIFICATION_ID;
 
     private final static int DIALOG_CONFIRM = 1;
 
+    /**
+     * The account to delete the messages on.
+     */
     private Account mAccount;
+    /**
+     * The messages to delete.
+     */
     private ArrayList<MessageReference> mMessageRefs;
+    /**
+     * ID of the notification that triggered this Activity.
+     * To make sure we close the correte notification afterwards because
+     * there may be multiple of them due to Android Wear stacked notifications.
+     */
+    private int mNotificationID;
 
-    public static PendingIntent getIntent(Context context, final Account account, final Serializable refs) {
+    /**
+     *
+     * @param context context to create the PendingIntent.
+     * @param account The account to delete the messages on.
+     * @param refs The messages to delete.
+     * @param notificationID ID of the notification that triggered this Activity.
+     * @return PendingIntent that either deletes directly or shows a confirm-dialog on the phone (not on the wear device) first.
+     */
+    public static PendingIntent getIntent(final Context context, final Account account, final Serializable refs, final int notificationID) {
         Intent i = new Intent(context, NotificationDeleteConfirmation.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
+        i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         return PendingIntent.getActivity(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -49,11 +71,12 @@ public class NotificationDeleteConfirmation extends Activity {
 
         mAccount = preferences.getAccount(intent.getStringExtra(EXTRA_ACCOUNT));
         mMessageRefs = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
+        mNotificationID = intent.getIntExtra(EXTRA_NOTIFICATION_ID, mAccount.getAccountNumber());
 
         if (mAccount == null || mMessageRefs == null || mMessageRefs.isEmpty()) {
             finish();
         } else if (!K9.confirmDeleteFromNotification()) {
-            triggerDelete();
+            triggerDelete(mNotificationID);
             finish();
         } else {
             showDialog(DIALOG_CONFIRM);
@@ -71,7 +94,7 @@ public class NotificationDeleteConfirmation extends Activity {
                     new Runnable() {
                         @Override
                         public void run() {
-                            triggerDelete();
+                            triggerDelete(mNotificationID);
                             finish();
                         }
                     },
@@ -100,8 +123,8 @@ public class NotificationDeleteConfirmation extends Activity {
         super.onPrepareDialog(id, d);
     }
 
-    private void triggerDelete() {
-        Intent i = NotificationActionService.getDeleteAllMessagesIntent(this, mAccount, mMessageRefs);
+    private void triggerDelete(final int notificationID) {
+        Intent i = NotificationActionService.getDeleteAllMessagesIntent(this, mAccount, mMessageRefs, notificationID);
         startService(i);
     }
 }
