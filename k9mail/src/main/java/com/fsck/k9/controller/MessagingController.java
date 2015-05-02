@@ -222,7 +222,7 @@ public class MessagingController implements Runnable {
         /**
          * Stacked notifications that share this notification as ther summary-notification.
          */
-        List<Integer> stackdNotifications;
+        Map<String, Integer> stackdNotifications;
         /**
          * List of references for messages that the user is still to be notified of,
          * but which don't fit into the inbox style anymore. It's sorted from newest
@@ -265,19 +265,55 @@ public class MessagingController implements Runnable {
             messages.addFirst(m);
         }
 
-        public void addStackedChildNotification(final int notificationId) {
+        /**
+         * Add a stacked notification that this is a summary notification for.
+         * @param ref
+         * @param notificationId
+         */
+        public void addStackedChildNotification(final MessageReference ref, final int notificationId) {
             if (stackdNotifications == null) {
-                stackdNotifications = new LinkedList<Integer>();
+                stackdNotifications = new HashMap<String, Integer>();
             }
-            stackdNotifications.add(new Integer(notificationId));
+            stackdNotifications.put(ref.getUid(), new Integer(notificationId));
         }
-        public List<Integer> getStackedChildNotifications() {
-            return stackdNotifications;
-        };
+        /**
+         * Add a stacked notification that this is a summary notification for.
+         * @param msg
+         * @param notificationId
+         */
+        public void addStackedChildNotification(final Message msg, final int notificationId) {
+            if (stackdNotifications == null) {
+                stackdNotifications = new HashMap<String, Integer>();
+            }
+            stackdNotifications.put(msg.getUid(), new Integer(notificationId));
+        }
+
+        /**
+         * @return the IDs of all stacked notifications this is a summary notification for.
+         */
+        public Collection<Integer> getStackedChildNotifications() {
+            return stackdNotifications.values();
+        }
+
+        /**
+         * @param ref
+         * @return null or the notification ID of a stacked notification for the given message
+         */
+        public Integer getStackedChildNotification(final MessageReference ref) {
+            return stackdNotifications.get(ref.getUid());
+        }
+        /**
+         * @param msg
+         * @return null or the notification ID of a stacked notification for the given message
+         */
+        public Integer getStackedChildNotification(final Message msg) {
+            return stackdNotifications.get(msg.getUid());
+        }
 
         /**
          * Remove a certain message from the message list.
-         *
+         * @see #getStackedChildNotification(com.fsck.k9.activity.MessageReference) for stacked
+         * notifications you may consider to cancel.
          * @param context A context.
          * @param ref Reference of the message to remove
          * @return true if message was found and removed, false otherwise
@@ -1848,7 +1884,18 @@ public class MessagingController implements Runnable {
                             synchronized (data) {
                                 MessageReference ref = localMessage.makeMessageReference();
                                 if (data.removeMatchingMessage(context, ref)) {
-                                    notifyAccountWithDataLocked(context, account, null, data);
+                                    synchronized (data) {
+                                        // if we remove a single message from the notification,
+                                        // maybe there is a stacked notification active for that one message
+                                        Integer childNotification = data.getStackedChildNotification(ref);
+                                        if (childNotification != null) {
+                                            NotificationManager notificationManager =
+                                                    (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                                            notificationManager.cancel(childNotification);
+                                        }
+                                        // update the (summary-) notification
+                                        notifyAccountWithDataLocked(context, account, null, data);
+                                    }
                                 }
                             }
                         }
@@ -4784,11 +4831,11 @@ public class MessagingController implements Runnable {
     /**
      * Build the specific notification actions for a single message on Android Wear.
      */
-    private void addWearActions(final NotificationCompat.Builder builder, final Account account, final Message messages) {
+    private void addWearActions(final NotificationCompat.Builder builder, final Account account, final Message message) {
         ArrayList<MessageReference> subAllRefs = new ArrayList<MessageReference>();
-        subAllRefs.add(new MessageReference(account.getUuid(), messages.getFolder().getName(), messages.getUid(), messages.getFlags().size()==0?null:messages.getFlags().iterator().next()));
+        subAllRefs.add(new MessageReference(account.getUuid(), message.getFolder().getName(), message.getUid(), message.getFlags().size()==0?null:message.getFlags().iterator().next()));
         LinkedList<Message> msgList = new LinkedList<Message>();
-        msgList.add(messages);
+        msgList.add(message);
         addWearActions(builder, 1, account, subAllRefs, msgList);
     }
     /**
@@ -4931,8 +4978,12 @@ public class MessagingController implements Runnable {
 
                     // this must be done before the summary notification
                     nID = 1000 + nID;
+                    Integer realnID = data.getStackedChildNotification(m);
+                    if (realnID == null) {
+                        realnID = nID;
+                    }
                     notifMgr.notify(nID, subBuilder.build());
-                    data.addStackedChildNotification(nID);
+                    data.addStackedChildNotification(m, realnID);
                 }
                 if (!data.droppedMessages.isEmpty()) {
                     style.setSummaryText(context.getString(R.string.notification_additional_messages,
@@ -5287,7 +5338,7 @@ public class MessagingController implements Runnable {
         // cancel stacked notifications on Android Wear that share this as a summary notification
         NotificationData data = notificationData.get(account.getAccountNumber());
         if (data != null) {
-            List<Integer> stackedChildNotifications = data.getStackedChildNotifications();
+            Collection<Integer> stackedChildNotifications = data.getStackedChildNotifications();
             if (stackedChildNotifications != null) {
                 for (Integer stackedNotificationId : stackedChildNotifications) {
                     notificationManager.cancel(stackedNotificationId);
