@@ -4824,18 +4824,21 @@ public class MessagingController implements Runnable {
 
     /**
      * Build the specific notification actions for a single message on Android Wear.
+     * @param totalMsgCount if this is a stacked notification, how many other messages are there?
      */
-    private void addWearActions(final NotificationCompat.Builder builder, final Account account, final Message message) {
+    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final Account account, final Message message) {
         ArrayList<MessageReference> subAllRefs = new ArrayList<MessageReference>();
         subAllRefs.add(new MessageReference(account.getUuid(), message.getFolder().getName(), message.getUid(), message.getFlags().size()==0?null:message.getFlags().iterator().next()));
         LinkedList<Message> msgList = new LinkedList<Message>();
         msgList.add(message);
-        addWearActions(builder, 1, account, subAllRefs, msgList);
+        addWearActions(builder, totalMsgCount, 1, account, subAllRefs, msgList);
     }
     /**
      * Build the specific notification actions for a single or multiple message on Android Wear.
+     * @param totalMsgCount total message count (may be different from msgCount if this is a stacked notification)
+     * @param msgCount message count to be handled in this (stacked or summary) notification
      */
-    private void addWearActions(final NotificationCompat.Builder builder, final int msgCount, final Account account, final ArrayList<MessageReference> allRefs, final List<? extends Message> messages) {
+    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final int msgCount, final Account account, final ArrayList<MessageReference> allRefs, final List<? extends Message> messages) {
         // we need a new wearableExtender for each notification
         final NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
@@ -4867,7 +4870,7 @@ public class MessagingController implements Runnable {
                     new NotificationCompat.Action.Builder(
                             R.drawable.ic_action_delete_dark,
                             context.getString(R.string.notification_action_archive),
-                            NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs))
+                            NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs, totalMsgCount > msgCount))
                             .build();
             builder.extend(wearableExtender.addAction(wearActionArchive));
         }
@@ -4878,7 +4881,7 @@ public class MessagingController implements Runnable {
                     new NotificationCompat.Action.Builder(
                             R.drawable.ic_action_delete_dark,
                             context.getString(R.string.notification_action_spam),
-                            NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs))
+                            NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs, totalMsgCount > msgCount))
                             .build();
             builder.extend(wearableExtender.addAction(wearActionSpam));
         }
@@ -4955,18 +4958,19 @@ public class MessagingController implements Runnable {
                     NotificationCompat.Builder subBuilder = new NotificationCompat.Builder(context);
                     subBuilder.setSmallIcon(R.drawable.ic_notify_new_mail);
                     subBuilder.setWhen(System.currentTimeMillis());
-                    subBuilder.setGroup(NOTIFICATION_GROUP_KEY); // same group are the GroupSummary notification
-                    subBuilder.setGroupSummary(false);           // this is not the summary
+                    subBuilder.setGroup(NOTIFICATION_GROUP_KEY); // same group as summary
+                    subBuilder.setAutoCancel(true); // summary closes all, stacked only itself
 
                     // set content
                     setNotificationContent(context, m, getMessageSender(context, account, message), getMessageSubject(context, message), subBuilder, accountDescr);
 
 
                     // set actions
-                    addWearActions(subBuilder, account, m);
+                    addWearActions(subBuilder, newMessages, account, m);
                     if (m.isSet(Flag.FLAGGED)) {
                         subBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
                     }
+
                     // no sound, no vibrate, no LED because these are for the summary notification only
                     // and depend on quiet time and user settings
 
@@ -4976,9 +4980,20 @@ public class MessagingController implements Runnable {
                     if (realnID == null) {
                         realnID = nID;
                     }
-                    notifMgr.notify(nID, subBuilder.build());
+                    notifMgr.notify(realnID, subBuilder.build());
                     data.addStackedChildNotification(m, realnID);
                 }
+                // go on configuring the summary notification on the phone
+                // The phone will only show the summary
+                // the wear device will show the stacked notifications
+                builder.setGroup(NOTIFICATION_GROUP_KEY);
+                builder.setGroupSummary(true);
+
+                //do not set summary notification to localOnly.
+                //Wear devices use the vibrate pattern of the summary
+                //despite not displaying the summary
+                //builder.setLocalOnly(true);
+
                 if (!data.droppedMessages.isEmpty()) {
                     style.setSummaryText(context.getString(R.string.notification_additional_messages,
                             data.droppedMessages.size(), accountDescr));
@@ -4999,6 +5014,11 @@ public class MessagingController implements Runnable {
                         : R.drawable.ic_action_single_message_options_dark,
                     context.getString(R.string.notification_action_reply),
                     NotificationActionService.getReplyIntent(context, account, message.makeMessageReference()));
+
+                // add /different) actions to show on connected Android Wear devices
+                // do not add these to the a summary notification or they will affect all stacked
+                // notifications
+                addWearActions(builder, newMessages, newMessages, account, allRefs, data.messages);
             }
 
             // Mark Read on phone
@@ -5013,8 +5033,6 @@ public class MessagingController implements Runnable {
             boolean showDeleteAction = deleteOption == NotificationQuickDelete.ALWAYS ||
                     (deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG && newMessages == 1);
 
-            // add /different) actions to show on connected Android Wear devices
-            addWearActions(builder, newMessages, account, allRefs, data.messages);
 
             if (showDeleteAction) {
                 // we need to pass the action directly to the activity, otherwise the
@@ -5028,12 +5046,6 @@ public class MessagingController implements Runnable {
                         context.getString(R.string.notification_action_delete),
                         NotificationDeleteConfirmation.getIntent(context, account, allRefs));
             }
-            // this may be a summary notification for multiple stacked notifications
-            // for each individual mail, shown on Android Wear
-            // The phone will only show the summary as it's the last notification given
-            // to notifMgr with this account's key
-            builder.setGroup(NOTIFICATION_GROUP_KEY);
-            builder.setGroupSummary(true);
 
         } else { // no extended notifications supported
             String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
@@ -5139,6 +5151,7 @@ public class MessagingController implements Runnable {
         if (preview != null) {
             style.bigText(preview);
         }
+        builder.setContentTitle(sender);
         builder.setContentText(subject);
         builder.setSubText(accountDescr);
         builder.setContentTitle(sender);

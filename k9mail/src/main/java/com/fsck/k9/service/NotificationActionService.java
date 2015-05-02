@@ -35,6 +35,7 @@ public class NotificationActionService extends CoreService {
     private final static String EXTRA_ACCOUNT = "account";
     private final static String EXTRA_MESSAGE = "message";
     private final static String EXTRA_MESSAGE_LIST = "messages";
+    private final static String EXTRA_DONTCANCEL = "dontcancel";
 
     public static PendingIntent getReplyIntent(Context context, final Account account, final MessageReference ref) {
         Intent i = new Intent(context, NotificationActionService.class);
@@ -75,7 +76,7 @@ public class NotificationActionService extends CoreService {
      * Check if for the given parameters the ArchiveAllMessages intent is possible for Android Wear.
      * (No confirmation on the phone required and moving these messages to the spam-folder possible)<br/>
      * Since we can not show a toast like on the phone screen, we must not offer actions that can not be performed.
-     * @see #getArchiveAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable)
+     * @see #getArchiveAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, boolean)
      * @param context the context to get a {@link MessagingController}
      * @param account the account (must allow moving messages to allow true as a result)
      * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
@@ -86,10 +87,21 @@ public class NotificationActionService extends CoreService {
         return (account.getArchiveFolderName() != null && !(account.getArchiveFolderName().equals(account.getSpamFolderName()) && K9.confirmSpam()) && isMovePossible(controller, account, account.getSentFolderName(), messages));
     }
 
-    public static PendingIntent getArchiveAllMessagesIntent(Context context, final Account account, final Serializable refs) {
+    /**
+     *
+     * @param context
+     * @param account
+     * @param refs
+     * @param dontCancel if true, after executing the intent, not all notifications for this account are canceled automatically
+     * @return
+     */
+    public static PendingIntent getArchiveAllMessagesIntent(Context context, final Account account, final Serializable refs, final boolean dontCancel) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
+        if (dontCancel) {
+            i.putExtra(EXTRA_DONTCANCEL, true);
+        }
         i.setAction(ARCHIVE_ALL_ACTION);
 
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -100,7 +112,7 @@ public class NotificationActionService extends CoreService {
      * Check if for the given parameters the SpamAllMessages intent is possible for Android Wear.
      * (No confirmation on the phone required and moving these messages to the spam-folder possible)<br/>
      * Since we can not show a toast like on the phone screen, we must not offer actions that can not be performed.
-     * @see #getSpamAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable)
+     * @see #getSpamAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, boolean)
      * @param context the context to get a {@link MessagingController}
      * @param account the account (must allow moving messages to allow true as a result)
      * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
@@ -111,10 +123,21 @@ public class NotificationActionService extends CoreService {
         return (account.getSpamFolderName() != null && !K9.confirmSpam() && isMovePossible(controller, account, account.getSentFolderName(), messages));
     }
 
-    public static PendingIntent getSpamAllMessagesIntent(Context context, final Account account, final Serializable refs) {
+    /**
+     *
+     * @param context
+     * @param account
+     * @param refs
+     * @param dontCancel if true, after executing the intent, not all notifications for this account are canceled automatically
+     * @return
+     */
+    public static PendingIntent getSpamAllMessagesIntent(Context context, final Account account, final Serializable refs, final boolean dontCancel) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
+        if (dontCancel) {
+            i.putExtra(EXTRA_DONTCANCEL, true);
+        }
         i.setAction(SPAM_ALL_ACTION);
 
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -240,10 +263,12 @@ public class NotificationActionService extends CoreService {
                 // of unseen messages is reset
             }
 
-            /* there's no point in keeping the notification after the user clicked on it */
-            //TODO: if this was a stacked notification on Android Wear, update the summary
+            // if this was a stacked notification on Android Wear, update the summary
             // notification and keep the other stacked notifications
-            controller.notifyAccountCancel(this, account);
+            if (!intent.hasExtra(EXTRA_DONTCANCEL)) {
+                // there's no point in keeping the notification after the user clicked on it
+                controller.notifyAccountCancel(this, account);
+            }
         } else {
             Log.w(K9.LOG_TAG, "Could not find account for notification action.");
         }
