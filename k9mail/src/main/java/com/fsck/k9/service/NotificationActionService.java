@@ -241,6 +241,8 @@ public class NotificationActionService extends CoreService {
             }
 
             /* there's no point in keeping the notification after the user clicked on it */
+            //TODO: if this was a stacked notification on Android Wear, update the summary
+            // notification and keep the other stacked notifications
             controller.notifyAccountCancel(this, account);
         } else {
             Log.w(K9.LOG_TAG, "Could not find account for notification action.");

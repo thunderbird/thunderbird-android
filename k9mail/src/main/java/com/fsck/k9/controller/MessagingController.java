@@ -222,7 +222,7 @@ public class MessagingController implements Runnable {
         /**
          * Stacked notifications that share this notification as ther summary-notification.
          */
-        Map<String, Integer> stackdNotifications;
+        Map<String, Integer> stackedNotifications = new HashMap<String, Integer>();
         /**
          * List of references for messages that the user is still to be notified of,
          * but which don't fit into the inbox style anymore. It's sorted from newest
@@ -267,47 +267,41 @@ public class MessagingController implements Runnable {
 
         /**
          * Add a stacked notification that this is a summary notification for.
-         * @param ref
-         * @param notificationId
+         * @param ref the message to add a stacked notification for
+         * @param notificationId the id of the stacked notification
          */
         public void addStackedChildNotification(final MessageReference ref, final int notificationId) {
-            if (stackdNotifications == null) {
-                stackdNotifications = new HashMap<String, Integer>();
-            }
-            stackdNotifications.put(ref.getUid(), new Integer(notificationId));
+            stackedNotifications.put(ref.getUid(), new Integer(notificationId));
         }
         /**
          * Add a stacked notification that this is a summary notification for.
-         * @param msg
-         * @param notificationId
+         * @param msg the message to add a stacked notification for
+         * @param notificationId the id of the stacked notification
          */
         public void addStackedChildNotification(final Message msg, final int notificationId) {
-            if (stackdNotifications == null) {
-                stackdNotifications = new HashMap<String, Integer>();
-            }
-            stackdNotifications.put(msg.getUid(), new Integer(notificationId));
+            stackedNotifications.put(msg.getUid(), new Integer(notificationId));
         }
 
         /**
          * @return the IDs of all stacked notifications this is a summary notification for.
          */
         public Collection<Integer> getStackedChildNotifications() {
-            return stackdNotifications.values();
+            return stackedNotifications.values();
         }
 
         /**
-         * @param ref
+         * @param ref the message to check for
          * @return null or the notification ID of a stacked notification for the given message
          */
         public Integer getStackedChildNotification(final MessageReference ref) {
-            return stackdNotifications.get(ref.getUid());
+            return stackedNotifications.get(ref.getUid());
         }
         /**
-         * @param msg
+         * @param msg the message to check for
          * @return null or the notification ID of a stacked notification for the given message
          */
         public Integer getStackedChildNotification(final Message msg) {
-            return stackdNotifications.get(msg.getUid());
+            return stackedNotifications.get(msg.getUid());
         }
 
         /**
@@ -361,7 +355,7 @@ public class MessagingController implements Runnable {
         public int getNewMessageCount() {
             return messages.size() + droppedMessages.size();
         }
-    };
+    }
 
     // Key is accountNumber
     private final ConcurrentMap<Integer, NotificationData> notificationData = new ConcurrentHashMap<Integer, NotificationData>();
@@ -5139,7 +5133,7 @@ public class MessagingController implements Runnable {
      * @param builder
      * @param accountDescr
      */
-    private NotificationCompat.Builder setNotificationContent(Context context, /*Local*/Message message, CharSequence sender, CharSequence subject, NotificationCompat.Builder builder, String accountDescr) {
+    private NotificationCompat.Builder setNotificationContent(final Context context, final Message message, final CharSequence sender, final CharSequence subject, final NotificationCompat.Builder builder, final String accountDescr) {
         NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle(builder);
         CharSequence preview = getMessagePreview(context, message);
         if (preview != null) {
