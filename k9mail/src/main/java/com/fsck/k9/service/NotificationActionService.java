@@ -2,7 +2,6 @@ package com.fsck.k9.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.fsck.k9.Account;
@@ -46,17 +45,18 @@ public class NotificationActionService extends CoreService {
 
     /**
      *
-     * @param context
-     * @param account
-     * @param ref
+     * @param context context to use for creating the {@link Intent}
+     * @param account the account we intent to act on
+     * @param ref the message we intent to act on
      * @param notificationID ID of the notification, this intent is for.
      * @see #EXTRA_NOTIFICATION_ID
-     * @return
+     * @return the requested intent. To be used in a Notification.
      */
     public static PendingIntent getReplyIntent(Context context, final Account account, final MessageReference ref, final int notificationID) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE, ref);
+        i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setAction(REPLY_ACTION);
 
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -64,11 +64,11 @@ public class NotificationActionService extends CoreService {
 
     /**
      *
-     * @param context
-     * @param account
-     * @param refs
+     * @param context context to use for creating the {@link Intent}
+     * @param account the account we intent to act on
+     * @param refs the messages we intent to act on
      * @param notificationID ID of the notification, this intent is for.
-     * @return
+     * @return the requested intent. To be used in a Notification.
      * @see #EXTRA_NOTIFICATION_ID
      */
     public static PendingIntent getReadAllMessagesIntent(Context context, final Account account, final Serializable refs, final int notificationID) {
@@ -83,10 +83,10 @@ public class NotificationActionService extends CoreService {
 
     /**
      *
-     * @param context
-     * @param account
+     * @param context context to use for creating the {@link Intent}
+     * @param account the account for the intent to act on
      * @param notificationID ID of the notification, this intent is for.
-     * @return
+     * @return the requested intent. To be used in a Notification.
      * @see #EXTRA_NOTIFICATION_ID
      */
     public static PendingIntent getAcknowledgeIntent(Context context, final Account account, final int notificationID) {
@@ -100,11 +100,11 @@ public class NotificationActionService extends CoreService {
 
     /**
      *
-     * @param context
-     * @param account
-     * @param refs
+     * @param context context to use for creating the {@link Intent}
+     * @param account the account we intent to act on
+     * @param refs the messages we intent to act on
      * @param notificationID ID of the notification, this intent is for.
-     * @return
+     * @return the requested intent. To be used in a Notification.
      * @see #EXTRA_NOTIFICATION_ID
      */
     public static Intent getDeleteAllMessagesIntent(Context context, final Account account, final Serializable refs, final int notificationID) {
@@ -121,7 +121,7 @@ public class NotificationActionService extends CoreService {
      * Check if for the given parameters the ArchiveAllMessages intent is possible for Android Wear.
      * (No confirmation on the phone required and moving these messages to the spam-folder possible)<br/>
      * Since we can not show a toast like on the phone screen, we must not offer actions that can not be performed.
-     * @see #getArchiveAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, boolean)
+     * @see #getArchiveAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, boolean, int)
      * @param context the context to get a {@link MessagingController}
      * @param account the account (must allow moving messages to allow true as a result)
      * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
@@ -134,12 +134,12 @@ public class NotificationActionService extends CoreService {
 
     /**
      *
-     * @param context
-     * @param account
-     * @param refs
+     * @param context context to use for creating the {@link Intent}
+     * @param account the account we intent to act on
+     * @param refs the messages we intent to act on
      * @param dontCancel if true, after executing the intent, not all notifications for this account are canceled automatically
      * @param notificationID ID of the notification, this intent is for.
-     * @return
+     * @return the requested intent. To be used in a Notification.
      * @see #EXTRA_NOTIFICATION_ID
      */
     public static PendingIntent getArchiveAllMessagesIntent(Context context, final Account account, final Serializable refs, final boolean dontCancel, final int notificationID) {
@@ -173,12 +173,12 @@ public class NotificationActionService extends CoreService {
 
     /**
      *
-     * @param context
-     * @param account
-     * @param refs
+     * @param context context to use for creating the {@link Intent}
+     * @param account the account we intent to act on
+     * @param refs the messages we intent to act on
      * @param dontCancel if true, after executing the intent, not all notifications for this account are canceled automatically
      * @param notificationID ID of the notification, this intent is for.
-     * @return
+     * @return the requested intent. To be used in a Notification.
      * @see #EXTRA_NOTIFICATION_ID
      */
     public static PendingIntent getSpamAllMessagesIntent(Context context, final Account account, final Serializable refs, final boolean dontCancel, final int notificationID) {
@@ -312,6 +312,7 @@ public class NotificationActionService extends CoreService {
             } else if (ACKNOWLEDGE_ACTION.equals(action)) {
                 // nothing to do here, we just want to cancel the notification so the list
                 // of unseen messages is reset
+                Log.i(K9.LOG_TAG, "notification acknowledged");
             }
 
             // if this was a stacked notification on Android Wear, update the summary

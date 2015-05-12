@@ -4669,11 +4669,8 @@ public class MessagingController implements Runnable {
 
         // Don't notify if the sender address matches one of our identities and the user chose not
         // to be notified for such messages.
-        if (account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail()) {
-            return false;
-        }
+        return !(account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail());
 
-        return true;
     }
 
     /**
@@ -4824,7 +4821,11 @@ public class MessagingController implements Runnable {
 
     /**
      * Build the specific notification actions for a single message on Android Wear.
+     * @param builder NotificationBuilder to add actions to
      * @param totalMsgCount if this is a stacked notification, how many other messages are there?
+     * @param account the account we intent to act on
+     * @param message the single message we intent to act on (in a stacked notification or a summary notification about a single message)
+     * @param notificationID the id of the future notification. Will be used in the intents, so afterwards the correct notification gets closed.
      */
     private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final Account account, final Message message, final int notificationID) {
         ArrayList<MessageReference> subAllRefs = new ArrayList<MessageReference>();
@@ -4835,8 +4836,13 @@ public class MessagingController implements Runnable {
     }
     /**
      * Build the specific notification actions for a single or multiple message on Android Wear.
+     * @param builder NotificationBuilder to add actions to
      * @param totalMsgCount total message count (may be different from msgCount if this is a stacked notification)
      * @param msgCount message count to be handled in this (stacked or summary) notification
+     * @param account the account we intent to act on
+     * @param allRefs the messages we intent to act on
+     * @param messages the messages we intent to act on
+     * @param notificationID the id of the future notification. Will be used in the intents, so afterwards the correct notification gets closed.
      */
     private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final int msgCount, final Account account, final ArrayList<MessageReference> allRefs, final List<? extends Message> messages, final int notificationID) {
         // we need a new wearableExtender for each notification
@@ -4886,6 +4892,15 @@ public class MessagingController implements Runnable {
             builder.extend(wearableExtender.addAction(wearActionSpam));
         }
     }
+
+    /**
+     * Create/Upate and show notifications about new messages
+     * or that there suddenly are no longer any new messages on an account
+     * @param context used to create the notification and it's intents
+     * @param account the account that has new messages
+     * @param message the message (if it's just one)
+     * @param data all the details
+     */
     private void notifyAccountWithDataLocked(Context context, final Account account,
             LocalMessage message, NotificationData data) {
         boolean updateSilently = false;
