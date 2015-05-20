@@ -24,7 +24,6 @@ dependencies {
     androidTestCompile('com.icegreen:greenmail:1.4.1') {
         exclude group: 'junit'
     }
-    androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
 
     testCompile('org.robolectric:robolectric:3.0-rc3') {
         exclude group: 'org.hamcrest', module: 'hamcrest-core'
