@@ -18,12 +18,17 @@
 package com.fsck.k9.mail.store.imap;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class ImapUtilityTest  {
     @Test
     public void testGetImapSequenceValues() {

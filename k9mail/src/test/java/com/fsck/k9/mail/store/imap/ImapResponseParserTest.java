@@ -3,6 +3,9 @@ package com.fsck.k9.mail.store.imap;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -16,6 +19,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class ImapResponseParserTest  {
 
     @Test public void testSimpleOkResponse() throws IOException {
