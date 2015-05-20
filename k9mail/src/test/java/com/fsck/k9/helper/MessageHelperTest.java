@@ -3,27 +3,29 @@ package com.fsck.k9.helper;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 import android.text.SpannableString;
 
 import com.fsck.k9.mail.Address;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class MessageHelperTest {
     private Contacts contacts;
     private Contacts mockContacts;
 
     @Before
     public void setUp() throws Exception {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = RuntimeEnvironment.application;
         contacts = new Contacts(context);
         mockContacts = new Contacts(context) {
             @Override public String getNameForAddress(String address) {

@@ -3,8 +3,6 @@ package com.fsck.k9.crypto;
 
 import java.util.List;
 
-import android.support.test.runner.AndroidJUnit4;
-
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -13,12 +11,15 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class MessageDecryptVerifierTest {
 
     @Test
