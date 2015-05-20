@@ -33,7 +33,7 @@ Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
   <li>Skróty klawiszowe</li>
   <li>Lepsza obsługa protokołu IMAP</li>
   <li>Zapisywanie załączników na kartę SD</li>
-  <li>Opróźnianie folderu \"Trash\"</li>
+  <li>Opróżnianie folderu \"Trash\"</li>
   <li>Sortowanie wiadomości</li>
   <li>… i wiele innych</li>
 </ul>
@@ -622,7 +622,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="network_preferences">Sieć</string>
   <string name="interaction_preferences">Interakcja</string>
   <string name="accountlist_preferences">Lista kont</string>
-  <string name="messagelist_preferences">Listy widomości</string>
+  <string name="messagelist_preferences">Listy wiadomości</string>
   <string name="messageview_preferences">Wiadomości</string>
   <string name="folderlist_preferences">Listy folderów</string>
   <string name="settings_theme_label">Kolorystyka</string>
