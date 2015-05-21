@@ -2,6 +2,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply from: '../gradle/plugins/checkstyle-android.gradle'
 apply from: '../gradle/plugins/findbugs-android.gradle'
+apply plugin: 'jacoco'
 
 repositories {
     jcenter()
