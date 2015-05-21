@@ -820,7 +820,7 @@ public class AccountSettings extends K9PreferenceActivity {
             //mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
         }
 
-        mAccount.setUseFolderStructureWhenArchive(mMarkAsReadWhenArchive.isChecked());
+        mAccount.setUseFolderStructureWhenArchive(mUseFolderStructureWhenArchive.isChecked());
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(FolderMode.valueOf(mSyncMode.getValue()));
