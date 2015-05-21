@@ -2505,20 +2505,22 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void onArchive(final List<LocalMessage> messages) {
         Map<Account, List<LocalMessage>> messagesByAccount = groupMessagesByAccount(messages);
 
-        Map<Folder, List<LocalMessage>> messagesByFolder = groupMessagesByFolder(messages);
+        for(Entry<Account, List<LocalMessage>> entryAccount : messagesByAccount.entrySet()) {
+            Account account = entryAccount.getKey();
+            Map<Folder, List<LocalMessage>> messagesByFolder = groupMessagesByFolder(entryAccount.getValue());
 
-        for (Entry<Folder, List<LocalMessage>> entry : messagesByFolder.entrySet()) {
-            Folder folder  = entry.getKey();
-            Account account = folder.getAccount();
-            String archiveTopFolder = account.getArchiveFolderName();
+            for (Entry<Folder, List<LocalMessage>> entry : messagesByFolder.entrySet()) {
+                Folder folder  = entry.getKey();
+                String archiveTopFolder = account.getArchiveFolderName();
 
-            String archiveFolder = archiveTopFolder;
-            if (!K9.FOLDER_NONE.equals(archiveTopFolder)) {
-                if (account.isUseFolderStructureWhenArchive()) {
-                    String archiveSubFolder = folder.getName();
-                    archiveFolder = archiveTopFolder + "." + archiveSubFolder;
+                String archiveFolder = archiveTopFolder;
+                if (!K9.FOLDER_NONE.equals(archiveTopFolder)) {
+                    if (account.isUseFolderStructureWhenArchive()) {
+                        String archiveSubFolder = folder.getName();
+                        archiveFolder = archiveTopFolder + "." + archiveSubFolder;
+                    }
+                    move(entry.getValue(), archiveFolder);
                 }
-                move(entry.getValue(), archiveFolder);
             }
         }
     }
