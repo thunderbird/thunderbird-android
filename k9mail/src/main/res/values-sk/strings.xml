@@ -158,6 +158,11 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="clearing_account">Čistenie účtu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Obnovovanie účtu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nová správa</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nová správa</item>
+    <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nové správy</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových správ</item>
+  </plurals>
   <string name="notification_new_one_account_fmt">Počet neprečítaných správ: <xliff:g id="unread_message_count">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_additional_messages">+ ďalších <xliff:g id="additional_messages">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Odpovedať</string>
@@ -264,7 +269,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_confirm_action_delete">Vymazať</string>
   <string name="global_settings_confirm_action_delete_starred">Vymazať správy s hviezdičkou (v zobrazení správ)</string>
   <string name="global_settings_confirm_action_spam">Nevyžiadaná pošta</string>
-  <string name="global_settings_confirm_action_delete_notif">Vymazať (z oznámenia)</string>
+  <string name="global_settings_confirm_action_delete_notif">Vymazať (z oznámení)</string>
   <string name="global_settings_privacy_hide_useragent">Odstrániť používateľského agenta K-9 z hlavičiek správ</string>
   <string name="global_settings_privacy_hide_timezone">Použiť UTC ako časové pásmo v hlavičkách správ</string>
   <string name="global_settings_notification_hide_subject_title">Skryť predmet v oznámení</string>
@@ -276,6 +281,12 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_notification_quick_delete_when_single_msg">Pre vymazanie jednej správy</string>
   <string name="global_settings_notification_quick_delete_always">Vždy</string>
   <string name="global_settings_notification_quick_delete_description">Zobraziť tlačidlo v oznámení pre rýchle vymazanie správy</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Oznámenia na obrazovke uzamknutia</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Žiadne oznámenia na obrazovke uzamknutia</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Názov aplikácie</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Počet neprečítaných správ</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Počet správ a odosielatelia</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Rovnaké ako pri odomknutej obrazovke</string>
   <string name="quiet_time">Čas ticha</string>
   <string name="quiet_time_description">Zakázať vyzváňanie, bzučanie a blikanie v noci</string>
   <string name="quiet_time_starts">Čas ticha začína o</string>
@@ -414,7 +425,13 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_title_fmt">Nastavenia účtu</string>
   <string name="account_settings_default_label">Predvolený účet</string>
   <string name="account_settings_default_summary">Odosielať e-maily z tohto účtu</string>
-  <string name="account_settings_notify_label">Oznámenie o nových správach</string>
+  <string name="account_settings_notify_label">Oznámenia o nových správach</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Priečinky oznámení</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Všetky</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Len priečinky 1. triedy</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Priečinky 1. a 2. triedy</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Všetky okrem priečinkov 2. triedy</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Žiadne</string>
   <string name="account_settings_notify_sync_label">Oznámenie o synchronizácii</string>
   <string name="account_settings_email_label">Vaša e-mailová adresa</string>
   <string name="account_settings_notify_summary">Oznamovať v stavovej lište, keď príde nová pošta</string>
@@ -424,7 +441,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_notification_opens_unread_label">Oznámenie otvorí neprečítané správy</string>
   <string name="account_settings_notification_opens_unread_summary">Po otvorení oznámenia zobraziť neprečítané správy</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Po otvorení označiť ako prečítané</string>
-  <string name="account_settings_mark_message_as_read_on_view_summary">Označiť správu ako prečítanú po jej otvorení na zobrazenie</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">Označiť správu ako prečítanú po jej zobrazení</string>
   <string name="account_settings_show_pictures_label">Vždy zobraziť obrázky</string>
   <string name="account_settings_show_pictures_never">Nie</string>
   <string name="account_settings_show_pictures_only_from_contacts">Od kontaktov</string>
@@ -453,6 +470,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_quote_prefix_label">Predpona citovaného textu</string>
   <string name="account_settings_crypto">Šifrovanie</string>
   <string name="account_settings_crypto_app">Poskytovateľ OpenPGP</string>
+  <string name="account_settings_no_openpgp_provider_installed">Nenainštalovaný poskytovateľ OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
   <string name="account_settings_storage_title">Ukladací priestor</string>
   <string name="account_settings_color_label">Farba účtu</string>
@@ -530,13 +548,18 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="folder_settings_folder_push_mode_first_class">1. trieda</string>
   <string name="folder_settings_folder_push_mode_second_class">2. trieda</string>
   <string name="folder_settings_folder_push_mode_inherited">Rovnaká ako trieda synchronizácie</string>
+  <string name="folder_settings_folder_notify_mode_label">Trieda priečinkov oznámení</string>
+  <string name="folder_settings_folder_notify_mode_normal">Žiadna</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1. trieda</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2. trieda</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Rovnaká ako push trieda</string>
   <string name="account_settings_incoming_label">Server prichádzajúcej pošty</string>
   <string name="account_settings_incoming_summary">Nastaviť server prichádzajúcej pošty</string>
   <string name="account_settings_outgoing_label">Server odchádzajúcej pošty</string>
   <string name="account_settings_outgoing_summary">Nastaviť (SMTP) server odchádzajúcej pošty</string>
   <string name="account_settings_description_label">Názov účtu</string>
   <string name="account_settings_name_label">Vaše meno</string>
-  <string name="notifications_title">Upozornenia</string>
+  <string name="notifications_title">Oznámenia</string>
   <string name="account_settings_vibrate_enable">Vibrovanie</string>
   <string name="account_settings_vibrate_summary">Vibrovať pri doručení nového e-mailu</string>
   <string name="account_settings_vibrate_pattern_label">Vzory vibrovania</string>
@@ -547,7 +570,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_vibrate_pattern_4">Vzor 4</string>
   <string name="account_settings_vibrate_pattern_5">Vzor 5</string>
   <string name="account_settings_vibrate_times">Opakovať vibrovanie</string>
-  <string name="account_settings_ringtone">Vyzváňanie pre novä správu</string>
+  <string name="account_settings_ringtone">Zvonenie pre novú správu</string>
   <string name="account_settings_led_label">Blikanie LED</string>
   <string name="account_settings_led_summary">Blikať diódou LED pri doručení novej správy</string>
   <string name="account_settings_composition_title">Možnosti vytvárania správ</string>
@@ -646,7 +669,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="background_ops_label">Synchronizácia na pozadí</string>
   <string name="background_ops_never">Nikdy</string>
   <string name="background_ops_always">Vždy</string>
-  <string name="background_ops_auto_sync_only">Keď je možnosť \'Automatická synchronizácia\'  zaškrtnutá</string>
+  <string name="background_ops_auto_sync_only">Keď je povolená možnosť \"Automatická synchronizácia\"</string>
   <string name="batch_select_all">Vybrať všetko</string>
   <string name="account_setup_push_limit_label">Maximálny počet priečinkov na kontrolu pomocou push</string>
   <string name="account_setup_push_limit_10">10 priečinkov</string>
@@ -889,7 +912,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Úspešne dešifrované a platný podpis, ale necertifikovaný</string>
   <string name="openpgp_successful_decryption_unknown_signature">Úspešne dešifrované, ale chýbajúci verejný kľúč</string>
   <string name="openpgp_get_key">Vyhľadať chýbajúci kľúč</string>
-  <string name="openpgp_error">Chyba OpenPGP:</string>
   <string name="openpgp_user_id">ID používateľa</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Použiť klientský certifikát</string>

@@ -23,8 +23,13 @@ import android.preference.RingtonePreference;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.DeletePolicy;
+import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
+import com.fsck.k9.Account.Searchable;
+import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
@@ -34,13 +39,15 @@ import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
+import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 
-import org.openintents.openpgp.util.OpenPgpListPreference;
+import org.openintents.openpgp.util.OpenPgpAppPreference;
+import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 
@@ -105,6 +112,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
+    private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -171,7 +179,8 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mIdleRefreshPeriod;
     private ListPreference mMaxPushFolders;
     private boolean mHasCrypto = false;
-    private OpenPgpListPreference mCryptoApp;
+    private OpenPgpAppPreference mCryptoApp;
+    private OpenPgpKeyPreference mCryptoKey;
 
     private PreferenceScreen mSearchScreen;
     private CheckBoxPreference mCloudSearchEnabled;
@@ -363,9 +372,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mDeletePolicy = (ListPreference) findPreference(PREFERENCE_DELETE_POLICY);
         if (!mIsSeenFlagSupported) {
-            removeListEntry(mDeletePolicy, Integer.toString(Account.DELETE_POLICY_MARK_AS_READ));
+            removeListEntry(mDeletePolicy, DeletePolicy.MARK_AS_READ.preferenceString());
         }
-        mDeletePolicy.setValue(Integer.toString(mAccount.getDeletePolicy()));
+        mDeletePolicy.setValue(mAccount.getDeletePolicy().preferenceString());
         mDeletePolicy.setSummary(mDeletePolicy.getEntry());
         mDeletePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -380,7 +389,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mExpungePolicy = (ListPreference) findPreference(PREFERENCE_EXPUNGE_POLICY);
         if (mIsExpungeCapable) {
-            mExpungePolicy.setValue(mAccount.getExpungePolicy());
+            mExpungePolicy.setValue(mAccount.getExpungePolicy().name());
             mExpungePolicy.setSummary(mExpungePolicy.getEntry());
             mExpungePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -692,15 +701,28 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mHasCrypto = OpenPgpUtils.isAvailable(this);
         if (mHasCrypto) {
-            mCryptoApp = (OpenPgpListPreference) findPreference(PREFERENCE_CRYPTO_APP);
+            mCryptoApp = (OpenPgpAppPreference) findPreference(PREFERENCE_CRYPTO_APP);
+            mCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
 
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
-            mCryptoApp.setSummary(mCryptoApp.getEntry());
             mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String value = newValue.toString();
-                    mCryptoApp.setSummary(mCryptoApp.getEntryByValue(value));
                     mCryptoApp.setValue(value);
+
+                    mCryptoKey.setOpenPgpProvider(value);
+                    return false;
+                }
+            });
+
+            mCryptoKey.setValue(mAccount.getCryptoKey());
+            mCryptoKey.setOpenPgpProvider(mCryptoApp.getValue());
+            // TODO: other identities?
+            mCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(mAccount.getIdentity(0)));
+            mCryptoKey.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    long value = (Long) newValue;
+                    mCryptoKey.setValue(value);
                     return false;
                 }
             });
@@ -739,7 +761,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setMarkMessageAsReadOnView(mMarkMessageAsReadOnView.isChecked());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
-        mAccount.setFolderNotifyNewMailMode(Account.FolderMode.valueOf(mAccountNotifyNewMailMode.getValue()));
+        mAccount.setFolderNotifyNewMailMode(FolderMode.valueOf(mAccountNotifyNewMailMode.getValue()));
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
@@ -752,14 +774,14 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
-        mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
-        mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
+        mAccount.setFolderTargetMode(FolderMode.valueOf(mTargetMode.getValue()));
+        mAccount.setDeletePolicy(DeletePolicy.fromInt(Integer.parseInt(mDeletePolicy.getValue())));
         if (mIsExpungeCapable) {
-            mAccount.setExpungePolicy(mExpungePolicy.getValue());
+            mAccount.setExpungePolicy(Expunge.valueOf(mExpungePolicy.getValue()));
         }
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
-        mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
-        mAccount.setMessageFormat(Account.MessageFormat.valueOf(mMessageFormat.getValue()));
+        mAccount.setSearchableFolders(Searchable.valueOf(mSearchableFolders.getValue()));
+        mAccount.setMessageFormat(MessageFormat.valueOf(mMessageFormat.getValue()));
         mAccount.setAlwaysShowCcBcc(mAlwaysShowCcBcc.isChecked());
         mAccount.setMessageReadReceipt(mMessageReadReceipt.isChecked());
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));
@@ -770,6 +792,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
         if (mHasCrypto) {
             mAccount.setCryptoApp(mCryptoApp.getValue());
+            mAccount.setCryptoKey(mCryptoKey.getValue());
         }
 
         // In webdav account we use the exact folder name also for inbox,
@@ -800,9 +823,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setUseFolderStructureWhenArchive(mMarkAsReadWhenArchive.isChecked());
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
-        needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
+        needsRefresh |= mAccount.setFolderSyncMode(FolderMode.valueOf(mSyncMode.getValue()));
 
-        boolean displayModeChanged = mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
+        boolean displayModeChanged = mAccount.setFolderDisplayMode(FolderMode.valueOf(mDisplayMode.getValue()));
 
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
@@ -815,11 +838,11 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         }
 
-        mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
+        mAccount.setShowPictures(ShowPictures.valueOf(mAccountShowPictures.getValue()));
 
         //IMAP specific stuff
         if (mIsPushCapable) {
-            boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
+            boolean needsPushRestart = mAccount.setFolderPushMode(FolderMode.valueOf(mPushMode.getValue()));
             if (mAccount.getFolderPushMode() != FolderMode.NONE) {
                 needsPushRestart |= displayModeChanged;
                 needsPushRestart |= mIncomingChanged;
@@ -839,6 +862,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mCryptoKey != null && mCryptoKey.handleOnActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
             case SELECT_AUTO_EXPAND_FOLDER:

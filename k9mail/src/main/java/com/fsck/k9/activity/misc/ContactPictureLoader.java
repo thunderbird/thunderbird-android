@@ -156,8 +156,8 @@ public class ContactPictureLoader {
         }
 
         int val = address.hashCode();
-        int rgb = CONTACT_DUMMY_COLORS_ARGB[Math.abs(val) % CONTACT_DUMMY_COLORS_ARGB.length];
-        return rgb;
+        int colorIndex = (val & Integer.MAX_VALUE) % CONTACT_DUMMY_COLORS_ARGB.length;
+        return CONTACT_DUMMY_COLORS_ARGB[colorIndex];
     }
 
     private String calcUnknownContactLetter(Address address) {

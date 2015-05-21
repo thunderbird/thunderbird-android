@@ -65,12 +65,12 @@ public class EmailProviderCacheCursor extends CursorWrapper {
         String value = mCache.getValueForMessage(messageId, columnName);
 
         if (value != null) {
-            return Integer.valueOf(value);
+            return Integer.parseInt(value);
         }
 
         value = mCache.getValueForThread(threadRootId, columnName);
         if (value != null) {
-            return Integer.valueOf(value);
+            return Integer.parseInt(value);
         }
 
         return super.getInt(columnIndex);

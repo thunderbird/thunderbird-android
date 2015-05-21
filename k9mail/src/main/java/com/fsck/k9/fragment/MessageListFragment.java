@@ -99,7 +99,7 @@ import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
 
 import com.handmark.pulltorefresh.library.ILoadingLayout;
@@ -2007,9 +2007,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 String uid = cursor.getString(UID_COLUMN);
                 String folderName = cursor.getString(FOLDER_NAME_COLUMN);
 
-                if (account.getUuid().equals(mActiveMessage.accountUuid) &&
-                        folderName.equals(mActiveMessage.folderName) &&
-                        uid.equals(mActiveMessage.uid)) {
+                if (account.getUuid().equals(mActiveMessage.getAccountUuid()) &&
+                        folderName.equals(mActiveMessage.getFolderName()) &&
+                        uid.equals(mActiveMessage.getUid())) {
                     int res = R.attr.messageListActiveItemBackgroundColor;
 
                     TypedValue outValue = new TypedValue();
@@ -2072,7 +2072,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
 
             if (holder.from != null ) {
-                holder.from.setTypeface(null, maybeBoldTypeface);
+                holder.from.setTypeface(Typeface.create(holder.from.getTypeface(), maybeBoldTypeface));
                 if (mSenderAboveSubject) {
                     holder.from.setCompoundDrawablesWithIntrinsicBounds(
                             statusHolder, // left
@@ -2095,7 +2095,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                             null); // bottom
                 }
 
-                holder.subject.setTypeface(null, maybeBoldTypeface);
+                holder.subject.setTypeface(Typeface.create(holder.subject.getTypeface(), maybeBoldTypeface));
                 holder.subject.setText(subject);
             }
 
@@ -2217,7 +2217,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
 
             if (mActionMode == null) {
-                mActionMode = getActivity().startActionMode(mActionModeCallback);
+                startAndPrepareActionMode();
             }
             computeBatchDirection();
             updateActionModeTitle();
@@ -2276,7 +2276,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 return;
             }
         } else {
-            mActionMode = getActivity().startActionMode(mActionModeCallback);
+            startAndPrepareActionMode();
         }
 
         if (selected) {
@@ -2287,9 +2287,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         computeBatchDirection();
         updateActionModeTitle();
-
-        // make sure the onPrepareActionMode is called
-        mActionMode.invalidate();
 
         computeSelectAllVisibility();
 
@@ -3020,10 +3017,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         for (int i = 0, len = mAdapter.getCount(); i < len; i++) {
             Cursor cursor = (Cursor) mAdapter.getItem(i);
 
-            MessageReference ref = new MessageReference();
-            ref.accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
-            ref.folderName = cursor.getString(FOLDER_NAME_COLUMN);
-            ref.uid = cursor.getString(UID_COLUMN);
+            String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+            String folderName = cursor.getString(FOLDER_NAME_COLUMN);
+            String messageUid = cursor.getString(UID_COLUMN);
+            MessageReference ref = new MessageReference(accountUuid, folderName, messageUid, null);
 
             messageRefs.add(ref);
         }
@@ -3086,12 +3083,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private MessageReference getReferenceForPosition(int position) {
         Cursor cursor = (Cursor) mAdapter.getItem(position);
-        MessageReference ref = new MessageReference();
-        ref.accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
-        ref.folderName = cursor.getString(FOLDER_NAME_COLUMN);
-        ref.uid = cursor.getString(UID_COLUMN);
 
-        return ref;
+        String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
+        String folderName = cursor.getString(FOLDER_NAME_COLUMN);
+        String messageUid = cursor.getString(UID_COLUMN);
+        return new MessageReference(accountUuid, folderName, messageUid, null);
     }
 
     private void openMessageAtPosition(int position) {
@@ -3119,9 +3115,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             String folderName = cursor.getString(FOLDER_NAME_COLUMN);
             String uid = cursor.getString(UID_COLUMN);
 
-            if (accountUuid.equals(messageReference.accountUuid) &&
-                    folderName.equals(messageReference.folderName) &&
-                    uid.equals(messageReference.uid)) {
+            if (accountUuid.equals(messageReference.getAccountUuid()) &&
+                    folderName.equals(messageReference.getFolderName()) &&
+                    uid.equals(messageReference.getUid())) {
                 return i;
             }
         }
@@ -3358,12 +3354,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<String>();
         if (needConditions) {
-            boolean selectActive = mActiveMessage != null && mActiveMessage.accountUuid.equals(accountUuid);
+            boolean selectActive = mActiveMessage != null && mActiveMessage.getAccountUuid().equals(accountUuid);
 
             if (selectActive) {
                 query.append("(" + MessageColumns.UID + " = ? AND " + SpecialColumns.FOLDER_NAME + " = ?) OR (");
-                queryArgs.add(mActiveMessage.uid);
-                queryArgs.add(mActiveMessage.folderName);
+                queryArgs.add(mActiveMessage.getUid());
+                queryArgs.add(mActiveMessage.getFolderName());
             }
 
             SqlQueryBuilder.buildWhereClause(account, mSearch.getConditions(), query, queryArgs);
@@ -3385,7 +3381,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private String getThreadId(LocalSearch search) {
         for (ConditionsTreeNode node : search.getLeafSet()) {
             SearchCondition condition = node.mCondition;
-            if (condition.field == Searchfield.THREAD_ID) {
+            if (condition.field == SearchField.THREAD_ID) {
                 return condition.value;
             }
         }
@@ -3561,11 +3557,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         if (mActionMode == null) {
-            mActionMode = getActivity().startActionMode(mActionModeCallback);
+            startAndPrepareActionMode();
         }
 
         recalculateSelectionCount();
         updateActionModeTitle();
+    }
+
+    private void startAndPrepareActionMode() {
+        mActionMode = getActivity().startActionMode(mActionModeCallback);
+        mActionMode.invalidate();
     }
 
     /**

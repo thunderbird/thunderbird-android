@@ -11,12 +11,13 @@ import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.MessagingException;
 
 /**
- * A {@link BinaryTempFileBody} extension containing a body of type
- * message/rfc822. This relates to a BinaryTempFileBody the same way that a
- * {@link LocalAttachmentMessageBody} relates to a {@link LocalAttachmentBody}.
- *
+ * A {@link BinaryTempFileBody} extension containing a body of type message/rfc822.
  */
 public class BinaryTempFileMessageBody extends BinaryTempFileBody implements CompositeBody {
+
+    public BinaryTempFileMessageBody(String encoding) {
+        super(encoding);
+    }
 
     @Override
     public void setEncoding(String encoding) throws MessagingException {

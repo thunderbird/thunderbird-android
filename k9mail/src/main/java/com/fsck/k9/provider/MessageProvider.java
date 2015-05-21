@@ -21,6 +21,7 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.FolderInfoHolder;
@@ -940,7 +941,7 @@ public class MessageProvider extends ContentProvider {
         }
     }
 
-    public static final String AUTHORITY = "com.fsck.k9.messageprovider";
+    public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".messageprovider";
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 

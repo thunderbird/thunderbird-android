@@ -205,11 +205,13 @@ Please submit bug reports, contribute new features and ask questions at
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> new messages</item>
     </plurals>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string>
-    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>
     <string name="notification_action_mark_as_read">Mark Read</string>
     <string name="notification_action_delete">Delete</string>
+    <string name="notification_action_archive">Archive</string>
+    <string name="notification_action_spam">Spam</string>
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
 
@@ -569,8 +571,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_folders">Folders</string>
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
     <string name="account_settings_crypto">Cryptography</string>
-    <string name="account_settings_crypto_app">OpenPGP Provider</string>
-    <string name="account_settings_no_openpgp_provider_installed">No OpenPGP Provider installed</string>
+    <string name="account_settings_crypto_app">OpenPGP app</string>
+    <string name="account_settings_crypto_key">My Key</string>
+    <string name="account_settings_no_openpgp_provider_installed">No OpenPGP app installed</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -1117,8 +1120,23 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_successful_decryption_valid_signature_uncertified">Successful decryption and valid signature but uncertified</string>
     <string name="openpgp_successful_decryption_unknown_signature">Successful decryption but missing public key</string>
     <string name="openpgp_get_key">Lookup missing key</string>
-    <string name="openpgp_error">OpenPGP Error:</string>
+    <string name="openpgp_error">OpenPGP Error: %s</string>
+    <string name="openpgp_unknown_error">Unknown OpenPGP Error</string>
     <string name="openpgp_user_id">User Id</string>
+    
+    <string name="openpgp_result_no_signature">"Not Signed"</string>
+    <string name="openpgp_result_invalid_signature">"Invalid signature!"</string>
+    <string name="openpgp_result_signature_uncertified">"Signed by (not certified!)"</string>
+    <string name="openpgp_result_signature_certified">"Signed by"</string>
+    <string name="openpgp_result_signature_expired_key">"Key is expired!"</string>
+    <string name="openpgp_result_signature_revoked_key">"Key has been revoked!"</string>
+    <string name="openpgp_result_signature_missing_key">"Unknown public key"</string>
+    <string name="openpgp_result_encrypted">"Encrypted"</string>
+    <string name="openpgp_result_not_encrypted">"Not Encrypted"</string>
+    <string name="openpgp_result_action_show">"Show"</string>
+    <string name="openpgp_result_action_lookup">"Lookup"</string>
+    <string name="openpgp_result_no_name">"No name"</string>
+    <string name="openpgp_result_no_email">"No email"</string>
 
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
@@ -1127,4 +1145,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="client_certificate_retrieval_failure">"Failed to retrieve client certificate for alias \"<xliff:g id="alias">%s</xliff:g>\""</string>
     <string name="client_certificate_advanced_options">Advanced options</string>
     <string name="client_certificate_expired">"Client certificate \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" has expired or is not yet valid (<xliff:g id="exception_message">%2$s</xliff:g>)"</string>
+
+    <string name="preview_inner_message">"Includes message titled \"%s\" containing: "</string>
+    <string name="preview_untitled_inner_message">"Includes untitled message containing: "</string>
+
+    <string name="crypto_incomplete_message">Incomplete message</string>
+    <!-- Note: This references message_view_download_remainder -->
+    <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
+
 </resources>

@@ -17,21 +17,20 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.store.imap.ImapStore;
-import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.mail.store.imap.ImapStore.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStore.WebDavStoreSettings;
-import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
@@ -47,14 +46,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
-    private static final String POP3_PORT = "110";
-    private static final String POP3_SSL_PORT = "995";
-    private static final String IMAP_PORT = "143";
-    private static final String IMAP_SSL_PORT = "993";
-    private static final String WEBDAV_PORT = "80";
-    private static final String WEBDAV_SSL_PORT = "443";
-
-    private String mStoreType;
+    private Type mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
     private ClientCertificateSpinner mClientCertificateSpinner;
@@ -80,8 +72,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private CheckBox mCompressionOther;
     private CheckBox mSubscribedFoldersOnly;
     private AuthTypeAdapter mAuthTypeAdapter;
-    private String mDefaultPort = "";
-    private String mDefaultSslPort = "";
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
@@ -188,10 +178,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             mStoreType = settings.type;
-            if (Pop3Store.STORE_TYPE.equals(settings.type)) {
+            if (Type.POP3 == settings.type) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
-                mDefaultPort = POP3_PORT;
-                mDefaultSslPort = POP3_SSL_PORT;
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
@@ -200,11 +188,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
-            } else if (ImapStore.STORE_TYPE.equals(settings.type)) {
+            } else if (Type.IMAP == settings.type) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
-                mDefaultPort = IMAP_PORT;
-                mDefaultSslPort = IMAP_SSL_PORT;
 
                 ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
 
@@ -217,15 +202,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
 
                 if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
-            } else if (WebDavStore.STORE_TYPE.equals(settings.type)) {
+            } else if (Type.WebDAV == settings.type) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
-                mDefaultPort = WEBDAV_PORT;
-                mDefaultSslPort = WEBDAV_SSL_PORT;
                 mConnectionSecurityChoices = new ConnectionSecurity[] {
                         ConnectionSecurity.NONE,
                         ConnectionSecurity.SSL_TLS_REQUIRED };
@@ -251,10 +233,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (webDavSettings.mailboxPath != null) {
                     mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
                 }
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
+
+            mAccount.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(settings.type));
 
             // Note that mConnectionSecurityChoices is configured above based on server type
             ConnectionSecurityAdapter securityTypesAdapter =
@@ -280,9 +263,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
-            mCompressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
-            mCompressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
-            mCompressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
+            mCompressionMobile.setChecked(mAccount.useCompression(NetworkType.MOBILE));
+            mCompressionWifi.setChecked(mAccount.useCompression(NetworkType.WIFI));
+            mCompressionOther.setChecked(mAccount.useCompression(NetworkType.OTHER));
 
             if (settings.host != null) {
                 mServerView.setText(settings.host);
@@ -490,25 +473,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(getDefaultPort(securityType));
+        mPortView.setText(String.valueOf(AccountCreator.getDefaultPort(securityType, mStoreType)));
         mPortView.addTextChangedListener(validationTextWatcher);
-    }
-
-    private String getDefaultPort(ConnectionSecurity securityType) {
-        String port;
-        switch (securityType) {
-        case NONE:
-        case STARTTLS_REQUIRED:
-            port = mDefaultPort;
-            break;
-        case SSL_TLS_REQUIRED:
-            port = mDefaultSslPort;
-            break;
-        default:
-            Log.e(K9.LOG_TAG, "Unhandled ConnectionSecurity type encountered");
-            port = "";
-        }
-        return port;
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
@@ -549,7 +515,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     }
 
                     URI oldUri = new URI(mAccount.getTransportUri());
-                    ServerSettings transportServer = new ServerSettings(SmtpTransport.TRANSPORT_TYPE, oldUri.getHost(), oldUri.getPort(),
+                    ServerSettings transportServer = new ServerSettings(Type.SMTP, oldUri.getHost(), oldUri.getPort(),
                             ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password, clientCertificateAlias);
                     String transportUri = Transport.createTransportUri(transportServer);
                     mAccount.setTransportUri(transportUri);
@@ -585,13 +551,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             int port = Integer.parseInt(mPortView.getText().toString());
 
             Map<String, String> extra = null;
-            if (ImapStore.STORE_TYPE.equals(mStoreType)) {
+            if (Type.IMAP == mStoreType) {
                 extra = new HashMap<String, String>();
                 extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
                         Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
                 extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
                         mImapPathPrefixView.getText().toString());
-            } else if (WebDavStore.STORE_TYPE.equals(mStoreType)) {
+            } else if (Type.WebDAV == mStoreType) {
                 extra = new HashMap<String, String>();
                 extra.put(WebDavStoreSettings.PATH_KEY,
                         mWebdavPathPrefixView.getText().toString());
@@ -607,9 +573,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             mAccount.setStoreUri(RemoteStore.createStoreUri(settings));
 
-            mAccount.setCompression(Account.TYPE_MOBILE, mCompressionMobile.isChecked());
-            mAccount.setCompression(Account.TYPE_WIFI, mCompressionWifi.isChecked());
-            mAccount.setCompression(Account.TYPE_OTHER, mCompressionOther.isChecked());
+            mAccount.setCompression(NetworkType.MOBILE, mCompressionMobile.isChecked());
+            mAccount.setCompression(NetworkType.WIFI, mCompressionWifi.isChecked());
+            mAccount.setCompression(NetworkType.OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);

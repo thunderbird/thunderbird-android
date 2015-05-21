@@ -127,7 +127,7 @@ public class K9 extends Application {
      * It should NEVER be on for Market builds
      * Right now, it just governs strictmode
      **/
-    public static boolean DEVELOPER_MODE = true;
+    public static boolean DEVELOPER_MODE = BuildConfig.DEVELOPER_MODE;
 
 
     /**
@@ -149,7 +149,7 @@ public class K9 extends Application {
      *
      * Feature is enabled when DEBUG == true
      */
-    public static String ERROR_FOLDER_NAME = "K9mail-errors";
+    public static final String ERROR_FOLDER_NAME = "K9mail-errors";
 
     /**
      * A reference to the {@link SharedPreferences} used for caching the last known database
@@ -280,7 +280,7 @@ public class K9 extends Application {
      * on each new folder and can be incremented with "Load more messages..." by the
      * VISIBLE_LIMIT_INCREMENT
      */
-    public static int DEFAULT_VISIBLE_LIMIT = 25;
+    public static final int DEFAULT_VISIBLE_LIMIT = 25;
 
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)
@@ -295,7 +295,7 @@ public class K9 extends Application {
      * until the app is killed and restarted
      */
 
-    public static int MAX_SEND_ATTEMPTS = 5;
+    public static final int MAX_SEND_ATTEMPTS = 5;
 
     /**
      * Max time (in millis) the wake lock will be held for when background sync is happening
@@ -339,18 +339,18 @@ public class K9 extends Application {
     public static class Intents {
 
         public static class EmailReceived {
-            public static final String ACTION_EMAIL_RECEIVED    = "com.fsck.k9.intent.action.EMAIL_RECEIVED";
-            public static final String ACTION_EMAIL_DELETED     = "com.fsck.k9.intent.action.EMAIL_DELETED";
-            public static final String ACTION_REFRESH_OBSERVER  = "com.fsck.k9.intent.action.REFRESH_OBSERVER";
-            public static final String EXTRA_ACCOUNT            = "com.fsck.k9.intent.extra.ACCOUNT";
-            public static final String EXTRA_FOLDER             = "com.fsck.k9.intent.extra.FOLDER";
-            public static final String EXTRA_SENT_DATE          = "com.fsck.k9.intent.extra.SENT_DATE";
-            public static final String EXTRA_FROM               = "com.fsck.k9.intent.extra.FROM";
-            public static final String EXTRA_TO                 = "com.fsck.k9.intent.extra.TO";
-            public static final String EXTRA_CC                 = "com.fsck.k9.intent.extra.CC";
-            public static final String EXTRA_BCC                = "com.fsck.k9.intent.extra.BCC";
-            public static final String EXTRA_SUBJECT            = "com.fsck.k9.intent.extra.SUBJECT";
-            public static final String EXTRA_FROM_SELF          = "com.fsck.k9.intent.extra.FROM_SELF";
+            public static final String ACTION_EMAIL_RECEIVED = BuildConfig.APPLICATION_ID + ".intent.action.EMAIL_RECEIVED";
+            public static final String ACTION_EMAIL_DELETED = BuildConfig.APPLICATION_ID + ".intent.action.EMAIL_DELETED";
+            public static final String ACTION_REFRESH_OBSERVER = BuildConfig.APPLICATION_ID + ".intent.action.REFRESH_OBSERVER";
+            public static final String EXTRA_ACCOUNT = BuildConfig.APPLICATION_ID + ".intent.extra.ACCOUNT";
+            public static final String EXTRA_FOLDER = BuildConfig.APPLICATION_ID + ".intent.extra.FOLDER";
+            public static final String EXTRA_SENT_DATE = BuildConfig.APPLICATION_ID + ".intent.extra.SENT_DATE";
+            public static final String EXTRA_FROM = BuildConfig.APPLICATION_ID + ".intent.extra.FROM";
+            public static final String EXTRA_TO = BuildConfig.APPLICATION_ID + ".intent.extra.TO";
+            public static final String EXTRA_CC = BuildConfig.APPLICATION_ID + ".intent.extra.CC";
+            public static final String EXTRA_BCC = BuildConfig.APPLICATION_ID + ".intent.extra.BCC";
+            public static final String EXTRA_SUBJECT = BuildConfig.APPLICATION_ID + ".intent.extra.SUBJECT";
+            public static final String EXTRA_FROM_SELF = BuildConfig.APPLICATION_ID + ".intent.extra.FROM_SELF";
         }
 
         public static class Share {
@@ -359,7 +359,7 @@ public class K9 extends Application {
              * because of different semantics (String array vs. string with comma separated
              * email addresses)
              */
-            public static final String EXTRA_FROM               = "com.fsck.k9.intent.extra.SENDER";
+            public static final String EXTRA_FROM = BuildConfig.APPLICATION_ID + ".intent.extra.SENDER";
         }
     }
 

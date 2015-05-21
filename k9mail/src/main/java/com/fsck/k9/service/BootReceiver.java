@@ -15,12 +15,12 @@ import com.fsck.k9.K9;
 
 public class BootReceiver extends CoreReceiver {
 
-    public static String FIRE_INTENT = "com.fsck.k9.service.BroadcastReceiver.fireIntent";
-    public static String SCHEDULE_INTENT = "com.fsck.k9.service.BroadcastReceiver.scheduleIntent";
-    public static String CANCEL_INTENT = "com.fsck.k9.service.BroadcastReceiver.cancelIntent";
+    public static final String FIRE_INTENT = "com.fsck.k9.service.BroadcastReceiver.fireIntent";
+    public static final String SCHEDULE_INTENT = "com.fsck.k9.service.BroadcastReceiver.scheduleIntent";
+    public static final String CANCEL_INTENT = "com.fsck.k9.service.BroadcastReceiver.cancelIntent";
 
-    public static String ALARMED_INTENT = "com.fsck.k9.service.BroadcastReceiver.pendingIntent";
-    public static String AT_TIME = "com.fsck.k9.service.BroadcastReceiver.atTime";
+    public static final String ALARMED_INTENT = "com.fsck.k9.service.BroadcastReceiver.pendingIntent";
+    public static final String AT_TIME = "com.fsck.k9.service.BroadcastReceiver.atTime";
 
     @Override
     public Integer receive(Context context, Intent intent, Integer tmpWakeLockId) {

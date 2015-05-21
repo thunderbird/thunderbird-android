@@ -129,7 +129,7 @@
   <string name="recreating_account">正在重建帳戶「<xliff:g id="account">%s</xliff:g>」</string>
   <string name="notification_new_title">您有新郵件</string>
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未讀郵件（<xliff:g id="account">%s</xliff:g>）</string>
-  <string name="notification_additional_messages">+ 來自<xliff:g id="account">%s</xliff:g>已超過<xliff:g id="additional_messages">%d</xliff:g>則訊息 </string>
+  <string name="notification_additional_messages">+ 來自<xliff:g id="account">%2$s</xliff:g>已超過<xliff:g id="additional_messages">%1$d</xliff:g>則訊息 </string>
   <string name="notification_action_reply">回覆</string>
   <string name="notification_action_mark_as_read">開啟</string>
   <string name="notification_action_delete">刪除</string>

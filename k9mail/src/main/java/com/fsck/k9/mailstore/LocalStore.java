@@ -21,18 +21,26 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
+import org.apache.james.mime4j.codec.Base64InputStream;
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+import org.apache.james.mime4j.util.MimeUtil;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +84,7 @@ public class LocalStore extends Store implements Serializable {
         "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, " +
         "bcc_list, reply_to_list, attachment_count, internal_date, messages.message_id, " +
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +
-        "forwarded ";
+        "forwarded, message_part_id, mime_type ";
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
@@ -119,7 +127,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 50;
+    public static final int DB_VERSION = 51;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -276,7 +284,7 @@ public class LocalStore extends Store implements Serializable {
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "Before prune size = " + getSize());
 
-        pruneCachedAttachments(true);
+        deleteAllMessageDataFromDisk();
         if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "After prune / before compaction size = " + getSize());
 
@@ -285,24 +293,16 @@ public class LocalStore extends Store implements Serializable {
 
             Log.i(K9.LOG_TAG, "After prune / before clear size = " + getSize());
         }
-        // don't delete messages that are Local, since there is no copy on the server.
-        // Don't delete deleted messages.  They are essentially placeholders for UIDs of messages that have
-        // been deleted locally.  They take up insignificant space
+
         database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) {
-                // Delete entries from 'threads' table
-                db.execSQL("DELETE FROM threads WHERE message_id IN " +
-                        "(SELECT id FROM messages WHERE deleted = 0 AND uid NOT LIKE 'Local%')");
+                // We don't care about threads of deleted messages, so delete the whole table.
+                db.delete("threads", null, null);
 
-                // Set 'root' and 'parent' of remaining entries in 'thread' table to 'NULL' to make
-                // sure the thread structure is in a valid state (this may destroy existing valid
-                // thread trees, but is much faster than adjusting the tree by removing messages
-                // one by one).
-                db.execSQL("UPDATE threads SET root=id, parent=NULL");
-
-                // Delete entries from 'messages' table
-                db.execSQL("DELETE FROM messages WHERE deleted = 0 AND uid NOT LIKE 'Local%'");
+                // Don't delete deleted messages. They are essentially placeholders for UIDs of messages that have
+                // been deleted locally.
+                db.delete("messages", "deleted = 0", null);
                 return null;
             }
         });
@@ -406,71 +406,37 @@ public class LocalStore extends Store implements Serializable {
         database.recreate();
     }
 
-    /**
-     * Deletes all cached attachments for the entire store.
-     * @param force
-     * @throws com.fsck.k9.mail.MessagingException
-     */
-    //TODO this method seems to be only called with force=true, simplify accordingly
-    private void pruneCachedAttachments(final boolean force) throws MessagingException {
+    private void deleteAllMessageDataFromDisk() throws MessagingException {
+        markAllMessagePartsDataAsMissing();
+        deleteAllMessagePartsDataFromDisk();
+    }
+
+    private void markAllMessagePartsDataAsMissing() throws MessagingException {
         database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                if (force) {
-                    ContentValues cv = new ContentValues();
-                    cv.putNull("content_uri");
-                    db.update("attachments", cv, null, null);
-                }
-                final StorageManager storageManager = StorageManager.getInstance(context);
-                File[] files = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId()).listFiles();
-                for (File file : files) {
-                    if (file.exists()) {
-                        if (!force) {
-                            Cursor cursor = null;
-                            try {
-                                cursor = db.query(
-                                             "attachments",
-                                             new String[] { "store_data" },
-                                             "id = ?",
-                                             new String[] { file.getName() },
-                                             null,
-                                             null,
-                                             null);
-                                if (cursor.moveToNext()) {
-                                    if (cursor.getString(0) == null) {
-                                        if (K9.DEBUG)
-                                            Log.d(K9.LOG_TAG, "Attachment " + file.getAbsolutePath() + " has no store data, not deleting");
-                                        /*
-                                         * If the attachment has no store data it is not recoverable, so
-                                         * we won't delete it.
-                                         */
-                                        continue;
-                                    }
-                                }
-                            } finally {
-                                Utility.closeQuietly(cursor);
-                            }
-                        }
-                        if (!force) {
-                            try {
-                                ContentValues cv = new ContentValues();
-                                cv.putNull("content_uri");
-                                db.update("attachments", cv, "id = ?", new String[] { file.getName() });
-                            } catch (Exception e) {
-                                /*
-                                 * If the row has gone away before we got to mark it not-downloaded that's
-                                 * okay.
-                                 */
-                            }
-                        }
-                        if (!file.delete()) {
-                            file.deleteOnExit();
-                        }
-                    }
-                }
+                ContentValues cv = new ContentValues();
+                cv.put("data_location", DataLocation.MISSING);
+                db.update("message_parts", cv, null, null);
+
                 return null;
             }
         });
+    }
+
+    private void deleteAllMessagePartsDataFromDisk() {
+        final StorageManager storageManager = StorageManager.getInstance(context);
+        File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId());
+        File[] files = attachmentDirectory.listFiles();
+        if (files == null) {
+            return;
+        }
+
+        for (File file : files) {
+            if (file.exists() && !file.delete()) {
+                file.deleteOnExit();
+            }
+        }
     }
 
     public void resetVisibleLimits(int visibleLimit) throws MessagingException {
@@ -671,7 +637,7 @@ public class LocalStore extends Store implements Serializable {
         String rootIdString = Long.toString(rootId);
 
         LocalSearch search = new LocalSearch();
-        search.and(Searchfield.THREAD_ID, rootIdString, Attribute.EQUALS);
+        search.and(SearchField.THREAD_ID, rootIdString, Attribute.EQUALS);
 
         return searchForMessages(null, search);
     }
@@ -680,40 +646,110 @@ public class LocalStore extends Store implements Serializable {
         return database.execute(false, new DbCallback<AttachmentInfo>() {
             @Override
             public AttachmentInfo doDbWork(final SQLiteDatabase db) throws WrappedException {
-                String name;
-                String type;
-                int size;
-                Cursor cursor = null;
+                Cursor cursor = db.query("message_parts",
+                        new String[] { "display_name", "decoded_body_size", "mime_type" },
+                        "id = ?",
+                        new String[] { attachmentId },
+                        null, null, null);
                 try {
-                    cursor = db.query(
-                                 "attachments",
-                                 new String[] { "name", "size", "mime_type" },
-                                 "id = ?",
-                                 new String[] { attachmentId },
-                                 null,
-                                 null,
-                                 null);
                     if (!cursor.moveToFirst()) {
                         return null;
                     }
-                    name = cursor.getString(0);
-                    size = cursor.getInt(1);
-                    type = cursor.getString(2);
+                    String name = cursor.getString(0);
+                    long size = cursor.getLong(1);
+                    String mimeType = cursor.getString(2);
+
                     final AttachmentInfo attachmentInfo = new AttachmentInfo();
                     attachmentInfo.name = name;
                     attachmentInfo.size = size;
-                    attachmentInfo.type = type;
+                    attachmentInfo.type = mimeType;
+
                     return attachmentInfo;
                 } finally {
-                    Utility.closeQuietly(cursor);
+                    cursor.close();
                 }
             }
         });
     }
 
+    public InputStream getAttachmentInputStream(final String attachmentId) throws MessagingException {
+        return database.execute(false, new DbCallback<InputStream>() {
+            @Override
+            public InputStream doDbWork(final SQLiteDatabase db) throws WrappedException {
+                Cursor cursor = db.query("message_parts",
+                        new String[] { "data_location", "data", "encoding" },
+                        "id = ?",
+                        new String[] { attachmentId },
+                        null, null, null);
+                try {
+                    if (!cursor.moveToFirst()) {
+                        return null;
+                    }
+
+                    int location = cursor.getInt(0);
+                    String encoding = cursor.getString(2);
+
+                    InputStream rawInputStream = getRawAttachmentInputStream(cursor, location, attachmentId);
+                    return getDecodingInputStream(rawInputStream, encoding);
+                } finally {
+                    cursor.close();
+                }
+            }
+        });
+    }
+
+    private InputStream getRawAttachmentInputStream(Cursor cursor, int location, String attachmentId) {
+        switch (location) {
+            case DataLocation.IN_DATABASE: {
+                byte[] data = cursor.getBlob(1);
+                return new ByteArrayInputStream(data);
+            }
+            case DataLocation.ON_DISK: {
+                File file = getAttachmentFile(attachmentId);
+                try {
+                    return new FileInputStream(file);
+                } catch (FileNotFoundException e) {
+                    throw new WrappedException(e);
+                }
+            }
+            default: {
+                throw new IllegalStateException("No attachment data available");
+            }
+        }
+    }
+
+    InputStream getDecodingInputStream(final InputStream rawInputStream, String encoding) {
+        if (MimeUtil.ENC_BASE64.equals(encoding)) {
+            return new Base64InputStream(rawInputStream) {
+                @Override
+                public void close() throws IOException {
+                    super.close();
+                    rawInputStream.close();
+                }
+            };
+        }
+        if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(encoding)) {
+            return new QuotedPrintableInputStream(rawInputStream) {
+                @Override
+                public void close() throws IOException {
+                    super.close();
+                    rawInputStream.close();
+                }
+            };
+        }
+
+        return rawInputStream;
+    }
+
+    File getAttachmentFile(String attachmentId) {
+        final StorageManager storageManager = StorageManager.getInstance(context);
+        final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId());
+        return new File(attachmentDirectory, attachmentId);
+    }
+
     public static class AttachmentInfo {
         public String name;
-        public int size;
+        public long size;
         public String type;
     }
 

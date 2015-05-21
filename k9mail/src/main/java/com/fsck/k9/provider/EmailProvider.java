@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.cache.EmailProviderCacheCursor;
 import com.fsck.k9.helper.Utility;
@@ -43,7 +44,7 @@ import android.text.TextUtils;
 public class EmailProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    public static final String AUTHORITY = "com.fsck.k9.provider.email";
+    public static final String AUTHORITY = BuildConfig.APPLICATION_ID +".provider.email";
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
@@ -152,8 +153,6 @@ public class EmailProvider extends ContentProvider {
     private interface InternalMessageColumns extends MessageColumns {
         public static final String DELETED = "deleted";
         public static final String EMPTY = "empty";
-        public static final String TEXT_CONTENT = "text_content";
-        public static final String HTML_CONTENT = "html_content";
         public static final String MIME_TYPE = "mime_type";
     }
 

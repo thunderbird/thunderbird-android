@@ -17,7 +17,6 @@ import com.fsck.k9.R;
 
 public class ManageIdentities extends ChooseIdentity {
     private boolean mIdentitiesChanged = false;
-    public static final String EXTRA_IDENTITIES = "com.fsck.k9.EditIdentity_identities";
 
     private static final int ACTIVITY_EDIT_IDENTITY = 1;
 

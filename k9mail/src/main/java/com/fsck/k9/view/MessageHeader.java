@@ -153,8 +153,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
     }
 
     public void setOnFlagListener(OnClickListener listener) {
-        if (mFlagged == null)
-            return;
         mFlagged.setOnClickListener(listener);
     }
 

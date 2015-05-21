@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
+import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.transport.SmtpTransport;
 import com.fsck.k9.mail.transport.WebDavTransport;
 
@@ -63,9 +64,9 @@ public abstract class Transport {
      * @see WebDavTransport#createUri(ServerSettings)
      */
     public static String createTransportUri(ServerSettings server) {
-        if (SmtpTransport.TRANSPORT_TYPE.equals(server.type)) {
+        if (Type.SMTP == server.type) {
             return SmtpTransport.createUri(server);
-        } else if (WebDavTransport.TRANSPORT_TYPE.equals(server.type)) {
+        } else if (Type.WebDAV == server.type) {
             return WebDavTransport.createUri(server);
         } else {
             throw new IllegalArgumentException("Not a valid transport URI");

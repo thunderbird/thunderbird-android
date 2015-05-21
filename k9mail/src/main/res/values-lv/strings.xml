@@ -160,6 +160,11 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="clearing_account">Iztukšot kontu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Atjaunot kontu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Jauna vēstule</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="zero"><xliff:g id="new_message_count">%d</xliff:g> nav jaunu vēstuļu</item>
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> jauna vēstule</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> jaunas vēstules</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nelasītas (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> vairāk <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Atbildēt</string>
@@ -278,6 +283,12 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Vienas vēstules paziņojumam</string>
   <string name="global_settings_notification_quick_delete_always">Vienmēr</string>
   <string name="global_settings_notification_quick_delete_description">Paziņojumā rādīt pogu, ar kuru vēstuli var ātri izdzēst</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Paziņojumi bloķētā ekrānā</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Nekādus paziņojumus bloķētā ekrānā</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Aplikācijas nosaukums</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Saskaitīt nelasītās vēstules</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Vēstuļu skaitīšana un sūtītāji</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Tāds pats, kad ekrāns ir atbloķēts</string>
   <string name="quiet_time">Miera laiks</string>
   <string name="quiet_time_description">Noņemt zvanīšanu, vibrēšanu un mirgošanu naktī</string>
   <string name="quiet_time_starts">Miera laiks sākas</string>
@@ -461,6 +472,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_quote_prefix_label">Citētā teksta galvene</string>
   <string name="account_settings_crypto">Šifrēšana</string>
   <string name="account_settings_crypto_app">OpenPGP nodrošinātājs</string>
+  <string name="account_settings_no_openpgp_provider_installed">OpenPGP nodrošinātājs nav instalēts</string>
   <string name="account_settings_mail_check_frequency_label">Mapes pārbaudes biežums</string>
   <string name="account_settings_storage_title">Krātuve</string>
   <string name="account_settings_color_label">Konta krāsa</string>
@@ -902,7 +914,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="openpgp_successful_decryption_valid_signature_uncertified">Atkodēšana sekmīga un paraksts derīgs, bet nesertificēts</string>
   <string name="openpgp_successful_decryption_unknown_signature">Atkodēšana sekmīga bet trūkst publiskās atslēgas</string>
   <string name="openpgp_get_key">Meklēt trūkstošo atslēgu</string>
-  <string name="openpgp_error">OpenPGP kļūda:</string>
   <string name="openpgp_user_id">Lietotāja ID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Izmantot klienta sertifikātu</string>

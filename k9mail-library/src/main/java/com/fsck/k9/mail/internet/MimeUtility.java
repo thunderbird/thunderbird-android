@@ -16,10 +16,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 
@@ -982,40 +979,80 @@ public class MimeUtility {
         return DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(mimeType);
     }
 
-    /**
-     * Removes any content transfer encoding from the stream and returns a Body.
-     * @throws MessagingException
-     */
-    public static Body decodeBody(InputStream in,
-            String contentTransferEncoding, String contentType)
+    public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
             throws IOException, MessagingException {
-        /*
-         * We'll remove any transfer encoding by wrapping the stream.
-         */
+
         if (contentTransferEncoding != null) {
-            contentTransferEncoding =
-                getHeaderParameter(contentTransferEncoding, null);
-            if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(contentTransferEncoding)) {
-                in = new QuotedPrintableInputStream(in);
-            } else if (MimeUtil.ENC_BASE64.equalsIgnoreCase(contentTransferEncoding)) {
-                in = new Base64InputStream(in);
-            }
+            contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);
         }
 
         BinaryTempFileBody tempBody;
         if (MimeUtil.isMessage(contentType)) {
-            tempBody = new BinaryTempFileMessageBody();
+            tempBody = new BinaryTempFileMessageBody(contentTransferEncoding);
         } else {
-            tempBody = new BinaryTempFileBody();
+            tempBody = new BinaryTempFileBody(contentTransferEncoding);
         }
-        tempBody.setEncoding(contentTransferEncoding);
+
         OutputStream out = tempBody.getOutputStream();
         try {
             IOUtils.copy(in, out);
         } finally {
             out.close();
         }
+
         return tempBody;
+    }
+
+    /**
+     * Get decoded contents of a body.
+     * <p/>
+     * Right now only some classes retain the original encoding of the body contents. Those classes have to implement
+     * the {@link RawDataBody} interface in order for this method to decode the data delivered by
+     * {@link Body#getInputStream()}.
+     * <p/>
+     * The ultimate goal is to get to a point where all classes retain the original data and {@code RawDataBody} can be
+     * merged into {@link Body}.
+     */
+    public static InputStream decodeBody(Body body) throws MessagingException {
+        InputStream inputStream;
+        if (body instanceof RawDataBody) {
+            RawDataBody rawDataBody = (RawDataBody) body;
+            String encoding = rawDataBody.getEncoding();
+            final InputStream rawInputStream = rawDataBody.getInputStream();
+            if (MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding) || MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
+                inputStream = rawInputStream;
+            } else if (MimeUtil.ENC_BASE64.equalsIgnoreCase(encoding)) {
+                inputStream = new Base64InputStream(rawInputStream, false) {
+                    @Override
+                    public void close() throws IOException {
+                        super.close();
+                        closeInputStreamWithoutDeletingTemporaryFiles(rawInputStream);
+                    }
+                };
+            } else if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(encoding)) {
+                inputStream = new QuotedPrintableInputStream(rawInputStream) {
+                    @Override
+                    public void close() throws IOException {
+                        super.close();
+                        closeInputStreamWithoutDeletingTemporaryFiles(rawInputStream);
+                    }
+                };
+            } else {
+                throw new RuntimeException("Encoding for RawDataBody not supported: " + encoding);
+            }
+        } else {
+            inputStream = body.getInputStream();
+        }
+
+        return inputStream;
+    }
+
+    public static void closeInputStreamWithoutDeletingTemporaryFiles(InputStream rawInputStream) throws IOException {
+        if (rawInputStream instanceof BinaryTempFileBody.BinaryTempFileBodyInputStream) {
+            ((BinaryTempFileBody.BinaryTempFileBodyInputStream) rawInputStream).closeWithoutDeleting();
+        } else {
+            rawInputStream.close();
+        }
     }
 
     public static String getMimeTypeByExtension(String filename) {

@@ -157,6 +157,9 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="clearing_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" をクリアしています</string>
   <string name="recreating_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" を再作成しています</string>
   <string name="notification_new_title">新着メール</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 件の新着メッセージ</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 未読 (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">返信</string>
@@ -275,6 +278,12 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_notification_quick_delete_when_single_msg">通知メッセージが1件の場合</string>
   <string name="global_settings_notification_quick_delete_always">常に表示する</string>
   <string name="global_settings_notification_quick_delete_description">通知領域に削除ボタンを表示する</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">ロック画面通知</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">ロック画面通知なし</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">アプリケーション名</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">未読件数</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">メッセージ件数と送信者</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">画面ロックの解除と同じ</string>
   <string name="quiet_time">夜間時間帯</string>
   <string name="quiet_time_description">夜間での各種通知や表示を抑制する時間帯を設定</string>
   <string name="quiet_time_starts">開始時刻</string>
@@ -886,7 +895,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="openpgp_successful_decryption_valid_signature_uncertified">解読と署名確認(証明書なし)成功</string>
   <string name="openpgp_successful_decryption_unknown_signature">解読成功。ただし、公開鍵なし</string>
   <string name="openpgp_get_key">公開鍵調査</string>
-  <string name="openpgp_error">OpenPGP エラー:</string>
   <string name="openpgp_user_id">ユーザID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">クライアント証明書を使う</string>

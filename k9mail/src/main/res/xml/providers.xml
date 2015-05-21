@@ -129,6 +129,10 @@
         <incoming uri="imap+ssl+://imap.gmx.com" username="$email" />
         <outgoing uri="smtp+ssl+://mail.gmx.com" username="$email" />
     </provider>
+    <provider id="zoho.com" label="Zoho Mail" domain="zoho.com">
+    	<incoming uri="imap+ssl+://imap.zoho.com" username="$email" />
+    	<outgoing uri="smtp+tls+://smtp.zoho.com" username="$email" />
+    </provider>
 
     <!-- Yahoo! Mail Variants -->
     <provider id="yahoo" label="Yahoo" domain="yahoo.com">

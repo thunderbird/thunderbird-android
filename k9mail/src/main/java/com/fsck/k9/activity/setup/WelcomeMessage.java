@@ -33,8 +33,8 @@ public class WelcomeMessage extends K9Activity implements OnClickListener{
         welcome.setText(HtmlConverter.htmlToSpanned(getString(R.string.accounts_welcome)));
         welcome.setMovementMethod(LinkMovementMethod.getInstance());
 
-        ((Button) findViewById(R.id.next)).setOnClickListener(this);
-        ((Button) findViewById(R.id.import_settings)).setOnClickListener(this);
+        findViewById(R.id.next).setOnClickListener(this);
+        findViewById(R.id.import_settings).setOnClickListener(this);
     }
 
     @Override

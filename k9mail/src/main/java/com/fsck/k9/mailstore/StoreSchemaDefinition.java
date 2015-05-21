@@ -53,8 +53,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         Log.i(K9.LOG_TAG, String.format(Locale.US, "Upgrading database from version %d to version %d",
                                         db.getVersion(), LocalStore.DB_VERSION));
 
-        AttachmentProvider.clear(this.localStore.context);
-
         db.beginTransaction();
         try {
             // schema version 29 was when we moved to incremental updates
@@ -83,8 +81,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         "cc_list TEXT, " +
                         "bcc_list TEXT, " +
                         "reply_to_list TEXT, " +
-                        "html_content TEXT, " +
-                        "text_content TEXT, " +
                         "attachment_count INTEGER, " +
                         "internal_date INTEGER, " +
                         "message_id TEXT, " +
@@ -95,12 +91,36 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         "read INTEGER default 0, " +
                         "flagged INTEGER default 0, " +
                         "answered INTEGER default 0, " +
-                        "forwarded INTEGER default 0" +
+                        "forwarded INTEGER default 0, " +
+                        "message_part_id INTEGER" +
                         ")");
 
-                db.execSQL("DROP TABLE IF EXISTS headers");
-                db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
-                db.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
+                db.execSQL("CREATE TABLE message_parts (" +
+                        "id INTEGER PRIMARY KEY, " +
+                        "type INTEGER NOT NULL, " +
+                        "root INTEGER, " +
+                        "parent INTEGER NOT NULL, " +
+                        "seq INTEGER NOT NULL, " +
+                        "mime_type TEXT, " +
+                        "decoded_body_size INTEGER, " +
+                        "display_name TEXT, " +
+                        "header TEXT, " +
+                        "encoding TEXT, " +
+                        "charset TEXT, " +
+                        "data_location INTEGER NOT NULL, " +
+                        "data BLOB, " +
+                        "preamble TEXT, " +
+                        "epilogue TEXT, " +
+                        "boundary TEXT, " +
+                        "content_id TEXT, " +
+                        "server_extra TEXT" +
+                        ")");
+
+                db.execSQL("CREATE TRIGGER set_message_part_root " +
+                        "AFTER INSERT ON message_parts " +
+                        "BEGIN " +
+                        "UPDATE message_parts SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
+                        "END");
 
                 db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
                 db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
@@ -145,11 +165,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
                         "END");
 
-                db.execSQL("DROP TABLE IF EXISTS attachments");
-                db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
-                           + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
-                           + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
-
                 db.execSQL("DROP TABLE IF EXISTS pending_commands");
                 db.execSQL("CREATE TABLE pending_commands " +
                            "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
@@ -158,8 +173,11 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
 
                 db.execSQL("DROP TRIGGER IF EXISTS delete_message");
-                db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
-                           + "DELETE FROM headers where old.id = message_id; END;");
+                db.execSQL("CREATE TRIGGER delete_message " +
+                        "BEFORE DELETE ON messages " +
+                        "BEGIN " +
+                        "DELETE FROM message_parts WHERE root = OLD.message_part_id;" +
+                        "END");
             } else {
                 // in the case that we're starting out at 29 or newer, run all the needed updates
 
@@ -540,6 +558,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                     db.update("folders", cv, "name = ?",
                             new String[] { this.localStore.getAccount().getInboxFolderName() });
+                }
+                if (db.getVersion() < 51) {
+                    throw new IllegalStateException("Database upgrade not supported yet!");
                 }
             }
 

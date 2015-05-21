@@ -2,8 +2,8 @@
 <manifest
     package="com.fsck.k9"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="23030"
-    android:versionName="5.103">
+    android:versionCode="23060"
+    android:versionName="5.106">
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -29,36 +29,36 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <permission
-        android:name="com.fsck.k9.permission.READ_ATTACHMENT"
+        android:name="${applicationId}.permission.READ_ATTACHMENT"
         android:description="@string/read_attachment_desc"
         android:label="@string/read_attachment_label"
         android:permissionGroup="android.permission-group.MESSAGES"
         android:protectionLevel="dangerous"/>
-    <uses-permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"/>
+    <uses-permission android:name="${applicationId}.permission.READ_ATTACHMENT"/>
 
     <permission
-        android:name="com.fsck.k9.permission.REMOTE_CONTROL"
+        android:name="${applicationId}.permission.REMOTE_CONTROL"
         android:description="@string/remote_control_desc"
         android:label="@string/remote_control_label"
         android:permissionGroup="android.permission-group.MESSAGES"
         android:protectionLevel="dangerous"/>
-    <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
+    <uses-permission android:name="${applicationId}.permission.REMOTE_CONTROL"/>
 
     <permission
-        android:name="com.fsck.k9.permission.READ_MESSAGES"
+        android:name="${applicationId}.permission.READ_MESSAGES"
         android:description="@string/read_messages_desc"
         android:label="@string/read_messages_label"
         android:permissionGroup="android.permission-group.MESSAGES"
         android:protectionLevel="dangerous"/>
-    <uses-permission android:name="com.fsck.k9.permission.READ_MESSAGES"/>
+    <uses-permission android:name="${applicationId}.permission.READ_MESSAGES"/>
 
     <permission
-        android:name="com.fsck.k9.permission.DELETE_MESSAGES"
+        android:name="${applicationId}.permission.DELETE_MESSAGES"
         android:description="@string/delete_messages_desc"
         android:label="@string/delete_messages_label"
         android:permissionGroup="android.permission-group.MESSAGES"
         android:protectionLevel="dangerous"/>
-    <uses-permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"/>
+    <uses-permission android:name="${applicationId}.permission.DELETE_MESSAGES"/>
 
 
     <application
@@ -70,7 +70,7 @@
 
         <meta-data
             android:name="android.app.default_searchable"
-            android:value=".activity.Search"/>
+            android:value="com.fsck.k9.activity.Search"/>
 
         <activity
             android:name=".activity.Accounts"
@@ -98,7 +98,7 @@
             android:configChanges="locale"
             android:excludeFromRecents="true"
             android:label="@string/prefs_title"
-            android:taskAffinity="com.fsck.k9.activity.setup.Prefs"/>
+            android:taskAffinity="${applicationId}.activity.setup.Prefs"/>
 
         <activity
             android:name=".activity.setup.WelcomeMessage"
@@ -315,12 +315,12 @@
         <receiver
             android:name=".service.RemoteControlReceiver"
             android:enabled="true"
-            android:permission="com.fsck.k9.permission.REMOTE_CONTROL">
+            android:permission="${applicationId}.permission.REMOTE_CONTROL">
             <intent-filter>
-                <action android:name="com.fsck.k9.K9RemoteControl.set"/>
+                <action android:name="${applicationId}.K9RemoteControl.set"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="com.fsck.k9.K9RemoteControl.requestAccounts"/>
+                <action android:name="${applicationId}.K9RemoteControl.requestAccounts"/>
             </intent-filter>
         </receiver>
 
@@ -383,7 +383,7 @@
         <service
             android:name=".service.RemoteControlService"
             android:enabled="true"
-            android:permission="com.fsck.k9.permission.REMOTE_CONTROL"/>
+            android:permission="${applicationId}.permission.REMOTE_CONTROL"/>
 
         <service
             android:name=".service.SleepService"
@@ -395,25 +395,37 @@
 
         <provider
             android:name=".provider.AttachmentProvider"
-            android:authorities="com.fsck.k9.attachmentprovider"
+            android:authorities="${applicationId}.attachmentprovider"
             android:exported="true"
             android:grantUriPermissions="true"
             android:multiprocess="true"
-            android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"/>
+            android:readPermission="${applicationId}.permission.READ_ATTACHMENT"/>
 
         <provider
             android:name=".provider.MessageProvider"
-            android:authorities="com.fsck.k9.messageprovider"
+            android:authorities="${applicationId}.messageprovider"
             android:exported="true"
             android:grantUriPermissions="true"
             android:multiprocess="true"
-            android:readPermission="com.fsck.k9.permission.READ_MESSAGES"
-            android:writePermission="com.fsck.k9.permission.DELETE_MESSAGES"/>
+            android:readPermission="${applicationId}.permission.READ_MESSAGES"
+            android:writePermission="${applicationId}.permission.DELETE_MESSAGES"/>
 
         <provider
             android:name=".provider.EmailProvider"
-            android:authorities="com.fsck.k9.provider.email"
+            android:authorities="${applicationId}.provider.email"
             android:exported="false"/>
+
+        <provider
+            android:name=".provider.K9FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/allowed_file_provider_paths" />
+
+        </provider>
 
     </application>
 </manifest>

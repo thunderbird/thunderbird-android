@@ -8,6 +8,19 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.106" versioncode="23060">
+        <change>Fixed a bug where messages where not always displayed on Android 5.x</change>
+    </release>
+    <release version="5.105" versioncode="23050">
+        <change>Reverted all changes introduced with v5.104 except for the bugfixes related to Android 5.1</change>
+    </release>
+    <release version="5.104" versioncode="23040">
+        <change>Fixed crash when selecting multiple messages on Android 5.1</change>
+        <change>Fixed settings export</change>
+        <change>Fixed some layout bugs</change>
+        <change>Added Serbian translation</change>
+        <change>Updated several translations</change>
+    </release>
     <release version="5.103" versioncode="23030">
         <change>Added ability to customize lock screen notifications (Android 5.0+ only)</change>
         <change>Fixed a bug where a certificate error was wrongly reported</change>

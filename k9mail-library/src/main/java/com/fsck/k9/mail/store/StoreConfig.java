@@ -1,12 +1,14 @@
 package com.fsck.k9.mail.store;
 
 
+import com.fsck.k9.mail.NetworkType;
+
 public interface StoreConfig {
     String getStoreUri();
     String getTransportUri();
 
     boolean subscribedFoldersOnly();
-    boolean useCompression(int type);
+    boolean useCompression(NetworkType type);
 
     String getInboxFolderName();
     String getOutboxFolderName();

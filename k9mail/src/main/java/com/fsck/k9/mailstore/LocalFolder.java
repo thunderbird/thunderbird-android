@@ -1,9 +1,14 @@
 package com.fsck.k9.mailstore;
 
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,26 +19,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.UUID;
-import java.util.regex.Pattern;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.james.mime4j.util.MimeUtil;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.activity.Search;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -42,24 +39,30 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.filter.CountingOutputStream;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
-import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mail.internet.SizeAware;
+import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
-import com.fsck.k9.provider.AttachmentProvider;
+import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.util.MimeUtil;
 
 
 public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
-    
+    private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
+    private static final long INVALID_MESSAGE_PART_ID = -1;
+
     private final LocalStore localStore;
 
     private String mName = null;
@@ -174,7 +177,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         // does a DB update on setLastChecked
         super.setLastChecked(cursor.getLong(LocalStore.FOLDER_LAST_CHECKED_INDEX));
         super.setLastPush(cursor.getLong(LocalStore.FOLDER_LAST_PUSHED_INDEX));
-        mInTopGroup = (cursor.getInt(LocalStore.FOLDER_TOP_GROUP_INDEX)) == 1  ? true : false;
+        mInTopGroup = (cursor.getInt(LocalStore.FOLDER_TOP_GROUP_INDEX)) == 1 ? true : false;
         mIntegrate = (cursor.getInt(LocalStore.FOLDER_INTEGRATE_INDEX) == 1) ? true : false;
         String noClass = FolderClass.NO_CLASS.toString();
         String displayClass = cursor.getString(LocalStore.FOLDER_DISPLAY_CLASS_INDEX);
@@ -209,10 +212,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException {
                 Cursor cursor = null;
                 try {
-                    cursor = db.rawQuery("SELECT id FROM folders "
-                                         + "where folders.name = ?", new String[] { LocalFolder.
-                                                 this.getName()
-                                                                                  });
+                    cursor = db.rawQuery("SELECT id FROM folders where folders.name = ?",
+                            new String[] { LocalFolder.this.getName() });
                     if (cursor.moveToFirst()) {
                         int folderId = cursor.getInt(0);
                         return (folderId > 0);
@@ -270,10 +271,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                     }
                     Cursor cursor = null;
                     try {
-                        cursor = db.rawQuery("SELECT COUNT(id) FROM messages WHERE (empty IS NULL OR empty != 1) AND deleted = 0 and folder_id = ?",
-                                             new String[] {
-                                                 Long.toString(mFolderId)
-                                             });
+                        cursor = db.rawQuery(
+                                "SELECT COUNT(id) FROM messages " +
+                                "WHERE (empty IS NULL OR empty != 1) AND deleted = 0 and folder_id = ?",
+                                new String[] { Long.toString(mFolderId) });
                         cursor.moveToFirst();
                         return cursor.getInt(0);   //messagecount
                     } finally {
@@ -282,7 +283,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 }
             });
         } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
+            throw (MessagingException) e.getCause();
         }
     }
 
@@ -402,6 +403,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public void setStatus(final String status) throws MessagingException {
         updateFolderColumn("status", status);
     }
+
     public void setPushState(final String pushState) throws MessagingException {
         mPushState = pushState;
         updateFolderColumn("push_state", pushState);
@@ -464,7 +466,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public void setDisplayClass(FolderClass displayClass) throws MessagingException {
         mDisplayClass = displayClass;
         updateFolderColumn("display_class", mDisplayClass.name());
-
     }
 
     public void setSyncClass(FolderClass syncClass) throws MessagingException {
@@ -502,7 +503,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private String getPrefId() throws MessagingException {
         open(OPEN_MODE_RW);
         return getPrefId(mName);
-
     }
 
     public void delete() throws MessagingException {
@@ -605,7 +605,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
         prefHolder.inTopGroup = preferences.getBoolean(id + ".inTopGroup", prefHolder.inTopGroup);
         prefHolder.integrate = preferences.getBoolean(id + ".integrate", prefHolder.integrate);
-
     }
 
     @Override
@@ -619,183 +618,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         open(OPEN_MODE_RW);
                         if (fp.contains(FetchProfile.Item.BODY)) {
                             for (Message message : messages) {
-                                LocalMessage localMessage = (LocalMessage)message;
-                                Cursor cursor = null;
-                                MimeMultipart mp = new MimeMultipart();
-                                mp.setSubType("mixed");
-                                try {
-                                    cursor = db.rawQuery("SELECT html_content, text_content, mime_type FROM messages "
-                                                         + "WHERE id = ?",
-                                                         new String[] { Long.toString(localMessage.getId()) });
-                                    cursor.moveToNext();
-                                    String htmlContent = cursor.getString(0);
-                                    String textContent = cursor.getString(1);
-                                    String mimeType = cursor.getString(2);
-                                    if (mimeType != null && mimeType.toLowerCase(Locale.US).startsWith("multipart/")) {
-                                        // If this is a multipart message, preserve both text
-                                        // and html parts, as well as the subtype.
-                                        mp.setSubType(mimeType.toLowerCase(Locale.US).replaceFirst("^multipart/", ""));
-                                        if (textContent != null) {
-                                            LocalTextBody body = new LocalTextBody(textContent, htmlContent);
-                                            MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
-                                            mp.addBodyPart(bp);
-                                        }
+                                LocalMessage localMessage = (LocalMessage) message;
 
-                                        if (getAccount().getMessageFormat() != MessageFormat.TEXT) {
-                                            if (htmlContent != null) {
-                                                TextBody body = new TextBody(htmlContent);
-                                                MimeBodyPart bp = new MimeBodyPart(body, "text/html");
-                                                mp.addBodyPart(bp);
-                                            }
-
-                                            // If we have both text and html content and our MIME type
-                                            // isn't multipart/alternative, then corral them into a new
-                                            // multipart/alternative part and put that into the parent.
-                                            // If it turns out that this is the only part in the parent
-                                            // MimeMultipart, it'll get fixed below before we attach to
-                                            // the message.
-                                            if (textContent != null && htmlContent != null && !mimeType.equalsIgnoreCase("multipart/alternative")) {
-                                                MimeMultipart alternativeParts = mp;
-                                                alternativeParts.setSubType("alternative");
-                                                mp = new MimeMultipart();
-                                                mp.addBodyPart(new MimeBodyPart(alternativeParts));
-                                            }
-                                        }
-                                    } else if (mimeType != null && mimeType.equalsIgnoreCase("text/plain")) {
-                                        // If it's text, add only the plain part. The MIME
-                                        // container will drop away below.
-                                        if (textContent != null) {
-                                            LocalTextBody body = new LocalTextBody(textContent, htmlContent);
-                                            MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
-                                            mp.addBodyPart(bp);
-                                        }
-                                    } else if (mimeType != null && mimeType.equalsIgnoreCase("text/html")) {
-                                        // If it's html, add only the html part. The MIME
-                                        // container will drop away below.
-                                        if (htmlContent != null) {
-                                            TextBody body = new TextBody(htmlContent);
-                                            MimeBodyPart bp = new MimeBodyPart(body, "text/html");
-                                            mp.addBodyPart(bp);
-                                        }
-                                    } else {
-                                        // MIME type not set. Grab whatever part we can get,
-                                        // with Text taking precedence. This preserves pre-HTML
-                                        // composition behaviour.
-                                        if (textContent != null) {
-                                            LocalTextBody body = new LocalTextBody(textContent, htmlContent);
-                                            MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
-                                            mp.addBodyPart(bp);
-                                        } else if (htmlContent != null) {
-                                            TextBody body = new TextBody(htmlContent);
-                                            MimeBodyPart bp = new MimeBodyPart(body, "text/html");
-                                            mp.addBodyPart(bp);
-                                        }
-                                    }
-
-                                } catch (Exception e) {
-                                    Log.e(K9.LOG_TAG, "Exception fetching message:", e);
-                                } finally {
-                                    Utility.closeQuietly(cursor);
-                                }
-
-                                try {
-                                    cursor = db.query(
-                                                 "attachments",
-                                                 new String[] {
-                                                     "id",
-                                                     "size",
-                                                     "name",
-                                                     "mime_type",
-                                                     "store_data",
-                                                     "content_uri",
-                                                     "content_id",
-                                                     "content_disposition"
-                                                 },
-                                                 "message_id = ?",
-                                                 new String[] { Long.toString(localMessage.getId()) },
-                                                 null,
-                                                 null,
-                                                 null);
-
-                                    while (cursor.moveToNext()) {
-                                        long id = cursor.getLong(0);
-                                        int size = cursor.getInt(1);
-                                        String name = cursor.getString(2);
-                                        String type = cursor.getString(3);
-                                        String storeData = cursor.getString(4);
-                                        String contentUri = cursor.getString(5);
-                                        String contentId = cursor.getString(6);
-                                        String contentDisposition = cursor.getString(7);
-                                        String encoding = MimeUtility.getEncodingforType(type);
-                                        Body body = null;
-
-                                        if (contentDisposition == null) {
-                                            contentDisposition = "attachment";
-                                        }
-
-                                        if (contentUri != null) {
-                                            if (MimeUtil.isMessage(type)) {
-                                                body = new LocalAttachmentMessageBody(
-                                                        Uri.parse(contentUri),
-                                                        LocalFolder.this.localStore.context);
-                                            } else {
-                                                body = new LocalAttachmentBody(
-                                                        Uri.parse(contentUri),
-                                                        LocalFolder.this.localStore.context);
-                                            }
-                                        }
-
-                                        MimeBodyPart bp = new LocalAttachmentBodyPart(body, id);
-                                        bp.setEncoding(encoding);
-                                        if (name != null) {
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                                                         String.format("%s;\r\n name=\"%s\"",
-                                                                       type,
-                                                                       name));
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                         String.format(Locale.US, "%s;\r\n filename=\"%s\";\r\n size=%d",
-                                                                       contentDisposition,
-                                                                       name, // TODO: Should use encoded word defined in RFC 2231.
-                                                                       size));
-                                        } else {
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, type);
-                                            bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                                    String.format(Locale.US, "%s;\r\n size=%d",
-                                                                  contentDisposition,
-                                                                  size));
-                                        }
-
-                                        bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
-                                        /*
-                                         * HEADER_ANDROID_ATTACHMENT_STORE_DATA is a custom header we add to that
-                                         * we can later pull the attachment from the remote store if necessary.
-                                         */
-                                        bp.setHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA, storeData);
-
-                                        mp.addBodyPart(bp);
-                                    }
-                                } finally {
-                                    Utility.closeQuietly(cursor);
-                                }
-
-                                if (mp.getCount() == 0) {
-                                    // If we have no body, remove the container and create a
-                                    // dummy plain text body. This check helps prevents us from
-                                    // triggering T_MIME_NO_TEXT and T_TVD_MIME_NO_HEADERS
-                                    // SpamAssassin rules.
-                                    localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
-                                    localMessage.setBody(new TextBody(""));
-                                } else if (mp.getCount() == 1 &&
-                                        !(mp.getBodyPart(0) instanceof LocalAttachmentBodyPart))
-                                {
-                                    // If we have only one part, drop the MimeMultipart container.
-                                    BodyPart part = mp.getBodyPart(0);
-                                    localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, part.getContentType());
-                                    localMessage.setBody(part.getBody());
-                                } else {
-                                    // Otherwise, attach the MimeMultipart to the message.
-                                    localMessage.setBody(mp);
-                                }
+                                loadMessageParts(db, localMessage);
                             }
                         }
                     } catch (MessagingException e) {
@@ -805,8 +630,111 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 }
             });
         } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
+            throw (MessagingException) e.getCause();
         }
+    }
+
+    private void loadMessageParts(SQLiteDatabase db, LocalMessage message) throws MessagingException {
+        Map<Long, Part> partById = new HashMap<Long, Part>();
+
+        String[] columns = {
+                "id",                   // 0
+                "type",                 // 1
+                "parent",               // 2
+                "mime_type",            // 3
+                "decoded_body_size",    // 4
+                "display_name",         // 5
+                "header",               // 6
+                "encoding",             // 7
+                "charset",              // 8
+                "data_location",        // 9
+                "data",                 // 10
+                "preamble",             // 11
+                "epilogue",             // 12
+                "boundary",             // 13
+                "content_id",           // 14
+                "server_extra",         // 15
+        };
+        Cursor cursor = db.query("message_parts", columns, "root = ?",
+                new String[] { String.valueOf(message.getMessagePartId()) }, null, null, "seq");
+        try {
+            while (cursor.moveToNext()) {
+                loadMessagePart(message, partById, cursor);
+            }
+        } finally {
+            cursor.close();
+        }
+    }
+
+    private void loadMessagePart(LocalMessage message, Map<Long, Part> partById, Cursor cursor)
+            throws MessagingException {
+
+        long id = cursor.getLong(0);
+        int type = cursor.getInt(1);
+        long parentId = cursor.getLong(2);
+        String mimeType = cursor.getString(3);
+        long size = cursor.getLong(4);
+        String displayName = cursor.getString(5);
+        byte[] header = cursor.getBlob(6);
+        int dataLocation = cursor.getInt(9);
+        String serverExtra = cursor.getString(15);
+        boolean firstClassAttachment = (type != MessagePartType.HIDDEN_ATTACHMENT);
+
+        final Part part;
+        if (id == message.getMessagePartId()) {
+            part = message;
+        } else {
+            Part parentPart = partById.get(parentId);
+            if (parentPart == null) {
+                throw new IllegalStateException("Parent part not found");
+            }
+
+            String parentMimeType = parentPart.getMimeType();
+            if (parentMimeType.startsWith("multipart/")) {
+                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, displayName, size,
+                        firstClassAttachment);
+                ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
+                part = bodyPart;
+            } else if (parentMimeType.startsWith("message/")) {
+                Message innerMessage = new MimeMessage();
+                parentPart.setBody(innerMessage);
+                part = innerMessage;
+            } else {
+                throw new IllegalStateException("Parent is neither a multipart nor a message");
+            }
+
+            parseHeaderBytes(part, header);
+        }
+        partById.put(id, part);
+        part.setServerExtra(serverExtra);
+
+        boolean isMultipart = mimeType.startsWith("multipart/");
+        if (isMultipart) {
+            byte[] preamble = cursor.getBlob(11);
+            byte[] epilogue = cursor.getBlob(12);
+            String boundary = cursor.getString(13);
+
+            MimeMultipart multipart = new MimeMultipart(mimeType, boundary);
+            part.setBody(multipart);
+            multipart.setPreamble(preamble);
+            multipart.setEpilogue(epilogue);
+        } else if (dataLocation == DataLocation.IN_DATABASE) {
+            String encoding = cursor.getString(7);
+            byte[] data = cursor.getBlob(10);
+
+            Body body = new BinaryMemoryBody(data, encoding);
+            part.setBody(body);
+        } else if (dataLocation == DataLocation.ON_DISK) {
+            String encoding = cursor.getString(7);
+
+            File file = localStore.getAttachmentFile(Long.toString(id));
+            Body body = new FileBackedBody(file, encoding);
+            part.setBody(body);
+        }
+    }
+
+    private void parseHeaderBytes(Part part, byte[] header) throws MessagingException {
+        MessageHeaderParser.parse(part, new ByteArrayInputStream(header));
     }
 
     @Override
@@ -817,50 +745,16 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             "LocalStore.getMessages(int, int, MessageRetrievalListener) not yet implemented");
     }
 
-    /**
-     * Populate the header fields of the given list of messages by reading
-     * the saved header data from the database.
-     *
-     * @param messages
-     *            The messages whose headers should be loaded.
-     * @throws UnavailableStorageException
-     */
-    void populateHeaders(final List<LocalMessage> messages) throws MessagingException {
+    void populateHeaders(final LocalMessage message) throws MessagingException {
         this.localStore.database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
-                Cursor cursor = null;
-                if (messages.isEmpty()) {
-                    return null;
-                }
+                Cursor cursor = db.query("message_parts", new String[] { "header" }, "id = ?",
+                        new String[] { Long.toString(message.getMessagePartId()) }, null, null, null);
                 try {
-                    Map<Long, LocalMessage> popMessages = new HashMap<Long, LocalMessage>();
-                    List<String> ids = new ArrayList<String>();
-                    StringBuilder questions = new StringBuilder();
-
-                    for (int i = 0; i < messages.size(); i++) {
-                        if (i != 0) {
-                            questions.append(", ");
-                        }
-                        questions.append("?");
-                        LocalMessage message = messages.get(i);
-                        Long id = message.getId();
-                        ids.add(Long.toString(id));
-                        popMessages.put(id, message);
-
-                    }
-
-                    cursor = db.rawQuery(
-                                 "SELECT message_id, name, value FROM headers " + "WHERE message_id in ( " + questions + ") ORDER BY id ASC",
-                                 ids.toArray(LocalStore.EMPTY_STRING_ARRAY));
-
-
-                    while (cursor.moveToNext()) {
-                        Long id = cursor.getLong(0);
-                        String name = cursor.getString(1);
-                        String value = cursor.getString(2);
-                        //Log.i(K9.LOG_TAG, "Retrieved header name= " + name + ", value = " + value + " for message " + id);
-                        popMessages.get(id).addHeader(name, value);
+                    if (cursor.moveToFirst()) {
+                        byte[] header = cursor.getBlob(0);
+                        parseHeaderBytes(message, header);
                     }
                 } finally {
                     Utility.closeQuietly(cursor);
@@ -881,11 +775,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
                         try {
                             cursor = db.rawQuery(
-                                         "SELECT uid FROM messages " +
-                                          "WHERE id = ? AND folder_id = ?",
-                                         new String[] {
-                                             Long.toString(id), Long.toString(mFolderId)
-                                         });
+                                    "SELECT uid FROM messages WHERE id = ? AND folder_id = ?",
+                                    new String[] { Long.toString(id), Long.toString(mFolderId) });
                             if (!cursor.moveToNext()) {
                                 return null;
                             }
@@ -916,14 +807,13 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
                         try {
                             cursor = db.rawQuery(
-                                         "SELECT " +
-                                         LocalStore.GET_MESSAGES_COLS +
-                                         "FROM messages " +
-                                         "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                                         "WHERE uid = ? AND folder_id = ?",
-                                         new String[] {
-                                             message.getUid(), Long.toString(mFolderId)
-                                         });
+                                    "SELECT " +
+                                    LocalStore.GET_MESSAGES_COLS +
+                                    "FROM messages " +
+                                    "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                                    "WHERE uid = ? AND folder_id = ?",
+                                    new String[] { message.getUid(), Long.toString(mFolderId) });
+
                             if (!cursor.moveToNext()) {
                                 return null;
                             }
@@ -955,17 +845,14 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
                         open(OPEN_MODE_RW);
-                        return LocalFolder.this.localStore.getMessages(
-                                   listener,
-                                   LocalFolder.this,
-                                   "SELECT " + LocalStore.GET_MESSAGES_COLS +
-                                   "FROM messages " +
-                                   "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                                   "WHERE (empty IS NULL OR empty != 1) AND " +
-                                   (includeDeleted ? "" : "deleted = 0 AND ") +
-                                   "folder_id = ? ORDER BY date DESC",
-                                   new String[] { Long.toString(mFolderId) }
-                               );
+                        return LocalFolder.this.localStore.getMessages(listener, LocalFolder.this,
+                                "SELECT " + LocalStore.GET_MESSAGES_COLS +
+                                "FROM messages " +
+                                "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                                "WHERE (empty IS NULL OR empty != 1) AND " +
+                                (includeDeleted ? "" : "deleted = 0 AND ") +
+                                "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
@@ -1191,6 +1078,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private ThreadInfo getThreadInfo(SQLiteDatabase db, String messageId, boolean onlyEmpty) {
+        if (messageId == null) {
+            return null;
+        }
+
         String sql = "SELECT t.id, t.message_id, t.root, t.parent " +
                 "FROM messages m " +
                 "LEFT JOIN threads t ON (t.message_id = m.id) " +
@@ -1233,7 +1124,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
      * @param copy
      * @return uidMap of srcUids -> destUids
      */
-    private Map<String, String> appendMessages(final List<? extends Message> messages, final boolean copy) throws MessagingException {
+    private Map<String, String> appendMessages(final List<? extends Message> messages, final boolean copy)
+            throws MessagingException {
         open(OPEN_MODE_RW);
         try {
             final Map<String, String> uidMap = new HashMap<String, String>();
@@ -1242,136 +1134,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
                         for (Message message : messages) {
-                            long oldMessageId = -1;
-                            String uid = message.getUid();
-                            if (uid == null || copy) {
-                                /*
-                                 * Create a new message in the database
-                                 */
-                                String randomLocalUid = K9.LOCAL_UID_PREFIX +
-                                        UUID.randomUUID().toString();
-
-                                if (copy) {
-                                    // Save mapping: source UID -> target UID
-                                    uidMap.put(uid, randomLocalUid);
-                                } else {
-                                    // Modify the Message instance to reference the new UID
-                                    message.setUid(randomLocalUid);
-                                }
-
-                                // The message will be saved with the newly generated UID
-                                uid = randomLocalUid;
-                            } else {
-                                /*
-                                 * Replace an existing message in the database
-                                 */
-                                LocalMessage oldMessage = getMessage(uid);
-
-                                if (oldMessage != null) {
-                                    oldMessageId = oldMessage.getId();
-                                }
-
-                                deleteAttachments(message.getUid());
-                            }
-
-                            long rootId = -1;
-                            long parentId = -1;
-
-                            if (oldMessageId == -1) {
-                                // This is a new message. Do the message threading.
-                                ThreadInfo threadInfo = doMessageThreading(db, message);
-                                oldMessageId = threadInfo.msgId;
-                                rootId = threadInfo.rootId;
-                                parentId = threadInfo.parentId;
-                            }
-
-                            boolean isDraft = (message.getHeader(K9.IDENTITY_HEADER) != null);
-
-                            List<Part> attachments;
-                            String text;
-                            String html;
-                            if (isDraft) {
-                                // Don't modify the text/plain or text/html part of our own
-                                // draft messages because this will cause the values stored in
-                                // the identity header to be wrong.
-                                ViewableContainer container =
-                                        LocalMessageExtractor.extractPartsFromDraft(message);
-
-                                text = container.text;
-                                html = container.html;
-                                attachments = container.attachments;
-                            } else {
-                                ViewableContainer container =
-                                        LocalMessageExtractor.extractTextAndAttachments(LocalFolder.this.localStore.context, message);
-
-                                attachments = container.attachments;
-                                text = container.text;
-                                html = HtmlConverter.convertEmoji2Img(container.html);
-                            }
-
-                            String preview = Message.calculateContentPreview(text);
-
-                            try {
-                                ContentValues cv = new ContentValues();
-                                cv.put("uid", uid);
-                                cv.put("subject", message.getSubject());
-                                cv.put("sender_list", Address.pack(message.getFrom()));
-                                cv.put("date", message.getSentDate() == null
-                                       ? System.currentTimeMillis() : message.getSentDate().getTime());
-                                cv.put("flags", LocalFolder.this.localStore.serializeFlags(message.getFlags()));
-                                cv.put("deleted", message.isSet(Flag.DELETED) ? 1 : 0);
-                                cv.put("read", message.isSet(Flag.SEEN) ? 1 : 0);
-                                cv.put("flagged", message.isSet(Flag.FLAGGED) ? 1 : 0);
-                                cv.put("answered", message.isSet(Flag.ANSWERED) ? 1 : 0);
-                                cv.put("forwarded", message.isSet(Flag.FORWARDED) ? 1 : 0);
-                                cv.put("folder_id", mFolderId);
-                                cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
-                                cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
-                                cv.put("bcc_list", Address.pack(message.getRecipients(RecipientType.BCC)));
-                                cv.put("html_content", html.length() > 0 ? html : null);
-                                cv.put("text_content", text.length() > 0 ? text : null);
-                                cv.put("preview", preview.length() > 0 ? preview : null);
-                                cv.put("reply_to_list", Address.pack(message.getReplyTo()));
-                                cv.put("attachment_count", attachments.size());
-                                cv.put("internal_date",  message.getInternalDate() == null
-                                       ? System.currentTimeMillis() : message.getInternalDate().getTime());
-                                cv.put("mime_type", message.getMimeType());
-                                cv.put("empty", 0);
-
-                                String messageId = message.getMessageId();
-                                if (messageId != null) {
-                                    cv.put("message_id", messageId);
-                                }
-
-                                long msgId;
-
-                                if (oldMessageId == -1) {
-                                    msgId = db.insert("messages", "uid", cv);
-
-                                    // Create entry in 'threads' table
-                                    cv.clear();
-                                    cv.put("message_id", msgId);
-
-                                    if (rootId != -1) {
-                                        cv.put("root", rootId);
-                                    }
-                                    if (parentId != -1) {
-                                        cv.put("parent", parentId);
-                                    }
-
-                                    db.insert("threads", null, cv);
-                                } else {
-                                    db.update("messages", cv, "id = ?", new String[] { Long.toString(oldMessageId) });
-                                    msgId = oldMessageId;
-                                }
-
-                                for (Part attachment : attachments) {
-                                    saveAttachment(msgId, attachment, copy);
-                                }
-                                saveHeaders(msgId, (MimeMessage)message);
-                            } catch (Exception e) {
-                                throw new MessagingException("Error appending message", e);
-                            }
+                            saveMessage(db, message, copy, uidMap);
                         }
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
@@ -1384,326 +1147,370 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
             return uidMap;
         } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
+            throw (MessagingException) e.getCause();
         }
     }
 
-    /**
-     * Update the given message in the LocalStore without first deleting the existing
-     * message (contrast with appendMessages). This method is used to store changes
-     * to the given message while updating attachments and not removing existing
-     * attachment data.
-     * TODO In the future this method should be combined with appendMessages since the Message
-     * contains enough data to decide what to do.
-     * @param message
-     * @throws MessagingException
-     */
-    public void updateMessage(final LocalMessage message) throws MessagingException {
-        open(OPEN_MODE_RW);
-        try {
-            this.localStore.database.execute(false, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                    try {
-                        message.buildMimeRepresentation();
-
-                        ViewableContainer container =
-                                LocalMessageExtractor.extractTextAndAttachments(LocalFolder.this.localStore.context, message);
-
-                        List<Part> attachments = container.attachments;
-                        String text = container.text;
-                        String html = HtmlConverter.convertEmoji2Img(container.html);
-
-                        String preview = Message.calculateContentPreview(text);
-
-                        try {
-                            db.execSQL("UPDATE messages SET "
-                                       + "uid = ?, subject = ?, sender_list = ?, date = ?, flags = ?, "
-                                       + "folder_id = ?, to_list = ?, cc_list = ?, bcc_list = ?, "
-                                       + "html_content = ?, text_content = ?, preview = ?, reply_to_list = ?, "
-                                       + "attachment_count = ?, read = ?, flagged = ?, answered = ?, forwarded = ? "
-                                       + "WHERE id = ?",
-                                       new Object[] {
-                                           message.getUid(),
-                                           message.getSubject(),
-                                           Address.pack(message.getFrom()),
-                                           message.getSentDate() == null ? System
-                                           .currentTimeMillis() : message.getSentDate()
-                                           .getTime(),
-                                           LocalFolder.this.localStore.serializeFlags(message.getFlags()),
-                                           mFolderId,
-                                           Address.pack(message
-                                                        .getRecipients(RecipientType.TO)),
-                                           Address.pack(message
-                                                        .getRecipients(RecipientType.CC)),
-                                           Address.pack(message
-                                                        .getRecipients(RecipientType.BCC)),
-                                           html.length() > 0 ? html : null,
-                                           text.length() > 0 ? text : null,
-                                           preview.length() > 0 ? preview : null,
-                                           Address.pack(message.getReplyTo()),
-                                           attachments.size(),
-                                           message.isSet(Flag.SEEN) ? 1 : 0,
-                                           message.isSet(Flag.FLAGGED) ? 1 : 0,
-                                           message.isSet(Flag.ANSWERED) ? 1 : 0,
-                                           message.isSet(Flag.FORWARDED) ? 1 : 0,
-                                           message.getId()
-                                       });
-
-                            for (int i = 0, count = attachments.size(); i < count; i++) {
-                                Part attachment = attachments.get(i);
-                                saveAttachment(message.getId(), attachment, false);
-                            }
-                            saveHeaders(message.getId(), message);
-                        } catch (Exception e) {
-                            throw new MessagingException("Error appending message", e);
-                        }
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
-                    return null;
-                }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
+    protected void saveMessage(SQLiteDatabase db, Message message, boolean copy, Map<String, String> uidMap)
+            throws MessagingException {
+        if (!(message instanceof MimeMessage)) {
+            throw new Error("LocalStore can only store Messages that extend MimeMessage");
         }
 
-        this.localStore.notifyChange();
-    }
+        long oldMessageId = -1;
+        String uid = message.getUid();
+        boolean shouldCreateNewMessage = uid == null || copy;
+        if (shouldCreateNewMessage) {
+            String randomLocalUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
 
-    /**
-     * Save the headers of the given message. Note that the message is not
-     * necessarily a {@link LocalMessage} instance.
-     * @param id
-     * @param message
-     * @throws com.fsck.k9.mail.MessagingException
-     */
-    private void saveHeaders(final long id, final MimeMessage message) throws MessagingException {
-        this.localStore.database.execute(true, new DbCallback<Void>() {
-            @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
-
-                deleteHeaders(id);
-                for (String name : message.getHeaderNames()) {
-                        String[] values = message.getHeader(name);
-                        for (String value : values) {
-                            ContentValues cv = new ContentValues();
-                            cv.put("message_id", id);
-                            cv.put("name", name);
-                            cv.put("value", value);
-                            db.insert("headers", "name", cv);
-                        }
-                }
-
-                // Remember that all headers for this message have been saved, so it is
-                // not necessary to download them again in case the user wants to see all headers.
-                List<Flag> appendedFlags = new ArrayList<Flag>();
-                appendedFlags.addAll(message.getFlags());
-                appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
-
-                db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
-                           new Object[]
-                           { LocalFolder.this.localStore.serializeFlags(appendedFlags), id });
-
-                return null;
+            if (copy) {
+                // Save mapping: source UID -> target UID
+                uidMap.put(uid, randomLocalUid);
+            } else {
+                // Modify the Message instance to reference the new UID
+                message.setUid(randomLocalUid);
             }
-        });
+
+            // The message will be saved with the newly generated UID
+            uid = randomLocalUid;
+        } else {
+            LocalMessage oldMessage = getMessage(uid);
+
+            if (oldMessage != null) {
+                oldMessageId = oldMessage.getId();
+
+                long oldRootMessagePartId = oldMessage.getMessagePartId();
+                deleteMessagePartsAndDataFromDisk(oldRootMessagePartId);
+            }
+        }
+
+        long rootId = -1;
+        long parentId = -1;
+
+        if (oldMessageId == -1) {
+            // This is a new message. Do the message threading.
+            ThreadInfo threadInfo = doMessageThreading(db, message);
+            oldMessageId = threadInfo.msgId;
+            rootId = threadInfo.rootId;
+            parentId = threadInfo.parentId;
+        }
+
+        try {
+            MessageInfoExtractor messageExtractor = new MessageInfoExtractor(localStore.context, message);
+            String preview = messageExtractor.getMessageTextPreview();
+            int attachmentCount = messageExtractor.getAttachmentCount();
+
+            long rootMessagePartId = saveMessageParts(db, message);
+
+            ContentValues cv = new ContentValues();
+            cv.put("message_part_id", rootMessagePartId);
+            cv.put("uid", uid);
+            cv.put("subject", message.getSubject());
+            cv.put("sender_list", Address.pack(message.getFrom()));
+            cv.put("date", message.getSentDate() == null
+                    ? System.currentTimeMillis() : message.getSentDate().getTime());
+            cv.put("flags", this.localStore.serializeFlags(message.getFlags()));
+            cv.put("deleted", message.isSet(Flag.DELETED) ? 1 : 0);
+            cv.put("read", message.isSet(Flag.SEEN) ? 1 : 0);
+            cv.put("flagged", message.isSet(Flag.FLAGGED) ? 1 : 0);
+            cv.put("answered", message.isSet(Flag.ANSWERED) ? 1 : 0);
+            cv.put("forwarded", message.isSet(Flag.FORWARDED) ? 1 : 0);
+            cv.put("folder_id", mFolderId);
+            cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
+            cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
+            cv.put("bcc_list", Address.pack(message.getRecipients(RecipientType.BCC)));
+            cv.put("preview", preview);
+            cv.put("reply_to_list", Address.pack(message.getReplyTo()));
+            cv.put("attachment_count", attachmentCount);
+            cv.put("internal_date", message.getInternalDate() == null
+                    ? System.currentTimeMillis() : message.getInternalDate().getTime());
+            cv.put("mime_type", message.getMimeType());
+            cv.put("empty", 0);
+
+            String messageId = message.getMessageId();
+            if (messageId != null) {
+                cv.put("message_id", messageId);
+            }
+
+            if (oldMessageId == -1) {
+                long msgId = db.insert("messages", "uid", cv);
+
+                // Create entry in 'threads' table
+                cv.clear();
+                cv.put("message_id", msgId);
+
+                if (rootId != -1) {
+                    cv.put("root", rootId);
+                }
+                if (parentId != -1) {
+                    cv.put("parent", parentId);
+                }
+
+                db.insert("threads", null, cv);
+            } else {
+                db.update("messages", cv, "id = ?", new String[] { Long.toString(oldMessageId) });
+            }
+        } catch (Exception e) {
+            throw new MessagingException("Error appending message", e);
+        }
     }
 
-    void deleteHeaders(final long id) throws MessagingException {
-        this.localStore.database.execute(false, new DbCallback<Void>() {
+    private long saveMessageParts(SQLiteDatabase db, Message message) throws IOException, MessagingException {
+        long rootMessagePartId = saveMessagePart(db, new PartContainer(-1, message), -1, 0);
+
+        Stack<PartContainer> partsToSave = new Stack<PartContainer>();
+        addChildrenToStack(partsToSave, message, rootMessagePartId);
+
+        int order = 1;
+        while (!partsToSave.isEmpty()) {
+            PartContainer partContainer = partsToSave.pop();
+            long messagePartId = saveMessagePart(db, partContainer, rootMessagePartId, order);
+            order++;
+
+            addChildrenToStack(partsToSave, partContainer.part, messagePartId);
+        }
+
+        return rootMessagePartId;
+    }
+
+    private long saveMessagePart(SQLiteDatabase db, PartContainer partContainer, long rootMessagePartId, int order)
+            throws IOException, MessagingException {
+
+        Part part = partContainer.part;
+
+        ContentValues cv = new ContentValues();
+        if (rootMessagePartId != -1) {
+            cv.put("root", rootMessagePartId);
+        }
+        cv.put("parent", partContainer.parent);
+        cv.put("seq", order);
+        cv.put("server_extra", part.getServerExtra());
+
+        return updateOrInsertMessagePart(db, cv, part, INVALID_MESSAGE_PART_ID);
+    }
+
+    private void renameTemporaryFile(File file, String messagePartId) {
+        File destination = localStore.getAttachmentFile(messagePartId);
+        if (!file.renameTo(destination)) {
+            Log.w(K9.LOG_TAG, "Couldn't rename temporary file " + file.getAbsolutePath() +
+                    " to " + destination.getAbsolutePath());
+        }
+    }
+
+    private long updateOrInsertMessagePart(SQLiteDatabase db, ContentValues cv, Part part, long existingMessagePartId)
+            throws IOException, MessagingException {
+        byte[] headerBytes = getHeaderBytes(part);
+
+        cv.put("mime_type", part.getMimeType());
+        cv.put("header", headerBytes);
+        cv.put("type", MessagePartType.UNKNOWN);
+
+        File file = null;
+        Body body = part.getBody();
+        if (body instanceof Multipart) {
+            multipartToContentValues(cv, (Multipart) body);
+        } else if (body == null) {
+            missingPartToContentValues(cv, part);
+        } else {
+            file = leafPartToContentValues(cv, part, body);
+        }
+
+        long messagePartId;
+        if (existingMessagePartId != INVALID_MESSAGE_PART_ID) {
+            messagePartId = existingMessagePartId;
+            db.update("message_parts", cv, "id = ?", new String[] { Long.toString(messagePartId) });
+        } else {
+            messagePartId = db.insertOrThrow("message_parts", null, cv);
+        }
+
+        if (file != null) {
+            renameTemporaryFile(file, Long.toString(messagePartId));
+        }
+
+        return messagePartId;
+    }
+
+    private void multipartToContentValues(ContentValues cv, Multipart multipart) {
+        cv.put("data_location", DataLocation.IN_DATABASE);
+        cv.put("preamble", multipart.getPreamble());
+        cv.put("epilogue", multipart.getEpilogue());
+        cv.put("boundary", multipart.getBoundary());
+    }
+
+    private void missingPartToContentValues(ContentValues cv, Part part) throws MessagingException {
+        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part);
+        cv.put("display_name", attachment.displayName);
+        cv.put("data_location", DataLocation.MISSING);
+        cv.put("decoded_body_size", attachment.size);
+    }
+
+    private File leafPartToContentValues(ContentValues cv, Part part, Body body)
+            throws MessagingException, IOException {
+        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part);
+        cv.put("display_name", attachment.displayName);
+
+        String encoding = getTransferEncoding(part);
+
+        if (!(body instanceof SizeAware)) {
+            throw new IllegalStateException("Body needs to implement SizeAware");
+        }
+
+        SizeAware sizeAwareBody = (SizeAware) body;
+        long fileSize = sizeAwareBody.getSize();
+
+        File file = null;
+        int dataLocation;
+        if (fileSize > MAX_BODY_SIZE_FOR_DATABASE) {
+            dataLocation = DataLocation.ON_DISK;
+
+            file = writeBodyToDiskIfNecessary(part);
+
+            long size = decodeAndCountBytes(file, encoding, fileSize);
+            cv.put("decoded_body_size", size);
+        } else {
+            dataLocation = DataLocation.IN_DATABASE;
+
+            byte[] bodyData = getBodyBytes(body);
+            cv.put("data", bodyData);
+
+            long size = decodeAndCountBytes(bodyData, encoding, bodyData.length);
+            cv.put("decoded_body_size", size);
+        }
+        cv.put("data_location", dataLocation);
+        cv.put("encoding", encoding);
+        cv.put("content_id", part.getContentId());
+
+        return file;
+    }
+
+    private File writeBodyToDiskIfNecessary(Part part) throws MessagingException, IOException {
+        Body body = part.getBody();
+        if (body instanceof BinaryTempFileBody) {
+            return ((BinaryTempFileBody) body).getFile();
+        } else {
+            return writeBodyToDisk(body);
+        }
+    }
+
+    private File writeBodyToDisk(Body body) throws IOException, MessagingException {
+        File file = File.createTempFile("body", null, BinaryTempFileBody.getTempDirectory());
+        OutputStream out = new FileOutputStream(file);
+        try {
+            body.writeTo(out);
+        } finally {
+            out.close();
+        }
+
+        return file;
+    }
+
+    private long decodeAndCountBytes(byte[] bodyData, String encoding, long fallbackValue) {
+        ByteArrayInputStream rawInputStream = new ByteArrayInputStream(bodyData);
+        return decodeAndCountBytes(rawInputStream, encoding, fallbackValue);
+    }
+
+    private long decodeAndCountBytes(File file, String encoding, long fallbackValue)
+            throws MessagingException, IOException {
+        InputStream inputStream = new FileInputStream(file);
+        try {
+            return decodeAndCountBytes(inputStream, encoding, fallbackValue);
+        } finally {
+            inputStream.close();
+        }
+    }
+
+    private long decodeAndCountBytes(InputStream rawInputStream, String encoding, long fallbackValue) {
+        InputStream decodingInputStream = localStore.getDecodingInputStream(rawInputStream, encoding);
+        try {
+            CountingOutputStream countingOutputStream = new CountingOutputStream();
+            try {
+                IOUtils.copy(decodingInputStream, countingOutputStream);
+
+                return countingOutputStream.getCount();
+            } catch (IOException e) {
+                return fallbackValue;
+            }
+        } finally {
+            try {
+                decodingInputStream.close();
+            } catch (IOException e) { /* ignore */ }
+        }
+    }
+
+    private byte[] getHeaderBytes(Part part) throws IOException, MessagingException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        part.writeHeaderTo(output);
+        return output.toByteArray();
+    }
+
+    private byte[] getBodyBytes(Body body) throws IOException, MessagingException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        body.writeTo(output);
+        return output.toByteArray();
+    }
+
+    private String getTransferEncoding(Part part) throws MessagingException {
+        String[] contentTransferEncoding = part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
+        if (contentTransferEncoding != null && contentTransferEncoding.length > 0) {
+            return contentTransferEncoding[0].toLowerCase(Locale.US);
+        }
+
+        return MimeUtil.ENC_7BIT;
+    }
+
+    private void addChildrenToStack(Stack<PartContainer> stack, Part part, long parentMessageId) {
+        Body body = part.getBody();
+        if (body instanceof Multipart) {
+            Multipart multipart = (Multipart) body;
+            for (int i = multipart.getCount() - 1; i >= 0; i--) {
+                BodyPart childPart = multipart.getBodyPart(i);
+                stack.push(new PartContainer(parentMessageId, childPart));
+            }
+        }
+    }
+
+    private static class PartContainer {
+        public final long parent;
+        public final Part part;
+
+        PartContainer(long parent, Part part) {
+            this.parent = parent;
+            this.part = part;
+        }
+    }
+
+    public void addPartToMessage(final LocalMessage message, final Part part) throws MessagingException {
+        open(OPEN_MODE_RW);
+
+        localStore.database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                db.execSQL("DELETE FROM headers WHERE message_id = ?", new Object[]
-                           { id });
+                long messagePartId;
+
+                Cursor cursor = db.query("message_parts", new String[] { "id" }, "root = ? AND server_extra = ?",
+                        new String[] { Long.toString(message.getMessagePartId()), part.getServerExtra() },
+                        null, null, null);
+                try {
+                    if (!cursor.moveToFirst()) {
+                        throw new IllegalStateException("Message part not found");
+                    }
+
+                    messagePartId = cursor.getLong(0);
+                } finally {
+                    cursor.close();
+                }
+
+                try {
+                    updateOrInsertMessagePart(db, new ContentValues(), part, messagePartId);
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Error writing message part", e);
+                }
+
                 return null;
             }
         });
-    }
 
-    /**
-     * @param messageId
-     * @param attachment
-     * @param saveAsNew
-     * @throws IOException
-     * @throws MessagingException
-     */
-    private void saveAttachment(final long messageId, final Part attachment, final boolean saveAsNew)
-    throws IOException, MessagingException {
-        try {
-            this.localStore.database.execute(true, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                    try {
-                        long attachmentId = -1;
-                        Uri contentUri = null;
-                        int size = -1;
-                        File tempAttachmentFile = null;
-
-                        if ((!saveAsNew) && (attachment instanceof LocalAttachmentBodyPart)) {
-                            attachmentId = ((LocalAttachmentBodyPart) attachment).getAttachmentId();
-                        }
-
-                        final File attachmentDirectory = StorageManager.getInstance(LocalFolder.this.localStore.context).getAttachmentDirectory(LocalFolder.this.localStore.uUid, LocalFolder.this.localStore.database.getStorageProviderId());
-                        if (attachment.getBody() != null) {
-                            Body body = attachment.getBody();
-                            if (body instanceof LocalAttachmentBody) {
-                                contentUri = ((LocalAttachmentBody) body).getContentUri();
-                            } else if (body instanceof Message) {
-                                // It's a message, so use Message.writeTo() to output the
-                                // message including all children.
-                                Message message = (Message) body;
-                                tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
-                                FileOutputStream out = new FileOutputStream(tempAttachmentFile);
-                                try {
-                                    message.writeTo(out);
-                                } finally {
-                                    out.close();
-                                }
-                                size = (int) (tempAttachmentFile.length() & 0x7FFFFFFFL);
-                            } else {
-                                /*
-                                 * If the attachment has a body we're expected to save it into the local store
-                                 * so we copy the data into a cached attachment file.
-                                 */
-                                InputStream in = attachment.getBody().getInputStream();
-                                try {
-                                    tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
-                                    FileOutputStream out = new FileOutputStream(tempAttachmentFile);
-                                    try {
-                                        size = IOUtils.copy(in, out);
-                                    } finally {
-                                        out.close();
-                                    }
-                                } finally {
-                                    try { in.close(); } catch (Throwable ignore) {}
-                                }
-                            }
-                        }
-
-                        if (size == -1) {
-                            /*
-                             * If the attachment is not yet downloaded see if we can pull a size
-                             * off the Content-Disposition.
-                             */
-                            String disposition = attachment.getDisposition();
-                            if (disposition != null) {
-                                String sizeParam = MimeUtility.getHeaderParameter(disposition, "size");
-                                if (sizeParam != null) {
-                                    try {
-                                        size = Integer.parseInt(sizeParam);
-                                    } catch (NumberFormatException e) { /* Ignore */ }
-                                }
-                            }
-                        }
-                        if (size == -1) {
-                            size = 0;
-                        }
-
-                        String storeData =
-                            Utility.combine(attachment.getHeader(
-                                                MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA), ',');
-
-                        String name = MimeUtility.getHeaderParameter(attachment.getContentType(), "name");
-                        String contentId = MimeUtility.getHeaderParameter(attachment.getContentId(), null);
-
-                        String contentDisposition = MimeUtility.unfoldAndDecode(attachment.getDisposition());
-                        String dispositionType = contentDisposition;
-
-                        if (dispositionType != null) {
-                            int pos = dispositionType.indexOf(';');
-                            if (pos != -1) {
-                                // extract the disposition-type, "attachment", "inline" or extension-token (see the RFC 2183)
-                                dispositionType = dispositionType.substring(0, pos);
-                            }
-                        }
-
-                        if (name == null && contentDisposition != null) {
-                            name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
-                        }
-                        if (attachmentId == -1) {
-                            ContentValues cv = new ContentValues();
-                            cv.put("message_id", messageId);
-                            cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
-                            cv.put("store_data", storeData);
-                            cv.put("size", size);
-                            cv.put("name", name);
-                            cv.put("mime_type", attachment.getMimeType());
-                            cv.put("content_id", contentId);
-                            cv.put("content_disposition", dispositionType);
-
-                            attachmentId = db.insert("attachments", "message_id", cv);
-                        } else {
-                            ContentValues cv = new ContentValues();
-                            cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
-                            cv.put("size", size);
-                            db.update("attachments", cv, "id = ?", new String[]
-                                      { Long.toString(attachmentId) });
-                        }
-
-                        if (attachmentId != -1 && tempAttachmentFile != null) {
-                            File attachmentFile = new File(attachmentDirectory, Long.toString(attachmentId));
-                            tempAttachmentFile.renameTo(attachmentFile);
-                            contentUri = AttachmentProvider.getAttachmentUri(
-                                             getAccount(),
-                                             attachmentId);
-                            if (MimeUtil.isMessage(attachment.getMimeType())) {
-                                attachment.setBody(new LocalAttachmentMessageBody(
-                                        contentUri, LocalFolder.this.localStore.context));
-                            } else {
-                                attachment.setBody(new LocalAttachmentBody(
-                                        contentUri, LocalFolder.this.localStore.context));
-                            }
-                            ContentValues cv = new ContentValues();
-                            cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
-                            db.update("attachments", cv, "id = ?", new String[]
-                                      { Long.toString(attachmentId) });
-                        }
-
-                        /* The message has attachment with Content-ID */
-                        if (contentId != null && contentUri != null) {
-                            Cursor cursor = db.query("messages", new String[]
-                                                     { "html_content" }, "id = ?", new String[]
-                                                     { Long.toString(messageId) }, null, null, null);
-                            try {
-                                if (cursor.moveToNext()) {
-                                    String htmlContent = cursor.getString(0);
-
-                                    if (htmlContent != null) {
-                                        String newHtmlContent = htmlContent.replaceAll(
-                                                                    Pattern.quote("cid:" + contentId),
-                                                                    contentUri.toString());
-
-                                        ContentValues cv = new ContentValues();
-                                        cv.put("html_content", newHtmlContent);
-                                        db.update("messages", cv, "id = ?", new String[]
-                                                  { Long.toString(messageId) });
-                                    }
-                                }
-                            } finally {
-                                Utility.closeQuietly(cursor);
-                            }
-                        }
-
-                        if (attachmentId != -1 && attachment instanceof LocalAttachmentBodyPart) {
-                            ((LocalAttachmentBodyPart) attachment).setAttachmentId(attachmentId);
-                        }
-                        return null;
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    } catch (IOException e) {
-                        throw new WrappedException(e);
-                    }
-                }
-            });
-        } catch (WrappedException e) {
-            final Throwable cause = e.getCause();
-            if (cause instanceof IOException) {
-                throw (IOException) cause;
-            }
-
-            throw (MessagingException) cause;
-        }
+        localStore.notifyChange();
     }
 
     /**
@@ -1720,7 +1527,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 db.update("messages", cv, "id = ?", new String[]
-                          { Long.toString(message.getId()) });
+                        { Long.toString(message.getId()) });
                 return null;
             }
         });
@@ -1774,17 +1581,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public void clearMessagesOlderThan(long cutoff) throws MessagingException {
         open(OPEN_MODE_RO);
 
-        List<? extends Message> messages  = this.localStore.getMessages(
-                                  null,
-                                  this,
-                                  "SELECT " + LocalStore.GET_MESSAGES_COLS +
-                                  "FROM messages " +
-                                  "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                                  "WHERE (empty IS NULL OR empty != 1) AND " +
-                                  "(folder_id = ? and date < ?)",
-                                  new String[] {
-                                          Long.toString(mFolderId), Long.toString(cutoff)
-                                  });
+        List<? extends Message> messages  = this.localStore.getMessages(null, this,
+                "SELECT " + LocalStore.GET_MESSAGES_COLS +
+                "FROM messages " +
+                "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                "WHERE (empty IS NULL OR empty != 1) AND (folder_id = ? and date < ?)",
+                new String[] { Long.toString(mFolderId), Long.toString(cutoff) });
 
         for (Message message : messages) {
             message.destroy();
@@ -1803,21 +1605,18 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
-                        // Get UIDs for all messages to delete
-                        Cursor cursor = db.query("messages", new String[] { "uid" },
+                        Cursor cursor = db.query("messages", new String[] { "message_part_id" },
                                 "folder_id = ? AND (empty IS NULL OR empty != 1)",
                                 folderIdArg, null, null, null);
-
                         try {
-                            // Delete attachments of these messages
                             while (cursor.moveToNext()) {
-                                deleteAttachments(cursor.getString(0));
+                                long messagePartId = cursor.getLong(0);
+                                deleteMessageDataFromDisk(messagePartId);
                             }
                         } finally {
                             cursor.close();
                         }
 
-                        // Delete entries in 'threads' and 'messages'
                         db.execSQL("DELETE FROM threads WHERE message_id IN " +
                                 "(SELECT id FROM messages WHERE folder_id = ?)", folderIdArg);
                         db.execSQL("DELETE FROM messages WHERE folder_id = ?", folderIdArg);
@@ -1849,9 +1648,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                     try {
                         // We need to open the folder first to make sure we've got it's id
                         open(OPEN_MODE_RO);
-                        List<? extends Message> messages = getMessages(null);
-                        for (Message message : messages) {
-                            deleteAttachments(message.getUid());
+                        List<LocalMessage> messages = getMessages(null);
+                        for (LocalMessage message : messages) {
+                            deleteMessageDataFromDisk(message.getMessagePartId());
                         }
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
@@ -1879,75 +1678,47 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         return mName.hashCode();
     }
 
-    void deleteAttachments(final long messageId) throws MessagingException {
-        open(OPEN_MODE_RW);
-        this.localStore.database.execute(false, new DbCallback<Void>() {
+    void deleteMessagePartsAndDataFromDisk(final long rootMessagePartId) throws MessagingException {
+        deleteMessageDataFromDisk(rootMessagePartId);
+        deleteMessageParts(rootMessagePartId);
+    }
+
+    private void deleteMessageParts(final long rootMessagePartId) throws MessagingException {
+        localStore.database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                Cursor attachmentsCursor = null;
-                try {
-                    String accountUuid = getAccountUuid();
-                    Context context = LocalFolder.this.localStore.context;
-
-                    // Get attachment IDs
-                    String[] whereArgs = new String[] { Long.toString(messageId) };
-                    attachmentsCursor = db.query("attachments", new String[] { "id" },
-                            "message_id = ?", whereArgs, null, null, null);
-
-                    final File attachmentDirectory = StorageManager.getInstance(LocalFolder.this.localStore.context)
-                            .getAttachmentDirectory(LocalFolder.this.localStore.uUid, LocalFolder.this.localStore.database.getStorageProviderId());
-
-                    while (attachmentsCursor.moveToNext()) {
-                        String attachmentId = Long.toString(attachmentsCursor.getLong(0));
-                        try {
-                            // Delete stored attachment
-                            File file = new File(attachmentDirectory, attachmentId);
-                            if (file.exists()) {
-                                file.delete();
-                            }
-
-                            // Delete thumbnail file
-                            AttachmentProvider.deleteThumbnail(context, accountUuid,
-                                    attachmentId);
-                        } catch (Exception e) { /* ignore */ }
-                    }
-
-                    // Delete attachment metadata from the database
-                    db.delete("attachments", "message_id = ?", whereArgs);
-                } finally {
-                    Utility.closeQuietly(attachmentsCursor);
-                }
+                db.delete("message_parts", "root = ?", new String[] { Long.toString(rootMessagePartId) });
                 return null;
             }
         });
     }
 
-    private void deleteAttachments(final String uid) throws MessagingException {
-        open(OPEN_MODE_RW);
-        try {
-            this.localStore.database.execute(false, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                    Cursor messagesCursor = null;
-                    try {
-                        messagesCursor = db.query("messages", new String[]
-                                                  { "id" }, "folder_id = ? AND uid = ?", new String[]
-                                                  { Long.toString(mFolderId), uid }, null, null, null);
-                        while (messagesCursor.moveToNext()) {
-                            long messageId = messagesCursor.getLong(0);
-                            deleteAttachments(messageId);
+    private void deleteMessageDataFromDisk(final long rootMessagePartId) throws MessagingException {
+        localStore.database.execute(false, new DbCallback<Void>() {
+            @Override
+            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                deleteMessagePartsFromDisk(db, rootMessagePartId);
+                return null;
+            }
+        });
+    }
 
-                        }
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    } finally {
-                        Utility.closeQuietly(messagesCursor);
+    private void deleteMessagePartsFromDisk(SQLiteDatabase db, long rootMessagePartId) {
+        Cursor cursor = db.query("message_parts", new String[] { "id" },
+                "root = ? AND data_location = " + DataLocation.ON_DISK,
+                new String[] { Long.toString(rootMessagePartId) }, null, null, null);
+        try {
+            while (cursor.moveToNext()) {
+                String messagePartId = cursor.getString(0);
+                File file = localStore.getAttachmentFile(messagePartId);
+                if (file.exists()) {
+                    if (!file.delete() && K9.DEBUG) {
+                        Log.d(K9.LOG_TAG, "Couldn't delete message part file: " + file.getAbsolutePath());
                     }
-                    return null;
                 }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
+            }
+        } finally {
+            cursor.close();
         }
     }
 
@@ -2205,5 +1976,23 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private Account getAccount() {
         return localStore.getAccount();
+    }
+
+    // Note: The contents of the 'message_parts' table depend on these values.
+    private static class MessagePartType {
+        static final int UNKNOWN = 0;
+        static final int ALTERNATIVE_PLAIN = 1;
+        static final int ALTERNATIVE_HTML = 2;
+        static final int TEXT = 3;
+        static final int RELATED = 4;
+        static final int ATTACHMENT = 5;
+        static final int HIDDEN_ATTACHMENT = 6;
+    }
+
+    // Note: The contents of the 'message_parts' table depend on these values.
+    static class DataLocation {
+        static final int MISSING = 0;
+        static final int IN_DATABASE = 1;
+        static final int ON_DISK = 2;
     }
 }

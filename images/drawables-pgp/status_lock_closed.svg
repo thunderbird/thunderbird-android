@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.0.4 (8053) - http://www.bohemiancoding.com/sketch -->
+    <title>lock-closed</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="lock-closed" sketch:type="MSArtboardGroup" fill="#000000">
+            <path d="M81.502,45.132 L79.577,45.132 L79.577,29.479 C79.479,10.285 66.387,-0.164 50.476,-0.164 C34.57,-0.164 20.304,10.782 20.801,29.479 L20.785,45.112 C20.785,45.112 21.025,45.133 19.825,45.133 C18.555,45.133 10.185,46.606 10.185,54.069 L10.185,89.893 C10.185,97.852 19.605,99.836 19.825,99.836 L81.027,99.836 C81.247,99.836 90.181,98.843 90.181,89.893 L90.181,54.564 C90.182,46.109 81.727,45.132 81.502,45.132 L81.502,45.132 Z M59.334,86.055 L41.061,86.055 L46.024,71.489 C43.904,70.077 42.496,67.623 42.496,64.824 C42.496,60.44 45.938,56.886 50.183,56.886 C54.428,56.886 57.87,60.443 57.87,64.824 C57.87,67.619 56.466,70.077 54.348,71.485 L59.334,86.055 L59.334,86.055 Z M34.261,45.132 L34.277,29.686 C34.277,19.737 40.348,11.783 50.183,11.783 C59.924,11.783 66.088,18.741 66.088,29.686 L66.098,45.132 L34.261,45.132 L34.261,45.132 Z" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

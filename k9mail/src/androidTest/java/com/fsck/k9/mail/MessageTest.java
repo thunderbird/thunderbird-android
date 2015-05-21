@@ -8,11 +8,8 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.james.mime4j.codec.Base64InputStream;
-import org.apache.james.mime4j.util.MimeUtil;
-
-import android.test.AndroidTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
@@ -21,13 +18,23 @@ import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
+import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.util.MimeUtil;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class MessageTest extends AndroidTestCase {
-    @Override
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+
+@RunWith(AndroidJUnit4.class)
+public class MessageTest {
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"));
     }
 
@@ -199,7 +206,8 @@ public class MessageTest extends AndroidTestCase {
             + "Content-Transfer-Encoding: 7bit\r\n"
             + "\r\n"
             + "------Boundary102\r\n"
-            + "Content-Type: text/plain; charset=utf-8\r\n"
+            + "Content-Type: text/plain;\r\n"
+            + " charset=utf-8\r\n"
             + "Content-Transfer-Encoding: quoted-printable\r\n"
             + "\r\n"
             + "Testing=2E\r\n"
@@ -208,7 +216,8 @@ public class MessageTest extends AndroidTestCase {
             + "End of test=2E\r\n"
             + "\r\n"
             + "------Boundary102\r\n"
-            + "Content-Type: text/plain; charset=utf-8\r\n"
+            + "Content-Type: text/plain;\r\n"
+            + " charset=utf-8\r\n"
             + "Content-Transfer-Encoding: quoted-printable\r\n"
             + "\r\n"
             + "Testing=2E\r\n"
@@ -236,7 +245,8 @@ public class MessageTest extends AndroidTestCase {
             + "Content-Transfer-Encoding: 7bit\r\n"
             + "\r\n"
             + "------Boundary101\r\n"
-            + "Content-Type: text/plain; charset=utf-8\r\n"
+            + "Content-Type: text/plain;\r\n"
+            + " charset=utf-8\r\n"
             + "Content-Transfer-Encoding: quoted-printable\r\n"
             + "\r\n"
             + "Testing=2E\r\n"
@@ -245,7 +255,8 @@ public class MessageTest extends AndroidTestCase {
             + "End of test=2E\r\n"
             + "\r\n"
             + "------Boundary101\r\n"
-            + "Content-Type: text/plain; charset=utf-8\r\n"
+            + "Content-Type: text/plain;\r\n"
+            + " charset=utf-8\r\n"
             + "Content-Transfer-Encoding: quoted-printable\r\n"
             + "\r\n"
             + "Testing=2E\r\n"
@@ -267,10 +278,7 @@ public class MessageTest extends AndroidTestCase {
 
     private int mMimeBoundary;
 
-    public MessageTest() {
-        super();
-    }
-
+    @Test
     public void testSetSendDateSetsSentDate() throws Exception {
         Message message = sampleMessage();
         final int milliseconds = 0;
@@ -281,23 +289,26 @@ public class MessageTest extends AndroidTestCase {
         assertEquals(milliseconds, sentDate.getTime());
     }
 
+    @Test
     public void testSetSendDateFormatsHeaderCorrectlyWithCurrentTimeZone() throws Exception {
         Message message = sampleMessage();
         message.setSentDate(new Date(0), false);
         assertEquals("Thu, 01 Jan 1970 09:00:00 +0900", message.getHeader("Date")[0]);
     }
 
+    @Test
     public void testSetSendDateFormatsHeaderCorrectlyWithoutTimeZone() throws Exception {
         Message message = sampleMessage();
         message.setSentDate(new Date(0), true);
         assertEquals("Thu, 01 Jan 1970 00:00:00 +0000", message.getHeader("Date")[0]);
     }
 
+    @Test
     public void testMessage() throws MessagingException, IOException {
         MimeMessage message;
         ByteArrayOutputStream out;
 
-        BinaryTempFileBody.setTempDirectory(getContext().getCacheDir());
+        BinaryTempFileBody.setTempDirectory(InstrumentationRegistry.getTargetContext().getCacheDir());
 
         mMimeBoundary = 101;
         message = nestedMessage(nestedMessage(sampleMessage()));
@@ -315,8 +326,7 @@ public class MessageTest extends AndroidTestCase {
 
     private MimeMessage nestedMessage(MimeMessage subMessage)
             throws MessagingException, IOException {
-        BinaryTempFileMessageBody tempMessageBody = new BinaryTempFileMessageBody();
-        tempMessageBody.setEncoding(MimeUtil.ENC_8BIT);
+        BinaryTempFileMessageBody tempMessageBody = new BinaryTempFileMessageBody(MimeUtil.ENC_8BIT);
 
         OutputStream out = tempMessageBody.getOutputStream();
         try {
@@ -348,7 +358,7 @@ public class MessageTest extends AndroidTestCase {
         multipartBody.addBodyPart(textBodyPart(MimeUtil.ENC_8BIT));
         multipartBody.addBodyPart(textBodyPart(MimeUtil.ENC_QUOTED_PRINTABLE));
         multipartBody.addBodyPart(binaryBodyPart());
-        message.setBody(multipartBody);
+        MimeMessageHelper.setBody(message, multipartBody);
 
         return message;
     }
@@ -356,12 +366,12 @@ public class MessageTest extends AndroidTestCase {
     private MimeBodyPart binaryBodyPart() throws IOException,
             MessagingException {
         String encodedTestString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "abcdefghijklmnopqrstuvwxyz0123456789+/";
+                + "abcdefghijklmnopqrstuvwxyz0123456789+/\r\n";
 
-        BinaryTempFileBody tempFileBody = new BinaryTempFileBody();
+        BinaryTempFileBody tempFileBody = new BinaryTempFileBody(MimeUtil.ENC_BASE64);
 
-        InputStream in = new Base64InputStream(new ByteArrayInputStream(
-                encodedTestString.getBytes("UTF-8")));
+        InputStream in = new ByteArrayInputStream(
+                encodedTestString.getBytes("UTF-8"));
 
         OutputStream out = tempFileBody.getOutputStream();
         try {

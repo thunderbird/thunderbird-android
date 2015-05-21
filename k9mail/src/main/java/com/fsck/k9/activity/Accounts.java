@@ -81,7 +81,6 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
 import com.fsck.k9.preferences.SettingsImporter;
@@ -92,7 +91,7 @@ import com.fsck.k9.preferences.SettingsImporter.ImportResults;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.Searchfield;
+import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.view.ColorChip;
 
 import de.cketti.library.changelog.ChangeLog;
@@ -366,7 +365,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             realAccount.limitToDisplayableFolders(search);
         }
 
-        search.and(Searchfield.READ, "1", Attribute.NOT_EQUALS);
+        search.and(SearchField.READ, "1", Attribute.NOT_EQUALS);
 
         return search;
     }
@@ -779,7 +778,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
              * Also don't ask when the AuthType is EXTERNAL.
              */
             boolean configureOutgoingServer = AuthType.EXTERNAL != outgoing.authenticationType
-                    && !WebDavStore.STORE_TYPE.equals(outgoing.type)
+                    && !(ServerSettings.Type.WebDAV == outgoing.type)
                     && outgoing.username != null
                     && !outgoing.username.isEmpty()
                     && (outgoing.password == null || outgoing.password
@@ -1075,7 +1074,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                             // are currently not inserted to be left
                         }
                         MessagingController.getInstance(getApplication())
-                        .notifyAccountCancel(Accounts.this, realAccount);
+                        .deleteAccount(Accounts.this, realAccount);
                         Preferences.getPreferences(Accounts.this)
                         .deleteAccount(realAccount);
                         K9.setServicesEnabled(Accounts.this);
@@ -1284,7 +1283,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         new String[] {"HtmlCleaner", "http://htmlcleaner.sourceforge.net/"},
         new String[] {"Android-PullToRefresh", "https://github.com/chrisbanes/Android-PullToRefresh"},
         new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"},
-        new String[] {"HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker"}
+        new String[] {"HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker"},
+        new String[] {"Glide", "https://github.com/bumptech/glide"}
     };
 
     private void onAbout() {
@@ -1864,7 +1864,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 realAccount.limitToDisplayableFolders(search);
             }
 
-            search.and(Searchfield.FLAGGED, "1", Attribute.EQUALS);
+            search.and(SearchField.FLAGGED, "1", Attribute.EQUALS);
 
             return new AccountClickListener(search);
         }

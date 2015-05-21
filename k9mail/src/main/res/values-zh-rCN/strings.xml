@@ -157,6 +157,9 @@ K-9改进的功能包括：
   <string name="clearing_account">正在清理账户“<xliff:g id="account">%s</xliff:g>”</string>
   <string name="recreating_account">正在重建账户“<xliff:g id="account">%s</xliff:g>”</string>
   <string name="notification_new_title">您有新邮件</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 条新消息</item>
+  </plurals>
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string>
   <string name="notification_additional_messages">再加载 <xliff:g id="additional_messages">%d</xliff:g> 条信息, 账户 <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">回复</string>
@@ -275,6 +278,12 @@ K-9改进的功能包括：
   <string name="global_settings_notification_quick_delete_when_single_msg">为单条消息通知</string>
   <string name="global_settings_notification_quick_delete_always">总是</string>
   <string name="global_settings_notification_quick_delete_description">在通知区域中显示一个按钮以允许快速删除信息</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">屏幕锁定通知</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">无屏幕锁定通知</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">应用程序名称</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">未读消息计数</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">消息计数及发件人</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">与解除屏幕锁定时相同</string>
   <string name="quiet_time">安静时间</string>
   <string name="quiet_time_description">禁止铃声，震动以及闪光</string>
   <string name="quiet_time_starts">安静时间开始</string>
@@ -890,7 +899,6 @@ K-9改进的功能包括：
   <string name="openpgp_successful_decryption_valid_signature_uncertified">已成功解密且签名有效，但未验证</string>
   <string name="openpgp_successful_decryption_unknown_signature">已成功解密，但没有公钥</string>
   <string name="openpgp_get_key">查找缺失的公钥</string>
-  <string name="openpgp_error">OpenPGP 错误:</string>
   <string name="openpgp_user_id">用户标识</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">使用客户端证书</string>
