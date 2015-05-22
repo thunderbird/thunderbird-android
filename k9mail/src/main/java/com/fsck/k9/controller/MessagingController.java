@@ -1296,14 +1296,15 @@ public class MessagingController implements Runnable {
 
             fetchUnsyncedMessages(account, remoteFolder, localFolder, unsyncedMessages, smallMessages, largeMessages, progress, todo, fp);
 
-            // If a message didn't exist, messageFinished won't be called, but we shouldn't try again
-            // If we got here, nothing failed
+            String updatedPushState = localFolder.getPushState();
             for (Message message : unsyncedMessages) {
-                String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
+                String newPushState = remoteFolder.getNewPushState(updatedPushState, message);
                 if (newPushState != null) {
-                    localFolder.setPushState(newPushState);
+                    updatedPushState = newPushState;
                 }
             }
+            localFolder.setPushState(updatedPushState);
+
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
             }
@@ -1462,10 +1463,6 @@ public class MessagingController implements Runnable {
             @Override
             public void messageFinished(T message, int number, int ofTotal) {
                 try {
-                    String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
-                    if (newPushState != null) {
-                        localFolder.setPushState(newPushState);
-                    }
                     if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
 
                         if (K9.DEBUG) {
