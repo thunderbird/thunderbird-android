@@ -30,8 +30,13 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     protected static final String ENABLED_CIPHERS[];
     protected static final String ENABLED_PROTOCOLS[];
 
-    // Order taken from OpenSSL 1.0.1c
     protected static final String ORDERED_KNOWN_CIPHERS[] = {
+            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+            "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+            "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+            "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+            "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+            "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
             "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
             "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
             "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
