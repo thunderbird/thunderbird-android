@@ -288,6 +288,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="global_settings_lock_screen_notification_visibility_everything">Het zelfde. Ook na schermontgrendeling</string>
   <string name="quiet_time">Stilteperiode</string>
   <string name="quiet_time_description">Schakel beltoon, vibratie en leds uit gedurende de nacht</string>
+  <string name="quiet_time_notification">Stilteperiode notificaties</string>
+  <string name="quiet_time_notification_description">Notificaties tijdens stilteperiode uitschakelen</string>
   <string name="quiet_time_starts">Stilteperiode start</string>
   <string name="quiet_time_ends">Stilteperiode eindigt</string>
   <string name="account_setup_basics_title">Een nieuwe account instellen</string>
