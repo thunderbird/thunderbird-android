@@ -214,6 +214,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
         db.execSQL("DROP TABLE IF EXISTS messages_fulltext");
         db.execSQL("CREATE VIRTUAL TABLE messages_fulltext USING fts4 (fulltext)");
+
+        db.execSQL("DROP TABLE IF EXISTS keyword_tag_map");
+        db.execSQL("CREATE TABLE keyword_tag_map (keyword TEXT UNIQUE, tag TEXT)");
     }
 
 
