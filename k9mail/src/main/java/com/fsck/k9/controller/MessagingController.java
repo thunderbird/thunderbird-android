@@ -3717,6 +3717,9 @@ public class MessagingController {
                 }
                 synchronizeFolder(account, folder, ignoreLastCheckedTime, accountInterval, listener);
             }
+
+            /* Now synchronize the mappings (db -> memory) */
+            localStore.updateTagMappings();
         } catch (MessagingException e) {
             Timber.e(e, "Unable to synchronize account %s", account.getName());
             addErrorMessage(account, null, e);

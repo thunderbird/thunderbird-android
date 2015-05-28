@@ -430,6 +430,41 @@ public class LocalStore extends Store implements Serializable {
     }
 
     @Override
+    public void updateTagMappings() throws MessagingException {
+        try {
+            /* For every keyword->tag mapping in the database, update the corresponding Flag object
+             * and change its attribute to match.
+             */
+            database.execute(false, new DbCallback <Map<String, Flag>> () {
+                @Override
+                public Map<String, Flag> doDbWork(final SQLiteDatabase db) throws WrappedException {
+                    Cursor cursor = null;
+
+                    try {
+                        cursor = db.rawQuery("SELECT * FROM keyword_tag_map WHERE tag NOT NULL", null);
+                        while (cursor.moveToNext()) {
+                            String imapKeyword = cursor.getString(KEYWTAG_KEYWORD_INDEX);
+                            String tag = cursor.getString(KEYWTAG_TAG_INDEX);
+
+                            Flag keywordObj = Flag.valueOf(imapKeyword); /* obj added to map here */
+                            keywordObj.setTagName(tag);
+                        }
+                    } catch (Exception e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return Flag.REMEMBERED_KEYWORDS;
+                }
+            });
+        } catch (WrappedException e) {
+            /* Not sure if we should throw a MessagingException here... */
+            //throw(MessagingException) e.getCause();
+        }
+    }
+
+    @Override
     public void checkSettings() throws MessagingException {
     }
 

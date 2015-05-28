@@ -2,7 +2,9 @@
 package com.fsck.k9.mail;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -122,6 +124,11 @@ public final class Flag {
             ANSWERED,
             FORWARDED));
 
+    /**
+     * Map from IMAP keywords to Flag object, in-memory, for easy access
+     */
+    public static final Map<String, Flag> REMEMBERED_KEYWORDS = new HashMap<String, Flag>();
+
     /*
      * Predefined Prefixes
      */
@@ -131,6 +138,7 @@ public final class Flag {
     private final String mName;             // for use towards third party  ex. "\\Deleted"
     private final String mInternalName;     // for internal use in database,...   ex. "DELETED"
     protected final boolean mCustom;
+    private String mTagName;                // for use in the UI, a user-defined keyword can be associated to a tag
 
     /**
      * When a Flag is created dynamically we know it's a custom flag.
@@ -139,7 +147,13 @@ public final class Flag {
      * @return Newly created Flag object.
      */
     public static Flag createFlag(String name) {
-        Flag tmpFlag = new Flag(USER_PREFIX + name, name, true);
+        Flag tmpFlag;
+        if (!REMEMBERED_KEYWORDS.containsKey(name)) {
+            tmpFlag = new Flag(USER_PREFIX + name, name, name);
+            REMEMBERED_KEYWORDS.put(name, tmpFlag);
+        } else {
+            tmpFlag = REMEMBERED_KEYWORDS.get(name);
+        }
         return tmpFlag;
     }
 
@@ -162,6 +176,19 @@ public final class Flag {
         this.mName = name;
         this.mCustom = isCustom;
         this.mInternalName = internalName;
+    }
+
+    /**
+     * Create a new Flag with an associated tag name. Tag names are user-facing strings that hide
+     * the underlying IMAP keyword name.
+     *
+     * @param internalName Name for internal use in database,...   ex. "$label1"
+     * @param name Name for use towards third party ( ex. "???????" )
+     * @param tagName Name for use in the UI, ex. "Read Later"
+     */
+    private Flag(String internalName, String name, String tagName) {
+        this(internalName, name, true);
+        this.mTagName = tagName;
     }
 
     /**
@@ -223,6 +250,10 @@ public final class Flag {
         return Flag.createFlag(name);
     }
 
+    public void setTagName(String mTagName) {
+        this.mTagName = mTagName;
+    }
+
     @Override
     public String toString() {
         return mInternalName;
@@ -230,6 +261,10 @@ public final class Flag {
 
     public String name() {
         return mInternalName;
+    }
+
+    public String tagName() {
+        return mTagName;
     }
 
     /**
