@@ -304,7 +304,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         if (!msgFlags.isEmpty()) {
             for (Flag f : msgFlags) {
                 if (f.isCustom()) {
-                    sb.append(f.realName() + ", ");
+                    sb.append(f.tagName() + ", ");
                 }
             }
 
