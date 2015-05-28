@@ -96,6 +96,9 @@ public class LocalStore extends Store implements Serializable {
     static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
     static final int FOLDER_NOTIFY_CLASS_INDEX = 12;
 
+    static final int KEYWTAG_KEYWORD_INDEX = 0;
+    static final int KEYWTAG_TAG_INDEX = 1;
+
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
     /**
@@ -119,7 +122,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 50;
+    public static final int DB_VERSION = 51;
 
 
     public static String getColumnNameForFlag(Flag flag) {
