@@ -8,7 +8,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.endtoend.framework.AccountForTest;
 import com.fsck.k9.endtoend.framework.ApplicationState;
 import com.fsck.k9.endtoend.framework.StubMailServer;
 import com.fsck.k9.endtoend.pages.WelcomeMessagePage;
@@ -36,14 +38,13 @@ public abstract class AbstractEndToEndTest<T extends Activity> extends ActivityI
         this.bypassWelcome = bypassWelcome;
     }
 
-    @BeforeClass
-    public static void beforeClass() {
-        ApplicationState.getInstance().stubMailServer = new StubMailServer();
-    }
 
     @AfterClass
     public static void afterClass() {
-        ApplicationState.getInstance().stubMailServer.stop();
+        for (AccountForTest account : ApplicationState.getInstance().accounts) {
+            Log.d(K9.LOG_TAG + "-test", "Stopping mail server for account " + account.name);
+            account.stubMailServer.stop();
+        }
     }
 
     @Before

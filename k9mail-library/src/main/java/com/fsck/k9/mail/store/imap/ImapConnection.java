@@ -583,7 +583,9 @@ class ImapConnection {
                 connectException = e;
             }
         }
-        throw new MessagingException("Cannot connect to host", connectException);
+        throw new MessagingException(
+                "Cannot connect to host " + settings.getHost() + " on port " + settings.getPort(),
+                connectException);
     }
 
     private void adjustDNSCacheTTL() {

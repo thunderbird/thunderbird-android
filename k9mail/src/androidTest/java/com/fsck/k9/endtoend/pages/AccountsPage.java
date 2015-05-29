@@ -3,7 +3,10 @@ package com.fsck.k9.endtoend.pages;
 import com.fsck.k9.R;
 import com.fsck.k9.endtoend.framework.AccountForTest;
 import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewAssertion;
+import android.support.test.espresso.ViewInteraction;
+
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -42,8 +45,17 @@ public class AccountsPage extends AbstractPage {
         assertAccount(accountDisplayName, false);
     }
 
+    public FolderPage clickOnAccount(AccountForTest accountForTest) {
+        performOnAccountView(accountForTest, click());
+        return new FolderPage();
+    }
+
     public void clickLongOnAccount(AccountForTest accountForTest) {
-        onView(withText(accountForTest.description)).perform(longClick());
+        performOnAccountView(accountForTest, longClick());
+    }
+
+    private ViewInteraction performOnAccountView(AccountForTest accountForTest, ViewAction viewAction) {
+        return onView(withText(accountForTest.description)).perform(viewAction);
     }
 
     public void clickRemoveInAccountMenu() {
@@ -53,4 +65,5 @@ public class AccountsPage extends AbstractPage {
     public void clickOK() {
         onView(withText("OK")).perform(click());
     }
+
 }

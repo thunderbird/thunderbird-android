@@ -4,8 +4,10 @@ import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.endtoend.framework.AccountForTest;
 import com.fsck.k9.endtoend.framework.ApplicationState;
 import com.fsck.k9.endtoend.pages.AccountsPage;
+
 import org.junit.Test;
 
+import java.util.Iterator;
 
 /**
  * Creates and removes accounts.
@@ -32,7 +34,9 @@ public class A010_AccountIntegrationTest extends AbstractEndToEndTest<Accounts>{
         assertFalse("NB: this test is order dependent and requires A000_WelcomeAndSetupAccountIntegrationTest to run first",
                 ApplicationState.getInstance().accounts.isEmpty());
 
-        AccountForTest accountForTest = ApplicationState.getInstance().accounts.get(0);
+        Iterator<AccountForTest> iterator = ApplicationState.getInstance().accounts.iterator();
+
+        AccountForTest accountForTest = iterator.next();
         accountsPage.assertAccountExists(accountForTest.description);
 
         accountsPage.clickLongOnAccount(accountForTest);
@@ -42,6 +46,8 @@ public class A010_AccountIntegrationTest extends AbstractEndToEndTest<Accounts>{
         accountsPage.clickOK();
 
         accountsPage.assertAccountDoesNotExist(accountForTest.description);
+
+        iterator.remove();
 
     }
 }

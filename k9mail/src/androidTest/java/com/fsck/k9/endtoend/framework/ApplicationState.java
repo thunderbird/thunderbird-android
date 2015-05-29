@@ -12,8 +12,6 @@ public class ApplicationState {
 
     public final List<AccountForTest> accounts = new ArrayList<AccountForTest>();
 
-    public StubMailServer stubMailServer;
-
     public static ApplicationState getInstance() {
         return state;
     }
