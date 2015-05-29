@@ -48,7 +48,6 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA",
             "TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA",
             "TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA",
-            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
             "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
             "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
             "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
@@ -56,14 +55,6 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_ECDH_RSA_WITH_AES_128_CBC_SHA",
             "TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA",
             "TLS_RSA_WITH_AES_128_CBC_SHA",
-            "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
-            "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
-            "TLS_ECDH_RSA_WITH_RC4_128_SHA",
-            "TLS_ECDH_ECDSA_WITH_RC4_128_SHA",
-            "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
-            "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
-            "SSL_RSA_WITH_RC4_128_SHA",
-            "SSL_RSA_WITH_RC4_128_MD5",
     };
 
     protected static final String[] BLACKLISTED_CIPHERS = {
@@ -74,10 +65,19 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "SSL_RSA_EXPORT_WITH_DES40_CBC_SHA",
             "SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA",
             "SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA",
+            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+            "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+            "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+            "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
+            "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
+            "TLS_ECDH_RSA_WITH_RC4_128_SHA",
+            "TLS_ECDH_ECDSA_WITH_RC4_128_SHA",
+            "SSL_RSA_WITH_RC4_128_SHA",
+            "SSL_RSA_WITH_RC4_128_MD5",
     };
 
     protected static final String ORDERED_KNOWN_PROTOCOLS[] = {
-            "TLSv1.2", "TLSv1.1", "TLSv1", "SSLv3"
+            "TLSv1.2", "TLSv1.1", "TLSv1"
     };
 
     static {
