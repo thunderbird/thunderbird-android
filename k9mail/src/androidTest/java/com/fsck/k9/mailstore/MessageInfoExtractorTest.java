@@ -135,6 +135,44 @@ public class MessageInfoExtractorTest {
         assertEquals("text / Includes message titled \"inner message\" containing: html", preview);
     }
 
+    @Test
+    public void shouldPreviewSMimeEncryptedMessage() throws MessagingException {
+        MimeMessage message = new MimeMessage();
+        message.addHeader("Content-Type", "application/pkcs7-mime");
+        MimeMultipart multipart = new MimeMultipart();
+        multipart.setSubType("pkcs7-mime");
+        message.setBody(multipart);
+
+        String preview = new MessageInfoExtractor(getContext(), message).getMessageTextPreview();
+
+        assertEquals("*Encrypted*", preview);
+    }
+
+    @Test
+    public void shouldPreviewPgpMimeEncryptedMessage() throws MessagingException {
+        MimeMessage message = new MimeMessage();
+        message.addHeader("Content-Type", "multipart/encrypted");
+        MimeMultipart multipart = new MimeMultipart();
+        multipart.setSubType("encrypted");
+        message.setBody(multipart);
+
+        String preview = new MessageInfoExtractor(getContext(), message).getMessageTextPreview();
+
+        assertEquals("*Encrypted*", preview);
+    }
+
+    @Test
+    public void shouldPreviewInlineEncryptedMessage() throws MessagingException {
+        MimeMessage message = new MimeMessage();
+        message.addHeader("Content-Type", "text/plain");
+        TextBody body = new TextBody("-----BEGIN PGP MESSAGE----- CIPHERTEXT -----END PGP MESSAGE-----");
+        message.setBody(body);
+
+        String preview = new MessageInfoExtractor(getContext(), message).getMessageTextPreview();
+
+        assertEquals("*Encrypted*", preview);
+    }
+
     private Context getContext() {
         return InstrumentationRegistry.getTargetContext();
     }
