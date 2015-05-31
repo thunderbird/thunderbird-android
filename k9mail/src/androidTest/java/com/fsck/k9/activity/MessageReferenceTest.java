@@ -13,6 +13,8 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+
 
 @RunWith(AndroidJUnit4.class)
 public class MessageReferenceTest {
@@ -122,6 +124,11 @@ public class MessageReferenceTest {
         MessageReference messageReferenceTwo = createMessageReference("account", "folder", "---");
 
         assertEqualsReturnsFalseSymmetrically(messageReferenceOne, messageReferenceTwo);
+    }
+
+    @Test
+    public void hashcodeVerifyEqualsContract() {
+        EqualsVerifier.forClass(MessageReference.class).verify();
     }
 
     private MessageReference createMessageReference(String accountUuid, String folderName, String uid) {
