@@ -39,69 +39,30 @@ public class CryptoHelper {
      * @param message
      * @return
      */
-    public static boolean isSMimeEncrypted(Message message) {
-        String[] contentHeaders = null;
-        try {
-            contentHeaders = message.getHeader("Content-Type");
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
-        }
-
-        if (contentHeaders == null) {
-            return false;
-        }
-
-        for (String contentHeader : contentHeaders) {
-            if (contentHeader.equalsIgnoreCase(APPLICATION_PKCS7_MIME)) {
-                return true;
-            }
-        }
-
-        return false;
+    public static boolean isSMimeEncrypted(Message message) throws MessagingException {
+        return contentHeaderContains(message, APPLICATION_PKCS7_MIME);
     }
 
     /**
      * @param message
      * @return
      */
-    public static boolean isPgpMimeEncrypted(Message message) {
-        String[] contentHeaders = null;
-        try {
-            contentHeaders = message.getHeader("Content-Type");
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
-        }
-
-        if (contentHeaders == null) {
-            return false;
-        }
-
-        for (String contentHeader : contentHeaders) {
-            if (contentHeader.equalsIgnoreCase(MULTIPART_ENCRYPTED)) {
-                return true;
-            }
-        }
-
-        return false;
+    public static boolean isPgpMimeEncrypted(Message message) throws MessagingException {
+        return contentHeaderContains(message, MULTIPART_ENCRYPTED);
     }
 
     /**
      * @param message
      * @return
      */
-    public static boolean isPgpInlineEncrypted(Message message) {
-        String data = null;
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part != null) {
-                data = MessageExtractor.getTextFromPart(part);
-            }
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
+    public static boolean isPgpInlineEncrypted(Message message) throws MessagingException {
+        Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+
+        if (part == null) {
+            return false;
         }
+
+        String data = MessageExtractor.getTextFromPart(part);
 
         if (data == null) {
             return false;
@@ -116,26 +77,19 @@ public class CryptoHelper {
         }
     }
 
-    public boolean isSigned(Message message) {
-        String data = null;
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null) {
-                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            }
-            if (part != null) {
-                data = MessageExtractor.getTextFromPart(part);
-            }
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
-        }
+    private static boolean contentHeaderContains(Message message, String desiredHeader) throws MessagingException {
+        String[] contentHeaders = message.getHeader("Content-Type");
 
-        if (data == null) {
+        if (contentHeaders == null) {
             return false;
         }
 
-        Matcher matcher = PGP_SIGNED_MESSAGE.matcher(data);
-        return matcher.matches();
+        for (String contentHeader : contentHeaders) {
+            if (contentHeader.equalsIgnoreCase(desiredHeader)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
