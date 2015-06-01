@@ -80,6 +80,10 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLSv1.2", "TLSv1.1", "TLSv1"
     };
 
+    protected static final String[] BLACKLISTED_PROTOCOLS = {
+            "SSLv3"
+    };
+
     static {
         String[] enabledCiphers = null;
         String[] supportedProtocols = null;
@@ -106,7 +110,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
                 reorder(enabledCiphers, ORDERED_KNOWN_CIPHERS, BLACKLISTED_CIPHERS);
 
         ENABLED_PROTOCOLS = (supportedProtocols == null) ? null :
-            reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, null);
+            reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, BLACKLISTED_PROTOCOLS);
     }
 
     public DefaultTrustedSocketFactory(Context context) {
