@@ -1939,7 +1939,28 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         }
     }
-
+    
+    private void askBeforeDiscard(){
+        if(K9.confirmMenuDiscard()){
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MessageCompose.this);
+                alertDialog.setTitle(R.string.dialog_confirm_delete_title);
+                alertDialog.setMessage(R.string.dialog_confirm_delete_message);
+                alertDialog.setPositiveButton(R.string.dialog_confirm_delete_confirm_button, new DialogInterface.OnClickListener() {                
+                    public void onClick(DialogInterface dialog, int which){
+                        onDiscard();
+                    }
+                });        
+                alertDialog.setNegativeButton(R.string.dialog_confirm_delete_cancel_button, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which){
+                    }
+                });                
+                alertDialog.show();
+        }else{
+                onDiscard();
+        }
+    }
+    
+                
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -1955,7 +1976,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
                 break;
             case R.id.discard:
-                onDiscard();
+                askBeforeDiscard();
+                
                 break;
             case R.id.add_cc_bcc:
                 onAddCcBcc();

@@ -211,8 +211,9 @@ public class Prefs extends K9PreferenceActivity {
         mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
 
         boolean canDeleteFromNotification = MessagingController.platformSupportsExtendedNotifications();
-        CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 4 : 3];
-        boolean[] confirmActionValues = new boolean[canDeleteFromNotification ? 4 : 3];
+//jab was 4 3 (two lines)
+        CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 5 : 4];
+        boolean[] confirmActionValues = new boolean[canDeleteFromNotification ? 5 : 4];
         int index = 0;
 
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete);
@@ -223,8 +224,11 @@ public class Prefs extends K9PreferenceActivity {
             confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete_notif);
             confirmActionValues[index++] = K9.confirmDeleteFromNotification();
         }
+//jab
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_spam);
         confirmActionValues[index++] = K9.confirmSpam();
+        confirmActionEntries[index] = getString(R.string.global_settings_confirm_menu_discard);
+        confirmActionValues[index++] = K9.confirmMenuDiscard();
 
         mConfirmActions.setItems(confirmActionEntries);
         mConfirmActions.setCheckedItems(confirmActionValues);
@@ -456,7 +460,9 @@ public class Prefs extends K9PreferenceActivity {
         if (MessagingController.platformSupportsExtendedNotifications()) {
             K9.setConfirmDeleteFromNotification(mConfirmActions.getCheckedItems()[index++]);
         }
+//jab
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[index++]);
+        K9.setConfirmMenuDiscard(mConfirmActions.getCheckedItems()[index++]);
 
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());

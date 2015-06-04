@@ -101,7 +101,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="single_message_options_action">Senden…</string>
   <string name="refile_action">Umsortieren…</string>
   <string name="done_action">Fertig</string>
-  <string name="discard_action">Verwerfen</string>
+  <string name="discard_action">Verwerfen </string>
   <string name="save_draft_action">Als Entwurf speichern</string>
   <string name="check_mail_action">E-Mail abrufen</string>
   <string name="send_messages_action">Nachrichten senden</string>
@@ -270,6 +270,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="global_settings_confirm_action_delete">Löschen</string>
   <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Verwerfen im Nachrichterstellenmenu</string>
   <string name="global_settings_confirm_action_delete_notif">Löschen (aus Benachrichtigung)</string>
   <string name="global_settings_privacy_hide_useragent">K-9 nicht als Mailprogramm in Kopfzeilen eintragen</string>
   <string name="global_settings_privacy_hide_timezone">UTC als Zeitzone in Kopfzeilen verwenden</string>
