@@ -312,8 +312,6 @@ public class MessagingController implements Runnable {
     // Key is accountNumber
     private final ConcurrentMap<Integer, NotificationData> notificationData = new ConcurrentHashMap<Integer, NotificationData>();
 
-    private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
-
     private void suppressMessages(Account account, List<LocalMessage> messages) {
         EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
         cache.hideMessages(messages);
@@ -1855,7 +1853,24 @@ public class MessagingController implements Runnable {
                 messageChanged = true;
             }
         } else {
-            for (Flag flag : MessagingController.SYNC_FLAGS) {
+            /* TODO should synchronize the local and remote flags, not just do "server-wins" */
+
+            /* Aggregate local and remote flags here before testing which one goes where */
+            Set<Flag> allFlags = new HashSet<Flag>(remoteMessage.getFlags());
+            allFlags.addAll(localMessage.getFlags());
+
+            /* Filter out the non-custom ones */
+            Iterator<Flag> it = allFlags.iterator();
+            while (it.hasNext()) {
+                if (!it.next().isCustom()) {
+                    it.remove();
+                }
+            }
+
+            /* add the "system" flags */
+            allFlags.addAll(Flag.SYNC_FLAGS);
+
+            for (Flag flag : allFlags) {
                 if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                     localMessage.setFlag(flag, remoteMessage.isSet(flag));
                     messageChanged = true;
