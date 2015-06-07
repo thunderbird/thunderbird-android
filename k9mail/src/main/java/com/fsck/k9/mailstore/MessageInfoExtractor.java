@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 
+import com.fsck.k9.R;
 import com.fsck.k9.crypto.CryptoHelper;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -29,7 +30,7 @@ class MessageInfoExtractor {
         if (CryptoHelper.isPgpInlineEncrypted(message)
                 || CryptoHelper.isPgpMimeEncrypted(message)
                 || CryptoHelper.isSMimeEncrypted(message)) {
-            return "*Encrypted*";
+            return context.getString(R.string.openpgp_message_preview);
         }
         getViewablesIfNecessary();
         return MessagePreviewExtractor.extractPreview(context, viewables);
