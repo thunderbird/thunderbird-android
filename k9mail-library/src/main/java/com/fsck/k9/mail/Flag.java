@@ -2,8 +2,8 @@
 package com.fsck.k9.mail;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -127,7 +127,7 @@ public final class Flag {
     /**
      * Map from IMAP keywords to Flag object, in-memory, for easy access
      */
-    public static final Map<String, Flag> REMEMBERED_KEYWORDS = new HashMap<String, Flag>();
+    public static final Map<String, Flag> REMEMBERED_KEYWORDS = new LinkedHashMap<String, Flag>();
 
     /*
      * Predefined Prefixes

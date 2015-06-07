@@ -464,6 +464,10 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
+    public Map<String, Flag> getTagMappings() {
+        return Flag.REMEMBERED_KEYWORDS;
+    }
+
     @Override
     public void checkSettings() throws MessagingException {
     }

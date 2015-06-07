@@ -202,6 +202,12 @@
         </activity>
 
         <activity
+            android:name=".activity.TagMapping"
+            android:configChanges="locale"
+            android:uiOptions="splitActionBarWhenNarrow">
+        </activity>
+
+        <activity
             android:name=".activity.MessageList"
             android:configChanges="locale"
             android:launchMode="singleTop"

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -31,6 +32,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.TagMapping;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.ContactPicture;
@@ -138,6 +140,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
+        mTagsView.setOnClickListener(this);
 
         mFromView.setOnLongClickListener(this);
         mToView.setOnLongClickListener(this);
@@ -166,6 +169,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             }
             case R.id.crypto_status_icon: {
                 onCryptoClickListener.onCryptoClick();
+                break;
+            }
+            case R.id.tags:
+            case R.id.tags_label: {
+                Intent intent = new Intent(mContext, TagMapping.class);
+                intent.putExtra("account", mAccount.getUuid());
+                mContext.startActivity(intent);
                 break;
             }
         }
