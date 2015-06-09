@@ -270,6 +270,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="global_settings_confirm_action_delete">Löschen</string>
   <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Verwerfen im Nachrichterstellenmenu</string>
   <string name="global_settings_confirm_action_delete_notif">Löschen (aus Benachrichtigung)</string>
   <string name="global_settings_privacy_hide_useragent">K-9 nicht als Mailprogramm in Kopfzeilen eintragen</string>
   <string name="global_settings_privacy_hide_timezone">UTC als Zeitzone in Kopfzeilen verwenden</string>
