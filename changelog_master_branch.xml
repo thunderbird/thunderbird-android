@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.107" versioncode="23070" >
+        <change>Fixed an issue caused by the latest Android System WebView update</change>
+    </release>
     <release version="5.106" versioncode="23060">
         <change>Fixed a bug where messages where not always displayed on Android 5.x</change>
     </release>
