@@ -162,7 +162,7 @@ public class MessagingController implements Runnable {
             if (o1 == null || o2 == null || o1.getUid() == null || o2.getUid() == null) {
                 return 0;
             }
-      int id1, id2;
+            int id1, id2;
             try {
                 id1 = Integer.parseInt(o1.getUid());
                 id2 = Integer.parseInt(o2.getUid());
