@@ -1294,16 +1294,17 @@ public class MessagingController implements Runnable {
                 Log.d(K9.LOG_TAG, "SYNC: About to fetch " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
 
 
-            fetchUnsyncedMessages(account, remoteFolder, localFolder, unsyncedMessages, smallMessages, largeMessages, progress, todo, fp);
+            fetchUnsyncedMessages(account, remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress, todo, fp);
 
-            // If a message didn't exist, messageFinished won't be called, but we shouldn't try again
-            // If we got here, nothing failed
+            String updatedPushState = localFolder.getPushState();
             for (Message message : unsyncedMessages) {
-                String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
+                String newPushState = remoteFolder.getNewPushState(updatedPushState, message);
                 if (newPushState != null) {
-                    localFolder.setPushState(newPushState);
+                    updatedPushState = newPushState;
                 }
             }
+            localFolder.setPushState(updatedPushState);
+
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
             }
@@ -1441,7 +1442,6 @@ public class MessagingController implements Runnable {
     }
 
     private <T extends Message> void fetchUnsyncedMessages(final Account account, final Folder<T> remoteFolder,
-                                       final LocalFolder localFolder,
                                        List<T> unsyncedMessages,
                                        final List<Message> smallMessages,
                                        final List<Message> largeMessages,
@@ -1452,22 +1452,12 @@ public class MessagingController implements Runnable {
 
         final Date earliestDate = account.getEarliestPollDate();
 
-        /*
-         * Messages to be batch written
-         */
-        final List<Message> chunk = new ArrayList<Message>(UNSYNC_CHUNK_SIZE);
-
         remoteFolder.fetch(unsyncedMessages, fp,
         new MessageRetrievalListener<T>() {
             @Override
             public void messageFinished(T message, int number, int ofTotal) {
                 try {
-                    String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
-                    if (newPushState != null) {
-                        localFolder.setPushState(newPushState);
-                    }
                     if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
-
                         if (K9.DEBUG) {
                             if (message.isSet(Flag.DELETED)) {
                                 Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid()
@@ -1490,24 +1480,6 @@ public class MessagingController implements Runnable {
                     } else {
                         smallMessages.add(message);
                     }
-
-                    // And include it in the view
-                    if (message.getSubject() != null && message.getFrom() != null) {
-                        /*
-                         * We check to make sure that we got something worth
-                         * showing (subject and from) because some protocols
-                         * (POP) may not be able to give us headers for
-                         * ENVELOPE, only size.
-                         */
-
-                        // keep message for delayed storing
-                        chunk.add(message);
-
-                        if (chunk.size() >= UNSYNC_CHUNK_SIZE) {
-                            writeUnsyncedMessages(chunk, localFolder, account, folder);
-                            chunk.clear();
-                        }
-                    }
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
                     addErrorMessage(account, null, e);
@@ -1523,47 +1495,7 @@ public class MessagingController implements Runnable {
             }
 
         });
-        if (!chunk.isEmpty()) {
-            writeUnsyncedMessages(chunk, localFolder, account, folder);
-            chunk.clear();
-        }
     }
-
-    /**
-     * Actual storing of messages
-     *
-     * <br>
-     * FIXME: <strong>This method should really be moved in the above MessageRetrievalListener once {@link MessageRetrievalListener#messagesFinished(int)} is properly invoked by various stores</strong>
-     *
-     * @param messages Never <code>null</code>.
-     * @param localFolder
-     * @param account
-     * @param folder
-     */
-    private void writeUnsyncedMessages(final List<Message> messages, final LocalFolder localFolder, final Account account, final String folder) {
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "Batch writing " + Integer.toString(messages.size()) + " messages");
-        }
-        try {
-            // Store the new message locally
-            localFolder.appendMessages(messages);
-
-            for (final Message message : messages) {
-                final LocalMessage localMessage = localFolder.getMessage(message.getUid());
-                syncFlags(localMessage, message);
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
-                          + account + ":" + folder + ":" + message.getUid());
-                for (final MessagingListener l : getListeners()) {
-                    l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                }
-            }
-        } catch (final Exception e) {
-            Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
-            addErrorMessage(account, null, e);
-        }
-    }
-
 
     private boolean shouldImportMessage(final Account account, final String folder, final Message message, final AtomicInteger progress, final Date earliestDate) {
 
