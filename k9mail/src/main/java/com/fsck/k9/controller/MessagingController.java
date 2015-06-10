@@ -4669,7 +4669,9 @@ public class MessagingController implements Runnable {
 
         // Don't notify if the sender address matches one of our identities and the user chose not
         // to be notified for such messages.
-        return !(account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail());
+        if (account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail()) {
+            return false;
+        }
 
     }
 
@@ -5359,17 +5361,6 @@ public class MessagingController implements Runnable {
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(account.getAccountNumber());
         notificationManager.cancel(-1000 - account.getAccountNumber());
-
-        // cancel stacked notifications on Android Wear that share this as a summary notification
-        //NotificationData data = notificationData.get(account.getAccountNumber());
-        //if (data != null) {
-        //    Collection<Integer> stackedChildNotifications = data.getStackedChildNotifications();
-        //    if (stackedChildNotifications != null) {
-        //        for (Integer stackedNotificationId : stackedChildNotifications) {
-        //            notificationManager.cancel(stackedNotificationId);
-        //        }
-        //    }
-        //}
 
         notificationData.remove(account.getAccountNumber());
     }
