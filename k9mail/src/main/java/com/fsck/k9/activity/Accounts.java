@@ -1183,41 +1183,40 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         if (menuInfo != null) {
             mSelectedContextAccount = (BaseAccount)getListView().getItemAtPosition(menuInfo.position);
         }
-        Account realAccount = null;
         if (mSelectedContextAccount instanceof Account) {
-            realAccount = (Account)mSelectedContextAccount;
-        }
-        switch (item.getItemId()) {
-        case R.id.delete_account:
-            onDeleteAccount(realAccount);
-            break;
-        case R.id.account_settings:
-            onEditAccount(realAccount);
-            break;
-        case R.id.activate:
-            onActivateAccount(realAccount);
-            break;
-        case R.id.clear_pending:
-            onClearCommands(realAccount);
-            break;
-        case R.id.empty_trash:
-            onEmptyTrash(realAccount);
-            break;
-        case R.id.clear:
-            onClear(realAccount);
-            break;
-        case R.id.recreate:
-            onRecreate(realAccount);
-            break;
-        case R.id.export:
-            onExport(false, realAccount);
-            break;
-        case R.id.move_up:
-            onMove(realAccount, true);
-            break;
-        case R.id.move_down:
-            onMove(realAccount, false);
-            break;
+            Account realAccount = (Account)mSelectedContextAccount;
+            switch (item.getItemId()) {
+                case R.id.delete_account:
+                    onDeleteAccount(realAccount);
+                    break;
+                case R.id.account_settings:
+                    onEditAccount(realAccount);
+                    break;
+                case R.id.activate:
+                    onActivateAccount(realAccount);
+                    break;
+                case R.id.clear_pending:
+                    onClearCommands(realAccount);
+                    break;
+                case R.id.empty_trash:
+                    onEmptyTrash(realAccount);
+                    break;
+                case R.id.clear:
+                    onClear(realAccount);
+                    break;
+                case R.id.recreate:
+                    onRecreate(realAccount);
+                    break;
+                case R.id.export:
+                    onExport(false, realAccount);
+                    break;
+                case R.id.move_up:
+                    onMove(realAccount, true);
+                    break;
+                case R.id.move_down:
+                    onMove(realAccount, false);
+                    break;
+            }
         }
         return true;
     }
