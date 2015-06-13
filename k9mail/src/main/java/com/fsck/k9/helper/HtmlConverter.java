@@ -60,8 +60,6 @@ public class HtmlConverter {
         + "|(?:xn\\-\\-0zwm56d|xn\\-\\-11b5bs3a9aj6g|xn\\-\\-80akhbyknj4f|xn\\-\\-9t4b11yi5a|xn\\-\\-deba0ad|xn\\-\\-fiqs8s|xn\\-\\-fiqz9s|xn\\-\\-fzc2c9e2c|xn\\-\\-g6w251d|xn\\-\\-hgbk6aj7f53bba|xn\\-\\-hlcj6aya9esc7a|xn\\-\\-j6w193g|xn\\-\\-jxalpdlp|xn\\-\\-kgbechtv|xn\\-\\-kprw13d|xn\\-\\-kpry57d|xn\\-\\-mgbaam7a8h|xn\\-\\-mgbayh7gpa|xn\\-\\-mgberp4a5d4ar|xn\\-\\-o3cw4h|xn\\-\\-p1ai|xn\\-\\-pgbs0dh|xn\\-\\-wgbh1c|xn\\-\\-wgbl6a|xn\\-\\-xkc2al3hye2a|xn\\-\\-ygbi2ammx|xn\\-\\-zckzah)"
         + "|y[et]"
         + "|z[amw]))";
-    private static final String BITCOIN_URI_PATTERN =
-            "bitcoin:[1-9a-km-zA-HJ-NP-Z]{27,34}(\\?[a-zA-Z0-9$\\-_.+!*'(),%:@&=]*)?";
     /**
      *  Regular expression pattern to match most part of RFC 3987
      *  Internationalized URLs, aka IRIs.  Commonly used Unicode characters are
@@ -82,6 +80,35 @@ public class HtmlConverter {
                 + "(\\/(?:(?:[" + GOOD_IRI_CHAR + "\\;\\/\\?\\:\\@\\&\\=\\#\\~"  // plus option query params
                 + "\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])|(?:\\%[a-fA-F0-9]{2}))*)?"
                 + "(?:\\b|$)"); // and finally, a word boundary or end of
+
+    /**
+     * URI for making payments with bitcoin https://en.bitcoin.it/wiki/BIP_0021
+     */
+    private static final Pattern BITCOIN_URI_PATTERN = Pattern.compile(
+            "bitcoin:[1-9a-km-zA-HJ-NP-Z]{27,34}(\\?[a-zA-Z0-9$\\-_.+!*'(),%:;@&=]*)?");
+    /**
+     * A configuration link for a Tor bridge, to work around Tor blocking https://bridges.torproject.org
+     */
+    private static final Pattern BRIDGE_URI_PATTERN = Pattern.compile("bridge:[^ \t\n\"\':,<>]+");
+    /**
+     * geo: URIs for representing location, supported natively in Android and by
+     * all Android map apps.  It is also an RFC: https://tools.ietf.org/html/rfc5870
+     * http://geouri.org
+     */
+    private static final Pattern GEO_URI_PATTERN = Pattern.compile("geo:[-0-9.]+,[-0-9.]+[^ \t\n\"\':<>]*");
+    /**
+     * Android-specific direct links to apps in app stores, supported by the major app stores
+     */
+    private static final Pattern MARKET_URI_PATTERN = Pattern.compile("market://[^ \t\n\"\':,<>]+");
+    /**
+     * OpenPGP key IDs (8 or 16 hex chars) and fingerprints (40 hex chars)
+     * https://tools.ietf.org/html/draft-vb-openpgp-linked-ids-00
+     */
+    private static final Pattern OPENPGP4FPR_URI_PATTERN = Pattern.compile("openpgp4fpr:[A-Za-z0-9]{8,40}");
+    /**
+     * Links to configure XMPP contacts https://xmpp.org/extensions/xep-0147.html
+     */
+    private static final Pattern XMPP_URI_PATTERN = Pattern.compile("xmpp:[^ \t\n\"\':,<>]+");
 
     /**
      * When generating previews, Spannable objects that can't be converted into a String are
@@ -446,7 +473,14 @@ public class HtmlConverter {
      * @param outputBuffer Buffer to append linked text to.
      */
     protected static void linkifyText(final String text, final StringBuffer outputBuffer) {
-        String prepared = text.replaceAll(BITCOIN_URI_PATTERN, "<a href=\"$0\">$0</a>");
+
+        Pattern[] patterns = {
+                BITCOIN_URI_PATTERN, GEO_URI_PATTERN, MARKET_URI_PATTERN,
+                OPENPGP4FPR_URI_PATTERN, BRIDGE_URI_PATTERN, XMPP_URI_PATTERN
+        };
+        String prepared = text;
+        for (Pattern pattern : patterns)
+            prepared = pattern.matcher(prepared).replaceAll("<a href=\"$0\">$0</a>");
 
         Matcher m = WEB_URL_PATTERN.matcher(prepared);
         while (m.find()) {
