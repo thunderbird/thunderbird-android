@@ -49,8 +49,8 @@ class JisSupport {
 
 
     private static String getJisVariantFromMailerHeaders(Message message) throws MessagingException {
-        String mailerHeaders[] = message.getHeader("X-Mailer");
-        if (mailerHeaders == null || mailerHeaders.length == 0)
+        String[] mailerHeaders = message.getHeader("X-Mailer");
+        if (mailerHeaders.length == 0)
             return null;
 
         if (mailerHeaders[0].startsWith("iPhone Mail ") || mailerHeaders[0].startsWith("iPad Mail "))
@@ -61,8 +61,8 @@ class JisSupport {
 
 
     private static String getJisVariantFromReceivedHeaders(Part message) throws MessagingException {
-        String receivedHeaders[] = message.getHeader("Received");
-        if (receivedHeaders == null)
+        String[] receivedHeaders = message.getHeader("Received");
+        if (receivedHeaders.length == 0)
             return null;
 
         for (String receivedHeader : receivedHeaders) {

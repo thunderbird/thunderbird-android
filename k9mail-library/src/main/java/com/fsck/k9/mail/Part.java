@@ -22,6 +22,9 @@ public interface Part {
 
     String getContentId();
 
+    /**
+     * Returns an array of headers of the given name. The array may be empty.
+     */
     String[] getHeader(String name) throws MessagingException;
 
     boolean isMimeType(String mimeType) throws MessagingException;

@@ -1451,7 +1451,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private String getTransferEncoding(Part part) throws MessagingException {
         String[] contentTransferEncoding = part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
-        if (contentTransferEncoding != null && contentTransferEncoding.length > 0) {
+        if (contentTransferEncoding.length > 0) {
             return contentTransferEncoding[0].toLowerCase(Locale.US);
         }
 
@@ -1812,14 +1812,14 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         // Get the message IDs from the "References" header line
         String[] referencesArray = message.getHeader("References");
         List<String> messageIds = null;
-        if (referencesArray != null && referencesArray.length > 0) {
+        if (referencesArray.length > 0) {
             messageIds = Utility.extractMessageIds(referencesArray[0]);
         }
 
         // Append the first message ID from the "In-Reply-To" header line
         String[] inReplyToArray = message.getHeader("In-Reply-To");
         String inReplyTo;
-        if (inReplyToArray != null && inReplyToArray.length > 0) {
+        if (inReplyToArray.length > 0) {
             inReplyTo = Utility.extractMessageId(inReplyToArray[0]);
             if (inReplyTo != null) {
                 if (messageIds == null) {
