@@ -1,16 +1,31 @@
 package com.fsck.k9.helper;
 
-import android.text.*;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.text.Annotation;
+import android.text.Editable;
+import android.text.Html;
 import android.text.Html.TagHandler;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
+
 import com.fsck.k9.K9;
 
 import org.xml.sax.XMLReader;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -82,33 +97,39 @@ public class HtmlConverter {
                 + "(?:\\b|$)"); // and finally, a word boundary or end of
 
     /**
-     * URI for making payments with bitcoin https://en.bitcoin.it/wiki/BIP_0021
+     * List of currently active URI scheme patterns for linkifying message contents,
+     * generated from {@link #URI_PATTERNS} and {@link #TEST_URIS}
      */
-    private static final Pattern BITCOIN_URI_PATTERN = Pattern.compile(
-            "bitcoin:[1-9a-km-zA-HJ-NP-Z]{27,34}(\\?[a-zA-Z0-9$\\-_.+!*'(),%:;@&=]*)?");
-    /**
-     * A configuration link for a Tor bridge, to work around Tor blocking https://bridges.torproject.org
-     */
-    private static final Pattern BRIDGE_URI_PATTERN = Pattern.compile("bridge:[^ \t\n\"\':,<>]+");
-    /**
-     * geo: URIs for representing location, supported natively in Android and by
-     * all Android map apps.  It is also an RFC: https://tools.ietf.org/html/rfc5870
-     * http://geouri.org
-     */
-    private static final Pattern GEO_URI_PATTERN = Pattern.compile("geo:[-0-9.]+,[-0-9.]+[^ \t\n\"\':<>]*");
-    /**
-     * Android-specific direct links to apps in app stores, supported by the major app stores
-     */
-    private static final Pattern MARKET_URI_PATTERN = Pattern.compile("market://[^ \t\n\"\':,<>]+");
-    /**
-     * OpenPGP key IDs (8 or 16 hex chars) and fingerprints (40 hex chars)
-     * https://tools.ietf.org/html/draft-vb-openpgp-linked-ids-00
-     */
-    private static final Pattern OPENPGP4FPR_URI_PATTERN = Pattern.compile("openpgp4fpr:[A-Za-z0-9]{8,40}");
-    /**
-     * Links to configure XMPP contacts https://xmpp.org/extensions/xep-0147.html
-     */
-    private static final Pattern XMPP_URI_PATTERN = Pattern.compile("xmpp:[^ \t\n\"\':,<>]+");
+    public static final ArrayList<Pattern> activePatterns = new ArrayList<Pattern>(6);
+
+    // this must be alpha sorted basedon scheme to match TEST_URIS
+    public static final Pattern[] URI_PATTERNS = {
+            // For making payments with bitcoin https://en.bitcoin.it/wiki/BIP_0021
+            Pattern.compile("bitcoin:[1-9a-km-zA-HJ-NP-Z]{27,34}(\\?[a-zA-Z0-9$\\-_.+!*'(),%:;@&=]*)?"),
+            // config link for a Tor bridge to work around blocking https://bridges.torproject.org
+            Pattern.compile("bridge:[^ \t\n\"\':,<>]+"),
+            // represents physical location, supported natively in Android and by
+            // all Android map apps.  It is also an RFC: https://tools.ietf.org/html/rfc5870
+            // http://geouri.org
+            Pattern.compile("geo:[-0-9.]+,[-0-9.]+[^ \t\n\"\':<>]*"),
+            // Android-specific direct links to apps in app stores, supported by the major app stores
+            Pattern.compile("market://[^ \t\n\"\':,<>]+"),
+            // OpenPGP key IDs (8 or 16 hex chars) and fingerprints (40 hex chars)
+            // https://tools.ietf.org/html/draft-vb-openpgp-linked-ids-00
+            Pattern.compile("openpgp4fpr:[A-Za-z0-9]{8,40}"),
+            // configures XMPP contacts https://xmpp.org/extensions/xep-0147.html
+            Pattern.compile("xmpp:[^ \t\n\"\':,<>]+"),
+    };
+
+    // this must have the same sort order as URI_PATTERNS, based on the scheme, e.g. alpha
+    public static final Uri[] TEST_URIS = {
+            Uri.parse("bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"),
+            Uri.parse("bridge://scramblesuit%20135.229.149.58%3A29461%20a93fb6cf0709b8e732f300ff237f8cd51e5b6a7f"),
+            Uri.parse("geo:34.99393,-106.61568"),
+            Uri.parse("market://details?id=com.fsck.k9"),
+            Uri.parse("openpgp4fpr:5E61C8780F86295CE17D86779F0FE587374BBE81"),
+            Uri.parse("xmpp:test@xmpp.jp"),
+    };
 
     /**
      * When generating previews, Spannable objects that can't be converted into a String are
@@ -467,20 +488,34 @@ public class HtmlConverter {
     }
 
     /**
+     * build list of active linkifiers based on currently installed apps
+     */
+    public static void buildActiveUriPatterns(Context context) {
+        activePatterns.clear();
+        // first, check if an app is installed that handles each URI scheme
+        final Intent intent = new Intent(Intent.ACTION_VIEW);
+        PackageManager pm = context.getPackageManager();
+        // URI_PATTERNS and TEST_URIS are manually hardcoded to have the same order
+        for (int i = 0; i < URI_PATTERNS.length; i++) {
+            intent.setData(TEST_URIS[i]);
+            List<ResolveInfo> activities = pm.queryIntentActivities(intent, 0);
+            if (!activities.isEmpty())
+                activePatterns.add(URI_PATTERNS[i]);
+        }
+    }
+
+    /**
      * Searches for link-like text in a string and turn it into a link. Append the result to
      * <tt>outputBuffer</tt>. <tt>text</tt> is not modified.
      * @param text Plain text to be linkified.
      * @param outputBuffer Buffer to append linked text to.
      */
     protected static void linkifyText(final String text, final StringBuffer outputBuffer) {
-
-        Pattern[] patterns = {
-                BITCOIN_URI_PATTERN, GEO_URI_PATTERN, MARKET_URI_PATTERN,
-                OPENPGP4FPR_URI_PATTERN, BRIDGE_URI_PATTERN, XMPP_URI_PATTERN
-        };
+        // linkify any currently supported URI scheme
         String prepared = text;
-        for (Pattern pattern : patterns)
+        for (Pattern pattern : activePatterns) {
             prepared = pattern.matcher(prepared).replaceAll("<a href=\"$0\">$0</a>");
+        }
 
         Matcher m = WEB_URL_PATTERN.matcher(prepared);
         while (m.find()) {
