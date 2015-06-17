@@ -1404,7 +1404,7 @@ public class Account implements BaseAccount, StoreConfig {
         if (i < identities.size()) {
             return identities.get(i);
         }
-        return null;
+        throw new IllegalArgumentException("Identity with index " + i + " not found");
     }
 
     public boolean isAnIdentity(Address[] addrs) {
