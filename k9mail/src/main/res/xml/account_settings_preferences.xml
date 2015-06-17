@@ -451,14 +451,12 @@
             android:dialogTitle="@string/account_settings_remote_search_num_label"
             android:dependency="remote_search_enabled"/>
 
-        <!-- Temporarily removed
         <CheckBoxPreference
             android:key="account_remote_search_full_text"
             android:title="@string/account_settings_remote_search_full_text"
             android:summary="@string/account_settings_remote_search_full_text_summary"
             android:persistent="false"
             android:dependency="remote_search_enabled"/>
-        -->
 
     </PreferenceScreen>
 
