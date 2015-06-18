@@ -849,7 +849,7 @@ public class MessagingController implements Runnable {
         final FetchProfile structure = new FetchProfile();
         structure.add(FetchProfile.Item.STRUCTURE);
         final FetchProfile body = new FetchProfile();
-        body.add(FetchProfile.Item.BODY);
+        body.add(FetchProfile.Item.BODY_SANE);
 
         int i = 0;
         for (Message message : messages) {
