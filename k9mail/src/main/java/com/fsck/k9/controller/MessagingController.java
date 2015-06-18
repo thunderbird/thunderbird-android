@@ -848,6 +848,8 @@ public class MessagingController implements Runnable {
         header.add(FetchProfile.Item.ENVELOPE);
         final FetchProfile structure = new FetchProfile();
         structure.add(FetchProfile.Item.STRUCTURE);
+        final FetchProfile body = new FetchProfile();
+        body.add(FetchProfile.Item.BODY);
 
         int i = 0;
         for (Message message : messages) {
@@ -858,6 +860,7 @@ public class MessagingController implements Runnable {
                 remoteFolder.fetch(Collections.singletonList(message), header, null);
                 //fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
                 remoteFolder.fetch(Collections.singletonList(message), structure, null);
+                remoteFolder.fetch(Collections.singletonList(message), body, null);
                 localFolder.appendMessages(Collections.singletonList(message));
                 localMsg = localFolder.getMessage(message.getUid());
             }
