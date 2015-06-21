@@ -3367,6 +3367,7 @@ public class MessagingController implements Runnable {
     public void sendPendingMessagesSynchronous(final Account account) {
         Folder localFolder = null;
         Exception lastFailure = null;
+        boolean wasPermanentFailure = false;
         try {
             Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(
@@ -3463,38 +3464,40 @@ public class MessagingController implements Runnable {
                             processPendingCommands(account);
                         }
 
-                    } catch (Exception e) {
-                        // 5.x.x errors from the SMTP server are "PERMFAIL"
-                        // move the message over to drafts rather than leaving it in the outbox
-                        // This is a complete hack, but is worlds better than the previous
-                        // "don't even bother" functionality
-                        if (getRootCauseMessage(e).startsWith("5")) {
-                            localFolder.moveMessages(Collections.singletonList(message), (LocalFolder) localStore.getFolder(account.getDraftsFolderName()));
-                        }
+                    } catch (CertificateValidationException e) {
+                        lastFailure = e;
+                        wasPermanentFailure = false;
 
                         notifyUserIfCertificateProblem(context, e, account, false);
-                        addErrorMessage(account, "Failed to send message", e);
-                        message.setFlag(Flag.X_SEND_FAILED, true);
-                        Log.e(K9.LOG_TAG, "Failed to send message", e);
-                        for (MessagingListener l : getListeners()) {
-                            l.synchronizeMailboxFailed(account, localFolder.getName(), getRootCauseMessage(e));
-                        }
+                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
+                    } catch (MessagingException e) {
                         lastFailure = e;
+                        wasPermanentFailure = e.isPermanentFailure();
+
+                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
+                    } catch (Exception e) {
+                        lastFailure = e;
+                        wasPermanentFailure = true;
+
+                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     }
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Failed to fetch message for sending", e);
-                    for (MessagingListener l : getListeners()) {
-                        l.synchronizeMailboxFailed(account, localFolder.getName(), getRootCauseMessage(e));
-                    }
-                    addErrorMessage(account, "Failed to fetch message for sending", e);
                     lastFailure = e;
+                    wasPermanentFailure = false;
+
+                    Log.e(K9.LOG_TAG, "Failed to fetch message for sending", e);
+
+                    addErrorMessage(account, "Failed to fetch message for sending", e);
+                    notifySynchronizeMailboxFailed(account, localFolder, e);
                 }
             }
+
             for (MessagingListener l : getListeners()) {
                 l.sendPendingMessagesCompleted(account);
             }
+
             if (lastFailure != null) {
-                if (getRootCauseMessage(lastFailure).startsWith("5")) {
+                if (wasPermanentFailure) {
                     notifySendPermFailed(account, lastFailure);
                 } else {
                     notifySendTempFailed(account, lastFailure);
@@ -3514,6 +3517,35 @@ public class MessagingController implements Runnable {
                 cancelNotification(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber());
             }
             closeFolder(localFolder);
+        }
+    }
+
+    private void handleSendFailure(Account account, Store localStore, Folder localFolder, Message message,
+            Exception exception, boolean permanentFailure) throws MessagingException {
+
+        Log.e(K9.LOG_TAG, "Failed to send message", exception);
+
+        if (permanentFailure) {
+            moveMessageToDraftsFolder(account, localFolder, localStore, message);
+        }
+
+        addErrorMessage(account, "Failed to send message", exception);
+        message.setFlag(Flag.X_SEND_FAILED, true);
+
+        notifySynchronizeMailboxFailed(account, localFolder, exception);
+    }
+
+    private void moveMessageToDraftsFolder(Account account, Folder localFolder, Store localStore, Message message)
+            throws MessagingException {
+        LocalFolder draftsFolder = (LocalFolder) localStore.getFolder(account.getDraftsFolderName());
+        localFolder.moveMessages(Collections.singletonList(message), draftsFolder);
+    }
+
+    private void notifySynchronizeMailboxFailed(Account account, Folder localFolder, Exception exception) {
+        String folderName = localFolder.getName();
+        String errorMessage = getRootCauseMessage(exception);
+        for (MessagingListener listener : getListeners()) {
+            listener.synchronizeMailboxFailed(account, folderName, errorMessage);
         }
     }
 
