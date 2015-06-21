@@ -5,33 +5,50 @@
 
 USERNAME=$USER
 SIGNING_NAME='k-9'
+SDK_VERSION='r24.3.3'
+SDK_DIR=$HOME/android-sdk
 
 cd ..
 
 PROJECT_HOME=$(pwd)
 
-sudo apt-get install build-essential default-jdk android-tools-adb \
-     lib32stdc++6 lib32z1 lib32z1-dev gradle
+sudo apt-get install build-essential default-jdk \
+     lib32stdc++6 lib32z1 lib32z1-dev
 
-if [ ! -d ~/Android ]; then
-    echo -n 'Download android studio from http://developer.android.com/sdk/'
-    echo -n 'index.html and extract it to the the home folder, install, open'
-    echo -n 'the Sdk Manager and install Android 17 and Sdk tools for 19.1, '
-    echo 'then press any key...'
-    read -n 1 -s
-    cd ~/Android/Sdk/tools
-    echo ''
-    echo ''
-    echo -n 'You need to have pretty much everything installed. '
-    echo 'It will take some time.'
-    ./android sdk
-    cd $PROJECT_HOME
+if [ ! -d $SDK_DIR ]; then
+    mkdir -p $SDK_DIR
 fi
+cd $SDK_DIR
 
-echo "sdk.dir=/home/$USERNAME/Android/Sdk" > local.properties
+# download the SDK
+if [ ! -f $SDK_DIR/android-sdk_$SDK_VERSION-linux.tgz ]; then
+    wget http://dl.google.com/android/android-sdk_$SDK_VERSION-linux.tgz
+    tar -xzvf android-sdk_$SDK_VERSION-linux.tgz
+fi
+SDK_DIR=$SDK_DIR/android-sdk-linux
 
-# install Gradle (if is not installed yet) and then execute Gradle
-./gradlew build
+echo 'Check that you have the SDK tools installed for Android 17, SDK 19.1'
+if [ ! -f $SDK_DIR/tools/android ]; then
+    echo "$SDK_DIR/tools/android not found"
+    exit -1
+fi
+cd $SDK_DIR
+chmod -R 0755 $SDK_DIR
+chmod a+rx $SDK_DIR/tools
+
+ANDROID_HOME=$SDK_DIR
+echo "sdk.dir=$SDK_DIR" > $ANDROID_HOME/local.properties
+PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+android sdk
+cd $PROJECT_HOME
+
+
+if [ ! -f $SDK_DIR/tools/templates/gradle/wrapper/gradlew ]; then
+    echo "$SDK_DIR/tools/templates/gradle/wrapper/gradlew not found"
+    exit -2
+fi
+. $SDK_DIR/tools/templates/gradle/wrapper/gradlew build
 
 #cd ~/develop/$PROJECT_NAME/build/outputs/apk
 #keytool -genkey -v -keystore example.keystore -alias \
@@ -41,11 +58,11 @@ echo "sdk.dir=/home/$USERNAME/Android/Sdk" > local.properties
 
 # cleaning up
 cd $PROJECT_HOME/k9mail/build/outputs/apk
-if [ ! -f k9mail-release-unsigned.apk ]; then
-    echo 'k9mail-release-unsigned.apk was not found'
-    exit 648
+if [ ! -f k9mail-debug.apk ]; then
+    echo 'k9mail-debug.apk was not found'
+    exit -3
 fi
 echo 'Build script ended successfully'
 echo -n 'apk is available at: '
-echo "$PROJECT_HOME/k9mail/build/outputs/apk/k9mail-release-unsigned.apk"
+echo "$PROJECT_HOME/k9mail/build/outputs/apk/k9mail-debug.apk"
 exit 0
