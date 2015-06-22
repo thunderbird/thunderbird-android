@@ -455,29 +455,33 @@ public class LocalMessage extends MimeMessage {
 
     @Override
     public void setHeader(String name, String value) throws MessagingException {
-        if (!mHeadersLoaded)
+        if (!mHeadersLoaded) {
             loadHeaders();
+        }
         super.setHeader(name, value);
     }
 
     @Override
     public String[] getHeader(String name) throws MessagingException {
-        if (!mHeadersLoaded)
+        if (!mHeadersLoaded) {
             loadHeaders();
+        }
         return super.getHeader(name);
     }
 
     @Override
     public void removeHeader(String name) throws MessagingException {
-        if (!mHeadersLoaded)
+        if (!mHeadersLoaded) {
             loadHeaders();
+        }
         super.removeHeader(name);
     }
 
     @Override
     public Set<String> getHeaderNames() throws MessagingException {
-        if (!mHeadersLoaded)
+        if (!mHeadersLoaded) {
             loadHeaders();
+        }
         return super.getHeaderNames();
     }
 
@@ -533,9 +537,15 @@ public class LocalMessage extends MimeMessage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         final LocalMessage that = (LocalMessage) o;
         return !(getAccountUuid() != null ? !getAccountUuid().equals(that.getAccountUuid()) : that.getAccountUuid() != null);

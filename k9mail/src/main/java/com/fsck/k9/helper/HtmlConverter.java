@@ -57,7 +57,12 @@ public class HtmlConverter {
         + "|u[agksyz]"
         + "|v[aceginu]"
         + "|w[fs]"
-        + "|(?:xn\\-\\-0zwm56d|xn\\-\\-11b5bs3a9aj6g|xn\\-\\-80akhbyknj4f|xn\\-\\-9t4b11yi5a|xn\\-\\-deba0ad|xn\\-\\-fiqs8s|xn\\-\\-fiqz9s|xn\\-\\-fzc2c9e2c|xn\\-\\-g6w251d|xn\\-\\-hgbk6aj7f53bba|xn\\-\\-hlcj6aya9esc7a|xn\\-\\-j6w193g|xn\\-\\-jxalpdlp|xn\\-\\-kgbechtv|xn\\-\\-kprw13d|xn\\-\\-kpry57d|xn\\-\\-mgbaam7a8h|xn\\-\\-mgbayh7gpa|xn\\-\\-mgberp4a5d4ar|xn\\-\\-o3cw4h|xn\\-\\-p1ai|xn\\-\\-pgbs0dh|xn\\-\\-wgbh1c|xn\\-\\-wgbl6a|xn\\-\\-xkc2al3hye2a|xn\\-\\-ygbi2ammx|xn\\-\\-zckzah)"
+        + "|(?:xn\\-\\-0zwm56d|xn\\-\\-11b5bs3a9aj6g|xn\\-\\-80akhbyknj4f|xn\\-\\-9t4b11yi5a|xn\\-"
+		+ "\\-deba0ad|xn\\-\\-fiqs8s|xn\\-\\-fiqz9s|xn\\-\\-fzc2c9e2c|xn\\-\\-g6w251d|xn\\-\\-"
+		+ "hgbk6aj7f53bba|xn\\-\\-hlcj6aya9esc7a|xn\\-\\-j6w193g|xn\\-\\-jxalpdlp|xn\\-\\-"
+		+ "kgbechtv|xn\\-\\-kprw13d|xn\\-\\-kpry57d|xn\\-\\-mgbaam7a8h|xn\\-\\-mgbayh7gpa|xn\\-\\-"
+		+ "mgberp4a5d4ar|xn\\-\\-o3cw4h|xn\\-\\-p1ai|xn\\-\\-pgbs0dh|xn\\-\\-wgbh1c|xn\\-\\-"
+		+ "wgbl6a|xn\\-\\-xkc2al3hye2a|xn\\-\\-ygbi2ammx|xn\\-\\-zckzah)"
         + "|y[et]"
         + "|z[amw]))";
     private static final String BITCOIN_URI_PATTERN =
@@ -88,15 +93,15 @@ public class HtmlConverter {
      * represented as 0xfffc. When displayed, these show up as undisplayed squares. These constants
      * define the object character and the replacement character.
      */
-    private static final char PREVIEW_OBJECT_CHARACTER = (char)0xfffc;
-    private static final char PREVIEW_OBJECT_REPLACEMENT = (char)0x20;  // space
+    private static final char PREVIEW_OBJECT_CHARACTER = (char) 0xfffc;
+    private static final char PREVIEW_OBJECT_REPLACEMENT = (char) 0x20;  // space
 
     /**
      * toHtml() converts non-breaking spaces into the UTF-8 non-breaking space, which doesn't get
      * rendered properly in some clients. Replace it with a simple space.
      */
-    private static final char NBSP_CHARACTER = (char)0x00a0;    // utf-8 non-breaking space
-    private static final char NBSP_REPLACEMENT = (char)0x20;    // space
+    private static final char NBSP_CHARACTER = (char) 0x00a0;    // utf-8 non-breaking space
+    private static final char NBSP_REPLACEMENT = (char) 0x20;    // space
 
     // Number of extra bytes to allocate in a string buffer for htmlification.
     private static final int TEXT_TO_HTML_EXTRA_BUFFER_LENGTH = 512;
@@ -229,7 +234,7 @@ public class HtmlConverter {
                     break;
                 default:
                     buff.append((char)c);
-                }//switch
+                } //switch
             }
         } catch (IOException e) {
             //Should never happen
@@ -339,26 +344,26 @@ public class HtmlConverter {
 
         // Make newlines at the end of blockquotes nicer by putting newlines beyond the first one outside of the
         // blockquote.
-        text = text.replaceAll(
+        String localText = text.replaceAll(
                    "\\Q" + HTML_NEWLINE + "\\E((\\Q" + HTML_NEWLINE + "\\E)+?)\\Q" + HTML_BLOCKQUOTE_END + "\\E",
                    HTML_BLOCKQUOTE_END + "$1"
                );
 
         // Replace lines of -,= or _ with horizontal rules
-        text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
+        localText = localText.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
 
-        StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
+        StringBuffer sb = new StringBuffer(localText.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
 
         sb.append(htmlifyMessageHeader());
-        linkifyText(text, sb);
+        linkifyText(localText, sb);
         sb.append(htmlifyMessageFooter());
 
-        text = sb.toString();
+        localText = sb.toString();
 
         // Above we replaced > with <gt>, now make it &gt;
-        text = text.replaceAll("<gt>", "&gt;");
+        localText = localText.replaceAll("<gt>", "&gt;");
 
-        return text;
+        return localText;
     }
 
     private static void appendchar(StringBuilder buff, int c) {
@@ -473,8 +478,9 @@ public class HtmlConverter {
     private static boolean hasEmoji(String html) {
         for (int i = 0; i < html.length(); ++i) {
             char c = html.charAt(i);
-            if (c >= 0xDBB8 && c < 0xDBBC)
+            if (c >= 0xDBB8 && c < 0xDBBC) {
                 return true;
+            }
         }
         return false;
     }
@@ -488,10 +494,12 @@ public class HtmlConverter {
         for (int i = 0; i < html.length(); i = html.offsetByCodePoints(i, 1)) {
             int codePoint = html.codePointAt(i);
             String emoji = getEmojiForCodePoint(codePoint);
-            if (emoji != null)
+            if (emoji != null) {
                 buff.append("<img src=\"file:///android_asset/emoticons/").append(emoji).append(".gif\" alt=\"").append(emoji).append("\" />");
-            else
+            }
+            else {
                 buff.appendCodePoint(codePoint);
+            }
 
         }
         return buff.toString();

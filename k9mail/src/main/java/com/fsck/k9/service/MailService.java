@@ -106,40 +106,48 @@ public class MailService extends CoreService {
 
         syncBlocked = !(doBackground && hasConnectivity);
 
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "MailService.onStart(" + intent + ", " + startId
                   + "), hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
+        }
 
         // MessagingController.getInstance(getApplication()).addListener(mListener);
         if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.i(K9.LOG_TAG, "***** MailService *****: checking mail");
+            }
             if (hasConnectivity && doBackground) {
                 PollService.startService(this);
             }
             reschedulePollInBackground(hasConnectivity, doBackground, startId, false);
         } else if (ACTION_CANCEL.equals(intent.getAction())) {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "***** MailService *****: cancel");
+            }
             cancel();
         } else if (ACTION_RESET.equals(intent.getAction())) {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "***** MailService *****: reschedule");
+            }
             rescheduleAllInBackground(hasConnectivity, doBackground, startId);
         } else if (ACTION_RESTART_PUSHERS.equals(intent.getAction())) {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "***** MailService *****: restarting pushers");
+            }
             reschedulePushersInBackground(hasConnectivity, doBackground, startId);
         } else if (ACTION_RESCHEDULE_POLL.equals(intent.getAction())) {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "***** MailService *****: rescheduling poll");
+            }
             reschedulePollInBackground(hasConnectivity, doBackground, startId, true);
         } else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction())) {
             refreshPushersInBackground(hasConnectivity, doBackground, startId);
         } else if (CONNECTIVITY_CHANGE.equals(intent.getAction())) {
             rescheduleAllInBackground(hasConnectivity, doBackground, startId);
-            if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
+            if (K9.DEBUG) {
+                Log.i(K9.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity +
+                      ", doBackground = " + doBackground);
+            }
         } else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction())) {
             /* do nothing */
         }
@@ -148,16 +156,18 @@ public class MailService extends CoreService {
             MessagingController.getInstance(getApplication()).systemStatusChanged();
         }
 
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "MailService.onStart took " + (System.currentTimeMillis() - startTime) + "ms");
+        }
 
         return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.v(K9.LOG_TAG, "***** MailService *****: onDestroy()");
+        }
         super.onDestroy();
         //     MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
@@ -173,8 +183,9 @@ public class MailService extends CoreService {
 
     public static void saveLastCheckEnd(Context context) {
         long lastCheckEnd = System.currentTimeMillis();
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "Saving lastCheckEnd = " + new Date(lastCheckEnd));
+        }
         Preferences prefs = Preferences.getPreferences(context);
         SharedPreferences sPrefs = prefs.getPreferences();
         SharedPreferences.Editor editor = sPrefs.edit();
@@ -341,8 +352,9 @@ public class MailService extends CoreService {
     private void setupPushers() {
         boolean pushing = false;
         for (Account account : Preferences.getPreferences(MailService.this).getAccounts()) {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.i(K9.LOG_TAG, "Setting up pushers for account " + account.getDescription());
+            }
             if (account.isEnabled() && account.isAvailable(getApplicationContext())) {
                 pushing |= MessagingController.getInstance(getApplication()).setupPushing(account);
             } else {
@@ -358,8 +370,9 @@ public class MailService extends CoreService {
     private void refreshPushers() {
         try {
             long nowTime = System.currentTimeMillis();
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.i(K9.LOG_TAG, "Refreshing pushers");
+            }
             Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
             for (Pusher pusher : pushers) {
                 long lastRefresh = pusher.getLastRefresh();
@@ -406,8 +419,9 @@ public class MailService extends CoreService {
         }
         if (minInterval > 0) {
             long nextTime = System.currentTimeMillis() + minInterval;
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "Next pusher refresh scheduled for " + new Date(nextTime));
+            }
             Intent i = new Intent(this, MailService.class);
             i.setAction(ACTION_REFRESH_PUSHERS);
             BootReceiver.scheduleIntent(MailService.this, nextTime, i);

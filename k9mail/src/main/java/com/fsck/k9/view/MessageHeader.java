@@ -135,7 +135,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
             }
             case R.id.to:
             case R.id.cc: {
-                expand((TextView)view, ((TextView)view).getEllipsize() != null);
+                expand((TextView) view, ((TextView) view).getEllipsize() != null);
                 layoutChanged();
             }
         }
@@ -394,12 +394,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
-        if(!(state instanceof SavedState)) {
+        if (!(state instanceof SavedState)) {
             super.onRestoreInstanceState(state);
             return;
         }
 
-        SavedState savedState = (SavedState)state;
+        SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
 
         mSavedState = savedState;

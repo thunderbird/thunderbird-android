@@ -2305,7 +2305,7 @@ public class MessagingController implements Runnable {
                     Message localDestMessage = localDestFolder.getMessage(localDestUid);
                     if (localDestMessage != null) {
                         localDestMessage.setUid(newUid);
-                        localDestFolder.changeUid((LocalMessage)localDestMessage);
+                        localDestFolder.changeUid((LocalMessage) localDestMessage);
                         for (MessagingListener l : getListeners()) {
                             l.messageUidChanged(account, destFolder, localDestUid, newUid);
                         }
@@ -2684,7 +2684,7 @@ public class MessagingController implements Runnable {
             }
 
             Store localStore = account.getLocalStore();
-            LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
+            LocalFolder localFolder = (LocalFolder) localStore.getFolder(account.getErrorFolderName());
             MimeMessage message = new MimeMessage();
 
             MimeMessageHelper.setBody(message, new TextBody(body));
@@ -3473,7 +3473,9 @@ public class MessagingController implements Runnable {
                     }
 
                     if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS) {
-                        Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() + " can't be delivered after " + K9.MAX_SEND_ATTEMPTS + " attempts.  Giving up until the user restarts the device");
+                        Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() +
+                              " can't be delivered after " + K9.MAX_SEND_ATTEMPTS +
+                              " attempts.  Giving up until the user restarts the device");
                         notifySendTempFailed(account, new MessagingException(message.getSubject()));
                         continue;
                     }
@@ -4305,8 +4307,9 @@ public class MessagingController implements Runnable {
                     @Override
                     public void run() {
 
-                        if (K9.DEBUG)
+                        if (K9.DEBUG) {
                             Log.i(K9.LOG_TAG, "Finished mail sync");
+                        }
 
                         if (wakeLock != null) {
                             wakeLock.release();
@@ -5170,7 +5173,7 @@ public class MessagingController implements Runnable {
     /** Cancel a notification of new email messages */
     public void notifyAccountCancel(Context context, Account account) {
         NotificationManager notifMgr =
-            (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notifMgr.cancel(account.getAccountNumber());
         notifMgr.cancel(-1000 - account.getAccountNumber());
         notificationData.remove(account.getAccountNumber());
