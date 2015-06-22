@@ -41,7 +41,7 @@ public final class PRNGFixes {
             getBuildFingerprintAndDeviceSerial();
 
     /** Hidden constructor to prevent instantiation. */
-    private PRNGFixes() {}
+    private PRNGFixes() { }
 
     /**
      * Applies all fixes.

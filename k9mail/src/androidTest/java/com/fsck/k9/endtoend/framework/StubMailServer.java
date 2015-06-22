@@ -27,7 +27,7 @@ public class StubMailServer {
                         UserForImap.TEST_USER.password);
 
         for (String mailbox : new String[] {"Drafts", "Spam"}) {
-            Log.d(K9.LOG_TAG, "creating mailbox "+mailbox);
+            Log.d(K9.LOG_TAG, "creating mailbox " + mailbox);
             try {
                 greenmail.getManagers().getImapHostManager().createMailbox(user, mailbox);
             } catch (Exception e) {
@@ -57,4 +57,3 @@ public class StubMailServer {
         greenmail.stop();
     }
 }
-

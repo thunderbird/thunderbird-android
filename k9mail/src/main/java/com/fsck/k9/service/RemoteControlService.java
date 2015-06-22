@@ -37,13 +37,15 @@ public class RemoteControlService extends CoreService {
 
     @Override
     public int startService(final Intent intent, final int startId) {
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "RemoteControlService started with startId = " + startId);
+        }
         final Preferences preferences = Preferences.getPreferences(this);
 
         if (RESCHEDULE_ACTION.equals(intent.getAction())) {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.i(K9.LOG_TAG, "RemoteControlService requesting MailService poll reschedule");
+            }
             MailService.actionReschedulePoll(this, null);
         }
         if (PUSH_RESTART_ACTION.equals(intent.getAction())) {
@@ -51,8 +53,9 @@ public class RemoteControlService extends CoreService {
                 Log.i(K9.LOG_TAG, "RemoteControlService requesting MailService push restart");
             MailService.actionRestartPushers(this, null);
         } else if (RemoteControlService.SET_ACTION.equals(intent.getAction())) {
-            if (K9.DEBUG)
+            if (K9.DEBUG) {
                 Log.i(K9.LOG_TAG, "RemoteControlService got request to change settings");
+            }
             execute(getApplication(), new Runnable() {
                 public void run() {
                     try {
@@ -72,8 +75,9 @@ public class RemoteControlService extends CoreService {
                             //warning: account may not be isAvailable()
                             if (allAccounts || account.getUuid().equals(uuid)) {
 
-                                if (K9.DEBUG)
+                                if (K9.DEBUG) {
                                     Log.i(K9.LOG_TAG, "RemoteControlService changing settings for account " + account.getDescription());
+                                }
 
                                 String notificationEnabled = intent.getStringExtra(K9_NOTIFICATION_ENABLED);
                                 String ringEnabled = intent.getStringExtra(K9_RING_ENABLED);
@@ -109,8 +113,9 @@ public class RemoteControlService extends CoreService {
                                 account.save(Preferences.getPreferences(RemoteControlService.this));
                             }
                         }
-                        if (K9.DEBUG)
+                        if (K9.DEBUG) {
                             Log.i(K9.LOG_TAG, "RemoteControlService changing global settings");
+                        }
 
                         String backgroundOps = intent.getStringExtra(K9_BACKGROUND_OPERATIONS);
                         if (K9RemoteControl.K9_BACKGROUND_OPERATIONS_ALWAYS.equals(backgroundOps)

@@ -665,7 +665,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (mCurrentFolder != null && mCurrentFolder.loading && mListener.getFolderTotal() > 0) {
             int divisor = mListener.getFolderTotal();
             if (divisor != 0) {
-                level = (Window.PROGRESS_END / divisor) * (mListener.getFolderCompleted()) ;
+                level = (Window.PROGRESS_END / divisor) * (mListener.getFolderCompleted());
                 if (level > Window.PROGRESS_END) {
                     level = Window.PROGRESS_END;
                 }
@@ -1602,7 +1602,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         menu.setHeaderTitle(subject);
 
-        if(  mSelected.contains(mContextMenuUniqueId)) {
+        if (mSelected.contains(mContextMenuUniqueId)) {
             menu.findItem(R.id.select).setVisible(false);
         } else {
             menu.findItem(R.id.deselect).setVisible(false);
@@ -1879,7 +1879,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
 
             // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
-            holder.preview.setLines(Math.max(mPreviewLines,1));
+            holder.preview.setLines(Math.max(mPreviewLines, 1));
             mFontSizes.setViewTextSize(holder.preview, mFontSizes.getMessageListPreview());
             holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
             mFontSizes.setViewTextSize(holder.threadCount, mFontSizes.getMessageListSubject()); // thread count is next to subject
@@ -2036,11 +2036,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
             holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE);
 
-            Spannable str = (Spannable)holder.preview.getText();
+            Spannable str = (Spannable) holder.preview.getText();
 
             // Create a span section for the sender, and assign the correct font size and weight
             int fontSize = (mSenderAboveSubject) ?
-                    mFontSizes.getMessageListSubject():
+                    mFontSizes.getMessageListSubject() :
                     mFontSizes.getMessageListSender();
 
             AbsoluteSizeSpan span = new AbsoluteSizeSpan(fontSize, true);
@@ -2065,7 +2065,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 statusHolder = mForwardedIcon;
             }
 
-            if (holder.from != null ) {
+            if (holder.from != null) {
                 holder.from.setTypeface(Typeface.create(holder.from.getTypeface(), maybeBoldTypeface));
                 if (mSenderAboveSubject) {
                     holder.from.setCompoundDrawablesWithIntrinsicBounds(
@@ -2080,7 +2080,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 }
             }
 
-            if (holder.subject != null ) {
+            if (holder.subject != null) {
                 if (!mSenderAboveSubject) {
                     holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                             statusHolder, // left
@@ -2241,7 +2241,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         Cursor cursor = (Cursor) mAdapter.getItem(adapterPosition);
         boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
 
-        setFlag(adapterPosition,Flag.FLAGGED, !flagged);
+        setFlag(adapterPosition, Flag.FLAGGED, !flagged);
     }
 
     private void toggleMessageSelectWithAdapterPosition(int adapterPosition) {

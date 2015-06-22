@@ -42,11 +42,11 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_options);
 
-        mCheckFrequencyView = (Spinner)findViewById(R.id.account_check_frequency);
-        mDisplayCountView = (Spinner)findViewById(R.id.account_display_count);
-        mNotifyView = (CheckBox)findViewById(R.id.account_notify);
-        mNotifySyncView = (CheckBox)findViewById(R.id.account_notify_sync);
-        mPushEnable = (CheckBox)findViewById(R.id.account_enable_push);
+        mCheckFrequencyView = (Spinner) findViewById(R.id.account_check_frequency);
+        mDisplayCountView = (Spinner) findViewById(R.id.account_display_count);
+        mNotifyView = (CheckBox) findViewById(R.id.account_notify);
+        mNotifySyncView = (CheckBox) findViewById(R.id.account_notify_sync);
+        mPushEnable = (CheckBox) findViewById(R.id.account_enable_push);
 
         findViewById(R.id.next).setOnClickListener(this);
 
@@ -132,9 +132,9 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mAccount.setDescription(mAccount.getEmail());
         mAccount.setNotifyNewMail(mNotifyView.isChecked());
         mAccount.setShowOngoing(mNotifySyncView.isChecked());
-        mAccount.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption)mCheckFrequencyView
+        mAccount.setAutomaticCheckIntervalMinutes((Integer) ((SpinnerOption) mCheckFrequencyView
                 .getSelectedItem()).value);
-        mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView
+        mAccount.setDisplayCount((Integer) ((SpinnerOption) mDisplayCountView
                                            .getSelectedItem()).value);
 
         if (mPushEnable.isChecked()) {

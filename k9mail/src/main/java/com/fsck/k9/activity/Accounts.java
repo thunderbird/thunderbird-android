@@ -204,7 +204,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                         stats.size = newSize;
                     }
                     String toastText = getString(R.string.account_size_changed, account.getDescription(),
-                                                 SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));
+                                                 SizeFormatter.formatSize(getApplication(), oldSize),
+                                                 SizeFormatter.formatSize(getApplication(), newSize));
 
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
@@ -268,16 +269,17 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         public void accountStatusChanged(BaseAccount account, AccountStats stats) {
             AccountStats oldStats = accountStats.get(account.getUuid());
             int oldUnreadMessageCount = 0;
+            AccountStats statsLocal = stats;
             if (oldStats != null) {
                 oldUnreadMessageCount = oldStats.unreadMessageCount;
             }
-            if (stats == null) {
-                stats = new AccountStats(); // empty stats for unavailable accounts
-                stats.available = false;
+            if (statsLocal == null) {
+                statsLocal = new AccountStats(); // empty stats for unavailable accounts
+                statsLocal.available = false;
             }
-            accountStats.put(account.getUuid(), stats);
+            accountStats.put(account.getUuid(), statsLocal);
             if (account instanceof Account) {
-                mUnreadMessageCount += stats.unreadMessageCount - oldUnreadMessageCount;
+                mUnreadMessageCount += statsLocal.unreadMessageCount - oldUnreadMessageCount;
             }
             mHandler.dataChanged();
             pendingWork.remove(account);
@@ -286,7 +288,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 mHandler.progress(Window.PROGRESS_END);
                 mHandler.refreshTitle();
             } else {
-                int level = (Window.PROGRESS_END / mAdapter.getCount()) * (mAdapter.getCount() - pendingWork.size()) ;
+                int level = (Window.PROGRESS_END / mAdapter.getCount()) * (mAdapter.getCount() - pendingWork.size());
                 mHandler.progress(level);
             }
         }
@@ -477,7 +479,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     @SuppressWarnings("unchecked")
     private void restoreAccountStats(Bundle icicle) {
         if (icicle != null) {
-            Map<String, AccountStats> oldStats = (Map<String, AccountStats>)icicle.get(ACCOUNT_STATS);
+            Map<String, AccountStats> oldStats = (Map<String, AccountStats>) icicle.get(ACCOUNT_STATS);
             if (oldStats != null) {
                 accountStats.putAll(oldStats);
             }
@@ -657,10 +659,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      */
     private boolean onOpenAccount(BaseAccount account) {
         if (account instanceof SearchAccount) {
-            SearchAccount searchAccount = (SearchAccount)account;
+            SearchAccount searchAccount = (SearchAccount) account;
             MessageList.actionDisplaySearch(this, searchAccount.getRelatedSearch(), false, false);
         } else {
-            Account realAccount = (Account)account;
+            Account realAccount = (Account) account;
             if (!realAccount.isEnabled()) {
                 onActivateAccount(realAccount);
                 return false;
@@ -678,7 +680,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
                 search.addAllowedFolder(realAccount.getAutoExpandFolderName());
                 search.addAccountUuid(realAccount.getUuid());
-                MessageList.actionDisplaySearch(this, search, false, true);}
+                MessageList.actionDisplaySearch(this, search, false, true);
+            }
         }
         return true;
     }
@@ -1177,14 +1180,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
+        AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item.getMenuInfo();
         // submenus don't actually set the menuInfo, so the "advanced"
         // submenu wouldn't work.
         if (menuInfo != null) {
-            mSelectedContextAccount = (BaseAccount)getListView().getItemAtPosition(menuInfo.position);
+            mSelectedContextAccount = (BaseAccount) getListView().getItemAtPosition(menuInfo.position);
         }
         if (mSelectedContextAccount instanceof Account) {
-            Account realAccount = (Account)mSelectedContextAccount;
+            Account realAccount = (Account) mSelectedContextAccount;
             switch (item.getItemId()) {
                 case R.id.delete_account:
                     onDeleteAccount(realAccount);
@@ -1237,7 +1240,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        BaseAccount account = (BaseAccount)parent.getItemAtPosition(position);
+        BaseAccount account = (BaseAccount) parent.getItemAtPosition(position);
         onOpenAccount(account);
     }
 
@@ -1433,8 +1436,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(K9.LOG_TAG, "onActivityResult requestCode = " + requestCode + ", resultCode = " + resultCode + ", data = " + data);
-        if (resultCode != RESULT_OK)
+        if (resultCode != RESULT_OK) {
             return;
+        }
         if (data == null) {
             return;
         }
@@ -1761,7 +1765,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
                 holder.chip = view.findViewById(R.id.chip);
                 holder.folders = (ImageButton) view.findViewById(R.id.folders);
-                holder.accountsItemLayout = (LinearLayout)view.findViewById(R.id.accounts_item_layout);
+                holder.accountsItemLayout = (LinearLayout) view.findViewById(R.id.accounts_item_layout);
 
                 view.setTag(holder);
             }
@@ -1793,7 +1797,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.newMessageCountWrapper.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
-                holder.flaggedMessageCountWrapper.setVisibility(K9.messageListStars() && stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
+                holder.flaggedMessageCountWrapper.setVisibility(K9.messageListStars() &&
+                                                                stats.flaggedMessageCount > 0 ?
+                                                                View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearchListener(account));
                 holder.newMessageCountWrapper.setOnClickListener(createUnreadSearchListener(account));
@@ -1811,16 +1817,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
             }
             if (account instanceof Account) {
-                Account realAccount = (Account)account;
+                Account realAccount = (Account) account;
 
                 holder.chip.setBackgroundColor(realAccount.getChipColor());
 
-                holder.flaggedMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false,true).drawable() );
-                holder.newMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false, false, false, false).drawable() );
+                holder.flaggedMessageCountIcon.setBackgroundDrawable(realAccount.generateColorChip(false, false,
+                                                                                                   false, false,
+                                                                                                   true).drawable());
+                holder.newMessageCountIcon.setBackgroundDrawable(realAccount.generateColorChip(false, false, false,
+                                                                                               false, false).drawable());
 
             } else {
                 holder.chip.setBackgroundColor(0xff999999);
-                holder.newMessageCountIcon.setBackgroundDrawable( new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable() );
+                holder.newMessageCountIcon.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable());
                 holder.flaggedMessageCountIcon.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.STAR).drawable());
             }
 
@@ -1836,8 +1845,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.folders.setVisibility(View.VISIBLE);
                 holder.folders.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
-                        FolderList.actionHandleAccount(Accounts.this, (Account)account);
-
+                        FolderList.actionHandleAccount(Accounts.this, (Account) account);
                     }
                 });
             }

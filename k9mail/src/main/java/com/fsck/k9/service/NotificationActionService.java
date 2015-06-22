@@ -80,9 +80,13 @@ public class NotificationActionService extends CoreService {
      * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
      * @return true if the ArchiveAllMessages intent is available for the given messages
      */
-    public static boolean isArchiveAllMessagesWearAvaliable(Context context, final Account account, final LinkedList<LocalMessage> messages) {
+    public static boolean isArchiveAllMessagesWearAvaliable(Context context, final Account account,
+                                                            final LinkedList<LocalMessage> messages) {
         final MessagingController controller = MessagingController.getInstance(context);
-        return (account.getArchiveFolderName() != null && !(account.getArchiveFolderName().equals(account.getSpamFolderName()) && K9.confirmSpam()) && isMovePossible(controller, account, account.getSentFolderName(), messages));
+        return (account.getArchiveFolderName() != null &&
+                !(account.getArchiveFolderName().equals(account.getSpamFolderName()) &&
+                  K9.confirmSpam()) &&
+                isMovePossible(controller, account, account.getSentFolderName(), messages));
     }
 
     public static PendingIntent getArchiveAllMessagesIntent(Context context, final Account account, final Serializable refs) {
@@ -135,8 +139,9 @@ public class NotificationActionService extends CoreService {
     }
     @Override
     public int startService(Intent intent, int startId) {
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "NotificationActionService started with startId = " + startId);
+        }
         final Preferences preferences = Preferences.getPreferences(this);
         final MessagingController controller = MessagingController.getInstance(getApplication());
         final Account account = preferences.getAccount(intent.getStringExtra(EXTRA_ACCOUNT));
@@ -144,8 +149,9 @@ public class NotificationActionService extends CoreService {
 
         if (account != null) {
             if (READ_ALL_ACTION.equals(action)) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
+                }
 
                 List<MessageReference> refs =
                         intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
@@ -153,8 +159,9 @@ public class NotificationActionService extends CoreService {
                     controller.setFlag(account, ref.getFolderName(), ref.getUid(), Flag.SEEN, true);
                 }
             } else if (DELETE_ALL_ACTION.equals(action)) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.i(K9.LOG_TAG, "NotificationActionService deleting messages");
+                }
 
                 List<MessageReference> refs =
                         intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
@@ -169,8 +176,9 @@ public class NotificationActionService extends CoreService {
 
                 controller.deleteMessages(messages, null);
             } else if (ARCHIVE_ALL_ACTION.equals(action)) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.i(K9.LOG_TAG, "NotificationActionService archiving messages");
+                }
 
                 List<MessageReference> refs =
                         intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
@@ -189,7 +197,9 @@ public class NotificationActionService extends CoreService {
                         && isMovePossible(controller, account, dstFolder, messages)) {
                     for(LocalMessage messageToMove : messages) {
                         if (!controller.isMoveCapable(messageToMove)) {
-                            //Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                            //Toast toast = Toast.makeText(getActivity(),
+                            //                             R.string.move_copy_cannot_copy_unsynced_message,
+                            //                             Toast.LENGTH_LONG);
                             //toast.show();
                             continue;
                         }
@@ -198,8 +208,9 @@ public class NotificationActionService extends CoreService {
                     }
                 }
             } else if (SPAM_ALL_ACTION.equals(action)) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.i(K9.LOG_TAG, "NotificationActionService moving messages to spam");
+                }
 
                 List<MessageReference> refs =
                         intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
@@ -222,8 +233,9 @@ public class NotificationActionService extends CoreService {
                     }
                 }
             } else if (REPLY_ACTION.equals(action)) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.i(K9.LOG_TAG, "NotificationActionService initiating reply");
+                }
 
                 MessageReference ref = intent.getParcelableExtra(EXTRA_MESSAGE);
                 LocalMessage message = ref.restoreToLocalMessage(this);

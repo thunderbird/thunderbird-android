@@ -59,7 +59,7 @@ public class Attachment implements Parcelable {
     public String filename;
 
 
-    public Attachment() {}
+    public Attachment() { }
 
     public static enum LoadingState {
         /**

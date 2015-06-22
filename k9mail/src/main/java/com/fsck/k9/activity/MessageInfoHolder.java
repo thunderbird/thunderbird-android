@@ -35,7 +35,7 @@ public class MessageInfoHolder {
         if (!(o instanceof MessageInfoHolder)) {
             return false;
         }
-        MessageInfoHolder other = (MessageInfoHolder)o;
+        MessageInfoHolder other = (MessageInfoHolder) o;
         return message.equals(other.message);
     }
 

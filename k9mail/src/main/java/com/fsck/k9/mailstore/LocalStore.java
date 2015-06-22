@@ -265,8 +265,9 @@ public class LocalStore extends Store implements Serializable {
     }
 
     public void compact() throws MessagingException {
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "Before compaction size = " + getSize());
+        }
 
         database.execute(false, new DbCallback<Void>() {
             @Override
@@ -275,14 +276,16 @@ public class LocalStore extends Store implements Serializable {
                 return null;
             }
         });
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "After compaction size = " + getSize());
+        }
     }
 
 
     public void clear() throws MessagingException {
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "Before prune size = " + getSize());
+        }
 
         deleteAllMessageDataFromDisk();
         if (K9.DEBUG) {
@@ -359,12 +362,12 @@ public class LocalStore extends Store implements Serializable {
 
     // TODO this takes about 260-300ms, seems slow.
     @Override
-    public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List<?extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<LocalFolder>();
         try {
-            database.execute(false, new DbCallback < List <? extends Folder >> () {
+            database.execute(false, new DbCallback<List<?extends Folder>> () {
                 @Override
-                public List <? extends Folder > doDbWork(final SQLiteDatabase db) throws WrappedException {
+                public List<?extends Folder> doDbWork(final SQLiteDatabase db) throws WrappedException {
                     Cursor cursor = null;
 
                     try {

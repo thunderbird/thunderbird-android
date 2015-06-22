@@ -53,7 +53,7 @@ public class FolderSettings extends K9PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
+        String folderName = (String) getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
@@ -81,9 +81,9 @@ public class FolderSettings extends K9PreferenceActivity {
         category.setTitle(displayName);
 
 
-        mInTopGroup = (CheckBoxPreference)findPreference(PREFERENCE_IN_TOP_GROUP);
+        mInTopGroup = (CheckBoxPreference) findPreference(PREFERENCE_IN_TOP_GROUP);
         mInTopGroup.setChecked(mFolder.isInTopGroup());
-        mIntegrate = (CheckBoxPreference)findPreference(PREFERENCE_INTEGRATE);
+        mIntegrate = (CheckBoxPreference) findPreference(PREFERENCE_INTEGRATE);
         mIntegrate.setChecked(mFolder.isIntegrate());
 
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);

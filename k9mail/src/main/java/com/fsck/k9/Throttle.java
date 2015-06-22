@@ -72,13 +72,13 @@ public class Throttle {
     }
 
     /** Constructor that takes custom timeout */
-    public Throttle(String name, Runnable callback, Handler handler,int minTimeout,
+    public Throttle(String name, Runnable callback, Handler handler, int minTimeout,
             int maxTimeout) {
         this(name, callback, handler, minTimeout, maxTimeout, Clock.INSTANCE, TIMER);
     }
 
     /** Constructor for tests */
-    /* package */ Throttle(String name, Runnable callback, Handler handler,int minTimeout,
+    /* package */ Throttle(String name, Runnable callback, Handler handler, int minTimeout,
             int maxTimeout, Clock clock, Timer timer) {
         if (maxTimeout < minTimeout) {
             throw new IllegalArgumentException();
@@ -103,7 +103,9 @@ public class Throttle {
 
     public void cancelScheduledCallback() {
         if (mRunningTimerTask != null) {
-            if (DEBUG) debugLog("Canceling scheduled callback");
+            if (DEBUG) {
+                debugLog("Canceling scheduled callback");
+            }
             mRunningTimerTask.cancel();
             mRunningTimerTask = null;
         }
@@ -116,24 +118,34 @@ public class Throttle {
             if (mTimeout >= mMaxTimeout) {
                 mTimeout = mMaxTimeout;
             }
-            if (DEBUG) debugLog("Timeout extended " + mTimeout);
+            if (DEBUG) {
+                debugLog("Timeout extended " + mTimeout);
+            }
         } else {
             mTimeout = mMinTimeout;
-            if (DEBUG) debugLog("Timeout reset to " + mTimeout);
+            if (DEBUG) {
+                debugLog("Timeout reset to " + mTimeout);
+            }
         }
 
         mLastEventTime = now;
     }
 
     public void onEvent() {
-        if (DEBUG) debugLog("onEvent");
+        if (DEBUG) {
+            debugLog("onEvent");
+        }
 
         updateTimeout();
 
         if (isCallbackScheduled()) {
-            if (DEBUG) debugLog("    callback already scheduled");
+            if (DEBUG) {
+                debugLog("    callback already scheduled");
+            }
         } else {
-            if (DEBUG) debugLog("    scheduling callback");
+            if (DEBUG) {
+                debugLog("    scheduling callback");
+            }
             mRunningTimerTask = new MyTimerTask();
             mTimer.schedule(mRunningTimerTask, mTimeout);
         }
@@ -161,7 +173,9 @@ public class Throttle {
             public void run() {
                 mRunningTimerTask = null;
                 if (!mCanceled) { // This check has to be done on the UI thread.
-                    if (DEBUG) debugLog("Kicking callback");
+                    if (DEBUG) {
+                        debugLog("Kicking callback");
+                    }
                     mCallback.run();
                 }
             }

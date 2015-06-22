@@ -42,7 +42,8 @@ public class ActivityListener extends MessagingListener {
 
             if (mLoadingFolderName != null || mLoadingHeaderFolderName != null) {
                 String displayName = mLoadingFolderName;
-                if ((mAccount != null) && (mAccount.getInboxFolderName() != null) && mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
+                if ((mAccount != null) && (mAccount.getInboxFolderName() != null) &&
+                    mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
                     displayName = context.getString(R.string.special_mailbox_name_inbox);
                 } else if ((mAccount != null) && mAccount.getOutboxFolderName().equals(displayName)) {
                     displayName = context.getString(R.string.special_mailbox_name_outbox);
@@ -50,9 +51,11 @@ public class ActivityListener extends MessagingListener {
 
                 if (mLoadingHeaderFolderName != null) {
 
-                    operation = context.getString(R.string.status_loading_account_folder_headers, mLoadingAccountDescription, displayName, progress);
+                    operation = context.getString(R.string.status_loading_account_folder_headers,
+                                                  mLoadingAccountDescription, displayName, progress);
                 } else {
-                    operation = context.getString(R.string.status_loading_account_folder, mLoadingAccountDescription, displayName, progress);
+                    operation = context.getString(R.string.status_loading_account_folder,
+                                                  mLoadingAccountDescription, displayName, progress);
                 }
             }
 

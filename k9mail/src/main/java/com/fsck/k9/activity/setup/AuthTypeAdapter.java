@@ -35,14 +35,14 @@ class AuthTypeAdapter extends ArrayAdapter<AuthTypeHolder> {
      *            "Password, transmitted insecurely"
      */
     public void useInsecureText(boolean insecure) {
-        for (int i=0; i<getCount(); i++) {
+        for (int i = 0; i < getCount(); i++) {
             getItem(i).setInsecure(insecure);
         }
         notifyDataSetChanged();
     }
 
     public int getAuthPosition(AuthType authenticationType) {
-        for (int i=0; i<getCount(); i++) {
+        for (int i = 0; i < getCount(); i++) {
             if (getItem(i).authType == authenticationType) {
                 return i;
             }

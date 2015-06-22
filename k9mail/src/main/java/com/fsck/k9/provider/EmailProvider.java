@@ -120,34 +120,34 @@ public class EmailProvider extends ContentProvider {
     }
 
     public interface SpecialColumns {
-        public static final String ACCOUNT_UUID = "account_uuid";
+        static final String ACCOUNT_UUID = "account_uuid";
 
-        public static final String THREAD_COUNT = "thread_count";
+        static final String THREAD_COUNT = "thread_count";
 
-        public static final String FOLDER_NAME = "name";
-        public static final String INTEGRATE = "integrate";
+        static final String FOLDER_NAME = "name";
+        static final String INTEGRATE = "integrate";
     }
 
     public interface MessageColumns {
-        public static final String ID = "id";
-        public static final String UID = "uid";
-        public static final String INTERNAL_DATE = "internal_date";
-        public static final String SUBJECT = "subject";
-        public static final String DATE = "date";
-        public static final String MESSAGE_ID = "message_id";
-        public static final String SENDER_LIST = "sender_list";
-        public static final String TO_LIST = "to_list";
-        public static final String CC_LIST = "cc_list";
-        public static final String BCC_LIST = "bcc_list";
-        public static final String REPLY_TO_LIST = "reply_to_list";
-        public static final String FLAGS = "flags";
-        public static final String ATTACHMENT_COUNT = "attachment_count";
-        public static final String FOLDER_ID = "folder_id";
-        public static final String PREVIEW = "preview";
-        public static final String READ = "read";
-        public static final String FLAGGED = "flagged";
-        public static final String ANSWERED = "answered";
-        public static final String FORWARDED = "forwarded";
+        static final String ID = "id";
+        static final String UID = "uid";
+        static final String INTERNAL_DATE = "internal_date";
+        static final String SUBJECT = "subject";
+        static final String DATE = "date";
+        static final String MESSAGE_ID = "message_id";
+        static final String SENDER_LIST = "sender_list";
+        static final String TO_LIST = "to_list";
+        static final String CC_LIST = "cc_list";
+        static final String BCC_LIST = "bcc_list";
+        static final String REPLY_TO_LIST = "reply_to_list";
+        static final String FLAGS = "flags";
+        static final String ATTACHMENT_COUNT = "attachment_count";
+        static final String FOLDER_ID = "folder_id";
+        static final String PREVIEW = "preview";
+        static final String READ = "read";
+        static final String FLAGGED = "flagged";
+        static final String ANSWERED = "answered";
+        static final String FORWARDED = "forwarded";
     }
 
     private interface InternalMessageColumns extends MessageColumns {
@@ -157,32 +157,32 @@ public class EmailProvider extends ContentProvider {
     }
 
     public interface FolderColumns {
-        public static final String ID = "id";
-        public static final String NAME = "name";
-        public static final String LAST_UPDATED = "last_updated";
-        public static final String UNREAD_COUNT = "unread_count";
-        public static final String VISIBLE_LIMIT = "visible_limit";
-        public static final String STATUS = "status";
-        public static final String PUSH_STATE = "push_state";
-        public static final String LAST_PUSHED = "last_pushed";
-        public static final String FLAGGED_COUNT = "flagged_count";
-        public static final String INTEGRATE = "integrate";
-        public static final String TOP_GROUP = "top_group";
-        public static final String POLL_CLASS = "poll_class";
-        public static final String PUSH_CLASS = "push_class";
-        public static final String DISPLAY_CLASS = "display_class";
+        static final String ID = "id";
+        static final String NAME = "name";
+        static final String LAST_UPDATED = "last_updated";
+        static final String UNREAD_COUNT = "unread_count";
+        static final String VISIBLE_LIMIT = "visible_limit";
+        static final String STATUS = "status";
+        static final String PUSH_STATE = "push_state";
+        static final String LAST_PUSHED = "last_pushed";
+        static final String FLAGGED_COUNT = "flagged_count";
+        static final String INTEGRATE = "integrate";
+        static final String TOP_GROUP = "top_group";
+        static final String POLL_CLASS = "poll_class";
+        static final String PUSH_CLASS = "push_class";
+        static final String DISPLAY_CLASS = "display_class";
     }
 
     public interface ThreadColumns {
-        public static final String ID = "id";
-        public static final String MESSAGE_ID = "message_id";
-        public static final String ROOT = "root";
-        public static final String PARENT = "parent";
+        static final String ID = "id";
+        static final String MESSAGE_ID = "message_id";
+        static final String ROOT = "root";
+        static final String PARENT = "parent";
     }
 
     public interface StatsColumns {
-        public static final String UNREAD_COUNT = "unread_count";
-        public static final String FLAGGED_COUNT = "flagged_count";
+        static final String UNREAD_COUNT = "unread_count";
+        static final String FLAGGED_COUNT = "flagged_count";
     }
 
     private static final String[] STATS_DEFAULT_PROJECTION = {

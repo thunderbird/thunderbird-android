@@ -123,12 +123,12 @@ public class SliderPreference extends DialogPreference {
     }
 
     public void setValue(float value) {
-        value = Math.max(0, Math.min(value, 1)); // clamp to [0, 1]
+        float valueLocal = Math.max(0, Math.min(value, 1)); // clamp to [0, 1]
         if (shouldPersist()) {
-            persistFloat(value);
+            persistFloat(valueLocal);
         }
-        if (value != mValue) {
-            mValue = value;
+        if (valueLocal != mValue) {
+            mValue = valueLocal;
             notifyChanged();
         }
     }

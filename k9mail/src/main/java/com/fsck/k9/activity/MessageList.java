@@ -724,8 +724,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         // Swallow these events too to avoid the audible notification of a volume change
         if (K9.useVolumeKeysForListNavigationEnabled()) {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-                if (K9.DEBUG)
+                if (K9.DEBUG) {
                     Log.v(K9.LOG_TAG, "Swallowed key up.");
+                }
                 return true;
             }
         }
@@ -928,7 +929,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.message_list_option, menu);
         mMenu = menu;
-        mMenuButtonCheckMail= menu.findItem(R.id.check_mail);
+        mMenuButtonCheckMail = menu.findItem(R.id.check_mail);
         return true;
     }
 
@@ -1275,8 +1276,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         ft.replace(R.id.message_list_container, fragment);
-        if (addToBackStack)
+        if (addToBackStack) {
             ft.addToBackStack(null);
+        }
 
         mMessageListFragment = fragment;
 
@@ -1380,8 +1382,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 mMenuButtonCheckMail.setActionView(null);
             }
         } else {
-            if (mMenuButtonCheckMail != null)
+            if (mMenuButtonCheckMail != null) {
                 mMenuButtonCheckMail.setActionView(null);
+            }
             if (enable) {
                 mActionBarProgress.setVisibility(ProgressBar.VISIBLE);
             } else {

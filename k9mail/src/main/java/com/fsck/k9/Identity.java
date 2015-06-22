@@ -61,6 +61,7 @@ public class Identity implements Serializable {
 
     @Override
     public synchronized String toString() {
-        return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", replyTo=" + replyTo + ", signature=" + mSignature;
+        return "Account.Identity(description=" + mDescription + ", name=" + mName +
+            ", email=" + mEmail + ", replyTo=" + replyTo + ", signature=" + mSignature;
     }
 }
