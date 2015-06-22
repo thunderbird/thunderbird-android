@@ -41,7 +41,7 @@ public class EmailAddressList extends K9ListActivity implements OnItemClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String item = (String)parent.getItemAtPosition(position);
+        String item = (String) parent.getItemAtPosition(position);
 
         Toast.makeText(EmailAddressList.this, item, Toast.LENGTH_LONG).show();
 

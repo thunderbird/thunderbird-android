@@ -61,7 +61,7 @@ public class ContactPictureLoader {
     /**
      * @see <a href="http://developer.android.com/design/style/color.html">Color palette used</a>
      */
-    private final static int CONTACT_DUMMY_COLORS_ARGB[] = {
+    private final int CONTACT_DUMMY_COLORS_ARGB[] = {
         0xff33B5E5,
         0xffAA66CC,
         0xff99CC00,

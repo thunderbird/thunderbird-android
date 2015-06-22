@@ -55,18 +55,18 @@ public class AccountSetupComposition extends K9Activity {
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
-        mAccountName = (EditText)findViewById(R.id.account_name);
+        mAccountName = (EditText) findViewById(R.id.account_name);
         mAccountName.setText(mAccount.getName());
 
-        mAccountEmail = (EditText)findViewById(R.id.account_email);
+        mAccountEmail = (EditText) findViewById(R.id.account_email);
         mAccountEmail.setText(mAccount.getEmail());
 
-        mAccountAlwaysBcc = (EditText)findViewById(R.id.account_always_bcc);
+        mAccountAlwaysBcc = (EditText) findViewById(R.id.account_always_bcc);
         mAccountAlwaysBcc.setText(mAccount.getAlwaysBcc());
 
-        mAccountSignatureLayout = (LinearLayout)findViewById(R.id.account_signature_layout);
+        mAccountSignatureLayout = (LinearLayout) findViewById(R.id.account_signature_layout);
 
-        mAccountSignatureUse = (CheckBox)findViewById(R.id.account_signature_use);
+        mAccountSignatureUse = (CheckBox) findViewById(R.id.account_signature_use);
         boolean useSignature = mAccount.getSignatureUse();
         mAccountSignatureUse.setChecked(useSignature);
         mAccountSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -83,10 +83,10 @@ public class AccountSetupComposition extends K9Activity {
             }
         });
 
-        mAccountSignature = (EditText)findViewById(R.id.account_signature);
+        mAccountSignature = (EditText) findViewById(R.id.account_signature);
 
-        mAccountSignatureBeforeLocation = (RadioButton)findViewById(R.id.account_signature_location_before_quoted_text);
-        mAccountSignatureAfterLocation = (RadioButton)findViewById(R.id.account_signature_location_after_quoted_text);
+        mAccountSignatureBeforeLocation = (RadioButton) findViewById(R.id.account_signature_location_before_quoted_text);
+        mAccountSignatureAfterLocation = (RadioButton) findViewById(R.id.account_signature_location_after_quoted_text);
 
         if (useSignature) {
             mAccountSignature.setText(mAccount.getSignature());

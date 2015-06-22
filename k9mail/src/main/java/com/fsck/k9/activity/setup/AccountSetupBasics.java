@@ -82,12 +82,12 @@ public class AccountSetupBasics extends K9Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_basics);
-        mEmailView = (EditText)findViewById(R.id.account_email);
-        mPasswordView = (EditText)findViewById(R.id.account_password);
-        mClientCertificateCheckBox = (CheckBox)findViewById(R.id.account_client_certificate);
-        mClientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
-        mNextButton = (Button)findViewById(R.id.next);
-        mManualSetupButton = (Button)findViewById(R.id.manual_setup);
+        mEmailView = (EditText) findViewById(R.id.account_email);
+        mPasswordView = (EditText) findViewById(R.id.account_password);
+        mClientCertificateCheckBox = (CheckBox) findViewById(R.id.account_client_certificate);
+        mClientCertificateSpinner = (ClientCertificateSpinner) findViewById(R.id.account_client_certificate_spinner);
+        mNextButton = (Button) findViewById(R.id.next);
+        mManualSetupButton = (Button) findViewById(R.id.manual_setup);
         mShowPasswordCheckBox = (CheckBox) findViewById(R.id.show_password);
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);
@@ -98,7 +98,7 @@ public class AccountSetupBasics extends K9Activity
         mPasswordView.addTextChangedListener(this);
         mClientCertificateCheckBox.setOnCheckedChangeListener(this);
         mClientCertificateSpinner.setOnClientCertificateChangedListener(this);
-        mShowPasswordCheckBox.setOnCheckedChangeListener (new OnCheckedChangeListener() {
+        mShowPasswordCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 showPassword(isChecked);

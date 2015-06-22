@@ -82,7 +82,7 @@ import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.OpenPgpApiHelper;
+//import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
@@ -569,18 +569,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             onAddCcBcc();
         }
 
-        EolConvertingEditText upperSignature = (EolConvertingEditText)findViewById(R.id.upper_signature);
-        EolConvertingEditText lowerSignature = (EolConvertingEditText)findViewById(R.id.lower_signature);
+        EolConvertingEditText upperSignature = (EolConvertingEditText) findViewById(R.id.upper_signature);
+        EolConvertingEditText lowerSignature = (EolConvertingEditText) findViewById(R.id.lower_signature);
 
-        mMessageContentView = (EolConvertingEditText)findViewById(R.id.message_content);
+        mMessageContentView = (EolConvertingEditText) findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        mAttachments = (LinearLayout)findViewById(R.id.attachments);
-        mQuotedTextShow = (Button)findViewById(R.id.quoted_text_show);
+        mAttachments = (LinearLayout) findViewById(R.id.attachments);
+        mQuotedTextShow = (Button) findViewById(R.id.quoted_text_show);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
-        mQuotedTextEdit = (ImageButton)findViewById(R.id.quoted_text_edit);
+        mQuotedTextEdit = (ImageButton) findViewById(R.id.quoted_text_edit);
         ImageButton mQuotedTextDelete = (ImageButton) findViewById(R.id.quoted_text_delete);
-        mQuotedText = (EolConvertingEditText)findViewById(R.id.quoted_text);
+        mQuotedText = (EolConvertingEditText) findViewById(R.id.quoted_text);
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
 
         mQuotedHTML = (MessageWebView) findViewById(R.id.quoted_html);
@@ -749,7 +749,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         mOpenPgpProvider = mAccount.getOpenPgpProvider();
         if (isCryptoProviderEnabled()) {
-            mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
+            mCryptoSignatureCheckbox = (CheckBox) findViewById(R.id.cb_crypto_signature);
             final OnCheckedChangeListener updateListener = new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -757,9 +757,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             };
             mCryptoSignatureCheckbox.setOnCheckedChangeListener(updateListener);
-            mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
-            mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
-            mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
+            mCryptoSignatureUserId = (TextView) findViewById(R.id.userId);
+            mCryptoSignatureUserIdRest = (TextView) findViewById(R.id.userIdRest);
+            mEncryptCheckbox = (CheckBox) findViewById(R.id.cb_encrypt);
             mEncryptCheckbox.setOnCheckedChangeListener(updateListener);
 
             if (mSourceMessageBody != null) {
@@ -1093,7 +1093,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         mDraftId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
-        mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
+        mIdentity = (Identity) savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mInReplyTo = savedInstanceState.getString(STATE_IN_REPLY_TO);
@@ -1319,13 +1319,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         if (mMessageReference != null && mMessageReference.getFlag() != null) {
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Setting referenced message (" + mMessageReference.getFolderName() + ", " + mMessageReference.getUid() + ") flag to " + mMessageReference.getFlag());
+                Log.d(K9.LOG_TAG, "Setting referenced message (" + mMessageReference.getFolderName() + ", " +
+                      mMessageReference.getUid() + ") flag to " + mMessageReference.getFlag());
             }
 
             final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.getAccountUuid());
             final String folderName = mMessageReference.getFolderName();
             final String sourceMessageUid = mMessageReference.getUid();
-            MessagingController.getInstance(getApplication()).setFlag(account, folderName, sourceMessageUid, mMessageReference.getFlag(), true);
+            MessagingController.getInstance(getApplication()).setFlag(account, folderName, sourceMessageUid,
+                                                                      mMessageReference.getFlag(), true);
         }
 
         mDraftNeedsSaving = false;
@@ -1369,9 +1371,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     try {
                         final String output = os.toString("UTF-8");
 
-                        if (K9.DEBUG)
+                        if (K9.DEBUG) {
                             Log.d(OpenPgpApi.TAG, "result: " + os.toByteArray().length +
                                     " str=" + output);
+                        }
 
                         mPgpData.setEncryptedData(output);
                         onSend();
@@ -1461,7 +1464,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void onReadReceipt() {
         CharSequence txt;
-        if (mReadReceipt == false) {
+        if (!mReadReceipt) {
             txt = getString(R.string.read_receipt_enabled);
             mReadReceipt = true;
         } else {
@@ -2379,7 +2382,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // Decode the identity header when loading a draft.
         // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
         Map<IdentityField, String> k9identity = new HashMap<IdentityField, String>();
-        if (message.getHeader(K9.IDENTITY_HEADER) != null && message.getHeader(K9.IDENTITY_HEADER).length > 0 && message.getHeader(K9.IDENTITY_HEADER)[0] != null) {
+        if (message.getHeader(K9.IDENTITY_HEADER) != null && message.getHeader(K9.IDENTITY_HEADER).length > 0 &&
+            message.getHeader(K9.IDENTITY_HEADER)[0] != null) {
             k9identity = IdentityHeaderParser.parse(message.getHeader(K9.IDENTITY_HEADER)[0]);
         }
 
@@ -2501,7 +2505,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 mQuotedTextFormat = SimpleMessageFormat.HTML;
                 String text = MessageExtractor.getTextFromPart(part);
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
+                    Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength +
+                          ". Text length is " + text.length() + ".");
                 }
 
                 if (bodyOffset + bodyLength > text.length()) {
@@ -2566,7 +2571,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (textPart != null) {
             String text = MessageExtractor.getTextFromPart(textPart);
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
+                Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength +
+                      ". Text length is " + text.length() + ".");
             }
 
             // If we had a body length (and it was valid), separate the composition from the quoted text
@@ -2809,9 +2815,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int FIND_INSERTION_POINT_FIRST_GROUP = 1;
     // HTML bits to insert as appropriate
     // TODO is it safe to assume utf-8 here?
-    private static final String FIND_INSERTION_POINT_HTML_CONTENT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\r\n<html>";
+    private static final String FIND_INSERTION_POINT_HTML_CONTENT =
+		"<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\r\n<html>";
     private static final String FIND_INSERTION_POINT_HTML_END_CONTENT = "</html>";
-    private static final String FIND_INSERTION_POINT_HEAD_CONTENT = "<head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"></head>";
+    private static final String FIND_INSERTION_POINT_HEAD_CONTENT =
+		"<head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"></head>";
     // Index of the start of the beginning of a String.
     private static final int FIND_INSERTION_POINT_START_OF_STRING = 0;
 
@@ -2879,7 +2887,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             newContent.insert(htmlMatcher.end(FIND_INSERTION_POINT_FIRST_GROUP), FIND_INSERTION_POINT_HEAD_CONTENT);
             insertable.setQuotedContent(newContent);
             // The new insertion point is the end of the HTML tag, plus the length of the HEAD content.
-            insertable.setHeaderInsertionPoint(htmlMatcher.end(FIND_INSERTION_POINT_FIRST_GROUP) + FIND_INSERTION_POINT_HEAD_CONTENT.length());
+            insertable.setHeaderInsertionPoint(htmlMatcher.end(FIND_INSERTION_POINT_FIRST_GROUP) +
+											   FIND_INSERTION_POINT_HEAD_CONTENT.length());
         } else {
             // If we have none of the above, we probably have a fragment of HTML.  Yahoo! and Gmail both do this.
             // Again, we add a HEAD, but not BODY.
@@ -2991,7 +3000,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
             // Track UID changes of the source message
             if (mMessageReference != null) {
-                final Account sourceAccount = Preferences.getPreferences(MessageCompose.this).getAccount(mMessageReference.getAccountUuid());
+                final Account sourceAccount =
+					Preferences.getPreferences(MessageCompose.this).getAccount(mMessageReference.getAccountUuid());
                 final String sourceFolder = mMessageReference.getFolderName();
                 final String sourceMessageUid = mMessageReference.getUid();
 
@@ -3165,7 +3175,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * @return Quoted text.
      * @throws MessagingException
      */
-    private String quoteOriginalTextMessage(final Message originalMessage, final String messageBody, final QuoteStyle quoteStyle) throws MessagingException {
+    private String quoteOriginalTextMessage(final Message originalMessage, final String messageBody,
+											final QuoteStyle quoteStyle) throws MessagingException {
         String body = messageBody == null ? "" : messageBody;
         String sentDate = getSentDateText(originalMessage);
         if (quoteStyle == QuoteStyle.PREFIX) {
@@ -3196,19 +3207,25 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             quotedText.append("\r\n");
             quotedText.append(getString(R.string.message_compose_quote_header_separator)).append("\r\n");
             if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_from)).append(" ").append(Address.toString(originalMessage.getFrom())).append("\r\n");
+				String quoteHeaderFrom = getString(R.string.message_compose_quote_header_from);
+                quotedText.append(quoteHeaderFrom).append(" ").append(Address.toString(originalMessage.getFrom())).append("\r\n");
             }
             if (sentDate.length() != 0) {
                 quotedText.append(getString(R.string.message_compose_quote_header_send_date)).append(" ").append(sentDate).append("\r\n");
             }
             if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_to)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.TO))).append("\r\n");
+                String quoteHeaderTo = getString(R.string.message_compose_quote_header_to);
+                String recipientsTo = Address.toString(originalMessage.getRecipients(RecipientType.TO));
+                quotedText.append(quoteHeaderTo).append(" ").append(recipientsTo).append("\r\n");
             }
             if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_cc)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.CC))).append("\r\n");
+                String quoteHeaderCC = getString(R.string.message_compose_quote_header_cc);
+                String recipientsCC = Address.toString(originalMessage.getRecipients(RecipientType.CC));
+                quotedText.append(quoteHeaderCC).append(" ").append(recipientsCC).append("\r\n");
             }
             if (originalMessage.getSubject() != null) {
-                quotedText.append(getString(R.string.message_compose_quote_header_subject)).append(" ").append(originalMessage.getSubject()).append("\r\n");
+                String quoteHeaderSubject = getString(R.string.message_compose_quote_header_subject);
+                quotedText.append(quoteHeaderSubject).append(" ").append(originalMessage.getSubject()).append("\r\n");
             }
             quotedText.append("\r\n");
 
@@ -3229,7 +3246,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * @return Modified insertable message.
      * @throws MessagingException
      */
-    private InsertableHtmlContent quoteOriginalHtmlMessage(final Message originalMessage, final String messageBody, final QuoteStyle quoteStyle) throws MessagingException {
+    private InsertableHtmlContent quoteOriginalHtmlMessage(final Message originalMessage, final String messageBody,
+														   final QuoteStyle quoteStyle) throws MessagingException {
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
         String sentDate = getSentDateText(originalMessage);
@@ -3259,7 +3277,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             StringBuilder header = new StringBuilder();
             header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\r\n");
-            header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\r\n"); // This gets converted into a horizontal line during html to text conversion.
+			// This gets converted into a horizontal line during html to text conversion.
+            header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\r\n");
             if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ")
                     .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getFrom())))

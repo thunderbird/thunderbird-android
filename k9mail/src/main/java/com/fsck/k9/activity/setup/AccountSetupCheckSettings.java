@@ -41,18 +41,18 @@ import java.util.Locale;
 /**
  * Checks the given settings to make sure that they can be used to send and
  * receive mail.
- * 
+ *
  * XXX NOTE: The manifest for this app has it ignore config changes, because
  * it doesn't correctly deal with restarting while its thread is running.
  */
 public class AccountSetupCheckSettings extends K9Activity implements OnClickListener,
-        ConfirmationDialogFragmentListener{
+        ConfirmationDialogFragmentListener {
 
     public static final int ACTIVITY_REQUEST_CODE = 1;
 
     private static final String EXTRA_ACCOUNT = "account";
 
-    private static final String EXTRA_CHECK_DIRECTION ="checkDirection";
+    private static final String EXTRA_CHECK_DIRECTION = "checkDirection";
 
     public enum CheckDirection {
         INCOMING,
@@ -85,8 +85,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_check_settings);
-        mMessageView = (TextView)findViewById(R.id.message);
-        mProgressBar = (ProgressBar)findViewById(R.id.progress);
+        mMessageView = (TextView) findViewById(R.id.message);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress);
         findViewById(R.id.cancel).setOnClickListener(this);
 
         setMessage(R.string.account_setup_check_settings_retr_info_msg);
@@ -170,7 +170,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     //  by a subjectDN not matching the server even though a
                     //  SubjectAltName matches)
                     try {
-                        final Collection < List<? >> subjectAlternativeNames = chain[i].getSubjectAlternativeNames();
+                        final Collection<List<?>> subjectAlternativeNames = chain[i].getSubjectAlternativeNames();
                         if (subjectAlternativeNames != null) {
                             // The list of SubjectAltNames may be very long
                             //TODO: localize this string
@@ -182,7 +182,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             String transportURIHost = (Uri.parse(mAccount.getTransportUri())).getHost();
 
                             for (List<?> subjectAlternativeName : subjectAlternativeNames) {
-                                Integer type = (Integer)subjectAlternativeName.get(0);
+                                Integer type = (Integer) subjectAlternativeName.get(0);
                                 Object value = subjectAlternativeName.get(1);
                                 String name;
                                 switch (type.intValue()) {
@@ -190,10 +190,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                     Log.w(K9.LOG_TAG, "SubjectAltName of type OtherName not supported.");
                                     continue;
                                 case 1: // RFC822Name
-                                    name = (String)value;
+                                    name = (String) value;
                                     break;
                                 case 2:  // DNSName
-                                    name = (String)value;
+                                    name = (String) value;
                                     break;
                                 case 3:
                                     Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type x400Address");
@@ -205,10 +205,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                     Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type ediPartyName");
                                     continue;
                                 case 6:  // Uri
-                                    name = (String)value;
+                                    name = (String) value;
                                     break;
                                 case 7: // ip-address
-                                    name = (String)value;
+                                    name = (String) value;
                                     break;
                                 default:
                                     Log.w(K9.LOG_TAG, "unsupported SubjectAltName of unknown type");
@@ -277,7 +277,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     /**
      * Permanently accepts a certificate for the INCOMING or OUTGOING direction
      * by adding it to the local key store.
-     * 
+     *
      * @param certificate
      */
     private void acceptCertificate(X509Certificate certificate) {

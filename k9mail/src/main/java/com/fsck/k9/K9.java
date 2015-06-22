@@ -29,7 +29,7 @@ import android.util.Log;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.activity.UpgradeDatabases;
+//import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Address;
@@ -52,7 +52,7 @@ public class K9 extends Application {
      * components') should implement this interface and register using
      * {@link K9#registerApplicationAware(ApplicationAware)}.
      */
-    public static interface ApplicationAware {
+    public interface ApplicationAware {
         /**
          * Called when the Application instance is available and ready.
          *
@@ -575,7 +575,8 @@ public class K9 extends Application {
         MessagingController.getInstance(this).addListener(new MessagingListener() {
             private void broadcastIntent(String action, Account account, String folder, Message message) {
                 try {
-                    Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
+                    Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" +
+                                        Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
                     Intent intent = new Intent(action, uri);
                     intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
                     intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folder);
@@ -587,12 +588,13 @@ public class K9 extends Application {
                     intent.putExtra(K9.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
                     intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
                     K9.this.sendBroadcast(intent);
-                    if (K9.DEBUG)
+                    if (K9.DEBUG) {
                         Log.d(K9.LOG_TAG, "Broadcasted: action=" + action
                               + " account=" + account.getDescription()
                               + " folder=" + folder
                               + " message uid=" + message.getUid()
                              );
+                    }
 
                 } catch (MessagingException e) {
                     Log.w(K9.LOG_TAG, "Error: action=" + action
@@ -754,7 +756,7 @@ public class K9 extends Application {
         }
 
         String lockScreenNotificationVisibility = sprefs.getString("lockScreenNotificationVisibility", null);
-        if(lockScreenNotificationVisibility != null) {
+        if (lockScreenNotificationVisibility != null) {
             sLockScreenNotificationVisibility = LockScreenNotificationVisibility.valueOf(lockScreenNotificationVisibility);
         }
 

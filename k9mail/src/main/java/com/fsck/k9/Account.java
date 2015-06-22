@@ -19,7 +19,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
+//import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
@@ -34,7 +34,7 @@ import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.StorageManager;
-import com.fsck.k9.mailstore.StorageManager.StorageProvider;
+//import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.StatsColumns;
@@ -379,7 +379,8 @@ public class Account implements BaseAccount, StoreConfig {
         SharedPreferences prefs = preferences.getPreferences();
 
         mStoreUri = Base64.decode(prefs.getString(mUuid + ".storeUri", null));
-        mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
+        mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider",
+                                                  StorageManager.getInstance(K9.app).getDefaultProviderId());
         mTransportUri = Base64.decode(prefs.getString(mUuid + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
         mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
@@ -609,8 +610,8 @@ public class Account implements BaseAccount, StoreConfig {
         if (moveUp) {
             for (int i = 0; i < uuids.length; i++) {
                 if (i > 0 && uuids[i].equals(mUuid)) {
-                    newUuids[i] = newUuids[i-1];
-                    newUuids[i-1] = mUuid;
+                    newUuids[i] = newUuids[i - 1];
+                    newUuids[i - 1] = mUuid;
                 }
                 else {
                     newUuids[i] = uuids[i];
@@ -620,8 +621,8 @@ public class Account implements BaseAccount, StoreConfig {
         else {
             for (int i = uuids.length - 1; i >= 0; i--) {
                 if (i < uuids.length - 1 && uuids[i].equals(mUuid)) {
-                    newUuids[i] = newUuids[i+1];
-                    newUuids[i+1] = mUuid;
+                    newUuids[i] = newUuids[i + 1];
+                    newUuids[i + 1] = mUuid;
                 }
                 else {
                     newUuids[i] = uuids[i];
@@ -1305,7 +1306,7 @@ public class Account implements BaseAccount, StoreConfig {
     @Override
     public boolean equals(Object o) {
         if (o instanceof Account) {
-            return ((Account)o).mUuid.equals(mUuid);
+            return ((Account) o).mUuid.equals(mUuid);
         }
         return super.equals(o);
     }
@@ -1516,7 +1517,8 @@ public class Account implements BaseAccount, StoreConfig {
             now.set(Calendar.MILLISECOND, 0);
             if (age < 28) {
                 now.add(Calendar.DATE, age * -1);
-            } else switch (age) {
+            } else {
+                switch (age) {
                 case 28:
                     now.add(Calendar.MONTH, -1);
                     break;
@@ -1533,6 +1535,7 @@ public class Account implements BaseAccount, StoreConfig {
                     now.add(Calendar.YEAR, -1);
                     break;
                 }
+            }
 
             return now.getTime();
         }

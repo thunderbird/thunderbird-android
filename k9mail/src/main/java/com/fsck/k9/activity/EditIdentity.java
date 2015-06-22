@@ -34,7 +34,7 @@ public class EditIdentity extends K9Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mIdentity = (Identity)getIntent().getSerializableExtra(EXTRA_IDENTITY);
+        mIdentity = (Identity) getIntent().getSerializableExtra(EXTRA_IDENTITY);
         mIdentityIndex = getIntent().getIntExtra(EXTRA_IDENTITY_INDEX, -1);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -50,16 +50,16 @@ public class EditIdentity extends K9Activity {
          * we saved
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_IDENTITY)) {
-            mIdentity = (Identity)savedInstanceState.getSerializable(EXTRA_IDENTITY);
+            mIdentity = (Identity) savedInstanceState.getSerializable(EXTRA_IDENTITY);
         }
 
-        mDescriptionView = (EditText)findViewById(R.id.description);
+        mDescriptionView = (EditText) findViewById(R.id.description);
         mDescriptionView.setText(mIdentity.getDescription());
 
-        mNameView = (EditText)findViewById(R.id.name);
+        mNameView = (EditText) findViewById(R.id.name);
         mNameView.setText(mIdentity.getName());
 
-        mEmailView = (EditText)findViewById(R.id.email);
+        mEmailView = (EditText) findViewById(R.id.email);
         mEmailView.setText(mIdentity.getEmail());
 
         mReplyTo = (EditText) findViewById(R.id.reply_to);
@@ -68,9 +68,9 @@ public class EditIdentity extends K9Activity {
 //      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
 //      mAccountAlwaysBcc.setText(mIdentity.getAlwaysBcc());
 
-        mSignatureLayout = (LinearLayout)findViewById(R.id.signature_layout);
-        mSignatureUse = (CheckBox)findViewById(R.id.signature_use);
-        mSignatureView = (EditText)findViewById(R.id.signature);
+        mSignatureLayout = (LinearLayout) findViewById(R.id.signature_layout);
+        mSignatureUse = (CheckBox) findViewById(R.id.signature_use);
+        mSignatureView = (EditText) findViewById(R.id.signature);
         mSignatureUse.setChecked(mIdentity.getSignatureUse());
         mSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

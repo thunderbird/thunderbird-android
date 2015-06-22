@@ -93,8 +93,9 @@ public class ChooseFolder extends K9ListActivity {
         if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) {
             mShowDisplayableOnly = true;
         }
-        if (mFolder == null)
+        if (mFolder == null) {
             mFolder = "";
+        }
 
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1) {
             private Filter myFilter = null;
@@ -119,7 +120,7 @@ public class ChooseFolder extends K9ListActivity {
                 Intent result = new Intent();
                 result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
                 result.putExtra(EXTRA_CUR_FOLDER, mFolder);
-                String destFolderName = ((TextView)view).getText().toString();
+                String destFolderName = ((TextView) view).getText().toString();
                 if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
                     destFolderName = mHeldInbox;
                 }

@@ -2,7 +2,7 @@ package com.fsck.k9.activity.misc;
 
 import android.content.Context;
 import android.view.MotionEvent;
-import android.view.GestureDetector.OnGestureListener;
+//import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector.SimpleOnGestureListener;
 
 
@@ -45,18 +45,20 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         // Apparently sometimes e1 is null
         // Found a workaround here: http://stackoverflow.com/questions/4151385/
-        if (e1 == null) {
-            e1 = mLastOnDownEvent;
+        MotionEvent localEvent1 = e1;
+
+        if (localEvent1 == null) {
+            localEvent1 = mLastOnDownEvent;
         }
 
         // Make sure we avoid NullPointerExceptions
-        if (e1 == null || e2 == null) {
+        if (localEvent1 == null || e2 == null) {
             return false;
         }
 
         // Calculate how much was actually swiped.
-        final float deltaX = e2.getX() - e1.getX();
-        final float deltaY = e2.getY() - e1.getY();
+        final float deltaX = e2.getX() - localEvent1.getX();
+        final float deltaY = e2.getY() - localEvent1.getY();
 
         // Calculate the minimum distance required for this to be considered a swipe.
         final int minDistance = (int) Math.abs(deltaY * 4);
@@ -67,9 +69,9 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
             }
 
             if (deltaX < (minDistance * -1)) {
-                mListener.onSwipeRightToLeft(e1, e2);
+                mListener.onSwipeRightToLeft(localEvent1, e2);
             } else if (deltaX > minDistance) {
-                mListener.onSwipeLeftToRight(e1, e2);
+                mListener.onSwipeLeftToRight(localEvent1, e2);
             } else {
                 return false;
             }

@@ -42,10 +42,11 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     }
 
     private String truncateStatus(String mess) {
+        String returnedMess = mess;
         if (mess != null && mess.length() > 27) {
-            mess = mess.substring(0, 27);
+            returnedMess = mess.substring(0, 27);
         }
-        return mess;
+        return returnedMess;
     }
 
     // constructor for an empty object for comparisons
