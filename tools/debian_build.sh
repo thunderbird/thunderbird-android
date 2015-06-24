@@ -22,7 +22,7 @@ cd $SDK_DIR
 
 # download the SDK
 if [ ! -f $SDK_DIR/android-sdk_$SDK_VERSION-linux.tgz ]; then
-    wget http://dl.google.com/android/android-sdk_$SDK_VERSION-linux.tgz
+    wget https://dl.google.com/android/android-sdk_$SDK_VERSION-linux.tgz
     tar -xzvf android-sdk_$SDK_VERSION-linux.tgz
 fi
 SDK_DIR=$SDK_DIR/android-sdk-linux
