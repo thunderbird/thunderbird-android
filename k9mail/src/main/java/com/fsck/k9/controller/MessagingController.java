@@ -1833,18 +1833,16 @@ public class MessagingController implements Runnable {
                             synchronized (data) {
                                 MessageReference ref = localMessage.makeMessageReference();
                                 if (data.removeMatchingMessage(context, ref)) {
-                                    synchronized (data) {
-                                        // if we remove a single message from the notification,
-                                        // maybe there is a stacked notification active for that one message
-                                        Integer childNotification = data.getStackedChildNotification(ref);
-                                        if (childNotification != null) {
-                                            NotificationManager notificationManager =
-                                                    (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-                                            notificationManager.cancel(childNotification);
-                                        }
-                                        // update the (summary-) notification
-                                        notifyAccountWithDataLocked(context, account, null, data);
+                                    // if we remove a single message from the notification,
+                                    // maybe there is a stacked notification active for that one message
+                                    Integer childNotification = data.getStackedChildNotification(ref);
+                                    if (childNotification != null) {
+                                        NotificationManager notificationManager =
+                                                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                                        notificationManager.cancel(childNotification);
                                     }
+                                    // update the (summary-) notification
+                                    notifyAccountWithDataLocked(context, account, null, data);
                                 }
                             }
                         }
