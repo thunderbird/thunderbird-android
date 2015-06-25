@@ -4820,9 +4820,9 @@ public class MessagingController implements Runnable {
      * @param message the single message we intent to act on (in a stacked notification or a summary notification about a single message)
      * @param notificationID the id of the future notification. Will be used in the intents, so afterwards the correct notification gets closed.
      */
-    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final Account account, final Message message, final int notificationID) {
+    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final Account account, final LocalMessage message, final int notificationID) {
         ArrayList<MessageReference> subAllRefs = new ArrayList<MessageReference>();
-        subAllRefs.add(new MessageReference(account.getUuid(), message.getFolder().getName(), message.getUid(), message.getFlags().size()==0?null:message.getFlags().iterator().next()));
+        subAllRefs.add(message.makeMessageReference());
         LinkedList<Message> msgList = new LinkedList<Message>();
         msgList.add(message);
         addWearActions(builder, totalMsgCount, 1, account, subAllRefs, msgList, notificationID);
@@ -4955,7 +4955,7 @@ public class MessagingController implements Runnable {
                 // multiple messages pending, show inbox style
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
                 int nID = account.getAccountNumber();
-                for (Message m : data.messages) {
+                for (LocalMessage m : data.messages) {
                     style.addLine(buildMessageSummary(context,
                             getMessageSender(context, account, m),
                             getMessageSubject(context, m)));
