@@ -1311,6 +1311,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             multipartToContentValues(cv, (Multipart) body);
         } else if (body == null) {
             missingPartToContentValues(cv, part);
+        } else if (body instanceof Message) {
+            messageMarkerToContentValues(cv);
         } else {
             file = leafPartToContentValues(cv, part, body);
         }
@@ -1342,6 +1344,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         cv.put("display_name", attachment.displayName);
         cv.put("data_location", DataLocation.MISSING);
         cv.put("decoded_body_size", attachment.size);
+    }
+
+    private void messageMarkerToContentValues(ContentValues cv) throws MessagingException {
+        cv.put("data_location", DataLocation.CHILD_PART_CONTAINS_DATA);
     }
 
     private File leafPartToContentValues(ContentValues cv, Part part, Body body)
@@ -1466,6 +1472,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 BodyPart childPart = multipart.getBodyPart(i);
                 stack.push(new PartContainer(parentMessageId, childPart));
             }
+        } else if (body instanceof Message) {
+            Message innerMessage = (Message) body;
+            stack.push(new PartContainer(parentMessageId, innerMessage));
         }
     }
 
@@ -1994,5 +2003,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         static final int MISSING = 0;
         static final int IN_DATABASE = 1;
         static final int ON_DISK = 2;
+        static final int CHILD_PART_CONTAINS_DATA = 3;
     }
 }
