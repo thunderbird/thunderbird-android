@@ -4815,35 +4815,32 @@ public class MessagingController implements Runnable {
     /**
      * Build the specific notification actions for a single message on Android Wear.
      * @param builder NotificationBuilder to add actions to
-     * @param totalMsgCount if this is a stacked notification, how many other messages are there?
      * @param account the account we intent to act on
      * @param message the single message we intent to act on (in a stacked notification or a summary notification about a single message)
      * @param notificationID the id of the future notification. Will be used in the intents, so afterwards the correct notification gets closed.
      */
-    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final Account account, final LocalMessage message, final int notificationID) {
+    private void addWearActions(final NotificationCompat.Builder builder, final Account account, final LocalMessage message, final int notificationID) {
         ArrayList<MessageReference> subAllRefs = new ArrayList<MessageReference>();
         subAllRefs.add(message.makeMessageReference());
         LinkedList<Message> msgList = new LinkedList<Message>();
         msgList.add(message);
-        addWearActions(builder, totalMsgCount, 1, account, subAllRefs, msgList, notificationID);
+        addWearActions(builder, account, subAllRefs, msgList, notificationID);
     }
     /**
      * Build the specific notification actions for a single or multiple message on Android Wear.
      * @param builder NotificationBuilder to add actions to
-     * @param totalMsgCount total message count (may be different from msgCount if this is a stacked notification)
-     * @param msgCount message count to be handled in this (stacked or summary) notification
      * @param account the account we intent to act on
      * @param allRefs the messages we intent to act on
      * @param messages the messages we intent to act on
      * @param notificationID the id of the future notification. Will be used in the intents, so afterwards the correct notification gets closed.
      */
-    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final int msgCount, final Account account, final ArrayList<MessageReference> allRefs, final List<? extends Message> messages, final int notificationID) {
+    private void addWearActions(final NotificationCompat.Builder builder, final Account account, final ArrayList<MessageReference> allRefs, final List<? extends Message> messages, final int notificationID) {
         // we need a new wearableExtender for each notification
         final NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
         NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
-        boolean showDeleteAction = deleteOption == NotificationQuickDelete.ALWAYS ||
-                (deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG && msgCount == 1);
+        boolean showDeleteAction = (deleteOption == NotificationQuickDelete.ALWAYS ||
+                deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG);
 
         // note: while we are limited to 3 actions on the phone,
         // this does not seem to be a limit on Android Wear devices.
@@ -4869,7 +4866,7 @@ public class MessagingController implements Runnable {
                     new NotificationCompat.Action.Builder(
                             R.drawable.ic_action_archive_dark,
                             context.getString(R.string.notification_action_archive),
-                            NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs, totalMsgCount > msgCount, notificationID))
+                            NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs, notificationID))
                             .build();
             builder.extend(wearableExtender.addAction(wearActionArchive));
         }
@@ -4880,7 +4877,7 @@ public class MessagingController implements Runnable {
                     new NotificationCompat.Action.Builder(
                             R.drawable.ic_action_delete_dark,
                             context.getString(R.string.notification_action_spam),
-                            NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs, totalMsgCount > msgCount, notificationID))
+                            NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs, notificationID))
                             .build();
             builder.extend(wearableExtender.addAction(wearActionSpam));
         }
@@ -4982,7 +4979,7 @@ public class MessagingController implements Runnable {
 
 
                     // set actions
-                    addWearActions(subBuilder, newMessages, account, m, realnID);
+                    addWearActions(subBuilder, account, m, realnID);
                     if (m.isSet(Flag.FLAGGED)) {
                         subBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
                     }
@@ -5029,7 +5026,7 @@ public class MessagingController implements Runnable {
                 // add /different) actions to show on connected Android Wear devices
                 // do not add these to the a summary notification or they will affect all stacked
                 // notifications
-                addWearActions(builder, newMessages, newMessages, account, allRefs, data.messages, account.getAccountNumber());
+                addWearActions(builder, account, allRefs, data.messages, account.getAccountNumber());
             }
 
             // Mark Read on phone

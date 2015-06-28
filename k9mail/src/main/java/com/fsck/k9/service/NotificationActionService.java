@@ -35,7 +35,6 @@ public class NotificationActionService extends CoreService {
     private final static String EXTRA_ACCOUNT = "account";
     private final static String EXTRA_MESSAGE = "message";
     private final static String EXTRA_MESSAGE_LIST = "messages";
-    private final static String EXTRA_DONTCANCEL = "dontcancel";
     /**
      * ID of the notification that triggered an intent.
      * Used to cancel exactly that one notification because due to
@@ -121,7 +120,7 @@ public class NotificationActionService extends CoreService {
      * Check if for the given parameters the ArchiveAllMessages intent is possible for Android Wear.
      * (No confirmation on the phone required and moving these messages to the spam-folder possible)<br/>
      * Since we can not show a toast like on the phone screen, we must not offer actions that can not be performed.
-     * @see #getArchiveAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, boolean, int)
+     * @see #getArchiveAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, int)
      * @param context the context to get a {@link MessagingController}
      * @param account the account (must allow moving messages to allow true as a result)
      * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
@@ -137,18 +136,14 @@ public class NotificationActionService extends CoreService {
      * @param context context to use for creating the {@link Intent}
      * @param account the account we intent to act on
      * @param refs the messages we intent to act on
-     * @param dontCancel if true, after executing the intent, not all notifications for this account are canceled automatically
      * @param notificationID ID of the notification, this intent is for.
      * @return the requested intent. To be used in a Notification.
      * @see #EXTRA_NOTIFICATION_ID
      */
-    public static PendingIntent getArchiveAllMessagesIntent(Context context, final Account account, final Serializable refs, final boolean dontCancel, final int notificationID) {
+    public static PendingIntent getArchiveAllMessagesIntent(Context context, final Account account, final Serializable refs, final int notificationID) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
-        if (dontCancel) {
-            i.putExtra(EXTRA_DONTCANCEL, true);
-        }
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setAction(ARCHIVE_ALL_ACTION);
 
@@ -160,7 +155,7 @@ public class NotificationActionService extends CoreService {
      * Check if for the given parameters the SpamAllMessages intent is possible for Android Wear.
      * (No confirmation on the phone required and moving these messages to the spam-folder possible)<br/>
      * Since we can not show a toast like on the phone screen, we must not offer actions that can not be performed.
-     * @see #getSpamAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, boolean, int)
+     * @see #getSpamAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, int)
      * @param context the context to get a {@link MessagingController}
      * @param account the account (must allow moving messages to allow true as a result)
      * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
@@ -176,18 +171,14 @@ public class NotificationActionService extends CoreService {
      * @param context context to use for creating the {@link Intent}
      * @param account the account we intent to act on
      * @param refs the messages we intent to act on
-     * @param dontCancel if true, after executing the intent, not all notifications for this account are canceled automatically
      * @param notificationID ID of the notification, this intent is for.
      * @return the requested intent. To be used in a Notification.
      * @see #EXTRA_NOTIFICATION_ID
      */
-    public static PendingIntent getSpamAllMessagesIntent(Context context, final Account account, final Serializable refs, final boolean dontCancel, final int notificationID) {
+    public static PendingIntent getSpamAllMessagesIntent(Context context, final Account account, final Serializable refs, final int notificationID) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
-        if (dontCancel) {
-            i.putExtra(EXTRA_DONTCANCEL, true);
-        }
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setAction(SPAM_ALL_ACTION);
 
@@ -315,17 +306,13 @@ public class NotificationActionService extends CoreService {
                 Log.i(K9.LOG_TAG, "notification acknowledged");
             }
 
-            // if this was a stacked notification on Android Wear, update the summary
-            // notification and keep the other stacked notifications
-            if (!intent.hasExtra(EXTRA_DONTCANCEL)) {
-                // there's no point in keeping the notification after the user clicked on it
-                if (intent.hasExtra(EXTRA_NOTIFICATION_ID)) {
-                    NotificationManager notificationManager =
-                            (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.cancel(intent.getIntExtra(EXTRA_NOTIFICATION_ID, account.getAccountNumber()));
-                } else {
-                    controller.notifyAccountCancel(this, account);
-                }
+            // there's no point in keeping the notification after the user clicked on it
+            if (intent.hasExtra(EXTRA_NOTIFICATION_ID)) {
+                NotificationManager notificationManager =
+                        (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(intent.getIntExtra(EXTRA_NOTIFICATION_ID, account.getAccountNumber()));
+            } else {
+                controller.notifyAccountCancel(this, account);
             }
         } else {
             Log.w(K9.LOG_TAG, "Could not find account for notification action.");
