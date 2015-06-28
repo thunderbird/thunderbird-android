@@ -266,6 +266,9 @@ public class GlobalSettings {
                 new V(38, new EnumSetting<NotificationQuickDelete>(NotificationQuickDelete.class,
                         NotificationQuickDelete.NEVER))
             ));
+        s.put("notificationDuringQuietTimeEnabled", Settings.versions(
+                new V(39, new BooleanSetting(true))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
