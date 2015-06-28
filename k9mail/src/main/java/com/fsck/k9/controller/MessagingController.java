@@ -269,26 +269,11 @@ public class MessagingController implements Runnable {
 
         /**
          * Add a stacked notification that this is a summary notification for.
-         * @param ref the message to add a stacked notification for
-         * @param notificationId the id of the stacked notification
-         */
-        public void addStackedChildNotification(final MessageReference ref, final int notificationId) {
-            stackedNotifications.put(ref.getUid(), new Integer(notificationId));
-        }
-        /**
-         * Add a stacked notification that this is a summary notification for.
          * @param msg the message to add a stacked notification for
          * @param notificationId the id of the stacked notification
          */
         public void addStackedChildNotification(final Message msg, final int notificationId) {
             stackedNotifications.put(msg.getUid(), new Integer(notificationId));
-        }
-
-        /**
-         * @return the IDs of all stacked notifications this is a summary notification for.
-         */
-        public Collection<Integer> getStackedChildNotifications() {
-            return stackedNotifications.values();
         }
 
         /**
