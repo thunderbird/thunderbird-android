@@ -237,7 +237,7 @@ public class K9 extends Application {
     private static boolean mHideSpecialAccounts = false;
     private static boolean mAutofitWidth;
     private static boolean mQuietTimeEnabled = false;
-    private static boolean mQuietTimeNotificationEnabled = false;
+    private static boolean mNotificationDuringQuietTimeEnabled = true;
     private static String mQuietTimeStarts = null;
     private static String mQuietTimeEnds = null;
     private static String mAttachmentDefaultPath = "";
@@ -475,7 +475,7 @@ public class K9 extends Application {
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("autofitWidth", mAutofitWidth);
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
-        editor.putBoolean("quietTimeNotificationEnabled", mQuietTimeNotificationEnabled);
+        editor.putBoolean("notificationDuringQuietTimeEnabled", mNotificationDuringQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
         editor.putString("quietTimeEnds", mQuietTimeEnds);
 
@@ -710,7 +710,7 @@ public class K9 extends Application {
         mAutofitWidth = sprefs.getBoolean("autofitWidth", true);
 
         mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
-        mQuietTimeNotificationEnabled = sprefs.getBoolean("quietTimeNotificationEnabled", false);
+        mNotificationDuringQuietTimeEnabled = sprefs.getBoolean("notificationDuringQuietTimeEnabled", true);
         mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
         mQuietTimeEnds = sprefs.getString("quietTimeEnds", "7:00");
 
@@ -973,12 +973,12 @@ public class K9 extends Application {
         mQuietTimeEnabled = quietTimeEnabled;
     }
 
-    public static boolean getQuietTimeNotificationEnabled() {
-        return mQuietTimeNotificationEnabled;
+    public static boolean isNotificationDuringQuietTimeEnabled() {
+        return mNotificationDuringQuietTimeEnabled;
     }
 
-    public static void setQuietTimeNotificationEnabled(boolean quietTimeNotificationEnabled) {
-        mQuietTimeNotificationEnabled = quietTimeNotificationEnabled;
+    public static void setNotificationDuringQuietTimeEnabled(boolean notificationDuringQuietTimeEnabled) {
+        mNotificationDuringQuietTimeEnabled = notificationDuringQuietTimeEnabled;
     }
 
     public static String getQuietTimeStarts() {

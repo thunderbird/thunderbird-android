@@ -353,8 +353,8 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="quiet_time">Quiet Time</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>
-    <string name="quiet_time_notification">Quiet Time notifications</string>
-    <string name="quiet_time_notification_description">Disable notifications during quiet time</string>
+    <string name="quiet_time_notification">Disable notifications</string>
+    <string name="quiet_time_notification_description">Completely disable notifications during Quiet Time</string>
     <string name="quiet_time_starts">Quiet Time starts</string>
     <string name="quiet_time_ends">Quiet Time ends</string>
 

@@ -4683,10 +4683,8 @@ public class MessagingController implements Runnable {
     /**
      * Creates a notification of a newly received message.
      */
-    private void notifyAccount(Context context, Account account,
-            LocalMessage message, int previousUnreadMessageCount) {
-    	// if it's quiet time and notifications are disabled, then we shouldn't show a notification
-        if (K9.isQuietTime() && K9.getQuietTimeNotificationEnabled()) {
+    private void notifyAccount(Context context, Account account, LocalMessage message, int previousUnreadMessageCount) {
+        if (K9.isQuietTime() && !K9.isNotificationDuringQuietTimeEnabled()) {
             return;
         }
 

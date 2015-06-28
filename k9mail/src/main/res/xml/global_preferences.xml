@@ -304,7 +304,7 @@
             android:summary="@string/quiet_time_description"
             />
         <CheckBoxPreference
-            android:key="quiet_time_notification_enabled"
+            android:key="disable_notifications_during_quiet_time"
             android:persistent="false"
             android:dependency="quiet_time_enabled"
             android:title="@string/quiet_time_notification"

@@ -79,7 +79,8 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
     private static final String PREFERENCE_MESSAGEVIEW_SHOW_NEXT = "messageview_show_next";
     private static final String PREFERENCE_QUIET_TIME_ENABLED = "quiet_time_enabled";
-    private static final String PREFERENCE_QUIET_TIME_NOTIFICATION_ENABLED = "quiet_time_notification_enabled";
+    private static final String PREFERENCE_DISABLE_NOTIFICATION_DURING_QUIET_TIME =
+            "disable_notifications_during_quiet_time";
     private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
     private static final String PREFERENCE_NOTIF_QUICK_DELETE = "notification_quick_delete";
@@ -143,7 +144,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxListPreference mVisibleRefileActions;
 
     private CheckBoxPreference mQuietTimeEnabled;
-    private CheckBoxPreference mQuietTimeNotificationEnabled;
+    private CheckBoxPreference mDisableNotificationDuringQuietTime;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeEnds;
     private ListPreference mNotificationQuickDelete;
@@ -311,8 +312,9 @@ public class Prefs extends K9PreferenceActivity {
         mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
         mQuietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
 
-        mQuietTimeNotificationEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_NOTIFICATION_ENABLED);
-        mQuietTimeNotificationEnabled.setChecked(K9.getQuietTimeNotificationEnabled());
+        mDisableNotificationDuringQuietTime = (CheckBoxPreference) findPreference(
+                PREFERENCE_DISABLE_NOTIFICATION_DURING_QUIET_TIME);
+        mDisableNotificationDuringQuietTime.setChecked(!K9.isNotificationDuringQuietTimeEnabled());
         mQuietTimeStarts = (TimePickerPreference) findPreference(PREFERENCE_QUIET_TIME_STARTS);
         mQuietTimeStarts.setDefaultValue(K9.getQuietTimeStarts());
         mQuietTimeStarts.setSummary(K9.getQuietTimeStarts());
@@ -489,7 +491,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMessageViewCopyActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_COPY]);
         K9.setMessageViewSpamActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_SPAM]);
 
-        K9.setQuietTimeNotificationEnabled(mQuietTimeNotificationEnabled.isChecked());
+        K9.setNotificationDuringQuietTimeEnabled(!mDisableNotificationDuringQuietTime.isChecked());
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
         K9.setQuietTimeEnds(mQuietTimeEnds.getTime());
         K9.setWrapFolderNames(mWrapFolderNames.isChecked());
