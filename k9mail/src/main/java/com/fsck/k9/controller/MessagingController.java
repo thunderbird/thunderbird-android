@@ -224,7 +224,7 @@ public class MessagingController implements Runnable {
         /**
          * Stacked notifications that share this notification as ther summary-notification.
          */
-        Map<String, Integer> stackedNotifications = new HashMap<String, Integer>();
+        Map<MessageReference, Integer> stackedNotifications = new HashMap<MessageReference, Integer>();
         /**
          * List of references for messages that the user is still to be notified of,
          * but which don't fit into the inbox style anymore. It's sorted from newest
@@ -269,11 +269,11 @@ public class MessagingController implements Runnable {
 
         /**
          * Add a stacked notification that this is a summary notification for.
-         * @param msg the message to add a stacked notification for
+         * @param ref the message to add a stacked notification for
          * @param notificationId the id of the stacked notification
          */
-        public void addStackedChildNotification(final Message msg, final int notificationId) {
-            stackedNotifications.put(msg.getUid(), new Integer(notificationId));
+        public void addStackedChildNotification(MessageReference ref, final int notificationId) {
+            stackedNotifications.put(ref, notificationId);
         }
 
         /**
@@ -281,14 +281,7 @@ public class MessagingController implements Runnable {
          * @return null or the notification ID of a stacked notification for the given message
          */
         public Integer getStackedChildNotification(final MessageReference ref) {
-            return stackedNotifications.get(ref.getUid());
-        }
-        /**
-         * @param msg the message to check for
-         * @return null or the notification ID of a stacked notification for the given message
-         */
-        public Integer getStackedChildNotification(final Message msg) {
-            return stackedNotifications.get(msg.getUid());
+            return stackedNotifications.get(ref);
         }
 
         /**
@@ -4938,6 +4931,8 @@ public class MessagingController implements Runnable {
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
                 int nID = account.getAccountNumber();
                 for (LocalMessage m : data.messages) {
+                    MessageReference messageReference = m.makeMessageReference();
+
                     style.addLine(buildMessageSummary(context,
                             getMessageSender(context, account, m),
                             getMessageSubject(context, m)));
@@ -4954,7 +4949,7 @@ public class MessagingController implements Runnable {
                     nID = 1000 + nID;
                     // reuse existing notification IDs if some of the stacked messages
                     // are already shown on the wear device.
-                    Integer realnID = data.getStackedChildNotification(m);
+                    Integer realnID = data.getStackedChildNotification(messageReference);
                     if (realnID == null) {
                         realnID = nID;
                     }
@@ -4974,7 +4969,7 @@ public class MessagingController implements Runnable {
 
                     // this must be done before the summary notification
                     notifMgr.notify(realnID, subBuilder.build());
-                    data.addStackedChildNotification(m, realnID);
+                    data.addStackedChildNotification(messageReference, realnID);
                 }
                 // go on configuring the summary notification on the phone
                 // The phone will only show the summary
