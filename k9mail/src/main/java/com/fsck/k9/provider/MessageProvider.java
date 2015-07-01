@@ -1035,7 +1035,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (myAccount == null) {
-            throw new IllegalArgumentException("Could not find account with id " + accountId);
+            Log.e(K9.LOG_TAG, "Could not find account with id " + accountId);
         }
 
         // get localstore parameter
@@ -1048,16 +1048,14 @@ public class MessageProvider extends ContentProvider {
             }
             msg = lf.getMessage(msgUid);
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (msg == null) {
-            throw new IllegalArgumentException("Could not find message with id " + msgUid);
+            Log.e(K9.LOG_TAG, "Unable to retrieve message", e);
         }
 
         // launch command to delete the message
-        MessagingController controller = MessagingController.getInstance(getContext());
-        controller.deleteMessages(Collections.singletonList(msg), null);
+        if ((myAccount != null) && (msg != null)) {
+            MessagingController controller = MessagingController.getInstance(getContext());
+            controller.deleteMessages(Collections.singletonList(msg), null);
+        }
 
         // FIXME return the actual number of deleted messages
         return 0;
