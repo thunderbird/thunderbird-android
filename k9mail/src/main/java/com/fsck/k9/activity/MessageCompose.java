@@ -2379,8 +2379,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // Decode the identity header when loading a draft.
         // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
         Map<IdentityField, String> k9identity = new HashMap<IdentityField, String>();
-        if (message.getHeader(K9.IDENTITY_HEADER).length > 0 && message.getHeader(K9.IDENTITY_HEADER)[0] != null) {
-            k9identity = IdentityHeaderParser.parse(message.getHeader(K9.IDENTITY_HEADER)[0]);
+        String[] identityHeaders = message.getHeader(K9.IDENTITY_HEADER);
+
+        if (identityHeaders.length > 0 && identityHeaders[0] != null) {
+            k9identity = IdentityHeaderParser.parse(identityHeaders[0]);
         }
 
         Identity newIdentity = new Identity();
