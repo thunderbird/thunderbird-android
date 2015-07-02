@@ -1,4 +1,4 @@
-package com.fsck.k9.service;
+package com.fsck.k9.notification;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.service.CoreService;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -312,7 +313,7 @@ public class NotificationActionService extends CoreService {
                         (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(intent.getIntExtra(EXTRA_NOTIFICATION_ID, account.getAccountNumber()));
             } else {
-                controller.notifyAccountCancel(this, account);
+                controller.cancelNotificationsForAccount(account);
             }
         } else {
             Log.w(K9.LOG_TAG, "Could not find account for notification action.");

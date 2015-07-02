@@ -387,7 +387,7 @@ public class FolderList extends K9ListActivity {
 
         onRefresh(!REFRESH_REMOTE);
 
-        MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
+        MessagingController.getInstance(getApplication()).cancelNotificationsForAccount(mAccount);
         mAdapter.mListener.onResume(this);
     }
 

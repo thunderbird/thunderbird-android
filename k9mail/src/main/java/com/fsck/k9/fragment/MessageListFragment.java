@@ -1091,7 +1091,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         for (Account accountWithNotification : accountsWithNotification) {
-            mController.notifyAccountCancel(appContext, accountWithNotification);
+            mController.cancelNotificationsForAccount(accountWithNotification);
         }
 
         if (mAccount != null && mFolderName != null && !mSearch.isManualSearch()) {
