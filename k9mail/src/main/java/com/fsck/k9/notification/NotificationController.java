@@ -112,29 +112,19 @@ public class NotificationController {
                 K9.NOTIFICATION_LED_FAILURE_COLOR,
                 K9.NOTIFICATION_LED_BLINK_FAST, true);
 
-        final NotificationManager nm = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(null, id, builder.build());
+        notificationManager.notify(null, id, builder.build());
     }
 
-    public void clearCertificateErrorNotifications(Context context,
-            final Account account, CheckDirection direction) {
-        final NotificationManager nm = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-
+    public void clearCertificateErrorNotifications(final Account account, CheckDirection direction) {
         if (direction == CheckDirection.INCOMING) {
-            nm.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING + account.getAccountNumber());
+            notificationManager.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING + account.getAccountNumber());
         } else {
-            nm.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING + account.getAccountNumber());
+            notificationManager.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING + account.getAccountNumber());
         }
     }
 
-
     public void cancelNotification(int id) {
-        NotificationManager notifMgr =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notifMgr.cancel(id);
+        notificationManager.cancel(id);
     }
 
     public void notifyWhileSendingDone(Account account) {
@@ -153,9 +143,6 @@ public class NotificationController {
         if (!account.isShowOngoing()) {
             return;
         }
-
-        NotificationManager notifMgr =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.drawable.ic_notify_check_mail);
@@ -183,7 +170,7 @@ public class NotificationController {
                     K9.NOTIFICATION_LED_BLINK_FAST, true);
         }
 
-        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
+        notificationManager.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
                 builder.build());
     }
 
@@ -206,9 +193,6 @@ public class NotificationController {
      *         The name of the folder to open when the notification is clicked.
      */
     private void notifySendFailed(Account account, Exception lastFailure, String openFolder) {
-        NotificationManager notifMgr =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(platformSupportsLockScreenNotifications()
                 ? R.drawable.ic_notify_new_mail_vector
@@ -226,7 +210,7 @@ public class NotificationController {
         configureNotification(builder,  null, null, K9.NOTIFICATION_LED_FAILURE_COLOR,
                 K9.NOTIFICATION_LED_BLINK_FAST, true);
 
-        notifMgr.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(),
+        notificationManager.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(),
                 builder.build());
     }
 
@@ -242,9 +226,6 @@ public class NotificationController {
         if (!account.isShowOngoing()) {
             return;
         }
-
-        final NotificationManager notifMgr =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.drawable.ic_notify_check_mail);
@@ -268,7 +249,7 @@ public class NotificationController {
                     K9.NOTIFICATION_LED_BLINK_FAST, true);
         }
 
-        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
+        notificationManager.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
                 builder.build());
     }
 
@@ -514,7 +495,7 @@ public class NotificationController {
             if (message == null) {
                 // seemingly both the message list as well as the overflow list is empty;
                 // it probably is a good idea to cancel the notification in that case
-                notifyAccountCancel(context, account);
+                notifyAccountCancel(account);
                 return;
             }
         } else {
@@ -534,9 +515,6 @@ public class NotificationController {
         if (privacyModeEnabled || summary.length() == 0) {
             summary = context.getString(R.string.notification_new_title);
         }
-
-        NotificationManager notifMgr =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.drawable.ic_notify_new_mail);
@@ -602,7 +580,7 @@ public class NotificationController {
                     // and depend on quiet time and user settings
 
                     // this must be done before the summary notification
-                    notifMgr.notify(realnID, subBuilder.build());
+                    notificationManager.notify(realnID, subBuilder.build());
                     data.addStackedChildNotification(messageReference, realnID);
                 }
                 // go on configuring the summary notification on the phone
@@ -709,7 +687,7 @@ public class NotificationController {
                 K9.NOTIFICATION_LED_BLINK_SLOW,
                 ringAndVibrate);
 
-        notifMgr.notify(account.getAccountNumber(), builder.build());
+        notificationManager.notify(account.getAccountNumber(), builder.build());
     }
 
 
@@ -957,9 +935,7 @@ public class NotificationController {
      * Cancel a notification of new email messages
      * @param  account all notifications for this account will be canceled and removed
      */
-    public void notifyAccountCancel(final Context context, final Account account) {
-        NotificationManager notificationManager =
-                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+    public void notifyAccountCancel(final Account account) {
         notificationManager.cancel(account.getAccountNumber());
         notificationManager.cancel(-1000 - account.getAccountNumber());
 
@@ -977,8 +953,6 @@ public class NotificationController {
                     // maybe there is a stacked notification active for that one message
                     Integer childNotification = data.getStackedChildNotification(ref);
                     if (childNotification != null) {
-                        NotificationManager notificationManager =
-                                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
                         notificationManager.cancel(childNotification);
                     }
                     // update the (summary-) notification

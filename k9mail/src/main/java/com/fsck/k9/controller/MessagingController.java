@@ -4036,7 +4036,7 @@ public class MessagingController implements Runnable {
                     try {
                         AccountStats stats = account.getStats(context);
                         if (stats == null || stats.unreadMessageCount == 0) {
-                            notificationController.notifyAccountCancel(context, account);
+                            notificationController.notifyAccountCancel(account);
                         }
                     } catch (MessagingException e) {
                         Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
@@ -4265,7 +4265,7 @@ public class MessagingController implements Runnable {
     }
 
     public void deleteAccount(Context context, Account account) {
-        notificationController.notifyAccountCancel(context, account);
+        notificationController.notifyAccountCancel(account);
         memorizingListener.removeAccount(account);
     }
 
@@ -4519,7 +4519,7 @@ public class MessagingController implements Runnable {
                         Log.i(K9.LOG_TAG, "messagesArrived newCount = " + newCount + ", unread count = " + unreadMessageCount);
 
                     if (unreadMessageCount == 0) {
-                        notificationController.notifyAccountCancel(context, account);
+                        notificationController.notifyAccountCancel(account);
                     }
 
                     for (MessagingListener l : getListeners()) {
@@ -4564,11 +4564,11 @@ public class MessagingController implements Runnable {
     }
 
     public void cancelNotificationsForAccount(Account account) {
-        notificationController.notifyAccountCancel(context, account);
+        notificationController.notifyAccountCancel(account);
     }
 
     public void clearCertificateErrorNotifications(Account account, CheckDirection direction) {
-        notificationController.clearCertificateErrorNotifications(context, account, direction);
+        notificationController.clearCertificateErrorNotifications(account, direction);
     }
 
     public void notifyUserIfCertificateProblem(Exception e, Account account, boolean incoming) {
