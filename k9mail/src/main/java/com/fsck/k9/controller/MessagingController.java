@@ -3197,7 +3197,7 @@ public class MessagingController implements Runnable {
 
         } finally {
             if (lastFailure == null) {
-                notificationController.cancelNotification(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber());
+                notificationController.cancelSendFailedNotification(account);
             }
             closeFolder(localFolder);
         }

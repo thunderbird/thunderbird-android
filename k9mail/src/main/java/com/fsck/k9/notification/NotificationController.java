@@ -85,9 +85,8 @@ public class NotificationController {
             return;
         }
 
-        final int id = incoming
-                ? K9.CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING + account.getAccountNumber()
-                : K9.CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING + account.getAccountNumber();
+        int notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming);
+
         final Intent i = incoming
                 ? AccountSetupIncoming.intentActionEditIncomingSettings(context, account)
                 : AccountSetupOutgoing.intentActionEditOutgoingSettings(context, account);
@@ -112,24 +111,19 @@ public class NotificationController {
                 K9.NOTIFICATION_LED_FAILURE_COLOR,
                 K9.NOTIFICATION_LED_BLINK_FAST, true);
 
-        notificationManager.notify(null, id, builder.build());
+        notificationManager.notify(notificationId, builder.build());
     }
 
     public void clearCertificateErrorNotifications(final Account account, CheckDirection direction) {
-        if (direction == CheckDirection.INCOMING) {
-            notificationManager.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING + account.getAccountNumber());
-        } else {
-            notificationManager.cancel(null, K9.CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING + account.getAccountNumber());
-        }
-    }
-
-    public void cancelNotification(int id) {
-        notificationManager.cancel(id);
+        boolean incoming = (direction == CheckDirection.INCOMING);
+        int notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming);
+        notificationManager.cancel(notificationId);
     }
 
     public void notifyWhileSendingDone(Account account) {
         if (account.isShowOngoing()) {
-            cancelNotification(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
+            int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+            notificationManager.cancel(notificationId);
         }
     }
 
@@ -170,8 +164,8 @@ public class NotificationController {
                     K9.NOTIFICATION_LED_BLINK_FAST, true);
         }
 
-        notificationManager.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
-                builder.build());
+        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+        notificationManager.notify(notificationId, builder.build());
     }
 
     public void notifySendTempFailed(Account account, Exception lastFailure) {
@@ -210,8 +204,8 @@ public class NotificationController {
         configureNotification(builder,  null, null, K9.NOTIFICATION_LED_FAILURE_COLOR,
                 K9.NOTIFICATION_LED_BLINK_FAST, true);
 
-        notificationManager.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(),
-                builder.build());
+        int notificationId = NotificationIds.getSendFailedNotificationId(account);
+        notificationManager.notify(notificationId, builder.build());
     }
 
     /**
@@ -249,13 +243,14 @@ public class NotificationController {
                     K9.NOTIFICATION_LED_BLINK_FAST, true);
         }
 
-        notificationManager.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(),
-                builder.build());
+        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+        notificationManager.notify(notificationId, builder.build());
     }
 
     public void notifyFetchingMailCancel(final Account account) {
         if (account.isShowOngoing()) {
-            cancelNotification(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
+            int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+            notificationManager.cancel(notificationId);
         }
     }
 
@@ -541,7 +536,7 @@ public class NotificationController {
 
                 // multiple messages pending, show inbox style
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
-                int nID = account.getAccountNumber();
+                int notificationOffset = 1;
                 for (LocalMessage m : data.messages) {
                     MessageReference messageReference = m.makeMessageReference();
 
@@ -558,12 +553,11 @@ public class NotificationController {
                     subBuilder.setGroup(NOTIFICATION_GROUP_KEY); // same group as summary
                     subBuilder.setAutoCancel(true); // summary closes all, stacked only itself
 
-                    nID = 1000 + nID;
                     // reuse existing notification IDs if some of the stacked messages
                     // are already shown on the wear device.
                     Integer realnID = data.getStackedChildNotification(messageReference);
                     if (realnID == null) {
-                        realnID = nID;
+                        realnID = NotificationIds.getNewMailNotificationId(account, notificationOffset);
                     }
 
                     // set content
@@ -582,6 +576,8 @@ public class NotificationController {
                     // this must be done before the summary notification
                     notificationManager.notify(realnID, subBuilder.build());
                     data.addStackedChildNotification(messageReference, realnID);
+
+                    notificationOffset++;
                 }
                 // go on configuring the summary notification on the phone
                 // The phone will only show the summary
@@ -687,7 +683,8 @@ public class NotificationController {
                 K9.NOTIFICATION_LED_BLINK_SLOW,
                 ringAndVibrate);
 
-        notificationManager.notify(account.getAccountNumber(), builder.build());
+        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        notificationManager.notify(notificationId, builder.build());
     }
 
 
@@ -936,8 +933,8 @@ public class NotificationController {
      * @param  account all notifications for this account will be canceled and removed
      */
     public void notifyAccountCancel(final Account account) {
-        notificationManager.cancel(account.getAccountNumber());
-        notificationManager.cancel(-1000 - account.getAccountNumber());
+        int newMailNotificationId = NotificationIds.getNewMailNotificationId(account);
+        notificationManager.cancel(newMailNotificationId);
 
         notificationData.remove(account.getAccountNumber());
     }
@@ -980,5 +977,10 @@ public class NotificationController {
                     ? (rootCause.getClass().getSimpleName() + ": " + rootCause.getLocalizedMessage())
                     : rootCause.getClass().getSimpleName();
         }
+    }
+
+    public void cancelSendFailedNotification(Account account) {
+        int notificationId = NotificationIds.getSendFailedNotificationId(account);
+        notificationManager.cancel(notificationId);
     }
 }
