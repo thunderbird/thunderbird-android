@@ -1,8 +1,13 @@
 package com.fsck.k9.notification;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -11,314 +16,225 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.service.CoreService;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
-/**
- * Service called by actions in notifications.
- * Provides a number of default actions to trigger.
- */
 public class NotificationActionService extends CoreService {
-    private final static String REPLY_ACTION = "com.fsck.k9.service.NotificationActionService.REPLY_ACTION";
-    private final static String READ_ALL_ACTION = "com.fsck.k9.service.NotificationActionService.READ_ALL_ACTION";
-    private final static String DELETE_ALL_ACTION = "com.fsck.k9.service.NotificationActionService.DELETE_ALL_ACTION";
-    private final static String ARCHIVE_ALL_ACTION = "com.fsck.k9.service.NotificationActionService.ARCHIVE_ALL_ACTION";
-    private final static String SPAM_ALL_ACTION = "com.fsck.k9.service.NotificationActionService.SPAM_ALL_ACTION";
-    private final static String ACKNOWLEDGE_ACTION = "com.fsck.k9.service.NotificationActionService.ACKNOWLEDGE_ACTION";
+    private final static String ACTION_REPLY = "ACTION_REPLY";
+    private final static String ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ";
+    private final static String ACTION_DELETE = "ACTION_DELETE";
+    private final static String ACTION_ARCHIVE = "ACTION_ARCHIVE";
+    private final static String ACTION_SPAM = "ACTION_SPAM";
+    private final static String ACTION_DISMISS = "ACTION_DISMISS";
 
-    private final static String EXTRA_ACCOUNT = "account";
-    private final static String EXTRA_MESSAGE = "message";
-    private final static String EXTRA_MESSAGE_LIST = "messages";
-    /**
-     * ID of the notification that triggered an intent.
-     * Used to cancel exactly that one notification because due to
-     * Android Wear there may be multiple notifications per account.
-     */
-    public final static String EXTRA_NOTIFICATION_ID = "notificationid";
+    private final static String EXTRA_ACCOUNT_UUID = "accountUuid";
+    private final static String EXTRA_MESSAGE_REFERENCE = "messageReference";
+    private final static String EXTRA_MESSAGE_REFERENCES = "messageReferences";
+    public final static String EXTRA_NOTIFICATION_ID = "notificationId";
 
-    /**
-     *
-     * @param context context to use for creating the {@link Intent}
-     * @param account the account we intent to act on
-     * @param ref the message we intent to act on
-     * @param notificationID ID of the notification, this intent is for.
-     * @see #EXTRA_NOTIFICATION_ID
-     * @return the requested intent. To be used in a Notification.
-     */
-    public static PendingIntent getReplyIntent(Context context, final Account account, final MessageReference ref, final int notificationID) {
-        Intent i = new Intent(context, NotificationActionService.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE, ref);
-        i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
-        i.setAction(REPLY_ACTION);
 
-        return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
+    public static PendingIntent createReplyPendingIntent(Context context, Account account,
+            MessageReference messageReference, int notificationId) {
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_REPLY);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
+        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
+
+        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    /**
-     *
-     * @param context context to use for creating the {@link Intent}
-     * @param account the account we intent to act on
-     * @param refs the messages we intent to act on
-     * @param notificationID ID of the notification, this intent is for.
-     * @return the requested intent. To be used in a Notification.
-     * @see #EXTRA_NOTIFICATION_ID
-     */
-    public static PendingIntent getReadAllMessagesIntent(Context context, final Account account, final Serializable refs, final int notificationID) {
-        Intent i = new Intent(context, NotificationActionService.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_LIST, refs);
-        i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
-        i.setAction(READ_ALL_ACTION);
+    public static PendingIntent createMarkAsReadPendingIntent(Context context, Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId) {
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_MARK_AS_READ);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
 
-        return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    /**
-     *
-     * @param context context to use for creating the {@link Intent}
-     * @param account the account for the intent to act on
-     * @param notificationID ID of the notification, this intent is for.
-     * @return the requested intent. To be used in a Notification.
-     * @see #EXTRA_NOTIFICATION_ID
-     */
-    public static PendingIntent getAcknowledgeIntent(Context context, final Account account, final int notificationID) {
-        Intent i = new Intent(context, NotificationActionService.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
-        i.setAction(ACKNOWLEDGE_ACTION);
+    public static PendingIntent createDismissPendingIntent(Context context, Account account, int notificationId) {
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_DISMISS);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
+        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
 
-        return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    /**
-     *
-     * @param context context to use for creating the {@link Intent}
-     * @param account the account we intent to act on
-     * @param refs the messages we intent to act on
-     * @param notificationID ID of the notification, this intent is for.
-     * @return the requested intent. To be used in a Notification.
-     * @see #EXTRA_NOTIFICATION_ID
-     */
-    public static Intent getDeleteAllMessagesIntent(Context context, final Account account, final Serializable refs, final int notificationID) {
-        Intent i = new Intent(context, NotificationActionService.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_LIST, refs);
-        i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
-        i.setAction(DELETE_ALL_ACTION);
+    public static Intent createDeletePendingIntent(Context context, Account account,
+            ArrayList<MessageReference> messageReferences, int notificationID) {
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_DELETE);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
 
-        return i;
+        return intent;
     }
 
-    /**
-     * Check if for the given parameters the ArchiveAllMessages intent is possible for Android Wear.
-     * (No confirmation on the phone required and moving these messages to the spam-folder possible)<br/>
-     * Since we can not show a toast like on the phone screen, we must not offer actions that can not be performed.
-     * @see #getArchiveAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, int)
-     * @param context the context to get a {@link MessagingController}
-     * @param account the account (must allow moving messages to allow true as a result)
-     * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
-     * @return true if the ArchiveAllMessages intent is available for the given messages
-     */
-    public static boolean isArchiveAllMessagesWearAvaliable(Context context, final Account account, final List<? extends Message> messages) {
-        final MessagingController controller = MessagingController.getInstance(context);
-        return (account.getArchiveFolderName() != null && !(account.getArchiveFolderName().equals(account.getSpamFolderName()) && K9.confirmSpam()) && isMovePossible(controller, account, account.getSentFolderName(), messages));
-    }
+    public static PendingIntent createArchivePendingIntent(Context context, Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId) {
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_ARCHIVE);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
 
-    /**
-     *
-     * @param context context to use for creating the {@link Intent}
-     * @param account the account we intent to act on
-     * @param refs the messages we intent to act on
-     * @param notificationID ID of the notification, this intent is for.
-     * @return the requested intent. To be used in a Notification.
-     * @see #EXTRA_NOTIFICATION_ID
-     */
-    public static PendingIntent getArchiveAllMessagesIntent(Context context, final Account account, final Serializable refs, final int notificationID) {
-        Intent i = new Intent(context, NotificationActionService.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_LIST, refs);
-        i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
-        i.setAction(ARCHIVE_ALL_ACTION);
-
-        return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     }
 
-    /**
-     * Check if for the given parameters the SpamAllMessages intent is possible for Android Wear.
-     * (No confirmation on the phone required and moving these messages to the spam-folder possible)<br/>
-     * Since we can not show a toast like on the phone screen, we must not offer actions that can not be performed.
-     * @see #getSpamAllMessagesIntent(android.content.Context, com.fsck.k9.Account, java.io.Serializable, int)
-     * @param context the context to get a {@link MessagingController}
-     * @param account the account (must allow moving messages to allow true as a result)
-     * @param messages the messages to move to the spam folder (must be synchronized to allow true as a result)
-     * @return true if the SpamAllMessages intent is available for the given messages
-     */
-    public static boolean isSpamAllMessagesWearAvaliable(Context context, final Account account, final List<? extends Message> messages) {
-        final MessagingController controller = MessagingController.getInstance(context);
-        return (account.getSpamFolderName() != null && !K9.confirmSpam() && isMovePossible(controller, account, account.getSentFolderName(), messages));
+    public static PendingIntent createMarkAsSpamPendingIntent(Context context, Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId) {
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_SPAM);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
+
+        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    /**
-     *
-     * @param context context to use for creating the {@link Intent}
-     * @param account the account we intent to act on
-     * @param refs the messages we intent to act on
-     * @param notificationID ID of the notification, this intent is for.
-     * @return the requested intent. To be used in a Notification.
-     * @see #EXTRA_NOTIFICATION_ID
-     */
-    public static PendingIntent getSpamAllMessagesIntent(Context context, final Account account, final Serializable refs, final int notificationID) {
-        Intent i = new Intent(context, NotificationActionService.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MESSAGE_LIST, refs);
-        i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
-        i.setAction(SPAM_ALL_ACTION);
+    private static boolean isMovePossible(MessagingController controller, Account account,
+            String destinationFolderName) {
+        boolean isSpecialFolderConfigured = !K9.FOLDER_NONE.equalsIgnoreCase(destinationFolderName);
 
-        return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
+        return isSpecialFolderConfigured && controller.isMoveCapable(account);
     }
 
-    private static boolean isMovePossible(MessagingController controller, Account account, String dstFolder, List<? extends Message> messages) {
-        if (!controller.isMoveCapable(account)) {
-            return false;
-        }
-        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
-            return false;
-        }
-        for(Message messageToMove : messages) {
-            if (!controller.isMoveCapable(messageToMove)) {
-                return false;
-            }
-        }
-        return true;
-    }
     @Override
     public int startService(Intent intent, int startId) {
-        if (K9.DEBUG)
+        if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "NotificationActionService started with startId = " + startId);
-        final Preferences preferences = Preferences.getPreferences(this);
-        final MessagingController controller = MessagingController.getInstance(getApplication());
-        final Account account = preferences.getAccount(intent.getStringExtra(EXTRA_ACCOUNT));
-        final String action = intent.getAction();
+        }
 
-        if (account != null) {
-            if (READ_ALL_ACTION.equals(action)) {
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
+        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID);
+        Preferences preferences = Preferences.getPreferences(this);
+        Account account = preferences.getAccount(accountUuid);
 
-                List<MessageReference> refs =
-                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
-                for (MessageReference ref : refs) {
-                    controller.setFlag(account, ref.getFolderName(), ref.getUid(), Flag.SEEN, true);
-                }
-            } else if (DELETE_ALL_ACTION.equals(action)) {
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "NotificationActionService deleting messages");
-
-                List<MessageReference> refs =
-                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
-                List<LocalMessage> messages = new ArrayList<LocalMessage>();
-
-                for (MessageReference ref : refs) {
-                    LocalMessage m = ref.restoreToLocalMessage(this);
-                    if (m != null) {
-                        messages.add(m);
-                    }
-                }
-
-                controller.deleteMessages(messages, null);
-            } else if (ARCHIVE_ALL_ACTION.equals(action)) {
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "NotificationActionService archiving messages");
-
-                List<MessageReference> refs =
-                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
-                List<LocalMessage> messages = new ArrayList<LocalMessage>();
-
-                for (MessageReference ref : refs) {
-                    LocalMessage m = ref.restoreToLocalMessage(this.getApplicationContext());
-                    if (m != null) {
-                        messages.add(m);
-                    }
-                }
-
-                String dstFolder = account.getArchiveFolderName();
-                if (dstFolder != null
-                        && !(dstFolder.equals(account.getSpamFolderName()) && K9.confirmSpam())
-                        && isMovePossible(controller, account, dstFolder, messages)) {
-                    for(LocalMessage messageToMove : messages) {
-                        if (!controller.isMoveCapable(messageToMove)) {
-                            //Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                            //toast.show();
-                            continue;
-                        }
-                        String srcFolder = messageToMove.getFolder().getName();
-                        controller.moveMessage(account, srcFolder, messageToMove, dstFolder, null);
-                    }
-                }
-            } else if (SPAM_ALL_ACTION.equals(action)) {
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "NotificationActionService moving messages to spam");
-
-                List<MessageReference> refs =
-                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
-                List<LocalMessage> messages = new ArrayList<LocalMessage>();
-
-                for (MessageReference ref : refs) {
-                    LocalMessage m = ref.restoreToLocalMessage(this);
-                    if (m != null) {
-                        messages.add(m);
-                    }
-                }
-
-                String dstFolder = account.getSpamFolderName();
-                if (dstFolder != null
-                        && !K9.confirmSpam()
-                        && isMovePossible(controller, account, dstFolder, messages)) {
-                    for(LocalMessage messageToMove : messages) {
-                        String srcFolder = messageToMove.getFolder().getName();
-                        controller.moveMessage(account, srcFolder, messageToMove, dstFolder, null);
-                    }
-                }
-            } else if (REPLY_ACTION.equals(action)) {
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "NotificationActionService initiating reply");
-
-                MessageReference ref = intent.getParcelableExtra(EXTRA_MESSAGE);
-                LocalMessage message = ref.restoreToLocalMessage(this);
-                if (message != null) {
-                    Intent i = MessageCompose.getActionReplyIntent(this, message, false, null);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-                } else {
-                    Log.i(K9.LOG_TAG, "Could not execute reply action.");
-                }
-            } else if (ACKNOWLEDGE_ACTION.equals(action)) {
-                // nothing to do here, we just want to cancel the notification so the list
-                // of unseen messages is reset
-                Log.i(K9.LOG_TAG, "notification acknowledged");
-            }
-
-            // there's no point in keeping the notification after the user clicked on it
-            if (intent.hasExtra(EXTRA_NOTIFICATION_ID)) {
-                NotificationManager notificationManager =
-                        (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.cancel(intent.getIntExtra(EXTRA_NOTIFICATION_ID, account.getAccountNumber()));
-            } else {
-                controller.cancelNotificationsForAccount(account);
-            }
-        } else {
+        if (account == null) {
             Log.w(K9.LOG_TAG, "Could not find account for notification action.");
+            return START_NOT_STICKY;
+        }
+
+        MessagingController controller = MessagingController.getInstance(getApplication());
+
+        String action = intent.getAction();
+        if (ACTION_MARK_AS_READ.equals(action)) {
+            markMessagesAsRead(intent, account, controller);
+        } else if (ACTION_DELETE.equals(action)) {
+            deleteMessages(intent, controller);
+        } else if (ACTION_ARCHIVE.equals(action)) {
+            archiveMessages(intent, account, controller);
+        } else if (ACTION_SPAM.equals(action)) {
+            markMessagesAsSpam(intent, account, controller);
+        } else if (ACTION_REPLY.equals(action)) {
+            reply(intent);
+        } else if (ACTION_DISMISS.equals(action)) {
+            Log.i(K9.LOG_TAG, "notification acknowledged");
+        }
+
+        if (intent.hasExtra(EXTRA_NOTIFICATION_ID)) {
+            int notificationId = intent.getIntExtra(EXTRA_NOTIFICATION_ID, account.getAccountNumber());
+            controller.cancelNotification(notificationId);
+        } else {
+            controller.cancelNotificationsForAccount(account);
         }
 
         return START_NOT_STICKY;
+    }
+
+    private void markMessagesAsRead(Intent intent, Account account, MessagingController controller) {
+        if (K9.DEBUG) {
+            Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
+        }
+
+        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        for (MessageReference messageReference : messageReferences) {
+            controller.setFlag(account, messageReference.getFolderName(), messageReference.getUid(), Flag.SEEN, true);
+        }
+    }
+
+    private void deleteMessages(Intent intent, MessagingController controller) {
+        if (K9.DEBUG) {
+            Log.i(K9.LOG_TAG, "NotificationActionService deleting messages");
+        }
+
+        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<LocalMessage> messages = getLocalMessages(messageReferences);
+
+        controller.deleteMessages(messages, null);
+    }
+
+    private void archiveMessages(Intent intent, Account account, MessagingController controller) {
+        if (K9.DEBUG) {
+            Log.i(K9.LOG_TAG, "NotificationActionService archiving messages");
+        }
+
+        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<LocalMessage> messages = getLocalMessages(messageReferences);
+
+        String archiveFolderName = account.getArchiveFolderName();
+        if (archiveFolderName != null &&
+                !(archiveFolderName.equals(account.getSpamFolderName()) && K9.confirmSpam()) &&
+                isMovePossible(controller, account, archiveFolderName)) {
+            for (LocalMessage messageToMove : messages) {
+                if (controller.isMoveCapable(messageToMove)) {
+                    String sourceFolderName = messageToMove.getFolder().getName();
+                    controller.moveMessage(account, sourceFolderName, messageToMove, archiveFolderName, null);
+                }
+            }
+        }
+    }
+
+    private void markMessagesAsSpam(Intent intent, Account account, MessagingController controller) {
+        if (K9.DEBUG) {
+            Log.i(K9.LOG_TAG, "NotificationActionService moving messages to spam");
+        }
+
+        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<LocalMessage> messages = getLocalMessages(messageReferences);
+
+        String spamFolderName = account.getSpamFolderName();
+        if (spamFolderName != null && !K9.confirmSpam() &&
+                isMovePossible(controller, account, spamFolderName)) {
+            for (LocalMessage messageToMove : messages) {
+                String sourceFolderName = messageToMove.getFolder().getName();
+                controller.moveMessage(account, sourceFolderName, messageToMove, spamFolderName, null);
+            }
+        }
+    }
+
+    private void reply(Intent intent) {
+        if (K9.DEBUG) {
+            Log.i(K9.LOG_TAG, "NotificationActionService initiating reply");
+        }
+
+        MessageReference messageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+        LocalMessage message = messageReference.restoreToLocalMessage(this);
+        if (message == null) {
+            Log.i(K9.LOG_TAG, "Could not execute reply action.");
+            return;
+        }
+
+        Intent replyIntent = MessageCompose.getActionReplyIntent(this, message, false, null);
+        replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(replyIntent);
+    }
+
+    private List<LocalMessage> getLocalMessages(List<MessageReference> messageReferences) {
+        List<LocalMessage> messages = new ArrayList<LocalMessage>(messageReferences.size());
+
+        for (MessageReference messageReference : messageReferences) {
+            LocalMessage message = messageReference.restoreToLocalMessage(this);
+            if (message != null) {
+                messages.add(message);
+            }
+        }
+        return messages;
     }
 }

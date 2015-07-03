@@ -1038,7 +1038,7 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners(listener)) {
                 l.synchronizeMailboxFailed(account, folder, rootMessage);
             }
-            notificationController.notifyUserIfCertificateProblem(context, e, account, true);
+            notifyUserIfCertificateProblem(account, e, true);
             addErrorMessage(account, null, e);
             Log.e(K9.LOG_TAG, "Failed synchronizing folder " + account.getDescription() + ":" + folder + " @ " + new Date());
 
@@ -1459,7 +1459,7 @@ public class MessagingController implements Runnable {
 
                     if (shouldNotifyForMessage(account, localFolder, message)) {
                         // Notify with the localMessage so that we don't have to recalculate the content preview.
-                        notificationController.notifyAccount(context, account, localMessage, unreadBeforeStart);
+                        notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
                     }
 
                 } catch (MessagingException me) {
@@ -1597,7 +1597,7 @@ public class MessagingController implements Runnable {
             // Send a notification of this message
             if (shouldNotifyForMessage(account, localFolder, message)) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
-                notificationController.notifyAccount(context, account, localMessage, unreadBeforeStart);
+                notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
             }
 
         }//for large messages
@@ -1650,7 +1650,7 @@ public class MessagingController implements Runnable {
 
                     // we're only interested in messages that need removing
                     if (!shouldBeNotifiedOf) {
-                        notificationController.notifyForMessage(account, localMessage);
+                        notificationController.removeNewMailNotification(account, localMessage);
                     }
                 }
                 progress.incrementAndGet();
@@ -1807,7 +1807,7 @@ public class MessagingController implements Runnable {
                 }
             }
         } catch (MessagingException me) {
-            notificationController.notifyUserIfCertificateProblem(context, me, account, true);
+            notifyUserIfCertificateProblem(account, me, true);
             addErrorMessage(account, null, me);
             Log.e(K9.LOG_TAG, "Could not process command '" + processingCommand + "'", me);
             throw me;
@@ -2806,7 +2806,7 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners(listener)) {
                 l.loadMessageForViewFailed(account, folder, uid, e);
             }
-            notificationController.notifyUserIfCertificateProblem(context, e, account, true);
+            notifyUserIfCertificateProblem(account, e, true);
             addErrorMessage(account, null, e);
             return false;
         } finally {
@@ -2941,7 +2941,7 @@ public class MessagingController implements Runnable {
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadAttachmentFailed(account, message, part, me.getMessage());
                     }
-                    notificationController.notifyUserIfCertificateProblem(context, me, account, true);
+                    notifyUserIfCertificateProblem(account, me, true);
                     addErrorMessage(account, null, me);
 
                 } finally {
@@ -3007,17 +3007,28 @@ public class MessagingController implements Runnable {
                 }
                 if (messagesPendingSend(account)) {
 
-
-                    notificationController.notifyWhileSending(account);
+                    showSendingNotificationIfNecessary(account);
 
                     try {
                         sendPendingMessagesSynchronous(account);
                     } finally {
-                        notificationController.notifyWhileSendingDone(account);
+                        clearSendingNotificationIfNecessary(account);
                     }
                 }
             }
         });
+    }
+
+    private void showSendingNotificationIfNecessary(Account account) {
+        if (account.isShowOngoing()) {
+            notificationController.showSendingNotification(account);
+        }
+    }
+
+    private void clearSendingNotificationIfNecessary(Account account) {
+        if (account.isShowOngoing()) {
+            notificationController.clearSendingNotification(account);
+        }
     }
 
     public boolean messagesPendingSend(final Account account) {
@@ -3097,7 +3108,7 @@ public class MessagingController implements Runnable {
 
                     if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS) {
                         Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() + " can't be delivered after " + K9.MAX_SEND_ATTEMPTS + " attempts.  Giving up until the user restarts the device");
-                        notificationController.notifySendTempFailed(account,
+                        notificationController.showSendFailedNotification(account,
                                 new MessagingException(message.getSubject()));
                         continue;
                     }
@@ -3151,7 +3162,7 @@ public class MessagingController implements Runnable {
                         lastFailure = e;
                         wasPermanentFailure = false;
 
-                        notificationController.notifyUserIfCertificateProblem(context, e, account, false);
+                        notifyUserIfCertificateProblem(account, e, false);
                         handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     } catch (MessagingException e) {
                         lastFailure = e;
@@ -3181,9 +3192,9 @@ public class MessagingController implements Runnable {
 
             if (lastFailure != null) {
                 if (wasPermanentFailure) {
-                    notificationController.notifySendPermFailed(account, lastFailure);
+                    notificationController.showSendFailedNotification(account, lastFailure);
                 } else {
-                    notificationController.notifySendTempFailed(account, lastFailure);
+                    notificationController.showSendFailedNotification(account, lastFailure);
                 }
             }
         } catch (UnavailableStorageException e) {
@@ -3197,7 +3208,7 @@ public class MessagingController implements Runnable {
 
         } finally {
             if (lastFailure == null) {
-                notificationController.cancelSendFailedNotification(account);
+                notificationController.clearSendFailedNotification(account);
             }
             closeFolder(localFolder);
         }
@@ -4036,7 +4047,7 @@ public class MessagingController implements Runnable {
                     try {
                         AccountStats stats = account.getStats(context);
                         if (stats == null || stats.unreadMessageCount == 0) {
-                            notificationController.notifyAccountCancel(account);
+                            notificationController.clearNewMailNotifications(account);
                         }
                     } catch (MessagingException e) {
                         Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
@@ -4090,11 +4101,11 @@ public class MessagingController implements Runnable {
                                   + " which would be too recent for the account period");
                         return;
                     }
-                    notificationController.notifyFetchingMail(account, folder);
+                    showFetchingMailNotificationIfNecessary(account, folder);
                     try {
                         synchronizeMailboxSynchronous(account, folder.getName(), listener, null);
                     } finally {
-                        notificationController.notifyFetchingMailCancel(account);
+                        clearFetchingMailNotificationIfNecessary(account);
                     }
                 } catch (Exception e) {
 
@@ -4111,6 +4122,17 @@ public class MessagingController implements Runnable {
 
     }
 
+    private void showFetchingMailNotificationIfNecessary(Account account, Folder folder) {
+        if (account.isShowOngoing()) {
+            notificationController.showFetchingMailNotification(account, folder);
+        }
+    }
+
+    private void clearFetchingMailNotificationIfNecessary(Account account) {
+        if (account.isShowOngoing()) {
+            notificationController.clearFetchingMailNotification(account);
+        }
+    }
 
 
     public void compact(final Account account, final MessagingListener ml) {
@@ -4265,7 +4287,7 @@ public class MessagingController implements Runnable {
     }
 
     public void deleteAccount(Context context, Account account) {
-        notificationController.notifyAccountCancel(account);
+        notificationController.clearNewMailNotifications(account);
         memorizingListener.removeAccount(account);
     }
 
@@ -4519,7 +4541,7 @@ public class MessagingController implements Runnable {
                         Log.i(K9.LOG_TAG, "messagesArrived newCount = " + newCount + ", unread count = " + unreadMessageCount);
 
                     if (unreadMessageCount == 0) {
-                        notificationController.notifyAccountCancel(account);
+                        notificationController.clearNewMailNotifications(account);
                     }
 
                     for (MessagingListener l : getListeners()) {
@@ -4564,15 +4586,29 @@ public class MessagingController implements Runnable {
     }
 
     public void cancelNotificationsForAccount(Account account) {
-        notificationController.notifyAccountCancel(account);
+        notificationController.clearNewMailNotifications(account);
+    }
+
+    public void cancelNotification(int notificationId) {
+        notificationController.cancelNotification(notificationId);
     }
 
     public void clearCertificateErrorNotifications(Account account, CheckDirection direction) {
-        notificationController.clearCertificateErrorNotifications(account, direction);
+        boolean incoming = (direction == CheckDirection.INCOMING);
+        notificationController.clearCertificateErrorNotifications(account, incoming);
     }
 
-    public void notifyUserIfCertificateProblem(Exception e, Account account, boolean incoming) {
-        notificationController.notifyUserIfCertificateProblem(context, e, account, incoming);
+    public void notifyUserIfCertificateProblem(Account account, Exception exception, boolean incoming) {
+        if (!(exception instanceof CertificateValidationException)) {
+            return;
+        }
+
+        CertificateValidationException cve = (CertificateValidationException) exception;
+        if (!cve.needsUserAttention()) {
+            return;
+        }
+
+        notificationController.showCertificateErrorNotification(account, incoming);
     }
 
     enum MemorizingState { STARTED, FINISHED, FAILED }
