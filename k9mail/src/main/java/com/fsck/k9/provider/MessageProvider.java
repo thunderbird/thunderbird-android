@@ -1025,7 +1025,9 @@ public class MessageProvider extends ContentProvider {
         segments = uri.getPathSegments();
         accountId = Integer.parseInt(segments.get(1));
         folderName = segments.get(2);
-        msgUid = segments.get(3);
+        for (int i = 3; i < segments.length - 1; i++)
+            folderName += "/" + segments.get(i);
+        msgUid = segments.get(segments.length - 1);
 
         // get account
         Account myAccount = null;
