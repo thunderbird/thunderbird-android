@@ -1,16 +1,5 @@
 package com.fsck.k9.mail.ssl;
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.fsck.k9.mail.MessagingException;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -20,6 +9,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.fsck.k9.mail.MessagingException;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
@@ -27,11 +27,16 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
  * Filter and reorder list of cipher suites and TLS versions.
  */
 public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
-    protected static final String ENABLED_CIPHERS[];
-    protected static final String ENABLED_PROTOCOLS[];
+    protected static final String[] ENABLED_CIPHERS;
+    protected static final String[] ENABLED_PROTOCOLS;
 
-    // Order taken from OpenSSL 1.0.1c
-    protected static final String ORDERED_KNOWN_CIPHERS[] = {
+    protected static final String[] ORDERED_KNOWN_CIPHERS = {
+            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+            "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+            "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+            "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+            "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+            "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
             "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
             "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
             "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
@@ -43,7 +48,6 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA",
             "TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA",
             "TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA",
-            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
             "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
             "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
             "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
@@ -51,14 +55,6 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_ECDH_RSA_WITH_AES_128_CBC_SHA",
             "TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA",
             "TLS_RSA_WITH_AES_128_CBC_SHA",
-            "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
-            "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
-            "TLS_ECDH_RSA_WITH_RC4_128_SHA",
-            "TLS_ECDH_ECDSA_WITH_RC4_128_SHA",
-            "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
-            "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
-            "SSL_RSA_WITH_RC4_128_SHA",
-            "SSL_RSA_WITH_RC4_128_MD5",
     };
 
     protected static final String[] BLACKLISTED_CIPHERS = {
@@ -69,10 +65,23 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "SSL_RSA_EXPORT_WITH_DES40_CBC_SHA",
             "SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA",
             "SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA",
+            "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+            "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+            "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+            "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
+            "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
+            "TLS_ECDH_RSA_WITH_RC4_128_SHA",
+            "TLS_ECDH_ECDSA_WITH_RC4_128_SHA",
+            "SSL_RSA_WITH_RC4_128_SHA",
+            "SSL_RSA_WITH_RC4_128_MD5",
     };
 
-    protected static final String ORDERED_KNOWN_PROTOCOLS[] = {
-            "TLSv1.2", "TLSv1.1", "TLSv1", "SSLv3"
+    protected static final String[] ORDERED_KNOWN_PROTOCOLS = {
+            "TLSv1.2", "TLSv1.1", "TLSv1"
+    };
+
+    protected static final String[] BLACKLISTED_PROTOCOLS = {
+            "SSLv3"
     };
 
     static {
@@ -101,7 +110,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
                 reorder(enabledCiphers, ORDERED_KNOWN_CIPHERS, BLACKLISTED_CIPHERS);
 
         ENABLED_PROTOCOLS = (supportedProtocols == null) ? null :
-            reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, null);
+                reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, BLACKLISTED_PROTOCOLS);
     }
 
     public DefaultTrustedSocketFactory(Context context) {

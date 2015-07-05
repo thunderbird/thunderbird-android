@@ -2,6 +2,7 @@ package com.fsck.k9.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.fsck.k9.Account;

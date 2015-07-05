@@ -46,7 +46,7 @@ public class BinaryTempFileMessageBody extends BinaryTempFileBody implements Com
                 IOUtils.copy(in, out);
             }
         } finally {
-            in.close();
+            IOUtils.closeQuietly(in);
         }
     }
 

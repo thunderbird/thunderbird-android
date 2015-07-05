@@ -221,10 +221,6 @@ public class MessagingController implements Runnable {
          */
         LinkedList<LocalMessage> messages;
         /**
-         * Stacked notifications that share this notification as ther summary-notification.
-         */
-        Map<String, Integer> stackedNotifications = new HashMap<String, Integer>();
-        /**
          * List of references for messages that the user is still to be notified of,
          * but which don't fit into the inbox style anymore. It's sorted from newest
          * to oldest message.
@@ -307,8 +303,7 @@ public class MessagingController implements Runnable {
 
         /**
          * Remove a certain message from the message list.
-         * @see #getStackedChildNotification(com.fsck.k9.activity.MessageReference) for stacked
-         * notifications you may consider to cancel.
+         *
          * @param context A context.
          * @param ref Reference of the message to remove
          * @return true if message was found and removed, false otherwise
@@ -1343,16 +1338,17 @@ public class MessagingController implements Runnable {
                 Log.d(K9.LOG_TAG, "SYNC: About to fetch " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
 
 
-            fetchUnsyncedMessages(account, remoteFolder, localFolder, unsyncedMessages, smallMessages, largeMessages, progress, todo, fp);
+            fetchUnsyncedMessages(account, remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress, todo, fp);
 
-            // If a message didn't exist, messageFinished won't be called, but we shouldn't try again
-            // If we got here, nothing failed
+            String updatedPushState = localFolder.getPushState();
             for (Message message : unsyncedMessages) {
-                String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
+                String newPushState = remoteFolder.getNewPushState(updatedPushState, message);
                 if (newPushState != null) {
-                    localFolder.setPushState(newPushState);
+                    updatedPushState = newPushState;
                 }
             }
+            localFolder.setPushState(updatedPushState);
+
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
             }
@@ -1490,7 +1486,6 @@ public class MessagingController implements Runnable {
     }
 
     private <T extends Message> void fetchUnsyncedMessages(final Account account, final Folder<T> remoteFolder,
-                                       final LocalFolder localFolder,
                                        List<T> unsyncedMessages,
                                        final List<Message> smallMessages,
                                        final List<Message> largeMessages,
@@ -1501,22 +1496,12 @@ public class MessagingController implements Runnable {
 
         final Date earliestDate = account.getEarliestPollDate();
 
-        /*
-         * Messages to be batch written
-         */
-        final List<Message> chunk = new ArrayList<Message>(UNSYNC_CHUNK_SIZE);
-
         remoteFolder.fetch(unsyncedMessages, fp,
         new MessageRetrievalListener<T>() {
             @Override
             public void messageFinished(T message, int number, int ofTotal) {
                 try {
-                    String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
-                    if (newPushState != null) {
-                        localFolder.setPushState(newPushState);
-                    }
                     if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
-
                         if (K9.DEBUG) {
                             if (message.isSet(Flag.DELETED)) {
                                 Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid()
@@ -1539,24 +1524,6 @@ public class MessagingController implements Runnable {
                     } else {
                         smallMessages.add(message);
                     }
-
-                    // And include it in the view
-                    if (message.getSubject() != null && message.getFrom() != null) {
-                        /*
-                         * We check to make sure that we got something worth
-                         * showing (subject and from) because some protocols
-                         * (POP) may not be able to give us headers for
-                         * ENVELOPE, only size.
-                         */
-
-                        // keep message for delayed storing
-                        chunk.add(message);
-
-                        if (chunk.size() >= UNSYNC_CHUNK_SIZE) {
-                            writeUnsyncedMessages(chunk, localFolder, account, folder);
-                            chunk.clear();
-                        }
-                    }
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
                     addErrorMessage(account, null, e);
@@ -1572,47 +1539,7 @@ public class MessagingController implements Runnable {
             }
 
         });
-        if (!chunk.isEmpty()) {
-            writeUnsyncedMessages(chunk, localFolder, account, folder);
-            chunk.clear();
-        }
     }
-
-    /**
-     * Actual storing of messages
-     *
-     * <br>
-     * FIXME: <strong>This method should really be moved in the above MessageRetrievalListener once {@link MessageRetrievalListener#messagesFinished(int)} is properly invoked by various stores</strong>
-     *
-     * @param messages Never <code>null</code>.
-     * @param localFolder
-     * @param account
-     * @param folder
-     */
-    private void writeUnsyncedMessages(final List<Message> messages, final LocalFolder localFolder, final Account account, final String folder) {
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "Batch writing " + Integer.toString(messages.size()) + " messages");
-        }
-        try {
-            // Store the new message locally
-            localFolder.appendMessages(messages);
-
-            for (final Message message : messages) {
-                final LocalMessage localMessage = localFolder.getMessage(message.getUid());
-                syncFlags(localMessage, message);
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
-                          + account + ":" + folder + ":" + message.getUid());
-                for (final MessagingListener l : getListeners()) {
-                    l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                }
-            }
-        } catch (final Exception e) {
-            Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
-            addErrorMessage(account, null, e);
-        }
-    }
-
 
     private boolean shouldImportMessage(final Account account, final String folder, final Message message, final AtomicInteger progress, final Date earliestDate) {
 
@@ -1879,18 +1806,16 @@ public class MessagingController implements Runnable {
                             synchronized (data) {
                                 MessageReference ref = localMessage.makeMessageReference();
                                 if (data.removeMatchingMessage(context, ref)) {
-                                    synchronized (data) {
-                                        // if we remove a single message from the notification,
-                                        // maybe there is a stacked notification active for that one message
-                                        Integer childNotification = data.getStackedChildNotification(ref);
-                                        if (childNotification != null) {
-                                            NotificationManager notificationManager =
-                                                    (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-                                            notificationManager.cancel(childNotification);
-                                        }
-                                        // update the (summary-) notification
-                                        notifyAccountWithDataLocked(context, account, null, data);
+                                    // if we remove a single message from the notification,
+                                    // maybe there is a stacked notification active for that one message
+                                    Integer childNotification = data.getStackedChildNotification(ref);
+                                    if (childNotification != null) {
+                                        NotificationManager notificationManager =
+                                                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                                        notificationManager.cancel(childNotification);
                                     }
+                                    // update the (summary-) notification
+                                    notifyAccountWithDataLocked(context, account, null, data);
                                 }
                             }
                         }
@@ -4688,7 +4613,7 @@ public class MessagingController implements Runnable {
      * @return A pending data instance, or null if one doesn't exist and
      *          previousUnreadMessageCount was passed as null.
      */
-    private NotificationData getNotificationData(Account account, @Nullable Integer previousUnreadMessageCount) {
+    private NotificationData getNotificationData(Account account, Integer previousUnreadMessageCount) {
         NotificationData data;
 
         synchronized (notificationData) {
@@ -4977,7 +4902,7 @@ public class MessagingController implements Runnable {
                 // multiple messages pending, show inbox style
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
                 int nID = account.getAccountNumber();
-                for (Message m : data.messages) {
+                for (LocalMessage m : data.messages) {
                     style.addLine(buildMessageSummary(context,
                             getMessageSender(context, account, m),
                             getMessageSubject(context, m)));
@@ -5079,8 +5004,29 @@ public class MessagingController implements Runnable {
                         context.getString(R.string.notification_action_delete),
                         NotificationDeleteConfirmation.getIntent(context, account, allRefs, account.getAccountNumber()));
             }
+            if (NotificationActionService.isArchiveAllMessagesWearAvaliable(context, account, data.messages)) {
 
-        } else { // no extended notifications supported
+                // Archive on wear
+                NotificationCompat.Action wearActionArchive =
+                        new NotificationCompat.Action.Builder(
+                                R.drawable.ic_action_delete_dark,
+                                context.getString(R.string.notification_action_archive),
+                                NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs))
+                                .build();
+                builder.extend(wearableExtender.addAction(wearActionArchive));
+            }
+            if (NotificationActionService.isSpamAllMessagesWearAvaliable(context, account, data.messages)) {
+
+                // Archive on wear
+                NotificationCompat.Action wearActionSpam =
+                        new NotificationCompat.Action.Builder(
+                                R.drawable.ic_action_delete_dark,
+                                context.getString(R.string.notification_action_spam),
+                                NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs))
+                                .build();
+                builder.extend(wearableExtender.addAction(wearActionSpam));
+            }
+        } else {
             String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
                     unreadCount, accountDescr);
             builder.setContentTitle(accountNotice);
