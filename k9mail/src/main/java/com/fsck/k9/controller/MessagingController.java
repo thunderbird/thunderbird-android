@@ -221,6 +221,10 @@ public class MessagingController implements Runnable {
          */
         LinkedList<LocalMessage> messages;
         /**
+         * Stacked notifications that share this notification as ther summary-notification.
+         */
+        Map<String, Integer> stackedNotifications = new HashMap<String, Integer>();
+        /**
          * List of references for messages that the user is still to be notified of,
          * but which don't fit into the inbox style anymore. It's sorted from newest
          * to oldest message.
@@ -303,7 +307,8 @@ public class MessagingController implements Runnable {
 
         /**
          * Remove a certain message from the message list.
-         *
+         * @see #getStackedChildNotification(com.fsck.k9.activity.MessageReference) for stacked
+         * notifications you may consider to cancel.
          * @param context A context.
          * @param ref Reference of the message to remove
          * @return true if message was found and removed, false otherwise
@@ -4767,9 +4772,9 @@ public class MessagingController implements Runnable {
      * @param message the single message we intent to act on (in a stacked notification or a summary notification about a single message)
      * @param notificationID the id of the future notification. Will be used in the intents, so afterwards the correct notification gets closed.
      */
-    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final Account account, final Message message, final int notificationID) {
+    private void addWearActions(final NotificationCompat.Builder builder, final int totalMsgCount, final Account account, final LocalMessage message, final int notificationID) {
         ArrayList<MessageReference> subAllRefs = new ArrayList<MessageReference>();
-        subAllRefs.add(new MessageReference(account.getUuid(), message.getFolder().getName(), message.getUid(), message.getFlags().size()==0?null:message.getFlags().iterator().next()));
+        subAllRefs.add(message.makeMessageReference());
         LinkedList<Message> msgList = new LinkedList<Message>();
         msgList.add(message);
         addWearActions(builder, totalMsgCount, 1, account, subAllRefs, msgList, notificationID);
@@ -5003,28 +5008,6 @@ public class MessagingController implements Runnable {
                                 : R.drawable.ic_action_delete_dark,
                         context.getString(R.string.notification_action_delete),
                         NotificationDeleteConfirmation.getIntent(context, account, allRefs, account.getAccountNumber()));
-            }
-            if (NotificationActionService.isArchiveAllMessagesWearAvaliable(context, account, data.messages)) {
-
-                // Archive on wear
-                NotificationCompat.Action wearActionArchive =
-                        new NotificationCompat.Action.Builder(
-                                R.drawable.ic_action_delete_dark,
-                                context.getString(R.string.notification_action_archive),
-                                NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs))
-                                .build();
-                builder.extend(wearableExtender.addAction(wearActionArchive));
-            }
-            if (NotificationActionService.isSpamAllMessagesWearAvaliable(context, account, data.messages)) {
-
-                // Archive on wear
-                NotificationCompat.Action wearActionSpam =
-                        new NotificationCompat.Action.Builder(
-                                R.drawable.ic_action_delete_dark,
-                                context.getString(R.string.notification_action_spam),
-                                NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs))
-                                .build();
-                builder.extend(wearableExtender.addAction(wearActionSpam));
             }
         } else {
             String accountNotice = context.getString(R.string.notification_new_one_account_fmt,
