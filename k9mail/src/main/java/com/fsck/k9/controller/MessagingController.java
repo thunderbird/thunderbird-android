@@ -34,6 +34,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.SpannableStringBuilder;
@@ -4673,6 +4674,7 @@ public class MessagingController implements Runnable {
             return false;
         }
 
+        return true;
     }
 
     /**
@@ -4686,7 +4688,7 @@ public class MessagingController implements Runnable {
      * @return A pending data instance, or null if one doesn't exist and
      *          previousUnreadMessageCount was passed as null.
      */
-    private NotificationData getNotificationData(Account account, Integer previousUnreadMessageCount) {
+    private NotificationData getNotificationData(Account account, @Nullable Integer previousUnreadMessageCount) {
         NotificationData data;
 
         synchronized (notificationData) {
@@ -4810,6 +4812,16 @@ public class MessagingController implements Runnable {
     /**
      * Creates a notification of a newly received message.
      */
+    public void updateAccountNotification(final Context context, final Account account) {
+        final NotificationData data = getNotificationData(account, null);
+        //noinspection SynchronizationOnLocalVariableOrMethodParameter
+        synchronized (data) {
+            notifyAccountWithDataLocked(context, account, null, data);
+        }
+    }
+    /**
+     * Creates a notification of a newly received message.
+     */
     private void notifyAccount(Context context, Account account,
             LocalMessage message, int previousUnreadMessageCount) {
         final NotificationData data = getNotificationData(account, previousUnreadMessageCount);
@@ -4879,7 +4891,7 @@ public class MessagingController implements Runnable {
                     new NotificationCompat.Action.Builder(
                             R.drawable.ic_action_archive_dark,
                             context.getString(R.string.notification_action_archive),
-                            NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs, totalMsgCount > msgCount, notificationID))
+                            NotificationActionService.getArchiveAllMessagesIntent(context, account, allRefs, notificationID))
                             .build();
             builder.extend(wearableExtender.addAction(wearActionArchive));
         }
@@ -4890,7 +4902,7 @@ public class MessagingController implements Runnable {
                     new NotificationCompat.Action.Builder(
                             R.drawable.ic_action_delete_dark,
                             context.getString(R.string.notification_action_spam),
-                            NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs, totalMsgCount > msgCount, notificationID))
+                            NotificationActionService.getSpamAllMessagesIntent(context, account, allRefs, notificationID))
                             .build();
             builder.extend(wearableExtender.addAction(wearActionSpam));
         }
