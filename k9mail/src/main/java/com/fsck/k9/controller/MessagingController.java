@@ -4715,8 +4715,11 @@ public class MessagingController implements Runnable {
     /**
      * Creates a notification of a newly received message.
      */
-    private void notifyAccount(Context context, Account account,
-            LocalMessage message, int previousUnreadMessageCount) {
+    private void notifyAccount(Context context, Account account, LocalMessage message, int previousUnreadMessageCount) {
+        if (K9.isQuietTime() && !K9.isNotificationDuringQuietTimeEnabled()) {
+            return;
+        }
+
         final NotificationData data = getNotificationData(account, previousUnreadMessageCount);
         synchronized (data) {
             notifyAccountWithDataLocked(context, account, message, data);
