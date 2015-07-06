@@ -162,6 +162,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
+        boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
+
         try {
             ServerSettings settings = Store.decodeStoreUri(mAccount.getStoreUri());
 
@@ -199,7 +201,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
             } else if (ImapStore.STORE_TYPE.equals(settings.type)) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
                 mDefaultPort = IMAP_PORT;
@@ -216,9 +217,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
 
-                if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
+                if (!editSettings) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
             } else if (WebDavStore.STORE_TYPE.equals(settings.type)) {
@@ -250,9 +250,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (webDavSettings.mailboxPath != null) {
                     mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
                 }
-                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
+            }
+
+            if (!editSettings) {
+                mAccount.setDeletePolicy(getDefaultDeletePolicy(settings.type));
             }
 
             // Note that mConnectionSecurityChoices is configured above based on server type
@@ -508,6 +511,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             port = "";
         }
         return port;
+    }
+
+    private int getDefaultDeletePolicy(String storeType) {
+        if (ImapStore.STORE_TYPE.equals(storeType)) {
+            return Account.DELETE_POLICY_ON_DELETE;
+        } else if (Pop3Store.STORE_TYPE.equals(storeType)) {
+            return Account.DELETE_POLICY_NEVER;
+        } else if (WebDavStore.STORE_TYPE.equals(storeType)) {
+            return Account.DELETE_POLICY_ON_DELETE;
+        }
+
+        throw new IllegalStateException("Unknown store type: " + storeType);
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
