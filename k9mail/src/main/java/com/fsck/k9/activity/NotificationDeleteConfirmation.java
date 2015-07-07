@@ -56,7 +56,9 @@ public class NotificationDeleteConfirmation extends Activity {
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        return PendingIntent.getActivity(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
+        // we can not use FLAG_UPDATE_CURRENT here because with Android Wear we may have
+        // PendingIntents for all new messages and for each individual new message at the same time.
+        return PendingIntent.getActivity(context, account.getAccountNumber(), i, PendingIntent.FLAG_ONE_SHOT);
     }
 
     @Override

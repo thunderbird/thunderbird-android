@@ -2,6 +2,7 @@ package com.fsck.k9.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -208,14 +209,14 @@ public class NotificationActionService extends CoreService {
         final MessagingController controller = MessagingController.getInstance(getApplication());
         final Account account = preferences.getAccount(intent.getStringExtra(EXTRA_ACCOUNT));
         final String action = intent.getAction();
+        List<MessageReference> refs = null;
 
         if (account != null) {
             if (READ_ALL_ACTION.equals(action)) {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
 
-                List<MessageReference> refs =
-                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
+                refs = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
                 for (MessageReference ref : refs) {
                     controller.setFlag(account, ref.getFolderName(), ref.getUid(), Flag.SEEN, true);
                 }
@@ -223,8 +224,7 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService deleting messages");
 
-                List<MessageReference> refs =
-                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
+                refs = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
                 List<LocalMessage> messages = new ArrayList<LocalMessage>();
 
                 for (MessageReference ref : refs) {
@@ -239,8 +239,7 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService archiving messages");
 
-                List<MessageReference> refs =
-                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
+                refs = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
                 List<LocalMessage> messages = new ArrayList<LocalMessage>();
 
                 for (MessageReference ref : refs) {
@@ -268,8 +267,7 @@ public class NotificationActionService extends CoreService {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "NotificationActionService moving messages to spam");
 
-                List<MessageReference> refs =
-                        intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
+                refs = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
                 List<LocalMessage> messages = new ArrayList<LocalMessage>();
 
                 for (MessageReference ref : refs) {
@@ -293,6 +291,8 @@ public class NotificationActionService extends CoreService {
                     Log.i(K9.LOG_TAG, "NotificationActionService initiating reply");
 
                 MessageReference ref = intent.getParcelableExtra(EXTRA_MESSAGE);
+                refs = Collections.singletonList(ref);
+
                 LocalMessage message = ref.restoreToLocalMessage(this);
                 if (message != null) {
                     Intent i = MessageCompose.getActionReplyIntent(this, message, false, null);
@@ -316,7 +316,7 @@ public class NotificationActionService extends CoreService {
                 notificationManager.cancel(intent.getIntExtra(EXTRA_NOTIFICATION_ID, account.getAccountNumber()));
 
                 // update the summary notification
-                MessagingController.getInstance(this).updateAccountNotification(this, account);
+                MessagingController.getInstance(this).updateAccountNotification(this, account, refs);
             } else {
                 controller.notifyAccountCancel(this, account);
             }

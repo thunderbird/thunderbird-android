@@ -356,6 +356,25 @@ public class MessagingController implements Runnable {
         public int getNewMessageCount() {
             return messages.size() + droppedMessages.size();
         }
+
+        /**
+         *
+         * @param messagingController
+         * @param context
+         */
+        public void checkSupressedMessaged(MessagingController messagingController, Context context) {
+            for (LocalMessage m : messages) {
+
+                if (messagingController.isMessageSuppressed(m)) {
+                    //TODO: NotificationData needs to be updated when taking action on a single message
+                    // from a notification. Bus that's a major rewrite of the entire notification system
+                    // and should happen in it's own github issue.
+                    // so we temporarily work around this shortcoming by checking.
+                    removeMatchingMessage(context, m.makeMessageReference());
+                    continue;
+                }
+            }
+        }
     }
 
     // Key is accountNumber
@@ -3059,7 +3078,7 @@ public class MessagingController implements Runnable {
 
                     LocalMessage message = localFolder.getMessage(uid);
                     if (message == null
-                    || message.getId() == 0) {
+                            || message.getId() == 0) {
                         throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
                     }
                     // IMAP search results will usually need to be downloaded before viewing.
@@ -3341,7 +3360,7 @@ public class MessagingController implements Runnable {
         builder.setContentIntent(stack.getPendingIntent(0, 0));
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
-        configureNotification(builder,  null, null, K9.NOTIFICATION_LED_FAILURE_COLOR,
+        configureNotification(builder, null, null, K9.NOTIFICATION_LED_FAILURE_COLOR,
                 K9.NOTIFICATION_LED_BLINK_FAST, true);
 
         notifMgr.notify(K9.SEND_FAILED_NOTIFICATION - account.getAccountNumber(),
@@ -4180,57 +4199,57 @@ public class MessagingController implements Runnable {
                   + ":" + message.getUid() + " for sendAlternate");
 
         loadMessageForView(account, message.getFolder().getName(),
-        message.getUid(), new MessagingListener() {
-            @Override
-            public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-            Message message) {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Got message " + account.getDescription() + ":" + folder
-                          + ":" + message.getUid() + " for sendAlternate");
+                message.getUid(), new MessagingListener() {
+                    @Override
+                    public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
+                                                                Message message) {
+                        if (K9.DEBUG)
+                            Log.d(K9.LOG_TAG, "Got message " + account.getDescription() + ":" + folder
+                                    + ":" + message.getUid() + " for sendAlternate");
 
-                try {
-                    Intent msg = new Intent(Intent.ACTION_SEND);
-                    String quotedText = null;
-                    Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                    if (part == null) {
-                        part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-                    }
-                    if (part != null) {
-                        quotedText = MessageExtractor.getTextFromPart(part);
-                    }
-                    if (quotedText != null) {
-                        msg.putExtra(Intent.EXTRA_TEXT, quotedText);
-                    }
-                    msg.putExtra(Intent.EXTRA_SUBJECT, message.getSubject());
+                        try {
+                            Intent msg = new Intent(Intent.ACTION_SEND);
+                            String quotedText = null;
+                            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+                            if (part == null) {
+                                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+                            }
+                            if (part != null) {
+                                quotedText = MessageExtractor.getTextFromPart(part);
+                            }
+                            if (quotedText != null) {
+                                msg.putExtra(Intent.EXTRA_TEXT, quotedText);
+                            }
+                            msg.putExtra(Intent.EXTRA_SUBJECT, message.getSubject());
 
-                    Address[] from = message.getFrom();
-                    String[] senders = new String[from.length];
-                    for (int i = 0; i < from.length; i++) {
-                        senders[i] = from[i].toString();
-                    }
-                    msg.putExtra(Intents.Share.EXTRA_FROM, senders);
+                            Address[] from = message.getFrom();
+                            String[] senders = new String[from.length];
+                            for (int i = 0; i < from.length; i++) {
+                                senders[i] = from[i].toString();
+                            }
+                            msg.putExtra(Intents.Share.EXTRA_FROM, senders);
 
-                    Address[] to = message.getRecipients(RecipientType.TO);
-                    String[] recipientsTo = new String[to.length];
-                    for (int i = 0; i < to.length; i++) {
-                        recipientsTo[i] = to[i].toString();
-                    }
-                    msg.putExtra(Intent.EXTRA_EMAIL, recipientsTo);
+                            Address[] to = message.getRecipients(RecipientType.TO);
+                            String[] recipientsTo = new String[to.length];
+                            for (int i = 0; i < to.length; i++) {
+                                recipientsTo[i] = to[i].toString();
+                            }
+                            msg.putExtra(Intent.EXTRA_EMAIL, recipientsTo);
 
-                    Address[] cc = message.getRecipients(RecipientType.CC);
-                    String[] recipientsCc = new String[cc.length];
-                    for (int i = 0; i < cc.length; i++) {
-                        recipientsCc[i] = cc[i].toString();
-                    }
-                    msg.putExtra(Intent.EXTRA_CC, recipientsCc);
+                            Address[] cc = message.getRecipients(RecipientType.CC);
+                            String[] recipientsCc = new String[cc.length];
+                            for (int i = 0; i < cc.length; i++) {
+                                recipientsCc[i] = cc[i].toString();
+                            }
+                            msg.putExtra(Intent.EXTRA_CC, recipientsCc);
 
-                    msg.setType("text/plain");
-                    context.startActivity(Intent.createChooser(msg, context.getString(R.string.send_alternate_chooser_title)));
-                } catch (MessagingException me) {
-                    Log.e(K9.LOG_TAG, "Unable to send email through alternate program", me);
-                }
-            }
-        });
+                            msg.setType("text/plain");
+                            context.startActivity(Intent.createChooser(msg, context.getString(R.string.send_alternate_chooser_title)));
+                        } catch (MessagingException me) {
+                            Log.e(K9.LOG_TAG, "Unable to send email through alternate program", me);
+                        }
+                    }
+                });
 
     }
 
@@ -4286,22 +4305,22 @@ public class MessagingController implements Runnable {
                     addErrorMessage(account, null, e);
                 }
                 putBackground("finalize sync", null, new Runnable() {
-                    @Override
-                    public void run() {
+                            @Override
+                            public void run() {
 
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "Finished mail sync");
+                                if (K9.DEBUG)
+                                    Log.i(K9.LOG_TAG, "Finished mail sync");
 
-                        if (wakeLock != null) {
-                            wakeLock.release();
+                                if (wakeLock != null) {
+                                    wakeLock.release();
+                                }
+                                for (MessagingListener l : getListeners()) {
+                                    l.checkMailFinished(context, account);
+                                }
+
+                            }
                         }
-                        for (MessagingListener l : getListeners()) {
-                            l.checkMailFinished(context, account);
-                        }
-
-                    }
-                }
-                             );
+                );
             }
         });
     }
@@ -4627,6 +4646,9 @@ public class MessagingController implements Runnable {
                 data = new NotificationData(previousUnreadMessageCount);
                 notificationData.put(account.getAccountNumber(), data);
             }
+            if (data != null) {
+                data.checkSupressedMessaged(this, context);
+            }
         }
 
         return data;
@@ -4741,11 +4763,17 @@ public class MessagingController implements Runnable {
 
     /**
      * Creates a notification of a newly received message.
+     * @param acknowledgedMessages the user has acted on these messages, we may remove them from the notifications
      */
-    public void updateAccountNotification(final Context context, final Account account) {
+    public void updateAccountNotification(final Context context, final Account account, final @Nullable List<MessageReference> acknowledgedMessages) {
         final NotificationData data = getNotificationData(account, null);
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (data) {
+            if (acknowledgedMessages != null) {
+                for (MessageReference ref : acknowledgedMessages) {
+                    data.removeMatchingMessage(context, ref);
+                }
+            }
             notifyAccountWithDataLocked(context, account, null, data);
         }
     }
@@ -4805,10 +4833,16 @@ public class MessagingController implements Runnable {
             // Delete on wear only if no confirmation is required
             // because they would have to be confirmed on the phone, not the wear device
             if (!K9.confirmDeleteFromNotification()) {
+                String label = null; //TODO: temporary debugging code
+                if (allRefs.size()>1) {
+                    label = context.getString(R.string.notification_action_delete_all);
+                } else {
+                    label = context.getString(R.string.notification_action_delete) + " " + allRefs.get(0).restoreToLocalMessage(context).getSubject();
+                }//TODO: DANGEROUS CODE! In case of 2 new messages, this one deletes the wrong one! No idea why yet.
                 NotificationCompat.Action wearActionDelete =
                         new NotificationCompat.Action.Builder(
                                 R.drawable.ic_action_delete_dark,
-                                context.getString(R.string.notification_action_delete),
+                                label, //context.getString(allRefs.size()>1?R.string.notification_action_delete_all:R.string.notification_action_delete),
                                 NotificationDeleteConfirmation.getIntent(context, account, allRefs, notificationID))
                                 .build();
                 builder.extend(wearableExtender.addAction(wearActionDelete));
@@ -4888,7 +4922,7 @@ public class MessagingController implements Runnable {
             builder.setTicker(summary);
         }
 
-        final int newMessages = data.getNewMessageCount();
+        int newMessages = data.getNewMessageCount();
         final int unreadCount = data.unreadBeforeNotification + newMessages;
 
         builder.setNumber(unreadCount);
@@ -4897,6 +4931,10 @@ public class MessagingController implements Runnable {
                 account.getDescription() : account.getEmail();
         final ArrayList<MessageReference> allRefs = new ArrayList<MessageReference>();
         data.supplyAllMessageRefs(allRefs);
+
+        if (newMessages == 0) {
+            notifyAccountCancel(context, account);
+        }
 
         if (platformSupportsExtendedNotifications() && !privacyModeEnabled) {
             if (newMessages > 1) {
@@ -4907,6 +4945,7 @@ public class MessagingController implements Runnable {
                 // multiple messages pending, show inbox style
                 NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder);
                 int nID = account.getAccountNumber();
+                int realnID = 1000 + nID;
                 for (LocalMessage m : data.messages) {
                     style.addLine(buildMessageSummary(context,
                             getMessageSender(context, account, m),
@@ -4921,13 +4960,14 @@ public class MessagingController implements Runnable {
                     subBuilder.setGroup(NOTIFICATION_GROUP_KEY); // same group as summary
                     subBuilder.setAutoCancel(true); // summary closes all, stacked only itself
 
-                    nID = 1000 + nID;
+                    realnID++;//TODO: test code
+                    // nID = 1000 + nID;
                     // reuse existing notification IDs if some of the stacked messages
                     // are already shown on the wear device.
-                    Integer realnID = data.getStackedChildNotification(m);
-                    if (realnID == null) {
-                        realnID = nID;
-                    }
+                    //Integer realnID = data.getStackedChildNotification(m);
+                    //if (realnID == null) {
+                    //    realnID = nID;
+                    //}
 
                     // set content
                     setNotificationContent(context, m, getMessageSender(context, account, m), getMessageSubject(context, m), subBuilder, accountDescr);
@@ -5006,7 +5046,7 @@ public class MessagingController implements Runnable {
                         platformSupportsLockScreenNotifications()
                                 ? R.drawable.ic_action_delete_dark_vector
                                 : R.drawable.ic_action_delete_dark,
-                        context.getString(R.string.notification_action_delete),
+                        "test " + context.getString(R.string.notification_action_delete),
                         NotificationDeleteConfirmation.getIntent(context, account, allRefs, account.getAccountNumber()));
             }
         } else {
