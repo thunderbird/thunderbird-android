@@ -6,7 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +34,9 @@ public class TagMapping extends K9ListActivity {
     private LayoutInflater mInflater;
 
     private TagMappingListAdapter mAdapter;
+
+    private TagMappingViewHolder mLastEdited;
+    private int mLastEditedPosition = -1;
 
     private static LocalStore localStoreRef;
     private static Account mAccount;
@@ -63,11 +69,24 @@ public class TagMapping extends K9ListActivity {
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(false);
-//        mListView.setOnItemClickListener(new OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                //onOpenFolder(((FolderInfoHolder)mAdapter.getItem(position)).name);
-//            }
-//        });
+
+        mListView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Flag f = (Flag) mAdapter.getItem(position);
+                //onOpenFolder(((FolderInfoHolder)mAdapter.getItem(position)).name);
+
+                if (mLastEdited != null) {
+                    saveChanges();
+                    mLastEdited.hideEditables();
+                }
+
+                TagMappingViewHolder holder = (TagMappingViewHolder) view.getTag();
+                holder.showEditables(f);
+
+                mLastEdited = holder;
+                mLastEditedPosition = position;
+            }
+        });
         registerForContextMenu(mListView);
     }
 
@@ -88,6 +107,22 @@ public class TagMapping extends K9ListActivity {
         //mAdapter.mListener.onResume(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        saveChanges();
+        super.onBackPressed();
+        /* TODO need to update the MessageHeader */
+    }
+
+    private void saveChanges() {
+        if (mLastEdited != null && mLastEditedPosition >= 0) {
+            Flag f = (Flag) mAdapter.getItem(mLastEditedPosition);
+            String newTagName = mLastEdited.editTagName.getText().toString();
+
+            f.setTagName(newTagName);
+        }
+    }
+
     class TagMappingListAdapter extends BaseAdapter {
         private Map<String, Flag> mTagMap = localStoreRef.getTagMappings();
         private ArrayList<String> keys;
@@ -104,7 +139,6 @@ public class TagMapping extends K9ListActivity {
         }
 
         public long getItemId(int position) {
-            //return mFilteredFolders.get(position).folder.getName().hashCode() ;
             return getItem(position).hashCode();
         }
 
@@ -147,8 +181,11 @@ public class TagMapping extends K9ListActivity {
                 holder = new TagMappingViewHolder();
                 holder.tagName = (TextView) view.findViewById(R.id.tag_name);
                 holder.keywordName = (TextView) view.findViewById(R.id.keyword_name);
+                holder.editTagName = (EditText) view.findViewById(R.id.edit_tag_name);
+                //holder.tagColor = view.findViewById(R.id.tag_color);
 
                 holder.tagMappingListItemLayout = (LinearLayout)view.findViewById(R.id.tagmapping_list_item_layout);
+                holder.tagMappingEditablesLayout = (LinearLayout)view.findViewById(R.id.tagmapping_editables_layout);
 
                 view.setTag(holder);
             }
@@ -157,6 +194,12 @@ public class TagMapping extends K9ListActivity {
             holder.tagName.setVisibility(View.VISIBLE);
             holder.keywordName.setText(flag.name());
             holder.keywordName.setVisibility(View.VISIBLE);
+
+            holder.hideEditables();
+            if (mLastEditedPosition == itemPosition) {
+                holder.showEditables(flag);
+                holder.editTagName.requestFocus(); /* TODO put cursor at the end */
+            }
 
             return view;
         }
@@ -174,8 +217,24 @@ public class TagMapping extends K9ListActivity {
     static class TagMappingViewHolder {
         public TextView tagName;
         public TextView keywordName;
+        public EditText editTagName;
+        public View tagColor;
 
         public LinearLayout tagMappingListItemLayout;
+        public LinearLayout tagMappingEditablesLayout;
+
+        public void showEditables(Flag f) {
+            tagName.setVisibility(View.INVISIBLE);
+
+            tagMappingEditablesLayout.setVisibility(View.VISIBLE);
+            editTagName.setText(f.tagName());
+        }
+
+        public void hideEditables() {
+            tagName.setVisibility(View.VISIBLE);
+
+            tagMappingEditablesLayout.setVisibility(View.GONE);
+        }
     }
 
 }
