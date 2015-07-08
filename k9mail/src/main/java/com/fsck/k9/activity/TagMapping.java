@@ -100,8 +100,15 @@ public class TagMapping extends K9ListActivity {
     public void onResume() {
         super.onResume();
 
+        try {
+            localStoreRef.updateTagMappings();
+        } catch (MessagingException e) {
+        }
+
         if (mAdapter == null) {
             initializeActivityView();
+        } else {
+            mAdapter.notifyDataSetChanged();
         }
 
         //mAdapter.mListener.onResume(this);
@@ -117,9 +124,21 @@ public class TagMapping extends K9ListActivity {
     private void saveChanges() {
         if (mLastEdited != null && mLastEditedPosition >= 0) {
             Flag f = (Flag) mAdapter.getItem(mLastEditedPosition);
+            String oldTagName = f.tagName();
             String newTagName = mLastEdited.editTagName.getText().toString();
 
             f.setTagName(newTagName);
+
+            try {
+                localStoreRef.changeTagMapping(f);
+            } catch (MessagingException e) {
+                /* TODO notify the user */
+
+                Log.e("k-9:tagmapping", "error changing tag for keyword '" + f.name());
+
+                /* revert to previous name */
+                f.setTagName(oldTagName);
+            }
         }
     }
 
