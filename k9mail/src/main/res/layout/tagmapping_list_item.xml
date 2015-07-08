@@ -36,5 +36,36 @@
                 android:textColor="?android:attr/textColorTertiary"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tagmapping_editables_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:weightSum="1"
+                android:visibility="gone">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_tag_name"
+                    android:imeOptions="actionSend"
+                    android:layout_weight="0.50" />
+
+                <!--- Not yet available
+                <Space
+                    android:layout_width="@dimen/activity_horizontal_margin"
+                    android:layout_height="match_parent" />
+
+                <View
+                        android:id="@+id/tag_color"
+                        android:layout_height="match_parent"
+                        android:layout_width="@dimen/button_minWidth"
+                        android:background="#ff336699"
+                    android:clickable="true" />
+                -->
+
+            </LinearLayout>
+
+        </LinearLayout>
 </LinearLayout>
