@@ -458,6 +458,57 @@ public class LocalStore extends Store implements Serializable {
                     return Flag.REMEMBERED_KEYWORDS;
                 }
             });
+
+            /* Now do the reverse: insert keywords from the memory map. Because they are UNIQUE,
+             * only the ones that do not yet exist in the db should be inserted.
+             */
+            database.execute(false, new DbCallback <Void> () {
+                @Override
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+                    ContentValues cv = new ContentValues();
+
+                    try {
+                        for (Flag f : getTagMappings().values()) {
+                            cv.clear();
+                            cv.put("keyword", f.name());
+                            cv.put("tag", f.tagName());
+                            db.insert("keyword_tag_map", null, cv);
+                        }
+                    } catch (Exception e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        /* No need to rollback inserted keywords */
+                    }
+
+                    return null;
+                }
+            });
+        } catch (WrappedException e) {
+            /* Not sure if we should throw a MessagingException here... */
+            //throw(MessagingException) e.getCause();
+        }
+    }
+
+    @Override
+    public void changeTagMapping(final Flag f) throws MessagingException {
+        try {
+            /* Use the tag name in memory to update the keyword's tag name in the database */
+            database.execute(false, new DbCallback <Void> () {
+                @Override
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+                    int rows = 0;
+
+                    ContentValues cv = new ContentValues();
+                    cv.put("tag", f.tagName());
+
+                    try {
+                        rows = db.update("keyword_tag_map", cv, "keyword = ?", new String[] { f.name() });
+                    } catch (Exception e) {
+                        throw new WrappedException(e);
+                    }
+                    return null;
+                }
+            });
         } catch (WrappedException e) {
             /* Not sure if we should throw a MessagingException here... */
             //throw(MessagingException) e.getCause();

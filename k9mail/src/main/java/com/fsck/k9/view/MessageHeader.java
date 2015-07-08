@@ -362,11 +362,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         StringBuilder sb = new StringBuilder();
         if (!msgFlags.isEmpty()) {
             for (Flag f : msgFlags) {
-                if (f.isCustom()) {
+                if (f.isCustom() && f.tagName().length() > 0) {
                     sb.append(f.tagName() + ", ");
                 }
             }
 
+            /* Remove last comma-space */
             if (sb.length() > 0) {
                 sb.setLength(sb.length()-2);
             }
