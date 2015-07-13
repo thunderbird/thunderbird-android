@@ -1,11 +1,11 @@
 package com.fsck.k9.notification;
 
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
@@ -66,7 +66,7 @@ class CertificateErrorNotifications {
                 R.drawable.ic_notify_new_mail_vector : R.drawable.ic_notify_new_mail;
     }
 
-    private NotificationManager getNotificationManager() {
+    private NotificationManagerCompat getNotificationManager() {
         return controller.getNotificationManager();
     }
 }

@@ -1,10 +1,6 @@
 package com.fsck.k9.notification;
 
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -14,18 +10,17 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 
 
 class NotificationContentCreator {
-    private static final int MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5;
-
-
     private final Context context;
     private TextAppearanceSpan emphasizedSpan;
 
@@ -34,21 +29,19 @@ class NotificationContentCreator {
         this.context = context;
     }
 
-    public String createCommaSeparatedListOfSenders(Account account, List<LocalMessage> messages) {
-        // Use a LinkedHashSet so that we preserve ordering (newest to oldest), but still remove duplicates
-        Set<CharSequence> senders = new LinkedHashSet<CharSequence>(MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
-        for (Message message : messages) {
-            senders.add(getMessageSender(account, message));
-            if (senders.size() == MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION) {
-                break;
-            }
-        }
+    public NotificationContent createFromMessage(Account account, LocalMessage message) {
+        MessageReference messageReference = message.makeMessageReference();
+        String sender = getMessageSender(account, message);
+        String subject = getMessageSubject(message);
+        CharSequence preview = getMessagePreview(message);
+        CharSequence summary = buildMessageSummary(sender, subject);
+        boolean starred = message.isSet(Flag.FLAGGED);
 
-        return TextUtils.join(", ", senders);
+        return new NotificationContent(messageReference, sender, subject, preview, summary, starred);
     }
 
-    public CharSequence getMessagePreview(Message message) {
-        CharSequence subject = getMessageSubject(message);
+    private CharSequence getMessagePreview(Message message) {
+        String subject = getMessageSubject(message);
         String snippet = message.getPreview();
 
         if (TextUtils.isEmpty(subject)) {
@@ -67,7 +60,7 @@ class NotificationContentCreator {
         return preview;
     }
 
-    public CharSequence buildMessageSummary(CharSequence sender, CharSequence subject) {
+    private CharSequence buildMessageSummary(String sender, String subject) {
         if (sender == null) {
             return subject;
         }
@@ -82,7 +75,7 @@ class NotificationContentCreator {
         return summary;
     }
 
-    public CharSequence getMessageSubject(Message message) {
+    private String getMessageSubject(Message message) {
         String subject = message.getSubject();
         if (!TextUtils.isEmpty(subject)) {
             return subject;
@@ -91,7 +84,7 @@ class NotificationContentCreator {
         return context.getString(R.string.general_no_subject);
     }
 
-    public CharSequence getMessageSender(Account account, Message message) {
+    private String getMessageSender(Account account, Message message) {
         try {
             boolean isSelf = false;
             final Contacts contacts = K9.showContactName() ? Contacts.getInstance(context) : null;

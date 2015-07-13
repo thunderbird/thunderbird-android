@@ -2,16 +2,15 @@ package com.fsck.k9.notification;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import android.content.Context;
+import android.util.SparseBooleanArray;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.mailstore.LocalMessage;
 
 
 /**
@@ -20,67 +19,85 @@ import com.fsck.k9.mailstore.LocalMessage;
 class NotificationsHolder {
     // Note: As of Jellybean, phone notifications show a maximum of 5 lines, while tablet notifications show 7 lines.
     private static final int MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5;
+    // Note: This class assumes MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
+    private static final int MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS = 8;
 
 
-    private int unreadMessagesCountBeforeNotification;
-    private LinkedList<LocalMessage> messagesForSummaryNotification;
-    private LinkedList<MessageReference> additionalMessages;
-    private Map<MessageReference, Integer> stackedNotifications = new HashMap<MessageReference, Integer>();
+    private final Account account;
+    private final LinkedList<NotificationHolder> activeNotifications = new LinkedList<NotificationHolder>();
+    private final Deque<NotificationContent> additionalNotifications = new LinkedList<NotificationContent>();
+    private final SparseBooleanArray notificationIdsInUse = new SparseBooleanArray();
+    private int unreadMessageCount;
 
 
-    public NotificationsHolder(int unreadMessagesCount) {
-        unreadMessagesCountBeforeNotification = unreadMessagesCount;
-        additionalMessages = new LinkedList<MessageReference>();
-        messagesForSummaryNotification = new LinkedList<LocalMessage>();
+    public NotificationsHolder(Account account) {
+        this.account = account;
     }
 
-    public int getUnreadMessagesCountBeforeNotification() {
-        return unreadMessagesCountBeforeNotification;
-    }
-
-    public List<LocalMessage> getMessagesForSummaryNotification() {
-        return Collections.unmodifiableList(messagesForSummaryNotification);
-    }
-
-    public boolean hasAdditionalMessages() {
-        return !additionalMessages.isEmpty();
-    }
-
-    public int getAdditionalMessagesCount() {
-        return additionalMessages.size();
-    }
-
-    public void addMessage(LocalMessage message) {
-        while (messagesForSummaryNotification.size() >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION) {
-            LocalMessage dropped = messagesForSummaryNotification.removeLast();
-            additionalMessages.addFirst(dropped.makeMessageReference());
+    public AddNotificationResult addNotificationContent(NotificationContent content) {
+        int notificationId;
+        boolean cancelNotificationIdBeforeReuse;
+        if (isMaxNumberOfActiveNotificationsReached()) {
+            NotificationHolder notificationHolder = activeNotifications.pop();
+            addToAdditionalNotifications(notificationHolder);
+            notificationId = notificationHolder.notificationId;
+            cancelNotificationIdBeforeReuse = true;
+        } else {
+            notificationId = getNewNotificationId();
+            cancelNotificationIdBeforeReuse = false;
         }
 
-        messagesForSummaryNotification.addFirst(message);
+        NotificationHolder notificationHolder = createNotificationHolder(notificationId, content);
+        activeNotifications.push(notificationHolder);
+
+        if (cancelNotificationIdBeforeReuse) {
+            return AddNotificationResult.replaceNotification(notificationHolder);
+        } else {
+            return AddNotificationResult.newNotification(notificationHolder);
+        }
     }
 
-    public void addStackedChildNotification(MessageReference messageReference, final int notificationId) {
-        stackedNotifications.put(messageReference, notificationId);
+    private boolean isMaxNumberOfActiveNotificationsReached() {
+        return activeNotifications.size() == MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS;
     }
 
-    public Integer getStackedChildNotification(MessageReference messageReference) {
-        return stackedNotifications.get(messageReference);
+    private void addToAdditionalNotifications(NotificationHolder notificationHolder) {
+        additionalNotifications.addFirst(notificationHolder.content);
     }
 
-    public boolean removeMatchingMessage(Context context, MessageReference messageReference) {
-        if (additionalMessages.remove(messageReference)) {
-            return true;
+    private int getNewNotificationId() {
+        for (int i = 1; i <= MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS; i++) {
+            int notificationId = NotificationIds.getNewMailNotificationId(account, i);
+            if (!isNotificationInUse(notificationId)) {
+                markNotificationIdAsInUse(notificationId);
+                return notificationId;
+            }
         }
 
-        for (LocalMessage message : messagesForSummaryNotification) {
-            if (message.makeMessageReference().equals(messageReference)) {
-                if (messagesForSummaryNotification.remove(message) && !additionalMessages.isEmpty()) {
-                    LocalMessage restoredMessage = additionalMessages.getFirst().restoreToLocalMessage(context);
-                    if (restoredMessage != null) {
-                        messagesForSummaryNotification.addLast(restoredMessage);
-                        additionalMessages.removeFirst();
-                    }
-                }
+        throw new AssertionError("getNewNotificationId() called with no free notification ID");
+    }
+
+    private boolean isNotificationInUse(int notificationId) {
+        return notificationIdsInUse.get(notificationId);
+    }
+
+    private void markNotificationIdAsInUse(int notificationId) {
+        notificationIdsInUse.put(notificationId, true);
+    }
+
+    NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {
+        return new NotificationHolder(notificationId, content);
+    }
+
+    public boolean containsStarredMessages() {
+        for (NotificationHolder holder : activeNotifications) {
+            if (holder.content.starred) {
+                return true;
+            }
+        }
+
+        for (NotificationContent content : additionalNotifications) {
+            if (content.starred) {
                 return true;
             }
         }
@@ -88,32 +105,110 @@ class NotificationsHolder {
         return false;
     }
 
-    public ArrayList<MessageReference> getMessageReferencesForAllNotifications() {
-        int size = messagesForSummaryNotification.size() + additionalMessages.size();
-        ArrayList<MessageReference> messageReferences = new ArrayList<MessageReference>(size);
+    public boolean hasAdditionalMessages() {
+        return activeNotifications.size() > MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION;
+    }
 
-        for (LocalMessage message : messagesForSummaryNotification) {
-            messageReferences.add(message.makeMessageReference());
-        }
-
-        messageReferences.addAll(additionalMessages);
-
-        return messageReferences;
+    public int getAdditionalMessagesCount() {
+        return getNewMessagesCount() - MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION;
     }
 
     public int getNewMessagesCount() {
-        return messagesForSummaryNotification.size() + additionalMessages.size();
+        return activeNotifications.size() + additionalNotifications.size();
     }
 
-    public LocalMessage getNewestMessage(Context context) {
-        if (!messagesForSummaryNotification.isEmpty()) {
-            return messagesForSummaryNotification.getFirst();
+    public boolean isSingleMessageNotification() {
+        return activeNotifications.size() == 1;
+    }
+
+    public NotificationHolder getHolderForLatestNotification() {
+        return activeNotifications.getFirst();
+    }
+
+    public List<NotificationContent> getContentForSummaryNotification() {
+        int size = calculateNumberOfMessagesForSummaryNotification();
+        List<NotificationContent> result = new ArrayList<NotificationContent>(size);
+
+        Iterator<NotificationHolder> iterator = activeNotifications.iterator();
+        int notificationCount = 0;
+        while (iterator.hasNext() && notificationCount < MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION) {
+            NotificationHolder holder = iterator.next();
+            result.add(holder.content);
+            notificationCount++;
         }
 
-        if (!additionalMessages.isEmpty()) {
-            return additionalMessages.getFirst().restoreToLocalMessage(context);
+        return result;
+    }
+
+    private int calculateNumberOfMessagesForSummaryNotification() {
+        return Math.min(activeNotifications.size(), MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION);
+    }
+
+    public int[] getActiveNotificationIds() {
+        int size = activeNotifications.size();
+        int[] notificationIds = new int[size];
+
+        for (int i = 0; i < size; i++) {
+            NotificationHolder holder = activeNotifications.get(i);
+            notificationIds[i] = holder.notificationId;
+        }
+
+        return notificationIds;
+    }
+
+    public RemoveNotificationResult removeNotificationForMessage(MessageReference messageReference) {
+        NotificationHolder holder = getNotificationHolderForMessage(messageReference);
+        if (holder == null) {
+            return RemoveNotificationResult.unknownNotification();
+        }
+
+        activeNotifications.remove(holder);
+
+        int notificationId = holder.notificationId;
+        if (!additionalNotifications.isEmpty()) {
+            NotificationContent newContent = additionalNotifications.pop();
+            NotificationHolder replacement = createNotificationHolder(notificationId, newContent);
+            activeNotifications.add(replacement);
+            return RemoveNotificationResult.createNotification(replacement);
+        }
+
+        return RemoveNotificationResult.cancelNotification(notificationId);
+    }
+
+    private NotificationHolder getNotificationHolderForMessage(MessageReference messageReference) {
+        for (NotificationHolder holder : activeNotifications) {
+            if (messageReference.equals(holder.content.messageReference)) {
+                return holder;
+            }
         }
 
         return null;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public int getUnreadMessageCount() {
+        return unreadMessageCount + getNewMessagesCount();
+    }
+
+    public void setUnreadMessageCount(int unreadMessageCount) {
+        this.unreadMessageCount = unreadMessageCount;
+    }
+
+    public ArrayList<MessageReference> getAllMessageReferences() {
+        int newSize = activeNotifications.size() + additionalNotifications.size();
+        ArrayList<MessageReference> messageReferences = new ArrayList<MessageReference>(newSize);
+
+        for (NotificationHolder holder : activeNotifications) {
+            messageReferences.add(holder.content.messageReference);
+        }
+
+        for (NotificationContent content : additionalNotifications) {
+            messageReferences.add(content.messageReference);
+        }
+
+        return messageReferences;
     }
 }

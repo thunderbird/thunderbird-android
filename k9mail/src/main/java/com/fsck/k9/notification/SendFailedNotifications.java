@@ -1,10 +1,10 @@
 package com.fsck.k9.notification;
 
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
@@ -29,7 +29,9 @@ class SendFailedNotifications {
         String title = context.getString(R.string.send_failure_subject);
         String text = ExceptionHelper.getRootCauseMessage(exception);
 
-        PendingIntent folderListPendingIntent = actionBuilder.createViewFolderListPendingIntent(account);
+        int notificationId = NotificationIds.getSendFailedNotificationId(account);
+        PendingIntent folderListPendingIntent = actionBuilder.createViewFolderListPendingIntent(
+                account, notificationId);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(getSendFailedNotificationIcon())
@@ -44,7 +46,6 @@ class SendFailedNotifications {
         controller.configureNotification(builder, null, null, NOTIFICATION_LED_FAILURE_COLOR,
                 NOTIFICATION_LED_BLINK_FAST, true);
 
-        int notificationId = NotificationIds.getSendFailedNotificationId(account);
         getNotificationManager().notify(notificationId, builder.build());
     }
 
@@ -59,7 +60,7 @@ class SendFailedNotifications {
                 R.drawable.ic_notify_new_mail_vector : R.drawable.ic_notify_new_mail;
     }
 
-    private NotificationManager getNotificationManager() {
+    private NotificationManagerCompat getNotificationManager() {
         return controller.getNotificationManager();
     }
 }

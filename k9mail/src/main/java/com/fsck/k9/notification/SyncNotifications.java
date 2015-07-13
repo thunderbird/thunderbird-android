@@ -1,10 +1,10 @@
 package com.fsck.k9.notification;
 
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
@@ -32,7 +32,10 @@ class SyncNotifications {
         String title = context.getString(R.string.notification_bg_send_title);
         String tickerText = context.getString(R.string.notification_bg_send_ticker, accountName);
 
-        PendingIntent showMessageListPendingIntent = actionBuilder.createViewInboxPendingIntent(account);
+        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+        String outboxFolderName = account.getOutboxFolderName();
+        PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
+                account, outboxFolderName, notificationId);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
@@ -50,7 +53,6 @@ class SyncNotifications {
                     NOTIFICATION_LED_BLINK_FAST, true);
         }
 
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
         getNotificationManager().notify(notificationId, builder.build());
     }
 
@@ -69,7 +71,9 @@ class SyncNotifications {
         //TODO: Use format string from resources
         String text = accountName + context.getString(R.string.notification_bg_title_separator) + folderName;
 
-        PendingIntent showMessageListPendingIntent = actionBuilder.createViewInboxPendingIntent(account);
+        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+        PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
+                account, folderName, notificationId);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
@@ -87,7 +91,6 @@ class SyncNotifications {
                     NOTIFICATION_LED_BLINK_FAST, true);
         }
 
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
         getNotificationManager().notify(notificationId, builder.build());
     }
 
@@ -96,7 +99,7 @@ class SyncNotifications {
         getNotificationManager().cancel(notificationId);
     }
 
-    private NotificationManager getNotificationManager() {
+    private NotificationManagerCompat getNotificationManager() {
         return controller.getNotificationManager();
     }
 }

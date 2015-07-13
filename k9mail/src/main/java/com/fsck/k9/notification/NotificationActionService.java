@@ -4,7 +4,6 @@ package com.fsck.k9.notification;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -12,7 +11,6 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
@@ -21,7 +19,6 @@ import com.fsck.k9.service.CoreService;
 
 
 public class NotificationActionService extends CoreService {
-    private final static String ACTION_REPLY = "ACTION_REPLY";
     private final static String ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ";
     private final static String ACTION_DELETE = "ACTION_DELETE";
     private final static String ACTION_ARCHIVE = "ACTION_ARCHIVE";
@@ -31,79 +28,95 @@ public class NotificationActionService extends CoreService {
     private final static String EXTRA_ACCOUNT_UUID = "accountUuid";
     private final static String EXTRA_MESSAGE_REFERENCE = "messageReference";
     private final static String EXTRA_MESSAGE_REFERENCES = "messageReferences";
-    public final static String EXTRA_NOTIFICATION_ID = "notificationId";
 
 
-    public static PendingIntent createReplyPendingIntent(Context context, Account account,
-            MessageReference messageReference, int notificationId) {
-        Intent intent = new Intent(context, NotificationActionService.class);
-        intent.setAction(ACTION_REPLY);
-        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
-        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
+    static Intent createMarkMessageAsReadIntent(Context context, MessageReference messageReference) {
+        String accountUuid = messageReference.getAccountUuid();
+        ArrayList<MessageReference> messageReferences = createSingleItemArrayList(messageReference);
 
-        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return createMarkAllAsReadIntent(context, accountUuid, messageReferences);
     }
 
-    public static PendingIntent createMarkAsReadPendingIntent(Context context, Account account,
-            ArrayList<MessageReference> messageReferences, int notificationId) {
+    static Intent createMarkAllAsReadIntent(Context context, String accountUuid,
+            ArrayList<MessageReference> messageReferences) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_MARK_AS_READ);
-        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
+        intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
         intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
-        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
-
-        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    public static PendingIntent createDismissPendingIntent(Context context, Account account, int notificationId) {
-        Intent intent = new Intent(context, NotificationActionService.class);
-        intent.setAction(ACTION_DISMISS);
-        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
-        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
-
-        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    public static Intent createDeletePendingIntent(Context context, Account account,
-            ArrayList<MessageReference> messageReferences, int notificationID) {
-        Intent intent = new Intent(context, NotificationActionService.class);
-        intent.setAction(ACTION_DELETE);
-        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
-        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
 
         return intent;
     }
 
-    public static PendingIntent createArchivePendingIntent(Context context, Account account,
-            ArrayList<MessageReference> messageReferences, int notificationId) {
+    static Intent createDismissMessageIntent(Context context, MessageReference messageReference) {
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_DISMISS);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
+
+        return intent;
+    }
+
+    static Intent createDismissAllMessagesIntent(Context context, Account account) {
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_DISMISS);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
+
+        return intent;
+    }
+
+    static Intent createDeleteMessageIntent(Context context, MessageReference messageReference) {
+        String accountUuid = messageReference.getAccountUuid();
+        ArrayList<MessageReference> messageReferences = createSingleItemArrayList(messageReference);
+
+        return createDeleteAllMessagesIntent(context, accountUuid, messageReferences);
+    }
+
+    public static Intent createDeleteAllMessagesIntent(Context context, String accountUuid,
+            ArrayList<MessageReference> messageReferences) {
+
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_DELETE);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+
+        return intent;
+    }
+
+    static Intent createArchiveMessageIntent(Context context, MessageReference messageReference) {
+        ArrayList<MessageReference> messageReferences = createSingleItemArrayList(messageReference);
+
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_ARCHIVE);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+
+        return intent;
+    }
+
+    static Intent createArchiveAllIntent(Context context, Account account,
+            ArrayList<MessageReference> messageReferences) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_ARCHIVE);
         intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
         intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
-        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
 
-        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+        return intent;
     }
 
-    public static PendingIntent createMarkAsSpamPendingIntent(Context context, Account account,
-            ArrayList<MessageReference> messageReferences, int notificationId) {
+    static Intent createMarkMessageAsSpamIntent(Context context, MessageReference messageReference) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_SPAM);
-        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
-        intent.putExtra(EXTRA_NOTIFICATION_ID, notificationId);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
 
-        return PendingIntent.getService(context, account.getAccountNumber(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return intent;
     }
 
-    private static boolean isMovePossible(MessagingController controller, Account account,
-            String destinationFolderName) {
-        boolean isSpecialFolderConfigured = !K9.FOLDER_NONE.equalsIgnoreCase(destinationFolderName);
+    private static ArrayList<MessageReference> createSingleItemArrayList(MessageReference messageReference) {
+        ArrayList<MessageReference> messageReferences = new ArrayList<MessageReference>(1);
+        messageReferences.add(messageReference);
 
-        return isSpecialFolderConfigured && controller.isMoveCapable(account);
+        return messageReferences;
     }
 
     @Override
@@ -131,19 +144,14 @@ public class NotificationActionService extends CoreService {
         } else if (ACTION_ARCHIVE.equals(action)) {
             archiveMessages(intent, account, controller);
         } else if (ACTION_SPAM.equals(action)) {
-            markMessagesAsSpam(intent, account, controller);
-        } else if (ACTION_REPLY.equals(action)) {
-            reply(intent);
+            markMessageAsSpam(intent, account, controller);
         } else if (ACTION_DISMISS.equals(action)) {
-            Log.i(K9.LOG_TAG, "notification acknowledged");
+            if (K9.DEBUG) {
+                Log.i(K9.LOG_TAG, "Notification dismissed");
+            }
         }
 
-        if (intent.hasExtra(EXTRA_NOTIFICATION_ID)) {
-            int notificationId = intent.getIntExtra(EXTRA_NOTIFICATION_ID, account.getAccountNumber());
-            controller.cancelNotification(notificationId);
-        } else {
-            controller.cancelNotificationsForAccount(account);
-        }
+        cancelNotifications(intent, account, controller);
 
         return START_NOT_STICKY;
     }
@@ -175,55 +183,52 @@ public class NotificationActionService extends CoreService {
             Log.i(K9.LOG_TAG, "NotificationActionService archiving messages");
         }
 
-        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
-        List<LocalMessage> messages = getLocalMessages(messageReferences);
-
         String archiveFolderName = account.getArchiveFolderName();
-        if (archiveFolderName != null &&
-                !(archiveFolderName.equals(account.getSpamFolderName()) && K9.confirmSpam()) &&
-                isMovePossible(controller, account, archiveFolderName)) {
-            for (LocalMessage messageToMove : messages) {
-                if (controller.isMoveCapable(messageToMove)) {
-                    String sourceFolderName = messageToMove.getFolder().getName();
-                    controller.moveMessage(account, sourceFolderName, messageToMove, archiveFolderName, null);
-                }
+        if (archiveFolderName == null ||
+                (archiveFolderName.equals(account.getSpamFolderName()) && K9.confirmSpam()) ||
+                !isMovePossible(controller, account, archiveFolderName)) {
+            Log.w(K9.LOG_TAG, "Can not archive messages");
+            return;
+        }
+
+        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        for (MessageReference messageReference : messageReferences) {
+            LocalMessage message = messageReference.restoreToLocalMessage(this);
+            if (controller.isMoveCapable(message)) {
+                String sourceFolderName = message.getFolder().getName();
+                controller.moveMessage(account, sourceFolderName, message, archiveFolderName, null);
             }
         }
     }
 
-    private void markMessagesAsSpam(Intent intent, Account account, MessagingController controller) {
+    private void markMessageAsSpam(Intent intent, Account account, MessagingController controller) {
         if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "NotificationActionService moving messages to spam");
         }
 
-        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
-        List<LocalMessage> messages = getLocalMessages(messageReferences);
+        MessageReference messageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+        LocalMessage message = messageReference.restoreToLocalMessage(this);
 
         String spamFolderName = account.getSpamFolderName();
         if (spamFolderName != null && !K9.confirmSpam() &&
                 isMovePossible(controller, account, spamFolderName)) {
-            for (LocalMessage messageToMove : messages) {
-                String sourceFolderName = messageToMove.getFolder().getName();
-                controller.moveMessage(account, sourceFolderName, messageToMove, spamFolderName, null);
-            }
+            String sourceFolderName = message.getFolder().getName();
+            controller.moveMessage(account, sourceFolderName, message, spamFolderName, null);
         }
     }
 
-    private void reply(Intent intent) {
-        if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "NotificationActionService initiating reply");
+    private void cancelNotifications(Intent intent, Account account, MessagingController controller) {
+        if (intent.hasExtra(EXTRA_MESSAGE_REFERENCE)) {
+            MessageReference messageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+            controller.cancelNotificationForMessage(account, messageReference);
+        } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCES)) {
+            List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+            for (MessageReference messageReference : messageReferences) {
+                controller.cancelNotificationForMessage(account, messageReference);
+            }
+        } else {
+            controller.cancelNotificationsForAccount(account);
         }
-
-        MessageReference messageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
-        LocalMessage message = messageReference.restoreToLocalMessage(this);
-        if (message == null) {
-            Log.i(K9.LOG_TAG, "Could not execute reply action.");
-            return;
-        }
-
-        Intent replyIntent = MessageCompose.getActionReplyIntent(this, message, false, null);
-        replyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(replyIntent);
     }
 
     private List<LocalMessage> getLocalMessages(List<MessageReference> messageReferences) {
@@ -236,5 +241,12 @@ public class NotificationActionService extends CoreService {
             }
         }
         return messages;
+    }
+
+    private boolean isMovePossible(MessagingController controller, Account account,
+            String destinationFolderName) {
+        boolean isSpecialFolderConfigured = !K9.FOLDER_NONE.equalsIgnoreCase(destinationFolderName);
+
+        return isSpecialFolderConfigured && controller.isMoveCapable(account);
     }
 }

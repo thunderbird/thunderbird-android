@@ -41,6 +41,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -1650,7 +1651,8 @@ public class MessagingController implements Runnable {
 
                     // we're only interested in messages that need removing
                     if (!shouldBeNotifiedOf) {
-                        notificationController.removeNewMailNotification(account, localMessage);
+                        MessageReference messageReference = localMessage.makeMessageReference();
+                        notificationController.removeNewMailNotification(account, messageReference);
                     }
                 }
                 progress.incrementAndGet();
@@ -4589,8 +4591,8 @@ public class MessagingController implements Runnable {
         notificationController.clearNewMailNotifications(account);
     }
 
-    public void cancelNotification(int notificationId) {
-        notificationController.cancelNotification(notificationId);
+    public void cancelNotificationForMessage(Account account, MessageReference messageReference) {
+        notificationController.removeNewMailNotification(account, messageReference);
     }
 
     public void clearCertificateErrorNotifications(Account account, CheckDirection direction) {

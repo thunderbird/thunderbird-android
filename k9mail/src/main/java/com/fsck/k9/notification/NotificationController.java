@@ -1,15 +1,16 @@
 package com.fsck.k9.notification;
 
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalMessage;
 
@@ -25,7 +26,7 @@ public class NotificationController {
 
 
     private final Context context;
-    private final NotificationManager notificationManager;
+    private final NotificationManagerCompat notificationManager;
     private final CertificateErrorNotifications certificateErrorNotifications;
     private final SyncNotifications syncNotifications;
     private final SendFailedNotifications sendFailedNotifications;
@@ -34,8 +35,7 @@ public class NotificationController {
 
     public static NotificationController newInstance(Context context) {
         Context appContext = context.getApplicationContext();
-        NotificationManager notificationManager =
-                (NotificationManager) appContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(appContext);
         return new NotificationController(appContext, notificationManager);
     }
 
@@ -48,7 +48,7 @@ public class NotificationController {
     }
 
 
-    NotificationController(Context context, NotificationManager notificationManager) {
+    NotificationController(Context context, NotificationManagerCompat notificationManager) {
         this.context = context;
         this.notificationManager = notificationManager;
 
@@ -56,7 +56,7 @@ public class NotificationController {
         certificateErrorNotifications = new CertificateErrorNotifications(this);
         syncNotifications = new SyncNotifications(this, actionBuilder);
         sendFailedNotifications = new SendFailedNotifications(this, actionBuilder);
-        newMailNotifications = new NewMailNotifications(this, actionBuilder);
+        newMailNotifications = NewMailNotifications.newInstance(this, actionBuilder);
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
@@ -95,16 +95,12 @@ public class NotificationController {
         newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount);
     }
 
-    public void removeNewMailNotification(Account account, LocalMessage localMessage) {
-        newMailNotifications.removeNewMailNotification(account, localMessage);
+    public void removeNewMailNotification(Account account, MessageReference messageReference) {
+        newMailNotifications.removeNewMailNotification(account, messageReference);
     }
 
     public void clearNewMailNotifications(Account account) {
         newMailNotifications.clearNewMailNotifications(account);
-    }
-
-    public void cancelNotification(int notificationId) {
-        notificationManager.cancel(notificationId);
     }
 
     void configureNotification(NotificationCompat.Builder builder, String ringtone, long[] vibrationPattern,
@@ -152,7 +148,7 @@ public class NotificationController {
         return context;
     }
 
-    NotificationManager getNotificationManager() {
+    NotificationManagerCompat getNotificationManager() {
         return notificationManager;
     }
 }
