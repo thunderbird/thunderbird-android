@@ -46,24 +46,26 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
 
         try {
             File newFile = File.createTempFile("body", null, mTempDirectory);
-            OutputStream out = new FileOutputStream(newFile);
+            final OutputStream out = new FileOutputStream(newFile);
             try {
+                OutputStream wrappedOut = null;
                 if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(encoding)) {
-                    out = new QuotedPrintableOutputStream(out, false);
+                    wrappedOut = new QuotedPrintableOutputStream(out, false);
                 } else if (MimeUtil.ENC_BASE64.equals(encoding)) {
-                    out = new Base64OutputStream(out);
+                    wrappedOut = new Base64OutputStream(out);
                 } else {
                     throw new RuntimeException("Target encoding not supported: " + encoding);
                 }
 
                 InputStream in = getInputStream();
                 try {
-                    IOUtils.copy(in, out);
+                    IOUtils.copy(in, wrappedOut);
                 } finally {
-                    in.close();
+                    IOUtils.closeQuietly(in);
+                    IOUtils.closeQuietly(wrappedOut);
                 }
             } finally {
-                out.close();
+                IOUtils.closeQuietly(out);
             }
 
             mFile = newFile;
@@ -100,7 +102,7 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
         try {
             IOUtils.copy(in, out);
         } finally {
-            in.close();
+            IOUtils.closeQuietly(in);
         }
     }
 

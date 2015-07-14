@@ -203,9 +203,14 @@ public class MessageProvider extends ContentProvider {
         @Override
         public String getField(final MessageInfoHolder source) {
             final LocalMessage message = source.message;
-            return CONTENT_URI + "/delete_message/"
-                   + message.getAccount().getAccountNumber() + "/"
-                   + message.getFolder().getName() + "/" + message.getUid();
+            int accountNumber = message.getAccount().getAccountNumber();
+            return CONTENT_URI.buildUpon()
+                    .appendPath("delete_message")
+                    .appendPath(Integer.toString(accountNumber))
+                    .appendPath(message.getFolder().getName())
+                    .appendPath(message.getUid())
+                    .build()
+                    .toString();
         }
     }
     public static class SenderExtractor implements FieldExtractor<MessageInfoHolder, CharSequence> {

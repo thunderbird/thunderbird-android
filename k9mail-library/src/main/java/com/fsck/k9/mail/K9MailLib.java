@@ -55,7 +55,7 @@ public class K9MailLib {
         }
     }
 
-    public static interface DebugStatus {
+    public interface DebugStatus {
         boolean enabled();
 
         boolean debugSensitive();
@@ -68,7 +68,7 @@ public class K9MailLib {
         debugStatus = status;
     }
 
-    private static interface WritableDebugStatus extends DebugStatus {
+    private interface WritableDebugStatus extends DebugStatus {
         void setEnabled(boolean enabled);
 
         void setSensitive(boolean sensitive);
