@@ -4833,16 +4833,10 @@ public class MessagingController implements Runnable {
             // Delete on wear only if no confirmation is required
             // because they would have to be confirmed on the phone, not the wear device
             if (!K9.confirmDeleteFromNotification()) {
-                String label = null; //TODO: temporary debugging code
-                if (allRefs.size()>1) {
-                    label = context.getString(R.string.notification_action_delete_all);
-                } else {
-                    label = context.getString(R.string.notification_action_delete) + " " + allRefs.get(0).restoreToLocalMessage(context).getSubject();
-                }//TODO: DANGEROUS CODE! In case of 2 new messages, this one deletes the wrong one! No idea why yet.
                 NotificationCompat.Action wearActionDelete =
                         new NotificationCompat.Action.Builder(
                                 R.drawable.ic_action_delete_dark,
-                                label, //context.getString(allRefs.size()>1?R.string.notification_action_delete_all:R.string.notification_action_delete),
+                                context.getString(allRefs.size()>1?R.string.notification_action_delete_all:R.string.notification_action_delete),
                                 NotificationDeleteConfirmation.getIntent(context, account, allRefs, notificationID))
                                 .build();
                 builder.extend(wearableExtender.addAction(wearActionDelete));
@@ -4960,14 +4954,7 @@ public class MessagingController implements Runnable {
                     subBuilder.setGroup(NOTIFICATION_GROUP_KEY); // same group as summary
                     subBuilder.setAutoCancel(true); // summary closes all, stacked only itself
 
-                    realnID++;//TODO: test code
-                    // nID = 1000 + nID;
-                    // reuse existing notification IDs if some of the stacked messages
-                    // are already shown on the wear device.
-                    //Integer realnID = data.getStackedChildNotification(m);
-                    //if (realnID == null) {
-                    //    realnID = nID;
-                    //}
+                    realnID++;
 
                     // set content
                     setNotificationContent(context, m, getMessageSender(context, account, m), getMessageSubject(context, m), subBuilder, accountDescr);
@@ -5051,7 +5038,7 @@ public class MessagingController implements Runnable {
                         platformSupportsLockScreenNotifications()
                                 ? R.drawable.ic_action_delete_dark_vector
                                 : R.drawable.ic_action_delete_dark,
-                        "test " + context.getString(R.string.notification_action_delete),
+                        context.getString(R.string.notification_action_delete),
                         NotificationDeleteConfirmation.getIntent(context, account, allRefs, account.getAccountNumber()));
             }
         } else {
