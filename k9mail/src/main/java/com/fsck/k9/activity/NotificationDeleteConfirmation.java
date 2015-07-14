@@ -10,7 +10,10 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.support.annotation.NonNull;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -54,11 +57,17 @@ public class NotificationDeleteConfirmation extends Activity {
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
+
+        // this is needed because Android considers 2 PendingIntents that only differ in Extras, the same
+        // and will return the already created PendingIntent instead.
+        // This MUST NOT lead to us returning a PendingIntent that deletes any other messages but the
+        // ones we have as parameters right now!!!
+        i.setData(Uri.parse("dummy://" + account.getUuid() + "/" + notificationID + "/notifydelete/" + refs.hashCode()));
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         // we can not use FLAG_UPDATE_CURRENT here because with Android Wear we may have
         // PendingIntents for all new messages and for each individual new message at the same time.
-        return PendingIntent.getActivity(context, account.getAccountNumber(), i, PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getActivity(context, account.getAccountNumber(), i, 0);
     }
 
     @Override

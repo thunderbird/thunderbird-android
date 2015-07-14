@@ -20,6 +20,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 /**
@@ -35,7 +36,13 @@ public class NotificationActionService extends CoreService {
     private final static String ACKNOWLEDGE_ACTION = "com.fsck.k9.service.NotificationActionService.ACKNOWLEDGE_ACTION";
 
     private final static String EXTRA_ACCOUNT = "account";
+    /**
+     * Single message reference.
+     */
     private final static String EXTRA_MESSAGE = "message";
+    /**
+     * Serialized message list of references.
+     */
     private final static String EXTRA_MESSAGE_LIST = "messages";
     /**
      * ID of the notification that triggered an intent.
@@ -60,6 +67,12 @@ public class NotificationActionService extends CoreService {
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setAction(REPLY_ACTION);
 
+        // this is needed because Android considers 2 PendingIntents that only differ in Extras, the same
+        // and will return the already created PendingIntent instead.
+        // This MUST NOT lead to us returning a PendingIntent that deletes any other messages but the
+        // ones we have as parameters right now!!!
+        i.setData(Uri.parse("dummy://" + account.getUuid() + "/" + notificationID + "/reply/" + ref.getUid()));
+
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -79,6 +92,12 @@ public class NotificationActionService extends CoreService {
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setAction(READ_ALL_ACTION);
 
+        // this is needed because Android considers 2 PendingIntents that only differ in Extras, the same
+        // and will return the already created PendingIntent instead.
+        // This MUST NOT lead to us returning a PendingIntent that deletes any other messages but the
+        // ones we have as parameters right now!!!
+        i.setData(Uri.parse("dummy://" + account.getUuid() + "/" + notificationID + "/read/" + refs.hashCode()));
+
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -90,11 +109,35 @@ public class NotificationActionService extends CoreService {
      * @return the requested intent. To be used in a Notification.
      * @see #EXTRA_NOTIFICATION_ID
      */
-    public static PendingIntent getAcknowledgeIntent(Context context, final Account account, final int notificationID) {
+  /*  public static PendingIntent getAcknowledgeIntent(Context context, final Account account, final int notificationID) {
         Intent i = new Intent(context, NotificationActionService.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setAction(ACKNOWLEDGE_ACTION);
+
+        return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
+    }*/
+    /**
+     *
+     * @param context context to use for creating the {@link Intent}
+     * @param account the account for the intent to act on
+     * @param notificationID ID of the notification, this intent is for.
+     * @param refs these messages are acknowledged and shoud not be notified for anymore.
+     * @return the requested intent. To be used in a Notification.
+     * @see #EXTRA_NOTIFICATION_ID
+     */
+    public static PendingIntent getAcknowledgeIntent(Context context, final Account account, final int notificationID, final Serializable refs) {
+        Intent i = new Intent(context, NotificationActionService.class);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
+        i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
+        i.putExtra(EXTRA_MESSAGE_LIST, refs);
+        i.setAction(ACKNOWLEDGE_ACTION);
+
+        // this is needed because Android considers 2 PendingIntents that only differ in Extras, the same
+        // and will return the already created PendingIntent instead.
+        // This MUST NOT lead to us returning a PendingIntent that deletes any other messages but the
+        // ones we have as parameters right now!!!
+        i.setData(Uri.parse("dummy://" + account.getUuid() + "/" + notificationID + "/ack/" + refs.hashCode()));
 
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -114,6 +157,12 @@ public class NotificationActionService extends CoreService {
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setAction(DELETE_ALL_ACTION);
+
+        // this is needed because Android considers 2 PendingIntents that only differ in Extras, the same
+        // and will return the already created PendingIntent instead.
+        // This MUST NOT lead to us returning a PendingIntent that deletes any other messages but the
+        // ones we have as parameters right now!!!
+        i.setData(Uri.parse("dummy://" + account.getUuid() + "/" + notificationID + "/delete/" + refs.hashCode()));
 
         return i;
     }
@@ -149,6 +198,12 @@ public class NotificationActionService extends CoreService {
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setAction(ARCHIVE_ALL_ACTION);
 
+        // this is needed because Android considers 2 PendingIntents that only differ in Extras, the same
+        // and will return the already created PendingIntent instead.
+        // This MUST NOT lead to us returning a PendingIntent that deletes any other messages but the
+        // ones we have as parameters right now!!!
+        i.setData(Uri.parse("dummy://" + account.getUuid() + "/" + notificationID + "/archive/" + refs.hashCode()));
+
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
 
     }
@@ -183,6 +238,12 @@ public class NotificationActionService extends CoreService {
         i.putExtra(EXTRA_MESSAGE_LIST, refs);
         i.putExtra(EXTRA_NOTIFICATION_ID, notificationID);
         i.setAction(SPAM_ALL_ACTION);
+
+        // this is needed because Android considers 2 PendingIntents that only differ in Extras, the same
+        // and will return the already created PendingIntent instead.
+        // This MUST NOT lead to us returning a PendingIntent that deletes any other messages but the
+        // ones we have as parameters right now!!!
+        i.setData(Uri.parse("dummy://" + account.getUuid() + "/" + notificationID + "/spam/" + refs.hashCode()));
 
         return PendingIntent.getService(context, account.getAccountNumber(), i, PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -305,6 +366,8 @@ public class NotificationActionService extends CoreService {
                 // nothing to do here, we just want to cancel the notification so the list
                 // of unseen messages is reset
                 Log.i(K9.LOG_TAG, "notification acknowledged");
+
+                refs = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_LIST);
             }
 
             // if this was a stacked notification on Android Wear, update the summary

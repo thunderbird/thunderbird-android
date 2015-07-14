@@ -4982,6 +4982,11 @@ public class MessagingController implements Runnable {
                     // no sound, no vibrate, no LED because these are for the summary notification only
                     // and depend on quiet time and user settings
 
+                    // discarding the notification means this one message is no longer bening notified for
+                    ArrayList<MessageReference> subAllRefs = new ArrayList<MessageReference>();
+                    subAllRefs.add(message.makeMessageReference());
+                    subBuilder.setDeleteIntent(NotificationActionService.getAcknowledgeIntent(context, account, realnID, subAllRefs));
+
                     // this must be done before the summary notification
                     notifMgr.notify(realnID, subBuilder.build());
                     data.addStackedChildNotification(m, realnID);
@@ -5068,7 +5073,7 @@ public class MessagingController implements Runnable {
         builder.setContentIntent(stack.getPendingIntent(
                 account.getAccountNumber(),
                 PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT));
-        builder.setDeleteIntent(NotificationActionService.getAcknowledgeIntent(context, account, account.getAccountNumber()));
+        builder.setDeleteIntent(NotificationActionService.getAcknowledgeIntent(context, account, account.getAccountNumber(), allRefs));
 
         // Only ring or vibrate if we have not done so already on this account and fetch
         boolean ringAndVibrate = false;
