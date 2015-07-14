@@ -72,5 +72,11 @@
                 android:title="@string/global_settings_action"/>
         </menu>
     </item>
+    <item
+        android:id="@+id/create_local_folder"
+        android:title="@string/account_settings_folder_create_local_folder"/>
+    <item
+        android:id="@+id/delete_local_folder"
+        android:title="@string/account_settings_folder_delete_local_folder"/>
 
 </menu>

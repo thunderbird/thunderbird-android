@@ -566,6 +566,14 @@ public class FolderList extends K9ListActivity {
             setDisplayMode(FolderMode.ALL);
             return true;
         }
+        case R.id.create_local_folder: {
+            Log.i("FolderList", "Create a local folder");
+            return true;
+        }
+        case R.id.delete_local_folder: {
+            Log.i("FolderList","Delete a local folder");
+            return true;
+        }
         default:
             return super.onOptionsItemSelected(item);
         }
