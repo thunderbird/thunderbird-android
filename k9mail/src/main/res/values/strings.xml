@@ -626,10 +626,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
 
-    <!--manage local folders -->
-    <string name="account_settings_folder_create_local_folder">Create a local folder</string>
-    <string name="account_settings_folder_delete_local_folder">Delete a local folder</string>
-
     <string name="account_settings_folder_sync_mode_label">Poll folders</string>
     <string name="account_settings_folder_sync_mode_all">All</string>
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
