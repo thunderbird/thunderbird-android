@@ -1156,4 +1156,8 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
 
+    <string name="type_local_folder_name">Type a valid name for the local folder</string>
+    <string name="existing_local_folder_name">A local folder with the same name already exists</string>
+    <string name="missing_local_folder_name">A local folder with this name does not exist</string>
+
 </resources>
