@@ -1,9 +1,12 @@
 package com.fsck.k9.activity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import android.app.ActionBar;
@@ -12,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.support.annotation.NonNull;
 import android.text.TextUtils.TruncateAt;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -50,12 +54,15 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.fragment.ManageLocalFolderDialog;
 import com.fsck.k9.helper.SizeFormatter;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalFolder;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
@@ -568,6 +575,20 @@ public class FolderList extends K9ListActivity {
         }
         case R.id.create_local_folder: {
             Log.i("FolderList", "Create a local folder");
+            try {
+                LocalStore ls = mAccount.getLocalStore();
+                int c = ls.getFolderCount();
+                List<? extends Folder> folders = ls.getPersonalNamespaces(true);
+                List<String> fnames = new LinkedList<String>();
+                for (Folder f:folders) fnames.add(f.getName());
+                Log.i("FolderList",String.format("Number of folders=%d",c));
+                //todo: the title does not show
+                ManageLocalFolderDialog d = ManageLocalFolderDialog.newInstance("Create a local folder", null);
+                d.show(getFragmentManager(),"Test");
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
             return true;
         }
         case R.id.delete_local_folder: {
