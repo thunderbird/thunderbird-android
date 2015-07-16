@@ -2362,13 +2362,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         // Read In-Reply-To header from draft
         final String[] inReplyTo = message.getHeader("In-Reply-To");
-        if ((inReplyTo != null) && (inReplyTo.length >= 1)) {
+        if (inReplyTo.length >= 1) {
             mInReplyTo = inReplyTo[0];
         }
 
         // Read References header from draft
         final String[] references = message.getHeader("References");
-        if ((references != null) && (references.length >= 1)) {
+        if (references.length >= 1) {
             mReferences = references[0];
         }
 
@@ -2379,8 +2379,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // Decode the identity header when loading a draft.
         // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
         Map<IdentityField, String> k9identity = new HashMap<IdentityField, String>();
-        if (message.getHeader(K9.IDENTITY_HEADER) != null && message.getHeader(K9.IDENTITY_HEADER).length > 0 && message.getHeader(K9.IDENTITY_HEADER)[0] != null) {
-            k9identity = IdentityHeaderParser.parse(message.getHeader(K9.IDENTITY_HEADER)[0]);
+        String[] identityHeaders = message.getHeader(K9.IDENTITY_HEADER);
+
+        if (identityHeaders.length > 0 && identityHeaders[0] != null) {
+            k9identity = IdentityHeaderParser.parse(identityHeaders[0]);
         }
 
         Identity newIdentity = new Identity();
