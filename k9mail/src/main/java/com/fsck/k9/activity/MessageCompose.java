@@ -999,6 +999,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         super.onResume();
         mIgnoreOnPause = false;
         MessagingController.getInstance(getApplication()).addListener(mListener);
+
+        HtmlConverter.buildActiveUriPatterns(this);
     }
 
     @Override
