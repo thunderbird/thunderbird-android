@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.fsck.k9.R;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ConteDiMonteCristo on 15/07/15.
@@ -28,8 +28,9 @@ public class CreateLocalFolderDialog extends DialogFragment
     protected static final String FOLDER_NAME = "folderName";
     protected static final String FOLDER_NAMES = "folderNames";
     private String mFolderName; //the selection for the folder name
-    private ArrayList<String> mFNames; //list of folder names
+    private String mTitle;
     private EditText editFolderName;
+    private TextView textMessage;
     private Button bOk;
     private FolderNameValidation mValidator;
 
@@ -38,9 +39,7 @@ public class CreateLocalFolderDialog extends DialogFragment
         return mFolderName;
     }
 
-    private void setmFNames(ArrayList<String> mFNames) {
-        this.mFNames = mFNames;
-    }
+    public String getTitle() {return mTitle;}
 
     private void setmValidator(FolderNameValidation mValidator) {
         this.mValidator = mValidator;
@@ -50,7 +49,7 @@ public class CreateLocalFolderDialog extends DialogFragment
      * Interface for validating the text in input
      */
     public interface FolderNameValidation{
-        public Boolean validateName(Editable field);
+        public Boolean validateName(String field);
     }
 
 
@@ -59,23 +58,18 @@ public class CreateLocalFolderDialog extends DialogFragment
     /**
      * Create a new instance of this dialog to input the name of the new folder
      * @param title the title of the dialog
-     * @param fnames a collection of names for the existing folders
      * @param validator a validator used to check that the name input is correct
      * @return a CreateLocalFolderDialog
      */
-    public static CreateLocalFolderDialog newInstance(String title, List<String> fnames, FolderNameValidation validator)
+    public static CreateLocalFolderDialog newInstance(String title, FolderNameValidation validator)
     {
         CreateLocalFolderDialog fragment = new CreateLocalFolderDialog();
-
-        ArrayList foldersNames = new ArrayList(fnames);
 
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
         args.putString(FOLDER_NAME, "");
-        args.putStringArrayList(FOLDER_NAMES, foldersNames);
 
         fragment.setArguments(args);
-        fragment.setmFNames(foldersNames);
         fragment.setmValidator(validator);
 
         return fragment;
@@ -86,25 +80,31 @@ public class CreateLocalFolderDialog extends DialogFragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.local_folder_dialog_fragment, null);
+        textMessage = (TextView)v.findViewById(R.id.local_folder_validation);
         editFolderName = (EditText)v.findViewById(R.id.local_folder_name);
         editFolderName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mValidator.validateName(s)) {
+                if (mValidator == null) return;
+                if (mValidator.validateName(s.toString())) {
                     bOk.setEnabled(true);
+                    textMessage.setText("");
+                } else {
+                    bOk.setEnabled(false);
+                    textMessage.setText(R.string.existing_local_folder_name);
                 }
-                bOk.setEnabled(false);
-
             }
         });
-        builder.setView(v)
-        // Add action buttons
+        builder.setTitle(mTitle)
+        .setView(v)
         .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {clickOk(dialog, id);}
         })
@@ -115,9 +115,17 @@ public class CreateLocalFolderDialog extends DialogFragment
 
         });
 
-        AlertDialog ad = builder.create();
-        bOk = ad.getButton(AlertDialog.BUTTON_POSITIVE);
-        return ad;
+        return builder.create();
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        AlertDialog ad = (AlertDialog)getDialog();
+        if (ad == null) return;
+        bOk = (Button)ad.getButton(AlertDialog.BUTTON_POSITIVE);
+        bOk.setEnabled(false);
     }
 
     private void clickOk(DialogInterface dialog, int id)

@@ -2,9 +2,11 @@ package com.fsck.k9.activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -51,6 +53,7 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.fragment.CreateLocalFolderDialog;
+import com.fsck.k9.helper.NotInSetValidator;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.power.TracingPowerManager;
@@ -575,10 +578,9 @@ public class FolderList extends K9ListActivity {
             try {
                 LocalStore ls = mAccount.getLocalStore();
                 List<? extends Folder> folders = ls.getPersonalNamespaces(true);
-                List<String> fnames = new LinkedList<String>();
+                Set<String> fnames = new HashSet<String>();
                 for (Folder f:folders) fnames.add(f.getName());
-                //todo: create validator
-                CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title,fnames, null);
+                CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title,new NotInSetValidator(fnames) );
                 d.show(getFragmentManager(),title);
 
             } catch (MessagingException e) {
