@@ -1,12 +1,9 @@
 package com.fsck.k9.activity;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 
 import android.app.ActionBar;
@@ -15,7 +12,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
 import android.text.TextUtils.TruncateAt;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -54,7 +50,7 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.fragment.ManageLocalFolderDialog;
+import com.fsck.k9.fragment.CreateLocalFolderDialog;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.power.TracingPowerManager;
@@ -574,25 +570,27 @@ public class FolderList extends K9ListActivity {
             return true;
         }
         case R.id.create_local_folder: {
-            Log.i("FolderList", "Create a local folder");
+            String title = "Create a local folder";
+            Log.i(K9.LOG_TAG, title);
             try {
                 LocalStore ls = mAccount.getLocalStore();
-                int c = ls.getFolderCount();
                 List<? extends Folder> folders = ls.getPersonalNamespaces(true);
                 List<String> fnames = new LinkedList<String>();
                 for (Folder f:folders) fnames.add(f.getName());
-                Log.i("FolderList",String.format("Number of folders=%d",c));
-                //todo: the title does not show
-                ManageLocalFolderDialog d = ManageLocalFolderDialog.newInstance("Create a local folder", null);
-                d.show(getFragmentManager(),"Test");
+                //todo: create validator
+                CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title,fnames, null);
+                d.show(getFragmentManager(),title);
 
             } catch (MessagingException e) {
+                //todo: manage exceptions
                 e.printStackTrace();
             }
             return true;
         }
         case R.id.delete_local_folder: {
-            Log.i("FolderList","Delete a local folder");
+            String title = "Delete a local folder";
+            Log.i(K9.LOG_TAG, title);
+
             return true;
         }
         default:
