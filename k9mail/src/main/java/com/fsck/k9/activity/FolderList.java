@@ -577,12 +577,9 @@ public class FolderList extends K9ListActivity {
             Log.i(K9.LOG_TAG, title);
             try {
                 LocalStore ls = mAccount.getLocalStore();
-                List<? extends Folder> folders = ls.getPersonalNamespaces(true);
-                Set<String> fnames = new HashSet<String>();
-                for (Folder f:folders) fnames.add(f.getName());
-                CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title,new NotInSetValidator(fnames) );
+                CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title, ls);
                 d.show(getFragmentManager(),title);
-
+                //Log.i(K9.LOG_TAG, d.getmFolderName());
             } catch (MessagingException e) {
                 //todo: manage exceptions
                 e.printStackTrace();

@@ -7,14 +7,22 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.NotInSetValidator;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mailstore.LocalStore;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,24 +32,13 @@ import java.util.Set;
  */
 public class CreateLocalFolderDialog extends DialogFragment
 {
-    protected static final String ARG_TITLE = "title";
-    protected static final String FOLDER_NAME = "folderName";
-    protected static final String FOLDER_NAMES = "folderNames";
-    private String mFolderName; //the selection for the folder name
-    private String mTitle;
+    private static final String ARG_TITLE = "title";
     private EditText editFolderName;
     private TextView textMessage;
     private Button bOk;
     private FolderNameValidation mValidator;
 
-
-    public String getmFolderName() {
-        return mFolderName;
-    }
-
-    public String getTitle() {return mTitle;}
-
-    private void setmValidator(FolderNameValidation mValidator) {
+    private void setValidator(FolderNameValidation mValidator) {
         this.mValidator = mValidator;
     }
 
@@ -49,7 +46,7 @@ public class CreateLocalFolderDialog extends DialogFragment
      * Interface for validating the text in input
      */
     public interface FolderNameValidation{
-        public Boolean validateName(String field);
+        Boolean validateName(String field);
     }
 
 
@@ -58,19 +55,26 @@ public class CreateLocalFolderDialog extends DialogFragment
     /**
      * Create a new instance of this dialog to input the name of the new folder
      * @param title the title of the dialog
-     * @param validator a validator used to check that the name input is correct
+     * @param store a reference to the local store
      * @return a CreateLocalFolderDialog
      */
-    public static CreateLocalFolderDialog newInstance(String title, FolderNameValidation validator)
-    {
+    public static CreateLocalFolderDialog newInstance(String title, LocalStore store) throws MessagingException {
+
         CreateLocalFolderDialog fragment = new CreateLocalFolderDialog();
+
+        List<? extends Folder> folders = store.getPersonalNamespaces(true);
+        Set<String> fnames = new HashSet<String>();
+        for (Folder f:folders) fnames.add(f.getName());
+
+        FolderNameValidation validator = new NotInSetValidator(fnames);
+
 
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
-        args.putString(FOLDER_NAME, "");
 
         fragment.setArguments(args);
-        fragment.setmValidator(validator);
+        fragment.setValidator(validator);
+        fragment.setStyle(STYLE_NORMAL,0);
 
         return fragment;
     }
@@ -99,11 +103,12 @@ public class CreateLocalFolderDialog extends DialogFragment
                     textMessage.setText("");
                 } else {
                     bOk.setEnabled(false);
-                    textMessage.setText(R.string.existing_local_folder_name);
+                    if (!s.toString().isEmpty())
+                        textMessage.setText(R.string.existing_local_folder_name);
                 }
             }
         });
-        builder.setTitle(mTitle)
+        builder.setTitle(getArguments().getString(ARG_TITLE))
         .setView(v)
         .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {clickOk(dialog, id);}
@@ -124,13 +129,14 @@ public class CreateLocalFolderDialog extends DialogFragment
         super.onStart();
         AlertDialog ad = (AlertDialog)getDialog();
         if (ad == null) return;
-        bOk = (Button)ad.getButton(AlertDialog.BUTTON_POSITIVE);
+        bOk = ad.getButton(AlertDialog.BUTTON_POSITIVE);
         bOk.setEnabled(false);
     }
 
     private void clickOk(DialogInterface dialog, int id)
     {
-        mFolderName = editFolderName.getText().toString();
+        String folderName = editFolderName.getText().toString();
+        Log.i(K9.LOG_TAG, String.format("Local folder to be created: %s",folderName));
     }
 
     private void clickCancel(DialogInterface dialog, int id)
