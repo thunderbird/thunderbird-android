@@ -23,8 +23,8 @@ function convert {
 }
 
 # Cope with the inconsistent naming of the drawables. Eventually fix the
-# drawable names instead of using this workaround. Three functions for
-# three different suffixes currently used.
+# drawable names instead of using this workaround. Four functions for
+# four different suffixes currently used.
 function convert1 {
 	convert $1 "_material_light" "_material_dark"
 }
@@ -35,6 +35,10 @@ function convert2 {
 
 function convert3 {
 	convert $1 "_black_material" "_white_material"
+}
+
+function convert4 {
+	convert $1 "_light" "_dark"
 }
 
 for file in \
@@ -50,3 +54,15 @@ done
 
 convert2 "folder.svg"
 convert3 "ic_attach_file.svg"
+
+for file in \
+"action_search_folder.svg" \
+"ic_action_compose.svg" \
+"ic_action_send.svg" \
+"ic_action_settings.svg" \
+"ic_button_add_contact.svg" \
+"ic_action_mark_as_read.svg" \
+"ic_action_mark_as_unread.svg" \
+; do
+	convert4 "$file"
+done
