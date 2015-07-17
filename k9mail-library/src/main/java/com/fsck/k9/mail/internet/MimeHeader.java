@@ -26,7 +26,7 @@ public class MimeHeader {
 
     public String getFirstHeader(String name) {
         String[] header = getHeader(name);
-        if (header == null) {
+        if (header.length == 0) {
             return null;
         }
         return header[0];
@@ -64,9 +64,6 @@ public class MimeHeader {
             if (field.getName().equalsIgnoreCase(name)) {
                 values.add(field.getValue());
             }
-        }
-        if (values.isEmpty()) {
-            return null;
         }
         return values.toArray(EMPTY_STRING_ARRAY);
     }
