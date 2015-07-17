@@ -18,6 +18,7 @@
 package com.fsck.k9.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.webkit.WebView;
@@ -34,6 +35,7 @@ import com.fsck.k9.helper.Utility;
  * contents with percent-based height will force the WebView to infinitely expand (or shrink).
  */
 public class RigidWebView extends WebView {
+    private static final boolean NO_THROTTLE = Build.VERSION.SDK_INT >= 21; //Build.VERSION_CODES.LOLLIPOP
 
     public RigidWebView(Context context) {
         super(context);
@@ -64,8 +66,14 @@ public class RigidWebView extends WebView {
 
     @Override
     protected void onSizeChanged(int w, int h, int ow, int oh) {
+        if (NO_THROTTLE) {
+            super.onSizeChanged(w, h, ow, oh);
+            return;
+        }
+
         mRealWidth = w;
         mRealHeight = h;
+
         long now = mClock.getTime();
         boolean recentlySized = (now - mLastSizeChangeTime < MIN_RESIZE_INTERVAL);
 

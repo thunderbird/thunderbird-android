@@ -2,8 +2,8 @@
 <manifest
     package="com.fsck.k9"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="23050"
-    android:versionName="5.105">
+    android:versionCode="23060"
+    android:versionName="5.106">
 
     <uses-feature
         android:name="android.hardware.touchscreen"

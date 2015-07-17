@@ -1937,7 +1937,7 @@ public class ImapStore extends RemoteStore {
                 */
                 String[] messageIdHeader = message.getHeader("Message-ID");
 
-                if (messageIdHeader == null || messageIdHeader.length == 0) {
+                if (messageIdHeader.length == 0) {
                     if (K9MailLib.isDebug())
                         Log.d(LOG_TAG, "Did not get a message-id in order to search for UID  for " + getLogId());
                     return null;

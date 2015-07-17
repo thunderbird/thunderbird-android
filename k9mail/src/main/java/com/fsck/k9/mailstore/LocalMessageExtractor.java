@@ -560,7 +560,7 @@ public class LocalMessageExtractor {
         // attachments.
         if (contentDisposition != null &&
                 MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)") &&
-                part.getHeader(MimeHeader.HEADER_CONTENT_ID) != null) {
+                part.getHeader(MimeHeader.HEADER_CONTENT_ID).length > 0) {
             firstClassAttachment = false;
         }
 

@@ -1024,15 +1024,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private String getFolderNameById(Account account, long folderId) {
-        try {
-            Folder folder = getFolderById(account, folderId);
-            if (folder != null) {
-                return folder.getName();
-            }
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "getFolderNameById() failed.", e);
+        Folder folder = getFolderById(account, folderId);
+        if (folder != null) {
+            return folder.getName();
         }
-
         return null;
     }
 
@@ -1042,9 +1037,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             LocalFolder localFolder = localStore.getFolderById(folderId);
             localFolder.open(Folder.OPEN_MODE_RO);
             return localFolder;
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "getFolderNameById() failed.", e);
-            return null;
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -3162,10 +3156,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         try {
             return folder.getMessage(uid);
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Something went wrong while fetching a message", e);
+            throw new RuntimeException(e);
         }
-
-        return null;
     }
 
     private List<LocalMessage> getCheckedMessages() {

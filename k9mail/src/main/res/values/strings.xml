@@ -205,11 +205,13 @@ Please submit bug reports, contribute new features and ask questions at
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> new messages</item>
     </plurals>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string>
-    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
 
     <string name="notification_action_reply">Reply</string>
     <string name="notification_action_mark_as_read">Mark Read</string>
     <string name="notification_action_delete">Delete</string>
+    <string name="notification_action_archive">Archive</string>
+    <string name="notification_action_spam">Spam</string>
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
 
@@ -351,6 +353,8 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="quiet_time">Quiet Time</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>
+    <string name="quiet_time_notification">Disable notifications</string>
+    <string name="quiet_time_notification_description">Completely disable notifications during Quiet Time</string>
     <string name="quiet_time_starts">Quiet Time starts</string>
     <string name="quiet_time_ends">Quiet Time ends</string>
 
@@ -1147,4 +1151,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_incomplete_message">Incomplete message</string>
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
+
 </resources>

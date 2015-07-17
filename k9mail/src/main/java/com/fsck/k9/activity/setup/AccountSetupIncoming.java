@@ -153,6 +153,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
+        boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
+
         try {
             ServerSettings settings = RemoteStore.decodeStoreUri(mAccount.getStoreUri());
 
@@ -203,7 +205,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
 
-                if (!Intent.ACTION_EDIT.equals(getIntent().getAction())) {
+                if (!editSettings) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
             } else if (Type.WebDAV == settings.type) {
@@ -237,7 +239,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
-            mAccount.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(settings.type));
+            if (!editSettings) {
+                mAccount.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(settings.type));
+            }
 
             // Note that mConnectionSecurityChoices is configured above based on server type
             ConnectionSecurityAdapter securityTypesAdapter =

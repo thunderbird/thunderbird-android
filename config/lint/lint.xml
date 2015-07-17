@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
     <issue id="MissingTranslation" severity="ignore" />
+    <issue id="OldTargetApi" severity="ignore" />
 
     <!-- Transifex and Lint disagree on what quantities are necessary -->
     <issue id="UnusedQuantity" severity="warning">
