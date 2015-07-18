@@ -17,8 +17,10 @@ import android.widget.TextView;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.NotInSetValidator;
+import com.fsck.k9.helper.RangeValidator;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 
 import java.util.HashSet;
@@ -36,19 +38,14 @@ public class CreateLocalFolderDialog extends DialogFragment
     private EditText editFolderName;
     private TextView textMessage;
     private Button bOk;
-    private FolderNameValidation mValidator;
+    private RangeValidator mValidator;
+    private LocalStore mStore;
 
-    private void setValidator(FolderNameValidation mValidator) {
+    private void setValidator(RangeValidator mValidator) {
         this.mValidator = mValidator;
     }
 
-    /**
-     * Interface for validating the text in input
-     */
-    public interface FolderNameValidation{
-        Boolean validateName(String field);
-    }
-
+    private void setLocalStore(LocalStore store) {mStore = store;}
 
     //todo: add list of folder names
 
@@ -66,7 +63,7 @@ public class CreateLocalFolderDialog extends DialogFragment
         Set<String> fnames = new HashSet<String>();
         for (Folder f:folders) fnames.add(f.getName());
 
-        FolderNameValidation validator = new NotInSetValidator(fnames);
+        RangeValidator validator = new NotInSetValidator(fnames);
 
 
         Bundle args = new Bundle();
@@ -74,7 +71,8 @@ public class CreateLocalFolderDialog extends DialogFragment
 
         fragment.setArguments(args);
         fragment.setValidator(validator);
-        fragment.setStyle(STYLE_NORMAL,0);
+        fragment.setLocalStore(store);
+        fragment.setStyle(STYLE_NORMAL, 0);
 
         return fragment;
     }
@@ -98,7 +96,7 @@ public class CreateLocalFolderDialog extends DialogFragment
             @Override
             public void afterTextChanged(Editable s) {
                 if (mValidator == null) return;
-                if (mValidator.validateName(s.toString())) {
+                if (mValidator.validateField(s.toString())) {
                     bOk.setEnabled(true);
                     textMessage.setText("");
                 } else {
@@ -137,6 +135,13 @@ public class CreateLocalFolderDialog extends DialogFragment
     {
         String folderName = editFolderName.getText().toString();
         Log.i(K9.LOG_TAG, String.format("Local folder to be created: %s",folderName));
+        LocalFolder lf = new LocalFolder(mStore,folderName);
+
+        try {
+            lf.create(Folder.FolderType.HOLDS_MESSAGES);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
     private void clickCancel(DialogInterface dialog, int id)
