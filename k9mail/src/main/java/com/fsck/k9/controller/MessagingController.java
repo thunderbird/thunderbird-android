@@ -617,8 +617,10 @@ public class MessagingController implements Runnable {
                             localFolder.delete(false);
                         }
 
+                        //Folders with sync class = LOCAL should not be deleted when missing in remote store
                         if (!account.isSpecialFolder(localFolderName) &&
-                                !remoteFolderNames.contains(localFolderName)) {
+                            !remoteFolderNames.contains(localFolderName) &&
+                            !localFolder.getSyncClass().equals(Folder.FolderClass.LOCAL)) {
                             localFolder.delete(false);
                         }
                     }

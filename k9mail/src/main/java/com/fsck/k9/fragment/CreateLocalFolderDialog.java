@@ -134,10 +134,13 @@ public class CreateLocalFolderDialog extends DialogFragment
     private void clickOk(DialogInterface dialog, int id)
     {
         String folderName = editFolderName.getText().toString();
-        Log.i(K9.LOG_TAG, String.format("Local folder to be created: %s",folderName));
+        Log.i(K9.LOG_TAG, String.format("Local folder to be created: %s", folderName));
         LocalFolder lf = new LocalFolder(mStore,folderName);
 
         try {
+            lf.setSyncClass(Folder.FolderClass.LOCAL);
+            lf.setDisplayClass(Folder.FolderClass.FIRST_CLASS);
+            lf.setStatus("Local Folder");
             lf.create(Folder.FolderType.HOLDS_MESSAGES);
         } catch (MessagingException e) {
             e.printStackTrace();
