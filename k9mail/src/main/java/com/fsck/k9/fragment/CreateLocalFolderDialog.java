@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -151,6 +152,9 @@ public class CreateLocalFolderDialog extends DialogFragment
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to create a local folder", e);
         }
+        Toast toast = Toast.makeText(this.getActivity(), String.format("Local folder %s created",folderName), Toast.LENGTH_SHORT);
+        toast.show();
+
         MessagingController.getInstance(getActivity().getApplication()).listFolders(mAccount, false, null);
     }
 

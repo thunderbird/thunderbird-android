@@ -1,4 +1,4 @@
-package com.fsck.k9.activity.setup;
+package com.fsck.k9.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import java.util.List;
 public class ChooseLocalFolder extends K9ListActivity {
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseLocalFolder_account";
     public static final String EXTRA_CHOICE = "com.fsck.k9.ChooseLocalFolder_choice";
-    public static final int ACTIVITY_LOCAL_FOLDER = 1;
+    public static final int ACTIVITY_LOCAL_FOLDER = 101;
     Account mAccount;
     ArrayAdapter<String> mAdapter;
     protected List<LocalFolder> mLocalFolders = null;
@@ -65,7 +65,7 @@ public class ChooseLocalFolder extends K9ListActivity {
                     lf.delete(false);
                     Intent intent = new Intent();
                     intent.putExtra(EXTRA_CHOICE,lf.getName());
-                    setResult(ACTIVITY_LOCAL_FOLDER, intent);
+                    setResult(RESULT_OK, intent);
                     finish();
                 } catch (MessagingException e) {
                     Log.e(K9.LOG_TAG, "Unable to delete a local folder", e);
@@ -74,7 +74,7 @@ public class ChooseLocalFolder extends K9ListActivity {
         });
     }
 
-    @Override
+     @Override
     public void onResume() {
         super.onResume();
         try {

@@ -2,11 +2,9 @@ package com.fsck.k9.activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -48,13 +46,11 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.activity.setup.ChooseLocalFolder;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.fragment.CreateLocalFolderDialog;
-import com.fsck.k9.helper.NotInSetValidator;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.power.TracingPowerManager;
@@ -618,8 +614,7 @@ public class FolderList extends K9ListActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // check if the request code is same as what is passed  here it is 2
-        if(requestCode==ChooseLocalFolder.ACTIVITY_LOCAL_FOLDER)
+        if(requestCode==ChooseLocalFolder.ACTIVITY_LOCAL_FOLDER && resultCode==RESULT_OK)
         {
             String folderName=data.getStringExtra(ChooseLocalFolder.EXTRA_CHOICE);
             Toast toast = Toast.makeText(getApplication(), String.format("Local folder %s deleted!",folderName), Toast.LENGTH_SHORT);

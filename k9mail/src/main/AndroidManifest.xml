@@ -159,7 +159,7 @@
             android:theme="@style/Theme.K9Dialog"/>
 
         <activity
-            android:name=".activity.setup.ChooseLocalFolder"
+            android:name=".activity.ChooseLocalFolder"
             android:configChanges="locale"
             android:label="@string/choose_local_folder_title"
             android:theme="@style/Theme.K9Dialog"/>
