@@ -144,10 +144,10 @@ public class CreateLocalFolderDialog extends DialogFragment
         LocalFolder lf = new LocalFolder(mStore,folderName);
 
         try {
+            lf.create(Folder.FolderType.HOLDS_MESSAGES);
             lf.setSyncClass(Folder.FolderClass.LOCAL);
             lf.setDisplayClass(Folder.FolderClass.FIRST_CLASS);
             lf.setStatus(getString(R.string.local_folder_status));
-            lf.create(Folder.FolderType.HOLDS_MESSAGES);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to create a local folder", e);
         }

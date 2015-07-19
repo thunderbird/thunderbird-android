@@ -6,9 +6,12 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.HashMap;
@@ -21,11 +24,13 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.Store;
@@ -33,6 +38,7 @@ import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
+import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mailstore.LocalStore;
@@ -64,6 +70,7 @@ public class Account implements BaseAccount, StoreConfig {
      * This local folder is used to store messages to be sent.
      */
     public static final String OUTBOX = "K9MAIL_INTERNAL_OUTBOX";
+
 
     public enum Expunge {
         EXPUNGE_IMMEDIATELY,
@@ -1884,4 +1891,40 @@ public class Account implements BaseAccount, StoreConfig {
             localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
         }
     }
+
+    /**
+     * Find all the local folders associated with this account
+     * @return a list of local folders
+     */
+    public List<LocalFolder> getLocalFolders() throws MessagingException {
+        LocalStore store = getLocalStore();
+        List<? extends Folder> folders = store.getPersonalNamespaces(true);
+        List<LocalFolder> localFolders = new ArrayList<LocalFolder>();
+        for(Folder f: folders) {
+            LocalFolder lf = (LocalFolder)f;
+            if (lf==null) continue;
+            if (lf.getSyncClass().equals(FolderClass.LOCAL)) localFolders.add(lf);
+        }
+
+        return localFolders;
+    }
+
+    /**
+     * Count the number of local folders
+     * @return the number of local folders
+     * @throws MessagingException
+     */
+    public int countLocalFolders() throws MessagingException {
+        int cnt = 0;
+        LocalStore store = getLocalStore();
+        List<? extends Folder> folders = store.getPersonalNamespaces(true);
+        List<LocalFolder> localFolders = new ArrayList<LocalFolder>();
+        for(Folder f: folders) {
+            LocalFolder lf = (LocalFolder)f;
+            if (lf==null) continue;
+            if (lf.getSyncClass().equals(FolderClass.LOCAL)) cnt++;
+        }
+        return cnt;
+    }
+
 }

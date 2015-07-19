@@ -48,6 +48,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.setup.AccountSettings;
+import com.fsck.k9.activity.setup.ChooseLocalFolder;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
@@ -449,6 +450,35 @@ public class FolderList extends K9ListActivity {
         onRefresh(false);
     }
 
+    private void createLocalFolder() {
+        String title = getString(R.string.local_folder_create);
+        try {
+            LocalStore ls = mAccount.getLocalStore();
+            CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title, ls, mAccount);
+            d.show(getFragmentManager(),title);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Unable to create a local folder", e);
+        }
+    }
+
+    private void deleteLocalFolder() {
+        try {
+            int nlf = mAccount.countLocalFolders();
+            if (nlf == 0)
+            {
+                Toast toast = Toast.makeText(getApplication(), getString(R.string.local_folder_delete_no_folders), Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Unable to delete a local folder", e);
+            return;
+        }
+        Intent intent = new Intent(this, ChooseLocalFolder.class);
+        intent.putExtra(ChooseLocalFolder.EXTRA_ACCOUNT, mAccount.getUuid());
+        startActivityForResult(intent, ChooseLocalFolder.ACTIVITY_LOCAL_FOLDER);
+    }
+
 
     private void onRefresh(final boolean forceRemote) {
 
@@ -573,27 +603,30 @@ public class FolderList extends K9ListActivity {
             return true;
         }
         case R.id.create_local_folder: {
-            String title = getString(R.string.local_folder_create);
-            Log.i(K9.LOG_TAG, title);
-            try {
-                LocalStore ls = mAccount.getLocalStore();
-                CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title, ls, mAccount);
-                d.show(getFragmentManager(),title);
-            } catch (MessagingException e) {
-                Log.e(K9.LOG_TAG, "Unable to create a local folder", e);
-            }
+            createLocalFolder();
             return true;
         }
         case R.id.delete_local_folder: {
-            String title = getString(R.string.local_folder_delete);
-            Log.i(K9.LOG_TAG, title);
-
+            deleteLocalFolder();
             return true;
         }
         default:
             return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode==ChooseLocalFolder.ACTIVITY_LOCAL_FOLDER)
+        {
+            String folderName=data.getStringExtra(ChooseLocalFolder.EXTRA_CHOICE);
+            Toast toast = Toast.makeText(getApplication(), String.format("Local folder %s deleted!",folderName), Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
 
     @Override
     public boolean onSearchRequested() {
@@ -951,6 +984,7 @@ public class FolderList extends K9ListActivity {
                     mHandler.accountSizeChanged(oldSize, newSize);
                 }
             }
+
         };
 
 
