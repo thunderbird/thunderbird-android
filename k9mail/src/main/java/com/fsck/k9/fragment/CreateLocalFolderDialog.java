@@ -1,5 +1,6 @@
 package com.fsck.k9.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -14,8 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.NotInSetValidator;
 import com.fsck.k9.helper.RangeValidator;
 import com.fsck.k9.mail.Folder;
@@ -40,6 +44,7 @@ public class CreateLocalFolderDialog extends DialogFragment
     private Button bOk;
     private RangeValidator mValidator;
     private LocalStore mStore;
+    private Account mAccount;
 
     private void setValidator(RangeValidator mValidator) {
         this.mValidator = mValidator;
@@ -47,7 +52,7 @@ public class CreateLocalFolderDialog extends DialogFragment
 
     private void setLocalStore(LocalStore store) {mStore = store;}
 
-    //todo: add list of folder names
+    private void setAccount(Account account) {mAccount = account;}
 
     /**
      * Create a new instance of this dialog to input the name of the new folder
@@ -55,7 +60,7 @@ public class CreateLocalFolderDialog extends DialogFragment
      * @param store a reference to the local store
      * @return a CreateLocalFolderDialog
      */
-    public static CreateLocalFolderDialog newInstance(String title, LocalStore store) throws MessagingException {
+    public static CreateLocalFolderDialog newInstance(String title, LocalStore store, Account account) throws MessagingException {
 
         CreateLocalFolderDialog fragment = new CreateLocalFolderDialog();
 
@@ -72,6 +77,7 @@ public class CreateLocalFolderDialog extends DialogFragment
         fragment.setArguments(args);
         fragment.setValidator(validator);
         fragment.setLocalStore(store);
+        fragment.setAccount(account);
         fragment.setStyle(STYLE_NORMAL, 0);
 
         return fragment;
@@ -140,16 +146,17 @@ public class CreateLocalFolderDialog extends DialogFragment
         try {
             lf.setSyncClass(Folder.FolderClass.LOCAL);
             lf.setDisplayClass(Folder.FolderClass.FIRST_CLASS);
-            lf.setStatus("Local Folder");
+            lf.setStatus(getString(R.string.local_folder_status));
             lf.create(Folder.FolderType.HOLDS_MESSAGES);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            Log.e(K9.LOG_TAG, "Unable to create a local folder", e);
         }
+        MessagingController.getInstance(getActivity().getApplication()).listFolders(mAccount, false, null);
     }
 
     private void clickCancel(DialogInterface dialog, int id)
     {
-
+        dismiss();
     }
 
 

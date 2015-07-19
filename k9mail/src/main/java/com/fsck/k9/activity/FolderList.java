@@ -573,21 +573,19 @@ public class FolderList extends K9ListActivity {
             return true;
         }
         case R.id.create_local_folder: {
-            String title = "Create a local folder";
+            String title = getString(R.string.local_folder_create);
             Log.i(K9.LOG_TAG, title);
             try {
                 LocalStore ls = mAccount.getLocalStore();
-                CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title, ls);
+                CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title, ls, mAccount);
                 d.show(getFragmentManager(),title);
-                //Log.i(K9.LOG_TAG, d.getmFolderName());
             } catch (MessagingException e) {
-                //todo: manage exceptions
-                e.printStackTrace();
+                Log.e(K9.LOG_TAG, "Unable to create a local folder", e);
             }
             return true;
         }
         case R.id.delete_local_folder: {
-            String title = "Delete a local folder";
+            String title = getString(R.string.local_folder_delete);
             Log.i(K9.LOG_TAG, title);
 
             return true;

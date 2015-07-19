@@ -1159,5 +1159,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="type_local_folder_name">Type a valid name for the local folder</string>
     <string name="existing_local_folder_name">A local folder with the same name already exists</string>
     <string name="missing_local_folder_name">A local folder with this name does not exist</string>
+    <string name="local_folder_status">Local Folder</string>
+    <string name="local_folder_create">Create a local folder</string>
+    <string name="local_folder_delete">Delete a local folder</string>
 
 </resources>
