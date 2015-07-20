@@ -75,6 +75,7 @@ public class FolderList extends K9ListActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_FROM_SHORTCUT = "fromShortcut";
+    private static final String EXTRA_FOLDER_NAME = "folderName";
 
     private static final boolean REFRESH_REMOTE = true;
 
@@ -472,8 +473,33 @@ public class FolderList extends K9ListActivity {
         }
         Intent intent = new Intent(this, ChooseLocalFolder.class);
         intent.putExtra(ChooseLocalFolder.EXTRA_ACCOUNT, mAccount.getUuid());
+        intent.putExtra(ChooseLocalFolder.EXTRA_TITLE, getString(R.string.local_folder_delete));
+
         startActivityForResult(intent, ChooseLocalFolder.ACTIVITY_LOCAL_FOLDER);
     }
+
+    private void deleteOneLocalFolder(String folderName) {
+        try {
+            LocalFolder lf = mAccount.findLocalFolder(folderName);
+            if (lf == null) {
+                Log.e(K9.LOG_TAG, String.format("Local folder %s not found", lf.getName()));
+                return;
+            }
+            if (lf.getMessageCount() > 0) {
+                Toast toast = Toast.makeText(getApplication(), getString(R.string.local_folder_delete_not_empty), Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+            Log.i(K9.LOG_TAG, String.format("Local folder to be deleted: %s", lf.getName()));
+            lf.delete(false);
+            Toast toast = Toast.makeText(getApplication(), String.format("Local folder %s deleted!",folderName), Toast.LENGTH_SHORT);
+            toast.show();
+            MessagingController.getInstance(getApplication()).listFolders(mAccount, false, null);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Unable to delete a local folder", e);
+        }
+    }
+
 
 
     private void onRefresh(final boolean forceRemote) {
@@ -695,10 +721,15 @@ public class FolderList extends K9ListActivity {
         case R.id.folder_settings:
             FolderSettings.actionSettings(this, mAccount, folder.name);
             break;
+        case R.id.local_folder_delete:
+            String folderName = item.getIntent().getStringExtra(EXTRA_FOLDER_NAME);
+            deleteOneLocalFolder(folderName);
+            break;
         }
 
         return super.onContextItemSelected(item);
     }
+
 
     @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -708,6 +739,23 @@ public class FolderList extends K9ListActivity {
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
         menu.setHeaderTitle(folder.displayName);
+        MenuItem item = menu.findItem(R.id.local_folder_delete);
+        item.setEnabled(false);
+        try {
+            LocalFolder lf = mAccount.findLocalFolder(folder.displayName);
+            if (lf != null &&
+                lf.getSyncClass().equals(Folder.FolderClass.LOCAL) &&
+                lf.getMessageCount()==0)
+            {
+                item.setEnabled(true);
+                Intent i = new Intent();
+                i.putExtra(EXTRA_FOLDER_NAME,folder.displayName);
+                item.setIntent(i);
+            }
+
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, String.format("Failed to create context item %s", item.getTitle()));
+        }
     }
 
     class FolderListAdapter extends BaseAdapter implements Filterable {

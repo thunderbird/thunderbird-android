@@ -1927,4 +1927,17 @@ public class Account implements BaseAccount, StoreConfig {
         return cnt;
     }
 
+    /**
+     * Find a local folder by name
+     * @param name name of the local folder to find
+     * @return the searched item or null if not found
+     * @throws MessagingException
+     */
+    public LocalFolder findLocalFolder(String name) throws MessagingException {
+         for (LocalFolder lf: getLocalFolders()) {
+             if (lf.getName().equals(name)) return lf;
+         }
+        return null;
+    }
+
 }

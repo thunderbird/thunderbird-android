@@ -25,6 +25,7 @@ import java.util.List;
  */
 public class ChooseLocalFolder extends K9ListActivity {
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseLocalFolder_account";
+    public static final String EXTRA_TITLE = "com.fsck.k9.ChooseLocalFolder_title";
     public static final String EXTRA_CHOICE = "com.fsck.k9.ChooseLocalFolder_choice";
     public static final int ACTIVITY_LOCAL_FOLDER = 101;
     Account mAccount;
@@ -42,18 +43,20 @@ public class ChooseLocalFolder extends K9ListActivity {
         getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+        String title = intent.getStringExtra(EXTRA_TITLE);
 
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
         setListAdapter(mAdapter);
+        View v = getListView();
+        setTitle(title);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LocalFolder lf = mLocalFolders.get(position);
                 try {
-                    if (lf.getMessageCount() > 0)
-                    {
+                    if (lf.getMessageCount() > 0) {
                         Toast toast = Toast.makeText(getApplication(), getString(R.string.local_folder_delete_not_empty), Toast.LENGTH_SHORT);
                         toast.show();
                         Intent intent = new Intent();
@@ -64,7 +67,7 @@ public class ChooseLocalFolder extends K9ListActivity {
                     Log.i(K9.LOG_TAG, String.format("Local folder to be deleted: %s", lf.getName()));
                     lf.delete(false);
                     Intent intent = new Intent();
-                    intent.putExtra(EXTRA_CHOICE,lf.getName());
+                    intent.putExtra(EXTRA_CHOICE, lf.getName());
                     setResult(RESULT_OK, intent);
                     finish();
                 } catch (MessagingException e) {
