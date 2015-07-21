@@ -8,7 +8,7 @@ import java.util.Set;
  */
 public class NotInSetValidator implements RangeValidator{
 
-    private Set<String> set;
+    private final Set<String> set;
 
     public NotInSetValidator(Set<String> set)
     {
@@ -17,7 +17,6 @@ public class NotInSetValidator implements RangeValidator{
 
     @Override
     public Boolean validateField(String field) {
-        if (field.isEmpty()) return false;
-        return !set.contains(field);
+        return !field.isEmpty() && !set.contains(field);
     }
 }

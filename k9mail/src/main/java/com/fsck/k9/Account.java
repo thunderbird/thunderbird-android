@@ -1918,7 +1918,6 @@ public class Account implements BaseAccount, StoreConfig {
         int cnt = 0;
         LocalStore store = getLocalStore();
         List<? extends Folder> folders = store.getPersonalNamespaces(true);
-        List<LocalFolder> localFolders = new ArrayList<LocalFolder>();
         for(Folder f: folders) {
             LocalFolder lf = (LocalFolder)f;
             if (lf==null) continue;

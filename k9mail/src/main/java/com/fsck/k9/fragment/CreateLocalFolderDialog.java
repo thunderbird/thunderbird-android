@@ -1,6 +1,5 @@
 package com.fsck.k9.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -20,7 +19,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.NotInSetValidator;
 import com.fsck.k9.helper.RangeValidator;
 import com.fsck.k9.mail.Folder;
@@ -88,7 +86,8 @@ public class CreateLocalFolderDialog extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View v = inflater.inflate(R.layout.local_folder_dialog_fragment, null);
+        View v = inflater.inflate(R.layout.local_folder_dialog_fragment,null);
+
         textMessage = (TextView)v.findViewById(R.id.local_folder_validation);
         editFolderName = (EditText)v.findViewById(R.id.local_folder_name);
         editFolderName.addTextChangedListener(new TextWatcher() {
@@ -116,11 +115,11 @@ public class CreateLocalFolderDialog extends DialogFragment
         builder.setTitle(getArguments().getString(ARG_TITLE))
         .setView(v)
         .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {clickOk(dialog, id);}
+            public void onClick(DialogInterface dialog, int id) {clickOk();}
         })
         .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                clickCancel(dialog, id);
+                clickCancel();
             }
 
         });
@@ -138,7 +137,7 @@ public class CreateLocalFolderDialog extends DialogFragment
         bOk.setEnabled(false);
     }
 
-    private void clickOk(DialogInterface dialog, int id)
+    private void clickOk()
     {
         String folderName = editFolderName.getText().toString();
         Log.i(K9.LOG_TAG, String.format("Local folder to be created: %s", folderName));
@@ -158,7 +157,7 @@ public class CreateLocalFolderDialog extends DialogFragment
         MessagingController.getInstance(getActivity().getApplication()).listFolders(mAccount, false, null);
     }
 
-    private void clickCancel(DialogInterface dialog, int id)
+    private void clickCancel()
     {
         dismiss();
     }

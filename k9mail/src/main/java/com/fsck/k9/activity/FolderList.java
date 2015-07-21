@@ -482,7 +482,10 @@ public class FolderList extends K9ListActivity {
         try {
             LocalFolder lf = mAccount.findLocalFolder(folderName);
             if (lf == null) {
-                Log.e(K9.LOG_TAG, String.format("Local folder %s not found", lf.getName()));
+                String name = lf.getName();
+                if (name==null)
+                    name="unknown";
+                Log.e(K9.LOG_TAG, String.format("Local folder %s not found", name));
                 return;
             }
             if (lf.getMessageCount() > 0) {

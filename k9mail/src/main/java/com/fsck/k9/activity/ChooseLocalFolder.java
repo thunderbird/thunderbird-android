@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -28,9 +27,9 @@ public class ChooseLocalFolder extends K9ListActivity {
     public static final String EXTRA_TITLE = "com.fsck.k9.ChooseLocalFolder_title";
     public static final String EXTRA_CHOICE = "com.fsck.k9.ChooseLocalFolder_choice";
     public static final int ACTIVITY_LOCAL_FOLDER = 101;
-    Account mAccount;
-    ArrayAdapter<String> mAdapter;
-    protected List<LocalFolder> mLocalFolders = null;
+    private Account mAccount;
+    private ArrayAdapter<String> mAdapter;
+    private List<LocalFolder> mLocalFolders = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,6 @@ public class ChooseLocalFolder extends K9ListActivity {
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
         setListAdapter(mAdapter);
-        View v = getListView();
         setTitle(title);
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -87,7 +85,7 @@ public class ChooseLocalFolder extends K9ListActivity {
         }
     }
 
-    protected void refreshView() throws MessagingException {
+    private void refreshView() throws MessagingException {
         mAdapter.setNotifyOnChange(false);
         mAdapter.clear();
 
