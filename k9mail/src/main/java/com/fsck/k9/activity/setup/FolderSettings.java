@@ -101,16 +101,22 @@ public class FolderSettings extends K9PreferenceActivity {
 
         mSyncClass = (ListPreference) findPreference(PREFERENCE_SYNC_CLASS);
         mSyncClass.setValue(mFolder.getRawSyncClass().name());
-        mSyncClass.setSummary(mSyncClass.getEntry());
-        mSyncClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                int index = mSyncClass.findIndexOfValue(summary);
-                mSyncClass.setSummary(mSyncClass.getEntries()[index]);
-                mSyncClass.setValue(summary);
-                return false;
-            }
-        });
+        if (mFolder.getSyncClass().equals(FolderClass.LOCAL))
+        {
+            mSyncClass.setEnabled(false);
+            mSyncClass.setSummary(getString(R.string.local_folder_synclass));
+        } else {
+            mSyncClass.setSummary(mSyncClass.getEntry());
+            mSyncClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    final String summary = newValue.toString();
+                    int index = mSyncClass.findIndexOfValue(summary);
+                    mSyncClass.setSummary(mSyncClass.getEntries()[index]);
+                    mSyncClass.setValue(summary);
+                    return false;
+                }
+            });
+        }
 
         mPushClass = (ListPreference) findPreference(PREFERENCE_PUSH_CLASS);
         mPushClass.setEnabled(isPushCapable);
