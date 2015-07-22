@@ -641,6 +641,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         return mController.isMoveCapable(mAccount);
     }
 
+    public boolean hasLocalFolders() {return mController.hasLocalFolders(mAccount);}
+
     public boolean canMessageBeArchived() {
         return (!mMessageReference.getFolderName().equals(mAccount.getArchiveFolderName())
                 && mAccount.hasArchiveFolder());

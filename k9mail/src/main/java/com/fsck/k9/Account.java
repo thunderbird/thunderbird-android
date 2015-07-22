@@ -1926,6 +1926,16 @@ public class Account implements BaseAccount, StoreConfig {
         return cnt;
     }
 
+
+    /**
+     * Check the presence of local folders
+     * @return a flag to indicate the presence of local folders
+     * @throws MessagingException
+     */
+    public boolean hasLocalFolders() throws MessagingException {
+        return countLocalFolders()>0;
+    }
+
     /**
      * Find a local folder by name
      * @param name name of the local folder to find

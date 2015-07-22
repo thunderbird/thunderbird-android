@@ -1037,7 +1037,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             /*
              * Set visibility of copy, move, archive, spam in action bar and refile submenu
              */
-            if (mMessageViewFragment.isCopyCapable()) {
+            final boolean copyCapable = mMessageViewFragment.isCopyCapable();
+            final boolean moveCapable = mMessageViewFragment.isMoveCapable();
+            final boolean hasLocalFolders = mMessageViewFragment.hasLocalFolders();
+
+            if (copyCapable || hasLocalFolders) {
                 menu.findItem(R.id.copy).setVisible(K9.isMessageViewCopyActionVisible());
                 menu.findItem(R.id.refile_copy).setVisible(true);
             } else {
@@ -1045,9 +1049,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 menu.findItem(R.id.refile_copy).setVisible(false);
             }
 
-            if (mMessageViewFragment.isMoveCapable()) {
-                boolean canMessageBeArchived = mMessageViewFragment.canMessageBeArchived();
-                boolean canMessageBeMovedToSpam = mMessageViewFragment.canMessageBeMovedToSpam();
+            if (moveCapable || hasLocalFolders) {
+                boolean canMessageBeArchived = mMessageViewFragment.canMessageBeArchived() & moveCapable;
+                boolean canMessageBeMovedToSpam = mMessageViewFragment.canMessageBeMovedToSpam() & moveCapable;
 
                 menu.findItem(R.id.move).setVisible(K9.isMessageViewMoveActionVisible());
                 menu.findItem(R.id.archive).setVisible(canMessageBeArchived &&

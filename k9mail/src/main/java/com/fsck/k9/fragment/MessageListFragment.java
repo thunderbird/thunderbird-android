@@ -1620,12 +1620,18 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             menu.findItem(R.id.unflag).setVisible(false);
         }
 
-        if (!mController.isCopyCapable(account)) {
+        boolean copyCapable = mController.isCopyCapable(account);
+        boolean moveCapable = mController.isMoveCapable(account);
+        boolean hasLocaFolder = mController.hasLocalFolders(account);
+
+        if (!copyCapable && !hasLocaFolder) {
             menu.findItem(R.id.copy).setVisible(false);
         }
 
-        if (!mController.isMoveCapable(account)) {
+        if (!moveCapable && !hasLocaFolder) {
             menu.findItem(R.id.move).setVisible(false);
+        }
+        if (!moveCapable) {
             menu.findItem(R.id.archive).setVisible(false);
             menu.findItem(R.id.spam).setVisible(false);
         }
@@ -2585,8 +2591,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 first = false;
                 // account check
                 final Account account = message.getAccount();
-                if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(account)) ||
-                        (operation == FolderOperation.COPY && !mController.isCopyCapable(account))) {
+                final boolean hasLocalFolder = mController.hasLocalFolders(account);
+                final boolean canMove = mController.isMoveCapable(account) || hasLocalFolder;
+                final boolean canCopy = mController.isCopyCapable(account) || hasLocalFolder;
+
+                if ((operation == FolderOperation.MOVE && !canMove) ||
+                    (operation == FolderOperation.COPY && !canCopy)) {
                     return false;
                 }
             }
@@ -2643,9 +2653,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         Map<String, List<LocalMessage>> folderMap = new HashMap<String, List<LocalMessage>>();
 
+
+
         for (LocalMessage message : messages) {
             if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) ||
-                    (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
+                (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
 
                 Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
                         Toast.LENGTH_LONG).show();

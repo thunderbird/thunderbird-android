@@ -3697,6 +3697,17 @@ public class MessagingController implements Runnable {
             return false;
         }
     }
+
+    public boolean hasLocalFolders(final Account account) {
+        if (account==null) return false;
+        try {
+            return account.hasLocalFolders();
+        } catch (MessagingException me) {
+            Log.e(K9.LOG_TAG, "Exception while ascertaining the presence of local folders", me);
+            return false;
+        }
+    }
+
     public void moveMessages(final Account account, final String srcFolder,
             final List<LocalMessage> messages, final String destFolder,
             final MessagingListener listener) {
@@ -3779,12 +3790,13 @@ public class MessagingController implements Runnable {
 
         try {
             Map<String, String> uidMap = new HashMap<String, String>();
+            final boolean hasLocalFolders = account.hasLocalFolders();
             Store localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
-            if (!isCopy && (!remoteStore.isMoveCapable() || !localStore.isMoveCapable())) {
+            if (!isCopy && !hasLocalFolders && (!remoteStore.isMoveCapable() || !localStore.isMoveCapable())) {
                 return;
             }
-            if (isCopy && (!remoteStore.isCopyCapable() || !localStore.isCopyCapable())) {
+            if (isCopy && !hasLocalFolders && (!remoteStore.isCopyCapable() || !localStore.isCopyCapable())) {
                 return;
             }
 
