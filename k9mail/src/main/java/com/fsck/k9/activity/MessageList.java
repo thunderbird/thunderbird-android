@@ -1039,7 +1039,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
              */
             final boolean copyCapable = mMessageViewFragment.isCopyCapable();
             final boolean moveCapable = mMessageViewFragment.isMoveCapable();
-            final boolean hasLocalFolders = mMessageViewFragment.hasLocalFolders();
+            final boolean hasLocalFolders = mMessageViewFragment.hasLocalFoldersForDestination();
 
             if (copyCapable || hasLocalFolders) {
                 menu.findItem(R.id.copy).setVisible(K9.isMessageViewCopyActionVisible());

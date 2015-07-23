@@ -1622,7 +1622,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         boolean copyCapable = mController.isCopyCapable(account);
         boolean moveCapable = mController.isMoveCapable(account);
-        boolean hasLocaFolder = mController.hasLocalFolders(account);
+        boolean hasLocaFolder = mController.hasLocalFoldersForDestination(account,mFolderName);
 
         if (!copyCapable && !hasLocaFolder) {
             menu.findItem(R.id.copy).setVisible(false);
@@ -2586,14 +2586,17 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         boolean first = true;
+        boolean hasLocalFolders = false;
         for (final LocalMessage message : messages) {
             if (first) {
                 first = false;
                 // account check
                 final Account account = message.getAccount();
-                final boolean hasLocalFolder = mController.hasLocalFolders(account);
-                final boolean canMove = mController.isMoveCapable(account) || hasLocalFolder;
-                final boolean canCopy = mController.isCopyCapable(account) || hasLocalFolder;
+
+                if (message.getFolder()!=null && message.getFolder().getName()!=null)
+                    hasLocalFolders = mController.hasLocalFoldersForDestination(account, message.getFolder().getName());
+                final boolean canMove = mController.isMoveCapable(account) || hasLocalFolders;
+                final boolean canCopy = mController.isCopyCapable(account) || hasLocalFolders;
 
                 if ((operation == FolderOperation.MOVE && !canMove) ||
                     (operation == FolderOperation.COPY && !canCopy)) {
@@ -2601,8 +2604,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 }
             }
             // message check
-            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) ||
-                    (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
+            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message) && !hasLocalFolders ) ||
+                (operation == FolderOperation.COPY && !mController.isCopyCapable(message) && !hasLocalFolders)) {
                 final Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
                                                    Toast.LENGTH_LONG);
                 toast.show();
@@ -2655,9 +2658,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
 
 
+        final boolean isDestionationLocal = mController.isLocalFolder(mAccount,destination);
         for (LocalMessage message : messages) {
-            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message)) ||
-                (operation == FolderOperation.COPY && !mController.isCopyCapable(message))) {
+            if ((operation == FolderOperation.MOVE && !mController.isMoveCapable(message) && !isDestionationLocal) ||
+                (operation == FolderOperation.COPY && !mController.isCopyCapable(message) && !isDestionationLocal)) {
 
                 Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
                         Toast.LENGTH_LONG).show();

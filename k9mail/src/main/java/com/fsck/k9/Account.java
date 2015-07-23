@@ -1928,15 +1928,6 @@ public class Account implements BaseAccount, StoreConfig {
 
 
     /**
-     * Check the presence of local folders
-     * @return a flag to indicate the presence of local folders
-     * @throws MessagingException
-     */
-    public boolean hasLocalFolders() throws MessagingException {
-        return countLocalFolders()>0;
-    }
-
-    /**
      * Find a local folder by name
      * @param name name of the local folder to find
      * @return the searched item or null if not found
@@ -1947,6 +1938,38 @@ public class Account implements BaseAccount, StoreConfig {
              if (lf.getName().equals(name)) return lf;
          }
         return null;
+    }
+
+    /**
+     * Checks if a given name corresponds to a local folder
+     * @param name folder name
+     * @return a flag indicating if we have a local folder or not
+     * @throws MessagingException
+     */
+    public boolean isLocalFolder(String name) throws MessagingException {
+        LocalStore store = getLocalStore();
+        List<? extends Folder> folders = store.getPersonalNamespaces(true);
+        for (Folder f: folders) {
+            if (f.getName().equals(name) && f.getSyncClass().equals(FolderClass.LOCAL))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if there are candidate locol folders as destination for a move
+     * or copy operation
+     * @param name the name of the source folder
+     * @return a flag indicating if there are candidate local folders as
+     * destination of a move or copy operation
+     * @throws MessagingException
+     */
+    public boolean hasLocalFoldersForDestination(String name) throws MessagingException {
+        if (name==null) return false;
+        int nlf = countLocalFolders();
+        if (isLocalFolder(name))
+            nlf--;
+        return (nlf > 0);
     }
 
 }
