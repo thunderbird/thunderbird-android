@@ -888,6 +888,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         return ((LocalFolder) folder).appendMessages(msgs, true);
     }
 
+    public Map<String, String> appendClonedMessages(List<? extends Message> msgs) throws MessagingException {
+        return appendMessages(msgs, true);
+    }
+
     @Override
     public Map<String, String> moveMessages(final List<? extends Message> msgs, final Folder destFolder) throws MessagingException {
         if (!(destFolder instanceof LocalFolder)) {
