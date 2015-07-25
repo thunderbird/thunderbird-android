@@ -1,5 +1,6 @@
 package com.fsck.k9.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -12,12 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.NotInSetValidator;
 import com.fsck.k9.helper.RangeValidator;
@@ -44,6 +47,7 @@ public class CreateLocalFolderDialog extends DialogFragment
     private RangeValidator mValidator;
     private LocalStore mStore;
     private Account mAccount;
+    private Activity mParentActivity;
 
     private void setValidator(RangeValidator mValidator) {
         this.mValidator = mValidator;
@@ -84,6 +88,7 @@ public class CreateLocalFolderDialog extends DialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mParentActivity = getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.local_folder_dialog_fragment,null);
@@ -153,6 +158,7 @@ public class CreateLocalFolderDialog extends DialogFragment
         }
         Toast toast = Toast.makeText(this.getActivity(), String.format("Local folder %s created",folderName), Toast.LENGTH_SHORT);
         toast.show();
+        ((FolderList)mParentActivity).enableDeleteLocalFolderItem();
 
         MessagingController.getInstance(getActivity().getApplication()).listFolders(mAccount, false, null);
     }

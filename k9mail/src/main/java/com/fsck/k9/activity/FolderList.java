@@ -95,6 +95,7 @@ public class FolderList extends K9ListActivity {
     private Context context;
 
     private MenuItem mRefreshMenuItem;
+    private MenuItem mDeleteLocalFolderItem;
     private View mActionBarProgressView;
     private ActionBar mActionBar;
 
@@ -497,6 +498,7 @@ public class FolderList extends K9ListActivity {
             lf.delete(false);
             Toast toast = Toast.makeText(getApplication(), String.format("Local folder %s deleted!",folderName), Toast.LENGTH_SHORT);
             toast.show();
+            enableDeleteLocalFolderItem();
             MessagingController.getInstance(getApplication()).listFolders(mAccount, false, null);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to delete a local folder", e);
@@ -648,6 +650,7 @@ public class FolderList extends K9ListActivity {
             String folderName=data.getStringExtra(ChooseLocalFolder.EXTRA_CHOICE);
             Toast toast = Toast.makeText(getApplication(), String.format("Local folder %s deleted!",folderName), Toast.LENGTH_SHORT);
             toast.show();
+            enableDeleteLocalFolderItem();
         }
     }
 
@@ -676,8 +679,21 @@ public class FolderList extends K9ListActivity {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.folder_list_option, menu);
         mRefreshMenuItem = menu.findItem(R.id.check_mail);
+        mDeleteLocalFolderItem = menu.findItem(R.id.delete_local_folder);
+        enableDeleteLocalFolderItem();
+
         configureFolderSearchView(menu);
         return true;
+    }
+
+    public void enableDeleteLocalFolderItem() {
+        if (mDeleteLocalFolderItem==null) return;
+        try {
+            mDeleteLocalFolderItem.setEnabled(mAccount.countLocalFolders()>0);
+        } catch (MessagingException e) {
+            mDeleteLocalFolderItem.setEnabled(false);
+            Log.e(K9.LOG_TAG,"Can't enable this option: delete a local folder");
+        }
     }
 
     private void configureFolderSearchView(Menu menu) {
