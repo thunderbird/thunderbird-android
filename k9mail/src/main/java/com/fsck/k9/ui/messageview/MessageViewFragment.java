@@ -408,7 +408,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onArchive() {
-        onRefile(mAccount.getArchiveFolderName());
+        if (mMessage != null) {
+            if (mAccount.isUseFolderStructureWhenArchive()) {
+                String archiveFolder = mAccount.getArchiveFolderName() + "." + mMessage.getFolder().getName();
+                onRefile(archiveFolder);
+            } else {
+                onRefile(mAccount.getArchiveFolderName());
+            }
+        }
     }
 
     public void onSpam() {

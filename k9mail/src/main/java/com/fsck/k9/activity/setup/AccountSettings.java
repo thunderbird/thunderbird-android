@@ -125,6 +125,8 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
+    private static final String PREFERENCE_ARCHIVE_OPTIONS="archive_options";
+    private static final String PREFERENCE_USE_FOLDER_STRUCTURE_WHEN_ARCHIVE = "use_folder_structure_when_archive";
 
 
     private Account mAccount;
@@ -197,6 +199,9 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mTrashFolder;
     private CheckBoxPreference mAlwaysShowCcBcc;
 
+    private PreferenceScreen mArchiveOptions;
+    private CheckBoxPreference mUseFolderStructureWhenArchive;
+
 
     public static void actionSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSettings.class);
@@ -255,6 +260,11 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAlwaysShowCcBcc = (CheckBoxPreference) findPreference(PREFERENCE_ALWAYS_SHOW_CC_BCC);
         mAlwaysShowCcBcc.setChecked(mAccount.isAlwaysShowCcBcc());
+
+        mArchiveOptions = (PreferenceScreen) findPreference(PREFERENCE_ARCHIVE_OPTIONS);
+
+        mUseFolderStructureWhenArchive = (CheckBoxPreference) findPreference(PREFERENCE_USE_FOLDER_STRUCTURE_WHEN_ARCHIVE);
+        mUseFolderStructureWhenArchive.setChecked(mAccount.isUseFolderStructureWhenArchive());
 
         mMessageReadReceipt = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGE_READ_RECEIPT);
         mMessageReadReceipt.setChecked(mAccount.isMessageReadReceiptAlways());
@@ -809,6 +819,8 @@ public class AccountSettings extends K9PreferenceActivity {
             mAccount.setRemoteSearchNumResults(Integer.parseInt(mRemoteSearchNumResults.getValue()));
             //mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
         }
+
+        mAccount.setUseFolderStructureWhenArchive(mUseFolderStructureWhenArchive.isChecked());
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(FolderMode.valueOf(mSyncMode.getValue()));

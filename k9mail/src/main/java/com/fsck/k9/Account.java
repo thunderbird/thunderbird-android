@@ -226,6 +226,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mAllowRemoteSearch;
     private boolean mRemoteSearchFullText;
     private int mRemoteSearchNumResults;
+    private boolean mUseFolderStructureWhenArchive;
 
     private ColorChip mUnreadColorChip;
     private ColorChip mReadColorChip;
@@ -322,6 +323,7 @@ public class Account implements BaseAccount, StoreConfig {
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
         mAlwaysShowCcBcc = false;
+        mUseFolderStructureWhenArchive = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -473,6 +475,8 @@ public class Account implements BaseAccount, StoreConfig {
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
         mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
 
+        mUseFolderStructureWhenArchive = prefs.getBoolean(mUuid + ".useFolderStructureWhenArchive",false);
+
         cacheChips();
 
         // Use email address as account description if necessary
@@ -567,6 +571,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".messageFormat");
         editor.remove(mUuid + ".messageReadReceipt");
         editor.remove(mUuid + ".notifyMailCheck");
+        editor.remove(mUuid + ".mUseFolderStructureWhenArchive");
         for (NetworkType type : NetworkType.values()) {
             editor.remove(mUuid + ".useCompression." + type.name());
         }
@@ -741,6 +746,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putString(mUuid + ".ringtone", mNotificationSetting.getRingtone());
         editor.putBoolean(mUuid + ".led", mNotificationSetting.isLed());
         editor.putInt(mUuid + ".ledColor", mNotificationSetting.getLedColor());
+        editor.putBoolean(mUuid + ".mUseFolderStructureWhenArchive",mUseFolderStructureWhenArchive);
 
         for (NetworkType type : NetworkType.values()) {
             Boolean useCompression = compressionMap.get(type);
@@ -1713,6 +1719,13 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setRemoteSearchFullText(boolean val) {
         mRemoteSearchFullText = val;
+    }
+
+    public boolean isUseFolderStructureWhenArchive() {
+        return mUseFolderStructureWhenArchive;
+    }
+    public void setUseFolderStructureWhenArchive(boolean val) {
+        mUseFolderStructureWhenArchive = val;
     }
 
     /**

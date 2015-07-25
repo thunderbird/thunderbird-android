@@ -705,6 +705,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_identities_label">Manage identities</string>
     <string name="account_settings_identities_summary">Set up alternate \'From\' addresses and signatures</string>
 
+    <string name="account_settings_folders_archive">Archive options</string>
+    <string name="account_settings_use_folder_structure_when_archive">Keep the folder structure when archived</string>
+
     <string name="manage_identities_title">Manage identities</string>
 
     <string name="manage_identities_context_menu_title">Manage identity</string>
