@@ -3265,6 +3265,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         return true;
     }
 
+    public boolean isLocalFolder() {
+        try {
+            return mAccount.isLocalFolder(mFolderName);
+        } catch (MessagingException e) {
+            return false;
+        }
+    }
+
     public boolean isManualSearch() {
         return mSearch.isManualSearch();
     }
@@ -3641,8 +3649,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public boolean isCheckMailSupported() {
-        return (mAllAccounts || !isSingleAccountMode() || !isSingleFolderMode() ||
-                isRemoteFolder());
+        return !isLocalFolder() &
+                (mAllAccounts || !isSingleAccountMode() || !isSingleFolderMode() || isRemoteFolder());
     }
 
     private boolean isCheckMailAllowed() {

@@ -878,6 +878,11 @@ public class FolderList extends K9ListActivity {
                         } else {
                             newFolders.add(holder);
                         }
+                        if (folder.getSyncClass().equals(Folder.FolderClass.LOCAL)) try {
+                            folder.setStatus(getString(R.string.local_folder_status));
+                        } catch (MessagingException e) {
+                            Log.e(K9.LOG_TAG,"Can't set folder status");
+                        }
                     }
                     Collections.sort(newFolders);
                     Collections.sort(topFolders);

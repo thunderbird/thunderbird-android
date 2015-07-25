@@ -30,6 +30,7 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.Search;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -886,10 +887,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             throw new MessagingException("copyMessages called with incorrect Folder");
         }
         return ((LocalFolder) folder).appendMessages(msgs, true);
-    }
-
-    public Map<String, String> appendClonedMessages(List<? extends Message> msgs) throws MessagingException {
-        return appendMessages(msgs, true);
     }
 
     @Override

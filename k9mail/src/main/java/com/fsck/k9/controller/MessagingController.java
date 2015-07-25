@@ -2240,19 +2240,14 @@ public class MessagingController implements Runnable {
                 SrcFolder.delete(messages, localDestFolderName);
             } else {
                 if (isLocalDest)
-                    DestFolder = account.getLocalStore().getFolder(destFolderName);
+                    DestFolder = localDestFolder;
                 else
                     DestFolder = account.getRemoteStore().getFolder(destFolderName);
 
                 if (isCopy) {
-                        if (isLocalDest) {
-                            ((LocalFolder)DestFolder).appendClonedMessages(messages);
-                        } else {
-                            remoteUidMap = SrcFolder.copyMessages(messages, DestFolder);
-                        }
+                    if (!isLocalDest) remoteUidMap = SrcFolder.copyMessages(messages, DestFolder);
                 } else {
                     if (isLocalDest) {
-                        ((LocalFolder)DestFolder).appendClonedMessages(messages);
                         SrcFolder.delete(messages,null);
                     } else {
                         remoteUidMap = SrcFolder.moveMessages(messages, DestFolder);
@@ -3824,13 +3819,14 @@ public class MessagingController implements Runnable {
 
         try {
             Map<String, String> uidMap = new HashMap<String, String>();
-            final boolean hasLocalFolders = account.hasLocalFoldersForDestination(srcFolder);
+            final boolean isSourceLocal = account.isLocalFolder(srcFolder);
+            final boolean isDestinationLocal = account.isLocalFolder(destFolder);
             Store localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
-            if (!isCopy && !hasLocalFolders && (!remoteStore.isMoveCapable() || !localStore.isMoveCapable())) {
+            if (!isCopy && !isDestinationLocal && (!remoteStore.isMoveCapable() || !localStore.isMoveCapable())) {
                 return;
             }
-            if (isCopy && !hasLocalFolders && (!remoteStore.isCopyCapable() || !localStore.isCopyCapable())) {
+            if (isCopy && !isDestinationLocal && (!remoteStore.isCopyCapable() || !localStore.isCopyCapable())) {
                 return;
             }
 
@@ -3841,7 +3837,7 @@ public class MessagingController implements Runnable {
             List<String> uids = new LinkedList<String>();
             for (Message message : inMessages) {
                 String uid = message.getUid();
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                if (!uid.startsWith(K9.LOCAL_UID_PREFIX) || isSourceLocal) {
                     uids.add(uid);
                 }
 
