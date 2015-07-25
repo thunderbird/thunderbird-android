@@ -62,6 +62,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
                 port,
                 autoClose
         );
+        com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory.setSNIHost(mSocketFactory, sslSocket, host);
         //hostnameVerifier.verify(host, sslSocket);
         // verifyHostName() didn't blowup - good!
         return sslSocket;
