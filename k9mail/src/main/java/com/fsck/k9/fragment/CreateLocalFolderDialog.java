@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.controller.MessagingController;
@@ -40,7 +42,8 @@ import java.util.Set;
  */
 public class CreateLocalFolderDialog extends DialogFragment
 {
-    private static final String ARG_TITLE = "title";
+    private static final String ARG_TITLE = "TITLE";
+    private static final String ARG_ACCOUNT_ID = "UUID";
     private EditText editFolderName;
     private TextView textMessage;
     private Button bOk;
@@ -48,6 +51,7 @@ public class CreateLocalFolderDialog extends DialogFragment
     private LocalStore mStore;
     private Account mAccount;
     private Activity mParentActivity;
+    private String mTitle;
 
     private void setValidator(RangeValidator mValidator) {
         this.mValidator = mValidator;
@@ -60,28 +64,17 @@ public class CreateLocalFolderDialog extends DialogFragment
     /**
      * Create a new instance of this dialog to input the name of the new folder
      * @param title the title of the dialog
-     * @param store a reference to the local store
+     * @param account the present account
      * @return a CreateLocalFolderDialog
      */
-    public static CreateLocalFolderDialog newInstance(String title, LocalStore store, Account account) throws MessagingException {
+    public static CreateLocalFolderDialog newInstance(String title, Account account) throws MessagingException {
 
         CreateLocalFolderDialog fragment = new CreateLocalFolderDialog();
-
-        List<? extends Folder> folders = store.getPersonalNamespaces(true);
-        Set<String> fnames = new HashSet<String>();
-        for (Folder f:folders) fnames.add(f.getName());
-
-        RangeValidator validator = new NotInSetValidator(fnames);
-
-
+        String accountId = account.getUuid();
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
-
+        args.putString(ARG_ACCOUNT_ID, accountId);
         fragment.setArguments(args);
-        fragment.setValidator(validator);
-        fragment.setLocalStore(store);
-        fragment.setAccount(account);
-        fragment.setStyle(STYLE_NORMAL, 0);
 
         return fragment;
     }
@@ -89,48 +82,79 @@ public class CreateLocalFolderDialog extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mParentActivity = getActivity();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View v = inflater.inflate(R.layout.local_folder_dialog_fragment,null);
 
-        textMessage = (TextView)v.findViewById(R.id.local_folder_validation);
-        editFolderName = (EditText)v.findViewById(R.id.local_folder_name);
-        editFolderName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        Bundle args = getArguments();
+        if (args==null && savedInstanceState!=null)
+            args = savedInstanceState;
+        String aid = args.getString(ARG_ACCOUNT_ID);
+        mAccount = Preferences.getPreferences(mParentActivity).getAccount(aid);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+        try {
+            mStore = mAccount.getLocalStore();
+            List<? extends Folder> folders = mStore.getPersonalNamespaces(true);
+            Set<String> fnames = new HashSet<String>();
+            for (Folder f:folders) fnames.add(f.getName());
+            mValidator = new NotInSetValidator(fnames);
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (mValidator == null) return;
-                if (mValidator.validateField(s.toString())) {
-                    bOk.setEnabled(true);
-                    textMessage.setText("");
-                } else {
-                    bOk.setEnabled(false);
-                    if (!s.toString().isEmpty())
-                        textMessage.setText(R.string.existing_local_folder_name);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View v = inflater.inflate(R.layout.local_folder_dialog_fragment,null);
+
+            textMessage = (TextView)v.findViewById(R.id.local_folder_validation);
+            editFolderName = (EditText)v.findViewById(R.id.local_folder_name);
+            editFolderName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
-            }
-        });
-        builder.setTitle(getArguments().getString(ARG_TITLE))
-        .setView(v)
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {clickOk();}
-        })
-        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                clickCancel();
-            }
 
-        });
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
 
-        return builder.create();
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (mValidator == null) return;
+                    if (bOk == null) return;
+                    if (mValidator.validateField(s.toString())) {
+                        bOk.setEnabled(true);
+                        textMessage.setText("");
+                    } else {
+                        bOk.setEnabled(false);
+                        if (!s.toString().isEmpty())
+                            textMessage.setText(R.string.existing_local_folder_name);
+                    }
+                }
+            });
+            mTitle = args.getString(ARG_TITLE);
+            builder.setTitle(mTitle)
+                    .setView(v)
+                    .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {clickOk();}
+                    })
+                    .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            clickCancel();
+                        }
+
+                    });
+
+            return builder.create();
+
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG,"Could not create dialog to create a local folder");
+        }
+
+        return null;
+
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ARG_TITLE, mTitle);
+        outState.putString(ARG_ACCOUNT_ID, mAccount.getUuid());
+    }
+
 
     @Override
     public void onStart()
@@ -139,8 +163,9 @@ public class CreateLocalFolderDialog extends DialogFragment
         AlertDialog ad = (AlertDialog)getDialog();
         if (ad == null) return;
         bOk = ad.getButton(AlertDialog.BUTTON_POSITIVE);
-        bOk.setEnabled(false);
+        bOk.setEnabled(mValidator.validateField(editFolderName.getText().toString()));
     }
+
 
     private void clickOk()
     {

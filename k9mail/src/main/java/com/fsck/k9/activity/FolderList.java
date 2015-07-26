@@ -452,7 +452,7 @@ public class FolderList extends K9ListActivity {
         String title = getString(R.string.local_folder_create);
         try {
             LocalStore ls = mAccount.getLocalStore();
-            CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title, ls, mAccount);
+            CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title, mAccount);
             d.show(getFragmentManager(),title);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to create a local folder", e);
