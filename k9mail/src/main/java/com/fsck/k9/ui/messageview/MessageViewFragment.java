@@ -379,11 +379,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onMove() {
-        if ((!mController.isMoveCapable(mAccount))
-                || (mMessage == null)) {
+        final boolean hasLocalFolders = hasLocalFoldersForDestination();
+        final boolean isMoveCapable = mController.isMoveCapable(mAccount) | hasLocalFolders;
+        if (!isMoveCapable || mMessage == null) {
             return;
         }
-        if (!mController.isMoveCapable(mMessage)) {
+        if (!(mController.isMoveCapable(mMessage) | hasLocalFolders)) {
             Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
             return;
@@ -394,11 +395,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onCopy() {
-        if ((!mController.isCopyCapable(mAccount))
-                || (mMessage == null)) {
+        final boolean hasLocalFolders = hasLocalFoldersForDestination();
+        final boolean isCopyCapable = mController.isCopyCapable(mAccount) | hasLocalFolders;
+        if (!isCopyCapable  || mMessage == null) {
             return;
         }
-        if (!mController.isCopyCapable(mMessage)) {
+        if (!(mController.isCopyCapable(mMessage) | hasLocalFolders)) {
             Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
             return;
