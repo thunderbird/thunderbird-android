@@ -1972,4 +1972,17 @@ public class Account implements BaseAccount, StoreConfig {
         return (nlf > 0);
     }
 
+
+    /**
+     * Check ig this account can move and copy freely messages
+     * @return a flag indicating move and copy capabilities at the same time
+     * @throws MessagingException
+     */
+    public boolean isCopyMoveCapable() throws MessagingException {
+        Store localStore = getLocalStore();
+        Store remoteStore = getRemoteStore();
+        return localStore.isCopyCapable() && localStore.isMoveCapable() &&
+               remoteStore.isCopyCapable() && remoteStore.isMoveCapable();
+    }
+
 }

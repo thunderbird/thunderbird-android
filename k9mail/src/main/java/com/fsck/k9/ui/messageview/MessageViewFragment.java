@@ -390,7 +390,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_MOVE);
+        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_MOVE, ChooseFolder.ACTION_MOVE);
 
     }
 
@@ -406,7 +406,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY);
+        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY, ChooseFolder.ACTION_COPY);
     }
 
     public void onArchive() {
@@ -422,12 +422,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         // mMessageView.beginSelectingText();
     }
 
-    private void startRefileActivity(int activity) {
+    private void startRefileActivity(int activity, String action) {
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderName());
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
+        intent.setAction(action);
         startActivityForResult(intent, activity);
     }
 

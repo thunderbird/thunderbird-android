@@ -9,6 +9,7 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.MessagingException;
 
 
 public class ChooseFolder extends K9ListActivity {
@@ -39,10 +41,14 @@ public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_SHOW_CURRENT = "com.fsck.k9.ChooseFolder_showcurrent";
     public static final String EXTRA_SHOW_FOLDER_NONE = "com.fsck.k9.ChooseFolder_showOptionNone";
     public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
+    public static final String EXTRA_ACTION = "com.fsck.k9.ChooseFolder_action";
+    public static final String ACTION_COPY = "do.copy";
+    public static final String ACTION_MOVE = "do.move";
 
 
     String mFolder;
     String mSelectFolder;
+    String mAction;
     Account mAccount;
     MessageReference mMessageReference;
     ArrayAdapter<String> mAdapter;
@@ -72,6 +78,9 @@ public class ChooseFolder extends K9ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (savedInstanceState!=null && savedInstanceState.containsKey(EXTRA_ACTION))
+            mAction = savedInstanceState.getString(EXTRA_ACTION);
+
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.list_content_simple);
 
@@ -93,6 +102,10 @@ public class ChooseFolder extends K9ListActivity {
         if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) {
             mShowDisplayableOnly = true;
         }
+        if (mAction == null & intent.getAction()!=null) {
+            mAction = intent.getAction();
+        }
+
         if (mFolder == null)
             mFolder = "";
 
@@ -130,6 +143,15 @@ public class ChooseFolder extends K9ListActivity {
             }
         });
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mAction!=null) {
+            outState.putString(EXTRA_ACTION, mAction);
+        }
+    }
+
 
     class ChooseFolderHandler extends Handler {
         private static final int MSG_PROGRESS = 1;
@@ -324,10 +346,27 @@ public class ChooseFolder extends K9ListActivity {
              * We're not allowed to change the adapter from a background thread, so we collect the
              * folder names and update the adapter in the UI thread (see finally block).
              */
+            boolean hasLocaFilter = false; //has filter on local folders only
+            if (mAction != null && (mAction.equals(ACTION_COPY) || mAction.equals(ACTION_MOVE))) {
+                try {
+                    hasLocaFilter = !account.isCopyMoveCapable();
+                } catch (MessagingException e) {
+                    Log.e(K9.LOG_TAG, "Failed test on account capability of move and copy actions");
+                }
+            }
             final List<String> folderList = new ArrayList<String>();
             try {
                 int position = 0;
                 for (String name : localFolders) {
+
+                    if (hasLocaFilter) {
+                        try {
+                            if (!account.isLocalFolder(name)) continue;
+                        } catch (MessagingException e) {
+                            Log.e(K9.LOG_TAG, "Failed test on folder capability of move and copy actions");
+                        }
+                    }
+
                     if (mAccount.getInboxFolderName().equalsIgnoreCase(name)) {
                         folderList.add(getString(R.string.special_mailbox_name_inbox));
                         mHeldInbox = name;

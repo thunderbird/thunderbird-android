@@ -2430,7 +2430,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
 
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folder,
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE,ChooseFolder.ACTION_MOVE, folder,
                 messages.get(0).getFolder().getAccountUuid(), null,
                 messages);
     }
@@ -2459,7 +2459,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             folder = null;
         }
 
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folder,
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, ChooseFolder.ACTION_COPY, folder,
                 messages.get(0).getFolder().getAccountUuid(),
                 null,
                 messages);
@@ -2472,6 +2472,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * @param requestCode
      *         If {@code >= 0}, this code will be returned in {@code onActivityResult()} when the
      *         activity exits.
+     * @param action
+     *         action to be passed to the activity
      * @param folder
      *         The source folder. Never {@code null}.
      * @param messages
@@ -2479,13 +2481,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      *
      * @see #startActivityForResult(Intent, int)
      */
-    private void displayFolderChoice(int requestCode, Folder folder,
+    private void displayFolderChoice(int requestCode, String action, Folder folder,
             String accountUuid, String lastSelectedFolderName,
             List<LocalMessage> messages) {
 
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, accountUuid);
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, lastSelectedFolderName);
+        intent.setAction(action);
 
         if (folder == null) {
             intent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
