@@ -9,6 +9,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
+import org.openintents.openpgp.util.OpenPgpUtils;
 
 
 public class CryptoHelper {
@@ -22,58 +23,73 @@ public class CryptoHelper {
                     ".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
                     Pattern.DOTALL);
 
+    public static final String APPLICATION_PKCS7_MIME = "application/pkcs7-mime";
+    public static final String MULTIPART_ENCRYPTED = "multipart/encrypted";
+    public static final String MULTIPART_SIGNED = "multipart/signed";
+    public static final String PROTOCOL_PARAMETER = "protocol";
+    public static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
+    public static final String APPLICATION_PGP_SIGNATURE = "application/pgp-signature";
+    public static final String TEXT_PLAIN = "text/plain";
+
     public CryptoHelper() {
         super();
     }
 
     /**
-     * TODO: use new parseMessage() from PgpUtils to actually parse!
      * @param message
      * @return
      */
-    public boolean isEncrypted(Message message) {
-        String data = null;
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null) {
-                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            }
-            if (part != null) {
-                data = MessageExtractor.getTextFromPart(part);
-            }
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
-        }
-
-        if (data == null) {
-            return false;
-        }
-
-        Matcher matcher = PGP_MESSAGE.matcher(data);
-        return matcher.matches();
+    public static boolean isSMimeEncrypted(Message message) throws MessagingException {
+        return contentHeaderContains(message, APPLICATION_PKCS7_MIME);
     }
 
-    public boolean isSigned(Message message) {
-        String data = null;
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null) {
-                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            }
-            if (part != null) {
-                data = MessageExtractor.getTextFromPart(part);
-            }
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
+    /**
+     * @param message
+     * @return
+     */
+    public static boolean isPgpMimeEncrypted(Message message) throws MessagingException {
+        return contentHeaderContains(message, MULTIPART_ENCRYPTED);
+    }
+
+    /**
+     * @param message
+     * @return
+     */
+    public static boolean isPgpInlineEncrypted(Message message) throws MessagingException {
+        Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+
+        if (part == null) {
+            return false;
         }
+
+        String data = MessageExtractor.getTextFromPart(part);
 
         if (data == null) {
             return false;
         }
 
-        Matcher matcher = PGP_SIGNED_MESSAGE.matcher(data);
-        return matcher.matches();
+        switch (OpenPgpUtils.parseMessage(data)) {
+            case OpenPgpUtils.PARSE_RESULT_MESSAGE:
+            case OpenPgpUtils.PARSE_RESULT_SIGNED_MESSAGE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private static boolean contentHeaderContains(Message message, String desiredHeader) throws MessagingException {
+        String[] contentHeaders = message.getHeader("Content-Type");
+
+        if (contentHeaders == null) {
+            return false;
+        }
+
+        for (String contentHeader : contentHeaders) {
+            if (contentHeader.equalsIgnoreCase(desiredHeader)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

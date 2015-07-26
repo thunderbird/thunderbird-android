@@ -17,13 +17,6 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 
 
 public class MessageDecryptVerifier {
-    private static final String MULTIPART_ENCRYPTED = "multipart/encrypted";
-    private static final String MULTIPART_SIGNED = "multipart/signed";
-    private static final String PROTOCOL_PARAMETER = "protocol";
-    private static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
-    private static final String APPLICATION_PGP_SIGNATURE = "application/pgp-signature";
-    private static final String TEXT_PLAIN = "text/plain";
-
 
     public static List<Part> findEncryptedParts(Part startPart) {
         List<Part> encryptedParts = new ArrayList<Part>();
@@ -35,7 +28,7 @@ public class MessageDecryptVerifier {
             String mimeType = part.getMimeType();
             Body body = part.getBody();
 
-            if (MULTIPART_ENCRYPTED.equals(mimeType)) {
+            if (CryptoHelper.MULTIPART_ENCRYPTED.equals(mimeType)) {
                 encryptedParts.add(part);
             } else if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;
@@ -59,7 +52,7 @@ public class MessageDecryptVerifier {
             String mimeType = part.getMimeType();
             Body body = part.getBody();
 
-            if (MULTIPART_SIGNED.equals(mimeType)) {
+            if (CryptoHelper.MULTIPART_SIGNED.equals(mimeType)) {
                 signedParts.add(part);
             } else if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;
@@ -83,7 +76,7 @@ public class MessageDecryptVerifier {
             String mimeType = part.getMimeType();
             Body body = part.getBody();
 
-            if (TEXT_PLAIN.equalsIgnoreCase(mimeType)) {
+            if (CryptoHelper.TEXT_PLAIN.equalsIgnoreCase(mimeType)) {
                 String text = MessageExtractor.getTextFromPart(part);
                 switch (OpenPgpUtils.parseMessage(text)) {
                     case OpenPgpUtils.PARSE_RESULT_MESSAGE:
@@ -104,12 +97,12 @@ public class MessageDecryptVerifier {
 
     public static byte[] getSignatureData(Part part) throws IOException, MessagingException {
 
-        if (MULTIPART_SIGNED.equals(part.getMimeType())) {
+        if (CryptoHelper.MULTIPART_SIGNED.equals(part.getMimeType())) {
             Body body = part.getBody();
             if (body instanceof Multipart) {
                 Multipart multi = (Multipart) body;
                 BodyPart signatureBody = multi.getBodyPart(1);
-                if (APPLICATION_PGP_SIGNATURE.equals(signatureBody.getMimeType())) {
+                if (CryptoHelper.APPLICATION_PGP_SIGNATURE.equals(signatureBody.getMimeType())) {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     signatureBody.getBody().writeTo(bos);
                     return bos.toByteArray();
@@ -121,7 +114,7 @@ public class MessageDecryptVerifier {
     }
 
     public static boolean isPgpMimeSignedPart(Part part) {
-        return MULTIPART_SIGNED.equals(part.getMimeType());
+        return CryptoHelper.MULTIPART_SIGNED.equals(part.getMimeType());
     }
 
     public static boolean isPgpMimeEncryptedPart(Part part) {
@@ -129,6 +122,6 @@ public class MessageDecryptVerifier {
 //        String contentType = part.getContentType();
 //        String protocol = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);
 //        return APPLICATION_PGP_ENCRYPTED.equals(protocol);
-        return MULTIPART_ENCRYPTED.equals(part.getMimeType());
+        return CryptoHelper.MULTIPART_ENCRYPTED.equals(part.getMimeType());
     }
 }
