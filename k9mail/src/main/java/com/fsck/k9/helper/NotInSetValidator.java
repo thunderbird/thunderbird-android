@@ -4,7 +4,8 @@ import java.util.Set;
 
 
 /**
- * Created by ConteDiMonteCristo on 16/07/15.
+ * Class to validate a value based on the predicate that it does not
+ * exists in a collection.
  */
 public class NotInSetValidator implements RangeValidator{
 

@@ -2488,6 +2488,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, accountUuid);
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, lastSelectedFolderName);
+        intent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "no");
         intent.setAction(action);
 
         if (folder == null) {

@@ -28,6 +28,8 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.LocalFolderValidator;
+import com.fsck.k9.helper.RangeValidator;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 
@@ -44,12 +46,14 @@ public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_ACTION = "com.fsck.k9.ChooseFolder_action";
     public static final String ACTION_COPY = "do.copy";
     public static final String ACTION_MOVE = "do.move";
+    public static final String ACTION_DELETE_LOCAL = "do.delete.local";
 
 
     String mFolder;
     String mSelectFolder;
     String mAction;
     Account mAccount;
+    private RangeValidator mFolderValidator;
     MessageReference mMessageReference;
     ArrayAdapter<String> mAdapter;
     private ChooseFolderHandler mHandler = new ChooseFolderHandler();
@@ -93,7 +97,8 @@ public class ChooseFolder extends K9ListActivity {
         mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE);
         mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
         mSelectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
-        if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
+        String showCurrent = intent.getStringExtra(EXTRA_SHOW_CURRENT);
+        if (showCurrent != null && showCurrent.equalsIgnoreCase("yes")) {
             mHideCurrentFolder = false;
         }
         if (intent.getStringExtra(EXTRA_SHOW_FOLDER_NONE) != null) {
@@ -104,6 +109,13 @@ public class ChooseFolder extends K9ListActivity {
         }
         if (mAction == null & intent.getAction()!=null) {
             mAction = intent.getAction();
+        }
+        if (mAction.equals(ACTION_MOVE) || mAction.equals(ACTION_COPY)) {
+            mFolderValidator = new LocalFolderValidator(mAccount);
+        } else if (mAction.equals(ACTION_DELETE_LOCAL)) {
+            mFolderValidator = new LocalFolderValidator(mAccount,true);
+        } else {
+            mFolderValidator = new LocalFolderValidator();
         }
 
         if (mFolder == null)
@@ -346,26 +358,13 @@ public class ChooseFolder extends K9ListActivity {
              * We're not allowed to change the adapter from a background thread, so we collect the
              * folder names and update the adapter in the UI thread (see finally block).
              */
-            boolean hasLocaFilter = false; //has filter on local folders only
-            if (mAction != null && (mAction.equals(ACTION_COPY) || mAction.equals(ACTION_MOVE))) {
-                try {
-                    hasLocaFilter = !account.isCopyMoveCapable();
-                } catch (MessagingException e) {
-                    Log.e(K9.LOG_TAG, "Failed test on account capability of move and copy actions");
-                }
-            }
+
             final List<String> folderList = new ArrayList<String>();
             try {
                 int position = 0;
                 for (String name : localFolders) {
 
-                    if (hasLocaFilter) {
-                        try {
-                            if (!account.isLocalFolder(name)) continue;
-                        } catch (MessagingException e) {
-                            Log.e(K9.LOG_TAG, "Failed test on folder capability of move and copy actions");
-                        }
-                    }
+                    if (!mFolderValidator.validateField(name)) continue;
 
                     if (mAccount.getInboxFolderName().equalsIgnoreCase(name)) {
                         folderList.add(getString(R.string.special_mailbox_name_inbox));
