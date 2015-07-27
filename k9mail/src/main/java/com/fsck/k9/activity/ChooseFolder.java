@@ -20,6 +20,7 @@ import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
@@ -32,6 +33,7 @@ import com.fsck.k9.helper.LocalFolderValidator;
 import com.fsck.k9.helper.RangeValidator;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mailstore.LocalFolder;
 
 
 public class ChooseFolder extends K9ListActivity {
@@ -44,18 +46,23 @@ public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_SHOW_FOLDER_NONE = "com.fsck.k9.ChooseFolder_showOptionNone";
     public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
     public static final String EXTRA_ACTION = "com.fsck.k9.ChooseFolder_action";
+    public static final String EXTRA_TITLE = "com.fsck.k9.ChooseFolder_title";
+    public static final String EXTRA_CHOICE = "com.fsck.k9.ChooseFolder_choice";
     public static final String ACTION_COPY = "do.copy";
     public static final String ACTION_MOVE = "do.move";
     public static final String ACTION_DELETE_LOCAL = "do.delete.local";
+    public static final int ACTIVITY_DELETE_LOCAL_FOLDER = 101;
 
 
     String mFolder;
     String mSelectFolder;
     String mAction;
+    String mTitle;
     Account mAccount;
     private RangeValidator mFolderValidator;
     MessageReference mMessageReference;
     ArrayAdapter<String> mAdapter;
+    private List<LocalFolder> mLocalFolders = null;
     private ChooseFolderHandler mHandler = new ChooseFolderHandler();
     String mHeldInbox = null;
     boolean mHideCurrentFolder = true;
@@ -81,9 +88,15 @@ public class ChooseFolder extends K9ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mTitle = "ChooseFolder";
 
-        if (savedInstanceState!=null && savedInstanceState.containsKey(EXTRA_ACTION))
+        if (savedInstanceState!=null && savedInstanceState.containsKey(EXTRA_ACTION)) {
             mAction = savedInstanceState.getString(EXTRA_ACTION);
+        }
+
+        if (savedInstanceState!=null && savedInstanceState.containsKey(EXTRA_TITLE)) {
+            mTitle = savedInstanceState.getString(EXTRA_TITLE);
+        }
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.list_content_simple);
@@ -110,6 +123,9 @@ public class ChooseFolder extends K9ListActivity {
         if (mAction == null & intent.getAction()!=null) {
             mAction = intent.getAction();
         }
+        if (intent.getStringExtra(EXTRA_TITLE) != null) {
+            mTitle = intent.getStringExtra(EXTRA_TITLE);
+        }
         if (mAction.equals(ACTION_MOVE) || mAction.equals(ACTION_COPY)) {
             mFolderValidator = new LocalFolderValidator(mAccount);
         } else if (mAction.equals(ACTION_DELETE_LOCAL)) {
@@ -134,6 +150,7 @@ public class ChooseFolder extends K9ListActivity {
         };
 
         setListAdapter(mAdapter);
+        setTitle(mTitle);
 
         mMode = mAccount.getFolderTargetMode();
         MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
@@ -141,19 +158,67 @@ public class ChooseFolder extends K9ListActivity {
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent result = new Intent();
-                result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
-                result.putExtra(EXTRA_CUR_FOLDER, mFolder);
-                String destFolderName = ((TextView)view).getText().toString();
-                if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
-                    destFolderName = mHeldInbox;
+                if (mAction.equals(ACTION_COPY) || mAction.equals(ACTION_MOVE)) {
+                    Intent result = new Intent();
+                    result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
+                    result.putExtra(EXTRA_CUR_FOLDER, mFolder);
+                    String destFolderName = ((TextView) view).getText().toString();
+                    if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
+                        destFolderName = mHeldInbox;
+                    }
+                    result.putExtra(EXTRA_NEW_FOLDER, destFolderName);
+                    result.putExtra(EXTRA_MESSAGE, mMessageReference);
+                    setResult(RESULT_OK, result);
+                    finish();
                 }
-                result.putExtra(EXTRA_NEW_FOLDER, destFolderName);
-                result.putExtra(EXTRA_MESSAGE, mMessageReference);
-                setResult(RESULT_OK, result);
-                finish();
+                if (mAction.equals(ACTION_DELETE_LOCAL)) {
+                    LocalFolder lf = mLocalFolders.get(position);
+                    try {
+                        if (lf.getMessageCount() > 0) {
+                            Toast toast = Toast.makeText(getApplication(), getString(R.string.local_folder_delete_not_empty), Toast.LENGTH_SHORT);
+                            toast.show();
+                            Intent intent = new Intent();
+                            setResult(RESULT_CANCELED, intent);
+                            finish();
+                            return;
+                        }
+                        Log.i(K9.LOG_TAG, String.format("Local folder to be deleted: %s", lf.getName()));
+                        lf.delete(false);
+                        Intent intent = new Intent();
+                        intent.putExtra(EXTRA_CHOICE, lf.getName());
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } catch (MessagingException e) {
+                        Log.e(K9.LOG_TAG, "Unable to delete a local folder", e);
+                    }
+                }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAction.equals(ACTION_DELETE_LOCAL)) {
+            try {
+                refreshViewForLocalDelete();
+            } catch (MessagingException e) {
+                Log.e(K9.LOG_TAG, "Unable to refresh list of local folders", e);
+            }
+        }
+    }
+
+    private void refreshViewForLocalDelete() throws MessagingException {
+        mAdapter.setNotifyOnChange(false);
+        mAdapter.clear();
+
+        mLocalFolders = mAccount.getLocalFolders();
+        for(LocalFolder lf : mLocalFolders)
+        {
+            mAdapter.add(lf.getName());
+        }
+
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -161,6 +226,9 @@ public class ChooseFolder extends K9ListActivity {
         super.onSaveInstanceState(outState);
         if (mAction!=null) {
             outState.putString(EXTRA_ACTION, mAction);
+        }
+        if (mTitle != null) {
+            outState.putString(EXTRA_TITLE, mTitle);
         }
     }
 

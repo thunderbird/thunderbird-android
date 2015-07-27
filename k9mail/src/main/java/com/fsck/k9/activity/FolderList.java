@@ -472,11 +472,13 @@ public class FolderList extends K9ListActivity {
             Log.e(K9.LOG_TAG, "Unable to delete a local folder", e);
             return;
         }
-        Intent intent = new Intent(this, ChooseLocalFolder.class);
-        intent.putExtra(ChooseLocalFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseLocalFolder.EXTRA_TITLE, getString(R.string.local_folder_delete));
+        Intent intent = new Intent(this, ChooseFolder.class);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
+        intent.putExtra(ChooseFolder.EXTRA_TITLE, getString(R.string.local_folder_delete));
+        intent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
+        intent.setAction(ChooseFolder.ACTION_DELETE_LOCAL);
 
-        startActivityForResult(intent, ChooseLocalFolder.ACTIVITY_LOCAL_FOLDER);
+        startActivityForResult(intent, ChooseFolder.ACTIVITY_DELETE_LOCAL_FOLDER);
     }
 
     private void deleteOneLocalFolder(String folderName) {
@@ -645,9 +647,9 @@ public class FolderList extends K9ListActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==ChooseLocalFolder.ACTIVITY_LOCAL_FOLDER && resultCode==RESULT_OK)
+        if(requestCode==ChooseFolder.ACTIVITY_DELETE_LOCAL_FOLDER && resultCode==RESULT_OK)
         {
-            String folderName=data.getStringExtra(ChooseLocalFolder.EXTRA_CHOICE);
+            String folderName=data.getStringExtra(ChooseFolder.EXTRA_CHOICE);
             Toast toast = Toast.makeText(getApplication(), String.format("Local folder %s deleted!",folderName), Toast.LENGTH_SHORT);
             toast.show();
             enableDeleteLocalFolderItem();

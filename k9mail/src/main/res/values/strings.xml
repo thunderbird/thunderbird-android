@@ -1168,5 +1168,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="local_folder_delete_no_folders">Could not find any local folder to delete</string>
     <string name="choose_local_folder_title">Choose local folder</string>
     <string name="local_folder_synclass">Local</string>
+    <string name="choose_folder_copy_to">Copy to ...</string>
+    <string name="choose_folder_move_to">Move to ...</string>
 
 </resources>

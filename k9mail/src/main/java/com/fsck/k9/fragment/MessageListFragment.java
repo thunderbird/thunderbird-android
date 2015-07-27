@@ -2486,10 +2486,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             List<LocalMessage> messages) {
 
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
+        intent.setAction(action);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, accountUuid);
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, lastSelectedFolderName);
         intent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "no");
-        intent.setAction(action);
+        if (action.equals(ChooseFolder.ACTION_COPY)) {
+            intent.putExtra(ChooseFolder.EXTRA_TITLE, getString(R.string.choose_folder_copy_to));
+        }
+        if (action.equals(ChooseFolder.ACTION_MOVE)) {
+            intent.putExtra(ChooseFolder.EXTRA_TITLE, getString(R.string.choose_folder_move_to));
+        }
 
         if (folder == null) {
             intent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");

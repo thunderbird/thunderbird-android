@@ -428,6 +428,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderName());
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
+        if (action.equals(ChooseFolder.ACTION_COPY)) {
+            intent.putExtra(ChooseFolder.EXTRA_TITLE, getString(R.string.choose_folder_copy_to));
+        }
+        if (action.equals(ChooseFolder.ACTION_MOVE)) {
+            intent.putExtra(ChooseFolder.EXTRA_TITLE, getString(R.string.choose_folder_move_to));
+        }
+
         intent.setAction(action);
         startActivityForResult(intent, activity);
     }
