@@ -450,13 +450,8 @@ public class FolderList extends K9ListActivity {
 
     private void createLocalFolder() {
         String title = getString(R.string.local_folder_create);
-        try {
-            LocalStore ls = mAccount.getLocalStore();
-            CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title, mAccount);
-            d.show(getFragmentManager(),title);
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Unable to create a local folder", e);
-        }
+        CreateLocalFolderDialog d = CreateLocalFolderDialog.newInstance(title, mAccount);
+        d.show(getFragmentManager(),title);
     }
 
     private void deleteLocalFolder() {
@@ -492,7 +487,7 @@ public class FolderList extends K9ListActivity {
             }
             LocalFolder lf = mAccount.findLocalFolder(folderName);
             if (lf == null) {
-                String name = lf.getName();
+                String name = folderName;
                 if (name==null)
                     name="unknown";
                 Log.e(K9.LOG_TAG, String.format("Local folder %s not found", name));

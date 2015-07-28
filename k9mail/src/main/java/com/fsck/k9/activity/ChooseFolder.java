@@ -9,6 +9,7 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,7 +82,7 @@ public class ChooseFolder extends K9ListActivity {
      * Created on the fly and invalidated if a new
      * set of folders is chosen via {@link #onOptionsItemSelected(MenuItem)}
      */
-    private FolderListFilter<String> mMyFilter = null;
+    final private FolderListFilter<String> mMyFilter = null;
 
 
     @Override
@@ -127,10 +128,13 @@ public class ChooseFolder extends K9ListActivity {
         }
         if (mAction.equals(ACTION_MOVE) || mAction.equals(ACTION_COPY)) {
             mFolderValidator = new LocalFolderValidator(mAccount);
+
         } else if (mAction.equals(ACTION_DELETE_LOCAL)) {
-            mFolderValidator = new LocalFolderValidator(mAccount,true);
+            mFolderValidator = new LocalFolderValidator(mAccount, true);
+
         } else {
             mFolderValidator = new LocalFolderValidator();
+
         }
 
         if (mFolder == null)
@@ -210,7 +214,7 @@ public class ChooseFolder extends K9ListActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mAction!=null) {
             outState.putString(EXTRA_ACTION, mAction);

@@ -6,7 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.preference.Preference;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,21 +52,13 @@ public class CreateLocalFolderDialog extends DialogFragment
     private Activity mParentActivity;
     private String mTitle;
 
-    private void setValidator(RangeValidator mValidator) {
-        this.mValidator = mValidator;
-    }
-
-    private void setLocalStore(LocalStore store) {mStore = store;}
-
-    private void setAccount(Account account) {mAccount = account;}
-
     /**
      * Create a new instance of this dialog to input the name of the new folder
      * @param title the title of the dialog
      * @param account the present account
      * @return a CreateLocalFolderDialog
      */
-    public static CreateLocalFolderDialog newInstance(String title, Account account) throws MessagingException {
+    public static CreateLocalFolderDialog newInstance(String title, Account account) {
 
         CreateLocalFolderDialog fragment = new CreateLocalFolderDialog();
         String accountId = account.getUuid();
@@ -86,7 +77,11 @@ public class CreateLocalFolderDialog extends DialogFragment
         Bundle args = getArguments();
         if (args==null && savedInstanceState!=null)
             args = savedInstanceState;
-        String aid = args.getString(ARG_ACCOUNT_ID);
+        String aid = args!= null? args.getString(ARG_ACCOUNT_ID):null;
+        if (aid==null) {
+            Log.e(K9.LOG_TAG,"Could not create dialog to create a local folder");
+            return null;
+        }
         mAccount = Preferences.getPreferences(mParentActivity).getAccount(aid);
 
         try {
@@ -149,7 +144,7 @@ public class CreateLocalFolderDialog extends DialogFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ARG_TITLE, mTitle);
         outState.putString(ARG_ACCOUNT_ID, mAccount.getUuid());
