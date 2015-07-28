@@ -461,7 +461,10 @@ public class FolderList extends K9ListActivity {
 
     private void deleteLocalFolder() {
         try {
-            int nlf = mAccount.countLocalFolders();
+            int nlf = 0;
+            if (mAccount!=null) {
+                nlf = mAccount.countLocalFolders();
+            }
             if (nlf == 0)
             {
                 Toast toast = Toast.makeText(getApplication(), getString(R.string.local_folder_delete_no_folders), Toast.LENGTH_SHORT);
@@ -483,6 +486,10 @@ public class FolderList extends K9ListActivity {
 
     private void deleteOneLocalFolder(String folderName) {
         try {
+            if (mAccount==null) {
+                Log.e(K9.LOG_TAG, "No account selected");
+                return;
+            }
             LocalFolder lf = mAccount.findLocalFolder(folderName);
             if (lf == null) {
                 String name = lf.getName();
@@ -691,7 +698,8 @@ public class FolderList extends K9ListActivity {
     public void enableDeleteLocalFolderItem() {
         if (mDeleteLocalFolderItem==null) return;
         try {
-            mDeleteLocalFolderItem.setEnabled(mAccount.countLocalFolders()>0);
+            if (mAccount != null)
+                mDeleteLocalFolderItem.setEnabled(mAccount.countLocalFolders()>0);
         } catch (MessagingException e) {
             mDeleteLocalFolderItem.setEnabled(false);
             Log.e(K9.LOG_TAG,"Can't enable this option: delete a local folder");
@@ -765,7 +773,11 @@ public class FolderList extends K9ListActivity {
         if (item != null) {
             item.setEnabled(false);
             try {
-                LocalFolder lf = mAccount.findLocalFolder(folder.displayName);
+                LocalFolder lf = null;
+                if (mAccount != null) {
+                    lf = mAccount.findLocalFolder(folder.displayName);
+                }
+
                 if (lf != null &&
                         lf.getSyncClass().equals(Folder.FolderClass.LOCAL) &&
                         lf.getMessageCount()==0)
@@ -784,7 +796,7 @@ public class FolderList extends K9ListActivity {
         item = menu.findItem(R.id.refresh_folder);
         if (item!=null) {
             try {
-                if (mAccount.isLocalFolder(folder.displayName)) {
+                if (mAccount != null && mAccount.isLocalFolder(folder.displayName)) {
                     item.setEnabled(false);
                 }
 

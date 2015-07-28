@@ -1947,7 +1947,11 @@ public class Account implements BaseAccount, StoreConfig {
      * @throws MessagingException
      */
     public boolean isLocalFolder(String name) throws MessagingException {
+        if (name == null)
+            return false;
         LocalStore store = getLocalStore();
+        if (store==null)
+            return false;
         List<? extends Folder> folders = store.getPersonalNamespaces(true);
         for (Folder f: folders) {
             if (f.getName().equals(name) && f.getSyncClass().equals(FolderClass.LOCAL))

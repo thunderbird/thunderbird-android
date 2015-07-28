@@ -3281,7 +3281,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public boolean isLocalFolder() {
         try {
-            return mAccount.isLocalFolder(mFolderName);
+            return mAccount != null && mAccount.isLocalFolder(mFolderName);
         } catch (MessagingException e) {
             return false;
         }

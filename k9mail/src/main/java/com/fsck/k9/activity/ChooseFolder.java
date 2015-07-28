@@ -173,7 +173,10 @@ public class ChooseFolder extends K9ListActivity {
                 if (mAction.equals(ACTION_DELETE_LOCAL)) {
                     String destFolderName = ((TextView) view).getText().toString();
                     try {
-                        LocalFolder lf = mAccount.findLocalFolder(destFolderName);
+                        LocalFolder lf=null;
+                        if (mAccount!=null) {
+                            lf = mAccount.findLocalFolder(destFolderName);
+                        }
                         if (lf==null) {
                             Log.e(K9.LOG_TAG, String.format("Cannot find local folder: %s", destFolderName));
                             Toast toast = Toast.makeText(getApplication(), String.format("Cannot find local folder: %s", destFolderName), Toast.LENGTH_SHORT);
