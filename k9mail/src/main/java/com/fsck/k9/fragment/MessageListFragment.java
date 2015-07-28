@@ -2821,16 +2821,20 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 menu.findItem(R.id.spam).setVisible(false);
 
             } else {
+                final boolean hasLocalFolders = mController.hasLocalFoldersForDestination(account,mFolderName);
                 // hide unsupported
-                if (!mController.isCopyCapable(account)) {
+                if (!mController.isCopyCapable(account) && !hasLocalFolders) {
                     menu.findItem(R.id.copy).setVisible(false);
                 }
 
                 if (!mController.isMoveCapable(account)) {
-                    menu.findItem(R.id.move).setVisible(false);
+                    if (!hasLocalFolders) {
+                        menu.findItem(R.id.move).setVisible(false);
+                    }
                     menu.findItem(R.id.archive).setVisible(false);
                     menu.findItem(R.id.spam).setVisible(false);
                 }
+
 
                 if (!account.hasArchiveFolder()) {
                     menu.findItem(R.id.archive).setVisible(false);

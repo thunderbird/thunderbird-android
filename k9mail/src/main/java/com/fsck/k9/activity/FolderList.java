@@ -760,22 +760,37 @@ public class FolderList extends K9ListActivity {
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
         menu.setHeaderTitle(folder.displayName);
-        MenuItem item = menu.findItem(R.id.local_folder_delete);
-        item.setEnabled(false);
-        try {
-            LocalFolder lf = mAccount.findLocalFolder(folder.displayName);
-            if (lf != null &&
-                lf.getSyncClass().equals(Folder.FolderClass.LOCAL) &&
-                lf.getMessageCount()==0)
-            {
-                item.setEnabled(true);
-                Intent i = new Intent();
-                i.putExtra(EXTRA_FOLDER_NAME,folder.displayName);
-                item.setIntent(i);
-            }
 
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, String.format("Failed to create context item %s", item.getTitle()));
+        MenuItem item = menu.findItem(R.id.local_folder_delete);
+        if (item != null) {
+            item.setEnabled(false);
+            try {
+                LocalFolder lf = mAccount.findLocalFolder(folder.displayName);
+                if (lf != null &&
+                        lf.getSyncClass().equals(Folder.FolderClass.LOCAL) &&
+                        lf.getMessageCount()==0)
+                {
+                    item.setEnabled(true);
+                    Intent i = new Intent();
+                    i.putExtra(EXTRA_FOLDER_NAME,folder.displayName);
+                    item.setIntent(i);
+                }
+
+            } catch (MessagingException e) {
+                Log.e(K9.LOG_TAG, String.format("Failed to create context item %s", item.getTitle()));
+            }
+        }
+
+        item = menu.findItem(R.id.refresh_folder);
+        if (item!=null) {
+            try {
+                if (mAccount.isLocalFolder(folder.displayName)) {
+                    item.setEnabled(false);
+                }
+
+            } catch (MessagingException e) {
+                Log.e(K9.LOG_TAG, String.format("Failed to inspect local nature of folder %s", item.getTitle()));
+            }
         }
     }
 
