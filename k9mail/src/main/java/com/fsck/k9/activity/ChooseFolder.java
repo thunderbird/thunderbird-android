@@ -62,7 +62,6 @@ public class ChooseFolder extends K9ListActivity {
     private RangeValidator mFolderValidator;
     MessageReference mMessageReference;
     ArrayAdapter<String> mAdapter;
-    private List<LocalFolder> mLocalFolders = null;
     private ChooseFolderHandler mHandler = new ChooseFolderHandler();
     String mHeldInbox = null;
     boolean mHideCurrentFolder = true;
@@ -172,8 +171,19 @@ public class ChooseFolder extends K9ListActivity {
                     finish();
                 }
                 if (mAction.equals(ACTION_DELETE_LOCAL)) {
-                    LocalFolder lf = mLocalFolders.get(position);
+                    String destFolderName = ((TextView) view).getText().toString();
                     try {
+                        LocalFolder lf = mAccount.findLocalFolder(destFolderName);
+                        if (lf==null) {
+                            Log.e(K9.LOG_TAG, String.format("Cannot find local folder: %s", destFolderName));
+                            Toast toast = Toast.makeText(getApplication(), String.format("Cannot find local folder: %s", destFolderName), Toast.LENGTH_SHORT);
+                            toast.show();
+                            Intent intent = new Intent();
+                            intent.putExtra(EXTRA_CHOICE, destFolderName);
+                            setResult(RESULT_CANCELED, intent);
+                            finish();
+                            return;
+                        }
                         if (lf.getMessageCount() > 0) {
                             Toast toast = Toast.makeText(getApplication(), getString(R.string.local_folder_delete_not_empty), Toast.LENGTH_SHORT);
                             toast.show();
@@ -194,31 +204,6 @@ public class ChooseFolder extends K9ListActivity {
                 }
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mAction.equals(ACTION_DELETE_LOCAL)) {
-            try {
-                refreshViewForLocalDelete();
-            } catch (MessagingException e) {
-                Log.e(K9.LOG_TAG, "Unable to refresh list of local folders", e);
-            }
-        }
-    }
-
-    private void refreshViewForLocalDelete() throws MessagingException {
-        mAdapter.setNotifyOnChange(false);
-        mAdapter.clear();
-
-        mLocalFolders = mAccount.getLocalFolders();
-        for(LocalFolder lf : mLocalFolders)
-        {
-            mAdapter.add(lf.getName());
-        }
-
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
