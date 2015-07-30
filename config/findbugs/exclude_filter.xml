@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<FindBugsFilter>
+    <Match>
+        <Class name="~com\.fsck\.k9\.R.*" />
+    </Match>
+    <Match>
+        <Class name="~android\..*" />
+    </Match>
+</FindBugsFilter>

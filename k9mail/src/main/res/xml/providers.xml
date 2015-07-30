@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2008 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+    <!--
+        This file is used to specify providers that we know default settings for
+        so that the user can set up their account by simply entering their email
+        address and password.
+
+        When a user starts this process, the email address is parsed, the domain
+        broken out and used to search this file for a provider. If one is found the
+        provider's settings are used to attempt to connect to the account.
+        
+        At this time, the id and label attributes are not used.  However, please include them
+        if you make edits to this file.  id must also be completely unique.  label will be shown
+        to the user when there are multiple options provided for a single domain (not currently
+        supported).
+
+        A provider contains the settings for setting up an email account
+        that ends with the given domain. Domains should be unique within
+        this file. Each provider should have at least one incoming section and
+        one outgoing section. If more than one is specified only the first
+        will be used.
+
+        Valid incoming uri schemes are:
+            imap+tls+   IMAP with required TLS transport security.
+                            If TLS is not available the connection fails.
+            imap+ssl+   IMAP with required SSL transport security.
+                            If SSL is not available the connection fails.
+
+            pop3+tls+   POP3 with required TLS transport security.
+                            If TLS is not available the connection fails.
+            pop3+ssl+   POP3 with required SSL transport security.
+                            If SSL is not available the connection fails.
+
+        Valid outgoing uri schemes are:
+            smtp+tls+   SMTP with required TLS transport security.
+                            If TLS is not available the connection fails.
+            smtp+ssl+   SMTP with required SSL transport security.
+                            If SSL is not available the connection fails.
+
+        The URIs should be full templates for connection, including a port if
+        the service uses a non-default port.  The default ports are as follows:
+            imap+tls+   143     pop3+tls+   110     smtp+tls+   587
+            imap+ssl+   993     pop3+ssl+   995     smtp+ssl+   465
+
+        The username attribute is used to supply a template for the username
+        that will be presented to the server. This username is built from a
+        set of variables that are substituted with parts of the user
+        specified email address.
+
+        Valid substitution values for the username attribute are:
+            $email - the email address the user entered
+            $user - the value before the @ sign in the email address the user entered
+            $domain - the value after the @ sign in the email address the user entered
+            
+        The username attribute MUST be specified for the incoming element, so the POP3 or IMAP
+        server can identify the mailbox to be opened.
+        
+        The username attribute MAY be the empty string for the outgoing element, but only if the 
+        SMTP server supports anonymous transmission (most don't).
+
+        While it would technically work please DO NOT add providers that don't support encrypted
+        connections.
+    -->
+
+<providers>
+
+    <!-- Gmail variants -->
+    <provider id="gmail" label="Gmail" domain="gmail.com">
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
+    </provider>
+    <provider id="googlemail" label="Google Mail" domain="googlemail.com">
+        <incoming uri="imap+ssl+://imap.googlemail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.googlemail.com" username="$email" />
+    </provider>
+    <provider id="google" label="Google" domain="google.com">
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
+    </provider>
+    <provider id="android" label="Android" domain="android.com">
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
+    </provider>
+
+    <!-- USA -->
+    <provider id="comcast" label="Comcast" domain="comcast.net">
+        <incoming uri="pop3+ssl+://mail.comcast.net" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.comcast.net" username="$user" />
+    </provider>
+    <provider id="cox" label="Cox" domain="cox.net">
+        <incoming uri="pop3+ssl+://pop.east.cox.net" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.east.cox.net" username="$user" />
+    </provider> 
+    <provider id="live" label="Windows Live Hotmail" domain="live.com">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
+    </provider>
+    <provider id="hotmail" label="Hotmail" domain="hotmail.com">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
+    </provider>
+    <provider id="outlook" label="Outlook.com" domain="outlook.com">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
+    </provider>
+    <provider id="msn" label="MSN" domain="msn.com">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
+    </provider>
+    <provider id="montclair.edu" label="MSU" domain="montclair.edu">
+        <incoming uri="imap+ssl+://mail.montclair.edu" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.montclair.edu" username="$user" />
+    </provider>
+    <provider id="gmx.com" label="GMX" domain="gmx.com">
+        <incoming uri="imap+ssl+://imap.gmx.com" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.gmx.com" username="$email" />
+    </provider>
+    <provider id="zoho.com" label="Zoho Mail" domain="zoho.com">
+    	<incoming uri="imap+ssl+://imap.zoho.com" username="$email" />
+    	<outgoing uri="smtp+tls+://smtp.zoho.com" username="$email" />
+    </provider>
+
+    <!-- Yahoo! Mail Variants -->
+    <provider id="yahoo" label="Yahoo" domain="yahoo.com">
+        <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
+    </provider>
+    <provider id="ymail" label="YMail" domain="ymail.com">
+        <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
+    </provider>
+    <provider id="rocketmail" label="Rocketmail" domain="rocketmail.com">
+        <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
+    </provider>
+    
+    <!-- Apple -->
+    <provider id="apple" label="Apple" domain="apple.com">
+        <incoming uri="imap+ssl+://imap.mail.apple.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.apple.com" username="$user" />
+    </provider>
+    <provider id="dotmac" label=".Mac" domain="mac.com">
+        <incoming uri="imap+ssl+://imap.mail.mac.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.mac.com" username="$user" />
+    </provider>
+    <provider id="mobileme" label="MobileMe" domain="me.com">
+        <incoming uri="imap+ssl+://imap.mail.me.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.me.com" username="$user" />
+    </provider>
+    <provider id="icloud" label="iCloud" domain="icloud.com">
+        <incoming uri="imap+ssl+://imap.mail.icloud.com" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.mail.icloud.com" username="$user" />
+    </provider>
+
+    <!-- Australia -->
+    <provider id="fastmail-fm" label="Fastmail" domain="fastmail.fm">
+        <incoming uri="imap+ssl+://mail.messagingengine.com" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.messagingengine.com" username="$email" />
+    </provider>
+
+   <!-- UK -->
+    <provider id="aol-uk" label="AOL" domain="aol.co.uk">
+        <incoming uri="imap+ssl+://imap.uk.aol.com" label="IMAP" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.uk.aol.com" username="$user" />
+    </provider>
+    <provider id="yahoo-uk" label="Yahoo" domain="yahoo.co.uk">
+        <incoming uri="pop3+ssl+://pop.mail.yahoo.co.uk" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.mail.yahoo.co.uk" username="$user" />
+    </provider>
+    
+    <!-- Germany -->
+    <provider id="mailbox.org" label="mailbox.org" domain="mailbox.org">
+        <incoming uri="imap+tls+://imap.mailbox.org" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mailbox.org" username="$email" />
+    </provider>
+    <provider id="freenet" label="Freenet" domain="freenet.de">
+        <incoming uri="imap+tls+://mx.freenet.de" username="$email" />
+        <outgoing uri="smtp+tls+://mx.freenet.de" username="$email" />
+    </provider>
+    <provider id="T-Online" label="T-Online" domain="t-online.de">
+        <incoming uri="imap+ssl+://secureimap.t-online.de" username="$email" />
+        <outgoing uri="smtp+tls+://securesmtp.t-online.de" username="$email" />
+    </provider>
+    <provider id="web.de" label="Web.de" domain="web.de">
+        <incoming uri="imap+ssl+://imap.web.de" username="$user" />
+        <outgoing uri="smtp+tls+://smtp.web.de" username="$user" />
+    </provider>
+    <provider id="posteo" label="Posteo" domain="posteo.de">
+        <incoming uri="imap+tls+://posteo.de" username="$email" />
+        <outgoing uri="smtp+tls+://posteo.de" username="$email" />
+    </provider>
+    <!-- GMX variants -->
+    <provider id="gmx.net" label="GMX.net" domain="gmx.net">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
+    </provider>
+    <provider id="gmx.de" label="GMX.de" domain="gmx.de">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
+    </provider>
+    <provider id="gmx.at" label="GMX.at" domain="gmx.at">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
+    </provider>
+    <provider id="gmx.ch" label="GMX.ch" domain="gmx.ch">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
+    </provider>
+    <provider id="gmx.eu" label="GMX.eu" domain="gmx.eu">
+        <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
+    </provider>
+    
+   <!-- Switzerland -->
+    <!-- MyKolab.com variants -->
+    <provider id="mykolab.com" label="MyKolab.com" domain="mykolab.com">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="attorneymail.ch" label="MyKolab.com" domain="attorneymail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="barmail.ch" label="MyKolab.com" domain="barmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="collaborative.li" label="MyKolab.com" domain="collaborative.li">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="diplomail.ch" label="MyKolab.com" domain="diplomail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="groupoffice.ch" label="MyKolab.com" domain="groupoffice.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="journalistmail.ch" label="MyKolab.com" domain="journalistmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="legalprivilege.ch" label="MyKolab.com" domain="legalprivilege.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="mailatlaw.ch" label="MyKolab.com" domain="mailatlaw.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="medmail.ch" label="MyKolab.com" domain="medmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="mykolab.ch" label="MyKolab.com" domain="mykolab.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="myswissmail.ch" label="MyKolab.com" domain="myswissmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="opengroupware.ch" label="MyKolab.com" domain="opengroupware.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="pressmail.ch" label="MyKolab.com" domain="pressmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="swisscollab.ch" label="MyKolab.com" domain="swisscollab.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="swissgroupware.ch" label="MyKolab.com" domain="swissgroupware.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="switzerlandmail.ch" label="MyKolab.com" domain="switzerlandmail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+    <provider id="trusted-legal-mail.ch" label="MyKolab.com" domain="trusted-legal-mail.ch">
+        <incoming uri="imap+tls+://imap.mykolab.com" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.mykolab.com" username="$email" />
+    </provider>
+
+    <!-- Poland -->
+    <provider id="interia" label="Interia" domain="interia.pl">
+        <incoming uri="pop3+ssl+://poczta.interia.pl" username="$user" />
+        <outgoing uri="smtp+ssl+://poczta.interia.pl" username="$user" />
+    </provider>
+    <provider id="o2" label="O2" domain="o2.pl">
+        <incoming uri="pop3+ssl+://poczta.o2.pl" username="$user" />
+        <outgoing uri="smtp+ssl+://poczta.o2.pl" username="$user" />
+    </provider>
+
+   <!-- Japanese -->
+    <provider id="auone" label="au one" domain="auone.jp"
+              note="@string/provider_note_auonejp">
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
+    </provider>
+
+   <!-- Korean -->
+    <provider id="naver" label="Naver" domain="naver.com"
+			  note="@string/provider_note_naver">
+        <incoming uri="imap+ssl+://imap.naver.com"  username="$user" />
+        <outgoing uri="smtp+tls+://smtp.naver.com:587" username="$user" />
+    </provider>
+    <provider id="hanmail" label="Hanmail" domain="hanmail.net"
+			  note="@string/provider_note_hanmail">
+        <incoming uri="imap+ssl+://imap.hanmail.net"  username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.hanmail.net" username="$user" />
+    </provider>
+    <provider id="daum" label="Hanmail" domain="daum.net"
+			  note="@string/provider_note_hanmail">
+        <incoming uri="imap+ssl+://imap.hanmail.net"  username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.hanmail.net" username="$user" />
+    </provider>
+    
+   <!-- Russia -->
+    <!-- Mail.Ru variants -->
+    <provider id="rumailmailimap" label="mail.ru" domain="mail.ru">
+        <incoming uri="imap+ssl+://imap.mail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
+    </provider>
+    <provider id="rumailinboximap" label="inbox.ru" domain="inbox.ru">
+        <incoming uri="imap+ssl+://imap.mail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
+    </provider>
+    <provider id="rumaillistimap" label="list.ru" domain="list.ru">
+        <incoming uri="imap+ssl+://imap.mail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
+    </provider>
+    <provider id="rumailbkimap" label="bk.ru" domain="bk.ru">
+        <incoming uri="imap+ssl+://imap.mail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
+    </provider>
+    <!-- Yandex.ru variants -->
+    <provider id="comyanyandeximap" label="yandex.com" domain="yandex.com">
+        <incoming uri="imap+ssl+://imap.yandex.com" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.yandex.com" username="$user" />
+    </provider>
+    <provider id="ruyanyandeximap" label="yandex.ru" domain="yandex.ru">
+        <incoming uri="imap+ssl+://imap.yandex.ru" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.yandex.ru" username="$user" />
+    </provider>
+    <provider id="ruyanyaimap" label="ya.ru" domain="ya.ru">
+        <incoming uri="imap+ssl+://imap.ya.ru" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.ya.ru" username="$user" />
+    </provider>
+    <provider id="ruyannarodimap" label="narod.ru" domain="narod.ru">
+        <incoming uri="imap+ssl+://imap.narod.ru" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.narod.ru" username="$user" />
+    </provider>
+    <!-- Rambler.ru variants -->
+    <provider id="ruramramblerimap" label="rambler.ru" domain="rambler.ru">
+        <incoming uri="imap+ssl+://mail.rambler.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.rambler.ru" username="$email" />
+    </provider>
+    <provider id="ruramlentaimap" label="lenta.ru" domain="lenta.ru">
+        <incoming uri="imap+ssl+://mail.rambler.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.rambler.ru" username="$email" />
+    </provider>
+    <provider id="ruramroimap" label="ro.ru" domain="ro.ru">
+        <incoming uri="imap+ssl+://mail.rambler.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://mail.rambler.ru" username="$email" />
+    </provider>
+    <!-- QIP.RU variants -->
+    <provider id="ruqipqipimap" label="qip.ru" domain="qip.ru">
+        <incoming uri="imap+ssl+://imap.qip.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.qip.ru" username="$email" />
+    </provider>
+    <provider id="ruqippochtaimap" label="pochta.ru" domain="pochta.ru">
+        <incoming uri="imap+ssl+://imap.pochta.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pochta.ru" username="$email" />
+    </provider>
+    <provider id="comqipfromruimap" label="fromru.com" domain="fromru.com">
+        <incoming uri="imap+ssl+://imap.fromru.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.fromru.com" username="$email" />
+    </provider>
+    <provider id="ruqipfrontimap" label="front.ru" domain="front.ru">
+        <incoming uri="imap+ssl+://imap.front.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.front.ru" username="$email" />
+    </provider>
+    <provider id="ruqiphotboximap" label="hotbox.ru" domain="hotbox.ru">
+        <incoming uri="imap+ssl+://imap.hotbox.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.hotbox.ru" username="$email" />
+    </provider>
+    <provider id="ruqiphotmailimap" label="hotmail.ru" domain="hotmail.ru">
+        <incoming uri="imap+ssl+://imap.hotmail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.hotmail.ru" username="$email" />
+    </provider>
+    <provider id="suqipkrovatkaimap" label="krovatka.su" domain="krovatka.su">
+        <incoming uri="imap+ssl+://imap.krovatka.su" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.krovatka.su" username="$email" />
+    </provider>
+    <provider id="ruqiplandimap" label="land.ru" domain="land.ru">
+        <incoming uri="imap+ssl+://imap.land.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.land.ru" username="$email" />
+    </provider>
+    <provider id="comqipmail15imap" label="mail15.com" domain="mail15.com">
+        <incoming uri="imap+ssl+://imap.mail15.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail15.com" username="$email" />
+    </provider>
+    <provider id="comqipmail333imap" label="mail333.com" domain="mail333.com">
+        <incoming uri="imap+ssl+://imap.mail333.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail333.com" username="$email" />
+    </provider>
+    <provider id="ruqipnewmailimap" label="newmail.ru" domain="newmail.ru">
+        <incoming uri="imap+ssl+://imap.newmail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.newmail.ru" username="$email" />
+    </provider>
+    <provider id="ruqipnightmailimap" label="nightmail.ru" domain="nightmail.ru">
+        <incoming uri="imap+ssl+://imap.nightmail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.nightmail.ru" username="$email" />
+    </provider>
+    <provider id="ruqipnmimap" label="nm.ru" domain="nm.ru">
+        <incoming uri="imap+ssl+://imap.nm.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.nm.ru" username="$email" />
+    </provider>
+    <provider id="netqippisemimap" label="pisem.net" domain="pisem.net">
+        <incoming uri="imap+ssl+://imap.pisem.net" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pisem.net" username="$email" />
+    </provider>
+    <provider id="ruqippochtamtimap" label="pochtamt.ru" domain="pochtamt.ru">
+        <incoming uri="imap+ssl+://imap.pochtamt.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pochtamt.ru" username="$email" />
+    </provider>
+    <provider id="ruqippop3imap" label="pop3.ru" domain="pop3.ru">
+        <incoming uri="imap+ssl+://imap.pop3.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pop3.ru" username="$email" />
+    </provider>
+    <provider id="ruqiprbcmailimap" label="rbcmail.ru" domain="rbcmail.ru">
+        <incoming uri="imap+ssl+://imap.rbcmail.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.rbcmail.ru" username="$email" />
+    </provider>
+    <provider id="ruqipsmtpimap" label="smtp.ru" domain="smtp.ru">
+        <incoming uri="imap+ssl+://imap.smtp.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.smtp.ru" username="$email" />
+    </provider>
+    <provider id="ruqip5ballovimap" label="5ballov.ru" domain="5ballov.ru">
+        <incoming uri="imap+ssl+://imap.5ballov.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.5ballov.ru" username="$email" />
+    </provider>
+    <provider id="ruqipaeternaimap" label="aeterna.ru" domain="aeterna.ru">
+        <incoming uri="imap+ssl+://imap.aeterna.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.aeterna.ru" username="$email" />
+    </provider>
+    <provider id="ruqipzizaimap" label="ziza.ru" domain="ziza.ru">
+        <incoming uri="imap+ssl+://imap.ziza.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.ziza.ru" username="$email" />
+    </provider>
+    <provider id="ruqipmemoriimap" label="memori.ru" domain="memori.ru">
+        <incoming uri="imap+ssl+://imap.memori.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.memori.ru" username="$email" />
+    </provider>
+    <provider id="ruqipphotofileimap" label="photofile.ru" domain="photofile.ru">
+        <incoming uri="imap+ssl+://imap.photofile.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.photofile.ru" username="$email" />
+    </provider>
+    <provider id="ruqipfotoplenkaimap" label="fotoplenka.ru" domain="fotoplenka.ru">
+        <incoming uri="imap+ssl+://imap.fotoplenka.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.fotoplenka.ru" username="$email" />
+    </provider>
+    <provider id="comqippochtaimap" label="pochta.com" domain="pochta.com">
+        <incoming uri="imap+ssl+://imap.pochta.ru" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.pochta.ru" username="$email" />
+    </provider>
+
+    <!-- Slovakia -->
+    <provider id="azet.sk" label="Azet.sk" domain="azet.sk">
+        <incoming uri="imap+ssl+://imap.azet.sk" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.azet.sk" username="$email" />
+    </provider>
+    <provider id="outlook.sk" label="Outlook.sk" domain="outlook.sk">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
+    </provider>
+
+    <!-- Developers' vanity providers -->
+    <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
+        <incoming uri="imap+ssl+://fsck.com"  username="$user" />
+        <outgoing uri="smtp+tls+://mail.bestpractical.com:2525" />
+    </provider>
+    <provider id="bestpractical.com" label="Best Practical Solutions" domain="bestpractical.com" >
+        <incoming uri="imap+ssl+://imap.bestpractical.com"  username="$user" />
+        <outgoing uri="smtp+tls+://smtp.bestpractical.com:2525" />
+    </provider>
+</providers>

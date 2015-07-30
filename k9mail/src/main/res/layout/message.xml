@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fsck.k9.ui.messageview.MessageTopView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/message_view"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    android:background="?attr/messageViewBackgroundColor">
+
+    <com.fsck.k9.view.NonLockingScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+	        android:layout_height="fill_parent">
+
+	        <!-- Header area -->
+	        <include layout="@layout/message_view_header"/>
+
+            <Button
+                android:id="@+id/show_pictures"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="4dip"
+                android:layout_marginLeft="6dip"
+                android:layout_marginRight="6dip"
+                android:layout_marginTop="4dip"
+                android:text="@string/message_view_show_pictures_action"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/message_containers"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+	    </LinearLayout>
+
+    </com.fsck.k9.view.NonLockingScrollView>
+
+    <Button android:id="@+id/download_remainder"
+        android:text="@string/message_view_download_remainder"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_width="fill_parent"/>
+
+</com.fsck.k9.ui.messageview.MessageTopView>

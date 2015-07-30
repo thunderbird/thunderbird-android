@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2008 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+
+    <string-array name="account_settings_check_frequency_entries">
+        <item>@string/account_setup_options_mail_check_frequency_never</item>
+        <item>@string/account_setup_options_mail_check_frequency_1min</item>
+        <item>@string/account_setup_options_mail_check_frequency_5min</item>
+        <item>@string/account_setup_options_mail_check_frequency_10min</item>
+        <item>@string/account_setup_options_mail_check_frequency_15min</item>
+        <item>@string/account_setup_options_mail_check_frequency_30min</item>
+        <item>@string/account_setup_options_mail_check_frequency_1hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_2hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_3hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_6hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_12hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_24hour</item>
+    </string-array>
+
+    <string-array name="account_settings_check_frequency_values" translatable="false">
+        <item>-1</item>
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+    </string-array>
+
+    <string-array name="account_settings_display_count_entries">
+        <item>@string/account_setup_options_mail_display_count_10</item>
+        <item>@string/account_setup_options_mail_display_count_25</item>
+        <item>@string/account_setup_options_mail_display_count_50</item>
+        <item>@string/account_setup_options_mail_display_count_100</item>
+        <item>@string/account_setup_options_mail_display_count_250</item>
+        <item>@string/account_setup_options_mail_display_count_500</item>
+        <item>@string/account_setup_options_mail_display_count_1000</item>
+        <item>@string/account_setup_options_mail_display_count_2500</item>
+        <item>@string/account_setup_options_mail_display_count_5000</item>
+        <item>@string/account_setup_options_mail_display_count_10000</item>
+        <item>@string/account_setup_options_mail_display_count_all</item>
+    </string-array>
+
+    <string-array name="account_settings_display_count_values" translatable="false">
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+        <item>250</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>2500</item>
+        <item>5000</item>
+        <item>10000</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="account_settings_message_age_entries">
+        <item>@string/account_settings_message_age_any</item>
+        <item>@string/account_settings_message_age_0</item>
+        <item>@string/account_settings_message_age_1</item>
+        <item>@string/account_settings_message_age_2</item>
+        <item>@string/account_settings_message_age_7</item>
+        <item>@string/account_settings_message_age_14</item>
+        <item>@string/account_settings_message_age_21</item>
+        <item>@string/account_settings_message_age_1_month</item>
+        <item>@string/account_settings_message_age_2_months</item>
+        <item>@string/account_settings_message_age_3_months</item>
+        <item>@string/account_settings_message_age_6_months</item>
+        <item>@string/account_settings_message_age_1_year</item>
+    </string-array>
+
+    <string-array name="account_settings_message_age_values" translatable="false">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>7</item>
+        <item>14</item>
+        <item>21</item>
+        <item>28</item>
+        <item>56</item>
+        <item>84</item>
+        <item>168</item>
+        <item>365</item>
+    </string-array>
+
+
+    <string-array name="account_settings_autodownload_message_size_entries">
+        <item>@string/account_settings_autodownload_message_size_1</item>
+        <item>@string/account_settings_autodownload_message_size_2</item>
+        <item>@string/account_settings_autodownload_message_size_4</item>
+        <item>@string/account_settings_autodownload_message_size_8</item>
+        <item>@string/account_settings_autodownload_message_size_16</item>
+        <item>@string/account_settings_autodownload_message_size_32</item>
+        <item>@string/account_settings_autodownload_message_size_64</item>
+        <item>@string/account_settings_autodownload_message_size_128</item>
+        <item>@string/account_settings_autodownload_message_size_256</item>
+        <item>@string/account_settings_autodownload_message_size_512</item>
+        <item>@string/account_settings_autodownload_message_size_1024</item>
+        <item>@string/account_settings_autodownload_message_size_2048</item>
+        <item>@string/account_settings_autodownload_message_size_5120</item>
+        <item>@string/account_settings_autodownload_message_size_10240</item>
+        <item>@string/account_settings_autodownload_message_size_any</item>
+    </string-array>
+
+    <string-array name="account_settings_autodownload_message_size_values" translatable="false">
+        <item>1024</item>
+        <item>2048</item>
+        <item>4096</item>
+        <item>8192</item>
+        <item>16384</item>
+        <item>32768</item>
+        <item>65536</item>
+        <item>131072</item>
+        <item>262144</item>
+        <item>524288</item>
+        <item>1048576</item>
+        <item>2097152</item>
+        <item>5242880</item>
+        <item>10485760</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_display_mode_entries">
+        <item>@string/account_settings_folder_display_mode_all</item>
+        <item>@string/account_settings_folder_display_mode_first_class</item>
+        <item>@string/account_settings_folder_display_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_display_mode_not_second_class</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_display_mode_values" translatable="false">
+        <item>ALL</item>
+        <item>FIRST_CLASS</item>
+        <item>FIRST_AND_SECOND_CLASS</item>
+        <item>NOT_SECOND_CLASS</item>
+    </string-array>
+
+    <string-array name="account_settings_show_pictures_entries">
+        <item>@string/account_settings_show_pictures_never</item>
+        <item>@string/account_settings_show_pictures_only_from_contacts</item>
+        <item>@string/account_settings_show_pictures_always</item>
+    </string-array>
+
+    <string-array name="account_settings_show_pictures_values" translatable="false">
+        <item>NEVER</item>
+        <item>ONLY_FROM_CONTACTS</item>
+        <item>ALWAYS</item>
+    </string-array>
+
+    <string-array name="account_settings_searchable_entries">
+        <item>@string/account_settings_searchable_all</item>
+        <item>@string/account_settings_searchable_displayable</item>
+        <item>@string/account_settings_searchable_none</item>
+    </string-array>
+
+    <string-array name="account_settings_searchable_values" translatable="false">
+        <item>ALL</item>
+        <item>DISPLAYABLE</item>
+        <item>NONE</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_sync_mode_entries">
+        <item>@string/account_settings_folder_sync_mode_all</item>
+        <item>@string/account_settings_folder_sync_mode_first_class</item>
+        <item>@string/account_settings_folder_sync_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_sync_mode_not_second_class</item>
+        <item>@string/account_settings_folder_sync_mode_none</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_sync_mode_values" translatable="false">
+        <item>ALL</item>
+        <item>FIRST_CLASS</item>
+        <item>FIRST_AND_SECOND_CLASS</item>
+        <item>NOT_SECOND_CLASS</item>
+        <item>NONE</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_push_mode_entries">
+        <item>@string/account_settings_folder_push_mode_all</item>
+        <item>@string/account_settings_folder_push_mode_first_class</item>
+        <item>@string/account_settings_folder_push_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_push_mode_not_second_class</item>
+        <item>@string/account_settings_folder_push_mode_none</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_push_mode_values" translatable="false">
+        <item>ALL</item>
+        <item>FIRST_CLASS</item>
+        <item>FIRST_AND_SECOND_CLASS</item>
+        <item>NOT_SECOND_CLASS</item>
+        <item>NONE</item>
+    </string-array>
+
+    <string-array name="account_settings_push_limit_entries">
+        <item>@string/account_setup_push_limit_10</item>
+        <item>@string/account_setup_push_limit_25</item>
+        <item>@string/account_setup_push_limit_50</item>
+        <item>@string/account_setup_push_limit_100</item>
+        <item>@string/account_setup_push_limit_250</item>
+        <item>@string/account_setup_push_limit_500</item>
+        <item>@string/account_setup_push_limit_1000</item>
+    </string-array>
+
+    <string-array name="account_settings_push_limit_values" translatable="false">
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+        <item>250</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_notify_new_mail_mode_entries">
+        <item>@string/account_settings_folder_notify_new_mail_mode_all</item>
+        <item>@string/account_settings_folder_notify_new_mail_mode_first_class</item>
+        <item>@string/account_settings_folder_notify_new_mail_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_notify_new_mail_mode_not_second_class</item>
+        <item>@string/account_settings_folder_notify_new_mail_mode_none</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_notify_new_mail_mode_values" translatable="false">
+        <item>ALL</item>
+        <item>FIRST_CLASS</item>
+        <item>FIRST_AND_SECOND_CLASS</item>
+        <item>NOT_SECOND_CLASS</item>
+        <item>NONE</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_target_mode_entries">
+        <item>@string/account_settings_folder_target_mode_all</item>
+        <item>@string/account_settings_folder_target_mode_first_class</item>
+        <item>@string/account_settings_folder_target_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_target_mode_not_second_class</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_target_mode_values" translatable="false">
+        <item>ALL</item>
+        <item>FIRST_CLASS</item>
+        <item>FIRST_AND_SECOND_CLASS</item>
+        <item>NOT_SECOND_CLASS</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_display_mode_entries">
+        <item>@string/folder_settings_folder_display_mode_normal</item>
+        <item>@string/folder_settings_folder_display_mode_first_class</item>
+        <item>@string/folder_settings_folder_display_mode_second_class</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_display_mode_values" translatable="false">
+        <item>NO_CLASS</item>
+        <item>FIRST_CLASS</item>
+        <item>SECOND_CLASS</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_sync_mode_entries">
+        <item>@string/folder_settings_folder_sync_mode_normal</item>
+        <item>@string/folder_settings_folder_sync_mode_first_class</item>
+        <item>@string/folder_settings_folder_sync_mode_second_class</item>
+        <item>@string/folder_settings_folder_sync_mode_inherited</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_sync_mode_values" translatable="false">
+        <item>NO_CLASS</item>
+        <item>FIRST_CLASS</item>
+        <item>SECOND_CLASS</item>
+        <item>INHERITED</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_push_mode_entries">
+        <item>@string/folder_settings_folder_push_mode_normal</item>
+        <item>@string/folder_settings_folder_push_mode_first_class</item>
+        <item>@string/folder_settings_folder_push_mode_second_class</item>
+        <item>@string/folder_settings_folder_push_mode_inherited</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_push_mode_values" translatable="false">
+        <item>NO_CLASS</item>
+        <item>FIRST_CLASS</item>
+        <item>SECOND_CLASS</item>
+        <item>INHERITED</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_notify_mode_entries">
+        <item>@string/folder_settings_folder_notify_mode_normal</item>
+        <item>@string/folder_settings_folder_notify_mode_first_class</item>
+        <item>@string/folder_settings_folder_notify_mode_second_class</item>
+        <item>@string/folder_settings_folder_notify_mode_inherited</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_notify_mode_values" translatable="false">
+        <item>NO_CLASS</item>
+        <item>FIRST_CLASS</item>
+        <item>SECOND_CLASS</item>
+        <item>INHERITED</item>
+    </string-array>
+
+    <string-array name="account_setup_delete_policy_entries">
+        <item>@string/account_setup_incoming_delete_policy_never_label</item>
+        <item>@string/account_setup_incoming_delete_policy_delete_label</item>
+        <item>@string/account_setup_incoming_delete_policy_markread_label</item>
+    </string-array>
+
+    <string-array name="account_setup_delete_policy_values" translatable="false">
+        <item>0</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="account_setup_expunge_policy_entries">
+        <item>@string/account_setup_expunge_policy_immediately</item>
+        <item>@string/account_setup_expunge_policy_on_poll</item>
+        <item>@string/account_setup_expunge_policy_manual</item>
+    </string-array>
+
+    <string-array name="account_setup_expunge_policy_values" translatable="false">
+        <item>EXPUNGE_IMMEDIATELY</item>
+        <item>EXPUNGE_ON_POLL</item>
+        <item>EXPUNGE_MANUALLY</item>
+    </string-array>
+
+    <string-array name="settings_language_entries">
+        <item>@string/setting_language_system</item>
+        <item>Afrikaans</item>
+        <item>Bahasa indonesia</item>
+        <item>Bahasa melayu</item>
+        <item>Bamanankan</item>
+        <item>Català</item>
+        <item>Cymraeg</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Dholuo</item>
+        <item>Eesti</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>Fulfulde, Pulaar, Pular</item>
+        <item>Gaeilge</item>
+        <item>Galego</item>
+        <item>Hausa</item>
+        <item>Hrvatski</item>
+        <item>Kinyarwanda</item>
+        <item>Kirundi</item>
+        <item>Kiswahili</item>
+        <item>Latviešu</item>
+        <item>Lietuvių</item>
+        <item>Magyar</item>
+        <item>Malti</item>
+        <item>Nederlands</item>
+        <item>Norsk</item>
+        <item>Pyccĸий</item>
+        <item>Română</item>
+        <item>Slovenčina</item>
+        <item>Slovenščina</item>
+        <item>Somali</item>
+        <item>Српски</item>
+        <item>Tiếng Việt</item>
+        <item>Tϋrkçe</item>
+        <item>Wolof</item>
+        <item>Yorùbá</item>
+        <item>Azərbaycan</item>
+        <item>Euskera</item>
+        <item>Français</item>
+        <item>Français (Canada)</item>
+        <item>isiXhosa</item>
+        <item>isiZulu</item>
+        <item>Italiano</item>
+        <item>O\'zbek</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Português (Brasil)</item>
+        <item>Shqip</item>
+        <item>Suomi</item>
+        <item>Svenska</item>
+        <item>Íslenska</item>
+        <item>Čeština</item>
+        <item>Ɛʋɛ</item>
+        <item>Ελληνικά</item>
+        <item>Беларуская</item>
+        <item>Български</item>
+        <item>Кыргыз</item>
+        <item>Македонски</item>
+        <item>Українська</item>
+        <item>аҧсуа бызшәа</item>
+        <item>Қазақ</item>
+        <item>Հայերեն</item>
+        <item>עברית</item>
+        <item>اردو</item>
+        <item>العربية</item>
+        <item>فارسی</item>
+        <item>پښتو</item>
+        <item>हिंदी</item>
+        <item>తెలుగు</item>
+        <item>ಕನ್ನಡ</item>
+        <item>ภาษาไทย</item>
+        <item>አማርኛ</item>
+        <item>中文(繁體)</item>
+        <item>中文(简体)</item>
+        <item>日本語</item>
+        <item>한국어</item>
+    </string-array>
+
+    <string-array name="settings_language_values" translatable="false">
+        <item></item>
+        <item>af</item>
+        <item>id</item>
+        <item>ms</item>
+        <item>bm</item>
+        <item>ca</item>
+        <item>cy</item>
+        <item>da</item>
+        <item>de</item>
+        <item>luo</item>
+        <item>et</item>
+        <item>en</item>
+        <item>es</item>
+        <item>ff</item>
+        <item>ga</item>
+        <item>gl</item>
+        <item>ha</item>
+        <item>hr</item>
+        <item>rw</item>
+        <item>rn</item>
+        <item>sw</item>
+        <item>lv</item>
+        <item>lt</item>
+        <item>hu</item>
+        <item>mt</item>
+        <item>nl</item>
+        <item>no</item>
+        <item>ru</item>
+        <item>ro</item>
+        <item>sk</item>
+        <item>sl</item>
+        <item>so</item>
+        <item>sr</item>
+        <item>vi</item>
+        <item>tr</item>
+        <item>wo</item>
+        <item>yo</item>
+        <item>az</item>
+        <item>eu</item>
+        <item>fr</item>
+        <item>fr_CA</item>
+        <item>xs</item>
+        <item>zu</item>
+        <item>it</item>
+        <item>uz</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>pt_BR</item>
+        <item>sq</item>
+        <item>fi</item>
+        <item>sv</item>
+        <item>is</item>
+        <item>cs</item>
+        <item>ee</item>
+        <item>el</item>
+        <item>be</item>
+        <item>bg</item>
+        <item>ky</item>
+        <item>mk</item>
+        <item>uk</item>
+        <item>ab</item>
+        <item>kk</item>
+        <item>hy</item>
+        <item>he</item>
+        <item>ur</item>
+        <item>ar</item>
+        <item>fa</item>
+        <item>ps</item>
+        <item>hi</item>
+        <item>te</item>
+        <item>kn</item>
+        <item>th</item>
+        <item>am</item>
+        <item>zh_TW</item>
+        <item>zh_CN</item>
+        <item>ja</item>
+        <item>ko</item>
+    </string-array>
+
+    <string-array name="supported_languages" translatable="false">
+        <item></item>
+        <item>ca</item>
+        <item>da</item>
+        <item>de</item>
+        <item>en</item>
+        <item>es</item>
+        <item>gl</item>
+        <item>hu</item>
+        <item>nl</item>
+        <item>ru</item>
+        <item>tr</item>
+        <item>fr</item>
+        <item>fr_CA</item>
+        <item>it</item>
+        <item>pl</item>
+        <item>pt_BR</item>
+        <item>fi</item>
+        <item>sv</item>
+        <item>cs</item>
+        <item>el</item>
+        <item>uk</item>
+        <item>he</item>
+        <item>zh_TW</item>
+        <item>zh_CN</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>sk</item>
+        <item>lt</item>
+    </string-array>
+
+    <string-array name="settings_theme_entries">
+        <item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_dark</item>
+    </string-array>
+
+    <string-array name="settings_theme_values" translatable="false">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
+    <string-array name="settings_message_theme_entries">
+        <item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_dark</item>
+        <item>@string/setting_theme_global</item>
+    </string-array>
+
+    <string-array name="settings_message_theme_values" translatable="false">
+        <item>light</item>
+        <item>dark</item>
+        <item>global</item>
+    </string-array>
+
+    <string-array name="background_ops_entries">
+        <item>@string/background_ops_auto_sync_only</item>
+        <item>@string/background_ops_always</item>
+        <item>@string/background_ops_never</item>
+    </string-array>
+
+    <string-array name="background_ops_values" translatable="false">
+        <item>WHEN_CHECKED_AUTO_SYNC</item>
+        <item>ALWAYS</item>
+        <item>NEVER</item>
+    </string-array>
+
+    <string-array name="font_entries">
+        <item>@string/font_size_default</item>
+        <item>@string/font_size_tiniest</item>
+        <item>@string/font_size_tiny</item>
+        <item>@string/font_size_smaller</item>
+        <item>@string/font_size_small</item>
+        <item>@string/font_size_medium</item>
+        <item>@string/font_size_large</item>
+        <item>@string/font_size_larger</item>
+    </string-array>
+
+    <string-array name="font_values" translatable="false">
+        <item>-1</item>
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>20</item>
+        <item>22</item>
+    </string-array>
+
+    <string-array name="idle_refresh_period_entries">
+        <item>@string/idle_refresh_period_1min</item>
+        <item>@string/idle_refresh_period_2min</item>
+        <item>@string/idle_refresh_period_3min</item>
+        <item>@string/idle_refresh_period_6min</item>
+        <item>@string/idle_refresh_period_12min</item>
+        <item>@string/idle_refresh_period_24min</item>
+        <item>@string/idle_refresh_period_36min</item>
+        <item>@string/idle_refresh_period_48min</item>
+        <item>@string/idle_refresh_period_60min</item>
+    </string-array>
+
+    <string-array name="idle_refresh_period_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+        <item>36</item>
+        <item>48</item>
+        <item>60</item>
+    </string-array>
+
+    <string-array name="account_settings_vibrate_pattern_entries">
+        <item>@string/account_settings_vibrate_pattern_default</item>
+        <item>@string/account_settings_vibrate_pattern_1</item>
+        <item>@string/account_settings_vibrate_pattern_2</item>
+        <item>@string/account_settings_vibrate_pattern_3</item>
+        <item>@string/account_settings_vibrate_pattern_4</item>
+        <item>@string/account_settings_vibrate_pattern_5</item>
+    </string-array>
+
+    <string-array name="account_settings_vibrate_pattern_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="account_settings_vibrate_times_label" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="settings_preview_lines_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="settings_preview_lines_entries">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="account_settings_quote_style_entries">
+        <item>@string/account_settings_quote_style_prefix</item>
+        <item>@string/account_settings_quote_style_header</item>
+    </string-array>
+
+    <string-array name="account_settings_quote_style_values" translatable="false">
+        <item>PREFIX</item>
+        <item>HEADER</item>
+    </string-array>
+
+    <string-array name="account_settings_message_format_entries">
+        <item>@string/account_settings_message_format_text</item>
+        <item>@string/account_settings_message_format_html</item>
+        <item>@string/account_settings_message_format_auto</item>
+    </string-array>
+
+    <string-array name="account_settings_message_format_values" translatable="false">
+        <item>TEXT</item>
+        <item>HTML</item>
+        <item>AUTO</item>
+    </string-array>
+    <string-array name="account_settings_remote_search_num_results_entries">
+        <item >@string/account_settings_remote_search_num_results_entries_10</item>
+        <item>@string/account_settings_remote_search_num_results_entries_25</item>
+        <item>@string/account_settings_remote_search_num_results_entries_50</item>
+        <item>@string/account_settings_remote_search_num_results_entries_100</item>
+        <item>@string/account_settings_remote_search_num_results_entries_250</item>
+        <item>@string/account_settings_remote_search_num_results_entries_500</item>
+        <item>@string/account_settings_remote_search_num_results_entries_1000</item>
+        <item>@string/account_settings_remote_search_num_results_entries_all</item>
+    </string-array>
+    <string-array name="account_settings_remote_search_num_results_values" translatable="false">
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+        <item>250</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_hide_subject_entries">
+        <item name="1">@string/global_settings_notification_hide_subject_never</item>
+        <item name="2">@string/global_settings_notification_hide_subject_when_locked</item>
+        <item name="3">@string/global_settings_notification_hide_subject_always</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_hide_subject_values" translatable="false">
+        <item name="1">NEVER</item>
+        <item name="2">WHEN_LOCKED</item>
+        <item name="3">ALWAYS</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_quick_delete_entries">
+        <item name="1">@string/global_settings_notification_quick_delete_never</item>
+        <item name="2">@string/global_settings_notification_quick_delete_when_single_msg</item>
+        <item name="3">@string/global_settings_notification_quick_delete_always</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_quick_delete_values" translatable="false">
+        <item name="1">NEVER</item>
+        <item name="2">FOR_SINGLE_MSG</item>
+        <item name="3">ALWAYS</item>
+    </string-array>
+
+    <string-array name="global_settings_lock_screen_notification_visibility_entries">
+        <item name="0">@string/global_settings_lock_screen_notification_visibility_nothing</item>
+        <item name="1">@string/global_settings_lock_screen_notification_visibility_app_name</item>
+        <item name="2">@string/global_settings_lock_screen_notification_visibility_message_count</item>
+        <item name="3">@string/global_settings_lock_screen_notification_visibility_senders</item>
+        <item name="4">@string/global_settings_lock_screen_notification_visibility_everything</item>
+    </string-array>
+
+    <string-array name="global_settings_lock_screen_notification_visibility_values" translatable="false">
+        <item name="0">NOTHING</item>
+        <item name="1">APP_NAME</item>
+        <item name="2">MESSAGE_COUNT</item>
+        <item name="3">SENDERS</item>
+        <item name="4">EVERYTHING</item>
+    </string-array>
+
+    <string-array name="global_settings_splitview_mode_entries">
+        <item>@string/global_settings_splitview_always</item>
+        <item>@string/global_settings_splitview_never</item>
+        <item>@string/global_settings_splitview_when_in_landscape</item>
+    </string-array>
+
+    <string-array name="global_settings_splitview_mode_values" translatable="false">
+        <item>ALWAYS</item>
+        <item>NEVER</item>
+        <item>WHEN_IN_LANDSCAPE</item>
+    </string-array>
+</resources>
