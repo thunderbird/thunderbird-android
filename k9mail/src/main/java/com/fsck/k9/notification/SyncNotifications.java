@@ -37,7 +37,7 @@ class SyncNotifications {
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
                 account, outboxFolderName, notificationId);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
@@ -75,7 +75,7 @@ class SyncNotifications {
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
                 account, folderName, notificationId);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)

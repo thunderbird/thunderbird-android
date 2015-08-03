@@ -10,10 +10,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.support.v4.app.NotificationCompat.InboxStyle;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
+import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
@@ -137,7 +139,7 @@ class DeviceNotifications extends BaseNotifications {
                 .setContentTitle(title)
                 .setSubText(accountName);
 
-        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle(builder)
+        NotificationCompat.InboxStyle style = createInboxStyle(builder)
                 .setBigContentTitle(title)
                 .setSummaryText(summary);
 
@@ -186,6 +188,10 @@ class DeviceNotifications extends BaseNotifications {
     }
 
     private void addDeleteAllAction(Builder builder, NotificationsHolder notificationsHolder) {
+        if (K9.getNotificationQuickDeleteBehaviour() != NotificationQuickDelete.ALWAYS) {
+            return;
+        }
+
         int icon = getDeleteActionIcon();
         String title = context.getString(R.string.notification_action_delete);
 
@@ -246,5 +252,9 @@ class DeviceNotifications extends BaseNotifications {
         return controller.platformSupportsVectorDrawables() ?
                 R.drawable.ic_action_single_message_options_dark_vector :
                 R.drawable.ic_action_single_message_options_dark;
+    }
+
+    protected InboxStyle createInboxStyle(Builder builder) {
+        return new InboxStyle(builder);
     }
 }

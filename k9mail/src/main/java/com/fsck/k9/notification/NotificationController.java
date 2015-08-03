@@ -151,4 +151,8 @@ public class NotificationController {
     NotificationManagerCompat getNotificationManager() {
         return notificationManager;
     }
+
+    NotificationCompat.Builder createNotificationBuilder() {
+        return new NotificationCompat.Builder(context);
+    }
 }

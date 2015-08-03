@@ -18,7 +18,7 @@ import com.fsck.k9.activity.MessageReference;
  */
 class NotificationsHolder {
     // Note: As of Jellybean, phone notifications show a maximum of 5 lines, while tablet notifications show 7 lines.
-    private static final int MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5;
+    static final int MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5;
     // Note: This class assumes MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
     private static final int MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS = 8;
 
@@ -38,7 +38,7 @@ class NotificationsHolder {
         int notificationId;
         boolean cancelNotificationIdBeforeReuse;
         if (isMaxNumberOfActiveNotificationsReached()) {
-            NotificationHolder notificationHolder = activeNotifications.pop();
+            NotificationHolder notificationHolder = activeNotifications.removeLast();
             addToAdditionalNotifications(notificationHolder);
             notificationId = notificationHolder.notificationId;
             cancelNotificationIdBeforeReuse = true;
@@ -48,7 +48,7 @@ class NotificationsHolder {
         }
 
         NotificationHolder notificationHolder = createNotificationHolder(notificationId, content);
-        activeNotifications.push(notificationHolder);
+        activeNotifications.addFirst(notificationHolder);
 
         if (cancelNotificationIdBeforeReuse) {
             return AddNotificationResult.replaceNotification(notificationHolder);
@@ -110,7 +110,7 @@ class NotificationsHolder {
     }
 
     public int getAdditionalMessagesCount() {
-        return getNewMessagesCount() - MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION;
+        return additionalNotifications.size();
     }
 
     public int getNewMessagesCount() {
@@ -166,9 +166,9 @@ class NotificationsHolder {
 
         int notificationId = holder.notificationId;
         if (!additionalNotifications.isEmpty()) {
-            NotificationContent newContent = additionalNotifications.pop();
+            NotificationContent newContent = additionalNotifications.removeFirst();
             NotificationHolder replacement = createNotificationHolder(notificationId, newContent);
-            activeNotifications.add(replacement);
+            activeNotifications.addLast(replacement);
             return RemoveNotificationResult.createNotification(replacement);
         }
 

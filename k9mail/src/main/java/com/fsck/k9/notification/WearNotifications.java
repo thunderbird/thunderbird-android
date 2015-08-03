@@ -40,20 +40,21 @@ class WearNotifications extends BaseNotifications {
     public void addSummaryActions(Builder builder, NotificationsHolder notificationsHolder) {
         NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
-        addMarkAllAsReadAction(builder, wearableExtender, notificationsHolder);
+        addMarkAllAsReadAction(wearableExtender, notificationsHolder);
 
         if (isDeleteActionAvailableForWear()) {
-            addDeleteAllAction(builder, wearableExtender, notificationsHolder);
+            addDeleteAllAction(wearableExtender, notificationsHolder);
         }
 
         Account account = notificationsHolder.getAccount();
         if (isArchiveActionAvailableForWear(account)) {
-            addArchiveAllAction(builder, wearableExtender, notificationsHolder);
+            addArchiveAllAction(wearableExtender, notificationsHolder);
         }
+
+        builder.extend(wearableExtender);
     }
 
-    private void addMarkAllAsReadAction(Builder builder, WearableExtender wearableExtender,
-            NotificationsHolder notificationsHolder) {
+    private void addMarkAllAsReadAction(WearableExtender wearableExtender, NotificationsHolder notificationsHolder) {
         int icon = R.drawable.ic_action_mark_as_read_dark;
         String title = context.getString(R.string.notification_action_mark_all_as_read);
 
@@ -64,11 +65,10 @@ class WearNotifications extends BaseNotifications {
                 account, messageReferences, notificationId);
 
         NotificationCompat.Action markAsReadAction = new NotificationCompat.Action.Builder(icon, title, action).build();
-        builder.extend(wearableExtender.addAction(markAsReadAction));
+        wearableExtender.addAction(markAsReadAction);
     }
 
-    private void addDeleteAllAction(Builder builder, WearableExtender wearableExtender,
-            NotificationsHolder notificationsHolder) {
+    private void addDeleteAllAction(WearableExtender wearableExtender, NotificationsHolder notificationsHolder) {
         int icon = R.drawable.ic_action_delete_dark;
         String title = context.getString(R.string.notification_action_delete_all);
 
@@ -78,11 +78,10 @@ class WearNotifications extends BaseNotifications {
         PendingIntent action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId);
 
         NotificationCompat.Action deleteAction = new NotificationCompat.Action.Builder(icon, title, action).build();
-        builder.extend(wearableExtender.addAction(deleteAction));
+        wearableExtender.addAction(deleteAction);
     }
 
-    private void addArchiveAllAction(Builder builder, WearableExtender wearableExtender,
-            NotificationsHolder notificationsHolder) {
+    private void addArchiveAllAction(WearableExtender wearableExtender, NotificationsHolder notificationsHolder) {
         int icon = R.drawable.ic_action_archive_dark;
         String title = context.getString(R.string.notification_action_archive_all);
 
@@ -92,29 +91,31 @@ class WearNotifications extends BaseNotifications {
         PendingIntent action = actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId);
 
         NotificationCompat.Action archiveAction = new NotificationCompat.Action.Builder(icon, title, action).build();
-        builder.extend(wearableExtender.addAction(archiveAction));
+        wearableExtender.addAction(archiveAction);
     }
 
     private void addActions(Builder builder, Account account, NotificationHolder holder) {
         NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
-        addReplyAction(builder, wearableExtender, holder);
-        addMarkAsReadAction(builder, wearableExtender, holder);
+        addReplyAction(wearableExtender, holder);
+        addMarkAsReadAction(wearableExtender, holder);
 
         if (isDeleteActionAvailableForWear()) {
-            addDeleteAction(builder, wearableExtender, holder);
+            addDeleteAction(wearableExtender, holder);
         }
 
         if (isArchiveActionAvailableForWear(account)) {
-            addArchiveAction(builder, wearableExtender, holder);
+            addArchiveAction(wearableExtender, holder);
         }
 
         if (isSpamActionAvailableForWear(account)) {
-            addMarkAsSpamAction(builder, wearableExtender, holder);
+            addMarkAsSpamAction(wearableExtender, holder);
         }
+
+        builder.extend(wearableExtender);
     }
 
-    private void addReplyAction(Builder builder, WearableExtender wearableExtender, NotificationHolder holder) {
+    private void addReplyAction(WearableExtender wearableExtender, NotificationHolder holder) {
         int icon = R.drawable.ic_action_single_message_options_dark;
         String title = context.getString(R.string.notification_action_reply);
 
@@ -123,11 +124,10 @@ class WearNotifications extends BaseNotifications {
         PendingIntent action = actionCreator.createReplyPendingIntent(messageReference, notificationId);
 
         NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(icon, title, action).build();
-        builder.extend(wearableExtender.addAction(replyAction));
+        wearableExtender.addAction(replyAction);
     }
 
-    private void addMarkAsReadAction(Builder builder, WearableExtender wearableExtender,
-            NotificationHolder holder) {
+    private void addMarkAsReadAction(WearableExtender wearableExtender, NotificationHolder holder) {
         int icon = R.drawable.ic_action_mark_as_read_dark;
         String title = context.getString(R.string.notification_action_mark_as_read);
 
@@ -137,10 +137,10 @@ class WearNotifications extends BaseNotifications {
         PendingIntent action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId);
 
         NotificationCompat.Action markAsReadAction = new NotificationCompat.Action.Builder(icon, title, action).build();
-        builder.extend(wearableExtender.addAction(markAsReadAction));
+        wearableExtender.addAction(markAsReadAction);
     }
 
-    private void addDeleteAction(Builder builder, WearableExtender wearableExtender, NotificationHolder holder) {
+    private void addDeleteAction(WearableExtender wearableExtender, NotificationHolder holder) {
         int icon = R.drawable.ic_action_delete_dark;
         String title = context.getString(R.string.notification_action_delete);
 
@@ -149,10 +149,10 @@ class WearNotifications extends BaseNotifications {
         PendingIntent action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId);
 
         NotificationCompat.Action deleteAction = new NotificationCompat.Action.Builder(icon, title, action).build();
-        builder.extend(wearableExtender.addAction(deleteAction));
+        wearableExtender.addAction(deleteAction);
     }
 
-    private void addArchiveAction(Builder builder, WearableExtender wearableExtender, NotificationHolder holder) {
+    private void addArchiveAction(WearableExtender wearableExtender, NotificationHolder holder) {
         int icon = R.drawable.ic_action_archive_dark;
         String title = context.getString(R.string.notification_action_archive);
 
@@ -161,11 +161,10 @@ class WearNotifications extends BaseNotifications {
         PendingIntent action = actionCreator.createArchiveMessagePendingIntent(messageReference, notificationId);
 
         NotificationCompat.Action archiveAction = new NotificationCompat.Action.Builder(icon, title, action).build();
-        builder.extend(wearableExtender.addAction(archiveAction));
+        wearableExtender.addAction(archiveAction);
     }
 
-    private void addMarkAsSpamAction(Builder builder, WearableExtender wearableExtender,
-            NotificationHolder holder) {
+    private void addMarkAsSpamAction(WearableExtender wearableExtender, NotificationHolder holder) {
         int icon = R.drawable.ic_action_spam_dark;
         String title = context.getString(R.string.notification_action_spam);
 
@@ -174,7 +173,7 @@ class WearNotifications extends BaseNotifications {
         PendingIntent action = actionCreator.createMarkMessageAsSpamPendingIntent(messageReference, notificationId);
 
         NotificationCompat.Action spamAction = new NotificationCompat.Action.Builder(icon, title, action).build();
-        builder.extend(wearableExtender.addAction(spamAction));
+        wearableExtender.addAction(spamAction);
     }
 
     private boolean isDeleteActionAvailableForWear() {
@@ -196,7 +195,11 @@ class WearNotifications extends BaseNotifications {
             return false;
         }
 
-        MessagingController controller = MessagingController.getInstance(context);
+        MessagingController controller = createMessagingController();
         return controller.isMoveCapable(account);
+    }
+
+    MessagingController createMessagingController() {
+        return MessagingController.getInstance(context);
     }
 }

@@ -28,17 +28,11 @@ class CertificateErrorNotifications {
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming);
         Context context = controller.getContext();
 
-        Intent editServerSettingsIntent = incoming ?
-                AccountSetupIncoming.intentActionEditIncomingSettings(context, account) :
-                AccountSetupOutgoing.intentActionEditOutgoingSettings(context, account);
-
-        PendingIntent editServerSettingsPendingIntent = PendingIntent.getActivity(context,
-                account.getAccountNumber(), editServerSettingsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+        PendingIntent editServerSettingsPendingIntent = createContentIntent(context, account, incoming);
         String title = context.getString(R.string.notification_certificate_error_title, account.getDescription());
         String text = context.getString(R.string.notification_certificate_error_text);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(getCertificateErrorNotificationIcon())
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
@@ -58,6 +52,15 @@ class CertificateErrorNotifications {
     public void clearCertificateErrorNotifications(Account account, boolean incoming) {
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming);
         getNotificationManager().cancel(notificationId);
+    }
+
+    PendingIntent createContentIntent(Context context, Account account, boolean incoming) {
+        Intent editServerSettingsIntent = incoming ?
+                AccountSetupIncoming.intentActionEditIncomingSettings(context, account) :
+                AccountSetupOutgoing.intentActionEditOutgoingSettings(context, account);
+
+        return PendingIntent.getActivity(context, account.getAccountNumber(), editServerSettingsIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private int getCertificateErrorNotificationIcon() {

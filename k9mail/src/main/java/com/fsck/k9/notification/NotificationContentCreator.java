@@ -32,30 +32,35 @@ class NotificationContentCreator {
     public NotificationContent createFromMessage(Account account, LocalMessage message) {
         MessageReference messageReference = message.makeMessageReference();
         String sender = getMessageSender(account, message);
+        String displaySender = getMessageSenderForDisplay(sender);
         String subject = getMessageSubject(message);
         CharSequence preview = getMessagePreview(message);
         CharSequence summary = buildMessageSummary(sender, subject);
         boolean starred = message.isSet(Flag.FLAGGED);
 
-        return new NotificationContent(messageReference, sender, subject, preview, summary, starred);
+        return new NotificationContent(messageReference, displaySender, subject, preview, summary, starred);
     }
 
     private CharSequence getMessagePreview(Message message) {
-        String subject = getMessageSubject(message);
+        String subject = message.getSubject();
         String snippet = message.getPreview();
 
-        if (TextUtils.isEmpty(subject)) {
+        boolean isSubjectEmpty = TextUtils.isEmpty(subject);
+        boolean isSnippetPresent = !TextUtils.isEmpty(snippet);
+        if (isSubjectEmpty && isSnippetPresent) {
             return snippet;
-        } else if (TextUtils.isEmpty(snippet)) {
-            return subject;
         }
 
-        SpannableStringBuilder preview = new SpannableStringBuilder();
-        preview.append(subject);
-        preview.append('\n');
-        preview.append(snippet);
+        String displaySubject = getMessageSubject(message);
 
-        preview.setSpan(getEmphasizedSpan(), 0, subject.length(), 0);
+        SpannableStringBuilder preview = new SpannableStringBuilder();
+        preview.append(displaySubject);
+        if (isSnippetPresent) {
+            preview.append('\n');
+            preview.append(snippet);
+        }
+
+        preview.setSpan(getEmphasizedSpan(), 0, displaySubject.length(), 0);
 
         return preview;
     }
@@ -105,14 +110,16 @@ class NotificationContentCreator {
                     return context.getString(R.string.message_to_fmt,
                             MessageHelper.toFriendly(recipients[0], contacts).toString());
                 }
-
-                return context.getString(R.string.general_no_sender);
             }
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to get sender information for notification.", e);
         }
 
         return null;
+    }
+
+    private String getMessageSenderForDisplay(String sender) {
+        return (sender != null) ? sender : context.getString(R.string.general_no_sender);
     }
 
     private TextAppearanceSpan getEmphasizedSpan() {

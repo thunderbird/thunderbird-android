@@ -17,7 +17,7 @@ import com.fsck.k9.R;
 
 
 class LockScreenNotification {
-    private static final int MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5;
+    static final int MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5;
 
 
     private final Context context;
@@ -95,7 +95,7 @@ class LockScreenNotification {
         String title = context.getResources().getQuantityString(R.plurals.notification_new_messages_title,
                 newMessages, newMessages);
 
-        return new Builder(context)
+        return controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_new_mail_vector)
                 .setColor(account.getChipColor())
                 .setNumber(unreadCount)
@@ -103,7 +103,7 @@ class LockScreenNotification {
     }
 
 
-    private String createCommaSeparatedListOfSenders(List<NotificationContent> contents) {
+    String createCommaSeparatedListOfSenders(List<NotificationContent> contents) {
         // Use a LinkedHashSet so that we preserve ordering (newest to oldest), but still remove duplicates
         Set<CharSequence> senders = new LinkedHashSet<CharSequence>(MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
         for (NotificationContent content : contents) {
