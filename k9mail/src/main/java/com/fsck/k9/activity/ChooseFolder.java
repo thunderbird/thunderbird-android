@@ -158,60 +158,10 @@ public class ChooseFolder extends K9ListActivity {
         mMode = mAccount.getFolderTargetMode();
         MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
 
-        this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mAction.equals(ACTION_COPY) || mAction.equals(ACTION_MOVE)) {
-                    Intent result = new Intent();
-                    result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
-                    result.putExtra(EXTRA_CUR_FOLDER, mFolder);
-                    String destFolderName = ((TextView) view).getText().toString();
-                    if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
-                        destFolderName = mHeldInbox;
-                    }
-                    result.putExtra(EXTRA_NEW_FOLDER, destFolderName);
-                    result.putExtra(EXTRA_MESSAGE, mMessageReference);
-                    setResult(RESULT_OK, result);
-                    finish();
-                }
-                if (mAction.equals(ACTION_DELETE_LOCAL)) {
-                    String destFolderName = ((TextView) view).getText().toString();
-                    try {
-                        LocalFolder lf=null;
-                        if (mAccount!=null) {
-                            lf = mAccount.findLocalFolder(destFolderName);
-                        }
-                        if (lf==null) {
-                            Log.e(K9.LOG_TAG, String.format("Cannot find local folder: %s", destFolderName));
-                            Toast toast = Toast.makeText(getApplication(), String.format("Cannot find local folder: %s", destFolderName), Toast.LENGTH_SHORT);
-                            toast.show();
-                            Intent intent = new Intent();
-                            intent.putExtra(EXTRA_CHOICE, destFolderName);
-                            setResult(RESULT_CANCELED, intent);
-                            finish();
-                            return;
-                        }
-                        if (lf.getMessageCount() > 0) {
-                            Toast toast = Toast.makeText(getApplication(), getString(R.string.local_folder_delete_not_empty), Toast.LENGTH_SHORT);
-                            toast.show();
-                            Intent intent = new Intent();
-                            setResult(RESULT_CANCELED, intent);
-                            finish();
-                            return;
-                        }
-                        Log.i(K9.LOG_TAG, String.format("Local folder to be deleted: %s", lf.getName()));
-                        lf.delete(false);
-                        Intent intent = new Intent();
-                        intent.putExtra(EXTRA_CHOICE, lf.getName());
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    } catch (MessagingException e) {
-                        Log.e(K9.LOG_TAG, "Unable to delete a local folder", e);
-                    }
-                }
-            }
-        });
+        this.getListView().setOnItemClickListener(getClickListener());
     }
+
+
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -477,4 +427,79 @@ public class ChooseFolder extends K9ListActivity {
             }
         }
     };
+
+    private AdapterView.OnItemClickListener getClickListener() {
+        if (mAction.equals(ACTION_COPY) || mAction.equals(ACTION_MOVE)) {
+            return getCopyMoveClickListener();
+        }
+        if (mAction.equals(ACTION_DELETE_LOCAL)) {
+            return getDeleteClickListener();
+        }
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.e(K9.LOG_TAG, "Unimplemented OnItemClickListener");
+            }
+        };
+    }
+
+    private AdapterView.OnItemClickListener getDeleteClickListener() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String destFolderName = ((TextView) view).getText().toString();
+                try {
+                    LocalFolder lf = null;
+                    if (mAccount != null) {
+                        lf = mAccount.findLocalFolder(destFolderName);
+                    }
+                    if (lf == null) {
+                        Log.e(K9.LOG_TAG, String.format("Cannot find local folder: %s", destFolderName));
+                        Toast toast = Toast.makeText(getApplication(), String.format("Cannot find local folder: %s", destFolderName), Toast.LENGTH_SHORT);
+                        toast.show();
+                        Intent intent = new Intent();
+                        intent.putExtra(EXTRA_CHOICE, destFolderName);
+                        setResult(RESULT_CANCELED, intent);
+                        finish();
+                        return;
+                    }
+                    if (lf.getMessageCount() > 0) {
+                        Toast toast = Toast.makeText(getApplication(), getString(R.string.local_folder_delete_not_empty), Toast.LENGTH_SHORT);
+                        toast.show();
+                        Intent intent = new Intent();
+                        setResult(RESULT_CANCELED, intent);
+                        finish();
+                        return;
+                    }
+                    Log.i(K9.LOG_TAG, String.format("Local folder to be deleted: %s", lf.getName()));
+                    lf.delete(false);
+                    Intent intent = new Intent();
+                    intent.putExtra(EXTRA_CHOICE, lf.getName());
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } catch (MessagingException e) {
+                    Log.e(K9.LOG_TAG, "Unable to delete a local folder", e);
+                }
+            }
+        };
+    }
+
+    private AdapterView.OnItemClickListener getCopyMoveClickListener() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent result = new Intent();
+                result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
+                result.putExtra(EXTRA_CUR_FOLDER, mFolder);
+                String destFolderName = ((TextView) view).getText().toString();
+                if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
+                    destFolderName = mHeldInbox;
+                }
+                result.putExtra(EXTRA_NEW_FOLDER, destFolderName);
+                result.putExtra(EXTRA_MESSAGE, mMessageReference);
+                setResult(RESULT_OK, result);
+                finish();
+            }
+        };
+    }
 }
