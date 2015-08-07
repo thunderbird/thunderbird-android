@@ -906,6 +906,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="openpgp_successful_decryption_unknown_signature">Déchiffrement réussi mais clef publique manquante</string>
   <string name="openpgp_get_key">Rechercher la clef manquante </string>
   <string name="openpgp_user_id">ID utilisateur</string>
+  <string name="openpgp_cancel_by_user">Annulé par l\'utilisateur</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Utiliser le certificat client</string>
   <string name="client_certificate_spinner_empty">Aucun certificat client</string>

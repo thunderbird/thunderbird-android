@@ -21,6 +21,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.helper.IdentityHelper;
@@ -430,8 +431,7 @@ public class MessageCryptoHelper {
         if (resultCode == Activity.RESULT_OK) {
             decryptOrVerifyNextPart();
         } else {
-            // FIXME: don't pass null
-            onCryptoFailed(null);
+            onCryptoFailed(new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, context.getString(R.string.openpgp_cancel_by_user)));
         }
     }
 
