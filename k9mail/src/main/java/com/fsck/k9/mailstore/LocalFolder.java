@@ -690,12 +690,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             }
 
             String parentMimeType = parentPart.getMimeType();
-            if (parentMimeType.startsWith("multipart/")) {
+            if (parentMimeType.toLowerCase().startsWith("multipart/")) {
                 BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, displayName, size,
                         firstClassAttachment);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
-            } else if (parentMimeType.startsWith("message/")) {
+            } else if (parentMimeType.toLowerCase().startsWith("message/")) {
                 Message innerMessage = new MimeMessage();
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
@@ -708,7 +708,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         partById.put(id, part);
         part.setServerExtra(serverExtra);
 
-        boolean isMultipart = mimeType.startsWith("multipart/");
+        boolean isMultipart = mimeType.toLowerCase().startsWith("multipart/");
         if (isMultipart) {
             byte[] preamble = cursor.getBlob(11);
             byte[] epilogue = cursor.getBlob(12);
