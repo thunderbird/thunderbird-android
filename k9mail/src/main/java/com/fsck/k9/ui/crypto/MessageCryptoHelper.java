@@ -431,7 +431,7 @@ public class MessageCryptoHelper {
         if (resultCode == Activity.RESULT_OK) {
             decryptOrVerifyNextPart();
         } else {
-            onCryptoFailed(new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, context.getString(R.string.openpgp_cancel_by_user)));
+            onCryptoFailed(new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, context.getString(R.string.openpgp_cancelled_by_user)));
         }
     }
 
