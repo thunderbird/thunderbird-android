@@ -27,6 +27,7 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Account.MessageFormat;
+import com.fsck.k9.Account.MessageDisplayMode;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.Searchable;
 import com.fsck.k9.Account.ShowPictures;
@@ -87,6 +88,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_INCOMING = "incoming";
     private static final String PREFERENCE_OUTGOING = "outgoing";
     private static final String PREFERENCE_DISPLAY_MODE = "folder_display_mode";
+    private static final String PREFERENCE_MESSAGE_DISPLAY_MODE = "message_display_mode";
     private static final String PREFERENCE_SYNC_MODE = "folder_sync_mode";
     private static final String PREFERENCE_PUSH_MODE = "folder_push_mode";
     private static final String PREFERENCE_PUSH_POLL_ON_CONNECT = "push_poll_on_connect";
@@ -154,6 +156,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mAccountVibrateTimes;
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
+    private ListPreference mMessageDisplayMode;
     private ListPreference mSyncMode;
     private ListPreference mPushMode;
     private ListPreference mTargetMode;
@@ -329,6 +332,19 @@ public class AccountSettings extends K9PreferenceActivity {
                 int index = mDisplayMode.findIndexOfValue(summary);
                 mDisplayMode.setSummary(mDisplayMode.getEntries()[index]);
                 mDisplayMode.setValue(summary);
+                return false;
+            }
+        });
+
+        mMessageDisplayMode = (ListPreference) findPreference(PREFERENCE_MESSAGE_DISPLAY_MODE);
+        mMessageDisplayMode.setValue(mAccount.getDefaultMessageDisplayMode().name());
+        mMessageDisplayMode.setSummary(mMessageDisplayMode.getEntry());
+        mMessageDisplayMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mMessageDisplayMode.findIndexOfValue(summary);
+                mMessageDisplayMode.setSummary(mMessageDisplayMode.getEntries()[index]);
+                mMessageDisplayMode.setValue(summary);
                 return false;
             }
         });
@@ -772,6 +788,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSearchableFolders(Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setMessageFormat(MessageFormat.valueOf(mMessageFormat.getValue()));
+        mAccount.setDefaultMessageDisplayMode(MessageDisplayMode.valueOf(mMessageDisplayMode.getValue()));
         mAccount.setAlwaysShowCcBcc(mAlwaysShowCcBcc.isChecked());
         mAccount.setMessageReadReceipt(mMessageReadReceipt.isChecked());
         mAccount.setQuoteStyle(QuoteStyle.valueOf(mQuoteStyle.getValue()));

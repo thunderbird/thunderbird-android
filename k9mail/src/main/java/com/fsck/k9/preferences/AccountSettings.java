@@ -13,6 +13,7 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Account.MessageFormat;
+import com.fsck.k9.Account.MessageDisplayMode;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.Searchable;
 import com.fsck.k9.Account.ShowPictures;
@@ -67,6 +68,10 @@ public class AccountSettings {
         s.put("displayCount", Settings.versions(
                 new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
                         R.array.account_settings_display_count_values))
+            ));
+        s.put("defaultDisplayMode", Settings.versions(
+                new V(15, new EnumSetting(Account.MessageDisplayMode.class,
+                        MessageDisplayMode.HTML))
             ));
         s.put("draftsFolderName", Settings.versions(
                 new V(1, new StringSetting("Drafts"))

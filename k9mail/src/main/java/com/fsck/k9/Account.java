@@ -98,6 +98,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
+    public static final MessageDisplayMode DEFAULT_MESSAGE_DISPLAY_MODE = MessageDisplayMode.HTML;
     public static final boolean DEFAULT_MESSAGE_FORMAT_AUTO = false;
     public static final boolean DEFAULT_MESSAGE_READ_RECEIPT = false;
     public static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
@@ -226,6 +227,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mAllowRemoteSearch;
     private boolean mRemoteSearchFullText;
     private int mRemoteSearchNumResults;
+    private MessageDisplayMode mDefaultMessageDisplayMode;
 
     private ColorChip mUnreadColorChip;
     private ColorChip mReadColorChip;
@@ -276,6 +278,15 @@ public class Account implements BaseAccount, StoreConfig {
         TEXT, HTML, AUTO
     }
 
+    /**
+     * Default Format to display incoming mails.
+     * TEXT -> only show text/plain part
+     * HTML -> show HTML mimepart, if present
+     */
+    public enum MessageDisplayMode {
+        TEXT, HTML
+    }
+
     protected Account(Context context) {
         mUuid = UUID.randomUUID().toString();
         mLocalStorageProviderId = StorageManager.getInstance(context).getDefaultProviderId();
@@ -283,6 +294,7 @@ public class Account implements BaseAccount, StoreConfig {
         mIdleRefreshMinutes = 24;
         mPushPollOnConnect = true;
         mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
+        mDefaultMessageDisplayMode = DEFAULT_MESSAGE_DISPLAY_MODE;
         mAccountNumber = -1;
         mNotifyNewMail = true;
         mFolderNotifyNewMailMode = FolderMode.ALL;
@@ -386,6 +398,7 @@ public class Account implements BaseAccount, StoreConfig {
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = prefs.getInt(mUuid + ".idleRefreshMinutes", 24);
         mPushPollOnConnect = prefs.getBoolean(mUuid + ".pushPollOnConnect", true);
+        mDefaultMessageDisplayMode = MessageDisplayMode.valueOf(prefs.getString(mUuid + ".defaultMessageDisplayMode", DEFAULT_MESSAGE_DISPLAY_MODE.name()));
         mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         if (mDisplayCount < 0) {
             mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
@@ -677,6 +690,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
+        editor.putString(mUuid + ".defaultMessageDisplayMode", mDefaultMessageDisplayMode.name());
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putLong(mUuid + ".latestOldMessageSeenTime", mLatestOldMessageSeenTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
@@ -1706,6 +1720,15 @@ public class Account implements BaseAccount, StoreConfig {
     public synchronized void setAlwaysShowCcBcc(boolean show) {
         mAlwaysShowCcBcc = show;
     }
+
+    public MessageDisplayMode getDefaultMessageDisplayMode() {
+        return mDefaultMessageDisplayMode;
+    }
+
+    public void setDefaultMessageDisplayMode(MessageDisplayMode defaultMode) {
+        this.mDefaultMessageDisplayMode = defaultMode;
+    }
+
     public boolean isRemoteSearchFullText() {
         return false;   // Temporarily disabled
         //return mRemoteSearchFullText;

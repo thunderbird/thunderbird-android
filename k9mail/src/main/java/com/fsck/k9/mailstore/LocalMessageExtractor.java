@@ -3,6 +3,7 @@ package com.fsck.k9.mailstore;
 import android.content.Context;
 import android.net.Uri;
 
+import com.fsck.k9.Account.MessageDisplayMode;
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.DecryptedTempFileBody;
 import com.fsck.k9.mail.Address;
@@ -187,8 +188,13 @@ public class LocalMessageExtractor {
             String t = MessageExtractor.getTextFromPart(part);
             if (t == null) {
                 t = "";
-            } else if (viewable instanceof Html) {
-                t = HtmlConverter.htmlToText(t);
+            } else {
+                if (viewable instanceof Html) {
+                    t = HtmlConverter.htmlToText(t);
+                } else {
+                    t = t.replaceAll("\\r\\n", "<br/>");
+                    t = t.replaceAll("\\n", "<br/>"); // do emails always use dos line endings?
+                }
             }
             text.append(t);
         } else if (viewable instanceof Alternative) {
@@ -422,7 +428,7 @@ public class LocalMessageExtractor {
     }
 
     public static MessageViewInfo decodeMessageForView(Context context,
-            Message message, MessageCryptoAnnotations annotations) throws MessagingException {
+            Message message, MessageCryptoAnnotations annotations, MessageDisplayMode messageDisplayMode) throws MessagingException {
 
         // 1. break mime structure on encryption/signature boundaries
         List<Part> parts = getCryptPieces(message, annotations);
@@ -446,7 +452,7 @@ public class LocalMessageExtractor {
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
 
             MessageViewContainer messageViewContainer =
-                    new MessageViewContainer(viewable.html, part, attachmentInfos, pgpAnnotation);
+                    new MessageViewContainer(messageDisplayMode == MessageDisplayMode.HTML ? viewable.html : viewable.text, part, attachmentInfos, pgpAnnotation);
 
             containers.add(messageViewContainer);
         }

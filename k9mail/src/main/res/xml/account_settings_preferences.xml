@@ -72,6 +72,14 @@
             android:title="@string/account_settings_mark_message_as_read_on_view_label"
             android:summary="@string/account_settings_mark_message_as_read_on_view_summary" />
 
+        <ListPreference
+            android:persistent="false"
+            android:key="message_display_mode"
+            android:title="@string/account_settings_message_display_mode_label"
+            android:entries="@array/account_settings_message_display_mode_entries"
+            android:entryValues="@array/account_settings_message_display_mode_values"
+            android:dialogTitle="@string/account_settings_message_display_mode_label" />
+
     </PreferenceScreen>
 
     <PreferenceScreen

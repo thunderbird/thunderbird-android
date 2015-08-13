@@ -747,7 +747,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         @Override
         public Loader<MessageViewInfo> onCreateLoader(int id, Bundle args) {
             setProgress(true);
-            return new DecodeMessageLoader(mContext, mMessage, messageAnnotations);
+            return new DecodeMessageLoader(mContext, mMessage, messageAnnotations, mAccount.getDefaultMessageDisplayMode());
         }
 
         @Override
