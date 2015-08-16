@@ -235,8 +235,8 @@
         <outgoing uri="smtp+tls+://mailgate.cosmotemail.gr" username="$email" />
     </provider>
     <provider id="mycosmos.gr" label="mycosmos" domain="mycosmos.gr">
-        <incoming uri="imap+ssl+://imap.mycosmos.gr" username="$email" />
-        <outgoing uri="smtp+tls+://mailgate.mycosmos.gr" username="$email" />
+        <incoming uri="imap+ssl+://mail.mycosmos.gr" username="$email" />
+        <outgoing uri="smtp+tls+://mail.mycosmos.gr" username="$email" />
     </provider>
     
    <!-- Switzerland -->
