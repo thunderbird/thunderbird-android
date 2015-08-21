@@ -1123,6 +1123,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_error">OpenPGP Error: %s</string>
     <string name="openpgp_unknown_error">Unknown OpenPGP Error</string>
     <string name="openpgp_user_id">User Id</string>
+    <string name="openpgp_cancelled_by_user">Cancelled by user</string>
     
     <string name="openpgp_result_no_signature">"Not Signed"</string>
     <string name="openpgp_result_invalid_signature">"Invalid signature!"</string>
