@@ -224,6 +224,20 @@
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
         <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
     </provider>
+
+     <!-- Greece -->
+    <provider id="otenet.gr" label="otenet.gr" domain="otenet.gr">
+        <incoming uri="imap+ssl+://imap.otenet.gr" username="$email" />
+        <outgoing uri="smtp+tls+://mailgate.otenet.gr" username="$email" />
+    </provider>
+    <provider id="cosmotemail.gr" label="cosmotemail" domain="cosmotemail.gr">
+        <incoming uri="imap+ssl+://imap.cosmotemail.gr" username="$email" />
+        <outgoing uri="smtp+tls+://mailgate.cosmotemail.gr" username="$email" />
+    </provider>
+    <provider id="mycosmos.gr" label="mycosmos" domain="mycosmos.gr">
+        <incoming uri="imap+ssl+://mail.mycosmos.gr" username="$email" />
+        <outgoing uri="smtp+tls+://mail.mycosmos.gr" username="$email" />
+    </provider>
     
    <!-- Switzerland -->
     <!-- MyKolab.com variants -->
