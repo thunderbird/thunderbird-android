@@ -479,7 +479,7 @@ public class LocalMessageExtractor {
         Body body = part.getBody();
         if (body instanceof Multipart) {
             Multipart multi = (Multipart) body;
-            if ("multipart/mixed".equals(part.getMimeType())) {
+            if ("multipart/mixed".equalsIgnoreCase(part.getMimeType())) {
                 boolean foundSome = false;
                 for (BodyPart sub : multi.getBodyParts()) {
                     foundSome |= getCryptSubPieces(sub, parts, annotations);
