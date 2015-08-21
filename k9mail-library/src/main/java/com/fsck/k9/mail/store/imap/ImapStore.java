@@ -1745,7 +1745,7 @@ public class ImapStore extends RemoteStore {
                 String encoding = bs.getString(5);
                 int size = bs.getNumber(6);
 
-                if (MimeUtility.mimeTypeMatches(mimeType, "message/rfc822")) {
+                if (MimeUtility.isMessage(mimeType)) {
 //                  A body type of type MESSAGE and subtype RFC822
 //                  contains, immediately after the basic fields, the
 //                  envelope structure, body structure, and size in

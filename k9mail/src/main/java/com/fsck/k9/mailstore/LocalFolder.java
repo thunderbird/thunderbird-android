@@ -49,6 +49,7 @@ import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.SizeAware;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
@@ -690,12 +691,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             }
 
             String parentMimeType = parentPart.getMimeType();
-            if (parentMimeType.startsWith("multipart/")) {
+            if (MimeUtility.isMultipart(parentMimeType)) {
                 BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, displayName, size,
                         firstClassAttachment);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
-            } else if (parentMimeType.startsWith("message/")) {
+            } else if (MimeUtility.isMessage(parentMimeType)) {
                 Message innerMessage = new MimeMessage();
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
@@ -708,8 +709,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         partById.put(id, part);
         part.setServerExtra(serverExtra);
 
-        boolean isMultipart = mimeType.startsWith("multipart/");
-        if (isMultipart) {
+        if (MimeUtility.isMultipart(mimeType)) {
             byte[] preamble = cursor.getBlob(11);
             byte[] epilogue = cursor.getBlob(12);
             String boundary = cursor.getString(13);
