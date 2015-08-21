@@ -229,7 +229,7 @@ public class Prefs extends K9PreferenceActivity {
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_spam);
         confirmActionValues[index++] = K9.confirmSpam();
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_menu_discard);
-        confirmActionValues[index++] = K9.confirmMenuDiscard();
+        confirmActionValues[index++] = K9.confirmDiscardMessage();
 
         mConfirmActions.setItems(confirmActionEntries);
         mConfirmActions.setCheckedItems(confirmActionValues);
@@ -465,7 +465,7 @@ public class Prefs extends K9PreferenceActivity {
             K9.setConfirmDeleteFromNotification(mConfirmActions.getCheckedItems()[index++]);
         }
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[index++]);
-        K9.setConfirmMenuDiscard(mConfirmActions.getCheckedItems()[index++]);
+        K9.setConfirmDiscardMessage(mConfirmActions.getCheckedItems()[index++]);
 
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());

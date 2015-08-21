@@ -82,14 +82,13 @@ import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
+import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -112,7 +111,6 @@ import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
-
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
@@ -1939,28 +1937,29 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         }
     }
-    
+
     private void askBeforeDiscard(){
-        if(K9.confirmMenuDiscard()){
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MessageCompose.this);
-                alertDialog.setTitle(R.string.dialog_confirm_delete_title);
-                alertDialog.setMessage(R.string.dialog_confirm_delete_message);
-                alertDialog.setPositiveButton(R.string.dialog_confirm_delete_confirm_button, new DialogInterface.OnClickListener() {                
-                    public void onClick(DialogInterface dialog, int which){
-                        onDiscard();
-                    }
-                });        
-                alertDialog.setNegativeButton(R.string.dialog_confirm_delete_cancel_button, new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int which){
-                    }
-                });                
-                alertDialog.show();
-        }else{
-                onDiscard();
+        if (K9.confirmDiscardMessage()) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MessageCompose.this);
+            alertDialog.setTitle(R.string.dialog_confirm_delete_title);
+            alertDialog.setMessage(R.string.dialog_confirm_delete_message);
+            alertDialog.setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            onDiscard();
+                        }
+                    });
+            alertDialog.setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+            alertDialog.show();
+        } else {
+            onDiscard();
         }
     }
-    
-                
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -1977,7 +1976,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 break;
             case R.id.discard:
                 askBeforeDiscard();
-                
                 break;
             case R.id.add_cc_bcc:
                 onAddCcBcc();
