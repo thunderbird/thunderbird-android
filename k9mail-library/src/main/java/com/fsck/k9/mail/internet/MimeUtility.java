@@ -957,7 +957,7 @@ public class MimeUtility {
                     return ret;
                 }
             }
-        } else if (part.getMimeType().equalsIgnoreCase(mimeType)) {
+        } else if (isSameMimeType(part.getMimeType(), mimeType)) {
             return part;
         }
         return null;
@@ -976,7 +976,7 @@ public class MimeUtility {
     }
 
     public static boolean isDefaultMimeType(String mimeType) {
-        return DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(mimeType);
+        return isSameMimeType(mimeType, DEFAULT_ATTACHMENT_MIME_TYPE);
     }
 
     public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
@@ -1065,7 +1065,7 @@ public class MimeUtility {
         }
         // If the MIME type set by the user's mailer is application/octet-stream, try to figure
         // out whether there's a sane file type extension.
-        if (returnedType != null && !DEFAULT_ATTACHMENT_MIME_TYPE.equalsIgnoreCase(returnedType)) {
+        if (returnedType != null && !isSameMimeType(returnedType, DEFAULT_ATTACHMENT_MIME_TYPE)) {
             return returnedType;
         } else if (extension != null) {
             for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP) {
@@ -1111,12 +1111,24 @@ public class MimeUtility {
             return (MimeUtil.ENC_BASE64);
         } else if (MimeUtil.isMessage(type)) {
             return (MimeUtil.ENC_8BIT);
-        } else if ("multipart/signed".equalsIgnoreCase(type) || type.toLowerCase(Locale.US).startsWith("message/")) {
+        } else if (isSameMimeType(type, "multipart/signed") || isMessage(type)) {
             return (MimeUtil.ENC_7BIT);
-        } else if (type.toLowerCase(Locale.US).startsWith("multipart/")) {
+        } else if (isMultipart(type)) {
             return (MimeUtil.ENC_8BIT);
         } else {
             return (MimeUtil.ENC_BASE64);
         }
+    }
+
+    public static boolean isMultipart(String mimeType) {
+        return mimeType != null && mimeType.toLowerCase(Locale.US).startsWith("multipart/");
+    }
+
+    public static boolean isMessage(String mimeType) {
+        return isSameMimeType(mimeType, "message/rfc822");
+    }
+
+    public static boolean isSameMimeType(String mimeType, String otherMimeType) {
+        return mimeType != null && mimeType.equalsIgnoreCase(otherMimeType);
     }
 }

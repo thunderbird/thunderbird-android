@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
+import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Html;
 import static com.fsck.k9.mail.internet.Viewable.MessageHeader;
@@ -47,7 +48,7 @@ public class MessageExtractor {
                     /*
                      * determine the charset from HTML message.
                      */
-                    if (mimeType.equalsIgnoreCase("text/html") && charset == null) {
+                    if (isSameMimeType(mimeType, "text/html") && charset == null) {
                         InputStream in = MimeUtility.decodeBody(body);
                         try {
                             byte[] buf = new byte[256];
@@ -121,7 +122,7 @@ public class MessageExtractor {
         Body body = part.getBody();
         if (body instanceof Multipart) {
             Multipart multipart = (Multipart) body;
-            if (part.getMimeType().equalsIgnoreCase("multipart/alternative")) {
+            if (isSameMimeType(part.getMimeType(), "multipart/alternative")) {
                 /*
                  * For multipart/alternative parts we try to find a text/plain and a text/html
                  * child. Everything else we find is put into 'attachments'.
@@ -159,14 +160,14 @@ public class MessageExtractor {
              * Save text/plain and text/html
              */
             String mimeType = part.getMimeType();
-            if (mimeType.equalsIgnoreCase("text/plain")) {
+            if (isSameMimeType(mimeType, "text/plain")) {
                 Text text = new Text(part);
                 viewables.add(text);
             } else {
                 Html html = new Html(part);
                 viewables.add(html);
             }
-        } else if (part.getMimeType().equalsIgnoreCase("application/pgp-signature")) {
+        } else if (isSameMimeType(part.getMimeType(), "application/pgp-signature")) {
             // ignore this type explicitly
         } else {
             // Everything else is treated as attachment.
@@ -266,7 +267,7 @@ public class MessageExtractor {
                         break;
                     }
                 }
-            } else if (isPartTextualBody(part) && part.getMimeType().equalsIgnoreCase("text/plain")) {
+            } else if (isPartTextualBody(part) && isSameMimeType(part.getMimeType(), "text/plain")) {
                 Text text = new Text(part);
                 viewables.add(text);
                 if (directChild) {
@@ -326,7 +327,7 @@ public class MessageExtractor {
                     }
                 }
             } else if (!(directChild && partFound) && isPartTextualBody(part) &&
-                    part.getMimeType().equalsIgnoreCase("text/html")) {
+                    isSameMimeType(part.getMimeType(), "text/html")) {
                 Html html = new Html(part);
                 viewables.add(html);
                 partFound = true;
@@ -405,14 +406,14 @@ public class MessageExtractor {
          */
         boolean attachment = ("attachment".equalsIgnoreCase(dispositionType) || (dispositionFilename != null));
 
-        if ((!attachment) && (part.getMimeType().equalsIgnoreCase("text/html"))) {
+        if ((!attachment) && (isSameMimeType(part.getMimeType(), "text/html"))) {
             return true;
         }
         /*
          * If the part is plain text and it got this far it's part of a
          * mixed (et al) and should be rendered inline.
          */
-        else if ((!attachment) && (part.getMimeType().equalsIgnoreCase("text/plain"))) {
+        else if ((!attachment) && (isSameMimeType(part.getMimeType(), "text/plain"))) {
             return true;
         }
         /*

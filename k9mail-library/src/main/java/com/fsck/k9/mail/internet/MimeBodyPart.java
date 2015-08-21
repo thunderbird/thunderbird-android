@@ -10,7 +10,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Locale;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -147,17 +146,15 @@ public class MimeBodyPart extends BodyPart {
          * header if any of its subparts are 8bit, so we automatically recurse
          * (as long as its not multipart/signed).
          */
-        if (mBody instanceof CompositeBody
-                && !"multipart/signed".equalsIgnoreCase(type)) {
+        if (mBody instanceof CompositeBody && !MimeUtility.isSameMimeType(type, "multipart/signed")) {
             setEncoding(MimeUtil.ENC_7BIT);
             // recurse
             ((CompositeBody) mBody).setUsing7bitTransport();
         } else if (!MimeUtil.ENC_8BIT
                 .equalsIgnoreCase(getFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING))) {
             return;
-        } else if (type != null
-                && (type.equalsIgnoreCase("multipart/signed") || type
-                        .toLowerCase(Locale.US).startsWith("message/"))) {
+        } else if (type != null &&
+                (MimeUtility.isSameMimeType(type, "multipart/signed") || MimeUtility.isMessage(type))) {
             /*
              * This shouldn't happen. In any case, it would be wrong to convert
              * them to some other encoding for 7bit transport.
