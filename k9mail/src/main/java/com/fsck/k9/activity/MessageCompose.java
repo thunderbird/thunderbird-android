@@ -126,6 +126,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 3;
     private static final int DIALOG_CHOOSE_IDENTITY = 4;
+    private static final int DIALOG_CONFIRM_DISCARD = 5;
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
 
@@ -1940,21 +1941,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void askBeforeDiscard(){
         if (K9.confirmDiscardMessage()) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(MessageCompose.this);
-            alertDialog.setTitle(R.string.dialog_confirm_delete_title);
-            alertDialog.setMessage(R.string.dialog_confirm_delete_message);
-            alertDialog.setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            onDiscard();
-                        }
-                    });
-            alertDialog.setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-            alertDialog.show();
+            showDialog(DIALOG_CONFIRM_DISCARD);
         } else {
             onDiscard();
         }
@@ -2145,6 +2132,23 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 });
 
                 return builder.create();
+            case DIALOG_CONFIRM_DISCARD: {
+                return new AlertDialog.Builder(this)
+                        .setTitle(R.string.dialog_confirm_delete_title)
+                        .setMessage(R.string.dialog_confirm_delete_message)
+                        .setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        onDiscard();
+                                    }
+                                })
+                        .setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                        .create();
+            }
         }
         return super.onCreateDialog(id);
     }
