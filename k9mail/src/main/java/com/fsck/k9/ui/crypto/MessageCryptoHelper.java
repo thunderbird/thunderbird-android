@@ -19,12 +19,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
-import com.fsck.k9.crypto.OpenPgpApiHelper;
-import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.MessagingException;
@@ -431,7 +428,7 @@ public class MessageCryptoHelper {
         if (resultCode == Activity.RESULT_OK) {
             decryptOrVerifyNextPart();
         } else {
-            onCryptoFailed(new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, context.getString(R.string.openpgp_cancelled_by_user)));
+            onCryptoFailed(new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, context.getString(R.string.openpgp_canceled_by_user)));
         }
     }
 
