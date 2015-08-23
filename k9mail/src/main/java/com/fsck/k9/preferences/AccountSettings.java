@@ -70,7 +70,7 @@ public class AccountSettings {
                         R.array.account_settings_display_count_values))
             ));
         s.put("defaultDisplayMode", Settings.versions(
-                new V(15, new EnumSetting(Account.MessageDisplayMode.class,
+                new V(40, new EnumSetting(Account.MessageDisplayMode.class,
                         MessageDisplayMode.HTML))
             ));
         s.put("draftsFolderName", Settings.versions(
