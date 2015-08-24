@@ -36,6 +36,7 @@ import com.fsck.k9.mailstore.MessageHelper;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
 import org.openintents.openpgp.IOpenPgpService;
+import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -397,24 +398,16 @@ public class MessageCryptoHelper {
     }
 
     private void handleCryptoOperationSuccess(MimeBodyPart outputPart) {
-        OpenPgpResultAnnotation resultAnnotation = new OpenPgpResultAnnotation();
-
-        resultAnnotation.setOutputData(outputPart);
-
-        int resultType = currentCryptoResult.getIntExtra(OpenPgpApi.RESULT_TYPE,
-                OpenPgpApi.RESULT_TYPE_UNENCRYPTED_UNSIGNED);
-        if ((resultType & OpenPgpApi.RESULT_TYPE_ENCRYPTED) == OpenPgpApi.RESULT_TYPE_ENCRYPTED) {
-            resultAnnotation.setWasEncrypted(true);
-        } else {
-            resultAnnotation.setWasEncrypted(false);
-        }
-        if ((resultType & OpenPgpApi.RESULT_TYPE_SIGNED) == OpenPgpApi.RESULT_TYPE_SIGNED) {
-            OpenPgpSignatureResult signatureResult =
-                    currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
-            resultAnnotation.setSignatureResult(signatureResult);
-        }
-
+        OpenPgpDecryptionResult decryptionResult =
+                currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_DECRYPTION);
+        OpenPgpSignatureResult signatureResult =
+                currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
         PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+
+        OpenPgpResultAnnotation resultAnnotation = new OpenPgpResultAnnotation();
+        resultAnnotation.setOutputData(outputPart);
+        resultAnnotation.setDecryptionResult(decryptionResult);
+        resultAnnotation.setSignatureResult(signatureResult);
         resultAnnotation.setPendingIntent(pendingIntent);
 
         onCryptoSuccess(resultAnnotation);

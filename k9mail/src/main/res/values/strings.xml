@@ -1131,9 +1131,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_result_signature_certified">"Signed by"</string>
     <string name="openpgp_result_signature_expired_key">"Key is expired!"</string>
     <string name="openpgp_result_signature_revoked_key">"Key has been revoked!"</string>
+    <string name="openpgp_result_signature_insecure">"Insecure!"</string>
     <string name="openpgp_result_signature_missing_key">"Unknown public key"</string>
     <string name="openpgp_result_encrypted">"Encrypted"</string>
     <string name="openpgp_result_not_encrypted">"Not Encrypted"</string>
+    <string name="openpgp_result_decryption_insecure">"Insecure"</string>
     <string name="openpgp_result_action_show">"Show"</string>
     <string name="openpgp_result_action_lookup">"Lookup"</string>
     <string name="openpgp_result_no_name">"No name"</string>
