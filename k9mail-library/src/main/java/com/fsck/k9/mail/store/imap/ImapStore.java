@@ -185,6 +185,13 @@ public class ImapStore extends RemoteStore {
                 } else {
                     password = decodeUtf8(userInfoParts[2]);
                 }
+                
+            
+            } else if (userInfoParts.length == 4) {
+                authenticationType = AuthType.valueOf(userInfoParts[0]);
+                username = decodeUtf8(userInfoParts[1]);
+                password = decodeUtf8(userInfoParts[2]);
+                clientCertificateAlias = decodeUtf8(userInfoParts[3]);
             }
         }
 
@@ -247,7 +254,7 @@ public class ImapStore extends RemoteStore {
         if (authType == AuthType.EXTERNAL) {
             userInfo = authType.name() + ":" + userEnc + ":" + clientCertificateAliasEnc;
         } else {
-            userInfo = authType.name() + ":" + userEnc + ":" + passwordEnc;
+            userInfo = authType.name() + ":" + userEnc + ":" + passwordEnc + ":" + clientCertificateAliasEnc;
         }
         try {
             Map<String, String> extra = server.getExtra();

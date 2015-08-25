@@ -705,8 +705,6 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
 
-            Log.d("aSD", "asd"+mAccount.getCryptoKey());
-
             mCryptoKey.setValue(mAccount.getCryptoKey());
             mCryptoKey.setOpenPgpProvider(mCryptoApp.getValue());
             // TODO: other identities?

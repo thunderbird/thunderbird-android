@@ -390,8 +390,10 @@ public class AccountSetupBasics extends K9Activity
         String clientCertificateAlias = null;
         AuthType authenticationType;
         if (mClientCertificateCheckBox.isChecked()) {
-            authenticationType = AuthType.EXTERNAL;
+            // authenticationType = AuthType.EXTERNAL; // mauro
             clientCertificateAlias = mClientCertificateSpinner.getAlias();
+            authenticationType = AuthType.PLAIN;	// mauro
+            password = mPasswordView.getText().toString();	// mauro
         } else {
             authenticationType = AuthType.PLAIN;
             password = mPasswordView.getText().toString();
