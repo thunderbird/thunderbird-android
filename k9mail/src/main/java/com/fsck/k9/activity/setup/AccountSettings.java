@@ -537,7 +537,7 @@ public class AccountSettings extends K9PreferenceActivity {
             if(Arrays.asList(getResources().getStringArray(R.array.idle_refresh_period_values)).contains(Integer.toString(mAccount.getIdleRefreshMinutes())))
                 mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
             else
-                mIdleRefreshPeriod.setValue("customize");
+                mIdleRefreshPeriod.setValue("0");
 
             mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());
             mIdleRefreshPeriod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -546,7 +546,7 @@ public class AccountSettings extends K9PreferenceActivity {
                     int index = mIdleRefreshPeriod.findIndexOfValue(summary);
                     mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntries()[index]);
                     mIdleRefreshPeriod.setValue(summary);
-                    if (summary.equals("customize"))
+                    if (summary.equals("0"))
                         mIdleRefreshCustomPeriod.setEnabled(true);
                     else
                         mIdleRefreshCustomPeriod.setEnabled(false);
@@ -555,7 +555,7 @@ public class AccountSettings extends K9PreferenceActivity {
             });
 
             mIdleRefreshCustomPeriod.setSummary(mIdleRefreshCustomPeriod.getTime());
-            if (!mIdleRefreshPeriod.getValue().equals("customize"))
+            if (!mIdleRefreshPeriod.getValue().equals("0"))
                 mIdleRefreshCustomPeriod.setEnabled(false);
             mIdleRefreshCustomPeriod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -828,7 +828,7 @@ public class AccountSettings extends K9PreferenceActivity {
         if (mIsPushCapable) {
             mAccount.setPushPollOnConnect(mPushPollOnConnect.isChecked());
 
-            if (mIdleRefreshPeriod.getValue().equals("customize")) {
+            if (mIdleRefreshPeriod.getValue().equals("0")) {
                 mAccount.setIdleRefreshMinutes(mIdleRefreshCustomPeriod.getTimeInMinutes());
             }
             else  {
