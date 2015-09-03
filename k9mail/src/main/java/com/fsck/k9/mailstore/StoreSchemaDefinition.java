@@ -18,7 +18,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.provider.AttachmentProvider;
 
 class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     /**
@@ -60,11 +59,23 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             if (db.getVersion() < 29) {
 
                 db.execSQL("DROP TABLE IF EXISTS folders");
-                db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                           + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, "
-                           + "push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0, "
-                           + "integrate INTEGER, top_group INTEGER, poll_class TEXT, push_class TEXT, display_class TEXT, notify_class TEXT"
-                           + ")");
+                db.execSQL("CREATE TABLE folders (" +
+                        "id INTEGER PRIMARY KEY," +
+                        "name TEXT, " +
+                        "last_updated INTEGER, " +
+                        "unread_count INTEGER, " +
+                        "visible_limit INTEGER, " +
+                        "status TEXT, " +
+                        "push_state TEXT, " +
+                        "last_pushed INTEGER, " +
+                        "flagged_count INTEGER default 0, " +
+                        "integrate INTEGER, " +
+                        "top_group INTEGER, " +
+                        "poll_class TEXT, " +
+                        "push_class TEXT, " +
+                        "display_class TEXT, " +
+                        "notify_class TEXT" +
+                        ")");
 
                 db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
                 db.execSQL("DROP TABLE IF EXISTS messages");
