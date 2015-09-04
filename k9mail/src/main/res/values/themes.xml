@@ -60,8 +60,6 @@
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_light</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
         <item name="composerBackgroundColor">@android:color/background_light</item>
-        <item name="compatDividerVertical">?android:attr/dividerVertical</item>
-        <item name="compatSelectableItemBackground">?android:attr/selectableItemBackground</item>
     </style>
 
     <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Base">
@@ -115,8 +113,6 @@
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_dark</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
         <item name="composerBackgroundColor">@android:color/background_dark</item>
-        <item name="compatDividerVertical">?android:attr/dividerVertical</item>
-        <item name="compatSelectableItemBackground">?android:attr/selectableItemBackground</item>
     </style>
 
     <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">
