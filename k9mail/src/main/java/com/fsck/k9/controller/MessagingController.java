@@ -1,6 +1,7 @@
 package com.fsck.k9.controller;
 
 import java.io.CharArrayWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,6 +86,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.MessageRemovalListener;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -538,12 +540,12 @@ public class MessagingController implements Runnable {
         for (MessagingListener l : getListeners(listener)) {
             l.listFoldersStarted(account);
         }
-        List <? extends Folder > localFolders = null;
+        List<LocalFolder> localFolders = null;
         if (!account.isAvailable(context)) {
             Log.i(K9.LOG_TAG, "not listing folders of unavailable account");
         } else {
             try {
-                Store localStore = account.getLocalStore();
+                LocalStore localStore = account.getLocalStore();
                 localFolders = localStore.getPersonalNamespaces(false);
 
                 if (refreshRemote || localFolders.isEmpty()) {
@@ -579,7 +581,7 @@ public class MessagingController implements Runnable {
         put("doRefreshRemote", listener, new Runnable() {
             @Override
             public void run() {
-                List <? extends Folder > localFolders = null;
+                List<LocalFolder> localFolders = null;
                 try {
                     Store store = account.getRemoteStore();
 
@@ -1036,9 +1038,9 @@ public class MessagingController implements Runnable {
             final Date earliestDate = account.getEarliestPollDate();
 
 
+            int remoteStart;
             if (remoteMessageCount > 0) {
                 /* Message numbers start at 1.  */
-                int remoteStart;
                 if (visibleLimit > 0) {
                     remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
                 } else {
@@ -1077,13 +1079,14 @@ public class MessagingController implements Runnable {
                     l.synchronizeMailboxHeadersFinished(account, folder, headerProgress.get(), remoteUidMap.size());
                 }
 
-            } else if (remoteMessageCount < 0) {
+            } else {
                 throw new Exception("Message count " + remoteMessageCount + " for folder " + folder);
             }
 
             /*
              * Remove any messages that are in the local store but no longer on the remote store or are too old
              */
+            MoreMessages moreMessages = localFolder.getMoreMessages();
             if (account.syncRemoteDeletions()) {
                 List<Message> destroyMessages = new ArrayList<Message>();
                 for (Message localMessage : localMessages) {
@@ -1092,16 +1095,23 @@ public class MessagingController implements Runnable {
                     }
                 }
 
+                if (!destroyMessages.isEmpty()) {
+                    moreMessages = MoreMessages.UNKNOWN;
 
-                localFolder.destroyMessages(destroyMessages);
+                    localFolder.destroyMessages(destroyMessages);
 
-                for (Message destroyMessage : destroyMessages) {
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.synchronizeMailboxRemovedMessage(account, folder, destroyMessage);
+                    for (Message destroyMessage : destroyMessages) {
+                        for (MessagingListener l : getListeners(listener)) {
+                            l.synchronizeMailboxRemovedMessage(account, folder, destroyMessage);
+                        }
                     }
                 }
             }
             localMessages = null;
+
+            if (moreMessages == MoreMessages.UNKNOWN) {
+                updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
+            }
 
             /*
              * Now we download the actual content of messages.
@@ -1170,6 +1180,19 @@ public class MessagingController implements Runnable {
             closeFolder(tLocalFolder);
         }
 
+    }
+
+    private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
+            throws MessagingException, IOException {
+
+        if (remoteStart == 1) {
+            localFolder.setMoreMessages(MoreMessages.FALSE);
+        } else {
+            boolean moreMessagesAvailable = remoteFolder.areMoreMessagesAvailable(remoteStart, earliestDate);
+
+            MoreMessages newMoreMessages = (moreMessagesAvailable) ? MoreMessages.TRUE : MoreMessages.FALSE;
+            localFolder.setMoreMessages(newMoreMessages);
+        }
     }
 
 

@@ -74,7 +74,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         "poll_class TEXT, " +
                         "push_class TEXT, " +
                         "display_class TEXT, " +
-                        "notify_class TEXT" +
+                        "notify_class TEXT, " +
+                        "more_messages TEXT default \"unknown\"" +
                         ")");
 
                 db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
@@ -573,6 +574,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 if (db.getVersion() < 51) {
                     throw new IllegalStateException("Database upgrade not supported yet!");
                 }
+                if (db.getVersion() < 52) {
+                    addMoreMessagesColumnToFoldersTable(db);
+                }
             }
 
             db.setVersion(LocalStore.DB_VERSION);
@@ -626,5 +630,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ? WHERE id = ?",
                    new Object[] { integrate, inTopGroup, syncClass, pushClass, displayClass, id });
 
+    }
+
+    private void addMoreMessagesColumnToFoldersTable(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE folders ADD more_messages TEXT default \"unknown\"");
     }
 }

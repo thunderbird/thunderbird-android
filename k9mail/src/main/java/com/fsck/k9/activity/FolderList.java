@@ -739,14 +739,14 @@ public class FolderList extends K9ListActivity {
             }
 
             @Override
-            public void listFolders(Account account, List<? extends Folder> folders) {
+            public void listFolders(Account account, List<LocalFolder> folders) {
                 if (account.equals(mAccount)) {
 
                     List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
                     List<FolderInfoHolder> topFolders = new LinkedList<FolderInfoHolder>();
 
                     Account.FolderMode aMode = account.getFolderDisplayMode();
-                    for (Folder folder : folders) {
+                    for (LocalFolder folder : folders) {
                         Folder.FolderClass fMode = folder.getDisplayClass();
 
                         if ((aMode == FolderMode.FIRST_CLASS && fMode != Folder.FolderClass.FIRST_CLASS)
@@ -810,7 +810,7 @@ public class FolderList extends K9ListActivity {
 
             private void refreshFolder(Account account, String folderName) {
                 // There has to be a cheaper way to get at the localFolder object than this
-                Folder localFolder = null;
+                LocalFolder localFolder = null;
                 try {
                     if (account != null && folderName != null) {
                         if (!account.isAvailable(FolderList.this)) {
