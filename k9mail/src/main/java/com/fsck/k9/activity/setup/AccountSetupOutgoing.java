@@ -276,7 +276,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                     // This may again invoke validateFields()
                     mClientCertificateSpinner.chooseCertificate();
                 } else {
-                	mClientCertificateSpinner.chooseCertificate();
                     mPasswordView.requestFocus();
                 }
             }
