@@ -167,8 +167,7 @@ public class ImapStore extends RemoteStore {
         if (imapUri.getUserInfo() != null) {
             String userinfo = imapUri.getUserInfo();
             String[] userInfoParts = userinfo.split(":");
-
-            if (userinfo.endsWith(":")) {
+            if (userinfo.endsWith("::")) {
                 // Password is empty. This can only happen after an account was imported.
                 authenticationType = AuthType.valueOf(userInfoParts[0]);
                 username = decodeUtf8(userInfoParts[1]);
