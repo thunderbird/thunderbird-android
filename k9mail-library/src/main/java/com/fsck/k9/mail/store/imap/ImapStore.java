@@ -185,8 +185,6 @@ public class ImapStore extends RemoteStore {
                 } else {
                     password = decodeUtf8(userInfoParts[2]);
                 }
-                
-            
             } else if (userInfoParts.length == 4) {
                 authenticationType = AuthType.valueOf(userInfoParts[0]);
                 username = decodeUtf8(userInfoParts[1]);

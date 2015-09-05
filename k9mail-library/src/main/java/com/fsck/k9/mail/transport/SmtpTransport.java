@@ -111,13 +111,11 @@ public class SmtpTransport extends Transport {
                     password = decodeUtf8(userInfoParts[1]);
                 }
             } else if (userInfoParts.length == 4) {
-                // NOTE: In SmptTransport URIs, the authType comes last!
                 authType = AuthType.valueOf(userInfoParts[2]);
                 username = decodeUtf8(userInfoParts[0]);
-                clientCertificateAlias = decodeUtf8(userInfoParts[3]);
                 password = decodeUtf8(userInfoParts[1]);
-            }
-            
+                clientCertificateAlias = decodeUtf8(userInfoParts[3]);
+            } 
         }
 
         return new ServerSettings(ServerSettings.Type.SMTP, host, port, connectionSecurity,
