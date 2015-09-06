@@ -167,8 +167,7 @@ public class ImapStore extends RemoteStore {
         if (imapUri.getUserInfo() != null) {
             String userinfo = imapUri.getUserInfo();
             String[] userInfoParts = userinfo.split(":");
-
-            if (userinfo.endsWith(":")) {
+            if (userinfo.endsWith("::")) {
                 // Password is empty. This can only happen after an account was imported.
                 authenticationType = AuthType.valueOf(userInfoParts[0]);
                 username = decodeUtf8(userInfoParts[1]);
@@ -185,6 +184,11 @@ public class ImapStore extends RemoteStore {
                 } else {
                     password = decodeUtf8(userInfoParts[2]);
                 }
+            } else if (userInfoParts.length == 4) {
+                authenticationType = AuthType.valueOf(userInfoParts[0]);
+                username = decodeUtf8(userInfoParts[1]);
+                password = decodeUtf8(userInfoParts[2]);
+                clientCertificateAlias = decodeUtf8(userInfoParts[3]);
             }
         }
 
@@ -247,7 +251,7 @@ public class ImapStore extends RemoteStore {
         if (authType == AuthType.EXTERNAL) {
             userInfo = authType.name() + ":" + userEnc + ":" + clientCertificateAliasEnc;
         } else {
-            userInfo = authType.name() + ":" + userEnc + ":" + passwordEnc;
+            userInfo = authType.name() + ":" + userEnc + ":" + passwordEnc + ":" + clientCertificateAliasEnc;
         }
         try {
             Map<String, String> extra = server.getExtra();
