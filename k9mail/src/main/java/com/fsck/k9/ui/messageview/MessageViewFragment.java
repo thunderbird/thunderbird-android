@@ -58,7 +58,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private static final String ARG_REFERENCE = "reference";
 
-    private static final String STATE_MESSAGE_REFERENCE = "reference";
     private static final String STATE_PGP_DATA = "pgpData";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -171,14 +170,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        MessageReference messageReference;
         if (savedInstanceState != null) {
             mPgpData = (PgpData) savedInstanceState.get(STATE_PGP_DATA);
-            messageReference = (MessageReference) savedInstanceState.get(STATE_MESSAGE_REFERENCE);
-        } else {
-            Bundle args = getArguments();
-            messageReference = args.getParcelable(ARG_REFERENCE);
         }
+
+        Bundle arguments = getArguments();
+        MessageReference messageReference = arguments.getParcelable(ARG_REFERENCE);
 
         displayMessage(messageReference, (mPgpData == null));
     }
@@ -186,7 +183,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(STATE_MESSAGE_REFERENCE, mMessageReference);
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
     }
 
