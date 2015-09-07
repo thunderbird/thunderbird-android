@@ -2874,6 +2874,7 @@ public class MessagingController implements Runnable {
         }
     }
 
+    //TODO: Fix the callback mess. See GH-782
     public void loadMessageForViewRemote(final Account account, final String folder,
                                          final String uid, final MessagingListener listener) {
         put("loadMessageForViewRemote", listener, new Runnable() {
