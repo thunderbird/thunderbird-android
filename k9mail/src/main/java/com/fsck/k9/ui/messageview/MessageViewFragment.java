@@ -800,7 +800,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    onMessageDownloadFinished(message);
+                    if (isAdded()) {
+                        onMessageDownloadFinished(message);
+                    }
                 }
             });
         }
@@ -810,7 +812,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    onDownloadMessageFailed(t);
+                    if (isAdded()) {
+                        onDownloadMessageFailed(t);
+                    }
                 }
             });
         }
