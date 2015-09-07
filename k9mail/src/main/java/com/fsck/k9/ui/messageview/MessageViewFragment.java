@@ -170,14 +170,20 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            mPgpData = (PgpData) savedInstanceState.get(STATE_PGP_DATA);
-        }
+        initializePgpData(savedInstanceState);
 
         Bundle arguments = getArguments();
         MessageReference messageReference = arguments.getParcelable(ARG_REFERENCE);
 
-        displayMessage(messageReference, (mPgpData == null));
+        displayMessage(messageReference);
+    }
+
+    private void initializePgpData(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mPgpData = (PgpData) savedInstanceState.get(STATE_PGP_DATA);
+        } else {
+            mPgpData = new PgpData();
+        }
     }
 
     @Override
@@ -186,23 +192,16 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
     }
 
-    private void displayMessage(MessageReference ref, boolean resetPgpData) {
-        mMessageReference = ref;
+    private void displayMessage(MessageReference messageReference) {
+        mMessageReference = messageReference;
         if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
         }
 
-        Context appContext = getActivity().getApplicationContext();
+        Activity activity = getActivity();
+        Context appContext = activity.getApplicationContext();
         mAccount = Preferences.getPreferences(appContext).getAccount(mMessageReference.getAccountUuid());
-        messageCryptoHelper = new MessageCryptoHelper(getActivity(), mAccount, this);
-        if (resetPgpData) {
-            // start with fresh, empty PGP data
-            mPgpData = new PgpData();
-        }
-
-        // Clear previous message
-        mMessageView.resetView();
-        mMessageView.resetHeaderView();
+        messageCryptoHelper = new MessageCryptoHelper(activity, mAccount, this);
 
         startLoadingMessageFromDatabase();
 
@@ -268,14 +267,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         getLoaderManager().initLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
     }
 
-    private void onDecodeMessageFinished(MessageViewInfo messageContainer) {
-        this.messageViewInfo = messageContainer;
-        showMessage(messageContainer);
+    private void onDecodeMessageFinished(MessageViewInfo messageViewInfo) {
+        this.messageViewInfo = messageViewInfo;
+        showMessage(messageViewInfo);
     }
 
-    private void showMessage(MessageViewInfo messageContainer) {
+    private void showMessage(MessageViewInfo messageViewInfo) {
         try {
-            mMessageView.setMessage(mAccount, messageContainer);
+            mMessageView.setMessage(mAccount, messageViewInfo);
             mMessageView.setShowDownloadButton(mMessage);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Error while trying to display message", e);
@@ -747,9 +746,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         @Override
-        public void onLoadFinished(Loader<MessageViewInfo> loader, MessageViewInfo messageContainer) {
+        public void onLoadFinished(Loader<MessageViewInfo> loader, MessageViewInfo messageViewInfo) {
             setProgress(false);
-            onDecodeMessageFinished(messageContainer);
+            onDecodeMessageFinished(messageViewInfo);
         }
 
         @Override
