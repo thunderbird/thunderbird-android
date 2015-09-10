@@ -627,6 +627,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
 
+    <!--manage local folders -->
+    <string name="account_settings_folder_create_local_folder">Create a local folder</string>
+    <string name="account_settings_folder_delete_local_folder">Delete a local folder</string>
+
     <string name="account_settings_folder_sync_mode_label">Poll folders</string>
     <string name="account_settings_folder_sync_mode_all">All</string>
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
@@ -1155,5 +1159,20 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_incomplete_message">Incomplete message</string>
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
+
+    <!--Support local folders -->
+    <string name="type_local_folder_name">Type a valid name for the local folder</string>
+    <string name="existing_local_folder_name">A local folder with the same name already exists</string>
+    <string name="missing_local_folder_name">A local folder with this name does not exist</string>
+    <string name="local_folder_status">Local Folder</string>
+    <string name="local_folder_create">Create a local folder</string>
+    <string name="local_folder_delete">Delete a local folder</string>
+    <string name="local_folder_delete_this">Delete this local folder</string>
+    <string name="local_folder_delete_not_empty">The local folder is not empty. Clear all messages before deleting the folder</string>
+    <string name="local_folder_delete_no_folders">Could not find any local folder to delete</string>
+    <string name="choose_local_folder_title">Choose local folder</string>
+    <string name="local_folder_synclass">Local</string>
+    <string name="choose_folder_copy_to">Copy to ...</string>
+    <string name="choose_folder_move_to">Move to ...</string>
 
 </resources>

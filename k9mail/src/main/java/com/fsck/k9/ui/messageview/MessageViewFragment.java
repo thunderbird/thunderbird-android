@@ -374,32 +374,34 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onMove() {
-        if ((!mController.isMoveCapable(mAccount))
-                || (mMessage == null)) {
+        final boolean hasLocalFolders = hasLocalFoldersForDestination();
+        final boolean isMoveCapable = mController.isMoveCapable(mAccount) | hasLocalFolders;
+        if (!isMoveCapable || mMessage == null) {
             return;
         }
-        if (!mController.isMoveCapable(mMessage)) {
+        if (!(mController.isMoveCapable(mMessage) | hasLocalFolders)) {
             Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
             return;
         }
 
-        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_MOVE);
+        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_MOVE, ChooseFolder.ACTION_MOVE);
 
     }
 
     public void onCopy() {
-        if ((!mController.isCopyCapable(mAccount))
-                || (mMessage == null)) {
+        final boolean hasLocalFolders = hasLocalFoldersForDestination();
+        final boolean isCopyCapable = mController.isCopyCapable(mAccount) | hasLocalFolders;
+        if (!isCopyCapable  || mMessage == null) {
             return;
         }
-        if (!mController.isCopyCapable(mMessage)) {
+        if (!(mController.isCopyCapable(mMessage) | hasLocalFolders)) {
             Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
             return;
         }
 
-        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY);
+        startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY, ChooseFolder.ACTION_COPY);
     }
 
     public void onArchive() {
@@ -415,12 +417,20 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         // mMessageView.beginSelectingText();
     }
 
-    private void startRefileActivity(int activity) {
+    private void startRefileActivity(int activity, String action) {
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderName());
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
+        if (action.equals(ChooseFolder.ACTION_COPY)) {
+            intent.putExtra(ChooseFolder.EXTRA_TITLE, getString(R.string.choose_folder_copy_to));
+        }
+        if (action.equals(ChooseFolder.ACTION_MOVE)) {
+            intent.putExtra(ChooseFolder.EXTRA_TITLE, getString(R.string.choose_folder_move_to));
+        }
+
+        intent.setAction(action);
         startActivityForResult(intent, activity);
     }
 
@@ -634,6 +644,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public boolean isMoveCapable() {
         return mController.isMoveCapable(mAccount);
+    }
+
+    public boolean hasLocalFoldersForDestination() {
+        if (mMessage != null && mMessage.getFolder()!= null && mMessage.getFolder().getName()!= null)
+            return mController.hasLocalFoldersForDestination(mAccount, mMessage.getFolder().getName());
+        return false;
     }
 
     public boolean canMessageBeArchived() {
