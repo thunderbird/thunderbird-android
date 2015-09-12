@@ -110,7 +110,12 @@ public class SmtpTransport extends Transport {
                 } else {
                     password = decodeUtf8(userInfoParts[1]);
                 }
-            }
+            } else if (userInfoParts.length == 4) {
+                authType = AuthType.valueOf(userInfoParts[2]);
+                username = decodeUtf8(userInfoParts[0]);
+                password = decodeUtf8(userInfoParts[1]);
+                clientCertificateAlias = decodeUtf8(userInfoParts[3]);
+            } 
         }
 
         return new ServerSettings(ServerSettings.Type.SMTP, host, port, connectionSecurity,
@@ -157,7 +162,7 @@ public class SmtpTransport extends Transport {
             if (AuthType.EXTERNAL == authType) {
                 userInfo = userEnc + ":" + clientCertificateAliasEnc + ":" + authType.name();
             } else {
-                userInfo = userEnc + ":" + passwordEnc + ":" + authType.name();
+                userInfo = userEnc + ":" + passwordEnc + ":" + authType.name() + ":" + clientCertificateAliasEnc;
             }
         } else {
             userInfo = userEnc + ":" + passwordEnc;
