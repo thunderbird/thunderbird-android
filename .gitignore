@@ -26,3 +26,9 @@ build.xml
 proguard-project.txt
 .idea/
 *.iml
+
+#me
+gradle
+gradlew
+gradlew.bat
+
