@@ -291,7 +291,7 @@ public class SettingsExporter {
         for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String valueString = entry.getValue().toString();
-            String[] comps = key.split("\\.");
+            String[] comps = key.split("\\.", 2);
 
             if (comps.length < 2) {
                 // Skip global settings
@@ -299,16 +299,18 @@ public class SettingsExporter {
             }
 
             String keyUuid = comps[0];
-            String secondPart = comps[1];
+            String keyPart = comps[1];
 
             if (!keyUuid.equals(accountUuid)) {
                 // Setting doesn't belong to the account we're currently writing.
                 continue;
             }
 
-            String keyPart;
-            if (comps.length >= 3) {
-                String thirdPart = comps[2];
+            int indexOfLastDot = keyPart.lastIndexOf(".");
+            boolean hasThirdPart = indexOfLastDot != -1 && indexOfLastDot < keyPart.length() - 1;
+            if (hasThirdPart) {
+                String secondPart = keyPart.substring(0, indexOfLastDot);
+                String thirdPart = keyPart.substring(indexOfLastDot + 1);
 
                 if (Account.IDENTITY_DESCRIPTION_KEY.equals(secondPart)) {
                     // This is an identity key. Save identity index for later...
@@ -325,11 +327,6 @@ public class SettingsExporter {
                     // ... but don't write it now.
                     continue;
                 }
-
-                // Strip account UUID from key
-                keyPart = key.substring(comps[0].length() + 1);
-            } else {
-                keyPart = secondPart;
             }
 
             TreeMap<Integer, SettingsDescription> versionedSetting =
@@ -346,7 +343,7 @@ public class SettingsExporter {
                         String pretty = setting.toPrettyString(value);
                         writeKeyValue(serializer, keyPart, pretty);
                     } catch (InvalidSettingValueException e) {
-                        Log.w(K9.LOG_TAG, "Account setting \"" + keyPart  + "\" (" +
+                        Log.w(K9.LOG_TAG, "Account setting \"" + keyPart + "\" (" +
                                 account.getDescription() + ") has invalid value \"" + valueString +
                                 "\" in preference storage. This shouldn't happen!");
                     }
@@ -463,16 +460,17 @@ public class SettingsExporter {
         for (Map.Entry<String, Object> entry : prefs.entrySet()) {
             String key = entry.getKey();
             String valueString = entry.getValue().toString();
-            String[] comps = key.split("\\.");
+            int indexOfFirstDot = key.indexOf('.');
+            int indexOfLastDot = key.lastIndexOf('.');
 
-            if (comps.length < 3) {
+            if (indexOfFirstDot == -1 || indexOfLastDot == -1 || indexOfFirstDot == indexOfLastDot) {
                 // Skip non-folder config entries
                 continue;
             }
 
-            String keyUuid = comps[0];
-            String folderName = comps[1];
-            String folderKey = comps[2];
+            String keyUuid = key.substring(0, indexOfFirstDot);
+            String folderName = key.substring(indexOfFirstDot + 1, indexOfLastDot);
+            String folderKey = key.substring(indexOfLastDot + 1);
 
             if (!keyUuid.equals(accountUuid) || !folderName.equals(folder)) {
                 // Skip entries that belong to another folder
