@@ -22,6 +22,7 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
+import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
@@ -88,7 +89,7 @@ public class LocalStore extends Store implements Serializable {
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
-        "integrate, top_group, poll_class, push_class, display_class, notify_class";
+        "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages";
 
     static final int FOLDER_ID_INDEX = 0;
     static final int FOLDER_NAME_INDEX = 1;
@@ -103,6 +104,7 @@ public class LocalStore extends Store implements Serializable {
     static final int FOLDER_PUSH_CLASS_INDEX = 10;
     static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
     static final int FOLDER_NOTIFY_CLASS_INDEX = 12;
+    static final int MORE_MESSAGES_INDEX = 13;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -127,7 +129,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 51;
+    public static final int DB_VERSION = 52;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -359,7 +361,7 @@ public class LocalStore extends Store implements Serializable {
 
     // TODO this takes about 260-300ms, seems slow.
     @Override
-    public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<LocalFolder>();
         try {
             database.execute(false, new DbCallback < List <? extends Folder >> () {
@@ -442,6 +444,7 @@ public class LocalStore extends Store implements Serializable {
     public void resetVisibleLimits(int visibleLimit) throws MessagingException {
         final ContentValues cv = new ContentValues();
         cv.put("visible_limit", Integer.toString(visibleLimit));
+        cv.put("more_messages", MoreMessages.UNKNOWN.getDatabaseName());
         database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {

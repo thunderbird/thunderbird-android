@@ -610,6 +610,11 @@ public class Pop3Store extends RemoteStore {
             return messages;
         }
 
+        @Override
+        public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate) {
+            return indexOfOldestMessage > 1;
+        }
+
         /**
          * Ensures that the given message set (from start to end inclusive)
          * has been queried so that uids are available in the local cache.

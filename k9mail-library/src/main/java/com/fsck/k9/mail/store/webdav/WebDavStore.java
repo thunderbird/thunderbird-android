@@ -1449,6 +1449,11 @@ public class WebDavStore extends RemoteStore {
         }
 
         @Override
+        public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate) {
+            return indexOfOldestMessage > 1;
+        }
+
+        @Override
         public List<WebDavMessage> getMessages(MessageRetrievalListener<WebDavMessage> listener) throws MessagingException {
             return getMessages(null, listener);
         }
