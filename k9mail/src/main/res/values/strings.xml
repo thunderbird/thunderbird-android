@@ -1156,4 +1156,7 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
 
+    <!--==== add attachment dialog menu_items ====-->
+    <string name="pick_photo">相册</string>
+    <string name="take_photo">拍照</string>
 </resources>

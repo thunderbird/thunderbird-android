@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-
+    <uses-permission android:name="android.permission.CAMERA" /><!-- add attachment via take photos -->
     <!-- Needed to mark a contact as contacted -->
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
 
