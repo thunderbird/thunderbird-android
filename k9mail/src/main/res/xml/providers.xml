@@ -242,7 +242,17 @@
         <incoming uri="imap+ssl+://mail.mycosmos.gr" username="$email" />
         <outgoing uri="smtp+tls+://mail.mycosmos.gr" username="$email" />
     </provider>
-    
+
+   <!-- Italy -->
+   <provider id="poste" label="poste" domain="poste.it">
+        <incoming uri="imap+ssl+://relay.poste.it" username="$email" />
+        <outgoing uri="smtp+ssl+://relay.poste.it" username="$email" />
+   </provider> 
+   <provider id="vodafone" label="vodafone" domain="vodafone.it">
+        <incoming uri="imap+ssl+://imap.vodafone.it" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.vodafone.it" username="$email" />
+   </provider> 
+
    <!-- Switzerland -->
     <!-- MyKolab.com variants -->
     <provider id="mykolab.com" label="MyKolab.com" domain="mykolab.com">

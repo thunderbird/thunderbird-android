@@ -80,6 +80,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     // mLastUid is used during syncs. It holds the highest UID within the local folder so we
     // know whether or not an unread message added to the local folder is actually "new" or not.
     private Integer mLastUid = null;
+    private MoreMessages moreMessages = MoreMessages.UNKNOWN;
 
     public LocalFolder(LocalStore localStore, String name) {
         super();
@@ -189,6 +190,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         mPushClass = Folder.FolderClass.valueOf((pushClass == null) ? noClass : pushClass);
         String syncClass = cursor.getString(LocalStore.FOLDER_SYNC_CLASS_INDEX);
         mSyncClass = Folder.FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
+        String moreMessagesValue = cursor.getString(LocalStore.MORE_MESSAGES_INDEX);
+        moreMessages = MoreMessages.fromDatabaseName(moreMessagesValue);
     }
 
     @Override
@@ -396,8 +399,22 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
 
     public void setVisibleLimit(final int visibleLimit) throws MessagingException {
+        updateMoreMessagesOnVisibleLimitChange(visibleLimit, mVisibleLimit);
+
         mVisibleLimit = visibleLimit;
         updateFolderColumn("visible_limit", mVisibleLimit);
+    }
+
+    private void updateMoreMessagesOnVisibleLimitChange(int newVisibleLimit, int oldVisibleLimit)
+            throws MessagingException {
+
+        boolean growVisibleLimit = newVisibleLimit > oldVisibleLimit;
+        boolean shrinkVisibleLimit = newVisibleLimit < oldVisibleLimit;
+        boolean moreMessagesWereAvailable = getMoreMessages() == MoreMessages.TRUE;
+
+        if (growVisibleLimit || (shrinkVisibleLimit && !moreMessagesWereAvailable)) {
+            setMoreMessages(MoreMessages.UNKNOWN);
+        }
     }
 
     @Override
@@ -491,6 +508,19 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public void setIntegrate(boolean integrate) throws MessagingException {
         mIntegrate = integrate;
         updateFolderColumn("integrate", mIntegrate ? 1 : 0);
+    }
+
+    public boolean hasMoreMessages() {
+        return moreMessages != MoreMessages.FALSE;
+    }
+
+    public MoreMessages getMoreMessages() {
+        return moreMessages;
+    }
+
+    public void setMoreMessages(MoreMessages moreMessages) throws MessagingException {
+        this.moreMessages = moreMessages;
+        updateFolderColumn("more_messages", moreMessages.getDatabaseName());
     }
 
     private String getPrefId(String name) {
@@ -743,6 +773,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         open(OPEN_MODE_RW);
         throw new MessagingException(
             "LocalStore.getMessages(int, int, MessageRetrievalListener) not yet implemented");
+    }
+
+    @Override
+    public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate)
+            throws IOException, MessagingException {
+        throw new IllegalStateException("Not implemented");
     }
 
     void populateHeaders(final LocalMessage message) throws MessagingException {
@@ -1630,6 +1666,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                 "(SELECT id FROM messages WHERE folder_id = ?)", folderIdArg);
                         db.execSQL("DELETE FROM messages WHERE folder_id = ?", folderIdArg);
 
+                        setMoreMessages(MoreMessages.UNKNOWN);
+
                         return null;
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
@@ -2004,5 +2042,31 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         static final int IN_DATABASE = 1;
         static final int ON_DISK = 2;
         static final int CHILD_PART_CONTAINS_DATA = 3;
+    }
+
+    public enum MoreMessages {
+        UNKNOWN("unknown"),
+        FALSE("false"),
+        TRUE("true");
+
+        private final String databaseName;
+
+        MoreMessages(String databaseName) {
+            this.databaseName = databaseName;
+        }
+
+        public static MoreMessages fromDatabaseName(String databaseName) {
+            for (MoreMessages value : MoreMessages.values()) {
+                if (value.databaseName.equals(databaseName)) {
+                    return value;
+                }
+            }
+
+            throw new IllegalArgumentException("Unknown value: " + databaseName);
+        }
+
+        public String getDatabaseName() {
+            return databaseName;
+        }
     }
 }

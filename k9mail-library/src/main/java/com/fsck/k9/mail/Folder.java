@@ -1,5 +1,6 @@
 package com.fsck.k9.mail;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,9 @@ public abstract class Folder<T extends Message> {
      * @throws MessagingException
      */
     public abstract List<T> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<T> listener) throws MessagingException;
+
+    public abstract boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate)
+            throws IOException, MessagingException;
 
     /**
      * Fetches the given list of messages. The specified listener is notified as

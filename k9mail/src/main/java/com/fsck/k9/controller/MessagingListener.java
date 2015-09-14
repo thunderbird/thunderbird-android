@@ -8,9 +8,9 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 
 /**
@@ -34,7 +34,7 @@ public class MessagingListener {
 
     public void listFoldersStarted(Account account) {}
 
-    public void listFolders(Account account, List<? extends Folder> folders) {}
+    public void listFolders(Account account, List<LocalFolder> folders) {}
 
     public void listFoldersFinished(Account account) {}
 

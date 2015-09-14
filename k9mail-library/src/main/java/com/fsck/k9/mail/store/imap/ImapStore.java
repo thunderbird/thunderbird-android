@@ -670,6 +670,8 @@ public class ImapStore extends RemoteStore {
 
 
     protected class ImapFolder extends Folder<ImapMessage> {
+        private static final int MORE_MESSAGES_WINDOW_SIZE = 500;
+
         private String mName;
         protected volatile int mMessageCount = -1;
         protected volatile long uidNext = -1L;
@@ -1202,14 +1204,8 @@ public class ImapStore extends RemoteStore {
                     String.format(Locale.US, "Invalid message set %d %d",
                                   start, end));
             }
-            final StringBuilder dateSearchString = new StringBuilder();
-            if (earliestDate != null) {
-                dateSearchString.append(" SINCE ");
-                synchronized (RFC3501_DATE) {
-                    dateSearchString.append(RFC3501_DATE.format(earliestDate));
-                }
-            }
 
+            final String dateSearchString = getDateSearchString(earliestDate);
 
             ImapSearcher searcher = new ImapSearcher() {
                 @Override
@@ -1220,6 +1216,62 @@ public class ImapStore extends RemoteStore {
             return search(searcher, listener);
 
         }
+
+        private String getDateSearchString(Date earliestDate) {
+            if (earliestDate == null) {
+                return "";
+            }
+
+            synchronized (RFC3501_DATE) {
+                return " SINCE " + RFC3501_DATE.format(earliestDate);
+            }
+        }
+
+        @Override
+        public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate)
+                throws IOException, MessagingException {
+
+            checkOpen();
+
+            if (indexOfOldestMessage == 1) {
+                return false;
+            }
+
+            String dateSearchString = getDateSearchString(earliestDate);
+
+            int endIndex = indexOfOldestMessage - 1;
+
+            while (endIndex > 0) {
+                int startIndex = Math.max(0, endIndex - MORE_MESSAGES_WINDOW_SIZE) + 1;
+
+                if (existsNonDeletedMessageInRange(startIndex, endIndex, dateSearchString)) {
+                    return true;
+                }
+
+                endIndex = endIndex - MORE_MESSAGES_WINDOW_SIZE;
+            }
+
+            return false;
+        }
+
+        private boolean existsNonDeletedMessageInRange(int startIndex, int endIndex, String dateSearchString)
+                throws MessagingException, IOException {
+
+            String command = String.format(Locale.US, "SEARCH %d:%d%s NOT DELETED",
+                    startIndex, endIndex, dateSearchString);
+
+            List<ImapResponse> responses = executeSimpleCommand(command);
+            for (ImapResponse response : responses) {
+                if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
+                    if (response.size() > 1) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         protected List<ImapMessage> getMessages(final List<Long> mesgSeqs,
                                                       final boolean includeDeleted,
                                                       final MessageRetrievalListener<ImapMessage> listener)
