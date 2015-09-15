@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
+import android.net.SSLCertificateSocketFactory;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -163,8 +164,11 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         } else {
             trustedSocket = socketFactory.createSocket(socket, host, port, true);
         }
-        hardenSocket((SSLSocket) trustedSocket);
-        setSNIHost(socketFactory, (SSLSocket) trustedSocket, host);
+
+        SSLSocket sslSocket = (SSLSocket) trustedSocket;
+        hardenSocket(sslSocket);
+        setSniHost(socketFactory, sslSocket, host);
+
         return trustedSocket;
     }
 
@@ -177,16 +181,21 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         }
     }
 
-    public static void setSNIHost(final SSLSocketFactory factory, final SSLSocket socket, final String hostname) {
-        if (factory instanceof android.net.SSLCertificateSocketFactory && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            ((android.net.SSLCertificateSocketFactory)factory).setHostname(socket, hostname);
+    public static void setSniHost(SSLSocketFactory factory, SSLSocket socket, String hostname) {
+        if (factory instanceof android.net.SSLCertificateSocketFactory &&
+                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            SSLCertificateSocketFactory sslCertificateSocketFactory = (SSLCertificateSocketFactory) factory;
+            sslCertificateSocketFactory.setHostname(socket, hostname);
         } else {
-            try {
-                socket.getClass().getMethod("setHostname", String.class).invoke(socket, hostname);
-            } catch (Throwable e) {
-                // ignore any error, we just can't set the hostname...
-                Log.e(LOG_TAG, "Could not call SSLSocket#setHostname(String) method ", e);
-            }
+            setHostnameViaReflection(socket, hostname);
+        }
+    }
+
+    private static void setHostnameViaReflection(SSLSocket socket, String hostname) {
+        try {
+            socket.getClass().getMethod("setHostname", String.class).invoke(socket, hostname);
+        } catch (Throwable e) {
+            Log.e(LOG_TAG, "Could not call SSLSocket#setHostname(String) method ", e);
         }
     }
 }
