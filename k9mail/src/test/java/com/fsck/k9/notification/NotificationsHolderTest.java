@@ -46,7 +46,7 @@ public class NotificationsHolderTest {
         assertFalse(result.shouldCancelNotification());
         NotificationHolder holder = result.getNotificationHolder();
         assertNotNull(holder);
-        assertEquals(1023, holder.notificationId);
+        assertEquals(NotificationIds.getNewMailNotificationId(account, 1), holder.notificationId);
         assertEquals(content, holder.content);
     }
 
@@ -65,7 +65,7 @@ public class NotificationsHolderTest {
         AddNotificationResult result = notificationsHolder.addNotificationContent(createNotificationContent("9"));
 
         assertTrue(result.shouldCancelNotification());
-        assertEquals(1023, result.getNotificationId());
+        assertEquals(NotificationIds.getNewMailNotificationId(account, 1), result.getNotificationId());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class NotificationsHolderTest {
         RemoveNotificationResult result = notificationsHolder.removeNotificationForMessage(content.messageReference);
 
         assertFalse(result.isUnknownNotification());
-        assertEquals(1023, result.getNotificationId());
+        assertEquals(NotificationIds.getNewMailNotificationId(account, 1), result.getNotificationId());
         assertFalse(result.shouldCreateNotification());
     }
 
@@ -99,11 +99,11 @@ public class NotificationsHolderTest {
                 notificationsHolder.removeNotificationForMessage(latestContent.messageReference);
 
         assertFalse(result.isUnknownNotification());
-        assertEquals(2023, result.getNotificationId());
+        assertEquals(NotificationIds.getNewMailNotificationId(account, 2), result.getNotificationId());
         assertTrue(result.shouldCreateNotification());
         NotificationHolder holder = result.getNotificationHolder();
         assertNotNull(holder);
-        assertEquals(2023, holder.notificationId);
+        assertEquals(NotificationIds.getNewMailNotificationId(account, 2), holder.notificationId);
         assertEquals(content, holder.content);
     }
 
@@ -214,8 +214,8 @@ public class NotificationsHolderTest {
         int[] notificationIds = notificationsHolder.getActiveNotificationIds();
 
         assertEquals(2, notificationIds.length);
-        assertEquals(2023, notificationIds[0]);
-        assertEquals(1023, notificationIds[1]);
+        assertEquals(NotificationIds.getNewMailNotificationId(account, 2), notificationIds[0]);
+        assertEquals(NotificationIds.getNewMailNotificationId(account, 1), notificationIds[1]);
     }
 
     @Test

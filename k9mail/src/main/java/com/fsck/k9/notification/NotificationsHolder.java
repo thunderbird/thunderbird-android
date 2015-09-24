@@ -20,7 +20,7 @@ class NotificationsHolder {
     // Note: As of Jellybean, phone notifications show a maximum of 5 lines, while tablet notifications show 7 lines.
     static final int MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5;
     // Note: This class assumes MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
-    private static final int MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS = 8;
+    static final int MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS = 8;
 
 
     private final Account account;

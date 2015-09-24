@@ -23,7 +23,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailNotificationId(account);
 
-        assertEquals(0, notificationId);
+        assertEquals(4, notificationId);
     }
 
     @Test
@@ -33,7 +33,21 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
 
-        assertEquals(1000, notificationId);
+        assertEquals(5, notificationId);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getNewMailNotificationId_withTooLowOffset() throws Exception {
+        Account account = createMockAccountWithAccountNumber(0);
+
+        NotificationIds.getNewMailNotificationId(account, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getNewMailNotificationId_withTooLargeOffset() throws Exception {
+        Account account = createMockAccountWithAccountNumber(0);
+
+        NotificationIds.getNewMailNotificationId(account, 9);
     }
 
     @Test
@@ -42,7 +56,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailNotificationId(account);
 
-        assertEquals(1, notificationId);
+        assertEquals(17, notificationId);
     }
 
     @Test
@@ -52,7 +66,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
 
-        assertEquals(8001, notificationId);
+        assertEquals(25, notificationId);
     }
 
     @Test
@@ -61,7 +75,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
 
-        assertEquals(-5000, notificationId);
+        assertEquals(3, notificationId);
     }
 
     @Test
@@ -70,7 +84,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
 
-        assertEquals(-4999, notificationId);
+        assertEquals(16, notificationId);
     }
 
     @Test
@@ -79,7 +93,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getSendFailedNotificationId(account);
 
-        assertEquals(-1500, notificationId);
+        assertEquals(0, notificationId);
     }
 
     @Test
@@ -88,7 +102,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getSendFailedNotificationId(account);
 
-        assertEquals(-1499, notificationId);
+        assertEquals(13, notificationId);
     }
 
     @Test
@@ -97,7 +111,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING);
 
-        assertEquals(-2000, notificationId);
+        assertEquals(1, notificationId);
     }
 
     @Test
@@ -106,7 +120,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING);
 
-        assertEquals(-1999, notificationId);
+        assertEquals(14, notificationId);
     }
 
     @Test
@@ -115,7 +129,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING);
 
-        assertEquals(-2500, notificationId);
+        assertEquals(2, notificationId);
     }
 
     @Test
@@ -124,7 +138,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING);
 
-        assertEquals(-2499, notificationId);
+        assertEquals(15, notificationId);
     }
 
     private Account createMockAccountWithAccountNumber(int accountNumber) {
