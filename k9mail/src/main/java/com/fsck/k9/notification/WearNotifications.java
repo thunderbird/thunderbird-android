@@ -131,7 +131,6 @@ class WearNotifications extends BaseNotifications {
         int icon = R.drawable.ic_action_mark_as_read_dark;
         String title = context.getString(R.string.notification_action_mark_as_read);
 
-
         MessageReference messageReference = holder.content.messageReference;
         int notificationId = holder.notificationId;
         PendingIntent action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId);

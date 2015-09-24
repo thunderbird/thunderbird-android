@@ -12,6 +12,16 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mailstore.LocalMessage;
 
 
+/**
+ * Handle notifications for new messages.
+ * <p>
+ * We call the notification shown on the device <em>summary notification</em>, even when there's only one new message.
+ * Notifications on an Android Wear device are displayed as a stack of cards and that's why we call them <em>stacked
+ * notifications</em>. We have to keep track of stacked notifications individually and recreate/update the summary
+ * notification when one or more of the stacked notifications are added/removed.<br>
+ * {@link NotificationData} keeps track of all data required to (re)create the actual system notifications.
+ * </p>
+ */
 class NewMailNotifications {
     private final NotificationController controller;
     private final NotificationContentCreator contentCreator;
