@@ -21,27 +21,27 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
-public class NotificationsHolderTest {
+public class NotificationDataTest {
     private static final String ACCOUNT_UUID = "1-2-3";
     private static final int ACCOUNT_NUMBER = 23;
     private static final String FOLDER_NAME = "INBOX";
 
 
-    private NotificationsHolder notificationsHolder;
+    private NotificationData notificationData;
     private Account account;
 
 
     @Before
     public void setUp() throws Exception {
         account = createFakeAccount();
-        notificationsHolder = new NotificationsHolder(account);
+        notificationData = new NotificationData(account);
     }
 
     @Test
     public void testAddNotificationContent() throws Exception {
         NotificationContent content = createNotificationContent("1");
 
-        AddNotificationResult result = notificationsHolder.addNotificationContent(content);
+        AddNotificationResult result = notificationData.addNotificationContent(content);
 
         assertFalse(result.shouldCancelNotification());
         NotificationHolder holder = result.getNotificationHolder();
@@ -53,16 +53,16 @@ public class NotificationsHolderTest {
     @Test
     public void testAddNotificationContentWithReplacingNotification() throws Exception {
         NotificationContent content = createNotificationContent("1");
-        notificationsHolder.addNotificationContent(content);
-        notificationsHolder.addNotificationContent(createNotificationContent("2"));
-        notificationsHolder.addNotificationContent(createNotificationContent("3"));
-        notificationsHolder.addNotificationContent(createNotificationContent("4"));
-        notificationsHolder.addNotificationContent(createNotificationContent("5"));
-        notificationsHolder.addNotificationContent(createNotificationContent("6"));
-        notificationsHolder.addNotificationContent(createNotificationContent("7"));
-        notificationsHolder.addNotificationContent(createNotificationContent("8"));
+        notificationData.addNotificationContent(content);
+        notificationData.addNotificationContent(createNotificationContent("2"));
+        notificationData.addNotificationContent(createNotificationContent("3"));
+        notificationData.addNotificationContent(createNotificationContent("4"));
+        notificationData.addNotificationContent(createNotificationContent("5"));
+        notificationData.addNotificationContent(createNotificationContent("6"));
+        notificationData.addNotificationContent(createNotificationContent("7"));
+        notificationData.addNotificationContent(createNotificationContent("8"));
 
-        AddNotificationResult result = notificationsHolder.addNotificationContent(createNotificationContent("9"));
+        AddNotificationResult result = notificationData.addNotificationContent(createNotificationContent("9"));
 
         assertTrue(result.shouldCancelNotification());
         assertEquals(NotificationIds.getNewMailNotificationId(account, 1), result.getNotificationId());
@@ -71,9 +71,9 @@ public class NotificationsHolderTest {
     @Test
     public void testRemoveNotificationForMessage() throws Exception {
         NotificationContent content = createNotificationContent("1");
-        notificationsHolder.addNotificationContent(content);
+        notificationData.addNotificationContent(content);
 
-        RemoveNotificationResult result = notificationsHolder.removeNotificationForMessage(content.messageReference);
+        RemoveNotificationResult result = notificationData.removeNotificationForMessage(content.messageReference);
 
         assertFalse(result.isUnknownNotification());
         assertEquals(NotificationIds.getNewMailNotificationId(account, 1), result.getNotificationId());
@@ -82,21 +82,21 @@ public class NotificationsHolderTest {
 
     @Test
     public void testRemoveNotificationForMessageWithRecreatingNotification() throws Exception {
-        notificationsHolder.addNotificationContent(createNotificationContent("1"));
+        notificationData.addNotificationContent(createNotificationContent("1"));
         NotificationContent content = createNotificationContent("2");
-        notificationsHolder.addNotificationContent(content);
-        notificationsHolder.addNotificationContent(createNotificationContent("3"));
-        notificationsHolder.addNotificationContent(createNotificationContent("4"));
-        notificationsHolder.addNotificationContent(createNotificationContent("5"));
-        notificationsHolder.addNotificationContent(createNotificationContent("6"));
-        notificationsHolder.addNotificationContent(createNotificationContent("7"));
-        notificationsHolder.addNotificationContent(createNotificationContent("8"));
-        notificationsHolder.addNotificationContent(createNotificationContent("9"));
+        notificationData.addNotificationContent(content);
+        notificationData.addNotificationContent(createNotificationContent("3"));
+        notificationData.addNotificationContent(createNotificationContent("4"));
+        notificationData.addNotificationContent(createNotificationContent("5"));
+        notificationData.addNotificationContent(createNotificationContent("6"));
+        notificationData.addNotificationContent(createNotificationContent("7"));
+        notificationData.addNotificationContent(createNotificationContent("8"));
+        notificationData.addNotificationContent(createNotificationContent("9"));
         NotificationContent latestContent = createNotificationContent("10");
-        notificationsHolder.addNotificationContent(latestContent);
+        notificationData.addNotificationContent(latestContent);
 
         RemoveNotificationResult result =
-                notificationsHolder.removeNotificationForMessage(latestContent.messageReference);
+                notificationData.removeNotificationForMessage(latestContent.messageReference);
 
         assertFalse(result.isUnknownNotification());
         assertEquals(NotificationIds.getNewMailNotificationId(account, 2), result.getNotificationId());
@@ -109,94 +109,94 @@ public class NotificationsHolderTest {
 
     @Test
     public void testNewMessagesCount() throws Exception {
-        assertEquals(0, notificationsHolder.getNewMessagesCount());
+        assertEquals(0, notificationData.getNewMessagesCount());
 
         NotificationContent contentOne = createNotificationContent("1");
-        notificationsHolder.addNotificationContent(contentOne);
-        assertEquals(1, notificationsHolder.getNewMessagesCount());
+        notificationData.addNotificationContent(contentOne);
+        assertEquals(1, notificationData.getNewMessagesCount());
 
         NotificationContent contentTwo = createNotificationContent("2");
-        notificationsHolder.addNotificationContent(contentTwo);
-        assertEquals(2, notificationsHolder.getNewMessagesCount());
+        notificationData.addNotificationContent(contentTwo);
+        assertEquals(2, notificationData.getNewMessagesCount());
     }
 
     @Test
     public void testUnreadMessagesCount() throws Exception {
-        notificationsHolder.setUnreadMessageCount(42);
-        assertEquals(42, notificationsHolder.getUnreadMessageCount());
+        notificationData.setUnreadMessageCount(42);
+        assertEquals(42, notificationData.getUnreadMessageCount());
 
         NotificationContent content = createNotificationContent("1");
-        notificationsHolder.addNotificationContent(content);
-        assertEquals(43, notificationsHolder.getUnreadMessageCount());
+        notificationData.addNotificationContent(content);
+        assertEquals(43, notificationData.getUnreadMessageCount());
 
         NotificationContent contentTwo = createNotificationContent("2");
-        notificationsHolder.addNotificationContent(contentTwo);
-        assertEquals(44, notificationsHolder.getUnreadMessageCount());
+        notificationData.addNotificationContent(contentTwo);
+        assertEquals(44, notificationData.getUnreadMessageCount());
     }
 
     @Test
     public void testContainsStarredMessages() throws Exception {
-        assertFalse(notificationsHolder.containsStarredMessages());
+        assertFalse(notificationData.containsStarredMessages());
 
-        notificationsHolder.addNotificationContent(createNotificationContentForStarredMessage());
+        notificationData.addNotificationContent(createNotificationContentForStarredMessage());
 
-        assertTrue(notificationsHolder.containsStarredMessages());
+        assertTrue(notificationData.containsStarredMessages());
     }
 
     @Test
     public void testContainsStarredMessagesWithAdditionalMessages() throws Exception {
-        notificationsHolder.addNotificationContent(createNotificationContent("1"));
-        notificationsHolder.addNotificationContent(createNotificationContent("2"));
-        notificationsHolder.addNotificationContent(createNotificationContent("3"));
-        notificationsHolder.addNotificationContent(createNotificationContent("4"));
-        notificationsHolder.addNotificationContent(createNotificationContent("5"));
-        notificationsHolder.addNotificationContent(createNotificationContent("6"));
-        notificationsHolder.addNotificationContent(createNotificationContent("7"));
-        notificationsHolder.addNotificationContent(createNotificationContent("8"));
+        notificationData.addNotificationContent(createNotificationContent("1"));
+        notificationData.addNotificationContent(createNotificationContent("2"));
+        notificationData.addNotificationContent(createNotificationContent("3"));
+        notificationData.addNotificationContent(createNotificationContent("4"));
+        notificationData.addNotificationContent(createNotificationContent("5"));
+        notificationData.addNotificationContent(createNotificationContent("6"));
+        notificationData.addNotificationContent(createNotificationContent("7"));
+        notificationData.addNotificationContent(createNotificationContent("8"));
 
-        assertFalse(notificationsHolder.containsStarredMessages());
+        assertFalse(notificationData.containsStarredMessages());
 
-        notificationsHolder.addNotificationContent(createNotificationContentForStarredMessage());
+        notificationData.addNotificationContent(createNotificationContentForStarredMessage());
 
-        assertTrue(notificationsHolder.containsStarredMessages());
+        assertTrue(notificationData.containsStarredMessages());
     }
 
     @Test
     public void testIsSingleMessageNotification() throws Exception {
-        assertFalse(notificationsHolder.isSingleMessageNotification());
+        assertFalse(notificationData.isSingleMessageNotification());
 
-        notificationsHolder.addNotificationContent(createNotificationContent("1"));
-        assertTrue(notificationsHolder.isSingleMessageNotification());
+        notificationData.addNotificationContent(createNotificationContent("1"));
+        assertTrue(notificationData.isSingleMessageNotification());
 
-        notificationsHolder.addNotificationContent(createNotificationContent("2"));
-        assertFalse(notificationsHolder.isSingleMessageNotification());
+        notificationData.addNotificationContent(createNotificationContent("2"));
+        assertFalse(notificationData.isSingleMessageNotification());
     }
 
     @Test
     public void testGetHolderForLatestNotification() throws Exception {
         NotificationContent content = createNotificationContent("1");
-        AddNotificationResult addResult = notificationsHolder.addNotificationContent(content);
+        AddNotificationResult addResult = notificationData.addNotificationContent(content);
 
-        NotificationHolder holder = notificationsHolder.getHolderForLatestNotification();
+        NotificationHolder holder = notificationData.getHolderForLatestNotification();
 
         assertEquals(addResult.getNotificationHolder(), holder);
     }
 
     @Test
     public void testGetContentForSummaryNotification() throws Exception {
-        notificationsHolder.addNotificationContent(createNotificationContent("1"));
+        notificationData.addNotificationContent(createNotificationContent("1"));
         NotificationContent content4 = createNotificationContent("2");
-        notificationsHolder.addNotificationContent(content4);
+        notificationData.addNotificationContent(content4);
         NotificationContent content3 = createNotificationContent("3");
-        notificationsHolder.addNotificationContent(content3);
+        notificationData.addNotificationContent(content3);
         NotificationContent content2 = createNotificationContent("4");
-        notificationsHolder.addNotificationContent(content2);
+        notificationData.addNotificationContent(content2);
         NotificationContent content1 = createNotificationContent("5");
-        notificationsHolder.addNotificationContent(content1);
+        notificationData.addNotificationContent(content1);
         NotificationContent content0 = createNotificationContent("6");
-        notificationsHolder.addNotificationContent(content0);
+        notificationData.addNotificationContent(content0);
 
-        List<NotificationContent> contents = notificationsHolder.getContentForSummaryNotification();
+        List<NotificationContent> contents = notificationData.getContentForSummaryNotification();
 
         assertEquals(5, contents.size());
         assertEquals(content0, contents.get(0));
@@ -208,10 +208,10 @@ public class NotificationsHolderTest {
 
     @Test
     public void testGetActiveNotificationIds() throws Exception {
-        notificationsHolder.addNotificationContent(createNotificationContent("1"));
-        notificationsHolder.addNotificationContent(createNotificationContent("2"));
+        notificationData.addNotificationContent(createNotificationContent("1"));
+        notificationData.addNotificationContent(createNotificationContent("2"));
 
-        int[] notificationIds = notificationsHolder.getActiveNotificationIds();
+        int[] notificationIds = notificationData.getActiveNotificationIds();
 
         assertEquals(2, notificationIds.length);
         assertEquals(NotificationIds.getNewMailNotificationId(account, 2), notificationIds[0]);
@@ -220,7 +220,7 @@ public class NotificationsHolderTest {
 
     @Test
     public void testGetAccount() throws Exception {
-        assertEquals(account, notificationsHolder.getAccount());
+        assertEquals(account, notificationData.getAccount());
     }
 
     @Test
@@ -234,17 +234,17 @@ public class NotificationsHolderTest {
         MessageReference messageReference6 = createMessageReference("7");
         MessageReference messageReference7 = createMessageReference("8");
         MessageReference messageReference8 = createMessageReference("9");
-        notificationsHolder.addNotificationContent(createNotificationContent(messageReference8));
-        notificationsHolder.addNotificationContent(createNotificationContent(messageReference7));
-        notificationsHolder.addNotificationContent(createNotificationContent(messageReference6));
-        notificationsHolder.addNotificationContent(createNotificationContent(messageReference5));
-        notificationsHolder.addNotificationContent(createNotificationContent(messageReference4));
-        notificationsHolder.addNotificationContent(createNotificationContent(messageReference3));
-        notificationsHolder.addNotificationContent(createNotificationContent(messageReference2));
-        notificationsHolder.addNotificationContent(createNotificationContent(messageReference1));
-        notificationsHolder.addNotificationContent(createNotificationContent(messageReference0));
+        notificationData.addNotificationContent(createNotificationContent(messageReference8));
+        notificationData.addNotificationContent(createNotificationContent(messageReference7));
+        notificationData.addNotificationContent(createNotificationContent(messageReference6));
+        notificationData.addNotificationContent(createNotificationContent(messageReference5));
+        notificationData.addNotificationContent(createNotificationContent(messageReference4));
+        notificationData.addNotificationContent(createNotificationContent(messageReference3));
+        notificationData.addNotificationContent(createNotificationContent(messageReference2));
+        notificationData.addNotificationContent(createNotificationContent(messageReference1));
+        notificationData.addNotificationContent(createNotificationContent(messageReference0));
 
-        List<MessageReference> messageReferences = notificationsHolder.getAllMessageReferences();
+        List<MessageReference> messageReferences = notificationData.getAllMessageReferences();
 
         assertEquals(9, messageReferences.size());
         assertEquals(messageReference0, messageReferences.get(0));

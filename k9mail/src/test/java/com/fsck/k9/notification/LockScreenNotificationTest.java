@@ -38,7 +38,7 @@ public class LockScreenNotificationTest {
     private Builder builder;
     private Builder publicBuilder;
     private LockScreenNotification lockScreenNotification;
-    private NotificationsHolder notificationsHolder;
+    private NotificationData notificationData;
 
 
     @Before
@@ -48,7 +48,7 @@ public class LockScreenNotificationTest {
         publicBuilder = createFakeNotificationBuilder();
         NotificationController controller = createFakeController(context, publicBuilder);
         Account account = createFakeAccount();
-        notificationsHolder = createFakeNotificationsHolder(account);
+        notificationData = createFakeNotificationData(account);
         lockScreenNotification = new LockScreenNotification(controller);
     }
 
@@ -56,7 +56,7 @@ public class LockScreenNotificationTest {
     public void configureLockScreenNotification_NOTHING() throws Exception {
         K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.NOTHING);
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationsHolder);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
         verify(builder).setVisibility(NotificationCompat.VISIBILITY_SECRET);
     }
@@ -65,7 +65,7 @@ public class LockScreenNotificationTest {
     public void configureLockScreenNotification_APP_NAME() throws Exception {
         K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.APP_NAME);
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationsHolder);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
         verify(builder).setVisibility(NotificationCompat.VISIBILITY_PRIVATE);
     }
@@ -74,7 +74,7 @@ public class LockScreenNotificationTest {
     public void configureLockScreenNotification_EVERYTHING() throws Exception {
         K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.EVERYTHING);
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationsHolder);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
         verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
     }
@@ -85,11 +85,11 @@ public class LockScreenNotificationTest {
         String senderName = "alice@example.com";
         NotificationContent content = createNotificationContent(senderName);
         NotificationHolder holder = new NotificationHolder(42, content);
-        when(notificationsHolder.getNewMessagesCount()).thenReturn(1);
-        when(notificationsHolder.getUnreadMessageCount()).thenReturn(1);
-        when(notificationsHolder.getHolderForLatestNotification()).thenReturn(holder);
+        when(notificationData.getNewMessagesCount()).thenReturn(1);
+        when(notificationData.getUnreadMessageCount()).thenReturn(1);
+        when(notificationData.getHolderForLatestNotification()).thenReturn(holder);
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationsHolder);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
         verify(publicBuilder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
         verify(publicBuilder).setNumber(1);
@@ -104,12 +104,12 @@ public class LockScreenNotificationTest {
         NotificationContent content1 = createNotificationContent("alice@example.com");
         NotificationContent content2 = createNotificationContent("Bob <bob@example.com>");
         NotificationContent content3 = createNotificationContent("\"Peter Lustig\" <peter@example.com>");
-        when(notificationsHolder.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
-        when(notificationsHolder.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
-        when(notificationsHolder.getContentForSummaryNotification()).thenReturn(
+        when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
+        when(notificationData.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
+        when(notificationData.getContentForSummaryNotification()).thenReturn(
                 Arrays.asList(content1, content2, content3));
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationsHolder);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
         verify(publicBuilder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
         verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
@@ -121,7 +121,7 @@ public class LockScreenNotificationTest {
 
     @Test
     public void configureLockScreenNotification_SENDERS_makeSureWeGetEnoughSenderNames() throws Exception {
-        assertTrue(NotificationsHolder.MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION >=
+        assertTrue(NotificationData.MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION >=
                 LockScreenNotification.MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
     }
 
@@ -144,10 +144,10 @@ public class LockScreenNotificationTest {
     @Test
     public void configureLockScreenNotification_MESSAGE_COUNT() throws Exception {
         K9.setLockScreenNotificationVisibility(LockScreenNotificationVisibility.MESSAGE_COUNT);
-        when(notificationsHolder.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
-        when(notificationsHolder.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
+        when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
+        when(notificationData.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationsHolder);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
         verify(publicBuilder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
         verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
@@ -177,11 +177,11 @@ public class LockScreenNotificationTest {
         return controller;
     }
 
-    private NotificationsHolder createFakeNotificationsHolder(Account account) {
-        NotificationsHolder notificationsHolder = mock(NotificationsHolder.class);
-        when(notificationsHolder.getAccount()).thenReturn(account);
+    private NotificationData createFakeNotificationData(Account account) {
+        NotificationData notificationData = mock(NotificationData.class);
+        when(notificationData.getAccount()).thenReturn(account);
 
-        return notificationsHolder;
+        return notificationData;
     }
 
     private NotificationContent createNotificationContent(String sender) {

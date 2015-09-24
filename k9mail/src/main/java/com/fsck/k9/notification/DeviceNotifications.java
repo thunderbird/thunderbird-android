@@ -42,21 +42,21 @@ class DeviceNotifications extends BaseNotifications {
         return new DeviceNotifications(controller, actionCreator, lockScreenNotification, wearNotifications);
     }
 
-    public Notification buildSummaryNotification(Account account, NotificationsHolder notificationsHolder,
+    public Notification buildSummaryNotification(Account account, NotificationData notificationData,
             boolean silent) {
-        int unreadMessageCount = notificationsHolder.getUnreadMessageCount();
+        int unreadMessageCount = notificationData.getUnreadMessageCount();
 
         NotificationCompat.Builder builder;
         if (isPrivacyModeActive() || !platformSupportsExtendedNotifications()) {
             builder = createSimpleSummaryNotification(account, unreadMessageCount);
-        } else if (notificationsHolder.isSingleMessageNotification()) {
-            NotificationHolder holder = notificationsHolder.getHolderForLatestNotification();
+        } else if (notificationData.isSingleMessageNotification()) {
+            NotificationHolder holder = notificationData.getHolderForLatestNotification();
             builder = createBigTextStyleSummaryNotification(account, holder);
         } else {
-            builder = createInboxStyleSummaryNotification(account, notificationsHolder, unreadMessageCount);
+            builder = createInboxStyleSummaryNotification(account, notificationData, unreadMessageCount);
         }
 
-        if (notificationsHolder.containsStarredMessages()) {
+        if (notificationData.containsStarredMessages()) {
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         }
 
@@ -65,7 +65,7 @@ class DeviceNotifications extends BaseNotifications {
                 account, notificationId);
         builder.setDeleteIntent(deletePendingIntent);
 
-        lockScreenNotification.configureLockScreenNotification(builder, notificationsHolder);
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
         boolean ringAndVibrate = false;
         if (!silent && !account.isRingNotified()) {
@@ -118,17 +118,17 @@ class DeviceNotifications extends BaseNotifications {
     }
 
     private NotificationCompat.Builder createInboxStyleSummaryNotification(Account account,
-            NotificationsHolder notificationsHolder, int unreadMessageCount) {
+            NotificationData notificationData, int unreadMessageCount) {
 
-        NotificationHolder latestNotification = notificationsHolder.getHolderForLatestNotification();
+        NotificationHolder latestNotification = notificationData.getHolderForLatestNotification();
 
-        int newMessagesCount = notificationsHolder.getNewMessagesCount();
+        int newMessagesCount = notificationData.getNewMessagesCount();
         String accountName = controller.getAccountName(account);
         String title = context.getResources().getQuantityString(R.plurals.notification_new_messages_title,
                 newMessagesCount, newMessagesCount);
-        String summary = (notificationsHolder.hasAdditionalMessages()) ?
+        String summary = (notificationData.hasAdditionalMessages()) ?
                 context.getString(R.string.notification_additional_messages,
-                        notificationsHolder.getAdditionalMessagesCount(), accountName) :
+                        notificationData.getAdditionalMessagesCount(), accountName) :
                 accountName;
 
         NotificationCompat.Builder builder = createAndInitializeNotificationBuilder(account)
@@ -143,19 +143,19 @@ class DeviceNotifications extends BaseNotifications {
                 .setBigContentTitle(title)
                 .setSummaryText(summary);
 
-        for (NotificationContent content : notificationsHolder.getContentForSummaryNotification()) {
+        for (NotificationContent content : notificationData.getContentForSummaryNotification()) {
             style.addLine(content.summary);
         }
 
         builder.setStyle(style);
 
-        addMarkAllAsReadAction(builder, notificationsHolder);
-        addDeleteAllAction(builder, notificationsHolder);
+        addMarkAllAsReadAction(builder, notificationData);
+        addDeleteAllAction(builder, notificationData);
 
-        wearNotifications.addSummaryActions(builder, notificationsHolder);
+        wearNotifications.addSummaryActions(builder, notificationData);
 
         int notificationId = NotificationIds.getNewMailNotificationId(account);
-        List<MessageReference> messageReferences = notificationsHolder.getAllMessageReferences();
+        List<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         PendingIntent contentIntent = actionCreator.createViewMessagesPendingIntent(
                 account, messageReferences, notificationId);
         builder.setContentIntent(contentIntent);
@@ -174,12 +174,12 @@ class DeviceNotifications extends BaseNotifications {
         builder.addAction(icon, title, action);
     }
 
-    private void addMarkAllAsReadAction(Builder builder, NotificationsHolder notificationsHolder) {
+    private void addMarkAllAsReadAction(Builder builder, NotificationData notificationData) {
         int icon = getMarkAsReadActionIcon();
         String title = context.getString(R.string.notification_action_mark_as_read);
 
-        Account account = notificationsHolder.getAccount();
-        ArrayList<MessageReference> messageReferences = notificationsHolder.getAllMessageReferences();
+        Account account = notificationData.getAccount();
+        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         int notificationId = NotificationIds.getNewMailNotificationId(account);
         PendingIntent markAllAsReadPendingIntent =
                 actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId);
@@ -187,7 +187,7 @@ class DeviceNotifications extends BaseNotifications {
         builder.addAction(icon, title, markAllAsReadPendingIntent);
     }
 
-    private void addDeleteAllAction(Builder builder, NotificationsHolder notificationsHolder) {
+    private void addDeleteAllAction(Builder builder, NotificationData notificationData) {
         if (K9.getNotificationQuickDeleteBehaviour() != NotificationQuickDelete.ALWAYS) {
             return;
         }
@@ -195,9 +195,9 @@ class DeviceNotifications extends BaseNotifications {
         int icon = getDeleteActionIcon();
         String title = context.getString(R.string.notification_action_delete);
 
-        Account account = notificationsHolder.getAccount();
+        Account account = notificationData.getAccount();
         int notificationId = NotificationIds.getNewMailNotificationId(account);
-        ArrayList<MessageReference> messageReferences = notificationsHolder.getAllMessageReferences();
+        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         PendingIntent action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId);
 
         builder.addAction(icon, title, action);

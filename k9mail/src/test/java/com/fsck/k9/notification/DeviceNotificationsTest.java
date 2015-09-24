@@ -56,7 +56,7 @@ public class DeviceNotificationsTest {
 
 
     private Account account;
-    private NotificationsHolder notificationsHolder;
+    private NotificationData notificationData;
     private TestDeviceNotifications notifications;
     private Builder builder;
     private Builder builder2 = mockBuilder(Builder.class);
@@ -66,7 +66,7 @@ public class DeviceNotificationsTest {
     @Before
     public void setUp() throws Exception {
         account = createFakeAccount();
-        notificationsHolder = createFakeNotificationsHolder(account);
+        notificationData = createFakeNotificationData(account);
 
         builder = createFakeNotificationBuilder();
         lockScreenNotification = mock(LockScreenNotification.class);
@@ -77,7 +77,7 @@ public class DeviceNotificationsTest {
     public void buildSummaryNotification_withPrivacyModeActive() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.ALWAYS);
 
-        Notification result = notifications.buildSummaryNotification(account, notificationsHolder, false);
+        Notification result = notifications.buildSummaryNotification(account, notificationData, false);
 
         verify(builder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
         verify(builder).setColor(ACCOUNT_COLOR);
@@ -86,7 +86,7 @@ public class DeviceNotificationsTest {
         verify(builder).setTicker("New mail");
         verify(builder).setContentText("New mail");
         verify(builder).setContentTitle(UNREAD_MESSAGE_COUNT + " Unread (" + ACCOUNT_NAME + ")");
-        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationsHolder);
+        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
         assertEquals(FAKE_NOTIFICATION, result);
     }
 
@@ -94,9 +94,9 @@ public class DeviceNotificationsTest {
     public void buildSummaryNotification_withSingleMessageNotification() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
         K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
-        when(notificationsHolder.isSingleMessageNotification()).thenReturn(true);
+        when(notificationData.isSingleMessageNotification()).thenReturn(true);
 
-        Notification result = notifications.buildSummaryNotification(account, notificationsHolder, false);
+        Notification result = notifications.buildSummaryNotification(account, notificationData, false);
 
         verify(builder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
         verify(builder).setColor(ACCOUNT_COLOR);
@@ -109,7 +109,7 @@ public class DeviceNotificationsTest {
         verify(builder).addAction(R.drawable.ic_action_single_message_options_dark_vector, "Reply", null);
         verify(builder).addAction(R.drawable.ic_action_mark_as_read_dark_vector, "Mark Read", null);
         verify(builder).addAction(R.drawable.ic_action_delete_dark_vector, "Delete", null);
-        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationsHolder);
+        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
         assertEquals(FAKE_NOTIFICATION, result);
     }
 
@@ -117,10 +117,10 @@ public class DeviceNotificationsTest {
     public void buildSummaryNotification_withMultiMessageNotification() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
         K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
-        when(notificationsHolder.isSingleMessageNotification()).thenReturn(false);
-        when(notificationsHolder.containsStarredMessages()).thenReturn(true);
+        when(notificationData.isSingleMessageNotification()).thenReturn(false);
+        when(notificationData.containsStarredMessages()).thenReturn(true);
 
-        Notification result = notifications.buildSummaryNotification(account, notificationsHolder, false);
+        Notification result = notifications.buildSummaryNotification(account, notificationData, false);
 
         verify(builder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
         verify(builder).setColor(ACCOUNT_COLOR);
@@ -138,7 +138,7 @@ public class DeviceNotificationsTest {
         verify(notifications.inboxStyle).addLine(SUMMARY_2);
         verify(builder).addAction(R.drawable.ic_action_mark_as_read_dark_vector, "Mark Read", null);
         verify(builder).addAction(R.drawable.ic_action_delete_dark_vector, "Delete", null);
-        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationsHolder);
+        verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
         assertEquals(FAKE_NOTIFICATION, result);
     }
 
@@ -146,11 +146,11 @@ public class DeviceNotificationsTest {
     public void buildSummaryNotification_withAdditionalMessages() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
         K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
-        when(notificationsHolder.isSingleMessageNotification()).thenReturn(false);
-        when(notificationsHolder.hasAdditionalMessages()).thenReturn(true);
-        when(notificationsHolder.getAdditionalMessagesCount()).thenReturn(23);
+        when(notificationData.isSingleMessageNotification()).thenReturn(false);
+        when(notificationData.hasAdditionalMessages()).thenReturn(true);
+        when(notificationData.getAdditionalMessagesCount()).thenReturn(23);
 
-        notifications.buildSummaryNotification(account, notificationsHolder, false);
+        notifications.buildSummaryNotification(account, notificationData, false);
 
         verify(notifications.inboxStyle).setSummaryText("+ 23 more on " + ACCOUNT_NAME);
     }
@@ -159,9 +159,9 @@ public class DeviceNotificationsTest {
     public void buildSummaryNotification_withoutDeleteAllAction() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
         K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
-        when(notificationsHolder.isSingleMessageNotification()).thenReturn(false);
+        when(notificationData.isSingleMessageNotification()).thenReturn(false);
 
-        notifications.buildSummaryNotification(account, notificationsHolder, false);
+        notifications.buildSummaryNotification(account, notificationData, false);
 
         verify(builder, never()).addAction(R.drawable.ic_action_delete_dark_vector, "Delete", null);
     }
@@ -170,9 +170,9 @@ public class DeviceNotificationsTest {
     public void buildSummaryNotification_withoutDeleteAction() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
         K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
-        when(notificationsHolder.isSingleMessageNotification()).thenReturn(true);
+        when(notificationData.isSingleMessageNotification()).thenReturn(true);
 
-        notifications.buildSummaryNotification(account, notificationsHolder, false);
+        notifications.buildSummaryNotification(account, notificationData, false);
 
         verify(builder, never()).addAction(R.drawable.ic_action_delete_dark_vector, "Delete", null);
     }
@@ -195,21 +195,21 @@ public class DeviceNotificationsTest {
         return account;
     }
 
-    private NotificationsHolder createFakeNotificationsHolder(Account account) {
-        NotificationsHolder notificationsHolder = mock(NotificationsHolder.class);
-        when(notificationsHolder.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
-        when(notificationsHolder.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
-        when(notificationsHolder.getAccount()).thenReturn(account);
+    private NotificationData createFakeNotificationData(Account account) {
+        NotificationData notificationData = mock(NotificationData.class);
+        when(notificationData.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
+        when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
+        when(notificationData.getAccount()).thenReturn(account);
 
         NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, PREVIEW, SUMMARY, false);
         NotificationContent content2 = new NotificationContent(null, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
         List<NotificationContent> contents = Arrays.asList(content, content2);
-        when(notificationsHolder.getContentForSummaryNotification()).thenReturn(contents);
+        when(notificationData.getContentForSummaryNotification()).thenReturn(contents);
 
         NotificationHolder holder = new NotificationHolder(NOTIFICATION_ID, content);
-        when(notificationsHolder.getHolderForLatestNotification()).thenReturn(holder);
+        when(notificationData.getHolderForLatestNotification()).thenReturn(holder);
 
-        return notificationsHolder;
+        return notificationData;
     }
 
     private TestDeviceNotifications createDeviceNotifications(Builder builder,

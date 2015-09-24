@@ -33,7 +33,7 @@ class LockScreenNotification {
         return new LockScreenNotification(controller);
     }
 
-    public void configureLockScreenNotification(Builder builder, NotificationsHolder notificationsHolder) {
+    public void configureLockScreenNotification(Builder builder, NotificationData notificationData) {
         if (!NotificationController.platformSupportsLockScreenNotifications()) {
             return;
         }
@@ -52,26 +52,26 @@ class LockScreenNotification {
                 break;
             }
             case SENDERS: {
-                Notification publicNotification = createPublicNotificationWithSenderList(notificationsHolder);
+                Notification publicNotification = createPublicNotificationWithSenderList(notificationData);
                 builder.setPublicVersion(publicNotification);
                 break;
             }
             case MESSAGE_COUNT: {
-                Notification publicNotification = createPublicNotificationWithNewMessagesCount(notificationsHolder);
+                Notification publicNotification = createPublicNotificationWithNewMessagesCount(notificationData);
                 builder.setPublicVersion(publicNotification);
                 break;
             }
         }
     }
 
-    private Notification createPublicNotificationWithSenderList(NotificationsHolder notificationsHolder) {
-        Builder builder = createPublicNotification(notificationsHolder);
-        int newMessages = notificationsHolder.getNewMessagesCount();
+    private Notification createPublicNotificationWithSenderList(NotificationData notificationData) {
+        Builder builder = createPublicNotification(notificationData);
+        int newMessages = notificationData.getNewMessagesCount();
         if (newMessages == 1) {
-            NotificationHolder holder = notificationsHolder.getHolderForLatestNotification();
+            NotificationHolder holder = notificationData.getHolderForLatestNotification();
             builder.setContentText(holder.content.sender);
         } else {
-            List<NotificationContent> contents = notificationsHolder.getContentForSummaryNotification();
+            List<NotificationContent> contents = notificationData.getContentForSummaryNotification();
             String senderList = createCommaSeparatedListOfSenders(contents);
             builder.setContentText(senderList);
         }
@@ -79,19 +79,19 @@ class LockScreenNotification {
         return builder.build();
     }
 
-    private Notification createPublicNotificationWithNewMessagesCount(NotificationsHolder notificationsHolder) {
-        Builder builder = createPublicNotification(notificationsHolder);
-        Account account = notificationsHolder.getAccount();
+    private Notification createPublicNotificationWithNewMessagesCount(NotificationData notificationData) {
+        Builder builder = createPublicNotification(notificationData);
+        Account account = notificationData.getAccount();
         String accountName = controller.getAccountName(account);
         builder.setContentText(accountName);
 
         return builder.build();
     }
 
-    private Builder createPublicNotification(NotificationsHolder notificationsHolder) {
-        Account account = notificationsHolder.getAccount();
-        int newMessages = notificationsHolder.getNewMessagesCount();
-        int unreadCount = notificationsHolder.getUnreadMessageCount();
+    private Builder createPublicNotification(NotificationData notificationData) {
+        Account account = notificationData.getAccount();
+        int newMessages = notificationData.getNewMessagesCount();
+        int unreadCount = notificationData.getUnreadMessageCount();
         String title = context.getResources().getQuantityString(R.plurals.notification_new_messages_title,
                 newMessages, newMessages);
 

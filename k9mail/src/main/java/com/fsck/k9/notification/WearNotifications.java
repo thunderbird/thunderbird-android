@@ -37,29 +37,29 @@ class WearNotifications extends BaseNotifications {
     }
 
 
-    public void addSummaryActions(Builder builder, NotificationsHolder notificationsHolder) {
+    public void addSummaryActions(Builder builder, NotificationData notificationData) {
         NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
-        addMarkAllAsReadAction(wearableExtender, notificationsHolder);
+        addMarkAllAsReadAction(wearableExtender, notificationData);
 
         if (isDeleteActionAvailableForWear()) {
-            addDeleteAllAction(wearableExtender, notificationsHolder);
+            addDeleteAllAction(wearableExtender, notificationData);
         }
 
-        Account account = notificationsHolder.getAccount();
+        Account account = notificationData.getAccount();
         if (isArchiveActionAvailableForWear(account)) {
-            addArchiveAllAction(wearableExtender, notificationsHolder);
+            addArchiveAllAction(wearableExtender, notificationData);
         }
 
         builder.extend(wearableExtender);
     }
 
-    private void addMarkAllAsReadAction(WearableExtender wearableExtender, NotificationsHolder notificationsHolder) {
+    private void addMarkAllAsReadAction(WearableExtender wearableExtender, NotificationData notificationData) {
         int icon = R.drawable.ic_action_mark_as_read_dark;
         String title = context.getString(R.string.notification_action_mark_all_as_read);
 
-        Account account = notificationsHolder.getAccount();
-        ArrayList<MessageReference> messageReferences = notificationsHolder.getAllMessageReferences();
+        Account account = notificationData.getAccount();
+        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         int notificationId = NotificationIds.getNewMailNotificationId(account);
         PendingIntent action = actionCreator.createMarkAllAsReadPendingIntent(
                 account, messageReferences, notificationId);
@@ -68,12 +68,12 @@ class WearNotifications extends BaseNotifications {
         wearableExtender.addAction(markAsReadAction);
     }
 
-    private void addDeleteAllAction(WearableExtender wearableExtender, NotificationsHolder notificationsHolder) {
+    private void addDeleteAllAction(WearableExtender wearableExtender, NotificationData notificationData) {
         int icon = R.drawable.ic_action_delete_dark;
         String title = context.getString(R.string.notification_action_delete_all);
 
-        Account account = notificationsHolder.getAccount();
-        ArrayList<MessageReference> messageReferences = notificationsHolder.getAllMessageReferences();
+        Account account = notificationData.getAccount();
+        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         int notificationId = NotificationIds.getNewMailNotificationId(account);
         PendingIntent action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId);
 
@@ -81,12 +81,12 @@ class WearNotifications extends BaseNotifications {
         wearableExtender.addAction(deleteAction);
     }
 
-    private void addArchiveAllAction(WearableExtender wearableExtender, NotificationsHolder notificationsHolder) {
+    private void addArchiveAllAction(WearableExtender wearableExtender, NotificationData notificationData) {
         int icon = R.drawable.ic_action_archive_dark;
         String title = context.getString(R.string.notification_action_archive_all);
 
-        Account account = notificationsHolder.getAccount();
-        ArrayList<MessageReference> messageReferences = notificationsHolder.getAllMessageReferences();
+        Account account = notificationData.getAccount();
+        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         int notificationId = NotificationIds.getNewMailNotificationId(account);
         PendingIntent action = actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId);
 

@@ -15,7 +15,7 @@ class NotificationIds {
     private static final int NUMBER_OF_DEVICE_NOTIFICATIONS = OFFSET_NEW_MAIL_STACKED;
 
     private static final int NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT = NUMBER_OF_DEVICE_NOTIFICATIONS +
-            NotificationsHolder.MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS;
+            NotificationData.MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS;
             
 
     public static int getNewMailNotificationId(Account account) {
@@ -23,7 +23,7 @@ class NotificationIds {
     }
 
     public static int getNewMailNotificationId(Account account, int offset) {
-        if (offset < 1 || offset > NotificationsHolder.MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS) {
+        if (offset < 1 || offset > NotificationData.MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS) {
             throw new IllegalArgumentException("Invalid value for offset: " + offset);
         }
 

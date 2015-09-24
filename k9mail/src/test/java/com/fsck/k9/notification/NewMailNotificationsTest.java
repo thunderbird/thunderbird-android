@@ -149,7 +149,7 @@ public class NewMailNotificationsTest {
     }
 
     @Test
-    public void testRemoveNewMailNotificationWithoutNotificationsHolder() throws Exception {
+    public void testRemoveNewMailNotificationWithoutNotificationData() throws Exception {
         MessageReference messageReference = createMessageReference(1);
 
         newMailNotifications.removeNewMailNotification(account, messageReference);
@@ -214,7 +214,7 @@ public class NewMailNotificationsTest {
         addToDeviceNotifications(summaryNotification);
         newMailNotifications.addNewMailNotification(account, message, 23);
         whenRemovingContentReturn(messageReference, RemoveNotificationResult.cancelNotification(notificationId));
-        when(newMailNotifications.notificationsHolder.getNewMessagesCount()).thenReturn(0);
+        when(newMailNotifications.notificationData.getNewMessagesCount()).thenReturn(0);
         setActiveNotificationIds();
 
         newMailNotifications.removeNewMailNotification(account, messageReference);
@@ -254,7 +254,7 @@ public class NewMailNotificationsTest {
     }
 
     @Test
-    public void testClearNewMailNotificationsWithoutNotificationsHolder() throws Exception {
+    public void testClearNewMailNotificationsWithoutNotificationData() throws Exception {
         newMailNotifications.clearNewMailNotifications(account);
 
         verify(notificationManager, never()).cancel(anyInt());
@@ -321,7 +321,7 @@ public class NewMailNotificationsTest {
 
     private void addToDeviceNotifications(Notification notificationToReturn) {
         when(deviceNotifications.buildSummaryNotification(
-                        eq(account), eq(newMailNotifications.notificationsHolder), anyBoolean())
+                        eq(account), eq(newMailNotifications.notificationData), anyBoolean())
         ).thenReturn(notificationToReturn);
     }
 
@@ -342,21 +342,21 @@ public class NewMailNotificationsTest {
     }
 
     private void whenAddingContentReturn(NotificationContent content, AddNotificationResult result) {
-        NotificationsHolder notificationsHolder = newMailNotifications.notificationsHolder;
-        when(notificationsHolder.addNotificationContent(content)).thenReturn(result);
+        NotificationData notificationData = newMailNotifications.notificationData;
+        when(notificationData.addNotificationContent(content)).thenReturn(result);
 
-        int newCount = notificationsHolder.getNewMessagesCount() + 1;
-        when(notificationsHolder.getNewMessagesCount()).thenReturn(newCount);
+        int newCount = notificationData.getNewMessagesCount() + 1;
+        when(notificationData.getNewMessagesCount()).thenReturn(newCount);
     }
 
     private void whenRemovingContentReturn(MessageReference messageReference, RemoveNotificationResult result) {
-        NotificationsHolder notificationsHolder = newMailNotifications.notificationsHolder;
-        when(notificationsHolder.removeNotificationForMessage(messageReference)).thenReturn(result);
+        NotificationData notificationData = newMailNotifications.notificationData;
+        when(notificationData.removeNotificationForMessage(messageReference)).thenReturn(result);
     }
 
     private void setActiveNotificationIds(int... notificationIds) {
-        NotificationsHolder notificationsHolder = newMailNotifications.notificationsHolder;
-        when(notificationsHolder.getActiveNotificationIds()).thenReturn(notificationIds);
+        NotificationData notificationData = newMailNotifications.notificationData;
+        when(notificationData.getActiveNotificationIds()).thenReturn(notificationIds);
     }
 
     private void enablePrivacyMode() {
@@ -365,17 +365,17 @@ public class NewMailNotificationsTest {
 
     static class TestNewMailNotifications extends NewMailNotifications {
 
-        public final NotificationsHolder notificationsHolder;
+        public final NotificationData notificationData;
 
         TestNewMailNotifications(NotificationController controller, NotificationContentCreator contentCreator,
                 DeviceNotifications deviceNotifications, WearNotifications wearNotifications) {
             super(controller, contentCreator, deviceNotifications, wearNotifications);
-            notificationsHolder = mock(NotificationsHolder.class);
+            notificationData = mock(NotificationData.class);
         }
 
         @Override
-        NotificationsHolder createNotificationsHolder(Account account, int unreadMessageCount) {
-            return notificationsHolder;
+        NotificationData createNotificationData(Account account, int unreadMessageCount) {
+            return notificationData;
         }
     }
 }

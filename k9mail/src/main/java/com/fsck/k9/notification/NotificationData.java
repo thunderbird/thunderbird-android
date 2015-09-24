@@ -16,7 +16,7 @@ import com.fsck.k9.activity.MessageReference;
 /**
  * A holder class for pending new mail notifications.
  */
-class NotificationsHolder {
+class NotificationData {
     // Note: As of Jellybean, phone notifications show a maximum of 5 lines, while tablet notifications show 7 lines.
     static final int MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5;
     // Note: This class assumes MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
@@ -30,7 +30,7 @@ class NotificationsHolder {
     private int unreadMessageCount;
 
 
-    public NotificationsHolder(Account account) {
+    public NotificationData(Account account) {
         this.account = account;
     }
 

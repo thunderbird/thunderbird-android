@@ -17,7 +17,7 @@ class NewMailNotifications {
     private final NotificationContentCreator contentCreator;
     private final DeviceNotifications deviceNotifications;
     private final WearNotifications wearNotifications;
-    private final SparseArray<NotificationsHolder> notifications = new SparseArray<NotificationsHolder>();
+    private final SparseArray<NotificationData> notifications = new SparseArray<NotificationData>();
     private final Object lock = new Object();
 
 
@@ -42,8 +42,8 @@ class NewMailNotifications {
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
         synchronized (lock) {
-            NotificationsHolder notificationsHolder = getOrCreateNotificationsHolder(account, unreadMessageCount);
-            AddNotificationResult result = notificationsHolder.addNotificationContent(content);
+            NotificationData notificationData = getOrCreateNotificationData(account, unreadMessageCount);
+            AddNotificationResult result = notificationData.addNotificationContent(content);
 
             if (result.shouldCancelNotification()) {
                 int notificationId = result.getNotificationId();
@@ -51,18 +51,18 @@ class NewMailNotifications {
             }
 
             createStackedNotification(account, result.getNotificationHolder());
-            createSummaryNotification(account, notificationsHolder, false);
+            createSummaryNotification(account, notificationData, false);
         }
     }
 
     public void removeNewMailNotification(Account account, MessageReference messageReference) {
         synchronized (lock) {
-            NotificationsHolder notificationsHolder = getNotificationsHolder(account);
-            if (notificationsHolder == null) {
+            NotificationData notificationData = getNotificationData(account);
+            if (notificationData == null) {
                 return;
             }
 
-            RemoveNotificationResult result = notificationsHolder.removeNotificationForMessage(messageReference);
+            RemoveNotificationResult result = notificationData.removeNotificationForMessage(messageReference);
             if (result.isUnknownNotification()) {
                 return;
             }
@@ -73,21 +73,21 @@ class NewMailNotifications {
                 createStackedNotification(account, result.getNotificationHolder());
             }
 
-            updateSummaryNotification(account, notificationsHolder);
+            updateSummaryNotification(account, notificationData);
         }
     }
 
     public void clearNewMailNotifications(Account account) {
-        NotificationsHolder notificationsHolder;
+        NotificationData notificationData;
         synchronized (lock) {
-            notificationsHolder = removeNotificationsHolder(account);
+            notificationData = removeNotificationData(account);
         }
 
-        if (notificationsHolder == null) {
+        if (notificationData == null) {
             return;
         }
 
-        for (int notificationId : notificationsHolder.getActiveNotificationIds()) {
+        for (int notificationId : notificationData.getActiveNotificationIds()) {
             cancelNotification(notificationId);
         }
 
@@ -95,51 +95,51 @@ class NewMailNotifications {
         cancelNotification(notificationId);
     }
 
-    private NotificationsHolder getOrCreateNotificationsHolder(Account account, int unreadMessageCount) {
-        NotificationsHolder notificationsHolder = getNotificationsHolder(account);
-        if (notificationsHolder != null) {
-            return notificationsHolder;
+    private NotificationData getOrCreateNotificationData(Account account, int unreadMessageCount) {
+        NotificationData notificationData = getNotificationData(account);
+        if (notificationData != null) {
+            return notificationData;
         }
 
         int accountNumber = account.getAccountNumber();
-        NotificationsHolder newNotificationHolder = createNotificationsHolder(account, unreadMessageCount);
+        NotificationData newNotificationHolder = createNotificationData(account, unreadMessageCount);
         notifications.put(accountNumber, newNotificationHolder);
 
         return newNotificationHolder;
     }
 
-    private NotificationsHolder getNotificationsHolder(Account account) {
+    private NotificationData getNotificationData(Account account) {
         int accountNumber = account.getAccountNumber();
         return notifications.get(accountNumber);
     }
 
-    private NotificationsHolder removeNotificationsHolder(Account account) {
+    private NotificationData removeNotificationData(Account account) {
         int accountNumber = account.getAccountNumber();
-        NotificationsHolder notificationsHolder = notifications.get(accountNumber);
+        NotificationData notificationData = notifications.get(accountNumber);
         notifications.remove(accountNumber);
-        return notificationsHolder;
+        return notificationData;
     }
 
-    NotificationsHolder createNotificationsHolder(Account account, int unreadMessageCount) {
-        NotificationsHolder notificationsHolder = new NotificationsHolder(account);
-        notificationsHolder.setUnreadMessageCount(unreadMessageCount);
-        return notificationsHolder;
+    NotificationData createNotificationData(Account account, int unreadMessageCount) {
+        NotificationData notificationData = new NotificationData(account);
+        notificationData.setUnreadMessageCount(unreadMessageCount);
+        return notificationData;
     }
 
     private void cancelNotification(int notificationId) {
         getNotificationManager().cancel(notificationId);
     }
 
-    private void updateSummaryNotification(Account account, NotificationsHolder notificationsHolder) {
-        if (notificationsHolder.getNewMessagesCount() == 0) {
+    private void updateSummaryNotification(Account account, NotificationData notificationData) {
+        if (notificationData.getNewMessagesCount() == 0) {
             clearNewMailNotifications(account);
         } else {
-            createSummaryNotification(account, notificationsHolder, true);
+            createSummaryNotification(account, notificationData, true);
         }
     }
 
-    private void createSummaryNotification(Account account, NotificationsHolder notificationsHolder, boolean silent) {
-        Notification notification = deviceNotifications.buildSummaryNotification(account, notificationsHolder, silent);
+    private void createSummaryNotification(Account account, NotificationData notificationData, boolean silent) {
+        Notification notification = deviceNotifications.buildSummaryNotification(account, notificationData, silent);
         int notificationId = NotificationIds.getNewMailNotificationId(account);
 
         getNotificationManager().notify(notificationId, notification);

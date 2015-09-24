@@ -144,12 +144,12 @@ public class WearNotificationsTest {
         disableOptionalSummaryActions();
         int notificationId = NotificationIds.getNewMailNotificationId(account);
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
-        NotificationsHolder notificationsHolder = createNotificationsHolder(messageReferences);
+        NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent markAllAsReadPendingIntent = createFakePendingIntent(1);
         when(actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId))
                 .thenReturn(markAllAsReadPendingIntent);
 
-        wearNotifications.addSummaryActions(builder, notificationsHolder);
+        wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
         verifyAddAction(R.drawable.ic_action_mark_as_read_dark, "Mark All Read", markAllAsReadPendingIntent);
@@ -161,12 +161,12 @@ public class WearNotificationsTest {
         enableDeleteAction();
         int notificationId = NotificationIds.getNewMailNotificationId(account);
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
-        NotificationsHolder notificationsHolder = createNotificationsHolder(messageReferences);
+        NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent deletePendingIntent = createFakePendingIntent(1);
         when(actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId))
                 .thenReturn(deletePendingIntent);
 
-        wearNotifications.addSummaryActions(builder, notificationsHolder);
+        wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
         verifyAddAction(R.drawable.ic_action_delete_dark, "Delete All", deletePendingIntent);
@@ -177,12 +177,12 @@ public class WearNotificationsTest {
         enableArchiveAction();
         int notificationId = NotificationIds.getNewMailNotificationId(account);
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
-        NotificationsHolder notificationsHolder = createNotificationsHolder(messageReferences);
+        NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent archivePendingIntent = createFakePendingIntent(1);
         when(actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId))
                 .thenReturn(archivePendingIntent);
 
-        wearNotifications.addSummaryActions(builder, notificationsHolder);
+        wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
         verifyAddAction(R.drawable.ic_action_archive_dark, "Archive All", archivePendingIntent);
@@ -282,11 +282,11 @@ public class WearNotificationsTest {
         return messageReferences;
     }
 
-    private NotificationsHolder createNotificationsHolder(ArrayList<MessageReference> messageReferences) {
-        NotificationsHolder notificationsHolder = mock(NotificationsHolder.class);
-        when(notificationsHolder.getAccount()).thenReturn(account);
-        when(notificationsHolder.getAllMessageReferences()).thenReturn(messageReferences);
-        return notificationsHolder;
+    private NotificationData createNotificationData(ArrayList<MessageReference> messageReferences) {
+        NotificationData notificationData = mock(NotificationData.class);
+        when(notificationData.getAccount()).thenReturn(account);
+        when(notificationData.getAllMessageReferences()).thenReturn(messageReferences);
+        return notificationData;
     }
 
     private Builder verifyExtendWasOnlyCalledOnce() {
