@@ -18,53 +18,53 @@ public class NotificationIdsTest {
     private static final boolean OUTGOING = false;
 
     @Test
-    public void getNewMailNotificationId_withDefaultAccount() throws Exception {
+    public void getNewMailSummaryNotificationId_withDefaultAccount() throws Exception {
         Account account = createMockAccountWithAccountNumber(0);
 
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
         assertEquals(4, notificationId);
     }
 
     @Test
-    public void getNewMailNotificationId_withDefaultAccountAndOffset() throws Exception {
+    public void getNewMailStackedNotificationId_withDefaultAccount() throws Exception {
         Account account = createMockAccountWithAccountNumber(0);
-        int notificationOffset = 1;
+        int notificationIndex = 1;
 
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
         assertEquals(5, notificationId);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void getNewMailNotificationId_withTooLowOffset() throws Exception {
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void getNewMailStackedNotificationId_withTooLowIndex() throws Exception {
         Account account = createMockAccountWithAccountNumber(0);
 
-        NotificationIds.getNewMailNotificationId(account, 0);
+        NotificationIds.getNewMailStackedNotificationId(account, 0);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void getNewMailNotificationId_withTooLargeOffset() throws Exception {
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void getNewMailStackedNotificationId_withTooLargeIndex() throws Exception {
         Account account = createMockAccountWithAccountNumber(0);
 
-        NotificationIds.getNewMailNotificationId(account, 9);
+        NotificationIds.getNewMailStackedNotificationId(account, 9);
     }
 
     @Test
-    public void getNewMailNotificationId_withSecondAccount() throws Exception {
+    public void getNewMailSummaryNotificationId_withSecondAccount() throws Exception {
         Account account = createMockAccountWithAccountNumber(1);
 
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
         assertEquals(17, notificationId);
     }
 
     @Test
-    public void getNewMailNotificationId_withSecondAccountAndOffset() throws Exception {
+    public void getNewMailStackedNotificationId_withSecondAccount() throws Exception {
         Account account = createMockAccountWithAccountNumber(1);
-        int notificationOffset = 8;
+        int notificationIndex = 8;
 
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
         assertEquals(25, notificationId);
     }

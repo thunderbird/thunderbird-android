@@ -101,7 +101,7 @@ class NewMailNotifications {
             cancelNotification(notificationId);
         }
 
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         cancelNotification(notificationId);
     }
 
@@ -150,7 +150,7 @@ class NewMailNotifications {
 
     private void createSummaryNotification(Account account, NotificationData notificationData, boolean silent) {
         Notification notification = deviceNotifications.buildSummaryNotification(account, notificationData, silent);
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
         getNotificationManager().notify(notificationId, notification);
     }

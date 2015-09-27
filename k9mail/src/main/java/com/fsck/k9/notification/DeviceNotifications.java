@@ -60,7 +60,7 @@ class DeviceNotifications extends BaseNotifications {
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         }
 
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         PendingIntent deletePendingIntent = actionCreator.createDismissAllMessagesPendingIntent(
                 account, notificationId);
         builder.setDeleteIntent(deletePendingIntent);
@@ -91,7 +91,7 @@ class DeviceNotifications extends BaseNotifications {
         String unreadMessageCountText = context.getString(R.string.notification_new_one_account_fmt,
                 unreadMessageCount, accountName);
 
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         PendingIntent contentIntent = actionCreator.createViewFolderListPendingIntent(account, notificationId);
 
         return createAndInitializeNotificationBuilder(account)
@@ -105,7 +105,7 @@ class DeviceNotifications extends BaseNotifications {
     private NotificationCompat.Builder createBigTextStyleSummaryNotification(Account account,
             NotificationHolder holder) {
 
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         Builder builder = createBigTextStyleNotification(account, holder, notificationId)
                 .setGroupSummary(true);
 
@@ -154,7 +154,7 @@ class DeviceNotifications extends BaseNotifications {
 
         wearNotifications.addSummaryActions(builder, notificationData);
 
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         List<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         PendingIntent contentIntent = actionCreator.createViewMessagesPendingIntent(
                 account, messageReferences, notificationId);
@@ -180,7 +180,7 @@ class DeviceNotifications extends BaseNotifications {
 
         Account account = notificationData.getAccount();
         ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         PendingIntent markAllAsReadPendingIntent =
                 actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId);
 
@@ -196,7 +196,7 @@ class DeviceNotifications extends BaseNotifications {
         String title = context.getString(R.string.notification_action_delete);
 
         Account account = notificationData.getAccount();
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         PendingIntent action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId);
 

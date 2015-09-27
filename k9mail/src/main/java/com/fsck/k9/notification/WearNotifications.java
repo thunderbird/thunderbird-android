@@ -60,7 +60,7 @@ class WearNotifications extends BaseNotifications {
 
         Account account = notificationData.getAccount();
         ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         PendingIntent action = actionCreator.createMarkAllAsReadPendingIntent(
                 account, messageReferences, notificationId);
 
@@ -74,7 +74,7 @@ class WearNotifications extends BaseNotifications {
 
         Account account = notificationData.getAccount();
         ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         PendingIntent action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId);
 
         NotificationCompat.Action deleteAction = new NotificationCompat.Action.Builder(icon, title, action).build();
@@ -87,7 +87,7 @@ class WearNotifications extends BaseNotifications {
 
         Account account = notificationData.getAccount();
         ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         PendingIntent action = actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId);
 
         NotificationCompat.Action archiveAction = new NotificationCompat.Action.Builder(icon, title, action).build();

@@ -55,10 +55,10 @@ public class NewMailNotificationsTest {
 
     @Test
     public void testAddNewMailNotification() throws Exception {
-        int notificationOffset = 1;
+        int notificationIndex = 1;
         LocalMessage message = createLocalMessage();
         NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationOffset);
+        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
         addToNotificationContentCreator(message, content);
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
         Notification wearNotification = createNotification();
@@ -68,18 +68,18 @@ public class NewMailNotificationsTest {
 
         newMailNotifications.addNewMailNotification(account, message, 42);
 
-        int wearNotificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
-        int summaryNotificationId = NotificationIds.getNewMailNotificationId(account);
+        int wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
+        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         verify(notificationManager).notify(wearNotificationId, wearNotification);
         verify(notificationManager).notify(summaryNotificationId, summaryNotification);
     }
 
     @Test
     public void testAddNewMailNotificationWithCancelingExistingNotification() throws Exception {
-        int notificationOffset = 1;
+        int notificationIndex = 1;
         LocalMessage message = createLocalMessage();
         NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationOffset);
+        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
         addToNotificationContentCreator(message, content);
         whenAddingContentReturn(content, AddNotificationResult.replaceNotification(holder));
         Notification wearNotification = createNotification();
@@ -89,8 +89,8 @@ public class NewMailNotificationsTest {
 
         newMailNotifications.addNewMailNotification(account, message, 42);
 
-        int wearNotificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
-        int summaryNotificationId = NotificationIds.getNewMailNotificationId(account);
+        int wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
+        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         verify(notificationManager).notify(wearNotificationId, wearNotification);
         verify(notificationManager).cancel(wearNotificationId);
         verify(notificationManager).notify(summaryNotificationId, summaryNotification);
@@ -99,10 +99,10 @@ public class NewMailNotificationsTest {
     @Test
     public void testAddNewMailNotificationWithPrivacyModeEnabled() throws Exception {
         enablePrivacyMode();
-        int notificationOffset = 1;
+        int notificationIndex = 1;
         LocalMessage message = createLocalMessage();
         NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationOffset);
+        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
         addToNotificationContentCreator(message, content);
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
         Notification wearNotification = createNotification();
@@ -110,22 +110,22 @@ public class NewMailNotificationsTest {
 
         newMailNotifications.addNewMailNotification(account, message, 42);
 
-        int wearNotificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
-        int summaryNotificationId = NotificationIds.getNewMailNotificationId(account);
+        int wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
+        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         verify(notificationManager, never()).notify(eq(wearNotificationId), any(Notification.class));
         verify(notificationManager).notify(summaryNotificationId, wearNotification);
     }
 
     @Test
     public void testAddNewMailNotificationTwice() throws Exception {
-        int notificationOffsetOne = 1;
-        int notificationOffsetTwo = 2;
+        int notificationIndexOne = 1;
+        int notificationIndexTwo = 2;
         LocalMessage messageOne = createLocalMessage();
         LocalMessage messageTwo = createLocalMessage();
         NotificationContent contentOne = createNotificationContent();
         NotificationContent contentTwo = createNotificationContent();
-        NotificationHolder holderOne = createNotificationHolder(contentOne, notificationOffsetOne);
-        NotificationHolder holderTwo = createNotificationHolder(contentTwo, notificationOffsetTwo);
+        NotificationHolder holderOne = createNotificationHolder(contentOne, notificationIndexOne);
+        NotificationHolder holderTwo = createNotificationHolder(contentTwo, notificationIndexTwo);
         addToNotificationContentCreator(messageOne, contentOne);
         addToNotificationContentCreator(messageTwo, contentTwo);
         whenAddingContentReturn(contentOne, AddNotificationResult.newNotification(holderOne));
@@ -140,9 +140,9 @@ public class NewMailNotificationsTest {
         newMailNotifications.addNewMailNotification(account, messageOne, 42);
         newMailNotifications.addNewMailNotification(account, messageTwo, 42);
 
-        int wearNotificationIdOne = NotificationIds.getNewMailNotificationId(account, notificationOffsetOne);
-        int wearNotificationIdTwo = NotificationIds.getNewMailNotificationId(account, notificationOffsetTwo);
-        int summaryNotificationId = NotificationIds.getNewMailNotificationId(account);
+        int wearNotificationIdOne = NotificationIds.getNewMailStackedNotificationId(account, notificationIndexOne);
+        int wearNotificationIdTwo = NotificationIds.getNewMailStackedNotificationId(account, notificationIndexTwo);
+        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         verify(notificationManager).notify(wearNotificationIdOne, wearNotificationOne);
         verify(notificationManager).notify(wearNotificationIdTwo, wearNotificationTwo);
         verify(notificationManager, times(2)).notify(summaryNotificationId, summaryNotification);
@@ -161,10 +161,10 @@ public class NewMailNotificationsTest {
     public void testRemoveNewMailNotificationWithUnknownMessageReference() throws Exception {
         enablePrivacyMode();
         MessageReference messageReference = createMessageReference(1);
-        int notificationOffset = 1;
+        int notificationIndex = 1;
         LocalMessage message = createLocalMessage();
         NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationOffset);
+        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
         addToNotificationContentCreator(message, content);
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
         Notification summaryNotification = createNotification();
@@ -181,11 +181,11 @@ public class NewMailNotificationsTest {
     public void testRemoveNewMailNotification() throws Exception {
         enablePrivacyMode();
         MessageReference messageReference = createMessageReference(1);
-        int notificationOffset = 1;
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationIndex = 1;
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         LocalMessage message = createLocalMessage();
         NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationOffset);
+        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
         addToNotificationContentCreator(message, content);
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
         Notification summaryNotification = createNotification();
@@ -195,7 +195,7 @@ public class NewMailNotificationsTest {
 
         newMailNotifications.removeNewMailNotification(account, messageReference);
 
-        int summaryNotificationId = NotificationIds.getNewMailNotificationId(account);
+        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         verify(notificationManager).cancel(notificationId);
         verify(notificationManager, times(2)).notify(summaryNotificationId, summaryNotification);
     }
@@ -203,11 +203,11 @@ public class NewMailNotificationsTest {
     @Test
     public void testRemoveNewMailNotificationClearingAllNotifications() throws Exception {
         MessageReference messageReference = createMessageReference(1);
-        int notificationOffset = 1;
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationIndex = 1;
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         LocalMessage message = createLocalMessage();
         NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationOffset);
+        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
         addToNotificationContentCreator(message, content);
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
         Notification summaryNotification = createNotification();
@@ -219,7 +219,7 @@ public class NewMailNotificationsTest {
 
         newMailNotifications.removeNewMailNotification(account, messageReference);
 
-        int summaryNotificationId = NotificationIds.getNewMailNotificationId(account);
+        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         verify(notificationManager).cancel(notificationId);
         verify(notificationManager).cancel(summaryNotificationId);
     }
@@ -227,13 +227,13 @@ public class NewMailNotificationsTest {
     @Test
     public void testRemoveNewMailNotificationWithCreateNotification() throws Exception {
         MessageReference messageReference = createMessageReference(1);
-        int notificationOffset = 1;
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationIndex = 1;
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         LocalMessage message = createLocalMessage();
         NotificationContent contentOne = createNotificationContent();
         NotificationContent contentTwo = createNotificationContent();
-        NotificationHolder holderOne = createNotificationHolder(contentOne, notificationOffset);
-        NotificationHolder holderTwo = createNotificationHolder(contentTwo, notificationOffset);
+        NotificationHolder holderOne = createNotificationHolder(contentOne, notificationIndex);
+        NotificationHolder holderTwo = createNotificationHolder(contentTwo, notificationIndex);
         addToNotificationContentCreator(message, contentOne);
         whenAddingContentReturn(contentOne, AddNotificationResult.newNotification(holderOne));
         Notification summaryNotification = createNotification();
@@ -247,7 +247,7 @@ public class NewMailNotificationsTest {
 
         newMailNotifications.removeNewMailNotification(account, messageReference);
 
-        int summaryNotificationId = NotificationIds.getNewMailNotificationId(account);
+        int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         verify(notificationManager).cancel(notificationId);
         verify(notificationManager).notify(notificationId, wearNotificationTwo);
         verify(notificationManager, times(2)).notify(summaryNotificationId, summaryNotification);
@@ -262,11 +262,11 @@ public class NewMailNotificationsTest {
 
     @Test
     public void testClearNewMailNotifications() throws Exception {
-        int notificationOffset = 1;
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationIndex = 1;
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         LocalMessage message = createLocalMessage();
         NotificationContent content = createNotificationContent();
-        NotificationHolder holder = createNotificationHolder(content, notificationOffset);
+        NotificationHolder holder = createNotificationHolder(content, notificationIndex);
         addToNotificationContentCreator(message, content);
         setActiveNotificationIds(notificationId);
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
@@ -275,7 +275,7 @@ public class NewMailNotificationsTest {
         newMailNotifications.clearNewMailNotifications(account);
 
         verify(notificationManager).cancel(notificationId);
-        verify(notificationManager).cancel(NotificationIds.getNewMailNotificationId(account));
+        verify(notificationManager).cancel(NotificationIds.getNewMailSummaryNotificationId(account));
     }
 
     private Account createAccount() {
@@ -292,8 +292,8 @@ public class NewMailNotificationsTest {
         return new NotificationContent(null, null, null, null, null, false);
     }
 
-    private NotificationHolder createNotificationHolder(NotificationContent content, int offset) {
-        int notificationId = NotificationIds.getNewMailNotificationId(account, offset);
+    private NotificationHolder createNotificationHolder(NotificationContent content, int index) {
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, index);
         return new NotificationHolder(notificationId, content);
     }
 

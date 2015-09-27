@@ -62,8 +62,8 @@ public class WearNotificationsTest {
     @Test
     public void testBuildStackedNotification() throws Exception {
         disableOptionalActions();
-        int notificationOffset = 1;
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationIndex = 1;
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         MessageReference messageReference = createMessageReference(1);
         NotificationContent content = createNotificationContent(messageReference);
         NotificationHolder holder = createNotificationHolder(notificationId, content);
@@ -85,8 +85,8 @@ public class WearNotificationsTest {
     @Test
     public void testBuildStackedNotificationWithDeleteActionEnabled() throws Exception {
         enableDeleteAction();
-        int notificationOffset = 1;
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationIndex = 1;
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         MessageReference messageReference = createMessageReference(1);
         NotificationContent content = createNotificationContent(messageReference);
         NotificationHolder holder = createNotificationHolder(notificationId, content);
@@ -104,8 +104,8 @@ public class WearNotificationsTest {
     @Test
     public void testBuildStackedNotificationWithArchiveActionEnabled() throws Exception {
         enableArchiveAction();
-        int notificationOffset = 1;
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationIndex = 1;
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         MessageReference messageReference = createMessageReference(1);
         NotificationContent content = createNotificationContent(messageReference);
         NotificationHolder holder = createNotificationHolder(notificationId, content);
@@ -123,8 +123,8 @@ public class WearNotificationsTest {
     @Test
     public void testBuildStackedNotificationWithMarkAsSpamActionEnabled() throws Exception {
         enableSpamAction();
-        int notificationOffset = 1;
-        int notificationId = NotificationIds.getNewMailNotificationId(account, notificationOffset);
+        int notificationIndex = 1;
+        int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         MessageReference messageReference = createMessageReference(1);
         NotificationContent content = createNotificationContent(messageReference);
         NotificationHolder holder = createNotificationHolder(notificationId, content);
@@ -142,7 +142,7 @@ public class WearNotificationsTest {
     @Test
     public void testAddSummaryActions() throws Exception {
         disableOptionalSummaryActions();
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
         NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent markAllAsReadPendingIntent = createFakePendingIntent(1);
@@ -159,7 +159,7 @@ public class WearNotificationsTest {
     @Test
     public void testAddSummaryActionsWithDeleteAllActionEnabled() throws Exception {
         enableDeleteAction();
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
         NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent deletePendingIntent = createFakePendingIntent(1);
@@ -175,7 +175,7 @@ public class WearNotificationsTest {
     @Test
     public void testAddSummaryActionsWithArchiveAllActionEnabled() throws Exception {
         enableArchiveAction();
-        int notificationId = NotificationIds.getNewMailNotificationId(account);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
         NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent archivePendingIntent = createFakePendingIntent(1);

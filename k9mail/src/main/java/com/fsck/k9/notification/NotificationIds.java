@@ -10,24 +10,25 @@ class NotificationIds {
     private static final int OFFSET_CERTIFICATE_ERROR_OUTGOING = 2;
     private static final int OFFSET_FETCHING_MAIL = 3;
     private static final int OFFSET_NEW_MAIL_SUMMARY = 4;
+
     private static final int OFFSET_NEW_MAIL_STACKED = 5;
 
-    private static final int NUMBER_OF_DEVICE_NOTIFICATIONS = OFFSET_NEW_MAIL_STACKED;
-
+    private static final int NUMBER_OF_DEVICE_NOTIFICATIONS = 5;
+    private static final int NUMBER_OF_STACKED_NOTIFICATIONS = NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS;
     private static final int NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT = NUMBER_OF_DEVICE_NOTIFICATIONS +
-            NotificationData.MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS;
+            NUMBER_OF_STACKED_NOTIFICATIONS;
             
 
-    public static int getNewMailNotificationId(Account account) {
+    public static int getNewMailSummaryNotificationId(Account account) {
         return getBaseNotificationId(account) + OFFSET_NEW_MAIL_SUMMARY;
     }
 
-    public static int getNewMailNotificationId(Account account, int offset) {
-        if (offset < 1 || offset > NotificationData.MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS) {
-            throw new IllegalArgumentException("Invalid value for offset: " + offset);
+    public static int getNewMailStackedNotificationId(Account account, int index) {
+        if (index < 1 || index > NUMBER_OF_STACKED_NOTIFICATIONS) {
+            throw new IndexOutOfBoundsException("Invalid value: " + index);
         }
 
-        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_STACKED + offset - 1;
+        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_STACKED + index - 1;
     }
 
     public static int getFetchingMailNotificationId(Account account) {

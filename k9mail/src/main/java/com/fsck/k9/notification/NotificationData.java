@@ -19,8 +19,8 @@ import com.fsck.k9.activity.MessageReference;
 class NotificationData {
     // Note: As of Jellybean, phone notifications show a maximum of 5 lines, while tablet notifications show 7 lines.
     static final int MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5;
-    // Note: This class assumes MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
-    static final int MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS = 8;
+    // Note: This class assumes MAX_NUMBER_OF_STACKED_NOTIFICATIONS >= MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION
+    static final int MAX_NUMBER_OF_STACKED_NOTIFICATIONS = 8;
 
 
     private final Account account;
@@ -58,7 +58,7 @@ class NotificationData {
     }
 
     private boolean isMaxNumberOfActiveNotificationsReached() {
-        return activeNotifications.size() == MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS;
+        return activeNotifications.size() == MAX_NUMBER_OF_STACKED_NOTIFICATIONS;
     }
 
     private void addToAdditionalNotifications(NotificationHolder notificationHolder) {
@@ -66,8 +66,8 @@ class NotificationData {
     }
 
     private int getNewNotificationId() {
-        for (int i = 1; i <= MAX_NUMBER_OF_ACTIVE_NOTIFICATIONS; i++) {
-            int notificationId = NotificationIds.getNewMailNotificationId(account, i);
+        for (int i = 1; i <= MAX_NUMBER_OF_STACKED_NOTIFICATIONS; i++) {
+            int notificationId = NotificationIds.getNewMailStackedNotificationId(account, i);
             if (!isNotificationInUse(notificationId)) {
                 markNotificationIdAsInUse(notificationId);
                 return notificationId;
