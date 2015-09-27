@@ -24,11 +24,11 @@ class NotificationIds {
     }
 
     public static int getNewMailStackedNotificationId(Account account, int index) {
-        if (index < 1 || index > NUMBER_OF_STACKED_NOTIFICATIONS) {
+        if (index < 0 || index >= NUMBER_OF_STACKED_NOTIFICATIONS) {
             throw new IndexOutOfBoundsException("Invalid value: " + index);
         }
 
-        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_STACKED + index - 1;
+        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_STACKED + index;
     }
 
     public static int getFetchingMailNotificationId(Account account) {

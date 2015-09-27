@@ -46,7 +46,7 @@ public class NotificationDataTest {
         assertFalse(result.shouldCancelNotification());
         NotificationHolder holder = result.getNotificationHolder();
         assertNotNull(holder);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), holder.notificationId);
+        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), holder.notificationId);
         assertEquals(content, holder.content);
     }
 
@@ -65,7 +65,7 @@ public class NotificationDataTest {
         AddNotificationResult result = notificationData.addNotificationContent(createNotificationContent("9"));
 
         assertTrue(result.shouldCancelNotification());
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), result.getNotificationId());
+        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), result.getNotificationId());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class NotificationDataTest {
         RemoveNotificationResult result = notificationData.removeNotificationForMessage(content.messageReference);
 
         assertFalse(result.isUnknownNotification());
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), result.getNotificationId());
+        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), result.getNotificationId());
         assertFalse(result.shouldCreateNotification());
     }
 
@@ -99,11 +99,11 @@ public class NotificationDataTest {
                 notificationData.removeNotificationForMessage(latestContent.messageReference);
 
         assertFalse(result.isUnknownNotification());
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 2), result.getNotificationId());
+        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), result.getNotificationId());
         assertTrue(result.shouldCreateNotification());
         NotificationHolder holder = result.getNotificationHolder();
         assertNotNull(holder);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 2), holder.notificationId);
+        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), holder.notificationId);
         assertEquals(content, holder.content);
     }
 
@@ -214,8 +214,8 @@ public class NotificationDataTest {
         int[] notificationIds = notificationData.getActiveNotificationIds();
 
         assertEquals(2, notificationIds.length);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 2), notificationIds[0]);
-        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), notificationIds[1]);
+        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), notificationIds[0]);
+        assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 0), notificationIds[1]);
     }
 
     @Test

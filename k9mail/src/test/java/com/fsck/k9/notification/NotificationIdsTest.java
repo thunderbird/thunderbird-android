@@ -29,7 +29,7 @@ public class NotificationIdsTest {
     @Test
     public void getNewMailStackedNotificationId_withDefaultAccount() throws Exception {
         Account account = createMockAccountWithAccountNumber(0);
-        int notificationIndex = 1;
+        int notificationIndex = 0;
 
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
@@ -40,14 +40,14 @@ public class NotificationIdsTest {
     public void getNewMailStackedNotificationId_withTooLowIndex() throws Exception {
         Account account = createMockAccountWithAccountNumber(0);
 
-        NotificationIds.getNewMailStackedNotificationId(account, 0);
+        NotificationIds.getNewMailStackedNotificationId(account, -1);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void getNewMailStackedNotificationId_withTooLargeIndex() throws Exception {
         Account account = createMockAccountWithAccountNumber(0);
 
-        NotificationIds.getNewMailStackedNotificationId(account, 9);
+        NotificationIds.getNewMailStackedNotificationId(account, 8);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class NotificationIdsTest {
     @Test
     public void getNewMailStackedNotificationId_withSecondAccount() throws Exception {
         Account account = createMockAccountWithAccountNumber(1);
-        int notificationIndex = 8;
+        int notificationIndex = 7;
 
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 

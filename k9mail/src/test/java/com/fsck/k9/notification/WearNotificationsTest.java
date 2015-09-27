@@ -62,7 +62,7 @@ public class WearNotificationsTest {
     @Test
     public void testBuildStackedNotification() throws Exception {
         disableOptionalActions();
-        int notificationIndex = 1;
+        int notificationIndex = 0;
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         MessageReference messageReference = createMessageReference(1);
         NotificationContent content = createNotificationContent(messageReference);
@@ -85,7 +85,7 @@ public class WearNotificationsTest {
     @Test
     public void testBuildStackedNotificationWithDeleteActionEnabled() throws Exception {
         enableDeleteAction();
-        int notificationIndex = 1;
+        int notificationIndex = 0;
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         MessageReference messageReference = createMessageReference(1);
         NotificationContent content = createNotificationContent(messageReference);
@@ -104,7 +104,7 @@ public class WearNotificationsTest {
     @Test
     public void testBuildStackedNotificationWithArchiveActionEnabled() throws Exception {
         enableArchiveAction();
-        int notificationIndex = 1;
+        int notificationIndex = 0;
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         MessageReference messageReference = createMessageReference(1);
         NotificationContent content = createNotificationContent(messageReference);
@@ -123,7 +123,7 @@ public class WearNotificationsTest {
     @Test
     public void testBuildStackedNotificationWithMarkAsSpamActionEnabled() throws Exception {
         enableSpamAction();
-        int notificationIndex = 1;
+        int notificationIndex = 0;
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         MessageReference messageReference = createMessageReference(1);
         NotificationContent content = createNotificationContent(messageReference);

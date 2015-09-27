@@ -66,7 +66,7 @@ class NotificationData {
     }
 
     private int getNewNotificationId() {
-        for (int i = 1; i <= MAX_NUMBER_OF_STACKED_NOTIFICATIONS; i++) {
+        for (int i = 0; i < MAX_NUMBER_OF_STACKED_NOTIFICATIONS; i++) {
             int notificationId = NotificationIds.getNewMailStackedNotificationId(account, i);
             if (!isNotificationInUse(notificationId)) {
                 markNotificationIdAsInUse(notificationId);
