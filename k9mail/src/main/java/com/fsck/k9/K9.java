@@ -312,31 +312,6 @@ public class K9 extends Application {
 
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 
-    /**
-     * Time the LED is on/off when blinking on new email notification
-     */
-    public static final int NOTIFICATION_LED_ON_TIME = 500;
-    public static final int NOTIFICATION_LED_OFF_TIME = 2000;
-
-    public static final boolean NOTIFICATION_LED_WHILE_SYNCING = false;
-    public static final int NOTIFICATION_LED_FAST_ON_TIME = 100;
-    public static final int NOTIFICATION_LED_FAST_OFF_TIME = 100;
-
-
-    public static final int NOTIFICATION_LED_BLINK_SLOW = 0;
-    public static final int NOTIFICATION_LED_BLINK_FAST = 1;
-
-
-
-    public static final int NOTIFICATION_LED_FAILURE_COLOR = 0xffff0000;
-
-    // Must not conflict with an account number
-    public static final int FETCHING_EMAIL_NOTIFICATION      = -5000;
-    public static final int SEND_FAILED_NOTIFICATION      = -1500;
-    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING = -2000;
-    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING = -2500;
-    public static final int CONNECTIVITY_ID = -3;
-
 
     public static class Intents {
 
