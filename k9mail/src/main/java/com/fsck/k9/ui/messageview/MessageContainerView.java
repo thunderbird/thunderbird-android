@@ -163,7 +163,11 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             }
             case HitTestResult.IMAGE_TYPE:
             case HitTestResult.SRC_IMAGE_ANCHOR_TYPE: {
-                final String url = result.getExtra();
+                final String url = getUriForExternalAccess(result.getExtra());
+                if (url == null) {
+                    return;
+                }
+
                 final boolean externalImage = url.startsWith("http");
                 OnMenuItemClickListener listener = new OnMenuItemClickListener() {
                     @Override
@@ -307,6 +311,31 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                 break;
             }
         }
+    }
+
+    private String getUriForExternalAccess(String url) {
+        if (!url.startsWith("cid:")) {
+            return url;
+        }
+
+        String cid = Uri.parse(url).getSchemeSpecificPart();
+
+        AttachmentViewInfo attachment = getAttachmentByContentId(cid);
+        if (attachment == null) {
+            return null;
+        }
+
+        return attachment.uri.toString();
+    }
+
+    private AttachmentViewInfo getAttachmentByContentId(String cid) {
+        for (AttachmentViewInfo attachment : attachments.keySet()) {
+            if (cid.equals(attachment.part.getContentId())) {
+                return attachment;
+            }
+        }
+
+        return null;
     }
 
     private void startActivityIfAvailable(Context context, Intent intent) {
