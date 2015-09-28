@@ -568,7 +568,7 @@ public class LocalStore extends Store implements Serializable {
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                 "LEFT JOIN folders ON (folders.id = messages.folder_id) WHERE " +
-                "((empty IS NULL OR empty != 1) AND deleted = 0)" +
+                "(empty = 0 AND deleted = 0)" +
                 ((!TextUtils.isEmpty(where)) ? " AND (" + where + ")" : "") +
                 " ORDER BY date DESC";
 
@@ -981,7 +981,7 @@ public class LocalStore extends Store implements Serializable {
             public void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
                     throws UnavailableStorageException {
 
-                db.update("messages", cv, "(empty IS NULL OR empty != 1) AND id" + selectionSet,
+                db.update("messages", cv, "empty = 0 AND id" + selectionSet,
                         selectionArgs);
             }
 
@@ -1033,7 +1033,7 @@ public class LocalStore extends Store implements Serializable {
                         " WHERE id IN (" +
                         "SELECT m.id FROM threads t " +
                         "LEFT JOIN messages m ON (t.message_id = m.id) " +
-                        "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
+                        "WHERE m.empty = 0 AND m.deleted = 0 " +
                         "AND t.root" + selectionSet + ")",
                         selectionArgs);
             }
@@ -1086,7 +1086,7 @@ public class LocalStore extends Store implements Serializable {
                             "FROM threads t " +
                             "LEFT JOIN messages m ON (t.message_id = m.id) " +
                             "LEFT JOIN folders f ON (m.folder_id = f.id) " +
-                            "WHERE (m.empty IS NULL OR m.empty != 1) AND m.deleted = 0 " +
+                            "WHERE m.empty = 0 AND m.deleted = 0 " +
                             "AND t.root" + selectionSet;
 
                     getDataFromCursor(db.rawQuery(sql, selectionArgs));
@@ -1096,7 +1096,7 @@ public class LocalStore extends Store implements Serializable {
                             "SELECT m.uid, f.name " +
                             "FROM messages m " +
                             "LEFT JOIN folders f ON (m.folder_id = f.id) " +
-                            "WHERE (m.empty IS NULL OR m.empty != 1) AND m.id" + selectionSet;
+                            "WHERE m.empty = 0 AND m.id" + selectionSet;
 
                     getDataFromCursor(db.rawQuery(sql, selectionArgs));
                 }
