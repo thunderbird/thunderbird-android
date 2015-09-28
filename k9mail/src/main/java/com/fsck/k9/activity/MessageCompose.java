@@ -442,6 +442,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return i;
     }
 
+    public static Intent getActionReplyIntent(Context context, MessageReference messageReference) {
+        Intent intent = new Intent(context, MessageCompose.class);
+        intent.setAction(ACTION_REPLY);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        return intent;
+    }
+
     /**
      * Compose a new message as a reply to the given message. If replyAll is true the function
      * is reply all instead of simply reply.

@@ -445,8 +445,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
         private void clearCertificateErrorNotifications(CheckDirection direction) {
             final MessagingController ctrl = MessagingController.getInstance(getApplication());
-            ctrl.clearCertificateErrorNotifications(AccountSetupCheckSettings.this,
-                    account, direction);
+            ctrl.clearCertificateErrorNotifications(account, direction);
         }
 
         private boolean cancelled() {
