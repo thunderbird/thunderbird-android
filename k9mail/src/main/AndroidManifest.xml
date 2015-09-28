@@ -369,7 +369,7 @@
             android:enabled="true"/>
 
         <service
-            android:name=".service.NotificationActionService"
+            android:name=".notification.NotificationActionService"
             android:enabled="true"/>
 
         <service

@@ -32,6 +32,7 @@ import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
+import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.preferences.TimePickerPreference;
 
@@ -213,7 +214,7 @@ public class Prefs extends K9PreferenceActivity {
 
         mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
 
-        boolean canDeleteFromNotification = MessagingController.platformSupportsExtendedNotifications();
+        boolean canDeleteFromNotification = NotificationController.platformSupportsExtendedNotifications();
         CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 5 : 4];
         boolean[] confirmActionValues = new boolean[canDeleteFromNotification ? 5 : 4];
         int index = 0;
@@ -341,7 +342,7 @@ public class Prefs extends K9PreferenceActivity {
 
         mNotificationQuickDelete = setupListPreference(PREFERENCE_NOTIF_QUICK_DELETE,
                 K9.getNotificationQuickDeleteBehaviour().toString());
-        if (!MessagingController.platformSupportsExtendedNotifications()) {
+        if (!NotificationController.platformSupportsExtendedNotifications()) {
             PreferenceScreen prefs = (PreferenceScreen) findPreference("notification_preferences");
             prefs.removePreference(mNotificationQuickDelete);
             mNotificationQuickDelete = null;
@@ -349,7 +350,7 @@ public class Prefs extends K9PreferenceActivity {
 
         mLockScreenNotificationVisibility = setupListPreference(PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
             K9.getLockScreenNotificationVisibility().toString());
-        if (!MessagingController.platformSupportsLockScreenNotifications()) {
+        if (!NotificationController.platformSupportsLockScreenNotifications()) {
             ((PreferenceScreen) findPreference("notification_preferences"))
                 .removePreference(mLockScreenNotificationVisibility);
             mLockScreenNotificationVisibility = null;
@@ -461,7 +462,7 @@ public class Prefs extends K9PreferenceActivity {
         int index = 0;
         K9.setConfirmDelete(mConfirmActions.getCheckedItems()[index++]);
         K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[index++]);
-        if (MessagingController.platformSupportsExtendedNotifications()) {
+        if (NotificationController.platformSupportsExtendedNotifications()) {
             K9.setConfirmDeleteFromNotification(mConfirmActions.getCheckedItems()[index++]);
         }
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[index++]);
