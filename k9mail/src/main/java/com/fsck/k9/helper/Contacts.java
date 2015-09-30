@@ -1,12 +1,17 @@
 package com.fsck.k9.helper;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.content.Intent;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -263,7 +268,7 @@ public class Contacts {
      * @return The intent necessary to open a contact picker.
      */
     public Intent contactPickerIntent() {
-        return new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        return getOwnContactIntent();//return new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
     }
 
     /**
@@ -386,7 +391,7 @@ public class Contacts {
             mHasContactPicker = !(mContext.getPackageManager().
                                   queryIntentActivities(contactPickerIntent(), 0).isEmpty());
         }
-        return mHasContactPicker;
+        return true;//mHasContactPicker;
     }
 
     /**
@@ -406,6 +411,13 @@ public class Contacts {
                 null,
                 SORT_ORDER);
         return c;
+    }
+
+    private Intent getOwnContactIntent(){
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setComponent(new ComponentName("com.example.administrator.emailcontact","com.example.administrator.emailcontact.Activity.ContactList"));
+        return intent;
     }
 
 }
