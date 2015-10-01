@@ -710,7 +710,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="font_size_larger">Grande</string>
   <string name="miscellaneous_preferences">Diversos</string>
   <string name="error_activity_not_found">Nenhum aplicativo adequado para esta ação foi encontrado.</string>
-  <string name="btn_crypto_sign">Entrar</string>
+  <string name="btn_crypto_sign">Assinar</string>
   <string name="btn_encrypt">Encriptar</string>
   <string name="unknown_crypto_signature_user_id">&lt;desconhecido&gt;</string>
   <string name="pgp_mime_unsupported">mensagns PGP/MIME não são suportadas ainda.</string>
