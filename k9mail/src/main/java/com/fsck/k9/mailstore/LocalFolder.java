@@ -277,7 +277,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                     try {
                         cursor = db.rawQuery(
                                 "SELECT COUNT(id) FROM messages " +
-                                "WHERE (empty IS NULL OR empty != 1) AND deleted = 0 and folder_id = ?",
+                                "WHERE empty = 0 AND deleted = 0 and folder_id = ?",
                                 new String[] { Long.toString(mFolderId) });
                         cursor.moveToFirst();
                         return cursor.getInt(0);   //messagecount
@@ -303,7 +303,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                     int unreadMessageCount = 0;
                     Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                            "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0 AND read=0",
+                            "folder_id = ? AND empty = 0 AND deleted = 0 AND read=0",
                             new String[] { Long.toString(mFolderId) }, null, null, null);
 
                     try {
@@ -334,7 +334,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                     int flaggedMessageCount = 0;
                     Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                            "folder_id = ? AND (empty IS NULL OR empty != 1) AND deleted = 0 AND flagged = 1",
+                            "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged = 1",
                             new String[] { Long.toString(mFolderId) }, null, null, null);
 
                     try {
@@ -885,7 +885,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                 "SELECT " + LocalStore.GET_MESSAGES_COLS +
                                 "FROM messages " +
                                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                                "WHERE (empty IS NULL OR empty != 1) AND " +
+                                "WHERE empty = 0 AND " +
                                 (includeDeleted ? "" : "deleted = 0 AND ") +
                                 "folder_id = ? ORDER BY date DESC",
                                 new String[] { Long.toString(mFolderId) });
@@ -1630,7 +1630,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 "SELECT " + LocalStore.GET_MESSAGES_COLS +
                 "FROM messages " +
                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                "WHERE (empty IS NULL OR empty != 1) AND (folder_id = ? and date < ?)",
+                "WHERE empty = 0 AND (folder_id = ? and date < ?)",
                 new String[] { Long.toString(mFolderId), Long.toString(cutoff) });
 
         for (Message message : messages) {
@@ -1651,7 +1651,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
                         Cursor cursor = db.query("messages", new String[] { "message_part_id" },
-                                "folder_id = ? AND (empty IS NULL OR empty != 1)",
+                                "folder_id = ? AND empty = 0",
                                 folderIdArg, null, null, null);
                         try {
                             while (cursor.moveToNext()) {

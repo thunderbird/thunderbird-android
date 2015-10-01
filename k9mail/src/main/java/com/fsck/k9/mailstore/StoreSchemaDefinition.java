@@ -20,14 +20,8 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 
 class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
-    /**
-     * 
-     */
     private final LocalStore localStore;
 
-    /**
-     * @param localStore
-     */
     StoreSchemaDefinition(LocalStore localStore) {
         this.localStore = localStore;
     }
@@ -99,7 +93,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                         "preview TEXT, " +
                         "mime_type TEXT, "+
                         "normalized_subject_hash INTEGER, " +
-                        "empty INTEGER, " +
+                        "empty INTEGER default 0, " +
                         "read INTEGER default 0, " +
                         "flagged INTEGER default 0, " +
                         "answered INTEGER default 0, " +
@@ -316,7 +310,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                         editor.commit();
                         long endTime = System.currentTimeMillis();
-                        Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() + " folders back into Preferences took " + (endTime - startTime) + " ms");
+                        Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() +
+                                " folders back into Preferences took " + (endTime - startTime) + " ms");
                     } catch (Exception e) {
                         Log.e(K9.LOG_TAG, "Could not replace Preferences in upgrade from DB_VERSION 41", e);
                     }
@@ -577,6 +572,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 if (db.getVersion() < 52) {
                     addMoreMessagesColumnToFoldersTable(db);
                 }
+                if (db.getVersion() < 53) {
+                    removeNullValuesFromEmptyColumnInMessagesTable(db);
+                }
             }
 
             db.setVersion(LocalStore.DB_VERSION);
@@ -634,5 +632,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
     private void addMoreMessagesColumnToFoldersTable(SQLiteDatabase db) {
         db.execSQL("ALTER TABLE folders ADD more_messages TEXT default \"unknown\"");
+    }
+
+    private void removeNullValuesFromEmptyColumnInMessagesTable(SQLiteDatabase db) {
+        db.execSQL("UPDATE messages SET empty = 0 WHERE empty IS NULL");
     }
 }
