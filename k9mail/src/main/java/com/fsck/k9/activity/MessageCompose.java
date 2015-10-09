@@ -194,7 +194,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int CONTACT_PICKER_TO2 = 7;
     private static final int CONTACT_PICKER_CC2 = 8;
     private static final int CONTACT_PICKER_BCC2 = 9;
-
+    private static final int CONTACT_PICKER = 10;
     private static final int REQUEST_CODE_SIGN_ENCRYPT = 12;
 
     /**
@@ -1701,6 +1701,22 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             executeOpenPgpMethod(data);
 
             return;
+        }
+
+        if(resultCode == CONTACT_PICKER){
+            if(data != null){
+                String emails = data.getStringExtra("email");
+                Address[] adds = Address.parse(emails);
+                if (requestCode == CONTACT_PICKER_TO) {
+                    addAddresses(mToView, adds);
+                } else if (requestCode == CONTACT_PICKER_CC) {
+                    addAddresses(mCcView, adds);
+                } else if (requestCode == CONTACT_PICKER_BCC) {
+                    addAddresses(mBccView, adds);
+                } else {
+                    return;
+                }
+            }
         }
 
         if (resultCode != RESULT_OK) {
