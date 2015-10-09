@@ -303,14 +303,12 @@ public class EmailProvider extends ContentProvider {
 
                     String where;
                     if (TextUtils.isEmpty(selection)) {
-                        where = InternalMessageColumns.DELETED + "=0 AND (" +
-                                InternalMessageColumns.EMPTY + " IS NULL OR " +
-                                InternalMessageColumns.EMPTY + "!=1)";
+                        where = InternalMessageColumns.DELETED + " = 0 AND " +
+                                InternalMessageColumns.EMPTY + " = 0";
                     } else {
                         where = "(" + selection + ") AND " +
-                                InternalMessageColumns.DELETED + "=0 AND (" +
-                                InternalMessageColumns.EMPTY + " IS NULL OR " +
-                                InternalMessageColumns.EMPTY + "!=1)";
+                                InternalMessageColumns.DELETED + " = 0 AND " +
+                                InternalMessageColumns.EMPTY + " = 0";
                     }
 
                     final Cursor cursor;
@@ -466,10 +464,10 @@ public class EmailProvider extends ContentProvider {
                     ")");
         }
 
-        query.append(" WHERE " +
-                "(" + InternalMessageColumns.DELETED + " = 0 AND " +
-                "(" + InternalMessageColumns.EMPTY + " IS NULL OR " +
-                InternalMessageColumns.EMPTY + " != 1))");
+        query.append(" WHERE (" +
+                InternalMessageColumns.DELETED + " = 0 AND " +
+                InternalMessageColumns.EMPTY + " = 0" +
+                ")");
 
 
         if (!TextUtils.isEmpty(selection)) {
@@ -522,9 +520,8 @@ public class EmailProvider extends ContentProvider {
 
                     query.append("WHERE " +
                             ThreadColumns.ROOT + " = ? AND " +
-                            InternalMessageColumns.DELETED + " = 0 AND (" +
-                            InternalMessageColumns.EMPTY + " IS NULL OR " +
-                            InternalMessageColumns.EMPTY + " != 1)");
+                            InternalMessageColumns.DELETED + " = 0 AND " +
+                            InternalMessageColumns.EMPTY + " = 0");
 
                     query.append(" ORDER BY ");
                     query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
@@ -581,7 +578,7 @@ public class EmailProvider extends ContentProvider {
         }
 
         // WHERE clause
-        sql.append(" WHERE (deleted=0 AND (empty IS NULL OR empty!=1))");
+        sql.append(" WHERE (deleted = 0 AND empty = 0)");
         if (!TextUtils.isEmpty(selection)) {
             sql.append(" AND (");
             sql.append(selection);
