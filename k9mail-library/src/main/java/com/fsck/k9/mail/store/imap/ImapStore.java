@@ -550,19 +550,32 @@ public class ImapStore extends RemoteStore {
                 ImapList attributes = response.getList(1);
                 for (int i = 0, count = attributes.size(); i < count; i++) {
                     String attribute = attributes.getString(i);
-                    if (attribute.equals("\\Drafts")) {
+                    if (attribute.equals("\\Archive") || attribute.equals("\\AllMail")) {
+                        mStoreConfig.setArchiveFolderName(decodedFolderName);
+                        if (K9MailLib.isDebug()) {
+                            Log.d(LOG_TAG, "Folder auto-configuration detected Archive folder: " + decodedFolderName);
+                        }
+                    } else if (attribute.equals("\\Drafts")) {
                         mStoreConfig.setDraftsFolderName(decodedFolderName);
-                        if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration detected draft folder: " + decodedFolderName);
+                        if (K9MailLib.isDebug()) {
+                            Log.d(LOG_TAG, "Folder auto-configuration detected Drafts folder: " + decodedFolderName);
+                        }
                     } else if (attribute.equals("\\Sent")) {
                         mStoreConfig.setSentFolderName(decodedFolderName);
-                        if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration detected sent folder: " + decodedFolderName);
+                        if (K9MailLib.isDebug()) {
+                            Log.d(LOG_TAG, "Folder auto-configuration detected Sent folder: " + decodedFolderName);
+                        }
                     } else if (attribute.equals("\\Spam") || attribute.equals("\\Junk")) {
                         //rfc6154 just mentions \Junk
                         mStoreConfig.setSpamFolderName(decodedFolderName);
-                        if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration detected spam folder: " + decodedFolderName);
+                        if (K9MailLib.isDebug()) {
+                            Log.d(LOG_TAG, "Folder auto-configuration detected Spam folder: " + decodedFolderName);
+                        }
                     } else if (attribute.equals("\\Trash")) {
                         mStoreConfig.setTrashFolderName(decodedFolderName);
-                        if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration detected trash folder: " + decodedFolderName);
+                        if (K9MailLib.isDebug()) {
+                            Log.d(LOG_TAG, "Folder auto-configuration detected Trash folder: " + decodedFolderName);
+                        }
                     }
                 }
             }
