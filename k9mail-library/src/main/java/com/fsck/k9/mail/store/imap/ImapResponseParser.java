@@ -230,6 +230,8 @@ class ImapResponseParser {
         expect(' ');
         String name = parseString();
         response.add(name);
+        expect('\r');
+        expect('\n');
     }
 
     private void skipIfSpace() throws IOException {

@@ -353,6 +353,17 @@ public class ImapResponseParserTest {
     }
 
     @Test
+    public void readResponseShouldReadWholeListResponseLine() throws Exception {
+        ImapResponseParser parser = createParser("* LIST (\\HasNoChildren) \".\" [FolderName]\r\n" +
+                "TAG OK [List complete]\r\n");
+        parser.readResponse();
+
+        ImapResponse responseTwo = parser.readResponse();
+
+        assertEquals("TAG", responseTwo.getTag());
+    }
+
+    @Test
     public void testFetchResponse() throws Exception {
         ImapResponseParser parser = createParser("* 1 FETCH (" +
                 "UID 23 " +
