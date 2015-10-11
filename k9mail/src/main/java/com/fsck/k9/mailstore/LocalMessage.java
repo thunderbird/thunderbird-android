@@ -17,10 +17,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 
@@ -451,6 +448,12 @@ public class LocalMessage extends MimeMessage {
     private void loadHeaders() throws MessagingException {
         mHeadersLoaded = true;
         getFolder().populateHeaders(this);
+    }
+
+    void loadHeadersIfNecessary() throws MessagingException {
+        if (!mHeadersLoaded) {
+            loadHeaders();
+        }
     }
 
     @Override
