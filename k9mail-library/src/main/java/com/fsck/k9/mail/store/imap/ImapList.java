@@ -44,7 +44,7 @@ public class ImapList extends ArrayList<Object> {
         return getDate(getString(index));
     }
 
-    public Date getKeyedDate(Object key) throws MessagingException {
+    public Date getKeyedDate(String key) throws MessagingException {
         return getDate(getKeyedString(key));
     }
 
@@ -60,7 +60,7 @@ public class ImapList extends ArrayList<Object> {
     }
 
 
-    public Object getKeyedValue(Object key) {
+    public Object getKeyedValue(String key) {
         for (int i = 0, count = size() - 1; i < count; i++) {
             if (ImapResponseParser.equalsIgnoreCase(get(i), key)) {
                 return get(i + 1);
@@ -69,34 +69,34 @@ public class ImapList extends ArrayList<Object> {
         return null;
     }
 
-    public ImapList getKeyedList(Object key) {
+    public ImapList getKeyedList(String key) {
         return (ImapList)getKeyedValue(key);
     }
 
-    public String getKeyedString(Object key) {
+    public String getKeyedString(String key) {
         return (String)getKeyedValue(key);
     }
 
-    public int getKeyedNumber(Object key) {
+    public int getKeyedNumber(String key) {
         return Integer.parseInt(getKeyedString(key));
     }
 
-    public boolean containsKey(Object key) {
+    public boolean containsKey(String key) {
         if (key == null) {
             return false;
         }
 
         for (int i = 0, count = size() - 1; i < count; i++) {
-            if (ImapResponseParser.equalsIgnoreCase(key, get(i))) {
+            if (ImapResponseParser.equalsIgnoreCase(get(i), key)) {
                 return true;
             }
         }
         return false;
     }
 
-    public int getKeyIndex(Object key) {
+    public int getKeyIndex(String key) {
         for (int i = 0, count = size() - 1; i < count; i++) {
-            if (ImapResponseParser.equalsIgnoreCase(key, get(i))) {
+            if (ImapResponseParser.equalsIgnoreCase(get(i), key)) {
                 return i;
             }
         }
