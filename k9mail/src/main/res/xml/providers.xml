@@ -22,7 +22,7 @@
         When a user starts this process, the email address is parsed, the domain
         broken out and used to search this file for a provider. If one is found the
         provider's settings are used to attempt to connect to the account.
-        
+
         At this time, the id and label attributes are not used.  However, please include them
         if you make edits to this file.  id must also be completely unique.  label will be shown
         to the user when there are multiple options provided for a single domain (not currently
@@ -65,11 +65,11 @@
             $email - the email address the user entered
             $user - the value before the @ sign in the email address the user entered
             $domain - the value after the @ sign in the email address the user entered
-            
+
         The username attribute MUST be specified for the incoming element, so the POP3 or IMAP
         server can identify the mailbox to be opened.
-        
-        The username attribute MAY be the empty string for the outgoing element, but only if the 
+
+        The username attribute MAY be the empty string for the outgoing element, but only if the
         SMTP server supports anonymous transmission (most don't).
 
         While it would technically work please DO NOT add providers that don't support encrypted
@@ -77,6 +77,36 @@
     -->
 
 <providers>
+    <!--126mail variants-->
+        <provider id="126mail" label="126mail" domain="126.com">
+        <incoming uri="pop3+ssl+://pop.126.com" username="$email"/>
+        <outgoing uri="smtp+ssl+://smtp.126.com" username="$email"/>
+    </provider>
+    <!--sinamail variants-->
+    <provider id="sinamail" label="Sinamail" domain="sina.com">
+        <incoming uri="pop3+ssl+://pop.sina.com" username="$email"/>
+        <outgoing uri="smtp+ssl+://smtp.sina.com" username="$email"/>
+    </provider>
+    <!--139mail variants-->
+    <provider id="139mail" label="139mail" domain="139.com">
+        <incoming uri="pop3+ssl+://pop.139.com" username="$email"/>
+        <outgoing uri="smtp+ssl+://smtp.139.com" username="$email"/>
+    </provider>
+    <!--sohumail variants-->
+    <provider id="sohumail" label="sohumail" domain="sohu.com">
+        <incoming uri="pop3+ssl+://pop3.sohu.com" username="$email"/>
+        <outgoing uri="smtp+ssl+://smtp.sohu.com" username="$email"/>
+    </provider>
+    <!--163mail variants-->
+    <provider id="163mail"  label="163mail" domain="163.com">
+        <incoming uri="pop3+ssl+://pop.163.com" username="$email"/>
+        <outgoing uri="smtp+ssl+://smtp.163.com" username="$email"/>
+    </provider>
+    <!--QQmail variants-->
+    <provider id="qqmail" label="QQmail" domain="qq.com">
+        <incoming uri="pop3+ssl+://pop.qq.com" username="$email"/>
+        <outgoing uri="smtp+ssl+://smtp.qq.com" username="$email"/>
+    </provider>
 
     <!-- Gmail variants -->
     <provider id="gmail" label="Gmail" domain="gmail.com">
@@ -104,7 +134,7 @@
     <provider id="cox" label="Cox" domain="cox.net">
         <incoming uri="pop3+ssl+://pop.east.cox.net" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.east.cox.net" username="$user" />
-    </provider> 
+    </provider>
     <provider id="live" label="Windows Live Hotmail" domain="live.com">
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
@@ -147,7 +177,7 @@
         <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
     </provider>
-    
+
     <!-- Apple -->
     <provider id="apple" label="Apple" domain="apple.com">
         <incoming uri="imap+ssl+://imap.mail.apple.com" username="$user" />
@@ -181,7 +211,7 @@
         <incoming uri="pop3+ssl+://pop.mail.yahoo.co.uk" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.mail.yahoo.co.uk" username="$user" />
     </provider>
-    
+
     <!-- Germany -->
     <provider id="mailbox.org" label="mailbox.org" domain="mailbox.org">
         <incoming uri="imap+tls+://imap.mailbox.org" username="$email" />
@@ -202,7 +232,7 @@
     <provider id="posteo" label="Posteo" domain="posteo.net">
         <incoming uri="imap+tls+://posteo.de" username="$email" />
         <outgoing uri="smtp+tls+://posteo.de" username="$email" />
-    </provider>    
+    </provider>
     <provider id="posteo" label="Posteo" domain="posteo.de">
         <incoming uri="imap+tls+://posteo.de" username="$email" />
         <outgoing uri="smtp+tls+://posteo.de" username="$email" />
@@ -247,11 +277,11 @@
    <provider id="poste" label="poste" domain="poste.it">
         <incoming uri="imap+ssl+://relay.poste.it" username="$email" />
         <outgoing uri="smtp+ssl+://relay.poste.it" username="$email" />
-   </provider> 
+   </provider>
    <provider id="vodafone" label="vodafone" domain="vodafone.it">
         <incoming uri="imap+ssl+://imap.vodafone.it" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.vodafone.it" username="$email" />
-   </provider> 
+   </provider>
 
    <!-- Switzerland -->
     <!-- MyKolab.com variants -->
@@ -361,7 +391,7 @@
         <incoming uri="imap+ssl+://imap.hanmail.net"  username="$user" />
         <outgoing uri="smtp+ssl+://smtp.hanmail.net" username="$user" />
     </provider>
-    
+
    <!-- Russia -->
     <!-- Mail.Ru variants -->
     <provider id="rumailmailimap" label="mail.ru" domain="mail.ru">
