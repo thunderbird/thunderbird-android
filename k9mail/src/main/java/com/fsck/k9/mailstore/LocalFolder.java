@@ -652,6 +652,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                 LocalMessage localMessage = (LocalMessage) message;
 
                                 loadMessageParts(db, localMessage);
+                                localMessage.loadHeadersIfNecessary();
                             }
                         }
                     } catch (MessagingException e) {
