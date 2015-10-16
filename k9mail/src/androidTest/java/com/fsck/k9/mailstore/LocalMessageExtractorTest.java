@@ -1,13 +1,16 @@
 package com.fsck.k9.mailstore;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
@@ -208,5 +211,14 @@ public class LocalMessageExtractorTest {
 
         assertEquals(expectedText, container.text);
         assertEquals(expectedHtml, container.html);
+    }
+
+    @Test
+    public void testData(){
+        Calendar calendar1 = new GregorianCalendar(2015, 6, 30, 23, 59, 59) ;
+        Calendar calendar2 = new GregorianCalendar(2015, 6, 30, 23, 59, 60) ;
+        long c1 = calendar1.getTimeInMillis();
+        long c2 = calendar2.getTimeInMillis();
+        Log.e("VS:", ""+(c2-c1));
     }
 }

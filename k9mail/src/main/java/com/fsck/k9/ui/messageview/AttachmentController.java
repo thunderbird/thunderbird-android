@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
@@ -206,10 +207,10 @@ public class AttachmentController {
     private IntentAndResolvedActivitiesCount getBestViewIntentForMimeType(String mimeType) {
         Intent contentUriIntent = createViewIntentForAttachmentProviderUri(mimeType);
         int contentUriActivitiesCount = getResolvedIntentActivitiesCount(contentUriIntent);
-
-        if (contentUriActivitiesCount > 0) {
-            return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
-        }
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1)/* 4.2.2 & higher ,image attachemnt can`t open*/
+            if (contentUriActivitiesCount > 0) {
+                return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
+            }
 
         File tempFile = TemporaryAttachmentStore.getFile(context, attachment.displayName);
         Uri tempFileUri = Uri.fromFile(tempFile);

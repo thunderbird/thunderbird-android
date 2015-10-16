@@ -158,9 +158,9 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
     }
 
     private String getFileNameWithExtension(String fileName, String mimeType) {
-        if (fileName.indexOf('.') != -1) {
-            return fileName;
-        }
+//        if (fileName.indexOf('.') != -1) {
+//            return fileName;
+//        }
 
         // Use JPEG as fallback
         String extension = "jpeg";
@@ -188,6 +188,6 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
             out.close();
         }
 
-        return file.getName();
+        return file.toString();
     }
 }
