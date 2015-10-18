@@ -409,7 +409,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     public void displayMessageViewContainer(MessageViewContainer messageViewContainer,
             boolean automaticallyLoadPictures, ShowPicturesController showPicturesController,
             AttachmentViewCallback attachmentCallback, OpenPgpHeaderViewCallback openPgpHeaderViewCallback,
-            boolean displayPgpHeader) throws MessagingException {
+            boolean displayPgpHeader, boolean isShowAttachmentView) throws MessagingException {
 
         this.attachmentCallback = attachmentCallback;
 
@@ -418,7 +418,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         WebViewClient webViewClient = K9WebViewClient.newInstance(messageViewContainer.rootPart);
         mMessageContentView.setWebViewClient(webViewClient);
 
-        boolean hasAttachments = !messageViewContainer.attachments.isEmpty();
+        boolean hasAttachments = !messageViewContainer.attachments.isEmpty() && isShowAttachmentView;
         if (hasAttachments) {
             renderAttachments(messageViewContainer);
         }

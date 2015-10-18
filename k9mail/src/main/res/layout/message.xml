@@ -47,9 +47,13 @@
     </com.fsck.k9.view.NonLockingScrollView>
 
     <Button android:id="@+id/download_remainder"
-        android:text="@string/message_view_download_remainder"
+        android:text="@string/attachment_not_download"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_email_attachment_small"
         android:visibility="gone"
-        android:layout_width="fill_parent"/>
+        android:background="@drawable/attachment_view_button"
+        android:layout_width="fill_parent"
+        android:paddingLeft="10dp"
+        android:layout_margin="4dp"/>
 
 </com.fsck.k9.ui.messageview.MessageTopView>
