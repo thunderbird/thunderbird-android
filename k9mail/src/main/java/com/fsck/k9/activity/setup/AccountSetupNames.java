@@ -68,12 +68,13 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
          * just leave the saved value alone.
          */
         // mDescription.setText(mAccount.getDescription());
-        if (mAccount.getName() != null) {
-            mName.setText(mAccount.getName());
-        }
+//        if (mAccount.getName() != null) {
+//            mName.setText(mAccount.getName());
+//        }
         if (!Utility.requiredFieldValid(mName)) {
             mDoneButton.setEnabled(false);
         }
+        mDoneButton.performClick();
     }
 
     private void validateFields() {
