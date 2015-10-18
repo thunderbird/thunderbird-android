@@ -1162,4 +1162,5 @@ Please submit bug reports, contribute new features and ask questions at
     <!--==== add attachment dialog menu_items ====-->
     <string name="pick_photo">文件管理器</string>
     <string name="take_photo">拍照</string>
+    <string name="attachment_icon">attachment_icon</string>
 </resources>

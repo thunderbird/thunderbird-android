@@ -60,7 +60,8 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-
+        mDescription.setText(mAccount.getEmail());
+        mName.setText(mAccount.getEmail());
         /*
          * Since this field is considered optional, we don't set this here. If
          * the user fills in a value we'll reset the current value, otherwise we
