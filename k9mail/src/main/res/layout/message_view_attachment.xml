@@ -24,6 +24,7 @@
                 android:layout_marginLeft="4dip"
                 android:layout_marginRight="4dip"
                 android:layout_marginTop="4dip"
+                android:scaleType="centerInside"
                 android:src="@drawable/attached_image_placeholder"
                 android:contentDescription="@string/attachment_icon" />
 

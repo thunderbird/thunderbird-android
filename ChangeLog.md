@@ -221,9 +221,73 @@
 				#1		intent = viewInlineImage(url);
 						intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 					}
-5.	附件显示处理。
-	
-	
+5.	优化附件视图：缩小图片大小，使整体更和谐。
+	a)	修改附件视图xml文件：\layout\message_view_attachment.xml
+	b)	增加附件视图Button的Selector作为Background：\drawable\attachment_view_button.xml
+6.	下载完整附件处理：修改按钮视图，增加下载滚动效果；附件未全部下载的，全部隐藏,直到下载完整后才显示。
+	a)	修改按钮视图：\layout\message.xml
+		[1]	...
+			<Button android:id="@+id/download_remainder"
+				android:text="@string/attachment_not_download"
+				android:layout_height="wrap_content"
+				android:drawableLeft="@drawable/ic_email_attachment_small"
+				android:visibility="gone"
+				android:background="@drawable/attachment_view_button"
+				android:layout_width="fill_parent"
+				android:paddingLeft="10dp"
+				android:layout_margin="4dp"/>
+				...
+	b)	增加按钮滚动条效果:  增加Animation-list动画
+		[1]	MessageTopView.java
+			public void disableDownloadButton() {
+				mDownloadRemainder.setEnabled(false);
+			#1	mDownloadRemainder.setText(R.string.attachment_loading);
+			#2	AnimationDrawable frameAnimation = (AnimationDrawable) getResources().getDrawable(R.drawable.ic_notify_check_mail);
+			#3	mDownloadRemainder.setCompoundDrawablesWithIntrinsicBounds(frameAnimation, null, null, null);
+			#4	if(frameAnimation != null)
+			#5		frameAnimation.start();
+			}
+	c)	 隐藏未完整下载的附件
+		[1]	增加是否显示附件标志：MessageTopView.java
+			public void setMessage(Account account, MessageViewInfo messageViewInfo)
+					throws MessagingException {
+				resetView();
+
+				ShowPictures showPicturesSetting = account.getShowPictures();
+				boolean automaticallyLoadPictures =
+						shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
+			#1	boolean isShowAttachmentView = messageViewInfo.message.isSet(Flag.X_DOWNLOADED_FULL);/* 判断附件下载是否完整，if true,then true */
+				for (MessageViewContainer container : messageViewInfo.containers) {
+					MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container, null);
+					boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
+					view.displayMessageViewContainer(container, automaticallyLoadPictures, this, attachmentCallback,
+			#2				openPgpHeaderViewCallback, displayPgpHeader, isShowAttachmentView);
+
+					containerViews.addView(view);
+				}
+
+			}
+		[2]	隐藏附件
+			public void displayMessageViewContainer(MessageViewContainer messageViewContainer,
+					boolean automaticallyLoadPictures, ShowPicturesController showPicturesController,
+					AttachmentViewCallback attachmentCallback, OpenPgpHeaderViewCallback openPgpHeaderViewCallback,
+			#1		boolean displayPgpHeader, boolean isShowAttachmentView) throws MessagingException {
+
+				this.attachmentCallback = attachmentCallback;
+
+				resetView();
+
+				WebViewClient webViewClient = K9WebViewClient.newInstance(messageViewContainer.rootPart);
+				mMessageContentView.setWebViewClient(webViewClient);
+
+			#2	boolean hasAttachments = !messageViewContainer.attachments.isEmpty() && isShowAttachmentView;
+				if (hasAttachments) {
+					renderAttachments(messageViewContainer);
+				}
+
+				mHiddenAttachments.setVisibility(View.GONE);
+			...
+7.	>>>
 
 	位置：MessageViewFragment.onClick(){onDownloadRemainder();//Button：下载完整附件}
 	SingleMessageView onShowAttachments() 显示附件

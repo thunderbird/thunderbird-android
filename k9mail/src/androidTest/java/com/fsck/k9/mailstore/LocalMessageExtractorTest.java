@@ -7,6 +7,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
@@ -215,10 +217,23 @@ public class LocalMessageExtractorTest {
 
     @Test
     public void testData(){
-        Calendar calendar1 = new GregorianCalendar(2015, 6, 30, 23, 59, 59) ;
-        Calendar calendar2 = new GregorianCalendar(2015, 6, 30, 23, 59, 60) ;
-        long c1 = calendar1.getTimeInMillis();
-        long c2 = calendar2.getTimeInMillis();
-        Log.e("VS:", ""+(c2-c1));
+//        Calendar calendar1 = new GregorianCalendar(2015, 6, 30, 23, 59, 59) ;
+//        Calendar calendar2 = new GregorianCalendar(2015, 6, 30, 23, 59, 60) ;
+//        long c1 = calendar1.getTimeInMillis();
+//        long c2 = calendar2.getTimeInMillis();
+//        Log.e("VS:", ""+(c2-c1));
+        String str = "<img style=\"HEIGHT: 532px; WIDTH: 326px\" src=\"cid:3A10B1C5@FD3B9869.362D1656\" naturalw=\"1305\" naturalh=\"2130\" modifysize=\"25%\" diffpixels=\"-1px\" scalingmode=\"zoom\" /></font>\n" +
+                "   </div> \n" +
+                "   <div>\n" +
+                "    <img src=\"cid:D5C2B59A@FD3B9869.362D1656\" naturalw=\"425\" naturalh=\"358\" />\n" +
+                "   </div> ";
+        Pattern p = Pattern.compile("cid:[A-Z0-9]{8}@[A-Z0-9]{8}\\.[A-Z0-9]{8}");
+        Matcher m = p.matcher(str);
+       // Log.e("VS:", "" + m.matches());
+        while (m.find()){
+            String txt = m.group();
+            String txt1 = m.replaceAll("content://");
+            Log.e("VS:", txt1);
+        }
     }
 }

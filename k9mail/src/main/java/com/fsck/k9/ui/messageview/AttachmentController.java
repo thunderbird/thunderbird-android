@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -143,7 +145,7 @@ public class AttachmentController {
     }
 
     private File saveAttachmentWithUniqueFileName(File directory) throws IOException {
-        String filename = FileHelper.sanitizeFilename(attachment.displayName);
+        String filename = FileHelper.sanitizeFilename(attachment.displayName) + (isInlineResource(attachment)?".jpeg":"");
         File file = FileHelper.createUniqueFile(directory, filename);
 
         writeAttachmentToStorage(file);
@@ -167,7 +169,7 @@ public class AttachmentController {
     }
 
     private Intent getBestViewIntentAndSaveFileIfNecessary() {
-        String displayName = attachment.displayName;
+        String displayName = (isInlineResource(attachment)? attachment.displayName + ".jpeg" : attachment.displayName);
         String inferredMimeType = MimeUtility.getMimeTypeByExtension(displayName);
 
         IntentAndResolvedActivitiesCount resolvedIntentInfo;
@@ -207,7 +209,8 @@ public class AttachmentController {
     private IntentAndResolvedActivitiesCount getBestViewIntentForMimeType(String mimeType) {
         Intent contentUriIntent = createViewIntentForAttachmentProviderUri(mimeType);
         int contentUriActivitiesCount = getResolvedIntentActivitiesCount(contentUriIntent);
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1)/* 4.2.2 & higher ,image attachemnt can`t open*/
+        boolean isInline = isInlineResource(attachment);
+        if(!isInline && Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1)/* 4.2.2 & higher ,image attachemnt can`t open*/
             if (contentUriActivitiesCount > 0) {
                 return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
             }
@@ -367,4 +370,12 @@ public class AttachmentController {
             }
         }
     }
+
+    /* 通过attachment.displayName="3000FA10@98D76401.E35F2456"和mimeType="application/octet-stream"判断为内嵌图片 */
+    private boolean isInlineResource(AttachmentViewInfo attachmentViewInfo){
+        Pattern p = Pattern.compile("^[A-Z0-9]{8}@[A-Z0-9]{8}\\.[A-Z0-9]{8}$");
+        Matcher m = p.matcher(attachmentViewInfo.displayName);
+        return MimeUtility.isDefaultMimeType(attachmentViewInfo.mimeType) && m.matches();
+    }
+
 }

@@ -88,7 +88,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         ShowPictures showPicturesSetting = account.getShowPictures();
         boolean automaticallyLoadPictures =
                 shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
-        boolean isShowAttachmentView = messageViewInfo.message.isSet(Flag.X_DOWNLOADED_FULL);
+        boolean isShowAttachmentView = messageViewInfo.message.isSet(Flag.X_DOWNLOADED_FULL);/* 判断附件下载是否完整，if true,then true */
         for (MessageViewContainer container : messageViewInfo.containers) {
             MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container, null);
             boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
