@@ -166,6 +166,12 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     public void setShowDownloadButton(Message message) {
         if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
             mDownloadRemainder.setVisibility(View.GONE);
+            for(int i = 0; i < containerViews.getChildCount(); i++){
+                View view = containerViews.getChildAt(i);
+                if(view != null && view instanceof MessageContainerView){
+                    ((MessageContainerView)view).setLoadsImagesAutomatical();
+                }
+            }
         } else {
             mDownloadRemainder.setEnabled(true);
             mDownloadRemainder.setVisibility(View.VISIBLE);

@@ -747,4 +747,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
         return displayName;
     }
+
+    public void setLoadsImagesAutomatical() {
+        mMessageContentView.setLoadsImagesAutomatical();
+    }
 }
