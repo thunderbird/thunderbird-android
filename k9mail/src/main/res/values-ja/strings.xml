@@ -40,7 +40,7 @@ K-9で改良された機能:
 <p>
 K-9 は大多数のメールクライアントと同様に、ほとんどのフリーHotmailアカウントをサポートしていません。また、 Microsoft Exchange との通信において少し癖を持っていることに注意してください。
 </p><p>
-バグレポートや新機能の貢献、質問は http://k9mail.googlecode.com/ にお願いします。<br>
+バグレポートや新機能の貢献、質問は https://github.com/k9mail/k-9/ にお願いします。<br>
 日本語で質問などがある場合は <a href=\"http://groups.google.co.jp/group/k9mail_ja/\">http://groups.google.co.jp/group/k9mail_ja/</a> を参照してください。
 </p>
     ]]></string>
