@@ -317,6 +317,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_registered_name_color_changed">Colorize names in your contact list</string>
     <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>
     <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>
+    <string name="global_settings_folderlist_show_display_names_label">Show localized display names</string>
+    <string name="global_settings_folderlist_show_display_names_summary">Show localized display names for certain folders (Sent, Spam, Thrash etc)</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>

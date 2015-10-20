@@ -98,6 +98,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR = "messagelist_background_as_unread_indicator";
     private static final String PREFERENCE_THREADED_VIEW = "threaded_view";
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
+    private static final String PREFERENCE_FOLDERLIST_SHOW_DISPLAY_NAMES = "folderlist_show_display_names";
     private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
 
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
@@ -142,6 +143,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mHideUserAgent;
     private CheckBoxPreference mHideTimeZone;
     private CheckBoxPreference mWrapFolderNames;
+    private CheckBoxPreference mShowFolderDisplayNames;
     private CheckBoxListPreference mVisibleRefileActions;
 
     private CheckBoxPreference mQuietTimeEnabled;
@@ -401,6 +403,9 @@ public class Prefs extends K9PreferenceActivity {
         mWrapFolderNames = (CheckBoxPreference)findPreference(PREFERENCE_FOLDERLIST_WRAP_NAME);
         mWrapFolderNames.setChecked(K9.wrapFolderNames());
 
+        mShowFolderDisplayNames = (CheckBoxPreference)findPreference(PREFERENCE_FOLDERLIST_SHOW_DISPLAY_NAMES);
+        mShowFolderDisplayNames.setChecked(K9.showFolderDisplayNames());
+
         mVisibleRefileActions = (CheckBoxListPreference) findPreference(PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS);
         CharSequence[] visibleRefileActionsEntries = new CharSequence[5];
         visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_DELETE] = getString(R.string.delete_action);
@@ -499,6 +504,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
         K9.setQuietTimeEnds(mQuietTimeEnds.getTime());
         K9.setWrapFolderNames(mWrapFolderNames.isChecked());
+        K9.setFolderDisplayNames(mShowFolderDisplayNames.isChecked());
 
         if (mNotificationQuickDelete != null) {
             K9.setNotificationQuickDeleteBehaviour(
