@@ -76,7 +76,7 @@ public class MessageWebView extends RigidWebView {
         disableDisplayZoomControls();
 
         webSettings.setJavaScriptEnabled(false);
-        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setLoadsImagesAutomatically(false);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
 
         // TODO:  Review alternatives.  NARROW_COLUMNS is deprecated on KITKAT
@@ -144,6 +144,10 @@ public class MessageWebView extends RigidWebView {
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);
         }
+    }
+
+    public void setLoadsImagesAutomatical(){
+        getSettings().setLoadsImagesAutomatically(true);
     }
 
 }
