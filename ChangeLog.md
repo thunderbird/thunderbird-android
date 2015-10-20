@@ -221,6 +221,28 @@
 				#1		intent = viewInlineImage(url);
 						intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 					}
+4.1	内嵌图片，作为附件形式的打开和保存处理。
+	a)	正则表达式判断是否为内嵌图片：AttachmentController.java
+		[1]	 /* 通过attachment.displayName="3000FA10@98D76401.E35F2456"和mimeType="application/octet-stream"判断为内嵌图片 */
+			private boolean isInlineResource(String displayName, String mimeType){
+				Pattern p = Pattern.compile("^[A-Z0-9]{8}@[A-Z0-9]{8}\\.[A-Z0-9]{8}$");
+				Matcher m = p.matcher(displayName);
+				return MimeUtility.isDefaultMimeType(mimeType) && m.matches();
+			}
+		[2]	 private IntentAndResolvedActivitiesCount getBestViewIntentForMimeType(String mimeType) {
+				Intent contentUriIntent = createViewIntentForAttachmentProviderUri(mimeType);
+				int contentUriActivitiesCount = getResolvedIntentActivitiesCount(contentUriIntent);
+			#1	boolean isInline = isInlineResource(attachment.displayName, mimeType);
+			#2	if(!isInline && Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1)/* 4.2.2 & higher ,image attachemnt can`t open*/
+					if (contentUriActivitiesCount > 0) {
+						return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
+					}
+
+			#3	File tempFile = TemporaryAttachmentStore.getFile(context, isInline ? attachment.displayName + ".jpeg" : attachment.displayName);
+				...
+		
+		
+	
 5.	优化附件视图：缩小图片大小，使整体更和谐。
 	a)	修改附件视图xml文件：\layout\message_view_attachment.xml
 	b)	增加附件视图Button的Selector作为Background：\drawable\attachment_view_button.xml
