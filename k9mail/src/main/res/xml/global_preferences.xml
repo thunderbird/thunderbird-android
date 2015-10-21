@@ -123,6 +123,12 @@
                 android:title="@string/global_settings_folderlist_wrap_folder_names_label"
                 android:summary="@string/global_settings_folderlist_wrap_folder_names_summary" />
 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="folderlist_show_display_names"
+                android:title="@string/global_settings_folderlist_show_display_names_label"
+                android:summary="@string/global_settings_folderlist_show_display_names_summary" />
+
         </PreferenceCategory>
 
         <PreferenceCategory

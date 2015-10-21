@@ -243,6 +243,7 @@ public class K9 extends Application {
     private static String mQuietTimeEnds = null;
     private static String mAttachmentDefaultPath = "";
     private static boolean mWrapFolderNames = false;
+    private static boolean mShowFolderDisplayNames = true;
     private static boolean mHideUserAgent = false;
     private static boolean mHideTimeZone = false;
 
@@ -472,6 +473,7 @@ public class K9 extends Application {
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
         editor.putBoolean("messageViewShowNext", mMessageViewShowNext);
         editor.putBoolean("wrapFolderNames", mWrapFolderNames);
+        editor.putBoolean("showFolderDisplayNames", mShowFolderDisplayNames);
         editor.putBoolean("hideUserAgent", mHideUserAgent);
         editor.putBoolean("hideTimeZone", mHideTimeZone);
 
@@ -700,6 +702,7 @@ public class K9 extends Application {
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
         mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
         mWrapFolderNames = sprefs.getBoolean("wrapFolderNames", false);
+        mShowFolderDisplayNames = sprefs.getBoolean("showFolderDisplayNames", true);
         mHideUserAgent = sprefs.getBoolean("hideUserAgent", false);
         mHideTimeZone = sprefs.getBoolean("hideTimeZone", false);
 
@@ -1220,6 +1223,11 @@ public class K9 extends Application {
     }
     public static void setWrapFolderNames(final boolean state) {
         mWrapFolderNames = state;
+    }
+
+    public static boolean showFolderDisplayNames() { return mShowFolderDisplayNames; }
+    public static void setFolderDisplayNames(final boolean state) {
+        mShowFolderDisplayNames = state;
     }
 
     public static boolean hideUserAgent() {
