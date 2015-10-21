@@ -272,6 +272,9 @@ public class GlobalSettings {
         s.put("confirmDiscardMessage", Settings.versions(
                 new V(40, new BooleanSetting(true))
             ));
+        s.put("showFolderDisplayNames", Settings.versions(
+                new V(41, new BooleanSetting(true))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
