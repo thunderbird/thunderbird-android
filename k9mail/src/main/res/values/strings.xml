@@ -1165,4 +1165,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="attachment_icon">attachment_icon</string>
     <string name="attachment_not_download">下载附件</string>
     <string name="attachment_loading">正在下载…</string>
+    <string name="message_view_date_label">日期：</string>
 </resources>

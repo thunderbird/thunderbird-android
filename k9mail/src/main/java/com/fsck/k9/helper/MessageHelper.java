@@ -150,7 +150,7 @@ public class MessageHelper {
         for (int i = 0; i < addresses.length; i++) {
             sb.append(toFriendly(addresses[i], contacts));
             if (i < addresses.length - 1) {
-                sb.append(',');
+                sb.append('\n');
             }
         }
         return sb;
@@ -180,6 +180,6 @@ public class MessageHelper {
             }
         }
 
-        return (!TextUtils.isEmpty(address.getPersonal())) ? address.getPersonal() : address.getAddress();
+        return (!TextUtils.isEmpty(address.getPersonal())) ? address.getPersonal() + "\n" + address.getAddress(): address.getAddress();
     }
 }
