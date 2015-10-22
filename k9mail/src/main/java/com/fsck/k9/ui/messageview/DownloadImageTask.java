@@ -158,9 +158,9 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
     }
 
     private String getFileNameWithExtension(String fileName, String mimeType) {
-        if (fileName.indexOf('.') != -1) {
-            return fileName;
-        }
+//        if (fileName.indexOf('.') != -1) {
+//            return fileName;
+//        }
 
         // Use JPEG as fallback
         String extension = "jpeg";
@@ -178,8 +178,10 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
         String sanitized = FileHelper.sanitizeFilename(fileName);
 
         File directory = new File(K9.getAttachmentDefaultPath());
-        File file = FileHelper.createUniqueFile(directory, sanitized);
-
+        //避免再次创建文件 File file = FileHelper.createUniqueFile(directory, sanitized);
+        File file = new File(directory, sanitized);
+        if(file.exists())
+            return file.toString();
         FileOutputStream out = new FileOutputStream(file);
         try {
             IOUtils.copy(in, out);
@@ -188,6 +190,6 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
             out.close();
         }
 
-        return file.getName();
+        return file.toString();
     }
 }

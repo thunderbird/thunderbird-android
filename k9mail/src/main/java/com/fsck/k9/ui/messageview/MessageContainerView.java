@@ -1,15 +1,22 @@
 package com.fsck.k9.ui.messageview;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -28,20 +35,27 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.cache.TemporaryAttachmentStore;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
+import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.view.K9WebViewClient;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
+
+import org.apache.commons.io.IOUtils;
 
 
 public class MessageContainerView extends LinearLayout implements OnClickListener,
@@ -176,8 +190,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                             case MENU_ITEM_IMAGE_VIEW: {
                                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                                 if (!externalImage) {
-                                    // Grant read permission if this points to our
-                                    // AttachmentProvider
+                                    // Grant read permission if this points to our AttachmentProvider
+                                    intent = viewInlineImage(url);
                                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                                 }
                                 startActivityIfAvailable(getContext(), intent);
@@ -395,7 +409,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     public void displayMessageViewContainer(MessageViewContainer messageViewContainer,
             boolean automaticallyLoadPictures, ShowPicturesController showPicturesController,
             AttachmentViewCallback attachmentCallback, OpenPgpHeaderViewCallback openPgpHeaderViewCallback,
-            boolean displayPgpHeader) throws MessagingException {
+            boolean displayPgpHeader, boolean isShowAttachmentView) throws MessagingException {
 
         this.attachmentCallback = attachmentCallback;
 
@@ -404,7 +418,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         WebViewClient webViewClient = K9WebViewClient.newInstance(messageViewContainer.rootPart);
         mMessageContentView.setWebViewClient(webViewClient);
 
-        boolean hasAttachments = !messageViewContainer.attachments.isEmpty();
+        boolean hasAttachments = !messageViewContainer.attachments.isEmpty() && isShowAttachmentView;
         if (hasAttachments) {
             renderAttachments(messageViewContainer);
         }
@@ -629,5 +643,112 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             out.writeInt((this.hiddenAttachmentsVisible) ? 1 : 0);
             out.writeInt((this.showingPictures) ? 1 : 0);
         }
+    }
+
+    private Intent viewInlineImage(String url) {
+        File tempFile = null;
+        try {
+            tempFile = fetchAndStoreImage(url);
+        } catch (IOException e) {
+            Log.e(K9.LOG_TAG, "Error while downloading image", e);
+            e.printStackTrace();
+        }
+        Uri tempFileUri = Uri.fromFile(tempFile);
+        Intent fileUriIntent = createViewIntentForFileUri("image/jpeg", tempFileUri);
+        return fileUriIntent;
+    }
+
+    private Intent createViewIntentForFileUri(String mimeType, Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, mimeType);
+        addUiIntentFlags(intent);
+        return intent;
+    }
+
+    private void addUiIntentFlags(Intent intent) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+    }
+
+    private File fetchAndStoreImage(String urlString) throws IOException {
+        ContentResolver contentResolver = getContext().getContentResolver();
+        Uri uri = Uri.parse(urlString);
+
+        String fileName = getFileNameFromContentProvider(contentResolver, uri);
+        String mimeType = getMimeType(contentResolver, uri, fileName);
+
+        InputStream in = contentResolver.openInputStream(uri);
+        try {
+            String fileNameWithExtension = getFileNameWithExtension(fileName, mimeType);
+            return writeFileToStorage(fileNameWithExtension, in);
+        } finally {
+            in.close();
+        }
+    }
+
+    private File writeFileToStorage(String fileName, InputStream in) throws IOException {
+        String sanitized = FileHelper.sanitizeFilename(fileName);
+
+        File directory = new File(K9.getAttachmentDefaultPath());
+        File file = new File(directory, sanitized);
+        if(file.exists())
+            return file;
+        FileOutputStream out = new FileOutputStream(file);
+        try {
+            IOUtils.copy(in, out);
+            out.flush();
+        } finally {
+            out.close();
+        }
+
+        return file;
+    }
+
+    private String getFileNameWithExtension(String fileName, String mimeType) {
+//        if (fileName.indexOf('.') != -1) {
+//            return fileName;
+//        }
+
+        // Use JPEG as fallback
+        String extension = "jpeg";
+        if (mimeType != null) {
+            String extensionFromMimeType = MimeUtility.getExtensionByMimeType(mimeType);
+            if (extensionFromMimeType != null) {
+                extension = extensionFromMimeType;
+            }
+        }
+
+        return fileName + "." + extension;
+    }
+
+    private String getMimeType(ContentResolver contentResolver, Uri uri, String fileName) {
+        String mimeType = null;
+        if (fileName.indexOf('.') == -1) {
+            mimeType = contentResolver.getType(uri);
+        }
+
+        return mimeType;
+    }
+
+    private String getFileNameFromContentProvider(ContentResolver contentResolver, Uri uri) {
+        String displayName = "saved_image";
+        int DISPLAY_NAME_INDEX = 1;
+        String[] ATTACHMENT_PROJECTION = new String[] {AttachmentProvider.AttachmentProviderColumns._ID,
+                AttachmentProvider.AttachmentProviderColumns.DISPLAY_NAME};
+        Cursor cursor = contentResolver.query(uri, ATTACHMENT_PROJECTION, null, null, null);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToNext() && !cursor.isNull(DISPLAY_NAME_INDEX)) {
+                    displayName = cursor.getString(DISPLAY_NAME_INDEX);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
+        return displayName;
+    }
+
+    public void setLoadsImagesAutomatical() {
+        mMessageContentView.setLoadsImagesAutomatical();
     }
 }

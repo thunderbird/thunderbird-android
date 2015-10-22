@@ -3,10 +3,15 @@ package com.fsck.k9.activity;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -33,12 +38,15 @@ import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.content.Loader;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
@@ -127,7 +135,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 3;
     private static final int DIALOG_CHOOSE_IDENTITY = 4;
     private static final int DIALOG_CONFIRM_DISCARD = 5;
-
+    private static final int DIALOG_CHOOSE_ATTACHMENT_SOURCE = 6;
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
 
     private static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
@@ -178,7 +186,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int MSG_SAVED_DRAFT = 4;
     private static final int MSG_DISCARDED_DRAFT = 5;
     private static final int MSG_PERFORM_STALLED_ACTION = 6;
-
+    private static final int ACTIVITY_REQUEST_TAKE_ATTACHMENT = 2;
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
     private static final int CONTACT_PICKER_TO = 4;
     private static final int CONTACT_PICKER_CC = 5;
@@ -186,7 +194,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int CONTACT_PICKER_TO2 = 7;
     private static final int CONTACT_PICKER_CC2 = 8;
     private static final int CONTACT_PICKER_BCC2 = 9;
-
+    private static final int CONTACT_PICKER = 10;
     private static final int REQUEST_CODE_SIGN_ENCRYPT = 12;
 
     /**
@@ -1485,7 +1493,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
      */
     private void onAddAttachment() {
-        onAddAttachment2("*/*");
+        showDialog(DIALOG_CHOOSE_ATTACHMENT_SOURCE);// onAddAttachment2("*/*");
     }
 
     /**
@@ -1695,6 +1703,22 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
+        if(resultCode == CONTACT_PICKER){
+            if(data != null){
+                String emails = data.getStringExtra("email");
+                Address[] adds = Address.parse(emails);
+                if (requestCode == CONTACT_PICKER_TO) {
+                    addAddresses(mToView, adds);
+                } else if (requestCode == CONTACT_PICKER_CC) {
+                    addAddresses(mCcView, adds);
+                } else if (requestCode == CONTACT_PICKER_BCC) {
+                    addAddresses(mBccView, adds);
+                } else {
+                    return;
+                }
+            }
+        }
+
         if (resultCode != RESULT_OK) {
             return;
         }
@@ -1704,6 +1728,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         switch (requestCode) {
             case ACTIVITY_REQUEST_PICK_ATTACHMENT:
                 addAttachmentsFromResultIntent(data);
+                mDraftNeedsSaving = true;
+                break;
+            case ACTIVITY_REQUEST_TAKE_ATTACHMENT:
+                addAttachmentsFromCapture(data);
                 mDraftNeedsSaving = true;
                 break;
             case CONTACT_PICKER_TO:
@@ -1734,7 +1762,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     }
                 }
 
-
                 String email = contact.emailAddresses.get(0);
                 if (requestCode == CONTACT_PICKER_TO) {
                     addAddress(mToView, new Address(email, ""));
@@ -1745,9 +1772,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 } else {
                     return;
                 }
-
-
-
                 break;
             case CONTACT_PICKER_TO2:
             case CONTACT_PICKER_CC2:
@@ -2158,6 +2182,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                                 })
                         .create();
             }
+            case DIALOG_CHOOSE_ATTACHMENT_SOURCE:
+                return createAttachmentSourceChooseMenu();
         }
         return super.onCreateDialog(id);
     }
@@ -3552,4 +3578,68 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             startActivityForResult(mContacts.contactPickerIntent(), resultId);
         }
     }
+
+    private File getFile() {
+        File mFile = null;
+        try {
+            mFile = File.createTempFile("Img_", ".jpg", getCacheDir());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return mFile;
+    }
+
+    private FileOutputStream getOutputStream(File mFile) {
+        FileOutputStream mFileOutputStream = null;
+        if (mFile != null) {
+            try {
+                mFileOutputStream = new FileOutputStream(mFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return mFileOutputStream;
+    }
+
+    private void addAttachmentsFromCapture(Intent data) {
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        File mFile = getFile();
+        FileOutputStream mFileOutputStream = getOutputStream(mFile);
+        if(null == mFileOutputStream)
+            return;
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, mFileOutputStream);
+        bitmap.recycle();
+        try {
+            mFileOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Uri uri = Uri.fromFile(mFile);
+        if(uri != null)
+            addAttachment(uri);
+    }
+
+    private Dialog createAttachmentSourceChooseMenu(){
+        final CharSequence[] item = { getString(R.string.pick_photo), getString(R.string.take_photo) };
+        return new AlertDialog.Builder(this).setTitle(R.string.add_attachment_action).setItems(item, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+                switch (id) {
+                    case 0:
+                        onAddAttachment2("*/*");
+                        break;
+                    case 1:
+                        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_TAKE_ATTACHMENT);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }).setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).create();
+    }
+
 }

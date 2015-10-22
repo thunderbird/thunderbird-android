@@ -35,8 +35,9 @@
             <!-- Content area -->
             <com.fsck.k9.view.MessageWebView
                 android:id="@+id/message_content"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                android:layout_height="0dp"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"/>
 
             <!-- Attachments area -->
             <LinearLayout
@@ -50,7 +51,7 @@
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:padding="4dip" />
+                    android:padding="0dp" />
 
                 <Button
                     android:id="@+id/show_hidden_attachments"
@@ -63,7 +64,7 @@
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:padding="4dip" />
+                    android:padding="0dip" />
 
             </LinearLayout>
         </LinearLayout>

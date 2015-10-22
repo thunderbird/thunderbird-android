@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
         showPicturesButton = (Button) findViewById(R.id.show_pictures);
         setShowPicturesButtonListener();
-
+        hideShowPicturesButton();
         containerViews = (LinearLayout) findViewById(R.id.message_containers);
 
         hideHeaderView();
@@ -87,12 +88,12 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         ShowPictures showPicturesSetting = account.getShowPictures();
         boolean automaticallyLoadPictures =
                 shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
-
+        boolean isShowAttachmentView = messageViewInfo.message.isSet(Flag.X_DOWNLOADED_FULL);/* 判断附件下载是否完整，if true,then true */
         for (MessageViewContainer container : messageViewInfo.containers) {
             MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container, null);
             boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
             view.displayMessageViewContainer(container, automaticallyLoadPictures, this, attachmentCallback,
-                    openPgpHeaderViewCallback, displayPgpHeader);
+                    openPgpHeaderViewCallback, displayPgpHeader, isShowAttachmentView);
 
             containerViews.addView(view);
         }
@@ -149,15 +150,28 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
     public void enableDownloadButton() {
         mDownloadRemainder.setEnabled(true);
+        mDownloadRemainder.setText(R.string.attachment_not_download);
+        mDownloadRemainder.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_email_attachment_small), null, null, null);
     }
 
     public void disableDownloadButton() {
         mDownloadRemainder.setEnabled(false);
+        mDownloadRemainder.setText(R.string.attachment_loading);
+        AnimationDrawable frameAnimation = (AnimationDrawable) getResources().getDrawable(R.drawable.ic_notify_check_mail);
+        mDownloadRemainder.setCompoundDrawablesWithIntrinsicBounds(frameAnimation, null, null, null);
+        if(frameAnimation != null)
+            frameAnimation.start();
     }
 
     public void setShowDownloadButton(Message message) {
         if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
             mDownloadRemainder.setVisibility(View.GONE);
+            for(int i = 0; i < containerViews.getChildCount(); i++){
+                View view = containerViews.getChildAt(i);
+                if(view != null && view instanceof MessageContainerView){
+                    ((MessageContainerView)view).setLoadsImagesAutomatical();
+                }
+            }
         } else {
             mDownloadRemainder.setEnabled(true);
             mDownloadRemainder.setVisibility(View.VISIBLE);
@@ -165,7 +179,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     }
 
     private void showShowPicturesButton() {
-        showPicturesButton.setVisibility(View.VISIBLE);
+//        showPicturesButton.setVisibility(View.VISIBLE);
     }
 
     private void hideShowPicturesButton() {
