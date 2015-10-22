@@ -180,6 +180,6 @@ public class MessageHelper {
             }
         }
 
-        return (!TextUtils.isEmpty(address.getPersonal())) ? address.getPersonal() + "\n" + address.getAddress(): address.getAddress();
+        return (!TextUtils.isEmpty(address.getPersonal())) ? address.getPersonal() : address.getAddress();
     }
 }
