@@ -1,14 +1,15 @@
-
 package com.fsck.k9.service;
 
 import java.util.Date;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -22,6 +23,7 @@ public class BootReceiver extends CoreReceiver {
     public static final String ALARMED_INTENT = "com.fsck.k9.service.BroadcastReceiver.pendingIntent";
     public static final String AT_TIME = "com.fsck.k9.service.BroadcastReceiver.atTime";
 
+    @TargetApi(23)
     @Override
     public Integer receive(Context context, Intent intent, Integer tmpWakeLockId) {
         if (K9.DEBUG)
@@ -63,7 +65,16 @@ public class BootReceiver extends CoreReceiver {
             PendingIntent pi = buildPendingIntent(context, intent);
             AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
-            alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi);
+            if(Build.VERSION.SDK_INT < 23 || ! K9.isCheckMailDuringDoze()) {
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "BootReceiver Using Android <6.0 AlarmManager method");
+                alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi);
+
+            } else {
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "BootReceiver Using Android >=6.0 AlarmManager method to wake up during Doze");
+                alarmMgr.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, atTime, pi);
+            }
         } else if (CANCEL_INTENT.equals(action)) {
             Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
             if (K9.DEBUG)

@@ -716,6 +716,10 @@ public class MessageProvider extends ContentProvider {
         }
 
         @Override
+        public void setExtras(Bundle extras) {
+        }
+
+        @Override
         public boolean isAfterLast() {
             checkClosed();
             return mCursor.isAfterLast();

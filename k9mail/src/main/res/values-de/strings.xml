@@ -896,6 +896,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
   <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
   <string name="auth_external_error">Authentifizierung fehlgeschlagen. Der Server bietet nicht Simple Authentication and Security Layer, kurz SASL, an. Dies könnte durch ein Problem des Client Zertifikats (Zertifikat abgelaufen, unbekannte Zertifizierungsstelle) oder ein Konfigurationsproblem ausgelöst werden.</string>
+  <string name="check_mail_during_doze_label">Auf neue Mails während Doze prüfen</string>
+  <string name="check_mail_during_doze_summary">Auf neue Mails während Doze Modus prüfen (Android 6.0+), max. alle 15 Minuten</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decrypting_verifying">Entschlüssle/Verifiziere…</string>
   <string name="openpgp_successful_decryption">Erfolgreiche Entschlüsselung</string>
