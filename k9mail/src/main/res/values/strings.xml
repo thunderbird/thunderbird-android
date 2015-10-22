@@ -1110,7 +1110,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
 
     <string name="auth_external_error">Unable to authenticate.  The server does not advertise the SASL EXTERNAL capability.  This could be due to a problem with the client certificate (expired, unknown certificate authority) or some other configuration problem.</string>
-    
+
+    <string name="check_mail_during_doze_label">Check for new mails during Doze</string>
+    <string name="check_mail_during_doze_summary">Check for new mails during Doze mode (Android 6.0+), max. every 15 minutes</string>
+
     <!-- === OpenPGP specific ================================================================== -->
     <string name="openpgp_decrypting_verifying">Decrypting/Verifying…</string>
     <string name="openpgp_successful_decryption">Successful decryption</string>

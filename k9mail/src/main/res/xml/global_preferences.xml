@@ -357,6 +357,13 @@
             android:entryValues="@array/background_ops_values"
             android:dialogTitle="@string/background_ops_label" />
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="check_mail_during_doze"
+            android:title="@string/check_mail_during_doze_label"
+            android:defaultValue="false"
+            android:summary="@string/check_mail_during_doze_summary" />
+
     </PreferenceScreen>
 
     <PreferenceScreen
