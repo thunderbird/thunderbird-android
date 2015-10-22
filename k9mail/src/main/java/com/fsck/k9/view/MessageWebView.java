@@ -41,7 +41,7 @@ public class MessageWebView extends RigidWebView {
          * will network images that are already in the WebView cache.
          *
          */
-        getSettings().setBlockNetworkLoads(shouldBlockNetworkData);
+        getSettings().setBlockNetworkLoads(false);
     }
 
 
