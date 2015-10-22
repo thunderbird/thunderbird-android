@@ -53,7 +53,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
         showPicturesButton = (Button) findViewById(R.id.show_pictures);
         setShowPicturesButtonListener();
-
+        hideShowPicturesButton();
         containerViews = (LinearLayout) findViewById(R.id.message_containers);
 
         hideHeaderView();
@@ -179,7 +179,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     }
 
     private void showShowPicturesButton() {
-        showPicturesButton.setVisibility(View.VISIBLE);
+//        showPicturesButton.setVisibility(View.VISIBLE);
     }
 
     private void hideShowPicturesButton() {
