@@ -25,6 +25,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ProxySettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;

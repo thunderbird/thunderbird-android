@@ -26,6 +26,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mail.ProxySettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.filter.Base64;
@@ -1269,7 +1270,12 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public Store getRemoteStore() throws MessagingException {
-        return RemoteStore.getInstance(K9.app, this);
+        return RemoteStore.getInstance(K9.app,
+                                       this,
+                                       new ProxySettings(
+                                            K9.isSocksProxyEnabled(),
+                                            K9.getSocksProxyHost(),
+                                            K9.getSocksProxyPort()));
     }
 
     // It'd be great if this actually went into the store implementation
