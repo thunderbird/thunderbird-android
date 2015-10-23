@@ -272,6 +272,15 @@ public class GlobalSettings {
         s.put("confirmDiscardMessage", Settings.versions(
                 new V(40, new BooleanSetting(true))
             ));
+        s.put("useSocksProxy", Settings.versions(
+                new V(41, new BooleanSetting(true))
+        ));
+        s.put("socksProxyHost", Settings.versions(
+                new V(41, new StringSetting("127.0.0.1"))
+        ));
+        s.put("socksProxyPort", Settings.versions(
+                new V(41, new IntegerRangeSetting(0, 65535, 12345))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

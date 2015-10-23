@@ -260,6 +260,9 @@ public class K9 extends Application {
     private static boolean sMessageViewCopyActionVisible = false;
     private static boolean sMessageViewSpamActionVisible = false;
 
+    private static boolean sUseSocksProxy = false;
+    private static String sSocksProxyHost = "";
+    private static int sSocksProxyPort = 0;
 
     /**
      * @see #areDatabasesUpToDate()
@@ -506,6 +509,10 @@ public class K9 extends Application {
         editor.putBoolean("messageViewCopyActionVisible", sMessageViewCopyActionVisible);
         editor.putBoolean("messageViewSpamActionVisible", sMessageViewSpamActionVisible);
 
+        editor.putBoolean("useSocksProxy", sUseSocksProxy);
+        editor.putString("socksProxyHost", sSocksProxyHost);
+        editor.putInt("useSocksPort", sSocksProxyPort);
+
         fontSizes.save(editor);
     }
 
@@ -744,7 +751,7 @@ public class K9 extends Application {
             sSplitViewMode = SplitViewMode.valueOf(splitViewMode);
         }
 
-        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
+        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath", Environment.getExternalStorageDirectory().toString());
         sUseBackgroundAsUnreadIndicator = sprefs.getBoolean("useBackgroundAsUnreadIndicator", true);
         sThreadedViewEnabled = sprefs.getBoolean("threadedView", true);
         fontSizes.load(sprefs);
@@ -764,6 +771,10 @@ public class K9 extends Application {
         sMessageViewMoveActionVisible = sprefs.getBoolean("messageViewMoveActionVisible", false);
         sMessageViewCopyActionVisible = sprefs.getBoolean("messageViewCopyActionVisible", false);
         sMessageViewSpamActionVisible = sprefs.getBoolean("messageViewSpamActionVisible", false);
+
+        sUseSocksProxy = sprefs.getBoolean("useSocksProxy", false);
+        sSocksProxyHost = sprefs.getString("socksProxyHost", "127.0.0.1");
+        sSocksProxyPort = sprefs.getInt("socksProxyPort", 12345);
 
 
         K9.setK9Language(sprefs.getString("language", ""));
@@ -1341,6 +1352,24 @@ public class K9 extends Application {
 
     public static void setMessageViewSpamActionVisible(boolean visible) {
         sMessageViewSpamActionVisible = visible;
+    }
+
+    public static boolean isSocksProxyEnabled() { return sUseSocksProxy; }
+
+    public static void setUseSocksProxy(boolean useSocksProxy) {
+        sUseSocksProxy = useSocksProxy;
+    }
+
+    public static String getSocksProxyHost() { return sSocksProxyHost; }
+
+    public static void setSocksProxyHost(String socksProxyHost) {
+        sSocksProxyHost = socksProxyHost;
+    }
+
+    public static int getSocksProxyPort() { return sSocksProxyPort; }
+
+    public static void setSocksProxyPort(int socksProxyPort) {
+        sSocksProxyPort = socksProxyPort;
     }
 
     /**

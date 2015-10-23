@@ -19,10 +19,12 @@ public abstract class Transport {
     // RFC 1047
     protected static final int SOCKET_READ_TIMEOUT = 300000;
 
-    public synchronized static Transport getInstance(Context context, StoreConfig storeConfig) throws MessagingException {
+    public synchronized static Transport getInstance(Context context,
+                                                     StoreConfig storeConfig,
+                                                     ProxySettings proxy) throws MessagingException {
         String uri = storeConfig.getTransportUri();
         if (uri.startsWith("smtp")) {
-            return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context));
+            return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context, proxy));
         } else if (uri.startsWith("webdav")) {
             return new WebDavTransport(storeConfig);
         } else {
