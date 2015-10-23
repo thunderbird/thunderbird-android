@@ -1193,6 +1193,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         mFragmentListener.onReplyAll(message);
     }
 
+    public void onCallSIP(LocalMessage message) {
+        mFragmentListener.onCallSIP(message);
+    }
+
+    public void onCallXMPP(LocalMessage message) {
+        mFragmentListener.onCallXMPP(message);
+    }
+
     public void onForward(LocalMessage message) {
         mFragmentListener.onForward(message);
     }
@@ -1510,6 +1518,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
             case R.id.reply_all: {
                 onReplyAll(getMessageAtPosition(adapterPosition));
+                break;
+            }
+            case R.id.call_sip: {
+                onCallSIP(getMessageAtPosition(adapterPosition));
+                break;
+            }
+            case R.id.call_xmpp: {
+                onCallXMPP(getMessageAtPosition(adapterPosition));
                 break;
             }
             case R.id.forward: {
@@ -3104,6 +3120,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void onForward(LocalMessage message);
         void onReply(LocalMessage message);
         void onReplyAll(LocalMessage message);
+        void onCallSIP(LocalMessage message);
+        void onCallXMPP(LocalMessage message);
         void openMessage(MessageReference messageReference);
         void setMessageListTitle(String title);
         void setMessageListSubTitle(String subTitle);

@@ -122,6 +122,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="deselect_action">Deselect</string>
     <string name="reply_action">Reply</string>
     <string name="reply_all_action">Reply all</string>
+    <string name="call_sip_action">Call (SIP)</string>
+    <string name="call_xmpp_action">Call (XMPP)</string>
     <string name="delete_action">Delete</string>
     <string name="archive_action">Archive</string>
     <string name="spam_action">Spam</string>
@@ -1159,4 +1161,9 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
 
+    <!-- === Invoking other apps specific ================================================================== -->
+    <string name="no_sender_to_call">No sender/from address found to call.</string>
+    <string name="no_sip_app">No app for SIP.  Please try installing Lumicall.</string>
+    <string name="no_xmpp_app">No app for XMPP.  Please try installing Conversations.</string>
+    <string name="no_app_for_scheme">No app installed for scheme \'%1%s\'.</string>
 </resources>

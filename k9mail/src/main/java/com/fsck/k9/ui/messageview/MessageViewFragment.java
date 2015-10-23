@@ -358,6 +358,18 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
+    public void onCallSIP() {
+        if (mMessage != null) {
+            mFragmentListener.onCallSIP(mMessage, mPgpData);
+        }
+    }
+
+    public void onCallXMPP() {
+        if (mMessage != null) {
+            mFragmentListener.onCallXMPP(mMessage, mPgpData);
+        }
+    }
+
     public void onForward() {
         if (mMessage != null) {
             mFragmentListener.onForward(mMessage, mPgpData);
@@ -703,6 +715,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         public void disableDeleteAction();
         public void onReplyAll(LocalMessage mMessage, PgpData mPgpData);
         public void onReply(LocalMessage mMessage, PgpData mPgpData);
+        public void onCallSIP(LocalMessage mMessage, PgpData mPgpData);
+        public void onCallXMPP(LocalMessage mMessage, PgpData mPgpData);
         public void displayMessageSubject(String title);
         public void setProgress(boolean b);
         public void showNextMessageOrReturn();

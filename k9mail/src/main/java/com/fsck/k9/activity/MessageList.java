@@ -5,10 +5,12 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +44,7 @@ import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.search.LocalSearch;
@@ -853,6 +856,14 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 mMessageViewFragment.onReplyAll();
                 return true;
             }
+            case R.id.call_sip: {
+                mMessageViewFragment.onCallSIP();
+                return true;
+            }
+            case R.id.call_xmpp: {
+                mMessageViewFragment.onCallXMPP();
+                return true;
+            }
             case R.id.forward: {
                 mMessageViewFragment.onForward();
                 return true;
@@ -1211,6 +1222,47 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         MessageCompose.actionReply(this, message, true, null);
     }
 
+    protected void doCallURI(String scheme, LocalMessage message) {
+        Address[] senders = message.getFrom();
+        if(senders.length < 1) {
+            Log.w(K9.LOG_TAG, "senders.length < 1");
+            Toast toast = Toast.makeText(this, R.string.no_sender_to_call, Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+        // TODO - chooser for multiple From and Reply-To addresses
+        String callee = senders[0].getAddress();
+        Log.i(K9.LOG_TAG, "calling: " + callee);
+        Intent intent = new Intent(Intent.ACTION_CALL,
+            Uri.fromParts(scheme, callee, ""));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            Toast toast;
+            if(scheme.equalsIgnoreCase("sip")) {
+                toast = Toast.makeText(this, R.string.no_sip_app, Toast.LENGTH_LONG);
+            } else if(scheme.equalsIgnoreCase("xmpp")) {
+                toast = Toast.makeText(this, R.string.no_xmpp_app, Toast.LENGTH_LONG);
+            } else {
+                Resources res = getResources();
+                CharSequence text = res.getString(R.string.no_app_for_scheme, scheme);
+                toast = Toast.makeText(this, text, Toast.LENGTH_LONG);
+            }
+            toast.show();
+        }
+    }
+
+    @Override
+    public void onCallSIP(LocalMessage message) {
+        doCallURI("sip", message);
+    }
+
+    @Override
+    public void onCallXMPP(LocalMessage message) {
+        doCallURI("xmpp", message);
+    }
+
     @Override
     public void onCompose(Account account) {
         MessageCompose.actionCompose(this, account);
@@ -1405,6 +1457,16 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onReplyAll(LocalMessage message, PgpData pgpData) {
         MessageCompose.actionReply(this, message, true, pgpData.getDecryptedData());
+    }
+
+    @Override
+    public void onCallSIP(LocalMessage message, PgpData pgpData) {
+        doCallURI("sip", message);
+    }
+
+    @Override
+    public void onCallXMPP(LocalMessage message, PgpData pgpData) {
+        doCallURI("xmpp", message);
     }
 
     @Override
