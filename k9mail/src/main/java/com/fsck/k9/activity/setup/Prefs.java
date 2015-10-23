@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -99,6 +100,10 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
     private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
 
+    private static final String PREFERENCE_SOCKS_PROXY = "socks_proxy";
+    private static final String PREFERENCE_SOCKS_PROXY_HOST = "socks_proxy_host";
+    private static final String PREFERENCE_SOCKS_PROXY_PORT = "socks_proxy_port";
+
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
     // Named indices for the mVisibleRefileActions field
@@ -155,6 +160,9 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mThreadedView;
     private ListPreference mSplitViewMode;
 
+    private CheckBoxPreference mUseSocksProxy;
+    private EditTextPreference mSocksProxyHost;
+    private EditTextPreference mSocksProxyPort;
 
     public static void actionPrefs(Context context) {
         Intent i = new Intent(context, Prefs.class);
@@ -421,6 +429,15 @@ public class Prefs extends K9PreferenceActivity {
         mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
+
+        mUseSocksProxy = (CheckBoxPreference)findPreference(PREFERENCE_SOCKS_PROXY);
+        mUseSocksProxy.setChecked(K9.isSocksProxyEnabled());
+
+        mSocksProxyHost = (EditTextPreference)findPreference(PREFERENCE_SOCKS_PROXY_HOST);
+        mSocksProxyHost.setText(K9.getSocksProxyHost());
+
+        mSocksProxyPort = (EditTextPreference)findPreference(PREFERENCE_SOCKS_PROXY_PORT);
+        mSocksProxyPort.setText(K9.getSocksProxyPort()+"");
     }
 
     private static String themeIdToName(K9.Theme theme) {
@@ -520,6 +537,10 @@ public class Prefs extends K9PreferenceActivity {
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         K9.setHideUserAgent(mHideUserAgent.isChecked());
         K9.setHideTimeZone(mHideTimeZone.isChecked());
+
+        K9.setUseSocksProxy(mUseSocksProxy.isChecked());
+        K9.setSocksProxyHost(mSocksProxyHost.getText());
+        K9.setSocksProxyPort(Integer.parseInt(mSocksProxyPort.getText()));
 
         StorageEditor editor = storage.edit();
         K9.save(editor);
