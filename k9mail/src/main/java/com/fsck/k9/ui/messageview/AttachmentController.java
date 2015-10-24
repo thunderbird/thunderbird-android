@@ -28,6 +28,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.MediaScannerNotifier;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -142,9 +143,9 @@ public class AttachmentController {
     }
 
     private File saveAttachmentWithUniqueFileName(File directory) throws IOException {
-        String filename = FileHelper.sanitizeFilename(attachment.displayName);
+        boolean isInlineImage = Utility.isInlineImage(attachment);
+        String filename = FileHelper.sanitizeFilename(isInlineImage ? attachment.displayName + ".jpeg" : attachment.displayName);
         File file = FileHelper.createUniqueFile(directory, filename);
-
         writeAttachmentToStorage(file);
 
         return file;
@@ -168,9 +169,9 @@ public class AttachmentController {
     private Intent getBestViewIntentAndSaveFileIfNecessary() {
         String displayName = attachment.displayName;
         String inferredMimeType = MimeUtility.getMimeTypeByExtension(displayName);
-
+        boolean isInlineImage = Utility.isInlineImage(attachment);
         IntentAndResolvedActivitiesCount resolvedIntentInfo;
-        String mimeType = attachment.mimeType;
+        String mimeType = isInlineImage? "image/jpeg" : attachment.mimeType;
         if (MimeUtility.isDefaultMimeType(mimeType)) {
             resolvedIntentInfo = getBestViewIntentForMimeType(inferredMimeType);
         } else {
@@ -206,12 +207,12 @@ public class AttachmentController {
     private IntentAndResolvedActivitiesCount getBestViewIntentForMimeType(String mimeType) {
         Intent contentUriIntent = createViewIntentForAttachmentProviderUri(mimeType);
         int contentUriActivitiesCount = getResolvedIntentActivitiesCount(contentUriIntent);
-
-        if (contentUriActivitiesCount > 0) {
+        boolean isInlineImage = Utility.isInlineImage(attachment);
+        if (!isInlineImage && contentUriActivitiesCount > 0) {
             return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
         }
 
-        File tempFile = TemporaryAttachmentStore.getFile(context, attachment.displayName);
+        File tempFile = TemporaryAttachmentStore.getFile(context, isInlineImage ? attachment.displayName + ".jpeg" : attachment.displayName);
         Uri tempFileUri = Uri.fromFile(tempFile);
         Intent fileUriIntent = createViewIntentForFileUri(mimeType, tempFileUri);
         int fileUriActivitiesCount = getResolvedIntentActivitiesCount(fileUriIntent);

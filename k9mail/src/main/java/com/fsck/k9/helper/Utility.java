@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mailstore.AttachmentViewInfo;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -486,6 +488,18 @@ public class Utility {
             sMainThreadHandler = new Handler(Looper.getMainLooper());
         }
         return sMainThreadHandler;
+    }
+
+    /**
+     * return turn, if the image is inline image.
+     * @param displayName eg:"3000FA10@98D76401.E35F2456"
+     * @param mimeType eg:"application/octet-stream"
+     * @return
+     */
+    public static boolean isInlineImage(AttachmentViewInfo attachmentInfo){
+        Pattern p = Pattern.compile("^[A-Z0-9]{8}@[A-Z0-9]{8}\\.[A-Z0-9]{8}$");
+        Matcher m = p.matcher(attachmentInfo.displayName);
+        return MimeUtility.isDefaultMimeType(attachmentInfo.mimeType) && m.matches();
     }
 
 }
