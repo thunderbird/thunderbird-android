@@ -102,6 +102,7 @@ import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.IdentityHeaderParser;
@@ -109,6 +110,7 @@ import com.fsck.k9.message.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
 import org.htmlcleaner.CleanerProperties;
@@ -2191,19 +2193,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
         String name = MimeUtility.getHeaderParameter(contentType, "name");
         if (name != null) {
-            Body body = part.getBody();
-            //FIXME
-//            if (body instanceof LocalAttachmentBody) {
-//                final Uri uri = ((LocalAttachmentBody) body).getContentUri();
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        addAttachment(uri);
-//                    }
-//                });
-//            } else {
-//                return false;
-//            }
+            if (part instanceof LocalBodyPart) {
+                LocalBodyPart localBodyPart = (LocalBodyPart) part;
+                String mAccountUuid = localBodyPart.getAccountUuid();
+                long mContentId = localBodyPart.getId();
+                Uri uri = AttachmentProvider.getAttachmentUri(mAccountUuid, mContentId);
+                addAttachment(uri);
+                return true;
+            }
             return false;
         }
         return true;
@@ -2364,7 +2361,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         populateUIWithQuotedMessage(true);
 
         if (!mSourceMessageProcessed) {
-            if (!loadAttachments(message, 0)) {
+            if (message.isSet(Flag.X_DOWNLOADED_PARTIAL) || !loadAttachments(message, 0)) {
                 mHandler.sendEmptyMessage(MSG_SKIPPED_ATTACHMENTS);
             }
         }
