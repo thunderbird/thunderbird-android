@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class MimeHeader {
+public class MimeHeader implements Cloneable {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
@@ -19,6 +19,8 @@ public class MimeHeader {
 
     private List<Field> mFields = new ArrayList<Field>();
     private String mCharset = null;
+
+    private ContentType contentType;
 
     public void clear() {
         mFields.clear();
@@ -35,11 +37,17 @@ public class MimeHeader {
     public void addHeader(String name, String value) {
         Field field = Field.newNameValueField(name, MimeUtility.foldAndEncode(value));
         mFields.add(field);
+        if (name.equalsIgnoreCase(HEADER_CONTENT_TYPE)){
+            contentType = null;
+        }
     }
 
     void addRawHeader(String name, String raw) {
         Field field = Field.newRawField(name, raw);
         mFields.add(field);
+        if (name.equalsIgnoreCase(HEADER_CONTENT_TYPE)){
+            contentType = null;
+        }
     }
 
     public void setHeader(String name, String value) {
@@ -48,6 +56,9 @@ public class MimeHeader {
         }
         removeHeader(name);
         addHeader(name, value);
+        if (name.equalsIgnoreCase(HEADER_CONTENT_TYPE)){
+            contentType = null;
+        }
     }
 
     public Set<String> getHeaderNames() {
@@ -76,6 +87,9 @@ public class MimeHeader {
             }
         }
         mFields.removeAll(removeFields);
+        if (name.equalsIgnoreCase(HEADER_CONTENT_TYPE)){
+            contentType = null;
+        }
     }
 
     public void writeTo(OutputStream out) throws IOException {
@@ -119,6 +133,17 @@ public class MimeHeader {
         }
 
         return false;
+    }
+
+    public String getContentTypeParameter(String attribute) {
+        parseContentType();
+        return contentType.getParameter(attribute);
+    }
+
+    public void addContentTypeParameter(String attribute, String value) {
+        parseContentType();
+        contentType.addContentTypeParameter(attribute, value);
+        setHeader(HEADER_CONTENT_TYPE, contentType.toString());
     }
 
     private static class Field {
@@ -193,11 +218,118 @@ public class MimeHeader {
 
     @Override
     public MimeHeader clone() {
-        MimeHeader header = new MimeHeader();
-        header.mCharset = mCharset;
+        try {
+            MimeHeader header = (MimeHeader)super.clone();
+            header.mFields = new ArrayList<Field>(mFields);
+            return header;
+        } catch(CloneNotSupportedException e){
+            throw new RuntimeException(e);
+        }
+    }
 
-        header.mFields = new ArrayList<Field>(mFields);
+    private ContentType parseContentType(){
+        if (contentType == null){
+            contentType = new ContentType(getFirstHeader(HEADER_CONTENT_TYPE));
+        }
+        return contentType;
+    }
 
-        return header;
+    public String getType() {
+        return parseContentType().getType();
+    }
+
+    public String getSubtype() {
+        return parseContentType().getSubtype();
+    }
+
+    public String getTypeAndSubtype(){
+        return getType() + "/" + getSubtype();
+    }
+}
+
+class ContentType {
+    private String type;
+    private String subtype;
+    private LinkedHashMap<String, String> contentTypeParameters = new LinkedHashMap<String, String>();
+
+    public ContentType(String value) {
+        if (value == null){
+            type = null;
+            subtype = null;
+        } else {
+            value = value.replaceAll("\r|\n", "");
+            String[] params = value.split(";");
+            try {
+                contentTypeParameters.clear();
+                String[] type = params[0].trim().split("/");
+                this.type = type[0];
+                subtype = type[1];
+                for (int i = 1; i < params.length; i++) {
+                    String[] attributeValue = params[i].split("=");
+                    addContentTypeParameter(attributeValue[0].trim(), attributeValue[1].trim());
+                }
+            } catch (IndexOutOfBoundsException e) {
+                throw new IllegalArgumentException("content type format : 'type/subtype:att1=value1;att2=\"value2\"'");
+            }
+        }
+    }
+
+    public void addContentTypeParameter(String attribute, String value) {
+        if (type == null) {
+            type = "text";
+            subtype = "plain";
+            contentTypeParameters.put("charset", "us-ascii");
+        }
+        contentTypeParameters.put(attribute, value);
+    }
+
+    public String toString() {
+        if (type == null){
+            return null;
+        } else {
+            StringBuilder out = new StringBuilder();
+            out.append(type);
+            out.append("/");
+            out.append(subtype);
+
+            int lineLength = type.length() + subtype.length() + MimeHeader.HEADER_CONTENT_TYPE.length() + 2;
+            for (Map.Entry<String, String> parameterPair : contentTypeParameters.entrySet()) {
+                String parameter = parameterPair.getKey() + "=" + parameterPair.getValue();
+                /* some MTA truncate Content-Type at 128 for security purpose */
+                if (lineLength + parameter.length() + 2 > 128) {
+                    out.append("\r\n  ");
+                    lineLength = 2;
+                }
+                out.append("; ");
+                out.append(parameter);
+                lineLength += parameter.length() + 2;
+            }
+            return out.toString();
+        }
+    }
+
+    public String getParameter(String attribute) {
+        String result;
+        if (type == null) {
+            if ("charset".equalsIgnoreCase(attribute)){
+                result = "us-ascii";
+            } else {
+                result = null;
+            }
+        } else {
+            result = contentTypeParameters.get(attribute);
+        }
+        if (result != null && result.startsWith("\"") && result.endsWith("\"")){
+            result = result.substring(1, result.length()-1);
+        }
+        return result;
+    }
+
+    public String getType(){
+        return type;
+    }
+
+    public String getSubtype(){
+        return subtype;
     }
 }

@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Collection;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -18,7 +19,7 @@ import org.apache.james.mime4j.util.MimeUtil;
  * Message.
  */
 public class MimeBodyPart extends BodyPart {
-    private final MimeHeader mHeader = new MimeHeader();
+    private MimeHeader mHeader = new MimeHeader();
     private Body mBody;
 
     public MimeBodyPart() throws MessagingException {
@@ -34,6 +35,11 @@ public class MimeBodyPart extends BodyPart {
             addHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType);
         }
         MimeMessageHelper.setBody(this, body);
+    }
+
+    MimeBodyPart(MimeHeader header, Body body)  throws MessagingException {
+        this(body);
+        mHeader = header;
     }
 
     private String getFirstHeader(String name) {
@@ -177,4 +183,5 @@ public class MimeBodyPart extends BodyPart {
             setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
         }
     }
+
 }
