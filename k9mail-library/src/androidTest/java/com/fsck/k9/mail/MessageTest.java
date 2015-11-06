@@ -277,6 +277,120 @@ public class MessageTest {
             + "\r\n"
             + "------Boundary103--\r\n";
 
+    private static final String TO_BODY_PART_RESULT =
+                    "Content-Type: multipart/mixed; boundary=\"----Boundary103\"\r\n"
+                    + "Content-Transfer-Encoding: 8bit\r\n"
+                    + "\r\n"
+                    + "------Boundary103\r\n"
+                    + "Content-Type: text/plain;\r\n"
+                    + " charset=utf-8\r\n"
+                    + "Content-Transfer-Encoding: 8bit\r\n"
+                    + "\r\n"
+                    + "Testing.\r\n"
+                    + "This is a text body with some greek characters.\r\n"
+                    + "αβγδεζηθ\r\n"
+                    + "End of test.\r\n"
+                    + "\r\n"
+                    + "------Boundary103\r\n"
+                    + "Content-Type: text/plain;\r\n"
+                    + " charset=utf-8\r\n"
+                    + "Content-Transfer-Encoding: quoted-printable\r\n"
+                    + "\r\n"
+                    + "Testing=2E\r\n"
+                    + "This is a text body with some greek characters=2E\r\n"
+                    + "=CE=B1=CE=B2=CE=B3=CE=B4=CE=B5=CE=B6=CE=B7=CE=B8\r\n"
+                    + "End of test=2E\r\n"
+                    + "\r\n"
+                    + "------Boundary103\r\n"
+                    + "Content-Type: application/octet-stream\r\n"
+                    + "Content-Transfer-Encoding: base64\r\n"
+                    + "\r\n"
+                    + "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\r\n"
+                    + "\r\n"
+                    + "------Boundary103\r\n"
+                    + "Content-Type: message/rfc822\r\n"
+                    + "Content-Disposition: attachment\r\n"
+                    + "Content-Transfer-Encoding: 8bit\r\n"
+                    + "\r\n"
+                    + "From: from@example.com\r\n"
+                    + "To: to@example.com\r\n"
+                    + "Subject: Test Message\r\n"
+                    + "Date: Wed, 28 Aug 2013 08:51:09 -0400\r\n"
+                    + "MIME-Version: 1.0\r\n"
+                    + "Content-Type: multipart/mixed; boundary=\"----Boundary102\"\r\n"
+                    + "Content-Transfer-Encoding: 8bit\r\n"
+                    + "\r\n"
+                    + "------Boundary102\r\n"
+                    + "Content-Type: text/plain;\r\n"
+                    + " charset=utf-8\r\n"
+                    + "Content-Transfer-Encoding: 8bit\r\n"
+                    + "\r\n"
+                    + "Testing.\r\n"
+                    + "This is a text body with some greek characters.\r\n"
+                    + "αβγδεζηθ\r\n"
+                    + "End of test.\r\n"
+                    + "\r\n"
+                    + "------Boundary102\r\n"
+                    + "Content-Type: text/plain;\r\n"
+                    + " charset=utf-8\r\n"
+                    + "Content-Transfer-Encoding: quoted-printable\r\n"
+                    + "\r\n"
+                    + "Testing=2E\r\n"
+                    + "This is a text body with some greek characters=2E\r\n"
+                    + "=CE=B1=CE=B2=CE=B3=CE=B4=CE=B5=CE=B6=CE=B7=CE=B8\r\n"
+                    + "End of test=2E\r\n"
+                    + "\r\n"
+                    + "------Boundary102\r\n"
+                    + "Content-Type: application/octet-stream\r\n"
+                    + "Content-Transfer-Encoding: base64\r\n"
+                    + "\r\n"
+                    + "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\r\n"
+                    + "\r\n"
+                    + "------Boundary102\r\n"
+                    + "Content-Type: message/rfc822\r\n"
+                    + "Content-Disposition: attachment\r\n"
+                    + "Content-Transfer-Encoding: 8bit\r\n"
+                    + "\r\n"
+                    + "From: from@example.com\r\n"
+                    + "To: to@example.com\r\n"
+                    + "Subject: Test Message\r\n"
+                    + "Date: Wed, 28 Aug 2013 08:51:09 -0400\r\n"
+                    + "MIME-Version: 1.0\r\n"
+                    + "Content-Type: multipart/mixed; boundary=\"----Boundary101\"\r\n"
+                    + "Content-Transfer-Encoding: 8bit\r\n"
+                    + "\r\n"
+                    + "------Boundary101\r\n"
+                    + "Content-Type: text/plain;\r\n"
+                    + " charset=utf-8\r\n"
+                    + "Content-Transfer-Encoding: 8bit\r\n"
+                    + "\r\n"
+                    + "Testing.\r\n"
+                    + "This is a text body with some greek characters.\r\n"
+                    + "αβγδεζηθ\r\n"
+                    + "End of test.\r\n"
+                    + "\r\n"
+                    + "------Boundary101\r\n"
+                    + "Content-Type: text/plain;\r\n"
+                    + " charset=utf-8\r\n"
+                    + "Content-Transfer-Encoding: quoted-printable\r\n"
+                    + "\r\n"
+                    + "Testing=2E\r\n"
+                    + "This is a text body with some greek characters=2E\r\n"
+                    + "=CE=B1=CE=B2=CE=B3=CE=B4=CE=B5=CE=B6=CE=B7=CE=B8\r\n"
+                    + "End of test=2E\r\n"
+                    + "\r\n"
+                    + "------Boundary101\r\n"
+                    + "Content-Type: application/octet-stream\r\n"
+                    + "Content-Transfer-Encoding: base64\r\n"
+                    + "\r\n"
+                    + "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\r\n"
+                    + "\r\n"
+                    + "------Boundary101--\r\n"
+                    + "\r\n"
+                    + "------Boundary102--\r\n"
+                    + "\r\n"
+                    + "------Boundary103--\r\n";
+
     private int mMimeBoundary;
 
     @Test
@@ -415,5 +529,20 @@ public class MessageTest {
             sb.append(Integer.toString(mMimeBoundary++));
             return sb.toString();
         }
+    }
+
+    @Test
+    public void testToBodyPart() throws MessagingException, IOException {
+        MimeMessage message;
+        ByteArrayOutputStream out;
+
+        BinaryTempFileBody.setTempDirectory(InstrumentationRegistry.getTargetContext().getCacheDir());
+
+        mMimeBoundary = 101;
+        message = nestedMessage(nestedMessage(sampleMessage()));
+        out = new ByteArrayOutputStream();
+        MimeBodyPart bodyPart = message.toBodyPart();
+        bodyPart.writeTo(out);
+        assertEquals(TO_BODY_PART_RESULT, out.toString());
     }
 }

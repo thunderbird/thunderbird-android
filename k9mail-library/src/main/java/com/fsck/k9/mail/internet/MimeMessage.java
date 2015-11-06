@@ -712,5 +712,23 @@ public class MimeMessage extends Message {
         this.serverExtra = serverExtra;
     }
 
-
+    /**
+     * Convert a top level message into a bodypart.
+     * Returned body part shouldn't contain inappropriate headers such as smtp
+     * headers or MIME-VERSION.
+     * Both Message and MimeBodyPart might share structures.
+     * @return the body part
+     * @throws MessagingException
+     */
+    public MimeBodyPart toBodyPart() throws MessagingException {
+        MimeHeader contentHeaders = new MimeHeader();
+        for (String header : mHeader.getHeaderNames()) {
+            if (header.toLowerCase().startsWith("content-")) {
+                for (String value : mHeader.getHeader(header)) {
+                    contentHeaders.addHeader(header, value);
+                }
+            }
+        }
+        return new MimeBodyPart(contentHeaders, getBody());
+    }
 }
