@@ -5,6 +5,7 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
 
+import com.fsck.k9.Account.MessageDisplayMode;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessageExtractor;
@@ -16,11 +17,14 @@ public class DecodeMessageLoader extends AsyncTaskLoader<MessageViewInfo> {
     private final Message message;
     private MessageViewInfo messageViewInfo;
     private MessageCryptoAnnotations annotations;
+    private MessageDisplayMode messageDisplayMode;
 
-    public DecodeMessageLoader(Context context, Message message, MessageCryptoAnnotations annotations) {
+
+    public DecodeMessageLoader(Context context, Message message, MessageCryptoAnnotations annotations, MessageDisplayMode messageDisplayMode) {
         super(context);
         this.message = message;
         this.annotations = annotations;
+        this.messageDisplayMode = messageDisplayMode;
     }
 
     @Override
@@ -43,7 +47,7 @@ public class DecodeMessageLoader extends AsyncTaskLoader<MessageViewInfo> {
     @Override
     public MessageViewInfo loadInBackground() {
         try {
-            return LocalMessageExtractor.decodeMessageForView(getContext(), message, annotations);
+            return LocalMessageExtractor.decodeMessageForView(getContext(), message, annotations, messageDisplayMode);
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Error while decoding message", e);
             return null;

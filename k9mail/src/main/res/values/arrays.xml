@@ -46,6 +46,16 @@
         <item>1440</item>
     </string-array>
 
+    <string-array name="account_settings_message_display_mode_entries">
+        <item>@string/account_settings_message_display_mode_html</item>
+        <item>@string/account_settings_message_display_mode_plain</item>
+    </string-array>
+
+    <string-array name="account_settings_message_display_mode_values">
+        <item>HTML</item>
+        <item>TEXT</item>
+    </string-array>
+
     <string-array name="account_settings_display_count_entries">
         <item>@string/account_setup_options_mail_display_count_10</item>
         <item>@string/account_setup_options_mail_display_count_25</item>
