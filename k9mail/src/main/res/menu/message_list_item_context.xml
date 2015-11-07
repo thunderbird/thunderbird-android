@@ -12,6 +12,12 @@
          android:id="@+id/reply"
          android:title="@string/reply_action"/>
      <item
+         android:id="@+id/call_sip"
+         android:title="@string/call_sip_action"/>
+     <item
+         android:id="@+id/call_xmpp"
+         android:title="@string/call_xmpp_action"/>
+     <item
          android:id="@+id/send_again"
          android:title="@string/send_again_action"/>
      <item

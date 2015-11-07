@@ -100,6 +100,12 @@
             <item
                 android:id="@+id/share"
                 android:title="@string/send_alternate_action"/>
+            <item
+                android:id="@+id/call_sip"
+                android:title="@string/call_sip_action"/>
+            <item
+                android:id="@+id/call_xmpp"
+                android:title="@string/call_xmpp_action"/>
         </menu>
     </item>
 
