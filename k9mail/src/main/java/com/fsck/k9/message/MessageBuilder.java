@@ -512,6 +512,14 @@ public class MessageBuilder {
      * @throws MessagingException
      */
     private void encapsulateMimeInMultipartSigned(MimeMessage mime) throws MessagingException, OpenPgpApiException {
+        /*
+         * Once set to true, text messages will be sign safe (RFC-3156 §3) until K9Mail is stopped.
+         * This "global parameter" is made to avoid a double generation (regular/sign safe) on the
+         * whole Part/Body hierarchy and still limit the scope of this extra encoding to pgp/mime users
+         * Downside it that even unsigned messages will contain extra-encoding once a message has
+         * been signed. But it will be transparent if the recipient decodes properly quoted-printable.
+         */
+        TextBody.setSignSafe(true);
         MimeBodyPart bodyPart = mime.toBodyPart();
         bodyPart.setUsing7bitTransport();
         ByteArrayOutputStream messageToSign = new ByteArrayOutputStream();
