@@ -921,9 +921,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="error_activity_not_found">No suitable application for this action found.</string>
     <string name="btn_crypto_sign">Sign</string>
     <string name="btn_encrypt">Encrypt</string>
+    <string name="btn_attach_key">Attach my public key</string>
     <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
     <string name="pgp_mime_unsupported">PGP/MIME messages are not supported yet.</string>
-    <string name="attachment_encryption_unsupported">Warning: attachments are NOT signed or encrypted yet.</string>
+    <string name="attachment_use_pgpmime">Warning: use PGP/MIME if you want to encrypt/sign attachments.</string>
     <string name="send_aborted">Send aborted.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
@@ -1142,6 +1143,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_result_action_lookup">"Lookup"</string>
     <string name="openpgp_result_no_name">"No name"</string>
     <string name="openpgp_result_no_email">"No email"</string>
+    <string name="openpgp_dialog_cant_encrypt">Unable to encrypt message</string>
+    <string name="openpgp_dialog_select_a_key">Select at least a recipient\'s key to proceed.</string>
+    <string name="openpgp_no_public_key_returned">Your OpenPgp provider didn\'t return any key on ACTION_GET_KEY, contact them.\nUncheck \"%1$s\" to proceed.</string>
 
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
@@ -1158,4 +1162,5 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
 
+    <string name="error_cant_create_temporary_file">Couldn\'t create temporary file, memory full?</string>
 </resources>

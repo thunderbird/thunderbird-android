@@ -1115,6 +1115,8 @@ public class MimeUtility {
             return (MimeUtil.ENC_7BIT);
         } else if (isMultipart(type)) {
             return (MimeUtil.ENC_8BIT);
+        } else if (MimeUtil.isSameMimeType(type, "application/pgp-keys")) {
+            return MimeUtil.ENC_7BIT;
         } else {
             return (MimeUtil.ENC_BASE64);
         }

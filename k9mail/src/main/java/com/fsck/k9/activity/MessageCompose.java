@@ -1,9 +1,14 @@
 package com.fsck.k9.activity;
 
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
@@ -30,6 +35,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.Loader;
 import android.content.pm.ActivityInfo;
@@ -82,6 +88,7 @@ import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.crypto.OpenPgpApiException;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.ContactItem;
@@ -98,6 +105,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -111,6 +119,9 @@ import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
+
+import org.apache.commons.io.output.CountingOutputStream;
+import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
@@ -188,6 +199,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int CONTACT_PICKER_BCC2 = 9;
 
     private static final int REQUEST_CODE_SIGN_ENCRYPT = 12;
+    private static final int REQUEST_CODE_SIGN=13;
+    private static final int REQUEST_CODE_ENCRYPT=14;
 
     /**
      * Regular expression to remove the first localized "Re:" prefix in subjects.
@@ -245,6 +258,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private boolean mSourceMessageProcessed = false;
     private int mMaxLoaderId = 0;
+    private Attachment myPublicKey;
 
     enum Action {
         COMPOSE,
@@ -294,6 +308,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private CheckBox mEncryptCheckbox;
     private TextView mCryptoSignatureUserId;
     private TextView mCryptoSignatureUserIdRest;
+    private CheckBox attachKeyCheckBox;
 
     private PgpData mPgpData = null;
     private String mOpenPgpProvider;
@@ -760,6 +775,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
             mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
             mEncryptCheckbox.setOnCheckedChangeListener(updateListener);
+            attachKeyCheckBox = (CheckBox) findViewById(R.id.cb_attach_key);
+            attachKeyCheckBox.setEnabled(mAccount.getCryptoKey() != 0);
 
             if (mSourceMessageBody != null) {
                 // mSourceMessageBody is set to something when replying to and forwarding decrypted
@@ -1176,15 +1193,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return createMessageBuilder(isDraft).buildText();
     }
 
-    private MimeMessage createDraftMessage() throws MessagingException {
+    private MimeMessage createDraftMessage() throws MessagingException, OpenPgpApiException {
         return createMessageBuilder(true).build();
     }
 
-    private MimeMessage createMessage() throws MessagingException {
+    private MimeMessage createMessage() throws MessagingException, OpenPgpApiException {
         return createMessageBuilder(false).build();
     }
 
     private MessageBuilder createMessageBuilder(boolean isDraft) {
+        OpenPgpApi api = null;
+        if (mAccount.isUsePgpMime() && (shouldEncrypt() || shouldSign())) {
+            api = new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
+        }
         return new MessageBuilder(getApplicationContext())
                 .setSubject(mSubjectView.getText().toString())
                 .setTo(getAddresses(mToView))
@@ -1209,7 +1230,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setSignatureChanged(mSignatureChanged)
                 .setCursorPosition(mMessageContentView.getSelectionStart())
                 .setMessageReference(mMessageReference)
-                .setDraft(isDraft);
+                .setDraft(isDraft)
+                .setPgpMimeEncryption(shouldEncrypt() && mAccount.isUsePgpMime(), encryptIntent, api)
+                .setPgpMimeSignature(shouldSign() && mAccount.isUsePgpMime(), signIntent, api);
     }
 
     private ArrayList<Attachment> createAttachmentList() {
@@ -1219,8 +1242,46 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             Attachment attachment = (Attachment) view.getTag();
             attachments.add(attachment);
         }
-
+        if (myPublicKey != null){
+            attachments.add(myPublicKey);
+        }
         return attachments;
+    }
+
+    private Attachment attachedPublicKey() throws OpenPgpApiException {
+        try {
+            Attachment publicKey = new Attachment();
+            publicKey.contentType = "application/pgp-keys";
+
+            String keyName = "0x" +  Long.toString(mAccount.getCryptoKey(), 16).substring(8);
+            publicKey.name = keyName + ".asc";
+            Intent intent = new Intent(OpenPgpApi.ACTION_GET_KEY);
+            intent.putExtra(OpenPgpApi.EXTRA_KEY_ID, mAccount.getCryptoKey());
+            intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+            OpenPgpApi api = new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
+            File keyTempFile = File.createTempFile("key", ".asc", getCacheDir());
+            keyTempFile.deleteOnExit();
+            try {
+                CountingOutputStream keyFileStream = new CountingOutputStream(new BufferedOutputStream(
+                        new FileOutputStream(keyTempFile)));
+                Intent res = api.executeApi(intent, null, new EOLConvertingOutputStream(keyFileStream));
+                if (res.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR) != OpenPgpApi.RESULT_CODE_SUCCESS
+                        || keyFileStream.getByteCount() == 0) {
+                    keyTempFile.delete();
+                    throw new OpenPgpApiException(String.format(getString(R.string.openpgp_no_public_key_returned),
+                            getString(R.string.btn_attach_key)));
+                }
+                publicKey.filename = keyTempFile.getAbsolutePath();
+                publicKey.state = Attachment.LoadingState.COMPLETE;
+                publicKey.size = keyFileStream.getByteCount();
+                return publicKey;
+            } catch(RuntimeException e){
+                keyTempFile.delete();
+                throw e;
+            }
+        } catch(IOException e){
+            throw new RuntimeException(getString(R.string.error_cant_create_temporary_file), e);
+        }
     }
 
     private void sendMessage() {
@@ -1257,27 +1318,132 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
+    private volatile Intent signIntent;
+    private volatile Intent encryptIntent;
+
     private void onSend() {
-        if (getAddresses(mToView).length == 0 && getAddresses(mCcView).length == 0 && getAddresses(mBccView).length == 0) {
-            mToView.setError(getString(R.string.message_compose_error_no_recipients));
-            Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
-            return;
-        }
+        try {
+            if (getAddresses(mToView).length == 0 && getAddresses(mCcView).length == 0 && getAddresses(mBccView).length == 0) {
+                mToView.setError(getString(R.string.message_compose_error_no_recipients));
+                Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
+                return;
+            }
 
-        if (mWaitingForAttachments != WaitingAction.NONE) {
-            return;
-        }
+            if (mWaitingForAttachments != WaitingAction.NONE) {
+                return;
+            }
 
-        if (mNumAttachmentsLoading > 0) {
-            mWaitingForAttachments = WaitingAction.SEND;
-            showWaitingForAttachmentDialog();
-        } else {
-            performSend();
+            if (mNumAttachmentsLoading > 0) {
+                mWaitingForAttachments = WaitingAction.SEND;
+                showWaitingForAttachmentDialog();
+            } else {
+                if (isCryptoProviderEnabled() && attachKeyCheckBox.isChecked()){
+                    myPublicKey = attachedPublicKey();
+                }
+
+                boolean canProceed = true;
+                encryptIntent = signIntent = null;
+                if (shouldEncrypt() && mAccount.isUsePgpMime()) {
+                    if (!buildAndTestEncryptIntent()) {
+                        canProceed = false;
+                    }
+
+                }
+                if (shouldSign() && mAccount.isUsePgpMime()) {
+                    if (!buildAndTestSignIntent()) {
+                        canProceed = false;
+                    }
+                }
+                if (canProceed) {
+                    performSend();
+                }
+            }
+        } catch(OpenPgpApiException e){
+            Log.e(K9.LOG_TAG, "OpenPgp error while sending message", e);
+            Toast.makeText(MessageCompose.this,
+                    getString(R.string.openpgp_error, e.getLocalizedMessage()),
+                    Toast.LENGTH_LONG).show();
+        } catch(RuntimeException e){
+            Log.e(K9.LOG_TAG, "Error sending message", e);
+            Toast.makeText(MessageCompose.this,
+                    getString(R.string.send_aborted, e.getLocalizedMessage()),
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean buildAndTestSignIntent()  throws OpenPgpApiException {
+        signIntent = new Intent(OpenPgpApi.ACTION_DETACHED_SIGN);
+        if (mAccount.getCryptoKey() != 0) {
+            signIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, mAccount.getCryptoKey());
+        }
+        OpenPgpApi api = new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
+        OutputStream nullOutput = new OutputStream(){
+            public void write(int b){}
+
+        };
+        Intent res = api.executeApi(signIntent, new ByteArrayInputStream("dummy".getBytes()), nullOutput);
+        switch (res.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
+            case OpenPgpApi.RESULT_CODE_SUCCESS:
+                return true;
+
+            case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+                /* user interaction takes place, onActivityResult should be able to proceed */
+                PendingIntent pi = res.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                try {
+                    startIntentSenderForResult(pi.getIntentSender(), REQUEST_CODE_SIGN, null, 0, 0, 0);
+                } catch (IntentSender.SendIntentException e) {
+                    throw new RuntimeException(e.getLocalizedMessage(), e);
+                }
+                signIntent = null;
+                return false;
+            case OpenPgpApi.RESULT_CODE_ERROR:
+                OpenPgpError error = res.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                throw new OpenPgpApiException(error);
+            default:
+                throw new RuntimeException("Unexpected result from OpenPgpApi :"+ res.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR));
+        }
+    }
+
+    private boolean buildAndTestEncryptIntent() throws OpenPgpApiException {
+        List<String> emails = new ArrayList<String>();
+
+        for (Address address : getRecipientAddresses()) {
+            emails.add(address.getAddress());
+        }
+        encryptIntent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
+        encryptIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emails.toArray(new String[emails.size()]));
+        encryptIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+        OpenPgpApi api = new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
+        OutputStream nullOutput = new OutputStream(){
+            public void write(int b){}
+
+        };
+        Intent res = api.executeApi(encryptIntent, new ByteArrayInputStream("dummy".getBytes()), nullOutput);
+        switch (res.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
+            case OpenPgpApi.RESULT_CODE_SUCCESS:
+                return true;
+
+            case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
+                PendingIntent pi = res.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                try {
+                    startIntentSenderForResult(pi.getIntentSender(), REQUEST_CODE_ENCRYPT, null, 0, 0, 0);
+                } catch (IntentSender.SendIntentException e) {
+                    throw new RuntimeException("Internal error", e);
+                }
+                encryptIntent = null;
+                return false;
+            }
+            case OpenPgpApi.RESULT_CODE_ERROR: {
+                OpenPgpError error = res.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                throw new OpenPgpApiException(error);
+            }
+            default:
+                throw new RuntimeException("Unexpected result from OpenPgpApi :"+ res.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR));
         }
     }
 
     private void performSend() {
-        if (isCryptoProviderEnabled()) {
+        if (isCryptoProviderEnabled() && ! mAccount.isUsePgpMime()) {
             // OpenPGP Provider API
 
             // If not already encrypted but user wants to encrypt...
@@ -1487,7 +1653,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     @SuppressLint("InlinedApi")
     private void onAddAttachment2(final String mime_type) {
-        if (isCryptoProviderEnabled()) {
+        if (isCryptoProviderEnabled() && !mAccount.isUsePgpMime()) {
             Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
         }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
@@ -1752,7 +1918,52 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     addAddress(mBccView, new Address(emailAddr, ""));
                 }
                 break;
+            case REQUEST_CODE_ENCRYPT:
+                onActivityResultCodeEncrypt(requestCode, resultCode, data);
+                break;
+
+            case REQUEST_CODE_SIGN:
+                onActivityResultCodeSign(requestCode, resultCode, data);
+                break;
         }
+    }
+
+    protected void onActivityResultCodeEncrypt(int requestCode, int resultCode, Intent data) {
+        long[] keyIds = data.getLongArrayExtra(OpenPgpApi.EXTRA_KEY_IDS);
+        if (keyIds.length == 0) {
+            Toast.makeText(this,
+                    R.string.openpgp_dialog_select_a_key,
+                    Toast.LENGTH_LONG).show();
+        } else {
+            encryptIntent = data;
+            if (canPerformSend()) {
+                performSend();
+            }
+        }
+    }
+
+    protected void onActivityResultCodeSign(int requestCode, int resultCode, Intent data) {
+        try {
+            OpenPgpApi api = new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
+            Intent result = api.executeApi(data, new ByteArrayInputStream("dummy".getBytes()), null);
+            if (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR) == OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED) {
+                PendingIntent parcelableExtra = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                startIntentSenderForResult(parcelableExtra.getIntentSender(), REQUEST_CODE_SIGN, null, 0, 0, 0);
+            } else {
+                signIntent = data;
+                if (canPerformSend()) {
+                    performSend();
+                }
+            }
+        } catch(SendIntentException e){
+            Log.e(K9.LOG_TAG, e.getLocalizedMessage());
+            throw new RuntimeException("Internal error :", e);
+        }
+    }
+
+    private boolean canPerformSend(){
+        return (encryptIntent != null || !shouldEncrypt())
+                && (signIntent != null || !shouldSign());
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -3120,7 +3331,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             MimeMessage message;
             try {
                 message = createMessage();
-            } catch (MessagingException me) {
+            } catch (Exception me) {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);
             }
@@ -3153,7 +3364,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             MimeMessage message;
             try {
                 message = createDraftMessage();
-            } catch (MessagingException me) {
+            } catch (Exception me) {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);
             }
@@ -3471,9 +3682,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // Right now we send a text/plain-only message when the quoted text was edited, no
             // matter what the user selected for the message format.
             messageFormat = SimpleMessageFormat.TEXT;
-        } else if (shouldEncrypt() || shouldSign()) {
-            // Right now we only support PGP inline which doesn't play well with HTML. So force
-            // plain text in those cases.
+        } else if ((shouldEncrypt() || shouldSign()) && !mAccount.isUsePgpMime()) {
+            // PGP inline doesn't play well with HTML. So force plain text in those cases.
             messageFormat = SimpleMessageFormat.TEXT;
         } else if (origMessageFormat == MessageFormat.AUTO) {
             if (mAction == Action.COMPOSE || mQuotedTextFormat == SimpleMessageFormat.TEXT ||
