@@ -147,6 +147,7 @@ public class MimeBodyPart extends BodyPart {
     @Override
     public void setUsing7bitTransport() throws MessagingException {
         String type = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
+        String transferEncoding = getFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
         /*
          * We don't trust that a multipart/* will properly have an 8bit encoding
          * header if any of its subparts are 8bit, so we automatically recurse
@@ -156,8 +157,8 @@ public class MimeBodyPart extends BodyPart {
             setEncoding(MimeUtil.ENC_7BIT);
             // recurse
             ((CompositeBody) mBody).setUsing7bitTransport();
-        } else if (!MimeUtil.ENC_8BIT
-                .equalsIgnoreCase(getFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING))) {
+        } else if (!MimeUtil.ENC_8BIT.equalsIgnoreCase(transferEncoding)
+                && !MimeUtil.isSameMimeType(transferEncoding, MimeUtil.ENC_BINARY)) {
             return;
         } else if (type != null &&
                 (MimeUtility.isSameMimeType(type, "multipart/signed") || MimeUtility.isMessage(type))) {
