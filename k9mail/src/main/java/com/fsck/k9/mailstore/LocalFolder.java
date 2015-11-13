@@ -1263,6 +1263,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                     ? System.currentTimeMillis() : message.getInternalDate().getTime());
             cv.put("mime_type", message.getMimeType());
             cv.put("empty", 0);
+            cv.put("encryption_type", message.getEncryptionType().name());
 
             String messageId = message.getMessageId();
             if (messageId != null) {

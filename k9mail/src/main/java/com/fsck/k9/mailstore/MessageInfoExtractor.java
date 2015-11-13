@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 
+import com.fsck.k9.mail.EncryptionType;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -25,8 +26,12 @@ class MessageInfoExtractor {
     }
 
     public String getMessageTextPreview() throws MessagingException {
-        getViewablesIfNecessary();
-        return MessagePreviewExtractor.extractPreview(context, viewables);
+        if (message.getEncryptionType() == EncryptionType.NONE) {
+            getViewablesIfNecessary();
+            return MessagePreviewExtractor.extractPreview(context, viewables);
+        } else {
+            return ""; // cant preview encrypted emails
+        }
     }
 
     public int getAttachmentCount() throws MessagingException {
