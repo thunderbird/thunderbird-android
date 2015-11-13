@@ -61,7 +61,8 @@ public class MessageDecryptVerifier {
             String mimeType = part.getMimeType();
             Body body = part.getBody();
 
-            if (isSameMimeType(mimeType, MULTIPART_SIGNED)) {
+            if (isSameMimeType(mimeType, MULTIPART_SIGNED)
+                    && APPLICATION_PGP_SIGNATURE.equalsIgnoreCase(part.getContentTypeParameter(PROTOCOL_PARAMETER))) {
                 signedParts.add(part);
             } else if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;

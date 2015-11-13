@@ -745,4 +745,14 @@ public class MimeMessage extends Message {
     public void addContentTypeParameter(String attribute, String value){
         mHeader.addContentTypeParameter(attribute, value);
     }
+
+    /**
+     * Returns the value of content-type given parameter.
+     * To allow comparison, the returned string isn't quoted.
+     * @param attribute
+     * @return the unquoted parameter value
+     */
+    public String getContentTypeParameter(String attribute){
+        return mHeader.getContentTypeParameter(attribute);
+    }
 }
