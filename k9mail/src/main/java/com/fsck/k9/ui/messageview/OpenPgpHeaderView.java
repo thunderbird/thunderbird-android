@@ -140,7 +140,7 @@ public class OpenPgpHeaderView extends LinearLayout {
         if (error == null) {
             text = context.getString(R.string.openpgp_unknown_error);
         } else {
-            text = context.getString(R.string.openpgp_error, error.getMessage());
+            text = context.getString(R.string.openpgp_decryption_failed, error.getMessage());
         }
         resultEncryptionText.setText(text);
     }
@@ -160,6 +160,9 @@ public class OpenPgpHeaderView extends LinearLayout {
 
         switch (cryptoAnnotation.getErrorType()) {
             case CRYPTO_API_RETURNED_ERROR:
+                displayEncryptionError();
+                dontDisplayVerification();
+                break;
             case NONE: {
                 displayVerificationResult();
                 break;
@@ -170,6 +173,11 @@ public class OpenPgpHeaderView extends LinearLayout {
                 break;
             }
         }
+    }
+    private void dontDisplayVerification(){
+        hideSignatureLayout();
+        resultSignatureText.setVisibility(View.GONE);
+        resultSignatureIcon.setVisibility(View.GONE);
     }
 
     private void displayIncompleteSignedPart() {
