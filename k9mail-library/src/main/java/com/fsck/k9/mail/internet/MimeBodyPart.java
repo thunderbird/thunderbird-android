@@ -185,4 +185,15 @@ public class MimeBodyPart extends BodyPart {
         }
     }
 
+
+    /**
+     * Returns the value of content-type given parameter.
+     * To allow comparison, the returned string isn't quoted.
+     * @param attribute
+     * @return the unquoted parameter value
+     */
+    public String getContentTypeParameter(String attribute){
+        return mHeader.getContentTypeParameter(attribute);
+    }
+
 }

@@ -54,4 +54,6 @@ public interface Part {
     String getServerExtra();
 
     void setServerExtra(String serverExtra);
+
+    String getContentTypeParameter(String attribute);
 }
