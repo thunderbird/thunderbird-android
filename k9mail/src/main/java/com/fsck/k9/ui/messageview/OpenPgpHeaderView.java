@@ -140,7 +140,7 @@ public class OpenPgpHeaderView extends LinearLayout {
         if (error == null) {
             text = context.getString(R.string.openpgp_unknown_error);
         } else {
-            text = context.getString(R.string.openpgp_error, error.getMessage());
+            text = context.getString(R.string.openpgp_decryption_failed, error.getMessage());
         }
         resultEncryptionText.setText(text);
     }
