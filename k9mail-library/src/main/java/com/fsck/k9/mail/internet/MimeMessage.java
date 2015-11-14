@@ -14,6 +14,8 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
@@ -31,6 +33,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.CompositeBody;
+import com.fsck.k9.mail.EncryptionType;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -41,6 +44,9 @@ import com.fsck.k9.mail.Part;
  * RFC 2045 style headers.
  */
 public class MimeMessage extends Message {
+    public static final Pattern PGP_MESSAGE =
+            Pattern.compile(".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
+                    Pattern.DOTALL);
     private MimeHeader mHeader = new MimeHeader();
     protected Address[] mFrom;
     protected Address[] mTo;
@@ -58,6 +64,8 @@ public class MimeMessage extends Message {
     private Body mBody;
     protected int mSize;
     private String serverExtra;
+
+    private EncryptionType encryptionType;
 
     public MimeMessage() {
     }
@@ -114,6 +122,34 @@ public class MimeMessage extends Message {
         } catch (MimeException me) {
             //TODO wouldn't a MessagingException be better?
             throw new Error(me);
+        }
+
+        inspectEncryption();
+    }
+
+    private void inspectEncryption() throws MessagingException  {
+        encryptionType = EncryptionType.NONE;
+        String[] headers = getHeader("Content-Type");
+        if (headers.length > 0
+                && headers[0].contains("multipart/encrypted")) {
+            encryptionType = EncryptionType.PGP_MIME;
+        } else if (headers.length > 0
+                && headers[0].toLowerCase().startsWith("application/pkcs7-mime")) {
+            encryptionType = EncryptionType.S_MIME;
+        } else {
+            Part part = MimeUtility.findFirstPartByMimeType(this, "text/plain");
+            if (part == null) {
+                part = MimeUtility.findFirstPartByMimeType(this, "text/html");
+            }
+            if (part != null) {
+                String data = MessageExtractor.getTextFromPart(part);
+                if (data != null) {
+                    Matcher matcher = PGP_MESSAGE.matcher(data);
+                    if (matcher.matches()) {
+                        encryptionType = EncryptionType.INLINE;
+                    }
+                }
+            }
         }
     }
 
@@ -642,6 +678,7 @@ public class MimeMessage extends Message {
         destination.mReplyTo = mReplyTo;
         destination.mReferences = mReferences;
         destination.mInReplyTo = mInReplyTo;
+        destination.encryptionType = encryptionType;
     }
 
     @Override
@@ -717,5 +754,13 @@ public class MimeMessage extends Message {
         this.serverExtra = serverExtra;
     }
 
+    @Override
+    public EncryptionType getEncryptionType(){
+        return encryptionType;
+    }
+
+    protected void setEncryptionType(EncryptionType encryptionType) {
+        this.encryptionType = encryptionType;
+    }
 
 }

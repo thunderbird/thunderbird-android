@@ -9,6 +9,7 @@ import java.util.Set;
 
 import android.util.Log;
 
+import com.fsck.k9.mail.EncryptionType;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 
@@ -239,4 +240,9 @@ public abstract class Message implements Part, CompositeBody {
     @Override
     public abstract Message clone();
 
+    /**
+     * Returns message encryption type
+     * @return encrytion type
+     */
+    public abstract EncryptionType getEncryptionType();
 }
