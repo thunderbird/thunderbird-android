@@ -148,6 +148,7 @@ public class EmailProvider extends ContentProvider {
         public static final String FLAGGED = "flagged";
         public static final String ANSWERED = "answered";
         public static final String FORWARDED = "forwarded";
+        public static final String ENCRYPTION = "encryption_type";
     }
 
     private interface InternalMessageColumns extends MessageColumns {

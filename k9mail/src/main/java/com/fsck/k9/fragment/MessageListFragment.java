@@ -84,6 +84,7 @@ import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.EncryptionType;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -126,11 +127,13 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         MessageColumns.ATTACHMENT_COUNT,
         MessageColumns.FOLDER_ID,
         MessageColumns.PREVIEW,
+        MessageColumns.ENCRYPTION,
         ThreadColumns.ROOT,
         SpecialColumns.ACCOUNT_UUID,
         SpecialColumns.FOLDER_NAME,
 
-        SpecialColumns.THREAD_COUNT,
+        SpecialColumns.THREAD_COUNT
+
     };
 
     private static final int ID_COLUMN = 0;
@@ -148,10 +151,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private static final int ATTACHMENT_COUNT_COLUMN = 12;
     private static final int FOLDER_ID_COLUMN = 13;
     private static final int PREVIEW_COLUMN = 14;
-    private static final int THREAD_ROOT_COLUMN = 15;
-    private static final int ACCOUNT_UUID_COLUMN = 16;
-    private static final int FOLDER_NAME_COLUMN = 17;
-    private static final int THREAD_COUNT_COLUMN = 18;
+    private static final int ENCRYPTION_COLUMN = 15;
+    private static final int THREAD_ROOT_COLUMN = 16;
+    private static final int ACCOUNT_UUID_COLUMN = 17;
+    private static final int FOLDER_NAME_COLUMN = 18;
+    private static final int THREAD_COUNT_COLUMN = 19;
 
     private static final String[] PROJECTION = Arrays.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
@@ -2029,9 +2033,15 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     .append(beforePreviewText);
 
             if (mPreviewLines > 0) {
-                String preview = cursor.getString(PREVIEW_COLUMN);
-                if (preview != null) {
-                    messageStringBuilder.append(" ").append(preview);
+                if (EncryptionType.values()[cursor.getInt(ENCRYPTION_COLUMN)] != EncryptionType.NONE) {
+                    messageStringBuilder.append(" *");
+                    messageStringBuilder.append(context.getString(R.string.openpgp_result_encrypted));
+                    messageStringBuilder.append('*');
+                } else {
+                    String preview = cursor.getString(PREVIEW_COLUMN);
+                    if (preview != null) {
+                        messageStringBuilder.append(" ").append(preview);
+                    }
                 }
             }
 

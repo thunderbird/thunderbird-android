@@ -4,7 +4,6 @@ package com.fsck.k9.message;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -23,6 +22,7 @@ import com.fsck.k9.crypto.OpenPgpApiException;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.EncryptionType;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeBodyPart;
@@ -141,6 +141,7 @@ public class MessageBuilder {
         if (pgpData.getEncryptedData() != null) {
             String text = pgpData.getEncryptedData();
             body = new TextBody(text);
+            message.setEncryptionType(EncryptionType.INLINE);
         } else {
             body = buildText(isDraft);
         }
@@ -573,6 +574,7 @@ public class MessageBuilder {
                     new BinaryMemoryBody(encryptedData.toByteArray(), MimeUtil.ENC_7BIT), "application/octet-stream"));
             MimeMessageHelper.setBody(mime, multipartEncrypted);
             mime.addContentTypeParameter("protocol", "\"application/pgp-encrypted\"");
+            mime.setEncryptionType(EncryptionType.PGP_MIME);
         } catch (IOException e) {
             throw new RuntimeException(e.getLocalizedMessage(), e);
         }

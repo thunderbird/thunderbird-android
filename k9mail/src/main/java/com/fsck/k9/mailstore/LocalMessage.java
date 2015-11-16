@@ -14,6 +14,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.EncryptionType;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
@@ -113,6 +114,7 @@ public class LocalMessage extends MimeMessage {
 
         messagePartId = cursor.getLong(22);
         mimeType = cursor.getString(23);
+        setEncryptionType(EncryptionType.values()[cursor.getInt(24)]);
     }
 
     long getMessagePartId() {
@@ -317,7 +319,7 @@ public class LocalMessage extends MimeMessage {
             this.localStore.database.execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                    UnavailableStorageException {
+                        UnavailableStorageException {
                     try {
                         LocalFolder localFolder = (LocalFolder) mFolder;
 
