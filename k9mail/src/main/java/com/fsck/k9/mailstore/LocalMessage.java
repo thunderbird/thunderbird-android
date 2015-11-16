@@ -558,4 +558,26 @@ public class LocalMessage extends MimeMessage {
     public boolean isBodyMissing() {
         return getBody() == null;
     }
+
+
+    /**
+     * Returns the value of content-type given parameter.
+     * To allow comparison, the returned string isn't quoted.
+     * @param attribute
+     * @return the unquoted parameter value
+     */
+    public String getContentTypeParameter(String attribute){
+        loadHeaderIfNecessary();
+        return super.getContentTypeParameter(attribute);
+    }
+
+    synchronized protected void loadHeaderIfNecessary() {
+        try {
+            if (!mHeadersLoaded) {
+                loadHeaders();
+            }
+        } catch(MessagingException e){
+            throw new RuntimeException("Couldn't parse header", e);
+        }
+    }
 }

@@ -20,6 +20,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -113,6 +114,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
+    private static final String PREFERENCE_CRYPTO_PGPMIME = "pgp_mime_default";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -179,6 +181,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private boolean mHasCrypto = false;
     private OpenPgpAppPreference mCryptoApp;
     private OpenPgpKeyPreference mCryptoKey;
+    private CheckBoxPreference cryptoPgpMime;
 
     private PreferenceScreen mSearchScreen;
     private CheckBoxPreference mCloudSearchEnabled;
@@ -695,12 +698,16 @@ public class AccountSettings extends K9PreferenceActivity {
             mCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
 
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
+            cryptoPgpMime = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_PGPMIME);
+            cryptoPgpMime.setEnabled(!TextUtils.isEmpty(mCryptoApp.getValue()));
+
             mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String value = newValue.toString();
                     mCryptoApp.setValue(value);
 
                     mCryptoKey.setOpenPgpProvider(value);
+                    cryptoPgpMime.setEnabled(!TextUtils.isEmpty(value));
                     return false;
                 }
             });
@@ -716,6 +723,7 @@ public class AccountSettings extends K9PreferenceActivity {
                     return false;
                 }
             });
+            cryptoPgpMime.setChecked(mAccount.isUsePgpMime());
         } else {
             final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
             mCryptoMenu.setEnabled(false);
@@ -783,6 +791,7 @@ public class AccountSettings extends K9PreferenceActivity {
         if (mHasCrypto) {
             mAccount.setCryptoApp(mCryptoApp.getValue());
             mAccount.setCryptoKey(mCryptoKey.getValue());
+            mAccount.setUsePgpMime(cryptoPgpMime.isChecked());
         }
 
         // In webdav account we use the exact folder name also for inbox,

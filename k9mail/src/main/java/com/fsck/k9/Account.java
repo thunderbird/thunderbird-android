@@ -115,6 +115,8 @@ public class Account implements BaseAccount, StoreConfig {
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
+    private static final String USE_PGP_MIME = ".usePgpMime";
+
     /*
      * http://developer.android.com/design/style/color.html
      * Note: Order does matter, it's the order in which they will be picked.
@@ -222,6 +224,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
     private long mCryptoKey;
+    private boolean usePgpMime;
     private boolean mMarkMessageAsReadOnView;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
@@ -474,6 +477,7 @@ public class Account implements BaseAccount, StoreConfig {
         mEnabled = prefs.getBoolean(mUuid + ".enabled", true);
         mMarkMessageAsReadOnView = prefs.getBoolean(mUuid + ".markMessageAsReadOnView", true);
         mAlwaysShowCcBcc = prefs.getBoolean(mUuid + ".alwaysShowCcBcc", false);
+        usePgpMime = prefs.getBoolean(mUuid + USE_PGP_MIME, false);
 
         cacheChips();
 
@@ -569,6 +573,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".messageFormat");
         editor.remove(mUuid + ".messageReadReceipt");
         editor.remove(mUuid + ".notifyMailCheck");
+        editor.remove(mUuid + USE_PGP_MIME);
         for (NetworkType type : NetworkType.values()) {
             editor.remove(mUuid + ".useCompression." + type.name());
         }
@@ -729,6 +734,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putLong(mUuid + ".cryptoKey", mCryptoKey);
+        editor.putBoolean(mUuid + USE_PGP_MIME, usePgpMime);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1885,5 +1891,21 @@ public class Account implements BaseAccount, StoreConfig {
             Uri uri = Uri.parse(transportUri);
             localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
         }
+    }
+
+    /**
+     * Returns true if PGP/MIME should be used ro encrypt/sign emails sent with this account.
+     * @return true if PGP/MIME should be used ro encrypt/sign emails sent with this account.
+     */
+    public boolean isUsePgpMime(){
+        return usePgpMime;
+    }
+
+    /**
+     * Sets wether emails sent with this account
+     * @param usePgpMime true if PGP/MIME should be used ro encrypt/sign emails sent with this account.
+     */
+    public void setUsePgpMime(boolean usePgpMime){
+        this.usePgpMime = usePgpMime;
     }
 }

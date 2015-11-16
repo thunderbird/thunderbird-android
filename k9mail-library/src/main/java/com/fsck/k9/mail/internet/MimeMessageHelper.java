@@ -26,7 +26,7 @@ public class MimeMessageHelper {
             String mimeType = multipart.getMimeType();
             String contentType = String.format("%s; boundary=\"%s\"", mimeType, multipart.getBoundary());
             part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
-            if (MimeUtility.isSameMimeType(mimeType, "multipart/signed")) {
+            if (MimeUtility.isSameMimeType(mimeType, "multipart/signed") || MimeUtility.isSameMimeType(mimeType, "multipart/encrypted")) {
                 setEncoding(part, MimeUtil.ENC_7BIT);
             } else {
                 setEncoding(part, MimeUtil.ENC_8BIT);

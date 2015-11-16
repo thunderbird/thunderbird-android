@@ -1,11 +1,17 @@
 package com.fsck.k9.message;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -13,6 +19,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.Attachment;
+import com.fsck.k9.crypto.OpenPgpApiException;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -25,10 +32,13 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mailstore.BinaryMemoryBody;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.mailstore.TempFileMessageBody;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.util.MimeUtil;
+import org.openintents.openpgp.OpenPgpError;
+import org.openintents.openpgp.util.OpenPgpApi;
 
 
 public class MessageBuilder {
@@ -59,6 +69,9 @@ public class MessageBuilder {
     private MessageReference messageReference;
     private boolean isDraft;
 
+    private Intent pgpMimeSignIntent = null;
+    private Intent pgpMimeEncryptIntent = null;
+    private OpenPgpApi openPgpApi;
 
     public MessageBuilder(Context context) {
         this.context = context;
@@ -68,7 +81,7 @@ public class MessageBuilder {
      * Build the final message to be sent (or saved). If there is another message quoted in this one, it will be baked
      * into the final message here.
      */
-    public MimeMessage build() throws MessagingException {
+    public MimeMessage build() throws MessagingException, OpenPgpApiException {
         //FIXME: check arguments
 
         MimeMessage message = new MimeMessage();
@@ -76,6 +89,12 @@ public class MessageBuilder {
         buildHeader(message);
         buildBody(message);
 
+        if (pgpMimeSignIntent != null){
+            encapsulateMimeInMultipartSigned(message);
+        }
+        if (pgpMimeEncryptIntent != null){
+            encapsulateMimeInMultipartEncrypted(message);
+        }
         return message;
     }
 
@@ -446,5 +465,116 @@ public class MessageBuilder {
     public MessageBuilder setDraft(boolean isDraft) {
         this.isDraft = isDraft;
         return this;
+    }
+
+    /**
+     * Turns PGP/MIME encryption on.
+     * @param encrypt turn encryption on, if false other parameters will be ignored
+     * @param encryptIntent Intent to use to perform the encryption. This Intent must be
+     *                      fully functional and mustn't requires further interaction. If it isn't the case,
+     *                      message building will fail.
+     * @param api Link to an initialized OpenPgpApi
+     * @return this
+     */
+    public MessageBuilder setPgpMimeEncryption(boolean encrypt, Intent encryptIntent, OpenPgpApi api){
+        if (encrypt) {
+            this.pgpMimeEncryptIntent = encryptIntent;
+            this.openPgpApi = api;
+        } else {
+            pgpMimeEncryptIntent = null;
+        }
+        return this;
+    }
+
+    /**
+     * Turns PGP/MIME signature on.
+     * @param sign turn on signature, if false other parameters will be ignored
+     * @param signIntent Intent to use to sign the message. This Intent must be
+     *                      fully functional and mustn't requires further interaction. If it isn't the case,
+     *                      message building will fail.
+     * @param api Link to an initialized OpenPgpApi
+     * @return this
+     */
+    public MessageBuilder setPgpMimeSignature(boolean sign, Intent signIntent, OpenPgpApi api){
+        if (sign) {
+            this.pgpMimeSignIntent = signIntent;
+            this.openPgpApi = api;
+        } else {
+            this.pgpMimeSignIntent = null;
+        }
+        return this;
+    }
+
+    /**
+     * Process the message in order to encapsulate it in a multipart/signed message.
+     * @see <a href="http://tools.ietf.org/html/rfc2015">RFC-2015</a>
+     * @param mime messsage to process
+     * @throws MessagingException
+     */
+    private void encapsulateMimeInMultipartSigned(MimeMessage mime) throws MessagingException, OpenPgpApiException {
+        /*
+         * Once set to true, text messages will be sign safe (RFC-3156 §3) until K9Mail is stopped.
+         * This "global parameter" is made to avoid a double generation (regular/sign safe) on the
+         * whole Part/Body hierarchy and still limit the scope of this extra encoding to pgp/mime users
+         * Downside it that even unsigned messages will contain extra-encoding once a message has
+         * been signed. But it will be transparent if the recipient decodes properly quoted-printable.
+         */
+        TextBody.setSignSafe(true);
+        MimeBodyPart bodyPart = mime.toBodyPart();
+        bodyPart.setUsing7bitTransport();
+        ByteArrayOutputStream messageToSign = new ByteArrayOutputStream();
+        try {
+            bodyPart.writeTo(messageToSign);
+            Intent result = openPgpApi.executeApi(pgpMimeSignIntent, new ByteArrayInputStream(messageToSign.toByteArray()), null);
+            if (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR) != OpenPgpApi.RESULT_CODE_SUCCESS) {
+                OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                Log.e(OpenPgpApi.TAG, error.getMessage());
+                throw new OpenPgpApiException(error);
+            }
+            byte[] signedData = result.getByteArrayExtra(OpenPgpApi.RESULT_DETACHED_SIGNATURE);
+
+            MimeMultipart multipartSigned = new MimeMultipart();
+            multipartSigned.setSubType("signed");
+            multipartSigned.addBodyPart(bodyPart);
+            multipartSigned.addBodyPart(new MimeBodyPart(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT), "application/pgp-signature"));
+
+            MimeMessageHelper.setBody(mime, multipartSigned);
+            mime.addContentTypeParameter("protocol", "\"application/pgp-signature\"");
+            mime.addContentTypeParameter("micalg", "pgp-sha256");
+        } catch(IOException e){
+            throw new RuntimeException(e.getLocalizedMessage(), e);
+        }
+    }
+
+    /**
+     * Process the message in order to encapsulate it in a multipart/encrypted mime entity
+     * @see <a href="http://tools.ietf.org/html/rfc2015">RFC-2015</a>
+     * @param mime message to encrypt and process
+     * @throws MessagingException
+     */
+    private void encapsulateMimeInMultipartEncrypted(MimeMessage mime) throws MessagingException, OpenPgpApiException {
+        ByteArrayOutputStream mimeMessageToEncrypt = new ByteArrayOutputStream();
+        try {
+            mime.toBodyPart().writeTo(mimeMessageToEncrypt);
+
+            final ByteArrayOutputStream encryptedData = new ByteArrayOutputStream();
+            Intent result = openPgpApi.executeApi(pgpMimeEncryptIntent, new ByteArrayInputStream(mimeMessageToEncrypt.toByteArray()), encryptedData);
+            if (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR) == OpenPgpApi.RESULT_CODE_ERROR) {
+                OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                Log.e(OpenPgpApi.TAG, error.getMessage());
+                throw new OpenPgpApiException(error);
+            }
+
+            MimeMultipart multipartEncrypted = new MimeMultipart();
+            multipartEncrypted.setSubType("encrypted");
+            multipartEncrypted.addBodyPart(new MimeBodyPart(new BinaryMemoryBody("Version: 1".getBytes("US-ASCII"), MimeUtil.ENC_7BIT), "application/pgp-encrypted"));
+
+            multipartEncrypted.addBodyPart(new MimeBodyPart(
+                    new BinaryMemoryBody(encryptedData.toByteArray(), MimeUtil.ENC_7BIT), "application/octet-stream"));
+            MimeMessageHelper.setBody(mime, multipartEncrypted);
+            mime.addContentTypeParameter("protocol", "\"application/pgp-encrypted\"");
+        } catch (IOException e) {
+            throw new RuntimeException(e.getLocalizedMessage(), e);
+        }
     }
 }

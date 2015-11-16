@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Collection;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -18,7 +19,7 @@ import org.apache.james.mime4j.util.MimeUtil;
  * Message.
  */
 public class MimeBodyPart extends BodyPart {
-    private final MimeHeader mHeader = new MimeHeader();
+    private MimeHeader mHeader = new MimeHeader();
     private Body mBody;
 
     public MimeBodyPart() throws MessagingException {
@@ -34,6 +35,11 @@ public class MimeBodyPart extends BodyPart {
             addHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType);
         }
         MimeMessageHelper.setBody(this, body);
+    }
+
+    MimeBodyPart(MimeHeader header, Body body)  throws MessagingException {
+        this(body);
+        mHeader = header;
     }
 
     private String getFirstHeader(String name) {
@@ -141,6 +147,7 @@ public class MimeBodyPart extends BodyPart {
     @Override
     public void setUsing7bitTransport() throws MessagingException {
         String type = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
+        String transferEncoding = getFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
         /*
          * We don't trust that a multipart/* will properly have an 8bit encoding
          * header if any of its subparts are 8bit, so we automatically recurse
@@ -150,8 +157,8 @@ public class MimeBodyPart extends BodyPart {
             setEncoding(MimeUtil.ENC_7BIT);
             // recurse
             ((CompositeBody) mBody).setUsing7bitTransport();
-        } else if (!MimeUtil.ENC_8BIT
-                .equalsIgnoreCase(getFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING))) {
+        } else if (!MimeUtil.ENC_8BIT.equalsIgnoreCase(transferEncoding)
+                && !MimeUtil.isSameMimeType(transferEncoding, MimeUtil.ENC_BINARY)) {
             return;
         } else if (type != null &&
                 (MimeUtility.isSameMimeType(type, "multipart/signed") || MimeUtility.isMessage(type))) {
@@ -177,4 +184,16 @@ public class MimeBodyPart extends BodyPart {
             setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
         }
     }
+
+
+    /**
+     * Returns the value of content-type given parameter.
+     * To allow comparison, the returned string isn't quoted.
+     * @param attribute
+     * @return the unquoted parameter value
+     */
+    public String getContentTypeParameter(String attribute){
+        return mHeader.getContentTypeParameter(attribute);
+    }
+
 }

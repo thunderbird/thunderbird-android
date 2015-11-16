@@ -476,6 +476,12 @@
             android:key="crypto_key"
             android:title="@string/account_settings_crypto_key" />
 
+        <CheckBoxPreference
+            android:key="pgp_mime_default"
+            android:title="@string/account_settings_crypto_pgp_mime"
+            android:summary="@string/account_settings_crypto_pgp_mime_summary"
+            android:persistent="false"/>
+
     </PreferenceScreen>
 
 </PreferenceScreen>
