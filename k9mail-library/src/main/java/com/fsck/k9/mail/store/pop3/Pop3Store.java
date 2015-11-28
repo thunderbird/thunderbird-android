@@ -252,10 +252,9 @@ public class Pop3Store extends RemoteStore {
 
     @Override
     public void checkSettings() throws MessagingException {
-        try {
-            Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
-            folder.open(Folder.OPEN_MODE_RW);
-            if (!mCapabilities.uidl) {
+        Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
+        folder.open(Folder.OPEN_MODE_RW);
+        if (!mCapabilities.uidl) {
             /*
              * Run an additional test to see if UIDL is supported on the server. If it's not we
              * can't service this account.
@@ -265,13 +264,10 @@ public class Pop3Store extends RemoteStore {
              * If the server doesn't support UIDL it will return a - response, which causes
              * executeSimpleCommand to throw a MessagingException, exiting this method.
              */
-                folder.executeSimpleCommand(UIDL_COMMAND);
+            folder.executeSimpleCommand(UIDL_COMMAND);
 
-            }
-            folder.close();
-        } catch (IOException ioe) {
-            throw new MessagingException("Unable to connect", ioe);
         }
+        folder.close();
     }
 
     @Override
@@ -300,7 +296,7 @@ public class Pop3Store extends RemoteStore {
         }
 
         @Override
-        public synchronized void open(int mode) throws MessagingException, IOException {
+        public synchronized void open(int mode) throws MessagingException {
             if (isOpen()) {
                 return;
             }
@@ -393,7 +389,7 @@ public class Pop3Store extends RemoteStore {
                 if (e.getCause() instanceof CertificateException) {
                     throw new CertificateValidationException(e.getMessage(), e);
                 } else {
-                    throw e;
+                    throw new MessagingException("Unable to connect", e);
                 }
             } catch (GeneralSecurityException gse) {
                 throw new MessagingException(
