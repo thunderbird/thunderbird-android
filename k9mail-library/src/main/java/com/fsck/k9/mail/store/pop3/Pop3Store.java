@@ -22,6 +22,7 @@ import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -251,9 +252,10 @@ public class Pop3Store extends RemoteStore {
 
     @Override
     public void checkSettings() throws MessagingException {
-        Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
-        folder.open(Folder.OPEN_MODE_RW);
-        if (!mCapabilities.uidl) {
+        try {
+            Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
+            folder.open(Folder.OPEN_MODE_RW);
+            if (!mCapabilities.uidl) {
             /*
              * Run an additional test to see if UIDL is supported on the server. If it's not we
              * can't service this account.
@@ -263,10 +265,13 @@ public class Pop3Store extends RemoteStore {
              * If the server doesn't support UIDL it will return a - response, which causes
              * executeSimpleCommand to throw a MessagingException, exiting this method.
              */
-            folder.executeSimpleCommand(UIDL_COMMAND);
+                folder.executeSimpleCommand(UIDL_COMMAND);
 
+            }
+            folder.close();
+        } catch (IOException ioe) {
+            throw new MessagingException("Unable to connect", ioe);
         }
-        folder.close();
     }
 
     @Override
@@ -295,7 +300,7 @@ public class Pop3Store extends RemoteStore {
         }
 
         @Override
-        public synchronized void open(int mode) throws MessagingException {
+        public synchronized void open(int mode) throws MessagingException, IOException {
             if (isOpen()) {
                 return;
             }
@@ -385,7 +390,11 @@ public class Pop3Store extends RemoteStore {
                             "Unhandled authentication method found in the server settings (bug).");
                 }
             } catch (SSLException e) {
-                throw new CertificateValidationException(e.getMessage(), e);
+                if (e.getCause() instanceof CertificateException) {
+                    throw new CertificateValidationException(e.getMessage(), e);
+                } else {
+                    throw e;
+                }
             } catch (GeneralSecurityException gse) {
                 throw new MessagingException(
                     "Unable to open connection to POP server due to security error.", gse);

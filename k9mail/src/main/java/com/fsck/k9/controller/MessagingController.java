@@ -1860,7 +1860,9 @@ public class MessagingController implements Runnable {
                     return;
                 }
             }
+
             remoteFolder.open(Folder.OPEN_MODE_RW);
+
             if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
                 return;
             }
@@ -1951,6 +1953,8 @@ public class MessagingController implements Runnable {
                     }
                 }
             }
+        } catch (IOException ioe) {
+            throw new MessagingException("Unable to connect", ioe);
         } finally {
             closeFolder(remoteFolder);
             closeFolder(localFolder);
@@ -2093,7 +2097,13 @@ public class MessagingController implements Runnable {
             if (!remoteSrcFolder.exists()) {
                 throw new MessagingException("processingPendingMoveOrCopy: remoteFolder " + srcFolder + " does not exist", true);
             }
-            remoteSrcFolder.open(Folder.OPEN_MODE_RW);
+
+            try {
+                remoteSrcFolder.open(Folder.OPEN_MODE_RW);
+            } catch (IOException ioe) {
+                throw new MessagingException("Unable to connect", ioe);
+            }
+
             if (remoteSrcFolder.getMode() != Folder.OPEN_MODE_RW) {
                 throw new MessagingException("processingPendingMoveOrCopy: could not open remoteSrcFolder " + srcFolder + " read/write", true);
             }
@@ -2213,6 +2223,8 @@ public class MessagingController implements Runnable {
                 return;
             }
             remoteFolder.setFlags(messages, Collections.singleton(flag), newState);
+        } catch (IOException ioe) {
+            throw new MessagingException("Unable to connect", ioe);
         } finally {
             closeFolder(remoteFolder);
         }
@@ -2253,6 +2265,8 @@ public class MessagingController implements Runnable {
                 return;
             }
             remoteMessage.setFlag(flag, newState);
+        } catch (IOException ioe) {
+            throw new MessagingException("Unable to connect", ioe);
         } finally {
             closeFolder(remoteFolder);
         }
@@ -2295,6 +2309,8 @@ public class MessagingController implements Runnable {
             remoteFolder.expunge();
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "processPendingExpunge: complete for folder = " + folder);
+        } catch (IOException ioe) {
+            throw new MessagingException("Unable to connect", ioe);
         } finally {
             closeFolder(remoteFolder);
         }
@@ -2326,7 +2342,13 @@ public class MessagingController implements Runnable {
         if (!remoteSrcFolder.exists()) {
             throw new MessagingException("processPendingMoveOrCopyOld: remoteFolder " + srcFolder + " does not exist", true);
         }
-        remoteSrcFolder.open(Folder.OPEN_MODE_RW);
+
+        try {
+            remoteSrcFolder.open(Folder.OPEN_MODE_RW);
+        } catch (IOException ioe) {
+            throw new MessagingException("Unable to connect", ioe);
+        }
+
         if (remoteSrcFolder.getMode() != Folder.OPEN_MODE_RW) {
             throw new MessagingException("processPendingMoveOrCopyOld: could not open remoteSrcFolder " + srcFolder + " read/write", true);
         }
@@ -2352,7 +2374,12 @@ public class MessagingController implements Runnable {
             return;
         }
 
-        remoteDestFolder.open(Folder.OPEN_MODE_RW);
+        try {
+            remoteDestFolder.open(Folder.OPEN_MODE_RW);
+        } catch (IOException ioe) {
+            throw new MessagingException("Unable to connect", ioe);
+        }
+
         if (remoteDestFolder.getMode() != Folder.OPEN_MODE_RW) {
             throw new MessagingException("processPendingMoveOrCopyOld: could not open remoteDestFolder " + srcFolder + " read/write", true);
         }
@@ -2408,6 +2435,8 @@ public class MessagingController implements Runnable {
             remoteFolder.close();
         } catch (UnsupportedOperationException uoe) {
             Log.w(K9.LOG_TAG, "Could not mark all server-side as read because store doesn't support operation", uoe);
+        } catch (IOException ioe) {
+            throw new MessagingException("Unable to connect", ioe);
         } finally {
             closeFolder(localFolder);
             closeFolder(remoteFolder);
@@ -2613,7 +2642,12 @@ public class MessagingController implements Runnable {
         try {
             Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folderName);
-            localFolder.open(Folder.OPEN_MODE_RW);
+
+            try {
+                localFolder.open(Folder.OPEN_MODE_RW);
+            } catch (IOException ioe) {
+                throw new MessagingException("Unable to connect", ioe);
+            }
 
             // Allows for re-allowing sending of messages that could not be sent
             if (flag == Flag.FLAGGED && !newState &&
@@ -2680,7 +2714,12 @@ public class MessagingController implements Runnable {
         try {
             LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folderName);
-            localFolder.open(Folder.OPEN_MODE_RW);
+
+            try {
+                localFolder.open(Folder.OPEN_MODE_RW);
+            } catch (IOException ioe) {
+                throw new MessagingException("Unable to connect", ioe);
+            }
 
             Message message = localFolder.getMessage(uid);
             if (message != null) {
@@ -2833,7 +2872,7 @@ public class MessagingController implements Runnable {
 
                     LocalMessage message = localFolder.getMessage(uid);
                     if (message == null
-                    || message.getId() == 0) {
+                            || message.getId() == 0) {
                         throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
                     }
                     // IMAP search results will usually need to be downloaded before viewing.
@@ -2926,7 +2965,11 @@ public class MessagingController implements Runnable {
 
                     Store remoteStore = account.getRemoteStore();
                     remoteFolder = remoteStore.getFolder(folderName);
-                    remoteFolder.open(Folder.OPEN_MODE_RW);
+                    try {
+                        remoteFolder.open(Folder.OPEN_MODE_RW);
+                    } catch (IOException ioe) {
+                        throw new MessagingException("Unable to connect", ioe);
+                    }
 
                     Message remoteMessage = remoteFolder.getMessage(message.getUid());
                     remoteFolder.fetchPart(remoteMessage, part, null);
@@ -2945,7 +2988,6 @@ public class MessagingController implements Runnable {
                     }
                     notifyUserIfCertificateProblem(account, me, true);
                     addErrorMessage(account, null, me);
-
                 } finally {
                     closeFolder(localFolder);
                     closeFolder(remoteFolder);
@@ -3778,6 +3820,8 @@ public class MessagingController implements Runnable {
 
 
             }
+        } catch (IOException ioe) {
+            throw new MessagingException("Unable to connect", ioe);
         } finally {
             closeFolder(remoteFolder);
         }
@@ -4008,7 +4052,11 @@ public class MessagingController implements Runnable {
 
             Store localStore = account.getLocalStore();
             for (final Folder folder : localStore.getPersonalNamespaces(false)) {
-                folder.open(Folder.OPEN_MODE_RW);
+                try {
+                    folder.open(Folder.OPEN_MODE_RW);
+                } catch (IOException ioe) {
+                    throw new MessagingException("Unable to connect", ioe);
+                }
 
                 Folder.FolderClass fDisplayClass = folder.getDisplayClass();
                 Folder.FolderClass fSyncClass = folder.getSyncClass();

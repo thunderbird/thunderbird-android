@@ -33,7 +33,7 @@ public abstract class Folder<T extends Message> {
      *
      * @param mode READ_ONLY or READ_WRITE
      */
-    public abstract void open(int mode) throws MessagingException;
+    public abstract void open(int mode) throws MessagingException, IOException;
 
     /**
      * Forces a close of the MailProvider. Any further access will attempt to
