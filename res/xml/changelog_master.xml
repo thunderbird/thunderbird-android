@@ -12,7 +12,7 @@
         <change>Fixed an issue caused by the latest Android System WebView update</change>
     </release>
     <release version="5.005" versioncode="22005" >
-        <change>Fixed a bug where messages where not always displayed on Android 5.x</change>
+        <change>Fixed a bug where messages were not always displayed on Android 5.x</change>
     </release>
     <release version="5.004" versioncode="22004" >
         <change>Fixed more crashes when selecting messages on Android 5.1</change>
