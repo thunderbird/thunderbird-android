@@ -21,6 +21,7 @@ import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -389,7 +390,11 @@ public class Pop3Store extends Store {
                             "Unhandled authentication method found in the server settings (bug).");
                 }
             } catch (SSLException e) {
-                throw new CertificateValidationException(e.getMessage(), e);
+                if (e.getCause() instanceof CertificateException) {
+                    throw new CertificateValidationException(e.getMessage(), e);
+                } else {
+                    throw new MessagingException("Unable to connect", e);
+                }
             } catch (GeneralSecurityException gse) {
                 throw new MessagingException(
                     "Unable to open connection to POP server due to security error.", gse);
