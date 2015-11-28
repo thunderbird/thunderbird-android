@@ -129,6 +129,10 @@
         <incoming uri="imap+ssl+://imap.gmx.com" username="$email" />
         <outgoing uri="smtp+ssl+://mail.gmx.com" username="$email" />
     </provider>
+    <provider id="zoho.com" label="Zoho Mail" domain="zoho.com">
+    	<incoming uri="imap+ssl+://imap.zoho.com" username="$email" />
+    	<outgoing uri="smtp+tls+://smtp.zoho.com" username="$email" />
+    </provider>
 
     <!-- Yahoo! Mail Variants -->
     <provider id="yahoo" label="Yahoo" domain="yahoo.com">
@@ -195,6 +199,10 @@
         <incoming uri="imap+ssl+://imap.web.de" username="$user" />
         <outgoing uri="smtp+tls+://smtp.web.de" username="$user" />
     </provider>
+    <provider id="posteo" label="Posteo" domain="posteo.net">
+        <incoming uri="imap+tls+://posteo.de" username="$email" />
+        <outgoing uri="smtp+tls+://posteo.de" username="$email" />
+    </provider>    
     <provider id="posteo" label="Posteo" domain="posteo.de">
         <incoming uri="imap+tls+://posteo.de" username="$email" />
         <outgoing uri="smtp+tls+://posteo.de" username="$email" />
@@ -220,7 +228,31 @@
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
         <outgoing uri="smtp+tls+://mail.gmx.net" username="$email" />
     </provider>
-    
+
+     <!-- Greece -->
+    <provider id="otenet.gr" label="otenet.gr" domain="otenet.gr">
+        <incoming uri="imap+ssl+://imap.otenet.gr" username="$email" />
+        <outgoing uri="smtp+tls+://mailgate.otenet.gr" username="$email" />
+    </provider>
+    <provider id="cosmotemail.gr" label="cosmotemail" domain="cosmotemail.gr">
+        <incoming uri="imap+ssl+://imap.cosmotemail.gr" username="$email" />
+        <outgoing uri="smtp+tls+://mailgate.cosmotemail.gr" username="$email" />
+    </provider>
+    <provider id="mycosmos.gr" label="mycosmos" domain="mycosmos.gr">
+        <incoming uri="imap+ssl+://mail.mycosmos.gr" username="$email" />
+        <outgoing uri="smtp+tls+://mail.mycosmos.gr" username="$email" />
+    </provider>
+
+   <!-- Italy -->
+   <provider id="poste" label="poste" domain="poste.it">
+        <incoming uri="imap+ssl+://relay.poste.it" username="$email" />
+        <outgoing uri="smtp+ssl+://relay.poste.it" username="$email" />
+   </provider>
+   <provider id="vodafone" label="vodafone" domain="vodafone.it">
+        <incoming uri="imap+ssl+://imap.vodafone.it" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.vodafone.it" username="$email" />
+   </provider>
+
    <!-- Switzerland -->
     <!-- MyKolab.com variants -->
     <provider id="mykolab.com" label="MyKolab.com" domain="mykolab.com">
