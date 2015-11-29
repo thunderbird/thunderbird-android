@@ -41,7 +41,7 @@
                     android:layout_marginRight="6dip"
                     android:layout_width="fill_parent">
 
-                    <MultiAutoCompleteTextView
+                    <com.fsck.k9.activity.RecipientSelectView
                         android:id="@+id/to"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress|textMultiLine"
@@ -73,7 +73,7 @@
                     android:layout_marginRight="6dip"
                     android:layout_width="fill_parent">
 
-                    <MultiAutoCompleteTextView
+                    <com.fsck.k9.activity.RecipientSelectView
                         android:id="@+id/cc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                     android:layout_marginRight="6dip"
                     android:layout_width="fill_parent">
 
-                    <MultiAutoCompleteTextView
+                    <com.fsck.k9.activity.RecipientSelectView
                         android:id="@+id/bcc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

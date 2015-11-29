@@ -19,6 +19,7 @@ dependencies {
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.4.0'
     compile 'org.sufficientlysecure:openpgp-api:8.0'
+    compile 'com.splitwise:tokenautocomplete:2.0.2'
 
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'

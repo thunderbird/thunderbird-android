@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ccc">
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:id="@+id/contact_photo"
+        tools:src="@drawable/ic_action_add_cc_bbc_light"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@android:id/text1"
+        android:layout_gravity="center_vertical"
+        android:padding="4dp"
+        tools:text="Name"
+        />
+
+</LinearLayout>

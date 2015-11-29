@@ -1,26 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="50dip"
-    android:layout_centerVertical="true"
-    android:orientation="vertical">
-    <TextView android:id="@+id/text1"
-        android:textColor="?attr/textColorPrimaryRecipientDropdown"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="6dip"
-        android:singleLine="true"
-        android:ellipsize="end"
+    android:minHeight="?android:listPreferredItemHeight"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_margin="8dp"
+        android:id="@+id/contact_photo"
+        tools:src="@drawable/action_search_folder_light"
         />
-    <TextView android:id="@+id/text2"
-        android:textColor="?attr/textColorSecondaryRecipientDropdown"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="12dip"
-        android:singleLine="true"
-        android:ellipsize="end"
-        />
+        android:orientation="vertical">
+
+        <TextView android:id="@+id/text1"
+            android:textColor="?attr/textColorPrimaryRecipientDropdown"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6dip"
+            android:singleLine="true"
+            android:ellipsize="end"
+            tools:text="Mr. Firstname Lastname"
+            />
+
+        <TextView android:id="@+id/text2"
+            android:textColor="?attr/textColorSecondaryRecipientDropdown"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dip"
+            android:singleLine="true"
+            android:ellipsize="end"
+            tools:text="address@example.com"
+            />
+
+    </LinearLayout>
+
 </LinearLayout>
