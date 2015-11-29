@@ -609,6 +609,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         };
 
+        mToView.setCryptoProvider(mAccount.getOpenPgpProvider());
+
         mToView.addTextChangedListener(draftNeedsChangingTextWatcher);
         mCcView.addTextChangedListener(draftNeedsChangingTextWatcher);
         mBccView.addTextChangedListener(draftNeedsChangingTextWatcher);

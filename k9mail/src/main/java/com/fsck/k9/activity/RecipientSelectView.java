@@ -1,5 +1,6 @@
 package com.fsck.k9.activity;
 
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -8,15 +9,13 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Loader;
-import android.database.Cursor;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -33,13 +32,13 @@ import com.fsck.k9.mail.Address;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 
-public class RecipientSelectView extends TokenCompleteTextView<Recipient>
-        implements LoaderCallbacks<Cursor> {
+public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>> {
 
     public static final String ARG_QUERY = "query";
 
-    private RecipientAdapter mAdapter;
-    private android.app.LoaderManager mLoaderManager;
+    private RecipientAdapter adapter;
+    private String cryptoProvider;
+    private LoaderManager loaderManager;
 
     public RecipientSelectView(Context context) {
         super(context);
@@ -65,8 +64,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         // if a token is completed, pick an entry based on best guess
         performBestGuess(true);
 
-        mAdapter = new RecipientAdapter(getContext(), null, 0);
-        setAdapter(mAdapter);
+        adapter = new RecipientAdapter(getContext());
+        setAdapter(adapter);
     }
 
     @Override
@@ -108,43 +107,13 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         super.onAttachedToWindow();
 
         if (getContext() instanceof Activity) {
-            mLoaderManager = ((Activity) getContext()).getLoaderManager();
-            mLoaderManager.initLoader(0, null, this);
+            loaderManager = ((Activity) getContext()).getLoaderManager();
         }
     }
 
     @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mLoaderManager = null;
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        String query = args != null && args.containsKey(ARG_QUERY) ? args.getString(ARG_QUERY) : "";
-//        mAdapter.setSearchQuery(query);
-        Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_FILTER_URI, Uri.encode(query));
-
-        return new CursorLoader(getContext(), uri, RecipientAdapter.PROJECTION, null, null, RecipientAdapter.SORT_ORDER);
-
-        // new String[]{"%" + query + "%"}, null);
-
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
-    }
-
-    @Override
     public void showDropDown() {
-        boolean cursorIsValid = mAdapter != null && mAdapter.getCursor() != null && !mAdapter.getCursor().isClosed();
+        boolean cursorIsValid = adapter != null;
         if (!cursorIsValid) {
             return;
         }
@@ -162,15 +131,21 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
 
     @Override
     protected void performFiltering(@NonNull CharSequence text, int start, int end, int keyCode) {
-        super.performFiltering(text, start, end, keyCode);
         String query = text.subSequence(start, end).toString();
+
         if (TextUtils.isEmpty(query) || query.length() < 2) {
-            mLoaderManager.destroyLoader(0);
+            loaderManager.destroyLoader(0);
             return;
         }
+
         Bundle args = new Bundle();
         args.putString(ARG_QUERY, query);
-        mLoaderManager.restartLoader(0, args, this);
+        loaderManager.restartLoader(0, args, this);
+
+    }
+
+    public void setCryptoProvider(String cryptoProvider) {
+        this.cryptoProvider = cryptoProvider;
     }
 
     public void addAddress(Address... addresses) {
@@ -188,6 +163,23 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         return address;
     }
 
+    @Override
+    public Loader<List<Recipient>> onCreateLoader(int id, Bundle args) {
+        String query = args != null && args.containsKey(ARG_QUERY) ? args.getString(ARG_QUERY) : "";
+        // mAdapter.setSearchQuery(query);
+        return new RecipientLoader(getContext(), query, cryptoProvider);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Recipient>> loader, List<Recipient> data) {
+        adapter.setRecipients(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Recipient>> loader) {
+        adapter.setRecipients(null);
+    }
+
     static class Recipient implements Serializable {
         @NonNull
         public final Address address;
@@ -197,6 +189,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
 
         @Nullable // null if the contact has no photo
         transient Uri photoThumbnailUri;
+
+        // TODO change to enum
+        @Nullable // null if no info is available
+        Integer cryptoStatus;
+
 
         Recipient(@NonNull Address address) {
             this.address = address;

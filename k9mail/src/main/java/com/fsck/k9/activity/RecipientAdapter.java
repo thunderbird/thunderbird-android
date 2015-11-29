@@ -1,14 +1,16 @@
 package com.fsck.k9.activity;
 
 
+import java.util.List;
+
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,78 +18,91 @@ import com.bumptech.glide.Glide;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.RecipientSelectView.Recipient;
 import com.fsck.k9.helper.ContactPicture;
+import com.tokenautocomplete.FilteredArrayAdapter;
 
 
-public class RecipientAdapter extends CursorAdapter {
+public class RecipientAdapter extends BaseAdapter implements Filterable {
 
-    /** Indexes of the fields in the projection. This must match the order in
-     * {@link #PROJECTION}. */
-    protected static final int INDEX_NAME = 1;
-    protected static final int INDEX_EMAIL = 2;
-    protected static final int INDEX_CONTACT_ID = 3;
-    protected static final int INDEX_PHOTO_URI = 4;
+    List<Recipient> recipients;
+    boolean showCryptoStatus = true;
+    Context context;
 
-    protected static final String[] PROJECTION = {
-            ContactsContract.CommonDataKinds.Email._ID,
-            ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Email.DATA,
-            ContactsContract.CommonDataKinds.Email.CONTACT_ID,
-            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
-    };
-
-    protected static final String SORT_ORDER =
-            ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
-                    ContactsContract.Contacts.DISPLAY_NAME + ", " +
-                    ContactsContract.CommonDataKinds.Email._ID;
-
-    public RecipientAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+    public RecipientAdapter(Context context) {
+        super();
+        this.context = context;
     }
 
-    public Recipient getCurrentItem() {
-        Cursor cursor = getCursor();
-        if (cursor == null || cursor.isClosed()) {
-            return null;
-        }
+    public void setRecipients(List<Recipient> recipients) {
+        this.recipients = recipients;
+        notifyDataSetChanged();
+    }
 
-        String name = cursor.getString(INDEX_NAME);
-        String email = cursor.getString(INDEX_EMAIL);
-        long contactId = cursor.getLong(INDEX_CONTACT_ID);
-
-        Uri uri = cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
-        Recipient recipient = new Recipient(name, email, contactId);
-        recipient.photoThumbnailUri = uri;
-        return recipient;
+    @Override
+    public int getCount() {
+        return recipients == null ? 0 : recipients.size();
     }
 
     @Override
     public Recipient getItem(int position) {
-        Cursor cursor = getCursor();
-        if (cursor == null || !cursor.moveToPosition(position)) {
-            return null;
-        }
-
-        return getCurrentItem();
+        return recipients == null ? null : recipients.get(position);
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+    public long getItemId(int position) {
+        return recipients.get(position).hashCode();
+    }
+
+    @Override
+    public View getView(int position, View view, ViewGroup parent) {
+
+        if (view == null) {
+            view = newView(parent);
+        }
+        Recipient recipient = getItem(position);
+        bindView(view, recipient);
+
+        return view;
+    }
+
+    public View newView(ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.recipient_dropdown_item, parent, false);
         RecipientTokenHolder holder = new RecipientTokenHolder(view);
         view.setTag(holder);
         return view;
     }
 
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, Recipient recipient) {
 
         RecipientTokenHolder holder = (RecipientTokenHolder) view.getTag();
-        Recipient recipient = getCurrentItem();
 
         holder.name.setText(recipient.address.getPersonal());
-        holder.email.setText(recipient.address.getAddress());
+
+        String address = recipient.address.getAddress();
+        holder.email.setText(address);
 
         setContactPhotoOrPlaceholder(context, holder.photo, recipient);
+
+        if (!showCryptoStatus) {
+            holder.cryptoStatus.setVisibility(View.GONE);
+            return;
+        }
+        holder.cryptoStatus.setVisibility(View.VISIBLE);
+
+        int cryptoStatusRes, cryptoStatusColor;
+        if (recipient.cryptoStatus != null && recipient.cryptoStatus > 0) {
+            if (recipient.cryptoStatus == 2) {
+                cryptoStatusRes = R.drawable.status_lock_closed;
+                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_green);
+            } else {
+                cryptoStatusRes = R.drawable.status_lock_error;
+                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
+            }
+        } else {
+            cryptoStatusRes = R.drawable.status_lock_open;
+            cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
+        }
+        holder.cryptoStatus.setImageResource(cryptoStatusRes);
+        holder.cryptoStatus.setImageTintList(ColorStateList.valueOf(cryptoStatusColor));
 
     }
 
@@ -99,14 +114,37 @@ public class RecipientAdapter extends CursorAdapter {
         }
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                if (recipients == null) {
+                    return null;
+                }
+                FilterResults result = new FilterResults();
+                result.values = recipients;
+                result.count = recipients.size();
+                return result;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                notifyDataSetChanged();
+            }
+        };
+    }
+
     static class RecipientTokenHolder {
         TextView name, email;
         ImageView photo;
+        ImageView cryptoStatus;
 
         public RecipientTokenHolder(View view) {
             name = (TextView) view.findViewById(R.id.text1);
             email = (TextView) view.findViewById(R.id.text2);
             photo = (ImageView) view.findViewById(R.id.contact_photo);
+            cryptoStatus = (ImageView) view.findViewById(R.id.contact_crypto_status);
         }
     }
 
