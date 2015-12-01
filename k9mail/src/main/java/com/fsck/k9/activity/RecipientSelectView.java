@@ -86,6 +86,13 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         ImageView contactView = (ImageView) view.findViewById(R.id.contact_photo);
         RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), contactView, recipient);
 
+        int cryptoStatus = recipient.getCryptoStatus();
+
+        View cryptoStatusRed = view.findViewById(R.id.contact_crypto_status_red);
+        View cryptoStatusOrange = view.findViewById(R.id.contact_crypto_status_orange);
+        cryptoStatusRed.setVisibility(cryptoStatus == 0 ? View.VISIBLE : View.GONE);
+        cryptoStatusOrange.setVisibility(cryptoStatus == 1 ? View.VISIBLE : View.GONE);
+
         return view;
     }
 
@@ -194,7 +201,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         @Nullable // null if no info is available
         Integer cryptoStatus;
 
-
         Recipient(@NonNull Address address) {
             this.address = address;
             this.contactId = null;
@@ -203,6 +209,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         Recipient(String name, String email, long contactId) {
             this.address = new Address(email, name);
             this.contactId = contactId;
+        }
+
+        public int getCryptoStatus() {
+            return cryptoStatus == null ? 0 : cryptoStatus;
         }
 
         @Override

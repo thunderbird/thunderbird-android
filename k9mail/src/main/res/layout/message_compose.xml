@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
@@ -32,7 +33,7 @@
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"/>
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/to_wrapper"
                     android:layout_height="wrap_content"
                     android:baselineAligned="true"
@@ -44,25 +45,52 @@
                     <com.fsck.k9.activity.RecipientSelectView
                         android:id="@+id/to"
                         android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
                         android:inputType="textEmailAddress|textMultiLine"
                         android:imeOptions="actionNext"
                         android:hint="@string/message_compose_to_hint"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_width="0dp"
-                        android:layout_marginRight="6dip"
-                        android:layout_weight="1"/>
+                        android:paddingRight="38dp"
+                        android:paddingEnd="38dp"
+                        />
 
-                    <ImageButton
-                        android:id="@+id/add_to"
-                        android:contentDescription="@string/message_compose_description_add_to"
-                        android:src="?attr/messageComposeAddContactImage"
-                        android:layout_height="wrap_content"
+                    <ViewAnimator
                         android:layout_width="wrap_content"
-                        android:padding="8dip"
-                        android:layout_marginTop="1dip"
-                        android:visibility="gone" />
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:id="@+id/crypto_status"
+                        android:visibility="gone"
+                        android:inAnimation="@anim/fade_in"
+                        android:outAnimation="@anim/fade_out"
+                        tools:visibility="visible">
 
-                </LinearLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/status_lock_open"
+                            android:tint="@color/openpgp_red"
+                            />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/status_lock_error"
+                            android:tint="@color/openpgp_orange"
+                            />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/status_lock_closed"
+                            android:tint="@color/openpgp_green"
+                            />
+
+                    </ViewAnimator>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/cc_wrapper"
@@ -84,15 +112,6 @@
                         android:imeOptions="actionNext"
                         android:hint="@string/message_compose_cc_hint"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                    <ImageButton
-                        android:id="@+id/add_cc"
-                        android:contentDescription="@string/message_compose_description_add_cc"
-                        android:src="?attr/messageComposeAddContactImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="8dip"
-                        android:layout_marginTop="1dip"/>
 
                 </LinearLayout>
 
@@ -116,15 +135,6 @@
                         android:imeOptions="actionNext"
                         android:hint="@string/message_compose_bcc_hint"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                    <ImageButton
-                        android:id="@+id/add_bcc"
-                        android:contentDescription="@string/message_compose_description_add_bcc"
-                        android:layout_marginTop="1dip"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:padding="8dip"
-                        android:src="?attr/messageComposeAddContactImage"/>
 
                 </LinearLayout>
 

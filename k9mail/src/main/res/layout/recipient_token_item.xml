@@ -22,4 +22,25 @@
         tools:text="Name"
         />
 
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="-5dp"
+        android:src="@drawable/ic_corner_stripe_tr"
+        android:tint="@color/openpgp_red"
+        android:visibility="gone"
+        android:id="@+id/contact_crypto_status_red"
+        />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="-5dp"
+        android:src="@drawable/ic_corner_stripe_tr"
+        android:tint="@color/openpgp_orange"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:id="@+id/contact_crypto_status_orange"
+        />
+
 </LinearLayout>

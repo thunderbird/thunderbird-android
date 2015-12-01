@@ -15,6 +15,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose.CaseInsensitiveParamWrapper;
+import com.fsck.k9.activity.RecipientSelectView.Recipient;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -35,6 +36,7 @@ public class RecipientPresenter {
 
     public RecipientPresenter(RecipientView recipientView, Account account) {
         this.recipientView = recipientView;
+        recipientView.setPresenter(this);
         onSwitchAccount(account);
     }
 
@@ -50,6 +52,16 @@ public class RecipientPresenter {
         return recipientView.getBccAddresses();
     }
 
+    public List<Recipient> getAllRecipients() {
+        ArrayList<Recipient> result = new ArrayList<Recipient>();
+
+        result.addAll(recipientView.getToRecipients());
+        result.addAll(recipientView.getCcRecipients());
+        result.addAll(recipientView.getBccRecipients());
+
+        return result;
+    }
+
     public List<Address> getAllRecipientAddresses() {
         ArrayList<Address> result = new ArrayList<Address>();
 
@@ -62,14 +74,13 @@ public class RecipientPresenter {
 
     public boolean checkHasNoRecipients() {
         if (getToAddresses().isEmpty() && getCcAddresses().isEmpty() && getBccAddresses().isEmpty()) {
-            recipientView.setToError(R.string.message_compose_error_no_recipients);
+            recipientView.showNoRecipientsError();
             return true;
         }
         return false;
     }
 
     public void initFromReplyToMessage(Message message, Account mAccount) {
-
         Address[] replyToAddresses;
         if (message.getReplyTo().length > 0) {
             replyToAddresses = message.getReplyTo();
@@ -111,11 +122,9 @@ public class RecipientPresenter {
             // can't happen, we know the recipient types exist
             throw new AssertionError(e);
         }
-
     }
 
     public void initFromMailto(Uri mailtoUri, CaseInsensitiveParamWrapper uri) {
-
         String schemaSpecific = mailtoUri.getSchemeSpecificPart();
         int end = schemaSpecific.indexOf('?');
         if (end == -1) {
@@ -138,11 +147,9 @@ public class RecipientPresenter {
 
         // Read blind carbon copy recipients from the "bcc" parameter.
         addBccAddresses(addressFromStringArray(uri.getQueryParameters("bcc")));
-
     }
 
     public void initFromSendOrViewIntent(Intent intent) {
-
         String[] extraEmail = intent.getStringArrayExtra(Intent.EXTRA_EMAIL);
         String[] extraCc = intent.getStringArrayExtra(Intent.EXTRA_CC);
         String[] extraBcc = intent.getStringArrayExtra(Intent.EXTRA_BCC);
@@ -158,7 +165,6 @@ public class RecipientPresenter {
         if (extraBcc != null) {
             addBccAddresses(addressFromStringArray(extraBcc));
         }
-
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -173,7 +179,6 @@ public class RecipientPresenter {
     }
 
     public void initFromDraftMessage(LocalMessage message) {
-
         try {
             addToAddresses(message.getRecipients(RecipientType.TO));
 
@@ -186,7 +191,6 @@ public class RecipientPresenter {
             // can't happen, we know the recipient types exist
             throw new AssertionError(e);
         }
-
     }
 
     void addToAddresses(Address... toAddresses) {
@@ -249,7 +253,6 @@ public class RecipientPresenter {
     }
 
     private static Address[] addressFromStringArray(List<String> addresses) {
-
         ArrayList<Address> result = new ArrayList<Address>(addresses.size());
 
         for (String addressStr : addresses) {
@@ -264,4 +267,46 @@ public class RecipientPresenter {
         recipientView.setBccVisibility(true);
         recipientView.invalidateOptionsMenu();
     }
+
+    public void updateCryptoStatus() {
+        List<Recipient> recipients = getAllRecipients();
+        if (recipients.isEmpty()) {
+            recipientView.hideCryptoStatus();
+            return;
+        }
+
+        boolean allKeys = true, allVerified = true;
+        for (Recipient recipient : recipients) {
+            int cryptoStatus = recipient.getCryptoStatus();
+            if (cryptoStatus == 0) {
+                allKeys = false;
+            } else if (cryptoStatus == 1) {
+                allVerified = false;
+            }
+        }
+
+        recipientView.showCryptoStatus(allKeys, allVerified);
+    }
+
+    public void onToTokenAdded(Recipient recipient) {
+        updateCryptoStatus();
+    }
+    public void onToTokenRemoved(Recipient recipient) {
+        updateCryptoStatus();
+    }
+
+    public void onCcTokenAdded(Recipient recipient) {
+        updateCryptoStatus();
+    }
+    public void onCcTokenRemoved(Recipient recipient) {
+        updateCryptoStatus();
+    }
+
+    public void onBccTokenAdded(Recipient recipient) {
+        updateCryptoStatus();
+    }
+    public void onBccTokenRemoved(Recipient recipient) {
+        updateCryptoStatus();
+    }
+
 }
