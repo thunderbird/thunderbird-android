@@ -113,16 +113,16 @@ public class RecipientView {
         fontSizes.setViewTextSize(bccView, fontSize);
     }
 
-    public void addToAddresses(Address... addresses) {
-        toView.addAddress(addresses);
+    public void addToRecipients(Recipient... recipients) {
+        toView.addRecipients(recipients);
     }
 
-    public void addCcAddresses(Address... addresses) {
-        ccView.addAddress(addresses);
+    public void addCcRecipients(Recipient... recipients) {
+        ccView.addRecipients(recipients);
     }
 
-    public void addBccAddresses(Address... addresses) {
-        bccView.addAddress(addresses);
+    public void addBccRecipients(Recipient... recipients) {
+        bccView.addRecipients(recipients);
     }
 
     public void setCcVisibility(boolean visible) {

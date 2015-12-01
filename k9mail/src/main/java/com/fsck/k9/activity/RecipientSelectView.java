@@ -155,9 +155,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         this.cryptoProvider = cryptoProvider;
     }
 
-    public void addAddress(Address... addresses) {
-        for (Address address : addresses) {
-            addObject(new Recipient(address));
+    public void addRecipients(Recipient... recipients) {
+        for (Recipient recipient : recipients) {
+            addObject(recipient);
         }
     }
 
@@ -174,7 +174,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     public Loader<List<Recipient>> onCreateLoader(int id, Bundle args) {
         String query = args != null && args.containsKey(ARG_QUERY) ? args.getString(ARG_QUERY) : "";
         // mAdapter.setSearchQuery(query);
-        return new RecipientLoader(getContext(), query, cryptoProvider);
+        return new RecipientLoader(getContext(), cryptoProvider, query);
     }
 
     @Override

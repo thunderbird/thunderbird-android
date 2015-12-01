@@ -47,17 +47,26 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                     ContactsContract.Contacts.DISPLAY_NAME + ", " +
                     ContactsContract.CommonDataKinds.Email._ID;
 
-    private String query;
-    private String cryptoProvider;
+    private final String query;
+    private final Address[] addresses;
+    private final String cryptoProvider;
 
     private List<Recipient> cachedRecipients;
 
     private ForceLoadContentObserver observerContact, observerKey;
     private CancellationSignal mCancellationSignal;
 
-    public RecipientLoader(Context context, String query, String cryptoProvider) {
+    public RecipientLoader(Context context, String cryptoProvider, String query) {
         super(context);
         this.query = query;
+        this.addresses = null;
+        this.cryptoProvider = cryptoProvider;
+    }
+
+    public RecipientLoader(Context context, String cryptoProvider, Address... addresses) {
+        super(context);
+        this.query = null;
+        this.addresses = addresses;
         this.cryptoProvider = cryptoProvider;
     }
 
@@ -75,14 +84,20 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             ArrayList<Recipient> recipients = new ArrayList<Recipient>();
             HashMap<String,Recipient> recipientMap = new HashMap<String, Recipient>();
 
-            loadContactData(recipients, recipientMap);
+            if (addresses != null) {
+                fillContactDataFromAddresses(addresses, recipients, recipientMap);
+            } else if (query != null) {
+                    fillContactDataFromQuery(query, recipients, recipientMap);
+            } else {
+                throw new IllegalStateException("loader must be initialized with query or list of addresses!");
+            }
 
             if (recipients.isEmpty()) {
                 return recipients;
             }
 
             if (cryptoProvider != null) {
-                loadCryptoStatusData(recipientMap);
+                fillCryptoStatusData(recipientMap);
             }
 
             return recipients;
@@ -94,7 +109,20 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         }
     }
 
-    private void loadContactData(ArrayList<Recipient> recipients, HashMap<String, Recipient> recipientMap) {
+    private void fillContactDataFromAddresses(Address[] addresses, ArrayList<Recipient> recipients,
+            HashMap<String, Recipient> recipientMap) {
+
+        for (Address address : addresses) {
+            // TODO actually query photos
+            Recipient recipient = new Recipient(address);
+            recipients.add(recipient);
+            recipientMap.put(address.getAddress(), recipient);
+        }
+
+    }
+
+    private void fillContactDataFromQuery(
+            String query, ArrayList<Recipient> recipients, HashMap<String, Recipient> recipientMap) {
 
         Uri queryUri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_FILTER_URI,
                 Uri.encode(query));
@@ -138,7 +166,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     }
 
-    private void loadCryptoStatusData(HashMap<String, Recipient> recipientMap) {
+    private void fillCryptoStatusData(HashMap<String, Recipient> recipientMap) {
         ArrayList<String> recipientArrayList = new ArrayList<String>(recipientMap.keySet());
         String[] recipientAddresses = recipientArrayList.toArray(new String[ recipientArrayList.size() ]);
 

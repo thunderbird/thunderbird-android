@@ -2112,7 +2112,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
          * If a reply-to was included with the message use that, otherwise use the from
          * or sender address.
          */
-        recipientPresenter.initFromReplyToMessage(message, mAccount);
+        recipientPresenter.initFromReplyToMessage(message);
 
         if (message.getMessageId() != null && message.getMessageId().length() > 0) {
             mInReplyTo = message.getMessageId();

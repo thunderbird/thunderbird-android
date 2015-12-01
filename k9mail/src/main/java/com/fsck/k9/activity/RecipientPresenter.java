@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,11 +32,14 @@ public class RecipientPresenter {
     private static final String STATE_KEY_BCC_SHOWN =
             "com.fsck.k9.activity.MessageCompose.bccShown";
 
+    private Context context;
     private RecipientView recipientView;
     private Account account;
+    private String cryptoProvider;
 
-    public RecipientPresenter(RecipientView recipientView, Account account) {
+    public RecipientPresenter(Context context, RecipientView recipientView, Account account) {
         this.recipientView = recipientView;
+        this.context = context;
         recipientView.setPresenter(this);
         onSwitchAccount(account);
     }
@@ -80,7 +84,7 @@ public class RecipientPresenter {
         return false;
     }
 
-    public void initFromReplyToMessage(Message message, Account mAccount) {
+    public void initFromReplyToMessage(Message message) {
         Address[] replyToAddresses;
         if (message.getReplyTo().length > 0) {
             replyToAddresses = message.getReplyTo();
@@ -91,28 +95,28 @@ public class RecipientPresenter {
         try {
             // if we're replying to a message we sent, we probably meant
             // to reply to the recipient of that message
-            if (mAccount.isAnIdentity(replyToAddresses)) {
+            if (account.isAnIdentity(replyToAddresses)) {
                 replyToAddresses = message.getRecipients(RecipientType.TO);
             }
 
-            recipientView.addToAddresses(replyToAddresses);
+            addRecipientsFromAddresses(RecipientType.TO, replyToAddresses);
 
             if (message.getReplyTo().length > 0) {
                 for (Address address : message.getFrom()) {
-                    if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                        recipientView.addToAddresses(address);
+                    if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
+                        addRecipientsFromAddresses(RecipientType.TO, address);
                     }
                 }
             }
             for (Address address : message.getRecipients(RecipientType.TO)) {
-                if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
+                if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
                     addToAddresses(address);
                 }
 
             }
             if (message.getRecipients(RecipientType.CC).length > 0) {
                 for (Address address : message.getRecipients(RecipientType.CC)) {
-                    if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
+                    if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
                         addCcAddresses(address);
                     }
 
@@ -194,12 +198,12 @@ public class RecipientPresenter {
     }
 
     void addToAddresses(Address... toAddresses) {
-        recipientView.addToAddresses(toAddresses);
+        addRecipientsFromAddresses(RecipientType.TO, toAddresses);
     }
 
     void addCcAddresses(Address... ccAddresses) {
         if (ccAddresses.length > 0) {
-            recipientView.addCcAddresses(ccAddresses);
+            addRecipientsFromAddresses(RecipientType.CC, ccAddresses);
             recipientView.setCcVisibility(true);
             recipientView.invalidateOptionsMenu();
         }
@@ -207,7 +211,7 @@ public class RecipientPresenter {
 
     void addBccAddresses(Address... bccRecipients) {
         if (bccRecipients.length > 0) {
-            recipientView.addBccAddresses(bccRecipients);
+            addRecipientsFromAddresses(RecipientType.BCC, bccRecipients);
             String bccAddress = account.getAlwaysBcc();
 
             // If the auto-bcc is the only entry in the BCC list, don't show the Bcc fields.
@@ -232,9 +236,11 @@ public class RecipientPresenter {
             recipientView.setBccVisibility(true);
             recipientView.invalidateOptionsMenu();
         }
-        recipientView.setCryptoProvider(account.getOpenPgpProvider());
+        cryptoProvider = account.getOpenPgpProvider();
+        recipientView.setCryptoProvider(cryptoProvider);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void onSwitchIdentity(Identity identity) {
 
         // TODO decide what actually to do on identity switch?
@@ -288,25 +294,52 @@ public class RecipientPresenter {
         recipientView.showCryptoStatus(allKeys, allVerified);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void onToTokenAdded(Recipient recipient) {
         updateCryptoStatus();
     }
+    @SuppressWarnings("UnusedParameters")
     public void onToTokenRemoved(Recipient recipient) {
         updateCryptoStatus();
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void onCcTokenAdded(Recipient recipient) {
         updateCryptoStatus();
     }
+    @SuppressWarnings("UnusedParameters")
     public void onCcTokenRemoved(Recipient recipient) {
         updateCryptoStatus();
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void onBccTokenAdded(Recipient recipient) {
         updateCryptoStatus();
     }
+    @SuppressWarnings("UnusedParameters")
     public void onBccTokenRemoved(Recipient recipient) {
         updateCryptoStatus();
+    }
+
+    private void addRecipientsFromAddresses(final RecipientType type, final Address... addresses) {
+        new RecipientLoader(context, cryptoProvider, addresses) {
+            @Override
+            public void deliverResult(List<Recipient> result) {
+                Recipient[] recipientArray = result.toArray(new Recipient[result.size()]);
+                switch (type) {
+                    case TO:
+                        recipientView.addToRecipients(recipientArray);
+                        break;
+                    case CC:
+                        recipientView.addCcRecipients(recipientArray);
+                        break;
+                    case BCC:
+                        recipientView.addBccRecipients(recipientArray);
+                        break;
+                }
+                stopLoading();
+            }
+        }.startLoading();
     }
 
 }

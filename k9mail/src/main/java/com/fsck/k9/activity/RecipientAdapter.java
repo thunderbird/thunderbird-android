@@ -107,6 +107,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     }
 
     public static void setContactPhotoOrPlaceholder(Context context, ImageView imageView, Recipient recipient) {
+        imageView.setImageDrawable(null);
         if (recipient.photoThumbnailUri != null) {
             Glide.with(context).load(recipient.photoThumbnailUri).into(imageView);
         } else {
