@@ -1158,5 +1158,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_incomplete_message">Incomplete message</string>
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
-
+    <string name="add_from_contacts">Add from Contacts</string>
 </resources>

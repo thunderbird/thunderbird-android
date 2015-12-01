@@ -6,22 +6,24 @@ import java.util.List;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.RecipientSelectView.Recipient;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.tokenautocomplete.TokenCompleteTextView.TokenListener;
 
 
 public class RecipientView {
 
-    private final Activity activity;
+    private final MessageCompose activity;
 
     private final LinearLayout ccWrapper;
     private final LinearLayout bccWrapper;
@@ -32,7 +34,7 @@ public class RecipientView {
 
     private RecipientPresenter presenter;
 
-    public RecipientView(Activity activity) {
+    public RecipientView(MessageCompose activity) {
         this.activity = activity;
 
         toView = (RecipientSelectView) activity.findViewById(R.id.to);
@@ -50,6 +52,9 @@ public class RecipientView {
             toView.setTokenListener(null);
             ccView.setTokenListener(null);
             bccView.setTokenListener(null);
+            toView.setOnFocusChangeListener(null);
+            ccView.setOnFocusChangeListener(null);
+            bccView.setOnFocusChangeListener(null);
             return;
         }
 
@@ -89,6 +94,34 @@ public class RecipientView {
                 presenter.onBccTokenRemoved(recipient);
             }
         });
+
+        toView.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    presenter.onToFocused();
+                }
+            }
+        });
+
+        ccView.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    presenter.onCcFocused();
+                }
+            }
+        });
+
+        bccView.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    presenter.onBccFocused();
+                }
+            }
+        });
+
     }
 
     public void addTextChangedListener(TextWatcher textWatcher) {
@@ -113,16 +146,18 @@ public class RecipientView {
         fontSizes.setViewTextSize(bccView, fontSize);
     }
 
-    public void addToRecipients(Recipient... recipients) {
-        toView.addRecipients(recipients);
-    }
-
-    public void addCcRecipients(Recipient... recipients) {
-        ccView.addRecipients(recipients);
-    }
-
-    public void addBccRecipients(Recipient... recipients) {
-        bccView.addRecipients(recipients);
+    public void addRecipients(RecipientType recipientType, Recipient... recipients) {
+        switch (recipientType) {
+            case TO:
+                toView.addRecipients(recipients);
+                break;
+            case CC:
+                ccView.addRecipients(recipients);
+                break;
+            case BCC:
+                bccView.addRecipients(recipients);
+                break;
+        }
     }
 
     public void setCcVisibility(boolean visible) {
@@ -207,4 +242,25 @@ public class RecipientView {
             cryptoStatus.setDisplayedChild(childtoDisplay);
         }
     }
+
+    /**
+     * Does the device actually have a Contacts application suitable for
+     * picking a contact. As hard as it is to believe, some vendors ship
+     * without it.
+     *
+     * @return True, if the device supports picking contacts. False, otherwise.
+     */
+    public boolean hasContactPicker() {
+        return activity.hasContactPicker();
+    }
+
+    public void showContactPicker(int requestCode) {
+        // this is an extra indirection to keep the view here clear
+        activity.showContactPicker(requestCode);
+    }
+
+    public void showErrorContactNoAddress() {
+        Toast.makeText(activity, activity.getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
+    }
+
 }

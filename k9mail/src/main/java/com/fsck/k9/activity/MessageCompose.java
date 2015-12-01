@@ -170,12 +170,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int MSG_PERFORM_STALLED_ACTION = 6;
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
-    private static final int CONTACT_PICKER_TO = 4;
-    private static final int CONTACT_PICKER_CC = 5;
-    private static final int CONTACT_PICKER_BCC = 6;
-    private static final int CONTACT_PICKER_TO2 = 7;
-    private static final int CONTACT_PICKER_CC2 = 8;
-    private static final int CONTACT_PICKER_BCC2 = 9;
 
     private static final int REQUEST_CODE_SIGN_ENCRYPT = 12;
 
@@ -544,11 +538,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         RecipientView recipientView = new RecipientView(this);
-        recipientPresenter = new RecipientPresenter(recipientView, mAccount);
-
-        ImageButton mAddToFromContacts = (ImageButton) findViewById(R.id.add_to);
-        ImageButton mAddCcFromContacts = (ImageButton) findViewById(R.id.add_cc);
-        ImageButton mAddBccFromContacts = (ImageButton) findViewById(R.id.add_bcc);
+        recipientPresenter = new RecipientPresenter(this, recipientView, mAccount);
 
         mSubjectView = (EditText) findViewById(R.id.subject);
         mSubjectView.getInputExtras(true).putBoolean("allowEmoji", true);
@@ -600,16 +590,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mMessageContentView.addTextChangedListener(draftNeedsChangingTextWatcher);
         mQuotedText.addTextChangedListener(draftNeedsChangingTextWatcher);
 
-        /* Yes, there really are people who ship versions of android without a contact picker */
-        if (mContacts.hasContactPicker()) {
-            mAddToFromContacts.setOnClickListener(new DoLaunchOnClickListener(CONTACT_PICKER_TO));
-            mAddCcFromContacts.setOnClickListener(new DoLaunchOnClickListener(CONTACT_PICKER_CC));
-            mAddBccFromContacts.setOnClickListener(new DoLaunchOnClickListener(CONTACT_PICKER_BCC));
-        } else {
-            mAddToFromContacts.setVisibility(View.GONE);
-            mAddCcFromContacts.setVisibility(View.GONE);
-            mAddBccFromContacts.setVisibility(View.GONE);
-        }
         /*
          * We set this to invisible by default. Other methods will turn it back on if it's
          * needed.
@@ -1535,6 +1515,22 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
+    private static final int REQUEST_MASK_RECIPIENT_PRESENTER = (1<<8);
+
+    public void showContactPicker(int requestCode) {
+        requestCode |= REQUEST_MASK_RECIPIENT_PRESENTER;
+        startActivityForResult(mContacts.contactPickerIntent(), requestCode);
+    }
+
+    private Boolean hasContactPicker;
+
+    public boolean hasContactPicker() {
+        if (hasContactPicker == null) {
+            hasContactPicker = !(getPackageManager().queryIntentActivities(mContacts.contactPickerIntent(), 0).isEmpty());
+        }
+        return hasContactPicker;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if a CryptoSystem activity is returning, then mPreventDraftSaving was set to true
@@ -1559,63 +1555,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (data == null) {
             return;
         }
+
+        if ((requestCode & REQUEST_MASK_RECIPIENT_PRESENTER) == REQUEST_MASK_RECIPIENT_PRESENTER) {
+            requestCode ^= REQUEST_MASK_RECIPIENT_PRESENTER;
+            recipientPresenter.onActivityResult(requestCode, data);
+            return;
+        }
+
         switch (requestCode) {
             case ACTIVITY_REQUEST_PICK_ATTACHMENT:
                 addAttachmentsFromResultIntent(data);
                 mDraftNeedsSaving = true;
-                break;
-            case CONTACT_PICKER_TO:
-            case CONTACT_PICKER_CC:
-            case CONTACT_PICKER_BCC:
-                ContactItem contact = mContacts.extractInfoFromContactPickerIntent(data);
-                if (contact == null) {
-                    Toast.makeText(this, getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (contact.emailAddresses.size() > 1) {
-                    Intent i = new Intent(this, EmailAddressList.class);
-                    i.putExtra(EmailAddressList.EXTRA_CONTACT_ITEM, contact);
-
-                    if (requestCode == CONTACT_PICKER_TO) {
-                        startActivityForResult(i, CONTACT_PICKER_TO2);
-                    } else if (requestCode == CONTACT_PICKER_CC) {
-                        startActivityForResult(i, CONTACT_PICKER_CC2);
-                    } else if (requestCode == CONTACT_PICKER_BCC) {
-                        startActivityForResult(i, CONTACT_PICKER_BCC2);
-                    }
-                    return;
-                }
-                if (K9.DEBUG) {
-                    List<String> emails = contact.emailAddresses;
-                    for (int i = 0; i < emails.size(); i++) {
-                        Log.v(K9.LOG_TAG, "email[" + i + "]: " + emails.get(i));
-                    }
-                }
-
-
-                String email = contact.emailAddresses.get(0);
-                if (requestCode == CONTACT_PICKER_TO) {
-                    recipientPresenter.addToAddresses(new Address(email, ""));
-                } else if (requestCode == CONTACT_PICKER_CC) {
-                    recipientPresenter.addCcAddresses(new Address(email, ""));
-                } else if (requestCode == CONTACT_PICKER_BCC) {
-                    recipientPresenter.addBccAddresses(new Address(email, ""));
-                } else {
-                    return;
-                }
-
-                break;
-            case CONTACT_PICKER_TO2:
-            case CONTACT_PICKER_CC2:
-            case CONTACT_PICKER_BCC2:
-                String emailAddr = data.getStringExtra(EmailAddressList.EXTRA_EMAIL_ADDRESS);
-                if (requestCode == CONTACT_PICKER_TO2) {
-                    recipientPresenter.addToAddresses(new Address(emailAddr, ""));
-                } else if (requestCode == CONTACT_PICKER_CC2) {
-                    recipientPresenter.addCcAddresses(new Address(emailAddr, ""));
-                } else if (requestCode == CONTACT_PICKER_BCC2) {
-                    recipientPresenter.addBccAddresses(new Address(emailAddr, ""));
-                }
                 break;
         }
     }
@@ -1818,6 +1768,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 break;
             case R.id.discard:
                 askBeforeDiscard();
+                break;
+            case R.id.add_from_contacts:
+                recipientPresenter.onMenuAddFromContacts();
                 break;
             case R.id.add_cc_bcc:
                 recipientPresenter.onMenuShowCcBcc();
@@ -3302,18 +3255,4 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return isCryptoProviderEnabled() && mCryptoSignatureCheckbox.isChecked();
     }
 
-    class DoLaunchOnClickListener implements OnClickListener {
-
-        private final int resultId;
-
-        DoLaunchOnClickListener(int resultId) {
-            this.resultId = resultId;
-        }
-
-        @Override
-        public void onClick(View v) {
-            mIgnoreOnPause = true;
-            startActivityForResult(mContacts.contactPickerIntent(), resultId);
-        }
-    }
 }

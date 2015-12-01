@@ -49,6 +49,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private final String query;
     private final Address[] addresses;
+    private final Uri contactUri;
+
     private final String cryptoProvider;
 
     private List<Recipient> cachedRecipients;
@@ -60,6 +62,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         super(context);
         this.query = query;
         this.addresses = null;
+        this.contactUri = null;
         this.cryptoProvider = cryptoProvider;
     }
 
@@ -67,6 +70,15 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         super(context);
         this.query = null;
         this.addresses = addresses;
+        this.contactUri = null;
+        this.cryptoProvider = cryptoProvider;
+    }
+
+    public RecipientLoader(Context context, String cryptoProvider, Uri contactUri) {
+        super(context);
+        this.query = null;
+        this.addresses = null;
+        this.contactUri = contactUri;
         this.cryptoProvider = cryptoProvider;
     }
 
@@ -86,8 +98,10 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
             if (addresses != null) {
                 fillContactDataFromAddresses(addresses, recipients, recipientMap);
+            } else if (contactUri != null) {
+                fillContactDataFromContactUri(contactUri, recipients, recipientMap);
             } else if (query != null) {
-                    fillContactDataFromQuery(query, recipients, recipientMap);
+                fillContactDataFromQuery(query, recipients, recipientMap);
             } else {
                 throw new IllegalStateException("loader must be initialized with query or list of addresses!");
             }
@@ -113,11 +127,30 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             HashMap<String, Recipient> recipientMap) {
 
         for (Address address : addresses) {
-            // TODO actually query photos
+            // TODO actually query contacts - not sure if this is possible in a single query tho :(
             Recipient recipient = new Recipient(address);
             recipients.add(recipient);
             recipientMap.put(address.getAddress(), recipient);
         }
+
+    }
+
+    private void fillContactDataFromContactUri(
+            Uri contactUri, ArrayList<Recipient> recipients, HashMap<String, Recipient> recipientMap) {
+
+        // Get the contact id from the Uri
+        String contactIdStr = contactUri.getLastPathSegment();
+
+        Cursor cursor = getContext().getContentResolver().query(
+                ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                PROJECTION, ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?",
+                new String[] { contactIdStr }, null);
+
+        if (cursor == null) {
+            return;
+        }
+
+        fillContactDataFromCursor(cursor, recipients, recipientMap);
 
     }
 
@@ -132,6 +165,18 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         if (cursor == null) {
             return;
         }
+
+        fillContactDataFromCursor(cursor, recipients, recipientMap);
+
+        if (observerContact != null) {
+            observerContact = new ForceLoadContentObserver();
+            getContext().getContentResolver().registerContentObserver(queryUri, false, observerContact);
+        }
+
+    }
+
+    private void fillContactDataFromCursor(Cursor cursor, ArrayList<Recipient> recipients,
+            HashMap<String, Recipient> recipientMap) {
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -158,11 +203,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             cursor.moveToNext();
         }
         cursor.close();
-
-        if (observerContact != null) {
-            observerContact = new ForceLoadContentObserver();
-            getContext().getContentResolver().registerContentObserver(queryUri, false, observerContact);
-        }
 
     }
 

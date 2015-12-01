@@ -267,62 +267,6 @@ public class Contacts {
     }
 
     /**
-     * Given a contact picker intent, returns a {@code ContactItem} instance for that contact.
-     *
-     * @param intent
-     *         The {@link Intent} returned by the contact picker.
-     *
-     * @return A {@link ContactItem} instance describing the picked contact. Or {@code null} if the
-     *         contact doesn't have any email addresses.
-     */
-    public ContactItem extractInfoFromContactPickerIntent(final Intent intent) {
-        Cursor cursor = null;
-        List<String> email = new ArrayList<String>();
-
-        try {
-            Uri result = intent.getData();
-            String displayName = null;
-
-            // Get the contact id from the Uri
-            String id = result.getLastPathSegment();
-
-            cursor = mContentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, PROJECTION,
-                    ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?", new String[] { id }, null);
-
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    String address = cursor.getString(EMAIL_INDEX);
-                    if (address != null) {
-                        email.add(address);
-                    }
-
-                    if (displayName == null) {
-                        displayName = cursor.getString(NAME_INDEX);
-                    }
-                }
-
-                // Return 'null' if no email addresses have been found
-                if (email.isEmpty()) {
-                    return null;
-                }
-
-                // Use the first email address found as display name
-                if (displayName == null) {
-                    displayName = email.get(0);
-                }
-
-                return new ContactItem(displayName, email);
-            }
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to get email data", e);
-        } finally {
-            Utility.closeQuietly(cursor);
-        }
-
-        return null;
-    }
-
-    /**
      * Get URI to the picture of the contact with the supplied email address.
      *
      * @param address
@@ -372,21 +316,6 @@ public class Contacts {
             Log.e(K9.LOG_TAG, "Couldn't fetch photo for contact with email " + address, e);
             return null;
         }
-    }
-
-    /**
-     * Does the device actually have a Contacts application suitable for
-     * picking a contact. As hard as it is to believe, some vendors ship
-     * without it.
-     *
-     * @return True, if the device supports picking contacts. False, otherwise.
-     */
-    public boolean hasContactPicker() {
-        if (mHasContactPicker == null) {
-            mHasContactPicker = !(mContext.getPackageManager().
-                                  queryIntentActivities(contactPickerIntent(), 0).isEmpty());
-        }
-        return mHasContactPicker;
     }
 
     /**

@@ -36,6 +36,7 @@ public class RecipientPresenter {
     private RecipientView recipientView;
     private Account account;
     private String cryptoProvider;
+    private RecipientType lastFocusedType = RecipientType.TO;
 
     public RecipientPresenter(Context context, RecipientView recipientView, Account account) {
         this.recipientView = recipientView;
@@ -224,8 +225,14 @@ public class RecipientPresenter {
     }
 
     public void onPrepareOptionsMenu(Menu menu) {
-        if (recipientView.isCcVisible() && recipientView.isBccVisible()) {
+        boolean ccAndBccAlreadyShown = recipientView.isCcVisible() && recipientView.isBccVisible();
+        if (ccAndBccAlreadyShown) {
             menu.findItem(R.id.add_cc_bcc).setVisible(false);
+        }
+
+        boolean noContactPickerAvailable = !recipientView.hasContactPicker();
+        if (noContactPickerAvailable) {
+            menu.findItem(R.id.add_from_contacts).setVisible(false);
         }
     }
 
@@ -321,25 +328,87 @@ public class RecipientPresenter {
         updateCryptoStatus();
     }
 
-    private void addRecipientsFromAddresses(final RecipientType type, final Address... addresses) {
+    private void addRecipientsFromAddresses(final RecipientType recipientType, final Address... addresses) {
         new RecipientLoader(context, cryptoProvider, addresses) {
             @Override
             public void deliverResult(List<Recipient> result) {
                 Recipient[] recipientArray = result.toArray(new Recipient[result.size()]);
-                switch (type) {
-                    case TO:
-                        recipientView.addToRecipients(recipientArray);
-                        break;
-                    case CC:
-                        recipientView.addCcRecipients(recipientArray);
-                        break;
-                    case BCC:
-                        recipientView.addBccRecipients(recipientArray);
-                        break;
-                }
+                recipientView.addRecipients(recipientType, recipientArray);
                 stopLoading();
             }
         }.startLoading();
+    }
+
+    private void addRecipientFromContactUri(final RecipientType recipientType, final Uri uri) {
+        new RecipientLoader(context, cryptoProvider, uri) {
+            @Override
+            public void deliverResult(List<Recipient> result) {
+                // TODO handle multiple available mail addresses for a contact?
+                if (result.isEmpty()) {
+                    recipientView.showErrorContactNoAddress();
+                    return;
+                }
+                Recipient recipient = result.get(0);
+                recipientView.addRecipients(recipientType, recipient);
+                stopLoading();
+            }
+        }.startLoading();
+    }
+
+    public void onToFocused() {
+        lastFocusedType = RecipientType.TO;
+    }
+
+    public void onCcFocused() {
+        lastFocusedType = RecipientType.CC;
+    }
+
+    public void onBccFocused() {
+        lastFocusedType = RecipientType.BCC;
+    }
+
+    public void onMenuAddFromContacts() {
+        int requestCode = recipientTypeToRequestCode(lastFocusedType);
+        recipientView.showContactPicker(requestCode);
+    }
+
+    public void onActivityResult(int requestCode, Intent data) {
+        if (requestCode != CONTACT_PICKER_TO && requestCode != CONTACT_PICKER_CC && requestCode != CONTACT_PICKER_BCC) {
+            return;
+        }
+
+        RecipientType recipientType = recipientTypeFromRequestCode(requestCode);
+        addRecipientFromContactUri(recipientType, data.getData());
+    }
+
+    private static final int CONTACT_PICKER_TO = 1;
+    private static final int CONTACT_PICKER_CC = 2;
+    private static final int CONTACT_PICKER_BCC = 3;
+
+    private static int recipientTypeToRequestCode(RecipientType type) {
+        switch (type) {
+            case TO:
+            default:
+                return CONTACT_PICKER_TO;
+            case CC:
+                return CONTACT_PICKER_CC;
+            case BCC:
+                return CONTACT_PICKER_BCC;
+        }
+
+    }
+
+    private static RecipientType recipientTypeFromRequestCode(int type) {
+        switch (type) {
+            case CONTACT_PICKER_TO:
+            default:
+                return RecipientType.TO;
+            case CONTACT_PICKER_CC:
+                return RecipientType.CC;
+            case CONTACT_PICKER_BCC:
+                return RecipientType.BCC;
+        }
+
     }
 
 }

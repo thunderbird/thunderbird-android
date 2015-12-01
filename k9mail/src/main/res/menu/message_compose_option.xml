@@ -22,11 +22,16 @@
         android:showAsAction="always"
     />
     <item
+        android:id="@+id/add_from_contacts"
+        android:alphabeticShortcut="a"
+        android:title="@string/add_from_contacts"
+    />
+    <item
         android:id="@+id/save"
         android:alphabeticShortcut="d"
         android:title="@string/save_draft_action"
         android:icon="?attr/iconActionSave"
-    />
+        />
     <item
         android:id="@+id/discard"
         android:alphabeticShortcut="q"
