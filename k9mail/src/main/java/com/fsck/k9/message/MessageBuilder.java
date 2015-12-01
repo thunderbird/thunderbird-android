@@ -333,6 +333,11 @@ public class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder setTo(List<Address> to) {
+        this.to = to.toArray(new Address[to.size()]);
+        return this;
+    }
+
     public MessageBuilder setTo(Address[] to) {
         this.to = to;
         return this;
@@ -343,8 +348,18 @@ public class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder setCc(List<Address> cc) {
+        this.cc = cc.toArray(new Address[cc.size()]);
+        return this;
+    }
+
     public MessageBuilder setBcc(Address[] bcc) {
         this.bcc = bcc;
+        return this;
+    }
+
+    public MessageBuilder setBcc(List<Address> bcc) {
+        this.bcc = bcc.toArray(new Address[bcc.size()]);
         return this;
     }
 
