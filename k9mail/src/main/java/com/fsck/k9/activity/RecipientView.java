@@ -8,8 +8,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
@@ -21,16 +21,17 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.tokenautocomplete.TokenCompleteTextView.TokenListener;
 
 
-public class RecipientView {
+public class RecipientView implements OnFocusChangeListener, OnClickListener {
 
     private final MessageCompose activity;
 
-    private final LinearLayout ccWrapper;
-    private final LinearLayout bccWrapper;
+    private final View ccWrapper, ccDivider;
+    private final View bccWrapper, bccDivider;
     private final RecipientSelectView toView;
     private final RecipientSelectView ccView;
     private final RecipientSelectView bccView;
     private final ViewAnimator cryptoStatus;
+    private final ViewAnimator recipientExpanderContainer;
 
     private RecipientPresenter presenter;
 
@@ -40,9 +41,19 @@ public class RecipientView {
         toView = (RecipientSelectView) activity.findViewById(R.id.to);
         ccView = (RecipientSelectView) activity.findViewById(R.id.cc);
         bccView = (RecipientSelectView) activity.findViewById(R.id.bcc);
-        ccWrapper = (LinearLayout) activity.findViewById(R.id.cc_wrapper);
-        bccWrapper = (LinearLayout) activity.findViewById(R.id.bcc_wrapper);
+        ccWrapper = activity.findViewById(R.id.cc_wrapper);
+        ccDivider = activity.findViewById(R.id.cc_divider);
+        bccWrapper = activity.findViewById(R.id.bcc_wrapper);
+        bccDivider = activity.findViewById(R.id.bcc_divider);
+        recipientExpanderContainer = (ViewAnimator) activity.findViewById(R.id.recipient_expander_container);
         cryptoStatus = (ViewAnimator) activity.findViewById(R.id.crypto_status);
+
+        toView.setOnFocusChangeListener(this);
+        ccView.setOnFocusChangeListener(this);
+        bccView.setOnFocusChangeListener(this);
+
+        View recipientExpander = activity.findViewById(R.id.recipient_expander);
+        recipientExpander.setOnClickListener(this);
     }
 
     public void setPresenter(final RecipientPresenter presenter) {
@@ -52,9 +63,6 @@ public class RecipientView {
             toView.setTokenListener(null);
             ccView.setTokenListener(null);
             bccView.setTokenListener(null);
-            toView.setOnFocusChangeListener(null);
-            ccView.setOnFocusChangeListener(null);
-            bccView.setOnFocusChangeListener(null);
             return;
         }
 
@@ -94,34 +102,6 @@ public class RecipientView {
                 presenter.onBccTokenRemoved(recipient);
             }
         });
-
-        toView.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    presenter.onToFocused();
-                }
-            }
-        });
-
-        ccView.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    presenter.onCcFocused();
-                }
-            }
-        });
-
-        bccView.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    presenter.onBccFocused();
-                }
-            }
-        });
-
     }
 
     public void addTextChangedListener(TextWatcher textWatcher) {
@@ -162,10 +142,19 @@ public class RecipientView {
 
     public void setCcVisibility(boolean visible) {
         ccWrapper.setVisibility(visible ? View.VISIBLE : View.GONE);
+        ccDivider.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public void setBccVisibility(boolean visible) {
         bccWrapper.setVisibility(visible ? View.VISIBLE : View.GONE);
+        bccDivider.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    public void setRecipientExpanderVisibility(boolean visible) {
+        int childToDisplay = visible ? 0 : 1;
+        if (recipientExpanderContainer.getDisplayedChild() != childToDisplay) {
+            recipientExpanderContainer.setDisplayedChild(childToDisplay);
+        }
     }
 
     public boolean isCcVisible() {
@@ -178,10 +167,6 @@ public class RecipientView {
 
     public void showNoRecipientsError() {
         toView.setError(toView.getContext().getString(R.string.message_compose_error_no_recipients));
-    }
-
-    public void invalidateOptionsMenu() {
-        activity.invalidateOptionsMenu();
     }
 
     public List<Address> getToAddresses() {
@@ -263,4 +248,30 @@ public class RecipientView {
         Toast.makeText(activity, activity.getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            return;
+        }
+        switch(v.getId()) {
+            case R.id.to:
+                presenter.onToFocused();
+                break;
+            case R.id.cc:
+                presenter.onCcFocused();
+                break;
+            case R.id.bcc:
+                presenter.onBccFocused();
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.recipient_expander:
+                presenter.onClickRecipientExpander();
+                break;
+        }
+    }
 }

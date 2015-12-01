@@ -21,46 +21,46 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:paddingTop="6dp"
-                android:orientation="vertical"
-                android:background="#45bcbcbc">
-
-                <Button
-                    android:id="@+id/identity"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"/>
+                android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/to_wrapper"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="true"
-                    android:gravity="bottom"
-                    android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"
-                    android:layout_width="fill_parent">
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginRight="12dip"
+                    android:minHeight="50dp">
 
-                    <com.fsck.k9.activity.RecipientSelectView
-                        android:id="@+id/to"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:inputType="textEmailAddress|textMultiLine"
-                        android:imeOptions="actionNext"
-                        android:hint="@string/message_compose_to_hint"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:paddingRight="38dp"
-                        android:paddingEnd="38dp"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/from_label"
+                        android:minWidth="50dp"
+                        android:text="From"
+                        style="@style/ComposeTextLabel" />
+
+                    <TextView
+                        android:id="@+id/identity"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/from_label"
+                        android:layout_toEndOf="@id/from_label"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginEnd="30dp"
+                        android:singleLine="true"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        tools:text="Address"
+                        style="@style/ComposeEditText"
                         />
 
                     <ViewAnimator
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginRight="12dp"
+                        android:layout_centerVertical="true"
                         android:id="@+id/crypto_status"
                         android:visibility="gone"
                         android:inAnimation="@anim/fade_in"
@@ -70,6 +70,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:src="@drawable/status_lock_open"
                             android:tint="@color/openpgp_red"
                             />
@@ -77,6 +78,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:src="@drawable/status_lock_error"
                             android:tint="@color/openpgp_orange"
                             />
@@ -84,6 +86,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:src="@drawable/status_lock_closed"
                             android:tint="@color/openpgp_green"
                             />
@@ -92,51 +95,166 @@
 
                 </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <RelativeLayout
+                    android:id="@+id/to_wrapper"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:minHeight="50dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/to_label"
+                        android:labelFor="@+id/to"
+                        android:minWidth="50dp"
+                        android:text="To"
+                        style="@style/ComposeTextLabel" />
+
+                    <com.fsck.k9.activity.RecipientSelectView
+                        android:id="@+id/to"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/to_label"
+                        android:layout_toEndOf="@id/to_label"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginEnd="30dp"
+                        android:inputType="textEmailAddress|textMultiLine"
+                        android:imeOptions="actionNext"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:background="@android:color/transparent"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:dropDownWidth="wrap_content"
+                        android:dropDownAnchor="@id/to_wrapper"
+                        tools:text="Recipient"
+                        style="@style/ComposeEditText"
+                        />
+
+                    <ViewAnimator
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/recipient_expander_container"
+                        android:inAnimation="@anim/fade_in"
+                        android:outAnimation="@anim/fade_out"
+                        >
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_action_expand_light"
+                            android:id="@+id/recipient_expander"
+                            />
+
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </ViewAnimator>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
                 <LinearLayout
                     android:id="@+id/cc_wrapper"
                     android:visibility="gone"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="true"
-                    android:gravity="bottom"
-                    android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"
-                    android:layout_width="fill_parent">
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginRight="12dip"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:minHeight="50dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="50dp"
+                        android:labelFor="@+id/cc"
+                        android:text="Cc"
+                        style="@style/ComposeTextLabel"  />
 
                     <com.fsck.k9.activity.RecipientSelectView
                         android:id="@+id/cc"
-                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginRight="6dip"
+                        android:layout_width="match_parent"
                         android:inputType="textEmailAddress|textMultiLine"
                         android:imeOptions="actionNext"
-                        android:hint="@string/message_compose_cc_hint"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:background="@android:color/transparent"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:dropDownWidth="wrap_content"
+                        android:dropDownAnchor="@id/cc_wrapper"
+                        style="@style/ComposeEditText"
+                        />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:visibility="gone"
+                    android:id="@+id/cc_divider"
+                    android:background="?android:attr/listDivider" />
 
                 <LinearLayout
                     android:id="@+id/bcc_wrapper"
                     android:visibility="gone"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="true"
-                    android:gravity="bottom"
-                    android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"
-                    android:layout_width="fill_parent">
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginRight="12dip"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:minHeight="50dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="50dp"
+                        android:labelFor="@+id/bcc"
+                        android:text="Bcc"
+                        style="@style/ComposeTextLabel" />
 
                     <com.fsck.k9.activity.RecipientSelectView
                         android:id="@+id/bcc"
-                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="6dip"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
                         android:inputType="textEmailAddress|textMultiLine"
                         android:imeOptions="actionNext"
-                        android:hint="@string/message_compose_bcc_hint"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:background="@android:color/transparent"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:dropDownWidth="wrap_content"
+                        android:dropDownAnchor="@id/bcc_wrapper"
+                        style="@style/ComposeEditText"
+                    />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:visibility="gone"
+                    android:id="@+id/bcc_divider"
+                    android:background="?android:attr/listDivider" />
 
                 <LinearLayout
                     android:id="@+id/layout_encrypt"
@@ -196,17 +314,35 @@
 
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/subject"
-                    android:layout_width="fill_parent"
+                <LinearLayout
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"
-                    android:hint="@string/message_compose_subject_hint"
-                    android:inputType="textEmailSubject|textAutoCorrect|textCapSentences|textImeMultiLine"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginRight="12dip"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:minHeight="50dp">
+
+                    <EditText
+                        android:id="@+id/subject"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/message_compose_subject_hint"
+                        android:inputType="textEmailSubject|textAutoCorrect|textCapSentences|textImeMultiLine"
+                        android:imeOptions="actionNext"
+                        android:singleLine="true"
+                        android:background="@android:color/transparent"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        style="@style/ComposeEditTextLarge"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
 
                 <!--
                     Empty container for storing attachments. We'll stick
@@ -218,10 +354,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
 
+                <!--
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1dip"
                     android:background="@drawable/divider_horizontal_email" />
+                -->
 
             </LinearLayout>
 
@@ -238,7 +376,8 @@
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:imeOptions="actionDone|flagNoEnterAction"
                 android:minLines="3"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                style="@style/ComposeEditTextLarge"
+                />
 
             <view
                 class="com.fsck.k9.ui.EolConvertingEditText"

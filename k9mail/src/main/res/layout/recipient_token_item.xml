@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="32dp"
     android:background="#ccc">
 
     <ImageView
@@ -18,29 +18,32 @@
         android:layout_height="wrap_content"
         android:id="@android:id/text1"
         android:layout_gravity="center_vertical"
-        android:padding="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         tools:text="Name"
         />
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginLeft="-5dp"
-        android:src="@drawable/ic_corner_stripe_tr"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_margin="6dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/contact_crypto_status_red"
+        android:src="@drawable/status_lock_open"
         android:tint="@color/openpgp_red"
         android:visibility="gone"
-        android:id="@+id/contact_crypto_status_red"
         />
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginLeft="-5dp"
-        android:src="@drawable/ic_corner_stripe_tr"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginRight="4dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/contact_crypto_status_orange"
+        android:src="@drawable/status_lock_error"
         android:tint="@color/openpgp_orange"
         android:visibility="gone"
         tools:visibility="visible"
-        android:id="@+id/contact_crypto_status_orange"
         />
 
 </LinearLayout>

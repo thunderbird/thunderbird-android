@@ -39,5 +39,17 @@
         <item name="android:shadowRadius">4.0</item>
     </style>
 
+    <style name="ComposeTextLabel" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#aaa</item>
+    </style>
+    <style name="ComposeEditText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColorHint">#aaa</item>
+    </style>
+    <style name="ComposeEditTextLarge" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColorHint">#aaa</item>
+    </style>
+
 </resources>
 
