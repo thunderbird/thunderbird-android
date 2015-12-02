@@ -118,7 +118,7 @@
                         android:text="To"
                         style="@style/ComposeTextLabel" />
 
-                    <com.fsck.k9.activity.RecipientSelectView
+                    <com.fsck.k9.view.RecipientSelectView
                         android:id="@+id/to"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
@@ -191,7 +191,7 @@
                         android:text="Cc"
                         style="@style/ComposeTextLabel"  />
 
-                    <com.fsck.k9.activity.RecipientSelectView
+                    <com.fsck.k9.view.RecipientSelectView
                         android:id="@+id/cc"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
@@ -233,7 +233,7 @@
                         android:text="Bcc"
                         style="@style/ComposeTextLabel" />
 
-                    <com.fsck.k9.activity.RecipientSelectView
+                    <com.fsck.k9.view.RecipientSelectView
                         android:id="@+id/bcc"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"

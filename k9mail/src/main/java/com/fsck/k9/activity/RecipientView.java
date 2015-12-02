@@ -15,7 +15,8 @@ import android.widget.ViewAnimator;
 
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.RecipientSelectView.Recipient;
+import com.fsck.k9.view.RecipientSelectView;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.tokenautocomplete.TokenCompleteTextView.TokenListener;

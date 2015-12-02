@@ -16,7 +16,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose.CaseInsensitiveParamWrapper;
-import com.fsck.k9.activity.RecipientSelectView.Recipient;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;

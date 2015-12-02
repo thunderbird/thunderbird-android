@@ -15,7 +15,7 @@ import android.os.CancellationSignal;
 import android.os.OperationCanceledException;
 import android.provider.ContactsContract;
 
-import com.fsck.k9.activity.RecipientSelectView.Recipient;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.mail.Address;
 
 

@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.view;
 
 
 import java.io.IOException;
@@ -27,7 +27,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fsck.k9.R;
-import com.fsck.k9.activity.RecipientSelectView.Recipient;
+import com.fsck.k9.activity.RecipientAdapter;
+import com.fsck.k9.activity.RecipientLoader;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.mail.Address;
 import com.tokenautocomplete.TokenCompleteTextView;
 
@@ -187,7 +189,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         adapter.setRecipients(null);
     }
 
-    static class Recipient implements Serializable {
+    public static class Recipient implements Serializable {
         @NonNull
         public final Address address;
 
@@ -195,18 +197,19 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         public final Long contactId;
 
         @Nullable // null if the contact has no photo
-        transient Uri photoThumbnailUri;
+        public transient Uri photoThumbnailUri;
 
         // TODO change to enum
-        @Nullable // null if no info is available
+        @Nullable
+        public // null if no info is available
         Integer cryptoStatus;
 
-        Recipient(@NonNull Address address) {
+        public Recipient(@NonNull Address address) {
             this.address = address;
             this.contactId = null;
         }
 
-        Recipient(String name, String email, long contactId) {
+        public Recipient(String name, String email, long contactId) {
             this.address = new Address(email, name);
             this.contactId = contactId;
         }

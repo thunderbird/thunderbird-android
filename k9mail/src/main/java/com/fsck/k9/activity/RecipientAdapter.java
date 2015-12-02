@@ -16,9 +16,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.RecipientSelectView.Recipient;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.helper.ContactPicture;
-import com.tokenautocomplete.FilteredArrayAdapter;
 
 
 public class RecipientAdapter extends BaseAdapter implements Filterable {
