@@ -98,7 +98,7 @@ public class AccountSetupBasics extends K9Activity
         mPasswordView.addTextChangedListener(this);
         mClientCertificateCheckBox.setOnCheckedChangeListener(this);
         mClientCertificateSpinner.setOnClientCertificateChangedListener(this);
-        mShowPasswordCheckBox.setOnCheckedChangeListener (new OnCheckedChangeListener() {
+        mShowPasswordCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 showPassword(isChecked);
@@ -198,11 +198,13 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void showPassword(boolean show) {
+        int cursorPosition = mPasswordView.getSelectionStart();
         if (show) {
             mPasswordView.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         } else {
             mPasswordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
+        mPasswordView.setSelection(cursorPosition);
     }
 
     private void validateFields() {
