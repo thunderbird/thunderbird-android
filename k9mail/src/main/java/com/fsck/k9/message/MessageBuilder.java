@@ -141,7 +141,7 @@ public class MessageBuilder {
         if (pgpData.getEncryptedData() != null) {
             String text = pgpData.getEncryptedData();
             body = new TextBody(text);
-            message.setEncryptionType(EncryptionType.INLINE);
+            message.setEncryptionType(EncryptionType.PGP_INLINE);
         } else {
             body = buildText(isDraft);
         }

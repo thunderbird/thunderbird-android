@@ -7,7 +7,7 @@ public enum EncryptionType {
 
     NONE,
 
-    INLINE,
+    PGP_INLINE,
 
     PGP_MIME,
 

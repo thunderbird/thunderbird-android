@@ -146,7 +146,7 @@ public class MimeMessage extends Message {
                 if (data != null) {
                     Matcher matcher = PGP_MESSAGE.matcher(data);
                     if (matcher.matches()) {
-                        encryptionType = EncryptionType.INLINE;
+                        encryptionType = EncryptionType.PGP_INLINE;
                     }
                 }
             }
