@@ -19,7 +19,7 @@ import org.apache.james.mime4j.util.MimeUtil;
  * Message.
  */
 public class MimeBodyPart extends BodyPart {
-    private MimeHeader mHeader = new MimeHeader();
+    final private MimeHeader mHeader;
     private Body mBody;
 
     public MimeBodyPart() throws MessagingException {
@@ -31,15 +31,19 @@ public class MimeBodyPart extends BodyPart {
     }
 
     public MimeBodyPart(Body body, String mimeType) throws MessagingException {
+        this(body, mimeType, new MimeHeader());
+    }
+
+    MimeBodyPart(MimeHeader header, Body body)  throws MessagingException {
+        this(body, null, header);
+    }
+
+    private MimeBodyPart(Body body, String mimeType, MimeHeader header) throws MessagingException {
+        mHeader = header;
         if (mimeType != null) {
             addHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType);
         }
         MimeMessageHelper.setBody(this, body);
-    }
-
-    MimeBodyPart(MimeHeader header, Body body)  throws MessagingException {
-        this(body);
-        mHeader = header;
     }
 
     private String getFirstHeader(String name) {
