@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="openpgp_list_preference_none">Ninguno</string>
+  <string name="openpgp_install_openkeychain_via">Instalar OpenKeychain mediante %s</string>
+  <string name="openpgp_no_key_selected">No se seleccionó clave</string>
+  <string name="openpgp_key_selected">Se ha seleccionado clave</string>
+</resources>

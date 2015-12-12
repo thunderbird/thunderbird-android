@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="OpenPGP API">
+        <org.openintents.openpgp.util.OpenPgpAppPreference
+            android:key="openpgp_provider_list"
+            android:title="Select OpenPGP app!" />
+        <org.openintents.openpgp.util.OpenPgpKeyPreference
+            android:key="openpgp_key"
+            android:title="Select key!" />
+        <Preference
+            android:key="openpgp_provider_demo"
+            android:title="OpenPGP API Example" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
