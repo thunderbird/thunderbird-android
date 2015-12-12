@@ -36,6 +36,7 @@ import com.fsck.k9.mailstore.MessageHelper;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
 import org.openintents.openpgp.IOpenPgpService;
+import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -149,7 +150,7 @@ public class MessageCryptoHelper {
         new OpenPgpServiceConnection(context, openPgpProvider,
                 new OnBound() {
                     @Override
-                    public void onBound(IOpenPgpService service) {
+                    public void onBound(IOpenPgpService2 service) {
                         openPgpApi = new OpenPgpApi(context, service);
 
                         decryptOrVerifyNextPart();

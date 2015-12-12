@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -13,7 +15,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.Attachment;
-import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -44,7 +45,6 @@ public class MessageBuilder {
     private Identity identity;
     private SimpleMessageFormat messageFormat;
     private String text;
-    private PgpData pgpData;
     private List<Attachment> attachments;
     private String signature;
     private QuoteStyle quoteStyle;
@@ -58,7 +58,6 @@ public class MessageBuilder {
     private int cursorPosition;
     private MessageReference messageReference;
     private boolean isDraft;
-
 
     public MessageBuilder(Context context) {
         this.context = context;
@@ -118,13 +117,7 @@ public class MessageBuilder {
         // Build the body.
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
-        TextBody body;
-        if (pgpData.getEncryptedData() != null) {
-            String text = pgpData.getEncryptedData();
-            body = new TextBody(text);
-        } else {
-            body = buildText(isDraft);
-        }
+        TextBody body = buildText(isDraft);
 
         // text/plain part when messageFormat == MessageFormat.HTML
         TextBody bodyPlain = null;
@@ -378,11 +371,6 @@ public class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder setPgpData(PgpData pgpData) {
-        this.pgpData = pgpData;
-        return this;
-    }
-
     public MessageBuilder setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
         return this;
@@ -446,5 +434,24 @@ public class MessageBuilder {
     public MessageBuilder setDraft(boolean isDraft) {
         this.isDraft = isDraft;
         return this;
+    }
+
+    public void buildAsync(Callback callback) {
+        try {
+            MimeMessage message = build();
+            callback.onSuccess(message);
+        } catch (MessagingException e) {
+            callback.onException(e);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        throw new UnsupportedOperationException();
+    }
+
+    public interface Callback {
+        void onSuccess(MimeMessage message);
+        void onException(MessagingException exception);
+        void onReturnPendingIntent(PendingIntent pendingIntent, int requestCode);
     }
 }

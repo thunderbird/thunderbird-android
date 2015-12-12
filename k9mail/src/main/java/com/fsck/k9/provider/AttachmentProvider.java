@@ -158,7 +158,7 @@ public class AttachmentProvider extends ContentProvider {
     private ParcelFileDescriptor openAttachment(String accountUuid, String attachmentId) {
         try {
             InputStream inputStream = getAttachmentInputStream(accountUuid, attachmentId);
-            return ParcelFileDescriptorUtil.pipeFrom(inputStream, null);
+            return ParcelFileDescriptorUtil.pipeFrom(inputStream);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Error getting InputStream for attachment", e);
             return null;

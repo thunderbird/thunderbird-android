@@ -41,7 +41,6 @@
                     android:paddingBottom="10dp"
                     style="@style/ComposeEditTextLarge"
                     />
-
             </LinearLayout>
 
             <View

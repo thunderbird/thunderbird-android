@@ -920,9 +920,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="miscellaneous_preferences">Miscellaneous</string>
 
     <string name="error_activity_not_found">No suitable application for this action found.</string>
-    <string name="btn_crypto_sign">Sign</string>
-    <string name="btn_encrypt">Encrypt</string>
-    <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
     <string name="pgp_mime_unsupported">PGP/MIME messages are not supported yet.</string>
     <string name="attachment_encryption_unsupported">Warning: attachments are NOT signed or encrypted yet.</string>
     <string name="send_aborted">Send aborted.</string>

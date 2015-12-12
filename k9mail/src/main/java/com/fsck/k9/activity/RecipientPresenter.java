@@ -513,6 +513,10 @@ public class RecipientPresenter {
         return hasContactPicker;
     }
 
+    public CryptoMode getCurrentCryptoMode() {
+        return currentCryptoMode;
+    }
+
 
     enum CryptoMode {
         OPPORTUNISTIC,
