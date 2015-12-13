@@ -433,7 +433,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                                             case X_DESTROYED:
                                             case X_DOWNLOADED_FULL:
                                             case X_DOWNLOADED_PARTIAL:
-                                            case X_GOT_ALL_HEADERS:
                                             case X_REMOTE_COPY_STARTED:
                                             case X_SEND_FAILED:
                                             case X_SEND_IN_PROGRESS: {
