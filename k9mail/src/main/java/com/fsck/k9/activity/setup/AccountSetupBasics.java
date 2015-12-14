@@ -276,7 +276,7 @@ public class AccountSetupBasics extends K9Activity
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String[] emailParts = splitEmail(email);
-        String user = email;
+        String user = emailParts[0];
         String domain = emailParts[1];
         try {
             String userEnc = UrlEncodingHelper.encodeUtf8(user);
