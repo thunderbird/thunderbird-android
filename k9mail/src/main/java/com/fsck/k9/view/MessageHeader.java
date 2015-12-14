@@ -181,23 +181,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         Integer messageToShow = null;
         try {
             // Retrieve additional headers
-            boolean allHeadersDownloaded = mMessage.isSet(Flag.X_GOT_ALL_HEADERS);
             List<HeaderEntry> additionalHeaders = getAdditionalHeaders(mMessage);
             if (!additionalHeaders.isEmpty()) {
                 // Show the additional headers that we have got.
                 populateAdditionalHeadersView(additionalHeaders);
                 mAdditionalHeadersView.setVisibility(View.VISIBLE);
-            }
-            if (!allHeadersDownloaded) {
-                /*
-                * Tell the user about the "save all headers" setting
-                *
-                * NOTE: This is only a temporary solution... in fact,
-                * the system should download headers on-demand when they
-                * have not been saved in their entirety initially.
-                */
-                messageToShow = R.string.message_additional_headers_not_downloaded;
-            } else if (additionalHeaders.isEmpty()) {
+            } else {
                 // All headers have been downloaded, but there are no additional headers.
                 messageToShow = R.string.message_no_additional_headers_available;
             }
