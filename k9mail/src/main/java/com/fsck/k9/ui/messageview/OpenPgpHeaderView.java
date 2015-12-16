@@ -188,6 +188,11 @@ public class OpenPgpHeaderView extends LinearLayout {
 
     private void displayVerificationResult() {
         OpenPgpSignatureResult signatureResult = cryptoAnnotation.getSignatureResult();
+        if (signatureResult == null) {
+            hideSignatureLayout();
+            hideSignatureIconAndText();
+            return;
+        }
 
         switch (signatureResult.getResult()) {
             case OpenPgpSignatureResult.RESULT_NO_SIGNATURE: {
@@ -262,6 +267,11 @@ public class OpenPgpHeaderView extends LinearLayout {
             resultSignatureButton.setVisibility(View.VISIBLE);
             resultSignatureButton.setText(stringId);
         }
+    }
+
+    private void hideSignatureIconAndText() {
+        resultSignatureIcon.setVisibility(View.GONE);
+        resultSignatureText.setVisibility(View.GONE);
     }
 
     private void displayNotSigned() {
