@@ -17,9 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fsck.k9.R;
-
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
-
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -49,6 +47,8 @@ public class OpenPgpHeaderView extends LinearLayout {
 
     @Override
     public void onFinishInflate() {
+        super.onFinishInflate();
+
         resultEncryptionIcon = (ImageView) findViewById(R.id.result_encryption_icon);
         resultEncryptionText = (TextView) findViewById(R.id.result_encryption_text);
         resultSignatureIcon = (ImageView) findViewById(R.id.result_signature_icon);
@@ -131,7 +131,6 @@ public class OpenPgpHeaderView extends LinearLayout {
         resultEncryptionText.setText(R.string.openpgp_result_decryption_insecure);
     }
 
-
     private void displayEncryptionError() {
         setEncryptionImageAndTextColor(CryptoState.INVALID);
 
@@ -140,7 +139,7 @@ public class OpenPgpHeaderView extends LinearLayout {
         if (error == null) {
             text = context.getString(R.string.openpgp_unknown_error);
         } else {
-            text = context.getString(R.string.openpgp_error, error.getMessage());
+            text = context.getString(R.string.openpgp_decryption_failed, error.getMessage());
         }
         resultEncryptionText.setText(text);
     }
@@ -160,6 +159,9 @@ public class OpenPgpHeaderView extends LinearLayout {
 
         switch (cryptoAnnotation.getErrorType()) {
             case CRYPTO_API_RETURNED_ERROR:
+                displayEncryptionError();
+                hideVerificationState();
+                break;
             case NONE: {
                 displayVerificationResult();
                 break;
@@ -170,6 +172,12 @@ public class OpenPgpHeaderView extends LinearLayout {
                 break;
             }
         }
+    }
+
+    private void hideVerificationState() {
+        hideSignatureLayout();
+        resultSignatureText.setVisibility(View.GONE);
+        resultSignatureIcon.setVisibility(View.GONE);
     }
 
     private void displayIncompleteSignedPart() {
@@ -214,8 +222,9 @@ public class OpenPgpHeaderView extends LinearLayout {
                 displaySignatureInsecure();
                 break;
             }
-            default:
+            default: {
                 throw new RuntimeException("OpenPgpSignatureResult result not handled!");
+            }
         }
     }
 
