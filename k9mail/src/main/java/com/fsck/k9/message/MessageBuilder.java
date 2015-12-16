@@ -8,6 +8,7 @@ import java.util.Locale;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -32,7 +33,7 @@ import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.util.MimeUtil;
 
 
-public class MessageBuilder {
+public abstract class MessageBuilder {
     private final Context context;
 
     private String subject;
@@ -436,12 +437,86 @@ public class MessageBuilder {
         return this;
     }
 
+    private Callback asyncCallback;
+    private final Object callbackLock = new Object();
+
+    // Postponed results, to be delivered upon reattachment of callback. There should only ever be one of these!
+    private MimeMessage postponedMimeMessage;
+    private MessagingException postponedException;
+    private PendingIntent postponedPendingIntent;
+    private int postponedRequestCode;
+
+    /** This method builds the message asynchronously, calling *exactly one* of the callback
+     * methods on the UI thread when it finishes. The callback may thread-safely be detached
+     * and reattached intermittently.
+     */
     public void buildAsync(Callback callback) {
-        try {
-            MimeMessage message = build();
-            callback.onSuccess(message);
-        } catch (MessagingException e) {
-            callback.onException(e);
+        synchronized (callbackLock) {
+            asyncCallback = callback;
+            postponedMimeMessage = null;
+            postponedException = null;
+            postponedPendingIntent = null;
+        }
+    }
+
+    /** This method may be used to temporarily detach the callback. If a result is delivered
+     * while the callback is detached, it will be delivered upon reattachment. */
+    public void detachCallback() {
+        synchronized (callbackLock) {
+            asyncCallback = null;
+        }
+    }
+
+    /** This method attaches a new callback, and must only be called after a previous one was
+     * detached. If the computation finished while the callback was detached, it will be
+     * delivered immediately upon reattachment. */
+    public void reattachCallback(Callback callback) {
+        synchronized (callbackLock) {
+            if (asyncCallback != null) {
+                throw new IllegalStateException("need to detach callback before new one can be attached!");
+            }
+            asyncCallback = callback;
+        }
+        if (postponedMimeMessage != null) {
+            asyncCallback.onMessageBuildSuccess(postponedMimeMessage);
+            postponedMimeMessage = null;
+        } else if (postponedException != null) {
+            asyncCallback.onMessageBuildException(postponedException);
+            postponedException = null;
+        } else if (postponedPendingIntent != null) {
+            asyncCallback.onMessageBuildReturnPendingIntent(postponedPendingIntent, postponedRequestCode);
+            postponedPendingIntent = null;
+        }
+    }
+
+    protected void returnMessageBuildSuccess(MimeMessage message) {
+        synchronized (callbackLock) {
+            if (asyncCallback != null) {
+                asyncCallback.onMessageBuildSuccess(message);
+            } else {
+                postponedMimeMessage = message;
+            }
+        }
+    }
+
+    protected void returnMessageBuildException(MessagingException exception) {
+        synchronized (callbackLock) {
+            if (asyncCallback != null) {
+                asyncCallback.onMessageBuildException(exception);
+            } else {
+                postponedException = exception;
+            }
+        }
+    }
+
+    protected void returnMessageBuildPendingIntent(PendingIntent pendingIntent, int requestCode) {
+        synchronized (callbackLock) {
+            if (asyncCallback != null) {
+                asyncCallback.onMessageBuildReturnPendingIntent(pendingIntent, requestCode);
+            } else {
+                postponedPendingIntent = pendingIntent;
+                postponedRequestCode = requestCode;
+            }
         }
     }
 
@@ -450,8 +525,10 @@ public class MessageBuilder {
     }
 
     public interface Callback {
-        void onSuccess(MimeMessage message);
-        void onException(MessagingException exception);
-        void onReturnPendingIntent(PendingIntent pendingIntent, int requestCode);
+        void onMessageBuildSuccess(MimeMessage message);
+        void onMessageBuildCancel();
+        void onMessageBuildException(MessagingException exception);
+        void onMessageBuildReturnPendingIntent(PendingIntent pendingIntent, int requestCode);
     }
+
 }

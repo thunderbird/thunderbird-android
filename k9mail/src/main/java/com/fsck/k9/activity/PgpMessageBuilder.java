@@ -40,7 +40,6 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     private MimeMessage currentProcessedMimeMessage;
     private Intent currentOpenPgpIntent;
-    private Callback currentCallback;
     private long signingKeyId = Account.NO_OPENPGP_KEY;
     private CryptoMode cryptoMode;
 
@@ -72,6 +71,8 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     @Override
     public void buildAsync(Callback callback) {
+        super.buildAsync(callback);
+
         if (currentState != State.IDLE) {
             throw new IllegalStateException("bad state!");
         }
@@ -79,11 +80,10 @@ public class PgpMessageBuilder extends MessageBuilder {
         try {
             currentProcessedMimeMessage = build();
         } catch (MessagingException me) {
-            callback.onException(me);
+            returnMessageBuildException(me);
             return;
         }
 
-        currentCallback = callback;
         currentState = State.START;
         continueAsyncBuildMessage();
     }
@@ -96,7 +96,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         try {
             maybeProcessMessageWithPgpMimeCrypto();
         } catch (MessagingException me) {
-            currentCallback.onException(me);
+            returnMessageBuildException(me);
             return;
         }
 
@@ -104,7 +104,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        currentCallback.onSuccess(currentProcessedMimeMessage);
+        returnMessageBuildSuccess(currentProcessedMimeMessage);
     }
 
     private void maybeProcessMessageWithPgpMimeCrypto() throws MessagingException {
@@ -225,9 +225,8 @@ public class PgpMessageBuilder extends MessageBuilder {
                 return;
 
             case OpenPgpApi.RESULT_CODE_ERROR:
-                resetToIdleState();
                 OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-                currentCallback.onException(new MessagingException(error.getMessage()));
+                returnMessageBuildException(new MessagingException(error.getMessage()));
                 return;
 
             default:
@@ -240,10 +239,10 @@ public class PgpMessageBuilder extends MessageBuilder {
 
         if (currentState == State.OPENPGP_ENCRYPT) {
             currentState = State.OPENPGP_ENCRYPT_UI;
-            currentCallback.onReturnPendingIntent(pendingIntent, REQUEST_ENCRYPT_INTERACTION);
+            returnMessageBuildPendingIntent(pendingIntent, REQUEST_ENCRYPT_INTERACTION);
         } else if (currentState == State.OPENPGP_SIGN) {
             currentState = State.OPENPGP_SIGN_UI;
-            currentCallback.onReturnPendingIntent(pendingIntent, REQUEST_SIGN_INTERACTION);
+            returnMessageBuildPendingIntent(pendingIntent, REQUEST_SIGN_INTERACTION);
         } else {
             throw new IllegalStateException("illegal state!");
         }
@@ -279,15 +278,8 @@ public class PgpMessageBuilder extends MessageBuilder {
         currentState = State.OPENPGP_ENCRYPT_OK;
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_CANCELED) {
-            resetToIdleState();
-            return;
-        }
-        if (resultCode != Activity.RESULT_OK) {
-            throw new IllegalStateException("error during interaction!");
-        }
-
         if (requestCode == REQUEST_SIGN_INTERACTION && currentState == State.OPENPGP_SIGN_UI) {
             currentOpenPgpIntent = data;
             currentState = State.OPENPGP_SIGN;
@@ -299,12 +291,6 @@ public class PgpMessageBuilder extends MessageBuilder {
         } else {
             throw new IllegalStateException("illegal state!");
         }
-    }
-
-    private void resetToIdleState() {
-        currentOpenPgpIntent = null;
-        currentProcessedMimeMessage = null;
-        currentState = State.IDLE;
     }
 
     public void setSigningKeyId(long signingKeyId) {

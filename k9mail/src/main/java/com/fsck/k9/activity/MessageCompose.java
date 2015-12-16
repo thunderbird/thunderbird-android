@@ -97,6 +97,7 @@ import com.fsck.k9.message.IdentityHeaderParser;
 import com.fsck.k9.message.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
+import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
@@ -109,7 +110,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 @SuppressWarnings("deprecation")
 public class MessageCompose extends K9Activity implements OnClickListener,
-        CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener {
+        CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener, MessageBuilder.Callback {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
@@ -727,6 +728,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateMessageFormat();
 
         setTitle();
+
+        currentMessageBuilder = (MessageBuilder) getLastNonConfigurationInstance();
+        if (currentMessageBuilder != null) {
+            currentMessageBuilder.reattachCallback(this);
+        }
     }
 
     @Override
@@ -891,6 +897,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Override
+    public Object onRetainNonConfigurationInstance() {
+        if (currentMessageBuilder != null) {
+            currentMessageBuilder.detachCallback();
+        }
+        return currentMessageBuilder;
+    }
+
+    @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
@@ -977,14 +991,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return createMessageBuilder(isDraft).buildText();
     }
 
-    private MessageBuilder createDraftMessageBuilder() {
-        return createMessageBuilder(true);
-    }
-
-    private MessageBuilder createSendMessageBuilder() {
-        return createMessageBuilder(false);
-    }
-
     private MessageBuilder createMessageBuilder(boolean isDraft) {
         MessageBuilder builder;
         CryptoMode cryptoMode = recipientPresenter.getCurrentCryptoMode();
@@ -994,7 +1000,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             pgpBuilder.setCryptoMode(cryptoMode);
             builder = pgpBuilder;
         } else {
-            builder = new MessageBuilder(getApplicationContext());
+            builder = new SimpleMessageBuilder(getApplicationContext());
         }
 
         builder.setSubject(mSubjectView.getText().toString())
@@ -1067,34 +1073,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void performSend() {
-        currentMessageBuilder = createSendMessageBuilder();
-        currentMessageBuilder.buildAsync(new MessageBuilder.Callback() {
-            @Override
-            public void onSuccess(MimeMessage message) {
-                // actually send the message
-                new SendMessageTask(MessageCompose.this, mAccount, mContacts, message,
-                        mDraftId != INVALID_DRAFT_ID ? mDraftId : null).execute();
-                finish();
-            }
-
-            @Override
-            public void onException(MessagingException me) {
-                Log.e(K9.LOG_TAG, "Error sending message", me);
-                Toast.makeText(MessageCompose.this,
-                        getString(R.string.send_aborted, me.getLocalizedMessage()),
-                        Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onReturnPendingIntent(PendingIntent pendingIntent, int requestCode) {
-                requestCode |= REQUEST_MASK_MESSAGE_BUILDER;
-                try {
-                    startIntentSenderForResult(pendingIntent.getIntentSender(), requestCode, null, 0, 0, 0);
-                } catch (SendIntentException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        currentMessageBuilder = createMessageBuilder(false);
+        currentMessageBuilder.buildAsync(this);
     }
 
     private void onDiscard() {
@@ -1351,6 +1331,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         if ((requestCode & REQUEST_MASK_MESSAGE_BUILDER) == REQUEST_MASK_MESSAGE_BUILDER) {
             requestCode ^= REQUEST_MASK_MESSAGE_BUILDER;
+            if (currentMessageBuilder == null) {
+                Log.e(K9.LOG_TAG, "Got a message builder activity result for no message builder, " +
+                        "this is an illegal state!");
+                return;
+            }
             currentMessageBuilder.onActivityResult(requestCode, resultCode, data);
             return;
         }
@@ -3031,6 +3016,39 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean shouldSign() {
         return isCryptoProviderEnabled();
+    }
+
+    @Override
+    public void onMessageBuildSuccess(MimeMessage message) {
+        // actually send the message
+        new SendMessageTask(MessageCompose.this, mAccount, mContacts, message,
+                mDraftId != INVALID_DRAFT_ID ? mDraftId : null).execute();
+        currentMessageBuilder = null;
+        finish();
+    }
+
+    @Override
+    public void onMessageBuildCancel() {
+        currentMessageBuilder = null;
+    }
+
+    @Override
+    public void onMessageBuildException(MessagingException me) {
+        Log.e(K9.LOG_TAG, "Error sending message", me);
+        Toast.makeText(MessageCompose.this,
+                getString(R.string.send_aborted, me.getLocalizedMessage()),
+                Toast.LENGTH_LONG).show();
+        currentMessageBuilder = null;
+    }
+
+    @Override
+    public void onMessageBuildReturnPendingIntent(PendingIntent pendingIntent, int requestCode) {
+        requestCode |= REQUEST_MASK_MESSAGE_BUILDER;
+        try {
+            startIntentSenderForResult(pendingIntent.getIntentSender(), requestCode, null, 0, 0, 0);
+        } catch (SendIntentException e) {
+            Log.e(K9.LOG_TAG, "Error starting pending intent from builder!", e);
+        }
     }
 
 }
