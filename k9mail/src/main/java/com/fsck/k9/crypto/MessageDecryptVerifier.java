@@ -13,6 +13,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.internet.MimeUtility;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
@@ -34,10 +35,9 @@ public class MessageDecryptVerifier {
 
         while (!partsToCheck.isEmpty()) {
             Part part = partsToCheck.pop();
-            String mimeType = part.getMimeType();
             Body body = part.getBody();
 
-            if (isSameMimeType(mimeType, MULTIPART_ENCRYPTED)) {
+            if (isPgpMimeEncryptedPart(part)) {
                 encryptedParts.add(part);
             } else if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;
@@ -58,10 +58,9 @@ public class MessageDecryptVerifier {
 
         while (!partsToCheck.isEmpty()) {
             Part part = partsToCheck.pop();
-            String mimeType = part.getMimeType();
             Body body = part.getBody();
 
-            if (isSameMimeType(mimeType, MULTIPART_SIGNED)) {
+            if (isPgpMimeSignedPart(part)) {
                 signedParts.add(part);
             } else if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;
@@ -105,8 +104,7 @@ public class MessageDecryptVerifier {
     }
 
     public static byte[] getSignatureData(Part part) throws IOException, MessagingException {
-
-        if (isSameMimeType(part.getMimeType(), MULTIPART_SIGNED)) {
+        if (isPgpMimeSignedPart(part)) {
             Body body = part.getBody();
             if (body instanceof Multipart) {
                 Multipart multi = (Multipart) body;
@@ -122,15 +120,23 @@ public class MessageDecryptVerifier {
         return null;
     }
 
-    public static boolean isPgpMimeSignedPart(Part part) {
-        return isSameMimeType(part.getMimeType(), MULTIPART_SIGNED);
+    private static boolean isPgpMimeSignedPart(Part part) {
+        if (!isSameMimeType(part.getMimeType(), MULTIPART_SIGNED)) {
+            return false;
+        }
+
+        String contentType = part.getContentType();
+        String protocol = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);
+        return APPLICATION_PGP_SIGNATURE.equalsIgnoreCase(protocol);
     }
 
-    public static boolean isPgpMimeEncryptedPart(Part part) {
-        //FIXME: Doesn't work right now because LocalMessage.getContentType() doesn't load headers from database
-//        String contentType = part.getContentType();
-//        String protocol = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);
-//        return APPLICATION_PGP_ENCRYPTED.equals(protocol);
-        return isSameMimeType(part.getMimeType(), MULTIPART_ENCRYPTED);
+    private static boolean isPgpMimeEncryptedPart(Part part) {
+        if (!isSameMimeType(part.getMimeType(), MULTIPART_ENCRYPTED)) {
+            return false;
+        }
+
+        String contentType = part.getContentType();
+        String protocol = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);
+        return APPLICATION_PGP_ENCRYPTED.equalsIgnoreCase(protocol);
     }
 }
