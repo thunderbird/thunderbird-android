@@ -1,9 +1,8 @@
 package com.fsck.k9.activity;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -14,9 +13,11 @@ import android.content.Intent;
 import com.fsck.k9.Account;
 import com.fsck.k9.activity.RecipientPresenter.CryptoMode;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
@@ -27,6 +28,7 @@ import com.fsck.k9.message.MessageBuilder;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
+import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 
 
 public class PgpMessageBuilder extends MessageBuilder {
@@ -178,25 +180,41 @@ public class PgpMessageBuilder extends MessageBuilder {
          */
 //        TextBody.setSignSafe(true);
 
-        MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
-        bodyPart.setUsing7bitTransport();
-        ByteArrayOutputStream messageToProcess = new ByteArrayOutputStream();
-        try {
-            bodyPart.writeTo(messageToProcess);
-        } catch (IOException e) {
-            throw new MessagingException("Internal I/O error.", e);
-        }
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        final MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
 
-        Intent result = openPgpApi.executeApi(openPgpIntent,
-                new ByteArrayInputStream(messageToProcess.toByteArray()), outputStream);
+        bodyPart.setUsing7bitTransport();
+
+        // This data will be read in a worker thread
+        OpenPgpDataSource dataSource = new OpenPgpDataSource() {
+            @Override
+            public void writeTo(OutputStream os) throws IOException {
+                try {
+                    bodyPart.writeTo(os);
+                } catch (MessagingException e) {
+                    throw new IOException(e);
+                }
+            }
+        };
+
+        BinaryTempFileBody encryptedTempBody = null;
+        OutputStream outputStream = null;
+        if (currentState == State.OPENPGP_ENCRYPT) {
+            try {
+                encryptedTempBody = new BinaryTempFileBody(MimeUtil.ENC_7BIT);
+                outputStream = encryptedTempBody.getOutputStream();
+            } catch (IOException e) {
+                throw new MessagingException("Could not allocate temp file for storage!", e);
+            }
+        }
+
+        Intent result = openPgpApi.executeApi(openPgpIntent, dataSource, outputStream);
 
         switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
             case OpenPgpApi.RESULT_CODE_SUCCESS:
                 if (currentState == State.OPENPGP_SIGN) {
                     mimeBuildSignedMessage(bodyPart, result);
                 } else if (currentState == State.OPENPGP_ENCRYPT) {
-                    mimeBuildEncryptedMessage(result, outputStream.toByteArray());
+                    mimeBuildEncryptedMessage(encryptedTempBody, result);
                 } else {
                     throw new IllegalStateException("state error!");
                 }
@@ -247,16 +265,14 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     @SuppressWarnings("UnusedParameters")
-    private void mimeBuildEncryptedMessage(Intent result, byte[] encryptedData) throws MessagingException {
+    private void mimeBuildEncryptedMessage(Body encryptedBodyPart, Intent result) throws MessagingException {
         MimeMultipart multipartEncrypted = new MimeMultipart();
         multipartEncrypted.setSubType("encrypted");
 
         // The getBytes() here should strictly use US-ASCII encoding. However, we know that for this static
         // string the byte data is equivalent, and avoid an UnsupportedEncodingException by using this way.
-        multipartEncrypted.addBodyPart(new MimeBodyPart(
-                new TextBody("Version: 1"), "application/pgp-encrypted"));
-        multipartEncrypted.addBodyPart(new MimeBodyPart(
-                new BinaryMemoryBody(encryptedData, MimeUtil.ENC_7BIT), "application/octet-stream"));
+        multipartEncrypted.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));
+        multipartEncrypted.addBodyPart(new MimeBodyPart(encryptedBodyPart, "application/octet-stream"));
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartEncrypted);
         currentProcessedMimeMessage.addContentTypeParameter("protocol", "\"application/pgp-encrypted\"");
 

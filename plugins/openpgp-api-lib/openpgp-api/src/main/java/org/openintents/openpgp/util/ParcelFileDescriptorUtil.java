@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
+
+
 public class ParcelFileDescriptorUtil {
 
     public static ParcelFileDescriptor pipeFrom(InputStream inputStream)
@@ -38,16 +41,15 @@ public class ParcelFileDescriptorUtil {
         return readSide;
     }
 
-
     public static TransferThread pipeTo(OutputStream outputStream, ParcelFileDescriptor output)
             throws IOException {
 
-        TransferThread t = new TransferThread(new ParcelFileDescriptor.AutoCloseInputStream(output), outputStream);
+        TransferThread
+                t = new TransferThread(new ParcelFileDescriptor.AutoCloseInputStream(output), outputStream);
 
         t.start();
         return t;
     }
-
 
     static class TransferThread extends Thread {
         final InputStream mIn;
@@ -78,6 +80,42 @@ public class ParcelFileDescriptorUtil {
                 }
                 try {
                     mOut.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+    }
+
+    public static ParcelFileDescriptor asyncPipeFromDataSource(OpenPgpDataSource dataSource) throws IOException {
+        ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
+        ParcelFileDescriptor readSide = pipe[0];
+        ParcelFileDescriptor writeSide = pipe[1];
+
+        new DataSourceTransferThread(dataSource, new ParcelFileDescriptor.AutoCloseOutputStream(writeSide)).start();
+
+        return readSide;
+    }
+
+    static class DataSourceTransferThread extends Thread {
+        final OpenPgpDataSource dataSource;
+        final OutputStream outputStream;
+
+        DataSourceTransferThread(OpenPgpDataSource dataSource, OutputStream outputStream) {
+            super("IPC Transfer Thread");
+            this.dataSource = dataSource;
+            this.outputStream = outputStream;
+            setDaemon(true);
+        }
+
+        @Override
+        public void run() {
+            try {
+                dataSource.writeTo(outputStream);
+            } catch (IOException e) {
+                Log.e(OpenPgpApi.TAG, "IOException when writing to out", e);
+            } finally {
+                try {
+                    outputStream.close();
                 } catch (IOException ignored) {
                 }
             }
