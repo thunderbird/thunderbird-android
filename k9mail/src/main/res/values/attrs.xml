@@ -64,4 +64,11 @@
         <attr name="unFoldedLabel" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="LinearViewAnimator">
+        <attr name="downInAnimation" format="reference" />
+        <attr name="downOutAnimation" format="reference" />
+        <attr name="upInAnimation" format="reference" />
+        <attr name="upOutAnimation" format="reference" />
+    </declare-styleable>
+
 </resources>

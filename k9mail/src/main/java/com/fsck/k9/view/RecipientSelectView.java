@@ -92,8 +92,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         View cryptoStatusRed = view.findViewById(R.id.contact_crypto_status_red);
         View cryptoStatusOrange = view.findViewById(R.id.contact_crypto_status_orange);
+        View cryptoStatusGreen = view.findViewById(R.id.contact_crypto_status_green);
         cryptoStatusRed.setVisibility(cryptoStatus == 0 ? View.VISIBLE : View.GONE);
         cryptoStatusOrange.setVisibility(cryptoStatus == 1 ? View.VISIBLE : View.GONE);
+        cryptoStatusGreen.setVisibility(cryptoStatus == 2 ? View.VISIBLE : View.GONE);
 
         return view;
     }

@@ -15,6 +15,7 @@ import android.widget.ViewAnimator;
 
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.RecipientPresenter.CryptoMode;
 import com.fsck.k9.view.RecipientSelectView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.mail.Address;
@@ -31,7 +32,7 @@ public class RecipientView implements OnFocusChangeListener, OnClickListener {
     private final RecipientSelectView toView;
     private final RecipientSelectView ccView;
     private final RecipientSelectView bccView;
-    private final ViewAnimator cryptoStatus;
+    private final ViewAnimator cryptoStatusView;
     private final ViewAnimator recipientExpanderContainer;
 
     private RecipientPresenter presenter;
@@ -47,7 +48,8 @@ public class RecipientView implements OnFocusChangeListener, OnClickListener {
         bccWrapper = activity.findViewById(R.id.bcc_wrapper);
         bccDivider = activity.findViewById(R.id.bcc_divider);
         recipientExpanderContainer = (ViewAnimator) activity.findViewById(R.id.recipient_expander_container);
-        cryptoStatus = (ViewAnimator) activity.findViewById(R.id.crypto_status);
+        cryptoStatusView = (ViewAnimator) activity.findViewById(R.id.crypto_status);
+        cryptoStatusView.setOnClickListener(this);
 
         toView.setOnFocusChangeListener(this);
         ccView.setOnFocusChangeListener(this);
@@ -193,39 +195,46 @@ public class RecipientView implements OnFocusChangeListener, OnClickListener {
     }
 
     public void hideCryptoStatus() {
-        if (cryptoStatus.getVisibility() == View.GONE) {
+        if (cryptoStatusView.getVisibility() == View.GONE) {
             return;
         }
 
-        cryptoStatus.animate().translationX(100).setDuration(300).setListener(new AnimatorListenerAdapter() {
+        cryptoStatusView.animate().translationX(100).setDuration(300).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                cryptoStatus.setVisibility(View.GONE);
+                cryptoStatusView.setVisibility(View.GONE);
             }
         }).start();
     }
 
-    public void showCryptoStatus(final boolean allKeys, final boolean allVerified) {
-        if (cryptoStatus.getVisibility() == View.VISIBLE) {
-            switchCryptoStatus(allKeys, allVerified);
+    public enum CryptoStatusType {
+        DISABLED(4), SIGN_ONLY(3), OPPORTUNISTIC_NOKEY(0), OPPORTUNISTIC_UNTRUSTED(1), OPPORTUNISTIC_TRUSTED(2);
+        final int childToDisplay;
+        CryptoStatusType(int childToDisplay) {
+            this.childToDisplay = childToDisplay;
+        }
+    }
+    public void showCryptoStatus(final CryptoStatusType childToDisplay) {
+        if (cryptoStatusView.getVisibility() == View.VISIBLE) {
+            switchCryptoStatus(childToDisplay);
             return;
         }
 
-        cryptoStatus.setTranslationX(100);
-        cryptoStatus.setVisibility(View.VISIBLE);
-        cryptoStatus.animate().translationX(0).setDuration(300).setListener(new AnimatorListenerAdapter() {
+        cryptoStatusView.setTranslationX(100);
+        cryptoStatusView.setVisibility(View.VISIBLE);
+        cryptoStatusView.animate().translationX(0).setDuration(300).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                switchCryptoStatus(allKeys, allVerified);
+                switchCryptoStatus(childToDisplay);
             }
         }).start();
     }
 
-    private void switchCryptoStatus(boolean allKeys, boolean allVerified) {
-        int childtoDisplay = allKeys ? (allVerified ? 2 : 1) : 0;
-        if (cryptoStatus.getDisplayedChild() != childtoDisplay) {
-            cryptoStatus.setDisplayedChild(childtoDisplay);
+    private void switchCryptoStatus(CryptoStatusType cryptoStatus) {
+        int childToDisplay = cryptoStatus.childToDisplay;
+        if (cryptoStatusView.getDisplayedChild() != childToDisplay) {
+            cryptoStatusView.setDisplayedChild(childToDisplay);
         }
     }
 
@@ -273,6 +282,15 @@ public class RecipientView implements OnFocusChangeListener, OnClickListener {
             case R.id.recipient_expander:
                 presenter.onClickRecipientExpander();
                 break;
+            case R.id.crypto_status:
+                presenter.onClickCryptoStatus();
+                break;
         }
     }
+
+    public void showCryptoDialog(CryptoMode currentCryptoMode) {
+        CryptoSettingsDialog dialog = CryptoSettingsDialog.newInstance(currentCryptoMode);
+        dialog.show(activity.getFragmentManager(), "crypto_settings");
+    }
+
 }

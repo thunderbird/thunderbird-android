@@ -46,4 +46,15 @@
         tools:visibility="visible"
         />
 
+    <ImageView
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_margin="6dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/contact_crypto_status_green"
+        android:src="@drawable/status_lock_closed"
+        android:tint="@color/openpgp_green"
+        android:visibility="gone"
+        />
+
 </LinearLayout>

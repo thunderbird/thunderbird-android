@@ -72,6 +72,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
@@ -243,6 +244,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
                 break;
         }
+    }
+
+    public void onCryptoModeChanged(CryptoMode type) {
+        recipientPresenter.onCryptoModeChanged(type);
     }
 
     enum Action {

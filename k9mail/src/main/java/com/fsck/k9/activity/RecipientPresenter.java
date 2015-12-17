@@ -16,6 +16,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose.CaseInsensitiveParamWrapper;
+import com.fsck.k9.activity.RecipientView.CryptoStatusType;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -37,6 +38,7 @@ public class RecipientPresenter {
     private Account account;
     private String cryptoProvider;
     private RecipientType lastFocusedType = RecipientType.TO;
+    private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
 
     public RecipientPresenter(Context context, RecipientView recipientView, Account account) {
         this.recipientView = recipientView;
@@ -297,51 +299,66 @@ public class RecipientPresenter {
         recipientView.setRecipientExpanderVisibility(notBothAreVisible);
     }
 
-    public void updateCryptoStatus() {
+    public void updateCryptoDisplayStatus() {
         List<Recipient> recipients = getAllRecipients();
         if (recipients.isEmpty()) {
             recipientView.hideCryptoStatus();
             return;
         }
 
-        boolean allKeys = true, allVerified = true;
+        if (currentCryptoMode == CryptoMode.SIGN_ONLY) {
+            recipientView.showCryptoStatus(CryptoStatusType.SIGN_ONLY);
+            return;
+        }
+        if (currentCryptoMode == CryptoMode.DISABLE) {
+            recipientView.showCryptoStatus(CryptoStatusType.DISABLED);
+            return;
+        }
+
+        boolean allKeysAvailable = true, allKeysVerified = true;
         for (Recipient recipient : recipients) {
             int cryptoStatus = recipient.getCryptoStatus();
             if (cryptoStatus == 0) {
-                allKeys = false;
+                allKeysAvailable = false;
             } else if (cryptoStatus == 1) {
-                allVerified = false;
+                allKeysVerified = false;
             }
         }
 
-        recipientView.showCryptoStatus(allKeys, allVerified);
+        if (allKeysAvailable && allKeysVerified) {
+            recipientView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_TRUSTED);
+        } else if (allKeysAvailable) {
+            recipientView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_UNTRUSTED);
+        } else {
+            recipientView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_NOKEY);
+        }
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onToTokenAdded(Recipient recipient) {
-        updateCryptoStatus();
+        updateCryptoDisplayStatus();
     }
     @SuppressWarnings("UnusedParameters")
     public void onToTokenRemoved(Recipient recipient) {
-        updateCryptoStatus();
+        updateCryptoDisplayStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onCcTokenAdded(Recipient recipient) {
-        updateCryptoStatus();
+        updateCryptoDisplayStatus();
     }
     @SuppressWarnings("UnusedParameters")
     public void onCcTokenRemoved(Recipient recipient) {
-        updateCryptoStatus();
+        updateCryptoDisplayStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onBccTokenAdded(Recipient recipient) {
-        updateCryptoStatus();
+        updateCryptoDisplayStatus();
     }
     @SuppressWarnings("UnusedParameters")
     public void onBccTokenRemoved(Recipient recipient) {
-        updateCryptoStatus();
+        updateCryptoDisplayStatus();
     }
 
     private void addRecipientsFromAddresses(final RecipientType recipientType, final Address... addresses) {
@@ -430,4 +447,18 @@ public class RecipientPresenter {
     public void onNonRecipientFieldFocused() {
         hideEmptyExtendedRecipientFields();
     }
+
+    public void onClickCryptoStatus() {
+        recipientView.showCryptoDialog(currentCryptoMode);
+    }
+
+    public void onCryptoModeChanged(CryptoMode type) {
+        currentCryptoMode = type;
+        updateCryptoDisplayStatus();
+    }
+
+    enum CryptoMode {
+        OPPORTUNISTIC, DISABLE, SIGN_ONLY
+    }
+
 }
