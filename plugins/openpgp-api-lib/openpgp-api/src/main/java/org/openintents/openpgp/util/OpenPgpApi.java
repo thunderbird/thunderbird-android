@@ -217,7 +217,7 @@ public class OpenPgpApi {
 
     // ACTION_DETACHED_SIGN
     public static final String RESULT_DETACHED_SIGNATURE = "detached_signature";
-    public static final String RESULT_MICALG = "micalg";
+    public static final String RESULT_SIGNATURE_MICALG = "signature_micalg";
 
     // ENCRYPT, SIGN_AND_ENCRYPT
     public static final String EXTRA_USER_IDS = "user_ids";

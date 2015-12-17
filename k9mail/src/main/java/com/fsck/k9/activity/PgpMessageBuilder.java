@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.activity.RecipientPresenter.CryptoMode;
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -259,6 +260,12 @@ public class PgpMessageBuilder extends MessageBuilder {
 
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartSigned);
         currentProcessedMimeMessage.addContentTypeParameter("protocol", "\"application/pgp-signature\"");
+        if (result.hasExtra(OpenPgpApi.RESULT_SIGNATURE_MICALG)) {
+            String micAlgParameter = result.getStringExtra(OpenPgpApi.RESULT_SIGNATURE_MICALG);
+            currentProcessedMimeMessage.addContentTypeParameter("micalg", micAlgParameter);
+        } else {
+            Log.e(K9.LOG_TAG, "missing micalg parameter for pgp multipart/signed!");
+        }
 
         currentState = State.OPENPGP_SIGN_OK;
     }
