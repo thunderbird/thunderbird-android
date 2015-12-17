@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -40,7 +41,6 @@ public class PgpMessageBuilder extends MessageBuilder {
     private final OpenPgpApi openPgpApi;
 
     private MimeMessage currentProcessedMimeMessage;
-    private Intent currentOpenPgpIntent;
     private long signingKeyId = Account.NO_OPENPGP_KEY;
     private CryptoMode cryptoMode;
 
@@ -49,7 +49,8 @@ public class PgpMessageBuilder extends MessageBuilder {
         this.openPgpApi = openPgpApi;
     }
 
-    enum State {
+    /** This class keeps track of its internal state explicitly. */
+    private enum State {
         IDLE, START,
         OPENPGP_SIGN, OPENPGP_SIGN_UI, OPENPGP_SIGN_OK,
         OPENPGP_ENCRYPT, OPENPGP_ENCRYPT_UI, OPENPGP_ENCRYPT_OK;
@@ -75,7 +76,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         super.buildAsync(callback);
 
         if (currentState != State.IDLE) {
-            throw new IllegalStateException("bad state!");
+            throw new IllegalStateException("internal error, a PgpMessageBuilder can only be built once!");
         }
 
         try {
@@ -86,45 +87,40 @@ public class PgpMessageBuilder extends MessageBuilder {
         }
 
         currentState = State.START;
-        continueAsyncBuildMessage();
+        startOrContinueBuildMessage(null);
     }
 
-    private void continueAsyncBuildMessage() {
+    private void startOrContinueBuildMessage(@Nullable Intent userInteractionResult) {
         if (currentState != State.START && !currentState.isReentrantState()) {
             throw new IllegalStateException("bad state!");
         }
 
         try {
-            maybeProcessMessageWithPgpMimeCrypto();
+            startOrContinueSigningIfRequested(userInteractionResult);
+
+            if (currentState.isBreakState()) {
+                return;
+            }
+
+            startOrContinueEncryptionIfRequested(userInteractionResult);
+
+            if (currentState.isBreakState()) {
+                return;
+            }
+
+            returnMessageBuildSuccess(currentProcessedMimeMessage);
         } catch (MessagingException me) {
             returnMessageBuildException(me);
-            return;
         }
-
-        if (currentState.isBreakState()) {
-            return;
-        }
-
-        returnMessageBuildSuccess(currentProcessedMimeMessage);
     }
 
-    private void maybeProcessMessageWithPgpMimeCrypto() throws MessagingException {
-        if (currentState == State.OPENPGP_SIGN || currentState == State.OPENPGP_ENCRYPT) {
-            Intent openPgpIntent = currentOpenPgpIntent;
-            currentOpenPgpIntent = null;
-            mimeIntentLaunch(openPgpIntent);
-        }
-
-        maybeStartPgpSigning();
-
-        if (currentState.isBreakState()) {
+    private void startOrContinueEncryptionIfRequested(Intent userInteractionResult) throws MessagingException {
+        boolean reenterOperation = currentState == State.OPENPGP_ENCRYPT;
+        if (reenterOperation) {
+            mimeIntentLaunch(userInteractionResult);
             return;
         }
 
-        maybeStartPgpEncryption();
-    }
-
-    private void maybeStartPgpEncryption() throws MessagingException {
         if (cryptoMode == CryptoMode.SIGN_ONLY) {
             return;
         }
@@ -151,7 +147,13 @@ public class PgpMessageBuilder extends MessageBuilder {
         mimeIntentLaunch(encryptIntent);
     }
 
-    private void maybeStartPgpSigning() throws MessagingException {
+    private void startOrContinueSigningIfRequested(Intent userInteractionResult) throws MessagingException {
+        boolean reenterOperation = currentState == State.OPENPGP_SIGN;
+        if (reenterOperation) {
+            mimeIntentLaunch(userInteractionResult);
+            return;
+        }
+
         boolean isSignEnabled = signingKeyId != Account.NO_OPENPGP_KEY;
         boolean alreadySigned = currentState.isSignOk();
         if (!isSignEnabled || alreadySigned) {
@@ -165,14 +167,15 @@ public class PgpMessageBuilder extends MessageBuilder {
         mimeIntentLaunch(signIntent);
     }
 
-    /**
-     * Process the message in order to encapsulate it in a multipart/signed message.
-     * @see <a href="http://tools.ietf.org/html/rfc2015">RFC-2015</a>
-     * @throws MessagingException
+    /** This method executes the given Intent with the OpenPGP Api. It will pass the
+     * entire current message as input. On success, either mimeBuildSignedMessage() or
+     * mimeBuildEncryptedMessage() will be called with their appropriate inputs. If an
+     * error or PendingInput is returned, this will be passed as a result to the
+     * operation.
      */
     private void mimeIntentLaunch(Intent openPgpIntent) throws MessagingException {
 
-        /*
+        /* TODO do differently
          * Once set to true, text messages will be sign safe (RFC-3156 §3) until K9Mail is stopped.
          * This "global parameter" is made to avoid a double generation (regular/sign safe) on the
          * whole Part/Body hierarchy and still limit the scope of this extra encoding to pgp/mime users
@@ -286,15 +289,13 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent userInteractionResult) {
         if (requestCode == REQUEST_SIGN_INTERACTION && currentState == State.OPENPGP_SIGN_UI) {
-            currentOpenPgpIntent = data;
             currentState = State.OPENPGP_SIGN;
-            continueAsyncBuildMessage();
+            startOrContinueBuildMessage(userInteractionResult);
         } else if (requestCode == REQUEST_ENCRYPT_INTERACTION && currentState == State.OPENPGP_ENCRYPT_UI) {
-            currentOpenPgpIntent = data;
             currentState = State.OPENPGP_ENCRYPT;
-            continueAsyncBuildMessage();
+            startOrContinueBuildMessage(userInteractionResult);
         } else {
             throw new IllegalStateException("illegal state!");
         }

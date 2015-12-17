@@ -8,7 +8,6 @@ import java.util.Locale;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
