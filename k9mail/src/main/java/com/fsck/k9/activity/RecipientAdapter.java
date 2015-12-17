@@ -4,7 +4,8 @@ package com.fsck.k9.activity;
 import java.util.List;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.fsck.k9.R;
-import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.helper.ContactPicture;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
+import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
 public class RecipientAdapter extends BaseAdapter implements Filterable {
@@ -87,21 +89,34 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         }
         holder.cryptoStatus.setVisibility(View.VISIBLE);
 
-        int cryptoStatusRes, cryptoStatusColor;
-        if (recipient.cryptoStatus != null && recipient.cryptoStatus > 0) {
-            if (recipient.cryptoStatus == 2) {
+        Integer cryptoStatusRes = null, cryptoStatusColor = null;
+        RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
+        switch (cryptoStatus) {
+            case AVAILABLE_TRUSTED:
                 cryptoStatusRes = R.drawable.status_lock_closed;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_green);
-            } else {
+                break;
+            case AVAILABLE_UNTRUSTED:
                 cryptoStatusRes = R.drawable.status_lock_error;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
-            }
-        } else {
-            cryptoStatusRes = R.drawable.status_lock_open;
-            cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
+                break;
+            case UNAVAILABLE:
+                cryptoStatusRes = R.drawable.status_lock_open;
+                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
+                break;
         }
-        holder.cryptoStatus.setImageResource(cryptoStatusRes);
-        holder.cryptoStatus.setImageTintList(ColorStateList.valueOf(cryptoStatusColor));
+
+        if (cryptoStatusRes != null) {
+            // we could do this easier with setImageTintList, but that's API level 21
+            Drawable drawable = context.getResources().getDrawable(cryptoStatusRes);
+            // noinspection ConstantConditions, we know the resource exists!
+            drawable.mutate();
+            drawable.setColorFilter(cryptoStatusColor, Mode.SRC_ATOP);
+            holder.cryptoStatus.setImageDrawable(drawable);
+            holder.cryptoStatus.setVisibility(View.VISIBLE);
+        } else {
+            holder.cryptoStatus.setVisibility(View.GONE);
+        }
 
     }
 

@@ -24,6 +24,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
 public class RecipientPresenter {
@@ -301,7 +302,9 @@ public class RecipientPresenter {
 
     public void updateCryptoDisplayStatus() {
         List<Recipient> recipients = getAllRecipients();
-        if (recipients.isEmpty()) {
+
+        boolean hasNoCryptoProviderOrRecipients = cryptoProvider == null || recipients.isEmpty();
+        if (hasNoCryptoProviderOrRecipients) {
             recipientView.hideCryptoStatus();
             return;
         }
@@ -317,10 +320,10 @@ public class RecipientPresenter {
 
         boolean allKeysAvailable = true, allKeysVerified = true;
         for (Recipient recipient : recipients) {
-            int cryptoStatus = recipient.getCryptoStatus();
-            if (cryptoStatus == 0) {
+            RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
+            if (!cryptoStatus.isAvailable()) {
                 allKeysAvailable = false;
-            } else if (cryptoStatus == 1) {
+            } else if (cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED) {
                 allKeysVerified = false;
             }
         }

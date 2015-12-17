@@ -88,14 +88,19 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         ImageView contactView = (ImageView) view.findViewById(R.id.contact_photo);
         RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), contactView, recipient);
 
-        int cryptoStatus = recipient.getCryptoStatus();
-
         View cryptoStatusRed = view.findViewById(R.id.contact_crypto_status_red);
         View cryptoStatusOrange = view.findViewById(R.id.contact_crypto_status_orange);
         View cryptoStatusGreen = view.findViewById(R.id.contact_crypto_status_green);
-        cryptoStatusRed.setVisibility(cryptoStatus == 0 ? View.VISIBLE : View.GONE);
-        cryptoStatusOrange.setVisibility(cryptoStatus == 1 ? View.VISIBLE : View.GONE);
-        cryptoStatusGreen.setVisibility(cryptoStatus == 2 ? View.VISIBLE : View.GONE);
+
+        boolean hasCryptoProvider = cryptoProvider != null;
+        // display unavailable status only if a crypto provider is even available
+        cryptoStatusRed.setVisibility(
+                hasCryptoProvider && recipient.cryptoStatus == RecipientCryptoStatus.UNAVAILABLE
+                        ? View.VISIBLE : View.GONE);
+        cryptoStatusOrange.setVisibility(
+                recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED ? View.VISIBLE : View.GONE);
+        cryptoStatusGreen.setVisibility(
+                recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED ? View.VISIBLE : View.GONE);
 
         return view;
     }
@@ -191,6 +196,14 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         adapter.setRecipients(null);
     }
 
+    public enum RecipientCryptoStatus {
+        UNDEFINED, UNAVAILABLE, AVAILABLE_UNTRUSTED, AVAILABLE_TRUSTED;
+
+        public boolean isAvailable() {
+            return this == AVAILABLE_TRUSTED || this == AVAILABLE_UNTRUSTED;
+        }
+    }
+
     public static class Recipient implements Serializable {
         @NonNull
         public final Address address;
@@ -198,26 +211,31 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         @Nullable // null means the address is not associated with a contact
         public final Long contactId;
 
-        @Nullable // null if the contact has no photo
+        @Nullable // null if the contact has no photo. transient because we serialize this manually, see below.
         public transient Uri photoThumbnailUri;
 
-        // TODO change to enum
-        @Nullable
-        public // null if no info is available
-        Integer cryptoStatus;
+        @NonNull
+        private RecipientCryptoStatus cryptoStatus;
 
         public Recipient(@NonNull Address address) {
             this.address = address;
             this.contactId = null;
+            this.cryptoStatus = RecipientCryptoStatus.UNDEFINED;
         }
 
         public Recipient(String name, String email, long contactId) {
             this.address = new Address(email, name);
             this.contactId = contactId;
+            this.cryptoStatus = RecipientCryptoStatus.UNDEFINED;
         }
 
-        public int getCryptoStatus() {
-            return cryptoStatus == null ? 0 : cryptoStatus;
+        @NonNull
+        public RecipientCryptoStatus getCryptoStatus() {
+            return cryptoStatus;
+        }
+
+        public void setCryptoStatus(@NonNull RecipientCryptoStatus cryptoStatus) {
+            this.cryptoStatus = cryptoStatus;
         }
 
         @Override

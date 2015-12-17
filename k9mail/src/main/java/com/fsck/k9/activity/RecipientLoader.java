@@ -15,8 +15,9 @@ import android.os.CancellationSignal;
 import android.os.OperationCanceledException;
 import android.provider.ContactsContract;
 
-import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
+import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
 @TargetApi(VERSION_CODES.JELLY_BEAN) // TODO get rid of this, affects cancellation behavior!
@@ -214,6 +215,11 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         Cursor cursor = getContext().getContentResolver().query(
                 queryUri, PROJECTION_CRYPTO_STATUS, null, recipientAddresses, null, mCancellationSignal);
 
+        // fill all values with "unavailable", even if the query fails
+        for (Recipient recipient : recipientMap.values()) {
+            recipient.setCryptoStatus(RecipientCryptoStatus.UNAVAILABLE);
+        }
+
         if (cursor == null) {
             return;
         }
@@ -225,7 +231,15 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
             for (Address address : Address.parseUnencoded(email)) {
                 if (recipientMap.containsKey(address.getAddress())) {
-                    recipientMap.get(address.getAddress()).cryptoStatus = status;
+                    Recipient recipient = recipientMap.get(address.getAddress());
+                    switch (status) {
+                        case 1:
+                            recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_UNTRUSTED);
+                            break;
+                        case 2:
+                            recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_TRUSTED);
+                            break;
+                    }
                 }
             }
 
