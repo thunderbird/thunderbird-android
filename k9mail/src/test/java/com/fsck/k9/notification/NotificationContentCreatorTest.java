@@ -9,6 +9,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.message.preview.PreviewResult.PreviewType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,12 +77,25 @@ public class NotificationContentCreatorTest {
 
     @Test
     public void createFromMessage_withoutPreview() throws Exception {
+        when(message.getPreviewType()).thenReturn(PreviewType.NONE);
         when(message.getPreview()).thenReturn(null);
 
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
         assertEquals(SUBJECT, content.subject);
         assertEquals(SUBJECT, content.preview.toString());
+    }
+
+    @Test
+    public void createFromMessage_withEncryptedMessage() throws Exception {
+        when(message.getPreviewType()).thenReturn(PreviewType.ENCRYPTED);
+        when(message.getPreview()).thenReturn(null);
+
+        NotificationContent content = contentCreator.createFromMessage(account, message);
+
+        String encrypted = "*Encrypted*";
+        assertEquals(SUBJECT, content.subject);
+        assertEquals(SUBJECT + "\n" + encrypted, content.preview.toString());
     }
 
     @Test
@@ -118,6 +132,7 @@ public class NotificationContentCreatorTest {
     public void createFromMessage_withoutEmptyMessage() throws Exception {
         when(message.getFrom()).thenReturn(null);
         when(message.getSubject()).thenReturn(null);
+        when(message.getPreviewType()).thenReturn(PreviewType.NONE);
         when(message.getPreview()).thenReturn(null);
 
         NotificationContent content = contentCreator.createFromMessage(account, message);
@@ -145,6 +160,7 @@ public class NotificationContentCreatorTest {
         LocalMessage message = mock(LocalMessage.class);
 
         when(message.makeMessageReference()).thenReturn(messageReference);
+        when(message.getPreviewType()).thenReturn(PreviewType.TEXT);
         when(message.getPreview()).thenReturn(PREVIEW);
         when(message.getSubject()).thenReturn(SUBJECT);
         when(message.getFrom()).thenReturn(new Address[] { new Address(SENDER_ADDRESS, SENDER_NAME) });

@@ -142,7 +142,6 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract long getId();
 
-    public abstract String getPreview();
     public abstract boolean hasAttachments();
 
     public abstract int getSize();

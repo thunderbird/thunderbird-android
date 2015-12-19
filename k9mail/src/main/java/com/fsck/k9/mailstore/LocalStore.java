@@ -26,6 +26,7 @@ import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import com.fsck.k9.message.preview.MessagePreviewCreator;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
@@ -85,7 +86,7 @@ public class LocalStore extends Store implements Serializable {
         "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, " +
         "bcc_list, reply_to_list, attachment_count, internal_date, messages.message_id, " +
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +
-        "forwarded, message_part_id, mime_type ";
+        "forwarded, message_part_id, mime_type, preview_type ";
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
@@ -129,7 +130,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 53;
+    public static final int DB_VERSION = 54;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -161,6 +162,8 @@ public class LocalStore extends Store implements Serializable {
 
     private ContentResolver mContentResolver;
     private final Account mAccount;
+    private final MessagePreviewCreator messagePreviewCreator;
+    private final AttachmentCounter attachmentCounter;
 
     /**
      * local://localhost/path/to/database/uuid.db
@@ -177,6 +180,9 @@ public class LocalStore extends Store implements Serializable {
         mContentResolver = context.getContentResolver();
         database.setStorageProviderId(account.getLocalStorageProviderId());
         uUid = account.getUuid();
+
+        messagePreviewCreator = MessagePreviewCreator.newInstance();
+        attachmentCounter = new AttachmentCounter();
 
         database.open();
     }
@@ -829,6 +835,14 @@ public class LocalStore extends Store implements Serializable {
     // TODO: database should not be exposed!
     public LockableDatabase getDatabase() {
         return database;
+    }
+
+    public MessagePreviewCreator getMessagePreviewCreator() {
+        return messagePreviewCreator;
+    }
+
+    public AttachmentCounter getAttachmentCounter() {
+        return attachmentCounter;
     }
 
     void notifyChange() {

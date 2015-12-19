@@ -18,6 +18,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.message.preview.PreviewResult.PreviewType;
 
 
 class NotificationContentCreator {
@@ -41,12 +42,12 @@ class NotificationContentCreator {
         return new NotificationContent(messageReference, displaySender, subject, preview, summary, starred);
     }
 
-    private CharSequence getMessagePreview(Message message) {
+    private CharSequence getMessagePreview(LocalMessage message) {
         String subject = message.getSubject();
-        String snippet = message.getPreview();
+        String snippet = getPreview(message);
 
         boolean isSubjectEmpty = TextUtils.isEmpty(subject);
-        boolean isSnippetPresent = !TextUtils.isEmpty(snippet);
+        boolean isSnippetPresent = message.getPreviewType() != PreviewType.NONE;
         if (isSubjectEmpty && isSnippetPresent) {
             return snippet;
         }
@@ -63,6 +64,20 @@ class NotificationContentCreator {
         preview.setSpan(getEmphasizedSpan(), 0, displaySubject.length(), 0);
 
         return preview;
+    }
+
+    private String getPreview(LocalMessage message) {
+        PreviewType previewType = message.getPreviewType();
+        switch (previewType) {
+            case NONE:
+                return null;
+            case TEXT:
+                return message.getPreview();
+            case ENCRYPTED:
+                return context.getString(R.string.preview_encrypted);
+        }
+
+        throw new AssertionError("Unknown preview type: " + previewType);
     }
 
     private CharSequence buildMessageSummary(String sender, String subject) {

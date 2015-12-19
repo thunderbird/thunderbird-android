@@ -54,6 +54,9 @@ import com.fsck.k9.mail.internet.SizeAware;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import com.fsck.k9.message.preview.MessagePreviewCreator;
+import com.fsck.k9.message.preview.PreviewResult;
+import com.fsck.k9.message.preview.PreviewResult.PreviewType;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -1233,9 +1236,13 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         try {
-            MessageInfoExtractor messageExtractor = new MessageInfoExtractor(localStore.context, message);
-            String preview = messageExtractor.getMessageTextPreview();
-            int attachmentCount = messageExtractor.getAttachmentCount();
+            MessagePreviewCreator previewCreator = localStore.getMessagePreviewCreator();
+            PreviewResult previewResult = previewCreator.createPreview(message);
+            PreviewType previewType = previewResult.getPreviewType();
+            DatabasePreviewType databasePreviewType = DatabasePreviewType.fromPreviewType(previewType);
+
+            AttachmentCounter attachmentCounter = localStore.getAttachmentCounter();
+            int attachmentCount = attachmentCounter.getAttachmentCount(message);
 
             long rootMessagePartId = saveMessageParts(db, message);
 
@@ -1256,13 +1263,19 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
             cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
             cv.put("bcc_list", Address.pack(message.getRecipients(RecipientType.BCC)));
-            cv.put("preview", preview);
             cv.put("reply_to_list", Address.pack(message.getReplyTo()));
             cv.put("attachment_count", attachmentCount);
             cv.put("internal_date", message.getInternalDate() == null
                     ? System.currentTimeMillis() : message.getInternalDate().getTime());
             cv.put("mime_type", message.getMimeType());
             cv.put("empty", 0);
+
+            cv.put("preview_type", databasePreviewType.getDatabaseValue());
+            if (previewResult.isPreviewTextAvailable()) {
+                cv.put("preview", previewResult.getPreviewText());
+            } else {
+                cv.putNull("preview");
+            }
 
             String messageId = message.getMessageId();
             if (messageId != null) {

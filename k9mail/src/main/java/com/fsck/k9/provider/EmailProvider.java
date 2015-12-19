@@ -143,6 +143,7 @@ public class EmailProvider extends ContentProvider {
         public static final String FLAGS = "flags";
         public static final String ATTACHMENT_COUNT = "attachment_count";
         public static final String FOLDER_ID = "folder_id";
+        public static final String PREVIEW_TYPE = "preview_type";
         public static final String PREVIEW = "preview";
         public static final String READ = "read";
         public static final String FLAGGED = "flagged";
