@@ -8,11 +8,11 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_margin="8dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="12dp"
         android:id="@+id/contact_photo"
-        tools:src="@drawable/action_search_folder_light"
+        tools:src="@drawable/ic_contact_picture"
         />
 
     <LinearLayout
@@ -48,7 +48,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:padding="12dp"
         android:id="@+id/contact_crypto_status"
         tools:src="@drawable/status_lock_open"
         />

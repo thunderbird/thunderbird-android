@@ -10,7 +10,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:id="@+id/contact_photo"
-        tools:src="@drawable/ic_action_add_cc_bbc_light"
+        tools:src="@drawable/ic_contact_picture"
         />
 
     <TextView
@@ -24,9 +24,10 @@
         />
 
     <ImageView
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_margin="6dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/contact_crypto_status_red"
         android:src="@drawable/status_lock_open"
@@ -37,7 +38,8 @@
     <ImageView
         android:layout_width="14dp"
         android:layout_height="14dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/contact_crypto_status_orange"
         android:src="@drawable/status_lock_error"
@@ -47,9 +49,10 @@
         />
 
     <ImageView
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_margin="6dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/contact_crypto_status_green"
         android:src="@drawable/status_lock_closed"

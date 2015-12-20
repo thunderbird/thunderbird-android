@@ -72,10 +72,9 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     }
 
     public void bindView(View view, Recipient recipient) {
-
         RecipientTokenHolder holder = (RecipientTokenHolder) view.getTag();
 
-        holder.name.setText(recipient.address.getPersonal());
+        holder.name.setText(recipient.getDisplayNameOrUnknown(context));
 
         String address = recipient.address.getAddress();
         holder.email.setText(address);
@@ -110,7 +109,6 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         } else {
             holder.cryptoStatus.setVisibility(View.GONE);
         }
-
     }
 
     public static void setContactPhotoOrPlaceholder(Context context, ImageView imageView, Recipient recipient) {

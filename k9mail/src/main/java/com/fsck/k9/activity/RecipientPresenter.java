@@ -358,6 +358,10 @@ public class RecipientPresenter {
     public void onToTokenRemoved(Recipient recipient) {
         updateCryptoDisplayStatus();
     }
+    @SuppressWarnings("UnusedParameters")
+    public void onToTokenChanged(Recipient recipient) {
+        updateCryptoDisplayStatus();
+    }
 
     @SuppressWarnings("UnusedParameters")
     public void onCcTokenAdded(Recipient recipient) {
@@ -367,6 +371,10 @@ public class RecipientPresenter {
     public void onCcTokenRemoved(Recipient recipient) {
         updateCryptoDisplayStatus();
     }
+    @SuppressWarnings("UnusedParameters")
+    public void onCcTokenChanged(Recipient recipient) {
+        updateCryptoDisplayStatus();
+    }
 
     @SuppressWarnings("UnusedParameters")
     public void onBccTokenAdded(Recipient recipient) {
@@ -374,6 +382,10 @@ public class RecipientPresenter {
     }
     @SuppressWarnings("UnusedParameters")
     public void onBccTokenRemoved(Recipient recipient) {
+        updateCryptoDisplayStatus();
+    }
+    @SuppressWarnings("UnusedParameters")
+    public void onBccTokenChanged(Recipient recipient) {
         updateCryptoDisplayStatus();
     }
 

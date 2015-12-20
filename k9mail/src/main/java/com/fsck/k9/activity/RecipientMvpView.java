@@ -20,7 +20,7 @@ import com.fsck.k9.view.RecipientSelectView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.tokenautocomplete.TokenCompleteTextView.TokenListener;
+import com.fsck.k9.view.RecipientSelectView.TokenListener;
 
 
 public class RecipientMvpView implements OnFocusChangeListener, OnClickListener {
@@ -80,6 +80,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             public void onTokenRemoved(Recipient recipient) {
                 presenter.onToTokenRemoved(recipient);
             }
+
+            @Override
+            public void onTokenChanged(Recipient recipient) {
+                presenter.onToTokenChanged(recipient);
+            }
         });
 
         ccView.setTokenListener(new TokenListener<Recipient>() {
@@ -92,6 +97,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             public void onTokenRemoved(Recipient recipient) {
                 presenter.onCcTokenRemoved(recipient);
             }
+
+            @Override
+            public void onTokenChanged(Recipient recipient) {
+                presenter.onCcTokenChanged(recipient);
+            }
         });
 
         bccView.setTokenListener(new TokenListener<Recipient>() {
@@ -103,6 +113,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             @Override
             public void onTokenRemoved(Recipient recipient) {
                 presenter.onBccTokenRemoved(recipient);
+            }
+
+            @Override
+            public void onTokenChanged(Recipient recipient) {
+                presenter.onBccTokenChanged(recipient);
             }
         });
     }

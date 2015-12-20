@@ -1164,5 +1164,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="recipient_bcc">Bcc</string>
     <string name="recipient_to">To</string>
     <string name="recipient_from">From</string>
+    <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
+    <string name="address_type_home">Home</string>
+    <string name="address_type_work">Work</string>
+    <string name="address_type_other">Other</string>
+    <string name="address_type_mobile">Mobile</string>
 
 </resources>
