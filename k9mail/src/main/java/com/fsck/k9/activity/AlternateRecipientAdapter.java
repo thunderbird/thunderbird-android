@@ -23,12 +23,16 @@ import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
 public class AlternateRecipientAdapter extends BaseAdapter {
+    private static final int NUMBER_OF_FIXED_LIST_ITEMS = 2;
+    private static final int POSITION_HEADER_VIEW = 0;
+    private static final int POSITION_CURRENT_ADDRESS = 1;
+
 
     private final Context context;
+    private final AlternateRecipientListener listener;
     private List<Recipient> recipients;
-
     private Recipient currentRecipient;
-    private AlternateRecipientListener listener;
+
 
     public AlternateRecipientAdapter(Context context, AlternateRecipientListener listener) {
         super();
@@ -48,20 +52,20 @@ public class AlternateRecipientAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        // number of alternate addresses, +1 for the header, +1 for the current address
         if (recipients == null) {
-            return 2;
+            return NUMBER_OF_FIXED_LIST_ITEMS;
         }
-        return recipients.size() +2;
+
+        return recipients.size() + NUMBER_OF_FIXED_LIST_ITEMS;
     }
 
     @Override
     public Recipient getItem(int position) {
-        // position 0 is the recipient we display alternates for, substitute it
-        if (position == 0 || position == 1) {
+        if (position == POSITION_HEADER_VIEW || position == POSITION_CURRENT_ADDRESS) {
             return currentRecipient;
         }
-        return recipients == null ? null : recipients.get(position -2);
+
+        return recipients == null ? null : getRecipientFromPosition(position);
     }
 
     @Override
@@ -69,13 +73,19 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         return position;
     }
 
+    private Recipient getRecipientFromPosition(int position) {
+        return recipients.get(position - NUMBER_OF_FIXED_LIST_ITEMS);
+    }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         if (view == null) {
             view = newView(parent);
         }
+
         Recipient recipient = getItem(position);
-        if (position == 0) {
+
+        if (position == POSITION_HEADER_VIEW) {
             bindHeaderView(view, recipient);
         } else {
             bindItemView(view, recipient);
@@ -86,15 +96,16 @@ public class AlternateRecipientAdapter extends BaseAdapter {
 
     public View newView(ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.recipient_alternate_item, parent, false);
+
         RecipientTokenHolder holder = new RecipientTokenHolder(view);
         view.setTag(holder);
+
         return view;
     }
 
     @Override
     public boolean isEnabled(int position) {
-        // the header isn't clickable, all other elements are
-        return position > 0;
+        return position != POSITION_HEADER_VIEW;
     }
 
     public void bindHeaderView(View view, Recipient recipient) {
@@ -141,18 +152,21 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         Integer cryptoStatusRes = null, cryptoStatusColor = null;
         RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
         switch (cryptoStatus) {
-            case AVAILABLE_TRUSTED:
+            case AVAILABLE_TRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_closed;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_green);
                 break;
-            case AVAILABLE_UNTRUSTED:
+            }
+            case AVAILABLE_UNTRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_error;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
                 break;
-            case UNAVAILABLE:
+            }
+            case UNAVAILABLE: {
                 cryptoStatusRes = R.drawable.status_lock_open;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
                 break;
+            }
         }
 
         if (cryptoStatusRes != null) {
@@ -169,16 +183,16 @@ public class AlternateRecipientAdapter extends BaseAdapter {
 
     }
 
-    static class RecipientTokenHolder {
-        View layoutHeader, layoutItem;
 
-        TextView headerName;
-        QuickContactBadge headerPhoto;
-        View headerRemove;
+    private static class RecipientTokenHolder {
+        public final View layoutHeader, layoutItem;
+        public final TextView headerName;
+        public final QuickContactBadge headerPhoto;
+        public final View headerRemove;
+        public final TextView itemAddress;
+        public final TextView itemAddressLabel;
+        public final ImageView itemCryptoStatus;
 
-        TextView itemAddress;
-        TextView itemAddressLabel;
-        ImageView itemCryptoStatus;
 
         public RecipientTokenHolder(View view) {
             layoutHeader = view.findViewById(R.id.alternate_container_header);
@@ -203,5 +217,4 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         void onRecipientRemove(Recipient currentRecipient);
         void onRecipientChange(Recipient currentRecipient, Recipient alternateRecipient);
     }
-
 }

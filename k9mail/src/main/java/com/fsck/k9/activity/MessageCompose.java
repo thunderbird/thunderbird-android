@@ -709,7 +709,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mMessageContentView.requestFocus();
         } else {
             // Explicitly set focus to "To:" input field (see issue 2998)
-            recipientMvpView.requestFocusOnToFied();
+            recipientMvpView.requestFocusOnToField();
         }
 
         if (mAction == Action.FORWARD) {

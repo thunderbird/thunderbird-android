@@ -41,10 +41,16 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 
-public class RecipientSelectView extends TokenCompleteTextView<Recipient>
-        implements LoaderCallbacks<List<Recipient>>, AlternateRecipientListener {
+public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
+        AlternateRecipientListener {
 
-    public static final String ARG_QUERY = "query";
+    private static final int MINIMUM_LENGTH_FOR_FILTERING = 2;
+
+    private static final String ARG_QUERY = "query";
+
+    private static final int LOADER_ID_FILTERING = 0;
+    private static final int LOADER_ID_ALTERNATES = 1;
+
 
     private RecipientAdapter adapter;
     private String cryptoProvider;
@@ -55,6 +61,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
     private Recipient alternatesPopupRecipient;
     private boolean attachedToWindow = true;
     private TokenListener<Recipient> listener;
+
 
     public RecipientSelectView(Context context) {
         super(context);
@@ -90,10 +97,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
     }
 
     @Override
-    protected View getViewForObject(final Recipient recipient) {
-        LayoutInflater l = LayoutInflater.from(getContext());
-        @SuppressLint("InflateParams") // root will be attached by caller
-        View view = l.inflate(R.layout.recipient_token_item, null, false);
+    protected View getViewForObject(Recipient recipient) {
+        View view = inflateLayout();
 
         RecipientTokenViewHolder holder = new RecipientTokenViewHolder(view);
         view.setTag(holder);
@@ -101,6 +106,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         bindObjectView(recipient, view);
 
         return view;
+    }
+
+    @SuppressLint("InflateParams")
+    private View inflateLayout() {
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        return layoutInflater.inflate(R.layout.recipient_token_item, null, false);
     }
 
     private void bindObjectView(Recipient recipient, View view) {
@@ -136,7 +147,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         Editable text = getText();
 
         if (text != null && action == MotionEvent.ACTION_UP) {
-
             int offset = getOffsetForPosition(event.getX(), event.getY());
 
             if (offset != -1) {
@@ -157,6 +167,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         if (parsedAddresses.length == 0 || parsedAddresses[0].getAddress() == null) {
             return null;
         }
+
         return new Recipient(parsedAddresses[0]);
     }
 
@@ -171,7 +182,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         attachedToWindow = true;
 
         if (getContext() instanceof Activity) {
-            loaderManager = ((Activity) getContext()).getLoaderManager();
+            Activity activity = (Activity) getContext();
+            loaderManager = activity.getLoaderManager();
         }
     }
 
@@ -187,6 +199,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         if (!cursorIsValid) {
             return;
         }
+
         super.showDropDown();
     }
 
@@ -211,14 +224,14 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
     protected void performFiltering(@NonNull CharSequence text, int start, int end, int keyCode) {
         String query = text.subSequence(start, end).toString();
 
-        if (TextUtils.isEmpty(query) || query.length() < 2) {
-            loaderManager.destroyLoader(0);
+        if (TextUtils.isEmpty(query) || query.length() < MINIMUM_LENGTH_FOR_FILTERING) {
+            loaderManager.destroyLoader(LOADER_ID_FILTERING);
             return;
         }
 
         Bundle args = new Bundle();
         args.putString(ARG_QUERY, query);
-        loaderManager.restartLoader(0, args, this);
+        loaderManager.restartLoader(LOADER_ID_FILTERING, args, this);
     }
 
     public void setCryptoProvider(String cryptoProvider) {
@@ -237,9 +250,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         for (int i = 0; i < address.length; i++) {
             address[i] = recipients.get(i).address;
         }
+
         return address;
     }
-
 
     private void showAlternates(Recipient recipient) {
         if (!attachedToWindow) {
@@ -247,7 +260,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         }
 
         alternatesPopupRecipient = recipient;
-        loaderManager.restartLoader(1, null, this);
+        loaderManager.restartLoader(LOADER_ID_ALTERNATES, null, this);
     }
 
     public void showAlternatesPopup(List<Recipient> data) {
@@ -272,12 +285,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
     @Override
     public Loader<List<Recipient>> onCreateLoader(int id, Bundle args) {
         switch (id) {
-            case 0: {
+            case LOADER_ID_FILTERING: {
                 String query = args != null && args.containsKey(ARG_QUERY) ? args.getString(ARG_QUERY) : "";
-                // mAdapter.setSearchQuery(query);
                 return new RecipientLoader(getContext(), cryptoProvider, query);
             }
-            case 1: {
+            case LOADER_ID_ALTERNATES: {
                 Uri contactLookupUri = alternatesPopupRecipient.getContactLookupUri();
                 if (contactLookupUri != null) {
                     return new RecipientLoader(getContext(), cryptoProvider, contactLookupUri);
@@ -286,27 +298,29 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
                     return new RecipientLoader(getContext(), cryptoProvider, address);
                 }
             }
-            default:
-                throw new IllegalStateException();
         }
+
+        throw new IllegalStateException("Unknown Loader ID: " + id);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Recipient>> loader, List<Recipient> data) {
         switch (loader.getId()) {
-            case 0:
+            case LOADER_ID_FILTERING: {
                 adapter.setRecipients(data);
                 break;
-            case 1:
+            }
+            case LOADER_ID_ALTERNATES: {
                 showAlternatesPopup(data);
-                loaderManager.destroyLoader(1);
+                loaderManager.destroyLoader(LOADER_ID_ALTERNATES);
                 break;
+            }
         }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Recipient>> loader) {
-        if (loader.getId() == 0) {
+        if (loader.getId() == LOADER_ID_FILTERING) {
             adapter.setRecipients(null);
         }
     }
@@ -315,27 +329,116 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         return !TextUtils.isEmpty(currentCompletionText());
     }
 
+    @Override
+    public void onRecipientRemove(Recipient currentRecipient) {
+        alternatesPopup.dismiss();
+        removeObject(currentRecipient);
+    }
+
+    @Override
+    public void onRecipientChange(Recipient currentRecipient, Recipient alternateAddress) {
+        alternatesPopup.dismiss();
+
+        currentRecipient.address = alternateAddress.address;
+        currentRecipient.addressLabel = alternateAddress.addressLabel;
+        currentRecipient.cryptoStatus = alternateAddress.cryptoStatus;
+
+        View recipientTokenView = getTokenViewForRecipient(currentRecipient);
+        if (recipientTokenView == null) {
+            Log.e(K9.LOG_TAG, "Tried to refresh invalid view token!");
+            return;
+        }
+
+        bindObjectView(currentRecipient, recipientTokenView);
+
+        if (listener != null) {
+            listener.onTokenChanged(currentRecipient);
+        }
+
+        invalidate();
+    }
+
+    /**
+     * This method builds the span given a recipient object. We override it with identical
+     * functionality, but using the custom RecipientTokenSpan class which allows us to
+     * retrieve the view for redrawing at a later point.
+     */
+    @Override
+    protected TokenImageSpan buildSpanForObject(Recipient obj) {
+        if (obj == null) {
+            return null;
+        }
+
+        View tokenView = getViewForObject(obj);
+        return new RecipientTokenSpan(tokenView, obj, (int) maxTextWidth());
+    }
+
+    /**
+     * Find the token view tied to a given recipient. This method relies on spans to
+     * be of the RecipientTokenSpan class, as created by the buildSpanForObject method.
+     */
+    private View getTokenViewForRecipient(Recipient currentRecipient) {
+        Editable text = getText();
+        if (text == null) {
+            return null;
+        }
+
+        RecipientTokenSpan[] recipientSpans = text.getSpans(0, text.length(), RecipientTokenSpan.class);
+        for (RecipientTokenSpan recipientSpan : recipientSpans) {
+            if (recipientSpan.getToken() == currentRecipient) {
+                return recipientSpan.view;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * We use a specialized version of TokenCompleteTextView.TokenListener as well,
+     * adding a callback for onTokenChanged.
+     */
+    public void setTokenListener(TokenListener<Recipient> listener) {
+        super.setTokenListener(listener);
+        this.listener = listener;
+    }
+
+
     public enum RecipientCryptoStatus {
-        UNDEFINED, UNAVAILABLE, AVAILABLE_UNTRUSTED, AVAILABLE_TRUSTED;
+        UNDEFINED,
+        UNAVAILABLE,
+        AVAILABLE_UNTRUSTED,
+        AVAILABLE_TRUSTED;
 
         public boolean isAvailable() {
             return this == AVAILABLE_TRUSTED || this == AVAILABLE_UNTRUSTED;
         }
     }
 
-    private static class RecipientTokenViewHolder {
+    public interface TokenListener<T> extends TokenCompleteTextView.TokenListener<T> {
+        void onTokenChanged(T token);
+    }
 
-        private final TextView vName;
-        private final ImageView vContactPhoto;
-        private final View cryptoStatusRed;
-        private final View cryptoStatusOrange;
-        private final View cryptoStatusGreen;
+    private class RecipientTokenSpan extends TokenImageSpan {
+        private final View view;
+
+
+        public RecipientTokenSpan(View view, Recipient recipient, int token) {
+            super(view, recipient, token);
+            this.view = view;
+        }
+    }
+
+    private static class RecipientTokenViewHolder {
+        public final TextView vName;
+        public final ImageView vContactPhoto;
+        public final View cryptoStatusRed;
+        public final View cryptoStatusOrange;
+        public final View cryptoStatusGreen;
+
 
         RecipientTokenViewHolder(View view) {
             vName = (TextView) view.findViewById(android.R.id.text1);
-
             vContactPhoto = (ImageView) view.findViewById(R.id.contact_photo);
-
             cryptoStatusRed = view.findViewById(R.id.contact_crypto_status_red);
             cryptoStatusOrange = view.findViewById(R.id.contact_crypto_status_orange);
             cryptoStatusGreen = view.findViewById(R.id.contact_crypto_status_green);
@@ -358,6 +461,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
         @NonNull
         private RecipientCryptoStatus cryptoStatus;
 
+
         public Recipient(@NonNull Address address) {
             this.address = address;
             this.contactId = null;
@@ -378,6 +482,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
             if (displayName != null) {
                 return displayName;
             }
+
             return address.getAddress();
         }
 
@@ -386,6 +491,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
             if (displayName != null) {
                 return displayName;
             }
+
             return context.getString(R.string.unknown_recipient);
         }
 
@@ -393,10 +499,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
             if (TextUtils.isEmpty(address.getPersonal())) {
                 return null;
             }
+
             String displayName = address.getPersonal();
             if (addressLabel != null) {
                 displayName += " (" + addressLabel + ")";
             }
+
             return displayName;
         }
 
@@ -414,6 +522,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
             if (contactId == null) {
                 return null;
             }
+
             return Contacts.getLookupUri(contactId, contactLookupKey);
         }
 
@@ -444,82 +553,5 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient>
                 photoThumbnailUri = Uri.parse(uriString);
             }
         }
-
     }
-
-    @Override
-    public void onRecipientRemove(Recipient currentRecipient) {
-        alternatesPopup.dismiss();
-        removeObject(currentRecipient);
-    }
-
-    @Override
-    public void onRecipientChange(Recipient currentRecipient, Recipient alternateAddress) {
-        alternatesPopup.dismiss();
-        currentRecipient.address = alternateAddress.address;
-        currentRecipient.addressLabel = alternateAddress.addressLabel;
-        currentRecipient.cryptoStatus = alternateAddress.cryptoStatus;
-
-        View recipientTokenView = getTokenViewForRecipient(currentRecipient);
-        if (recipientTokenView == null) {
-            Log.e(K9.LOG_TAG, "Tried to refresh invalid view token!");
-            return;
-        }
-        bindObjectView(currentRecipient, recipientTokenView);
-        if (listener != null) {
-            listener.onTokenChanged(currentRecipient);
-        }
-        invalidate();
-    }
-    @Override
-    /** This method builds the span given a recipient object. We override it with identical
-     * functionality, but using the custom RecipientTokenSpan class which allows us to
-     * retrieve the view for redrawing at a later point.
-     */
-    protected TokenImageSpan buildSpanForObject(Recipient obj) {
-        if (obj == null) {
-            return null;
-        }
-        View tokenView = getViewForObject(obj);
-        return new RecipientTokenSpan(tokenView, obj, (int)maxTextWidth());
-    }
-
-    /** Find the token view tied to a given recipient. This method relies on spans to
-     * be of the RecipientTokenSpan class, as created by the buildSpanForObject method.
-     */
-    private View getTokenViewForRecipient(Recipient currentRecipient) {
-        Editable text = getText();
-        if (text == null) {
-            return null;
-        }
-        RecipientTokenSpan[] recipientSpans = text.getSpans(0, text.length(), RecipientTokenSpan.class);
-        for (RecipientTokenSpan recipientSpan : recipientSpans) {
-            if (recipientSpan.getToken() == currentRecipient) {
-                return recipientSpan.view;
-            }
-        }
-        return null;
-    }
-
-    private class RecipientTokenSpan extends TokenImageSpan {
-        private final View view;
-
-        public RecipientTokenSpan(View view, Recipient d, int token) {
-            super(view, d, token);
-            this.view = view;
-        }
-    }
-
-    /** We use a specialized version of TokenCompleteTextView.TokenListener as well,
-     * adding a callback for onTokenChanged.
-     */
-    public void setTokenListener(TokenListener<Recipient> l) {
-        super.setTokenListener(l);
-        listener = l;
-    }
-
-    public interface TokenListener<T> extends TokenCompleteTextView.TokenListener<T> {
-        void onTokenChanged(T token);
-    }
-
 }

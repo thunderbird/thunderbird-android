@@ -23,9 +23,9 @@ import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
 public class RecipientAdapter extends BaseAdapter implements Filterable {
-
     private final Context context;
     private List<Recipient> recipients;
+
 
     public RecipientAdapter(Context context) {
         super();
@@ -54,10 +54,10 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-
         if (view == null) {
             view = newView(parent);
         }
+
         Recipient recipient = getItem(position);
         bindView(view, recipient);
 
@@ -66,8 +66,10 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
     public View newView(ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.recipient_dropdown_item, parent, false);
+
         RecipientTokenHolder holder = new RecipientTokenHolder(view);
         view.setTag(holder);
+
         return view;
     }
 
@@ -84,18 +86,21 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         Integer cryptoStatusRes = null, cryptoStatusColor = null;
         RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
         switch (cryptoStatus) {
-            case AVAILABLE_TRUSTED:
+            case AVAILABLE_TRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_closed;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_green);
                 break;
-            case AVAILABLE_UNTRUSTED:
+            }
+            case AVAILABLE_UNTRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_error;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
                 break;
-            case UNAVAILABLE:
+            }
+            case UNAVAILABLE: {
                 cryptoStatusRes = R.drawable.status_lock_open;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
                 break;
+            }
         }
 
         if (cryptoStatusRes != null) {
@@ -113,6 +118,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
     public static void setContactPhotoOrPlaceholder(Context context, ImageView imageView, Recipient recipient) {
         imageView.setImageDrawable(null);
+
         // TODO don't use two different mechanisms for loading!
         if (recipient.photoThumbnailUri != null) {
             Glide.with(context).load(recipient.photoThumbnailUri).into(imageView);
@@ -129,9 +135,11 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
                 if (recipients == null) {
                     return null;
                 }
+
                 FilterResults result = new FilterResults();
                 result.values = recipients;
                 result.count = recipients.size();
+
                 return result;
             }
 
@@ -142,11 +150,13 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         };
     }
 
+
     private static class RecipientTokenHolder {
         public final TextView name;
         public final TextView email;
         public final ImageView photo;
         public final ImageView cryptoStatus;
+
 
         public RecipientTokenHolder(View view) {
             name = (TextView) view.findViewById(R.id.text1);
@@ -155,5 +165,4 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
             cryptoStatus = (ImageView) view.findViewById(R.id.contact_crypto_status);
         }
     }
-
 }

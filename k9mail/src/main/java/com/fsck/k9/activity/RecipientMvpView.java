@@ -16,26 +16,33 @@ import android.widget.ViewAnimator;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.RecipientPresenter.CryptoMode;
-import com.fsck.k9.view.RecipientSelectView;
-import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.view.RecipientSelectView;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.TokenListener;
 
 
 public class RecipientMvpView implements OnFocusChangeListener, OnClickListener {
+    private static final int VIEW_INDEX_CRYPTO_STATUS_NO_KEY = 0;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED = 1;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_TRUSTED = 2;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY = 3;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_DISABLED = 4;
+
 
     private final MessageCompose activity;
-
-    private final View ccWrapper, ccDivider;
-    private final View bccWrapper, bccDivider;
+    private final View ccWrapper;
+    private final View ccDivider;
+    private final View bccWrapper;
+    private final View bccDivider;
     private final RecipientSelectView toView;
     private final RecipientSelectView ccView;
     private final RecipientSelectView bccView;
     private final ViewAnimator cryptoStatusView;
     private final ViewAnimator recipientExpanderContainer;
-
     private RecipientPresenter presenter;
+
 
     public RecipientMvpView(MessageCompose activity) {
         this.activity = activity;
@@ -69,7 +76,6 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             return;
         }
 
-        // wire the view listeners directly to the presenter - saves a stack frame
         toView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
@@ -134,7 +140,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccView.setCryptoProvider(openPgpProvider);
     }
 
-    public void requestFocusOnToFied() {
+    public void requestFocusOnToField() {
         toView.requestFocus();
     }
 
@@ -146,15 +152,18 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
     public void addRecipients(RecipientType recipientType, Recipient... recipients) {
         switch (recipientType) {
-            case TO:
+            case TO: {
                 toView.addRecipients(recipients);
                 break;
-            case CC:
+            }
+            case CC: {
                 ccView.addRecipients(recipients);
                 break;
-            case BCC:
+            }
+            case BCC: {
                 bccView.addRecipients(recipients);
                 break;
+            }
         }
     }
 
@@ -169,7 +178,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     }
 
     public void setRecipientExpanderVisibility(boolean visible) {
-        int childToDisplay = visible ? 0 : 1;
+        int childToDisplay = visible ? VIEW_INDEX_CRYPTO_STATUS_NO_KEY : VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED;
         if (recipientExpanderContainer.getDisplayedChild() != childToDisplay) {
             recipientExpanderContainer.setDisplayedChild(childToDisplay);
         }
@@ -202,9 +211,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     public List<Recipient> getToRecipients() {
         return toView.getObjects();
     }
+
     public List<Recipient> getCcRecipients() {
         return ccView.getObjects();
     }
+
     public List<Recipient> getBccRecipients() {
         return bccView.getObjects();
     }
@@ -247,14 +258,6 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccView.setError(bccView.getContext().getString(R.string.message_compose_error_incomplete_recipient));
     }
 
-
-    public enum CryptoStatusType {
-        DISABLED(4), SIGN_ONLY(3), OPPORTUNISTIC_NOKEY(0), OPPORTUNISTIC_UNTRUSTED(1), OPPORTUNISTIC_TRUSTED(2);
-        final int childToDisplay;
-        CryptoStatusType(int childToDisplay) {
-            this.childToDisplay = childToDisplay;
-        }
-    }
     public void showCryptoStatus(final CryptoStatusType childToDisplay) {
         if (cryptoStatusView.getVisibility() == View.VISIBLE) {
             switchCryptoStatus(childToDisplay);
@@ -279,41 +282,47 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     }
 
     public void showContactPicker(int requestCode) {
-        // this is an extra indirection to keep the view here clear
         activity.showContactPicker(requestCode);
     }
 
     public void showErrorContactNoAddress() {
-        Toast.makeText(activity, activity.getString(R.string.error_contact_address_not_found), Toast.LENGTH_LONG).show();
+        String errorMessage = activity.getString(R.string.error_contact_address_not_found);
+        Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onFocusChange(View v, boolean hasFocus) {
+    public void onFocusChange(View view, boolean hasFocus) {
         if (!hasFocus) {
             return;
         }
-        switch(v.getId()) {
-            case R.id.to:
+
+        switch (view.getId()) {
+            case R.id.to: {
                 presenter.onToFocused();
                 break;
-            case R.id.cc:
+            }
+            case R.id.cc: {
                 presenter.onCcFocused();
                 break;
-            case R.id.bcc:
+            }
+            case R.id.bcc: {
                 presenter.onBccFocused();
                 break;
+            }
         }
     }
 
     @Override
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.recipient_expander:
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.recipient_expander: {
                 presenter.onClickRecipientExpander();
                 break;
-            case R.id.crypto_status:
+            }
+            case R.id.crypto_status: {
                 presenter.onClickCryptoStatus();
                 break;
+            }
         }
     }
 
@@ -322,4 +331,19 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         dialog.show(activity.getFragmentManager(), "crypto_settings");
     }
 
+
+    public enum CryptoStatusType {
+        DISABLED(VIEW_INDEX_CRYPTO_STATUS_DISABLED),
+        SIGN_ONLY(VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY),
+        OPPORTUNISTIC_NOKEY(VIEW_INDEX_CRYPTO_STATUS_NO_KEY),
+        OPPORTUNISTIC_UNTRUSTED(VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED),
+        OPPORTUNISTIC_TRUSTED(VIEW_INDEX_CRYPTO_STATUS_TRUSTED);
+
+
+        final int childToDisplay;
+
+        CryptoStatusType(int childToDisplay) {
+            this.childToDisplay = childToDisplay;
+        }
+    }
 }

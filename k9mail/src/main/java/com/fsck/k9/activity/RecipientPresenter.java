@@ -8,6 +8,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,33 +20,38 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose.CaseInsensitiveParamWrapper;
 import com.fsck.k9.activity.RecipientMvpView.CryptoStatusType;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
 public class RecipientPresenter {
+    private static final String STATE_KEY_CC_SHOWN = "com.fsck.k9.activity.MessageCompose.ccShown";
+    private static final String STATE_KEY_BCC_SHOWN = "com.fsck.k9.activity.MessageCompose.bccShown";
 
-    private static final String STATE_KEY_CC_SHOWN =
-            "com.fsck.k9.activity.MessageCompose.ccShown";
-    private static final String STATE_KEY_BCC_SHOWN =
-            "com.fsck.k9.activity.MessageCompose.bccShown";
+    private static final int CONTACT_PICKER_TO = 1;
+    private static final int CONTACT_PICKER_CC = 2;
+    private static final int CONTACT_PICKER_BCC = 3;
 
-    private Context context;
-    private RecipientMvpView recipientMvpView;
+
+    private final Context context;
+    private final RecipientMvpView recipientMvpView;
     private Account account;
     private String cryptoProvider;
     private RecipientType lastFocusedType = RecipientType.TO;
     private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
+    private Boolean hasContactPicker;
+
 
     public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account) {
         this.recipientMvpView = recipientMvpView;
         this.context = context;
+
         recipientMvpView.setPresenter(this);
         onSwitchAccount(account);
     }
@@ -86,18 +93,22 @@ public class RecipientPresenter {
             recipientMvpView.showToUncompletedError();
             return true;
         }
+
         if (recipientMvpView.recipientCcHasUncompletedText()) {
             recipientMvpView.showCcUncompletedError();
             return true;
         }
+
         if (recipientMvpView.recipientBccHasUncompletedText()) {
             recipientMvpView.showBccUncompletedError();
             return true;
         }
+
         if (getToAddresses().isEmpty() && getCcAddresses().isEmpty() && getBccAddresses().isEmpty()) {
             recipientMvpView.showNoRecipientsError();
             return true;
         }
+
         return false;
     }
 
@@ -125,12 +136,14 @@ public class RecipientPresenter {
                     }
                 }
             }
+
             for (Address address : message.getRecipients(RecipientType.TO)) {
                 if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
                     addToAddresses(address);
                 }
 
             }
+
             if (message.getRecipients(RecipientType.CC).length > 0) {
                 for (Address address : message.getRecipients(RecipientType.CC)) {
                     if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
@@ -249,11 +262,13 @@ public class RecipientPresenter {
 
     public void onSwitchAccount(Account account) {
         this.account = account;
+
         if (account.isAlwaysShowCcBcc()) {
             recipientMvpView.setCcVisibility(true);
             recipientMvpView.setBccVisibility(true);
             updateRecipientExpanderVisibility();
         }
+
         cryptoProvider = account.getOpenPgpProvider();
         recipientMvpView.setCryptoProvider(cryptoProvider);
     }
@@ -326,12 +341,14 @@ public class RecipientPresenter {
             recipientMvpView.showCryptoStatus(CryptoStatusType.SIGN_ONLY);
             return;
         }
+
         if (currentCryptoMode == CryptoMode.DISABLE) {
             recipientMvpView.showCryptoStatus(CryptoStatusType.DISABLED);
             return;
         }
 
-        boolean allKeysAvailable = true, allKeysVerified = true;
+        boolean allKeysAvailable = true;
+        boolean allKeysVerified = true;
         for (Recipient recipient : recipients) {
             RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
             if (!cryptoStatus.isAvailable()) {
@@ -354,10 +371,12 @@ public class RecipientPresenter {
     public void onToTokenAdded(Recipient recipient) {
         updateCryptoDisplayStatus();
     }
+
     @SuppressWarnings("UnusedParameters")
     public void onToTokenRemoved(Recipient recipient) {
         updateCryptoDisplayStatus();
     }
+
     @SuppressWarnings("UnusedParameters")
     public void onToTokenChanged(Recipient recipient) {
         updateCryptoDisplayStatus();
@@ -367,10 +386,12 @@ public class RecipientPresenter {
     public void onCcTokenAdded(Recipient recipient) {
         updateCryptoDisplayStatus();
     }
+
     @SuppressWarnings("UnusedParameters")
     public void onCcTokenRemoved(Recipient recipient) {
         updateCryptoDisplayStatus();
     }
+
     @SuppressWarnings("UnusedParameters")
     public void onCcTokenChanged(Recipient recipient) {
         updateCryptoDisplayStatus();
@@ -380,10 +401,12 @@ public class RecipientPresenter {
     public void onBccTokenAdded(Recipient recipient) {
         updateCryptoDisplayStatus();
     }
+
     @SuppressWarnings("UnusedParameters")
     public void onBccTokenRemoved(Recipient recipient) {
         updateCryptoDisplayStatus();
     }
+
     @SuppressWarnings("UnusedParameters")
     public void onBccTokenChanged(Recipient recipient) {
         updateCryptoDisplayStatus();
@@ -395,6 +418,7 @@ public class RecipientPresenter {
             public void deliverResult(List<Recipient> result) {
                 Recipient[] recipientArray = result.toArray(new Recipient[result.size()]);
                 recipientMvpView.addRecipients(recipientType, recipientArray);
+
                 stopLoading();
                 abandon();
             }
@@ -410,8 +434,10 @@ public class RecipientPresenter {
                     recipientMvpView.showErrorContactNoAddress();
                     return;
                 }
+
                 Recipient recipient = result.get(0);
                 recipientMvpView.addRecipients(recipientType, recipient);
+
                 stopLoading();
                 abandon();
             }
@@ -444,34 +470,34 @@ public class RecipientPresenter {
         addRecipientFromContactUri(recipientType, data.getData());
     }
 
-    private static final int CONTACT_PICKER_TO = 1;
-    private static final int CONTACT_PICKER_CC = 2;
-    private static final int CONTACT_PICKER_BCC = 3;
-
     private static int recipientTypeToRequestCode(RecipientType type) {
         switch (type) {
             case TO:
-            default:
+            default: {
                 return CONTACT_PICKER_TO;
-            case CC:
+            }
+            case CC: {
                 return CONTACT_PICKER_CC;
-            case BCC:
+            }
+            case BCC: {
                 return CONTACT_PICKER_BCC;
+            }
         }
-
     }
 
     private static RecipientType recipientTypeFromRequestCode(int type) {
         switch (type) {
             case CONTACT_PICKER_TO:
-            default:
+            default: {
                 return RecipientType.TO;
-            case CONTACT_PICKER_CC:
+            }
+            case CONTACT_PICKER_CC: {
                 return RecipientType.CC;
-            case CONTACT_PICKER_BCC:
+            }
+            case CONTACT_PICKER_BCC: {
                 return RecipientType.BCC;
+            }
         }
-
     }
 
     public void onNonRecipientFieldFocused() {
@@ -487,11 +513,6 @@ public class RecipientPresenter {
         updateCryptoDisplayStatus();
     }
 
-    enum CryptoMode {
-        OPPORTUNISTIC, DISABLE, SIGN_ONLY
-    }
-
-    private Boolean hasContactPicker;
     /**
      * Does the device actually have a Contacts application suitable for
      * picking a contact. As hard as it is to believe, some vendors ship
@@ -502,10 +523,19 @@ public class RecipientPresenter {
     public boolean hasContactPicker() {
         if (hasContactPicker == null) {
             Contacts contacts = Contacts.getInstance(context);
-            hasContactPicker = !(context.getPackageManager().queryIntentActivities(
-                    contacts.contactPickerIntent(), 0).isEmpty());
+
+            PackageManager packageManager = context.getPackageManager();
+            List<ResolveInfo> resolveInfoList = packageManager.queryIntentActivities(contacts.contactPickerIntent(), 0);
+            hasContactPicker = !resolveInfoList.isEmpty();
         }
+
         return hasContactPicker;
     }
 
+
+    enum CryptoMode {
+        OPPORTUNISTIC,
+        DISABLE,
+        SIGN_ONLY
+    }
 }

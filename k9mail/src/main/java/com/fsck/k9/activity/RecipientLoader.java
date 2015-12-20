@@ -4,8 +4,10 @@ package com.fsck.k9.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.AsyncTaskLoader;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,18 +20,18 @@ import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
 public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
+    /*
+     * Indexes of the fields in the projection. This must match the order in {@link #PROJECTION}.
+     */
+    private static final int INDEX_NAME = 1;
+    private static final int INDEX_LOOKUP_KEY = 2;
+    private static final int INDEX_EMAIL = 3;
+    private static final int INDEX_EMAIL_TYPE = 4;
+    private static final int INDEX_EMAIL_CUSTOM_LABEL = 5;
+    private static final int INDEX_CONTACT_ID = 6;
+    private static final int INDEX_PHOTO_URI = 7;
 
-    /** Indexes of the fields in the projection. This must match the order in
-     * {@link #PROJECTION}. */
-    protected static final int INDEX_NAME = 1;
-    protected static final int INDEX_LOOKUP_KEY = 2;
-    protected static final int INDEX_EMAIL = 3;
-    protected static final int INDEX_EMAIL_TYPE = 4;
-    protected static final int INDEX_EMAIL_CUSTOM_LABEL = 5;
-    protected static final int INDEX_CONTACT_ID = 6;
-    protected static final int INDEX_PHOTO_URI = 7;
-
-    protected static final String[] PROJECTION = {
+    private static final String[] PROJECTION = {
             ContactsContract.CommonDataKinds.Email._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.Contacts.LOOKUP_KEY,
@@ -40,25 +42,31 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
     };
 
-    protected static final String[] PROJECTION_CRYPTO_STATUS = {
+    private static final String SORT_ORDER = "" +
+            ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
+            ContactsContract.Contacts.DISPLAY_NAME + ", " +
+            ContactsContract.CommonDataKinds.Email._ID;
+
+    private static final int INDEX_EMAIL_ADDRESS = 0;
+    private static final int INDEX_EMAIL_STATUS = 1;
+
+    private static final String[] PROJECTION_CRYPTO_STATUS = {
             "email_address",
             "email_status"
     };
 
-    protected static final String SORT_ORDER =
-            ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
-                    ContactsContract.Contacts.DISPLAY_NAME + ", " +
-                    ContactsContract.CommonDataKinds.Email._ID;
+    private static final int CRYPTO_PROVIDER_STATUS_UNTRUSTED = 1;
+    private static final int CRYPTO_PROVIDER_STATUS_TRUSTED = 2;
+
 
     private final String query;
     private final Address[] addresses;
     private final Uri contactUri;
-
     private final String cryptoProvider;
 
     private List<Recipient> cachedRecipients;
-
     private ForceLoadContentObserver observerContact, observerKey;
+
 
     public RecipientLoader(Context context, String cryptoProvider, String query) {
         super(context);
@@ -86,8 +94,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     @Override
     public List<Recipient> loadInBackground() {
-        ArrayList<Recipient> recipients = new ArrayList<Recipient>();
-        HashMap<String,Recipient> recipientMap = new HashMap<String, Recipient>();
+        List<Recipient> recipients = new ArrayList<Recipient>();
+        Map<String, Recipient> recipientMap = new HashMap<String, Recipient>();
 
         if (addresses != null) {
             fillContactDataFromAddresses(addresses, recipients, recipientMap);
@@ -110,8 +118,9 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         return recipients;
     }
 
-    private void fillContactDataFromAddresses(Address[] addresses, ArrayList<Recipient> recipients,
-            HashMap<String, Recipient> recipientMap) {
+    private void fillContactDataFromAddresses(Address[] addresses, List<Recipient> recipients,
+            Map<String, Recipient> recipientMap) {
+
         for (Address address : addresses) {
             // TODO actually query contacts - not sure if this is possible in a single query tho :(
             Recipient recipient = new Recipient(address);
@@ -120,10 +129,10 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         }
     }
 
-    private void fillContactDataFromContactUri(
-            Uri contactUri, ArrayList<Recipient> recipients, HashMap<String, Recipient> recipientMap) {
-        // Get the contact id from the Uri
-        String contactIdStr = contactUri.getLastPathSegment();
+    private void fillContactDataFromContactUri(Uri contactUri, List<Recipient> recipients,
+            Map<String, Recipient> recipientMap) {
+
+        String contactIdStr = getContactIdFromUri(contactUri);
 
         Cursor cursor = getContext().getContentResolver().query(
                 ContactsContract.CommonDataKinds.Email.CONTENT_URI,
@@ -137,11 +146,18 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         fillContactDataFromCursor(cursor, recipients, recipientMap);
     }
 
-    private void fillContactDataFromQuery(
-            String query, ArrayList<Recipient> recipients, HashMap<String, Recipient> recipientMap) {
+    private String getContactIdFromUri(Uri contactUri) {
+        return contactUri.getLastPathSegment();
+    }
+
+    private void fillContactDataFromQuery(String query, List<Recipient> recipients,
+            Map<String, Recipient> recipientMap) {
+
+        ContentResolver contentResolver = getContext().getContentResolver();
+
         Uri queryUri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_FILTER_URI,
                 Uri.encode(query));
-        Cursor cursor = getContext().getContentResolver().query(queryUri, PROJECTION, null, null, SORT_ORDER);
+        Cursor cursor = contentResolver.query(queryUri, PROJECTION, null, null, SORT_ORDER);
 
         if (cursor == null) {
             return;
@@ -151,12 +167,13 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
         if (observerContact != null) {
             observerContact = new ForceLoadContentObserver();
-            getContext().getContentResolver().registerContentObserver(queryUri, false, observerContact);
+            contentResolver.registerContentObserver(queryUri, false, observerContact);
         }
     }
 
-    private void fillContactDataFromCursor(Cursor cursor, ArrayList<Recipient> recipients,
-            HashMap<String, Recipient> recipientMap) {
+    private void fillContactDataFromCursor(Cursor cursor, List<Recipient> recipients,
+            Map<String, Recipient> recipientMap) {
+
         while (cursor.moveToNext()) {
             String name = cursor.getString(INDEX_NAME);
             String email = cursor.getString(INDEX_EMAIL);
@@ -172,66 +189,71 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             int addressType = cursor.getInt(INDEX_EMAIL_TYPE);
             String addressLabel = null;
             switch (addressType) {
-                case ContactsContract.CommonDataKinds.Email.TYPE_HOME:
+                case ContactsContract.CommonDataKinds.Email.TYPE_HOME: {
                     addressLabel = getContext().getString(R.string.address_type_home);
                     break;
-                case ContactsContract.CommonDataKinds.Email.TYPE_WORK:
+                }
+                case ContactsContract.CommonDataKinds.Email.TYPE_WORK: {
                     addressLabel = getContext().getString(R.string.address_type_work);
                     break;
-                case ContactsContract.CommonDataKinds.Email.TYPE_OTHER:
+                }
+                case ContactsContract.CommonDataKinds.Email.TYPE_OTHER: {
                     addressLabel = getContext().getString(R.string.address_type_other);
                     break;
-                case ContactsContract.CommonDataKinds.Email.TYPE_MOBILE:
+                }
+                case ContactsContract.CommonDataKinds.Email.TYPE_MOBILE: {
                     // mobile isn't listed as an option contacts app, but it has a constant so we better support it
                     addressLabel = getContext().getString(R.string.address_type_mobile);
                     break;
-                case ContactsContract.CommonDataKinds.Email.TYPE_CUSTOM:
+                }
+                case ContactsContract.CommonDataKinds.Email.TYPE_CUSTOM: {
                     addressLabel = cursor.getString(INDEX_EMAIL_CUSTOM_LABEL);
                     break;
+                }
             }
 
-            Uri photoUri = cursor.isNull(INDEX_PHOTO_URI)
-                    ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
+            Uri photoUri = cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
             Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey);
             recipient.photoThumbnailUri = photoUri;
 
             recipientMap.put(email, recipient);
             recipients.add(recipient);
         }
+
         cursor.close();
     }
 
-    private void fillCryptoStatusData(HashMap<String, Recipient> recipientMap) {
-        ArrayList<String> recipientArrayList = new ArrayList<String>(recipientMap.keySet());
-        String[] recipientAddresses = recipientArrayList.toArray(new String[ recipientArrayList.size() ]);
+    private void fillCryptoStatusData(Map<String, Recipient> recipientMap) {
+        List<String> recipientList = new ArrayList<String>(recipientMap.keySet());
+        String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
 
         Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/email_status");
-        Cursor cursor = getContext().getContentResolver().query(
-                queryUri, PROJECTION_CRYPTO_STATUS, null, recipientAddresses, null);
+        Cursor cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_STATUS, null,
+                recipientAddresses, null);
 
-        // fill all values with "unavailable", even if the query fails
-        for (Recipient recipient : recipientMap.values()) {
-            recipient.setCryptoStatus(RecipientCryptoStatus.UNAVAILABLE);
-        }
+        initializeCryptoStatusForAllRecipients(recipientMap);
 
         if (cursor == null) {
             return;
         }
 
         while (cursor.moveToNext()) {
-            String email = cursor.getString(0);
-            int status = cursor.getInt(1);
+            String email = cursor.getString(INDEX_EMAIL_ADDRESS);
+            int status = cursor.getInt(INDEX_EMAIL_STATUS);
 
             for (Address address : Address.parseUnencoded(email)) {
-                if (recipientMap.containsKey(address.getAddress())) {
-                    Recipient recipient = recipientMap.get(address.getAddress());
+                String emailAddress = address.getAddress();
+                if (recipientMap.containsKey(emailAddress)) {
+                    Recipient recipient = recipientMap.get(emailAddress);
                     switch (status) {
-                        case 1:
+                        case CRYPTO_PROVIDER_STATUS_UNTRUSTED: {
                             recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_UNTRUSTED);
                             break;
-                        case 2:
+                        }
+                        case CRYPTO_PROVIDER_STATUS_TRUSTED: {
                             recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_TRUSTED);
                             break;
+                        }
                     }
                 }
             }
@@ -241,6 +263,12 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         if (observerKey != null) {
             observerKey = new ForceLoadContentObserver();
             getContext().getContentResolver().registerContentObserver(queryUri, false, observerKey);
+        }
+    }
+
+    private void initializeCryptoStatusForAllRecipients(Map<String, Recipient> recipientMap) {
+        for (Recipient recipient : recipientMap.values()) {
+            recipient.setCryptoStatus(RecipientCryptoStatus.UNAVAILABLE);
         }
     }
 
@@ -268,6 +296,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     @Override
     protected void onAbandon() {
         super.onAbandon();
+
         if (observerKey != null) {
             getContext().getContentResolver().unregisterContentObserver(observerKey);
         }
@@ -275,5 +304,4 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             getContext().getContentResolver().unregisterContentObserver(observerContact);
         }
     }
-
 }
