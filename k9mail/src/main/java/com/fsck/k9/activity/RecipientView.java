@@ -119,7 +119,7 @@ public class RecipientView implements OnFocusChangeListener, OnClickListener {
         bccView.setCryptoProvider(openPgpProvider);
     }
 
-    public void toFieldRequestFocus() {
+    public void requestFocusOnToFied() {
         toView.requestFocus();
     }
 
@@ -236,17 +236,6 @@ public class RecipientView implements OnFocusChangeListener, OnClickListener {
         if (cryptoStatusView.getDisplayedChild() != childToDisplay) {
             cryptoStatusView.setDisplayedChild(childToDisplay);
         }
-    }
-
-    /**
-     * Does the device actually have a Contacts application suitable for
-     * picking a contact. As hard as it is to believe, some vendors ship
-     * without it.
-     *
-     * @return True, if the device supports picking contacts. False, otherwise.
-     */
-    public boolean hasContactPicker() {
-        return activity.hasContactPicker();
     }
 
     public void showContactPicker(int requestCode) {

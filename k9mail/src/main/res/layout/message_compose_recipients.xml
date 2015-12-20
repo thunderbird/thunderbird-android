@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:orientation="vertical"
+    tools:showIn="@layout/message_compose">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dip"
+        android:layout_marginRight="12dip"
+        android:minHeight="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/from_label"
+            android:minWidth="50dp"
+            android:text="@string/recipient_from"
+            style="@style/ComposeTextLabel" />
+
+        <TextView
+            android:id="@+id/identity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/from_label"
+            android:layout_toEndOf="@id/from_label"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
+            android:singleLine="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            tools:text="Address"
+            style="@style/ComposeEditText"
+            />
+
+        <ViewAnimator
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/crypto_status"
+            android:visibility="gone"
+            android:inAnimation="@anim/fade_in"
+            android:outAnimation="@anim/fade_out"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/status_lock_open"
+                android:tint="@color/openpgp_red"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/status_lock_error"
+                android:tint="@color/openpgp_orange"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/status_lock_closed"
+                android:tint="@color/openpgp_green"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/status_lock_open"
+                android:tint="@color/openpgp_red"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/status_lock_disabled"
+                android:tint="@color/openpgp_grey"
+                />
+
+        </ViewAnimator>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <RelativeLayout
+        android:id="@+id/to_wrapper"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:minHeight="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/to_label"
+            android:labelFor="@+id/to"
+            android:minWidth="50dp"
+            android:text="@string/recipient_to"
+            style="@style/ComposeTextLabel" />
+
+        <com.fsck.k9.view.RecipientSelectView
+            android:id="@+id/to"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/to_label"
+            android:layout_toEndOf="@id/to_label"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
+            android:inputType="textEmailAddress|textMultiLine"
+            android:imeOptions="actionNext"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:background="@android:color/transparent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:dropDownWidth="wrap_content"
+            android:dropDownAnchor="@id/to_wrapper"
+            tools:text="Recipient"
+            style="@style/ComposeEditText"
+            />
+
+        <ViewAnimator
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/recipient_expander_container"
+            android:inAnimation="@anim/fade_in"
+            android:outAnimation="@anim/fade_out"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="6dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_action_expand_light"
+                android:id="@+id/recipient_expander"
+                />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </ViewAnimator>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:id="@+id/cc_wrapper"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="12dip"
+        android:layout_marginRight="12dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:minHeight="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="50dp"
+            android:labelFor="@+id/cc"
+            android:text="@string/recipient_cc"
+            style="@style/ComposeTextLabel" />
+
+        <com.fsck.k9.view.RecipientSelectView
+            android:id="@+id/cc"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:inputType="textEmailAddress|textMultiLine"
+            android:imeOptions="actionNext"
+            android:background="@android:color/transparent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:dropDownWidth="wrap_content"
+            android:dropDownAnchor="@id/cc_wrapper"
+            style="@style/ComposeEditText"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:id="@+id/cc_divider"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:id="@+id/bcc_wrapper"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="12dip"
+        android:layout_marginRight="12dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:minHeight="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="50dp"
+            android:labelFor="@+id/bcc"
+            android:text="@string/recipient_bcc"
+            style="@style/ComposeTextLabel" />
+
+        <com.fsck.k9.view.RecipientSelectView
+            android:id="@+id/bcc"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:inputType="textEmailAddress|textMultiLine"
+            android:imeOptions="actionNext"
+            android:background="@android:color/transparent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:dropDownWidth="wrap_content"
+            android:dropDownAnchor="@id/bcc_wrapper"
+            style="@style/ComposeEditText"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:id="@+id/bcc_divider"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:id="@+id/layout_encrypt"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="6dip"
+        android:paddingRight="6dip"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:text="@string/btn_crypto_sign"
+                android:id="@+id/cb_crypto_signature"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingRight="2dip">
+
+                <TextView
+                    android:id="@+id/userId"
+                    android:ellipsize="end"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/userIdRest"
+                    android:textSize="10sp"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <CheckBox
+            android:text="@string/btn_encrypt"
+            android:id="@+id/cb_encrypt"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</LinearLayout>

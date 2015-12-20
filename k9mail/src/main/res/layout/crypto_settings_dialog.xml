@@ -43,7 +43,7 @@
 
     </com.fsck.k9.view.LinearViewAnimator>
 
-    <com.fsck.k9.view.CryptoStatusSelector
+    <com.fsck.k9.view.CryptoModeSelector
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/crypto_status_selector" />

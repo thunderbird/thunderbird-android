@@ -338,23 +338,8 @@ public class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder setTo(Address[] to) {
-        this.to = to;
-        return this;
-    }
-
-    public MessageBuilder setCc(Address[] cc) {
-        this.cc = cc;
-        return this;
-    }
-
     public MessageBuilder setCc(List<Address> cc) {
         this.cc = cc.toArray(new Address[cc.size()]);
-        return this;
-    }
-
-    public MessageBuilder setBcc(Address[] bcc) {
-        this.bcc = bcc;
         return this;
     }
 

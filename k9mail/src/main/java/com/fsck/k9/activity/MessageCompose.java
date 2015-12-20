@@ -72,6 +72,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.CryptoSettingsDialog.OnCryptoModeChangedListener;
 import com.fsck.k9.activity.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
@@ -116,7 +117,7 @@ import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 public class MessageCompose extends K9Activity implements OnClickListener,
-        CancelListener, OnFocusChangeListener {
+        CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
@@ -174,6 +175,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
 
     private static final int REQUEST_CODE_SIGN_ENCRYPT = 12;
+    private static final int REQUEST_MASK_RECIPIENT_PRESENTER = (1<<8);
 
     /**
      * Regular expression to remove the first localized "Re:" prefix in subjects.
@@ -246,8 +248,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    public void onCryptoModeChanged(CryptoMode type) {
-        recipientPresenter.onCryptoModeChanged(type);
+    @Override
+    public void onCryptoModeChanged(CryptoMode cryptoMode) {
+        recipientPresenter.onCryptoModeChanged(cryptoMode);
     }
 
     enum Action {
@@ -550,13 +553,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mChooseIdentityButton = (TextView) findViewById(R.id.identity);
         mChooseIdentityButton.setOnClickListener(this);
 
-        /*
-        if (mAccount.getIdentities().size() == 1 &&
-                Preferences.getPreferences(this).getAvailableAccounts().size() == 1) {
-            mChooseIdentityButton.setVisibility(View.GONE);
-        }
-        */
-
         RecipientView recipientView = new RecipientView(this);
         recipientPresenter = new RecipientPresenter(this, recipientView, mAccount);
 
@@ -698,7 +694,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (mAction != Action.EDIT_DRAFT) {
                 String alwaysBccString = mAccount.getAlwaysBcc();
                 if (!TextUtils.isEmpty(alwaysBccString)) {
-                    recipientPresenter.addBccAddresses(new Address(alwaysBccString, ""));
+                    recipientPresenter.addBccAddresses(Address.parse(alwaysBccString));
                 }
             }
         }
@@ -713,7 +709,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mMessageContentView.requestFocus();
         } else {
             // Explicitly set focus to "To:" input field (see issue 2998)
-            recipientView.toFieldRequestFocus();
+            recipientView.requestFocusOnToFied();
         }
 
         if (mAction == Action.FORWARD) {
@@ -766,7 +762,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             mEncryptLayout.setVisibility(View.GONE);
         }
-        mEncryptLayout.setVisibility(View.GONE);
 
         // Set font size of input controls
         int fontSize = mFontSizes.getMessageComposeInput();
@@ -1539,20 +1534,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private static final int REQUEST_MASK_RECIPIENT_PRESENTER = (1<<8);
-
     public void showContactPicker(int requestCode) {
         requestCode |= REQUEST_MASK_RECIPIENT_PRESENTER;
         startActivityForResult(mContacts.contactPickerIntent(), requestCode);
-    }
-
-    private Boolean hasContactPicker;
-
-    public boolean hasContactPicker() {
-        if (hasContactPicker == null) {
-            hasContactPicker = !(getPackageManager().queryIntentActivities(mContacts.contactPickerIntent(), 0).isEmpty());
-        }
-        return hasContactPicker;
     }
 
     @Override

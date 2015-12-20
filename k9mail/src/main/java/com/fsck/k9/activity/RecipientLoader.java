@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import android.annotation.TargetApi;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build.VERSION_CODES;
-import android.os.CancellationSignal;
-import android.os.OperationCanceledException;
 import android.provider.ContactsContract;
 
 import com.fsck.k9.mail.Address;
@@ -20,7 +16,6 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
-@TargetApi(VERSION_CODES.JELLY_BEAN) // TODO get rid of this, affects cancellation behavior!
 public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     /** Indexes of the fields in the projection. This must match the order in
@@ -57,7 +52,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private List<Recipient> cachedRecipients;
 
     private ForceLoadContentObserver observerContact, observerKey;
-    private CancellationSignal mCancellationSignal;
 
     public RecipientLoader(Context context, String cryptoProvider, String query) {
         super(context);
@@ -85,43 +79,28 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     @Override
     public List<Recipient> loadInBackground() {
+        ArrayList<Recipient> recipients = new ArrayList<Recipient>();
+        HashMap<String,Recipient> recipientMap = new HashMap<String, Recipient>();
 
-        synchronized (this) {
-            if (isLoadInBackgroundCanceled()) {
-                throw new OperationCanceledException();
-            }
-            mCancellationSignal = new CancellationSignal();
+        if (addresses != null) {
+            fillContactDataFromAddresses(addresses, recipients, recipientMap);
+        } else if (contactUri != null) {
+            fillContactDataFromContactUri(contactUri, recipients, recipientMap);
+        } else if (query != null) {
+            fillContactDataFromQuery(query, recipients, recipientMap);
+        } else {
+            throw new IllegalStateException("loader must be initialized with query or list of addresses!");
         }
-        try {
 
-            ArrayList<Recipient> recipients = new ArrayList<Recipient>();
-            HashMap<String,Recipient> recipientMap = new HashMap<String, Recipient>();
-
-            if (addresses != null) {
-                fillContactDataFromAddresses(addresses, recipients, recipientMap);
-            } else if (contactUri != null) {
-                fillContactDataFromContactUri(contactUri, recipients, recipientMap);
-            } else if (query != null) {
-                fillContactDataFromQuery(query, recipients, recipientMap);
-            } else {
-                throw new IllegalStateException("loader must be initialized with query or list of addresses!");
-            }
-
-            if (recipients.isEmpty()) {
-                return recipients;
-            }
-
-            if (cryptoProvider != null) {
-                fillCryptoStatusData(recipientMap);
-            }
-
+        if (recipients.isEmpty()) {
             return recipients;
-
-        } finally {
-            synchronized (this) {
-                mCancellationSignal = null;
-            }
         }
+
+        if (cryptoProvider != null) {
+            fillCryptoStatusData(recipientMap);
+        }
+
+        return recipients;
     }
 
     private void fillContactDataFromAddresses(Address[] addresses, ArrayList<Recipient> recipients,
@@ -160,8 +139,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
         Uri queryUri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_FILTER_URI,
                 Uri.encode(query));
-        Cursor cursor = getContext().getContentResolver().query(
-                queryUri, PROJECTION, null, null, SORT_ORDER, mCancellationSignal);
+        Cursor cursor = getContext().getContentResolver().query(queryUri, PROJECTION, null, null, SORT_ORDER);
 
         if (cursor == null) {
             return;
@@ -178,9 +156,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private void fillContactDataFromCursor(Cursor cursor, ArrayList<Recipient> recipients,
             HashMap<String, Recipient> recipientMap) {
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
+        while (cursor.moveToNext()) {
 
             String name = cursor.getString(INDEX_NAME);
             String email = cursor.getString(INDEX_EMAIL);
@@ -189,7 +165,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             // already exists? just skip then
             if (recipientMap.containsKey(email)) {
                 // TODO merge? do something else? what do we do?
-                cursor.moveToNext();
                 continue;
             }
 
@@ -200,8 +175,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
             recipientMap.put(email, recipient);
             recipients.add(recipient);
-
-            cursor.moveToNext();
         }
         cursor.close();
 
@@ -213,7 +186,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
         Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/email_status");
         Cursor cursor = getContext().getContentResolver().query(
-                queryUri, PROJECTION_CRYPTO_STATUS, null, recipientAddresses, null, mCancellationSignal);
+                queryUri, PROJECTION_CRYPTO_STATUS, null, recipientAddresses, null);
 
         // fill all values with "unavailable", even if the query fails
         for (Recipient recipient : recipientMap.values()) {
@@ -224,8 +197,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             return;
         }
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
+        while (cursor.moveToNext()) {
             String email = cursor.getString(0);
             int status = cursor.getInt(1);
 
@@ -242,8 +214,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                     }
                 }
             }
-
-            cursor.moveToNext();
         }
         cursor.close();
 
@@ -283,17 +253,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         }
         if (observerContact != null) {
             getContext().getContentResolver().unregisterContentObserver(observerContact);
-        }
-    }
-
-    @Override
-    public void cancelLoadInBackground() {
-        super.cancelLoadInBackground();
-
-        synchronized (this) {
-            if (mCancellationSignal != null) {
-                mCancellationSignal.cancel();
-            }
         }
     }
 

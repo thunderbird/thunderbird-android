@@ -162,7 +162,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_theme_action_light">Switch to light theme</string>
 
     <string name="mark_as_unread_action">Mark unread</string>
-    <string name="add_cc_bcc_action">Add Cc/Bcc</string>
     <string name="read_receipt">Read receipt</string>
     <string name="read_receipt_enabled">Will request read receipt</string>
     <string name="read_receipt_disabled">Will not request read receipt</string>
@@ -1159,4 +1158,10 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
     <string name="add_from_contacts">Add from Contacts</string>
+    <string name="crypto_settings_ok">Proceed</string>
+    <string name="recipient_cc">Cc</string>
+    <string name="recipient_bcc">Bcc</string>
+    <string name="recipient_to">To</string>
+    <string name="recipient_from">From</string>
+
 </resources>

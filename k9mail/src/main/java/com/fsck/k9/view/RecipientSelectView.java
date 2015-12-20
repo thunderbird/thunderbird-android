@@ -93,14 +93,23 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         View cryptoStatusGreen = view.findViewById(R.id.contact_crypto_status_green);
 
         boolean hasCryptoProvider = cryptoProvider != null;
-        // display unavailable status only if a crypto provider is even available
-        cryptoStatusRed.setVisibility(
-                hasCryptoProvider && recipient.cryptoStatus == RecipientCryptoStatus.UNAVAILABLE
-                        ? View.VISIBLE : View.GONE);
-        cryptoStatusOrange.setVisibility(
-                recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED ? View.VISIBLE : View.GONE);
-        cryptoStatusGreen.setVisibility(
-                recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED ? View.VISIBLE : View.GONE);
+        if (!hasCryptoProvider) {
+            cryptoStatusRed.setVisibility(View.GONE);
+            cryptoStatusOrange.setVisibility(View.GONE);
+            cryptoStatusGreen.setVisibility(View.GONE);
+        } else if (recipient.cryptoStatus == RecipientCryptoStatus.UNAVAILABLE) {
+            cryptoStatusRed.setVisibility(View.VISIBLE);
+            cryptoStatusOrange.setVisibility(View.GONE);
+            cryptoStatusGreen.setVisibility(View.GONE);
+        } else if (recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED) {
+            cryptoStatusRed.setVisibility(View.GONE);
+            cryptoStatusOrange.setVisibility(View.VISIBLE);
+            cryptoStatusGreen.setVisibility(View.GONE);
+        } else if (recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED) {
+            cryptoStatusRed.setVisibility(View.GONE);
+            cryptoStatusOrange.setVisibility(View.GONE);
+            cryptoStatusGreen.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }

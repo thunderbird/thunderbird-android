@@ -24,9 +24,8 @@ import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 public class RecipientAdapter extends BaseAdapter implements Filterable {
 
-    List<Recipient> recipients;
-    boolean showCryptoStatus = true;
-    Context context;
+    private final Context context;
+    private List<Recipient> recipients;
 
     public RecipientAdapter(Context context) {
         super();
@@ -83,12 +82,6 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
         setContactPhotoOrPlaceholder(context, holder.photo, recipient);
 
-        if (!showCryptoStatus) {
-            holder.cryptoStatus.setVisibility(View.GONE);
-            return;
-        }
-        holder.cryptoStatus.setVisibility(View.VISIBLE);
-
         Integer cryptoStatusRes = null, cryptoStatusColor = null;
         RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
         switch (cryptoStatus) {
@@ -122,6 +115,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
     public static void setContactPhotoOrPlaceholder(Context context, ImageView imageView, Recipient recipient) {
         imageView.setImageDrawable(null);
+        // TODO don't use two different mechanisms for loading!
         if (recipient.photoThumbnailUri != null) {
             Glide.with(context).load(recipient.photoThumbnailUri).into(imageView);
         } else {
@@ -150,10 +144,11 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         };
     }
 
-    static class RecipientTokenHolder {
-        TextView name, email;
-        ImageView photo;
-        ImageView cryptoStatus;
+    private static class RecipientTokenHolder {
+        public final TextView name;
+        public final TextView email;
+        public final ImageView photo;
+        public final ImageView cryptoStatus;
 
         public RecipientTokenHolder(View view) {
             name = (TextView) view.findViewById(R.id.text1);

@@ -16,11 +16,11 @@ import com.fsck.k9.R;
  */
 public class LinearViewAnimator extends ViewAnimator {
 
-    Animation mUpInAnimation;
-    Animation mUpOutAnimation;
+    private Animation upInAnimation;
+    private Animation upOutAnimation;
 
-    Animation mDownInAnimation;
-    Animation mDownOutAnimation;
+    private Animation downInAnimation;
+    private Animation downOutAnimation;
 
     public LinearViewAnimator(Context context) {
         super(context);
@@ -31,6 +31,7 @@ public class LinearViewAnimator extends ViewAnimator {
         init(context, attrs);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public LinearViewAnimator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs);
         init(context, attrs);
@@ -67,7 +68,7 @@ public class LinearViewAnimator extends ViewAnimator {
     }
 
     public void setUpOutAnimation(Animation animation) {
-        mUpOutAnimation = animation;
+        upOutAnimation = animation;
     }
 
     public void setUpInAnimation(Context context, int resourceID) {
@@ -75,7 +76,7 @@ public class LinearViewAnimator extends ViewAnimator {
     }
 
     public void setUpInAnimation(Animation animation) {
-        mUpInAnimation = animation;
+        upInAnimation = animation;
     }
     
     public void setDownOutAnimation(Context context, int resourceID) {
@@ -83,7 +84,7 @@ public class LinearViewAnimator extends ViewAnimator {
     }
 
     public void setDownOutAnimation(Animation animation) {
-        mDownOutAnimation = animation;
+        downOutAnimation = animation;
     }
 
     public void setDownInAnimation(Context context, int resourceID) {
@@ -91,7 +92,7 @@ public class LinearViewAnimator extends ViewAnimator {
     }
 
     public void setDownInAnimation(Animation animation) {
-        mDownInAnimation = animation;
+        downInAnimation = animation;
     }
 
     @Override
@@ -108,11 +109,11 @@ public class LinearViewAnimator extends ViewAnimator {
             setInAnimation(null);
             setOutAnimation(null);
         } else if (displayedChild < whichChild) {
-            setInAnimation(mDownInAnimation);
-            setOutAnimation(mDownOutAnimation);
+            setInAnimation(downInAnimation);
+            setOutAnimation(downOutAnimation);
         } else {
-            setInAnimation(mUpInAnimation);
-            setOutAnimation(mUpOutAnimation);
+            setInAnimation(upInAnimation);
+            setOutAnimation(upOutAnimation);
         }
         super.setDisplayedChild(whichChild);
     }

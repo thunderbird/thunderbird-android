@@ -17,6 +17,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose.CaseInsensitiveParamWrapper;
 import com.fsck.k9.activity.RecipientView.CryptoStatusType;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -228,7 +229,7 @@ public class RecipientPresenter {
     }
 
     public void onPrepareOptionsMenu(Menu menu) {
-        boolean noContactPickerAvailable = !recipientView.hasContactPicker();
+        boolean noContactPickerAvailable = !hasContactPicker();
         if (noContactPickerAvailable) {
             menu.findItem(R.id.add_from_contacts).setVisible(false);
         }
@@ -371,6 +372,7 @@ public class RecipientPresenter {
                 Recipient[] recipientArray = result.toArray(new Recipient[result.size()]);
                 recipientView.addRecipients(recipientType, recipientArray);
                 stopLoading();
+                abandon();
             }
         }.startLoading();
     }
@@ -387,6 +389,7 @@ public class RecipientPresenter {
                 Recipient recipient = result.get(0);
                 recipientView.addRecipients(recipientType, recipient);
                 stopLoading();
+                abandon();
             }
         }.startLoading();
     }
@@ -455,13 +458,30 @@ public class RecipientPresenter {
         recipientView.showCryptoDialog(currentCryptoMode);
     }
 
-    public void onCryptoModeChanged(CryptoMode type) {
-        currentCryptoMode = type;
+    public void onCryptoModeChanged(CryptoMode cryptoMode) {
+        currentCryptoMode = cryptoMode;
         updateCryptoDisplayStatus();
     }
 
     enum CryptoMode {
         OPPORTUNISTIC, DISABLE, SIGN_ONLY
+    }
+
+    private Boolean hasContactPicker;
+    /**
+     * Does the device actually have a Contacts application suitable for
+     * picking a contact. As hard as it is to believe, some vendors ship
+     * without it.
+     *
+     * @return True, if the device supports picking contacts. False, otherwise.
+     */
+    public boolean hasContactPicker() {
+        if (hasContactPicker == null) {
+            Contacts contacts = Contacts.getInstance(context);
+            hasContactPicker = !(context.getPackageManager().queryIntentActivities(
+                    contacts.contactPickerIntent(), 0).isEmpty());
+        }
+        return hasContactPicker;
     }
 
 }
