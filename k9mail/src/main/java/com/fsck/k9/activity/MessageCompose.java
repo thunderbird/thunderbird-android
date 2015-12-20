@@ -553,8 +553,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mChooseIdentityButton = (TextView) findViewById(R.id.identity);
         mChooseIdentityButton.setOnClickListener(this);
 
-        RecipientView recipientView = new RecipientView(this);
-        recipientPresenter = new RecipientPresenter(this, recipientView, mAccount);
+        RecipientMvpView recipientMvpView = new RecipientMvpView(this);
+        recipientPresenter = new RecipientPresenter(this, recipientMvpView, mAccount);
 
         mSubjectView = (EditText) findViewById(R.id.subject);
         mSubjectView.getInputExtras(true).putBoolean("allowEmoji", true);
@@ -599,7 +599,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         };
 
-        recipientView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        recipientMvpView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
         mSubjectView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
@@ -709,7 +709,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mMessageContentView.requestFocus();
         } else {
             // Explicitly set focus to "To:" input field (see issue 2998)
-            recipientView.requestFocusOnToFied();
+            recipientMvpView.requestFocusOnToFied();
         }
 
         if (mAction == Action.FORWARD) {
@@ -765,7 +765,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         // Set font size of input controls
         int fontSize = mFontSizes.getMessageComposeInput();
-        recipientView.setFontSizes(mFontSizes, fontSize);
+        recipientMvpView.setFontSizes(mFontSizes, fontSize);
         mFontSizes.setViewTextSize(mSubjectView, fontSize);
         mFontSizes.setViewTextSize(mMessageContentView, fontSize);
         mFontSizes.setViewTextSize(mQuotedText, fontSize);

@@ -16,7 +16,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose.CaseInsensitiveParamWrapper;
-import com.fsck.k9.activity.RecipientView.CryptoStatusType;
+import com.fsck.k9.activity.RecipientMvpView.CryptoStatusType;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.helper.Utility;
@@ -36,37 +36,37 @@ public class RecipientPresenter {
             "com.fsck.k9.activity.MessageCompose.bccShown";
 
     private Context context;
-    private RecipientView recipientView;
+    private RecipientMvpView recipientMvpView;
     private Account account;
     private String cryptoProvider;
     private RecipientType lastFocusedType = RecipientType.TO;
     private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
 
-    public RecipientPresenter(Context context, RecipientView recipientView, Account account) {
-        this.recipientView = recipientView;
+    public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account) {
+        this.recipientMvpView = recipientMvpView;
         this.context = context;
-        recipientView.setPresenter(this);
+        recipientMvpView.setPresenter(this);
         onSwitchAccount(account);
     }
 
     public List<Address> getToAddresses() {
-        return recipientView.getToAddresses();
+        return recipientMvpView.getToAddresses();
     }
 
     public List<Address> getCcAddresses() {
-        return recipientView.getCcAddresses();
+        return recipientMvpView.getCcAddresses();
     }
 
     public List<Address> getBccAddresses() {
-        return recipientView.getBccAddresses();
+        return recipientMvpView.getBccAddresses();
     }
 
     public List<Recipient> getAllRecipients() {
         ArrayList<Recipient> result = new ArrayList<Recipient>();
 
-        result.addAll(recipientView.getToRecipients());
-        result.addAll(recipientView.getCcRecipients());
-        result.addAll(recipientView.getBccRecipients());
+        result.addAll(recipientMvpView.getToRecipients());
+        result.addAll(recipientMvpView.getCcRecipients());
+        result.addAll(recipientMvpView.getBccRecipients());
 
         return result;
     }
@@ -83,7 +83,7 @@ public class RecipientPresenter {
 
     public boolean checkHasNoRecipients() {
         if (getToAddresses().isEmpty() && getCcAddresses().isEmpty() && getBccAddresses().isEmpty()) {
-            recipientView.showNoRecipientsError();
+            recipientMvpView.showNoRecipientsError();
             return true;
         }
         return false;
@@ -177,14 +177,14 @@ public class RecipientPresenter {
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        recipientView.setCcVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN));
-        recipientView.setBccVisibility(savedInstanceState.getBoolean(STATE_KEY_BCC_SHOWN));
+        recipientMvpView.setCcVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN));
+        recipientMvpView.setBccVisibility(savedInstanceState.getBoolean(STATE_KEY_BCC_SHOWN));
         updateRecipientExpanderVisibility();
     }
 
     public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean(STATE_KEY_CC_SHOWN, recipientView.isCcVisible());
-        outState.putBoolean(STATE_KEY_BCC_SHOWN, recipientView.isBccVisible());
+        outState.putBoolean(STATE_KEY_CC_SHOWN, recipientMvpView.isCcVisible());
+        outState.putBoolean(STATE_KEY_BCC_SHOWN, recipientMvpView.isBccVisible());
     }
 
     public void initFromDraftMessage(LocalMessage message) {
@@ -209,7 +209,7 @@ public class RecipientPresenter {
     void addCcAddresses(Address... ccAddresses) {
         if (ccAddresses.length > 0) {
             addRecipientsFromAddresses(RecipientType.CC, ccAddresses);
-            recipientView.setCcVisibility(true);
+            recipientMvpView.setCcVisibility(true);
             updateRecipientExpanderVisibility();
         }
     }
@@ -220,10 +220,10 @@ public class RecipientPresenter {
             String bccAddress = account.getAlwaysBcc();
 
             // If the auto-bcc is the only entry in the BCC list, don't show the Bcc fields.
-            boolean alreadyVisible = recipientView.isBccVisible();
+            boolean alreadyVisible = recipientMvpView.isBccVisible();
             boolean singleBccRecipientFromAccount =
                     bccRecipients.length == 1 && bccRecipients[0].toString().equals(bccAddress);
-            recipientView.setBccVisibility(alreadyVisible || singleBccRecipientFromAccount);
+            recipientMvpView.setBccVisibility(alreadyVisible || singleBccRecipientFromAccount);
             updateRecipientExpanderVisibility();
         }
     }
@@ -238,12 +238,12 @@ public class RecipientPresenter {
     public void onSwitchAccount(Account account) {
         this.account = account;
         if (account.isAlwaysShowCcBcc()) {
-            recipientView.setCcVisibility(true);
-            recipientView.setBccVisibility(true);
+            recipientMvpView.setCcVisibility(true);
+            recipientMvpView.setBccVisibility(true);
             updateRecipientExpanderVisibility();
         }
         cryptoProvider = account.getOpenPgpProvider();
-        recipientView.setCryptoProvider(cryptoProvider);
+        recipientMvpView.setCryptoProvider(cryptoProvider);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -275,20 +275,20 @@ public class RecipientPresenter {
     }
 
     public void onClickRecipientExpander() {
-        recipientView.setCcVisibility(true);
-        recipientView.setBccVisibility(true);
+        recipientMvpView.setCcVisibility(true);
+        recipientMvpView.setBccVisibility(true);
         updateRecipientExpanderVisibility();
     }
 
     private void hideEmptyExtendedRecipientFields() {
-        if (recipientView.getCcAddresses().isEmpty()) {
-            recipientView.setCcVisibility(false);
+        if (recipientMvpView.getCcAddresses().isEmpty()) {
+            recipientMvpView.setCcVisibility(false);
             if (lastFocusedType == RecipientType.CC) {
                 lastFocusedType = RecipientType.TO;
             }
         }
-        if (recipientView.getBccAddresses().isEmpty()) {
-            recipientView.setBccVisibility(false);
+        if (recipientMvpView.getBccAddresses().isEmpty()) {
+            recipientMvpView.setBccVisibility(false);
             if (lastFocusedType == RecipientType.BCC) {
                 lastFocusedType = RecipientType.TO;
             }
@@ -297,8 +297,8 @@ public class RecipientPresenter {
     }
 
     private void updateRecipientExpanderVisibility() {
-        boolean notBothAreVisible = !(recipientView.isCcVisible() && recipientView.isBccVisible());
-        recipientView.setRecipientExpanderVisibility(notBothAreVisible);
+        boolean notBothAreVisible = !(recipientMvpView.isCcVisible() && recipientMvpView.isBccVisible());
+        recipientMvpView.setRecipientExpanderVisibility(notBothAreVisible);
     }
 
     public void updateCryptoDisplayStatus() {
@@ -306,16 +306,16 @@ public class RecipientPresenter {
 
         boolean hasNoCryptoProviderOrRecipients = cryptoProvider == null || recipients.isEmpty();
         if (hasNoCryptoProviderOrRecipients) {
-            recipientView.hideCryptoStatus();
+            recipientMvpView.hideCryptoStatus();
             return;
         }
 
         if (currentCryptoMode == CryptoMode.SIGN_ONLY) {
-            recipientView.showCryptoStatus(CryptoStatusType.SIGN_ONLY);
+            recipientMvpView.showCryptoStatus(CryptoStatusType.SIGN_ONLY);
             return;
         }
         if (currentCryptoMode == CryptoMode.DISABLE) {
-            recipientView.showCryptoStatus(CryptoStatusType.DISABLED);
+            recipientMvpView.showCryptoStatus(CryptoStatusType.DISABLED);
             return;
         }
 
@@ -330,11 +330,11 @@ public class RecipientPresenter {
         }
 
         if (allKeysAvailable && allKeysVerified) {
-            recipientView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_TRUSTED);
+            recipientMvpView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_TRUSTED);
         } else if (allKeysAvailable) {
-            recipientView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_UNTRUSTED);
+            recipientMvpView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_UNTRUSTED);
         } else {
-            recipientView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_NOKEY);
+            recipientMvpView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_NOKEY);
         }
     }
 
@@ -370,7 +370,7 @@ public class RecipientPresenter {
             @Override
             public void deliverResult(List<Recipient> result) {
                 Recipient[] recipientArray = result.toArray(new Recipient[result.size()]);
-                recipientView.addRecipients(recipientType, recipientArray);
+                recipientMvpView.addRecipients(recipientType, recipientArray);
                 stopLoading();
                 abandon();
             }
@@ -383,11 +383,11 @@ public class RecipientPresenter {
             public void deliverResult(List<Recipient> result) {
                 // TODO handle multiple available mail addresses for a contact?
                 if (result.isEmpty()) {
-                    recipientView.showErrorContactNoAddress();
+                    recipientMvpView.showErrorContactNoAddress();
                     return;
                 }
                 Recipient recipient = result.get(0);
-                recipientView.addRecipients(recipientType, recipient);
+                recipientMvpView.addRecipients(recipientType, recipient);
                 stopLoading();
                 abandon();
             }
@@ -408,7 +408,7 @@ public class RecipientPresenter {
 
     public void onMenuAddFromContacts() {
         int requestCode = recipientTypeToRequestCode(lastFocusedType);
-        recipientView.showContactPicker(requestCode);
+        recipientMvpView.showContactPicker(requestCode);
     }
 
     public void onActivityResult(int requestCode, Intent data) {
@@ -455,7 +455,7 @@ public class RecipientPresenter {
     }
 
     public void onClickCryptoStatus() {
-        recipientView.showCryptoDialog(currentCryptoMode);
+        recipientMvpView.showCryptoDialog(currentCryptoMode);
     }
 
     public void onCryptoModeChanged(CryptoMode cryptoMode) {

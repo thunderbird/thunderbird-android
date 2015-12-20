@@ -23,7 +23,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.tokenautocomplete.TokenCompleteTextView.TokenListener;
 
 
-public class RecipientView implements OnFocusChangeListener, OnClickListener {
+public class RecipientMvpView implements OnFocusChangeListener, OnClickListener {
 
     private final MessageCompose activity;
 
@@ -37,7 +37,7 @@ public class RecipientView implements OnFocusChangeListener, OnClickListener {
 
     private RecipientPresenter presenter;
 
-    public RecipientView(MessageCompose activity) {
+    public RecipientMvpView(MessageCompose activity) {
         this.activity = activity;
 
         toView = (RecipientSelectView) activity.findViewById(R.id.to);
