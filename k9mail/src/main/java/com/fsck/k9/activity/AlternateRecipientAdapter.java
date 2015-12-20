@@ -66,10 +66,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        if (position == 0 || position == 1) {
-            return currentRecipient.hashCode();
-        }
-        return recipients.get(position -2).hashCode();
+        return position;
     }
 
     @Override

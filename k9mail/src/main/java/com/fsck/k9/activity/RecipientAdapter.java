@@ -49,7 +49,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public long getItemId(int position) {
-        return recipients.get(position).hashCode();
+        return position;
     }
 
     @Override
