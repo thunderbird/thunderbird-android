@@ -208,6 +208,31 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         }).start();
     }
 
+    public boolean recipientToHasUncompletedText() {
+        return toView.hasUncompletedText();
+    }
+
+    public boolean recipientCcHasUncompletedText() {
+        return ccView.hasUncompletedText();
+    }
+
+    public boolean recipientBccHasUncompletedText() {
+        return bccView.hasUncompletedText();
+    }
+
+    public void showToUncompletedError() {
+        toView.setError(toView.getContext().getString(R.string.message_compose_error_incomplete_recipient));
+    }
+
+    public void showCcUncompletedError() {
+        ccView.setError(ccView.getContext().getString(R.string.message_compose_error_incomplete_recipient));
+    }
+
+    public void showBccUncompletedError() {
+        bccView.setError(bccView.getContext().getString(R.string.message_compose_error_incomplete_recipient));
+    }
+
+
     public enum CryptoStatusType {
         DISABLED(4), SIGN_ONLY(3), OPPORTUNISTIC_NOKEY(0), OPPORTUNISTIC_UNTRUSTED(1), OPPORTUNISTIC_TRUSTED(2);
         final int childToDisplay;

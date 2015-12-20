@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fsck.k9.R;
@@ -63,7 +64,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         // don't allow duplicates, based on equality of recipient objects, which is e-mail addresses
         allowDuplicates(false);
 
-        // if a token is completed, pick an entry based on best guess
+        // if a token is completed, pick an entry based on best guess.
+        // Note that we override performCompletion, so this doesn't actually do anything
         performBestGuess(true);
 
         adapter = new RecipientAdapter(getContext());
@@ -116,8 +118,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     protected Recipient defaultObject(String completionText) {
-        Address[] parsedAddresses = Address.parseUnencoded(completionText);
-        if (parsedAddresses.length == 0) {
+        Address[] parsedAddresses = Address.parse(completionText);
+        if (parsedAddresses.length == 0 || parsedAddresses[0].getAddress() == null) {
             return null;
         }
         return new Recipient(parsedAddresses[0]);
@@ -148,9 +150,27 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     public void onFocusChanged(boolean hasFocus, int direction, Rect previous) {
         super.onFocusChanged(hasFocus, direction, previous);
+
         if (hasFocus) {
             ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
                     .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
+
+    @Override
+    public void performCompletion() {
+        if (getListSelection() == ListView.INVALID_POSITION && enoughToFilter()) {
+            Object bestGuess;
+            if (getAdapter().getCount() > 0) {
+                bestGuess = getAdapter().getItem(0);
+            } else {
+                bestGuess = defaultObject(currentCompletionText());
+            }
+            if (bestGuess != null) {
+                replaceText(convertSelectionToString(bestGuess));
+            }
+        } else {
+            super.performCompletion();
         }
     }
 
@@ -203,6 +223,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     public void onLoaderReset(Loader<List<Recipient>> loader) {
         adapter.setRecipients(null);
+    }
+
+    public boolean hasUncompletedText() {
+        return !TextUtils.isEmpty(currentCompletionText());
     }
 
     public enum RecipientCryptoStatus {

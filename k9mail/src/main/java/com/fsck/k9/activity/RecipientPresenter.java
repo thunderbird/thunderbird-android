@@ -81,7 +81,19 @@ public class RecipientPresenter {
         return result;
     }
 
-    public boolean checkHasNoRecipients() {
+    public boolean checkRecipientsOkForSending() {
+        if (recipientMvpView.recipientToHasUncompletedText()) {
+            recipientMvpView.showToUncompletedError();
+            return true;
+        }
+        if (recipientMvpView.recipientCcHasUncompletedText()) {
+            recipientMvpView.showCcUncompletedError();
+            return true;
+        }
+        if (recipientMvpView.recipientBccHasUncompletedText()) {
+            recipientMvpView.showBccUncompletedError();
+            return true;
+        }
         if (getToAddresses().isEmpty() && getCcAddresses().isEmpty() && getBccAddresses().isEmpty()) {
             recipientMvpView.showNoRecipientsError();
             return true;
