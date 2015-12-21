@@ -292,7 +292,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             case LOADER_ID_ALTERNATES: {
                 Uri contactLookupUri = alternatesPopupRecipient.getContactLookupUri();
                 if (contactLookupUri != null) {
-                    return new RecipientLoader(getContext(), cryptoProvider, contactLookupUri);
+                    return new RecipientLoader(getContext(), cryptoProvider, contactLookupUri, true);
                 } else {
                     String address = alternatesPopupRecipient.address.getAddress();
                     return new RecipientLoader(getContext(), cryptoProvider, address);
