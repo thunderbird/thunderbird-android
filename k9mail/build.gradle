@@ -13,7 +13,7 @@ dependencies {
     compile project(':plugins:Android-PullToRefresh:library')
     compile project(':plugins:HoloColorPicker')
     compile 'commons-io:commons-io:2.4'
-    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:support-v4:23.1.1'
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.10'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.4.0'
