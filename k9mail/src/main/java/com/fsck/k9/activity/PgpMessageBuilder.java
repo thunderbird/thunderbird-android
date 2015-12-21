@@ -21,6 +21,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
@@ -72,9 +73,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     State currentState = State.IDLE;
 
     @Override
-    public void buildAsync(Callback callback) {
-        super.buildAsync(callback);
-
+    public void buildMessageInternal() {
         if (currentState != State.IDLE) {
             throw new IllegalStateException("internal error, a PgpMessageBuilder can only be built once!");
         }
@@ -82,12 +81,25 @@ public class PgpMessageBuilder extends MessageBuilder {
         try {
             currentProcessedMimeMessage = build();
         } catch (MessagingException me) {
-            returnMessageBuildException(me);
+            queueMessageBuildException(me);
             return;
         }
 
         currentState = State.START;
         startOrContinueBuildMessage(null);
+    }
+
+    @Override
+    public void buildMessageOnActivityResult(int requestCode, Intent userInteractionResult) {
+        if (requestCode == REQUEST_SIGN_INTERACTION && currentState == State.OPENPGP_SIGN_UI) {
+            currentState = State.OPENPGP_SIGN;
+            startOrContinueBuildMessage(userInteractionResult);
+        } else if (requestCode == REQUEST_ENCRYPT_INTERACTION && currentState == State.OPENPGP_ENCRYPT_UI) {
+            currentState = State.OPENPGP_ENCRYPT;
+            startOrContinueBuildMessage(userInteractionResult);
+        } else {
+            throw new IllegalStateException("illegal state!");
+        }
     }
 
     private void startOrContinueBuildMessage(@Nullable Intent userInteractionResult) {
@@ -108,9 +120,9 @@ public class PgpMessageBuilder extends MessageBuilder {
                 return;
             }
 
-            returnMessageBuildSuccess(currentProcessedMimeMessage);
+            queueMessageBuildSuccess(currentProcessedMimeMessage);
         } catch (MessagingException me) {
-            returnMessageBuildException(me);
+            queueMessageBuildException(me);
         }
     }
 
@@ -186,6 +198,10 @@ public class PgpMessageBuilder extends MessageBuilder {
 
         final MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
 
+        String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
+        if (contentType.length > 0) {
+            bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
+        }
         bodyPart.setUsing7bitTransport();
 
         // This data will be read in a worker thread
@@ -230,8 +246,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
             case OpenPgpApi.RESULT_CODE_ERROR:
                 OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-                returnMessageBuildException(new MessagingException(error.getMessage()));
-                return;
+                throw new MessagingException(error.getMessage());
 
             default:
                 throw new IllegalStateException("unreachable code segment reached - this is a bug");
@@ -243,10 +258,10 @@ public class PgpMessageBuilder extends MessageBuilder {
 
         if (currentState == State.OPENPGP_ENCRYPT) {
             currentState = State.OPENPGP_ENCRYPT_UI;
-            returnMessageBuildPendingIntent(pendingIntent, REQUEST_ENCRYPT_INTERACTION);
+            queueMessageBuildPendingIntent(pendingIntent, REQUEST_ENCRYPT_INTERACTION);
         } else if (currentState == State.OPENPGP_SIGN) {
             currentState = State.OPENPGP_SIGN_UI;
-            returnMessageBuildPendingIntent(pendingIntent, REQUEST_SIGN_INTERACTION);
+            queueMessageBuildPendingIntent(pendingIntent, REQUEST_SIGN_INTERACTION);
         } else {
             throw new IllegalStateException("illegal state!");
         }
@@ -262,13 +277,17 @@ public class PgpMessageBuilder extends MessageBuilder {
                 new MimeBodyPart(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT), "application/pgp-signature"));
 
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartSigned);
-        currentProcessedMimeMessage.addContentTypeParameter("protocol", "\"application/pgp-signature\"");
+
+        String contentType = String.format(
+                "multipart/signed; boundary=\"%s\";\r\n  protocol=\"application/pgp-signature\"",
+                multipartSigned.getBoundary());
         if (result.hasExtra(OpenPgpApi.RESULT_SIGNATURE_MICALG)) {
             String micAlgParameter = result.getStringExtra(OpenPgpApi.RESULT_SIGNATURE_MICALG);
-            currentProcessedMimeMessage.addContentTypeParameter("micalg", micAlgParameter);
+            contentType += String.format("; micalg=\"%s\"", micAlgParameter);
         } else {
             Log.e(K9.LOG_TAG, "missing micalg parameter for pgp multipart/signed!");
         }
+        currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
 
         currentState = State.OPENPGP_SIGN_OK;
     }
@@ -278,27 +297,15 @@ public class PgpMessageBuilder extends MessageBuilder {
         MimeMultipart multipartEncrypted = new MimeMultipart();
         multipartEncrypted.setSubType("encrypted");
 
-        // The getBytes() here should strictly use US-ASCII encoding. However, we know that for this static
-        // string the byte data is equivalent, and avoid an UnsupportedEncodingException by using this way.
         multipartEncrypted.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));
         multipartEncrypted.addBodyPart(new MimeBodyPart(encryptedBodyPart, "application/octet-stream"));
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartEncrypted);
-        currentProcessedMimeMessage.addContentTypeParameter("protocol", "\"application/pgp-encrypted\"");
+        String contentType = String.format(
+                "multipart/encrypted; boundary=\"%s\";\r\n  protocol=\"application/pgp-encrypted\"",
+                multipartEncrypted.getBoundary());
+        currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
 
         currentState = State.OPENPGP_ENCRYPT_OK;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent userInteractionResult) {
-        if (requestCode == REQUEST_SIGN_INTERACTION && currentState == State.OPENPGP_SIGN_UI) {
-            currentState = State.OPENPGP_SIGN;
-            startOrContinueBuildMessage(userInteractionResult);
-        } else if (requestCode == REQUEST_ENCRYPT_INTERACTION && currentState == State.OPENPGP_ENCRYPT_UI) {
-            currentState = State.OPENPGP_ENCRYPT;
-            startOrContinueBuildMessage(userInteractionResult);
-        } else {
-            throw new IllegalStateException("illegal state!");
-        }
     }
 
     public void setSigningKeyId(long signingKeyId) {

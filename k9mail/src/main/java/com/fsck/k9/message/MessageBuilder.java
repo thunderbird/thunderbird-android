@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -64,8 +67,8 @@ public abstract class MessageBuilder {
     }
 
     /**
-     * Build the final message to be sent (or saved). If there is another message quoted in this one, it will be baked
-     * into the final message here.
+     * Build the message to be sent (or saved). If there is another message quoted in this one, it will be baked
+     * into the message here.
      */
     public MimeMessage build() throws MessagingException {
         //FIXME: check arguments
@@ -440,27 +443,70 @@ public abstract class MessageBuilder {
     private final Object callbackLock = new Object();
 
     // Postponed results, to be delivered upon reattachment of callback. There should only ever be one of these!
-    private MimeMessage postponedMimeMessage;
-    private MessagingException postponedException;
-    private PendingIntent postponedPendingIntent;
-    private int postponedRequestCode;
+    private MimeMessage queuedMimeMessage;
+    private MessagingException queuedException;
+    private PendingIntent queuedPendingIntent;
+    private int queuedRequestCode;
 
-    /** This method builds the message asynchronously, calling *exactly one* of the callback
-     * methods on the UI thread when it finishes. The callback may thread-safely be detached
-     * and reattached intermittently.
-     */
-    public void buildAsync(Callback callback) {
+    /** This method builds the message asynchronously, calling *exactly one* of the methods
+     * on the callback on the UI thread after it finishes. The callback may thread-safely
+     * be detached and reattached intermittently. */
+    final public void buildAsync(Callback callback) {
         synchronized (callbackLock) {
             asyncCallback = callback;
-            postponedMimeMessage = null;
-            postponedException = null;
-            postponedPendingIntent = null;
+            queuedMimeMessage = null;
+            queuedException = null;
+            queuedPendingIntent = null;
         }
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                buildMessageInternal();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                deliverResult();
+            }
+        }.execute();
     }
+
+    final public void onActivityResult(Callback callback, final int requestCode, int resultCode, final Intent data) {
+        synchronized (callbackLock) {
+            asyncCallback = callback;
+            queuedMimeMessage = null;
+            queuedException = null;
+            queuedPendingIntent = null;
+        }
+        if (resultCode != Activity.RESULT_OK) {
+            asyncCallback.onMessageBuildCancel();
+            return;
+        }
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                buildMessageOnActivityResult(requestCode, data);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                deliverResult();
+            }
+        }.execute();
+    }
+
+    /** This method is called in a worker thread, and should build the actual message. To deliver
+     * its computation result, it must call *exactly one* of the queueMessageBuild* methods before
+     * it finishes. */
+    abstract protected void buildMessageInternal();
+
+    abstract protected void buildMessageOnActivityResult(int requestCode, Intent data);
 
     /** This method may be used to temporarily detach the callback. If a result is delivered
      * while the callback is detached, it will be delivered upon reattachment. */
-    public void detachCallback() {
+    final public void detachCallback() {
         synchronized (callbackLock) {
             asyncCallback = null;
         }
@@ -469,58 +515,53 @@ public abstract class MessageBuilder {
     /** This method attaches a new callback, and must only be called after a previous one was
      * detached. If the computation finished while the callback was detached, it will be
      * delivered immediately upon reattachment. */
-    public void reattachCallback(Callback callback) {
+    final public void reattachCallback(Callback callback) {
         synchronized (callbackLock) {
             if (asyncCallback != null) {
                 throw new IllegalStateException("need to detach callback before new one can be attached!");
             }
             asyncCallback = callback;
-        }
-        if (postponedMimeMessage != null) {
-            asyncCallback.onMessageBuildSuccess(postponedMimeMessage);
-            postponedMimeMessage = null;
-        } else if (postponedException != null) {
-            asyncCallback.onMessageBuildException(postponedException);
-            postponedException = null;
-        } else if (postponedPendingIntent != null) {
-            asyncCallback.onMessageBuildReturnPendingIntent(postponedPendingIntent, postponedRequestCode);
-            postponedPendingIntent = null;
+            deliverResult();
         }
     }
 
-    protected void returnMessageBuildSuccess(MimeMessage message) {
+    final protected void queueMessageBuildSuccess(MimeMessage message) {
         synchronized (callbackLock) {
-            if (asyncCallback != null) {
-                asyncCallback.onMessageBuildSuccess(message);
-            } else {
-                postponedMimeMessage = message;
-            }
+            queuedMimeMessage = message;
         }
     }
 
-    protected void returnMessageBuildException(MessagingException exception) {
+    final protected void queueMessageBuildException(MessagingException exception) {
         synchronized (callbackLock) {
-            if (asyncCallback != null) {
-                asyncCallback.onMessageBuildException(exception);
-            } else {
-                postponedException = exception;
-            }
+            queuedException = exception;
         }
     }
 
-    protected void returnMessageBuildPendingIntent(PendingIntent pendingIntent, int requestCode) {
+    final protected void queueMessageBuildPendingIntent(PendingIntent pendingIntent, int requestCode) {
         synchronized (callbackLock) {
-            if (asyncCallback != null) {
-                asyncCallback.onMessageBuildReturnPendingIntent(pendingIntent, requestCode);
-            } else {
-                postponedPendingIntent = pendingIntent;
-                postponedRequestCode = requestCode;
-            }
+            queuedPendingIntent = pendingIntent;
+            queuedRequestCode = requestCode;
         }
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        throw new UnsupportedOperationException();
+    final protected void deliverResult() {
+        synchronized (callbackLock) {
+            if (asyncCallback == null) {
+                Log.d(K9.LOG_TAG, "Keeping message builder result in queue for later delivery");
+                return;
+            }
+            if (queuedMimeMessage != null) {
+                asyncCallback.onMessageBuildSuccess(queuedMimeMessage);
+                queuedMimeMessage = null;
+            } else if (queuedException != null) {
+                asyncCallback.onMessageBuildException(queuedException);
+                queuedException = null;
+            } else if (queuedPendingIntent != null) {
+                asyncCallback.onMessageBuildReturnPendingIntent(queuedPendingIntent, queuedRequestCode);
+                queuedPendingIntent = null;
+            }
+            asyncCallback = null;
+        }
     }
 
     public interface Callback {
