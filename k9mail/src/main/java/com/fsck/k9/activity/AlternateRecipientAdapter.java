@@ -4,9 +4,12 @@ package com.fsck.k9.activity;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +22,6 @@ import android.widget.TextView;
 
 import com.fsck.k9.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
-import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
 public class AlternateRecipientAdapter extends BaseAdapter {
@@ -149,38 +151,43 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             }
         });
 
-        Integer cryptoStatusRes = null, cryptoStatusColor = null;
-        RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
-        switch (cryptoStatus) {
+        configureCryptoStatusView(holder, recipient);
+    }
+
+    private void configureCryptoStatusView(RecipientTokenHolder holder, Recipient recipient) {
+        switch (recipient.getCryptoStatus()) {
             case AVAILABLE_TRUSTED: {
-                cryptoStatusRes = R.drawable.status_lock_closed;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_green);
+                setCryptoStatusView(holder, R.drawable.status_lock_closed, R.color.openpgp_green);
                 break;
             }
             case AVAILABLE_UNTRUSTED: {
-                cryptoStatusRes = R.drawable.status_lock_error;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
+                setCryptoStatusView(holder, R.drawable.status_lock_error, R.color.openpgp_orange);
                 break;
             }
             case UNAVAILABLE: {
-                cryptoStatusRes = R.drawable.status_lock_open;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
+                setCryptoStatusView(holder, R.drawable.status_lock_open, R.color.openpgp_red);
+                break;
+            }
+            case UNDEFINED: {
+                holder.itemCryptoStatus.setVisibility(View.GONE);
                 break;
             }
         }
+    }
 
-        if (cryptoStatusRes != null) {
-            // we could do this easier with setImageTintList, but that's API level 21
-            Drawable drawable = context.getResources().getDrawable(cryptoStatusRes);
-            // noinspection ConstantConditions, we know the resource exists!
-            drawable.mutate();
-            drawable.setColorFilter(cryptoStatusColor, Mode.SRC_ATOP);
-            holder.itemCryptoStatus.setImageDrawable(drawable);
-            holder.itemCryptoStatus.setVisibility(View.VISIBLE);
-        } else {
-            holder.itemCryptoStatus.setVisibility(View.GONE);
-        }
+    private void setCryptoStatusView(RecipientTokenHolder holder, @DrawableRes int cryptoStatusRes,
+            @ColorRes int cryptoStatusColorRes) {
+        Resources resources = context.getResources();
 
+        Drawable drawable = resources.getDrawable(cryptoStatusRes);
+        // noinspection ConstantConditions, we know the resource exists!
+        drawable.mutate();
+
+        int cryptoStatusColor = resources.getColor(cryptoStatusColorRes);
+        drawable.setColorFilter(cryptoStatusColor, Mode.SRC_ATOP);
+
+        holder.itemCryptoStatus.setImageDrawable(drawable);
+        holder.itemCryptoStatus.setVisibility(View.VISIBLE);
     }
 
 
