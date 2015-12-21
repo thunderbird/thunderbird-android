@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@Config(manifest = Config.NONE, sdk = 21)
 public class NotificationDataTest {
     private static final String ACCOUNT_UUID = "1-2-3";
     private static final int ACCOUNT_NUMBER = 23;

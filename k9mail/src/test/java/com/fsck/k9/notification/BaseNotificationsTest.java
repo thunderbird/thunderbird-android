@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@Config(manifest = Config.NONE, sdk = 21)
 public class BaseNotificationsTest {
     private static final int ACCOUNT_COLOR = 0xAABBCC;
     private static final String ACCOUNT_NAME = "AccountName";

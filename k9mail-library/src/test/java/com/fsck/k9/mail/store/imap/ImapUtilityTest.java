@@ -28,7 +28,7 @@ import static org.junit.Assert.assertArrayEquals;
 
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@Config(manifest = Config.NONE, sdk = 21)
 public class ImapUtilityTest  {
     @Test
     public void testGetImapSequenceValues() {
