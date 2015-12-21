@@ -1283,7 +1283,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         new String[] {"Android-PullToRefresh", "https://github.com/chrisbanes/Android-PullToRefresh"},
         new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"},
         new String[] {"HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker"},
-        new String[] {"Glide", "https://github.com/bumptech/glide"}
+        new String[] {"Glide", "https://github.com/bumptech/glide"},
+        new String[] {"TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/"},
     };
 
     private void onAbout() {
