@@ -6,7 +6,7 @@ import android.support.test.espresso.matcher.BoundedMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import static com.android.support.test.deps.guava.base.Preconditions.checkNotNull;
+import static android.support.test.espresso.core.deps.guava.base.Preconditions.checkNotNull;
 
 
 public class ConnectionSecurityHolderMatcher {

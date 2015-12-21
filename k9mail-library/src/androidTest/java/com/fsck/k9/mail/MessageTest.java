@@ -36,6 +36,7 @@ public class MessageTest {
     @Before
     public void setUp() throws Exception {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"));
+        BinaryTempFileBody.setTempDirectory(InstrumentationRegistry.getTargetContext().getCacheDir());
     }
 
     private static final String EIGHT_BIT_RESULT =
