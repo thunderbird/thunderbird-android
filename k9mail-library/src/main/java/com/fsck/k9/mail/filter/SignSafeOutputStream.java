@@ -1,65 +1,97 @@
 package com.fsck.k9.mail.filter;
 
-import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
+
 
 /**
  * Further encode a quoted-printable stream into a safer format for signed email.
+ *
  * @see <a href="http://tools.ietf.org/html/rfc2015">RFC-2015</a>
  */
 public class SignSafeOutputStream extends FilterOutputStream {
-    private ByteBuffer buffer = ByteBuffer.allocate(1);
+    private static final byte[] ESCAPED_SPACE = new byte[] { '=', '2', '0' };
+    private static final int DEFAULT_BUFFER_SIZE = 1024;
+
 
     private State state = State.cr_FROM;
+    private final byte[] outBuffer;
+    private int outputIndex;
 
-    public SignSafeOutputStream(OutputStream out){
+    private boolean closed = false;
+
+
+    public SignSafeOutputStream(OutputStream out) {
         super(out);
+        outBuffer = new byte[DEFAULT_BUFFER_SIZE];
     }
 
-    public static FilterOutputStream newInstance(OutputStream out){
-        return new QuotedPrintableOutputStream(new SignSafeOutputStream(out), false);
+    public void encode(byte next) throws IOException {
+        State nextState = state.nextState(next);
+        if (nextState == State.SPACE_FROM) {
+            state = State.INIT;
+            writeToBuffer(ESCAPED_SPACE[0]);
+            writeToBuffer(ESCAPED_SPACE[1]);
+            writeToBuffer(ESCAPED_SPACE[2]);
+        } else {
+            state = nextState;
+            writeToBuffer(next);
+        }
     }
 
-    private static final byte[] ESCAPE = new byte[]{'=','2','0'};
+    private void writeToBuffer(byte next) throws IOException {
+        outBuffer[outputIndex++] = next;
+        if (outputIndex >= outBuffer.length) {
+            flushOutput();
+        }
+    }
+
+    void flushOutput() throws IOException {
+        if (outputIndex < outBuffer.length) {
+            out.write(outBuffer, 0, outputIndex);
+        } else {
+            out.write(outBuffer);
+        }
+        outputIndex = 0;
+    }
 
     @Override
-    public void write(int oneByte) throws IOException {
-        State nextState = state.nextState(oneByte);
-        if (nextState == State.SPACE_FROM){
-            state = State.INIT;
-            out.write(ESCAPE);
-        } else if (nextState == State.lf_SPACE){
-            buffer.clear();
-            state = State.lf_FROM;
-            out.write(ESCAPE);
-            out.write(oneByte);
-        } else if (nextState == State.SPACE) {
-            writeBuffer();
-            buffer.put((byte)32);
-            state = nextState;
-        } else {
-            writeBuffer();
-            state = nextState;
-            out.write(oneByte);
+    public void write(int b) throws IOException {
+        if (closed) {
+            throw new IOException("Stream has been closed");
+        }
+        encode((byte) b);
+    }
+
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+        if (closed) {
+            throw new IOException("Stream has been closed");
+        }
+        for (int inputIndex = off; inputIndex < len + off; inputIndex++) {
+            encode(b[inputIndex]);
         }
     }
 
-    private void writeBuffer() throws IOException {
-        buffer.flip();
-        if (buffer.hasRemaining()) {
-            out.write(buffer.get());
-        }
-        buffer.clear();
+    @Override
+    public void flush() throws IOException {
+        flushOutput();
+        out.flush();
     }
 
     @Override
     public void close() throws IOException {
-        writeBuffer();
-        out.close();
+        if (closed) {
+            return;
+        }
+
+        try {
+            flush();
+        } finally {
+            closed = true;
+        }
     }
 
     enum State {
@@ -69,8 +101,6 @@ public class SignSafeOutputStream extends FilterOutputStream {
                 switch (b) {
                     case '\r':
                         return lf_FROM;
-                    case ' ':
-                        return SPACE;
                     default:
                         return INIT;
 
@@ -83,8 +113,6 @@ public class SignSafeOutputStream extends FilterOutputStream {
                 switch (b) {
                     case '\n':
                         return cr_FROM;
-                    case ' ':
-                        return SPACE;
                     case '\r':
                         return lf_FROM;
                     default:
@@ -99,8 +127,6 @@ public class SignSafeOutputStream extends FilterOutputStream {
                 switch (b) {
                     case 'F':
                         return F_FROM;
-                    case ' ':
-                        return SPACE;
                     case '\r':
                         return lf_FROM;
                     default:
@@ -115,8 +141,6 @@ public class SignSafeOutputStream extends FilterOutputStream {
                 switch (b) {
                     case 'r':
                         return R_FROM;
-                    case ' ':
-                        return SPACE;
                     case '\r':
                         return lf_FROM;
                     default:
@@ -131,8 +155,6 @@ public class SignSafeOutputStream extends FilterOutputStream {
                 switch (b) {
                     case 'o':
                         return O_FROM;
-                    case ' ':
-                        return SPACE;
                     case '\r':
                         return lf_FROM;
                     default:
@@ -147,8 +169,6 @@ public class SignSafeOutputStream extends FilterOutputStream {
                 switch (b) {
                     case 'm':
                         return M_FROM;
-                    case ' ':
-                        return SPACE;
                     case '\r':
                         return lf_FROM;
                     default:
@@ -177,39 +197,13 @@ public class SignSafeOutputStream extends FilterOutputStream {
             public State nextState(int b) {
                 switch (b) {
                     case '\r':
-                        return lf_SPACE;
-                    case 'F':
-                        return F_FROM;
-                    case ' ':
-                        return SPACE;
+                        return lf_FROM;
                     default:
                         return INIT;
 
                 }
             }
 
-        },
-        SPACE {
-            @Override
-            public State nextState(int b) {
-                switch (b) {
-                    case '\r':
-                        return lf_SPACE;
-                    case 'F':
-                        return F_FROM;
-                    case ' ':
-                        return SPACE;
-                    default:
-                        return INIT;
-
-                }
-            }
-        },
-        lf_SPACE {
-            @Override
-            public State nextState(int b) {
-                return INIT;
-            }
         };
 
         public abstract State nextState(int b);

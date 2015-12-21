@@ -36,12 +36,6 @@ public class TextBody implements Body, SizeAware {
         this.mBody = body;
     }
 
-    private static boolean signSafe = false;
-
-    public static void setSignSafe(boolean signable){
-        signSafe = signable;
-    }
-
     @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         if (mBody != null) {
@@ -49,13 +43,12 @@ public class TextBody implements Body, SizeAware {
             if (MimeUtil.ENC_8BIT.equalsIgnoreCase(mEncoding)) {
                 out.write(bytes);
             } else {
-                if (signSafe){
-                    out = new SignSafeOutputStream(out);
-                }
-                QuotedPrintableOutputStream qp = new QuotedPrintableOutputStream(out, false);
-                qp.write(bytes);
-                qp.flush();
-                qp.close();
+                SignSafeOutputStream signSafeOutputStream = new SignSafeOutputStream(out);
+                QuotedPrintableOutputStream signSafeQuotedPrintableOutputStream =
+                        new QuotedPrintableOutputStream(signSafeOutputStream, false);
+                signSafeQuotedPrintableOutputStream.write(bytes);
+                signSafeQuotedPrintableOutputStream.flush();
+                signSafeOutputStream.flush();
             }
         }
     }
