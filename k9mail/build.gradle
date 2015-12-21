@@ -38,7 +38,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion '21.1.2'
 
     defaultConfig {

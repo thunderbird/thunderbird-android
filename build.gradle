@@ -9,8 +9,12 @@ buildscript {
     }
 }
 
-project.ext.preDexLibs = !project.hasProperty('disablePreDex')
-project.ext.testCoverage = project.hasProperty('testCoverage')
+project.ext {
+    preDexLibs = !project.hasProperty('disablePreDex')
+    testCoverage = project.hasProperty('testCoverage')
+
+    compileSdkVersion = 22
+}
 
 subprojects {
     project.plugins.whenPluginAdded { plugin ->
