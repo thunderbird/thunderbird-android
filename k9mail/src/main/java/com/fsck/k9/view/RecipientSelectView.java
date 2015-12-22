@@ -287,6 +287,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         switch (id) {
             case LOADER_ID_FILTERING: {
                 String query = args != null && args.containsKey(ARG_QUERY) ? args.getString(ARG_QUERY) : "";
+                adapter.setHighlight(query);
                 return new RecipientLoader(getContext(), cryptoProvider, query);
             }
             case LOADER_ID_ALTERNATES: {
@@ -321,6 +322,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     public void onLoaderReset(Loader<List<Recipient>> loader) {
         if (loader.getId() == LOADER_ID_FILTERING) {
+            adapter.setHighlight(null);
             adapter.setRecipients(null);
         }
     }
