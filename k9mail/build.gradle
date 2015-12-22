@@ -43,6 +43,12 @@ android {
     buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
+        applicationId "com.fsck.k9"
+        testApplicationId "com.fsck.k9.tests"
+
+        versionCode 23060
+        versionName '5.106'
+
         minSdkVersion 15
         targetSdkVersion 22
 
