@@ -32,7 +32,6 @@ dependencies {
     compile 'com.splitwise:tokenautocomplete:2.0.2'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
-    androidTestCompile 'com.icegreen:greenmail:1.4.1'
 
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'junit:junit:4.12'
