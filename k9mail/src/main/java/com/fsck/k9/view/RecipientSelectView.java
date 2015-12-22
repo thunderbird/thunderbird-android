@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract.Contacts;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
@@ -259,8 +261,21 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             return;
         }
 
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindowToken(), 0);
+
         alternatesPopupRecipient = recipient;
-        loaderManager.restartLoader(LOADER_ID_ALTERNATES, null, this);
+        loaderManager.restartLoader(LOADER_ID_ALTERNATES, null, RecipientSelectView.this);
+    }
+
+    public void postShowAlternatesPopup(final List<Recipient> data) {
+        // We delay this call so the soft keyboard is gone by the time the popup is layouted
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                showAlternatesPopup(data);
+            }
+        });
     }
 
     public void showAlternatesPopup(List<Recipient> data) {
@@ -312,7 +327,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 break;
             }
             case LOADER_ID_ALTERNATES: {
-                showAlternatesPopup(data);
+                postShowAlternatesPopup(data);
                 loaderManager.destroyLoader(LOADER_ID_ALTERNATES);
                 break;
             }
