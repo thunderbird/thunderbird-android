@@ -519,8 +519,9 @@ public class RecipientPresenter {
 
 
     enum CryptoMode {
+        PRIVATE,
         OPPORTUNISTIC,
+        SIGN_ONLY,
         DISABLE,
-        SIGN_ONLY
     }
 }

@@ -77,6 +77,10 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
                 cryptoModeSelector.setCryptoStatus(2);
                 cryptoStatusText.setDisplayedChild(2, animate);
                 break;
+            case PRIVATE:
+                cryptoModeSelector.setCryptoStatus(3);
+                cryptoStatusText.setDisplayedChild(3, animate);
+                break;
         }
     }
 
@@ -93,8 +97,10 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
             currentMode = CryptoMode.DISABLE;
         } else if (status == 1) {
             currentMode = CryptoMode.SIGN_ONLY;
-        } else {
+        } else if (status == 2) {
             currentMode = CryptoMode.OPPORTUNISTIC;
+        } else {
+            currentMode = CryptoMode.PRIVATE;
         }
         updateView(true);
 

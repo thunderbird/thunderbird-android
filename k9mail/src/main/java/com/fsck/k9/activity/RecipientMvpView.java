@@ -24,11 +24,11 @@ import com.fsck.k9.view.RecipientSelectView.TokenListener;
 
 
 public class RecipientMvpView implements OnFocusChangeListener, OnClickListener {
-    private static final int VIEW_INDEX_CRYPTO_STATUS_NO_KEY = 0;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED = 1;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_TRUSTED = 2;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY = 3;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_DISABLED = 4;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_DISABLED = 0;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_NO_KEY = 1;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED = 2;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_TRUSTED = 3;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY = 4;
 
 
     private final MessageCompose activity;

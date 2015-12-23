@@ -41,6 +41,14 @@
             android:text="Always Sign, Encrypt if possible."
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="Always Sign, Always Encrypt."
+            />
+
     </com.fsck.k9.view.LinearViewAnimator>
 
     <com.fsck.k9.view.CryptoModeSelector

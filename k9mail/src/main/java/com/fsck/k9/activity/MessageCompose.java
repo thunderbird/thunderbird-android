@@ -996,8 +996,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         CryptoMode cryptoMode = recipientPresenter.getCurrentCryptoMode();
         if(cryptoMode != CryptoMode.DISABLE) {
             PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), getOpenPgpApi());
-            pgpBuilder.setSigningKeyId(mAccount.getCryptoKey());
             pgpBuilder.setCryptoMode(cryptoMode);
+            pgpBuilder.setSigningKeyId(mAccount.getCryptoKey());
             builder = pgpBuilder;
         } else {
             builder = new SimpleMessageBuilder(getApplicationContext());
