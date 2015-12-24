@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -43,6 +44,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     private MimeMessage currentProcessedMimeMessage;
     private long signingKeyId = Account.NO_OPENPGP_KEY;
+    private long selfEncryptKeyId = Account.NO_OPENPGP_KEY;
     private CryptoMode cryptoMode;
 
     public PgpMessageBuilder(Context context, OpenPgpApi openPgpApi) {
@@ -137,26 +139,44 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        Intent encryptIntent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
-        {
-            ArrayList<String> recipientAddresses = new ArrayList<String>();
-            for (Address address : currentProcessedMimeMessage.getRecipients(RecipientType.TO)) {
-                recipientAddresses.add(address.getAddress());
-            }
-            for (Address address : currentProcessedMimeMessage.getRecipients(RecipientType.CC)) {
-                recipientAddresses.add(address.getAddress());
-            }
-            for (Address address : currentProcessedMimeMessage.getRecipients(RecipientType.BCC)) {
-                recipientAddresses.add(address.getAddress());
-            }
-            String[] addressStrings = recipientAddresses.toArray(new String[recipientAddresses.size()]);
+        boolean shouldEncryptToSelf = selfEncryptKeyId != Account.NO_OPENPGP_KEY;
+        boolean shouldEncryptToRecipients = !isDraft();
 
+        if (!shouldEncryptToSelf && !shouldEncryptToRecipients) {
+            // TODO safeguard here once this is better handled by the caller?
+            // throw new MessagingException("Tried to encrypt draft, but no encryption key specified!");
+            return;
+        }
+
+        Intent encryptIntent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
+        encryptIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+
+        if (shouldEncryptToSelf) {
+            encryptIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, new long[] { selfEncryptKeyId });
+        }
+
+        if (shouldEncryptToRecipients) {
+            String[] addressStrings = getRecipientAddressStrings(currentProcessedMimeMessage);
             encryptIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, addressStrings);
         }
-        encryptIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 
         currentState = State.OPENPGP_ENCRYPT;
         mimeIntentLaunch(encryptIntent);
+    }
+
+    @NonNull
+    private static String[] getRecipientAddressStrings(MimeMessage messsage) throws MessagingException {
+        ArrayList<String> recipientAddresses = new ArrayList<String>();
+        for (Address address : messsage.getRecipients(RecipientType.TO)) {
+            recipientAddresses.add(address.getAddress());
+        }
+        for (Address address : messsage.getRecipients(RecipientType.CC)) {
+            recipientAddresses.add(address.getAddress());
+        }
+        for (Address address : messsage.getRecipients(RecipientType.BCC)) {
+            recipientAddresses.add(address.getAddress());
+        }
+        return recipientAddresses.toArray(new String[recipientAddresses.size()]);
     }
 
     private void startOrContinueSigningIfRequested(Intent userInteractionResult) throws MessagingException {
@@ -166,9 +186,10 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        boolean isSignEnabled = signingKeyId != Account.NO_OPENPGP_KEY;
+        boolean isNoSigningKeyAvailable = signingKeyId == Account.NO_OPENPGP_KEY;
         boolean alreadySigned = currentState.isSignOk();
-        if (!isSignEnabled || alreadySigned) {
+        boolean isDraft = isDraft();
+        if (isNoSigningKeyAvailable || alreadySigned || isDraft) {
             return;
         }
 
@@ -300,6 +321,10 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     public void setSigningKeyId(long signingKeyId) {
         this.signingKeyId = signingKeyId;
+    }
+
+    public void setSelfEncryptKeyId(long selfEncryptKeyId) {
+        this.selfEncryptKeyId = selfEncryptKeyId;
     }
 
     public void setCryptoMode(CryptoMode cryptoMode) {

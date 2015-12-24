@@ -78,16 +78,6 @@ public class RecipientPresenter {
         return result;
     }
 
-    public List<Address> getAllRecipientAddresses() {
-        ArrayList<Address> result = new ArrayList<Address>();
-
-        result.addAll(getToAddresses());
-        result.addAll(getCcAddresses());
-        result.addAll(getBccAddresses());
-
-        return result;
-    }
-
     public boolean checkRecipientsOkForSending() {
         if (recipientMvpView.recipientToHasUncompletedText()) {
             recipientMvpView.showToUncompletedError();

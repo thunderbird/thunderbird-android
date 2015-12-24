@@ -439,6 +439,10 @@ public abstract class MessageBuilder {
         return this;
     }
 
+    public boolean isDraft() {
+        return isDraft;
+    }
+
     private Callback asyncCallback;
     private final Object callbackLock = new Object();
 
@@ -551,7 +555,7 @@ public abstract class MessageBuilder {
                 return;
             }
             if (queuedMimeMessage != null) {
-                asyncCallback.onMessageBuildSuccess(queuedMimeMessage);
+                asyncCallback.onMessageBuildSuccess(queuedMimeMessage, isDraft);
                 queuedMimeMessage = null;
             } else if (queuedException != null) {
                 asyncCallback.onMessageBuildException(queuedException);
@@ -565,7 +569,7 @@ public abstract class MessageBuilder {
     }
 
     public interface Callback {
-        void onMessageBuildSuccess(MimeMessage message);
+        void onMessageBuildSuccess(MimeMessage message, boolean isDraft);
         void onMessageBuildCancel();
         void onMessageBuildException(MessagingException exception);
         void onMessageBuildReturnPendingIntent(PendingIntent pendingIntent, int requestCode);

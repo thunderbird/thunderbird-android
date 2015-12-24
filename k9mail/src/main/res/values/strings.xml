@@ -930,9 +930,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="confirm_discard_draft_message_title">Discard message?</string>
     <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>
 
-    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>
-    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>
-
     <string name="select_text_now">Select text to copy.</string>
 
     <string name="dialog_confirm_delete_title">Confirm deletion</string>

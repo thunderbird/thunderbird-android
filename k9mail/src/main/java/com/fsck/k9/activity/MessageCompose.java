@@ -113,10 +113,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener, MessageBuilder.Callback {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
-    private static final int DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED = 2;
-    private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 3;
-    private static final int DIALOG_CHOOSE_IDENTITY = 4;
-    private static final int DIALOG_CONFIRM_DISCARD = 5;
+    private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
+    private static final int DIALOG_CHOOSE_IDENTITY = 3;
+    private static final int DIALOG_CONFIRM_DISCARD = 4;
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
 
@@ -308,7 +307,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private QuoteStyle mQuoteStyle;
 
     private boolean mDraftNeedsSaving = false;
-    private boolean mPreventDraftSaving = false;
+    private boolean mUnencryptedDraftSavingOk = false;
 
     /**
      * If this is {@code true} we don't save the message as a draft in {@link #onPause()}.
@@ -356,6 +355,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         Toast.LENGTH_LONG).show();
                     break;
                 case MSG_SAVED_DRAFT:
+                    mDraftId = (Long) msg.obj;
                     Toast.makeText(
                         MessageCompose.this,
                         getString(R.string.message_saved_toast),
@@ -861,6 +861,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // Save email as draft when activity is changed (go to home screen, call received) or screen locked
         // don't do this if only changing orientations
         if (!mIgnoreOnPause && (getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0) {
+            if (shouldEncrypt() && !mUnencryptedDraftSavingOk) {
+                Toast.makeText(this, "Draft NOT saved without encryption!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             saveIfNeeded();
         }
     }
@@ -994,10 +999,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private MessageBuilder createMessageBuilder(boolean isDraft) {
         MessageBuilder builder;
         CryptoMode cryptoMode = recipientPresenter.getCurrentCryptoMode();
-        if(cryptoMode != CryptoMode.DISABLE) {
+        // TODO encrypt drafts for storage
+        if(!isDraft && cryptoMode != CryptoMode.DISABLE) {
             PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), getOpenPgpApi());
             pgpBuilder.setCryptoMode(cryptoMode);
             pgpBuilder.setSigningKeyId(mAccount.getCryptoKey());
+            // TODO introduce separate key setting here?
+            pgpBuilder.setSelfEncryptKeyId(mAccount.getCryptoKey());
             builder = pgpBuilder;
         } else {
             builder = new SimpleMessageBuilder(getApplicationContext());
@@ -1040,21 +1048,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return attachments;
     }
 
-    private void saveMessage() {
-        new SaveMessageTask().execute();
-    }
-
     private void saveIfNeeded() {
-        if (!mDraftNeedsSaving || mPreventDraftSaving || shouldEncrypt() || !mAccount.hasDraftsFolder()) {
+        if (!mDraftNeedsSaving || !mAccount.hasDraftsFolder()) {
             return;
         }
 
         mDraftNeedsSaving = false;
-        saveMessage();
+        performSave();
     }
 
     private void onSend() {
-
         if (recipientPresenter.checkRecipientsOkForSending()) {
             return;
         }
@@ -1070,6 +1073,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         performSend();
+    }
+
+    private void performSave() {
+        currentMessageBuilder = createMessageBuilder(true);
+        currentMessageBuilder.buildAsync(this);
     }
 
     public void performSend() {
@@ -1096,11 +1104,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mWaitingForAttachments = WaitingAction.SAVE;
             showWaitingForAttachmentDialog();
         } else {
-            performSave();
+            performSaveAndFinish();
         }
     }
 
-    private void performSave() {
+    private void performSaveAndFinish() {
+        if (shouldEncrypt() && !mUnencryptedDraftSavingOk) {
+            Toast.makeText(this, "Draft will be saved unencrypted! Repeat to confirm.", Toast.LENGTH_SHORT).show();
+            mUnencryptedDraftSavingOk = true;
+            return;
+        }
+
         saveIfNeeded();
         finish();
     }
@@ -1311,7 +1325,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 break;
             }
             case SAVE: {
-                performSave();
+                performSaveAndFinish();
                 break;
             }
             case NONE:
@@ -1326,9 +1340,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // if a CryptoSystem activity is returning, then mPreventDraftSaving was set to true
-        mPreventDraftSaving = false;
-
         if ((requestCode & REQUEST_MASK_MESSAGE_BUILDER) == REQUEST_MASK_MESSAGE_BUILDER) {
             requestCode ^= REQUEST_MASK_MESSAGE_BUILDER;
             if (currentMessageBuilder == null) {
@@ -1407,7 +1418,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (K9.DEBUG) {
                     Log.v(K9.LOG_TAG, "Account switch, saving new draft in new account");
                 }
-                saveMessage();
+                performSave();
 
                 if (previousDraftId != INVALID_DRAFT_ID) {
                     if (K9.DEBUG) {
@@ -1550,11 +1561,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onSend();
                 break;
             case R.id.save:
-                if (shouldEncrypt()) {
-                    showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
-                } else {
-                    onSave();
-                }
+                onSave();
                 break;
             case R.id.discard:
                 askBeforeDiscard();
@@ -1599,9 +1606,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onBackPressed() {
         if (mDraftNeedsSaving) {
-            if (shouldEncrypt()) {
-                showDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
-            } else if (!mAccount.hasDraftsFolder()) {
+            if (!mAccount.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
             } else {
                 showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
@@ -1674,17 +1679,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
                         onDiscard();
-                    }
-                })
-                .create();
-            case DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED:
-                return new AlertDialog.Builder(this)
-                       .setTitle(R.string.refuse_to_save_draft_marked_encrypted_dlg_title)
-                       .setMessage(R.string.refuse_to_save_draft_marked_encrypted_instructions_fmt)
-                .setNeutralButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dismissDialog(DIALOG_REFUSE_TO_SAVE_DRAFT_MARKED_ENCRYPTED);
                     }
                 })
                 .create();
@@ -2501,7 +2495,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         Message message;
         Long draftId;
 
-        SendMessageTask(Context context, Account account, Contacts contacts, Message message, Long draftId) {
+        SendMessageTask(Context context, Account account, Contacts contacts, Handler handler,
+                Message message, Long draftId) {
             this.context = context;
             this.account = account;
             this.contacts = contacts;
@@ -2558,23 +2553,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    // We check to see if we've previously processed the source message since this
-                    // could be called when switching from HTML to text replies. If that happens, we
-                    // only want to update the UI with quoted text (which picks the appropriate
-                    // part).
-                    if (mSourceProcessed) {
-                        try {
-                            populateUIWithQuotedMessage(true);
-                        } catch (MessagingException e) {
-                            // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
-                            showOrHideQuotedText(QuotedTextMode.HIDE);
-                            Log.e(K9.LOG_TAG, "Could not re-process source message; deleting quoted text to be safe.", e);
-                        }
-                        updateMessageFormat();
-                    } else {
-                        processSourceMessage((LocalMessage) message);
-                        mSourceProcessed = true;
-                    }
+                    loadLocalMessageForDisplay((LocalMessage) message);
                 }
             });
         }
@@ -2608,6 +2587,26 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
+    private void loadLocalMessageForDisplay(LocalMessage message) {
+        // We check to see if we've previously processed the source message since this
+        // could be called when switching from HTML to text replies. If that happens, we
+        // only want to update the UI with quoted text (which picks the appropriate
+        // part).
+        if (mSourceProcessed) {
+            try {
+                populateUIWithQuotedMessage(true);
+            } catch (MessagingException e) {
+                // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
+                showOrHideQuotedText(QuotedTextMode.HIDE);
+                Log.e(K9.LOG_TAG, "Could not re-process source message; deleting quoted text to be safe.", e);
+            }
+            updateMessageFormat();
+        } else {
+            processSourceMessage(message);
+            mSourceProcessed = true;
+        }
+    }
+
     /**
      * When we are launched with an intent that includes a mailto: URI, we can actually
      * gather quite a few of our message fields from it.
@@ -2630,41 +2629,32 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
 
-    private class SaveMessageTask extends AsyncTask<Void, Void, Void> {
+    private static class SaveMessageTask extends AsyncTask<Void, Void, Void> {
+        Context context;
+        Account account;
+        Contacts contacts;
+        Handler handler;
+        Message message;
+        long draftId;
+
+        SaveMessageTask(Context context, Account account, Contacts contacts,
+                Handler handler, Message message, long draftId) {
+            this.context = context;
+            this.account = account;
+            this.contacts = contacts;
+            this.handler = handler;
+            this.message = message;
+            this.draftId = draftId;
+        }
+
         @Override
         protected Void doInBackground(Void... params) {
-            /*
-             * Create the message from all the data the user has entered.
-             */
-            MimeMessage message;
-            try {
-                message = null; // createDraftMessageBuilder();
-            } catch (Exception me) {
-                Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
-                throw new RuntimeException("Failed to create a new message for send or save.", me);
-            }
+            final MessagingController messagingController = MessagingController.getInstance(context);
+            Message draftMessage = messagingController.saveDraft(account, message, draftId);
+            draftId = messagingController.getId(draftMessage);
 
-            // TODO don't spam my drafts inbox while debugging :(
-            if (true) return null;
-
-            /*
-             * Save a draft
-             */
-            if (mAction == Action.EDIT_DRAFT) {
-                /*
-                 * We're saving a previously saved draft, so update the new message's uid
-                 * to the old message's uid.
-                 */
-                if (mMessageReference != null) {
-                    message.setUid(mMessageReference.getUid());
-                }
-            }
-
-            final MessagingController messagingController = MessagingController.getInstance(getApplication());
-            Message draftMessage = messagingController.saveDraft(mAccount, message, mDraftId);
-            mDraftId = messagingController.getId(draftMessage);
-
-            mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
+            android.os.Message msg = android.os.Message.obtain(handler, MSG_SAVED_DRAFT, draftId);
+            handler.sendMessage(msg);
             return null;
         }
     }
@@ -3011,7 +3001,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private boolean shouldEncrypt() {
-        return isCryptoProviderEnabled();
+        if (!isCryptoProviderEnabled()) {
+            return false;
+        }
+        CryptoMode cryptoMode = recipientPresenter.getCurrentCryptoMode();
+        return cryptoMode == CryptoMode.OPPORTUNISTIC || cryptoMode == CryptoMode.PRIVATE;
     }
 
     private boolean shouldSign() {
@@ -3019,12 +3013,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Override
-    public void onMessageBuildSuccess(MimeMessage message) {
-        // actually send the message
-        new SendMessageTask(MessageCompose.this, mAccount, mContacts, message,
-                mDraftId != INVALID_DRAFT_ID ? mDraftId : null).execute();
-        currentMessageBuilder = null;
-        finish();
+    public void onMessageBuildSuccess(MimeMessage message, boolean isDraft) {
+        if (isDraft) {
+            if (mAction == Action.EDIT_DRAFT && mMessageReference != null) {
+                message.setUid(mMessageReference.getUid());
+            }
+
+            new SaveMessageTask(getApplicationContext(), mAccount, mContacts, mHandler, message, mDraftId).execute();
+            finish();
+        } else {
+            new SendMessageTask(getApplicationContext(), mAccount, mContacts, mHandler, message,
+                    mDraftId != INVALID_DRAFT_ID ? mDraftId : null).execute();
+            finish();
+        }
     }
 
     @Override
