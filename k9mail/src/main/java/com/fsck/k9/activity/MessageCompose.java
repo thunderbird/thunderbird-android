@@ -33,6 +33,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -90,7 +91,6 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.IdentityHeaderParser;
@@ -992,20 +992,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private TextBody buildText(boolean isDraft) {
-        return createMessageBuilder(isDraft).buildText();
-    }
-
+    @Nullable
     private MessageBuilder createMessageBuilder(boolean isDraft) {
         MessageBuilder builder;
-        CryptoMode cryptoMode = recipientPresenter.getCurrentCryptoMode();
+
+        if (!recipientPresenter.canSendOrError(isDraft)) {
+            return null;
+        }
+
+        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
         // TODO encrypt drafts for storage
-        if(!isDraft && cryptoMode != CryptoMode.DISABLE) {
+        if(!isDraft && cryptoStatus.shouldUsePgpMessageBuilder()) {
             PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), getOpenPgpApi());
-            pgpBuilder.setCryptoMode(cryptoMode);
-            pgpBuilder.setSigningKeyId(mAccount.getCryptoKey());
-            // TODO introduce separate key setting here?
-            pgpBuilder.setSelfEncryptKeyId(mAccount.getCryptoKey());
+            pgpBuilder.setCryptoStatus(cryptoStatus);
             builder = pgpBuilder;
         } else {
             builder = new SimpleMessageBuilder(getApplicationContext());
@@ -1077,12 +1076,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void performSave() {
         currentMessageBuilder = createMessageBuilder(true);
-        currentMessageBuilder.buildAsync(this);
+        if (currentMessageBuilder != null) {
+            currentMessageBuilder.buildAsync(this);
+        }
     }
 
     public void performSend() {
         currentMessageBuilder = createMessageBuilder(false);
-        currentMessageBuilder.buildAsync(this);
+        if (currentMessageBuilder != null) {
+            currentMessageBuilder.buildAsync(this);
+        }
     }
 
     private void onDiscard() {
@@ -3004,8 +3007,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (!isCryptoProviderEnabled()) {
             return false;
         }
-        CryptoMode cryptoMode = recipientPresenter.getCurrentCryptoMode();
-        return cryptoMode == CryptoMode.OPPORTUNISTIC || cryptoMode == CryptoMode.PRIVATE;
+        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
+        return cryptoStatus.isEncryptionEnabled();
     }
 
     private boolean shouldSign() {

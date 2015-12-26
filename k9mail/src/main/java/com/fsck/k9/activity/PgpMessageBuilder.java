@@ -3,22 +3,16 @@ package com.fsck.k9.activity;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.activity.RecipientPresenter.CryptoMode;
 import com.fsck.k9.K9;
-import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeBodyPart;
@@ -43,9 +37,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     private final OpenPgpApi openPgpApi;
 
     private MimeMessage currentProcessedMimeMessage;
-    private long signingKeyId = Account.NO_OPENPGP_KEY;
-    private long selfEncryptKeyId = Account.NO_OPENPGP_KEY;
-    private CryptoMode cryptoMode;
+    private ComposeCryptoStatus cryptoStatus;
 
     public PgpMessageBuilder(Context context, OpenPgpApi openPgpApi) {
         super(context);
@@ -54,12 +46,12 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     /** This class keeps track of its internal state explicitly. */
     private enum State {
-        IDLE, START,
+        IDLE, START, FAILURE,
         OPENPGP_SIGN, OPENPGP_SIGN_UI, OPENPGP_SIGN_OK,
         OPENPGP_ENCRYPT, OPENPGP_ENCRYPT_UI, OPENPGP_ENCRYPT_OK;
 
         public boolean isBreakState() {
-            return this == OPENPGP_SIGN_UI || this == OPENPGP_ENCRYPT_UI;
+            return this == OPENPGP_SIGN_UI || this == OPENPGP_ENCRYPT_UI || this == FAILURE;
         }
 
         public boolean isReentrantState() {
@@ -75,7 +67,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     State currentState = State.IDLE;
 
     @Override
-    public void buildMessageInternal() {
+    protected void buildMessageInternal() {
         if (currentState != State.IDLE) {
             throw new IllegalStateException("internal error, a PgpMessageBuilder can only be built once!");
         }
@@ -135,48 +127,33 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        if (cryptoMode == CryptoMode.SIGN_ONLY) {
+        if (!cryptoStatus.isEncryptionEnabled()) {
             return;
         }
 
-        boolean shouldEncryptToSelf = selfEncryptKeyId != Account.NO_OPENPGP_KEY;
-        boolean shouldEncryptToRecipients = !isDraft();
+        boolean isDraft = isDraft();
+        long[] encryptKeyIds = cryptoStatus.getEncryptKeyIds(isDraft);
+        String[] encryptKeyReferences = cryptoStatus.getEncryptKeyReferences(isDraft);
 
-        if (!shouldEncryptToSelf && !shouldEncryptToRecipients) {
+        if (encryptKeyIds == null && encryptKeyReferences == null) {
             // TODO safeguard here once this is better handled by the caller?
-            // throw new MessagingException("Tried to encrypt draft, but no encryption key specified!");
+            // throw new MessagingException("Encryption is enabled, but no encryption key specified!");
             return;
         }
 
         Intent encryptIntent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
         encryptIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 
-        if (shouldEncryptToSelf) {
-            encryptIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, new long[] { selfEncryptKeyId });
+        if (encryptKeyIds != null) {
+            encryptIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, encryptKeyIds);
         }
 
-        if (shouldEncryptToRecipients) {
-            String[] addressStrings = getRecipientAddressStrings(currentProcessedMimeMessage);
-            encryptIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, addressStrings);
+        if (encryptKeyReferences != null) {
+            encryptIntent.putExtra(OpenPgpApi.EXTRA_KEY_REFERENCES, encryptKeyReferences);
         }
 
         currentState = State.OPENPGP_ENCRYPT;
         mimeIntentLaunch(encryptIntent);
-    }
-
-    @NonNull
-    private static String[] getRecipientAddressStrings(MimeMessage messsage) throws MessagingException {
-        ArrayList<String> recipientAddresses = new ArrayList<String>();
-        for (Address address : messsage.getRecipients(RecipientType.TO)) {
-            recipientAddresses.add(address.getAddress());
-        }
-        for (Address address : messsage.getRecipients(RecipientType.CC)) {
-            recipientAddresses.add(address.getAddress());
-        }
-        for (Address address : messsage.getRecipients(RecipientType.BCC)) {
-            recipientAddresses.add(address.getAddress());
-        }
-        return recipientAddresses.toArray(new String[recipientAddresses.size()]);
     }
 
     private void startOrContinueSigningIfRequested(Intent userInteractionResult) throws MessagingException {
@@ -186,15 +163,15 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        boolean isNoSigningKeyAvailable = signingKeyId == Account.NO_OPENPGP_KEY;
+        boolean signingDisabled = !cryptoStatus.isSigningEnabled();
         boolean alreadySigned = currentState.isSignOk();
         boolean isDraft = isDraft();
-        if (isNoSigningKeyAvailable || alreadySigned || isDraft) {
+        if (signingDisabled || alreadySigned || isDraft) {
             return;
         }
 
         Intent signIntent = new Intent(OpenPgpApi.ACTION_DETACHED_SIGN);
-        signIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, signingKeyId);
+        signIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, cryptoStatus.getSigningKeyId());
 
         currentState = State.OPENPGP_SIGN;
         mimeIntentLaunch(signIntent);
@@ -319,16 +296,8 @@ public class PgpMessageBuilder extends MessageBuilder {
         currentState = State.OPENPGP_ENCRYPT_OK;
     }
 
-    public void setSigningKeyId(long signingKeyId) {
-        this.signingKeyId = signingKeyId;
-    }
-
-    public void setSelfEncryptKeyId(long selfEncryptKeyId) {
-        this.selfEncryptKeyId = selfEncryptKeyId;
-    }
-
-    public void setCryptoMode(CryptoMode cryptoMode) {
-        this.cryptoMode = cryptoMode;
+    public void setCryptoStatus(ComposeCryptoStatus cryptoStatus) {
+        this.cryptoStatus = cryptoStatus;
     }
 
     /* TODO re-add PGP/INLINE

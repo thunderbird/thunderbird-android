@@ -49,10 +49,12 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             ContactsContract.Contacts.SORT_KEY_PRIMARY;
 
     private static final int INDEX_EMAIL_ADDRESS = 0;
-    private static final int INDEX_EMAIL_STATUS = 1;
+    private static final int INDEX_EMAIL_KEY_REFERENCE = 1;
+    private static final int INDEX_EMAIL_STATUS = 2;
 
     private static final String[] PROJECTION_CRYPTO_STATUS = {
             "email_address",
+            "email_key_reference",
             "email_status"
     };
 
@@ -265,6 +267,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
         while (cursor.moveToNext()) {
             String email = cursor.getString(INDEX_EMAIL_ADDRESS);
+            String keyRef = cursor.getString(INDEX_EMAIL_KEY_REFERENCE);
             int status = cursor.getInt(INDEX_EMAIL_STATUS);
 
             for (Address address : Address.parseUnencoded(email)) {
@@ -273,11 +276,15 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                     Recipient recipient = recipientMap.get(emailAddress);
                     switch (status) {
                         case CRYPTO_PROVIDER_STATUS_UNTRUSTED: {
-                            recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_UNTRUSTED);
+                            if (recipient.getCryptoStatus() == RecipientCryptoStatus.UNAVAILABLE) {
+                                recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_UNTRUSTED, keyRef);
+                            }
                             break;
                         }
                         case CRYPTO_PROVIDER_STATUS_TRUSTED: {
-                            recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_TRUSTED);
+                            if (recipient.getCryptoStatus() != RecipientCryptoStatus.AVAILABLE_TRUSTED) {
+                                recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_TRUSTED, keyRef);
+                            }
                             break;
                         }
                     }
@@ -294,7 +301,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private void initializeCryptoStatusForAllRecipients(Map<String, Recipient> recipientMap) {
         for (Recipient recipient : recipientMap.values()) {
-            recipient.setCryptoStatus(RecipientCryptoStatus.UNAVAILABLE);
+            recipient.setCryptoStatus(RecipientCryptoStatus.UNAVAILABLE, null);
         }
     }
 

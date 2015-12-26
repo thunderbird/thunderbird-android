@@ -16,7 +16,7 @@ public class SimpleMessageBuilder extends MessageBuilder {
     }
 
     @Override
-    public void buildMessageInternal() {
+    protected void buildMessageInternal() {
         try {
             MimeMessage message = build();
             queueMessageBuildSuccess(message);

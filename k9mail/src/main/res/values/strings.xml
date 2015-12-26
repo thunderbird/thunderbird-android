@@ -263,7 +263,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:</string>
     <string name="message_compose_reply_header_fmt_with_date">On <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> wrote:</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
-    <string name="message_compose_error_incomplete_recipient">Recipient field contains incomplete input!</string>
+    <string name="compose_error_incomplete_recipient">Recipient field contains incomplete input!</string>
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="message_compose_show_quoted_text_action">Quote message</string>
@@ -1165,5 +1165,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="address_type_other">Other</string>
     <string name="address_type_mobile">Mobile</string>
     <string name="warn_search_disabled">Search in message bodies is disabled in this development version!</string>
+    <string name="compose_confirm_draft_unencrypted">Draft will be saved unencrypted! Repeat to confirm.</string>
+    <string name="compose_error_no_draft_folder">No Drafts folder configured for this account!</string>
+    <string name="compose_not_saving_unencrypted">Draft NOT saved without encryption!</string>
+    <string name="compose_error_no_signing_key">Signing requested, but no key selected!</string>
+    <string name="compose_error_private_missing_keys">Private mode enabled, but cannot encrypt to all recipients!</string>
 
 </resources>

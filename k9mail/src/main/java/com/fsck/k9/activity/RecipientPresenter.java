@@ -17,7 +17,6 @@ import android.view.Menu;
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.RecipientMvpView.CryptoStatusType;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.Utility;
@@ -27,12 +26,11 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
-import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
 
 public class RecipientPresenter {
-    private static final String STATE_KEY_CC_SHOWN = "com.fsck.k9.activity.MessageCompose.ccShown";
-    private static final String STATE_KEY_BCC_SHOWN = "com.fsck.k9.activity.MessageCompose.bccShown";
+    private static final String STATE_KEY_CC_SHOWN = "state:ccShown";
+    private static final String STATE_KEY_BCC_SHOWN = "state:bccShown";
 
     private static final int CONTACT_PICKER_TO = 1;
     private static final int CONTACT_PICKER_CC = 2;
@@ -44,8 +42,9 @@ public class RecipientPresenter {
     private Account account;
     private String cryptoProvider;
     private RecipientType lastFocusedType = RecipientType.TO;
-    private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
     private Boolean hasContactPicker;
+    private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
+    private ComposeCryptoStatus currentCryptoStatus;
 
 
     public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account) {
@@ -54,6 +53,7 @@ public class RecipientPresenter {
 
         recipientMvpView.setPresenter(this);
         onSwitchAccount(account);
+        updateCryptoStatus();
     }
 
     public List<Address> getToAddresses() {
@@ -299,8 +299,13 @@ public class RecipientPresenter {
         recipientMvpView.setRecipientExpanderVisibility(notBothAreVisible);
     }
 
-    public void updateCryptoDisplayStatus() {
+    public void updateCryptoStatus() {
         List<Recipient> recipients = getAllRecipients();
+
+        long accountCryptoKey = account.getCryptoKey();
+
+        currentCryptoStatus = ComposeCryptoStatus.createFromRecipients(currentCryptoMode, getAllRecipients(),
+                accountCryptoKey == Account.NO_OPENPGP_KEY ? null : accountCryptoKey);
 
         boolean hasNoCryptoProviderOrRecipients = cryptoProvider == null || recipients.isEmpty();
         if (hasNoCryptoProviderOrRecipients) {
@@ -308,79 +313,61 @@ public class RecipientPresenter {
             return;
         }
 
-        if (currentCryptoMode == CryptoMode.SIGN_ONLY) {
-            recipientMvpView.showCryptoStatus(CryptoStatusType.SIGN_ONLY);
-            return;
-        }
+        recipientMvpView.showCryptoStatus(currentCryptoStatus.getCryptoStatusDisplayType());
+    }
 
-        if (currentCryptoMode == CryptoMode.DISABLE) {
-            recipientMvpView.showCryptoStatus(CryptoStatusType.DISABLED);
-            return;
-        }
-
-        boolean allKeysAvailable = true;
-        boolean allKeysVerified = true;
-        for (Recipient recipient : recipients) {
-            RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
-            if (!cryptoStatus.isAvailable()) {
-                allKeysAvailable = false;
-            } else if (cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED) {
-                allKeysVerified = false;
-            }
-        }
-
-        if (allKeysAvailable && allKeysVerified) {
-            recipientMvpView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_TRUSTED);
-        } else if (allKeysAvailable) {
-            recipientMvpView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_UNTRUSTED);
-        } else {
-            recipientMvpView.showCryptoStatus(CryptoStatusType.OPPORTUNISTIC_NOKEY);
-        }
+    public ComposeCryptoStatus getCurrentCryptoStatus() {
+        return currentCryptoStatus;
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onToTokenAdded(Recipient recipient) {
-        updateCryptoDisplayStatus();
+        updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onToTokenRemoved(Recipient recipient) {
-        updateCryptoDisplayStatus();
+        updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onToTokenChanged(Recipient recipient) {
-        updateCryptoDisplayStatus();
+        updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onCcTokenAdded(Recipient recipient) {
-        updateCryptoDisplayStatus();
+        updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onCcTokenRemoved(Recipient recipient) {
-        updateCryptoDisplayStatus();
+        updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onCcTokenChanged(Recipient recipient) {
-        updateCryptoDisplayStatus();
+        updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onBccTokenAdded(Recipient recipient) {
-        updateCryptoDisplayStatus();
+        updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onBccTokenRemoved(Recipient recipient) {
-        updateCryptoDisplayStatus();
+        updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onBccTokenChanged(Recipient recipient) {
-        updateCryptoDisplayStatus();
+        updateCryptoStatus();
+    }
+
+    public void onCryptoModeChanged(CryptoMode cryptoMode) {
+        currentCryptoMode = cryptoMode;
+        updateCryptoStatus();
     }
 
     private void addRecipientsFromAddresses(final RecipientType recipientType, final Address... addresses) {
@@ -479,11 +466,6 @@ public class RecipientPresenter {
         recipientMvpView.showCryptoDialog(currentCryptoMode);
     }
 
-    public void onCryptoModeChanged(CryptoMode cryptoMode) {
-        currentCryptoMode = cryptoMode;
-        updateCryptoDisplayStatus();
-    }
-
     /**
      * Does the device actually have a Contacts application suitable for
      * picking a contact. As hard as it is to believe, some vendors ship
@@ -503,10 +485,23 @@ public class RecipientPresenter {
         return hasContactPicker;
     }
 
-    public CryptoMode getCurrentCryptoMode() {
-        return currentCryptoMode;
-    }
+    public boolean canSendOrError(boolean isDraft) {
+        if (isDraft) {
+            return true;
+        }
 
+        ComposeCryptoStatus cryptoStatus = getCurrentCryptoStatus();
+        if (cryptoStatus.isMissingSignKey()) {
+            recipientMvpView.showMissingSignKeyError();
+            return false;
+        }
+        if (cryptoStatus.isPrivateAndIncomplete()) {
+            recipientMvpView.showPrivateAndIncompleteError();
+            return false;
+        }
+
+        return true;
+    }
 
     enum CryptoMode {
         PRIVATE,
