@@ -2,10 +2,14 @@ package com.fsck.k9.activity;
 
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +29,7 @@ import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 public class RecipientAdapter extends BaseAdapter implements Filterable {
     private final Context context;
     private List<Recipient> recipients;
+    private String highlight;
 
 
     public RecipientAdapter(Context context) {
@@ -35,6 +40,10 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     public void setRecipients(List<Recipient> recipients) {
         this.recipients = recipients;
         notifyDataSetChanged();
+    }
+
+    public void setHighlight(String highlight) {
+        this.highlight = highlight;
     }
 
     @Override
@@ -76,10 +85,10 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     public void bindView(View view, Recipient recipient) {
         RecipientTokenHolder holder = (RecipientTokenHolder) view.getTag();
 
-        holder.name.setText(recipient.getDisplayNameOrUnknown(context));
+        holder.name.setText(highlightText(recipient.getDisplayNameOrUnknown(context)));
 
         String address = recipient.address.getAddress();
-        holder.email.setText(address);
+        holder.email.setText(highlightText(address));
 
         setContactPhotoOrPlaceholder(context, holder.photo, recipient);
 
@@ -165,4 +174,23 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
             cryptoStatus = (ImageView) view.findViewById(R.id.contact_crypto_status);
         }
     }
+
+    public Spannable highlightText(String text) {
+        Spannable highlightedSpannable = Spannable.Factory.getInstance().newSpannable(text);
+
+        if (highlight == null) {
+            return highlightedSpannable;
+        }
+
+        Pattern pattern = Pattern.compile(highlight, Pattern.LITERAL | Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            highlightedSpannable.setSpan(
+                    new ForegroundColorSpan(context.getResources().getColor(android.R.color.holo_blue_light)),
+                    matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        return highlightedSpannable;
+    }
+
 }

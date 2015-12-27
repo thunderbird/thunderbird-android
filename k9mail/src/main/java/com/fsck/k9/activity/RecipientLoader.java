@@ -12,6 +12,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.Contacts.Data;
 
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Address;
@@ -33,7 +36,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private static final String[] PROJECTION = {
             ContactsContract.CommonDataKinds.Email._ID,
-            ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
             ContactsContract.Contacts.LOOKUP_KEY,
             ContactsContract.CommonDataKinds.Email.DATA,
             ContactsContract.CommonDataKinds.Email.TYPE,
@@ -41,11 +44,9 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
             ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
     };
-
     private static final String SORT_ORDER = "" +
             ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
-            ContactsContract.Contacts.DISPLAY_NAME + ", " +
-            ContactsContract.CommonDataKinds.Email._ID;
+            ContactsContract.Contacts.SORT_KEY_PRIMARY;
 
     private static final int INDEX_EMAIL_ADDRESS = 0;
     private static final int INDEX_EMAIL_STATUS = 1;
@@ -62,6 +63,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private final String query;
     private final Address[] addresses;
     private final Uri contactUri;
+    private final Uri lookupKeyUri;
     private final String cryptoProvider;
 
     private List<Recipient> cachedRecipients;
@@ -71,6 +73,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     public RecipientLoader(Context context, String cryptoProvider, String query) {
         super(context);
         this.query = query;
+        this.lookupKeyUri = null;
         this.addresses = null;
         this.contactUri = null;
         this.cryptoProvider = cryptoProvider;
@@ -82,13 +85,15 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         this.addresses = addresses;
         this.contactUri = null;
         this.cryptoProvider = cryptoProvider;
+        this.lookupKeyUri = null;
     }
 
-    public RecipientLoader(Context context, String cryptoProvider, Uri contactUri) {
+    public RecipientLoader(Context context, String cryptoProvider, Uri contactUri, boolean isLookupKey) {
         super(context);
         this.query = null;
         this.addresses = null;
-        this.contactUri = contactUri;
+        this.contactUri = isLookupKey ? null : contactUri;
+        this.lookupKeyUri = isLookupKey ? contactUri : null;
         this.cryptoProvider = cryptoProvider;
     }
 
@@ -100,9 +105,11 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         if (addresses != null) {
             fillContactDataFromAddresses(addresses, recipients, recipientMap);
         } else if (contactUri != null) {
-            fillContactDataFromContactUri(contactUri, recipients, recipientMap);
+            fillContactDataFromEmailContentUri(contactUri, recipients, recipientMap);
         } else if (query != null) {
             fillContactDataFromQuery(query, recipients, recipientMap);
+        } else if (lookupKeyUri != null) {
+            fillContactDataFromLookupKey(lookupKeyUri, recipients, recipientMap);
         } else {
             throw new IllegalStateException("loader must be initialized with query or list of addresses!");
         }
@@ -120,7 +127,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private void fillContactDataFromAddresses(Address[] addresses, List<Recipient> recipients,
             Map<String, Recipient> recipientMap) {
-
         for (Address address : addresses) {
             // TODO actually query contacts - not sure if this is possible in a single query tho :(
             Recipient recipient = new Recipient(address);
@@ -129,10 +135,26 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         }
     }
 
-    private void fillContactDataFromContactUri(Uri contactUri, List<Recipient> recipients,
+    private void fillContactDataFromEmailContentUri(Uri contactUri, List<Recipient> recipients,
             Map<String, Recipient> recipientMap) {
+        Cursor cursor = getContext().getContentResolver().query(contactUri, PROJECTION, null, null, null);
 
-        String contactIdStr = getContactIdFromUri(contactUri);
+        if (cursor == null) {
+            return;
+        }
+
+        fillContactDataFromCursor(cursor, recipients, recipientMap);
+    }
+
+    private void fillContactDataFromLookupKey(Uri lookupKeyUri, List<Recipient> recipients,
+            Map<String, Recipient> recipientMap) {
+        // We could use the contact id from the URI directly, but getting it from the lookup key is safer
+        Uri contactContentUri = Contacts.lookupContact(getContext().getContentResolver(), lookupKeyUri);
+        if (contactContentUri == null) {
+            return;
+        }
+
+        String contactIdStr = getContactIdFromContactUri(contactContentUri);
 
         Cursor cursor = getContext().getContentResolver().query(
                 ContactsContract.CommonDataKinds.Email.CONTENT_URI,
@@ -146,18 +168,22 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         fillContactDataFromCursor(cursor, recipients, recipientMap);
     }
 
-    private String getContactIdFromUri(Uri contactUri) {
+    private static String getContactIdFromContactUri(Uri contactUri) {
         return contactUri.getLastPathSegment();
     }
+
 
     private void fillContactDataFromQuery(String query, List<Recipient> recipients,
             Map<String, Recipient> recipientMap) {
 
         ContentResolver contentResolver = getContext().getContentResolver();
 
-        Uri queryUri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_FILTER_URI,
-                Uri.encode(query));
-        Cursor cursor = contentResolver.query(queryUri, PROJECTION, null, null, SORT_ORDER);
+        query = "%" + query + "%";
+        Uri queryUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
+        String selection = Contacts.DISPLAY_NAME_PRIMARY + " LIKE ? " +
+                " OR (" + Email.ADDRESS + " LIKE ? AND " + Data.MIMETYPE + " = '" + Email.CONTENT_ITEM_TYPE + "')";
+        String[] selectionArgs = { query, query };
+        Cursor cursor = contentResolver.query(queryUri, PROJECTION, selection, selectionArgs, SORT_ORDER);
 
         if (cursor == null) {
             return;

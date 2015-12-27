@@ -263,7 +263,7 @@ public class Contacts {
      * @return The intent necessary to open a contact picker.
      */
     public Intent contactPickerIntent() {
-        return new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        return new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Email.CONTENT_URI);
     }
 
     /**
