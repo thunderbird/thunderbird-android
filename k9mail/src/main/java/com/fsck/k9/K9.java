@@ -16,10 +16,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -159,11 +157,6 @@ public class K9 extends Application {
      * @see #setDatabasesUpToDate(boolean)
      */
     private static SharedPreferences sDatabaseVersionCache;
-
-    /**
-     * {@code true} if this is a debuggable build.
-     */
-    private static boolean sIsDebuggable;
 
     private static boolean mAnimations = true;
 
@@ -520,7 +513,6 @@ public class K9 extends Application {
         super.onCreate();
         app = this;
 
-        sIsDebuggable = ((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
             @Override public boolean enabled() {
                 return DEBUG;
@@ -664,12 +656,7 @@ public class K9 extends Application {
      */
     public static void loadPrefs(Preferences prefs) {
         SharedPreferences sprefs = prefs.getPreferences();
-        DEBUG = sprefs.getBoolean("enableDebugLogging", false);
-        if (!DEBUG && sIsDebuggable && Debug.isDebuggerConnected()) {
-            // If the debugger is attached, we're probably (surprise surprise) debugging something.
-            DEBUG = true;
-            Log.i(K9.LOG_TAG, "Debugger attached; enabling debug logging.");
-        }
+        DEBUG = sprefs.getBoolean("enableDebugLogging", BuildConfig.DEVELOPER_MODE);
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", false);

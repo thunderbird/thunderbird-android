@@ -1,0 +1,10 @@
+language: android
+android:
+ components:
+    - build-tools-23.0.1
+    - android-22
+    - extra-android-m2repository
+
+jdk: oraclejdk7
+
+script: ./gradlew testDebug

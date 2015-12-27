@@ -4,13 +4,18 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:1.5.0'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
     }
 }
 
-project.ext.preDexLibs = !project.hasProperty('disablePreDex')
-project.ext.testCoverage = project.hasProperty('testCoverage')
+project.ext {
+    preDexLibs = !project.hasProperty('disablePreDex')
+    testCoverage = project.hasProperty('testCoverage')
+
+    compileSdkVersion = 22
+    buildToolsVersion = '23.0.1'
+}
 
 subprojects {
     project.plugins.whenPluginAdded { plugin ->

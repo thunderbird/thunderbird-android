@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@Config(manifest = Config.NONE, sdk = 21)
 public class MimeMessageParseTest {
     @Before
     public void setup() {

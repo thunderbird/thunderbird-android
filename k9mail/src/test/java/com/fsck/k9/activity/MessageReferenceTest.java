@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertTrue;
 
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@Config(manifest = Config.NONE, sdk = 21)
 public class MessageReferenceTest {
 
     @Test
