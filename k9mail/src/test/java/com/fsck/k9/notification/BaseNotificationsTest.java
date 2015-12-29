@@ -117,7 +117,6 @@ public class BaseNotificationsTest {
         Builder builder = MockHelper.mockBuilder(Builder.class);
         NotificationController controller = mock(NotificationController.class);
         when(controller.createNotificationBuilder()).thenReturn(builder);
-        when(controller.platformSupportsVectorDrawables()).thenReturn(true);
         when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
         return controller;
     }

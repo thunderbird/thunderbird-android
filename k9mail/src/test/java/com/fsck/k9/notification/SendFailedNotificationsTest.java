@@ -89,7 +89,6 @@ public class SendFailedNotificationsTest {
         when(controller.getContext()).thenReturn(RuntimeEnvironment.application);
         when(controller.getNotificationManager()).thenReturn(notificationManager);
         when(controller.createNotificationBuilder()).thenReturn(builder);
-        when(controller.platformSupportsVectorDrawables()).thenReturn(true);
         return controller;
     }
 

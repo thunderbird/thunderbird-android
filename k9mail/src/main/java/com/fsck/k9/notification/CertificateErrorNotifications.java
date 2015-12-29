@@ -65,8 +65,7 @@ class CertificateErrorNotifications {
 
     private int getCertificateErrorNotificationIcon() {
         //TODO: Use a different icon for certificate error notifications
-        return controller.platformSupportsVectorDrawables() ?
-                R.drawable.notification_icon_new_mail : R.drawable.ic_notify_new_mail;
+        return R.drawable.notification_icon_new_mail;
     }
 
     private NotificationManagerCompat getNotificationManager() {

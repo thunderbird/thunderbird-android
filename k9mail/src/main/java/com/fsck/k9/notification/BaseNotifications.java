@@ -70,7 +70,6 @@ abstract class BaseNotifications {
     }
 
     private int getNewMailNotificationIcon() {
-        return controller.platformSupportsVectorDrawables() ?
-                R.drawable.notification_icon_new_mail : R.drawable.ic_notify_new_mail;
+        return R.drawable.notification_icon_new_mail;
     }
 }

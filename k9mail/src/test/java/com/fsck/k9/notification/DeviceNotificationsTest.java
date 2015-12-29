@@ -227,7 +227,6 @@ public class DeviceNotificationsTest {
         NotificationController controller = mock(NotificationController.class);
         when(controller.getContext()).thenReturn(context);
         when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        when(controller.platformSupportsVectorDrawables()).thenReturn(true);
         when(controller.createNotificationBuilder()).thenAnswer(new Answer<Builder>() {
             private int invocationCount = 0;
 
