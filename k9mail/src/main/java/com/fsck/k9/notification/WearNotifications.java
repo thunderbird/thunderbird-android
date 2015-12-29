@@ -61,8 +61,7 @@ class WearNotifications extends BaseNotifications {
         Account account = notificationData.getAccount();
         ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        PendingIntent action = actionCreator.createMarkAllAsReadPendingIntent(
-                account, messageReferences, notificationId);
+        PendingIntent action = actionCreator.getMarkAllAsReadPendingIntent(account, messageReferences, notificationId);
 
         NotificationCompat.Action markAsReadAction = new NotificationCompat.Action.Builder(icon, title, action).build();
         wearableExtender.addAction(markAsReadAction);
@@ -75,7 +74,7 @@ class WearNotifications extends BaseNotifications {
         Account account = notificationData.getAccount();
         ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        PendingIntent action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId);
+        PendingIntent action = actionCreator.getDeleteAllPendingIntent(account, messageReferences, notificationId);
 
         NotificationCompat.Action deleteAction = new NotificationCompat.Action.Builder(icon, title, action).build();
         wearableExtender.addAction(deleteAction);
