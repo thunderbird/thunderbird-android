@@ -92,7 +92,7 @@ public class CertificateErrorNotificationsTest {
     }
 
     private void assertCertificateErrorNotificationContents() {
-        verify(builder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(builder).setTicker("Certificate error for " + ACCOUNT_NAME);
         verify(builder).setContentTitle("Certificate error for " + ACCOUNT_NAME);
         verify(builder).setContentText("Check your server settings");

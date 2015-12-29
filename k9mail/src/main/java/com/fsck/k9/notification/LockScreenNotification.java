@@ -96,7 +96,7 @@ class LockScreenNotification {
                 newMessages, newMessages);
 
         return controller.createNotificationBuilder()
-                .setSmallIcon(R.drawable.ic_notify_new_mail_vector)
+                .setSmallIcon(R.drawable.notification_icon_new_mail)
                 .setColor(account.getChipColor())
                 .setNumber(unreadCount)
                 .setContentTitle(title);

@@ -48,7 +48,7 @@ public class BaseNotificationsTest {
 
         Builder builder = notifications.createAndInitializeNotificationBuilder(account);
 
-        verify(builder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
     }

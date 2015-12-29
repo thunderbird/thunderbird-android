@@ -79,7 +79,7 @@ public class DeviceNotificationsTest {
 
         Notification result = notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
         verify(builder).setNumber(UNREAD_MESSAGE_COUNT);
@@ -98,7 +98,7 @@ public class DeviceNotificationsTest {
 
         Notification result = notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
         verify(builder).setTicker(SUMMARY);
@@ -106,9 +106,9 @@ public class DeviceNotificationsTest {
         verify(builder).setContentTitle(SENDER);
         verify(builder).setStyle(notifications.bigTextStyle);
         verify(notifications.bigTextStyle).bigText(PREVIEW);
-        verify(builder).addAction(R.drawable.ic_action_single_message_options_dark_vector, "Reply", null);
-        verify(builder).addAction(R.drawable.ic_action_mark_as_read_dark_vector, "Mark Read", null);
-        verify(builder).addAction(R.drawable.ic_action_delete_dark_vector, "Delete", null);
+        verify(builder).addAction(R.drawable.notification_action_reply, "Reply", null);
+        verify(builder).addAction(R.drawable.notification_action_mark_as_read, "Mark Read", null);
+        verify(builder).addAction(R.drawable.notification_action_delete, "Delete", null);
         verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
         assertEquals(FAKE_NOTIFICATION, result);
     }
@@ -122,7 +122,7 @@ public class DeviceNotificationsTest {
 
         Notification result = notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
         verify(builder).setTicker(SUMMARY);
@@ -136,8 +136,8 @@ public class DeviceNotificationsTest {
         verify(notifications.inboxStyle).setSummaryText(ACCOUNT_NAME);
         verify(notifications.inboxStyle).addLine(SUMMARY);
         verify(notifications.inboxStyle).addLine(SUMMARY_2);
-        verify(builder).addAction(R.drawable.ic_action_mark_as_read_dark_vector, "Mark Read", null);
-        verify(builder).addAction(R.drawable.ic_action_delete_dark_vector, "Delete", null);
+        verify(builder).addAction(R.drawable.notification_action_mark_as_read, "Mark Read", null);
+        verify(builder).addAction(R.drawable.notification_action_delete, "Delete", null);
         verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
         assertEquals(FAKE_NOTIFICATION, result);
     }
@@ -163,7 +163,7 @@ public class DeviceNotificationsTest {
 
         notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder, never()).addAction(R.drawable.ic_action_delete_dark_vector, "Delete", null);
+        verify(builder, never()).addAction(R.drawable.notification_action_delete, "Delete", null);
     }
 
     @Test
@@ -174,7 +174,7 @@ public class DeviceNotificationsTest {
 
         notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder, never()).addAction(R.drawable.ic_action_delete_dark_vector, "Delete", null);
+        verify(builder, never()).addAction(R.drawable.notification_action_delete, "Delete", null);
     }
 
     private Builder createFakeNotificationBuilder() {
