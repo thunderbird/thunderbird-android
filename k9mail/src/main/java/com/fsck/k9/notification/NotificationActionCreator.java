@@ -106,11 +106,22 @@ class NotificationActionCreator {
 
     public PendingIntent createMarkAllAsReadPendingIntent(Account account,
             ArrayList<MessageReference> messageReferences, int notificationId) {
+        return getMarkAsReadPendingIntent(account, messageReferences, notificationId, context,
+                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+    }
+
+    public PendingIntent getMarkAllAsReadPendingIntent(Account account, ArrayList<MessageReference> messageReferences,
+            int notificationId) {
+        return getMarkAsReadPendingIntent(account, messageReferences, notificationId, context,
+                PendingIntent.FLAG_NO_CREATE);
+    }
+
+    private PendingIntent getMarkAsReadPendingIntent(Account account, ArrayList<MessageReference> messageReferences,
+            int notificationId, Context context, int flags) {
         String accountUuid = account.getUuid();
         Intent intent = NotificationActionService.createMarkAllAsReadIntent(context, accountUuid, messageReferences);
 
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(context, notificationId, intent, flags);
     }
 
     public PendingIntent createDeleteMessagePendingIntent(MessageReference messageReference, int notificationId) {
@@ -137,27 +148,39 @@ class NotificationActionCreator {
     public PendingIntent createDeleteAllPendingIntent(Account account, ArrayList<MessageReference> messageReferences,
             int notificationId) {
         if (K9.confirmDeleteFromNotification()) {
-            return createDeleteAllConfirmationPendingIntent(messageReferences, notificationId);
+            return getDeleteAllConfirmationPendingIntent(messageReferences, notificationId,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
         } else {
-            return createDeleteAllServicePendingIntent(account, messageReferences, notificationId);
+            return getDeleteAllServicePendingIntent(account, messageReferences, notificationId,
+                    PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
         }
     }
 
-    private PendingIntent createDeleteAllConfirmationPendingIntent(ArrayList<MessageReference> messageReferences,
+    public PendingIntent getDeleteAllPendingIntent(Account account, ArrayList<MessageReference> messageReferences,
             int notificationId) {
-        Intent intent = NotificationDeleteConfirmation.getIntent(context, messageReferences);
-
-        return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        if (K9.confirmDeleteFromNotification()) {
+            return getDeleteAllConfirmationPendingIntent(messageReferences, notificationId,
+                    PendingIntent.FLAG_NO_CREATE);
+        } else {
+            return getDeleteAllServicePendingIntent(account, messageReferences, notificationId,
+                    PendingIntent.FLAG_NO_CREATE);
+        }
     }
 
-    private PendingIntent createDeleteAllServicePendingIntent(Account account,
-            ArrayList<MessageReference> messageReferences, int notificationId) {
+    private PendingIntent getDeleteAllConfirmationPendingIntent(ArrayList<MessageReference> messageReferences,
+            int notificationId, int flags) {
+        Intent intent = NotificationDeleteConfirmation.getIntent(context, messageReferences);
+
+        return PendingIntent.getActivity(context, notificationId, intent, flags);
+    }
+
+    private PendingIntent getDeleteAllServicePendingIntent(Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId, int flags) {
         String accountUuid = account.getUuid();
         Intent intent = NotificationActionService.createDeleteAllMessagesIntent(
                 context, accountUuid, messageReferences);
 
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(context, notificationId, intent, flags);
     }
 
     public PendingIntent createArchiveMessagePendingIntent(MessageReference messageReference, int notificationId) {

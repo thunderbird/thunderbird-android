@@ -146,7 +146,7 @@ public class WearNotificationsTest {
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
         NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent markAllAsReadPendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId))
+        when(actionCreator.getMarkAllAsReadPendingIntent(account, messageReferences, notificationId))
                 .thenReturn(markAllAsReadPendingIntent);
 
         wearNotifications.addSummaryActions(builder, notificationData);
@@ -163,7 +163,7 @@ public class WearNotificationsTest {
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
         NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent deletePendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId))
+        when(actionCreator.getDeleteAllPendingIntent(account, messageReferences, notificationId))
                 .thenReturn(deletePendingIntent);
 
         wearNotifications.addSummaryActions(builder, notificationData);
