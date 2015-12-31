@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -147,6 +149,8 @@ public class AttachmentController {
 
         writeAttachmentToStorage(file);
 
+        addAttachmentToDownloadDatabase(file);
+
         return file;
     }
 
@@ -163,6 +167,14 @@ public class AttachmentController {
         } finally {
             in.close();
         }
+    }
+
+    /*
+     * Adding attachment information to Downloads database system, so it will appear in Downloads App
+     */
+    private void addAttachmentToDownloadDatabase(File file) {
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        downloadManager.addCompletedDownload(file.getName(), file.getName(), true, attachment.mimeType, file.getAbsolutePath(), file.length(), true);
     }
 
     private Intent getBestViewIntentAndSaveFileIfNecessary() {
