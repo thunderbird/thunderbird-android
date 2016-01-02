@@ -136,23 +136,29 @@ public class MessagingController implements Runnable {
 
     public static class UidReverseComparator implements Comparator<Message> {
         @Override
-        public int compare(Message o1, Message o2) {
-            if (o1 == null || o2 == null || o1.getUid() == null || o2.getUid() == null) {
-                return 0;
-            }
-            int id1, id2;
+        public int compare(Message messageLeft, Message messageRight) {
+            Integer uidLeft, uidRight;
             try {
-                id1 = Integer.parseInt(o1.getUid());
-                id2 = Integer.parseInt(o2.getUid());
-            } catch (NumberFormatException e) {
-                return 0;
+                uidLeft = Integer.parseInt(messageLeft.getUid());
+            } catch (NullPointerException | NumberFormatException e) {
+                uidLeft = null;
             }
-            //reversed intentionally.
-            if (id1 < id2)
+            try {
+                uidRight = Integer.parseInt(messageRight.getUid());
+            } catch (NullPointerException | NumberFormatException e) {
+                uidRight = null;
+            }
+
+            if (uidLeft == null && uidRight == null) {
+                return 0;
+            } else if (uidLeft == null) {
                 return 1;
-            if (id1 > id2)
+            } else if (uidRight == null) {
                 return -1;
-            return 0;
+            }
+
+            // reverse order
+            return uidRight.compareTo(uidLeft);
         }
     }
 
