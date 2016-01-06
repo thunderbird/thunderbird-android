@@ -239,19 +239,15 @@ class DeviceNotifications extends BaseNotifications {
     }
 
     private int getMarkAsReadActionIcon() {
-        return controller.platformSupportsVectorDrawables() ?
-                R.drawable.ic_action_mark_as_read_dark_vector : R.drawable.ic_action_mark_as_read_dark;
+        return R.drawable.notification_action_mark_as_read;
     }
 
     private int getDeleteActionIcon() {
-        return NotificationController.platformSupportsLockScreenNotifications() ?
-                R.drawable.ic_action_delete_dark_vector : R.drawable.ic_action_delete_dark;
+        return R.drawable.notification_action_delete;
     }
 
     private int getReplyActionIcon() {
-        return controller.platformSupportsVectorDrawables() ?
-                R.drawable.ic_action_single_message_options_dark_vector :
-                R.drawable.ic_action_single_message_options_dark;
+        return R.drawable.notification_action_reply;
     }
 
     protected InboxStyle createInboxStyle(Builder builder) {

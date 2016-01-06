@@ -135,10 +135,6 @@ public class NotificationController {
         }
     }
 
-    boolean platformSupportsVectorDrawables() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
     String getAccountName(Account account) {
         String accountDescription = account.getDescription();
         return TextUtils.isEmpty(accountDescription) ? account.getEmail() : accountDescription;

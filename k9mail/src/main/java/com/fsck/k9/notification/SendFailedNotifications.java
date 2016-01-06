@@ -56,8 +56,7 @@ class SendFailedNotifications {
 
     private int getSendFailedNotificationIcon() {
         //TODO: Use a different icon for send failure notifications
-        return controller.platformSupportsVectorDrawables() ?
-                R.drawable.ic_notify_new_mail_vector : R.drawable.ic_notify_new_mail;
+        return R.drawable.notification_icon_new_mail;
     }
 
     private NotificationManagerCompat getNotificationManager() {

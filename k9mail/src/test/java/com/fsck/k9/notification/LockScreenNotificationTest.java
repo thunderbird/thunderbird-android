@@ -91,7 +91,7 @@ public class LockScreenNotificationTest {
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
-        verify(publicBuilder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        verify(publicBuilder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(publicBuilder).setNumber(1);
         verify(publicBuilder).setContentTitle("1 new message");
         verify(publicBuilder).setContentText(senderName);
@@ -111,7 +111,7 @@ public class LockScreenNotificationTest {
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
-        verify(publicBuilder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        verify(publicBuilder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
         verify(publicBuilder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(publicBuilder).setContentText(
@@ -149,7 +149,7 @@ public class LockScreenNotificationTest {
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
-        verify(publicBuilder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        verify(publicBuilder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
         verify(publicBuilder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(publicBuilder).setContentText(ACCOUNT_NAME);

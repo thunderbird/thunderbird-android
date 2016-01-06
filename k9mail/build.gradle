@@ -52,6 +52,8 @@ android {
         minSdkVersion 15
         targetSdkVersion 22
 
+        generatedDensities = ['mdpi', 'hdpi', 'xhdpi']
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

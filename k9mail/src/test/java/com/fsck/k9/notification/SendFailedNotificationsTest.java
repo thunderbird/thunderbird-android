@@ -60,7 +60,7 @@ public class SendFailedNotificationsTest {
         sendFailedNotifications.showSendFailedNotification(account, exception);
 
         verify(notificationManager).notify(eq(notificationId), any(Notification.class));
-        verify(builder).setSmallIcon(R.drawable.ic_notify_new_mail_vector);
+        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(builder).setTicker("Failed to send some messages");
         verify(builder).setContentTitle("Failed to send some messages");
         verify(builder).setContentText("Exception");
@@ -89,7 +89,6 @@ public class SendFailedNotificationsTest {
         when(controller.getContext()).thenReturn(RuntimeEnvironment.application);
         when(controller.getNotificationManager()).thenReturn(notificationManager);
         when(controller.createNotificationBuilder()).thenReturn(builder);
-        when(controller.platformSupportsVectorDrawables()).thenReturn(true);
         return controller;
     }
 

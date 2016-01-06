@@ -118,7 +118,6 @@ public class SyncNotificationsTest {
         when(controller.getNotificationManager()).thenReturn(notificationManager);
         when(controller.createNotificationBuilder()).thenReturn(builder);
         when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        when(controller.platformSupportsVectorDrawables()).thenReturn(true);
         return controller;
     }
 
