@@ -21,7 +21,11 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import com.fsck.k9.mail.ProxySettings;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import static com.fsck.k9.mail.store.RemoteStore.SOCKET_CONNECT_TIMEOUT;
 
 
 /**
@@ -85,6 +89,8 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "SSLv3"
     };
 
+    private ProxySettings proxySettings;
+
     static {
         String[] enabledCiphers = null;
         String[] supportedProtocols = null;
@@ -114,8 +120,9 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
                 reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, BLACKLISTED_PROTOCOLS);
     }
 
-    public DefaultTrustedSocketFactory(Context context) {
+    public DefaultTrustedSocketFactory(Context context, ProxySettings proxySettings) {
         this.context = context;
+        this.proxySettings = proxySettings;
     }
 
     protected static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
@@ -160,7 +167,14 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         SSLSocketFactory socketFactory = sslContext.getSocketFactory();
         Socket trustedSocket;
         if (socket == null) {
-            trustedSocket = socketFactory.createSocket();
+            if (proxySettings.enabled) {
+                InetSocketAddress proxyAddr = new InetSocketAddress(proxySettings.host, proxySettings.port);
+                Socket underlying = new Socket(new Proxy(Proxy.Type.SOCKS, proxyAddr));
+                underlying.connect(new InetSocketAddress(host, port), SOCKET_CONNECT_TIMEOUT);
+                trustedSocket = socketFactory.createSocket(underlying, proxySettings.host, proxySettings.port, true);
+            } else {
+                trustedSocket = socketFactory.createSocket();
+            }
         } else {
             trustedSocket = socketFactory.createSocket(socket, host, port, true);
         }
@@ -168,6 +182,10 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         SSLSocket sslSocket = (SSLSocket) trustedSocket;
         hardenSocket(sslSocket);
         setSniHost(socketFactory, sslSocket, host);
+
+        if (proxySettings.enabled == false && socket == null) {
+            trustedSocket.connect(new InetSocketAddress(host, port), SOCKET_CONNECT_TIMEOUT);
+        }
 
         return trustedSocket;
     }

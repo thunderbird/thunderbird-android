@@ -574,8 +574,9 @@ class ImapConnection {
                             settings.getClientCertificateAlias());
                 } else {
                     socket = new Socket();
+                    socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                 }
-                socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+
                 // Successfully connected to the server; don't try any other addresses
                 return socket;
             } catch (IOException e) {
