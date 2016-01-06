@@ -18,7 +18,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -152,7 +151,7 @@ public class AttachmentController {
 
         writeAttachmentToStorage(file);
 
-        addAttachmentToDownloadDatabase(file);
+        addSavedAttachmentToDownloadsDatabase(file);
 
         return file;
     }
@@ -172,11 +171,13 @@ public class AttachmentController {
         }
     }
 
-    /*
-     * Adding attachment information to Downloads database system, so it will appear in Downloads App
-     */
-    private void addAttachmentToDownloadDatabase(File file) {
-        downloadManager.addCompletedDownload(file.getName(), file.getName(), true, attachment.mimeType, file.getAbsolutePath(), file.length(), true);
+    private void addSavedAttachmentToDownloadsDatabase(File file) {
+        String fileName = file.getName();
+        String path = file.getAbsolutePath();
+        long fileLength = file.length();
+        String mimeType = attachment.mimeType;
+
+        downloadManager.addCompletedDownload(fileName, fileName, true, mimeType, path, fileLength, true);
     }
 
     private Intent getBestViewIntentAndSaveFileIfNecessary() {
