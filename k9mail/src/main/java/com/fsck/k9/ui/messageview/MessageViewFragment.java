@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.DownloadManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
@@ -84,6 +85,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private LocalMessage mMessage;
     private MessageCryptoAnnotations messageAnnotations;
     private MessagingController mController;
+    private DownloadManager downloadManager;
     private Handler handler = new Handler();
     private DownloadMessageListener downloadMessageListener = new DownloadMessageListener();
     private MessageCryptoHelper messageCryptoHelper;
@@ -131,7 +133,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         // This fragments adds options to the action bar
         setHasOptionsMenu(true);
 
-        mController = MessagingController.getInstance(getActivity().getApplication());
+        Context context = getActivity().getApplicationContext();
+        mController = MessagingController.getInstance(context);
+        downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         mInitialized = true;
     }
 
@@ -791,7 +795,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
-        return new AttachmentController(mController, this, attachment);
+        return new AttachmentController(mController, downloadManager, this, attachment);
     }
 
     private class DownloadMessageListener extends MessagingListener {
