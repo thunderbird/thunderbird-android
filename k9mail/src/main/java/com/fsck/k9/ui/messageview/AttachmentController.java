@@ -44,11 +44,14 @@ public class AttachmentController {
     private final MessagingController controller;
     private final MessageViewFragment messageViewFragment;
     private final AttachmentViewInfo attachment;
+    private final DownloadManager downloadManager;
 
-    AttachmentController(MessagingController controller, MessageViewFragment messageViewFragment,
-            AttachmentViewInfo attachment) {
+
+    AttachmentController(MessagingController controller, DownloadManager downloadManager,
+            MessageViewFragment messageViewFragment, AttachmentViewInfo attachment) {
         this.context = messageViewFragment.getContext();
         this.controller = controller;
+        this.downloadManager = downloadManager;
         this.messageViewFragment = messageViewFragment;
         this.attachment = attachment;
     }
@@ -173,7 +176,6 @@ public class AttachmentController {
      * Adding attachment information to Downloads database system, so it will appear in Downloads App
      */
     private void addAttachmentToDownloadDatabase(File file) {
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         downloadManager.addCompletedDownload(file.getName(), file.getName(), true, attachment.mimeType, file.getAbsolutePath(), file.length(), true);
     }
 
