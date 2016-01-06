@@ -37,7 +37,7 @@ public class UidReverseComparatorTest {
     @Test
     public void compare_withLeftNullArgument_shouldReturnPositive() throws Exception {
         Message messageLeft = null;
-        Message messageRight = mockMessage(1);
+        Message messageRight = createMessageWithUid(1);
 
         int result = comparator.compare(messageLeft, messageRight);
 
@@ -46,7 +46,7 @@ public class UidReverseComparatorTest {
 
     @Test
     public void compare_withRightNullArgument_shouldReturnNegative() throws Exception {
-        Message messageLeft = mockMessage(1);
+        Message messageLeft = createMessageWithUid(1);
         Message messageRight = null;
 
         int result = comparator.compare(messageLeft, messageRight);
@@ -56,8 +56,8 @@ public class UidReverseComparatorTest {
 
     @Test
     public void compare_twoMessages_shouldReturnOrderByUid() throws Exception {
-        Message messageLeft = mockMessage(5);
-        Message messageRight = mockMessage(15);
+        Message messageLeft = createMessageWithUid(5);
+        Message messageRight = createMessageWithUid(15);
 
         int result = comparator.compare(messageLeft, messageRight);
 
@@ -65,9 +65,10 @@ public class UidReverseComparatorTest {
     }
 
     @NonNull
-    private static Message mockMessage(int uid1) {
-        Message msg1 = mock(Message.class);
-        when(msg1.getUid()).thenReturn(Integer.toString(uid1));
-        return msg1;
+    private Message createMessageWithUid(int uid) {
+        Message message = mock(Message.class);
+        when(message.getUid()).thenReturn(Integer.toString(uid));
+
+        return message;
     }
 }
