@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +41,7 @@ public class UidReverseComparatorTest {
 
         int result = comparator.compare(messageLeft, messageRight);
 
-        assertEquals("result must be 1 when both arguments are null", 1, result);
+        assertTrue("result must be > 0 when left argument is null", result > 0);
     }
 
     @Test
@@ -50,7 +51,7 @@ public class UidReverseComparatorTest {
 
         int result = comparator.compare(messageLeft, messageRight);
 
-        assertEquals("result must be -1 when both arguments are null", -1, result);
+        assertTrue("result must be < 0 when right argument is null", result < 0);
     }
 
     @Test
@@ -60,7 +61,7 @@ public class UidReverseComparatorTest {
 
         int result = comparator.compare(messageLeft, messageRight);
 
-        assertEquals("result must be 1 when right message has larger uid than left message", 1, result);
+        assertTrue("result must be > 0 when right message has larger UID than left message", result > 0);
     }
 
     @NonNull
