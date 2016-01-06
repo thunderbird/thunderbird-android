@@ -28,7 +28,6 @@ import com.fsck.k9.cache.TemporaryAttachmentStore;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.FileHelper;
-import com.fsck.k9.helper.MediaScannerNotifier;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -280,11 +279,6 @@ public class AttachmentController {
         return resolveInfos.size();
     }
 
-    private void displayAttachmentSavedMessage(final String filename) {
-        String message = context.getString(R.string.message_view_status_attachment_saved, filename);
-        displayMessageToUser(message);
-    }
-
     private void displayAttachmentNotSavedMessage() {
         String message = context.getString(R.string.message_view_status_attachment_not_saved);
         displayMessageToUser(message);
@@ -373,10 +367,7 @@ public class AttachmentController {
         @Override
         protected void onPostExecute(File file) {
             messageViewFragment.enableAttachmentButtons(attachment);
-            if (file != null) {
-                displayAttachmentSavedMessage(file.toString());
-                MediaScannerNotifier.notify(context, file);
-            } else {
+            if (file == null) {
                 displayAttachmentNotSavedMessage();
             }
         }
