@@ -9,17 +9,8 @@ import com.fsck.k9.mail.Message;
 class UidReverseComparator implements Comparator<Message> {
     @Override
     public int compare(Message messageLeft, Message messageRight) {
-        Integer uidLeft, uidRight;
-        try {
-            uidLeft = Integer.parseInt(messageLeft.getUid());
-        } catch (NullPointerException | NumberFormatException e) {
-            uidLeft = null;
-        }
-        try {
-            uidRight = Integer.parseInt(messageRight.getUid());
-        } catch (NullPointerException | NumberFormatException e) {
-            uidRight = null;
-        }
+        Integer uidLeft = getUidForMessage(messageLeft);
+        Integer uidRight = getUidForMessage(messageRight);
 
         if (uidLeft == null && uidRight == null) {
             return 0;
@@ -31,5 +22,13 @@ class UidReverseComparator implements Comparator<Message> {
 
         // reverse order
         return uidRight.compareTo(uidLeft);
+    }
+
+    private Integer getUidForMessage(Message message) {
+        try {
+            return Integer.parseInt(message.getUid());
+        } catch (NullPointerException | NumberFormatException e) {
+            return null;
+        }
     }
 }
