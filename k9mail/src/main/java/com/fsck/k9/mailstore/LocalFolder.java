@@ -182,8 +182,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         // does a DB update on setLastChecked
         super.setLastChecked(cursor.getLong(LocalStore.FOLDER_LAST_CHECKED_INDEX));
         super.setLastPush(cursor.getLong(LocalStore.FOLDER_LAST_PUSHED_INDEX));
-        mInTopGroup = (cursor.getInt(LocalStore.FOLDER_TOP_GROUP_INDEX)) == 1 ? true : false;
-        mIntegrate = (cursor.getInt(LocalStore.FOLDER_INTEGRATE_INDEX) == 1) ? true : false;
+        mInTopGroup = cursor.getInt(LocalStore.FOLDER_TOP_GROUP_INDEX) == 1;
+        mIntegrate = cursor.getInt(LocalStore.FOLDER_INTEGRATE_INDEX) == 1;
         String noClass = FolderClass.NO_CLASS.toString();
         String displayClass = cursor.getString(LocalStore.FOLDER_DISPLAY_CLASS_INDEX);
         mDisplayClass = Folder.FolderClass.valueOf((displayClass == null) ? noClass : displayClass);
@@ -244,7 +244,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         if (exists()) {
             throw new MessagingException("Folder " + mName + " already exists.");
         }
-        List<LocalFolder> foldersToCreate = new ArrayList<LocalFolder>(1);
+        List<LocalFolder> foldersToCreate = new ArrayList<>(1);
         foldersToCreate.add(this);
         this.localStore.createFolders(foldersToCreate, visibleLimit);
 
@@ -670,7 +670,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void loadMessageParts(SQLiteDatabase db, LocalMessage message) throws MessagingException {
-        Map<Long, Part> partById = new HashMap<Long, Part>();
+        Map<Long, Part> partById = new HashMap<>();
 
         String[] columns = {
                 "id",                   // 0
@@ -873,12 +873,13 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     @Override
-    public List<LocalMessage> getMessages(MessageRetrievalListener listener) throws MessagingException {
+    public List<LocalMessage> getMessages(MessageRetrievalListener<LocalMessage> listener) throws MessagingException {
         return getMessages(listener, true);
     }
 
     @Override
-    public List<LocalMessage> getMessages(final MessageRetrievalListener listener, final boolean includeDeleted) throws MessagingException {
+    public List<LocalMessage> getMessages(final MessageRetrievalListener<LocalMessage> listener,
+            final boolean includeDeleted) throws MessagingException {
         try {
             return  localStore.database.execute(false, new DbCallback<List<LocalMessage>>() {
                 @Override
@@ -910,7 +911,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         if (uids == null) {
             return getMessages(listener);
         }
-        List<LocalMessage> messages = new ArrayList<LocalMessage>();
+        List<LocalMessage> messages = new ArrayList<>();
         for (String uid : uids) {
             LocalMessage message = getMessage(uid);
             if (message != null) {
@@ -936,7 +937,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         final LocalFolder lDestFolder = (LocalFolder)destFolder;
 
-        final Map<String, String> uidMap = new HashMap<String, String>();
+        final Map<String, String> uidMap = new HashMap<>();
 
         try {
             this.localStore.database.execute(false, new DbCallback<Void>() {
@@ -1160,15 +1161,13 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
      * that the messages supplied as parameters are actually {@link LocalMessage} instances (in
      * fact, in most cases, they are not). Therefore, if you want to make local changes only to a
      * message, retrieve the appropriate local message instance first (if it already exists).
-     * @param messages
-     * @param copy
      * @return uidMap of srcUids -> destUids
      */
     private Map<String, String> appendMessages(final List<? extends Message> messages, final boolean copy)
             throws MessagingException {
         open(OPEN_MODE_RW);
         try {
-            final Map<String, String> uidMap = new HashMap<String, String>();
+            final Map<String, String> uidMap = new HashMap<>();
             this.localStore.database.execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
@@ -1308,7 +1307,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private long saveMessageParts(SQLiteDatabase db, Message message) throws IOException, MessagingException {
         long rootMessagePartId = saveMessagePart(db, new PartContainer(-1, message), -1, 0);
 
-        Stack<PartContainer> partsToSave = new Stack<PartContainer>();
+        Stack<PartContainer> partsToSave = new Stack<>();
         addChildrenToStack(partsToSave, message, rootMessagePartId);
 
         int order = 1;
@@ -1575,7 +1574,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     /**
      * Changes the stored uid of the given message (using it's internal id as a key) to
      * the uid in the message.
-     * @param message
      * @throws com.fsck.k9.mail.MessagingException
      */
     public void changeUid(final LocalMessage message) throws MessagingException {
@@ -1884,7 +1882,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             inReplyTo = Utility.extractMessageId(inReplyToArray[0]);
             if (inReplyTo != null) {
                 if (messageIds == null) {
-                    messageIds = new ArrayList<String>(1);
+                    messageIds = new ArrayList<>(1);
                     messageIds.add(inReplyTo);
                 } else if (!messageIds.contains(inReplyTo)) {
                     messageIds.add(inReplyTo);
@@ -1976,10 +1974,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         throw new WrappedException(e);
                     }
 
-                    List<Message> result = new ArrayList<Message>();
+                    List<Message> result = new ArrayList<>();
 
-                    List<String> selectionArgs = new ArrayList<String>();
-                    Set<String> existingMessages = new HashSet<String>();
+                    List<String> selectionArgs = new ArrayList<>();
+                    Set<String> existingMessages = new HashSet<>();
                     int start = 0;
 
                     while (start < messages.size()) {
