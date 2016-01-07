@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -133,28 +132,6 @@ public class MessagingController implements Runnable {
     private static final String PENDING_COMMAND_APPEND = "com.fsck.k9.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
     private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
-
-    public static class UidReverseComparator implements Comparator<Message> {
-        @Override
-        public int compare(Message o1, Message o2) {
-            if (o1 == null || o2 == null || o1.getUid() == null || o2.getUid() == null) {
-                return 0;
-            }
-            int id1, id2;
-            try {
-                id1 = Integer.parseInt(o1.getUid());
-                id2 = Integer.parseInt(o2.getUid());
-            } catch (NumberFormatException e) {
-                return 0;
-            }
-            //reversed intentionally.
-            if (id1 < id2)
-                return 1;
-            if (id1 > id2)
-                return -1;
-            return 0;
-        }
-    }
 
     /**
      * Maximum number of unsynced messages to store at once
