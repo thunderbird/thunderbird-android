@@ -3,7 +3,6 @@ package com.fsck.k9.controller;
 
 import android.support.annotation.NonNull;
 
-import com.fsck.k9.controller.MessagingController.UidReverseComparator;
 import com.fsck.k9.mail.Message;
 import org.junit.Before;
 import org.junit.Test;
