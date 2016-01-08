@@ -101,7 +101,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
                 break;
             }
             case AVAILABLE_UNTRUSTED: {
-                cryptoStatusRes = R.drawable.status_lock_error;
+                cryptoStatusRes = R.drawable.status_lock_opportunistic;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
                 break;
             }

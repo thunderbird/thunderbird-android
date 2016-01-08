@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/status_lock_closed"
+                android:src="@drawable/status_lock_opportunistic"
                 android:id="@+id/icon_3"
                 tools:tint="@color/openpgp_orange"
                 />
