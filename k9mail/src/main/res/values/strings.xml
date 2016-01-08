@@ -1170,5 +1170,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="compose_not_saving_unencrypted">Draft NOT saved without encryption!</string>
     <string name="compose_error_no_signing_key">Signing requested, but no key selected!</string>
     <string name="compose_error_private_missing_keys">Private mode enabled, but cannot encrypt to all recipients!</string>
+    <string name="crypto_mode_disabled">Never Sign or Encrypt.</string>
+    <string name="crypto_mode_sign_only">Always Sign, Never Encrypt.</string>
+    <string name="crypto_mode_opportunistic">Always Sign, Encrypt if possible.</string>
+    <string name="crypto_mode_private">Always Sign, Always Encrypt.</string>
 
 </resources>
