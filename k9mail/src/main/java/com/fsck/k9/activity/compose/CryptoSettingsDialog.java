@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.activity.compose;
 
 
 import android.annotation.SuppressLint;
@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.fsck.k9.R;
-import com.fsck.k9.activity.RecipientPresenter.CryptoMode;
+import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.view.CryptoModeSelector;
 import com.fsck.k9.view.CryptoModeSelector.CryptoStatusSelectedListener;
 import com.fsck.k9.view.LinearViewAnimator;
@@ -117,7 +117,7 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
         ((OnCryptoModeChangedListener) activity).onCryptoModeChanged(currentMode);
     }
 
-    interface OnCryptoModeChangedListener {
+    public interface OnCryptoModeChangedListener {
         void onCryptoModeChanged(CryptoMode cryptoMode);
     }
 

@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.activity.compose;
 
 
 import java.util.ArrayList;
@@ -210,7 +210,7 @@ public class RecipientPresenter {
         }
     }
 
-    void addBccAddresses(Address... bccRecipients) {
+    public void addBccAddresses(Address... bccRecipients) {
         if (bccRecipients.length > 0) {
             addRecipientsFromAddresses(RecipientType.BCC, bccRecipients);
             String bccAddress = account.getAlwaysBcc();
@@ -503,7 +503,7 @@ public class RecipientPresenter {
         return true;
     }
 
-    enum CryptoMode {
+    public enum CryptoMode {
         PRIVATE,
         OPPORTUNISTIC,
         SIGN_ONLY,

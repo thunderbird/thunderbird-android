@@ -21,6 +21,7 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import com.fsck.k9.R;
+import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 

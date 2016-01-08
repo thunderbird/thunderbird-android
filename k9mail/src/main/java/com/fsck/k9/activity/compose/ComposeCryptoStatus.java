@@ -1,11 +1,11 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.activity.compose;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fsck.k9.activity.RecipientMvpView.CryptoStatusDisplayType;
-import com.fsck.k9.activity.RecipientPresenter.CryptoMode;
+import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
+import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
@@ -36,7 +36,7 @@ public class ComposeCryptoStatus {
 
     public static ComposeCryptoStatus createFromRecipients(CryptoMode cryptoMode, List<Recipient> recipients,
             Long accountCryptoKey) {
-        ArrayList<String> keyReferences = new ArrayList<String>();
+        ArrayList<String> keyReferences = new ArrayList<>();
 
         boolean allKeysAvailable = true;
         boolean allKeysVerified = true;
