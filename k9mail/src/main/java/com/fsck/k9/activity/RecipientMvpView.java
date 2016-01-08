@@ -30,6 +30,8 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private static final int VIEW_INDEX_CRYPTO_STATUS_TRUSTED = 3;
     private static final int VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY = 4;
 
+    private static final int VIEW_INDEX_BCC_EXPANDER_VISIBLE = 0;
+    private static final int VIEW_INDEX_BCC_EXPANDER_HIDDEN = 1;
 
     private final MessageCompose activity;
     private final View ccWrapper;
@@ -178,7 +180,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     }
 
     public void setRecipientExpanderVisibility(boolean visible) {
-        int childToDisplay = visible ? VIEW_INDEX_CRYPTO_STATUS_NO_KEY : VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED;
+        int childToDisplay = visible ? VIEW_INDEX_BCC_EXPANDER_VISIBLE : VIEW_INDEX_BCC_EXPANDER_HIDDEN;
         if (recipientExpanderContainer.getDisplayedChild() != childToDisplay) {
             recipientExpanderContainer.setDisplayedChild(childToDisplay);
         }
