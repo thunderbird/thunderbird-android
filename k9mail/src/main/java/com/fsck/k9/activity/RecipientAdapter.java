@@ -113,7 +113,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         }
 
         if (cryptoStatusRes != null) {
-            // we could do this easier with setImageTintList, but that's API level 21
+            // noinspection deprecation, we could do this easier with setImageTintList, but that's API level 21
             Drawable drawable = context.getResources().getDrawable(cryptoStatusRes);
             // noinspection ConstantConditions, we know the resource exists!
             drawable.mutate();

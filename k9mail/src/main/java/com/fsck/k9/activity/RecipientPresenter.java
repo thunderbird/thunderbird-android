@@ -69,7 +69,7 @@ public class RecipientPresenter {
     }
 
     public List<Recipient> getAllRecipients() {
-        ArrayList<Recipient> result = new ArrayList<Recipient>();
+        ArrayList<Recipient> result = new ArrayList<>();
 
         result.addAll(recipientMvpView.getToRecipients());
         result.addAll(recipientMvpView.getCcRecipients());
@@ -263,7 +263,7 @@ public class RecipientPresenter {
     }
 
     private static Address[] addressFromStringArray(List<String> addresses) {
-        ArrayList<Address> result = new ArrayList<Address>(addresses.size());
+        ArrayList<Address> result = new ArrayList<>(addresses.size());
 
         for (String addressStr : addresses) {
             Collections.addAll(result, Address.parseUnencoded(addressStr));

@@ -10,7 +10,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.annotation.StringRes;
 import android.util.Log;
 
 import com.fsck.k9.Account.QuoteStyle;
@@ -169,10 +168,6 @@ public abstract class MessageBuilder {
             // Add the identity to the message.
             message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
         }
-    }
-
-    public TextBody buildText() {
-        return buildText(isDraft, messageFormat);
     }
 
     private String buildIdentityHeader(TextBody body, TextBody bodyPlain) {

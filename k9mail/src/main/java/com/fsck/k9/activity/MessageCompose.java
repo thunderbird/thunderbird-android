@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,7 +80,6 @@ import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -375,14 +373,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Listener mListener = new Listener();
 
     private FontSizes mFontSizes = K9.getFontSizes();
-    private ContextThemeWrapper mThemeContext;
 
 
     /**
      * Compose a new message using the given account. If account is null the default account
      * will be used.
-     * @param context
-     * @param account
      */
     public static void actionCompose(Context context, Account account) {
         String accountUuid = (account == null) ?
@@ -398,9 +393,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     /**
      * Get intent for composing a new message as a reply to the given message. If replyAll is true
      * the function is reply all instead of simply reply.
-     * @param context
-     * @param message
-     * @param replyAll
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
     public static Intent getActionReplyIntent(
@@ -431,9 +423,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     /**
      * Compose a new message as a reply to the given message. If replyAll is true the function
      * is reply all instead of simply reply.
-     * @param context
-     * @param message
-     * @param replyAll
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
     public static void actionReply(
@@ -446,8 +435,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     /**
      * Compose a new message as a forward of the given message.
-     * @param context
-     * @param message
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
     public static void actionForward(
@@ -466,8 +453,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * handles certain actions.
      * Save will attempt to replace the message in the given folder with the updated version.
      * Discard will delete the message from the given folder.
-     * @param context
-     * @param messageReference
      */
     public static void actionEditDraft(Context context, MessageReference messageReference) {
         Intent i = new Intent(context, MessageCompose.class);
@@ -489,17 +474,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         if (K9.getK9ComposerThemeSetting() != K9.Theme.USE_GLOBAL) {
             // theme the whole content according to the theme (except the action bar)
-            mThemeContext = new ContextThemeWrapper(this,
+            ContextThemeWrapper themeContext = new ContextThemeWrapper(this,
                     K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
-            View v = LayoutInflater.from(mThemeContext).inflate(R.layout.message_compose, null);
+            @SuppressLint("InflateParams") // this is the top level activity element, it has no root
+            View v = LayoutInflater.from(themeContext).inflate(R.layout.message_compose, null);
             TypedValue outValue = new TypedValue();
             // background color needs to be forced
-            mThemeContext.getTheme().resolveAttribute(R.attr.messageViewBackgroundColor, outValue, true);
+            themeContext.getTheme().resolveAttribute(R.attr.messageViewBackgroundColor, outValue, true);
             v.setBackgroundColor(outValue.data);
             setContentView(v);
         } else {
             setContentView(R.layout.message_compose);
-            mThemeContext = this;
         }
 
         final Intent intent = getIntent();
@@ -803,7 +788,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             String type = intent.getType();
             if (Intent.ACTION_SEND.equals(action)) {
-                Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                Uri stream = intent.getParcelableExtra(Intent.EXTRA_STREAM);
                 if (stream != null) {
                     addAttachment(stream, type);
                 }
@@ -922,6 +907,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         List<Attachment> attachments = savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
+        // noinspection ConstantConditions, we know this is set in onSaveInstanceState
         for (Attachment attachment : attachments) {
             addAttachmentView(attachment);
             if (attachment.loaderId > mMaxLoaderId) {
@@ -1112,7 +1098,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void onReadReceipt() {
         CharSequence txt;
-        if (mReadReceipt == false) {
+        if (!mReadReceipt) {
             txt = getString(R.string.read_receipt_enabled);
             mReadReceipt = true;
         } else {
@@ -1125,7 +1111,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private ArrayList<Attachment> createAttachmentList() {
-        ArrayList<Attachment> attachments = new ArrayList<Attachment>();
+        ArrayList<Attachment> attachments = new ArrayList<>();
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
             View view = mAttachments.getChildAt(i);
             Attachment attachment = (Attachment) view.getTag();
@@ -1135,27 +1121,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     /**
-     * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
-     */
-    private void onAddAttachment() {
-        onAddAttachment2("*/*");
-    }
-
-    /**
      * Kick off a picker for the specified MIME type and let Android take over.
-     *
-     * @param mime_type
-     *         The MIME type we want our attachment to have.
      */
     @SuppressLint("InlinedApi")
-    private void onAddAttachment2(final String mime_type) {
+    private void onAddAttachment() {
         if (isCryptoProviderEnabled()) {
             Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
         }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType(mime_type);
+        i.setType("*/*");
         isInSubActivity = true;
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_ATTACHMENT);
     }
@@ -1773,9 +1749,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
         String name = MimeUtility.getHeaderParameter(contentType, "name");
+        // noinspection RedundantIfStatement, to keep the fix-me below
         if (name != null) {
-            Body body = part.getBody();
-            //FIXME
+            // FIXME
+//            Body body = part.getBody();
 //            if (body instanceof LocalAttachmentBody) {
 //                final Uri uri = ((LocalAttachmentBody) body).getContentUri();
 //                mHandler.post(new Runnable() {
@@ -1940,7 +1917,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         // Decode the identity header when loading a draft.
         // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
-        Map<IdentityField, String> k9identity = new HashMap<IdentityField, String>();
+        Map<IdentityField, String> k9identity = new HashMap<>();
         String[] identityHeaders = message.getHeader(K9.IDENTITY_HEADER);
 
         if (identityHeaders.length > 0 && identityHeaders[0] != null) {
@@ -2219,8 +2196,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (dashSignatureHtml.find()) {
                     Matcher blockquoteStart = BLOCKQUOTE_START.matcher(content);
                     Matcher blockquoteEnd = BLOCKQUOTE_END.matcher(content);
-                    List<Integer> start = new ArrayList<Integer>();
-                    List<Integer> end = new ArrayList<Integer>();
+                    List<Integer> start = new ArrayList<>();
+                    List<Integer> end = new ArrayList<>();
 
                     while (blockquoteStart.find()) {
                         start.add(blockquoteStart.start());
@@ -2499,8 +2476,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         Message message;
         Long draftId;
 
-        SendMessageTask(Context context, Account account, Contacts contacts, Handler handler,
-                Message message, Long draftId) {
+        SendMessageTask(Context context, Account account, Contacts contacts, Message message, Long draftId) {
             this.context = context;
             this.account = account;
             this.contacts = contacts;
@@ -2631,7 +2607,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mMessageContentView.setCharacters(body);
         }
     }
-
 
     private static class SaveMessageTask extends AsyncTask<Void, Void, Void> {
         Context context;
@@ -2835,7 +2810,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mLayoutInflater = (LayoutInflater) context.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
 
-            List<Object> items = new ArrayList<Object>();
+            List<Object> items = new ArrayList<>();
             Preferences prefs = Preferences.getPreferences(context.getApplicationContext());
             Collection<Account> accounts = prefs.getAvailableAccounts();
             for (Account account : accounts) {
@@ -2986,7 +2961,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Extract the date from a message and convert it into a locale-specific
      * date string suitable for use in a header for a quoted message.
      *
-     * @param message
      * @return A string with the formatted date/time
      */
     private String getSentDateText(Message message) {
@@ -3038,7 +3012,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         } else {
             currentMessageBuilder = null;
-            new SendMessageTask(getApplicationContext(), mAccount, mContacts, mHandler, message,
+            new SendMessageTask(getApplicationContext(), mAccount, mContacts, message,
                     mDraftId != INVALID_DRAFT_ID ? mDraftId : null).execute();
             finish();
         }

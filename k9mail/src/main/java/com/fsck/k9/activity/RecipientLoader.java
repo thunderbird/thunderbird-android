@@ -101,8 +101,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     @Override
     public List<Recipient> loadInBackground() {
-        List<Recipient> recipients = new ArrayList<Recipient>();
-        Map<String, Recipient> recipientMap = new HashMap<String, Recipient>();
+        List<Recipient> recipients = new ArrayList<>();
+        Map<String, Recipient> recipientMap = new HashMap<>();
 
         if (addresses != null) {
             fillContactDataFromAddresses(addresses, recipients, recipientMap);
@@ -252,7 +252,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     }
 
     private void fillCryptoStatusData(Map<String, Recipient> recipientMap) {
-        List<String> recipientList = new ArrayList<String>(recipientMap.keySet());
+        List<String> recipientList = new ArrayList<>(recipientMap.keySet());
         String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
 
         Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/email_status");
