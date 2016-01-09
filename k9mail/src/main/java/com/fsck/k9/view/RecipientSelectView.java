@@ -514,6 +514,15 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             return context.getString(R.string.unknown_recipient);
         }
 
+        public String getNameOrUnknown(Context context) {
+            String name = address.getPersonal();
+            if (name != null) {
+                return name;
+            }
+
+            return context.getString(R.string.unknown_recipient);
+        }
+
         private String getDisplayName() {
             if (TextUtils.isEmpty(address.getPersonal())) {
                 return null;

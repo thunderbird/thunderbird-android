@@ -44,6 +44,19 @@
                 tools:text="Mr. Firstname Lastname"
                 />
 
+            <TextView
+                android:id="@+id/alternate_header_label"
+                android:textColor="?attr/textColorPrimaryRecipientDropdown"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip"
+                android:layout_marginStart="6dip"
+                android:singleLine="true"
+                android:ellipsize="end"
+                tools:text="Other"
+                />
+
         </LinearLayout>
 
         <ImageView
