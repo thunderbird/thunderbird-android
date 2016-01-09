@@ -126,11 +126,13 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     }
 
     public static void setContactPhotoOrPlaceholder(Context context, ImageView imageView, Recipient recipient) {
-        imageView.setImageDrawable(null);
-
         // TODO don't use two different mechanisms for loading!
         if (recipient.photoThumbnailUri != null) {
-            Glide.with(context).load(recipient.photoThumbnailUri).into(imageView);
+            Glide.with(context).load(recipient.photoThumbnailUri)
+                    // for some reason, this fixes loading issues.
+                    .placeholder(null)
+                    .dontAnimate()
+                    .into(imageView);
         } else {
             ContactPicture.getContactPictureLoader(context).loadContactPicture(recipient.address, imageView);
         }
