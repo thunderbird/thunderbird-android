@@ -320,6 +320,16 @@ public class RecipientPresenter {
         return currentCryptoStatus;
     }
 
+    public boolean isForceTextMessageFormat() {
+        ComposeCryptoStatus cryptoStatus = getCurrentCryptoStatus();
+        return cryptoStatus.isEncryptionEnabled() || cryptoStatus.isSigningEnabled();
+    }
+
+    public boolean isAllowSavingDraftRemotely() {
+        ComposeCryptoStatus cryptoStatus = getCurrentCryptoStatus();
+        return cryptoStatus.isEncryptionEnabled() || cryptoStatus.isSigningEnabled();
+    }
+
     @SuppressWarnings("UnusedParameters")
     public void onToTokenAdded(Recipient recipient) {
         updateCryptoStatus();

@@ -821,17 +821,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return startedByExternalIntent;
     }
 
-    /**
-     * Fill the encrypt layout with the latest data about signature key and encryption keys.
-     */
-    public void updateEncryptLayout() {
-        if (!isCryptoProviderEnabled()) {
-            return;
-        }
-
-        updateMessageFormat();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -950,7 +939,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         updateFrom();
         updateSignature();
-        updateEncryptLayout();
 
         updateMessageFormat();
     }
@@ -1129,9 +1117,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     @SuppressLint("InlinedApi")
     private void onAddAttachment() {
-        if (isCryptoProviderEnabled()) {
-            Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
-        }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         i.addCategory(Intent.CATEGORY_OPENABLE);
@@ -2935,7 +2920,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // Right now we send a text/plain-only message when the quoted text was edited, no
             // matter what the user selected for the message format.
             messageFormat = SimpleMessageFormat.TEXT;
-        } else if (shouldEncrypt() || shouldSign()) {
+        } else if (recipientPresenter.isForceTextMessageFormat()) {
             // Right now we only support PGP inline which doesn't play well with HTML. So force
             // plain text in those cases.
             messageFormat = SimpleMessageFormat.TEXT;
@@ -2984,18 +2969,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return mOpenPgpProvider != null;
     }
 
-    private boolean shouldEncrypt() {
-        if (!isCryptoProviderEnabled()) {
-            return false;
-        }
-        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
-        return cryptoStatus.isEncryptionEnabled();
-    }
-
-    private boolean shouldSign() {
-        return isCryptoProviderEnabled();
-    }
-
     @Override
     public void onMessageBuildSuccess(MimeMessage message, boolean isDraft) {
         if (isDraft) {
@@ -3006,7 +2979,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 message.setUid(mMessageReference.getUid());
             }
 
-            boolean saveRemotely = !shouldEncrypt();
+            boolean saveRemotely = recipientPresenter.isAllowSavingDraftRemotely();
             new SaveMessageTask(getApplicationContext(), mAccount, mContacts, mHandler,
                     message, mDraftId, saveRemotely).execute();
             if (mFinishAfterDraftSaved) {
