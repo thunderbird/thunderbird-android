@@ -17,7 +17,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickAction;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
@@ -60,6 +60,9 @@ public class GlobalSettings {
         s.put("confirmDeleteStarred", Settings.versions(
                 new V(2, new BooleanSetting(false))
             ));
+        s.put("confirmArchive", Settings.versions(
+                new V(41, new BooleanSetting(false)) // TODO: what number goes here?
+        ));
         s.put("confirmSpam", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
@@ -261,13 +264,27 @@ public class GlobalSettings {
         s.put("confirmDeleteFromNotification", Settings.versions(
                 new V(38, new BooleanSetting(true))
             ));
+        s.put("confirmArchiveFromNotification", Settings.versions(
+                new V(41, new BooleanSetting(true)) // TODO: what number goes here?
+        ));
+        s.put("confirmArchiveFromNotification", Settings.versions(
+                new V(41, new BooleanSetting(true)) // TODO: what number goes here?
+        ));
         s.put("messageListSenderAboveSubject", Settings.versions(
                 new V(38, new BooleanSetting(false))
             ));
         s.put("notificationQuickDelete", Settings.versions(
-                new V(38, new EnumSetting<NotificationQuickDelete>(NotificationQuickDelete.class,
-                        NotificationQuickDelete.NEVER))
+                new V(38, new EnumSetting<NotificationQuickAction>(NotificationQuickAction.class,
+                        NotificationQuickAction.NEVER))
             ));
+        s.put("notificationQuickArchive", Settings.versions(
+                new V(41, new EnumSetting<NotificationQuickAction>(NotificationQuickAction.class, // TODO: What number goes here?
+                        NotificationQuickAction.NEVER))
+        ));
+        s.put("notificationQuickSpam", Settings.versions(
+                new V(41, new EnumSetting<NotificationQuickAction>(NotificationQuickAction.class, // TODO: what number goes here?
+                        NotificationQuickAction.NEVER))
+        ));
         s.put("notificationDuringQuietTimeEnabled", Settings.versions(
                 new V(39, new BooleanSetting(true))
             ));

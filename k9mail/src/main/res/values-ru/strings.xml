@@ -277,9 +277,9 @@ K-9 Mail — почтовый клиент для Android.
   <string name="global_settings_notification_hide_subject_when_locked">При блокировке</string>
   <string name="global_settings_notification_hide_subject_always">Всегда</string>
   <string name="global_settings_notification_quick_delete_title">Кнопка \"Удалить\"</string>
-  <string name="global_settings_notification_quick_delete_never">Никогда</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Для одиночного</string>
-  <string name="global_settings_notification_quick_delete_always">Всегда</string>
+  <string name="global_settings_notification_quick_action_never">Никогда</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Для одиночного</string>
+  <string name="global_settings_notification_quick_action_always">Всегда</string>
   <string name="global_settings_notification_quick_delete_description">Кнопка в уведомлении для быстрого удаления сообщения</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Встроить в экран блокировки</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Убрать с экрана блокировки</string>
@@ -757,7 +757,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="select_text_now">Выберите текст длительным нажатием</string>
   <string name="dialog_confirm_delete_title">Удаление</string>
   <string name="dialog_confirm_delete_message">Сообщение будет удалено. Продолжить?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Сообщение будет удалено. Продолжить?</item>
     <item quantity="few">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>
     <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>

@@ -275,9 +275,9 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="global_settings_notification_hide_subject_when_locked">Når enhet er låst</string>
   <string name="global_settings_notification_hide_subject_always">Alltid</string>
   <string name="global_settings_notification_quick_delete_title">Vis \'Slettknappen\'</string>
-  <string name="global_settings_notification_quick_delete_never">Aldri</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">For enkeltmeldingsvarsel</string>
-  <string name="global_settings_notification_quick_delete_always">Alltid</string>
+  <string name="global_settings_notification_quick_action_never">Aldri</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">For enkeltmeldingsvarsel</string>
+  <string name="global_settings_notification_quick_action_always">Alltid</string>
   <string name="global_settings_notification_quick_delete_description">Vis en knapp i varsel som tillater hurtig sletting av melding</string>
   <string name="quiet_time">Stilletid</string>
   <string name="quiet_time_description">Deaktiver ringing, vibrasjon og blinking om natten</string>
@@ -749,7 +749,7 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="select_text_now">Velg tekst til å kopiere</string>
   <string name="dialog_confirm_delete_title">Bekreft sletting</string>
   <string name="dialog_confirm_delete_message">Vil du slette denne meldingen?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Ønsker du virkelig å slette denne meldingen?</item>
     <item quantity="other">Ønsker du virkelig å slette <xliff:g id="message_count">%1$d</xliff:g> meldinger?</item>
   </plurals>

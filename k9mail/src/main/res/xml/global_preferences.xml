@@ -336,6 +336,26 @@
             />
 
         <ListPreference
+            android:key="notification_quick_archive"
+            android:persistent="false"
+            android:title="@string/global_settings_notification_quick_archive_title"
+            android:entries="@array/global_settings_notification_quick_archive_entries"
+            android:entryValues="@array/global_settings_notification_quick_archive_values"
+            android:dialogTitle="@string/global_settings_notification_quick_archive_title"
+            android:summary="@string/global_settings_notification_quick_archive_description"
+            />
+
+        <ListPreference
+            android:key="notification_quick_spam"
+            android:persistent="false"
+            android:title="@string/global_settings_notification_quick_spam_title"
+            android:entries="@array/global_settings_notification_quick_spam_entries"
+            android:entryValues="@array/global_settings_notification_quick_spam_values"
+            android:dialogTitle="@string/global_settings_notification_quick_spam_title"
+            android:summary="@string/global_settings_notification_quick_spam_description"
+            />
+
+        <ListPreference
             android:key="lock_screen_notification_visibility"
             android:persistent="false"
             android:title="@string/global_settings_lock_screen_notification_visibility_title"

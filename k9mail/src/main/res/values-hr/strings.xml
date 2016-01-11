@@ -278,9 +278,9 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="global_settings_notification_hide_subject_when_locked">Kad je uređaj zaključan</string>
   <string name="global_settings_notification_hide_subject_always">Uvijek</string>
   <string name="global_settings_notification_quick_delete_title">Prikaži gumb \'Obriši\'</string>
-  <string name="global_settings_notification_quick_delete_never">Nikada</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Za pojedinačnu obavijest poruke</string>
-  <string name="global_settings_notification_quick_delete_always">Uvijek</string>
+  <string name="global_settings_notification_quick_action_never">Nikada</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Za pojedinačnu obavijest poruke</string>
+  <string name="global_settings_notification_quick_action_always">Uvijek</string>
   <string name="global_settings_notification_quick_delete_description">Prikaži gumb u traci obavijesti koji dozvoljava brzo brisanje poruke</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Obavijesti Zaključanog Zaslona</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nema obavijesti zaključanog zaslona</string>
@@ -758,7 +758,7 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="select_text_now">Odaberi tekst za kopiranje..</string>
   <string name="dialog_confirm_delete_title">Potvrda brisanja</string>
   <string name="dialog_confirm_delete_message">Da li želite obrisati ovu poruku?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Da li stvarno želite obrisati ovu poruku?</item>
     <item quantity="few">Da li stvarno želite obrisati <xliff:g id="message_count">%1$d</xliff:g> poruke?</item>
     <item quantity="other">Da li stvarno želite obrisati <xliff:g id="message_count">%1$d</xliff:g> poruke?</item>

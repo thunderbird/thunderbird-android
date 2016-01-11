@@ -276,9 +276,9 @@
   <string name="global_settings_notification_hide_subject_when_locked">Όταν το τηλέφωνο είναι κλειδωμένο</string>
   <string name="global_settings_notification_hide_subject_always">Πάντοτε</string>
   <string name="global_settings_notification_quick_delete_title">Προβολή πλήκτρου \'Διαγραφή\'</string>
-  <string name="global_settings_notification_quick_delete_never">Ποτέ</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Για ειδοποίηση ενός μηνύματος</string>
-  <string name="global_settings_notification_quick_delete_always">Πάντοτε</string>
+  <string name="global_settings_notification_quick_action_never">Ποτέ</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Για ειδοποίηση ενός μηνύματος</string>
+  <string name="global_settings_notification_quick_action_always">Πάντοτε</string>
   <string name="global_settings_notification_quick_delete_description">Προβολή πλήκτρου στην ειδοποίηση που επιτρέπει τη γρήγορη διαγραφή του μηνύματος</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Ειδοποιήσεις οθόνης κλειδώματος</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Χωρίς ειδοποιήσεις οθόνης κλειδώματος</string>
@@ -751,7 +751,7 @@
   <string name="select_text_now">Επιλογή κειμένου για αντιγραφή</string>
   <string name="dialog_confirm_delete_title">Επιβεβαίωση διαγραφής</string>
   <string name="dialog_confirm_delete_message">Θέλετε να διαγράψετε αυτό το μήνυμα;</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Θέλετε πράγματι να διαγράψετε αυτό το μήνυμα;</item>
     <item quantity="other">Θέλετε πράγματι να διαγράψετε <xliff:g id="message_count">%1$d</xliff:g> μηνύματα;</item>
   </plurals>

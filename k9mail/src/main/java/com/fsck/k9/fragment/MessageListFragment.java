@@ -1308,11 +1308,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         changeSort(sorts[curIndex]);
     }
 
-    private void onDelete(LocalMessage message) {
+    private void onDelete(final LocalMessage message) {
         onDelete(Collections.singletonList(message));
     }
 
-    private void onDelete(List<LocalMessage> messages) {
+    private void onDelete(final List<LocalMessage> messages) {
         if (K9.confirmDelete()) {
             // remember the message selection for #onCreateDialog(int)
             mActiveMessages = messages;
@@ -1322,7 +1322,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
     }
 
-    private void onDeleteConfirmed(List<LocalMessage> messages) {
+    private void onDeleteConfirmed(final List<LocalMessage> messages) {
         if (mThreadedList) {
             mController.deleteThreads(messages);
         } else {
@@ -1382,6 +1382,36 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void showDialog(int dialogId) {
         DialogFragment fragment;
         switch (dialogId) {
+            case R.id.dialog_confirm_delete: {
+                String title = getString(R.string.dialog_confirm_delete_title);
+
+                int selectionSize = mActiveMessages.size();
+                String message = getResources().getQuantityString(
+                        R.plurals.dialog_confirm_delete_message, selectionSize,
+                        Integer.valueOf(selectionSize));
+
+                String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
+                String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
+
+                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                        confirmText, cancelText);
+                break;
+            }
+            case R.id.dialog_confirm_archive: {
+                String title = getString(R.string.dialog_confirm_archive_title);
+
+                int selectionSize = mActiveMessages.size();
+                String message = getResources().getQuantityString(
+                        R.plurals.dialog_confirm_archive_message, selectionSize,
+                        Integer.valueOf(selectionSize));
+
+                String confirmText = getString(R.string.dialog_confirm_archive_confirm_button);
+                String cancelText = getString(R.string.dialog_confirm_archive_cancel_button);
+
+                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                        confirmText, cancelText);
+                break;
+            }
             case R.id.dialog_confirm_spam: {
                 String title = getString(R.string.dialog_confirm_spam_title);
 
@@ -1392,21 +1422,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
                 String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
                 String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
-
-                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                        confirmText, cancelText);
-                break;
-            }
-            case R.id.dialog_confirm_delete: {
-                String title = getString(R.string.dialog_confirm_delete_title);
-
-                int selectionSize = mActiveMessages.size();
-                String message = getResources().getQuantityString(
-                        R.plurals.dialog_confirm_delete_messages, selectionSize,
-                        Integer.valueOf(selectionSize));
-
-                String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
-                String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
 
                 fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
                         confirmText, cancelText);
@@ -2518,6 +2533,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void onArchive(final List<LocalMessage> messages) {
+        if (K9.confirmArchive()) {
+            // remember the message selection for #onCreateDialog(int)
+            mActiveMessages = messages;
+            showDialog(R.id.dialog_confirm_archive);
+        } else {
+            onArchiveConfirmed(messages);
+        }
+    }
+
+    private void onArchiveConfirmed(final List<LocalMessage> messages) {
         Map<Account, List<LocalMessage>> messagesByAccount = groupMessagesByAccount(messages);
 
         for (Entry<Account, List<LocalMessage>> entry : messagesByAccount.entrySet()) {
@@ -2526,6 +2551,39 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
             if (!K9.FOLDER_NONE.equals(archiveFolder)) {
                 move(entry.getValue(), archiveFolder);
+            }
+        }
+    }
+
+    private void onSpam(final LocalMessage message) {
+        onSpam(Collections.singletonList(message));
+    }
+
+    /**
+     * Move messages to the spam folder.
+     *
+     * @param messages
+     *         The messages to move to the spam folder. Never {@code null}.
+     */
+    private void onSpam(final List<LocalMessage> messages) {
+        if (K9.confirmSpam()) {
+            // remember the message selection for #onCreateDialog(int)
+            mActiveMessages = messages;
+            showDialog(R.id.dialog_confirm_spam);
+        } else {
+            onSpamConfirmed(messages);
+        }
+    }
+
+    private void onSpamConfirmed(final List<LocalMessage> messages) {
+        Map<Account, List<LocalMessage>> messagesByAccount = groupMessagesByAccount(messages);
+
+        for (Entry<Account, List<LocalMessage>> entry : messagesByAccount.entrySet()) {
+            Account account = entry.getKey();
+            String spamFolder = account.getSpamFolderName();
+
+            if (!K9.FOLDER_NONE.equals(spamFolder)) {
+                move(entry.getValue(), spamFolder);
             }
         }
     }
@@ -2544,39 +2602,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             msgList.add(message);
         }
         return messagesByAccount;
-    }
-
-    private void onSpam(LocalMessage message) {
-        onSpam(Collections.singletonList(message));
-    }
-
-    /**
-     * Move messages to the spam folder.
-     *
-     * @param messages
-     *         The messages to move to the spam folder. Never {@code null}.
-     */
-    private void onSpam(List<LocalMessage> messages) {
-        if (K9.confirmSpam()) {
-            // remember the message selection for #onCreateDialog(int)
-            mActiveMessages = messages;
-            showDialog(R.id.dialog_confirm_spam);
-        } else {
-            onSpamConfirmed(messages);
-        }
-    }
-
-    private void onSpamConfirmed(List<LocalMessage> messages) {
-        Map<Account, List<LocalMessage>> messagesByAccount = groupMessagesByAccount(messages);
-
-        for (Entry<Account, List<LocalMessage>> entry : messagesByAccount.entrySet()) {
-            Account account = entry.getKey();
-            String spamFolder = account.getSpamFolderName();
-
-            if (!K9.FOLDER_NONE.equals(spamFolder)) {
-                move(entry.getValue(), spamFolder);
-            }
-        }
     }
 
     private static enum FolderOperation {
@@ -2927,15 +2952,22 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     @Override
     public void doPositiveClick(int dialogId) {
         switch (dialogId) {
-            case R.id.dialog_confirm_spam: {
-                onSpamConfirmed(mActiveMessages);
+            case R.id.dialog_confirm_delete: {
+                onDeleteConfirmed(mActiveMessages);
+                // No further need for this reference
+                mActiveMessage = null;
+                break;
+            }
+            case R.id.dialog_confirm_archive: {
+                onArchiveConfirmed(mActiveMessages);
                 // No further need for this reference
                 mActiveMessages = null;
                 break;
             }
-            case R.id.dialog_confirm_delete: {
-                onDeleteConfirmed(mActiveMessages);
-                mActiveMessage = null;
+            case R.id.dialog_confirm_spam: {
+                onSpamConfirmed(mActiveMessages);
+                // No further need for this reference
+                mActiveMessages = null;
                 break;
             }
         }
@@ -2944,8 +2976,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     @Override
     public void doNegativeClick(int dialogId) {
         switch (dialogId) {
-            case R.id.dialog_confirm_spam:
-            case R.id.dialog_confirm_delete: {
+            case R.id.dialog_confirm_delete:
+            case R.id.dialog_confirm_archive:
+            case R.id.dialog_confirm_spam: {
                 // No further need for this reference
                 mActiveMessages = null;
                 break;

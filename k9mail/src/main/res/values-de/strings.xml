@@ -278,9 +278,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="global_settings_notification_hide_subject_when_locked">Wenn der Bildschirm gesperrt ist</string>
   <string name="global_settings_notification_hide_subject_always">Immer</string>
   <string name="global_settings_notification_quick_delete_title">Löschen erlauben</string>
-  <string name="global_settings_notification_quick_delete_never">Nie</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Für einzelne Nachricht</string>
-  <string name="global_settings_notification_quick_delete_always">Immer</string>
+  <string name="global_settings_notification_quick_action_never">Nie</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Für einzelne Nachricht</string>
+  <string name="global_settings_notification_quick_action_always">Immer</string>
   <string name="global_settings_notification_quick_delete_description">Der Benachrichtigung eine Schaltfläche zum Löschen der Nachrichten hinzufügen</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Sperrbildschirm-Benachrichtigungen</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Keine Sperrbildschirm-Benachrichtigungen</string>
@@ -758,7 +758,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="select_text_now">Text auswählen, um ihn zu kopieren.</string>
   <string name="dialog_confirm_delete_title">Löschen bestätigen</string>
   <string name="dialog_confirm_delete_message">Möchten Sie diese Nachricht löschen?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Möchten Sie diese Nachricht wirklich löschen?</item>
     <item quantity="other">Möchten Sie wirklich <xliff:g id="message_count">%1$d</xliff:g> Nachrichten löschen?</item>
   </plurals>

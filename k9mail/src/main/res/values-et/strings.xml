@@ -272,9 +272,9 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="global_settings_notification_hide_subject_when_locked">Kui seade on lukustatud</string>
   <string name="global_settings_notification_hide_subject_always">Alati</string>
   <string name="global_settings_notification_quick_delete_title">Näita \"Kustuta\" nuppu</string>
-  <string name="global_settings_notification_quick_delete_never">Mitte kunagi</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Ühest sõnumist teatamiseks</string>
-  <string name="global_settings_notification_quick_delete_always">Alati</string>
+  <string name="global_settings_notification_quick_action_never">Mitte kunagi</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Ühest sõnumist teatamiseks</string>
+  <string name="global_settings_notification_quick_action_always">Alati</string>
   <string name="global_settings_notification_quick_delete_description">Näita teatistes nuppu teatiste kiireks kustutamiseks</string>
   <string name="quiet_time">Vaikne aeg</string>
   <string name="quiet_time_description">Keela öösel helinad, värinad ja plinkivad tuled</string>
@@ -713,7 +713,7 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="select_text_now">Vali kopeerimiseks teks.</string>
   <string name="dialog_confirm_delete_title">Kinnita kustutamine</string>
   <string name="dialog_confirm_delete_message">Kas soovid sõnumit kustutada?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Oled kindel, et tahad seda sõnumit kustutada?</item>
     <item quantity="other">Oled kindel, et tahad <xliff:g id="message_count">%1$d</xliff:g> sõnumit kustutada?</item>
   </plurals>

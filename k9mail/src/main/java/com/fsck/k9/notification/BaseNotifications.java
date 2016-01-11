@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickAction;
 import com.fsck.k9.R;
 
 
@@ -61,8 +61,18 @@ abstract class BaseNotifications {
     }
 
     protected boolean isDeleteActionEnabled() {
-        NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
-        return deleteOption == NotificationQuickDelete.ALWAYS || deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG;
+        NotificationQuickAction option = K9.getNotificationQuickDeleteBehaviour();
+        return option == NotificationQuickAction.ALWAYS || option == NotificationQuickAction.FOR_SINGLE_MSG;
+    }
+
+    protected boolean isArchiveActionEnabled() {
+        NotificationQuickAction option = K9.getNotificationQuickArchiveBehaviour();
+        return option == NotificationQuickAction.ALWAYS || option == NotificationQuickAction.FOR_SINGLE_MSG;
+    }
+
+    protected boolean isSpamActionEnabled() {
+        NotificationQuickAction option = K9.getNotificationQuickSpamBehaviour();
+        return option == NotificationQuickAction.ALWAYS || option == NotificationQuickAction.FOR_SINGLE_MSG;
     }
 
     protected BigTextStyle createBigTextStyle(Builder builder) {

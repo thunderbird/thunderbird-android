@@ -238,9 +238,9 @@
   <string name="global_settings_notification_hide_subject_when_locked">當手持設備上鎖時</string>
   <string name="global_settings_notification_hide_subject_always">預設</string>
   <string name="global_settings_notification_quick_delete_title">顯示\'刪除\'鈕</string>
-  <string name="global_settings_notification_quick_delete_never">絕不</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">針對單一訊息通知</string>
-  <string name="global_settings_notification_quick_delete_always">預設</string>
+  <string name="global_settings_notification_quick_action_never">絕不</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">針對單一訊息通知</string>
+  <string name="global_settings_notification_quick_action_always">預設</string>
   <string name="global_settings_notification_quick_delete_description">在通知欄顯示訊息快速刪除按鈕</string>
   <string name="quiet_time">靜音設定</string>
   <string name="quiet_time_description">取消夜間響鈴, 鬧鐘及閃光</string>
@@ -680,7 +680,7 @@
   <string name="select_text_now">選擇需要複製的文字內容。</string>
   <string name="dialog_confirm_delete_title">刪除確認</string>
   <string name="dialog_confirm_delete_message">你確定要刪除這封郵件？</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="other">確定要刪除 <xliff:g id="message_count">%1$d</xliff:g> 則訊息?</item>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">刪除</string>

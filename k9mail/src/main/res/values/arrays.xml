@@ -716,12 +716,36 @@
     </string-array>
 
     <string-array name="global_settings_notification_quick_delete_entries">
-        <item name="1">@string/global_settings_notification_quick_delete_never</item>
-        <item name="2">@string/global_settings_notification_quick_delete_when_single_msg</item>
-        <item name="3">@string/global_settings_notification_quick_delete_always</item>
+        <item name="1">@string/global_settings_notification_quick_action_never</item>
+        <item name="2">@string/global_settings_notification_quick_action_when_single_msg</item>
+        <item name="3">@string/global_settings_notification_quick_action_always</item>
     </string-array>
 
     <string-array name="global_settings_notification_quick_delete_values" translatable="false">
+        <item name="1">NEVER</item>
+        <item name="2">FOR_SINGLE_MSG</item>
+        <item name="3">ALWAYS</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_quick_archive_entries">
+        <item name="1">@string/global_settings_notification_quick_action_never</item>
+        <item name="2">@string/global_settings_notification_quick_action_when_single_msg</item>
+        <item name="3">@string/global_settings_notification_quick_action_always</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_quick_archive_values" translatable="false">
+        <item name="1">NEVER</item>
+        <item name="2">FOR_SINGLE_MSG</item>
+        <item name="3">ALWAYS</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_quick_spam_entries">
+        <item name="1">@string/global_settings_notification_quick_action_never</item>
+        <item name="2">@string/global_settings_notification_quick_action_when_single_msg</item>
+        <item name="3">@string/global_settings_notification_quick_action_always</item>
+    </string-array>
+
+    <string-array name="global_settings_notification_quick_spam_values" translatable="false">
         <item name="1">NEVER</item>
         <item name="2">FOR_SINGLE_MSG</item>
         <item name="3">ALWAYS</item>

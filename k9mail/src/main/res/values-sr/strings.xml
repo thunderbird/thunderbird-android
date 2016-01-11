@@ -279,9 +279,9 @@
   <string name="global_settings_notification_hide_subject_when_locked">Кад је уређај закључан</string>
   <string name="global_settings_notification_hide_subject_always">Увек</string>
   <string name="global_settings_notification_quick_delete_title">Прикажи дугме за брисање</string>
-  <string name="global_settings_notification_quick_delete_never">Никад</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">За обавештења једне поруке</string>
-  <string name="global_settings_notification_quick_delete_always">Увек</string>
+  <string name="global_settings_notification_quick_action_never">Никад</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">За обавештења једне поруке</string>
+  <string name="global_settings_notification_quick_action_always">Увек</string>
   <string name="global_settings_notification_quick_delete_description">Прикажи дугме у обавештењу за брзо брисање поруке</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Обавештења на закључаном екрану</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Без обавештења на закључаном екрану</string>
@@ -756,7 +756,7 @@
   <string name="select_text_now">Изаберите текст за копирање.</string>
   <string name="dialog_confirm_delete_title">Потврда брисања</string>
   <string name="dialog_confirm_delete_message">Желите ли заиста да обришете ову поруку?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Желите ли заиста да обришете ову поруку?</item>
     <item quantity="few">Желите ли заиста да обришете <xliff:g id="message_count">%1$d</xliff:g> поруке?</item>
     <item quantity="other">Желите ли заиста да обришете <xliff:g id="message_count">%1$d</xliff:g> порука?</item>

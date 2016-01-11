@@ -268,9 +268,9 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_notification_hide_subject_when_locked">Gailua blokeatuta dagoenean</string>
   <string name="global_settings_notification_hide_subject_always">Beti</string>
   <string name="global_settings_notification_quick_delete_title">\'Ezabatu\' botoia erakutsi</string>
-  <string name="global_settings_notification_quick_delete_never">Inoiz ez</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Mezu bakarreko jakinarazpenetarako</string>
-  <string name="global_settings_notification_quick_delete_always">Beti</string>
+  <string name="global_settings_notification_quick_action_never">Inoiz ez</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Mezu bakarreko jakinarazpenetarako</string>
+  <string name="global_settings_notification_quick_action_always">Beti</string>
   <string name="global_settings_notification_quick_delete_description">Jakinarazpenetan ezabatze azkarra ahalbidetzen duen botoia ikusi</string>
   <string name="quiet_time">Tarte isila</string>
   <string name="quiet_time_description">Timbrea, bibrazioa eta argiak gauez ezgaitu</string>
@@ -728,7 +728,7 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="select_text_now">Kopiatuko den testua hautatu</string>
   <string name="dialog_confirm_delete_title">Ezabatzea baieztatu</string>
   <string name="dialog_confirm_delete_message">Mezu hau ezabatu nahi duzu?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Benetan mezu hau ezabatu nahi duzu?</item>
     <item quantity="other">Benetan <xliff:g id="message_count">%1$d</xliff:g> mezu ezabatu nahi dituzu?</item>
   </plurals>

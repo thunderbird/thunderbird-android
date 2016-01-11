@@ -276,9 +276,9 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="global_settings_notification_hide_subject_when_locked">Quanto lo schermo è bloccato</string>
   <string name="global_settings_notification_hide_subject_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_title">Mostra il pulsante \'Elimina\'</string>
-  <string name="global_settings_notification_quick_delete_never">Mai</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Per la notifica di un singolo messaggio</string>
-  <string name="global_settings_notification_quick_delete_always">Sempre</string>
+  <string name="global_settings_notification_quick_action_never">Mai</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Per la notifica di un singolo messaggio</string>
+  <string name="global_settings_notification_quick_action_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_description">Mostra un pulsante nella notifica che consente l\'eliminazione rapida</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Notifiche schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nessuna notifica sulla schermata di blocco</string>
@@ -756,7 +756,7 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="select_text_now">Seleziona il testo da copiare.</string>
   <string name="dialog_confirm_delete_title">Conferma l\'eliminazione</string>
   <string name="dialog_confirm_delete_message">Vuoi eliminare questo messaggio?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Vuoi davvero eliminare questo messaggio?</item>
     <item quantity="other">Vuoi davvero eliminare i <xliff:g id="message_count">%1$d</xliff:g> messaggi selezionati?</item>
   </plurals>

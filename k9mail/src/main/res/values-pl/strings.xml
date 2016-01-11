@@ -269,9 +269,9 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="global_settings_notification_hide_subject_when_locked">Gdy urządzenie jest zablokowane</string>
   <string name="global_settings_notification_hide_subject_always">Zawsze</string>
   <string name="global_settings_notification_quick_delete_title">Pokazuj przycisk \'Usuń\'</string>
-  <string name="global_settings_notification_quick_delete_never">Nigdy</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Dla powiadomień o pojedynczych wiadomościach</string>
-  <string name="global_settings_notification_quick_delete_always">Zawsze</string>
+  <string name="global_settings_notification_quick_action_never">Nigdy</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Dla powiadomień o pojedynczych wiadomościach</string>
+  <string name="global_settings_notification_quick_action_always">Zawsze</string>
   <string name="global_settings_notification_quick_delete_description">Pokazuj w oknie powiadomień przycisk pozwalający na szybkie usunięcie wiadomości</string>
   <string name="quiet_time">Okres ciszy</string>
   <string name="quiet_time_description">Wyłącz dzwonienie, wibracje i mruganie w nocy</string>
@@ -724,7 +724,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="select_text_now">Wybierz tekst do skopiowania.</string>
   <string name="dialog_confirm_delete_title">Potwiedź usunięcie</string>
   <string name="dialog_confirm_delete_message">Czy chcesz usunąć tą wiadomość?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Czy chcesz usunąć tę wiadomość?</item>
     <item quantity="few">Czy chcesz usunąć <xliff:g id="message_count">%1$d</xliff:g> wiadomości?</item>
     <item quantity="other">Czy chcesz usunąć <xliff:g id="message_count">%1$d</xliff:g> wiadomości?</item>

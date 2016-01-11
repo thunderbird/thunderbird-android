@@ -276,9 +276,9 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="global_settings_notification_hide_subject_when_locked">Als toestel gelocked is</string>
   <string name="global_settings_notification_hide_subject_always">Altijd</string>
   <string name="global_settings_notification_quick_delete_title">Zien \'Verwijder\' knop</string>
-  <string name="global_settings_notification_quick_delete_never">Nooit</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Notificatie voor los bericht</string>
-  <string name="global_settings_notification_quick_delete_always">Altijd</string>
+  <string name="global_settings_notification_quick_action_never">Nooit</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Notificatie voor los bericht</string>
+  <string name="global_settings_notification_quick_action_always">Altijd</string>
   <string name="global_settings_notification_quick_delete_description">Laat een knop in de notificatie zien om snel te verwijderen</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Start scherm notificatie</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Geen start scherm notificatie</string>
@@ -756,7 +756,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="select_text_now">Selecteer tekst om te kopieren.</string>
   <string name="dialog_confirm_delete_title">Bevestig verwijderen</string>
   <string name="dialog_confirm_delete_message">Wil je dit bericht verwijderen?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Wil je dit bericht echt verwijderen?</item>
     <item quantity="other">Wil je echt <xliff:g id="message_count">%1$d</xliff:g> berichten verwijderen?</item>
   </plurals>

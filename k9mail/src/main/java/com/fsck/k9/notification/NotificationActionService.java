@@ -20,9 +20,9 @@ import com.fsck.k9.service.CoreService;
 
 public class NotificationActionService extends CoreService {
     private final static String ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ";
-    private final static String ACTION_DELETE = "ACTION_DELETE";
-    private final static String ACTION_ARCHIVE = "ACTION_ARCHIVE";
-    private final static String ACTION_SPAM = "ACTION_SPAM";
+    public final static String ACTION_DELETE = "ACTION_DELETE";
+    public final static String ACTION_ARCHIVE = "ACTION_ARCHIVE";
+    public final static String ACTION_SPAM = "ACTION_SPAM";
     private final static String ACTION_DISMISS = "ACTION_DISMISS";
 
     private final static String EXTRA_ACCOUNT_UUID = "accountUuid";
@@ -64,55 +64,25 @@ public class NotificationActionService extends CoreService {
         return intent;
     }
 
-    static Intent createDeleteMessageIntent(Context context, MessageReference messageReference) {
+    public static Intent createActionMessageIntent(String action, Context context, MessageReference messageReference) {
         String accountUuid = messageReference.getAccountUuid();
         ArrayList<MessageReference> messageReferences = createSingleItemArrayList(messageReference);
 
-        return createDeleteAllMessagesIntent(context, accountUuid, messageReferences);
+        return createActionAllMessagesIntent(action, context, accountUuid, messageReferences);
     }
 
-    public static Intent createDeleteAllMessagesIntent(Context context, String accountUuid,
+    public static Intent createActionAllMessagesIntent(String action, Context context, String accountUuid,
             ArrayList<MessageReference> messageReferences) {
 
         Intent intent = new Intent(context, NotificationActionService.class);
-        intent.setAction(ACTION_DELETE);
+        intent.setAction(action);
         intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
         intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
 
         return intent;
     }
 
-    static Intent createArchiveMessageIntent(Context context, MessageReference messageReference) {
-        ArrayList<MessageReference> messageReferences = createSingleItemArrayList(messageReference);
-
-        Intent intent = new Intent(context, NotificationActionService.class);
-        intent.setAction(ACTION_ARCHIVE);
-        intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
-
-        return intent;
-    }
-
-    static Intent createArchiveAllIntent(Context context, Account account,
-            ArrayList<MessageReference> messageReferences) {
-        Intent intent = new Intent(context, NotificationActionService.class);
-        intent.setAction(ACTION_ARCHIVE);
-        intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
-
-        return intent;
-    }
-
-    static Intent createMarkMessageAsSpamIntent(Context context, MessageReference messageReference) {
-        Intent intent = new Intent(context, NotificationActionService.class);
-        intent.setAction(ACTION_SPAM);
-        intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
-
-        return intent;
-    }
-
-    private static ArrayList<MessageReference> createSingleItemArrayList(MessageReference messageReference) {
+    static ArrayList<MessageReference> createSingleItemArrayList(MessageReference messageReference) {
         ArrayList<MessageReference> messageReferences = new ArrayList<MessageReference>(1);
         messageReferences.add(messageReference);
 
@@ -144,7 +114,7 @@ public class NotificationActionService extends CoreService {
         } else if (ACTION_ARCHIVE.equals(action)) {
             archiveMessages(intent, account, controller);
         } else if (ACTION_SPAM.equals(action)) {
-            markMessageAsSpam(intent, account, controller);
+            spamMessages(intent, account, controller);
         } else if (ACTION_DISMISS.equals(action)) {
             if (K9.DEBUG) {
                 Log.i(K9.LOG_TAG, "Notification dismissed");
@@ -184,8 +154,7 @@ public class NotificationActionService extends CoreService {
         }
 
         String archiveFolderName = account.getArchiveFolderName();
-        if (archiveFolderName == null ||
-                (archiveFolderName.equals(account.getSpamFolderName()) && K9.confirmSpam()) ||
+        if (archiveFolderName == null || !K9.confirmArchive() &&
                 !isMovePossible(controller, account, archiveFolderName)) {
             Log.w(K9.LOG_TAG, "Can not archive messages");
             return;
@@ -201,7 +170,7 @@ public class NotificationActionService extends CoreService {
         }
     }
 
-    private void markMessageAsSpam(Intent intent, Account account, MessagingController controller) {
+    private void spamMessages(Intent intent, Account account, MessagingController controller) {
         if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "NotificationActionService moving messages to spam");
         }
