@@ -14,7 +14,7 @@ import android.support.v4.app.NotificationCompat.InboxStyle;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickAction;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
 import org.junit.Before;
@@ -93,7 +93,9 @@ public class DeviceNotificationsTest {
     @Test
     public void buildSummaryNotification_withSingleMessageNotification() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.ALWAYS);
+        K9.setNotificationQuickArchiveBehaviour(NotificationQuickAction.ALWAYS);
+        K9.setNotificationQuickSpamBehaviour(NotificationQuickAction.ALWAYS);
         when(notificationData.isSingleMessageNotification()).thenReturn(true);
 
         Notification result = notifications.buildSummaryNotification(account, notificationData, false);
@@ -109,6 +111,8 @@ public class DeviceNotificationsTest {
         verify(builder).addAction(R.drawable.notification_action_reply, "Reply", null);
         verify(builder).addAction(R.drawable.notification_action_mark_as_read, "Mark Read", null);
         verify(builder).addAction(R.drawable.notification_action_delete, "Delete", null);
+        verify(builder).addAction(R.drawable.notification_action_archive, "Archive", null);
+        verify(builder).addAction(R.drawable.notification_action_spam, "Spam", null);
         verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
         assertEquals(FAKE_NOTIFICATION, result);
     }
@@ -116,7 +120,9 @@ public class DeviceNotificationsTest {
     @Test
     public void buildSummaryNotification_withMultiMessageNotification() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.ALWAYS);
+        K9.setNotificationQuickArchiveBehaviour(NotificationQuickAction.ALWAYS);
+        K9.setNotificationQuickSpamBehaviour(NotificationQuickAction.ALWAYS);
         when(notificationData.isSingleMessageNotification()).thenReturn(false);
         when(notificationData.containsStarredMessages()).thenReturn(true);
 
@@ -138,6 +144,8 @@ public class DeviceNotificationsTest {
         verify(notifications.inboxStyle).addLine(SUMMARY_2);
         verify(builder).addAction(R.drawable.notification_action_mark_as_read, "Mark Read", null);
         verify(builder).addAction(R.drawable.notification_action_delete, "Delete", null);
+        verify(builder).addAction(R.drawable.notification_action_archive, "Archive", null);
+        verify(builder).addAction(R.drawable.notification_action_spam, "Spam", null);
         verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
         assertEquals(FAKE_NOTIFICATION, result);
     }
@@ -145,7 +153,9 @@ public class DeviceNotificationsTest {
     @Test
     public void buildSummaryNotification_withAdditionalMessages() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.ALWAYS);
+        K9.setNotificationQuickArchiveBehaviour(NotificationQuickAction.ALWAYS);
+        K9.setNotificationQuickSpamBehaviour(NotificationQuickAction.ALWAYS);
         when(notificationData.isSingleMessageNotification()).thenReturn(false);
         when(notificationData.hasAdditionalMessages()).thenReturn(true);
         when(notificationData.getAdditionalMessagesCount()).thenReturn(23);
@@ -158,7 +168,7 @@ public class DeviceNotificationsTest {
     @Test
     public void buildSummaryNotification_withoutDeleteAllAction() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.NEVER);
         when(notificationData.isSingleMessageNotification()).thenReturn(false);
 
         notifications.buildSummaryNotification(account, notificationData, false);
@@ -167,14 +177,58 @@ public class DeviceNotificationsTest {
     }
 
     @Test
+    public void buildSummaryNotification_withoutArchiveAllAction() throws Exception {
+        K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
+        K9.setNotificationQuickArchiveBehaviour(NotificationQuickAction.NEVER);
+        when(notificationData.isSingleMessageNotification()).thenReturn(false);
+
+        notifications.buildSummaryNotification(account, notificationData, false);
+
+        verify(builder, never()).addAction(R.drawable.notification_action_archive, "Archive", null);
+    }
+
+    @Test
+    public void buildSummaryNotification_withoutSpamAllAction() throws Exception {
+        K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
+        K9.setNotificationQuickSpamBehaviour(NotificationQuickAction.NEVER);
+        when(notificationData.isSingleMessageNotification()).thenReturn(false);
+
+        notifications.buildSummaryNotification(account, notificationData, false);
+
+        verify(builder, never()).addAction(R.drawable.notification_action_spam, "Spam", null);
+    }
+
+    @Test
     public void buildSummaryNotification_withoutDeleteAction() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.NEVER);
         when(notificationData.isSingleMessageNotification()).thenReturn(true);
 
         notifications.buildSummaryNotification(account, notificationData, false);
 
         verify(builder, never()).addAction(R.drawable.notification_action_delete, "Delete", null);
+    }
+
+    @Test
+    public void buildSummaryNotification_withoutArchiveAction() throws Exception {
+        K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
+        K9.setNotificationQuickArchiveBehaviour(NotificationQuickAction.NEVER);
+        when(notificationData.isSingleMessageNotification()).thenReturn(true);
+
+        notifications.buildSummaryNotification(account, notificationData, false);
+
+        verify(builder, never()).addAction(R.drawable.notification_action_archive, "Archive", null);
+    }
+
+    @Test
+    public void buildSummaryNotification_withoutSpamAction() throws Exception {
+        K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
+        K9.setNotificationQuickSpamBehaviour(NotificationQuickAction.NEVER);
+        when(notificationData.isSingleMessageNotification()).thenReturn(true);
+
+        notifications.buildSummaryNotification(account, notificationData, false);
+
+        verify(builder, never()).addAction(R.drawable.notification_action_spam, "Spam", null);
     }
 
     private Builder createFakeNotificationBuilder() {

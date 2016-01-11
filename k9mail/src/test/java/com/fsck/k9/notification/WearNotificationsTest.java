@@ -13,7 +13,7 @@ import android.support.v4.app.NotificationCompat.WearableExtender;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickAction;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
@@ -121,22 +121,22 @@ public class WearNotificationsTest {
     }
 
     @Test
-    public void testBuildStackedNotificationWithMarkAsSpamActionEnabled() throws Exception {
+    public void testBuildStackedNotificationWithSpamActionEnabled() throws Exception {
         enableSpamAction();
         int notificationIndex = 0;
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         MessageReference messageReference = createMessageReference(1);
         NotificationContent content = createNotificationContent(messageReference);
         NotificationHolder holder = createNotificationHolder(notificationId, content);
-        PendingIntent markAsSpamPendingIntent = createFakePendingIntent(1);
-        when(actionCreator.createMarkMessageAsSpamPendingIntent(messageReference, notificationId))
-                .thenReturn(markAsSpamPendingIntent);
+        PendingIntent spamPendingIntent = createFakePendingIntent(1);
+        when(actionCreator.createSpamPendingIntent(messageReference, notificationId))
+                .thenReturn(spamPendingIntent);
 
         Notification result = wearNotifications.buildStackedNotification(account, holder);
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_spam_dark, "Spam", markAsSpamPendingIntent);
+        verifyAddAction(R.drawable.ic_action_spam_dark, "Spam", spamPendingIntent);
     }
 
     @Test
@@ -188,6 +188,22 @@ public class WearNotificationsTest {
         verifyAddAction(R.drawable.ic_action_archive_dark, "Archive All", archivePendingIntent);
     }
 
+    @Test
+    public void testAddSummaryActionsWithSpamAllActionEnabled() throws Exception {
+        enableSpamAction();
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
+        ArrayList<MessageReference> messageReferences = createMessageReferenceList();
+        NotificationData notificationData = createNotificationData(messageReferences);
+        PendingIntent spamPendingIntent = createFakePendingIntent(1);
+        when(actionCreator.createSpamAllPendingIntent(account, messageReferences, notificationId))
+                .thenReturn(spamPendingIntent);
+
+        wearNotifications.addSummaryActions(builder, notificationData);
+
+        verifyExtendWasOnlyCalledOnce();
+        verifyAddAction(R.drawable.ic_action_spam_dark, "Spam All", spamPendingIntent);
+    }
+
     private void disableOptionalActions() {
         disableDeleteAction();
         disableArchiveAction();
@@ -195,7 +211,7 @@ public class WearNotificationsTest {
     }
 
     private void disableDeleteAction() {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.NEVER);
     }
 
     private void disableArchiveAction() {
@@ -207,7 +223,7 @@ public class WearNotificationsTest {
     }
 
     private void enableDeleteAction() {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.ALWAYS);
         K9.setConfirmDeleteFromNotification(false);
     }
 
@@ -222,6 +238,7 @@ public class WearNotificationsTest {
     private void disableOptionalSummaryActions() {
         disableDeleteAction();
         disableArchiveAction();
+        disableSpamAction();
     }
 
     private Builder createNotificationBuilder(Notification notification) {
