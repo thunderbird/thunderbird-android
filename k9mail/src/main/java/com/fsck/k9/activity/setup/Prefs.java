@@ -229,15 +229,19 @@ public class Prefs extends K9PreferenceActivity {
         if (canDoActionsFromNotification) {
             confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete_notif);
             confirmActionValues[index++] = K9.confirmDeleteFromNotification();
-            confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_archive_notif);
-            confirmActionValues[index++] = K9.confirmArchiveFromNotification();
-            confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_spam_notif);
-            confirmActionValues[index++] = K9.confirmSpamFromNotification();
         }
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_archive);
         confirmActionValues[index++] = K9.confirmArchive();
+        if (canDoActionsFromNotification) {
+            confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_archive_notif);
+            confirmActionValues[index++] = K9.confirmArchiveFromNotification();
+        }
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_spam);
         confirmActionValues[index++] = K9.confirmSpam();
+        if (canDoActionsFromNotification) {
+            confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_spam_notif);
+            confirmActionValues[index++] = K9.confirmSpamFromNotification();
+        }
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_menu_discard);
         confirmActionValues[index++] = K9.confirmDiscardMessage();
 
