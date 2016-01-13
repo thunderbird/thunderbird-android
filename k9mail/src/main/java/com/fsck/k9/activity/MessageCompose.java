@@ -85,6 +85,7 @@ import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
+import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -815,8 +816,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              */
             if (intent.getData() != null) {
                 Uri uri = intent.getData();
-                if ("mailto".equals(uri.getScheme())) {
-                    initializeFromMailto(uri);
+                if (MailTo.isMailTo(uri)) {
+                    MailTo mailTo = MailTo.parse(uri);
+                    initializeFromMailto(mailTo);
                 }
             }
 
@@ -2795,53 +2797,23 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * When we are launched with an intent that includes a mailto: URI, we can actually
      * gather quite a few of our message fields from it.
      *
-     * @param mailtoUri
-     *         The mailto: URI we use to initialize the message fields.
+     * @param mailTo
+     *         The MailTo object we use to initialize message field
      */
-    private void initializeFromMailto(Uri mailtoUri) {
-        /*
-         * mailto URIs are not hierarchical. So calling getQueryParameters()
-         * will throw an UnsupportedOperationException. We avoid this by
-         * creating a new hierarchical dummy Uri object with the query
-         * parameters of the original URI.
-         */
-        CaseInsensitiveParamWrapper uri = new CaseInsensitiveParamWrapper(
-                Uri.parse("foo://bar?" + mailtoUri.getEncodedQuery()));
+    private void initializeFromMailto(MailTo mailTo) {
+        recipientPresenter.initFromMailto(mailTo);
 
-        recipientPresenter.initFromMailto(mailtoUri, uri);
-
-        // Read subject from the "subject" parameter.
-        List<String> subject = uri.getQueryParameters("subject");
-        if (!subject.isEmpty()) {
-            mSubjectView.setText(subject.get(0));
+        String subject = mailTo.getSubject();
+        if (subject != null && !subject.isEmpty()) {
+            mSubjectView.setText(subject);
         }
 
-        // Read message body from the "body" parameter.
-        List<String> body = uri.getQueryParameters("body");
-        if (!body.isEmpty()) {
-            mMessageContentView.setCharacters(body.get(0));
+        String body = mailTo.getBody();
+        if (body != null && !subject.isEmpty()) {
+            mMessageContentView.setCharacters(body);
         }
     }
 
-    static class CaseInsensitiveParamWrapper {
-        private final Uri uri;
-        private Set<String> mParamNames;
-
-        public CaseInsensitiveParamWrapper(Uri uri) {
-            this.uri = uri;
-        }
-
-        public List<String> getQueryParameters(String key) {
-            final List<String> params = new ArrayList<String>();
-            for (String paramName : uri.getQueryParameterNames()) {
-                if (paramName.equalsIgnoreCase(key)) {
-                    params.addAll(uri.getQueryParameters(paramName));
-                }
-            }
-            return params;
-        }
-
-    }
 
     private class SendMessageTask extends AsyncTask<Void, Void, Void> {
         @Override

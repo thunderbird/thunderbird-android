@@ -17,9 +17,9 @@ import android.view.Menu;
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.MessageCompose.CaseInsensitiveParamWrapper;
 import com.fsck.k9.activity.RecipientMvpView.CryptoStatusType;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -158,29 +158,10 @@ public class RecipientPresenter {
         }
     }
 
-    public void initFromMailto(Uri mailtoUri, CaseInsensitiveParamWrapper uri) {
-        String schemaSpecific = mailtoUri.getSchemeSpecificPart();
-        int end = schemaSpecific.indexOf('?');
-        if (end == -1) {
-            end = schemaSpecific.length();
-        }
-
-        // Extract the recipient's email address from the mailto URI if there's one.
-        String recipient = Uri.decode(schemaSpecific.substring(0, end));
-
-        // Read additional recipients from the "to" parameter.
-        List<String> to = uri.getQueryParameters("to");
-        if (recipient.length() != 0) {
-            to = new ArrayList<String>(to);
-            to.add(0, recipient);
-        }
-        addToAddresses(addressFromStringArray(to));
-
-        // Read carbon copy recipients from the "cc" parameter.
-        addCcAddresses(addressFromStringArray(uri.getQueryParameters("cc")));
-
-        // Read blind carbon copy recipients from the "bcc" parameter.
-        addBccAddresses(addressFromStringArray(uri.getQueryParameters("bcc")));
+    public void initFromMailto(MailTo mailTo) {
+        addToAddresses(mailTo.getTo());
+        addCcAddresses(mailTo.getCc());
+        addBccAddresses(mailTo.getBcc());
     }
 
     public void initFromSendOrViewIntent(Intent intent) {
