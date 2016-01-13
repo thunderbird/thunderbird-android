@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import android.text.TextUtils;
+
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.MessagingException;
@@ -86,6 +88,9 @@ public class MessageDecryptVerifier {
 
             if (isSameMimeType(mimeType, TEXT_PLAIN)) {
                 String text = MessageExtractor.getTextFromPart(part);
+                if (TextUtils.isEmpty(text)) {
+                    continue;
+                }
                 switch (OpenPgpUtils.parseMessage(text)) {
                     case OpenPgpUtils.PARSE_RESULT_MESSAGE:
                     case OpenPgpUtils.PARSE_RESULT_SIGNED_MESSAGE:
