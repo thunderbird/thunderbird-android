@@ -19,6 +19,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.RecipientMvpView.CryptoStatusType;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -157,12 +158,10 @@ public class RecipientPresenter {
         }
     }
 
-    public void initFromMailto(Address[] toList, Address[] ccList, Address[] bccList) {
-        addToAddresses(toList);
-
-        addCcAddresses(ccList);
-
-        addBccAddresses(bccList);
+    public void initFromMailto(MailTo mailTo) {
+        addToAddresses(mailTo.getTo());
+        addCcAddresses(mailTo.getCc());
+        addBccAddresses(mailTo.getBcc());
     }
 
     public void initFromSendOrViewIntent(Intent intent) {

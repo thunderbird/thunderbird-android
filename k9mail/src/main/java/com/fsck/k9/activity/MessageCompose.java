@@ -2801,14 +2801,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      *         The MailTo object we use to initialize message field
      */
     private void initializeFromMailto(MailTo mailTo) {
-
-        Address[] toList = mailTo.getTo();
-
-        Address[] ccList = mailTo.getCc();
-
-        Address[] bccList = mailTo.getBcc();
-
-        recipientPresenter.initFromMailto(toList, ccList, bccList);
+        recipientPresenter.initFromMailto(mailTo);
 
         String subject = mailTo.getSubject();
         if (subject != null && !subject.isEmpty()) {
