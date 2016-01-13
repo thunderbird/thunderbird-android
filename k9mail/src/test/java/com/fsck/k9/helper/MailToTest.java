@@ -1,12 +1,13 @@
 package com.fsck.k9.helper;
 
 import android.net.Uri;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.fsck.k9.mail.Address;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +16,9 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(AndroidJUnit4.class)
+
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE, sdk = 21)
 public class MailToTest {
     @Test
     public void testIsMailTo_validMailToURI() {
