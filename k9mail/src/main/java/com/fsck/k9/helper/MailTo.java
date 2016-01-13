@@ -57,7 +57,6 @@ public class MailTo {
         // Read additional recipients from the "to" parameter.
         List<String> toList = caseInsensitiveParamWrapper.getQueryParameters(TO);
         if (recipient.length() != 0) {
-            toList = new ArrayList<String>(toList);
             toList.add(0, recipient);
         }
 
