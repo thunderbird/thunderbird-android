@@ -35,11 +35,11 @@ public class MailTo {
 
     public static MailTo parse(Uri uri) throws NullPointerException, IllegalArgumentException {
         if (uri == null || uri.toString() == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("Argument 'uri' must not be null");
         }
 
         if (!isMailTo(uri)) {
-            throw new IllegalArgumentException("Not a mail to scheme");
+            throw new IllegalArgumentException("Not a mailto scheme");
         }
 
         String schemaSpecific = uri.getSchemeSpecificPart();
