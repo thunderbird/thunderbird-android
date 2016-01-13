@@ -1,20 +1,20 @@
 package com.fsck.k9.helper;
 
+
+import java.util.Arrays;
+import java.util.List;
+
 import android.net.Uri;
 
 import com.fsck.k9.mail.Address;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -128,6 +128,6 @@ public class MailToTest {
                 Uri.parse("foo://bar?" + uri.getEncodedQuery()));
 
         List<String> actualTo = caseInsensitiveParamWrapper.getQueryParameters("to");
-        List<String> expectedTo = Arrays.asList(new String[]{"test2@abc.com"});
+        List<String> expectedTo = Arrays.asList(new String[] { "test2@abc.com" });
     }
 }

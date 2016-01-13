@@ -1,15 +1,22 @@
 package com.fsck.k9.helper;
 
-import android.net.Uri;
-
-import com.fsck.k9.mail.Address;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MailTo {
+import android.net.Uri;
 
-    static public final String MAILTO_SCHEME = "mailto";
+import com.fsck.k9.mail.Address;
+
+
+public class MailTo {
+    public static final String MAILTO_SCHEME = "mailto";
+    private static final String TO = "to";
+    private static final String BODY = "body";
+    private static final String CC = "cc";
+    private static final String BCC = "bcc";
+    private static final String SUBJECT = "subject";
+
 
     private final Address[] toAddresses;
     private final Address[] ccAddresses;
@@ -17,13 +24,6 @@ public class MailTo {
     private final String subject;
     private final String body;
 
-
-    // Well known headers
-    static private final String TO = "to";
-    static private final String BODY = "body";
-    static private final String CC = "cc";
-    static private final String BCC = "bcc";
-    static private final String SUBJECT = "subject";
 
     public static boolean isMailTo(Uri uri) {
         if (uri == null) {
@@ -77,15 +77,8 @@ public class MailTo {
             body = bodyList.get(0);
         }
 
-        return new MailTo(listToCommaSeperatedString(toList), listToCommaSeperatedString(ccList), listToCommaSeperatedString(bccList), subject, body);
-    }
-
-    private MailTo(String toAddresses, String ccAddresses, String bccAddresses, String subject, String body) {
-        this.toAddresses = Address.parseUnencoded(toAddresses);
-        this.ccAddresses = Address.parseUnencoded(ccAddresses);
-        this.bccAddresses = Address.parseUnencoded(bccAddresses);
-        this.subject = subject;
-        this.body = body;
+        return new MailTo(listToCommaSeperatedString(toList), listToCommaSeperatedString(ccList),
+                listToCommaSeperatedString(bccList), subject, body);
     }
 
     private static String listToCommaSeperatedString(List<String> listStr) {
@@ -99,22 +92,12 @@ public class MailTo {
         return strBuilder.toString();
     }
 
-    static class CaseInsensitiveParamWrapper {
-        private final Uri uri;
-
-        public CaseInsensitiveParamWrapper(Uri uri) {
-            this.uri = uri;
-        }
-
-        public List<String> getQueryParameters(String key) {
-            final List<String> params = new ArrayList<String>();
-            for (String paramName : uri.getQueryParameterNames()) {
-                if (paramName.equalsIgnoreCase(key)) {
-                    params.addAll(uri.getQueryParameters(paramName));
-                }
-            }
-            return params;
-        }
+    private MailTo(String toAddresses, String ccAddresses, String bccAddresses, String subject, String body) {
+        this.toAddresses = Address.parseUnencoded(toAddresses);
+        this.ccAddresses = Address.parseUnencoded(ccAddresses);
+        this.bccAddresses = Address.parseUnencoded(bccAddresses);
+        this.subject = subject;
+        this.body = body;
     }
 
     public Address[] getTo() {
@@ -135,5 +118,26 @@ public class MailTo {
 
     public String getBody() {
         return body;
+    }
+
+
+    static class CaseInsensitiveParamWrapper {
+        private final Uri uri;
+
+
+        public CaseInsensitiveParamWrapper(Uri uri) {
+            this.uri = uri;
+        }
+
+        public List<String> getQueryParameters(String key) {
+            List<String> params = new ArrayList<String>();
+            for (String paramName : uri.getQueryParameterNames()) {
+                if (paramName.equalsIgnoreCase(key)) {
+                    params.addAll(uri.getQueryParameters(paramName));
+                }
+            }
+
+            return params;
+        }
     }
 }
