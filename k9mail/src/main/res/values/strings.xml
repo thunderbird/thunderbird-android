@@ -1170,5 +1170,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="address_type_work">Work</string>
     <string name="address_type_other">Other</string>
     <string name="address_type_mobile">Mobile</string>
+    <string name="warn_search_disabled">Search in message bodies is disabled in this development version!</string>
 
 </resources>
