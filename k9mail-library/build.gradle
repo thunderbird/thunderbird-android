@@ -31,6 +31,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    // for using Apache HTTP Client
+    useLibrary 'org.apache.http.legacy'
+
     buildTypes {
         debug {
             testCoverageEnabled rootProject.testCoverage
