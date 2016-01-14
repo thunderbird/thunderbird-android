@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.K9AlarmManager;
 
 public class BootReceiver extends CoreReceiver {
 
@@ -61,7 +62,7 @@ public class BootReceiver extends CoreReceiver {
                 Log.i(K9.LOG_TAG, "BootReceiver Scheduling intent " + alarmedIntent + " for " + new Date(atTime));
 
             PendingIntent pi = buildPendingIntent(context, intent);
-            AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            K9AlarmManager alarmMgr = K9AlarmManager.getAlarmManager(context);
 
             alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi);
         } else if (CANCEL_INTENT.equals(action)) {
@@ -71,7 +72,7 @@ public class BootReceiver extends CoreReceiver {
 
             PendingIntent pi = buildPendingIntent(context, intent);
 
-            AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            K9AlarmManager alarmMgr = K9AlarmManager.getAlarmManager(context);
             alarmMgr.cancel(pi);
         }
 
@@ -119,8 +120,7 @@ public class BootReceiver extends CoreReceiver {
      * @param context
      */
     public static void purgeSchedule(final Context context) {
-        final AlarmManager alarmService = (AlarmManager) context
-                                          .getSystemService(Context.ALARM_SERVICE);
+        final K9AlarmManager alarmService = K9AlarmManager.getAlarmManager(context);
         alarmService.cancel(PendingIntent.getBroadcast(context, 0, new Intent() {
             @Override
             public boolean filterEquals(final Intent other) {
