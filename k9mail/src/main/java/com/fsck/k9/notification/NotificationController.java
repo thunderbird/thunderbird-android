@@ -149,6 +149,6 @@ public class NotificationController {
     }
 
     NotificationCompat.Builder createNotificationBuilder() {
-        return new NotificationCompat.Builder(context);
+        return new ExtendedNotificationBuilder(context);
     }
 }
