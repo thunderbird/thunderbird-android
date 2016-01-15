@@ -6,7 +6,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickAction;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
 import org.junit.Before;
@@ -55,7 +55,7 @@ public class BaseNotificationsTest {
 
     @Test
     public void testIsDeleteActionEnabled_NotificationQuickDelete_ALWAYS() throws Exception {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.ALWAYS);
 
         boolean result = notifications.isDeleteActionEnabled();
 
@@ -64,7 +64,7 @@ public class BaseNotificationsTest {
 
     @Test
     public void testIsDeleteActionEnabled_NotificationQuickDelete_FOR_SINGLE_MSG() throws Exception {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.FOR_SINGLE_MSG);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.FOR_SINGLE_MSG);
 
         boolean result = notifications.isDeleteActionEnabled();
 
@@ -73,9 +73,63 @@ public class BaseNotificationsTest {
 
     @Test
     public void testIsDeleteActionEnabled_NotificationQuickDelete_NEVER() throws Exception {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
+        K9.setNotificationQuickDeleteBehaviour(NotificationQuickAction.NEVER);
 
         boolean result = notifications.isDeleteActionEnabled();
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testIsArchiveActionEnabled_NotificationQuickArchive_ALWAYS() throws Exception {
+        K9.setNotificationQuickArchiveBehaviour(NotificationQuickAction.ALWAYS);
+
+        boolean result = notifications.isArchiveActionEnabled();
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void testIsArchiveActionEnabled_NotificationQuickArchive_FOR_SINGLE_MSG() throws Exception {
+        K9.setNotificationQuickArchiveBehaviour(NotificationQuickAction.FOR_SINGLE_MSG);
+
+        boolean result = notifications.isArchiveActionEnabled();
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void testIsArchiveActionEnabled_NotificationQuickArchive_NEVER() throws Exception {
+        K9.setNotificationQuickArchiveBehaviour(NotificationQuickAction.NEVER);
+
+        boolean result = notifications.isArchiveActionEnabled();
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testIsSpamActionEnabled_NotificationQuickSpam_ALWAYS() throws Exception {
+        K9.setNotificationQuickSpamBehaviour(NotificationQuickAction.ALWAYS);
+
+        boolean result = notifications.isSpamActionEnabled();
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void testIsSpamActionEnabled_NotificationQuickSpam_FOR_SINGLE_MSG() throws Exception {
+        K9.setNotificationQuickSpamBehaviour(NotificationQuickAction.FOR_SINGLE_MSG);
+
+        boolean result = notifications.isSpamActionEnabled();
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void testIsSpamActionEnabled_NotificationQuickSpam_NEVER() throws Exception {
+        K9.setNotificationQuickSpamBehaviour(NotificationQuickAction.NEVER);
+
+        boolean result = notifications.isSpamActionEnabled();
 
         assertFalse(result);
     }

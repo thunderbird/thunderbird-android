@@ -263,9 +263,9 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="global_settings_notification_hide_subject_when_locked">Når enhed er låst</string>
   <string name="global_settings_notification_hide_subject_always">Altid</string>
   <string name="global_settings_notification_quick_delete_title">Vis \'Slet\' knap</string>
-  <string name="global_settings_notification_quick_delete_never">Aldrig</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">For single meddelelse notifikation</string>
-  <string name="global_settings_notification_quick_delete_always">Altid</string>
+  <string name="global_settings_notification_quick_action_never">Aldrig</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">For single meddelelse notifikation</string>
+  <string name="global_settings_notification_quick_action_always">Altid</string>
   <string name="global_settings_notification_quick_delete_description">Vis knap i notifikation bjælke som tillader sletning af meddelese</string>
   <string name="quiet_time">Tidsrum med stilhed</string>
   <string name="quiet_time_description">Undlad at ringe, vibrere og blinke i tidsrummet</string>
@@ -702,7 +702,7 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="select_text_now">Vælg tekst som skal kopieres.</string>
   <string name="dialog_confirm_delete_title">Bekræft sletning</string>
   <string name="dialog_confirm_delete_message">Ønsker du at slette denne mail?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Ønsker du virkelig at slette denne meddelelse?</item>
     <item quantity="other">Ønsker du virkelig at slette <xliff:g id="message_count">%1$d</xliff:g> meddelelser?</item>
   </plurals>

@@ -276,9 +276,9 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="global_settings_notification_hide_subject_when_locked">Cihaz kilitlendiği zaman</string>
   <string name="global_settings_notification_hide_subject_always">Her zaman</string>
   <string name="global_settings_notification_quick_delete_title">\'Sil\' butonunu göster</string>
-  <string name="global_settings_notification_quick_delete_never">Hiçbir zaman</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Tek bir mesaj bildirimi için</string>
-  <string name="global_settings_notification_quick_delete_always">Her zaman</string>
+  <string name="global_settings_notification_quick_action_never">Hiçbir zaman</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Tek bir mesaj bildirimi için</string>
+  <string name="global_settings_notification_quick_action_always">Her zaman</string>
   <string name="global_settings_notification_quick_delete_description">Hızlı mesaj silmek için bildirimde buton göster</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Kilit Ekranı Bildirimleri</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Kilit ekranı bildirimi yok</string>
@@ -756,7 +756,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="select_text_now">Kopyalamak için metni seç.</string>
   <string name="dialog_confirm_delete_title">Silmeyi onayla</string>
   <string name="dialog_confirm_delete_message">Bu mesajı silmek istiyor musunuz?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Bu mesajı silmek istiyor musunuz?</item>
     <item quantity="other"><xliff:g id="message_count">%1$d</xliff:g> mesajını silmek istiyor musunuz?</item>
   </plurals>

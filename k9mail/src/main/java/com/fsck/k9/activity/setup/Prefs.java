@@ -23,13 +23,12 @@ import android.widget.Toast;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickAction;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
-import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.notification.NotificationController;
@@ -85,6 +84,8 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
     private static final String PREFERENCE_NOTIF_QUICK_DELETE = "notification_quick_delete";
+    private static final String PREFERENCE_NOTIF_QUICK_ARCHIVE = "notification_quick_archive";
+    private static final String PREFERENCE_NOTIF_QUICK_SPAM = "notification_quick_spam";
     private static final String PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY = "lock_screen_notification_visibility";
     private static final String PREFERENCE_HIDE_USERAGENT = "privacy_hide_useragent";
     private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
@@ -149,6 +150,8 @@ public class Prefs extends K9PreferenceActivity {
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
     private com.fsck.k9.preferences.TimePickerPreference mQuietTimeEnds;
     private ListPreference mNotificationQuickDelete;
+    private ListPreference mNotificationQuickArchive;
+    private ListPreference mNotificationQuickSpam;
     private ListPreference mLockScreenNotificationVisibility;
     private Preference mAttachmentPathPreference;
 
@@ -214,21 +217,31 @@ public class Prefs extends K9PreferenceActivity {
 
         mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
 
-        boolean canDeleteFromNotification = NotificationController.platformSupportsExtendedNotifications();
-        CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 5 : 4];
-        boolean[] confirmActionValues = new boolean[canDeleteFromNotification ? 5 : 4];
+        boolean canDoActionsFromNotification = NotificationController.platformSupportsExtendedNotifications();
+        CharSequence[] confirmActionEntries = new CharSequence[canDoActionsFromNotification ? 8 : 5];
+        boolean[] confirmActionValues = new boolean[canDoActionsFromNotification ? 8 : 5];
         int index = 0;
 
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete);
         confirmActionValues[index++] = K9.confirmDelete();
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete_starred);
         confirmActionValues[index++] = K9.confirmDeleteStarred();
-        if (canDeleteFromNotification) {
+        if (canDoActionsFromNotification) {
             confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete_notif);
             confirmActionValues[index++] = K9.confirmDeleteFromNotification();
         }
+        confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_archive);
+        confirmActionValues[index++] = K9.confirmArchive();
+        if (canDoActionsFromNotification) {
+            confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_archive_notif);
+            confirmActionValues[index++] = K9.confirmArchiveFromNotification();
+        }
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_spam);
         confirmActionValues[index++] = K9.confirmSpam();
+        if (canDoActionsFromNotification) {
+            confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_spam_notif);
+            confirmActionValues[index++] = K9.confirmSpamFromNotification();
+        }
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_menu_discard);
         confirmActionValues[index++] = K9.confirmDiscardMessage();
 
@@ -348,6 +361,22 @@ public class Prefs extends K9PreferenceActivity {
             mNotificationQuickDelete = null;
         }
 
+        mNotificationQuickArchive = setupListPreference(PREFERENCE_NOTIF_QUICK_ARCHIVE,
+                K9.getNotificationQuickArchiveBehaviour().toString());
+        if (!NotificationController.platformSupportsExtendedNotifications()) {
+            PreferenceScreen prefs = (PreferenceScreen) findPreference("notification_preferences");
+            prefs.removePreference(mNotificationQuickArchive);
+            mNotificationQuickArchive = null;
+        }
+
+        mNotificationQuickSpam = setupListPreference(PREFERENCE_NOTIF_QUICK_SPAM,
+                K9.getNotificationQuickSpamBehaviour().toString());
+        if (!NotificationController.platformSupportsExtendedNotifications()) {
+            PreferenceScreen prefs = (PreferenceScreen) findPreference("notification_preferences");
+            prefs.removePreference(mNotificationQuickSpam);
+            mNotificationQuickSpam = null;
+        }
+
         mLockScreenNotificationVisibility = setupListPreference(PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
             K9.getLockScreenNotificationVisibility().toString());
         if (!NotificationController.platformSupportsLockScreenNotifications()) {
@@ -464,7 +493,10 @@ public class Prefs extends K9PreferenceActivity {
         K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[index++]);
         if (NotificationController.platformSupportsExtendedNotifications()) {
             K9.setConfirmDeleteFromNotification(mConfirmActions.getCheckedItems()[index++]);
+            K9.setConfirmArchiveFromNotification(mConfirmActions.getCheckedItems()[index++]);
+            K9.setConfirmSpamFromNotification(mConfirmActions.getCheckedItems()[index++]);
         }
+        K9.setConfirmArchive(mConfirmActions.getCheckedItems()[index++]);
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[index++]);
         K9.setConfirmDiscardMessage(mConfirmActions.getCheckedItems()[index++]);
 
@@ -502,7 +534,17 @@ public class Prefs extends K9PreferenceActivity {
 
         if (mNotificationQuickDelete != null) {
             K9.setNotificationQuickDeleteBehaviour(
-                    NotificationQuickDelete.valueOf(mNotificationQuickDelete.getValue()));
+                    NotificationQuickAction.valueOf(mNotificationQuickDelete.getValue()));
+        }
+
+        if (mNotificationQuickArchive != null) {
+            K9.setNotificationQuickArchiveBehaviour(
+                    NotificationQuickAction.valueOf(mNotificationQuickArchive.getValue()));
+        }
+
+        if (mNotificationQuickSpam != null) {
+            K9.setNotificationQuickSpamBehaviour(
+                    NotificationQuickAction.valueOf(mNotificationQuickSpam.getValue()));
         }
 
         if(mLockScreenNotificationVisibility != null) {

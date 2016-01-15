@@ -275,9 +275,9 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="global_settings_notification_hide_subject_when_locked">Lorsque l\'appareil est verrouillé</string>
   <string name="global_settings_notification_hide_subject_always">Toujours</string>
   <string name="global_settings_notification_quick_delete_title">Afficher le bouton «\u00A0Supprimer\u00A0»</string>
-  <string name="global_settings_notification_quick_delete_never">Jamais</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Pour la notification de message unique</string>
-  <string name="global_settings_notification_quick_delete_always">Toujours</string>
+  <string name="global_settings_notification_quick_action_never">Jamais</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Pour la notification de message unique</string>
+  <string name="global_settings_notification_quick_action_always">Toujours</string>
   <string name="global_settings_notification_quick_delete_description">Afficher un bouton dans les notification permettant la suppression rapide des messages</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Notifications d\'écran verrouillé</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Notifications d\'écran déverrouillé</string>
@@ -755,7 +755,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="select_text_now">Sélectionner le texte à copier</string>
   <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
   <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Voulez-vous vraiment supprimer ce message\u00A0?</item>
     <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> messages\u00A0?</item>
   </plurals>

@@ -272,9 +272,9 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="global_settings_notification_hide_subject_when_locked">Cuando el dispositivo está bloqueado</string>
   <string name="global_settings_notification_hide_subject_always">Siempre</string>
   <string name="global_settings_notification_quick_delete_title">Mostrar el botón \'Borrar\'</string>
-  <string name="global_settings_notification_quick_delete_never">Nunca</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Para notificaciones de un mensaje</string>
-  <string name="global_settings_notification_quick_delete_always">Siempre</string>
+  <string name="global_settings_notification_quick_action_never">Nunca</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Para notificaciones de un mensaje</string>
+  <string name="global_settings_notification_quick_action_always">Siempre</string>
   <string name="global_settings_notification_quick_delete_description">Mostrar un botón en las notificaciones que permite borrar rápidamente los mensajes</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Notificaciones en pantalla bloqueada</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Sin notificaciones en pantalla bloqueada</string>
@@ -752,7 +752,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="select_text_now">Seleccionar texto a copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar borrado</string>
   <string name="dialog_confirm_delete_message">¿Quiere borrar este mensaje?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">¿Realmente desea borrar este mensaje?</item>
     <item quantity="other">¿Realmente desea borrar <xliff:g id="message_count">%1$d</xliff:g> mensajes?</item>
   </plurals>

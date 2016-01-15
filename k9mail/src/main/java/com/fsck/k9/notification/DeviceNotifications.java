@@ -15,7 +15,7 @@ import android.support.v4.app.NotificationCompat.InboxStyle;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickAction;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
@@ -112,7 +112,9 @@ class DeviceNotifications extends BaseNotifications {
         NotificationContent content = holder.content;
         addReplyAction(builder, content, notificationId);
         addMarkAsReadAction(builder, content, notificationId);
+        addArchiveAction(builder, content, notificationId);
         addDeleteAction(builder, content, notificationId);
+        addSpamAction(builder, content, notificationId);
 
         return builder;
     }
@@ -150,7 +152,9 @@ class DeviceNotifications extends BaseNotifications {
         builder.setStyle(style);
 
         addMarkAllAsReadAction(builder, notificationData);
+        addArchiveAllAction(builder, notificationData);
         addDeleteAllAction(builder, notificationData);
+        addSpamAllAction(builder, notificationData);
 
         wearNotifications.addSummaryActions(builder, notificationData);
 
@@ -188,7 +192,7 @@ class DeviceNotifications extends BaseNotifications {
     }
 
     private void addDeleteAllAction(Builder builder, NotificationData notificationData) {
-        if (K9.getNotificationQuickDeleteBehaviour() != NotificationQuickDelete.ALWAYS) {
+        if (K9.getNotificationQuickDeleteBehaviour() != NotificationQuickAction.ALWAYS) {
             return;
         }
 
@@ -203,6 +207,38 @@ class DeviceNotifications extends BaseNotifications {
         builder.addAction(icon, title, action);
     }
 
+    private void addArchiveAllAction(Builder builder, NotificationData notificationData) {
+        if (K9.getNotificationQuickArchiveBehaviour() != NotificationQuickAction.ALWAYS) {
+            return;
+        }
+
+        int icon = getArchiveActionIcon();
+        String title = context.getString(R.string.notification_action_archive);
+
+        Account account = notificationData.getAccount();
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
+        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
+        PendingIntent action = actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId);
+
+        builder.addAction(icon, title, action);
+    }
+
+    private void addSpamAllAction(Builder builder, NotificationData notificationData) {
+        if (K9.getNotificationQuickSpamBehaviour() != NotificationQuickAction.ALWAYS) {
+            return;
+        }
+
+        int icon = getSpamActionIcon();
+        String title = context.getString(R.string.notification_action_spam);
+
+        Account account = notificationData.getAccount();
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
+        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
+        PendingIntent action = actionCreator.createSpamAllPendingIntent(account, messageReferences, notificationId);
+
+        builder.addAction(icon, title, action);
+    }
+
     private void addDeleteAction(Builder builder, NotificationContent content, int notificationId) {
         if (!isDeleteActionEnabled()) {
             return;
@@ -213,6 +249,34 @@ class DeviceNotifications extends BaseNotifications {
 
         MessageReference messageReference = content.messageReference;
         PendingIntent action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId);
+
+        builder.addAction(icon, title, action);
+    }
+
+    private void addArchiveAction(Builder builder, NotificationContent content, int notificationId) {
+        if (!isArchiveActionEnabled()) {
+            return;
+        }
+
+        int icon = getArchiveActionIcon();
+        String title = context.getString(R.string.notification_action_archive);
+
+        MessageReference messageReference = content.messageReference;
+        PendingIntent action = actionCreator.createArchiveMessagePendingIntent(messageReference, notificationId);
+
+        builder.addAction(icon, title, action);
+    }
+
+    private void addSpamAction(Builder builder, NotificationContent content, int notificationId) {
+        if (!isSpamActionEnabled()) {
+            return;
+        }
+
+        int icon = getSpamActionIcon();
+        String title = context.getString(R.string.notification_action_spam);
+
+        MessageReference messageReference = content.messageReference;
+        PendingIntent action = actionCreator.createSpamMessagePendingIntent(messageReference, notificationId);
 
         builder.addAction(icon, title, action);
     }
@@ -244,6 +308,14 @@ class DeviceNotifications extends BaseNotifications {
 
     private int getDeleteActionIcon() {
         return R.drawable.notification_action_delete;
+    }
+
+    private int getArchiveActionIcon() {
+        return R.drawable.ic_action_archive_dark; // TODO: need vector drawing for archive
+    }
+
+    private int getSpamActionIcon() {
+        return R.drawable.ic_action_spam_dark; // TODO: need vector drawing for mark as spam
     }
 
     private int getReplyActionIcon() {

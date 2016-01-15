@@ -335,7 +335,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (mAccount.getSpamFolderName().equals(dstFolder) && K9.confirmSpam()) {
+        if (mAccount.getArchiveFolderName().equals(dstFolder) && K9.confirmArchive()) {
+            mDstFolder = dstFolder;
+            showDialog(R.id.dialog_confirm_archive);
+        } else if (mAccount.getSpamFolderName().equals(dstFolder) && K9.confirmSpam()) {
             mDstFolder = dstFolder;
             showDialog(R.id.dialog_confirm_spam);
         } else {
@@ -545,6 +548,16 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                         confirmText, cancelText);
                 break;
             }
+            case R.id.dialog_confirm_archive: {
+                String title = getString(R.string.dialog_confirm_archive_title);
+                String message = getResources().getQuantityString(R.plurals.dialog_confirm_archive_message, 1);
+                String confirmText = getString(R.string.dialog_confirm_archive_confirm_button);
+                String cancelText = getString(R.string.dialog_confirm_archive_cancel_button);
+
+                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                        confirmText, cancelText);
+                break;
+            }
             case R.id.dialog_confirm_spam: {
                 String title = getString(R.string.dialog_confirm_spam_title);
                 String message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, 1);
@@ -603,6 +616,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 delete();
                 break;
             }
+            case R.id.dialog_confirm_archive:
             case R.id.dialog_confirm_spam: {
                 refileMessage(mDstFolder);
                 mDstFolder = null;

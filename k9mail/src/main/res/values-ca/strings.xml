@@ -268,9 +268,9 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="global_settings_notification_hide_subject_when_locked">Quan el telèfon està bloquejat</string>
   <string name="global_settings_notification_hide_subject_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_title">Mostra el botó \'Elimina\'</string>
-  <string name="global_settings_notification_quick_delete_never">Mai</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Per a notificacions d\'un sol missatge</string>
-  <string name="global_settings_notification_quick_delete_always">Sempre</string>
+  <string name="global_settings_notification_quick_action_never">Mai</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Per a notificacions d\'un sol missatge</string>
+  <string name="global_settings_notification_quick_action_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_description">Mostra un botó a les notificacions que permet eliminar el missatge ràpidament.</string>
   <string name="quiet_time">Mode silenciós</string>
   <string name="quiet_time_description">Deshabilita so de trucada, brunzit i llums durant la nit</string>
@@ -710,7 +710,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="select_text_now">Seleccioneu el text a copiar.</string>
   <string name="dialog_confirm_delete_title">Confirma esborrar</string>
   <string name="dialog_confirm_delete_message">Voleu esborrar aquest missatge?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Voleu eliminar aquest missatge?</item>
     <item quantity="other">Voleu eliminar <xliff:g id="message_count">%1$d</xliff:g> missatges?</item>
   </plurals>

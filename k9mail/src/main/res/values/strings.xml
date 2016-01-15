@@ -214,6 +214,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_action_archive">Archive</string>
     <string name="notification_action_archive_all">Archive All</string>
     <string name="notification_action_spam">Spam</string>
+    <string name="notification_action_spam_all">Spam All</string>
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
 
@@ -331,9 +332,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
     <string name="global_settings_confirm_action_delete">Delete</string>
     <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>
+    <string name="global_settings_confirm_action_archive">Archive</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_menu_discard">Discard message</string>
     <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>
+    <string name="global_settings_confirm_action_archive_notif">Archive (from notification)</string>
+    <string name="global_settings_confirm_action_spam_notif">Spam (from notification)</string>
 
     <string name="global_settings_privacy_hide_useragent">Remove K-9 User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Use UTC as time zone in mail headers</string>
@@ -343,10 +347,17 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_notification_hide_subject_always">Always</string>
 
     <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>
-    <string name="global_settings_notification_quick_delete_never">Never</string>
-    <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>
-    <string name="global_settings_notification_quick_delete_always">Always</string>
     <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>
+
+    <string name="global_settings_notification_quick_archive_title">Show \'Archive\' button</string>
+    <string name="global_settings_notification_quick_archive_description">Show a button in the notification that allows quick message archival</string>
+
+    <string name="global_settings_notification_quick_spam_title">Show \'Spam\' button</string>
+    <string name="global_settings_notification_quick_spam_description">Show a button in the notification that allows quick marking of message as spam</string>
+
+    <string name="global_settings_notification_quick_action_never">Never</string>
+    <string name="global_settings_notification_quick_action_when_single_msg">For single message notification</string>
+    <string name="global_settings_notification_quick_action_always">Always</string>
 
     <string name="global_settings_lock_screen_notification_visibility_title">Lock Screen Notifications</string>
     <string name="global_settings_lock_screen_notification_visibility_nothing">No lock screen notifications</string>
@@ -941,12 +952,20 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="dialog_confirm_delete_title">Confirm deletion</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
 
-    <plurals name="dialog_confirm_delete_messages">
+    <plurals name="dialog_confirm_delete_message">
         <item quantity="one">Do you really want to delete this message?</item>
         <item quantity="other">Do you really want to delete <xliff:g id="message_count">%1$d</xliff:g> messages?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Yes</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
+
+    <string name="dialog_confirm_archive_title">Confirm move to archive folder</string>
+    <plurals name="dialog_confirm_archive_message">
+        <item quantity="one">Do you really want to move this message to the archive folder?</item>
+        <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the archive folder?</item>
+    </plurals>
+    <string name="dialog_confirm_archive_confirm_button">Yes</string>
+    <string name="dialog_confirm_archive_cancel_button">No</string>
 
     <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>
     <plurals name="dialog_confirm_spam_message">

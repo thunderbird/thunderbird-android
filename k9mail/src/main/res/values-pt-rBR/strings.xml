@@ -270,9 +270,9 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="global_settings_notification_hide_subject_when_locked">Com o telefone bloqueado</string>
   <string name="global_settings_notification_hide_subject_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_title">Exibir o botão \'Excluir\'</string>
-  <string name="global_settings_notification_quick_delete_never">Nunca</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Notificações únicas</string>
-  <string name="global_settings_notification_quick_delete_always">Sempre</string>
+  <string name="global_settings_notification_quick_action_never">Nunca</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">Notificações únicas</string>
+  <string name="global_settings_notification_quick_action_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_description">Exibir um botão nas notificações para exclusão rápida de mensagens</string>
   <string name="quiet_time">Período de silêncio</string>
   <string name="quiet_time_description">Desabilitar sons, vibração e luz indicadora à noite</string>
@@ -725,7 +725,7 @@ Por favor, nos envie relatórios de bugs, contribua para novas melhorias e faça
   <string name="select_text_now">Selecione o texto para copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar exclusão</string>
   <string name="dialog_confirm_delete_message">Deseja mesmo excluir esta mensagem?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Deseja mesmo excluir esta mensagem?</item>
     <item quantity="other">Deseja mesmo excluir estas <xliff:g id="message_count">%1$d</xliff:g> mensagens?</item>
   </plurals>

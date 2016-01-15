@@ -18,7 +18,7 @@ import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.activity.NotificationDeleteConfirmation;
+import com.fsck.k9.activity.NotificationActionConfirmation;
 import com.fsck.k9.search.LocalSearch;
 
 
@@ -125,85 +125,133 @@ class NotificationActionCreator {
     }
 
     public PendingIntent createDeleteMessagePendingIntent(MessageReference messageReference, int notificationId) {
+        String action = NotificationActionService.ACTION_DELETE;
         if (K9.confirmDeleteFromNotification()) {
-            return createDeleteConfirmationPendingIntent(messageReference, notificationId);
+            return createActionConfirmationPendingIntent(action, messageReference, notificationId);
         } else {
-            return createDeleteServicePendingIntent(messageReference, notificationId);
+            return createActionServicePendingIntent(action, messageReference, notificationId);
         }
     }
 
-    private PendingIntent createDeleteServicePendingIntent(MessageReference messageReference, int notificationId) {
-        Intent intent = NotificationActionService.createDeleteMessageIntent(context, messageReference);
+    public PendingIntent createArchiveMessagePendingIntent(MessageReference messageReference, int notificationId) {
+        String action = NotificationActionService.ACTION_ARCHIVE;
+        if (K9.confirmDeleteFromNotification()) {
+            return createActionConfirmationPendingIntent(action, messageReference, notificationId);
+        } else {
+            return createActionServicePendingIntent(action, messageReference, notificationId);
+        }
+    }
+
+    public PendingIntent createSpamMessagePendingIntent(MessageReference messageReference, int notificationId) {
+        String action = NotificationActionService.ACTION_SPAM;
+        if (K9.confirmDeleteFromNotification()) {
+            return createActionConfirmationPendingIntent(action, messageReference, notificationId);
+        } else {
+            return createActionServicePendingIntent(action, messageReference, notificationId);
+        }
+    }
+
+    private PendingIntent createActionServicePendingIntent(String action, MessageReference messageReference, int notificationId) {
+        Intent intent = NotificationActionService.createActionMessageIntent(action, context, messageReference);
 
         return PendingIntent.getService(context, notificationId, intent,
                 PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 
-    private PendingIntent createDeleteConfirmationPendingIntent(MessageReference messageReference, int notificationId) {
-        Intent intent = NotificationDeleteConfirmation.getIntent(context, messageReference);
+    private PendingIntent createActionConfirmationPendingIntent(String action, MessageReference messageReference, int notificationId) {
+        Intent intent = NotificationActionConfirmation.getIntent(action, context, messageReference);
 
         return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
-    public PendingIntent createDeleteAllPendingIntent(Account account, ArrayList<MessageReference> messageReferences,
-            int notificationId) {
+    public PendingIntent createDeleteAllPendingIntent(Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId) {
+        String action = NotificationActionService.ACTION_DELETE;
         if (K9.confirmDeleteFromNotification()) {
-            return getDeleteAllConfirmationPendingIntent(messageReferences, notificationId,
+            return getActionAllConfirmationPendingIntent(action, messageReferences, notificationId,
                     PendingIntent.FLAG_CANCEL_CURRENT);
         } else {
-            return getDeleteAllServicePendingIntent(account, messageReferences, notificationId,
+            return getActionAllServicePendingIntent(action, account, messageReferences, notificationId,
                     PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
         }
     }
 
-    public PendingIntent getDeleteAllPendingIntent(Account account, ArrayList<MessageReference> messageReferences,
-            int notificationId) {
+    public PendingIntent getDeleteAllPendingIntent(Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId) {
+        String action = NotificationActionService.ACTION_DELETE;
         if (K9.confirmDeleteFromNotification()) {
-            return getDeleteAllConfirmationPendingIntent(messageReferences, notificationId,
+            return getActionAllConfirmationPendingIntent(action, messageReferences, notificationId,
                     PendingIntent.FLAG_NO_CREATE);
         } else {
-            return getDeleteAllServicePendingIntent(account, messageReferences, notificationId,
+            return getActionAllServicePendingIntent(action, account, messageReferences, notificationId,
                     PendingIntent.FLAG_NO_CREATE);
         }
     }
 
-    private PendingIntent getDeleteAllConfirmationPendingIntent(ArrayList<MessageReference> messageReferences,
-            int notificationId, int flags) {
-        Intent intent = NotificationDeleteConfirmation.getIntent(context, messageReferences);
+    public PendingIntent createArchiveAllPendingIntent(Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId) {
+        String action = NotificationActionService.ACTION_ARCHIVE;
+        if (K9.confirmArchiveFromNotification()) {
+            return getActionAllConfirmationPendingIntent(action, messageReferences, notificationId,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+        } else {
+            return getActionAllServicePendingIntent(action, account, messageReferences, notificationId,
+                    PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        }
+    }
+
+    public PendingIntent getArchiveAllPendingIntent(Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId) {
+        String action = NotificationActionService.ACTION_ARCHIVE;
+        if (K9.confirmArchiveFromNotification()) {
+            return getActionAllConfirmationPendingIntent(action, messageReferences, notificationId,
+                    PendingIntent.FLAG_NO_CREATE);
+        } else {
+            return getActionAllServicePendingIntent(action, account, messageReferences, notificationId,
+                    PendingIntent.FLAG_NO_CREATE);
+        }
+    }
+
+    public PendingIntent createSpamAllPendingIntent(Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId) {
+        String action = NotificationActionService.ACTION_SPAM;
+        if (K9.confirmSpamFromNotification()) {
+            return getActionAllConfirmationPendingIntent(action, messageReferences, notificationId,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+        } else {
+            return getActionAllServicePendingIntent(action, account, messageReferences, notificationId,
+                    PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        }
+    }
+
+    public PendingIntent getSpamAllPendingIntent(Account account,
+            ArrayList<MessageReference> messageReferences, int notificationId) {
+        String action = NotificationActionService.ACTION_SPAM;
+        if (K9.confirmSpamFromNotification()) {
+            return getActionAllConfirmationPendingIntent(action, messageReferences, notificationId,
+                    PendingIntent.FLAG_NO_CREATE);
+        } else {
+            return getActionAllServicePendingIntent(action, account, messageReferences, notificationId,
+                    PendingIntent.FLAG_NO_CREATE);
+        }
+    }
+
+    private PendingIntent getActionAllConfirmationPendingIntent(String action,
+            ArrayList<MessageReference> messageReferences, int notificationId, int flags) {
+        Intent intent = NotificationActionConfirmation.getIntent(action, context, messageReferences);
 
         return PendingIntent.getActivity(context, notificationId, intent, flags);
     }
 
-    private PendingIntent getDeleteAllServicePendingIntent(Account account,
+    private PendingIntent getActionAllServicePendingIntent(String action, Account account,
             ArrayList<MessageReference> messageReferences, int notificationId, int flags) {
         String accountUuid = account.getUuid();
-        Intent intent = NotificationActionService.createDeleteAllMessagesIntent(
-                context, accountUuid, messageReferences);
+        Intent intent = NotificationActionService.createActionAllMessagesIntent(
+                action, context, accountUuid, messageReferences);
 
         return PendingIntent.getService(context, notificationId, intent, flags);
     }
 
-    public PendingIntent createArchiveMessagePendingIntent(MessageReference messageReference, int notificationId) {
-        Intent intent = NotificationActionService.createArchiveMessageIntent(context, messageReference);
-
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-    }
-
-    public PendingIntent createArchiveAllPendingIntent(Account account, ArrayList<MessageReference> messageReferences,
-            int notificationId) {
-        Intent intent = NotificationActionService.createArchiveAllIntent(context, account, messageReferences);
-
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-    }
-
-    public PendingIntent createMarkMessageAsSpamPendingIntent(MessageReference messageReference, int notificationId) {
-        Intent intent = NotificationActionService.createMarkMessageAsSpamIntent(context, messageReference);
-
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-    }
 
     private TaskStackBuilder buildAccountsBackStack() {
         TaskStackBuilder stack = TaskStackBuilder.create(context);

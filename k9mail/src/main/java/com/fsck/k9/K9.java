@@ -163,8 +163,11 @@ public class K9 extends Application {
     private static boolean mConfirmDelete = false;
     private static boolean mConfirmDiscardMessage = true;
     private static boolean mConfirmDeleteStarred = false;
+    private static boolean mConfirmArchive = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmDeleteFromNotification = true;
+    private static boolean mConfirmArchiveFromNotification = true;
+    private static boolean mConfirmSpamFromNotification = true;
 
     private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
 
@@ -177,12 +180,14 @@ public class K9 extends Application {
         NEVER
     }
 
-    private static NotificationQuickDelete sNotificationQuickDelete = NotificationQuickDelete.NEVER;
+    private static NotificationQuickAction sNotificationQuickDelete = NotificationQuickAction.NEVER;
+    private static NotificationQuickAction sNotificationQuickArchive = NotificationQuickAction.NEVER;
+    private static NotificationQuickAction sNotificationQuickSpam = NotificationQuickAction.NEVER;
 
     /**
-     * Controls behaviour of delete button in notifications.
+     * Controls behaviour of delete, archive and spam buttons in notifications.
      */
-    public enum NotificationQuickDelete {
+    public enum NotificationQuickAction {
         ALWAYS,
         FOR_SINGLE_MSG,
         NEVER
@@ -247,8 +252,8 @@ public class K9 extends Application {
     private static SplitViewMode sSplitViewMode = SplitViewMode.NEVER;
     private static boolean sColorizeMissingContactPictures = true;
 
-    private static boolean sMessageViewArchiveActionVisible = false;
     private static boolean sMessageViewDeleteActionVisible = true;
+    private static boolean sMessageViewArchiveActionVisible = false;
     private static boolean sMessageViewMoveActionVisible = false;
     private static boolean sMessageViewCopyActionVisible = false;
     private static boolean sMessageViewSpamActionVisible = false;
@@ -477,14 +482,19 @@ public class K9 extends Application {
         editor.putBoolean("confirmDelete", mConfirmDelete);
         editor.putBoolean("confirmDiscardMessage", mConfirmDiscardMessage);
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
+        editor.putBoolean("confirmArchive", mConfirmArchive);
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmDeleteFromNotification", mConfirmDeleteFromNotification);
+        editor.putBoolean("confirmArchiveFromNotification", mConfirmArchiveFromNotification);
+        editor.putBoolean("confirmSpamFromNotification", mConfirmSpamFromNotification);
 
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
 
         editor.putString("notificationHideSubject", sNotificationHideSubject.toString());
         editor.putString("notificationQuickDelete", sNotificationQuickDelete.toString());
+        editor.putString("notificationQuickArchive", sNotificationQuickArchive.toString());
+        editor.putString("notificationQuickSpam", sNotificationQuickSpam.toString());
         editor.putString("lockScreenNotificationVisibility", sLockScreenNotificationVisibility.toString());
 
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
@@ -693,8 +703,11 @@ public class K9 extends Application {
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
         mConfirmDiscardMessage = sprefs.getBoolean("confirmDiscardMessage", true);
         mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
+        mConfirmArchive = sprefs.getBoolean("confirmArchive", false);
         mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
         mConfirmDeleteFromNotification = sprefs.getBoolean("confirmDeleteFromNotification", true);
+        mConfirmSpamFromNotification = sprefs.getBoolean("confirmSpamFromNotification", true);
+        mConfirmArchiveFromNotification = sprefs.getBoolean("confirmArchiveFromNotification", true);
 
         try {
             String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
@@ -718,7 +731,17 @@ public class K9 extends Application {
 
         String notificationQuickDelete = sprefs.getString("notificationQuickDelete", null);
         if (notificationQuickDelete != null) {
-            sNotificationQuickDelete = NotificationQuickDelete.valueOf(notificationQuickDelete);
+            sNotificationQuickDelete = NotificationQuickAction.valueOf(notificationQuickDelete);
+        }
+
+        String notificationQuickArchive = sprefs.getString("notificationQuickArchive", null);
+        if (notificationQuickArchive != null) {
+            sNotificationQuickArchive = NotificationQuickAction.valueOf(notificationQuickArchive);
+        }
+
+        String notificationQuickSpam = sprefs.getString("notificationQuickSpam", null);
+        if (notificationQuickSpam != null) {
+            sNotificationQuickSpam = NotificationQuickAction.valueOf(notificationQuickSpam);
         }
 
         String lockScreenNotificationVisibility = sprefs.getString("lockScreenNotificationVisibility", null);
@@ -1155,16 +1178,24 @@ public class K9 extends Application {
         mConfirmDeleteStarred = confirm;
     }
 
+    public static boolean confirmArchive() {
+        return mConfirmArchive;
+    }
+
+    public static void setConfirmArchive(final boolean confirm) {
+        mConfirmArchive = confirm;
+    }
+
     public static boolean confirmSpam() {
         return mConfirmSpam;
     }
 
-    public static boolean confirmDiscardMessage() {
-        return mConfirmDiscardMessage;
-    }
-
     public static void setConfirmSpam(final boolean confirm) {
         mConfirmSpam = confirm;
+    }
+
+    public static boolean confirmDiscardMessage() {
+        return mConfirmDiscardMessage;
     }
 
     public static void setConfirmDiscardMessage(final boolean confirm) {
@@ -1179,6 +1210,22 @@ public class K9 extends Application {
         mConfirmDeleteFromNotification = confirm;
     }
 
+    public static boolean confirmArchiveFromNotification() {
+        return mConfirmArchiveFromNotification;
+    }
+
+    public static void setConfirmArchiveFromNotification(final boolean confirm) {
+        mConfirmArchiveFromNotification = confirm;
+    }
+
+    public static boolean confirmSpamFromNotification() {
+        return mConfirmSpamFromNotification;
+    }
+
+    public static void setConfirmSpamFromNotification(final boolean confirm) {
+        mConfirmSpamFromNotification = confirm;
+    }
+
     public static NotificationHideSubject getNotificationHideSubject() {
         return sNotificationHideSubject;
     }
@@ -1187,12 +1234,28 @@ public class K9 extends Application {
         sNotificationHideSubject = mode;
     }
 
-    public static NotificationQuickDelete getNotificationQuickDeleteBehaviour() {
+    public static NotificationQuickAction getNotificationQuickDeleteBehaviour() {
         return sNotificationQuickDelete;
     }
 
-    public static void setNotificationQuickDeleteBehaviour(final NotificationQuickDelete mode) {
+    public static void setNotificationQuickDeleteBehaviour(final NotificationQuickAction mode) {
         sNotificationQuickDelete = mode;
+    }
+
+    public static NotificationQuickAction getNotificationQuickArchiveBehaviour() {
+        return sNotificationQuickArchive;
+    }
+
+    public static void setNotificationQuickArchiveBehaviour(final NotificationQuickAction mode) {
+        sNotificationQuickArchive = mode;
+    }
+
+    public static NotificationQuickAction getNotificationQuickSpamBehaviour() {
+        return sNotificationQuickSpam;
+    }
+
+    public static void setNotificationQuickSpamBehaviour(final NotificationQuickAction mode) {
+        sNotificationQuickSpam = mode;
     }
 
     public static LockScreenNotificationVisibility getLockScreenNotificationVisibility() {
@@ -1291,20 +1354,20 @@ public class K9 extends Application {
         sColorizeMissingContactPictures = enabled;
     }
 
-    public static boolean isMessageViewArchiveActionVisible() {
-        return sMessageViewArchiveActionVisible;
-    }
-
-    public static void setMessageViewArchiveActionVisible(boolean visible) {
-        sMessageViewArchiveActionVisible = visible;
-    }
-
     public static boolean isMessageViewDeleteActionVisible() {
         return sMessageViewDeleteActionVisible;
     }
 
     public static void setMessageViewDeleteActionVisible(boolean visible) {
         sMessageViewDeleteActionVisible = visible;
+    }
+
+    public static boolean isMessageViewArchiveActionVisible() {
+        return sMessageViewArchiveActionVisible;
+    }
+
+    public static void setMessageViewArchiveActionVisible(boolean visible) {
+        sMessageViewArchiveActionVisible = visible;
     }
 
     public static boolean isMessageViewMoveActionVisible() {

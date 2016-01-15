@@ -42,13 +42,15 @@ class WearNotifications extends BaseNotifications {
 
         addMarkAllAsReadAction(wearableExtender, notificationData);
 
-        if (isDeleteActionAvailableForWear()) {
-            addDeleteAllAction(wearableExtender, notificationData);
-        }
-
         Account account = notificationData.getAccount();
         if (isArchiveActionAvailableForWear(account)) {
             addArchiveAllAction(wearableExtender, notificationData);
+        }
+        if (isDeleteActionAvailableForWear()) {
+            addDeleteAllAction(wearableExtender, notificationData);
+        }
+        if (isSpamActionAvailableForWear(account)) {
+            addSpamAllAction(wearableExtender, notificationData);
         }
 
         builder.extend(wearableExtender);
@@ -87,10 +89,23 @@ class WearNotifications extends BaseNotifications {
         Account account = notificationData.getAccount();
         ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        PendingIntent action = actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId);
+        PendingIntent action = actionCreator.getArchiveAllPendingIntent(account, messageReferences, notificationId);
 
         NotificationCompat.Action archiveAction = new NotificationCompat.Action.Builder(icon, title, action).build();
         wearableExtender.addAction(archiveAction);
+    }
+
+    private void addSpamAllAction(WearableExtender wearableExtender, NotificationData notificationData) {
+        int icon = R.drawable.ic_action_spam_dark;
+        String title = context.getString(R.string.notification_action_spam_all);
+
+        Account account = notificationData.getAccount();
+        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
+        PendingIntent action = actionCreator.getSpamAllPendingIntent(account, messageReferences, notificationId);
+
+        NotificationCompat.Action spamAction = new NotificationCompat.Action.Builder(icon, title, action).build();
+        wearableExtender.addAction(spamAction);
     }
 
     private void addActions(Builder builder, Account account, NotificationHolder holder) {
@@ -99,16 +114,16 @@ class WearNotifications extends BaseNotifications {
         addReplyAction(wearableExtender, holder);
         addMarkAsReadAction(wearableExtender, holder);
 
-        if (isDeleteActionAvailableForWear()) {
-            addDeleteAction(wearableExtender, holder);
-        }
-
         if (isArchiveActionAvailableForWear(account)) {
             addArchiveAction(wearableExtender, holder);
         }
 
+        if (isDeleteActionAvailableForWear()) {
+            addDeleteAction(wearableExtender, holder);
+        }
+
         if (isSpamActionAvailableForWear(account)) {
-            addMarkAsSpamAction(wearableExtender, holder);
+            addSpamAction(wearableExtender, holder);
         }
 
         builder.extend(wearableExtender);
@@ -162,13 +177,13 @@ class WearNotifications extends BaseNotifications {
         wearableExtender.addAction(archiveAction);
     }
 
-    private void addMarkAsSpamAction(WearableExtender wearableExtender, NotificationHolder holder) {
+    private void addSpamAction(WearableExtender wearableExtender, NotificationHolder holder) {
         int icon = R.drawable.ic_action_spam_dark;
         String title = context.getString(R.string.notification_action_spam);
 
         MessageReference messageReference = holder.content.messageReference;
         int notificationId = holder.notificationId;
-        PendingIntent action = actionCreator.createMarkMessageAsSpamPendingIntent(messageReference, notificationId);
+        PendingIntent action = actionCreator.createSpamMessagePendingIntent(messageReference, notificationId);
 
         NotificationCompat.Action spamAction = new NotificationCompat.Action.Builder(icon, title, action).build();
         wearableExtender.addAction(spamAction);
@@ -180,7 +195,7 @@ class WearNotifications extends BaseNotifications {
 
     private boolean isArchiveActionAvailableForWear(Account account) {
         String archiveFolderName = account.getArchiveFolderName();
-        return archiveFolderName != null && isMovePossible(account, archiveFolderName);
+        return archiveFolderName != null && !K9.confirmArchive() && isMovePossible(account, archiveFolderName);
     }
 
     private boolean isSpamActionAvailableForWear(Account account) {

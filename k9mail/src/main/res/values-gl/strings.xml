@@ -239,8 +239,8 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="global_settings_notification_hide_subject_never">Nunca</string>
   <string name="global_settings_notification_hide_subject_when_locked">Cando o dispositivo está bloqueado</string>
   <string name="global_settings_notification_hide_subject_always">Sempre</string>
-  <string name="global_settings_notification_quick_delete_never">Nunca</string>
-  <string name="global_settings_notification_quick_delete_always">Sempre</string>
+  <string name="global_settings_notification_quick_action_never">Nunca</string>
+  <string name="global_settings_notification_quick_action_always">Sempre</string>
   <string name="quiet_time">Tempo de Silencio</string>
   <string name="quiet_time_description">Desactivar sons, alertas e luces pola noite</string>
   <string name="quiet_time_starts">Silencio empeza</string>
@@ -649,7 +649,7 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="select_text_now">Seleccionar texto a copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar borrado</string>
   <string name="dialog_confirm_delete_message">¿Quere borrar esta mensaxe?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Realmente queres eliminar esta mensaxe?</item>
     <item quantity="other">Realmente queres elimnar <xliff:g id="message_count">%1$d</xliff:g> mensaxes?</item>
   </plurals>

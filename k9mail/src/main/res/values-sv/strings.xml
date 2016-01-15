@@ -277,9 +277,9 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="global_settings_notification_hide_subject_when_locked">När enheten är låst</string>
   <string name="global_settings_notification_hide_subject_always">Alltid</string>
   <string name="global_settings_notification_quick_delete_title">Visa \'Ta bort\'-knapp</string>
-  <string name="global_settings_notification_quick_delete_never">Aldrig</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">För borttagning av enstaka meddelande</string>
-  <string name="global_settings_notification_quick_delete_always">Alltid</string>
+  <string name="global_settings_notification_quick_action_never">Aldrig</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">För borttagning av enstaka meddelande</string>
+  <string name="global_settings_notification_quick_action_always">Alltid</string>
   <string name="global_settings_notification_quick_delete_description">Visa en knapp i aviseringen som möjliggör snabb borttagning av meddelandet</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Aviseringar på låsskärm</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Inga aviseringar på låsskärm</string>
@@ -757,7 +757,7 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="select_text_now">Välj text att kopiera.</string>
   <string name="dialog_confirm_delete_title">Bekräfta borttagning</string>
   <string name="dialog_confirm_delete_message">Vill du ta bort detta brev?</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="one">Vill du verkligen radera detta meddelande?</item>
     <item quantity="other">Vill du verkligen ta bort <xliff:g id="message_count">%1$d</xliff:g> meddelanden?</item>
   </plurals>

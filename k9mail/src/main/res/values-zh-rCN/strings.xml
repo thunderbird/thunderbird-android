@@ -274,9 +274,9 @@ K-9改进的功能包括：
   <string name="global_settings_notification_hide_subject_when_locked">当设备锁定时</string>
   <string name="global_settings_notification_hide_subject_always">总是</string>
   <string name="global_settings_notification_quick_delete_title">显示“删除”按钮</string>
-  <string name="global_settings_notification_quick_delete_never">从不</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">为单条消息通知</string>
-  <string name="global_settings_notification_quick_delete_always">总是</string>
+  <string name="global_settings_notification_quick_action_never">从不</string>
+  <string name="global_settings_notification_quick_action_when_single_msg">为单条消息通知</string>
+  <string name="global_settings_notification_quick_action_always">总是</string>
   <string name="global_settings_notification_quick_delete_description">在通知区域中显示一个按钮以允许快速删除信息</string>
   <string name="global_settings_lock_screen_notification_visibility_title">屏幕锁定通知</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">无屏幕锁定通知</string>
@@ -754,7 +754,7 @@ K-9改进的功能包括：
   <string name="select_text_now">选择需要拷贝的文本。</string>
   <string name="dialog_confirm_delete_title">删除确认</string>
   <string name="dialog_confirm_delete_message">你确定要删除这封邮件么？</string>
-  <plurals name="dialog_confirm_delete_messages">
+  <plurals name="dialog_confirm_delete_message">
     <item quantity="other">您确定要删除 <xliff:g id="message_count">%1$d</xliff:g> 条消息吗?</item>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">删除</string>
