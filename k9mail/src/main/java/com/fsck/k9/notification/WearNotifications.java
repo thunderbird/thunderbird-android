@@ -114,12 +114,12 @@ class WearNotifications extends BaseNotifications {
         addReplyAction(wearableExtender, holder);
         addMarkAsReadAction(wearableExtender, holder);
 
-        if (isDeleteActionAvailableForWear()) {
-            addDeleteAction(wearableExtender, holder);
-        }
-
         if (isArchiveActionAvailableForWear(account)) {
             addArchiveAction(wearableExtender, holder);
+        }
+
+        if (isDeleteActionAvailableForWear()) {
+            addDeleteAction(wearableExtender, holder);
         }
 
         if (isSpamActionAvailableForWear(account)) {
