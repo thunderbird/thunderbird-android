@@ -35,21 +35,6 @@ public class K9AlarmManager {
         alarmManager.setAndAllowWhileIdle(type, triggerAtMillis, operation);
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void setExact(int type, long triggerAtMillis, PendingIntent operation) {
-        if (isDozeSupported() && isDozeWhiteListed()) {
-            setExactAndAllowWhileIdle(type, triggerAtMillis, operation);
-        } else {
-            alarmManager.setExact(type, triggerAtMillis, operation);
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    public void setExactAndAllowWhileIdle(int type, long triggerAtMillis, PendingIntent operation) {
-        alarmManager.setExactAndAllowWhileIdle(type, triggerAtMillis, operation);
-    }
-
-
     public void cancel(PendingIntent operation) {
         alarmManager.cancel(operation);
     }
