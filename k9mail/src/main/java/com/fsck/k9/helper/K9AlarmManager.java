@@ -6,13 +6,17 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
 import android.os.PowerManager;
+import android.support.annotation.VisibleForTesting;
+
 
 public class K9AlarmManager {
-    private AlarmManager alarmManager;
-    private PowerManager powerManager;
-    private String packageName;
+    private final AlarmManager alarmManager;
+    private final PowerManager powerManager;
+    private final String packageName;
 
-    private K9AlarmManager(Context context) {
+
+    @VisibleForTesting
+    K9AlarmManager(Context context) {
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         packageName = context.getPackageName();
@@ -39,7 +43,8 @@ public class K9AlarmManager {
         alarmManager.cancel(operation);
     }
 
-    private boolean isDozeSupported() {
+    @VisibleForTesting
+    protected boolean isDozeSupported() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
