@@ -2,6 +2,7 @@ package com.fsck.k9.activity.compose;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
@@ -9,57 +10,20 @@ import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
-/** This is an immutable object, which contains all relevant metadata entered
+/** This is an immutable object which contains all relevant metadata entered
  * during e-mail composition to apply cryptographic operations before sending
  * or saving as draft.
  */
 public class ComposeCryptoStatus {
 
 
-    private final CryptoMode cryptoMode;
-    private final ArrayList<String> keyReferences;
-    private final boolean allKeysAvailable;
-    private final boolean allKeysVerified;
-    private final Long signingKeyId;
-    private final Long selfEncryptKeyId;
+    private CryptoMode cryptoMode;
+    private List<String> keyReferences;
+    private boolean allKeysAvailable;
+    private boolean allKeysVerified;
+    private Long signingKeyId;
+    private Long selfEncryptKeyId;
 
-
-    private ComposeCryptoStatus(CryptoMode cryptoMode, boolean allKeysAvailable, boolean allKeysVerified,
-            ArrayList<String> keyReferences, Long signingKeyId, Long selfEncryptKeyId) {
-        this.cryptoMode = cryptoMode;
-        this.keyReferences = keyReferences;
-        this.allKeysAvailable = allKeysAvailable;
-        this.allKeysVerified = allKeysVerified;
-        this.signingKeyId = signingKeyId;
-        this.selfEncryptKeyId = selfEncryptKeyId;
-    }
-
-    public static ComposeCryptoStatus createFromRecipients(CryptoMode cryptoMode, List<Recipient> recipients,
-            Long accountCryptoKey) {
-        ArrayList<String> keyReferences = new ArrayList<>();
-
-        boolean allKeysAvailable = true;
-        boolean allKeysVerified = true;
-        for (Recipient recipient : recipients) {
-            RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
-            if (cryptoStatus.isAvailable()) {
-                keyReferences.add(recipient.getKeyReference());
-                if (cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED) {
-                    allKeysVerified = false;
-                }
-            } else {
-                allKeysAvailable = false;
-            }
-        }
-
-        // noinspection UnnecessaryLocalVariable
-        Long signingKeyId = accountCryptoKey;
-        // noinspection UnnecessaryLocalVariable // TODO introduce separate key setting here?
-        Long selfEncryptKeyId = accountCryptoKey;
-
-        return new ComposeCryptoStatus(cryptoMode, allKeysAvailable, allKeysVerified, keyReferences,
-                signingKeyId, selfEncryptKeyId);
-    }
 
     @SuppressWarnings("UnusedParameters")
     public long[] getEncryptKeyIds(boolean isDraft) {
@@ -126,4 +90,67 @@ public class ComposeCryptoStatus {
     public boolean isPrivateAndIncomplete() {
         return cryptoMode == CryptoMode.PRIVATE && !allKeysAvailable;
     }
+
+
+    public static class ComposeCryptoStatusBuilder {
+
+        private CryptoMode cryptoMode;
+        private Long signingKeyId;
+        private Long selfEncryptKeyId;
+        private List<Recipient> recipients;
+
+        public ComposeCryptoStatusBuilder setCryptoMode(CryptoMode cryptoMode) {
+            this.cryptoMode = cryptoMode;
+            return this;
+        }
+
+        public ComposeCryptoStatusBuilder setSigningKeyId(long signingKeyId) {
+            this.signingKeyId = signingKeyId;
+            return this;
+        }
+
+        public ComposeCryptoStatusBuilder setSelfEncryptId(long selfEncryptKeyId) {
+            this.selfEncryptKeyId = selfEncryptKeyId;
+            return this;
+        }
+
+        public ComposeCryptoStatusBuilder setRecipients(List<Recipient> recipients) {
+            this.recipients = recipients;
+            return this;
+        }
+
+        public ComposeCryptoStatus build() {
+            if (cryptoMode == null) {
+                throw new AssertionError("crypto mode must be set. this is a bug!");
+            }
+            if (recipients == null) {
+                throw new AssertionError("recipients must be set. this is a bug!");
+            }
+
+            ArrayList<String> keyReferences = new ArrayList<>();
+            boolean allKeysAvailable = true;
+            boolean allKeysVerified = true;
+            for (Recipient recipient : recipients) {
+                RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
+                if (cryptoStatus.isAvailable()) {
+                    keyReferences.add(recipient.getKeyReference());
+                    if (cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED) {
+                        allKeysVerified = false;
+                    }
+                } else {
+                    allKeysAvailable = false;
+                }
+            }
+
+            ComposeCryptoStatus result = new ComposeCryptoStatus();
+            result.cryptoMode = cryptoMode;
+            result.keyReferences = Collections.unmodifiableList(keyReferences);
+            result.allKeysAvailable = allKeysAvailable;
+            result.allKeysVerified = allKeysVerified;
+            result.signingKeyId = signingKeyId;
+            result.selfEncryptKeyId = selfEncryptKeyId;
+            return result;
+        }
+    }
+
 }

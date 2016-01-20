@@ -17,6 +17,7 @@ import android.view.Menu;
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.Utility;
@@ -302,10 +303,18 @@ public class RecipientPresenter {
     public void updateCryptoStatus() {
         List<Recipient> recipients = getAllRecipients();
 
-        long accountCryptoKey = account.getCryptoKey();
+        ComposeCryptoStatusBuilder builder =  new ComposeCryptoStatusBuilder()
+            .setCryptoMode(currentCryptoMode)
+            .setRecipients(getAllRecipients());
 
-        currentCryptoStatus = ComposeCryptoStatus.createFromRecipients(currentCryptoMode, getAllRecipients(),
-                accountCryptoKey == Account.NO_OPENPGP_KEY ? null : accountCryptoKey);
+        long accountCryptoKey = account.getCryptoKey();
+        if (accountCryptoKey != Account.NO_OPENPGP_KEY) {
+            // TODO split these into individual settings? maybe after key is bound to identity
+            builder.setSigningKeyId(accountCryptoKey);
+            builder.setSelfEncryptId(accountCryptoKey);
+        }
+
+        currentCryptoStatus = builder.build();
 
         boolean hasNoCryptoProviderOrRecipients = cryptoProvider == null || recipients.isEmpty();
         if (hasNoCryptoProviderOrRecipients) {
