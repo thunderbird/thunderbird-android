@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.activity.compose;
 
 
 import java.util.List;
@@ -101,7 +101,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
                 break;
             }
             case AVAILABLE_UNTRUSTED: {
-                cryptoStatusRes = R.drawable.status_lock_error;
+                cryptoStatusRes = R.drawable.status_lock_opportunistic;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
                 break;
             }
@@ -113,7 +113,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         }
 
         if (cryptoStatusRes != null) {
-            // we could do this easier with setImageTintList, but that's API level 21
+            // noinspection deprecation, we could do this easier with setImageTintList, but that's API level 21
             Drawable drawable = context.getResources().getDrawable(cryptoStatusRes);
             // noinspection ConstantConditions, we know the resource exists!
             drawable.mutate();
@@ -126,11 +126,13 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     }
 
     public static void setContactPhotoOrPlaceholder(Context context, ImageView imageView, Recipient recipient) {
-        imageView.setImageDrawable(null);
-
         // TODO don't use two different mechanisms for loading!
         if (recipient.photoThumbnailUri != null) {
-            Glide.with(context).load(recipient.photoThumbnailUri).into(imageView);
+            Glide.with(context).load(recipient.photoThumbnailUri)
+                    // for some reason, this fixes loading issues.
+                    .placeholder(null)
+                    .dontAnimate()
+                    .into(imageView);
         } else {
             ContactPicture.getContactPictureLoader(context).loadContactPicture(recipient.address, imageView);
         }

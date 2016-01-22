@@ -36,8 +36,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
 import com.fsck.k9.activity.AlternateRecipientAdapter.AlternateRecipientListener;
-import com.fsck.k9.activity.RecipientAdapter;
-import com.fsck.k9.activity.RecipientLoader;
+import com.fsck.k9.activity.compose.RecipientAdapter;
+import com.fsck.k9.activity.compose.RecipientLoader;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
@@ -477,6 +477,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         @NonNull
         private RecipientCryptoStatus cryptoStatus;
+        @Nullable // null iff cryptoStatus == UNDEFINED || cryptoStatus == UNAVAILABLE
+        private String keyReference;
 
 
         public Recipient(@NonNull Address address) {
@@ -512,6 +514,15 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             return context.getString(R.string.unknown_recipient);
         }
 
+        public String getNameOrUnknown(Context context) {
+            String name = address.getPersonal();
+            if (name != null) {
+                return name;
+            }
+
+            return context.getString(R.string.unknown_recipient);
+        }
+
         private String getDisplayName() {
             if (TextUtils.isEmpty(address.getPersonal())) {
                 return null;
@@ -530,8 +541,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             return cryptoStatus;
         }
 
-        public void setCryptoStatus(@NonNull RecipientCryptoStatus cryptoStatus) {
+        public void setCryptoStatus(@NonNull RecipientCryptoStatus cryptoStatus, @Nullable String keyReference) {
             this.cryptoStatus = cryptoStatus;
+            this.keyReference = keyReference;
         }
 
         @Nullable
@@ -569,6 +581,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 String uriString = ois.readUTF();
                 photoThumbnailUri = Uri.parse(uriString);
             }
+        }
+
+        @Nullable
+        public String getKeyReference() {
+            return keyReference;
         }
     }
 }

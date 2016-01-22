@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textAppearance="?android:textAppearanceMedium"
-            android:text="Never Sign or Encrypt."
+            android:text="@string/crypto_mode_disabled"
             />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textAppearance="?android:textAppearanceMedium"
-            android:text="Always Sign, Never Encrypt."
+            android:text="@string/crypto_mode_sign_only"
             />
 
         <TextView
@@ -38,7 +38,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textAppearance="?android:textAppearanceMedium"
-            android:text="Always Sign, Encrypt if possible."
+            android:text="@string/crypto_mode_opportunistic"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="@string/crypto_mode_private"
             />
 
     </com.fsck.k9.view.LinearViewAnimator>

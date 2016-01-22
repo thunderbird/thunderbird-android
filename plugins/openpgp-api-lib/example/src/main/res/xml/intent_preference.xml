@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Intents (org.sufficientlysecure.keychain.action.)">
+        <Preference
+            android:key="ENCRYPT"
+            android:title="ENCRYPT" />
+        <Preference
+            android:key="ENCRYPT_URI"
+            android:title="ENCRYPT with Uri" />
+        <Preference
+            android:key="DECRYPT"
+            android:title="DECRYPT" />
+        <Preference
+            android:key="IMPORT_KEY"
+            android:title="IMPORT_KEY" />
+        <Preference
+            android:key="IMPORT_KEY_FROM_KEYSERVER"
+            android:title="IMPORT_KEY_FROM_KEYSERVER" />
+        <Preference
+            android:key="IMPORT_KEY_FROM_QR_CODE"
+            android:title="IMPORT_KEY_FROM_QR_CODE" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Special Intents">
+        <Preference
+            android:key="openpgp4fpr"
+            android:title="VIEW openpgp4fpr:73EE2314F65FA92EC2390D3A718C070100012282" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

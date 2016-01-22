@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="openpgp_list_preference_none">Ништа</string>
+  <string name="openpgp_install_openkeychain_via">Инсталирај Отворени кључарник преко %s</string>
+  <string name="openpgp_no_key_selected">Није изабран кључ</string>
+  <string name="openpgp_key_selected">Кључ је изабран</string>
+</resources>

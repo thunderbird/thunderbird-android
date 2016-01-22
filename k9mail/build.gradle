@@ -23,12 +23,12 @@ dependencies {
     compile project(':k9mail-library')
     compile project(':plugins:Android-PullToRefresh:library')
     compile project(':plugins:HoloColorPicker')
+    compile project(':plugins:openpgp-api-lib:openpgp-api')
     compile 'commons-io:commons-io:2.4'
     compile "com.android.support:support-v4:${project.supportLibraryVersion}"
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.16'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
-    compile 'org.sufficientlysecure:openpgp-api:8.0'
     compile 'com.splitwise:tokenautocomplete:2.0.2'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'

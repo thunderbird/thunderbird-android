@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="openpgp_list_preference_none">Žádný</string>
+  <string name="openpgp_install_openkeychain_via">Instalovat OpenKeychain pomocí %s</string>
+</resources>

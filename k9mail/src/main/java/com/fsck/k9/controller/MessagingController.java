@@ -4276,7 +4276,7 @@ public class MessagingController implements Runnable {
      * @param message Message to save.
      * @return Message representing the entry in the local store.
      */
-    public Message saveDraft(final Account account, final Message message, long existingDraftId) {
+    public Message saveDraft(final Account account, final Message message, long existingDraftId, boolean saveRemotely) {
         Message localMessage = null;
         try {
             LocalStore localStore = account.getLocalStore();
@@ -4294,14 +4294,16 @@ public class MessagingController implements Runnable {
             localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
 
-            PendingCommand command = new PendingCommand();
-            command.command = PENDING_COMMAND_APPEND;
-            command.arguments = new String[] {
-                localFolder.getName(),
-                localMessage.getUid()
-            };
-            queuePendingCommand(account, command);
-            processPendingCommands(account);
+            if (saveRemotely) {
+                PendingCommand command = new PendingCommand();
+                command.command = PENDING_COMMAND_APPEND;
+                command.arguments = new String[] {
+                        localFolder.getName(),
+                        localMessage.getUid()
+                };
+                queuePendingCommand(account, command);
+                processPendingCommands(account);
+            }
 
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Unable to save message as draft.", e);

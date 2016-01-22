@@ -18,7 +18,7 @@ import org.apache.james.mime4j.util.MimeUtil;
  * Message.
  */
 public class MimeBodyPart extends BodyPart {
-    private final MimeHeader mHeader = new MimeHeader();
+    private final MimeHeader mHeader;
     private Body mBody;
 
     public MimeBodyPart() throws MessagingException {
@@ -30,9 +30,15 @@ public class MimeBodyPart extends BodyPart {
     }
 
     public MimeBodyPart(Body body, String mimeType) throws MessagingException {
+        mHeader = new MimeHeader();
         if (mimeType != null) {
             addHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType);
         }
+        MimeMessageHelper.setBody(this, body);
+    }
+
+    MimeBodyPart(MimeHeader header, Body body)  throws MessagingException {
+        mHeader = header;
         MimeMessageHelper.setBody(this, body);
     }
 
@@ -177,4 +183,5 @@ public class MimeBodyPart extends BodyPart {
             setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
         }
     }
+
 }

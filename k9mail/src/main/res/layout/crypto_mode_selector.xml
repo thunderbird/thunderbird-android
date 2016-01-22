@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_gravity="center_horizontal"
@@ -18,14 +19,25 @@
                 android:layout_weight="1"
                 android:src="@drawable/status_lock_disabled"
                 android:id="@+id/icon_1"
+                android:tint="@color/openpgp_grey"
                 />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/status_lock_open"
+                android:src="@drawable/status_signature_verified_cutout"
                 android:id="@+id/icon_2"
+                tools:tint="@color/openpgp_blue"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/status_lock_opportunistic"
+                android:id="@+id/icon_3"
+                tools:tint="@color/openpgp_orange"
                 />
 
             <ImageView
@@ -33,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/status_lock_closed"
-                android:id="@+id/icon_3"
+                android:id="@+id/icon_4"
+                tools:tint="@color/openpgp_green"
                 />
 
         </LinearLayout>
@@ -43,12 +56,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:progressDrawable="@drawable/seekbar_background"
             android:id="@+id/seek_bar"
             android:progress="100"
-            android:max="200" />
+            android:max="300" />
 
     </LinearLayout>
 

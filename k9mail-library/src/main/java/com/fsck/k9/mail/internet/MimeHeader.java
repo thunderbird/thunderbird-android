@@ -8,14 +8,11 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class MimeHeader {
-    private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
+public class MimeHeader implements Cloneable {
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_ID = "Content-ID";
-
 
     private List<Field> mFields = new ArrayList<Field>();
     private String mCharset = null;
@@ -65,7 +62,7 @@ public class MimeHeader {
                 values.add(field.getValue());
             }
         }
-        return values.toArray(EMPTY_STRING_ARRAY);
+        return values.toArray(new String[values.size()]);
     }
 
     public void removeHeader(String name) {
@@ -193,11 +190,12 @@ public class MimeHeader {
 
     @Override
     public MimeHeader clone() {
-        MimeHeader header = new MimeHeader();
-        header.mCharset = mCharset;
-
-        header.mFields = new ArrayList<Field>(mFields);
-
-        return header;
+        try {
+            MimeHeader header = (MimeHeader) super.clone();
+            header.mFields = new ArrayList<Field>(mFields);
+            return header;
+        } catch(CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
     }
 }

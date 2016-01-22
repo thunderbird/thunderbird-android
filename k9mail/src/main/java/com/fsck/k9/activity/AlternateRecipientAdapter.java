@@ -21,6 +21,7 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import com.fsck.k9.R;
+import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 
@@ -114,7 +115,13 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         RecipientTokenHolder holder = (RecipientTokenHolder) view.getTag();
         holder.setShowAsHeader(true);
 
-        holder.headerName.setText(recipient.getDisplayNameOrUnknown(context));
+        holder.headerName.setText(recipient.getNameOrUnknown(context));
+        if (!TextUtils.isEmpty(recipient.addressLabel)) {
+            holder.headerAddressLabel.setText(recipient.addressLabel);
+            holder.headerAddressLabel.setVisibility(View.VISIBLE);
+        } else {
+            holder.headerAddressLabel.setVisibility(View.GONE);
+        }
 
         RecipientAdapter.setContactPhotoOrPlaceholder(context, holder.headerPhoto, recipient);
         holder.headerPhoto.assignContactUri(recipient.getContactLookupUri());
@@ -194,6 +201,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     private static class RecipientTokenHolder {
         public final View layoutHeader, layoutItem;
         public final TextView headerName;
+        public final TextView headerAddressLabel;
         public final QuickContactBadge headerPhoto;
         public final View headerRemove;
         public final TextView itemAddress;
@@ -206,6 +214,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             layoutItem = view.findViewById(R.id.alternate_container_item);
 
             headerName = (TextView) view.findViewById(R.id.alternate_header_name);
+            headerAddressLabel = (TextView) view.findViewById(R.id.alternate_header_label);
             headerPhoto = (QuickContactBadge) view.findViewById(R.id.alternate_contact_photo);
             headerRemove = view.findViewById(R.id.alternate_remove);
 

@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
+import com.fsck.k9.mail.filter.SignSafeOutputStream;
+
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -41,10 +43,12 @@ public class TextBody implements Body, SizeAware {
             if (MimeUtil.ENC_8BIT.equalsIgnoreCase(mEncoding)) {
                 out.write(bytes);
             } else {
-                QuotedPrintableOutputStream qp = new QuotedPrintableOutputStream(out, false);
-                qp.write(bytes);
-                qp.flush();
-                qp.close();
+                SignSafeOutputStream signSafeOutputStream = new SignSafeOutputStream(out);
+                QuotedPrintableOutputStream signSafeQuotedPrintableOutputStream =
+                        new QuotedPrintableOutputStream(signSafeOutputStream, false);
+                signSafeQuotedPrintableOutputStream.write(bytes);
+                signSafeQuotedPrintableOutputStream.flush();
+                signSafeOutputStream.flush();
             }
         }
     }
