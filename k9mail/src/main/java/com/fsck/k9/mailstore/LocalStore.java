@@ -1,7 +1,6 @@
 
 package com.fsck.k9.mailstore;
 
-import android.app.Application;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -69,14 +68,14 @@ public class LocalStore extends Store implements Serializable {
     /**
      * Lock objects indexed by account UUID.
      *
-     * @see #getInstance(Account, Application)
+     * @see #getInstance(Account, Context)
      */
-    private static ConcurrentMap<String, Object> sAccountLocks = new ConcurrentHashMap<String, Object>();
+    private static ConcurrentMap<String, Object> sAccountLocks = new ConcurrentHashMap<>();
 
     /**
      * Local stores indexed by UUID because the Uri may change due to migration to/from SD-card.
      */
-    private static ConcurrentMap<String, LocalStore> sLocalStores = new ConcurrentHashMap<String, LocalStore>();
+    private static ConcurrentMap<String, LocalStore> sLocalStores = new ConcurrentHashMap<>();
 
     /*
      * a String containing the columns getMessages expects to work with
@@ -167,12 +166,10 @@ public class LocalStore extends Store implements Serializable {
 
     /**
      * local://localhost/path/to/database/uuid.db
-     * This constructor is only used by {@link Store#getLocalInstance(Account, Context)}
-     * @param account
-     * @param context
+     * This constructor is only used by {@link LocalStore#getInstance(Account, Context)}
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
-    public LocalStore(final Account account, final Context context) throws MessagingException {
+    private LocalStore(final Account account, final Context context) throws MessagingException {
         mAccount = account;
         database = new LockableDatabase(context, account.getUuid(), new StoreSchemaDefinition(this));
 
@@ -201,12 +198,9 @@ public class LocalStore extends Store implements Serializable {
         // Create new per-account lock object if necessary
         sAccountLocks.putIfAbsent(accountUuid, new Object());
 
-        // Get the account's lock object
-        Object lock = sAccountLocks.get(accountUuid);
-
         // Use per-account locks so DatabaseUpgradeService always knows which account database is
         // currently upgraded.
-        synchronized (lock) {
+        synchronized (sAccountLocks.get(accountUuid)) {
             LocalStore store = sLocalStores.get(accountUuid);
 
             if (store == null) {
@@ -368,7 +362,7 @@ public class LocalStore extends Store implements Serializable {
     // TODO this takes about 260-300ms, seems slow.
     @Override
     public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
-        final List<LocalFolder> folders = new LinkedList<LocalFolder>();
+        final List<LocalFolder> folders = new LinkedList<>();
         try {
             database.execute(false, new DbCallback < List <? extends Folder >> () {
                 @Override
@@ -473,7 +467,7 @@ public class LocalStore extends Store implements Serializable {
                                       null,
                                       null,
                                       "id ASC");
-                    List<PendingCommand> commands = new ArrayList<PendingCommand>();
+                    List<PendingCommand> commands = new ArrayList<>();
                     while (cursor.moveToNext()) {
                         PendingCommand command = new PendingCommand();
                         command.mId = cursor.getLong(0);
@@ -558,11 +552,11 @@ public class LocalStore extends Store implements Serializable {
         return true;
     }
 
-    public List<LocalMessage> searchForMessages(MessageRetrievalListener retrievalListener,
+    public List<LocalMessage> searchForMessages(MessageRetrievalListener<LocalMessage> retrievalListener,
                                         LocalSearch search) throws MessagingException {
 
         StringBuilder query = new StringBuilder();
-        List<String> queryArgs = new ArrayList<String>();
+        List<String> queryArgs = new ArrayList<>();
         SqlQueryBuilder.buildWhereClause(mAccount, search.getConditions(), query, queryArgs);
 
         // Avoid "ambiguous column name" error by prefixing "id" with the message table name
@@ -590,11 +584,11 @@ public class LocalStore extends Store implements Serializable {
      * call the MessageRetrievalListener for each one
      */
     List<LocalMessage> getMessages(
-        final MessageRetrievalListener listener,
+        final MessageRetrievalListener<LocalMessage> listener,
         final LocalFolder folder,
         final String queryString, final String[] placeHolders
     ) throws MessagingException {
-        final List<LocalMessage> messages = new ArrayList<LocalMessage>();
+        final List<LocalMessage> messages = new ArrayList<>();
         final int j = database.execute(false, new DbCallback<Integer>() {
             @Override
             public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
@@ -812,7 +806,7 @@ public class LocalStore extends Store implements Serializable {
 
 
     String serializeFlags(Iterable<Flag> flags) {
-        List<Flag> extraFlags = new ArrayList<Flag>();
+        List<Flag> extraFlags = new ArrayList<>();
 
         for (Flag flag : flags) {
             switch (flag) {
@@ -869,7 +863,7 @@ public class LocalStore extends Store implements Serializable {
     public void doBatchSetSelection(final BatchSetSelection selectionCallback, final int batchSize)
             throws MessagingException {
 
-        final List<String> selectionArgs = new ArrayList<String>();
+        final List<String> selectionArgs = new ArrayList<>();
         int start = 0;
 
         while (start < selectionCallback.getListSize()) {
@@ -1077,7 +1071,7 @@ public class LocalStore extends Store implements Serializable {
     public Map<String, List<String>> getFoldersAndUids(final List<Long> messageIds,
             final boolean threadedList) throws MessagingException {
 
-        final Map<String, List<String>> folderMap = new HashMap<String, List<String>>();
+        final Map<String, List<String>> folderMap = new HashMap<>();
 
         doBatchSetSelection(new BatchSetSelection() {
 
@@ -1124,7 +1118,7 @@ public class LocalStore extends Store implements Serializable {
 
                         List<String> uidList = folderMap.get(folderName);
                         if (uidList == null) {
-                            uidList = new ArrayList<String>();
+                            uidList = new ArrayList<>();
                             folderMap.put(folderName, uidList);
                         }
 
