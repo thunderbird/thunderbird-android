@@ -1,5 +1,8 @@
 package com.fsck.k9.mailstore;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -9,6 +12,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -18,6 +23,13 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mailstore.LocalFolder.DataLocation;
+import com.fsck.k9.mailstore.LocalFolder.MessagePartType;
+import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
+import org.apache.james.mime4j.util.MimeUtil;
+
 
 class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     private final LocalStore localStore;
@@ -102,7 +114,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                     case 49:
                         db50FoldersAddNotifyClassColumn(db, localStore);
                     case 50:
-                        throw new IllegalStateException("Database upgrade not supported yet!");
+                        db51MigrateMessageFormat(db, localStore);
                     case 51:
                         db52AddMoreMessagesColumnToFoldersTable(db);
                     case 52:
@@ -124,7 +136,393 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
     }
 
+    private static void db51MigrateMessageFormat(SQLiteDatabase db, LocalStore localStore) {
+        db.execSQL("ALTER TABLE messages RENAME TO messages_old");
+
+        db.execSQL("CREATE TABLE messages (" +
+            "id INTEGER PRIMARY KEY, " +
+            "deleted INTEGER default 0, " +
+            "folder_id INTEGER, " +
+            "uid TEXT, " +
+            "subject TEXT, " +
+            "date INTEGER, " +
+            "flags TEXT, " +
+            "sender_list TEXT, " +
+            "to_list TEXT, " +
+            "cc_list TEXT, " +
+            "bcc_list TEXT, " +
+            "reply_to_list TEXT, " +
+            "attachment_count INTEGER, " +
+            "internal_date INTEGER, " +
+            "message_id TEXT, " +
+            "preview TEXT, " +
+            "mime_type TEXT, "+
+            "normalized_subject_hash INTEGER, " +
+            "empty INTEGER default 0, " +
+            "read INTEGER default 0, " +
+            "flagged INTEGER default 0, " +
+            "answered INTEGER default 0, " +
+            "forwarded INTEGER default 0, " +
+            "message_part_id INTEGER" +
+            ")");
+
+        db.execSQL("CREATE TABLE message_parts (" +
+            "id INTEGER PRIMARY KEY, " +
+            "type INTEGER NOT NULL, " +
+            "root INTEGER, " +
+            "parent INTEGER NOT NULL, " +
+            "seq INTEGER NOT NULL, " +
+            "mime_type TEXT, " +
+            "decoded_body_size INTEGER, " +
+            "display_name TEXT, " +
+            "header TEXT, " +
+            "encoding TEXT, " +
+            "charset TEXT, " +
+            "data_location INTEGER NOT NULL, " +
+            "data BLOB, " +
+            "preamble TEXT, " +
+            "epilogue TEXT, " +
+            "boundary TEXT, " +
+            "content_id TEXT, " +
+            "server_extra TEXT" +
+            ")");
+
+        db.execSQL("CREATE TRIGGER set_message_part_root " +
+                "AFTER INSERT ON message_parts " +
+                "BEGIN " +
+                "UPDATE message_parts SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
+                "END");
+
+        /**
+         * This is a complex migration, and ultimately we don't actually have all
+         * information from the e-mails we want to convert. What we have:
+         *  - general mail info (not a problem)
+         *  - html_content and text_content data, which is the squashed readable content of the mail
+         *  - a table with headers
+         *  - attachments
+         *
+         * What we need to do:
+         *  - migrate general mail info as-is
+         *  - flag mails as migrated for re-download
+         *
+         */
+
+        db.execSQL("INSERT INTO messages (" +
+                "deleted, folder_id, uid, subject, date, sender_list, " +
+                "to_list, cc_list, bcc_list, reply_to_list, attachment_count, " +
+                "internal_date, message_id, preview, mime_type, " +
+                "normalized_subject_hash, empty, read, flagged, answered" +
+                ") SELECT " +
+                "deleted, folder_id, uid, subject, date, sender_list, " +
+                "to_list, cc_list, bcc_list, reply_to_list, attachment_count, " +
+                "internal_date, message_id, preview, mime_type, " +
+                "normalized_subject_hash, empty, read, flagged, answered " +
+                "FROM messages_old");
+
+             // "html_content TEXT, " +
+             // "text_content TEXT, " +
+
+        // best we can do to to restore message:
+        // no attachments: headers + multipart/alternative ( text_content + html_content )
+        // with attachments: headers + multipart/mixed ( multipart/alternative ( text_content + html_content ) + attachments )
+
+        // Copy thread structure from 'messages' table to 'threads'
+        Cursor msgCursor = db.query("messages_old",
+                new String[] { "id", "uid", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
+                null, null, null, null, null);
+        try {
+            ContentValues cv = new ContentValues();
+            while (msgCursor.moveToNext()) {
+                long messageId = msgCursor.getLong(0);
+                String messageUid = msgCursor.getString(1);
+                String messageFlags = msgCursor.getString(2);
+                String htmlContent = msgCursor.getString(3);
+                String textContent = msgCursor.getString(4);
+                String mimeType = msgCursor.getString(5);
+                int attachmentCount = msgCursor.getInt(6);
+
+                updateFlagsForMessage(db, messageId, messageFlags);
+
+                MimeHeader mimeHeader = loadHeaderFromHeadersTable(db, messageId);
+
+                try {
+                    MimeStructureState structureState = MimeStructureState.getRoot();
+                    if (MimeUtil.isSameMimeType(mimeType, "text/plain") && attachmentCount == 0) {
+                        structureState = insertTextualPartIntoDatabase(db, structureState, mimeHeader, textContent, false);
+                    } else if (MimeUtil.isSameMimeType(mimeType, "text/html") && attachmentCount == 0) {
+                        structureState = insertTextualPartIntoDatabase(db, structureState, mimeHeader, htmlContent, true);
+                    } else if (MimeUtil.isSameMimeType(mimeType, "multipart/alternative") && attachmentCount == 0) {
+                        structureState = insertBodyAsMultipartAlternative(db, structureState, mimeHeader, textContent, htmlContent);
+                    } else {
+                        mimeType = "multipart/mixed";
+
+                        cv.clear();
+                        cv.put("type", MessagePartType.UNKNOWN);
+                        cv.put("data_location", DataLocation.IN_DATABASE);
+                        cv.put("mime_type", mimeType);
+                        cv.put("header", mimeHeader.toString());
+                        cv.put("parent", -1);
+                        cv.put("seq", 0);
+                        cv.put("boundary", MimeUtil.createUniqueBoundary());
+
+                        long rootMessagePartId = db.insertOrThrow("message_parts", null, cv);
+                        structureState = structureState.nextMultipartChild(rootMessagePartId);
+
+                        if (textContent != null && htmlContent != null) {
+                            structureState = insertBodyAsMultipartAlternative(db, structureState, null, textContent, htmlContent);
+                        } else if (textContent != null) {
+                            structureState = insertTextualPartIntoDatabase(db, structureState, null, textContent, false);
+                        } else if (htmlContent != null) {
+                            structureState = insertTextualPartIntoDatabase(db, structureState, null, htmlContent, true);
+                        }
+
+                        structureState = insertAttachments(db, localStore, messageId, structureState);
+                    }
+
+                    cv.clear();
+                    cv.put("mime_type", mimeType);
+                    cv.put("message_part_id", structureState.rootPartId);
+                    cv.put("attachment_count", attachmentCount);
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
+                } catch (IOException e) {
+                    Log.e(K9.LOG_TAG, "error inserting into database", e);
+                }
+            }
+
+        } finally {
+            msgCursor.close();
+        }
+
+    }
+
+    private static class MimeStructureState {
+        final Long rootPartId;
+        final long parentId;
+        final int nextOrder;
+
+        private MimeStructureState(Long rootPartId, long parentId, int nextOrder) {
+            this.rootPartId = rootPartId;
+            this.parentId = parentId;
+            this.nextOrder = nextOrder;
+        }
+
+        private MimeStructureState nextChild(long newPartId) {
+            if (rootPartId == null) {
+                return new MimeStructureState(newPartId, -1, nextOrder+1);
+            }
+            return new MimeStructureState(rootPartId, parentId, nextOrder+1);
+        }
+
+        private MimeStructureState nextMultipartChild(long newPartId) {
+            if (rootPartId == null) {
+                return new MimeStructureState(newPartId, newPartId, nextOrder+1);
+            }
+            return new MimeStructureState(rootPartId, newPartId, nextOrder+1);
+        }
+
+        public static MimeStructureState getRoot() {
+            return new MimeStructureState(null, -1, 0);
+        }
+    }
+
+    private static MimeStructureState insertAttachments(SQLiteDatabase db, LocalStore localStore, long messageId,
+            MimeStructureState structureState) {
+        Cursor cursor = null;
+        try {
+            cursor = db.query("attachments",
+                         new String[] {
+                             "id", "size", "name", "mime_type", "store_data",
+                                 "content_uri", "content_id", "content_disposition"
+                         },
+                    "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
+
+            Account account = localStore.getAccount();
+            File attachmentDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(
+                    account.getUuid(), account.getLocalStorageProviderId());
+
+            while (cursor.moveToNext()) {
+                long id = cursor.getLong(0);
+                int size = cursor.getInt(1);
+                String name = cursor.getString(2);
+                String mimeType = cursor.getString(3);
+                String storeData = cursor.getString(4);
+                String contentUriString = cursor.getString(5);
+                String contentId = cursor.getString(6);
+                String contentDisposition = cursor.getString(7);
+
+                if (K9.DEBUG) {
+                    Log.d(K9.LOG_TAG, "processing attachment " + id + ", " + name + ", "
+                            + mimeType + ", " + storeData + ", " + contentUriString);
+                }
+
+                if (contentDisposition == null) {
+                    contentDisposition = "attachment";
+                }
+
+                MimeHeader mimeHeader = new MimeHeader();
+                mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                        String.format("%s;\r\n name=\"%s\"", mimeType, name));
+                mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
+                        String.format(Locale.US, "%s;\r\n filename=\"%s\";\r\n size=%d",
+                                contentDisposition, name, size)); // TODO: Should use encoded word defined in RFC 2231.
+                mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
+
+                boolean hasData = contentUriString != null;
+                boolean hasDataWithChecks;
+                if (hasData) {
+                    try {
+                        Uri contentUri = Uri.parse(contentUriString);
+                        List<String> pathSegments = contentUri.getPathSegments();
+                        String attachmentId = pathSegments.get(1);
+                        boolean isMatchingAttachmentId = Long.parseLong(attachmentId) == id;
+                        boolean isExistingAttachmentFile = new File(attachmentDir, attachmentId).exists();
+                        hasDataWithChecks = isMatchingAttachmentId && isExistingAttachmentFile;
+
+                        if (!isMatchingAttachmentId && K9.DEBUG) {
+                            Log.e(K9.LOG_TAG, "mismatched attachment id. mark as missing");
+                        }
+                        if (!isExistingAttachmentFile && K9.DEBUG) {
+                            Log.e(K9.LOG_TAG, "attached file doesn't exist. mark as missing");
+                        }
+                    } catch (Exception e) {
+                        // anything here fails, conservatively assume the data doesn't exist
+                        hasDataWithChecks = false;
+                    }
+                } else {
+                    hasDataWithChecks = false;
+                }
+                if (K9.DEBUG && hasDataWithChecks) {
+                    Log.d(K9.LOG_TAG, "attachment is in local cache");
+                }
+
+                ContentValues cv = new ContentValues();
+                cv.put("type", MessagePartType.UNKNOWN);
+                cv.put("root", structureState.rootPartId);
+                cv.put("parent", structureState.parentId);
+                cv.put("seq", structureState.nextOrder);
+                cv.put("mime_type", mimeType);
+                cv.put("decoded_body_size", size);
+                cv.put("display_name", name);
+                cv.put("header", mimeHeader.toString());
+                cv.put("encoding", MimeUtil.ENC_BINARY);
+                cv.put("data_location", hasDataWithChecks ? DataLocation.ON_DISK : DataLocation.MISSING);
+                cv.put("content_id", contentId);
+                cv.put("server_extra", storeData);
+
+                long partId = db.insertOrThrow("message_parts", null, cv);
+                structureState = structureState.nextChild(partId);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return structureState;
+    }
+
+    private static void updateFlagsForMessage(SQLiteDatabase db, long messageId, String messageFlags) {
+        List<Flag> extraFlags = new ArrayList<>();
+        if (messageFlags != null && messageFlags.length() > 0) {
+            String[] flags = messageFlags.split(",");
+
+            for (String flagStr : flags) {
+                try {
+                    Flag flag = Flag.valueOf(flagStr);
+                    extraFlags.add(flag);
+                } catch (Exception e) {
+                    // Ignore bad flags
+                }
+            }
+        }
+
+        String flagsString = LocalStore.serializeFlags(extraFlags);
+        db.execSQL("UPDATE messages SET flags = ? WHERE id = ?", new Object[] { flagsString, messageId } );
+    }
+
+    private static MimeStructureState insertBodyAsMultipartAlternative(SQLiteDatabase db,
+            MimeStructureState structureInfo, MimeHeader mimeHeader,
+            String textContent, String htmlContent) throws IOException {
+        if (mimeHeader == null) {
+            mimeHeader = new MimeHeader();
+        }
+        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "multipart/alternative");
+        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, MimeUtil.ENC_QUOTED_PRINTABLE);
+
+        ContentValues cv = new ContentValues();
+        cv.put("type", MessagePartType.UNKNOWN);
+        cv.put("data_location", DataLocation.IN_DATABASE);
+        cv.put("mime_type", "multipart/alternative");
+        cv.put("header", mimeHeader.toString());
+        cv.put("root", structureInfo.rootPartId);
+        cv.put("parent", structureInfo.parentId);
+        cv.put("seq", structureInfo.nextOrder);
+        cv.put("boundary", MimeUtil.createUniqueBoundary());
+
+        long multipartAlternativePartId = db.insertOrThrow("message_parts", null, cv);
+        structureInfo = structureInfo.nextMultipartChild(multipartAlternativePartId);
+
+        if (!TextUtils.isEmpty(textContent)) {
+            structureInfo = insertTextualPartIntoDatabase(db, structureInfo, null, textContent, false);
+        }
+
+        if (!TextUtils.isEmpty(htmlContent)) {
+            structureInfo = insertTextualPartIntoDatabase(db, structureInfo, null, htmlContent, true);
+        }
+
+        return structureInfo;
+    }
+
+    private static MimeStructureState insertTextualPartIntoDatabase(SQLiteDatabase db, MimeStructureState structureInfo,
+            MimeHeader mimeHeader, String content, boolean isHtml) throws IOException {
+        if (mimeHeader == null) {
+            mimeHeader = new MimeHeader();
+        }
+        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE, isHtml ? "text/html" : "text/plain");
+        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, MimeUtil.ENC_QUOTED_PRINTABLE);
+
+        ByteArrayOutputStream contentOutputStream = new ByteArrayOutputStream();
+        QuotedPrintableOutputStream quotedPrintableOutputStream =
+                new QuotedPrintableOutputStream(contentOutputStream, false);
+        quotedPrintableOutputStream.write(content.getBytes());
+        quotedPrintableOutputStream.flush();
+        byte[] contentBytes = contentOutputStream.toByteArray();
+
+        ContentValues cv = new ContentValues();
+        cv.put("type", MessagePartType.UNKNOWN);
+        cv.put("data_location", DataLocation.IN_DATABASE);
+        cv.put("mime_type", isHtml ? "text/html" : "text/plain");
+        cv.put("header", mimeHeader.toString());
+        cv.put("data", contentBytes);
+        cv.put("decoded_body_size", content.length());
+        cv.put("root", structureInfo.rootPartId);
+        cv.put("parent", structureInfo.parentId);
+        cv.put("encoding", MimeUtil.ENC_QUOTED_PRINTABLE);
+        cv.put("seq", structureInfo.nextOrder);
+
+        long partId = db.insertOrThrow("message_parts", null, cv);
+        return structureInfo.nextChild(partId);
+    }
+
+    private static MimeHeader loadHeaderFromHeadersTable(SQLiteDatabase db, long messageId) {
+        Cursor headersCursor = db.query("headers",
+                new String[] { "name", "value" },
+                "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
+        try {
+            MimeHeader mimeHeader = new MimeHeader();
+            while (headersCursor.moveToNext()) {
+                String name = headersCursor.getString(0);
+                String value = headersCursor.getString(1);
+                mimeHeader.addHeader(name, value);
+            }
+            return mimeHeader;
+        } finally {
+            headersCursor.close();
+        }
+    }
+
     private static void dbCreateDatabaseFromScratch(SQLiteDatabase db) {
+
         db.execSQL("DROP TABLE IF EXISTS folders");
         db.execSQL("CREATE TABLE folders (" +
                 "id INTEGER PRIMARY KEY," +
@@ -570,7 +968,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 }
 
 
-                cv.put("flags", localStore.serializeFlags(extraFlags));
+                cv.put("flags", LocalStore.serializeFlags(extraFlags));
                 cv.put("read", read);
                 cv.put("flagged", flagged);
                 cv.put("answered", answered);

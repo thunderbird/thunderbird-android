@@ -75,6 +75,19 @@ public class MimeHeader implements Cloneable {
         mFields.removeAll(removeFields);
     }
 
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (Field field : mFields) {
+            if (field.hasRawData()) {
+                builder.append(field.getRaw());
+            } else {
+                writeNameValueField(builder, field);
+            }
+            builder.append('\r').append('\n');
+        }
+        return builder.toString();
+    }
+
     public void writeTo(OutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         for (Field field : mFields) {
@@ -103,6 +116,23 @@ public class MimeHeader implements Cloneable {
         writer.write(field.getName());
         writer.write(": ");
         writer.write(value);
+    }
+
+    private void writeNameValueField(StringBuilder builder, Field field) {
+        String value = field.getValue();
+
+        if (hasToBeEncoded(value)) {
+            Charset charset = null;
+
+            if (mCharset != null) {
+                charset = Charset.forName(mCharset);
+            }
+            value = EncoderUtil.encodeEncodedWord(field.getValue(), charset);
+        }
+
+        builder.append(field.getName());
+        builder.append(": ");
+        builder.append(value);
     }
 
     // encode non printable characters except LF/CR/TAB codes.
