@@ -507,6 +507,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 }
             }
         }
+        extraFlags.add(Flag.X_MIGRATED_FROM_V50);
 
         String flagsString = LocalStore.serializeFlags(extraFlags);
         db.execSQL("UPDATE messages SET flags = ? WHERE id = ?", new Object[] { flagsString, messageId } );
