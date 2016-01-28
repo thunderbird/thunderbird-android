@@ -64,7 +64,8 @@
         android:allowTaskReparenting="false"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/Theme.K9.Startup">
+        android:theme="@style/Theme.K9.Startup"
+        android:allowBackup="false">
 
         <meta-data
             android:name="android.app.default_searchable"
