@@ -226,6 +226,20 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         // no attachments: headers + multipart/alternative ( text_content + html_content )
         // with attachments: headers + multipart/mixed ( multipart/alternative ( text_content + html_content ) + attachments )
 
+        Account account = localStore.getAccount();
+        File attachmentDirNew = StorageManager.getInstance(K9.app).getAttachmentDirectory(
+                account.getUuid(), account.getLocalStorageProviderId());
+        File attachmentDirOld = new File(attachmentDirNew.getParent(),
+                account.getUuid() + ".old_attach-" + System.currentTimeMillis());
+        boolean moveOk = attachmentDirNew.renameTo(attachmentDirOld);
+        if (!moveOk) {
+            Log.e(K9.LOG_TAG, "Error moving attachment dir! All attachments might be lost!");
+        }
+        boolean mkdirOk = attachmentDirNew.mkdir();
+        if (!mkdirOk) {
+            Log.e(K9.LOG_TAG, "");
+        }
+
         // Copy thread structure from 'messages' table to 'threads'
         Cursor msgCursor = db.query("messages_old",
                 new String[] { "id", "uid", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
@@ -255,8 +269,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                                 mimeType, mimeHeader, structureState);
                     } else {
                         mimeType = "multipart/mixed";
-                        structureState = migrateComplexMailContent(db, localStore, messageId, htmlContent, textContent,
-                                mimeType, mimeHeader, structureState);
+                        structureState = migrateComplexMailContent(db, attachmentDirOld, attachmentDirNew, messageId,
+                                htmlContent, textContent, mimeHeader, structureState);
                     }
 
                     cv.clear();
@@ -275,9 +289,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
     }
 
-    @SuppressWarnings("UnusedParameters") // , we keep mimeType around for symmetry with migrateSimpleMailContent
-    private static MimeStructureState migrateComplexMailContent(SQLiteDatabase db, LocalStore localStore,
-            long messageId, String htmlContent, String textContent, String mimeType, MimeHeader mimeHeader,
+    private static MimeStructureState migrateComplexMailContent(SQLiteDatabase db,
+            File attachmentDirOld, File attachmentDirNew,
+            long messageId, String htmlContent, String textContent, MimeHeader mimeHeader,
             MimeStructureState structureState) throws IOException {
         ContentValues cv = new ContentValues();
         cv.put("type", MessagePartType.UNKNOWN);
@@ -299,7 +313,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             structureState = insertTextualPartIntoDatabase(db, structureState, null, htmlContent, true);
         }
 
-        structureState = insertAttachments(db, localStore, messageId, structureState);
+        structureState = insertAttachments(db, attachmentDirOld, attachmentDirNew, messageId, structureState);
         return structureState;
     }
 
@@ -347,8 +361,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
     }
 
-    private static MimeStructureState insertAttachments(SQLiteDatabase db, LocalStore localStore, long messageId,
-            MimeStructureState structureState) {
+    private static MimeStructureState insertAttachments(SQLiteDatabase db, File attachmentDirOld, File attachmentDirNew,
+            long messageId, MimeStructureState structureState) {
         Cursor cursor = null;
         try {
             cursor = db.query("attachments",
@@ -357,11 +371,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                                  "content_uri", "content_id", "content_disposition"
                          },
                     "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
-
-            Account account = localStore.getAccount();
-            // TODO fix attachment ids!
-            File attachmentDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(
-                    account.getUuid(), account.getLocalStorageProviderId());
 
             while (cursor.moveToNext()) {
                 long id = cursor.getLong(0);
@@ -392,19 +401,24 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                 boolean hasData = contentUriString != null;
                 boolean hasDataWithChecks;
+                File attachmentFileToMove = null;
                 if (hasData) {
                     try {
                         Uri contentUri = Uri.parse(contentUriString);
                         List<String> pathSegments = contentUri.getPathSegments();
                         String attachmentId = pathSegments.get(1);
                         boolean isMatchingAttachmentId = Long.parseLong(attachmentId) == id;
-                        boolean isExistingAttachmentFile = new File(attachmentDir, attachmentId).exists();
+
+                        File attachmentFile = new File(attachmentDirOld, attachmentId);
+                        boolean isExistingAttachmentFile = attachmentFile.exists();
                         hasDataWithChecks = isMatchingAttachmentId && isExistingAttachmentFile;
 
-                        if (!isMatchingAttachmentId && K9.DEBUG) {
+                        if (!isMatchingAttachmentId) {
                             Log.e(K9.LOG_TAG, "mismatched attachment id. mark as missing");
                         }
-                        if (!isExistingAttachmentFile && K9.DEBUG) {
+                        if (isExistingAttachmentFile) {
+                            attachmentFileToMove = attachmentFile;
+                        } else {
                             Log.e(K9.LOG_TAG, "attached file doesn't exist. mark as missing");
                         }
                     } catch (Exception e) {
@@ -434,6 +448,14 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                 long partId = db.insertOrThrow("message_parts", null, cv);
                 structureState = structureState.nextChild(partId);
+
+                if (attachmentFileToMove != null) {
+                    boolean moveOk = attachmentFileToMove.renameTo(new File(attachmentDirNew, Long.toString(partId)));
+                    if (!moveOk) {
+                        Log.e(K9.LOG_TAG, "Moving attachment to new dir failed!");
+                    }
+                }
+
             }
         } finally {
             if (cursor != null) {
