@@ -241,42 +241,22 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 String mimeType = msgCursor.getString(5);
                 int attachmentCount = msgCursor.getInt(6);
 
-                updateFlagsForMessage(db, messageId, messageFlags);
-
-                MimeHeader mimeHeader = loadHeaderFromHeadersTable(db, messageId);
-
                 try {
+
+                    updateFlagsForMessage(db, messageId, messageFlags);
+                    MimeHeader mimeHeader = loadHeaderFromHeadersTable(db, messageId);
+
                     MimeStructureState structureState = MimeStructureState.getRoot();
-                    if (MimeUtil.isSameMimeType(mimeType, "text/plain") && attachmentCount == 0) {
-                        structureState = insertTextualPartIntoDatabase(db, structureState, mimeHeader, textContent, false);
-                    } else if (MimeUtil.isSameMimeType(mimeType, "text/html") && attachmentCount == 0) {
-                        structureState = insertTextualPartIntoDatabase(db, structureState, mimeHeader, htmlContent, true);
-                    } else if (MimeUtil.isSameMimeType(mimeType, "multipart/alternative") && attachmentCount == 0) {
-                        structureState = insertBodyAsMultipartAlternative(db, structureState, mimeHeader, textContent, htmlContent);
+
+                    boolean isSimpleStructured = attachmentCount == 0 &&
+                            Utility.isAnyMimeType(mimeType, "text/plain", "text/html", "multipart/alternative");
+                    if (isSimpleStructured) {
+                        structureState = migrateSimpleMailContent(db, htmlContent, textContent,
+                                mimeType, mimeHeader, structureState);
                     } else {
                         mimeType = "multipart/mixed";
-
-                        cv.clear();
-                        cv.put("type", MessagePartType.UNKNOWN);
-                        cv.put("data_location", DataLocation.IN_DATABASE);
-                        cv.put("mime_type", mimeType);
-                        cv.put("header", mimeHeader.toString());
-                        cv.put("parent", -1);
-                        cv.put("seq", 0);
-                        cv.put("boundary", MimeUtil.createUniqueBoundary());
-
-                        long rootMessagePartId = db.insertOrThrow("message_parts", null, cv);
-                        structureState = structureState.nextMultipartChild(rootMessagePartId);
-
-                        if (textContent != null && htmlContent != null) {
-                            structureState = insertBodyAsMultipartAlternative(db, structureState, null, textContent, htmlContent);
-                        } else if (textContent != null) {
-                            structureState = insertTextualPartIntoDatabase(db, structureState, null, textContent, false);
-                        } else if (htmlContent != null) {
-                            structureState = insertTextualPartIntoDatabase(db, structureState, null, htmlContent, true);
-                        }
-
-                        structureState = insertAttachments(db, localStore, messageId, structureState);
+                        structureState = migrateComplexMailContent(db, localStore, messageId, htmlContent, textContent,
+                                mimeType, mimeHeader, structureState);
                     }
 
                     cv.clear();
@@ -293,6 +273,48 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             msgCursor.close();
         }
 
+    }
+
+    @SuppressWarnings("UnusedParameters") // , we keep mimeType around for symmetry with migrateSimpleMailContent
+    private static MimeStructureState migrateComplexMailContent(SQLiteDatabase db, LocalStore localStore,
+            long messageId, String htmlContent, String textContent, String mimeType, MimeHeader mimeHeader,
+            MimeStructureState structureState) throws IOException {
+        ContentValues cv = new ContentValues();
+        cv.put("type", MessagePartType.UNKNOWN);
+        cv.put("data_location", DataLocation.IN_DATABASE);
+        cv.put("mime_type", "multipart/mixed");
+        cv.put("header", mimeHeader.toString());
+        cv.put("parent", -1);
+        cv.put("seq", 0);
+        cv.put("boundary", MimeUtil.createUniqueBoundary());
+
+        long rootMessagePartId = db.insertOrThrow("message_parts", null, cv);
+        structureState = structureState.nextMultipartChild(rootMessagePartId);
+
+        if (textContent != null && htmlContent != null) {
+            structureState = insertBodyAsMultipartAlternative(db, structureState, null, textContent, htmlContent);
+        } else if (textContent != null) {
+            structureState = insertTextualPartIntoDatabase(db, structureState, null, textContent, false);
+        } else if (htmlContent != null) {
+            structureState = insertTextualPartIntoDatabase(db, structureState, null, htmlContent, true);
+        }
+
+        structureState = insertAttachments(db, localStore, messageId, structureState);
+        return structureState;
+    }
+
+    private static MimeStructureState migrateSimpleMailContent(SQLiteDatabase db, String htmlContent,
+            String textContent, String mimeType, MimeHeader mimeHeader, MimeStructureState structureState)
+            throws IOException {
+        if (MimeUtil.isSameMimeType(mimeType, "text/plain")) {
+            return insertTextualPartIntoDatabase(db, structureState, mimeHeader, textContent, false);
+        } else if (MimeUtil.isSameMimeType(mimeType, "text/html")) {
+            return insertTextualPartIntoDatabase(db, structureState, mimeHeader, htmlContent, true);
+        } else if (MimeUtil.isSameMimeType(mimeType, "multipart/alternative")) {
+            return insertBodyAsMultipartAlternative(db, structureState, mimeHeader, textContent, htmlContent);
+        } else {
+            throw new IllegalStateException("migrateSimpleMailContent cannot handle mimeType " + mimeType);
+        }
     }
 
     private static class MimeStructureState {
@@ -337,6 +359,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                     "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
 
             Account account = localStore.getAccount();
+            // TODO fix attachment ids!
             File attachmentDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(
                     account.getUuid(), account.getLocalStorageProviderId());
 
