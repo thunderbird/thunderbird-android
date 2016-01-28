@@ -1,11 +1,13 @@
 package com.fsck.k9.mailstore;
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import android.content.ContentValues;
 import android.content.SharedPreferences;
@@ -242,18 +244,17 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
         // Copy thread structure from 'messages' table to 'threads'
         Cursor msgCursor = db.query("messages_old",
-                new String[] { "id", "uid", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
+                new String[] { "id", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
                 null, null, null, null, null);
         try {
             ContentValues cv = new ContentValues();
             while (msgCursor.moveToNext()) {
                 long messageId = msgCursor.getLong(0);
-                String messageUid = msgCursor.getString(1);
-                String messageFlags = msgCursor.getString(2);
-                String htmlContent = msgCursor.getString(3);
-                String textContent = msgCursor.getString(4);
-                String mimeType = msgCursor.getString(5);
-                int attachmentCount = msgCursor.getInt(6);
+                String messageFlags = msgCursor.getString(1);
+                String htmlContent = msgCursor.getString(2);
+                String textContent = msgCursor.getString(3);
+                String mimeType = msgCursor.getString(4);
+                int attachmentCount = msgCursor.getInt(5);
 
                 try {
 
@@ -305,6 +306,10 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         long rootMessagePartId = db.insertOrThrow("message_parts", null, cv);
         structureState = structureState.nextMultipartChild(rootMessagePartId);
 
+        if (htmlContent != null) {
+            htmlContent = replaceContentUriWithContentIdInHtmlPart(db, messageId, htmlContent);
+        }
+
         if (textContent != null && htmlContent != null) {
             structureState = insertBodyAsMultipartAlternative(db, structureState, null, textContent, htmlContent);
         } else if (textContent != null) {
@@ -314,7 +319,29 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
 
         structureState = insertAttachments(db, attachmentDirOld, attachmentDirNew, messageId, structureState);
+
         return structureState;
+    }
+
+    private static String replaceContentUriWithContentIdInHtmlPart(
+            SQLiteDatabase db, long messageId, String htmlContent) {
+        Cursor cursor = db.query("attachments", new String[] { "content_uri", "content_id" },
+                "content_id IS NOT NULL AND message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
+
+        try {
+            while (cursor.moveToNext()) {
+                String contentUriString = cursor.getString(0);
+                String contentId = cursor.getString(1);
+                // this is not super efficient, but occurs only once or twice
+                htmlContent = htmlContent.replaceAll(Pattern.quote(contentUriString), "cid:" + contentId);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return htmlContent;
     }
 
     private static MimeStructureState migrateSimpleMailContent(SQLiteDatabase db, String htmlContent,
