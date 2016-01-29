@@ -50,16 +50,6 @@ import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.store.RemoteStore.SOCKET_CONNECT_TIMEOUT;
 import static com.fsck.k9.mail.store.RemoteStore.SOCKET_READ_TIMEOUT;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_AUTH_CRAM_MD5;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_AUTH_EXTERNAL;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_AUTH_PLAIN;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_COMPRESS_DEFLATE;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_IDLE;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_LOGINDISABLED;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_NAMESPACE;
-import static com.fsck.k9.mail.store.imap.ImapCommands.COMMAND_CAPABILITY;
-import static com.fsck.k9.mail.store.imap.ImapCommands.COMMAND_COMPRESS_DEFLATE;
-import static com.fsck.k9.mail.store.imap.ImapCommands.COMMAND_NAMESPACE;
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 
@@ -276,7 +266,7 @@ class ImapConnection {
     private void requestCapabilities() throws IOException, MessagingException {
         capabilities.clear();
 
-        List<ImapResponse> responses = extractCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
+        List<ImapResponse> responses = extractCapabilities(executeSimpleCommand(Commands.CAPABILITY));
         if (responses.size() != 2) {
             throw new MessagingException("Invalid CAPABILITY response received");
         }
@@ -289,7 +279,7 @@ class ImapConnection {
     }
 
     private void upgradeToTls() throws IOException, MessagingException, GeneralSecurityException {
-        if (!hasCapability("STARTTLS")) {
+        if (!hasCapability(Capabilities.STARTTLS)) {
             /*
              * This exception triggers a "Certificate error"
              * notification that takes the user to the incoming
@@ -304,7 +294,7 @@ class ImapConnection {
     }
 
     private void startTLS() throws IOException, MessagingException, GeneralSecurityException {
-        executeSimpleCommand("STARTTLS");
+        executeSimpleCommand(Commands.STARTTLS);
 
         String host = settings.getHost();
         int port = settings.getPort();
@@ -326,7 +316,7 @@ class ImapConnection {
     private void authenticate() throws MessagingException, IOException {
         switch (settings.getAuthType()) {
             case CRAM_MD5: {
-                if (hasCapability(CAPABILITY_AUTH_CRAM_MD5)) {
+                if (hasCapability(Capabilities.AUTH_CRAM_MD5)) {
                     authCramMD5();
                 } else {
                     throw new MessagingException("Server doesn't support encrypted passwords using CRAM-MD5.");
@@ -334,9 +324,9 @@ class ImapConnection {
                 break;
             }
             case PLAIN: {
-                if (hasCapability(CAPABILITY_AUTH_PLAIN)) {
+                if (hasCapability(Capabilities.AUTH_PLAIN)) {
                     saslAuthPlainWithLoginFallback();
-                } else if (!hasCapability(CAPABILITY_LOGINDISABLED)) {
+                } else if (!hasCapability(Capabilities.LOGINDISABLED)) {
                     login();
                 } else {
                     throw new MessagingException("Server doesn't support unencrypted passwords using AUTH=PLAIN " +
@@ -345,7 +335,7 @@ class ImapConnection {
                 break;
             }
             case EXTERNAL: {
-                if (hasCapability(CAPABILITY_AUTH_EXTERNAL)) {
+                if (hasCapability(Capabilities.AUTH_EXTERNAL)) {
                     saslAuthExternal();
                 } else {
                     // Provide notification to user of a problem authenticating using client certificates
@@ -360,7 +350,7 @@ class ImapConnection {
     }
 
     private void authCramMD5() throws MessagingException, IOException {
-        String command = "AUTHENTICATE CRAM-MD5";
+        String command = Commands.AUTHENTICATE_CRAM_MD5;
         String tag = sendCommand(command, false);
 
         ImapResponse response = readContinuationResponse(tag);
@@ -392,7 +382,7 @@ class ImapConnection {
     }
 
     private void saslAuthPlain() throws IOException, MessagingException {
-        String command = "AUTHENTICATE PLAIN";
+        String command = Commands.AUTHENTICATE_PLAIN;
         String tag = sendCommand(command, false);
 
         readContinuationResponse(tag);
@@ -426,7 +416,8 @@ class ImapConnection {
         String password = p.matcher(settings.getPassword()).replaceAll(replacement);
 
         try {
-            extractCapabilities(executeSimpleCommand(String.format("LOGIN \"%s\" \"%s\"", username, password), true));
+            String command = String.format(Commands.LOGIN + " \"%s\" \"%s\"", username, password);
+            extractCapabilities(executeSimpleCommand(command, true));
         } catch (NegativeImapResponseException e) {
             throw new AuthenticationFailedException(e.getMessage());
         }
@@ -434,8 +425,8 @@ class ImapConnection {
 
     private void saslAuthExternal() throws IOException, MessagingException {
         try {
-            extractCapabilities(executeSimpleCommand(
-                    String.format("AUTHENTICATE EXTERNAL %s", Base64.encode(settings.getUsername())), false));
+            String command = Commands.AUTHENTICATE_EXTERNAL + " " + Base64.encode(settings.getUsername());
+            extractCapabilities(executeSimpleCommand(command, false));
         } catch (NegativeImapResponseException e) {
             /*
              * Provide notification to the user of a problem authenticating
@@ -449,7 +440,7 @@ class ImapConnection {
     }
 
     private void enableCompressionIfRequested() throws IOException, MessagingException {
-        if (hasCapability(CAPABILITY_COMPRESS_DEFLATE) && shouldEnableCompression()) {
+        if (hasCapability(Capabilities.COMPRESS_DEFLATE) && shouldEnableCompression()) {
             enableCompression();
         }
     }
@@ -477,7 +468,7 @@ class ImapConnection {
 
     private void enableCompression() throws IOException, MessagingException {
         try {
-            executeSimpleCommand(COMMAND_COMPRESS_DEFLATE);
+            executeSimpleCommand(Commands.COMPRESS_DEFLATE);
         } catch (NegativeImapResponseException e) {
             Log.d(LOG_TAG, "Unable to negotiate compression: " + e.getMessage());
             return;
@@ -504,7 +495,7 @@ class ImapConnection {
             return;
         }
 
-        if (hasCapability(CAPABILITY_NAMESPACE)) {
+        if (hasCapability(Capabilities.NAMESPACE)) {
             if (K9MailLib.isDebug()) {
                 Log.i(LOG_TAG, "pathPrefix is unset and server has NAMESPACE capability");
             }
@@ -518,10 +509,10 @@ class ImapConnection {
     }
 
     private void handleNamespace() throws IOException, MessagingException {
-        List<ImapResponse> responses = executeSimpleCommand(COMMAND_NAMESPACE);
+        List<ImapResponse> responses = executeSimpleCommand(Commands.NAMESPACE);
 
         for (ImapResponse response : responses) {
-            if (equalsIgnoreCase(response.get(0), COMMAND_NAMESPACE)) {
+            if (equalsIgnoreCase(response.get(0), Responses.NAMESPACE)) {
                 if (K9MailLib.isDebug()) {
                     Log.d(LOG_TAG, "Got NAMESPACE response " + response + " on " + getLogId());
                 }
@@ -564,7 +555,7 @@ class ImapConnection {
     private void retrievePathDelimiter() throws IOException, MessagingException {
         List<ImapResponse> listResponses;
         try {
-            listResponses = executeSimpleCommand("LIST \"\" \"\"");
+            listResponses = executeSimpleCommand(Commands.LIST + " \"\" \"\"");
         } catch (NegativeImapResponseException e) {
             Log.d(LOG_TAG, "Error getting path delimiter using LIST command", e);
             return;
@@ -591,7 +582,7 @@ class ImapConnection {
             return false;
         }
 
-        boolean isListResponse = equalsIgnoreCase(response.get(0), "LIST");
+        boolean isListResponse = equalsIgnoreCase(response.get(0), Responses.LIST);
         boolean hierarchyDelimiterValid = response.get(2) instanceof String;
 
         return isListResponse && hierarchyDelimiterValid;
@@ -606,7 +597,7 @@ class ImapConnection {
             Log.v(LOG_TAG, "Connection " + getLogId() + " has " + capabilities.size() + " capabilities");
         }
 
-        return capabilities.contains(CAPABILITY_IDLE);
+        return capabilities.contains(Capabilities.IDLE);
     }
 
     public void close() {

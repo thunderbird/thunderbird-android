@@ -18,7 +18,6 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_CAPABILITY;
 
 
 class ImapResponseParser {
@@ -105,8 +104,8 @@ class ImapResponseParser {
                 while (responseIterator.hasNext()) {
                     ImapResponse delResponse = responseIterator.next();
                     if (delResponse.getTag() != null || delResponse.size() < 2 || (
-                            !equalsIgnoreCase(delResponse.get(1), "EXISTS") &&
-                            !equalsIgnoreCase(delResponse.get(1), "EXPUNGE"))) {
+                            !equalsIgnoreCase(delResponse.get(1), Responses.EXISTS) &&
+                            !equalsIgnoreCase(delResponse.get(1), Responses.EXPUNGE))) {
                         responseIterator.remove();
                     }
                 }
@@ -121,7 +120,7 @@ class ImapResponseParser {
             responses.add(response);
         } while (response == null || response.getTag() == null);
 
-        if (response.size() < 1 || !equalsIgnoreCase(response.get(0), "OK")) {
+        if (response.size() < 1 || !equalsIgnoreCase(response.get(0), Responses.OK)) {
             throw new NegativeImapResponseException("Command: " + commandToLog + "; response: " + response.toString(),
                     response.getAlertText());
         }
@@ -133,11 +132,11 @@ class ImapResponseParser {
         HashSet<String> capabilities = new HashSet<String>();
         for (ImapResponse response : responses) {
             ImapList list = null;
-            if (!response.isEmpty() && equalsIgnoreCase(response.get(0), "OK")) {
+            if (!response.isEmpty() && equalsIgnoreCase(response.get(0), Responses.OK)) {
                 for (Object thisPart : response) {
                     if (thisPart instanceof ImapList) {
                         ImapList thisList = (ImapList) thisPart;
-                        if (equalsIgnoreCase(thisList.get(0), CAPABILITY_CAPABILITY)) {
+                        if (equalsIgnoreCase(thisList.get(0), Responses.CAPABILITY)) {
                             list = thisList;
                             break;
                         }
@@ -147,7 +146,7 @@ class ImapResponseParser {
                 list = response;
             }
 
-            if (list != null && list.size() > 1 && equalsIgnoreCase(list.get(0), CAPABILITY_CAPABILITY)) {
+            if (list != null && list.size() > 1 && equalsIgnoreCase(list.get(0), Responses.CAPABILITY)) {
                 for (Object listItem : list.subList(1, list.size())) {
                     if (listItem instanceof String) {
                         String capability = (String) listItem;
@@ -167,7 +166,7 @@ class ImapResponseParser {
 
         if (isStatusResponse(firstToken)) {
             parseResponseText(response);
-        } else if (equalsIgnoreCase(firstToken, "LIST")) {
+        } else if (equalsIgnoreCase(firstToken, Responses.LIST)) {
             parseListResponse(response);
         } else {
             Object token;
@@ -472,11 +471,11 @@ class ImapResponseParser {
     }
 
     private boolean isStatusResponse(String symbol) {
-        return symbol.equalsIgnoreCase("OK") ||
-                symbol.equalsIgnoreCase("NO") ||
-                symbol.equalsIgnoreCase("BAD") ||
-                symbol.equalsIgnoreCase("PREAUTH") ||
-                symbol.equalsIgnoreCase("BYE");
+        return symbol.equalsIgnoreCase(Responses.OK) ||
+                symbol.equalsIgnoreCase(Responses.NO) ||
+                symbol.equalsIgnoreCase(Responses.BAD) ||
+                symbol.equalsIgnoreCase(Responses.PREAUTH) ||
+                symbol.equalsIgnoreCase(Responses.BYE);
     }
 
     static boolean equalsIgnoreCase(Object token, String symbol) {
