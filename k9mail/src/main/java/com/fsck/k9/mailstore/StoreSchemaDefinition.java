@@ -346,12 +346,12 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
     private static void copyMessageMetadataToNewTable(SQLiteDatabase db) {
         db.execSQL("INSERT INTO messages (" +
-                "deleted, folder_id, uid, subject, date, sender_list, " +
+                "id, deleted, folder_id, uid, subject, date, sender_list, " +
                 "to_list, cc_list, bcc_list, reply_to_list, attachment_count, " +
                 "internal_date, message_id, preview, mime_type, " +
                 "normalized_subject_hash, empty, read, flagged, answered" +
                 ") SELECT " +
-                "deleted, folder_id, uid, subject, date, sender_list, " +
+                "id, deleted, folder_id, uid, subject, date, sender_list, " +
                 "to_list, cc_list, bcc_list, reply_to_list, attachment_count, " +
                 "internal_date, message_id, preview, mime_type, " +
                 "normalized_subject_hash, empty, read, flagged, answered " +
