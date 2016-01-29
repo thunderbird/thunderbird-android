@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -263,15 +264,32 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                     MimeStructureState structureState = MimeStructureState.getNewRootState();
 
-                    boolean isSimpleStructured = attachmentCount == 0 &&
-                            Utility.isAnyMimeType(mimeType, "text/plain", "text/html", "multipart/alternative");
-                    if (isSimpleStructured) {
-                        structureState = migrateSimpleMailContent(db, htmlContent, textContent,
-                                mimeType, mimeHeader, structureState);
-                    } else {
-                        mimeType = "multipart/mixed";
-                        structureState = migrateComplexMailContent(db, attachmentDirOld, attachmentDirNew, messageId,
-                                htmlContent, textContent, mimeHeader, structureState);
+                    boolean messageHadSpecialFormat = false;
+
+                    boolean isMaybePgpMimeEncrypted = attachmentCount >= 2
+                            && MimeUtil.isSameMimeType(mimeType, "multipart/encrypted");
+                    if (isMaybePgpMimeEncrypted) {
+                        MimeStructureState maybeStructureState =
+                                migratePgpMimeEncryptedContent(db, messageId, attachmentDirOld, attachmentDirNew,
+                                        mimeHeader, structureState);
+                        if (maybeStructureState != null) {
+                            structureState = maybeStructureState;
+                            messageHadSpecialFormat = true;
+                        }
+                    }
+
+                    if (!messageHadSpecialFormat) {
+                        boolean isSimpleStructured = attachmentCount == 0 &&
+                                Utility.isAnyMimeType(mimeType, "text/plain", "text/html", "multipart/alternative");
+                        if (isSimpleStructured) {
+                            structureState = migrateSimpleMailContent(db, htmlContent, textContent,
+                                    mimeType, mimeHeader, structureState);
+                        } else {
+                            mimeType = "multipart/mixed";
+                            structureState =
+                                    migrateComplexMailContent(db, attachmentDirOld, attachmentDirNew, messageId,
+                                            htmlContent, textContent, mimeHeader, structureState);
+                        }
                     }
 
                     cv.clear();
@@ -398,9 +416,96 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 "END");
     }
 
+    @Nullable
+    private static MimeStructureState migratePgpMimeEncryptedContent(SQLiteDatabase db, long messageId,
+            File attachmentDirOld, File attachmentDirNew, MimeHeader mimeHeader, MimeStructureState structureState) {
+
+        Log.d(K9.LOG_TAG, "Attempting to migrate multipart/encrypted as pgp/mime");
+
+        Cursor cursor = null;
+        try {
+            cursor = db.query("attachments",
+                    new String[] {
+                            "id", "size", "name", "mime_type", "store_data",
+                            "content_uri", "content_id", "content_disposition"
+                    },
+                    "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
+
+            if (cursor.getCount() < 2) {
+                Log.e(K9.LOG_TAG, "Found multipart/encrypted but not enough attaachments, handling as regular mail");
+                return null;
+            }
+
+            cursor.moveToFirst();
+
+            long firstPartId = cursor.getLong(0);
+            int firstPartSize = cursor.getInt(1);
+            String firstPartName = cursor.getString(2);
+            String firstPartMimeType = cursor.getString(3);
+            String firstPartStoreData = cursor.getString(4);
+            String firstPartContentUriString = cursor.getString(5);
+
+            if (!MimeUtil.isSameMimeType(firstPartMimeType, "application/pgp-encrypted")) {
+                Log.e(K9.LOG_TAG,
+                        "First part in multipart/encrypted wasn't application/pgp-encrypted, handling as regular mail");
+                return null;
+            }
+
+            cursor.moveToNext();
+
+            long secondPartId = cursor.getLong(0);
+            int secondPartSize = cursor.getInt(1);
+            String secondPartName = cursor.getString(2);
+            String secondPartMimeType = cursor.getString(3);
+            String secondPartStoreData = cursor.getString(4);
+            String secondPartContentUriString = cursor.getString(5);
+
+            if (!MimeUtil.isSameMimeType(secondPartMimeType, "application/octet-stream")) {
+                Log.e(K9.LOG_TAG,
+                        "First part in multipart/encrypted wasn't application/octet-stream, handling as regular mail");
+                return null;
+            }
+
+            ContentValues cv = new ContentValues();
+            cv.put("type", MessagePartType.UNKNOWN);
+            cv.put("data_location", DataLocation.IN_DATABASE);
+            cv.put("mime_type", "multipart/encrypted");
+            cv.put("header", mimeHeader.toString());
+            cv.put("boundary", MimeUtil.createUniqueBoundary());
+            structureState.applyValues(cv);
+
+            long rootMessagePartId = db.insertOrThrow("message_parts", null, cv);
+            structureState = structureState.nextMultipartChild(rootMessagePartId);
+
+            structureState =
+                    insertMimeAttachmentPart(db, attachmentDirOld, attachmentDirNew, structureState, firstPartId,
+                            firstPartSize, firstPartName, "application/pgp-encrypted", firstPartStoreData,
+                            firstPartContentUriString, null, null);
+
+            structureState =
+                    insertMimeAttachmentPart(db, attachmentDirOld, attachmentDirNew, structureState, secondPartId,
+                            secondPartSize, secondPartName, "application/octet-stream", secondPartStoreData,
+                            secondPartContentUriString, null, null);
+
+            while (cursor.moveToNext()) {
+                Log.e(K9.LOG_TAG, "Ignoring trailing part after multipart/encrypted data.");
+            }
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return structureState;
+
+    }
+
     private static MimeStructureState migrateComplexMailContent(SQLiteDatabase db,
             File attachmentDirOld, File attachmentDirNew, long messageId, String htmlContent, String textContent,
             MimeHeader mimeHeader, MimeStructureState structureState) throws IOException {
+        Log.d(K9.LOG_TAG, "Processing mail with complex data structure as multipart/mixed");
+
         ContentValues cv = new ContentValues();
         cv.put("type", MessagePartType.UNKNOWN);
         cv.put("data_location", DataLocation.IN_DATABASE);
@@ -453,6 +558,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     private static MimeStructureState migrateSimpleMailContent(SQLiteDatabase db, String htmlContent,
             String textContent, String mimeType, MimeHeader mimeHeader, MimeStructureState structureState)
             throws IOException {
+        Log.d(K9.LOG_TAG, "Processing mail with simple structure");
+
         if (MimeUtil.isSameMimeType(mimeType, "text/plain")) {
             return insertTextualPartIntoDatabase(db, structureState, mimeHeader, textContent, false);
         } else if (MimeUtil.isSameMimeType(mimeType, "text/html")) {
@@ -485,77 +592,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 String contentId = cursor.getString(6);
                 String contentDisposition = cursor.getString(7);
 
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "processing attachment " + id + ", " + name + ", "
-                            + mimeType + ", " + storeData + ", " + contentUriString);
-                }
-
-                if (contentDisposition == null) {
-                    contentDisposition = "attachment";
-                }
-
-                MimeHeader mimeHeader = new MimeHeader();
-                mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                        String.format("%s;\r\n name=\"%s\"", mimeType, name));
-                mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                        String.format(Locale.US, "%s;\r\n filename=\"%s\";\r\n size=%d",
-                                contentDisposition, name, size)); // TODO: Should use encoded word defined in RFC 2231.
-                mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
-
-                boolean hasData = contentUriString != null;
-                boolean hasDataWithChecks;
-                File attachmentFileToMove = null;
-                if (hasData) {
-                    try {
-                        Uri contentUri = Uri.parse(contentUriString);
-                        List<String> pathSegments = contentUri.getPathSegments();
-                        String attachmentId = pathSegments.get(1);
-                        boolean isMatchingAttachmentId = Long.parseLong(attachmentId) == id;
-
-                        File attachmentFile = new File(attachmentDirOld, attachmentId);
-                        boolean isExistingAttachmentFile = attachmentFile.exists();
-                        hasDataWithChecks = isMatchingAttachmentId && isExistingAttachmentFile;
-
-                        if (!isMatchingAttachmentId) {
-                            Log.e(K9.LOG_TAG, "mismatched attachment id. mark as missing");
-                        }
-                        if (isExistingAttachmentFile) {
-                            attachmentFileToMove = attachmentFile;
-                        } else {
-                            Log.e(K9.LOG_TAG, "attached file doesn't exist. mark as missing");
-                        }
-                    } catch (Exception e) {
-                        // anything here fails, conservatively assume the data doesn't exist
-                        hasDataWithChecks = false;
-                    }
-                } else {
-                    hasDataWithChecks = false;
-                }
-                if (K9.DEBUG && hasDataWithChecks) {
-                    Log.d(K9.LOG_TAG, "attachment is in local cache");
-                }
-
-                ContentValues cv = new ContentValues();
-                cv.put("type", MessagePartType.UNKNOWN);
-                cv.put("mime_type", mimeType);
-                cv.put("decoded_body_size", size);
-                cv.put("display_name", name);
-                cv.put("header", mimeHeader.toString());
-                cv.put("encoding", MimeUtil.ENC_BINARY);
-                cv.put("data_location", hasDataWithChecks ? DataLocation.ON_DISK : DataLocation.MISSING);
-                cv.put("content_id", contentId);
-                cv.put("server_extra", storeData);
-                structureState.applyValues(cv);
-
-                long partId = db.insertOrThrow("message_parts", null, cv);
-                structureState = structureState.nextChild(partId);
-
-                if (attachmentFileToMove != null) {
-                    boolean moveOk = attachmentFileToMove.renameTo(new File(attachmentDirNew, Long.toString(partId)));
-                    if (!moveOk) {
-                        Log.e(K9.LOG_TAG, "Moving attachment to new dir failed!");
-                    }
-                }
+                structureState =
+                        insertMimeAttachmentPart(db, attachmentDirOld, attachmentDirNew, structureState, id, size, name,
+                                mimeType, storeData, contentUriString, contentId, contentDisposition);
 
             }
         } finally {
@@ -564,6 +603,85 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             }
         }
 
+        return structureState;
+    }
+
+    private static MimeStructureState insertMimeAttachmentPart(SQLiteDatabase db, File attachmentDirOld,
+            File attachmentDirNew, MimeStructureState structureState, long id, int size, String name, String mimeType,
+            String storeData, String contentUriString, String contentId, String contentDisposition) {
+        if (K9.DEBUG) {
+            Log.d(K9.LOG_TAG, "processing attachment " + id + ", " + name + ", "
+                    + mimeType + ", " + storeData + ", " + contentUriString);
+        }
+
+        if (contentDisposition == null) {
+            contentDisposition = "attachment";
+        }
+
+        MimeHeader mimeHeader = new MimeHeader();
+        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                String.format("%s;\r\n name=\"%s\"", mimeType, name));
+        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
+                String.format(Locale.US, "%s;\r\n filename=\"%s\";\r\n size=%d",
+                        contentDisposition, name, size)); // TODO: Should use encoded word defined in RFC 2231.
+        if (contentId != null) {
+            mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
+        }
+
+        boolean hasData = contentUriString != null;
+        boolean hasDataWithChecks;
+        File attachmentFileToMove = null;
+        if (hasData) {
+            try {
+                Uri contentUri = Uri.parse(contentUriString);
+                List<String> pathSegments = contentUri.getPathSegments();
+                String attachmentId = pathSegments.get(1);
+                boolean isMatchingAttachmentId = Long.parseLong(attachmentId) == id;
+
+                File attachmentFile = new File(attachmentDirOld, attachmentId);
+                boolean isExistingAttachmentFile = attachmentFile.exists();
+                hasDataWithChecks = isMatchingAttachmentId && isExistingAttachmentFile;
+
+                if (!isMatchingAttachmentId) {
+                    Log.e(K9.LOG_TAG, "mismatched attachment id. mark as missing");
+                }
+                if (isExistingAttachmentFile) {
+                    attachmentFileToMove = attachmentFile;
+                } else {
+                    Log.e(K9.LOG_TAG, "attached file doesn't exist. mark as missing");
+                }
+            } catch (Exception e) {
+                // anything here fails, conservatively assume the data doesn't exist
+                hasDataWithChecks = false;
+            }
+        } else {
+            hasDataWithChecks = false;
+        }
+        if (K9.DEBUG && hasDataWithChecks) {
+            Log.d(K9.LOG_TAG, "attachment is in local cache");
+        }
+
+        ContentValues cv = new ContentValues();
+        cv.put("type", MessagePartType.UNKNOWN);
+        cv.put("mime_type", mimeType);
+        cv.put("decoded_body_size", size);
+        cv.put("display_name", name);
+        cv.put("header", mimeHeader.toString());
+        cv.put("encoding", MimeUtil.ENC_BINARY);
+        cv.put("data_location", hasDataWithChecks ? DataLocation.ON_DISK : DataLocation.MISSING);
+        cv.put("content_id", contentId);
+        cv.put("server_extra", storeData);
+        structureState.applyValues(cv);
+
+        long partId = db.insertOrThrow("message_parts", null, cv);
+        structureState = structureState.nextChild(partId);
+
+        if (attachmentFileToMove != null) {
+            boolean moveOk = attachmentFileToMove.renameTo(new File(attachmentDirNew, Long.toString(partId)));
+            if (!moveOk) {
+                Log.e(K9.LOG_TAG, "Moving attachment to new dir failed!");
+            }
+        }
         return structureState;
     }
 
