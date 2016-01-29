@@ -100,18 +100,6 @@ class ImapConnection {
         this.socketReadTimeout = socketReadTimeout;
     }
 
-    public Set<String> getCapabilities() {
-        return capabilities;
-    }
-
-    public OutputStream getOutputStream() {
-        return outputStream;
-    }
-
-    protected String getLogId() {
-        return "conn" + hashCode();
-    }
-
     public void open() throws IOException, MessagingException {
         if (isOpen()) {
             return;
@@ -231,114 +219,135 @@ class ImapConnection {
                 socket.isConnected() && !socket.isClosed();
     }
 
-    public void close() {
-        IOUtils.closeQuietly(inputStream);
-        IOUtils.closeQuietly(outputStream);
-        IOUtils.closeQuietly(socket);
-
-        inputStream = null;
-        outputStream = null;
-        socket = null;
-    }
-
-    public ImapResponse readResponse() throws IOException, MessagingException {
-        return readResponse(null);
-    }
-
-    public ImapResponse readResponse(ImapResponseCallback callback) throws IOException {
+    private void adjustDNSCacheTTL() {
         try {
-            ImapResponse response = responseParser.readResponse(callback);
+            Security.setProperty("networkaddress.cache.ttl", "0");
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Could not set DNS ttl to 0 for " + getLogId(), e);
+        }
 
-            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                Log.v(LOG_TAG, getLogId() + "<<<" + response);
-            }
-
-            return response;
-        } catch (IOException e) {
-            close();
-            throw e;
+        try {
+            Security.setProperty("networkaddress.cache.negative.ttl", "0");
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Could not set DNS negative ttl to 0 for " + getLogId(), e);
         }
     }
 
-    public void sendContinuation(String continuation) throws IOException {
-        outputStream.write(continuation.getBytes());
-        outputStream.write('\r');
-        outputStream.write('\n');
-        outputStream.flush();
+    private Socket connect(ImapSettings settings, TrustedSocketFactory socketFactory) throws GeneralSecurityException,
+            MessagingException, IOException {
+        Exception connectException = null;
 
-        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-            Log.v(LOG_TAG, getLogId() + ">>> " + continuation);
-        }
-    }
+        String host = settings.getHost();
+        int port = settings.getPort();
+        String clientCertificateAlias = settings.getClientCertificateAlias();
 
-    public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
-        try {
-            open();
-
-            String tag = Integer.toString(nextCommandTag++);
-            String commandToSend = tag + " " + command + "\r\n";
-            outputStream.write(commandToSend.getBytes());
-            outputStream.flush();
-
-            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                if (sensitive && !K9MailLib.isDebugSensitive()) {
-                    Log.v(LOG_TAG, getLogId() + ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
-                } else {
-                    Log.v(LOG_TAG, getLogId() + ">>> " + commandToSend);
+        InetAddress[] inetAddresses = InetAddress.getAllByName(host);
+        for (InetAddress address : inetAddresses) {
+            try {
+                if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+                    Log.d(LOG_TAG, "Connecting to " + host + " as " + address);
                 }
+
+                SocketAddress socketAddress = new InetSocketAddress(address, port);
+
+                Socket socket;
+                if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+                    socket = socketFactory.createSocket(null, host, port, clientCertificateAlias);
+                } else {
+                    socket = new Socket();
+                }
+
+                socket.connect(socketAddress, socketConnectTimeout);
+
+                // Successfully connected to the server; don't try any other addresses
+                return socket;
+            } catch (IOException e) {
+                Log.w(LOG_TAG, "could not connect to " + address, e);
+                connectException = e;
             }
+        }
 
-            return tag;
-        } catch (IOException | MessagingException e) {
-            close();
-            throw e;
+        throw new MessagingException("Cannot connect to host", connectException);
+    }
+
+    private void startTLS() throws IOException, MessagingException, GeneralSecurityException {
+        executeSimpleCommand("STARTTLS");
+
+        String host = settings.getHost();
+        int port = settings.getPort();
+        String clientCertificateAlias = settings.getClientCertificateAlias();
+
+        socket = socketFactory.createSocket(socket, host, port, clientCertificateAlias);
+        socket.setSoTimeout(socketReadTimeout);
+
+        inputStream = new PeekableInputStream(new BufferedInputStream(socket.getInputStream(), BUFFER_SIZE));
+        responseParser = new ImapResponseParser(inputStream);
+        outputStream = new BufferedOutputStream(socket.getOutputStream(), BUFFER_SIZE);
+
+        // Per RFC 2595 (3.1):  Once TLS has been started, reissue CAPABILITY command
+        if (K9MailLib.isDebug()) {
+            Log.i(LOG_TAG, "Updating capabilities after STARTTLS for " + getLogId());
+        }
+
+        capabilities.clear();
+        List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
+        if (responses.size() != 2) {
+            throw new MessagingException("Invalid CAPABILITY response received");
         }
     }
 
-    public List<ImapResponse> executeSimpleCommand(String command) throws IOException, MessagingException {
-        return executeSimpleCommand(command, false, null);
-    }
+    private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses) {
+        Set<String> receivedCapabilities = ImapResponseParser.parseCapabilities(responses);
 
-    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
-            MessagingException {
-        return executeSimpleCommand(command, sensitive, null);
-    }
-
-    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
-            throws IOException, MessagingException {
-        String commandToLog = command;
-
-        if (sensitive && !K9MailLib.isDebugSensitive()) {
-            commandToLog = "*sensitive*";
+        /* RFC 3501 6.2.3
+            A server MAY include a CAPABILITY response code in the tagged OK
+            response to a successful LOGIN command in order to send
+            capabilities automatically.  It is unnecessary for a client to
+            send a separate CAPABILITY command if it recognizes these
+            automatic capabilities.
+        */
+        if (K9MailLib.isDebug()) {
+            Log.d(LOG_TAG, "Saving " + receivedCapabilities + " capabilities for " + getLogId());
         }
 
-        String tag = sendCommand(command, sensitive);
+        capabilities.addAll(receivedCapabilities);
 
-        try {
-            return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
-        } catch (IOException e) {
-            close();
-            throw e;
-        }
+        return responses;
     }
 
-    private void login() throws IOException, MessagingException {
-        /*
-         * Use quoted strings which permit spaces and quotes. (Using IMAP
-         * string literals would be better, but some servers are broken
-         * and don't parse them correctly.)
-         */
-
-        // escape double-quotes and backslash characters with a backslash
-        Pattern p = Pattern.compile("[\\\\\"]");
-        String replacement = "\\\\$0";
-        String username = p.matcher(settings.getUsername()).replaceAll(replacement);
-        String password = p.matcher(settings.getPassword()).replaceAll(replacement);
-
-        try {
-            receiveCapabilities(executeSimpleCommand(String.format("LOGIN \"%s\" \"%s\"", username, password), true));
-        } catch (ImapException e) {
-            throw new AuthenticationFailedException(e.getMessage());
+    private void authenticate(AuthType authType) throws MessagingException, IOException {
+        switch (authType) {
+            case CRAM_MD5: {
+                if (hasCapability(CAPABILITY_AUTH_CRAM_MD5)) {
+                    authCramMD5();
+                } else {
+                    throw new MessagingException("Server doesn't support encrypted passwords using CRAM-MD5.");
+                }
+                break;
+            }
+            case PLAIN: {
+                if (hasCapability(CAPABILITY_AUTH_PLAIN)) {
+                    saslAuthPlainWithLoginFallback();
+                } else if (!hasCapability(CAPABILITY_LOGINDISABLED)) {
+                    login();
+                } else {
+                    throw new MessagingException("Server doesn't support unencrypted passwords using AUTH=PLAIN " +
+                            "and LOGIN is disabled.");
+                }
+                break;
+            }
+            case EXTERNAL: {
+                if (hasCapability(CAPABILITY_AUTH_EXTERNAL)) {
+                    saslAuthExternal();
+                } else {
+                    // Provide notification to user of a problem authenticating using client certificates
+                    throw new CertificateValidationException(CertificateValidationException.Reason.MissingCapability);
+                }
+                break;
+            }
+            default: {
+                throw new MessagingException("Unhandled authentication method found in the server settings (bug).");
+            }
         }
     }
 
@@ -366,6 +375,14 @@ class ImapConnection {
         }
     }
 
+    private void saslAuthPlainWithLoginFallback() throws IOException, MessagingException {
+        try {
+            saslAuthPlain();
+        } catch (AuthenticationFailedException e) {
+            login();
+        }
+    }
+
     private void saslAuthPlain() throws IOException, MessagingException {
         String command = "AUTHENTICATE PLAIN";
         String tag = sendCommand(command, false);
@@ -387,50 +404,24 @@ class ImapConnection {
         }
     }
 
-    private void saslAuthPlainWithLoginFallback() throws IOException, MessagingException {
+    private void login() throws IOException, MessagingException {
+        /*
+         * Use quoted strings which permit spaces and quotes. (Using IMAP
+         * string literals would be better, but some servers are broken
+         * and don't parse them correctly.)
+         */
+
+        // escape double-quotes and backslash characters with a backslash
+        Pattern p = Pattern.compile("[\\\\\"]");
+        String replacement = "\\\\$0";
+        String username = p.matcher(settings.getUsername()).replaceAll(replacement);
+        String password = p.matcher(settings.getPassword()).replaceAll(replacement);
+
         try {
-            saslAuthPlain();
-        } catch (AuthenticationFailedException e) {
-            login();
+            receiveCapabilities(executeSimpleCommand(String.format("LOGIN \"%s\" \"%s\"", username, password), true));
+        } catch (ImapException e) {
+            throw new AuthenticationFailedException(e.getMessage());
         }
-    }
-
-    private ImapResponse readContinuationResponse(String tag) throws IOException, MessagingException {
-        ImapResponse response;
-        do {
-            response = readResponse();
-
-            String responseTag = response.getTag();
-            if (responseTag != null) {
-                if (responseTag.equalsIgnoreCase(tag)) {
-                    throw new MessagingException("Command continuation aborted: " + response);
-                } else {
-                    Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " +
-                            response + " for " + getLogId());
-                }
-            }
-        } while (!response.isContinuationRequested());
-
-        return response;
-    }
-
-    protected void setReadTimeout(int millis) throws SocketException {
-        Socket sock = socket;
-        if (sock != null) {
-            sock.setSoTimeout(millis);
-        }
-    }
-
-    protected boolean isIdleCapable() {
-        if (K9MailLib.isDebug()) {
-            Log.v(LOG_TAG, "Connection " + getLogId() + " has " + capabilities.size() + " capabilities");
-        }
-
-        return capabilities.contains(CAPABILITY_IDLE);
-    }
-
-    protected boolean hasCapability(String capability) {
-        return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 
     private void saslAuthExternal() throws IOException, MessagingException {
@@ -446,80 +437,6 @@ class ImapConnection {
              * AccountSetupCheckSettings.
              */
             throw new CertificateValidationException(e.getMessage());
-        }
-    }
-
-    private void getPathDelimiter() throws IOException, MessagingException {
-        List<ImapResponse> listResponses;
-        try {
-            listResponses = executeSimpleCommand("LIST \"\" \"\"");
-        } catch (ImapException e) {
-            Log.d(LOG_TAG, "Error getting path delimiter using LIST command", e);
-            return;
-        }
-
-        for (ImapResponse response : listResponses) {
-            if (isListResponse(response)) {
-                String hierarchyDelimiter = response.getString(2);
-                settings.setPathDelimiter(hierarchyDelimiter);
-                settings.setCombinedPrefix(null);
-
-                if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Got path delimiter '" + settings.getPathDelimiter() + "' for " + getLogId());
-                }
-
-                break;
-            }
-        }
-    }
-
-    private boolean isListResponse(ImapResponse response) {
-        boolean responseTooShort = response.size() < 4;
-        if (responseTooShort) {
-            return false;
-        }
-
-        boolean isListResponse = equalsIgnoreCase(response.get(0), "LIST");
-        boolean hierarchyDelimiterValid = response.get(2) instanceof String;
-
-        return isListResponse && hierarchyDelimiterValid;
-    }
-
-    private void handleNamespace() throws IOException, MessagingException {
-        List<ImapResponse> responses = executeSimpleCommand(COMMAND_NAMESPACE);
-
-        for (ImapResponse response : responses) {
-            if (equalsIgnoreCase(response.get(0), COMMAND_NAMESPACE)) {
-                if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Got NAMESPACE response " + response + " on " + getLogId());
-                }
-
-                Object personalNamespaces = response.get(1);
-                if (personalNamespaces instanceof ImapList) {
-                    if (K9MailLib.isDebug()) {
-                        Log.d(LOG_TAG, "Got personal namespaces: " + personalNamespaces);
-                    }
-
-                    ImapList bracketed = (ImapList) personalNamespaces;
-                    Object firstNamespace = bracketed.get(0);
-
-                    if (firstNamespace != null && firstNamespace instanceof ImapList) {
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Got first personal namespaces: " + firstNamespace);
-                        }
-
-                        bracketed = (ImapList) firstNamespace;
-                        settings.setPathPrefix(bracketed.getString(0));
-                        settings.setPathDelimiter(bracketed.getString(1));
-                        settings.setCombinedPrefix(null);
-
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Got path '" + settings.getPathPrefix() + "' and separator '" +
-                                    settings.getPathDelimiter() + "'");
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -570,135 +487,218 @@ class ImapConnection {
         }
     }
 
-    private void authenticate(AuthType authType) throws MessagingException, IOException {
-        switch (authType) {
-            case CRAM_MD5: {
-                if (hasCapability(CAPABILITY_AUTH_CRAM_MD5)) {
-                    authCramMD5();
-                } else {
-                    throw new MessagingException("Server doesn't support encrypted passwords using CRAM-MD5.");
+    private void handleNamespace() throws IOException, MessagingException {
+        List<ImapResponse> responses = executeSimpleCommand(COMMAND_NAMESPACE);
+
+        for (ImapResponse response : responses) {
+            if (equalsIgnoreCase(response.get(0), COMMAND_NAMESPACE)) {
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, "Got NAMESPACE response " + response + " on " + getLogId());
                 }
-                break;
-            }
-            case PLAIN: {
-                if (hasCapability(CAPABILITY_AUTH_PLAIN)) {
-                    saslAuthPlainWithLoginFallback();
-                } else if (!hasCapability(CAPABILITY_LOGINDISABLED)) {
-                    login();
-                } else {
-                    throw new MessagingException("Server doesn't support unencrypted passwords using AUTH=PLAIN " +
-                            "and LOGIN is disabled.");
+
+                Object personalNamespaces = response.get(1);
+                if (personalNamespaces instanceof ImapList) {
+                    if (K9MailLib.isDebug()) {
+                        Log.d(LOG_TAG, "Got personal namespaces: " + personalNamespaces);
+                    }
+
+                    ImapList bracketed = (ImapList) personalNamespaces;
+                    Object firstNamespace = bracketed.get(0);
+
+                    if (firstNamespace != null && firstNamespace instanceof ImapList) {
+                        if (K9MailLib.isDebug()) {
+                            Log.d(LOG_TAG, "Got first personal namespaces: " + firstNamespace);
+                        }
+
+                        bracketed = (ImapList) firstNamespace;
+                        settings.setPathPrefix(bracketed.getString(0));
+                        settings.setPathDelimiter(bracketed.getString(1));
+                        settings.setCombinedPrefix(null);
+
+                        if (K9MailLib.isDebug()) {
+                            Log.d(LOG_TAG, "Got path '" + settings.getPathPrefix() + "' and separator '" +
+                                    settings.getPathDelimiter() + "'");
+                        }
+                    }
                 }
-                break;
-            }
-            case EXTERNAL: {
-                if (hasCapability(CAPABILITY_AUTH_EXTERNAL)) {
-                    saslAuthExternal();
-                } else {
-                    // Provide notification to user of a problem authenticating using client certificates
-                    throw new CertificateValidationException(CertificateValidationException.Reason.MissingCapability);
-                }
-                break;
-            }
-            default: {
-                throw new MessagingException("Unhandled authentication method found in the server settings (bug).");
             }
         }
     }
 
-    private void startTLS() throws IOException, MessagingException, GeneralSecurityException {
-        executeSimpleCommand("STARTTLS");
-
-        String host = settings.getHost();
-        int port = settings.getPort();
-        String clientCertificateAlias = settings.getClientCertificateAlias();
-
-        socket = socketFactory.createSocket(socket, host, port, clientCertificateAlias);
-        socket.setSoTimeout(socketReadTimeout);
-
-        inputStream = new PeekableInputStream(new BufferedInputStream(socket.getInputStream(), BUFFER_SIZE));
-        responseParser = new ImapResponseParser(inputStream);
-        outputStream = new BufferedOutputStream(socket.getOutputStream(), BUFFER_SIZE);
-
-        // Per RFC 2595 (3.1):  Once TLS has been started, reissue CAPABILITY command
-        if (K9MailLib.isDebug()) {
-            Log.i(LOG_TAG, "Updating capabilities after STARTTLS for " + getLogId());
-        }
-
-        capabilities.clear();
-        List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
-        if (responses.size() != 2) {
-            throw new MessagingException("Invalid CAPABILITY response received");
-        }
-    }
-
-    private Socket connect(ImapSettings settings, TrustedSocketFactory socketFactory) throws GeneralSecurityException,
-            MessagingException, IOException {
-        Exception connectException = null;
-
-        String host = settings.getHost();
-        int port = settings.getPort();
-        String clientCertificateAlias = settings.getClientCertificateAlias();
-
-        InetAddress[] inetAddresses = InetAddress.getAllByName(host);
-        for (InetAddress address : inetAddresses) {
-            try {
-                if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                    Log.d(LOG_TAG, "Connecting to " + host + " as " + address);
-                }
-
-                SocketAddress socketAddress = new InetSocketAddress(address, port);
-
-                Socket socket;
-                if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                    socket = socketFactory.createSocket(null, host, port, clientCertificateAlias);
-                } else {
-                    socket = new Socket();
-                }
-
-                socket.connect(socketAddress, socketConnectTimeout);
-
-                // Successfully connected to the server; don't try any other addresses
-                return socket;
-            } catch (IOException e) {
-                Log.w(LOG_TAG, "could not connect to " + address, e);
-                connectException = e;
-            }
-        }
-
-        throw new MessagingException("Cannot connect to host", connectException);
-    }
-
-    private void adjustDNSCacheTTL() {
+    private void getPathDelimiter() throws IOException, MessagingException {
+        List<ImapResponse> listResponses;
         try {
-            Security.setProperty("networkaddress.cache.ttl", "0");
-        } catch (Exception e) {
-            Log.w(LOG_TAG, "Could not set DNS ttl to 0 for " + getLogId(), e);
+            listResponses = executeSimpleCommand("LIST \"\" \"\"");
+        } catch (ImapException e) {
+            Log.d(LOG_TAG, "Error getting path delimiter using LIST command", e);
+            return;
         }
 
-        try {
-            Security.setProperty("networkaddress.cache.negative.ttl", "0");
-        } catch (Exception e) {
-            Log.w(LOG_TAG, "Could not set DNS negative ttl to 0 for " + getLogId(), e);
+        for (ImapResponse response : listResponses) {
+            if (isListResponse(response)) {
+                String hierarchyDelimiter = response.getString(2);
+                settings.setPathDelimiter(hierarchyDelimiter);
+                settings.setCombinedPrefix(null);
+
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, "Got path delimiter '" + settings.getPathDelimiter() + "' for " + getLogId());
+                }
+
+                break;
+            }
         }
     }
 
-    private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses) {
-        Set<String> receivedCapabilities = ImapResponseParser.parseCapabilities(responses);
-
-        /* RFC 3501 6.2.3
-            A server MAY include a CAPABILITY response code in the tagged OK
-            response to a successful LOGIN command in order to send
-            capabilities automatically.  It is unnecessary for a client to
-            send a separate CAPABILITY command if it recognizes these
-            automatic capabilities.
-        */
-        if (K9MailLib.isDebug()) {
-            Log.d(LOG_TAG, "Saving " + receivedCapabilities + " capabilities for " + getLogId());
+    private boolean isListResponse(ImapResponse response) {
+        boolean responseTooShort = response.size() < 4;
+        if (responseTooShort) {
+            return false;
         }
 
-        capabilities.addAll(receivedCapabilities);
+        boolean isListResponse = equalsIgnoreCase(response.get(0), "LIST");
+        boolean hierarchyDelimiterValid = response.get(2) instanceof String;
 
-        return responses;
+        return isListResponse && hierarchyDelimiterValid;
+    }
+
+    protected boolean hasCapability(String capability) {
+        return capabilities.contains(capability.toUpperCase(Locale.US));
+    }
+
+    protected boolean isIdleCapable() {
+        if (K9MailLib.isDebug()) {
+            Log.v(LOG_TAG, "Connection " + getLogId() + " has " + capabilities.size() + " capabilities");
+        }
+
+        return capabilities.contains(CAPABILITY_IDLE);
+    }
+
+    public Set<String> getCapabilities() {
+        return capabilities;
+    }
+
+    public void close() {
+        IOUtils.closeQuietly(inputStream);
+        IOUtils.closeQuietly(outputStream);
+        IOUtils.closeQuietly(socket);
+
+        inputStream = null;
+        outputStream = null;
+        socket = null;
+    }
+
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    protected String getLogId() {
+        return "conn" + hashCode();
+    }
+
+    public List<ImapResponse> executeSimpleCommand(String command) throws IOException, MessagingException {
+        return executeSimpleCommand(command, false, null);
+    }
+
+    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
+            MessagingException {
+        return executeSimpleCommand(command, sensitive, null);
+    }
+
+    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
+            throws IOException, MessagingException {
+        String commandToLog = command;
+
+        if (sensitive && !K9MailLib.isDebugSensitive()) {
+            commandToLog = "*sensitive*";
+        }
+
+        String tag = sendCommand(command, sensitive);
+
+        try {
+            return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+        } catch (IOException e) {
+            close();
+            throw e;
+        }
+    }
+
+    public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
+        try {
+            open();
+
+            String tag = Integer.toString(nextCommandTag++);
+            String commandToSend = tag + " " + command + "\r\n";
+            outputStream.write(commandToSend.getBytes());
+            outputStream.flush();
+
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+                if (sensitive && !K9MailLib.isDebugSensitive()) {
+                    Log.v(LOG_TAG, getLogId() + ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
+                } else {
+                    Log.v(LOG_TAG, getLogId() + ">>> " + commandToSend);
+                }
+            }
+
+            return tag;
+        } catch (IOException | MessagingException e) {
+            close();
+            throw e;
+        }
+    }
+
+    public void sendContinuation(String continuation) throws IOException {
+        outputStream.write(continuation.getBytes());
+        outputStream.write('\r');
+        outputStream.write('\n');
+        outputStream.flush();
+
+        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+            Log.v(LOG_TAG, getLogId() + ">>> " + continuation);
+        }
+    }
+
+    public ImapResponse readResponse() throws IOException, MessagingException {
+        return readResponse(null);
+    }
+
+    public ImapResponse readResponse(ImapResponseCallback callback) throws IOException {
+        try {
+            ImapResponse response = responseParser.readResponse(callback);
+
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+                Log.v(LOG_TAG, getLogId() + "<<<" + response);
+            }
+
+            return response;
+        } catch (IOException e) {
+            close();
+            throw e;
+        }
+    }
+
+    protected void setReadTimeout(int millis) throws SocketException {
+        Socket sock = socket;
+        if (sock != null) {
+            sock.setSoTimeout(millis);
+        }
+    }
+
+    private ImapResponse readContinuationResponse(String tag) throws IOException, MessagingException {
+        ImapResponse response;
+        do {
+            response = readResponse();
+
+            String responseTag = response.getTag();
+            if (responseTag != null) {
+                if (responseTag.equalsIgnoreCase(tag)) {
+                    throw new MessagingException("Command continuation aborted: " + response);
+                } else {
+                    Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " +
+                            response + " for " + getLogId());
+                }
+            }
+        } while (!response.isContinuationRequested());
+
+        return response;
     }
 }
