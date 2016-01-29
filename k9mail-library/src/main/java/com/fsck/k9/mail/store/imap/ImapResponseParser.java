@@ -3,11 +3,8 @@ package com.fsck.k9.mail.store.imap;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 import android.util.Log;
 
@@ -125,36 +122,6 @@ class ImapResponseParser {
         }
 
         return responses;
-    }
-
-    static Set<String> parseCapabilities(List<ImapResponse> responses) {
-        HashSet<String> capabilities = new HashSet<String>();
-        for (ImapResponse response : responses) {
-            ImapList list = null;
-            if (!response.isEmpty() && equalsIgnoreCase(response.get(0), Responses.OK)) {
-                for (Object thisPart : response) {
-                    if (thisPart instanceof ImapList) {
-                        ImapList thisList = (ImapList) thisPart;
-                        if (equalsIgnoreCase(thisList.get(0), Responses.CAPABILITY)) {
-                            list = thisList;
-                            break;
-                        }
-                    }
-                }
-            } else if (response.getTag() == null) {
-                list = response;
-            }
-
-            if (list != null && list.size() > 1 && equalsIgnoreCase(list.get(0), Responses.CAPABILITY)) {
-                for (Object listItem : list.subList(1, list.size())) {
-                    if (listItem instanceof String) {
-                        String capability = (String) listItem;
-                        capabilities.add(capability.toUpperCase(Locale.US));
-                    }
-                }
-            }
-        }
-        return capabilities;
     }
 
     private void readTokens(ImapResponse response) throws IOException {

@@ -99,7 +99,6 @@ class ImapConnection {
 
         boolean authSuccess = false;
         nextCommandTag = 1;
-        capabilities.clear();
 
         adjustDNSCacheTTL();
 
@@ -240,13 +239,17 @@ class ImapConnection {
     }
 
     private List<ImapResponse> extractCapabilities(List<ImapResponse> responses) {
-        Set<String> receivedCapabilities = ImapResponseParser.parseCapabilities(responses);
+        CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
 
-        if (K9MailLib.isDebug()) {
-            Log.d(LOG_TAG, "Saving " + receivedCapabilities + " capabilities for " + getLogId());
+        if (capabilityResponse != null) {
+            Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
+
+            if (K9MailLib.isDebug()) {
+                Log.d(LOG_TAG, "Saving " + receivedCapabilities + " capabilities for " + getLogId());
+            }
+
+            capabilities = receivedCapabilities;
         }
-
-        capabilities.addAll(receivedCapabilities);
 
         return responses;
     }
@@ -264,8 +267,6 @@ class ImapConnection {
     }
 
     private void requestCapabilities() throws IOException, MessagingException {
-        capabilities.clear();
-
         List<ImapResponse> responses = extractCapabilities(executeSimpleCommand(Commands.CAPABILITY));
         if (responses.size() != 2) {
             throw new MessagingException("Invalid CAPABILITY response received");
