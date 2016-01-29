@@ -322,7 +322,7 @@ class ImapConnection {
         }
     }
 
-    protected void login() throws IOException, MessagingException {
+    private void login() throws IOException, MessagingException {
         /*
          * Use quoted strings which permit spaces and quotes. (Using IMAP
          * string literals would be better, but some servers are broken
@@ -342,7 +342,7 @@ class ImapConnection {
         }
     }
 
-    protected void authCramMD5() throws MessagingException, IOException {
+    private void authCramMD5() throws MessagingException, IOException {
         String command = "AUTHENTICATE CRAM-MD5";
         String tag = sendCommand(command, false);
 
@@ -366,7 +366,7 @@ class ImapConnection {
         }
     }
 
-    protected void saslAuthPlain() throws IOException, MessagingException {
+    private void saslAuthPlain() throws IOException, MessagingException {
         String command = "AUTHENTICATE PLAIN";
         String tag = sendCommand(command, false);
 
@@ -387,7 +387,7 @@ class ImapConnection {
         }
     }
 
-    protected void saslAuthPlainWithLoginFallback() throws IOException, MessagingException {
+    private void saslAuthPlainWithLoginFallback() throws IOException, MessagingException {
         try {
             saslAuthPlain();
         } catch (AuthenticationFailedException e) {
@@ -395,7 +395,7 @@ class ImapConnection {
         }
     }
 
-    protected ImapResponse readContinuationResponse(String tag) throws IOException, MessagingException {
+    private ImapResponse readContinuationResponse(String tag) throws IOException, MessagingException {
         ImapResponse response;
         do {
             response = readResponse();
