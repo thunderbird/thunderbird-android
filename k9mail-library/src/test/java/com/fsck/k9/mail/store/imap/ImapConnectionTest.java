@@ -53,6 +53,8 @@ public class ImapConnectionTest {
 
     private static final String USERNAME = "user";
     private static final String PASSWORD = "123456";
+    private static final int SOCKET_CONNECT_TIMEOUT = 2000;
+    private static final int SOCKET_READ_TIMEOUT = 1000;
 
 
     private TrustedSocketFactory socketFactory;
@@ -328,7 +330,7 @@ public class ImapConnectionTest {
     public void open_withConnectionError_shouldThrow() throws Exception {
         settings.setHost("127.1.2.3");
         settings.setPort(143);
-        ImapConnection imapConnection = new ImapConnection(settings, socketFactory, connectivityManager);
+        ImapConnection imapConnection = createImapConnection(settings, socketFactory, connectivityManager);
 
         try {
             imapConnection.open();
@@ -345,7 +347,7 @@ public class ImapConnectionTest {
     public void open_withInvalidHostname_shouldThrow() throws Exception {
         settings.setHost("host name");
         settings.setPort(143);
-        ImapConnection imapConnection = new ImapConnection(settings, socketFactory, connectivityManager);
+        ImapConnection imapConnection = createImapConnection(settings, socketFactory, connectivityManager);
 
         try {
             imapConnection.open();
@@ -499,7 +501,7 @@ public class ImapConnectionTest {
 
     @Test
     public void isOpen_withoutPreviousOpen_shouldReturnFalse() throws Exception {
-        ImapConnection imapConnection = new ImapConnection(settings, socketFactory, connectivityManager);
+        ImapConnection imapConnection = createImapConnection(settings, socketFactory, connectivityManager);
 
         boolean result = imapConnection.isOpen();
 
@@ -535,7 +537,7 @@ public class ImapConnectionTest {
 
     @Test
     public void close_withoutOpen_shouldNotThrow() throws Exception {
-        ImapConnection imapConnection = new ImapConnection(settings, socketFactory, connectivityManager);
+        ImapConnection imapConnection = createImapConnection(settings, socketFactory, connectivityManager);
 
         imapConnection.close();
     }
@@ -607,11 +609,17 @@ public class ImapConnectionTest {
         server.verifyInteractionCompleted();
     }
 
+    private ImapConnection createImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
+            ConnectivityManager connectivityManager) {
+        return new ImapConnection(settings, socketFactory, connectivityManager, SOCKET_CONNECT_TIMEOUT,
+                SOCKET_READ_TIMEOUT);
+    }
+
     private ImapConnection startServerAndCreateImapConnection(MockImapServer server) throws IOException {
         server.start();
         settings.setHost(server.getHost());
         settings.setPort(server.getPort());
-        return new ImapConnection(settings, socketFactory, connectivityManager);
+        return createImapConnection(settings, socketFactory, connectivityManager);
     }
 
     private ImapConnection simpleOpen(MockImapServer server) throws Exception {

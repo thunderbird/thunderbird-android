@@ -74,6 +74,8 @@ class ImapConnection {
     private ImapSettings mSettings;
     private ConnectivityManager mConnectivityManager;
     private final TrustedSocketFactory mSocketFactory;
+    private final int socketConnectTimeout;
+    private final int socketReadTimeout;
 
     public ImapConnection(ImapSettings settings,
                           TrustedSocketFactory socketFactory,
@@ -81,6 +83,17 @@ class ImapConnection {
         this.mSettings = settings;
         this.mSocketFactory = socketFactory;
         this.mConnectivityManager = connectivityManager;
+        this.socketConnectTimeout = SOCKET_CONNECT_TIMEOUT;
+        this.socketReadTimeout = SOCKET_READ_TIMEOUT;
+    }
+
+    ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory, ConnectivityManager connectivityManager,
+            int socketConnectTimeout, int socketReadTimeout) {
+        this.mSettings = settings;
+        this.mSocketFactory = socketFactory;
+        this.mConnectivityManager = connectivityManager;
+        this.socketConnectTimeout = socketConnectTimeout;
+        this.socketReadTimeout = socketReadTimeout;
     }
 
     public Set<String> getCapabilities() {
@@ -106,7 +119,7 @@ class ImapConnection {
 
         try {
             mSocket = connect(mSettings, mSocketFactory);
-            setReadTimeout(SOCKET_READ_TIMEOUT);
+            setReadTimeout(socketReadTimeout);
 
             mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), BUFFER_SIZE));
             mParser = new ImapResponseParser(mIn);
@@ -547,7 +560,7 @@ class ImapConnection {
                 mSettings.getPort(),
                 mSettings.getClientCertificateAlias());
 
-        mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
+        mSocket.setSoTimeout(socketReadTimeout);
         mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), BUFFER_SIZE));
         mParser = new ImapResponseParser(mIn);
         mOut = new BufferedOutputStream(mSocket.getOutputStream(), BUFFER_SIZE);
@@ -562,7 +575,7 @@ class ImapConnection {
         }
     }
 
-    private static Socket connect(ImapSettings settings, TrustedSocketFactory socketFactory)
+    private Socket connect(ImapSettings settings, TrustedSocketFactory socketFactory)
             throws GeneralSecurityException, MessagingException, IOException {
         // Try all IPv4 and IPv6 addresses of the host
         Exception connectException = null;
@@ -583,7 +596,7 @@ class ImapConnection {
                 } else {
                     socket = new Socket();
                 }
-                socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                socket.connect(socketAddress, socketConnectTimeout);
                 // Successfully connected to the server; don't try any other addresses
                 return socket;
             } catch (IOException e) {
