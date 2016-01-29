@@ -2,7 +2,7 @@ package com.fsck.k9.mail.store.imap;
 
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 
-public interface ImapResponseCallback {
+interface ImapResponseCallback {
     /**
      * Callback method that is called by the parser when a literal string
      * is found in an IMAP response.
@@ -20,5 +20,5 @@ public interface ImapResponseCallback {
      *                   and the exception will be thrown after the
      *                   complete IMAP response has been parsed.
      */
-    public Object foundLiteral(ImapResponse response, FixedLengthInputStream literal) throws Exception;
+    Object foundLiteral(ImapResponse response, FixedLengthInputStream literal) throws Exception;
 }
