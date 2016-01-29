@@ -378,7 +378,7 @@ class ImapConnection {
 
         try {
             extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
-        } catch (MessagingException e) {
+        } catch (NegativeImapResponseException e) {
             throw new AuthenticationFailedException(e.getMessage());
         }
     }
@@ -407,7 +407,7 @@ class ImapConnection {
 
         try {
             extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
-        } catch (MessagingException e) {
+        } catch (NegativeImapResponseException e) {
             throw new AuthenticationFailedException(e.getMessage());
         }
     }
