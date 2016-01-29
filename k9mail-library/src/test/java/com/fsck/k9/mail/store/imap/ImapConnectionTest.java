@@ -458,7 +458,6 @@ public class ImapConnectionTest {
     }
 
     @Test
-    //FIXME: currently fails
     public void open_withIoExceptionDuringCompressionCommand_shouldThrow() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         settings.setUseCompression(true);
@@ -479,7 +478,6 @@ public class ImapConnectionTest {
     }
 
     @Test
-    //FIXME: currently fails
     public void open_withIoExceptionDuringListCommand_shouldThrow() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         settings.setUseCompression(true);
@@ -496,6 +494,22 @@ public class ImapConnectionTest {
         }
 
         server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withNegativeResponseToListCommand() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        settings.setUseCompression(true);
+        MockImapServer server = new MockImapServer();
+        simplePreAuthAndLoginDialog(server, "");
+        server.expect("3 LIST \"\" \"\"");
+        server.output("3 NO");
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
 

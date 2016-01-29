@@ -314,7 +314,13 @@ class ImapConnection {
         String tag = sendCommand(command, sensitive);
         //if (K9MailLib.isDebug())
         //    Log.v(LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
-        return mParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+
+        try {
+            return mParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+        } catch (IOException e) {
+            close();
+            throw e;
+        }
     }
 
     protected void login() throws IOException, MessagingException {
@@ -439,21 +445,40 @@ class ImapConnection {
         }
     }
 
-    private void getPathDelimiter() {
+    private void getPathDelimiter() throws IOException, MessagingException {
+        List<ImapResponse> listResponses;
         try {
-            List<ImapResponse> nameResponses = executeSimpleCommand("LIST \"\" \"\"");
-            for (ImapResponse response : nameResponses) {
-                if (equalsIgnoreCase(response.get(0), "LIST")) {
-                    mSettings.setPathDelimiter(response.getString(2));
-                    mSettings.setCombinedPrefix(null);
-                    if (K9MailLib.isDebug()) {
-                        Log.d(LOG_TAG, "Got path delimiter '" + mSettings.getPathDelimiter() + "' for " + getLogId());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Unable to get path delimiter using LIST", e);
+            listResponses = executeSimpleCommand("LIST \"\" \"\"");
+        } catch (ImapException e) {
+            Log.d(LOG_TAG, "Error getting path delimiter using LIST command", e);
+            return;
         }
+
+        for (ImapResponse response : listResponses) {
+            if (isListResponse(response)) {
+                String hierarchyDelimiter = response.getString(2);
+                mSettings.setPathDelimiter(hierarchyDelimiter);
+                mSettings.setCombinedPrefix(null);
+
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, "Got path delimiter '" + mSettings.getPathDelimiter() + "' for " + getLogId());
+                }
+
+                break;
+            }
+        }
+    }
+
+    private boolean isListResponse(ImapResponse response) {
+        boolean responseTooShort = response.size() < 4;
+        if (responseTooShort) {
+            return false;
+        }
+
+        boolean isListResponse = equalsIgnoreCase(response.get(0), "LIST");
+        boolean hierarchyDelimiterValid = response.get(2) instanceof String;
+
+        return isListResponse && hierarchyDelimiterValid;
     }
 
     private void handleNamespace() throws IOException, MessagingException {
@@ -502,9 +527,15 @@ class ImapConnection {
         return useCompression;
     }
 
-    private void enableCompression() {
+    private void enableCompression() throws IOException, MessagingException {
         try {
             executeSimpleCommand(ImapCommands.COMMAND_COMPRESS_DEFLATE);
+        } catch (ImapException e) {
+            Log.d(LOG_TAG, "Unable to negotiate compression: " + e.getMessage());
+            return;
+        }
+
+        try {
             InflaterInputStream zInputStream = new InflaterInputStream(mSocket.getInputStream(), new Inflater(true));
             mIn = new PeekableInputStream(new BufferedInputStream(zInputStream, BUFFER_SIZE));
             mParser = new ImapResponseParser(mIn);
@@ -514,8 +545,9 @@ class ImapConnection {
             if (K9MailLib.isDebug()) {
                 Log.i(LOG_TAG, "Compression enabled for " + getLogId());
             }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Unable to negotiate compression", e);
+        } catch (IOException e) {
+            close();
+            Log.e(LOG_TAG, "Error enabling compression", e);
         }
     }
 
