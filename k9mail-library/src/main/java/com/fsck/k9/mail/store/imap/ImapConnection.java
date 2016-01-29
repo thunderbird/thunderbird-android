@@ -427,7 +427,7 @@ class ImapConnection {
 
         try {
             extractCapabilities(executeSimpleCommand(String.format("LOGIN \"%s\" \"%s\"", username, password), true));
-        } catch (ImapException e) {
+        } catch (NegativeImapResponseException e) {
             throw new AuthenticationFailedException(e.getMessage());
         }
     }
@@ -436,7 +436,7 @@ class ImapConnection {
         try {
             extractCapabilities(executeSimpleCommand(
                     String.format("AUTHENTICATE EXTERNAL %s", Base64.encode(settings.getUsername())), false));
-        } catch (ImapException e) {
+        } catch (NegativeImapResponseException e) {
             /*
              * Provide notification to the user of a problem authenticating
              * using client certificates. We don't use an
@@ -478,7 +478,7 @@ class ImapConnection {
     private void enableCompression() throws IOException, MessagingException {
         try {
             executeSimpleCommand(COMMAND_COMPRESS_DEFLATE);
-        } catch (ImapException e) {
+        } catch (NegativeImapResponseException e) {
             Log.d(LOG_TAG, "Unable to negotiate compression: " + e.getMessage());
             return;
         }
@@ -565,7 +565,7 @@ class ImapConnection {
         List<ImapResponse> listResponses;
         try {
             listResponses = executeSimpleCommand("LIST \"\" \"\"");
-        } catch (ImapException e) {
+        } catch (NegativeImapResponseException e) {
             Log.d(LOG_TAG, "Error getting path delimiter using LIST command", e);
             return;
         }

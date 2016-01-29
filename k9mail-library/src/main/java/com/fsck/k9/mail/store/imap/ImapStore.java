@@ -907,7 +907,7 @@ public class ImapStore extends RemoteStore {
                 return true;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
-            } catch (ImapException ie) {
+            } catch (NegativeImapResponseException ie) {
                 // We got a response, but it was not "OK"
                 return false;
             }
@@ -936,7 +936,7 @@ public class ImapStore extends RemoteStore {
                                                 encodeString(encodeFolderName(getPrefixedName()))));
                 mExists = true;
                 return true;
-            } catch (ImapException ie) {
+            } catch (NegativeImapResponseException ie) {
                 // We got a response, but it was not "OK"
                 return false;
             } catch (IOException ioe) {
@@ -967,7 +967,7 @@ public class ImapStore extends RemoteStore {
                 connection.executeSimpleCommand(String.format("CREATE %s",
                                                 encodeString(encodeFolderName(getPrefixedName()))));
                 return true;
-            } catch (ImapException ie) {
+            } catch (NegativeImapResponseException ie) {
                 // We got a response, but it was not "OK"
                 return false;
             } catch (IOException ioe) {

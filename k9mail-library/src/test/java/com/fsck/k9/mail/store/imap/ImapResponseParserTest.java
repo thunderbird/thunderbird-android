@@ -116,7 +116,7 @@ public class ImapResponseParserTest {
         assertEquals(responses.get(1), untaggedHandler.responses.get(2));
     }
 
-    @Test(expected = ImapException.class)
+    @Test(expected = NegativeImapResponseException.class)
     public void testReadStatusResponseWithErrorResponse() throws Exception {
         ImapResponseParser parser = createParser("* COMMAND BAR BAZ\r\nTAG ERROR COMMAND errored\r\n");
 
