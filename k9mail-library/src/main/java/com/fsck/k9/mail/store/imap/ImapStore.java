@@ -513,10 +513,10 @@ public class ImapStore extends RemoteStore {
         String commandResponse;
         String commandOptions = "";
 
-        if (connection.getCapabilities().contains("XLIST")) {
+        if (connection.hasCapability("XLIST")) {
             if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration: Using XLIST.");
             commandResponse = "XLIST";
-        } else if(connection.getCapabilities().contains("SPECIAL-USE")) {
+        } else if(connection.hasCapability("SPECIAL-USE")) {
             if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
             commandResponse = "LIST";
             commandOptions = " (SPECIAL-USE)";

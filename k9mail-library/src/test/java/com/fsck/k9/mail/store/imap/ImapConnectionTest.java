@@ -568,18 +568,6 @@ public class ImapConnectionTest {
     }
 
     @Test
-    public void getCapabilities_afterOpen_shouldReturnCapabilities() throws Exception {
-        MockImapServer server = new MockImapServer();
-        ImapConnection imapConnection = simpleOpenWithCapabilities(server, "IDLE X-LIST");
-
-        Set<String> capabilities = imapConnection.getCapabilities();
-
-        assertEquals(Sets.newSet("IMAP4", "IMAP4REV1", "IDLE", "X-LIST"), capabilities);
-
-        server.shutdown();
-    }
-
-    @Test
     public void isIdleCapable_withoutIdleCapability() throws Exception {
         MockImapServer server = new MockImapServer();
         ImapConnection imapConnection = simpleOpen(server);

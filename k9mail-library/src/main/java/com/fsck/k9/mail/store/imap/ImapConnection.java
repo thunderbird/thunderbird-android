@@ -573,10 +573,6 @@ class ImapConnection {
         return capabilities.contains(CAPABILITY_IDLE);
     }
 
-    public Set<String> getCapabilities() {
-        return capabilities;
-    }
-
     public void close() {
         IOUtils.closeQuietly(inputStream);
         IOUtils.closeQuietly(outputStream);
