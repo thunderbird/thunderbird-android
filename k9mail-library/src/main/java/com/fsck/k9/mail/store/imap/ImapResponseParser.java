@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.mail.K9MailLib;
@@ -213,7 +212,7 @@ class ImapResponseParser {
 
         String rest = readStringUntilEndOfLine();
 
-        if (!TextUtils.isEmpty(rest)) {
+        if (rest != null && !rest.isEmpty()) {
             // The rest is free-form text.
             parent.add(rest);
         }

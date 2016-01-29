@@ -511,37 +511,17 @@ class ImapConnection {
     private void handleNamespace() throws IOException, MessagingException {
         List<ImapResponse> responses = executeSimpleCommand(Commands.NAMESPACE);
 
-        for (ImapResponse response : responses) {
-            if (equalsIgnoreCase(response.get(0), Responses.NAMESPACE)) {
-                if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Got NAMESPACE response " + response + " on " + getLogId());
-                }
+        NamespaceResponse namespaceResponse = NamespaceResponse.parse(responses);
+        if (namespaceResponse != null) {
+            String prefix = namespaceResponse.getPrefix();
+            String hierarchyDelimiter = namespaceResponse.getHierarchyDelimiter();
 
-                Object personalNamespaces = response.get(1);
-                if (personalNamespaces instanceof ImapList) {
-                    if (K9MailLib.isDebug()) {
-                        Log.d(LOG_TAG, "Got personal namespaces: " + personalNamespaces);
-                    }
+            settings.setPathPrefix(prefix);
+            settings.setPathDelimiter(hierarchyDelimiter);
+            settings.setCombinedPrefix(null);
 
-                    ImapList bracketed = (ImapList) personalNamespaces;
-                    Object firstNamespace = bracketed.get(0);
-
-                    if (firstNamespace != null && firstNamespace instanceof ImapList) {
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Got first personal namespaces: " + firstNamespace);
-                        }
-
-                        bracketed = (ImapList) firstNamespace;
-                        settings.setPathPrefix(bracketed.getString(0));
-                        settings.setPathDelimiter(bracketed.getString(1));
-                        settings.setCombinedPrefix(null);
-
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Got path '" + settings.getPathPrefix() + "' and separator '" +
-                                    settings.getPathDelimiter() + "'");
-                        }
-                    }
-                }
+            if (K9MailLib.isDebug()) {
+                Log.d(LOG_TAG, "Got path '" + prefix + "' and separator '" + hierarchyDelimiter + "'");
             }
         }
     }

@@ -24,12 +24,20 @@ public class ImapList extends ArrayList<Object> {
         return (ImapList)get(index);
     }
 
+    public boolean isList(int index) {
+        return inRange(index) && get(index) instanceof ImapList;
+    }
+
     public Object getObject(int index) {
         return get(index);
     }
 
     public String getString(int index) {
         return (String)get(index);
+    }
+
+    public boolean isString(int index) {
+        return inRange(index) && get(index) instanceof String;
     }
 
     public long getLong(int index) {
@@ -102,6 +110,10 @@ public class ImapList extends ArrayList<Object> {
         }
 
         throw new IllegalArgumentException("getKeyIndex() only works for keys that are in the collection.");
+    }
+
+    private boolean inRange(int index) {
+        return index >= 0 && index < size();
     }
 
     private Date parseDate(String value) throws ParseException {
