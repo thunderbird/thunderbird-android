@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -26,7 +27,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LocalFolder.MessagePartType;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
@@ -106,7 +106,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                     case 44:
                         db45ChangeThreadingIndexes(db);
                     case 45:
-                        db46AddMessagesFlagColumns(db, localStore);
+                        db46AddMessagesFlagColumns(db);
                     case 46:
                         db47CreateThreadsTable(db);
                     case 47:
@@ -138,7 +138,209 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
     }
 
+    /** Objects of this class hold immutable information on a database position for
+     * one part of the mime structure of a message.
+     *
+     * An object of this class must be passed to and returned by every operation
+     * which inserts mime parts into the database. Each mime part which is inserted
+     * must call the {#applyValues()} method on its ContentValues, then obtain the
+     * next state object by calling the appropriate next*() method.
+     *
+     * While the data carried by this object is immutable, it contains some state
+     * to ensure that the operations are called correctly and in order.
+     *
+     * Because the insertion operations required for the database migration are
+     * strictly linear, we do not require a more complex stack-based data structure
+     * here.
+     */
+    private static class MimeStructureState {
+        final Long rootPartId;
+        final long parentId;
+        final int nextOrder;
+
+        // just some state to make sure all operations are called in order
+        boolean isValuesApplied, isStateAdvanced;
+
+        private MimeStructureState(Long rootPartId, long parentId, int nextOrder) {
+            this.rootPartId = rootPartId;
+            this.parentId = parentId;
+            this.nextOrder = nextOrder;
+        }
+
+        public static MimeStructureState getNewRootState() {
+            return new MimeStructureState(null, -1, 0);
+        }
+
+        private MimeStructureState nextChild(long newPartId) {
+            if (!isValuesApplied || isStateAdvanced) {
+                throw new IllegalStateException();
+            }
+            isStateAdvanced = true;
+
+            if (rootPartId == null) {
+                return new MimeStructureState(newPartId, -1, nextOrder+1);
+            }
+            return new MimeStructureState(rootPartId, parentId, nextOrder+1);
+        }
+
+        private MimeStructureState nextMultipartChild(long newPartId) {
+            if (!isValuesApplied || isStateAdvanced) {
+                throw new IllegalStateException();
+            }
+            isStateAdvanced = true;
+
+            if (rootPartId == null) {
+                return new MimeStructureState(newPartId, newPartId, nextOrder+1);
+            }
+            return new MimeStructureState(rootPartId, newPartId, nextOrder+1);
+        }
+
+        public void applyValues(ContentValues cv) {
+            if (isValuesApplied || isStateAdvanced) {
+                throw new IllegalStateException();
+            }
+            isValuesApplied = true;
+
+            if (rootPartId != null) {
+                cv.put("root", rootPartId);
+            }
+            cv.put("parent", parentId);
+            cv.put("seq", nextOrder);
+        }
+    }
+
+    /** This method converts from the old message table structure to the new one.
+     *
+     * This is a complex migration, and ultimately we do not have enough
+     * information to recreate the mime structure of the original mails.
+     * What we have:
+     *  - general mail info
+     *  - html_content and text_content data, which is the squashed readable content of the mail
+     *  - a table with message headers
+     *  - attachments
+     *
+     * What we need to do:
+     *  - migrate general mail info as-is
+     *  - flag mails as migrated for re-download
+     *  - for each message, recreate a mime structure from its message content and attachments:
+     *    + insert one or both of textContent and htmlContent, depending on mimeType
+     *    + if mimeType is text/plain, text/html or multipart/alternative and no
+     *      attachments are present, just insert that.
+     *    + otherwise, use multipart/mixed, adding attachments after textual content
+     *    + revert content:// URIs in htmlContent to original cid: URIs.
+     *
+     */
     private static void db51MigrateMessageFormat(SQLiteDatabase db, LocalStore localStore) {
+
+        renameOldMessagesTableAndCreateNew(db);
+
+        copyMessageMetadataToNewTable(db);
+
+        File attachmentDirNew, attachmentDirOld;
+        {
+            Account account = localStore.getAccount();
+            attachmentDirNew = StorageManager.getInstance(K9.app).getAttachmentDirectory(
+                    account.getUuid(), account.getLocalStorageProviderId());
+            attachmentDirOld = renameOldAttachmentDirAndCreateNew(account, attachmentDirNew);
+        }
+
+        Cursor msgCursor = db.query("messages_old",
+                new String[] { "id", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
+                null, null, null, null, null);
+        try {
+            ContentValues cv = new ContentValues();
+            while (msgCursor.moveToNext()) {
+                long messageId = msgCursor.getLong(0);
+                String messageFlags = msgCursor.getString(1);
+                String htmlContent = msgCursor.getString(2);
+                String textContent = msgCursor.getString(3);
+                String mimeType = msgCursor.getString(4);
+                int attachmentCount = msgCursor.getInt(5);
+
+                try {
+                    updateFlagsForMessage(db, messageId, messageFlags);
+                    MimeHeader mimeHeader = loadHeaderFromHeadersTable(db, messageId);
+
+                    MimeStructureState structureState = MimeStructureState.getNewRootState();
+
+                    boolean isSimpleStructured = attachmentCount == 0 &&
+                            Utility.isAnyMimeType(mimeType, "text/plain", "text/html", "multipart/alternative");
+                    if (isSimpleStructured) {
+                        structureState = migrateSimpleMailContent(db, htmlContent, textContent,
+                                mimeType, mimeHeader, structureState);
+                    } else {
+                        mimeType = "multipart/mixed";
+                        structureState = migrateComplexMailContent(db, attachmentDirOld, attachmentDirNew, messageId,
+                                htmlContent, textContent, mimeHeader, structureState);
+                    }
+
+                    cv.clear();
+                    cv.put("mime_type", mimeType);
+                    cv.put("message_part_id", structureState.rootPartId);
+                    cv.put("attachment_count", attachmentCount);
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
+                } catch (IOException e) {
+                    Log.e(K9.LOG_TAG, "error inserting into database", e);
+                }
+            }
+
+        } finally {
+            msgCursor.close();
+        }
+
+        cleanUpOldAttachmentDirectory(attachmentDirOld);
+
+        dropOldMessagesTable(db);
+    }
+
+    @NonNull
+    private static File renameOldAttachmentDirAndCreateNew(Account account, File attachmentDirNew) {
+        File attachmentDirOld = new File(attachmentDirNew.getParent(),
+                account.getUuid() + ".old_attach-" + System.currentTimeMillis());
+        boolean moveOk = attachmentDirNew.renameTo(attachmentDirOld);
+        if (!moveOk) {
+            // TODO escalate?
+            Log.e(K9.LOG_TAG, "Error moving attachment dir! All attachments might be lost!");
+        }
+        boolean mkdirOk = attachmentDirNew.mkdir();
+        if (!mkdirOk) {
+            // TODO escalate?
+            Log.e(K9.LOG_TAG, "Error creating new attachment dir!");
+        }
+        return attachmentDirOld;
+    }
+
+    private static void dropOldMessagesTable(SQLiteDatabase db) {
+        Log.d(K9.LOG_TAG, "Migration succeeded, dropping old tables.");
+        db.execSQL("DROP TABLE messages_old");
+        db.execSQL("DROP TABLE attachments");
+        db.execSQL("DROP TABLE headers");
+    }
+
+    private static void cleanUpOldAttachmentDirectory(File attachmentDirOld) {
+        for (File file : attachmentDirOld.listFiles()) {
+            Log.d(K9.LOG_TAG, "deleting stale attachment file: " + file.getName());
+            file.delete();
+        }
+        Log.d(K9.LOG_TAG, "deleting old attachment directory");
+        attachmentDirOld.delete();
+    }
+
+    private static void copyMessageMetadataToNewTable(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO messages (" +
+                "deleted, folder_id, uid, subject, date, sender_list, " +
+                "to_list, cc_list, bcc_list, reply_to_list, attachment_count, " +
+                "internal_date, message_id, preview, mime_type, " +
+                "normalized_subject_hash, empty, read, flagged, answered" +
+                ") SELECT " +
+                "deleted, folder_id, uid, subject, date, sender_list, " +
+                "to_list, cc_list, bcc_list, reply_to_list, attachment_count, " +
+                "internal_date, message_id, preview, mime_type, " +
+                "normalized_subject_hash, empty, read, flagged, answered " +
+                "FROM messages_old");
+    }
+
+    private static void renameOldMessagesTableAndCreateNew(SQLiteDatabase db) {
         db.execSQL("ALTER TABLE messages RENAME TO messages_old");
 
         db.execSQL("CREATE TABLE messages (" +
@@ -194,114 +396,18 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 "BEGIN " +
                 "UPDATE message_parts SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
                 "END");
-
-        /**
-         * This is a complex migration, and ultimately we don't actually have all
-         * information from the e-mails we want to convert. What we have:
-         *  - general mail info (not a problem)
-         *  - html_content and text_content data, which is the squashed readable content of the mail
-         *  - a table with headers
-         *  - attachments
-         *
-         * What we need to do:
-         *  - migrate general mail info as-is
-         *  - flag mails as migrated for re-download
-         *
-         */
-
-        db.execSQL("INSERT INTO messages (" +
-                "deleted, folder_id, uid, subject, date, sender_list, " +
-                "to_list, cc_list, bcc_list, reply_to_list, attachment_count, " +
-                "internal_date, message_id, preview, mime_type, " +
-                "normalized_subject_hash, empty, read, flagged, answered" +
-                ") SELECT " +
-                "deleted, folder_id, uid, subject, date, sender_list, " +
-                "to_list, cc_list, bcc_list, reply_to_list, attachment_count, " +
-                "internal_date, message_id, preview, mime_type, " +
-                "normalized_subject_hash, empty, read, flagged, answered " +
-                "FROM messages_old");
-
-             // "html_content TEXT, " +
-             // "text_content TEXT, " +
-
-        // best we can do to to restore message:
-        // no attachments: headers + multipart/alternative ( text_content + html_content )
-        // with attachments: headers + multipart/mixed ( multipart/alternative ( text_content + html_content ) + attachments )
-
-        Account account = localStore.getAccount();
-        File attachmentDirNew = StorageManager.getInstance(K9.app).getAttachmentDirectory(
-                account.getUuid(), account.getLocalStorageProviderId());
-        File attachmentDirOld = new File(attachmentDirNew.getParent(),
-                account.getUuid() + ".old_attach-" + System.currentTimeMillis());
-        boolean moveOk = attachmentDirNew.renameTo(attachmentDirOld);
-        if (!moveOk) {
-            Log.e(K9.LOG_TAG, "Error moving attachment dir! All attachments might be lost!");
-        }
-        boolean mkdirOk = attachmentDirNew.mkdir();
-        if (!mkdirOk) {
-            Log.e(K9.LOG_TAG, "");
-        }
-
-        // Copy thread structure from 'messages' table to 'threads'
-        Cursor msgCursor = db.query("messages_old",
-                new String[] { "id", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
-                null, null, null, null, null);
-        try {
-            ContentValues cv = new ContentValues();
-            while (msgCursor.moveToNext()) {
-                long messageId = msgCursor.getLong(0);
-                String messageFlags = msgCursor.getString(1);
-                String htmlContent = msgCursor.getString(2);
-                String textContent = msgCursor.getString(3);
-                String mimeType = msgCursor.getString(4);
-                int attachmentCount = msgCursor.getInt(5);
-
-                try {
-
-                    updateFlagsForMessage(db, messageId, messageFlags);
-                    MimeHeader mimeHeader = loadHeaderFromHeadersTable(db, messageId);
-
-                    MimeStructureState structureState = MimeStructureState.getRoot();
-
-                    boolean isSimpleStructured = attachmentCount == 0 &&
-                            Utility.isAnyMimeType(mimeType, "text/plain", "text/html", "multipart/alternative");
-                    if (isSimpleStructured) {
-                        structureState = migrateSimpleMailContent(db, htmlContent, textContent,
-                                mimeType, mimeHeader, structureState);
-                    } else {
-                        mimeType = "multipart/mixed";
-                        structureState = migrateComplexMailContent(db, attachmentDirOld, attachmentDirNew, messageId,
-                                htmlContent, textContent, mimeHeader, structureState);
-                    }
-
-                    cv.clear();
-                    cv.put("mime_type", mimeType);
-                    cv.put("message_part_id", structureState.rootPartId);
-                    cv.put("attachment_count", attachmentCount);
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
-                } catch (IOException e) {
-                    Log.e(K9.LOG_TAG, "error inserting into database", e);
-                }
-            }
-
-        } finally {
-            msgCursor.close();
-        }
-
     }
 
     private static MimeStructureState migrateComplexMailContent(SQLiteDatabase db,
-            File attachmentDirOld, File attachmentDirNew,
-            long messageId, String htmlContent, String textContent, MimeHeader mimeHeader,
-            MimeStructureState structureState) throws IOException {
+            File attachmentDirOld, File attachmentDirNew, long messageId, String htmlContent, String textContent,
+            MimeHeader mimeHeader, MimeStructureState structureState) throws IOException {
         ContentValues cv = new ContentValues();
         cv.put("type", MessagePartType.UNKNOWN);
         cv.put("data_location", DataLocation.IN_DATABASE);
         cv.put("mime_type", "multipart/mixed");
         cv.put("header", mimeHeader.toString());
-        cv.put("parent", -1);
-        cv.put("seq", 0);
         cv.put("boundary", MimeUtil.createUniqueBoundary());
+        structureState.applyValues(cv);
 
         long rootMessagePartId = db.insertOrThrow("message_parts", null, cv);
         structureState = structureState.nextMultipartChild(rootMessagePartId);
@@ -355,36 +461,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             return insertBodyAsMultipartAlternative(db, structureState, mimeHeader, textContent, htmlContent);
         } else {
             throw new IllegalStateException("migrateSimpleMailContent cannot handle mimeType " + mimeType);
-        }
-    }
-
-    private static class MimeStructureState {
-        final Long rootPartId;
-        final long parentId;
-        final int nextOrder;
-
-        private MimeStructureState(Long rootPartId, long parentId, int nextOrder) {
-            this.rootPartId = rootPartId;
-            this.parentId = parentId;
-            this.nextOrder = nextOrder;
-        }
-
-        private MimeStructureState nextChild(long newPartId) {
-            if (rootPartId == null) {
-                return new MimeStructureState(newPartId, -1, nextOrder+1);
-            }
-            return new MimeStructureState(rootPartId, parentId, nextOrder+1);
-        }
-
-        private MimeStructureState nextMultipartChild(long newPartId) {
-            if (rootPartId == null) {
-                return new MimeStructureState(newPartId, newPartId, nextOrder+1);
-            }
-            return new MimeStructureState(rootPartId, newPartId, nextOrder+1);
-        }
-
-        public static MimeStructureState getRoot() {
-            return new MimeStructureState(null, -1, 0);
         }
     }
 
@@ -461,9 +537,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                 ContentValues cv = new ContentValues();
                 cv.put("type", MessagePartType.UNKNOWN);
-                cv.put("root", structureState.rootPartId);
-                cv.put("parent", structureState.parentId);
-                cv.put("seq", structureState.nextOrder);
                 cv.put("mime_type", mimeType);
                 cv.put("decoded_body_size", size);
                 cv.put("display_name", name);
@@ -472,6 +545,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 cv.put("data_location", hasDataWithChecks ? DataLocation.ON_DISK : DataLocation.MISSING);
                 cv.put("content_id", contentId);
                 cv.put("server_extra", storeData);
+                structureState.applyValues(cv);
 
                 long partId = db.insertOrThrow("message_parts", null, cv);
                 structureState = structureState.nextChild(partId);
@@ -514,7 +588,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     }
 
     private static MimeStructureState insertBodyAsMultipartAlternative(SQLiteDatabase db,
-            MimeStructureState structureInfo, MimeHeader mimeHeader,
+            MimeStructureState structureState, MimeHeader mimeHeader,
             String textContent, String htmlContent) throws IOException {
         if (mimeHeader == null) {
             mimeHeader = new MimeHeader();
@@ -527,26 +601,24 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         cv.put("data_location", DataLocation.IN_DATABASE);
         cv.put("mime_type", "multipart/alternative");
         cv.put("header", mimeHeader.toString());
-        cv.put("root", structureInfo.rootPartId);
-        cv.put("parent", structureInfo.parentId);
-        cv.put("seq", structureInfo.nextOrder);
         cv.put("boundary", MimeUtil.createUniqueBoundary());
+        structureState.applyValues(cv);
 
         long multipartAlternativePartId = db.insertOrThrow("message_parts", null, cv);
-        structureInfo = structureInfo.nextMultipartChild(multipartAlternativePartId);
+        structureState = structureState.nextMultipartChild(multipartAlternativePartId);
 
         if (!TextUtils.isEmpty(textContent)) {
-            structureInfo = insertTextualPartIntoDatabase(db, structureInfo, null, textContent, false);
+            structureState = insertTextualPartIntoDatabase(db, structureState, null, textContent, false);
         }
 
         if (!TextUtils.isEmpty(htmlContent)) {
-            structureInfo = insertTextualPartIntoDatabase(db, structureInfo, null, htmlContent, true);
+            structureState = insertTextualPartIntoDatabase(db, structureState, null, htmlContent, true);
         }
 
-        return structureInfo;
+        return structureState;
     }
 
-    private static MimeStructureState insertTextualPartIntoDatabase(SQLiteDatabase db, MimeStructureState structureInfo,
+    private static MimeStructureState insertTextualPartIntoDatabase(SQLiteDatabase db, MimeStructureState structureState,
             MimeHeader mimeHeader, String content, boolean isHtml) throws IOException {
         if (mimeHeader == null) {
             mimeHeader = new MimeHeader();
@@ -568,13 +640,11 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         cv.put("header", mimeHeader.toString());
         cv.put("data", contentBytes);
         cv.put("decoded_body_size", content.length());
-        cv.put("root", structureInfo.rootPartId);
-        cv.put("parent", structureInfo.parentId);
         cv.put("encoding", MimeUtil.ENC_QUOTED_PRINTABLE);
-        cv.put("seq", structureInfo.nextOrder);
+        structureState.applyValues(cv);
 
         long partId = db.insertOrThrow("message_parts", null, cv);
-        return structureInfo.nextChild(partId);
+        return structureState.nextChild(partId);
     }
 
     private static MimeHeader loadHeaderFromHeadersTable(SQLiteDatabase db, long messageId) {
@@ -972,7 +1042,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
     }
 
-    private static void db46AddMessagesFlagColumns(SQLiteDatabase db, LocalStore localStore) {
+    private static void db46AddMessagesFlagColumns(SQLiteDatabase db) {
         db.execSQL("ALTER TABLE messages ADD read INTEGER default 0");
         db.execSQL("ALTER TABLE messages ADD flagged INTEGER default 0");
         db.execSQL("ALTER TABLE messages ADD answered INTEGER default 0");
