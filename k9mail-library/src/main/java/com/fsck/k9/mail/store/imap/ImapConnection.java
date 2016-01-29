@@ -52,7 +52,6 @@ import static com.fsck.k9.mail.store.RemoteStore.SOCKET_READ_TIMEOUT;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_AUTH_CRAM_MD5;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_AUTH_EXTERNAL;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_AUTH_PLAIN;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_CAPABILITY;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_COMPRESS_DEFLATE;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_LOGINDISABLED;
 import static com.fsck.k9.mail.store.imap.ImapCommands.COMMAND_CAPABILITY;
@@ -133,7 +132,7 @@ class ImapConnection {
             nullResponses.add(nullResponse);
             receiveCapabilities(nullResponses);
 
-            if (!hasCapability(CAPABILITY_CAPABILITY)) {
+            if (capabilities.isEmpty()) {
                 if (K9MailLib.isDebug())
                     Log.i(LOG_TAG, "Did not get capabilities in banner, requesting CAPABILITY for " + getLogId());
                 List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));

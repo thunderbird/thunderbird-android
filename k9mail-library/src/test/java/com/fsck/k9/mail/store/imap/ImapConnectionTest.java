@@ -79,7 +79,6 @@ public class ImapConnectionTest {
     }
 
     @Test
-    //FIXME: currently fails
     public void open_withCapabilitiesInInitialResponse_shouldNotIssueCapabilitiesCommand() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
