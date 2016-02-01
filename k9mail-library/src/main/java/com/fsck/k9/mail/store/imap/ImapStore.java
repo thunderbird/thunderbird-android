@@ -681,8 +681,15 @@ public class ImapStore extends RemoteStore {
         return true;
     }
 
+    StoreConfig getStoreConfig() {
+        return mStoreConfig;
+    }
 
-    protected class ImapFolder extends Folder<ImapMessage> {
+    Set<Flag> getPermanentFlagsIndex() {
+        return mPermanentFlagsIndex;
+    }
+
+    protected static class ImapFolder extends Folder<ImapMessage> {
         private static final int MORE_MESSAGES_WINDOW_SIZE = 500;
 
         private String mName;
@@ -703,11 +710,11 @@ public class ImapStore extends RemoteStore {
 
         public String getPrefixedName() throws MessagingException {
             String prefixedName = "";
-            if (!mStoreConfig.getInboxFolderName().equalsIgnoreCase(mName)) {
+            if (!store.getStoreConfig().getInboxFolderName().equalsIgnoreCase(mName)) {
                 ImapConnection connection;
                 synchronized (this) {
                     if (mConnection == null) {
-                        connection = getConnection();
+                        connection = store.getConnection();
                     } else {
                         connection = mConnection;
                     }
@@ -719,10 +726,10 @@ public class ImapStore extends RemoteStore {
                     throw new MessagingException("Unable to get IMAP prefix", ioe);
                 } finally {
                     if (mConnection == null) {
-                        releaseConnection(connection);
+                        store.releaseConnection(connection);
                     }
                 }
-                prefixedName = getCombinedPrefix();
+                prefixedName = store.getCombinedPrefix();
             }
 
             prefixedName += mName;
@@ -757,9 +764,9 @@ public class ImapStore extends RemoteStore {
                     /* don't throw */ ioExceptionHandler(mConnection, ioe);
                 }
             }
-            releaseConnection(mConnection);
+            store.releaseConnection(mConnection);
             synchronized (this) {
-                mConnection = getConnection();
+                mConnection = store.getConnection();
             }
             // * FLAGS (\Answered \Flagged \Deleted \Seen \Draft NonJunk
             // $MDNSent)
@@ -773,7 +780,7 @@ public class ImapStore extends RemoteStore {
             try {
                 msgSeqUidMap.clear();
                 String command = String.format("%s %s", mode == OPEN_MODE_RW ? "SELECT"
-                        : "EXAMINE", encodeString(encodeFolderName(getPrefixedName())));
+                        : "EXAMINE", encodeString(store.encodeFolderName(getPrefixedName())));
 
                 List<ImapResponse> responses = executeSimpleCommand(command);
 
@@ -837,15 +844,15 @@ public class ImapStore extends RemoteStore {
             for (Object flag : flags) {
                 flag = flag.toString().toLowerCase(Locale.US);
                 if (flag.equals("\\deleted")) {
-                    mPermanentFlagsIndex.add(Flag.DELETED);
+                    store.getPermanentFlagsIndex().add(Flag.DELETED);
                 } else if (flag.equals("\\answered")) {
-                    mPermanentFlagsIndex.add(Flag.ANSWERED);
+                    store.getPermanentFlagsIndex().add(Flag.ANSWERED);
                 } else if (flag.equals("\\seen")) {
-                    mPermanentFlagsIndex.add(Flag.SEEN);
+                    store.getPermanentFlagsIndex().add(Flag.SEEN);
                 } else if (flag.equals("\\flagged")) {
-                    mPermanentFlagsIndex.add(Flag.FLAGGED);
+                    store.getPermanentFlagsIndex().add(Flag.FLAGGED);
                 } else if (flag.equals("$forwarded")) {
-                    mPermanentFlagsIndex.add(Flag.FORWARDED);
+                    store.getPermanentFlagsIndex().add(Flag.FORWARDED);
                 } else if (flag.equals("\\*")) {
                     mCanCreateKeywords = true;
                 }
@@ -877,7 +884,7 @@ public class ImapStore extends RemoteStore {
                     Log.i(LOG_TAG, "IMAP search was aborted, shutting down connection.");
                     mConnection.close();
                 } else {
-                    releaseConnection(mConnection);
+                    store.releaseConnection(mConnection);
                 }
                 mConnection = null;
             }
@@ -926,14 +933,14 @@ public class ImapStore extends RemoteStore {
             ImapConnection connection;
             synchronized (this) {
                 if (mConnection == null) {
-                    connection = getConnection();
+                    connection = store.getConnection();
                 } else {
                     connection = mConnection;
                 }
             }
             try {
                 connection.executeSimpleCommand(String.format("STATUS %s (UIDVALIDITY)",
-                                                encodeString(encodeFolderName(getPrefixedName()))));
+                                                encodeString(store.encodeFolderName(getPrefixedName()))));
                 mExists = true;
                 return true;
             } catch (NegativeImapResponseException ie) {
@@ -943,7 +950,7 @@ public class ImapStore extends RemoteStore {
                 throw ioExceptionHandler(connection, ioe);
             } finally {
                 if (mConnection == null) {
-                    releaseConnection(connection);
+                    store.releaseConnection(connection);
                 }
             }
         }
@@ -958,14 +965,14 @@ public class ImapStore extends RemoteStore {
             ImapConnection connection;
             synchronized (this) {
                 if (mConnection == null) {
-                    connection = getConnection();
+                    connection = store.getConnection();
                 } else {
                     connection = mConnection;
                 }
             }
             try {
                 connection.executeSimpleCommand(String.format("CREATE %s",
-                                                encodeString(encodeFolderName(getPrefixedName()))));
+                                                encodeString(store.encodeFolderName(getPrefixedName()))));
                 return true;
             } catch (NegativeImapResponseException ie) {
                 // We got a response, but it was not "OK"
@@ -974,7 +981,7 @@ public class ImapStore extends RemoteStore {
                 throw ioExceptionHandler(mConnection, ioe);
             } finally {
                 if (mConnection == null) {
-                    releaseConnection(connection);
+                    store.releaseConnection(connection);
                 }
             }
         }
@@ -1015,7 +1022,7 @@ public class ImapStore extends RemoteStore {
             }
 
             try {
-                String remoteDestName = encodeString(encodeFolderName(iFolder.getPrefixedName()));
+                String remoteDestName = encodeString(store.encodeFolderName(iFolder.getPrefixedName()));
 
                 //TODO: Try to copy/move the messages first and only create the folder if the
                 //      operation fails. This will save a roundtrip if the folder already exists.
@@ -1114,7 +1121,7 @@ public class ImapStore extends RemoteStore {
                 setFlags(messages, Collections.singleton(Flag.DELETED), true);
             } else {
                 ImapFolder remoteTrashFolder = (ImapFolder)getStore().getFolder(trashFolderName);
-                String remoteTrashName = encodeString(encodeFolderName(remoteTrashFolder.getPrefixedName()));
+                String remoteTrashName = encodeString(store.encodeFolderName(remoteTrashFolder.getPrefixedName()));
 
                 if (!exists(remoteTrashName)) {
                     /*
@@ -1426,8 +1433,8 @@ public class ImapStore extends RemoteStore {
             }
             if (fp.contains(FetchProfile.Item.BODY_SANE)) {
                 // If the user wants to download unlimited-size messages, don't go only for the truncated body
-                if (mStoreConfig.getMaximumAutoDownloadMessageSize() > 0) {
-                    fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", mStoreConfig.getMaximumAutoDownloadMessageSize()));
+                if (store.getStoreConfig().getMaximumAutoDownloadMessageSize() > 0) {
+                    fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", store.getStoreConfig().getMaximumAutoDownloadMessageSize()));
                 } else {
                     fetchFields.add("BODY.PEEK[]");
                 }
@@ -1526,7 +1533,7 @@ public class ImapStore extends RemoteStore {
             String fetch;
             if ("TEXT".equalsIgnoreCase(partId)) {
                 fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>",
-                        mStoreConfig.getMaximumAutoDownloadMessageSize());
+                        store.getStoreConfig().getMaximumAutoDownloadMessageSize());
             } else {
                 fetch = String.format("BODY.PEEK[%s]", partId);
             }
@@ -1616,7 +1623,7 @@ public class ImapStore extends RemoteStore {
                         } else if (flag.equalsIgnoreCase("$Forwarded")) {
                             message.setFlagInternal(Flag.FORWARDED, true);
                             /* a message contains FORWARDED FLAG -> so we can also create them */
-                            mPermanentFlagsIndex.add(Flag.FORWARDED);
+                            store.getPermanentFlagsIndex().add(Flag.FORWARDED);
                         }
                     }
                 }
@@ -1923,7 +1930,7 @@ public class ImapStore extends RemoteStore {
                 for (Message message : messages) {
                     mConnection.sendCommand(
                         String.format(Locale.US, "APPEND %s (%s) {%d}",
-                                      encodeString(encodeFolderName(getPrefixedName())),
+                                      encodeString(store.encodeFolderName(getPrefixedName())),
                                       combineFlags(message.getFlags()),
                                       message.calculateSize()), false);
 
@@ -2050,7 +2057,7 @@ public class ImapStore extends RemoteStore {
                 } else if (flag == Flag.FLAGGED) {
                     flagNames.add("\\Flagged");
                 } else if (flag == Flag.FORWARDED
-                        && (mCanCreateKeywords || mPermanentFlagsIndex.contains(Flag.FORWARDED))) {
+                        && (mCanCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED))) {
                     flagNames.add("$Forwarded");
                 }
 
@@ -2146,7 +2153,7 @@ public class ImapStore extends RemoteStore {
         }
 
         protected String getLogId() {
-            String id = mStoreConfig.toString() + ":" + getName() + "/" + Thread.currentThread().getName();
+            String id = store.getStoreConfig().toString() + ":" + getName() + "/" + Thread.currentThread().getName();
             if (mConnection != null) {
                 id += "/" + mConnection.getLogId();
             }
@@ -2165,7 +2172,7 @@ public class ImapStore extends RemoteStore {
         public List<ImapMessage> search(final String queryString, final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags)
             throws MessagingException {
 
-            if (!mStoreConfig.allowRemoteSearch()) {
+            if (!store.getStoreConfig().allowRemoteSearch()) {
                 throw new MessagingException("Your settings do not allow remote searching of this account");
             }
 
@@ -2239,7 +2246,7 @@ public class ImapStore extends RemoteStore {
                         }
                     }
                     final String encodedQry = encodeString(queryString);
-                    if (mStoreConfig.isRemoteSearchFullText()) {
+                    if (store.getStoreConfig().isRemoteSearchFullText()) {
                         imapQuery += "TEXT " + encodedQry;
                     } else {
                         imapQuery += "OR SUBJECT " + encodedQry + " FROM " + encodedQry;
