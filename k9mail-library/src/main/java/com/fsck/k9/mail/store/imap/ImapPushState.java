@@ -1,44 +1,46 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import java.util.StringTokenizer;
-
 import android.util.Log;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
 class ImapPushState {
-    protected long uidNext;
-    protected ImapPushState(long nUidNext) {
-        uidNext = nUidNext;
-    }
-    protected static ImapPushState parse(String pushState) {
-        long newUidNext = -1L;
-        if (pushState != null) {
-            StringTokenizer tokenizer = new StringTokenizer(pushState, ";");
-            while (tokenizer.hasMoreTokens()) {
-                StringTokenizer thisState = new StringTokenizer(tokenizer.nextToken(), "=");
-                if (thisState.hasMoreTokens()) {
-                    String key = thisState.nextToken();
+    private static final long DEFAULT_UID_NEXT = -1L;
+    private static final String PUSH_STATE_PREFIX = "uidNext=";
+    private static final int PUSH_STATE_PREFIX_LENGTH = 8;
 
-                    if ("uidNext".equalsIgnoreCase(key) && thisState.hasMoreTokens()) {
-                        String value = thisState.nextToken();
-                        try {
-                            newUidNext = Long.parseLong(value);
-                        } catch (NumberFormatException e) {
-                            Log.e(LOG_TAG, "Unable to part uidNext value " + value, e);
-                        }
 
-                    }
-                }
-            }
+    public final long uidNext;
+
+    public static ImapPushState parse(String pushState) {
+        if (pushState == null || !pushState.startsWith(PUSH_STATE_PREFIX)) {
+            return createDefaultImapPushState();
         }
-        return new ImapPushState(newUidNext);
+
+        String value = pushState.substring(PUSH_STATE_PREFIX_LENGTH);
+        try {
+            long newUidNext = Long.parseLong(value);
+
+            return new ImapPushState(newUidNext);
+        } catch (NumberFormatException e) {
+            Log.e(LOG_TAG, "Unable to part uidNext value " + value, e);
+        }
+
+        return createDefaultImapPushState();
     }
+
+    static ImapPushState createDefaultImapPushState() {
+        return new ImapPushState(DEFAULT_UID_NEXT);
+    }
+
+    public ImapPushState(long uidNext) {
+        this.uidNext = uidNext;
+    }
+
     @Override
     public String toString() {
         return "uidNext=" + uidNext;
     }
-
 }
