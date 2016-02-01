@@ -11,7 +11,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -36,7 +35,6 @@ import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
@@ -653,33 +651,6 @@ public class ImapStore extends RemoteStore {
 
     Set<Flag> getPermanentFlagsIndex() {
         return mPermanentFlagsIndex;
-    }
-
-    protected static class ImapMessage extends MimeMessage {
-        ImapMessage(String uid, Folder folder) {
-            this.mUid = uid;
-            this.mFolder = folder;
-        }
-
-        public void setSize(int size) {
-            this.mSize = size;
-        }
-
-        public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
-            super.setFlag(flag, set);
-        }
-
-
-        @Override
-        public void setFlag(Flag flag, boolean set) throws MessagingException {
-            super.setFlag(flag, set);
-            mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
-        }
-
-        @Override
-        public void delete(String trashFolderName) throws MessagingException {
-            getFolder().delete(Collections.singletonList(this), trashFolderName);
-        }
     }
 
     @Override

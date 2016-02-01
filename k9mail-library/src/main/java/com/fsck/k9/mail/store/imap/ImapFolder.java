@@ -34,7 +34,6 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.imap.ImapStore.ImapMessage;
 import com.fsck.k9.mail.store.imap.ImapStore.ImapSearcher;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
