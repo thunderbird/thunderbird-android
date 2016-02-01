@@ -658,10 +658,6 @@ public class ImapStore extends RemoteStore {
         return new ImapPusher(this, receiver);
     }
 
-    protected interface ImapSearcher {
-        List<ImapResponse> search() throws IOException, MessagingException;
-    }
-
     private class StoreImapSettings implements ImapSettings {
         @Override
         public String getHost() {
