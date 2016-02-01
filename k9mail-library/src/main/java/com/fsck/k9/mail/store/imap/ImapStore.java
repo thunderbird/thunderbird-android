@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import android.net.ConnectivityManager;
 import android.util.Log;
@@ -764,40 +763,6 @@ public class ImapStore extends RemoteStore {
         }
     }
 
-    protected static class ImapPushState {
-        protected long uidNext;
-        protected ImapPushState(long nUidNext) {
-            uidNext = nUidNext;
-        }
-        protected static ImapPushState parse(String pushState) {
-            long newUidNext = -1L;
-            if (pushState != null) {
-                StringTokenizer tokenizer = new StringTokenizer(pushState, ";");
-                while (tokenizer.hasMoreTokens()) {
-                    StringTokenizer thisState = new StringTokenizer(tokenizer.nextToken(), "=");
-                    if (thisState.hasMoreTokens()) {
-                        String key = thisState.nextToken();
-
-                        if ("uidNext".equalsIgnoreCase(key) && thisState.hasMoreTokens()) {
-                            String value = thisState.nextToken();
-                            try {
-                                newUidNext = Long.parseLong(value);
-                            } catch (NumberFormatException e) {
-                                Log.e(LOG_TAG, "Unable to part uidNext value " + value, e);
-                            }
-
-                        }
-                    }
-                }
-            }
-            return new ImapPushState(newUidNext);
-        }
-        @Override
-        public String toString() {
-            return "uidNext=" + uidNext;
-        }
-
-    }
     protected interface ImapSearcher {
         List<ImapResponse> search() throws IOException, MessagingException;
     }
