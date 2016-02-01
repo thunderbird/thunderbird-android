@@ -658,7 +658,7 @@ public class ImapStore extends RemoteStore {
         return new ImapPusher(this, receiver);
     }
 
-    public class ImapPusher implements Pusher {
+    public static class ImapPusher implements Pusher {
         private final ImapStore mStore;
         final PushReceiver mReceiver;
         private long lastRefresh = -1;
@@ -720,7 +720,7 @@ public class ImapStore extends RemoteStore {
 
         @Override
         public int getRefreshInterval() {
-            return (mStoreConfig.getIdleRefreshMinutes() * 60 * 1000);
+            return (mStore.getStoreConfig().getIdleRefreshMinutes() * 60 * 1000);
         }
 
         @Override
