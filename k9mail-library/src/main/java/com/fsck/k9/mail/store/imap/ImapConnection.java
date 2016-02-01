@@ -52,7 +52,6 @@ import static com.fsck.k9.mail.store.RemoteStore.SOCKET_READ_TIMEOUT;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_AUTH_CRAM_MD5;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_AUTH_EXTERNAL;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_AUTH_PLAIN;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_CAPABILITY;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_COMPRESS_DEFLATE;
 import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_LOGINDISABLED;
 import static com.fsck.k9.mail.store.imap.ImapCommands.COMMAND_CAPABILITY;
@@ -74,6 +73,8 @@ class ImapConnection {
     private ImapSettings mSettings;
     private ConnectivityManager mConnectivityManager;
     private final TrustedSocketFactory mSocketFactory;
+    private final int socketConnectTimeout;
+    private final int socketReadTimeout;
 
     public ImapConnection(ImapSettings settings,
                           TrustedSocketFactory socketFactory,
@@ -81,6 +82,17 @@ class ImapConnection {
         this.mSettings = settings;
         this.mSocketFactory = socketFactory;
         this.mConnectivityManager = connectivityManager;
+        this.socketConnectTimeout = SOCKET_CONNECT_TIMEOUT;
+        this.socketReadTimeout = SOCKET_READ_TIMEOUT;
+    }
+
+    ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory, ConnectivityManager connectivityManager,
+            int socketConnectTimeout, int socketReadTimeout) {
+        this.mSettings = settings;
+        this.mSocketFactory = socketFactory;
+        this.mConnectivityManager = connectivityManager;
+        this.socketConnectTimeout = socketConnectTimeout;
+        this.socketReadTimeout = socketReadTimeout;
     }
 
     public Set<String> getCapabilities() {
@@ -106,7 +118,7 @@ class ImapConnection {
 
         try {
             mSocket = connect(mSettings, mSocketFactory);
-            setReadTimeout(SOCKET_READ_TIMEOUT);
+            setReadTimeout(socketReadTimeout);
 
             mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), BUFFER_SIZE));
             mParser = new ImapResponseParser(mIn);
@@ -120,7 +132,7 @@ class ImapConnection {
             nullResponses.add(nullResponse);
             receiveCapabilities(nullResponses);
 
-            if (!hasCapability(CAPABILITY_CAPABILITY)) {
+            if (capabilities.isEmpty()) {
                 if (K9MailLib.isDebug())
                     Log.i(LOG_TAG, "Did not get capabilities in banner, requesting CAPABILITY for " + getLogId());
                 List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
@@ -301,7 +313,13 @@ class ImapConnection {
         String tag = sendCommand(command, sensitive);
         //if (K9MailLib.isDebug())
         //    Log.v(LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
-        return mParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+
+        try {
+            return mParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+        } catch (IOException e) {
+            close();
+            throw e;
+        }
     }
 
     protected void login() throws IOException, MessagingException {
@@ -426,21 +444,40 @@ class ImapConnection {
         }
     }
 
-    private void getPathDelimiter() {
+    private void getPathDelimiter() throws IOException, MessagingException {
+        List<ImapResponse> listResponses;
         try {
-            List<ImapResponse> nameResponses = executeSimpleCommand("LIST \"\" \"\"");
-            for (ImapResponse response : nameResponses) {
-                if (equalsIgnoreCase(response.get(0), "LIST")) {
-                    mSettings.setPathDelimiter(response.getString(2));
-                    mSettings.setCombinedPrefix(null);
-                    if (K9MailLib.isDebug()) {
-                        Log.d(LOG_TAG, "Got path delimiter '" + mSettings.getPathDelimiter() + "' for " + getLogId());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Unable to get path delimiter using LIST", e);
+            listResponses = executeSimpleCommand("LIST \"\" \"\"");
+        } catch (ImapException e) {
+            Log.d(LOG_TAG, "Error getting path delimiter using LIST command", e);
+            return;
         }
+
+        for (ImapResponse response : listResponses) {
+            if (isListResponse(response)) {
+                String hierarchyDelimiter = response.getString(2);
+                mSettings.setPathDelimiter(hierarchyDelimiter);
+                mSettings.setCombinedPrefix(null);
+
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, "Got path delimiter '" + mSettings.getPathDelimiter() + "' for " + getLogId());
+                }
+
+                break;
+            }
+        }
+    }
+
+    private boolean isListResponse(ImapResponse response) {
+        boolean responseTooShort = response.size() < 4;
+        if (responseTooShort) {
+            return false;
+        }
+
+        boolean isListResponse = equalsIgnoreCase(response.get(0), "LIST");
+        boolean hierarchyDelimiterValid = response.get(2) instanceof String;
+
+        return isListResponse && hierarchyDelimiterValid;
     }
 
     private void handleNamespace() throws IOException, MessagingException {
@@ -489,9 +526,15 @@ class ImapConnection {
         return useCompression;
     }
 
-    private void enableCompression() {
+    private void enableCompression() throws IOException, MessagingException {
         try {
             executeSimpleCommand(ImapCommands.COMMAND_COMPRESS_DEFLATE);
+        } catch (ImapException e) {
+            Log.d(LOG_TAG, "Unable to negotiate compression: " + e.getMessage());
+            return;
+        }
+
+        try {
             InflaterInputStream zInputStream = new InflaterInputStream(mSocket.getInputStream(), new Inflater(true));
             mIn = new PeekableInputStream(new BufferedInputStream(zInputStream, BUFFER_SIZE));
             mParser = new ImapResponseParser(mIn);
@@ -501,8 +544,9 @@ class ImapConnection {
             if (K9MailLib.isDebug()) {
                 Log.i(LOG_TAG, "Compression enabled for " + getLogId());
             }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Unable to negotiate compression", e);
+        } catch (IOException e) {
+            close();
+            Log.e(LOG_TAG, "Error enabling compression", e);
         }
     }
 
@@ -547,7 +591,7 @@ class ImapConnection {
                 mSettings.getPort(),
                 mSettings.getClientCertificateAlias());
 
-        mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
+        mSocket.setSoTimeout(socketReadTimeout);
         mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), BUFFER_SIZE));
         mParser = new ImapResponseParser(mIn);
         mOut = new BufferedOutputStream(mSocket.getOutputStream(), BUFFER_SIZE);
@@ -562,7 +606,7 @@ class ImapConnection {
         }
     }
 
-    private static Socket connect(ImapSettings settings, TrustedSocketFactory socketFactory)
+    private Socket connect(ImapSettings settings, TrustedSocketFactory socketFactory)
             throws GeneralSecurityException, MessagingException, IOException {
         // Try all IPv4 and IPv6 addresses of the host
         Exception connectException = null;
@@ -583,7 +627,7 @@ class ImapConnection {
                 } else {
                     socket = new Socket();
                 }
-                socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                socket.connect(socketAddress, socketConnectTimeout);
                 // Successfully connected to the server; don't try any other addresses
                 return socket;
             } catch (IOException e) {
