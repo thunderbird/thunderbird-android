@@ -697,7 +697,7 @@ public class ImapStore extends RemoteStore {
         }
     }
 
-    protected class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
+    protected static class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         private final PushReceiver receiver;
         private Thread listeningThread = null;
         private final AtomicBoolean stop = new AtomicBoolean(false);
@@ -713,7 +713,7 @@ public class ImapStore extends RemoteStore {
             super(store, name);
             receiver = nReceiver;
             TracingPowerManager pm = TracingPowerManager.getPowerManager(receiver.getContext());
-            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ImapFolderPusher " + mStoreConfig.toString() + ":" + getName());
+            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ImapFolderPusher " + store.getStoreConfig().toString() + ":" + getName());
             wakeLock.setReferenceCounted(false);
 
         }
@@ -790,7 +790,7 @@ public class ImapStore extends RemoteStore {
                                 throw new MessagingException("IMAP server is not IDLE capable:" + conn.toString());
                             }
 
-                            if (!stop.get() && mStoreConfig.isPushPollOnConnect() && (conn != oldConnection || needsPoll.getAndSet(false))) {
+                            if (!stop.get() && store.getStoreConfig().isPushPollOnConnect() && (conn != oldConnection || needsPoll.getAndSet(false))) {
                                 List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
                                 storedUntaggedResponses.clear();
                                 processUntaggedResponses(untaggedResponses);
@@ -821,8 +821,8 @@ public class ImapStore extends RemoteStore {
                                 }
                             }
 
-                            if (startUid < newUidNext - mStoreConfig.getDisplayCount()) {
-                                startUid = newUidNext - mStoreConfig.getDisplayCount();
+                            if (startUid < newUidNext - store.getStoreConfig().getDisplayCount()) {
+                                startUid = newUidNext - store.getStoreConfig().getDisplayCount();
                             }
                             if (startUid < 1) {
                                 startUid = 1;
@@ -859,7 +859,7 @@ public class ImapStore extends RemoteStore {
                                 idling.set(true);
                                 doneSent.set(false);
 
-                                conn.setReadTimeout((mStoreConfig.getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
+                                conn.setReadTimeout((store.getStoreConfig().getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
                                 executeSimpleCommand(Commands.IDLE, false, ImapFolderPusher.this);
                                 idling.set(false);
                                 delayTime.set(NORMAL_DELAY_TIME);

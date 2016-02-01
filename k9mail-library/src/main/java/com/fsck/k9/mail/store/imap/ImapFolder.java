@@ -52,7 +52,7 @@ class ImapFolder extends Folder<ImapMessage> {
     protected volatile ImapConnection mConnection;
     private int mMode;
     private volatile boolean mExists;
-    private ImapStore store = null;
+    protected ImapStore store = null;
     Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
     private boolean mInSearch = false;
 
