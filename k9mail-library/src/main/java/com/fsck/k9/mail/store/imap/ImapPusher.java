@@ -15,27 +15,32 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
 class ImapPusher implements Pusher {
-    private final ImapStore mStore;
-    final PushReceiver mReceiver;
+    private final ImapStore store;
+    private final PushReceiver pushReceiver;
+
+    private final Map<String, ImapFolderPusher> folderPushers = new HashMap<>();
+
     private long lastRefresh = -1;
 
-    final Map<String, ImapFolderPusher> folderPushers = new HashMap<String, ImapFolderPusher>();
 
-    public ImapPusher(ImapStore store, PushReceiver receiver) {
-        mStore = store;
-        mReceiver = receiver;
+    public ImapPusher(ImapStore store, PushReceiver pushReceiver) {
+        this.store = store;
+        this.pushReceiver = pushReceiver;
     }
 
     @Override
     public void start(List<String> folderNames) {
         stop();
+
         synchronized (folderPushers) {
             setLastRefresh(currentTimeMillis());
+
             for (String folderName : folderNames) {
                 ImapFolderPusher pusher = folderPushers.get(folderName);
                 if (pusher == null) {
                     pusher = createImapFolderPusher(folderName);
                     folderPushers.put(folderName, pusher);
+
                     pusher.start();
                 }
             }
@@ -57,26 +62,30 @@ class ImapPusher implements Pusher {
 
     @Override
     public void stop() {
-        if (K9MailLib.isDebug())
+        if (K9MailLib.isDebug()) {
             Log.i(LOG_TAG, "Requested stop of IMAP pusher");
+        }
 
         synchronized (folderPushers) {
             for (ImapFolderPusher folderPusher : folderPushers.values()) {
                 try {
-                    if (K9MailLib.isDebug())
+                    if (K9MailLib.isDebug()) {
                         Log.i(LOG_TAG, "Requesting stop of IMAP folderPusher " + folderPusher.getName());
+                    }
+
                     folderPusher.stop();
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "Got exception while stopping " + folderPusher.getName(), e);
                 }
             }
+
             folderPushers.clear();
         }
     }
 
     @Override
     public int getRefreshInterval() {
-        return (mStore.getStoreConfig().getIdleRefreshMinutes() * 60 * 1000);
+        return (store.getStoreConfig().getIdleRefreshMinutes() * 60 * 1000);
     }
 
     @Override
@@ -90,7 +99,7 @@ class ImapPusher implements Pusher {
     }
 
     ImapFolderPusher createImapFolderPusher(String folderName) {
-        return new ImapFolderPusher(mStore, folderName, mReceiver);
+        return new ImapFolderPusher(store, folderName, pushReceiver);
     }
 
     long currentTimeMillis() {
