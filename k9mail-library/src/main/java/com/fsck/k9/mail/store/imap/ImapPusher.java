@@ -30,11 +30,11 @@ class ImapPusher implements Pusher {
     public void start(List<String> folderNames) {
         stop();
         synchronized (folderPushers) {
-            setLastRefresh(System.currentTimeMillis());
+            setLastRefresh(currentTimeMillis());
             for (String folderName : folderNames) {
                 ImapFolderPusher pusher = folderPushers.get(folderName);
                 if (pusher == null) {
-                    pusher = new ImapFolderPusher(mStore, folderName, mReceiver);
+                    pusher = createImapFolderPusher(folderName);
                     folderPushers.put(folderName, pusher);
                     pusher.start();
                 }
@@ -87,5 +87,13 @@ class ImapPusher implements Pusher {
     @Override
     public void setLastRefresh(long lastRefresh) {
         this.lastRefresh = lastRefresh;
+    }
+
+    ImapFolderPusher createImapFolderPusher(String folderName) {
+        return new ImapFolderPusher(mStore, folderName, mReceiver);
+    }
+
+    long currentTimeMillis() {
+        return System.currentTimeMillis();
     }
 }
