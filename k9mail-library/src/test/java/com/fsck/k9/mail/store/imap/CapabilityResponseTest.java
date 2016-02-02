@@ -1,16 +1,15 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.fsck.k9.mail.filter.PeekableInputStream;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
 
+import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -114,14 +113,6 @@ public class CapabilityResponseTest {
 
         assertNotNull(result);
         assertEquals(Sets.newSet("IMAP4REV1", "IDLE"), result.getCapabilities());
-    }
-
-    private ImapResponse createImapResponse(String response) throws IOException {
-        String input = response + "\r\n";
-        PeekableInputStream inputStream = new PeekableInputStream(new ByteArrayInputStream(input.getBytes()));
-        ImapResponseParser parser = new ImapResponseParser(inputStream);
-
-        return parser.readResponse();
     }
 
     private CapabilityResponse parse(String responseText) throws IOException {
