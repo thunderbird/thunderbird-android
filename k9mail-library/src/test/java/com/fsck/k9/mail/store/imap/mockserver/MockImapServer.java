@@ -45,6 +45,7 @@ public class MockImapServer {
 
     private final Deque<ImapInteraction> interactions = new ConcurrentLinkedDeque<>();
     private final CountDownLatch waitForConnectionClosed = new CountDownLatch(1);
+    private final CountDownLatch waitForAllExpectedCommands = new CountDownLatch(1);
     private final Logger logger;
 
     private MockServerThread mockServerThread;
@@ -94,7 +95,8 @@ public class MockImapServer {
         host = localSocketAddress.getHostString();
         port = serverSocket.getLocalPort();
 
-        mockServerThread = new MockServerThread(serverSocket, interactions, waitForConnectionClosed, logger);
+        mockServerThread = new MockServerThread(serverSocket, interactions, waitForConnectionClosed,
+                waitForAllExpectedCommands, logger);
         mockServerThread.start();
     }
 
@@ -122,6 +124,15 @@ public class MockImapServer {
         checkServerRunning();
 
         return port;
+    }
+
+    public void waitForInteractionToComplete() {
+        checkServerRunning();
+
+        try {
+            waitForAllExpectedCommands.await(1000L, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException ignored) {
+        }
     }
 
     public void verifyInteractionCompleted() {
@@ -223,6 +234,7 @@ public class MockImapServer {
         private final ServerSocket serverSocket;
         private final Deque<ImapInteraction> interactions;
         private final CountDownLatch waitForConnectionClosed;
+        private final CountDownLatch waitForAllExpectedCommands;
         private final Logger logger;
 
         private volatile boolean shouldStop = false;
@@ -234,11 +246,12 @@ public class MockImapServer {
 
 
         public MockServerThread(ServerSocket serverSocket, Deque<ImapInteraction> interactions,
-                CountDownLatch waitForConnectionClosed, Logger logger) {
+                CountDownLatch waitForConnectionClosed, CountDownLatch waitForAllExpectedCommands, Logger logger) {
             super("MockImapServer");
             this.serverSocket = serverSocket;
             this.interactions = interactions;
             this.waitForConnectionClosed = waitForConnectionClosed;
+            this.waitForAllExpectedCommands = waitForAllExpectedCommands;
             this.logger = logger;
         }
 
@@ -263,6 +276,8 @@ public class MockImapServer {
                 while (!shouldStop && !interactions.isEmpty()) {
                     handleInteractions(socket);
                 }
+
+                waitForAllExpectedCommands.countDown();
 
                 while (!shouldStop) {
                     readAdditionalCommands();

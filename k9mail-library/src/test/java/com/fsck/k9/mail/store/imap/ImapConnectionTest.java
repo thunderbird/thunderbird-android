@@ -604,6 +604,7 @@ public class ImapConnectionTest {
 
         imapConnection.sendContinuation("DONE");
 
+        server.waitForInteractionToComplete();
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
