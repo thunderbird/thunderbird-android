@@ -438,27 +438,22 @@ public class ImapStore extends RemoteStore {
      * @throws MessagingException uh oh!
      */
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
-        String commandResponse;
-        String commandOptions = "";
-
-        if (connection.hasCapability(Capabilities.XLIST)) {
-            if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration: Using XLIST.");
-            commandResponse = Responses.XLIST;
-        } else if(connection.hasCapability(Capabilities.SPECIAL_USE)) {
-            if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
-            commandResponse = Responses.LIST;
-            commandOptions = " (SPECIAL-USE)";
-        } else {
-            if (K9MailLib.isDebug()) Log.d(LOG_TAG, "No detected folder auto-configuration methods.");
+        if (!connection.hasCapability(Capabilities.SPECIAL_USE)) {
+            if (K9MailLib.isDebug()) {
+                Log.d(LOG_TAG, "No detected folder auto-configuration methods.");
+            }
             return;
         }
 
-        final List<ImapResponse> responses =
-            connection.executeSimpleCommand(String.format("%s%s \"\" %s", commandResponse, commandOptions,
-                encodeString(getCombinedPrefix() + "*")));
+        if (K9MailLib.isDebug()) {
+            Log.d(LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
+        }
+
+        String command = String.format("LIST (SPECIAL-USE) \"\" %s", encodeString(getCombinedPrefix() + "*"));
+        List<ImapResponse> responses = connection.executeSimpleCommand(command);
 
         for (ImapResponse response : responses) {
-            if (ImapResponseParser.equalsIgnoreCase(response.get(0), commandResponse)) {
+            if (ImapResponseParser.equalsIgnoreCase(response.get(0), Responses.LIST)) {
 
                 String decodedFolderName;
                 try {
@@ -478,7 +473,7 @@ public class ImapStore extends RemoteStore {
                 ImapList attributes = response.getList(1);
                 for (int i = 0, count = attributes.size(); i < count; i++) {
                     String attribute = attributes.getString(i);
-                    if (attribute.equals("\\Archive") || attribute.equals("\\AllMail")) {
+                    if (attribute.equals("\\Archive") || attribute.equals("\\All")) {
                         mStoreConfig.setArchiveFolderName(decodedFolderName);
                         if (K9MailLib.isDebug()) {
                             Log.d(LOG_TAG, "Folder auto-configuration detected Archive folder: " + decodedFolderName);
@@ -493,8 +488,7 @@ public class ImapStore extends RemoteStore {
                         if (K9MailLib.isDebug()) {
                             Log.d(LOG_TAG, "Folder auto-configuration detected Sent folder: " + decodedFolderName);
                         }
-                    } else if (attribute.equals("\\Spam") || attribute.equals("\\Junk")) {
-                        //rfc6154 just mentions \Junk
+                    } else if (attribute.equals("\\Junk")) {
                         mStoreConfig.setSpamFolderName(decodedFolderName);
                         if (K9MailLib.isDebug()) {
                             Log.d(LOG_TAG, "Folder auto-configuration detected Spam folder: " + decodedFolderName);

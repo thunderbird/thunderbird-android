@@ -115,7 +115,6 @@ public class ImapStoreTest {
         verify(storeConfig).setSentFolderName("[Gmail]/Sent Mail");
         verify(storeConfig).setSpamFolderName("[Gmail]/Spam");
         verify(storeConfig).setTrashFolderName("[Gmail]/Trash");
-        //FIXME: currently fails
         verify(storeConfig).setArchiveFolderName("[Gmail]/All Mail");
     }
 
