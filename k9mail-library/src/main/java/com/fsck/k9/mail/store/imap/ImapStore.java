@@ -437,7 +437,7 @@ public class ImapStore extends RemoteStore {
      * @throws IOException uh oh!
      * @throws MessagingException uh oh!
      */
-    private void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
+    void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
         String commandResponse;
         String commandOptions = "";
 
@@ -513,10 +513,7 @@ public class ImapStore extends RemoteStore {
     @Override
     public void checkSettings() throws MessagingException {
         try {
-            ImapConnection connection = new ImapConnection(
-                    new StoreImapSettings(),
-                    mTrustedSocketFactory,
-                    mConnectivityManager);
+            ImapConnection connection = createImapConnection();
 
             connection.open();
             autoconfigureFolders(connection);
@@ -538,9 +535,7 @@ public class ImapStore extends RemoteStore {
                 }
             }
             if (connection == null) {
-                connection = new ImapConnection(new StoreImapSettings(),
-                        mTrustedSocketFactory,
-                        mConnectivityManager);
+                connection = createImapConnection();
             }
             return connection;
         }
@@ -552,6 +547,10 @@ public class ImapStore extends RemoteStore {
                 mConnections.offer(connection);
             }
         }
+    }
+
+    ImapConnection createImapConnection() {
+        return new ImapConnection(new StoreImapSettings(), mTrustedSocketFactory, mConnectivityManager);
     }
 
     /**
