@@ -1,9 +1,8 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import android.util.Log;
 
@@ -18,7 +17,7 @@ class ImapPusher implements Pusher {
     private final ImapStore store;
     private final PushReceiver pushReceiver;
 
-    private final Map<String, ImapFolderPusher> folderPushers = new HashMap<>();
+    private final List<ImapFolderPusher> folderPushers = new ArrayList<>();
 
     private long lastRefresh = -1;
 
@@ -36,13 +35,10 @@ class ImapPusher implements Pusher {
             setLastRefresh(currentTimeMillis());
 
             for (String folderName : folderNames) {
-                ImapFolderPusher pusher = folderPushers.get(folderName);
-                if (pusher == null) {
-                    pusher = createImapFolderPusher(folderName);
-                    folderPushers.put(folderName, pusher);
+                ImapFolderPusher pusher = createImapFolderPusher(folderName);
+                folderPushers.add(pusher);
 
-                    pusher.start();
-                }
+                pusher.start();
             }
         }
     }
@@ -50,7 +46,7 @@ class ImapPusher implements Pusher {
     @Override
     public void refresh() {
         synchronized (folderPushers) {
-            for (ImapFolderPusher folderPusher : folderPushers.values()) {
+            for (ImapFolderPusher folderPusher : folderPushers) {
                 try {
                     folderPusher.refresh();
                 } catch (Exception e) {
@@ -67,7 +63,7 @@ class ImapPusher implements Pusher {
         }
 
         synchronized (folderPushers) {
-            for (ImapFolderPusher folderPusher : folderPushers.values()) {
+            for (ImapFolderPusher folderPusher : folderPushers) {
                 try {
                     if (K9MailLib.isDebug()) {
                         Log.i(LOG_TAG, "Requesting stop of IMAP folderPusher " + folderPusher.getName());
