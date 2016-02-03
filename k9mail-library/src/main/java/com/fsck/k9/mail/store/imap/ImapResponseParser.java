@@ -189,6 +189,7 @@ class ImapResponseParser {
         expect(' ');
         parseList(response, '(', ')');
         expect(' ');
+        //TODO: Add support for NIL
         String delimiter = parseQuoted();
         response.add(delimiter);
         expect(' ');

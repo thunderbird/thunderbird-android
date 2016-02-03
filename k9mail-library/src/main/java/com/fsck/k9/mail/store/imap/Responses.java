@@ -5,6 +5,7 @@ class Responses {
     public static final String CAPABILITY = "CAPABILITY";
     public static final String NAMESPACE = "NAMESPACE";
     public static final String LIST = "LIST";
+    public static final String LSUB = "LSUB";
     public static final String OK = "OK";
     public static final String NO = "NO";
     public static final String BAD = "BAD";

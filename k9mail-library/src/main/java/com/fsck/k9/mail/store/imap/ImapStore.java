@@ -357,71 +357,64 @@ public class ImapStore extends RemoteStore {
             connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
                                             encodeString(getCombinedPrefix() + "*")));
 
-        for (ImapResponse response : responses) {
-            if (ImapResponseParser.equalsIgnoreCase(response.get(0), commandResponse)) {
-                boolean includeFolder = true;
+        List<ListResponse> listResponses = (LSUB) ?
+                ListResponse.parseLsub(responses) : ListResponse.parseList(responses);
 
-                if (response.size() > 4 || !(response.getObject(3) instanceof String)) {
-                    Log.w(LOG_TAG, "Skipping incorrectly parsed " + commandResponse +
-                            " reply: " + response);
-                    continue;
-                }
+        for (ListResponse listResponse : listResponses) {
+            boolean includeFolder = true;
 
-                String decodedFolderName;
-                try {
-                    decodedFolderName = decodeFolderName(response.getString(3));
-                } catch (CharacterCodingException e) {
-                    Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
-                          "as defined by RFC 3501: " + response.getString(3), e);
+            String decodedFolderName;
+            try {
+                decodedFolderName = decodeFolderName(listResponse.getName());
+            } catch (CharacterCodingException e) {
+                Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                      "as defined by RFC 3501: " + listResponse.getName(), e);
 
-                    //TODO: Use the raw name returned by the server for all commands that require
-                    //      a folder name. Use the decoded name only for showing it to the user.
+                //TODO: Use the raw name returned by the server for all commands that require
+                //      a folder name. Use the decoded name only for showing it to the user.
 
-                    // We currently just skip folders with malformed names.
-                    continue;
-                }
+                // We currently just skip folders with malformed names.
+                continue;
+            }
 
-                String folder = decodedFolderName;
+            String folder = decodedFolderName;
 
-                if (mPathDelimiter == null) {
-                    mPathDelimiter = response.getString(2);
-                    mCombinedPrefix = null;
-                }
+            if (mPathDelimiter == null) {
+                mPathDelimiter = listResponse.getHierarchyDelimiter();
+                mCombinedPrefix = null;
+            }
 
-                if (folder.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
-                    continue;
-                } else if (folder.equals(mStoreConfig.getOutboxFolderName())) {
-                    /*
-                     * There is a folder on the server with the same name as our local
-                     * outbox. Until we have a good plan to deal with this situation
-                     * we simply ignore the folder on the server.
-                     */
-                    continue;
-                } else {
-                    int prefixLength = getCombinedPrefix().length();
-                    if (prefixLength > 0) {
-                        // Strip prefix from the folder name
-                        if (folder.length() >= prefixLength) {
-                            folder = folder.substring(prefixLength);
-                        }
-                        if (!decodedFolderName.equalsIgnoreCase(getCombinedPrefix() + folder)) {
-                            includeFolder = false;
-                        }
+            if (folder.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
+                continue;
+            } else if (folder.equals(mStoreConfig.getOutboxFolderName())) {
+                /*
+                 * There is a folder on the server with the same name as our local
+                 * outbox. Until we have a good plan to deal with this situation
+                 * we simply ignore the folder on the server.
+                 */
+                continue;
+            } else {
+                int prefixLength = getCombinedPrefix().length();
+                if (prefixLength > 0) {
+                    // Strip prefix from the folder name
+                    if (folder.length() >= prefixLength) {
+                        folder = folder.substring(prefixLength);
                     }
-                }
-
-                ImapList attributes = response.getList(1);
-                for (int i = 0, count = attributes.size(); i < count; i++) {
-                    String attribute = attributes.getString(i);
-                    if (attribute.equalsIgnoreCase("\\NoSelect")) {
+                    if (!decodedFolderName.equalsIgnoreCase(getCombinedPrefix() + folder)) {
                         includeFolder = false;
                     }
                 }
-                if (includeFolder) {
-                    folders.add(getFolder(folder));
-                }
+            }
+
+            if (listResponse.hasAttribute("\\NoSelect")) {
+                includeFolder = false;
+            }
+
+            if (includeFolder) {
+                folders.add(getFolder(folder));
             }
         }
+
         folders.add(getFolder(mStoreConfig.getInboxFolderName()));
         return folders;
 
@@ -452,53 +445,48 @@ public class ImapStore extends RemoteStore {
         String command = String.format("LIST (SPECIAL-USE) \"\" %s", encodeString(getCombinedPrefix() + "*"));
         List<ImapResponse> responses = connection.executeSimpleCommand(command);
 
-        for (ImapResponse response : responses) {
-            if (ImapResponseParser.equalsIgnoreCase(response.get(0), Responses.LIST)) {
+        List<ListResponse> listResponses = ListResponse.parseList(responses);
 
-                String decodedFolderName;
-                try {
-                    decodedFolderName = decodeFolderName(response.getString(3));
-                } catch (CharacterCodingException e) {
-                    Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
-                        "as defined by RFC 3501: " + response.getString(3), e);
-                    // We currently just skip folders with malformed names.
-                    continue;
+        for (ListResponse listResponse : listResponses) {
+            String decodedFolderName;
+            try {
+                decodedFolderName = decodeFolderName(listResponse.getName());
+            } catch (CharacterCodingException e) {
+                Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                    "as defined by RFC 3501: " + listResponse.getName(), e);
+                // We currently just skip folders with malformed names.
+                continue;
+            }
+
+            if (mPathDelimiter == null) {
+                mPathDelimiter = listResponse.getHierarchyDelimiter();
+                mCombinedPrefix = null;
+            }
+
+            if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
+                mStoreConfig.setArchiveFolderName(decodedFolderName);
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, "Folder auto-configuration detected Archive folder: " + decodedFolderName);
                 }
-
-                if (mPathDelimiter == null) {
-                    mPathDelimiter = response.getString(2);
-                    mCombinedPrefix = null;
+            } else if (listResponse.hasAttribute("\\Drafts")) {
+                mStoreConfig.setDraftsFolderName(decodedFolderName);
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, "Folder auto-configuration detected Drafts folder: " + decodedFolderName);
                 }
-
-                ImapList attributes = response.getList(1);
-                for (int i = 0, count = attributes.size(); i < count; i++) {
-                    String attribute = attributes.getString(i);
-                    if (attribute.equals("\\Archive") || attribute.equals("\\All")) {
-                        mStoreConfig.setArchiveFolderName(decodedFolderName);
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Folder auto-configuration detected Archive folder: " + decodedFolderName);
-                        }
-                    } else if (attribute.equals("\\Drafts")) {
-                        mStoreConfig.setDraftsFolderName(decodedFolderName);
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Folder auto-configuration detected Drafts folder: " + decodedFolderName);
-                        }
-                    } else if (attribute.equals("\\Sent")) {
-                        mStoreConfig.setSentFolderName(decodedFolderName);
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Folder auto-configuration detected Sent folder: " + decodedFolderName);
-                        }
-                    } else if (attribute.equals("\\Junk")) {
-                        mStoreConfig.setSpamFolderName(decodedFolderName);
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Folder auto-configuration detected Spam folder: " + decodedFolderName);
-                        }
-                    } else if (attribute.equals("\\Trash")) {
-                        mStoreConfig.setTrashFolderName(decodedFolderName);
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Folder auto-configuration detected Trash folder: " + decodedFolderName);
-                        }
-                    }
+            } else if (listResponse.hasAttribute("\\Sent")) {
+                mStoreConfig.setSentFolderName(decodedFolderName);
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, "Folder auto-configuration detected Sent folder: " + decodedFolderName);
+                }
+            } else if (listResponse.hasAttribute("\\Junk")) {
+                mStoreConfig.setSpamFolderName(decodedFolderName);
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, "Folder auto-configuration detected Spam folder: " + decodedFolderName);
+                }
+            } else if (listResponse.hasAttribute("\\Trash")) {
+                mStoreConfig.setTrashFolderName(decodedFolderName);
+                if (K9MailLib.isDebug()) {
+                    Log.d(LOG_TAG, "Folder auto-configuration detected Trash folder: " + decodedFolderName);
                 }
             }
         }
