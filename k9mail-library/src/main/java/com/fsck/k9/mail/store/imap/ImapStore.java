@@ -8,6 +8,8 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -24,7 +26,6 @@ import com.beetstra.jutf7.CharsetProvider;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
@@ -107,7 +108,7 @@ public class ImapStore extends RemoteStore {
     }
 
     @Override
-    public Folder getFolder(String name) {
+    public ImapFolder getFolder(String name) {
         ImapFolder folder;
         synchronized (folderCache) {
             folder = folderCache.get(name);
@@ -141,27 +142,21 @@ public class ImapStore extends RemoteStore {
     }
 
     @Override
-    public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List<ImapFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         ImapConnection connection = getConnection();
 
         try {
-            List<? extends Folder> allFolders = listFolders(connection, false);
+            Set<String> folderNames = listFolders(connection, false);
+
             if (forceListAll || !mStoreConfig.subscribedFoldersOnly()) {
-                return allFolders;
-            } else {
-                List<Folder> resultFolders = new LinkedList<>();
-                Set<String> subscribedFolderNames = new HashSet<>();
-                List<? extends Folder> subscribedFolders = listFolders(connection, true);
-                for (Folder subscribedFolder : subscribedFolders) {
-                    subscribedFolderNames.add(subscribedFolder.getName());
-                }
-                for (Folder folder : allFolders) {
-                    if (subscribedFolderNames.contains(folder.getName())) {
-                        resultFolders.add(folder);
-                    }
-                }
-                return resultFolders;
+                return getFolders(folderNames);
             }
+
+            Set<String> subscribedFolders = listFolders(connection, true);
+
+            folderNames.retainAll(subscribedFolders);
+
+            return getFolders(folderNames);
         } catch (IOException | MessagingException ioe) {
             connection.close();
             throw new MessagingException("Unable to get folder list.", ioe);
@@ -170,11 +165,9 @@ public class ImapStore extends RemoteStore {
         }
     }
 
-    private List<? extends Folder> listFolders(ImapConnection connection, boolean subscribedOnly) throws IOException,
+    private Set<String> listFolders(ImapConnection connection, boolean subscribedOnly) throws IOException,
             MessagingException {
         String commandResponse = subscribedOnly ? "LSUB" : "LIST";
-
-        LinkedList<Folder> folders = new LinkedList<>();
 
         List<ImapResponse> responses =
                 connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
@@ -182,6 +175,8 @@ public class ImapStore extends RemoteStore {
 
         List<ListResponse> listResponses = (subscribedOnly) ?
                 ListResponse.parseLsub(responses) : ListResponse.parseList(responses);
+
+        Set<String> folderNames = new HashSet<>(listResponses.size());
 
         for (ListResponse listResponse : listResponses) {
             boolean includeFolder = true;
@@ -234,13 +229,13 @@ public class ImapStore extends RemoteStore {
             }
 
             if (includeFolder) {
-                folders.add(getFolder(folder));
+                folderNames.add(folder);
             }
         }
 
-        folders.add(getFolder(mStoreConfig.getInboxFolderName()));
-        return folders;
+        folderNames.add(mStoreConfig.getInboxFolderName());
 
+        return folderNames;
     }
 
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
@@ -348,6 +343,17 @@ public class ImapStore extends RemoteStore {
 
     ImapConnection createImapConnection() {
         return new ImapConnection(new StoreImapSettings(), mTrustedSocketFactory, connectivityManager);
+    }
+
+    private List<ImapFolder> getFolders(Collection<String> folderNames) {
+        List<ImapFolder> folders = new ArrayList<>(folderNames.size());
+
+        for (String folderName : folderNames) {
+            ImapFolder imapFolder = getFolder(folderName);
+            folders.add(imapFolder);
+        }
+
+        return folders;
     }
 
     String encodeFolderName(String name) {
