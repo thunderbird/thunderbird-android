@@ -4,6 +4,7 @@ package com.fsck.k9.mail.store.imap;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -39,6 +40,7 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
 class ImapFolder extends Folder<ImapMessage> {
+    private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
     private static final int MORE_MESSAGES_WINDOW_SIZE = 500;
     private static final int FETCH_WINDOW_SIZE = 100;
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
@@ -593,8 +595,8 @@ class ImapFolder extends Folder<ImapMessage> {
             return "";
         }
 
-        synchronized (ImapStore.RFC3501_DATE) {
-            return " SINCE " + ImapStore.RFC3501_DATE.format(earliestDate);
+        synchronized (RFC3501_DATE) {
+            return " SINCE " + RFC3501_DATE.format(earliestDate);
         }
     }
 
