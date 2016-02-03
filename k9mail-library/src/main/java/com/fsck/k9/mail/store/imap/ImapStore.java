@@ -178,7 +178,7 @@ public class ImapStore extends RemoteStore {
 
         List<ImapResponse> responses =
                 connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
-                        encodeString(getCombinedPrefix() + "*")));
+                        ImapUtility.encodeString(getCombinedPrefix() + "*")));
 
         List<ListResponse> listResponses = (subscribedOnly) ?
                 ListResponse.parseLsub(responses) : ListResponse.parseList(responses);
@@ -255,7 +255,7 @@ public class ImapStore extends RemoteStore {
             Log.d(LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
         }
 
-        String command = String.format("LIST (SPECIAL-USE) \"\" %s", encodeString(getCombinedPrefix() + "*"));
+        String command = String.format("LIST (SPECIAL-USE) \"\" %s", ImapUtility.encodeString(getCombinedPrefix() + "*"));
         List<ImapResponse> responses = connection.executeSimpleCommand(command);
 
         List<ListResponse> listResponses = ListResponse.parseList(responses);
@@ -348,24 +348,6 @@ public class ImapStore extends RemoteStore {
 
     ImapConnection createImapConnection() {
         return new ImapConnection(new StoreImapSettings(), mTrustedSocketFactory, connectivityManager);
-    }
-
-    /**
-     * Encode a string to be able to use it in an IMAP command.
-     *
-     * "A quoted string is a sequence of zero or more 7-bit characters,
-     *  excluding CR and LF, with double quote (<">) characters at each
-     *  end." - Section 4.3, RFC 3501
-     *
-     * Double quotes and backslash are escaped by prepending a backslash.
-     *
-     * @param str
-     *         The input string (only 7-bit characters allowed).
-     *
-     * @return The string encoded as quoted (IMAP) string.
-     */
-    static String encodeString(String str) {
-        return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     }
 
     String encodeFolderName(String name) {

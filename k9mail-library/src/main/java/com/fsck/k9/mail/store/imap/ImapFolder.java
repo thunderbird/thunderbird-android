@@ -133,7 +133,7 @@ class ImapFolder extends Folder<ImapMessage> {
         try {
             msgSeqUidMap.clear();
             String command = String.format("%s %s", mode == OPEN_MODE_RW ? "SELECT"
-                    : "EXAMINE", ImapStore.encodeString(store.encodeFolderName(getPrefixedName())));
+                    : "EXAMINE", ImapUtility.encodeString(store.encodeFolderName(getPrefixedName())));
 
             List<ImapResponse> responses = executeSimpleCommand(command);
 
@@ -253,7 +253,7 @@ class ImapFolder extends Folder<ImapMessage> {
      *
      * @param folderName
      *     The name of the folder encoded as quoted string.
-     *     See {@link ImapStore#encodeString}
+     *     See {@link ImapUtility#encodeString}
      *
      * @return
      *     {@code True}, if the folder exists. {@code False}, otherwise.
@@ -293,7 +293,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
         try {
             connection.executeSimpleCommand(String.format("STATUS %s (UIDVALIDITY)",
-                                            ImapStore.encodeString(store.encodeFolderName(getPrefixedName()))));
+                                            ImapUtility.encodeString(store.encodeFolderName(getPrefixedName()))));
             mExists = true;
             return true;
         } catch (NegativeImapResponseException ie) {
@@ -325,7 +325,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
         try {
             connection.executeSimpleCommand(String.format("CREATE %s",
-                                            ImapStore.encodeString(store.encodeFolderName(getPrefixedName()))));
+                                            ImapUtility.encodeString(store.encodeFolderName(getPrefixedName()))));
             return true;
         } catch (NegativeImapResponseException ie) {
             // We got a response, but it was not "OK"
@@ -375,7 +375,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
 
         try {
-            String remoteDestName = ImapStore.encodeString(store.encodeFolderName(iFolder.getPrefixedName()));
+            String remoteDestName = ImapUtility.encodeString(store.encodeFolderName(iFolder.getPrefixedName()));
 
             //TODO: Try to copy/move the messages first and only create the folder if the
             //      operation fails. This will save a roundtrip if the folder already exists.
@@ -474,7 +474,7 @@ class ImapFolder extends Folder<ImapMessage> {
             setFlags(messages, Collections.singleton(Flag.DELETED), true);
         } else {
             ImapFolder remoteTrashFolder = (ImapFolder)getStore().getFolder(trashFolderName);
-            String remoteTrashName = ImapStore.encodeString(store.encodeFolderName(remoteTrashFolder.getPrefixedName()));
+            String remoteTrashName = ImapUtility.encodeString(store.encodeFolderName(remoteTrashFolder.getPrefixedName()));
 
             if (!exists(remoteTrashName)) {
                 /*
@@ -1284,7 +1284,7 @@ class ImapFolder extends Folder<ImapMessage> {
             for (Message message : messages) {
                 mConnection.sendCommand(
                     String.format(Locale.US, "APPEND %s (%s) {%d}",
-                                  ImapStore.encodeString(store.encodeFolderName(getPrefixedName())),
+                                  ImapUtility.encodeString(store.encodeFolderName(getPrefixedName())),
                                   combineFlags(message.getFlags()),
                                   message.calculateSize()), false);
 
@@ -1374,7 +1374,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
             List<ImapResponse> responses =
                 executeSimpleCommand(
-                    String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapStore.encodeString(messageId)));
+                    String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapUtility.encodeString(messageId)));
             for (ImapResponse response1 : responses) {
                 if (response1.getTag() == null && ImapResponseParser.equalsIgnoreCase(response1.get(0), "SEARCH")
                         && response1.size() > 1) {
@@ -1599,7 +1599,7 @@ class ImapFolder extends Folder<ImapMessage> {
                         }
                     }
                 }
-                final String encodedQry = ImapStore.encodeString(queryString);
+                final String encodedQry = ImapUtility.encodeString(queryString);
                 if (store.getStoreConfig().isRemoteSearchFullText()) {
                     imapQuery += "TEXT " + encodedQry;
                 } else {
