@@ -1,5 +1,5 @@
-
 package com.fsck.k9.mail.store.imap;
+
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -22,21 +22,20 @@ import java.util.Set;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-import com.fsck.k9.mail.NetworkType;
+import com.beetstra.jutf7.CharsetProvider;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
-
-import com.beetstra.jutf7.CharsetProvider;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
@@ -48,19 +47,33 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
  * </pre>
  */
 public class ImapStore extends RemoteStore {
-    private Set<Flag> mPermanentFlagsIndex = EnumSet.noneOf(Flag.class);
-    private ConnectivityManager mConnectivityManager;
+    static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
 
-    private String mHost;
-    private int mPort;
-    private String mUsername;
-    private String mPassword;
-    private String mClientCertificateAlias;
-    private ConnectionSecurity mConnectionSecurity;
-    private AuthType mAuthType;
-    private String mPathPrefix;
-    private String mCombinedPrefix = null;
-    private String mPathDelimiter = null;
+
+    private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
+    private ConnectivityManager connectivityManager;
+
+    private String host;
+    private int port;
+    private String username;
+    private String password;
+    private String clientCertificateAlias;
+    private ConnectionSecurity connectionSecurity;
+    private AuthType authType;
+    private String pathPrefix;
+    private String combinedPrefix = null;
+    private String pathDelimiter = null;
+    private final Deque<ImapConnection> connections = new LinkedList<ImapConnection>();
+    private Charset modifiedUtf7Charset;
+
+    /**
+     * Cache of ImapFolder objects. ImapFolders are attached to a given folder on the server
+     * and as long as their associated connection remains open they are reusable between
+     * requests. This cache lets us make sure we always reuse, if possible, for a given
+     * folder name.
+     */
+    private final Map<String, ImapFolder> folderCache = new HashMap<String, ImapFolder>();
+
 
     public static ImapStoreSettings decodeUri(String uri) {
         return ImapStoreUriDecoder.decode(uri);
@@ -70,29 +83,8 @@ public class ImapStore extends RemoteStore {
         return ImapStoreUriCreator.create(server);
     }
 
-
-    protected static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
-
-    private final Deque<ImapConnection> mConnections =
-        new LinkedList<ImapConnection>();
-
-    /**
-     * Charset used for converting folder names to and from UTF-7 as defined by RFC 3501.
-     */
-    private Charset mModifiedUtf7Charset;
-
-    /**
-     * Cache of ImapFolder objects. ImapFolders are attached to a given folder on the server
-     * and as long as their associated connection remains open they are reusable between
-     * requests. This cache lets us make sure we always reuse, if possible, for a given
-     * folder name.
-     */
-    private final Map<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
-
-    public ImapStore(StoreConfig storeConfig,
-                     TrustedSocketFactory trustedSocketFactory,
-                     ConnectivityManager connectivityManager)
-            throws MessagingException {
+    public ImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
+            ConnectivityManager connectivityManager) throws MessagingException {
         super(storeConfig, trustedSocketFactory);
 
         ImapStoreSettings settings;
@@ -102,66 +94,69 @@ public class ImapStore extends RemoteStore {
             throw new MessagingException("Error while decoding store URI", e);
         }
 
-        mHost = settings.host;
-        mPort = settings.port;
+        host = settings.host;
+        port = settings.port;
 
-        mConnectionSecurity = settings.connectionSecurity;
-        mConnectivityManager = connectivityManager;
+        connectionSecurity = settings.connectionSecurity;
+        this.connectivityManager = connectivityManager;
 
-        mAuthType = settings.authenticationType;
-        mUsername = settings.username;
-        mPassword = settings.password;
-        mClientCertificateAlias = settings.clientCertificateAlias;
+        authType = settings.authenticationType;
+        username = settings.username;
+        password = settings.password;
+        clientCertificateAlias = settings.clientCertificateAlias;
 
-        // Make extra sure mPathPrefix is null if "auto-detect namespace" is configured
-        mPathPrefix = (settings.autoDetectNamespace) ? null : settings.pathPrefix;
+        // Make extra sure pathPrefix is null if "auto-detect namespace" is configured
+        pathPrefix = (settings.autoDetectNamespace) ? null : settings.pathPrefix;
 
-        mModifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
+        modifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
     }
 
     @Override
     public Folder getFolder(String name) {
         ImapFolder folder;
-        synchronized (mFolderCache) {
-            folder = mFolderCache.get(name);
+        synchronized (folderCache) {
+            folder = folderCache.get(name);
             if (folder == null) {
                 folder = new ImapFolder(this, name);
-                mFolderCache.put(name, folder);
+                folderCache.put(name, folder);
             }
         }
+
         return folder;
     }
 
     String getCombinedPrefix() {
-        if (mCombinedPrefix == null) {
-            if (mPathPrefix != null) {
-                String tmpPrefix = mPathPrefix.trim();
-                String tmpDelim = (mPathDelimiter != null ? mPathDelimiter.trim() : "");
+        if (combinedPrefix == null) {
+            if (pathPrefix != null) {
+                String tmpPrefix = pathPrefix.trim();
+                String tmpDelim = (pathDelimiter != null ? pathDelimiter.trim() : "");
                 if (tmpPrefix.endsWith(tmpDelim)) {
-                    mCombinedPrefix = tmpPrefix;
+                    combinedPrefix = tmpPrefix;
                 } else if (tmpPrefix.length() > 0) {
-                    mCombinedPrefix = tmpPrefix + tmpDelim;
+                    combinedPrefix = tmpPrefix + tmpDelim;
                 } else {
-                    mCombinedPrefix = "";
+                    combinedPrefix = "";
                 }
             } else {
-                mCombinedPrefix = "";
+                combinedPrefix = "";
             }
         }
-        return mCombinedPrefix;
+
+        return combinedPrefix;
     }
 
     @Override
-    public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         ImapConnection connection = getConnection();
+
         try {
-            List <? extends Folder > allFolders = listFolders(connection, false);
+            List<? extends Folder> allFolders = listFolders(connection, false);
             if (forceListAll || !mStoreConfig.subscribedFoldersOnly()) {
                 return allFolders;
             } else {
-                List<Folder> resultFolders = new LinkedList<Folder>();
-                Set<String> subscribedFolderNames = new HashSet<String>();
-                List <? extends Folder > subscribedFolders = listFolders(connection, true);
+                List<Folder> resultFolders = new LinkedList<>();
+                Set<String> subscribedFolderNames = new HashSet<>();
+                List<? extends Folder> subscribedFolders = listFolders(connection, true);
                 for (Folder subscribedFolder : subscribedFolders) {
                     subscribedFolderNames.add(subscribedFolder.getName());
                 }
@@ -172,28 +167,25 @@ public class ImapStore extends RemoteStore {
                 }
                 return resultFolders;
             }
-        } catch (IOException ioe) {
+        } catch (IOException | MessagingException ioe) {
             connection.close();
             throw new MessagingException("Unable to get folder list.", ioe);
-        } catch (MessagingException me) {
-            connection.close();
-            throw new MessagingException("Unable to get folder list.", me);
         } finally {
             releaseConnection(connection);
         }
     }
 
+    private List<? extends Folder> listFolders(ImapConnection connection, boolean subscribedOnly) throws IOException,
+            MessagingException {
+        String commandResponse = subscribedOnly ? "LSUB" : "LIST";
 
-    private List <? extends Folder > listFolders(ImapConnection connection, boolean LSUB) throws IOException, MessagingException {
-        String commandResponse = LSUB ? "LSUB" : "LIST";
-
-        LinkedList<Folder> folders = new LinkedList<Folder>();
+        LinkedList<Folder> folders = new LinkedList<>();
 
         List<ImapResponse> responses =
-            connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
-                                            encodeString(getCombinedPrefix() + "*")));
+                connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
+                        encodeString(getCombinedPrefix() + "*")));
 
-        List<ListResponse> listResponses = (LSUB) ?
+        List<ListResponse> listResponses = (subscribedOnly) ?
                 ListResponse.parseLsub(responses) : ListResponse.parseList(responses);
 
         for (ListResponse listResponse : listResponses) {
@@ -204,7 +196,7 @@ public class ImapStore extends RemoteStore {
                 decodedFolderName = decodeFolderName(listResponse.getName());
             } catch (CharacterCodingException e) {
                 Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
-                      "as defined by RFC 3501: " + listResponse.getName(), e);
+                        "as defined by RFC 3501: " + listResponse.getName(), e);
 
                 //TODO: Use the raw name returned by the server for all commands that require
                 //      a folder name. Use the decoded name only for showing it to the user.
@@ -215,9 +207,9 @@ public class ImapStore extends RemoteStore {
 
             String folder = decodedFolderName;
 
-            if (mPathDelimiter == null) {
-                mPathDelimiter = listResponse.getHierarchyDelimiter();
-                mCombinedPrefix = null;
+            if (pathDelimiter == null) {
+                pathDelimiter = listResponse.getHierarchyDelimiter();
+                combinedPrefix = null;
             }
 
             if (folder.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
@@ -256,16 +248,6 @@ public class ImapStore extends RemoteStore {
 
     }
 
-    /**
-     * Attempt to auto-configure folders by attributes if the server advertises that capability.
-     *
-     * The parsing here is essentially the same as
-     * {@link #listFolders(ImapConnection, boolean)}; we should try to consolidate
-     * this at some point. :(
-     * @param connection IMAP Connection
-     * @throws IOException uh oh!
-     * @throws MessagingException uh oh!
-     */
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
         if (!connection.hasCapability(Capabilities.SPECIAL_USE)) {
             if (K9MailLib.isDebug()) {
@@ -289,14 +271,14 @@ public class ImapStore extends RemoteStore {
                 decodedFolderName = decodeFolderName(listResponse.getName());
             } catch (CharacterCodingException e) {
                 Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
-                    "as defined by RFC 3501: " + listResponse.getName(), e);
+                        "as defined by RFC 3501: " + listResponse.getName(), e);
                 // We currently just skip folders with malformed names.
                 continue;
             }
 
-            if (mPathDelimiter == null) {
-                mPathDelimiter = listResponse.getHierarchyDelimiter();
-                mCombinedPrefix = null;
+            if (pathDelimiter == null) {
+                pathDelimiter = listResponse.getHierarchyDelimiter();
+                combinedPrefix = null;
             }
 
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
@@ -342,9 +324,9 @@ public class ImapStore extends RemoteStore {
     }
 
     ImapConnection getConnection() throws MessagingException {
-        synchronized (mConnections) {
+        synchronized (connections) {
             ImapConnection connection;
-            while ((connection = mConnections.poll()) != null) {
+            while ((connection = connections.poll()) != null) {
                 try {
                     connection.executeSimpleCommand(Commands.NOOP);
                     break;
@@ -352,23 +334,25 @@ public class ImapStore extends RemoteStore {
                     connection.close();
                 }
             }
+
             if (connection == null) {
                 connection = createImapConnection();
             }
+
             return connection;
         }
     }
 
     void releaseConnection(ImapConnection connection) {
         if (connection != null && connection.isOpen()) {
-            synchronized (mConnections) {
-                mConnections.offer(connection);
+            synchronized (connections) {
+                connections.offer(connection);
             }
         }
     }
 
     ImapConnection createImapConnection() {
-        return new ImapConnection(new StoreImapSettings(), mTrustedSocketFactory, mConnectivityManager);
+        return new ImapConnection(new StoreImapSettings(), mTrustedSocketFactory, connectivityManager);
     }
 
     /**
@@ -381,18 +365,19 @@ public class ImapStore extends RemoteStore {
      * Double quotes and backslash are escaped by prepending a backslash.
      *
      * @param str
-     *     The input string (only 7-bit characters allowed).
-     * @return
-     *     The string encoded as quoted (IMAP) string.
+     *         The input string (only 7-bit characters allowed).
+     *
+     * @return The string encoded as quoted (IMAP) string.
      */
     static String encodeString(String str) {
         return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     }
 
     String encodeFolderName(String name) {
-        ByteBuffer bb = mModifiedUtf7Charset.encode(name);
+        ByteBuffer bb = modifiedUtf7Charset.encode(name);
         byte[] b = new byte[bb.limit()];
         bb.get(b);
+
         return new String(b, Charset.forName("US-ASCII"));
     }
 
@@ -402,10 +387,10 @@ public class ImapStore extends RemoteStore {
          * decoder and return the Unicode String.
          */
         // Make sure the decoder throws an exception if it encounters an invalid encoding.
-        CharsetDecoder decoder = mModifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
+        CharsetDecoder decoder = modifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
         CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes(Charset.forName("US-ASCII"))));
-        return cb.toString();
 
+        return cb.toString();
     }
 
     @Override
@@ -417,10 +402,12 @@ public class ImapStore extends RemoteStore {
     public boolean isCopyCapable() {
         return true;
     }
+
     @Override
     public boolean isPushCapable() {
         return true;
     }
+
     @Override
     public boolean isExpungeCapable() {
         return true;
@@ -431,7 +418,7 @@ public class ImapStore extends RemoteStore {
     }
 
     Set<Flag> getPermanentFlagsIndex() {
-        return mPermanentFlagsIndex;
+        return permanentFlagsIndex;
     }
 
     @Override
@@ -439,40 +426,41 @@ public class ImapStore extends RemoteStore {
         return new ImapPusher(this, receiver);
     }
 
+
     private class StoreImapSettings implements ImapSettings {
         @Override
         public String getHost() {
-            return mHost;
+            return host;
         }
 
         @Override
         public int getPort() {
-            return mPort;
+            return port;
         }
 
         @Override
         public ConnectionSecurity getConnectionSecurity() {
-            return mConnectionSecurity;
+            return connectionSecurity;
         }
 
         @Override
         public AuthType getAuthType() {
-            return mAuthType;
+            return authType;
         }
 
         @Override
         public String getUsername() {
-            return mUsername;
+            return username;
         }
 
         @Override
         public String getPassword() {
-            return mPassword;
+            return password;
         }
 
         @Override
         public String getClientCertificateAlias() {
-            return mClientCertificateAlias;
+            return clientCertificateAlias;
         }
 
         @Override
@@ -482,32 +470,32 @@ public class ImapStore extends RemoteStore {
 
         @Override
         public String getPathPrefix() {
-            return mPathPrefix;
+            return pathPrefix;
         }
 
         @Override
         public void setPathPrefix(String prefix) {
-            mPathPrefix = prefix;
+            pathPrefix = prefix;
         }
 
         @Override
         public String getPathDelimiter() {
-            return mPathDelimiter;
+            return pathDelimiter;
         }
 
         @Override
         public void setPathDelimiter(String delimiter) {
-            mPathDelimiter = delimiter;
+            pathDelimiter = delimiter;
         }
 
         @Override
         public String getCombinedPrefix() {
-            return mCombinedPrefix;
+            return combinedPrefix;
         }
 
         @Override
         public void setCombinedPrefix(String prefix) {
-            mCombinedPrefix = prefix;
+            combinedPrefix = prefix;
         }
     }
 }
