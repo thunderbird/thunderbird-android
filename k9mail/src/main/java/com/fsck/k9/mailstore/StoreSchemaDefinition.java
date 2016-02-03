@@ -684,8 +684,11 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             Log.d(K9.LOG_TAG, "attachment is in local cache");
         }
 
+        boolean hasContentTypeAndIsInline = !TextUtils.isEmpty(contentId) && "inline".equalsIgnoreCase(contentDisposition);
+        int messageType = hasContentTypeAndIsInline ? MessagePartType.HIDDEN_ATTACHMENT : MessagePartType.UNKNOWN;
+
         ContentValues cv = new ContentValues();
-        cv.put("type", MessagePartType.UNKNOWN);
+        cv.put("type", messageType);
         cv.put("mime_type", mimeType);
         cv.put("decoded_body_size", size);
         cv.put("display_name", name);
