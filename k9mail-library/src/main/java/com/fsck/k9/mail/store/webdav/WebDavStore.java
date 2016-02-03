@@ -50,6 +50,9 @@ import java.util.zip.GZIPInputStream;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_WEBDAV;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
+
 
 /**
  * <pre>

@@ -38,6 +38,9 @@ import java.util.Set;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
+
 
 public class Pop3Store extends RemoteStore {
 
