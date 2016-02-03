@@ -157,49 +157,51 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
      */
     private static class MimeStructureState {
         final Long rootPartId;
+        final Long prevParentId;
         final long parentId;
         final int nextOrder;
 
         // just some state to make sure all operations are called in order
         boolean isValuesApplied, isStateAdvanced;
 
-        private MimeStructureState(Long rootPartId, long parentId, int nextOrder) {
+        private MimeStructureState(Long rootPartId, Long prevParentId, long parentId, int nextOrder) {
             this.rootPartId = rootPartId;
+            this.prevParentId = prevParentId;
             this.parentId = parentId;
             this.nextOrder = nextOrder;
         }
 
         public static MimeStructureState getNewRootState() {
-            return new MimeStructureState(null, -1, 0);
+            return new MimeStructureState(null, null, -1, 0);
         }
 
         private MimeStructureState nextChild(long newPartId) {
             if (!isValuesApplied || isStateAdvanced) {
-                throw new IllegalStateException();
+                throw new IllegalStateException("next* methods must only be called once");
             }
             isStateAdvanced = true;
 
             if (rootPartId == null) {
-                return new MimeStructureState(newPartId, -1, nextOrder+1);
+                return new MimeStructureState(newPartId, null, -1, nextOrder+1);
             }
-            return new MimeStructureState(rootPartId, parentId, nextOrder+1);
+            return new MimeStructureState(rootPartId, prevParentId, parentId, nextOrder+1);
         }
 
         private MimeStructureState nextMultipartChild(long newPartId) {
             if (!isValuesApplied || isStateAdvanced) {
-                throw new IllegalStateException();
+                throw new IllegalStateException("next* methods must only be called once");
             }
             isStateAdvanced = true;
 
             if (rootPartId == null) {
-                return new MimeStructureState(newPartId, newPartId, nextOrder+1);
+                return new MimeStructureState(newPartId, parentId, newPartId, nextOrder+1);
             }
-            return new MimeStructureState(rootPartId, newPartId, nextOrder+1);
+            return new MimeStructureState(rootPartId, parentId, newPartId, nextOrder+1);
         }
 
         public void applyValues(ContentValues cv) {
             if (isValuesApplied || isStateAdvanced) {
-                throw new IllegalStateException();
+                throw new IllegalStateException("applyValues must be called exactly once, after a call to next*");
             }
             isValuesApplied = true;
 
@@ -208,6 +210,13 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             }
             cv.put("parent", parentId);
             cv.put("seq", nextOrder);
+        }
+
+        public MimeStructureState popParent() {
+            if (prevParentId == null) {
+                throw new IllegalStateException("popParent must only be called if parent depth is >= 2");
+            }
+            return new MimeStructureState(rootPartId, null, prevParentId, nextOrder);
         }
     }
 
@@ -536,6 +545,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
         if (textContent != null && htmlContent != null) {
             structureState = insertBodyAsMultipartAlternative(db, structureState, null, textContent, htmlContent);
+            structureState = structureState.popParent();
         } else if (textContent != null) {
             structureState = insertTextualPartIntoDatabase(db, structureState, null, textContent, false);
         } else if (htmlContent != null) {
