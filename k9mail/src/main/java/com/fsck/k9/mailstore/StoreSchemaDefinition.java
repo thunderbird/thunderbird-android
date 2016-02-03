@@ -28,6 +28,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LocalFolder.MessagePartType;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
@@ -249,6 +250,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 new String[] { "id", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
                 null, null, null, null, null);
         try {
+            Log.d(K9.LOG_TAG, "migrating " + msgCursor.getCount() + " messages");
             ContentValues cv = new ContentValues();
             while (msgCursor.moveToNext()) {
                 long messageId = msgCursor.getLong(0);
@@ -466,12 +468,17 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 return null;
             }
 
+            String boundary = MimeUtility.getHeaderParameter(mimeHeader.getFirstHeader("Content-Type"), "boundary");
+            if (TextUtils.isEmpty(boundary)) {
+                boundary = MimeUtil.createUniqueBoundary();
+            }
+
             ContentValues cv = new ContentValues();
             cv.put("type", MessagePartType.UNKNOWN);
             cv.put("data_location", DataLocation.IN_DATABASE);
             cv.put("mime_type", "multipart/encrypted");
             cv.put("header", mimeHeader.toString());
-            cv.put("boundary", MimeUtil.createUniqueBoundary());
+            cv.put("boundary", boundary);
             structureState.applyValues(cv);
 
             long rootMessagePartId = db.insertOrThrow("message_parts", null, cv);
@@ -506,12 +513,18 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             MimeHeader mimeHeader, MimeStructureState structureState) throws IOException {
         Log.d(K9.LOG_TAG, "Processing mail with complex data structure as multipart/mixed");
 
+        String boundary = MimeUtility.getHeaderParameter(
+                mimeHeader.getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
+        if (TextUtils.isEmpty(boundary)) {
+            boundary = MimeUtil.createUniqueBoundary();
+        }
+
         ContentValues cv = new ContentValues();
         cv.put("type", MessagePartType.UNKNOWN);
         cv.put("data_location", DataLocation.IN_DATABASE);
         cv.put("mime_type", "multipart/mixed");
         cv.put("header", mimeHeader.toString());
-        cv.put("boundary", MimeUtil.createUniqueBoundary());
+        cv.put("boundary", boundary);
         structureState.applyValues(cv);
 
         long rootMessagePartId = db.insertOrThrow("message_parts", null, cv);
@@ -711,7 +724,13 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         if (mimeHeader == null) {
             mimeHeader = new MimeHeader();
         }
-        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "multipart/alternative");
+        String boundary = MimeUtility.getHeaderParameter(
+                mimeHeader.getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
+        if (TextUtils.isEmpty(boundary)) {
+            boundary = MimeUtil.createUniqueBoundary();
+        }
+        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                String.format("multipart/alternative; boundary=\"%s\";", boundary));
         mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, MimeUtil.ENC_QUOTED_PRINTABLE);
 
         ContentValues cv = new ContentValues();
@@ -719,7 +738,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         cv.put("data_location", DataLocation.IN_DATABASE);
         cv.put("mime_type", "multipart/alternative");
         cv.put("header", mimeHeader.toString());
-        cv.put("boundary", MimeUtil.createUniqueBoundary());
+        cv.put("boundary", boundary);
         structureState.applyValues(cv);
 
         long multipartAlternativePartId = db.insertOrThrow("message_parts", null, cv);
