@@ -277,6 +277,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                     boolean messageHadSpecialFormat = false;
 
+                    // we do not rely on the protocol parameter here but guess by the multipart structure
                     boolean isMaybePgpMimeEncrypted = attachmentCount >= 2
                             && MimeUtil.isSameMimeType(mimeType, "multipart/encrypted");
                     if (isMaybePgpMimeEncrypted) {
@@ -443,7 +444,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                     "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
 
             if (cursor.getCount() < 2) {
-                Log.e(K9.LOG_TAG, "Found multipart/encrypted but not enough attaachments, handling as regular mail");
+                Log.e(K9.LOG_TAG, "Found multipart/encrypted but not enough attachments, handling as regular mail");
                 return null;
             }
 
@@ -458,7 +459,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
             if (!MimeUtil.isSameMimeType(firstPartMimeType, "application/pgp-encrypted")) {
                 Log.e(K9.LOG_TAG,
-                        "First part in multipart/encrypted wasn't application/pgp-encrypted, handling as regular mail");
+                        "First part in multipart/encrypted wasn't application/pgp-encrypted, not handling as pgp/mime");
                 return null;
             }
 
@@ -473,11 +474,12 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
             if (!MimeUtil.isSameMimeType(secondPartMimeType, "application/octet-stream")) {
                 Log.e(K9.LOG_TAG,
-                        "First part in multipart/encrypted wasn't application/octet-stream, handling as regular mail");
+                        "First part in multipart/encrypted wasn't application/octet-stream, not handling as pgp/mime");
                 return null;
             }
 
-            String boundary = MimeUtility.getHeaderParameter(mimeHeader.getFirstHeader("Content-Type"), "boundary");
+            String boundary = MimeUtility.getHeaderParameter(
+                    mimeHeader.getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
             if (TextUtils.isEmpty(boundary)) {
                 boundary = MimeUtil.createUniqueBoundary();
             }
