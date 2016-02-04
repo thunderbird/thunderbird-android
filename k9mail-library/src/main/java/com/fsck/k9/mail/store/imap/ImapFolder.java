@@ -61,7 +61,7 @@ class ImapFolder extends Folder<ImapMessage> {
         this.mName = name;
     }
 
-    public String getPrefixedName() throws MessagingException {
+    private String getPrefixedName() throws MessagingException {
         String prefixedName = "";
         if (!store.getStoreConfig().getInboxFolderName().equalsIgnoreCase(mName)) {
             ImapConnection connection;
@@ -89,7 +89,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return prefixedName;
     }
 
-    protected List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException {
+    private List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException {
         return handleUntaggedResponses(mConnection.executeSimpleCommand(command));
     }
 
@@ -107,7 +107,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    public List<ImapResponse> internalOpen(int mode) throws MessagingException {
+    protected List<ImapResponse> internalOpen(int mode) throws MessagingException {
         if (isOpen() && mMode == mode) {
             // Make sure the connection is valid. If it's not we'll close it down and continue
             // on to get a new one.
@@ -671,7 +671,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return search(searcher, listener);
     }
 
-    protected List<ImapMessage> search(ImapSearcher searcher, MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
+    private List<ImapMessage> search(ImapSearcher searcher, MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
         checkOpen(); //only need READ access
         List<ImapMessage> messages = new ArrayList<ImapMessage>();
         try {
@@ -1028,7 +1028,7 @@ class ImapFolder extends Folder<ImapMessage> {
     /**
      * Handle any untagged responses that the caller doesn't care to handle themselves.
      */
-    protected List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
+    private List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
         for (ImapResponse response : responses) {
             handleUntaggedResponse(response);
         }
@@ -1502,7 +1502,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return getName().hashCode();
     }
 
-    protected ImapStore getStore() {
+    private ImapStore getStore() {
         return store;
     }
 
