@@ -65,14 +65,23 @@ public class ComposeCryptoStatus {
                 return CryptoStatusDisplayType.OPPORTUNISTIC_NOKEY;
             case SIGN_ONLY:
                 return CryptoStatusDisplayType.SIGN_ONLY;
-            default:
             case DISABLE:
                 return CryptoStatusDisplayType.DISABLED;
+            case ERROR:
+                return CryptoStatusDisplayType.ERROR;
+            default:
+            case UNINITIALIZED:
+                return CryptoStatusDisplayType.UNINITIALIZED;
         }
     }
 
+    public boolean isPgpErrorState() {
+        return cryptoMode == CryptoMode.ERROR;
+    }
+
     public boolean shouldUsePgpMessageBuilder() {
-        return cryptoMode != CryptoMode.DISABLE;
+        return cryptoMode == CryptoMode.PRIVATE || cryptoMode == CryptoMode.OPPORTUNISTIC
+                || cryptoMode == CryptoMode.SIGN_ONLY;
     }
 
     public boolean isEncryptionEnabled() {
@@ -129,7 +138,7 @@ public class ComposeCryptoStatus {
 
             ArrayList<String> keyReferences = new ArrayList<>();
             boolean allKeysAvailable = true;
-            boolean allKeysVerified = true;
+            boolean allKeysVerified = !recipients.isEmpty();
             for (Recipient recipient : recipients) {
                 RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
                 if (cryptoStatus.isAvailable()) {

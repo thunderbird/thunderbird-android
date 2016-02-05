@@ -109,8 +109,11 @@ import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
+import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
+import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
+
 
 @SuppressWarnings("deprecation")
 public class MessageCompose extends K9Activity implements OnClickListener,
@@ -695,7 +698,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 //            attachKeyCheckBox = (CheckBox) findViewById(R.id.cb_attach_key);
 //            attachKeyCheckBox.setEnabled(mAccount.getCryptoKey() != 0);
 
-            mOpenPgpServiceConnection = new OpenPgpServiceConnection(this, mOpenPgpProvider);
+            mOpenPgpServiceConnection = new OpenPgpServiceConnection(this, mOpenPgpProvider, new OnBound() {
+                @Override
+                public void onBound(IOpenPgpService2 service) {
+                    recipientPresenter.onCryptoProviderBound();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    recipientPresenter.onCryptoProviderError(e);
+                }
+            });
             mOpenPgpServiceConnection.bindToService();
 
             updateMessageFormat();
@@ -1320,16 +1333,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-        if (data == null) {
+        if ((requestCode & REQUEST_MASK_RECIPIENT_PRESENTER) == REQUEST_MASK_RECIPIENT_PRESENTER) {
+            requestCode ^= REQUEST_MASK_RECIPIENT_PRESENTER;
+            recipientPresenter.onActivityResult(resultCode, requestCode, data);
             return;
         }
 
-        if ((requestCode & REQUEST_MASK_RECIPIENT_PRESENTER) == REQUEST_MASK_RECIPIENT_PRESENTER) {
-            requestCode ^= REQUEST_MASK_RECIPIENT_PRESENTER;
-            recipientPresenter.onActivityResult(requestCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        if (data == null) {
             return;
         }
 
@@ -3015,4 +3029,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
+    public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
+        requestCode |= REQUEST_MASK_RECIPIENT_PRESENTER;
+        try {
+            startIntentSenderForResult(pendingIntent.getIntentSender(), requestCode, null, 0, 0, 0);
+        } catch (SendIntentException e) {
+            e.printStackTrace();
+        }
+    }
 }

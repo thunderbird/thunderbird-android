@@ -66,6 +66,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:src="@drawable/status_lock_error"
+                android:tint="@color/openpgp_red"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:src="@drawable/status_lock_open"
                 android:tint="@color/openpgp_red"
                 />
@@ -74,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/status_lock_error"
+                android:src="@drawable/status_lock_opportunistic"
                 android:tint="@color/openpgp_orange"
                 />
 
