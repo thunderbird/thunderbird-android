@@ -9,7 +9,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Set;
 
 import android.annotation.SuppressLint;
 import android.net.ConnectivityManager;
@@ -31,7 +30,6 @@ import okio.ByteString;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.util.collections.Sets;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
@@ -414,7 +412,7 @@ public class ImapConnectionTest {
         try {
             imapConnection.open();
             fail("Expected exception");
-        } catch (ImapException e) {
+        } catch (NegativeImapResponseException e) {
             assertThat(e.getMessage(), containsString("response: #2# [NO]"));
         }
 
@@ -568,18 +566,6 @@ public class ImapConnectionTest {
     }
 
     @Test
-    public void getCapabilities_afterOpen_shouldReturnCapabilities() throws Exception {
-        MockImapServer server = new MockImapServer();
-        ImapConnection imapConnection = simpleOpenWithCapabilities(server, "IDLE X-LIST");
-
-        Set<String> capabilities = imapConnection.getCapabilities();
-
-        assertEquals(Sets.newSet("IMAP4", "IMAP4REV1", "IDLE", "X-LIST"), capabilities);
-
-        server.shutdown();
-    }
-
-    @Test
     public void isIdleCapable_withoutIdleCapability() throws Exception {
         MockImapServer server = new MockImapServer();
         ImapConnection imapConnection = simpleOpen(server);
@@ -618,6 +604,7 @@ public class ImapConnectionTest {
 
         imapConnection.sendContinuation("DONE");
 
+        server.waitForInteractionToComplete();
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }

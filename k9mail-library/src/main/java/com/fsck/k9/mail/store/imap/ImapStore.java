@@ -513,12 +513,12 @@ public class ImapStore extends RemoteStore {
         String commandResponse;
         String commandOptions = "";
 
-        if (connection.getCapabilities().contains("XLIST")) {
+        if (connection.hasCapability(Capabilities.XLIST)) {
             if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration: Using XLIST.");
-            commandResponse = "XLIST";
-        } else if(connection.getCapabilities().contains("SPECIAL-USE")) {
+            commandResponse = Responses.XLIST;
+        } else if(connection.hasCapability(Capabilities.SPECIAL_USE)) {
             if (K9MailLib.isDebug()) Log.d(LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
-            commandResponse = "LIST";
+            commandResponse = Responses.LIST;
             commandOptions = " (SPECIAL-USE)";
         } else {
             if (K9MailLib.isDebug()) Log.d(LOG_TAG, "No detected folder auto-configuration methods.");
@@ -603,7 +603,7 @@ public class ImapStore extends RemoteStore {
             ImapConnection connection;
             while ((connection = mConnections.poll()) != null) {
                 try {
-                    connection.executeSimpleCommand("NOOP");
+                    connection.executeSimpleCommand(Commands.NOOP);
                     break;
                 } catch (IOException ioe) {
                     connection.close();
@@ -752,7 +752,7 @@ public class ImapStore extends RemoteStore {
                 // Make sure the connection is valid. If it's not we'll close it down and continue
                 // on to get a new one.
                 try {
-                    return executeSimpleCommand("NOOP");
+                    return executeSimpleCommand(Commands.NOOP);
                 } catch (IOException ioe) {
                     /* don't throw */ ioExceptionHandler(mConnection, ioe);
                 }
@@ -907,7 +907,7 @@ public class ImapStore extends RemoteStore {
                 return true;
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
-            } catch (ImapException ie) {
+            } catch (NegativeImapResponseException ie) {
                 // We got a response, but it was not "OK"
                 return false;
             }
@@ -936,7 +936,7 @@ public class ImapStore extends RemoteStore {
                                                 encodeString(encodeFolderName(getPrefixedName()))));
                 mExists = true;
                 return true;
-            } catch (ImapException ie) {
+            } catch (NegativeImapResponseException ie) {
                 // We got a response, but it was not "OK"
                 return false;
             } catch (IOException ioe) {
@@ -967,7 +967,7 @@ public class ImapStore extends RemoteStore {
                 connection.executeSimpleCommand(String.format("CREATE %s",
                                                 encodeString(encodeFolderName(getPrefixedName()))));
                 return true;
-            } catch (ImapException ie) {
+            } catch (NegativeImapResponseException ie) {
                 // We got a response, but it was not "OK"
                 return false;
             } catch (IOException ioe) {
@@ -2453,7 +2453,7 @@ public class ImapStore extends RemoteStore {
                                 doneSent.set(false);
 
                                 conn.setReadTimeout((mStoreConfig.getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
-                                executeSimpleCommand(ImapCommands.COMMAND_IDLE, false, ImapFolderPusher.this);
+                                executeSimpleCommand(Commands.IDLE, false, ImapFolderPusher.this);
                                 idling.set(false);
                                 delayTime.set(NORMAL_DELAY_TIME);
                                 idleFailureCount.set(0);
