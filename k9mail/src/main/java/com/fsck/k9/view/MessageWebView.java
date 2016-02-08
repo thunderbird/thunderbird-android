@@ -126,7 +126,7 @@ public class MessageWebView extends RigidWebView {
         content += "</head><body>" + text + "</body></html>";
 
         String sanitizedContent = HtmlSanitizer.sanitize(content);
-        loadDataWithBaseURL("http://", sanitizedContent, "text/html", "utf-8", null);
+        loadDataWithBaseURL("about:blank", sanitizedContent, "text/html", "utf-8", null);
         resumeTimers();
     }
 
