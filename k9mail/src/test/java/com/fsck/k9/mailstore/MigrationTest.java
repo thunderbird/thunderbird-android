@@ -11,7 +11,6 @@ import java.util.Collections;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -20,6 +19,7 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -39,7 +39,6 @@ import org.robolectric.shadows.ShadowSQLiteConnection;
 public class MigrationTest {
 
     Account account;
-    LocalStore localStore;
     File databaseFile;
     File attachmentDir;
 
@@ -158,13 +157,30 @@ public class MigrationTest {
         insertSimplePlaintextMessage(db);
         db.close();
 
-        localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("3");
+        FetchProfile fp = new FetchProfile();
+        fp.add(FetchProfile.Item.BODY);
+        localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
+
         Assert.assertEquals("text/plain", msg.getMimeType());
         Assert.assertEquals(2, msg.getId());
         Assert.assertEquals(13, msg.getHeaderNames().size());
         Assert.assertEquals(0, msg.getAttachmentCount());
+
+        Assert.assertEquals(1, msg.getHeader("User-Agent").length);
+        Assert.assertEquals("Mutt/1.5.24 (2015-08-30)", msg.getHeader("User-Agent")[0]);
+        Assert.assertEquals(1, msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE).length);
+        Assert.assertEquals("text/plain",
+                MimeUtility.getHeaderParameter(msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], null));
+        Assert.assertEquals("utf-8",
+                MimeUtility.getHeaderParameter(msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], "charset"));
+
+        Assert.assertTrue(msg.getBody() instanceof BinaryMemoryBody);
+
+        String msgTextContent = MessageExtractor.getTextFromPart(msg);
+        Assert.assertEquals("nothing special here.\r\n", msgTextContent);
     }
 
     private void insertMixedWithAttachments(SQLiteDatabase db) throws Exception {
@@ -204,7 +220,7 @@ public class MigrationTest {
         insertMixedWithAttachments(db);
         db.close();
 
-        localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("4");
         FetchProfile fp = new FetchProfile();
@@ -214,6 +230,11 @@ public class MigrationTest {
         Assert.assertEquals(3, msg.getId());
         Assert.assertEquals(8, msg.getHeaderNames().size());
         Assert.assertEquals("multipart/mixed", msg.getMimeType());
+        Assert.assertEquals(1, msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE).length);
+        Assert.assertEquals("multipart/mixed",
+                MimeUtility.getHeaderParameter(msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], null));
+        Assert.assertEquals("----5D6OUTIYLNN2X63O0R2M0V53TOUAQP",
+                MimeUtility.getHeaderParameter(msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], "boundary"));
         Assert.assertEquals(1, msg.getAttachmentCount());
 
         Multipart body = (Multipart) msg.getBody();
@@ -270,7 +291,7 @@ public class MigrationTest {
         insertPgpMimeSignedMessage(db);
         db.close();
 
-        localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("5");
         FetchProfile fp = new FetchProfile();
@@ -329,7 +350,7 @@ public class MigrationTest {
         insertPgpMimeEncryptedMessage(db);
         db.close();
 
-        localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("6");
         FetchProfile fp = new FetchProfile();
@@ -342,6 +363,11 @@ public class MigrationTest {
         Assert.assertEquals(2, msg.getAttachmentCount());
 
         Multipart body = (Multipart) msg.getBody();
+        Assert.assertEquals(1, msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE).length);
+        Assert.assertEquals("application/pgp-encrypted",
+                MimeUtility.getHeaderParameter(msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], "protocol"));
+        Assert.assertEquals("UoPmpPX/dBe4BELn",
+                MimeUtility.getHeaderParameter(msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], "boundary"));
         Assert.assertEquals("UoPmpPX/dBe4BELn", body.getBoundary());
         Assert.assertEquals(2, body.getCount());
 
@@ -442,7 +468,7 @@ public class MigrationTest {
         insertPgpInlineEncryptedMessage(db);
         db.close();
 
-        localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("7");
         FetchProfile fp = new FetchProfile();
@@ -529,7 +555,7 @@ public class MigrationTest {
         insertPgpInlineClearsignedMessage(db);
         db.close();
 
-        localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("8");
         FetchProfile fp = new FetchProfile();
@@ -587,7 +613,7 @@ public class MigrationTest {
         insertMultipartAlternativeMessage(db);
         db.close();
 
-        localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("9");
         FetchProfile fp = new FetchProfile();
@@ -652,7 +678,7 @@ public class MigrationTest {
         insertHtmlWithRelatedMessage(db);
         db.close();
 
-        localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("10");
         FetchProfile fp = new FetchProfile();

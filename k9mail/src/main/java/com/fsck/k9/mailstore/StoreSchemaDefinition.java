@@ -156,13 +156,15 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
      * here.
      */
     private static class MimeStructureState {
-        final Long rootPartId;
-        final Long prevParentId;
-        final long parentId;
-        final int nextOrder;
+        private final Long rootPartId;
+        private final Long prevParentId;
+        private final long parentId;
+        private final int nextOrder;
 
-        // just some state to make sure all operations are called in order
-        boolean isValuesApplied, isStateAdvanced;
+        // just some diagnostic state to make sure all operations are called in order
+        private boolean isValuesApplied;
+        private boolean isStateAdvanced;
+
 
         private MimeStructureState(Long rootPartId, Long prevParentId, long parentId, int nextOrder) {
             this.rootPartId = rootPartId;
@@ -248,12 +250,10 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         copyMessageMetadataToNewTable(db);
 
         File attachmentDirNew, attachmentDirOld;
-        {
-            Account account = localStore.getAccount();
-            attachmentDirNew = StorageManager.getInstance(K9.app).getAttachmentDirectory(
-                    account.getUuid(), account.getLocalStorageProviderId());
-            attachmentDirOld = renameOldAttachmentDirAndCreateNew(account, attachmentDirNew);
-        }
+        Account account = localStore.getAccount();
+        attachmentDirNew = StorageManager.getInstance(K9.app).getAttachmentDirectory(
+                account.getUuid(), account.getLocalStorageProviderId());
+        attachmentDirOld = renameOldAttachmentDirAndCreateNew(account, attachmentDirNew);
 
         Cursor msgCursor = db.query("messages_old",
                 new String[] { "id", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
@@ -278,7 +278,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                     boolean messageHadSpecialFormat = false;
 
                     // we do not rely on the protocol parameter here but guess by the multipart structure
-                    boolean isMaybePgpMimeEncrypted = attachmentCount >= 2
+                    boolean isMaybePgpMimeEncrypted = attachmentCount == 2
                             && MimeUtil.isSameMimeType(mimeType, "multipart/encrypted");
                     if (isMaybePgpMimeEncrypted) {
                         MimeStructureState maybeStructureState =
@@ -436,12 +436,15 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
         Cursor cursor = null;
         try {
+            // we only handle attachment count == 2 here, so simply sorting application/pgp-encrypted
+            // to the front (and application/octet-stream second) should suffice.
+            String orderBy = "(mime_type LIKE 'application/pgp-encrypted') DESC";
             cursor = db.query("attachments",
                     new String[] {
                             "id", "size", "name", "mime_type", "store_data",
                             "content_uri", "content_id", "content_disposition"
                     },
-                    "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
+                    "message_id = ?", new String[] { Long.toString(messageId) }, null, null, orderBy);
 
             if (cursor.getCount() < 2) {
                 Log.e(K9.LOG_TAG, "Found multipart/encrypted but not enough attachments, handling as regular mail");
@@ -483,6 +486,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             if (TextUtils.isEmpty(boundary)) {
                 boundary = MimeUtil.createUniqueBoundary();
             }
+            mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                    String.format("multipart/encrypted; boundary=\"%s\"; protocol=\"application/pgp-encrypted\"", boundary));
 
             ContentValues cv = new ContentValues();
             cv.put("type", MessagePartType.UNKNOWN);
@@ -529,6 +534,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         if (TextUtils.isEmpty(boundary)) {
             boundary = MimeUtil.createUniqueBoundary();
         }
+        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                String.format("multipart/mixed; boundary=\"%s\";", boundary));
 
         ContentValues cv = new ContentValues();
         cv.put("type", MessagePartType.UNKNOWN);
@@ -654,7 +661,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
 
         boolean hasData = contentUriString != null;
-        boolean hasDataWithChecks;
+        boolean isMatchingIdAndDataOnDisk;
         File attachmentFileToMove = null;
         if (hasData) {
             try {
@@ -665,7 +672,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                 File attachmentFile = new File(attachmentDirOld, attachmentId);
                 boolean isExistingAttachmentFile = attachmentFile.exists();
-                hasDataWithChecks = isMatchingAttachmentId && isExistingAttachmentFile;
+                isMatchingIdAndDataOnDisk = isMatchingAttachmentId && isExistingAttachmentFile;
 
                 if (!isMatchingAttachmentId) {
                     Log.e(K9.LOG_TAG, "mismatched attachment id. mark as missing");
@@ -677,13 +684,13 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 }
             } catch (Exception e) {
                 // anything here fails, conservatively assume the data doesn't exist
-                hasDataWithChecks = false;
+                isMatchingIdAndDataOnDisk = false;
             }
         } else {
-            hasDataWithChecks = false;
+            isMatchingIdAndDataOnDisk = false;
         }
-        if (K9.DEBUG && hasDataWithChecks) {
-            Log.d(K9.LOG_TAG, "attachment is in local cache");
+        if (K9.DEBUG && isMatchingIdAndDataOnDisk) {
+            Log.d(K9.LOG_TAG, "matching attachment is in local cache");
         }
 
         boolean hasContentTypeAndIsInline = !TextUtils.isEmpty(contentId) && "inline".equalsIgnoreCase(contentDisposition);
@@ -696,7 +703,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         cv.put("display_name", name);
         cv.put("header", mimeHeader.toString());
         cv.put("encoding", MimeUtil.ENC_BINARY);
-        cv.put("data_location", hasDataWithChecks ? DataLocation.ON_DISK : DataLocation.MISSING);
+        cv.put("data_location", isMatchingIdAndDataOnDisk ? DataLocation.ON_DISK : DataLocation.MISSING);
         cv.put("content_id", contentId);
         cv.put("server_extra", storeData);
         structureState.applyValues(cv);
@@ -746,7 +753,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
         mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                 String.format("multipart/alternative; boundary=\"%s\";", boundary));
-        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, MimeUtil.ENC_QUOTED_PRINTABLE);
 
         ContentValues cv = new ContentValues();
         cv.put("type", MessagePartType.UNKNOWN);
@@ -775,7 +781,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         if (mimeHeader == null) {
             mimeHeader = new MimeHeader();
         }
-        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE, isHtml ? "text/html" : "text/plain");
+        mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                isHtml ? "text/html; charset=\"utf-8\"" : "text/plain; charset=\"utf-8\"");
         mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, MimeUtil.ENC_QUOTED_PRINTABLE);
 
         ByteArrayOutputStream contentOutputStream = new ByteArrayOutputStream();
@@ -793,6 +800,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         cv.put("data", contentBytes);
         cv.put("decoded_body_size", content.length());
         cv.put("encoding", MimeUtil.ENC_QUOTED_PRINTABLE);
+        cv.put("charset", "utf-8");
         structureState.applyValues(cv);
 
         long partId = db.insertOrThrow("message_parts", null, cv);
