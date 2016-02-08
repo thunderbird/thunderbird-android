@@ -439,20 +439,19 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
         Log.d(K9.LOG_TAG, "Attempting to migrate multipart/encrypted as pgp/mime");
 
-        Cursor cursor = null;
-        try {
-            // we only handle attachment count == 2 here, so simply sorting application/pgp-encrypted
-            // to the front (and application/octet-stream second) should suffice.
-            String orderBy = "(mime_type LIKE 'application/pgp-encrypted') DESC";
-            cursor = db.query("attachments",
-                    new String[] {
-                            "id", "size", "name", "mime_type", "store_data",
-                            "content_uri", "content_id", "content_disposition"
-                    },
-                    "message_id = ?", new String[] { Long.toString(messageId) }, null, null, orderBy);
+        // we only handle attachment count == 2 here, so simply sorting application/pgp-encrypted
+        // to the front (and application/octet-stream second) should suffice.
+        String orderBy = "(mime_type LIKE 'application/pgp-encrypted') DESC";
+        Cursor cursor = db.query("attachments",
+                new String[] {
+                        "id", "size", "name", "mime_type", "store_data",
+                        "content_uri", "content_id", "content_disposition"
+                },
+                "message_id = ?", new String[] { Long.toString(messageId) }, null, null, orderBy);
 
-            if (cursor.getCount() < 2) {
-                Log.e(K9.LOG_TAG, "Found multipart/encrypted but not enough attachments, handling as regular mail");
+        try {
+            if (cursor.getCount() != 2) {
+                Log.e(K9.LOG_TAG, "Found multipart/encrypted but bad number of attachments, handling as regular mail");
                 return null;
             }
 
@@ -514,15 +513,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                     insertMimeAttachmentPart(db, attachmentDirOld, attachmentDirNew, structureState, secondPartId,
                             secondPartSize, secondPartName, "application/octet-stream", secondPartStoreData,
                             secondPartContentUriString, null, null);
-
-            while (cursor.moveToNext()) {
-                Log.e(K9.LOG_TAG, "Ignoring trailing part after multipart/encrypted data.");
-            }
-
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+            cursor.close();
         }
 
         return structureState;
@@ -584,9 +576,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 htmlContent = htmlContent.replaceAll(Pattern.quote(contentUriString), "cid:" + contentId);
             }
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+            cursor.close();
         }
 
         return htmlContent;
@@ -610,15 +600,14 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
     private static MimeStructureState insertAttachments(SQLiteDatabase db, File attachmentDirOld, File attachmentDirNew,
             long messageId, MimeStructureState structureState) {
-        Cursor cursor = null;
-        try {
-            cursor = db.query("attachments",
-                         new String[] {
-                             "id", "size", "name", "mime_type", "store_data",
-                                 "content_uri", "content_id", "content_disposition"
-                         },
-                    "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
+        Cursor cursor = db.query("attachments",
+                new String[] {
+                        "id", "size", "name", "mime_type", "store_data",
+                        "content_uri", "content_id", "content_disposition"
+                },
+                "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
 
+        try {
             while (cursor.moveToNext()) {
                 long id = cursor.getLong(0);
                 int size = cursor.getInt(1);
@@ -635,9 +624,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
             }
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+            cursor.close();
         }
 
         return structureState;
@@ -666,8 +653,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
 
         boolean hasData = contentUriString != null;
-        boolean isMatchingIdAndDataOnDisk;
-        File attachmentFileToMove = null;
+        File attachmentFileToMove;
         if (hasData) {
             try {
                 Uri contentUri = Uri.parse(contentUriString);
@@ -677,24 +663,24 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
                 File attachmentFile = new File(attachmentDirOld, attachmentId);
                 boolean isExistingAttachmentFile = attachmentFile.exists();
-                isMatchingIdAndDataOnDisk = isMatchingAttachmentId && isExistingAttachmentFile;
 
                 if (!isMatchingAttachmentId) {
                     Log.e(K9.LOG_TAG, "mismatched attachment id. mark as missing");
-                }
-                if (isExistingAttachmentFile) {
-                    attachmentFileToMove = attachmentFile;
-                } else {
+                    attachmentFileToMove = null;
+                } else if (!isExistingAttachmentFile) {
                     Log.e(K9.LOG_TAG, "attached file doesn't exist. mark as missing");
+                    attachmentFileToMove = null;
+                } else {
+                    attachmentFileToMove = attachmentFile;
                 }
             } catch (Exception e) {
                 // anything here fails, conservatively assume the data doesn't exist
-                isMatchingIdAndDataOnDisk = false;
+                attachmentFileToMove = null;
             }
         } else {
-            isMatchingIdAndDataOnDisk = false;
+            attachmentFileToMove = null;
         }
-        if (K9.DEBUG && isMatchingIdAndDataOnDisk) {
+        if (K9.DEBUG && attachmentFileToMove == null) {
             Log.d(K9.LOG_TAG, "matching attachment is in local cache");
         }
 
@@ -708,7 +694,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         cv.put("display_name", name);
         cv.put("header", mimeHeader.toString());
         cv.put("encoding", MimeUtil.ENC_BINARY);
-        cv.put("data_location", isMatchingIdAndDataOnDisk ? DataLocation.ON_DISK : DataLocation.MISSING);
+        cv.put("data_location", attachmentFileToMove != null ? DataLocation.ON_DISK : DataLocation.MISSING);
         cv.put("content_id", contentId);
         cv.put("server_extra", storeData);
         structureState.applyValues(cv);

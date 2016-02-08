@@ -188,7 +188,7 @@ public class MigrationTest {
                 "INSERT INTO messages VALUES(3,0,16,'4','mail with attach',1453380649000," +
                         "'X_GOT_ALL_HEADERS,X_DOWNLOADED_PARTIAL','look@my.amazin.horse;','valodim@mugenguild.com'," +
                         "'','','','<pre class=\"k9mail\">ooohh, an attachment!<br /></pre>','ooohh, an attachment!\n'," +
-                        "1,1453380654000,'<20160121125049.GB31046@littlepip>','ooohh, an attachment!'," +
+                        "2,1453380654000,'<20160121125049.GB31046@littlepip>','ooohh, an attachment!'," +
                         "'multipart/mixed',NULL,0,1,0,0,0)",
 
                 "INSERT INTO headers (message_id, name, value) VALUES (3,'Date','Thu, 21 Jan 2016 13:50:49 +0100')",
@@ -205,6 +205,9 @@ public class MigrationTest {
                 "INSERT INTO attachments VALUES(3,3,'2'," +
                         "'content://com.fsck.k9.attachmentprovider/" + account.getUuid() + "/3/RAW',2250," +
                         "'k9small.png','image/png',NULL,'attachment')",
+                "INSERT INTO attachments VALUES(4,3,'2'," +
+                        "'content://com.fsck.k9.attachmentprovider/" + account.getUuid() + "/5/RAW',2250," +
+                        "'baduri.png','application/whatevs',NULL,'attachment')",
         };
 
         for (String statement : statements) {
@@ -212,6 +215,7 @@ public class MigrationTest {
         }
 
         copyAttachmentFromFile("k9small.png", 3, 2250);
+        copyAttachmentFromFile("k9small.png", 5, 2250);
     }
 
     @Test
@@ -235,10 +239,10 @@ public class MigrationTest {
                 MimeUtility.getHeaderParameter(msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], null));
         Assert.assertEquals("----5D6OUTIYLNN2X63O0R2M0V53TOUAQP",
                 MimeUtility.getHeaderParameter(msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], "boundary"));
-        Assert.assertEquals(1, msg.getAttachmentCount());
+        Assert.assertEquals(2, msg.getAttachmentCount());
 
         Multipart body = (Multipart) msg.getBody();
-        Assert.assertEquals(2, body.getCount());
+        Assert.assertEquals(3, body.getCount());
 
         Assert.assertEquals("multipart/alternative", body.getBodyPart(0).getMimeType());
         LocalBodyPart attachmentPart = (LocalBodyPart) body.getBodyPart(1);
@@ -253,6 +257,9 @@ public class MigrationTest {
         FileBackedBody attachmentBody = (FileBackedBody) attachmentPart.getBody();
         Assert.assertEquals(2250, attachmentBody.getSize());
         Assert.assertEquals(MimeUtil.ENC_BINARY, attachmentBody.getEncoding());
+
+        Assert.assertEquals("application/whatevs", body.getBodyPart(2).getMimeType());
+        Assert.assertNull(body.getBodyPart(2).getBody());
     }
 
     private void insertPgpMimeSignedMessage(SQLiteDatabase db) {
@@ -276,8 +283,8 @@ public class MigrationTest {
 
                 "INSERT INTO threads VALUES(5,4,5,NULL)",
 
-                "INSERT INTO attachments VALUES(5,4,'2',NULL,836,'signature.asc','application/pgp-signature',NULL,'')",
-                "INSERT INTO attachments VALUES(4,4,'1.2',NULL,39456,'smirk.png','image/png',NULL,'attachment')",
+                "INSERT INTO attachments VALUES(6,4,'2',NULL,836,'signature.asc','application/pgp-signature',NULL,'')",
+                "INSERT INTO attachments VALUES(5,4,'1.2',NULL,39456,'smirk.png','image/png',NULL,'attachment')",
         };
 
         for (String statement : statements) {
