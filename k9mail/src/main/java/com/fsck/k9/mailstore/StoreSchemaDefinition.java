@@ -17,6 +17,7 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -155,7 +156,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
      * strictly linear, we do not require a more complex stack-based data structure
      * here.
      */
-    private static class MimeStructureState {
+    @VisibleForTesting
+    static class MimeStructureState {
         private final Long rootPartId;
         private final Long prevParentId;
         private final long parentId;
@@ -177,7 +179,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             return new MimeStructureState(null, null, -1, 0);
         }
 
-        private MimeStructureState nextChild(long newPartId) {
+        public MimeStructureState nextChild(long newPartId) {
             if (!isValuesApplied || isStateAdvanced) {
                 throw new IllegalStateException("next* methods must only be called once");
             }
@@ -189,7 +191,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             return new MimeStructureState(rootPartId, prevParentId, parentId, nextOrder+1);
         }
 
-        private MimeStructureState nextMultipartChild(long newPartId) {
+        public MimeStructureState nextMultipartChild(long newPartId) {
             if (!isValuesApplied || isStateAdvanced) {
                 throw new IllegalStateException("next* methods must only be called once");
             }
@@ -204,6 +206,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         public void applyValues(ContentValues cv) {
             if (isValuesApplied || isStateAdvanced) {
                 throw new IllegalStateException("applyValues must be called exactly once, after a call to next*");
+            }
+            if (rootPartId != null && parentId == -1L) {
+                throw new IllegalStateException("applyValues must not be called after a root nextChild call");
             }
             isValuesApplied = true;
 
