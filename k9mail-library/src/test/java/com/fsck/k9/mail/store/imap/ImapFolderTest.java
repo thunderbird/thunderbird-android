@@ -685,7 +685,7 @@ public class ImapFolderTest {
         when(imapConnection.executeSimpleCommand("UID SEARCH UID 11,22,25")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
-        List<? extends Message> messages = folder.getMessagesFromUids(asList("11", "22", "25"));
+        List<ImapMessage> messages = folder.getMessagesFromUids(asList("11", "22", "25"));
 
         assertNotNull(messages);
         assertEquals(newSet("11", "22", "25"), extractMessageUids(messages));
@@ -1071,7 +1071,7 @@ public class ImapFolderTest {
         }
     }
 
-    private Set<String> extractMessageUids(List<? extends Message> messages) {
+    private Set<String> extractMessageUids(List<ImapMessage> messages) {
         Set<String> result = new HashSet<>();
         for (Message message : messages) {
             result.add(message.getUid());

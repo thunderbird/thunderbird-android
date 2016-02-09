@@ -654,7 +654,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return search(searcher, listener);
     }
 
-    protected List<? extends Message> getMessagesFromUids(final List<String> mesgUids) throws MessagingException {
+    protected List<ImapMessage> getMessagesFromUids(final List<String> mesgUids) throws MessagingException {
         ImapSearcher searcher = new ImapSearcher() {
             @Override
             public List<ImapResponse> search() throws IOException, MessagingException {
