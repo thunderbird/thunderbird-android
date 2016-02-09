@@ -458,24 +458,34 @@ class ImapFolder extends Folder<ImapMessage> {
         return getRemoteMessageCount("FLAGGED NOT DELETED");
     }
 
-    protected long getHighestUid() {
+    protected long getHighestUid() throws MessagingException {
         try {
-            ImapSearcher searcher = new ImapSearcher() {
-                @Override
-                public List<ImapResponse> search() throws IOException, MessagingException {
-                    return executeSimpleCommand("UID SEARCH *:*");
-                }
-            };
+            String command = "UID SEARCH *:*";
+            List<ImapResponse> responses = executeSimpleCommand(command);
 
-            List<ImapMessage> messages = search(searcher, null);
-            if (messages.size() > 0) {
-                return Long.parseLong(messages.get(0).getUid());
-            }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Unable to find highest UID in folder " + getName(), e);
+            SearchResponse searchResponse = SearchResponse.parse(responses);
+
+            return extractHighestUid(searchResponse);
+        } catch (NegativeImapResponseException e) {
+            return -1L;
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
+    }
+
+    private long extractHighestUid(SearchResponse searchResponse) {
+        List<Long> uids = searchResponse.getNumbers();
+        if (uids.isEmpty()) {
+            return -1L;
         }
 
-        return -1L;
+        if (uids.size() == 1) {
+            return uids.get(0);
+        }
+
+        Collections.sort(uids, Collections.reverseOrder());
+
+        return uids.get(0);
     }
 
     @Override
@@ -606,16 +616,8 @@ class ImapFolder extends Folder<ImapMessage> {
         try {
             List<ImapResponse> responses = searcher.search();
 
-            List<Long> uids = new ArrayList<>();
-            for (ImapResponse response : responses) {
-                if (response.getTag() == null) {
-                    if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
-                        for (int i = 1, count = response.size(); i < count; i++) {
-                            uids.add(response.getLong(i));
-                        }
-                    }
-                }
-            }
+            SearchResponse searchResponse = SearchResponse.parse(responses);
+            List<Long> uids = searchResponse.getNumbers();
 
             // Sort the uids in numerically decreasing order
             // By doing it in decreasing order, we ensure newest messages are dealt with first
