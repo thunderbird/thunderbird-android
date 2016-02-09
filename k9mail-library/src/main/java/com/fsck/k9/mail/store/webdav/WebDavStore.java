@@ -1456,29 +1456,6 @@ public class WebDavStore extends RemoteStore {
             return indexOfOldestMessage > 1;
         }
 
-        private List<WebDavMessage> getMessages(String[] uids, MessageRetrievalListener<WebDavMessage> listener) throws MessagingException {
-            List<WebDavMessage> messageList = new ArrayList<WebDavMessage>();
-
-            if (uids == null ||
-                    uids.length == 0) {
-                return messageList;
-            }
-
-            for (int i = 0, count = uids.length; i < count; i++) {
-                if (listener != null) {
-                    listener.messageStarted(uids[i], i, count);
-                }
-
-                WebDavMessage message = new WebDavMessage(uids[i], this);
-                messageList.add(message);
-
-                if (listener != null) {
-                    listener.messageFinished(message, i, count);
-                }
-            }
-            return messageList;
-        }
-
         private Map<String, String> getMessageUrls(String[] uids) throws MessagingException {
             Map<String, String> headers = new HashMap<String, String>();
             String messageBody;

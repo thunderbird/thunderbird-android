@@ -645,50 +645,6 @@ class ImapFolder extends Folder<ImapMessage> {
         return messages;
     }
 
-    List<ImapMessage> getMessages(MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
-        return getMessages(null, listener);
-    }
-
-    private List<ImapMessage> getMessages(String[] uids, MessageRetrievalListener<ImapMessage> listener)
-            throws MessagingException {
-        checkOpen();
-
-        List<ImapMessage> messages = new ArrayList<>();
-        try {
-            if (uids == null) {
-                List<ImapResponse> responses = executeSimpleCommand("UID SEARCH 1:* NOT DELETED");
-
-                List<String> tempUids = new ArrayList<>();
-                for (ImapResponse response : responses) {
-                    if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
-                        for (int i = 1, count = response.size(); i < count; i++) {
-                            tempUids.add(response.getString(i));
-                        }
-                    }
-                }
-
-                uids = tempUids.toArray(new String[tempUids.size()]);
-            }
-
-            for (int i = 0, count = uids.length; i < count; i++) {
-                if (listener != null) {
-                    listener.messageStarted(uids[i], i, count);
-                }
-
-                ImapMessage message = new ImapMessage(uids[i], this);
-                messages.add(message);
-
-                if (listener != null) {
-                    listener.messageFinished(message, i, count);
-                }
-            }
-        } catch (IOException ioe) {
-            throw ioExceptionHandler(connection, ioe);
-        }
-
-        return messages;
-    }
-
     @Override
     public void fetch(List<ImapMessage> messages, FetchProfile fetchProfile,
             MessageRetrievalListener<ImapMessage> listener) throws MessagingException {

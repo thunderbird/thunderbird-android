@@ -742,51 +742,6 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void getMessages_shouldIssueUidSearchCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        folder.open(OPEN_MODE_RW);
-
-        folder.getMessages(null);
-
-        verify(imapConnection).executeSimpleCommand("UID SEARCH 1:* NOT DELETED");
-    }
-
-    @Test
-    public void getMessages_shouldReturnMessages() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        List<ImapResponse> imapResponses = asList(
-                createImapResponse("* SEARCH 2"),
-                createImapResponse("* SEARCH 3"),
-                createImapResponse("* SEARCH 4")
-        );
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT DELETED")).thenReturn(imapResponses);
-        folder.open(OPEN_MODE_RW);
-
-        List<ImapMessage> result = folder.getMessages(null);
-
-        assertNotNull(result);
-        assertEquals(newSet("2", "3", "4"), extractMessageUids(result));
-    }
-
-    @Test
-    public void getMessages_withListener_shouldCallListenerMethods() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 23"));
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT DELETED")).thenReturn(imapResponses);
-        folder.open(OPEN_MODE_RW);
-        MessageRetrievalListener<ImapMessage> listener = createMessageRetrievalListener();
-
-        List<ImapMessage> messages = folder.getMessages(listener);
-
-        verify(listener).messageStarted("23", 0, 1);
-        verify(listener).messageFinished(messages.get(0), 0, 1);
-        verifyNoMoreInteractions(listener);
-    }
-
-    @Test
     public void fetch_withNullMessageListArgument_shouldDoNothing() throws Exception {
         ImapFolder folder = new ImapFolder(imapStore, "Folder");
         FetchProfile fetchProfile = createFetchProfile();
