@@ -13,4 +13,5 @@ class Responses {
     public static final String BYE = "BYE";
     public static final String EXISTS = "EXISTS";
     public static final String EXPUNGE = "EXPUNGE";
+    public static final String PERMANENTFLAGS = "PERMANENTFLAGS";
 }

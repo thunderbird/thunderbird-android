@@ -145,6 +145,8 @@ class ImapFolder extends Folder<ImapMessage> {
             this.mode = mode;
 
             for (ImapResponse response : responses) {
+                handlePermanentFlags(response);
+
                 if (response.size() >= 2) {
                     Object bracketedObj = response.get(1);
                     if (!(bracketedObj instanceof ImapList)) {
@@ -156,22 +158,15 @@ class ImapFolder extends Folder<ImapMessage> {
                         continue;
                     }
 
-                    ImapList flags = bracketed.getKeyedList("PERMANENTFLAGS");
-                    if (flags != null) {
-                        // parse: * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted
-                        // \Seen \Draft NonJunk $label1 \*)] Flags permitted.
-                        parseFlags(flags);
-                    } else {
-                        Object keyObj = bracketed.get(0);
-                        if (keyObj instanceof String) {
-                            String key = (String) keyObj;
-                            if (response.getTag() != null) {
+                    Object keyObj = bracketed.get(0);
+                    if (keyObj instanceof String) {
+                        String key = (String) keyObj;
+                        if (response.getTag() != null) {
 
-                                if ("READ-ONLY".equalsIgnoreCase(key)) {
-                                    this.mode = OPEN_MODE_RO;
-                                } else if ("READ-WRITE".equalsIgnoreCase(key)) {
-                                    this.mode = OPEN_MODE_RW;
-                                }
+                            if ("READ-ONLY".equalsIgnoreCase(key)) {
+                                this.mode = OPEN_MODE_RO;
+                            } else if ("READ-WRITE".equalsIgnoreCase(key)) {
+                                this.mode = OPEN_MODE_RW;
                             }
                         }
                     }
@@ -189,23 +184,15 @@ class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    private void parseFlags(ImapList flags) {
-        for (Object flag : flags) {
-            flag = flag.toString().toLowerCase(Locale.US);
-            if (flag.equals("\\deleted")) {
-                store.getPermanentFlagsIndex().add(Flag.DELETED);
-            } else if (flag.equals("\\answered")) {
-                store.getPermanentFlagsIndex().add(Flag.ANSWERED);
-            } else if (flag.equals("\\seen")) {
-                store.getPermanentFlagsIndex().add(Flag.SEEN);
-            } else if (flag.equals("\\flagged")) {
-                store.getPermanentFlagsIndex().add(Flag.FLAGGED);
-            } else if (flag.equals("$forwarded")) {
-                store.getPermanentFlagsIndex().add(Flag.FORWARDED);
-            } else if (flag.equals("\\*")) {
-                canCreateKeywords = true;
-            }
+    private void handlePermanentFlags(ImapResponse response) {
+        PermanentFlagsResponse permanentFlagsResponse = PermanentFlagsResponse.parse(response);
+        if (permanentFlagsResponse == null) {
+            return;
         }
+
+        Set<Flag> permanentFlags = store.getPermanentFlagsIndex();
+        permanentFlags.addAll(permanentFlagsResponse.getFlags());
+        canCreateKeywords = permanentFlagsResponse.canCreateKeywords();
     }
 
     @Override
