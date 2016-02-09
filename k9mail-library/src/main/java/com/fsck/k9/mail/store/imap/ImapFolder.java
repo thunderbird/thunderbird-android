@@ -50,6 +50,7 @@ class ImapFolder extends Folder<ImapMessage> {
     protected volatile ImapConnection connection;
     protected ImapStore store = null;
     protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
+    private final FolderNameCodec folderNameCodec;
     private final String name;
     private int mode;
     private volatile boolean exists;
@@ -58,9 +59,14 @@ class ImapFolder extends Folder<ImapMessage> {
 
 
     public ImapFolder(ImapStore store, String name) {
+        this(store, name, store.getFolderNameCodec());
+    }
+
+    ImapFolder(ImapStore store, String name, FolderNameCodec folderNameCodec) {
         super();
         this.store = store;
         this.name = name;
+        this.folderNameCodec = folderNameCodec;
     }
 
     private String getPrefixedName() throws MessagingException {
@@ -133,7 +139,7 @@ class ImapFolder extends Folder<ImapMessage> {
             msgSeqUidMap.clear();
 
             String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
-            String encodedFolderName = store.encodeFolderName(getPrefixedName());
+            String encodedFolderName = folderNameCodec.encode(getPrefixedName());
             String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
             String command = String.format("%s %s", openCommand, escapedFolderName);
             List<ImapResponse> responses = executeSimpleCommand(command);
@@ -255,7 +261,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
 
         try {
-            String encodedFolderName = store.encodeFolderName(getPrefixedName());
+            String encodedFolderName = folderNameCodec.encode(getPrefixedName());
             String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
             connection.executeSimpleCommand(String.format("STATUS %s (UIDVALIDITY)", escapedFolderName));
 
@@ -290,7 +296,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
 
         try {
-            String encodedFolderName = store.encodeFolderName(getPrefixedName());
+            String encodedFolderName = folderNameCodec.encode(getPrefixedName());
             String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
             connection.executeSimpleCommand(String.format("CREATE %s", escapedFolderName));
 
@@ -341,7 +347,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
 
         try {
-            String encodedDestinationFolderName = store.encodeFolderName(imapFolder.getPrefixedName());
+            String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
             String escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName);
 
             //TODO: Try to copy/move the messages first and only create the folder if the
@@ -396,7 +402,7 @@ class ImapFolder extends Folder<ImapMessage> {
             setFlags(messages, Collections.singleton(Flag.DELETED), true);
         } else {
             ImapFolder remoteTrashFolder = getStore().getFolder(trashFolderName);
-            String encodedTrashFolderName = store.encodeFolderName(remoteTrashFolder.getPrefixedName());
+            String encodedTrashFolderName = folderNameCodec.encode(remoteTrashFolder.getPrefixedName());
             String escapedTrashFolderName = ImapUtility.encodeString(encodedTrashFolderName);
 
             if (!exists(escapedTrashFolderName)) {
@@ -1148,7 +1154,7 @@ class ImapFolder extends Folder<ImapMessage> {
             for (Message message : messages) {
                 long messageSize = message.calculateSize();
 
-                String encodeFolderName = store.encodeFolderName(getPrefixedName());
+                String encodeFolderName = folderNameCodec.encode(getPrefixedName());
                 String escapedFolderName = ImapUtility.encodeString(encodeFolderName);
                 String command = String.format(Locale.US, "APPEND %s (%s) {%d}", escapedFolderName,
                         combineFlags(message.getFlags()), messageSize);

@@ -64,14 +64,13 @@ public class ImapFolderTest {
         when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
         when(imapStore.getCombinedPrefix()).thenReturn("");
         when(imapStore.getStoreConfig()).thenReturn(storeConfig);
-        when(imapStore.encodeFolderName("Folder")).thenReturn("Folder");
 
         imapConnection = mock(ImapConnection.class);
     }
 
     @Test
     public void open_readWrite_shouldOpenFolder() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
 
         imapFolder.open(OPEN_MODE_RW);
@@ -81,7 +80,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_readOnly_shouldOpenFolder() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
 
         imapFolder.open(OPEN_MODE_RO);
@@ -91,7 +90,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_shouldFetchMessageCount() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
 
         imapFolder.open(OPEN_MODE_RW);
@@ -101,7 +100,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_readWrite_shouldMakeGetModeReturnReadWrite() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
 
         imapFolder.open(OPEN_MODE_RW);
@@ -111,7 +110,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_readOnly_shouldMakeGetModeReturnReadOnly() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
 
         imapFolder.open(OPEN_MODE_RO);
@@ -121,7 +120,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_shouldMakeExistReturnTrueWithoutExecutingAdditionalCommands() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
 
         imapFolder.open(OPEN_MODE_RW);
@@ -132,7 +131,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_calledTwice_shouldReuseSameImapConnection() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         imapFolder.open(OPEN_MODE_RW);
 
@@ -143,7 +142,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_withConnectionThrowingOnReUse_shouldCreateNewImapConnection() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         imapFolder.open(OPEN_MODE_RW);
 
@@ -155,7 +154,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_withIoException_shouldThrowMessagingException() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
         doThrow(IOException.class).when(imapConnection).executeSimpleCommand("SELECT \"Folder\"");
 
@@ -170,7 +169,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_withMessagingException_shouldThrowMessagingException() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
         doThrow(MessagingException.class).when(imapConnection).executeSimpleCommand("SELECT \"Folder\"");
 
@@ -183,7 +182,7 @@ public class ImapFolderTest {
 
     @Test
     public void open_withoutExistsResponse_shouldThrowMessagingException() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
         List<ImapResponse> selectResponses = asList(
                 createImapResponse("* OK [UIDNEXT 57576] Predicted next UID"),
@@ -201,7 +200,7 @@ public class ImapFolderTest {
 
     @Test
     public void close_shouldCloseImapFolder() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         imapFolder.open(OPEN_MODE_RW);
 
@@ -212,7 +211,7 @@ public class ImapFolderTest {
 
     @Test
     public void exists_withClosedFolder_shouldOpenConnectionAndIssueStatusCommand() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         imapFolder.exists();
@@ -222,7 +221,7 @@ public class ImapFolderTest {
 
     @Test
     public void exists_withoutNegativeImapResponse_shouldReturnTrue() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         boolean result = imapFolder.exists();
@@ -232,7 +231,7 @@ public class ImapFolderTest {
 
     @Test
     public void exists_withNegativeImapResponse_shouldReturnFalse() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
         doThrow(NegativeImapResponseException.class).when(imapConnection)
                 .executeSimpleCommand("STATUS \"Folder\" (UIDVALIDITY)");
@@ -244,7 +243,7 @@ public class ImapFolderTest {
 
     @Test
     public void create_withClosedFolder_shouldOpenConnectionAndIssueCreateCommand() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         imapFolder.create(FolderType.HOLDS_MESSAGES);
@@ -254,7 +253,7 @@ public class ImapFolderTest {
 
     @Test
     public void create_withoutNegativeImapResponse_shouldReturnTrue() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         boolean result = imapFolder.create(FolderType.HOLDS_MESSAGES);
@@ -264,7 +263,7 @@ public class ImapFolderTest {
 
     @Test
     public void create_withNegativeImapResponse_shouldReturnFalse() throws Exception {
-        ImapFolder imapFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
         doThrow(NegativeImapResponseException.class).when(imapConnection).executeSimpleCommand("CREATE \"Folder\"");
 
@@ -275,7 +274,7 @@ public class ImapFolderTest {
 
     @Test
     public void copyMessages_withoutDestinationFolderOfWrongType_shouldThrow() throws Exception {
-        ImapFolder sourceFolder = new ImapFolder(imapStore, "Source");
+        ImapFolder sourceFolder = createFolder("Source");
         Folder destinationFolder = mock(Folder.class);
         List<ImapMessage> messages = singletonList(mock(ImapMessage.class));
 
@@ -289,8 +288,8 @@ public class ImapFolderTest {
 
     @Test
     public void copyMessages_withEmptyMessageList_shouldReturnNull() throws Exception {
-        ImapFolder sourceFolder = new ImapFolder(imapStore, "Source");
-        ImapFolder destinationFolder = new ImapFolder(imapStore, "Destination");
+        ImapFolder sourceFolder = createFolder("Source");
+        ImapFolder destinationFolder = createFolder("Destination");
         List<ImapMessage> messages = Collections.emptyList();
 
         Map<String, String> result = sourceFolder.copyMessages(messages, destinationFolder);
@@ -300,8 +299,8 @@ public class ImapFolderTest {
 
     @Test
     public void copyMessages_withClosedFolder_shouldThrow() throws Exception {
-        ImapFolder sourceFolder = new ImapFolder(imapStore, "Source");
-        ImapFolder destinationFolder = new ImapFolder(imapStore, "Destination");
+        ImapFolder sourceFolder = createFolder("Source");
+        ImapFolder destinationFolder = createFolder("Destination");
         when(imapStore.getConnection()).thenReturn(imapConnection);
         when(imapStore.getCombinedPrefix()).thenReturn("");
         List<ImapMessage> messages = singletonList(mock(ImapMessage.class));
@@ -316,10 +315,9 @@ public class ImapFolderTest {
 
     @Test
     public void copyMessages() throws Exception {
-        ImapFolder sourceFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder sourceFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapFolder destinationFolder = new ImapFolder(imapStore, "Destination");
-        when(imapStore.encodeFolderName("Destination")).thenReturn("Destination");
+        ImapFolder destinationFolder = createFolder("Destination");
         List<ImapMessage> messages = singletonList(createImapMessage("1"));
         List<ImapResponse> copyResponses = singletonList(
                 createImapResponse("x OK [COPYUID 23 1 101] Success")
@@ -335,10 +333,9 @@ public class ImapFolderTest {
 
     @Test
     public void moveMessages_shouldCopyMessages() throws Exception {
-        ImapFolder sourceFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder sourceFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapFolder destinationFolder = new ImapFolder(imapStore, "Destination");
-        when(imapStore.encodeFolderName("Destination")).thenReturn("Destination");
+        ImapFolder destinationFolder = createFolder("Destination");
         List<ImapMessage> messages = singletonList(createImapMessage("1"));
         List<ImapResponse> copyResponses = singletonList(
                 createImapResponse("x OK [COPYUID 23 1 101] Success")
@@ -354,10 +351,9 @@ public class ImapFolderTest {
 
     @Test
     public void moveMessages_shouldDeleteMessagesFromSourceFolder() throws Exception {
-        ImapFolder sourceFolder = new ImapFolder(imapStore, "Folder");
+        ImapFolder sourceFolder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapFolder destinationFolder = new ImapFolder(imapStore, "Destination");
-        when(imapStore.encodeFolderName("Destination")).thenReturn("Destination");
+        ImapFolder destinationFolder = createFolder("Destination");
         List<ImapMessage> messages = singletonList(createImapMessage("1"));
         List<ImapResponse> copyResponses = singletonList(
                 createImapResponse("x OK [COPYUID 23 1 101] Success")
@@ -372,8 +368,8 @@ public class ImapFolderTest {
 
     @Test
     public void moveMessages_withEmptyMessageList_shouldReturnNull() throws Exception {
-        ImapFolder sourceFolder = new ImapFolder(imapStore, "Source");
-        ImapFolder destinationFolder = new ImapFolder(imapStore, "Destination");
+        ImapFolder sourceFolder = createFolder("Source");
+        ImapFolder destinationFolder = createFolder("Destination");
         List<ImapMessage> messages = Collections.emptyList();
 
         Map<String, String> result = sourceFolder.moveMessages(messages, destinationFolder);
@@ -383,7 +379,7 @@ public class ImapFolderTest {
 
     @Test
     public void delete_withEmptyMessageList_shouldNotInteractWithImapConnection() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Source");
+        ImapFolder folder = createFolder("Source");
         List<ImapMessage> messages = Collections.emptyList();
 
         folder.delete(messages, "Trash");
@@ -393,7 +389,7 @@ public class ImapFolderTest {
 
     @Test
     public void delete_fromTrashFolder_shouldIssueUidStoreFlagsCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapMessage> messages = singletonList(createImapMessage("23"));
         folder.open(OPEN_MODE_RW);
@@ -405,11 +401,10 @@ public class ImapFolderTest {
 
     @Test
     public void delete_shouldMoveMessagesToTrashFolder() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapFolder trashFolder = new ImapFolder(imapStore, "Trash");
+        ImapFolder trashFolder = createFolder("Trash");
         when(imapStore.getFolder("Trash")).thenReturn(trashFolder);
-        when(imapStore.encodeFolderName("Trash")).thenReturn("Trash");
         List<ImapMessage> messages = singletonList(createImapMessage("2"));
         List<ImapResponse> copyResponses = singletonList(
                 createImapResponse("x OK [COPYUID 23 2 102] Success")
@@ -424,11 +419,10 @@ public class ImapFolderTest {
 
     @Test
     public void delete_withoutTrashFolderExisting_shouldCreateTrashFolder() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapFolder trashFolder = new ImapFolder(imapStore, "Trash");
+        ImapFolder trashFolder = createFolder("Trash");
         when(imapStore.getFolder("Trash")).thenReturn(trashFolder);
-        when(imapStore.encodeFolderName("Trash")).thenReturn("Trash");
         List<ImapMessage> messages = singletonList(createImapMessage("2"));
         List<ImapResponse> copyResponses = singletonList(
                 createImapResponse("x OK [COPYUID 23 2 102] Success")
@@ -445,7 +439,7 @@ public class ImapFolderTest {
 
     @Test
     public void getUnreadMessageCount_withClosedFolder_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         try {
@@ -458,7 +452,7 @@ public class ImapFolderTest {
 
     @Test
     public void getUnreadMessageCount() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 1 2 3"));
         when(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED")).thenReturn(imapResponses);
@@ -471,7 +465,7 @@ public class ImapFolderTest {
 
     @Test
     public void getFlaggedMessageCount_withClosedFolder_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         try {
@@ -484,7 +478,7 @@ public class ImapFolderTest {
 
     @Test
     public void getFlaggedMessageCount() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = asList(
                 createImapResponse("* SEARCH 1 2"),
@@ -500,7 +494,7 @@ public class ImapFolderTest {
 
     @Test
     public void getHighestUid() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 42"));
         when(imapConnection.executeSimpleCommand("UID SEARCH *:*")).thenReturn(imapResponses);
@@ -513,7 +507,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_withoutDateConstraint() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = asList(
                 createImapResponse("* SEARCH 3"),
@@ -531,7 +525,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_withDateConstraint() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = asList(
                 createImapResponse("* SEARCH 47"),
@@ -548,7 +542,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_withListener_shouldCallListener() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 99"));
         when(imapConnection.executeSimpleCommand("UID SEARCH 1:10 NOT DELETED")).thenReturn(imapResponses);
@@ -565,7 +559,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_withInvalidStartArgument_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
 
         try {
             folder.getMessages(0, 10, null, null);
@@ -577,7 +571,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_withInvalidEndArgument_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
 
         try {
             folder.getMessages(10, 0, null, null);
@@ -589,7 +583,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_withEndArgumentSmallerThanStartArgument_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
 
         try {
             folder.getMessages(10, 5, null, null);
@@ -601,7 +595,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_withClosedFolder_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         try {
@@ -614,7 +608,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_sequenceNumbers_withClosedFolder_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         try {
@@ -627,7 +621,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_sequenceNumbers() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = asList(
                 createImapResponse("* SEARCH 17"),
@@ -645,7 +639,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_sequenceNumbers_withListener_shouldCallListener() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 99"));
         when(imapConnection.executeSimpleCommand("UID SEARCH 1")).thenReturn(imapResponses);
@@ -662,7 +656,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessagesFromUids_withClosedFolder_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         try {
@@ -675,7 +669,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessagesFromUids() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = asList(
                 createImapResponse("* SEARCH 11"),
@@ -693,7 +687,7 @@ public class ImapFolderTest {
 
     @Test
     public void areMoreMessagesAvailable_withClosedFolder_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         try {
@@ -706,7 +700,7 @@ public class ImapFolderTest {
 
     @Test
     public void areMoreMessagesAvailable_withAdditionalMessages_shouldReturnTrue() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 42"));
         when(imapConnection.executeSimpleCommand("SEARCH 1:9 NOT DELETED")).thenReturn(imapResponses);
@@ -719,7 +713,7 @@ public class ImapFolderTest {
 
     @Test
     public void areMoreMessagesAvailable_withoutAdditionalMessages_shouldReturnFalse() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
 
@@ -731,7 +725,7 @@ public class ImapFolderTest {
     @Test
     public void areMoreMessagesAvailable_withoutAdditionalMessages_shouldIssueSearchCommandsUntilAllMessagesSearched()
             throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
 
@@ -743,7 +737,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetch_withNullMessageListArgument_shouldDoNothing() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         FetchProfile fetchProfile = createFetchProfile();
 
         folder.fetch(null, fetchProfile, null);
@@ -753,7 +747,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetch_withEmptyMessageListArgument_shouldDoNothing() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         FetchProfile fetchProfile = createFetchProfile();
 
         folder.fetch(Collections.<ImapMessage>emptyList(), fetchProfile, null);
@@ -763,7 +757,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetch_withFlagsFetchProfile_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
@@ -777,7 +771,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetch_withEnvelopeFetchProfile_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
@@ -793,7 +787,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetch_withStructureFetchProfile_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
@@ -807,7 +801,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetch_withBodySaneFetchProfile_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
@@ -822,7 +816,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetch_withBodySaneFetchProfileAndNoMaximumDownloadSize_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
@@ -837,7 +831,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetch_withBodyFetchProfileAndNoMaximumDownloadSize_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
@@ -851,7 +845,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetch_withFlagsFetchProfile_shouldSetFlags() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         List<ImapMessage> messages = createImapMessages("1");
@@ -868,7 +862,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetchPart_withTextSection_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         when(storeConfig.getMaximumAutoDownloadMessageSize()).thenReturn(4096);
         folder.open(OPEN_MODE_RO);
@@ -883,7 +877,7 @@ public class ImapFolderTest {
 
     @Test
     public void fetchPart_withNonTextSection_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         ImapMessage message = createImapMessage("1");
@@ -897,7 +891,7 @@ public class ImapFolderTest {
 
     @Test
     public void appendMessages_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
         List<ImapMessage> messages = createImapMessages("1");
@@ -910,7 +904,7 @@ public class ImapFolderTest {
 
     @Test
     public void getUidFromMessageId_withoutMessageIdHeader_shouldReturnNull() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         ImapMessage message = createImapMessage("2");
         when(message.getHeader("Message-ID")).thenReturn(new String[0]);
 
@@ -921,7 +915,7 @@ public class ImapFolderTest {
 
     @Test
     public void getUidFromMessageId_withMessageIdHeader_shouldIssueUidSearchCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("2");
@@ -934,7 +928,7 @@ public class ImapFolderTest {
 
     @Test
     public void getUidFromMessageId() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("2");
@@ -949,7 +943,7 @@ public class ImapFolderTest {
 
     @Test
     public void expunge_shouldIssueExpungeCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
 
         folder.expunge();
@@ -959,7 +953,7 @@ public class ImapFolderTest {
 
     @Test
     public void setFlags_shouldIssueUidStoreCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
 
         folder.setFlags(newSet(Flag.SEEN), true);
@@ -969,7 +963,7 @@ public class ImapFolderTest {
 
     @Test
     public void getNewPushState_withNewerUid_shouldReturnNewPushState() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("2");
 
@@ -980,7 +974,7 @@ public class ImapFolderTest {
 
     @Test
     public void getNewPushState_withoutNewerUid_shouldReturnNull() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("1");
 
@@ -991,7 +985,7 @@ public class ImapFolderTest {
 
     @Test
     public void search_withFullTextSearchEnabled_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         when(storeConfig.allowRemoteSearch()).thenReturn(true);
         when(storeConfig.isRemoteSearchFullText()).thenReturn(true);
@@ -1003,7 +997,7 @@ public class ImapFolderTest {
 
     @Test
     public void search_withFullTextSearchDisabled_shouldIssueRespectiveCommand() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
         when(storeConfig.allowRemoteSearch()).thenReturn(true);
         when(storeConfig.isRemoteSearchFullText()).thenReturn(false);
@@ -1015,7 +1009,7 @@ public class ImapFolderTest {
 
     @Test
     public void search_withRemoteSearchDisabled_shouldThrow() throws Exception {
-        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapFolder folder = createFolder("Folder");
         when(storeConfig.allowRemoteSearch()).thenReturn(false);
 
         try {
@@ -1033,6 +1027,10 @@ public class ImapFolderTest {
         }
 
         return result;
+    }
+
+    private ImapFolder createFolder(String folderName) {
+        return new ImapFolder(imapStore, folderName, FolderNameCodec.newInstance());
     }
 
     private ImapMessage createImapMessage(String uid) {

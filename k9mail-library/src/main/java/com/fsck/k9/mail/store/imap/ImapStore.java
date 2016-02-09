@@ -2,12 +2,7 @@ package com.fsck.k9.mail.store.imap;
 
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CodingErrorAction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
@@ -22,7 +17,6 @@ import java.util.Set;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-import com.beetstra.jutf7.CharsetProvider;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
@@ -60,7 +54,7 @@ public class ImapStore extends RemoteStore {
     private String combinedPrefix = null;
     private String pathDelimiter = null;
     private final Deque<ImapConnection> connections = new LinkedList<ImapConnection>();
-    private Charset modifiedUtf7Charset;
+    private FolderNameCodec folderNameCodec;
 
     /**
      * Cache of ImapFolder objects. ImapFolders are attached to a given folder on the server
@@ -104,7 +98,7 @@ public class ImapStore extends RemoteStore {
         // Make extra sure pathPrefix is null if "auto-detect namespace" is configured
         pathPrefix = (settings.autoDetectNamespace) ? null : settings.pathPrefix;
 
-        modifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
+        folderNameCodec = FolderNameCodec.newInstance();
     }
 
     @Override
@@ -183,7 +177,7 @@ public class ImapStore extends RemoteStore {
 
             String decodedFolderName;
             try {
-                decodedFolderName = decodeFolderName(listResponse.getName());
+                decodedFolderName = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
                 Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
                         "as defined by RFC 3501: " + listResponse.getName(), e);
@@ -258,7 +252,7 @@ public class ImapStore extends RemoteStore {
         for (ListResponse listResponse : listResponses) {
             String decodedFolderName;
             try {
-                decodedFolderName = decodeFolderName(listResponse.getName());
+                decodedFolderName = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
                 Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
                         "as defined by RFC 3501: " + listResponse.getName(), e);
@@ -345,6 +339,10 @@ public class ImapStore extends RemoteStore {
         return new ImapConnection(new StoreImapSettings(), mTrustedSocketFactory, connectivityManager);
     }
 
+    FolderNameCodec getFolderNameCodec() {
+        return folderNameCodec;
+    }
+
     private List<ImapFolder> getFolders(Collection<String> folderNames) {
         List<ImapFolder> folders = new ArrayList<>(folderNames.size());
 
@@ -354,26 +352,6 @@ public class ImapStore extends RemoteStore {
         }
 
         return folders;
-    }
-
-    String encodeFolderName(String name) {
-        ByteBuffer bb = modifiedUtf7Charset.encode(name);
-        byte[] b = new byte[bb.limit()];
-        bb.get(b);
-
-        return new String(b, Charset.forName("US-ASCII"));
-    }
-
-    private String decodeFolderName(String name) throws CharacterCodingException {
-        /*
-         * Convert the encoded name to US-ASCII, then pass it through the modified UTF-7
-         * decoder and return the Unicode String.
-         */
-        // Make sure the decoder throws an exception if it encounters an invalid encoding.
-        CharsetDecoder decoder = modifiedUtf7Charset.newDecoder().onMalformedInput(CodingErrorAction.REPORT);
-        CharBuffer cb = decoder.decode(ByteBuffer.wrap(name.getBytes(Charset.forName("US-ASCII"))));
-
-        return cb.toString();
     }
 
     @Override
