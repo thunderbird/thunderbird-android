@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.008" versioncode="22008" >
+        <change>Work around a problem with Android System WebView 49.0.2623.34</change>
+    </release>
     <release version="5.007" versioncode="22007" >
         <change>Improved MIME type handling when other apps share files to K-9 Mail</change>
         <change>Fixed bug where certificate error dialog was erroneously shown on generic TLS errors (POP3)</change>
@@ -20,7 +23,7 @@
         <change>Fixed an issue caused by the latest Android System WebView update</change>
     </release>
     <release version="5.005" versioncode="22005" >
-        <change>Fixed a bug where messages where not always displayed on Android 5.x</change>
+        <change>Fixed a bug where messages were not always displayed on Android 5.x</change>
     </release>
     <release version="5.004" versioncode="22004" >
         <change>Fixed more crashes when selecting messages on Android 5.1</change>
