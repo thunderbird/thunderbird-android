@@ -761,17 +761,6 @@ public class Pop3Store extends RemoteStore {
             mUidToMsgNumMap.put(message.getUid(), msgNum);
         }
 
-        @Override
-        public List<Pop3Message> getMessages(MessageRetrievalListener listener) throws MessagingException {
-            throw new UnsupportedOperationException("Pop3: No getMessages");
-        }
-
-        @Override
-        public List<Pop3Message> getMessages(String[] uids, MessageRetrievalListener listener)
-        throws MessagingException {
-            throw new UnsupportedOperationException("Pop3: No getMessages by uids");
-        }
-
         /**
          * Fetch the items contained in the FetchProfile into the given set of
          * Messages in as efficient a manner as possible.

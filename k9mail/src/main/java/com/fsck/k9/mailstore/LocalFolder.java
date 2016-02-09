@@ -872,12 +872,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    @Override
     public List<LocalMessage> getMessages(MessageRetrievalListener<LocalMessage> listener) throws MessagingException {
         return getMessages(listener, true);
     }
 
-    @Override
     public List<LocalMessage> getMessages(final MessageRetrievalListener<LocalMessage> listener,
             final boolean includeDeleted) throws MessagingException {
         try {
@@ -904,9 +902,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    @Override
     public List<LocalMessage> getMessages(String[] uids, MessageRetrievalListener<LocalMessage> listener)
-    throws MessagingException {
+            throws MessagingException {
         open(OPEN_MODE_RW);
         if (uids == null) {
             return getMessages(listener);

@@ -3037,11 +3037,11 @@ public class MessagingController implements Runnable {
      * @param account
      */
     public void sendPendingMessagesSynchronous(final Account account) {
-        Folder localFolder = null;
+        LocalFolder localFolder = null;
         Exception lastFailure = null;
         boolean wasPermanentFailure = false;
         try {
-            Store localStore = account.getLocalStore();
+            LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(
                               account.getOutboxFolderName());
             if (!localFolder.exists()) {
@@ -3052,7 +3052,7 @@ public class MessagingController implements Runnable {
             }
             localFolder.open(Folder.OPEN_MODE_RW);
 
-            List<? extends Message> localMessages = localFolder.getMessages(null);
+            List<LocalMessage> localMessages = localFolder.getMessages(null);
             int progress = 0;
             int todo = localMessages.size();
             for (MessagingListener l : getListeners()) {
@@ -3067,10 +3067,10 @@ public class MessagingController implements Runnable {
             fp.add(FetchProfile.Item.BODY);
 
             if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + ((LocalFolder)localFolder).getId() + ") for messages to send");
+                Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + localFolder.getId() + ") for messages to send");
 
             Transport transport = Transport.getInstance(K9.app, account);
-            for (Message message : localMessages) {
+            for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
                     message.destroy();
                     continue;
@@ -3121,7 +3121,7 @@ public class MessagingController implements Runnable {
                                 Log.i(K9.LOG_TAG, "Account does not have a sent mail folder; deleting sent message");
                             message.setFlag(Flag.DELETED, true);
                         } else {
-                            LocalFolder localSentFolder = (LocalFolder) localStore.getFolder(account.getSentFolderName());
+                            LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
 
@@ -3450,7 +3450,7 @@ public class MessagingController implements Runnable {
 
         try {
             Map<String, String> uidMap = new HashMap<String, String>();
-            Store localStore = account.getLocalStore();
+            LocalStore localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
             if (!isCopy && (!remoteStore.isMoveCapable() || !localStore.isMoveCapable())) {
                 return;
@@ -3459,7 +3459,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            Folder localSrcFolder = localStore.getFolder(srcFolder);
+            LocalFolder localSrcFolder = localStore.getFolder(srcFolder);
             Folder localDestFolder = localStore.getFolder(destFolder);
 
             boolean unreadCountAffected = false;
@@ -3475,7 +3475,7 @@ public class MessagingController implements Runnable {
                 }
             }
 
-            List<? extends Message> messages = localSrcFolder.getMessages(uids.toArray(EMPTY_STRING_ARRAY), null);
+            List<LocalMessage> messages = localSrcFolder.getMessages(uids.toArray(EMPTY_STRING_ARRAY), null);
             if (messages.size() > 0) {
                 Map<String, Message> origUidMap = new HashMap<String, Message>();
 

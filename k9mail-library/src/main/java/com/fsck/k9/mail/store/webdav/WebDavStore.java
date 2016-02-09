@@ -1456,13 +1456,7 @@ public class WebDavStore extends RemoteStore {
             return indexOfOldestMessage > 1;
         }
 
-        @Override
-        public List<WebDavMessage> getMessages(MessageRetrievalListener<WebDavMessage> listener) throws MessagingException {
-            return getMessages(null, listener);
-        }
-
-        @Override
-        public List<WebDavMessage> getMessages(String[] uids, MessageRetrievalListener<WebDavMessage> listener) throws MessagingException {
+        private List<WebDavMessage> getMessages(String[] uids, MessageRetrievalListener<WebDavMessage> listener) throws MessagingException {
             List<WebDavMessage> messageList = new ArrayList<WebDavMessage>();
 
             if (uids == null ||

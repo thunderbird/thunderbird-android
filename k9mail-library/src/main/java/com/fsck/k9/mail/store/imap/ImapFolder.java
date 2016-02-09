@@ -645,13 +645,11 @@ class ImapFolder extends Folder<ImapMessage> {
         return messages;
     }
 
-    @Override
-    public List<ImapMessage> getMessages(MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
+    List<ImapMessage> getMessages(MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
         return getMessages(null, listener);
     }
 
-    @Override
-    public List<ImapMessage> getMessages(String[] uids, MessageRetrievalListener<ImapMessage> listener)
+    private List<ImapMessage> getMessages(String[] uids, MessageRetrievalListener<ImapMessage> listener)
             throws MessagingException {
         checkOpen();
 
