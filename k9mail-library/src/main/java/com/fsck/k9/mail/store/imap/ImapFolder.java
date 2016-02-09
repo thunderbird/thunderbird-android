@@ -37,6 +37,7 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
 class ImapFolder extends Folder<ImapMessage> {
@@ -146,32 +147,9 @@ class ImapFolder extends Folder<ImapMessage> {
 
             for (ImapResponse response : responses) {
                 handlePermanentFlags(response);
-
-                if (response.size() >= 2) {
-                    Object bracketedObj = response.get(1);
-                    if (!(bracketedObj instanceof ImapList)) {
-                        continue;
-                    }
-
-                    ImapList bracketed = (ImapList) bracketedObj;
-                    if (bracketed.isEmpty()) {
-                        continue;
-                    }
-
-                    Object keyObj = bracketed.get(0);
-                    if (keyObj instanceof String) {
-                        String key = (String) keyObj;
-                        if (response.getTag() != null) {
-
-                            if ("READ-ONLY".equalsIgnoreCase(key)) {
-                                this.mode = OPEN_MODE_RO;
-                            } else if ("READ-WRITE".equalsIgnoreCase(key)) {
-                                this.mode = OPEN_MODE_RW;
-                            }
-                        }
-                    }
-                }
             }
+
+            handleSelectOrExamineOkResponse(getLastResponse(responses));
 
             exists = true;
 
@@ -193,6 +171,18 @@ class ImapFolder extends Folder<ImapMessage> {
         Set<Flag> permanentFlags = store.getPermanentFlagsIndex();
         permanentFlags.addAll(permanentFlagsResponse.getFlags());
         canCreateKeywords = permanentFlagsResponse.canCreateKeywords();
+    }
+
+    private void handleSelectOrExamineOkResponse(ImapResponse response) {
+        SelectOrExamineResponse selectOrExamineResponse = SelectOrExamineResponse.parse(response);
+        if (selectOrExamineResponse == null) {
+            // This shouldn't happen
+            return;
+        }
+
+        if (selectOrExamineResponse.hasOpenMode()) {
+            mode = selectOrExamineResponse.getOpenMode();
+        }
     }
 
     @Override
@@ -371,7 +361,7 @@ class ImapFolder extends Folder<ImapMessage> {
                     combine(uids, ','), escapedDestinationFolderName));
 
             // Get the tagged response for the UID COPY command
-            ImapResponse response = responses.get(responses.size() - 1);
+            ImapResponse response = getLastResponse(responses);
 
             Map<String, String> uidMapping = null;
             if (response.size() > 1) {

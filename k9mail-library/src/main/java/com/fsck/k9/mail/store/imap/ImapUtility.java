@@ -148,4 +148,10 @@ class ImapUtility {
     public static String encodeString(String str) {
         return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     }
+
+    public static ImapResponse getLastResponse(List<ImapResponse> responses) {
+        int lastIndex = responses.size() - 1;
+
+        return responses.get(lastIndex);
+    }
 }
