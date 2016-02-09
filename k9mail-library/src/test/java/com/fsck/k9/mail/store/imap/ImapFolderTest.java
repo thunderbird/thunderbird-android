@@ -18,6 +18,7 @@ import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.store.StoreConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.internal.util.collections.Sets.newSet;
 
 
+//TODO: Increase test coverage e.g. for fetch() and fetchPart()
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class ImapFolderTest {
@@ -909,6 +911,166 @@ public class ImapFolderTest {
         verify(imapMessage).setFlagInternal(Flag.SEEN, true);
     }
 
+    @Test
+    public void fetchPart_withTextSection_shouldIssueRespectiveCommand() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RO);
+        when(storeConfig.getMaximumAutoDownloadMessageSize()).thenReturn(4096);
+        folder.open(OPEN_MODE_RO);
+        ImapMessage message = createImapMessage("1");
+        Part part = createPart("TEXT");
+        when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
+
+        folder.fetchPart(message, part, null);
+
+        verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[TEXT]<0.4096>)", false);
+    }
+
+    @Test
+    public void fetchPart_withNonTextSection_shouldIssueRespectiveCommand() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RO);
+        folder.open(OPEN_MODE_RO);
+        ImapMessage message = createImapMessage("1");
+        Part part = createPart("1.1");
+        when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
+
+        folder.fetchPart(message, part, null);
+
+        verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[1.1])", false);
+    }
+
+    @Test
+    public void appendMessages_shouldIssueRespectiveCommand() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        folder.open(OPEN_MODE_RW);
+        List<ImapMessage> messages = createImapMessages("1");
+        when(imapConnection.readResponse()).thenReturn(createImapResponse("x OK [APPENDUID 1 23]"));
+
+        folder.appendMessages(messages);
+
+        verify(imapConnection).sendCommand("APPEND \"Folder\" () {0}", false);
+    }
+
+    @Test
+    public void getUidFromMessageId_withoutMessageIdHeader_shouldReturnNull() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        ImapMessage message = createImapMessage("2");
+        when(message.getHeader("Message-ID")).thenReturn(new String[0]);
+
+        String result = folder.getUidFromMessageId(message);
+
+        assertNull(result);
+    }
+
+    @Test
+    public void getUidFromMessageId_withMessageIdHeader_shouldIssueUidSearchCommand() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        folder.open(OPEN_MODE_RW);
+        ImapMessage message = createImapMessage("2");
+        when(message.getHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
+
+        folder.getUidFromMessageId(message);
+
+        verify(imapConnection).executeSimpleCommand("UID SEARCH HEADER MESSAGE-ID \"<00000000.0000000@example.org>\"");
+    }
+
+    @Test
+    public void getUidFromMessageId() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        folder.open(OPEN_MODE_RW);
+        ImapMessage message = createImapMessage("2");
+        when(message.getHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
+        when(imapConnection.executeSimpleCommand("UID SEARCH HEADER MESSAGE-ID \"<00000000.0000000@example.org>\""))
+                .thenReturn(singletonList(createImapResponse("* SEARCH 23")));
+
+        String result = folder.getUidFromMessageId(message);
+
+        assertEquals("23", result);
+    }
+
+    @Test
+    public void expunge_shouldIssueExpungeCommand() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+
+        folder.expunge();
+
+        verify(imapConnection).executeSimpleCommand("EXPUNGE");
+    }
+
+    @Test
+    public void setFlags_shouldIssueUidStoreCommand() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+
+        folder.setFlags(newSet(Flag.SEEN), true);
+
+        verify(imapConnection).executeSimpleCommand("UID STORE 1:* +FLAGS.SILENT (\\Seen)");
+    }
+
+    @Test
+    public void getNewPushState_withNewerUid_shouldReturnNewPushState() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        ImapMessage message = createImapMessage("2");
+
+        String result = folder.getNewPushState("uidNext=2", message);
+
+        assertEquals("uidNext=3", result);
+    }
+
+    @Test
+    public void getNewPushState_withoutNewerUid_shouldReturnNull() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        ImapMessage message = createImapMessage("1");
+
+        String result = folder.getNewPushState("uidNext=2", message);
+
+        assertNull(result);
+    }
+
+    @Test
+    public void search_withFullTextSearchEnabled_shouldIssueRespectiveCommand() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RO);
+        when(storeConfig.allowRemoteSearch()).thenReturn(true);
+        when(storeConfig.isRemoteSearchFullText()).thenReturn(true);
+
+        folder.search("query", newSet(Flag.SEEN), Collections.<Flag>emptySet());
+
+        verify(imapConnection).executeSimpleCommand("UID SEARCH SEEN TEXT \"query\"");
+    }
+
+    @Test
+    public void search_withFullTextSearchDisabled_shouldIssueRespectiveCommand() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RO);
+        when(storeConfig.allowRemoteSearch()).thenReturn(true);
+        when(storeConfig.isRemoteSearchFullText()).thenReturn(false);
+
+        folder.search("query", Collections.<Flag>emptySet(), Collections.<Flag>emptySet());
+
+        verify(imapConnection).executeSimpleCommand("UID SEARCH OR SUBJECT \"query\" FROM \"query\"");
+    }
+
+    @Test
+    public void search_withRemoteSearchDisabled_shouldThrow() throws Exception {
+        ImapFolder folder = new ImapFolder(imapStore, "Folder");
+        when(storeConfig.allowRemoteSearch()).thenReturn(false);
+
+        try {
+            folder.search("query", Collections.<Flag>emptySet(), Collections.<Flag>emptySet());
+            fail("Expected exception");
+        } catch (MessagingException e) {
+            assertEquals("Your settings do not allow remote searching of this account", e.getMessage());
+        }
+    }
+
     private Set<String> extractMessageUids(List<? extends Message> messages) {
         Set<String> result = new HashSet<>();
         for (Message message : messages) {
@@ -934,6 +1096,13 @@ public class ImapFolderTest {
         }
 
         return imapMessages;
+    }
+
+    private Part createPart(String serverExtra) {
+        Part part = mock(Part.class);
+        when(part.getServerExtra()).thenReturn(serverExtra);
+
+        return part;
     }
 
     private FetchProfile createFetchProfile(Item... items) {
