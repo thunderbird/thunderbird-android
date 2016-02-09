@@ -2,6 +2,7 @@ package com.fsck.k9.mail.store.imap;
 
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -77,6 +78,11 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
 
     private static void sendContinuation(ImapConnection connection, String continuation) throws IOException {
         connection.sendContinuation(continuation);
+    }
+
+    private void setReadTimeoutForIdle(ImapConnection conn) throws SocketException {
+        int idleRefreshTimeout = store.getStoreConfig().getIdleRefreshMinutes() * 60 * 1000;
+        conn.setReadTimeout(idleRefreshTimeout + IDLE_READ_TIMEOUT_INCREMENT);
     }
 
     public void start() {
@@ -173,7 +179,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                 }
 
                 if (!messages.isEmpty()) {
-                    pushMessages(messages, true);
+                    pushReceiver.messagesArrived(this, messages);
                 }
             }
         }
@@ -185,7 +191,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
 
             List<Message> messages = new ArrayList<Message>();
             messages.addAll(messageList);
-            pushMessages(messages, false);
+            pushReceiver.messagesFlagsChanged(this, messages);
         } catch (Exception e) {
             pushReceiver.pushError("Exception while processing Push untagged responses", e);
         }
@@ -309,12 +315,34 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         return messageCountDelta;
     }
 
-    private void pushMessages(List<Message> messages, boolean newArrivals) {
-        if (newArrivals) {
-            pushReceiver.messagesArrived(this, messages);
-        } else {
-            pushReceiver.messagesFlagsChanged(this, messages);
+    private void processStoredUntaggedResponses() throws MessagingException {
+        List<ImapResponse> untaggedResponses;
+        while (!storedUntaggedResponses.isEmpty()) {
+            if (K9MailLib.isDebug()) {
+                Log.i(LOG_TAG, "Processing " + storedUntaggedResponses.size() +
+                        " untagged responses from previous commands for " + getLogId());
+            }
+
+            untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
+            storedUntaggedResponses.clear();
+            processUntaggedResponses(untaggedResponses);
         }
+    }
+
+    private void notifyMessagesArrived(long startUid, long uidNext) {
+        if (K9MailLib.isDebug()) {
+            Log.i(LOG_TAG, "Needs sync from uid " + startUid + " to " + uidNext + " for " + getLogId());
+        }
+
+        int count = (int) (uidNext - startUid);
+        List<Message> messages = new ArrayList<Message>(count);
+
+        for (long uid = startUid; uid < uidNext; uid++) {
+            ImapMessage message = new ImapMessage(Long.toString(uid), this);
+            messages.add(message);
+        }
+
+        pushReceiver.messagesArrived(this, messages);
     }
 
     public void stop() {
@@ -399,6 +427,18 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         return oldUidNext;
     }
 
+    private void syncFolderOnConnect() throws MessagingException {
+        List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
+        storedUntaggedResponses.clear();
+        processUntaggedResponses(untaggedResponses);
+
+        if (messageCount == -1) {
+            throw new MessagingException("Message count = -1 for idling");
+        }
+
+        pushReceiver.syncFolder(ImapFolderPusher.this);
+    }
+
 
     private class PushRunnable implements Runnable {
         @Override
@@ -429,107 +469,43 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                     internalOpen(OPEN_MODE_RO);
 
                     ImapConnection conn = connection;
-                    if (conn == null) {
-                        pushReceiver.pushError("Could not establish connection for IDLE", null);
-                        throw new MessagingException("Could not establish connection for IDLE");
+
+                    checkConnectionNotNull(conn);
+                    checkConnectionIdleCapable(conn);
+
+                    if (stop.get()) {
+                        break;
                     }
 
-                    if (!conn.isIdleCapable()) {
-                        stop.set(true);
-                        pushReceiver.pushError("IMAP server is not IDLE capable: " + conn.toString(), null);
-                        throw new MessagingException("IMAP server is not IDLE capable:" + conn.toString());
-                    }
-
-                    if (!stop.get() && store.getStoreConfig().isPushPollOnConnect() &&
-                            (conn != oldConnection || needsPoll.getAndSet(false))) {
-                        List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
-                        storedUntaggedResponses.clear();
-                        processUntaggedResponses(untaggedResponses);
-                        if (messageCount == -1) {
-                            throw new MessagingException("Message count = -1 for idling");
-                        }
-                        pushReceiver.syncFolder(ImapFolderPusher.this);
+                    boolean pushPollOnConnect = store.getStoreConfig().isPushPollOnConnect();
+                    boolean openedNewConnection = conn != oldConnection;
+                    if (pushPollOnConnect && (openedNewConnection || needsPoll.getAndSet(false))) {
+                        syncFolderOnConnect();
                     }
 
                     if (stop.get()) {
-                        continue;
+                        break;
                     }
 
-                    long startUid = oldUidNext;
-                    long newUidNext = uidNext;
-
-                    if (newUidNext == -1) {
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "uidNext is -1, using search to find highest UID");
-                        }
-
-                        long highestUid = getHighestUid();
-                        if (highestUid != -1L) {
-                            if (K9MailLib.isDebug()) {
-                                Log.d(LOG_TAG, "highest UID = " + highestUid);
-                            }
-
-                            newUidNext = highestUid + 1;
-
-                            if (K9MailLib.isDebug()) {
-                                Log.d(LOG_TAG, "highest UID = " + highestUid + ", set newUidNext to " + newUidNext);
-                            }
-                        }
-                    }
-
-                    if (startUid < newUidNext - store.getStoreConfig().getDisplayCount()) {
-                        startUid = newUidNext - store.getStoreConfig().getDisplayCount();
-                    }
-
-                    if (startUid < 1) {
-                        startUid = 1;
-                    }
-
+                    long newUidNext = getNewUidNext();
                     lastUidNext = newUidNext;
+                    long startUid = getStartUid(oldUidNext, newUidNext);
+
                     if (newUidNext > startUid) {
-                        if (K9MailLib.isDebug()) {
-                            Log.i(LOG_TAG, "Needs sync from uid " + startUid + " to " + newUidNext +
-                                    " for " + getLogId());
-                        }
-
-                        List<Message> messages = new ArrayList<Message>();
-                        for (long uid = startUid; uid < newUidNext; uid++) {
-                            ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
-                            messages.add(message);
-                        }
-
-                        if (!messages.isEmpty()) {
-                            pushMessages(messages, true);
-                        }
+                        notifyMessagesArrived(startUid, newUidNext);
                     } else {
-                        List<ImapResponse> untaggedResponses;
-                        while (!storedUntaggedResponses.isEmpty()) {
-                            if (K9MailLib.isDebug()) {
-                                Log.i(LOG_TAG, "Processing " + storedUntaggedResponses.size() +
-                                        " untagged responses from previous commands for " + getLogId());
-                            }
-
-                            untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
-                            storedUntaggedResponses.clear();
-                            processUntaggedResponses(untaggedResponses);
-                        }
+                        processStoredUntaggedResponses();
 
                         if (K9MailLib.isDebug()) {
                             Log.i(LOG_TAG, "About to IDLE for " + getLogId());
                         }
 
-                        pushReceiver.setPushActive(getName(), true);
-                        idling.set(true);
-                        doneSent.set(false);
+                        prepareForIdle();
 
-                        int idleRefreshTimeout = store.getStoreConfig().getIdleRefreshMinutes() * 60 * 1000;
-                        conn.setReadTimeout(idleRefreshTimeout + IDLE_READ_TIMEOUT_INCREMENT);
-
+                        setReadTimeoutForIdle(conn);
                         executeSimpleCommand(Commands.IDLE, false, ImapFolderPusher.this);
 
-                        idling.set(false);
-                        delayTime.set(NORMAL_DELAY_TIME);
-                        idleFailureCount.set(0);
+                        returnFromIdle();
                     }
                 } catch (Exception e) {
                     wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
@@ -582,6 +558,77 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                 Log.e(LOG_TAG, "Got exception while closing for " + getLogId(), me);
             } finally {
                 wakeLock.release();
+            }
+        }
+
+        private long getNewUidNext() throws MessagingException {
+            long newUidNext = uidNext;
+            if (newUidNext != -1L) {
+                return newUidNext;
+            }
+
+            if (K9MailLib.isDebug()) {
+                Log.d(LOG_TAG, "uidNext is -1, using search to find highest UID");
+            }
+
+            long highestUid = getHighestUid();
+            if (highestUid == -1L) {
+                return -1L;
+            }
+
+            newUidNext = highestUid + 1;
+
+            if (K9MailLib.isDebug()) {
+                Log.d(LOG_TAG, "highest UID = " + highestUid + ", set newUidNext to " + newUidNext);
+            }
+
+            return newUidNext;
+        }
+
+        private long getStartUid(long oldUidNext, long newUidNext) {
+            long startUid = oldUidNext;
+            int displayCount = store.getStoreConfig().getDisplayCount();
+
+            if (startUid < newUidNext - displayCount) {
+                startUid = newUidNext - displayCount;
+            }
+
+            if (startUid < 1) {
+                startUid = 1;
+            }
+
+            return startUid;
+        }
+
+        private void prepareForIdle() {
+            pushReceiver.setPushActive(getName(), true);
+            idling.set(true);
+            doneSent.set(false);
+        }
+
+        private void returnFromIdle() {
+            idling.set(false);
+            delayTime.set(NORMAL_DELAY_TIME);
+            idleFailureCount.set(0);
+        }
+
+        private void checkConnectionNotNull(ImapConnection conn) throws MessagingException {
+            if (conn == null) {
+                String message = "Could not establish connection for IDLE";
+                pushReceiver.pushError(message, null);
+
+                throw new MessagingException(message);
+            }
+        }
+
+        private void checkConnectionIdleCapable(ImapConnection conn) throws MessagingException {
+            if (!conn.isIdleCapable()) {
+                stop.set(true);
+
+                String message = "IMAP server is not IDLE capable: " + conn.toString();
+                pushReceiver.pushError(message, null);
+
+                throw new MessagingException(message);
             }
         }
     }
