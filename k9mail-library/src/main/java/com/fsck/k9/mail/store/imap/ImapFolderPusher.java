@@ -62,7 +62,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
 
     private void sendDone() throws IOException, MessagingException {
         if (doneSent.compareAndSet(false, true)) {
-            ImapConnection conn = mConnection;
+            ImapConnection conn = connection;
             if (conn != null) {
                 conn.setReadTimeout(RemoteStore.SOCKET_READ_TIMEOUT);
                 sendContinuation("DONE");
@@ -73,7 +73,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
 
     private void sendContinuation(String continuation)
     throws IOException {
-        ImapConnection conn = mConnection;
+        ImapConnection conn = connection;
         if (conn != null) {
             conn.sendContinuation(continuation);
         }
@@ -112,9 +112,9 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                             oldUidNext = lastUidNext;
                         }
 
-                        ImapConnection oldConnection = mConnection;
+                        ImapConnection oldConnection = connection;
                         internalOpen(OPEN_MODE_RO);
-                        ImapConnection conn = mConnection;
+                        ImapConnection conn = connection;
                         if (conn == null) {
                             receiver.pushError("Could not establish connection for IDLE", null);
                             throw new MessagingException("Could not establish connection for IDLE");
@@ -130,7 +130,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                             List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
                             storedUntaggedResponses.clear();
                             processUntaggedResponses(untaggedResponses);
-                            if (mMessageCount == -1) {
+                            if (messageCount == -1) {
                                 throw new MessagingException("Message count = -1 for idling");
                             }
                             receiver.syncFolder(ImapFolderPusher.this);
@@ -266,7 +266,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
 
     protected void processUntaggedResponses(List<ImapResponse> responses) throws MessagingException {
         boolean skipSync = false;
-        int oldMessageCount = mMessageCount;
+        int oldMessageCount = messageCount;
         if (oldMessageCount == -1) {
             skipSync = true;
         }
@@ -280,8 +280,8 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
             if (oldMessageCount < 0) {
                 oldMessageCount = 0;
             }
-            if (mMessageCount > oldMessageCount) {
-                syncMessages(mMessageCount, true);
+            if (messageCount > oldMessageCount) {
+                syncMessages(messageCount, true);
             }
         }
         if (K9MailLib.isDebug())
@@ -469,13 +469,13 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         if (listeningThread != null) {
             listeningThread.interrupt();
         }
-        ImapConnection conn = mConnection;
+        ImapConnection conn = connection;
         if (conn != null) {
             if (K9MailLib.isDebug())
-                Log.v(LOG_TAG, "Closing mConnection to stop pushing for " + getLogId());
+                Log.v(LOG_TAG, "Closing connection to stop pushing for " + getLogId());
             conn.close();
         } else {
-            Log.w(LOG_TAG, "Attempt to interrupt null mConnection to stop pushing on folderPusher for " + getLogId());
+            Log.w(LOG_TAG, "Attempt to interrupt null connection to stop pushing on folderPusher for " + getLogId());
         }
     }
 

@@ -158,13 +158,6 @@ public abstract class Folder<T extends Message> {
 
     public abstract String getName();
 
-
-    /**
-     * Indicated by the server "\*" ( * OK [PERMANENTFLAGS (\Answered .. \*)] Flags permitted). that
-     * new keywords may be created
-     */
-    protected boolean mCanCreateKeywords = false;
-
     /**
      * @param oldPushState
      * @param message
