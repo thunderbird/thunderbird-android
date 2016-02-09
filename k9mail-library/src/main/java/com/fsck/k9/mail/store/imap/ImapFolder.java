@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -363,57 +362,12 @@ class ImapFolder extends Folder<ImapMessage> {
             // Get the tagged response for the UID COPY command
             ImapResponse response = getLastResponse(responses);
 
-            Map<String, String> uidMapping = null;
-            if (response.size() > 1) {
-                /*
-                 * If the server supports UIDPLUS, then along with the COPY response it will
-                 * return an COPYUID response code, e.g.
-                 *
-                 * 24 OK [COPYUID 38505 304,319:320 3956:3958] Success
-                 *
-                 * COPYUID is followed by UIDVALIDITY, the set of UIDs of copied messages from
-                 * the source folder and the set of corresponding UIDs assigned to them in the
-                 * destination folder.
-                 *
-                 * We can use the new UIDs included in this response to update our records.
-                 */
-                Object responseList = response.get(1);
-
-                if (responseList instanceof ImapList) {
-                    final ImapList copyList = (ImapList) responseList;
-                    if (copyList.size() >= 4 && copyList.getString(0).equals("COPYUID")) {
-                        List<String> srcUids = ImapUtility.getImapSequenceValues(
-                                copyList.getString(2));
-                        List<String> destUids = ImapUtility.getImapSequenceValues(
-                                copyList.getString(3));
-
-                        if (srcUids != null && destUids != null) {
-                            if (srcUids.size() == destUids.size()) {
-                                Iterator<String> srcUidsIterator = srcUids.iterator();
-                                Iterator<String> destUidsIterator = destUids.iterator();
-                                uidMapping = new HashMap<String, String>();
-                                while (srcUidsIterator.hasNext() &&
-                                        destUidsIterator.hasNext()) {
-                                    String srcUid = srcUidsIterator.next();
-                                    String destUid = destUidsIterator.next();
-                                    uidMapping.put(srcUid, destUid);
-                                }
-                            } else {
-                                if (K9MailLib.isDebug()) {
-                                    Log.v(LOG_TAG, "Parse error: size of source UIDs list is not the same as size of " +
-                                            "destination UIDs list.");
-                                }
-                            }
-                        } else {
-                            if (K9MailLib.isDebug()) {
-                                Log.v(LOG_TAG, "Parsing of the sequence set failed.");
-                            }
-                        }
-                    }
-                }
+            CopyUidResponse copyUidResponse = CopyUidResponse.parse(response);
+            if (copyUidResponse == null) {
+                return null;
             }
 
-            return uidMapping;
+            return copyUidResponse.getUidMapping();
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }
