@@ -448,7 +448,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                         if (flagMsg >= msgSeq) {
                             flagIter.remove();
                             if (flagMsg > msgSeq) {
-                                newSeqs.add(flagMsg--);
+                                newSeqs.add(flagMsg);
                             }
                         }
                     }
