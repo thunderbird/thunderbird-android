@@ -8,6 +8,14 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.007" versioncode="22007" >
+        <change>Improved MIME type handling when other apps share files to K-9 Mail</change>
+        <change>Fixed bug where certificate error dialog was erroneously shown on generic TLS errors (POP3)</change>
+        <change>Fixed bug when exporting folders containing "."</change>
+        <change>Don't overwrite delete policy setting when editing incoming server settings</change>
+        <change>Fixed bug with delete URI in MessageProvider</change>
+        <change>Added auto-configuration settings for some providers</change>
+    </release>
     <release version="5.006" versioncode="22006" >
         <change>Fixed an issue caused by the latest Android System WebView update</change>
     </release>
