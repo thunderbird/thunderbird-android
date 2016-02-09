@@ -540,16 +540,11 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         } else {
             if (response.getTag() == null) {
                 if (response.size() > 1) {
-                    boolean started = false;
-
                     Object responseType = response.get(1);
                     if (equalsIgnoreCase(responseType, "EXISTS") || equalsIgnoreCase(responseType, "EXPUNGE") ||
                             equalsIgnoreCase(responseType, "FETCH")) {
 
-                        if (!started) {
-                            wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
-                            started = true;
-                        }
+                        wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
 
                         if (K9MailLib.isDebug()) {
                             Log.d(LOG_TAG, "Got useful async untagged response: " + response + " for " + getLogId());
