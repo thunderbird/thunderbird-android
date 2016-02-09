@@ -654,19 +654,17 @@ class ImapFolder extends Folder<ImapMessage> {
         return search(searcher, listener);
     }
 
-    protected List<? extends Message> getMessagesFromUids(final List<String> mesgUids, final boolean includeDeleted,
-            final MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
+    protected List<? extends Message> getMessagesFromUids(final List<String> mesgUids) throws MessagingException {
         ImapSearcher searcher = new ImapSearcher() {
             @Override
             public List<ImapResponse> search() throws IOException, MessagingException {
-                String command = String.format("UID SEARCH UID %s%s", combine(mesgUids.toArray(), ','),
-                        includeDeleted ? "" : " NOT DELETED");
+                String command = String.format("UID SEARCH UID %s", combine(mesgUids.toArray(), ','));
 
                 return executeSimpleCommand(command);
             }
         };
 
-        return search(searcher, listener);
+        return search(searcher, null);
     }
 
     private List<ImapMessage> search(ImapSearcher searcher, MessageRetrievalListener<ImapMessage> listener)

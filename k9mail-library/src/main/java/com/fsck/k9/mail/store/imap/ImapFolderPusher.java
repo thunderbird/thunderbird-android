@@ -352,7 +352,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         List<Message> messages = new ArrayList<Message>(removeUids.size());
 
         try {
-            List<? extends Message> existingMessages = getMessagesFromUids(removeUids, true, null);
+            List<? extends Message> existingMessages = getMessagesFromUids(removeUids);
             for (Message existingMessage : existingMessages) {
                 needsPoll.set(true);
                 msgSeqUidMap.clear();

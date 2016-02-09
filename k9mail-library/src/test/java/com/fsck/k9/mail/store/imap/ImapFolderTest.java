@@ -666,7 +666,7 @@ public class ImapFolderTest {
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         try {
-            folder.getMessagesFromUids(asList("11", "22", "25"), false, null);
+            folder.getMessagesFromUids(asList("11", "22", "25"));
             fail("Expected exception");
         } catch (MessagingException e) {
             assertCheckOpenErrorMessage("Folder", e);
@@ -685,7 +685,7 @@ public class ImapFolderTest {
         when(imapConnection.executeSimpleCommand("UID SEARCH UID 11,22,25")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
-        List<? extends Message> messages = folder.getMessagesFromUids(asList("11", "22", "25"), true, null);
+        List<? extends Message> messages = folder.getMessagesFromUids(asList("11", "22", "25"));
 
         assertNotNull(messages);
         assertEquals(newSet("11", "22", "25"), extractMessageUids(messages));
