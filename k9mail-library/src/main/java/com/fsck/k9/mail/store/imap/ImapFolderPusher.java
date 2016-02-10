@@ -43,9 +43,10 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
     private final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
     private final AtomicInteger idleFailureCount = new AtomicInteger(0);
     private final AtomicBoolean needsPoll = new AtomicBoolean(false);
+    private final Object threadLock = new Object();
     private List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
     private TracingWakeLock wakeLock = null;
-    private Thread listeningThread = null;
+    private Thread listeningThread;
 
 
     public ImapFolderPusher(ImapStore store, String name, PushReceiver pushReceiver) {
@@ -60,8 +61,10 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
     }
 
     public void start() {
-        listeningThread = new Thread(new PushRunnable());
-        listeningThread.start();
+        synchronized (threadLock) {
+            listeningThread = new Thread(new PushRunnable());
+            listeningThread.start();
+        }
     }
 
     public void refresh() throws IOException, MessagingException {
@@ -74,9 +77,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
     public void stop() {
         stop.set(true);
 
-        if (listeningThread != null) {
-            listeningThread.interrupt();
-        }
+        interruptListeningThread();
 
         ImapConnection conn = connection;
         if (conn != null) {
@@ -87,6 +88,14 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
             conn.close();
         } else {
             Log.w(LOG_TAG, "Attempt to interrupt null connection to stop pushing on folderPusher for " + getLogId());
+        }
+    }
+
+    private void interruptListeningThread() {
+        synchronized (threadLock) {
+            if (listeningThread != null) {
+                listeningThread.interrupt();
+            }
         }
     }
 
