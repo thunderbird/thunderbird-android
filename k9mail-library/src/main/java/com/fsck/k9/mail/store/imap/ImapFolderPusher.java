@@ -59,10 +59,34 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         wakeLock.setReferenceCounted(false);
     }
 
+    public void start() {
+        listeningThread = new Thread(new PushRunnable());
+        listeningThread.start();
+    }
+
     public void refresh() throws IOException, MessagingException {
         if (idling.get()) {
             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
             sendDone();
+        }
+    }
+
+    public void stop() {
+        stop.set(true);
+
+        if (listeningThread != null) {
+            listeningThread.interrupt();
+        }
+
+        ImapConnection conn = connection;
+        if (conn != null) {
+            if (K9MailLib.isDebug()) {
+                Log.v(LOG_TAG, "Closing connection to stop pushing for " + getLogId());
+            }
+
+            conn.close();
+        } else {
+            Log.w(LOG_TAG, "Attempt to interrupt null connection to stop pushing on folderPusher for " + getLogId());
         }
     }
 
@@ -85,9 +109,50 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         conn.setReadTimeout(idleRefreshTimeout + IDLE_READ_TIMEOUT_INCREMENT);
     }
 
-    public void start() {
-        listeningThread = new Thread(new PushRunnable());
-        listeningThread.start();
+    @Override
+    public void handleAsyncUntaggedResponse(ImapResponse response) {
+        if (K9MailLib.isDebug()) {
+            Log.v(LOG_TAG, "Got async response: " + response);
+        }
+
+        if (stop.get()) {
+            if (K9MailLib.isDebug()) {
+                Log.d(LOG_TAG, "Got async untagged response: " + response + ", but stop is set for " + getLogId());
+            }
+
+            try {
+                sendDone();
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
+            }
+        } else {
+            if (response.getTag() == null) {
+                if (response.size() > 1) {
+                    Object responseType = response.get(1);
+                    if (equalsIgnoreCase(responseType, "EXISTS") || equalsIgnoreCase(responseType, "EXPUNGE") ||
+                            equalsIgnoreCase(responseType, "FETCH")) {
+
+                        wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
+
+                        if (K9MailLib.isDebug()) {
+                            Log.d(LOG_TAG, "Got useful async untagged response: " + response + " for " + getLogId());
+                        }
+
+                        try {
+                            sendDone();
+                        } catch (Exception e) {
+                            Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
+                        }
+                    }
+                } else if (response.isContinuationRequested()) {
+                    if (K9MailLib.isDebug()) {
+                        Log.d(LOG_TAG, "Idling " + getLogId());
+                    }
+
+                    wakeLock.release();
+                }
+            }
+        }
     }
 
     @Override
@@ -108,7 +173,21 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         }
     }
 
-    protected void processUntaggedResponses(List<ImapResponse> responses) throws MessagingException {
+    private void processStoredUntaggedResponses() throws MessagingException {
+        List<ImapResponse> untaggedResponses;
+        while (!storedUntaggedResponses.isEmpty()) {
+            if (K9MailLib.isDebug()) {
+                Log.i(LOG_TAG, "Processing " + storedUntaggedResponses.size() +
+                        " untagged responses from previous commands for " + getLogId());
+            }
+
+            untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
+            storedUntaggedResponses.clear();
+            processUntaggedResponses(untaggedResponses);
+        }
+    }
+
+    private void processUntaggedResponses(List<ImapResponse> responses) throws MessagingException {
         boolean skipSync = false;
 
         int oldMessageCount = messageCount;
@@ -144,6 +223,91 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         if (!removeMsgUids.isEmpty()) {
             removeMessages(removeMsgUids);
         }
+    }
+
+    private int processUntaggedResponse(long oldMessageCount, ImapResponse response, List<Long> flagSyncMsgSeqs,
+            List<String> removeMsgUids) {
+        super.handleUntaggedResponse(response);
+
+        int messageCountDelta = 0;
+        if (response.getTag() == null && response.size() > 1) {
+            try {
+                Object responseType = response.get(1);
+                if (equalsIgnoreCase(responseType, "FETCH")) {
+                    Log.i(LOG_TAG, "Got FETCH " + response);
+
+                    long msgSeq = response.getLong(0);
+
+                    if (K9MailLib.isDebug()) {
+                        Log.d(LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq + " for " + getLogId());
+                    }
+
+                    if (!flagSyncMsgSeqs.contains(msgSeq)) {
+                        flagSyncMsgSeqs.add(msgSeq);
+                    }
+                }
+
+                if (equalsIgnoreCase(responseType, "EXPUNGE")) {
+                    long msgSeq = response.getLong(0);
+                    if (msgSeq <= oldMessageCount) {
+                        messageCountDelta = -1;
+                    }
+
+                    if (K9MailLib.isDebug()) {
+                        Log.d(LOG_TAG, "Got untagged EXPUNGE for msgseq " + msgSeq + " for " + getLogId());
+                    }
+
+                    List<Long> newSeqs = new ArrayList<Long>();
+                    Iterator<Long> flagIter = flagSyncMsgSeqs.iterator();
+                    while (flagIter.hasNext()) {
+                        long flagMsg = flagIter.next();
+                        if (flagMsg >= msgSeq) {
+                            flagIter.remove();
+                            if (flagMsg > msgSeq) {
+                                newSeqs.add(flagMsg);
+                            }
+                        }
+                    }
+
+                    flagSyncMsgSeqs.addAll(newSeqs);
+
+                    List<Long> msgSeqs = new ArrayList<Long>(msgSeqUidMap.keySet());
+                    Collections.sort(msgSeqs);  // Have to do comparisons in order because of msgSeq reductions
+
+                    for (long msgSeqNum : msgSeqs) {
+                        if (K9MailLib.isDebug()) {
+                            Log.v(LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNum);
+                        }
+
+                        if (msgSeqNum == msgSeq) {
+                            String uid = msgSeqUidMap.get(msgSeqNum);
+
+                            if (K9MailLib.isDebug()) {
+                                Log.d(LOG_TAG, "Scheduling removal of UID " + uid + " because msgSeq " + msgSeqNum +
+                                        " was expunged");
+                            }
+
+                            removeMsgUids.add(uid);
+                            msgSeqUidMap.remove(msgSeqNum);
+                        } else if (msgSeqNum > msgSeq) {
+                            String uid = msgSeqUidMap.get(msgSeqNum);
+
+                            if (K9MailLib.isDebug()) {
+                                Log.d(LOG_TAG, "Reducing msgSeq for UID " + uid + " from " + msgSeqNum + " to " +
+                                        (msgSeqNum - 1));
+                            }
+
+                            msgSeqUidMap.remove(msgSeqNum);
+                            msgSeqUidMap.put(msgSeqNum - 1, uid);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Could not handle untagged FETCH for " + getLogId(), e);
+            }
+        }
+
+        return messageCountDelta;
     }
 
     private void syncMessages(int end) throws MessagingException {
@@ -230,103 +394,16 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         }
     }
 
-    protected int processUntaggedResponse(long oldMessageCount, ImapResponse response, List<Long> flagSyncMsgSeqs,
-            List<String> removeMsgUids) {
-        super.handleUntaggedResponse(response);
+    private void syncFolderOnConnect() throws MessagingException {
+        List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
+        storedUntaggedResponses.clear();
+        processUntaggedResponses(untaggedResponses);
 
-        int messageCountDelta = 0;
-        if (response.getTag() == null && response.size() > 1) {
-            try {
-                Object responseType = response.get(1);
-                if (equalsIgnoreCase(responseType, "FETCH")) {
-                    Log.i(LOG_TAG, "Got FETCH " + response);
-
-                    long msgSeq = response.getLong(0);
-
-                    if (K9MailLib.isDebug()) {
-                        Log.d(LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq + " for " + getLogId());
-                    }
-
-                    if (!flagSyncMsgSeqs.contains(msgSeq)) {
-                        flagSyncMsgSeqs.add(msgSeq);
-                    }
-                }
-
-                if (equalsIgnoreCase(responseType, "EXPUNGE")) {
-                    long msgSeq = response.getLong(0);
-                    if (msgSeq <= oldMessageCount) {
-                        messageCountDelta = -1;
-                    }
-
-                    if (K9MailLib.isDebug()) {
-                        Log.d(LOG_TAG, "Got untagged EXPUNGE for msgseq " + msgSeq + " for " + getLogId());
-                    }
-
-                    List<Long> newSeqs = new ArrayList<Long>();
-                    Iterator<Long> flagIter = flagSyncMsgSeqs.iterator();
-                    while (flagIter.hasNext()) {
-                        long flagMsg = flagIter.next();
-                        if (flagMsg >= msgSeq) {
-                            flagIter.remove();
-                            if (flagMsg > msgSeq) {
-                                newSeqs.add(flagMsg);
-                            }
-                        }
-                    }
-
-                    flagSyncMsgSeqs.addAll(newSeqs);
-
-                    List<Long> msgSeqs = new ArrayList<Long>(msgSeqUidMap.keySet());
-                    Collections.sort(msgSeqs);  // Have to do comparisons in order because of msgSeq reductions
-
-                    for (long msgSeqNum : msgSeqs) {
-                        if (K9MailLib.isDebug()) {
-                            Log.v(LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNum);
-                        }
-
-                        if (msgSeqNum == msgSeq) {
-                            String uid = msgSeqUidMap.get(msgSeqNum);
-
-                            if (K9MailLib.isDebug()) {
-                                Log.d(LOG_TAG, "Scheduling removal of UID " + uid + " because msgSeq " + msgSeqNum +
-                                        " was expunged");
-                            }
-
-                            removeMsgUids.add(uid);
-                            msgSeqUidMap.remove(msgSeqNum);
-                        } else if (msgSeqNum > msgSeq) {
-                            String uid = msgSeqUidMap.get(msgSeqNum);
-
-                            if (K9MailLib.isDebug()) {
-                                Log.d(LOG_TAG, "Reducing msgSeq for UID " + uid + " from " + msgSeqNum + " to " +
-                                        (msgSeqNum - 1));
-                            }
-
-                            msgSeqUidMap.remove(msgSeqNum);
-                            msgSeqUidMap.put(msgSeqNum - 1, uid);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                Log.e(LOG_TAG, "Could not handle untagged FETCH for " + getLogId(), e);
-            }
+        if (messageCount == -1) {
+            throw new MessagingException("Message count = -1 for idling");
         }
 
-        return messageCountDelta;
-    }
-
-    private void processStoredUntaggedResponses() throws MessagingException {
-        List<ImapResponse> untaggedResponses;
-        while (!storedUntaggedResponses.isEmpty()) {
-            if (K9MailLib.isDebug()) {
-                Log.i(LOG_TAG, "Processing " + storedUntaggedResponses.size() +
-                        " untagged responses from previous commands for " + getLogId());
-            }
-
-            untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
-            storedUntaggedResponses.clear();
-            processUntaggedResponses(untaggedResponses);
-        }
+        pushReceiver.syncFolder(ImapFolderPusher.this);
     }
 
     private void notifyMessagesArrived(long startUid, long uidNext) {
@@ -345,71 +422,6 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         pushReceiver.messagesArrived(this, messages);
     }
 
-    public void stop() {
-        stop.set(true);
-
-        if (listeningThread != null) {
-            listeningThread.interrupt();
-        }
-
-        ImapConnection conn = connection;
-        if (conn != null) {
-            if (K9MailLib.isDebug()) {
-                Log.v(LOG_TAG, "Closing connection to stop pushing for " + getLogId());
-            }
-
-            conn.close();
-        } else {
-            Log.w(LOG_TAG, "Attempt to interrupt null connection to stop pushing on folderPusher for " + getLogId());
-        }
-    }
-
-    @Override
-    public void handleAsyncUntaggedResponse(ImapResponse response) {
-        if (K9MailLib.isDebug()) {
-            Log.v(LOG_TAG, "Got async response: " + response);
-        }
-
-        if (stop.get()) {
-            if (K9MailLib.isDebug()) {
-                Log.d(LOG_TAG, "Got async untagged response: " + response + ", but stop is set for " + getLogId());
-            }
-
-            try {
-                sendDone();
-            } catch (Exception e) {
-                Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
-            }
-        } else {
-            if (response.getTag() == null) {
-                if (response.size() > 1) {
-                    Object responseType = response.get(1);
-                    if (equalsIgnoreCase(responseType, "EXISTS") || equalsIgnoreCase(responseType, "EXPUNGE") ||
-                            equalsIgnoreCase(responseType, "FETCH")) {
-
-                        wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
-
-                        if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Got useful async untagged response: " + response + " for " + getLogId());
-                        }
-
-                        try {
-                            sendDone();
-                        } catch (Exception e) {
-                            Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
-                        }
-                    }
-                } else if (response.isContinuationRequested()) {
-                    if (K9MailLib.isDebug()) {
-                        Log.d(LOG_TAG, "Idling " + getLogId());
-                    }
-
-                    wakeLock.release();
-                }
-            }
-        }
-    }
-
     private long getOldUidNext() {
         long oldUidNext = -1L;
         try {
@@ -425,18 +437,6 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         }
 
         return oldUidNext;
-    }
-
-    private void syncFolderOnConnect() throws MessagingException {
-        List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
-        storedUntaggedResponses.clear();
-        processUntaggedResponses(untaggedResponses);
-
-        if (messageCount == -1) {
-            throw new MessagingException("Message count = -1 for idling");
-        }
-
-        pushReceiver.syncFolder(ImapFolderPusher.this);
     }
 
 
