@@ -91,7 +91,7 @@ public class MessageDecryptVerifier {
                 if (TextUtils.isEmpty(text)) {
                     continue;
                 }
-                switch (OpenPgpUtils.parseMessage(text)) {
+                switch (OpenPgpUtils.parseMessage(text, true)) {
                     case OpenPgpUtils.PARSE_RESULT_MESSAGE:
                     case OpenPgpUtils.PARSE_RESULT_SIGNED_MESSAGE:
                         inlineParts.add(part);
