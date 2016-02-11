@@ -644,7 +644,7 @@ class ImapConnection {
                 if (sensitive && !K9MailLib.isDebugSensitive()) {
                     Log.v(LOG_TAG, getLogId() + ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
                 } else {
-                    Log.v(LOG_TAG, getLogId() + ">>> " + commandToSend);
+                    Log.v(LOG_TAG, getLogId() + ">>> " + tag + " " + command);
                 }
             }
 
