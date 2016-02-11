@@ -104,11 +104,6 @@ class ImapFolder extends Folder<ImapMessage> {
         return handleUntaggedResponses(connection.executeSimpleCommand(command));
     }
 
-    protected List<ImapResponse> executeSimpleCommand(String command, boolean sensitive,
-            UntaggedHandler untaggedHandler) throws MessagingException, IOException {
-        return handleUntaggedResponses(connection.executeSimpleCommand(command, sensitive, untaggedHandler));
-    }
-
     @Override
     public void open(int mode) throws MessagingException {
         internalOpen(mode);
@@ -930,7 +925,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return result;
     }
 
-    private List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
+    protected List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
         for (ImapResponse response : responses) {
             handleUntaggedResponse(response);
         }

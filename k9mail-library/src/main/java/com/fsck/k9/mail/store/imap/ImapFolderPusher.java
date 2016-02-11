@@ -39,11 +39,11 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
     private final PushReceiver pushReceiver;
     private final AtomicBoolean stop = new AtomicBoolean(false);
     private final AtomicBoolean idling = new AtomicBoolean(false);
-    private final AtomicBoolean doneSent = new AtomicBoolean(false);
     private final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
     private final AtomicInteger idleFailureCount = new AtomicInteger(0);
     private final AtomicBoolean needsPoll = new AtomicBoolean(false);
     private final Object threadLock = new Object();
+    private final IdleStopper idleStopper = new IdleStopper();
     private List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
     private TracingWakeLock wakeLock = null;
     private Thread listeningThread;
@@ -70,7 +70,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
     public void refresh() throws IOException, MessagingException {
         if (idling.get()) {
             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
-            sendDone();
+            idleStopper.stopIdle();
         }
     }
 
@@ -99,20 +99,6 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         }
     }
 
-    private void sendDone() throws IOException, MessagingException {
-        if (doneSent.compareAndSet(false, true)) {
-            ImapConnection connection = this.connection;
-            if (connection != null) {
-                connection.setReadTimeout(RemoteStore.SOCKET_READ_TIMEOUT);
-                sendContinuation(connection, "DONE");
-            }
-        }
-    }
-
-    private static void sendContinuation(ImapConnection connection, String continuation) throws IOException {
-        connection.sendContinuation(continuation);
-    }
-
     private void setReadTimeoutForIdle(ImapConnection conn) throws SocketException {
         int idleRefreshTimeout = store.getStoreConfig().getIdleRefreshMinutes() * 60 * 1000;
         conn.setReadTimeout(idleRefreshTimeout + IDLE_READ_TIMEOUT_INCREMENT);
@@ -129,11 +115,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                 Log.d(LOG_TAG, "Got async untagged response: " + response + ", but stop is set for " + getLogId());
             }
 
-            try {
-                sendDone();
-            } catch (Exception e) {
-                Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
-            }
+            idleStopper.stopIdle();
         } else {
             if (response.getTag() == null) {
                 if (response.size() > 1) {
@@ -147,17 +129,14 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                             Log.d(LOG_TAG, "Got useful async untagged response: " + response + " for " + getLogId());
                         }
 
-                        try {
-                            sendDone();
-                        } catch (Exception e) {
-                            Log.e(LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
-                        }
+                        idleStopper.stopIdle();
                     }
                 } else if (response.isContinuationRequested()) {
                     if (K9MailLib.isDebug()) {
                         Log.d(LOG_TAG, "Idling " + getLogId());
                     }
 
+                    idleStopper.startAcceptingDoneContinuation(connection);
                     wakeLock.release();
                 }
             }
@@ -512,7 +491,7 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                         prepareForIdle();
 
                         setReadTimeoutForIdle(conn);
-                        executeSimpleCommand(Commands.IDLE, false, ImapFolderPusher.this);
+                        sendIdle(conn);
 
                         returnFromIdle();
                     }
@@ -612,7 +591,24 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
         private void prepareForIdle() {
             pushReceiver.setPushActive(getName(), true);
             idling.set(true);
-            doneSent.set(false);
+        }
+
+        private void sendIdle(ImapConnection conn) throws MessagingException, IOException {
+            String tag = conn.sendCommand(Commands.IDLE, false);
+
+            List<ImapResponse> responses;
+            try {
+                try {
+                    responses = conn.readStatusResponse(tag, Commands.IDLE, ImapFolderPusher.this);
+                } finally {
+                    idleStopper.stopAcceptingDoneContinuation();
+                }
+            } catch (IOException e) {
+                close();
+                throw e;
+            }
+
+            handleUntaggedResponses(responses);
         }
 
         private void returnFromIdle() {
@@ -638,6 +634,45 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
                 pushReceiver.pushError(message, null);
 
                 throw new MessagingException(message);
+            }
+        }
+    }
+
+    /**
+     * Ensure the DONE continuation is only sent when the IDLE command was sent and hasn't completed yet.
+     */
+    private static class IdleStopper {
+        private boolean acceptDoneContinuation = false;
+        private ImapConnection imapConnection;
+
+
+        public synchronized void startAcceptingDoneContinuation(ImapConnection connection) {
+            if (connection == null) {
+                throw new NullPointerException("connection must not be null");
+            }
+
+            acceptDoneContinuation = true;
+            imapConnection = connection;
+        }
+
+        public synchronized void stopAcceptingDoneContinuation() {
+            acceptDoneContinuation = false;
+            imapConnection = null;
+        }
+
+        public synchronized void stopIdle() {
+            if (acceptDoneContinuation) {
+                acceptDoneContinuation = false;
+                sendDone();
+            }
+        }
+
+        private void sendDone() {
+            try {
+                imapConnection.setReadTimeout(RemoteStore.SOCKET_READ_TIMEOUT);
+                imapConnection.sendContinuation("DONE");
+            } catch (IOException e) {
+                imapConnection.close();
             }
         }
     }

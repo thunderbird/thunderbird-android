@@ -626,6 +626,11 @@ class ImapConnection {
         }
     }
 
+    public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
+            throws IOException, NegativeImapResponseException {
+        return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+    }
+
     public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
         try {
             open();
