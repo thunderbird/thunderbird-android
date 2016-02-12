@@ -29,9 +29,9 @@ class ImapPusher implements Pusher {
 
     @Override
     public void start(List<String> folderNames) {
-        stop();
-
         synchronized (folderPushers) {
+            stop();
+
             setLastRefresh(currentTimeMillis());
 
             for (String folderName : folderNames) {
