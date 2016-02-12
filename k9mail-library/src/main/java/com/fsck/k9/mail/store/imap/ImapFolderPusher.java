@@ -44,8 +44,8 @@ class ImapFolderPusher extends ImapFolder implements UntaggedHandler {
     private final AtomicBoolean needsPoll = new AtomicBoolean(false);
     private final Object threadLock = new Object();
     private final IdleStopper idleStopper = new IdleStopper();
+    private final TracingWakeLock wakeLock;
     private List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
-    private TracingWakeLock wakeLock = null;
     private Thread listeningThread;
 
 
