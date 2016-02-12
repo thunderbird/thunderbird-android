@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import android.content.Context;
 import android.os.PowerManager;
@@ -39,9 +38,6 @@ class ImapFolderPusher extends ImapFolder {
     private final PushReceiver pushReceiver;
     private final AtomicBoolean stop = new AtomicBoolean(false);
     private final AtomicBoolean idling = new AtomicBoolean(false);
-    private final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
-    private final AtomicInteger idleFailureCount = new AtomicInteger(0);
-    private final AtomicBoolean needsPoll = new AtomicBoolean(false);
     private final Object threadLock = new Object();
     private final IdleStopper idleStopper = new IdleStopper();
     private final TracingWakeLock wakeLock;
@@ -123,6 +119,10 @@ class ImapFolderPusher extends ImapFolder {
 
 
     private class PushRunnable implements Runnable, UntaggedHandler {
+        private int delayTime = NORMAL_DELAY_TIME;
+        private int idleFailureCount = 0;
+        private boolean needsPoll = false;
+
         @Override
         public void run() {
             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
@@ -161,7 +161,8 @@ class ImapFolderPusher extends ImapFolder {
 
                     boolean pushPollOnConnect = store.getStoreConfig().isPushPollOnConnect();
                     boolean openedNewConnection = conn != oldConnection;
-                    if (pushPollOnConnect && (openedNewConnection || needsPoll.getAndSet(false))) {
+                    if (pushPollOnConnect && (openedNewConnection || needsPoll)) {
+                        needsPoll = false;
                         syncFolderOnConnect();
                     }
 
@@ -208,20 +209,18 @@ class ImapFolderPusher extends ImapFolder {
                         pushReceiver.pushError("Push error for " + getName(), e);
                         Log.e(LOG_TAG, "Got exception while idling for " + getLogId(), e);
 
-                        int delayTimeInt = delayTime.get();
-                        pushReceiver.sleep(wakeLock, delayTimeInt);
+                        pushReceiver.sleep(wakeLock, delayTime);
 
-                        delayTimeInt *= 2;
-                        if (delayTimeInt > MAX_DELAY_TIME) {
-                            delayTimeInt = MAX_DELAY_TIME;
+                        delayTime *= 2;
+                        if (delayTime > MAX_DELAY_TIME) {
+                            delayTime = MAX_DELAY_TIME;
                         }
-                        delayTime.set(delayTimeInt);
 
-                        if (idleFailureCount.incrementAndGet() > IDLE_FAILURE_COUNT_LIMIT) {
-                            Log.e(LOG_TAG, "Disabling pusher for " + getLogId() + " after " +
-                                    idleFailureCount.get() + " consecutive errors");
-                            pushReceiver.pushError("Push disabled for " + getName() + " after " +
-                                    idleFailureCount.get() + " consecutive errors", e);
+                        if (++idleFailureCount > IDLE_FAILURE_COUNT_LIMIT) {
+                            Log.e(LOG_TAG, "Disabling pusher for " + getLogId() + " after " + idleFailureCount +
+                                    " consecutive errors");
+                            pushReceiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount +
+                                    " consecutive errors", e);
                             stop.set(true);
                         }
                     }
@@ -307,8 +306,8 @@ class ImapFolderPusher extends ImapFolder {
 
         private void returnFromIdle() {
             idling.set(false);
-            delayTime.set(NORMAL_DELAY_TIME);
-            idleFailureCount.set(0);
+            delayTime = NORMAL_DELAY_TIME;
+            idleFailureCount = 0;
         }
 
         private void checkConnectionNotNull(ImapConnection conn) throws MessagingException {
@@ -570,7 +569,7 @@ class ImapFolderPusher extends ImapFolder {
             try {
                 List<ImapMessage> existingMessages = getMessagesFromUids(removeUids);
                 for (Message existingMessage : existingMessages) {
-                    needsPoll.set(true);
+                    needsPoll = true;
                     msgSeqUidMap.clear();
 
                     String existingUid = existingMessage.getUid();
