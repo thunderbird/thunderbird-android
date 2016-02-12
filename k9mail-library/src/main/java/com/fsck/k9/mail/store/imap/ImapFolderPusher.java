@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.content.Context;
 import android.os.PowerManager;
@@ -36,13 +35,13 @@ class ImapFolderPusher extends ImapFolder {
 
 
     private final PushReceiver pushReceiver;
-    private final AtomicBoolean stop = new AtomicBoolean(false);
-    private final AtomicBoolean idling = new AtomicBoolean(false);
     private final Object threadLock = new Object();
     private final IdleStopper idleStopper = new IdleStopper();
     private final TracingWakeLock wakeLock;
     private List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
     private Thread listeningThread;
+    private volatile boolean stop = false;
+    private volatile boolean idling = false;
 
 
     public ImapFolderPusher(ImapStore store, String name, PushReceiver pushReceiver) {
@@ -64,14 +63,14 @@ class ImapFolderPusher extends ImapFolder {
     }
 
     public void refresh() throws IOException, MessagingException {
-        if (idling.get()) {
+        if (idling) {
             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
             idleStopper.stopIdle();
         }
     }
 
     public void stop() {
-        stop.set(true);
+        stop = true;
 
         interruptListeningThread();
 
@@ -132,7 +131,7 @@ class ImapFolderPusher extends ImapFolder {
             }
 
             long lastUidNext = -1L;
-            while (!stop.get()) {
+            while (!stop) {
                 try {
                     long oldUidNext = getOldUidNext();
 
@@ -155,7 +154,7 @@ class ImapFolderPusher extends ImapFolder {
                     checkConnectionNotNull(conn);
                     checkConnectionIdleCapable(conn);
 
-                    if (stop.get()) {
+                    if (stop) {
                         break;
                     }
 
@@ -166,7 +165,7 @@ class ImapFolderPusher extends ImapFolder {
                         syncFolderOnConnect();
                     }
 
-                    if (stop.get()) {
+                    if (stop) {
                         break;
                     }
 
@@ -194,7 +193,7 @@ class ImapFolderPusher extends ImapFolder {
                     wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
 
                     storedUntaggedResponses.clear();
-                    idling.set(false);
+                    idling = false;
                     pushReceiver.setPushActive(getName(), false);
 
                     try {
@@ -203,7 +202,7 @@ class ImapFolderPusher extends ImapFolder {
                         Log.e(LOG_TAG, "Got exception while closing for exception for " + getLogId(), me);
                     }
 
-                    if (stop.get()) {
+                    if (stop) {
                         Log.i(LOG_TAG, "Got exception while idling, but stop is set for " + getLogId());
                     } else {
                         pushReceiver.pushError("Push error for " + getName(), e);
@@ -221,7 +220,7 @@ class ImapFolderPusher extends ImapFolder {
                                     " consecutive errors");
                             pushReceiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount +
                                     " consecutive errors", e);
-                            stop.set(true);
+                            stop = true;
                         }
                     }
                 }
@@ -283,7 +282,7 @@ class ImapFolderPusher extends ImapFolder {
 
         private void prepareForIdle() {
             pushReceiver.setPushActive(getName(), true);
-            idling.set(true);
+            idling = true;
         }
 
         private void sendIdle(ImapConnection conn) throws MessagingException, IOException {
@@ -305,7 +304,7 @@ class ImapFolderPusher extends ImapFolder {
         }
 
         private void returnFromIdle() {
-            idling.set(false);
+            idling = false;
             delayTime = NORMAL_DELAY_TIME;
             idleFailureCount = 0;
         }
@@ -321,7 +320,7 @@ class ImapFolderPusher extends ImapFolder {
 
         private void checkConnectionIdleCapable(ImapConnection conn) throws MessagingException {
             if (!conn.isIdleCapable()) {
-                stop.set(true);
+                stop = true;
 
                 String message = "IMAP server is not IDLE capable: " + conn.toString();
                 pushReceiver.pushError(message, null);
@@ -341,7 +340,7 @@ class ImapFolderPusher extends ImapFolder {
                 Log.v(LOG_TAG, "Got async response: " + response);
             }
 
-            if (stop.get()) {
+            if (stop) {
                 if (K9MailLib.isDebug()) {
                     Log.d(LOG_TAG, "Got async untagged response: " + response + ", but stop is set for " + getLogId());
                 }
