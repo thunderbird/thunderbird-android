@@ -57,6 +57,10 @@ class ImapFolderPusher extends ImapFolder {
 
     public void start() {
         synchronized (threadLock) {
+            if (listeningThread != null) {
+                throw new IllegalStateException("start() called twice");
+            }
+
             listeningThread = new Thread(new PushRunnable());
             listeningThread.start();
         }
@@ -70,9 +74,16 @@ class ImapFolderPusher extends ImapFolder {
     }
 
     public void stop() {
-        stop = true;
+        synchronized (threadLock) {
+            if (listeningThread == null) {
+                throw new IllegalStateException("stop() called twice");
+            }
 
-        interruptListeningThread();
+            stop = true;
+
+            listeningThread.interrupt();
+            listeningThread = null;
+        }
 
         ImapConnection conn = connection;
         if (conn != null) {
@@ -83,14 +94,6 @@ class ImapFolderPusher extends ImapFolder {
             conn.close();
         } else {
             Log.w(LOG_TAG, "Attempt to interrupt null connection to stop pushing on folderPusher for " + getLogId());
-        }
-    }
-
-    private void interruptListeningThread() {
-        synchronized (threadLock) {
-            if (listeningThread != null) {
-                listeningThread.interrupt();
-            }
         }
     }
 
