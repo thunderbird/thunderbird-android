@@ -600,16 +600,11 @@ class ImapConnection {
     }
 
     public List<ImapResponse> executeSimpleCommand(String command) throws IOException, MessagingException {
-        return executeSimpleCommand(command, false, null);
+        return executeSimpleCommand(command, false);
     }
 
     public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
             MessagingException {
-        return executeSimpleCommand(command, sensitive, null);
-    }
-
-    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
-            throws IOException, MessagingException {
         String commandToLog = command;
 
         if (sensitive && !K9MailLib.isDebugSensitive()) {
@@ -619,7 +614,7 @@ class ImapConnection {
         String tag = sendCommand(command, sensitive);
 
         try {
-            return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+            return responseParser.readStatusResponse(tag, commandToLog, getLogId(), null);
         } catch (IOException e) {
             close();
             throw e;
