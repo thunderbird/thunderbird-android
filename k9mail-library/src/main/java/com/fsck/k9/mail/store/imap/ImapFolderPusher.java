@@ -38,7 +38,7 @@ class ImapFolderPusher extends ImapFolder {
     private final Object threadLock = new Object();
     private final IdleStopper idleStopper = new IdleStopper();
     private final TracingWakeLock wakeLock;
-    private List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
+    private final List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
     private Thread listeningThread;
     private volatile boolean stop = false;
     private volatile boolean idling = false;
@@ -105,7 +105,9 @@ class ImapFolderPusher extends ImapFolder {
                     Log.d(LOG_TAG, "Storing response " + response + " for later processing");
                 }
 
-                storedUntaggedResponses.add(response);
+                synchronized (storedUntaggedResponses) {
+                    storedUntaggedResponses.add(response);
+                }
             }
 
             handlePossibleUidNext(response);
@@ -192,7 +194,7 @@ class ImapFolderPusher extends ImapFolder {
                 } catch (Exception e) {
                     wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
 
-                    storedUntaggedResponses.clear();
+                    clearStoredUntaggedResponses();
                     idling = false;
                     pushReceiver.setPushActive(getName(), false);
 
@@ -373,18 +375,38 @@ class ImapFolderPusher extends ImapFolder {
             }
         }
 
+        private void clearStoredUntaggedResponses() {
+            synchronized (storedUntaggedResponses) {
+                storedUntaggedResponses.clear();
+            }
+        }
 
         private void processStoredUntaggedResponses() throws MessagingException {
-            List<ImapResponse> untaggedResponses;
-            while (!storedUntaggedResponses.isEmpty()) {
-                if (K9MailLib.isDebug()) {
-                    Log.i(LOG_TAG, "Processing " + storedUntaggedResponses.size() +
-                            " untagged responses from previous commands for " + getLogId());
+            while (true) {
+                List<ImapResponse> untaggedResponses = getAndClearStoredUntaggedResponses();
+                if (untaggedResponses.isEmpty()) {
+                    break;
                 }
 
-                untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
-                storedUntaggedResponses.clear();
+                if (K9MailLib.isDebug()) {
+                    Log.i(LOG_TAG, "Processing " + untaggedResponses.size() + " untagged responses from previous " +
+                            "commands for " + getLogId());
+                }
+
                 processUntaggedResponses(untaggedResponses);
+            }
+        }
+
+        private List<ImapResponse> getAndClearStoredUntaggedResponses() {
+            synchronized (storedUntaggedResponses) {
+                if (storedUntaggedResponses.isEmpty()) {
+                    return Collections.emptyList();
+                }
+
+                List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
+                storedUntaggedResponses.clear();
+
+                return untaggedResponses;
             }
         }
 
@@ -596,9 +618,7 @@ class ImapFolderPusher extends ImapFolder {
         }
 
         private void syncFolderOnConnect() throws MessagingException {
-            List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
-            storedUntaggedResponses.clear();
-            processUntaggedResponses(untaggedResponses);
+            processStoredUntaggedResponses();
 
             if (messageCount == -1) {
                 throw new MessagingException("Message count = -1 for idling");
