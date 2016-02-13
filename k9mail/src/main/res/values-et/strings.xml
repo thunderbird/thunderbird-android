@@ -14,36 +14,6 @@
   <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Tere kasutama K-9 Maili</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail on võimekas tasuta emaili klientprogramm Androidile.
-</p><p>
-Selle funktsioonid on järgnevad:
-</p>
-<ul>
-  <li>Tõuke meilid kasutades IMAP IDLE</li>
-  <li>Parem jõudlus</li>
-  <li>Sõnumite ümberpaigutamine</li>
-  <li>Emaili allkirjad</li>
-  <li>Bcc endale saatmiseks</li>
-  <li>Kaustade tellimine</li>
-  <li>Kõikide kaustade tellimine</li>
-  <li>Vastusaadressi konfigureerimine</li>
-  <li>Klaviatuuri kiirkorraldused</li>
-  <li>Parem IMAP tugi</li>
-  <li>Manuste SD kaardile salvestamine</li>
-  <li>Prügikasti tühjendamine</li>
-  <li>Sõnumite sorteerimine</li>
-  <li>…ja palju muud</li>
-</ul>
-<p>
-Palun võtke ka teatavaks, et K-9 ei toeta enamusi tasuta Hotmaili kontosid ja nagu ka paljud teised emaili klientprogrammid 
-omab mõningaid veidrusi Microsoft Exchangega suheldes.
-</p><p>
-Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küsimusi siit
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" eemaldatakse K-9 Mailist.</string>
@@ -158,7 +128,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="recreating_account">Taasloob kontot \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Uus meilisõnum</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Lugemata (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> rohkemat <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Vasta</string>
   <string name="notification_action_mark_as_read">Märgi loetuks</string>
   <string name="notification_action_delete">Kustuta</string>
@@ -426,7 +395,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="account_settings_sync">Tood meili</string>
   <string name="account_settings_folders">Kaustad</string>
   <string name="account_settings_crypto">Krüptograafia</string>
-  <string name="account_settings_crypto_app">VabaPGP pakkuja</string>
   <string name="account_settings_mail_check_frequency_label">Kausta pollimise sagedus</string>
   <string name="account_settings_storage_title">Mälu</string>
   <string name="account_settings_color_label">Konto värv</string>
@@ -811,4 +779,5 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="fetching_attachment_dialog_message">Toob manust…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

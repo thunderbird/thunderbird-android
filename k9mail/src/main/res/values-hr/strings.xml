@@ -14,35 +14,6 @@
   <string name="app_license">Licencirano pod Apache License, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Dobrodošli u K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail je moćan besplatan klijent e-pošte za Android.
-</p><p>
-Poboljšane značajke uključuju:
-</p>
-<ul>
-  <li>Slanje pošte koristeći IMAP BESPOSLENOST</li>
-  <li>Bolje performanse</li>
-  <li>Ponovno podnošenje poruke</li>
-  <li>Potpise E-Pošte</li>
-  <li>Bcc-sam-sebi</li>
-  <li>Upise mapa</li>
-  <li>Sinhronizacija svih mapa</li>
-  <li>Konfiguraciju porvratne adrese</li>
-  <li>Tipkovničke kratice</li>
-  <li>Bolju IMAP podršku</li>
-  <li>Spremanje privitaka na SD Karticu</li>
-  <li>Pražnjenje Smeća</li>
-  <li>Sortiranje poruka</li>
-  <li>…i više</li>
-</ul>
-<p>
-Molimo vas znajte da K-9 ne podržava većinu besplatnih Hotmail računa i poput drugih klijenata e-pošte ima nekih problema prilikom komunikacije sa Microsoft Exchange.
-</p><p>
-Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i postavljajte pitanja na
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nPoslano sa mog Android uređaja sa K-9 Mail. Molim vas oprostite na mojoj sažetosti.</string>
   <!--General strings that include the app name-->
@@ -76,7 +47,7 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="status_loading_account_folder">Provjera <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Dobavljanje zaglavlja <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Šaljem <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_processing_account">Obrađujem <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
   <string name="status_next_poll">Slijedeća provjera <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Sinhroniziranje je onemogućeno</string>
@@ -163,10 +134,12 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novih poruka</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nepročitano (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> više na <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> više na <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odgovori</string>
   <string name="notification_action_mark_as_read">Označi Pročitanim</string>
   <string name="notification_action_delete">Obriši</string>
+  <string name="notification_action_archive">Arhiva</string>
+  <string name="notification_action_spam">Neželjena pošta</string>
   <string name="notification_certificate_error_title">Greška certifikata za <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">provjerite postavke vašeg poslužitelja</string>
   <string name="notification_bg_sync_ticker">Provjeravam poštu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -256,6 +229,7 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="global_settings_confirm_action_delete">Obriši</string>
   <string name="global_settings_confirm_action_delete_starred">Obriši Označeno Zvjezdicom (u pregledu poruke)</string>
   <string name="global_settings_confirm_action_spam">Neželjena pošta</string>
+  <string name="global_settings_confirm_menu_discard">Odbaci poruku</string>
   <string name="global_settings_confirm_action_delete_notif">Obriši (iz obavijesti)</string>
   <string name="global_settings_privacy_hide_useragent">Makni K-9 Korisničkog agenta iz zaglavlja pošte</string>
   <string name="global_settings_privacy_hide_timezone">Koristi KSV kao vremensku zonu u zaglavlju pošte</string>
@@ -276,6 +250,8 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="global_settings_lock_screen_notification_visibility_everything">Isto kao kod otključanog zaslona</string>
   <string name="quiet_time">Tiho Vrijeme</string>
   <string name="quiet_time_description">Onemogućava zvonjavu, vibriranje i blicanje noću</string>
+  <string name="quiet_time_notification">Onemogući obavijesti</string>
+  <string name="quiet_time_notification_description">Potpuno onemogući obavijesti tijekom Vremena Tišine</string>
   <string name="quiet_time_starts">Vrijeme Tišine započinje</string>
   <string name="quiet_time_ends">Vrijeme Tišine završava</string>
   <string name="account_setup_basics_title">Postavi novi račun</string>
@@ -456,8 +432,9 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="account_settings_folders">Mape</string>
   <string name="account_settings_quote_prefix_label">Prefiks citiranog teksta</string>
   <string name="account_settings_crypto">Šifriranje</string>
-  <string name="account_settings_crypto_app">OpenPGP Davatelj Usluga</string>
-  <string name="account_settings_no_openpgp_provider_installed">Nema instaliranog Open PGP Pružatelja Usluge</string>
+  <string name="account_settings_crypto_app">Aplikacija OtvorenogPGP-a</string>
+  <string name="account_settings_crypto_key">Moj Ključ</string>
+  <string name="account_settings_no_openpgp_provider_installed">Nema instalirane aplikacije OtvorenogPGP-a</string>
   <string name="account_settings_mail_check_frequency_label">Učestalost provjere mape</string>
   <string name="account_settings_storage_title">Pohrana</string>
   <string name="account_settings_color_label">Boja računa</string>
@@ -878,6 +855,23 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="fetching_attachment_dialog_message">Dohvaćanje privitka…</string>
   <string name="auth_external_error">Ne mogu identificirati. Poslužitelj ne oglašava SASL VANJSKU sposobnost. To može biti problem sa certifikatom klijenta (istekao, nepoznat izdavatelj certifikata) ili neki drugi konfiguracijski problem.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_unknown_error">Nepoznata Greška OvorenogPGP-a</string>
+  <string name="openpgp_canceled_by_user">Otkazano od korisnika</string>
+  <string name="openpgp_result_no_signature">Nije Prijavljen</string>
+  <string name="openpgp_result_invalid_signature">Nevažeći potpis</string>
+  <string name="openpgp_result_signature_uncertified">Potpisno od (nije certificirano)</string>
+  <string name="openpgp_result_signature_certified">Potpisano od</string>
+  <string name="openpgp_result_signature_expired_key">Ključ je istekao!</string>
+  <string name="openpgp_result_signature_revoked_key">Ključ je opozvan</string>
+  <string name="openpgp_result_signature_insecure">Nesigurno!</string>
+  <string name="openpgp_result_signature_missing_key">Nepoznati javni ključ</string>
+  <string name="openpgp_result_encrypted">Enkriptirano</string>
+  <string name="openpgp_result_not_encrypted">Nije enkriptirano</string>
+  <string name="openpgp_result_decryption_insecure">Nesigurno</string>
+  <string name="openpgp_result_action_show">Prikaži</string>
+  <string name="openpgp_result_action_lookup">Potraži</string>
+  <string name="openpgp_result_no_name">Bez naziva</string>
+  <string name="openpgp_result_no_email">Bez e-pošte</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Koristi certifikat klijenta</string>
   <string name="client_certificate_spinner_empty">Nema certifikata klijenta</string>
@@ -885,4 +879,7 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="client_certificate_retrieval_failure">Neuspješno dobivanje certifikata klijenta za alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Napredne Opcije</string>
   <string name="client_certificate_expired">Certifikat klijenta \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" je istekao ili još nije važeći (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Nepotpuna poruka</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Kliknite \'Preuzimanje cijele poruke\' za omogućavanje dekripcije.</string>
 </resources>

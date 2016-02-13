@@ -21,29 +21,28 @@
 Побољшане могућности укључују:
 </p>
 <ul>
-  <li>ГУРАЊЕ поште користећи НЕАКТИВНИ ИМАП</li>
+  <li>Прослеђивање поште користећи IMAP IDLE</li>
   <li>Боље преформансе</li>
   <li>Реархивисање порука</li>
   <li>Потписи е-порука</li>
-  <li>Бцц-себи</li>
+  <li>Бцц себи</li>
   <li>Претплате на фасцикле</li>
   <li>Синхронизација свих фасцикли</li>
-  <li>Поставка повратне адресе</li>
+  <li>Подешавање повратне адресе</li>
   <li>Пречице тастатуре</li>
-  <li>Боља подршка за ИМАП</li>
+  <li>Боља подршка за IMAP</li>
   <li>Упис прилога на СД картицу</li>
   <li>Пражњење отпада</li>
   <li>Ређање порука</li>
-  <li>…и више</li>
+  <li>…и још тога</li>
 </ul>
 <p>
-Имајте на уму да К-9 не подржава већину бесплатних Хотмејл налога, и као и многи клијенти, има
-мушица при разговору са Мајкрософтовом Разменом.
+Имајте на уму да К-9 не подржава већину бесплатних Хотмејл налога и, као и многи клијенти, има мушица при контакту са Мајкрософтовом Разменом.
 </p><p>
-Шаљите пријаве грешака, допринесите нове могућности и постављајте питања на
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+Пријављујте грешке, доприносите нове могућности и постављајте питања на
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
-    ]]></string>
+]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nПослато К-9 Поштом са мог Андроид уређаја.</string>
   <!--General strings that include the app name-->
@@ -164,10 +163,15 @@
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> нових порука</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> непрочитаних (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> још на <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> још на <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Одговори</string>
   <string name="notification_action_mark_as_read">Означи прочитаним</string>
+  <string name="notification_action_mark_all_as_read">Означи све прочитаним</string>
   <string name="notification_action_delete">Обриши</string>
+  <string name="notification_action_delete_all">Обриши све</string>
+  <string name="notification_action_archive">Архивирај</string>
+  <string name="notification_action_archive_all">Архивирај све</string>
+  <string name="notification_action_spam">Нежељена</string>
   <string name="notification_certificate_error_title">Грешка сертификата за <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Проверите поставке за сервер</string>
   <string name="notification_bg_sync_ticker">Проверавам пошту: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -207,6 +211,7 @@
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> написа:</string>
   <string name="message_compose_reply_header_fmt_with_date">Дана <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> написа:</string>
   <string name="message_compose_error_no_recipients">Морате додати бар једног примаоца.</string>
+  <string name="compose_error_incomplete_recipient">Поље примаоца садржи непотпун унос!</string>
   <string name="error_contact_address_not_found">Адреса е-поште овог контакта није нађена.</string>
   <string name="message_compose_attachments_skipped_toast">Неки прилози не могу бити прослеђени јер нису преузети.</string>
   <string name="message_compose_show_quoted_text_action">Цитирај поруку</string>
@@ -257,6 +262,7 @@
   <string name="global_settings_confirm_action_delete">Брисања</string>
   <string name="global_settings_confirm_action_delete_starred">Обриши обележено звездицом (у приказу поруке)</string>
   <string name="global_settings_confirm_action_spam">Померања у нежељене</string>
+  <string name="global_settings_confirm_menu_discard">Одбаци поруку</string>
   <string name="global_settings_confirm_action_delete_notif">Брисања (из обавештења)</string>
   <string name="global_settings_privacy_hide_useragent">Уклони К-9 идентификацију из заглавља поруке</string>
   <string name="global_settings_privacy_hide_timezone">Користи УТЦ за временску зону у заглављу поруке</string>
@@ -275,10 +281,12 @@
   <string name="global_settings_lock_screen_notification_visibility_message_count">Број непрочитаних порука</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Број порука и пошиљаоци</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Исто као кад је откључан екран</string>
-  <string name="quiet_time">Тихо време</string>
+  <string name="quiet_time">Тихи сати</string>
   <string name="quiet_time_description">Онемогући звоњење, зујање и трептање светла ноћу</string>
-  <string name="quiet_time_starts">Тихо време почиње</string>
-  <string name="quiet_time_ends">Тихо време завршава</string>
+  <string name="quiet_time_notification">Искључи обавештења</string>
+  <string name="quiet_time_notification_description">Искључење обавештења у потпуности током тихих сати</string>
+  <string name="quiet_time_starts">Тихи сати почињу</string>
+  <string name="quiet_time_ends">Тихи сати завршавају</string>
   <string name="account_setup_basics_title">Постави нови налог</string>
   <string name="account_setup_basics_email_hint">Е-адреса</string>
   <string name="account_setup_basics_password_hint">Лозинка</string>
@@ -458,6 +466,7 @@
   <string name="account_settings_quote_prefix_label">Префикс цитираног текста</string>
   <string name="account_settings_crypto">Криптографија</string>
   <string name="account_settings_crypto_app">ОпенПГП апликација</string>
+  <string name="account_settings_crypto_key">Мој кључ</string>
   <string name="account_settings_no_openpgp_provider_installed">Нема инсталиране апликације за ОпенПГП</string>
   <string name="account_settings_mail_check_frequency_label">Учесталост провере фасцикли</string>
   <string name="account_settings_storage_title">Складиште</string>
@@ -563,6 +572,7 @@
   <string name="account_settings_led_summary">Трептање ЛЕД светла кад стигне нова пошта</string>
   <string name="account_settings_composition_title">Опције састављања поруке</string>
   <string name="account_settings_composition_label">Подразумевано састављање</string>
+  <string name="account_settings_composition_summary">Поставите подразумеване Од, БЦЦ и потпис</string>
   <string name="account_settings_identities_label">Менаџер идентитета</string>
   <string name="account_settings_identities_summary">Поставка алтернативне „Од“ адресе и потписа</string>
   <string name="manage_identities_title">Управљање идентитетима</string>
@@ -656,6 +666,7 @@
   <string name="background_ops_label">Синхронизација у позадини</string>
   <string name="background_ops_never">Никад</string>
   <string name="background_ops_always">Увек</string>
+  <string name="background_ops_auto_sync_only">Ако је ауто-синх. укључена</string>
   <string name="batch_select_all">Изабери све</string>
   <string name="account_setup_push_limit_label">Максимално фасцикли за проверу гурањем</string>
   <string name="account_setup_push_limit_10">10 фасцикли</string>
@@ -678,6 +689,7 @@
   <string name="count_search_title">Броји резултате претраге</string>
   <string name="count_search_summary">Искључите за бржи приказ</string>
   <string name="hide_special_accounts_title">Сакриј посебне налоге</string>
+  <string name="hide_special_accounts_summary">Сакриј налоге „Обједињено пријемно сандуче“ и „Све поруке“</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="flagged_modifier"> - са звездицом</string>
   <string name="unread_modifier"> - непрочитане</string>
@@ -876,6 +888,24 @@
   <string name="fetching_attachment_dialog_message">Добављам прилог…</string>
   <string name="auth_external_error">Не могу да се аутентификујем.  Сервер не оглашава САСЛ ЕКСТЕРНАЛ могућност.  Узрок може да буде проблем са сертификатом клијента (истекао, непознат ауторитет сертификата) или неки други проблем у подешавању.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decryption_failed">Дешифровање није успело: %s</string>
+  <string name="openpgp_unknown_error">Непозната ОпенПГП грешка</string>
+  <string name="openpgp_canceled_by_user">Отказао корисник</string>
+  <string name="openpgp_result_no_signature">Није потписана</string>
+  <string name="openpgp_result_invalid_signature">Неисправан потпис!</string>
+  <string name="openpgp_result_signature_uncertified">Потписник (неоверен!)</string>
+  <string name="openpgp_result_signature_certified">Потписник</string>
+  <string name="openpgp_result_signature_expired_key">Кључ је истекао!</string>
+  <string name="openpgp_result_signature_revoked_key">Кључ је опозван!</string>
+  <string name="openpgp_result_signature_insecure">Небезбедан!</string>
+  <string name="openpgp_result_signature_missing_key">Непознат јавни кључ</string>
+  <string name="openpgp_result_encrypted">Шифрована</string>
+  <string name="openpgp_result_not_encrypted">Није шифрована</string>
+  <string name="openpgp_result_decryption_insecure">Небезбедно</string>
+  <string name="openpgp_result_action_show">Прикажи</string>
+  <string name="openpgp_result_action_lookup">Потражи</string>
+  <string name="openpgp_result_no_name">Нема имена</string>
+  <string name="openpgp_result_no_email">Нема е-адресе</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Користи сертификат клијента</string>
   <string name="client_certificate_spinner_empty">Нема сертификата клијента</string>
@@ -883,4 +913,27 @@
   <string name="client_certificate_retrieval_failure">Неуспех добављања сертификата клијента за псеудоним „<xliff:g id="alias">%s</xliff:g>“</string>
   <string name="client_certificate_advanced_options">Напредне поставке</string>
   <string name="client_certificate_expired">Сертификат клијента „<xliff:g id="certificate_alias">%1$s</xliff:g>“ је истекао или још није важећи (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Непотпуна порука</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Кликните на „Преузми читаву поруку“ да дозволите дешифровање.</string>
+  <string name="preview_encrypted">*Шифровано*</string>
+  <string name="add_from_contacts">Додај из контаката</string>
+  <string name="crypto_settings_ok">Настави</string>
+  <string name="recipient_cc">Цц</string>
+  <string name="recipient_bcc">Бцц</string>
+  <string name="recipient_to">За</string>
+  <string name="recipient_from">Од</string>
+  <string name="unknown_recipient"><![CDATA[<Непознат прималац>]]></string>
+  <string name="address_type_home">Кућа</string>
+  <string name="address_type_work">Посао</string>
+  <string name="address_type_other">Остало</string>
+  <string name="address_type_mobile">Мобилни</string>
+  <string name="warn_search_disabled">Претрага тела поруке је онемогућена у овом развојном издању!</string>
+  <string name="compose_error_no_draft_folder">Фасцикла за нацрте није подешена за овај налог!</string>
+  <string name="compose_error_no_signing_key">Захтевано је потписивање, али ниједан кључ није одређен!</string>
+  <string name="compose_error_private_missing_keys">Приватни режим укључен, али не могу да шифрујем свим примаоцима!</string>
+  <string name="crypto_mode_disabled">Никад не потписуј и не шифруј.</string>
+  <string name="crypto_mode_sign_only">Увек потписуј, никад не шифруј.</string>
+  <string name="crypto_mode_opportunistic">Увек потписуј, шифруј ако је могуће.</string>
+  <string name="crypto_mode_private">Увек потписуј, увек шифруј.</string>
 </resources>

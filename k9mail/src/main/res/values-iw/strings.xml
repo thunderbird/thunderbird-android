@@ -12,35 +12,6 @@
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
-  <string name="accounts_welcome"><![CDATA[
-<p>
-ברוכים הבאים ל-K-9 הגדרת דואר. K-9 הוא קוד פתוח של תוכנת מייל לאנדרואיד המבוססת במקור על תוכנת המייל הסטנדרטית של האנדרואיד
-</p><p>
-תכונות משופרות של K-9 כוללת:
-</p>
-<ul>
-  <li>דחוף דואר באמצעות IMAP IDLE</li>
-  <li>ביצועים טובים יותר</li>
-  <li>הודעה refiling</li>
-  <li>חתימות דוא\"ל</li>
-  <li>עותק מוסתר אל עצמי</li>
-  <li>תיקיות מנויים</li>
-  <li>כל התיקיות מסונכרנות</li>
-  <li>חזור- כתובת תצורה</li>
-  <li>מקלדת קיצורי דרך</li>
-  <li>תמיכה טובה יותר ב-IMAP</li>
-  <li>שמירת קבצים מצורפים אל SD</li>
-  <li>רוקן אשפה</li>
-  <li>מיון הודעת</li>
-  <li>ועוד …</li>
-</ul>
-<p>
-לידיעתך, K-9 אינו תומך ברוב חשבונות Hotmail החינמיים, כמו תוכנות דואר רבות, יש כמה מוזרויות כאשר מדברים על Microsoft Exchange.
-</p><p>
-נא לשלוח דיווחי באגים, לתרום תכונות חדשות ולשאול שאלות על
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
@@ -353,7 +324,6 @@
   <string name="account_settings_folders">תיקיות</string>
   <string name="account_settings_quote_prefix_label">קידומת טקסט מצוטט</string>
   <string name="account_settings_crypto">הצפנה</string>
-  <string name="account_settings_crypto_app">OpenPGP Provider</string>
   <string name="account_settings_storage_title">אחסון</string>
   <string name="account_settings_color_label">צבע חשבון</string>
   <string name="account_settings_color_summary">בחר את הצבע של החשבון המשומש בתיקייה וברשימת החשבונות</string>
@@ -628,4 +598,5 @@
   <string name="manage_accounts_moving_message">מעביר חשבון…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

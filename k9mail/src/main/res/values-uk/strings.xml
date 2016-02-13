@@ -14,35 +14,6 @@
   <string name="app_license">Ліцензія Apache License, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Ласкаво просимо до K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail це поштовий клієнт з відкритим вихідним кодом для Android, який базується на основі стадартної програми Android Mail client.
-</p><p>
-Покращені можливості K-9 включають:
-</p>
-<ul>
-  <li>Push mail при використання IMAP IDLE</li>
-  <li>Краща швидкодія</li>
-  <li>Систематизація повідомлень</li>
-  <li>Електронні підписи у пошті</li>
-  <li>Прихована копія собі</li>
-  <li>Підписки до папок</li>
-  <li>Синхронізація всіх папок</li>
-  <li>Налаштування зворотньої адреси</li>
-  <li>Клавіатурні скорочення</li>
-  <li>Краща підтримка IMAP</li>
-  <li>Збереження вкладень на карту пам’яті</li>
-  <li>Очищення кошика</li>
-  <li>Упорядкування повідомлень</li>
-  <li>…і більше</li>
-</ul>
-<p>
-Зауважимо, що K-9 не підтримує більшіть безкоштовних облікових записів hotmail та, як і інші поштові програми, має деякі дивацтва при роботі з Microsoft Exchange.
-</p><p>
-Будь ласка, надсилайте звіти про помилки, запити про розробку нових функцій та задавайте питання на
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%s</xliff:g>\" буде вилучено з K-9 Mail.</string>
@@ -155,7 +126,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="recreating_account">Відновлення облікового запису\"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Нова пошта</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Непрочитане (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> більше на <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Відповісти</string>
   <string name="notification_action_mark_as_read">Позначити як прочитаний</string>
   <string name="notification_action_delete">Видалити</string>
@@ -420,7 +390,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_settings_folders">Папки</string>
   <string name="account_settings_quote_prefix_label">Префікс цитованого тексту</string>
   <string name="account_settings_crypto">Шифрування</string>
-  <string name="account_settings_crypto_app">OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Частота опитування папок</string>
   <string name="account_settings_storage_title">Пам’ять</string>
   <string name="account_settings_color_label">Колір облікового запису</string>
@@ -814,4 +783,5 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="fetching_attachment_dialog_message">Отримання вкладення…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

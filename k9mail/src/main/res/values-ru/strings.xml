@@ -21,26 +21,26 @@ K-9 Mail — почтовый клиент для Android.
 Возможности:
 </p>
 <ul>
-  <li>push-уведомления</li>
-  <li>высокая производительность</li>
-  <li>перемещение сообщений</li>
-  <li>несколько подписей</li>
-  <li>постоянная скрытая копия</li>
-  <li>подписка на папки</li>
-  <li>синхронизация папок</li>
-  <li>адрес для ответа</li>
-  <li>горячие клавиши</li>
-  <li>улучшенная поддержка IMAP</li>
-  <li>сохранение вложений</li>
-  <li>очистка корзины</li>
-  <li>сортировка сообщений</li>
+  <li>push-уведомления,</li>
+  <li>быстрая работа,</li>
+  <li>перемещение сообщений,</li>
+  <li>несколько подписей,</li>
+  <li>скрытая копия себе,</li>
+  <li>подписка на папки,</li>
+  <li>синхронизация всех папок,</li>
+  <li>адрес для ответа,</li>
+  <li>горячие клавиши,</li>
+  <li>улучшенная поддержка IMAP,</li>
+  <li>сохранение вложений,</li>
+  <li>очистка корзины,</li>
+  <li>сортировка сообщений,</li>
   <li>…и многое другое!</li>
 </ul>
 <p>
-Отметим, что K-9 Mail неполностью совместим с MS Exchange и не поддерживает бесплатные ящики Hotmail
+Отметим, что K-9 Mail не полностью совместим с MS Exchange и не поддерживает бесплатные ящики Hotmail.
 </p><p>
-Вопросы, сообщения об ошибках и участие в разработке на
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+Вопросы, сообщения об ошибках и участие в разработке:
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -159,13 +159,19 @@ K-9 Mail — почтовый клиент для Android.
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> новое письмо</item>
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> новых писем</item>
+    <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> новых писем</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> новых писем</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> новых (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> в <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ ещё <xliff:g id="additional_messages">%1$d</xliff:g> в <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Ответить</string>
   <string name="notification_action_mark_as_read">Открыть</string>
+  <string name="notification_action_mark_all_as_read">Прочитаны все</string>
   <string name="notification_action_delete">Удалить</string>
+  <string name="notification_action_delete_all">Удалить все</string>
+  <string name="notification_action_archive">Архив</string>
+  <string name="notification_action_archive_all">В архив все</string>
+  <string name="notification_action_spam">Спам</string>
   <string name="notification_certificate_error_title">Ошибка сертификата <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
   <string name="notification_bg_sync_ticker">Проверка <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -255,6 +261,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="global_settings_confirm_action_delete">Удалить</string>
   <string name="global_settings_confirm_action_delete_starred">Удаление важного (в просмотре)</string>
   <string name="global_settings_confirm_action_spam">Перемещение в спам</string>
+  <string name="global_settings_confirm_menu_discard">Отменить сообщение</string>
   <string name="global_settings_confirm_action_delete_notif">Удаление (в уведомлении)</string>
   <string name="global_settings_privacy_hide_useragent">Убрать заголовок K-9 User-Agent</string>
   <string name="global_settings_privacy_hide_timezone">Время в UTC в заголовках</string>
@@ -275,6 +282,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="global_settings_lock_screen_notification_visibility_everything">Как без блокировки</string>
   <string name="quiet_time">Период тишины</string>
   <string name="quiet_time_description">Отключить мелодию, вибрацию и индикатор на ночь</string>
+  <string name="quiet_time_notification">Отключить уведомления</string>
+  <string name="quiet_time_notification_description">Полностью, в период тишины</string>
   <string name="quiet_time_starts">Начало</string>
   <string name="quiet_time_ends">Конец</string>
   <string name="account_setup_basics_title">Новый ящик</string>
@@ -455,8 +464,9 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_folders">Папки</string>
   <string name="account_settings_quote_prefix_label">Префикс цитаты</string>
   <string name="account_settings_crypto">Криптография</string>
-  <string name="account_settings_crypto_app">Провайдер OpenPGP</string>
-  <string name="account_settings_no_openpgp_provider_installed">Провайдер OpenPGP не установлен</string>
+  <string name="account_settings_crypto_app">OpenPGP</string>
+  <string name="account_settings_crypto_key">Мой ключ</string>
+  <string name="account_settings_no_openpgp_provider_installed">OpenPGP не установлен</string>
   <string name="account_settings_mail_check_frequency_label">Интервал проверки</string>
   <string name="account_settings_storage_title">Хранение</string>
   <string name="account_settings_color_label">Цвет</string>
@@ -739,6 +749,7 @@ K-9 Mail — почтовый клиент для Android.
   <plurals name="dialog_confirm_delete_messages">
     <item quantity="one">Сообщение будет удалено. Продолжить?</item>
     <item quantity="few">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>
+    <item quantity="many">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>
     <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут удалены. Продолжить?</item>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">ОК</string>
@@ -747,6 +758,7 @@ K-9 Mail — почтовый клиент для Android.
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Сообщение будет перемещено в Спам. Продолжить?</item>
     <item quantity="few">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут перемещены в Спам. Продолжить?</item>
+    <item quantity="many">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут перемещены в Спам. Продолжить?</item>
     <item quantity="other">Сообщения (<xliff:g id="message_count">%1$d</xliff:g> шт.) будут перемещены в Спам. Продолжить?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">ОК</string>
@@ -772,6 +784,7 @@ K-9 Mail — почтовый клиент для Android.
   <plurals name="settings_import_accounts">
     <item quantity="one">1 ящик</item>
     <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> ящика</item>
+    <item quantity="many"><xliff:g id="numAccounts">%s</xliff:g> ящиков</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> ящиков</item>
   </plurals>
   <string name="settings_export_failure">Сбой экспорта настроек</string>
@@ -785,6 +798,7 @@ K-9 Mail — почтовый клиент для Android.
   <plurals name="settings_import_server_passwords">
     <item quantity="one">пароль</item>
     <item quantity="few">пароли</item>
+    <item quantity="many">пароли</item>
     <item quantity="other">пароли</item>
   </plurals>
   <string name="settings_import_incoming_server">Сервер входящей почты (<xliff:g id="hostname">%s</xliff:g>):</string>
@@ -792,6 +806,7 @@ K-9 Mail — почтовый клиент для Android.
   <plurals name="settings_import_setting_passwords">
     <item quantity="one">Проверка пароля…</item>
     <item quantity="few">Проверка паролей…</item>
+    <item quantity="many">Проверка паролей…</item>
     <item quantity="other">Проверка паролей…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Как для входящей</string>
@@ -877,6 +892,24 @@ K-9 Mail — почтовый клиент для Android.
   <string name="fetching_attachment_dialog_message">Получение вложений…</string>
   <string name="auth_external_error">Аутентификация не удалась. Сервер не сообщает о совместимости с SASL EXTERNAL. Причиной может служить неверный сертификат клиента (просрочен, неизвестен издатель) или какие-либо проблемы с настройками.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decryption_failed">Сбой дешифрования: %s</string>
+  <string name="openpgp_unknown_error">Неизвестная ошибка OpenPGP</string>
+  <string name="openpgp_canceled_by_user">Отменено пользователем</string>
+  <string name="openpgp_result_no_signature">Не подписано</string>
+  <string name="openpgp_result_invalid_signature">Подпись недействительна!</string>
+  <string name="openpgp_result_signature_uncertified">Подписано (не проверено)</string>
+  <string name="openpgp_result_signature_certified">Подписано</string>
+  <string name="openpgp_result_signature_expired_key">Ключ просрочен!</string>
+  <string name="openpgp_result_signature_revoked_key">Ключ был отозван!</string>
+  <string name="openpgp_result_signature_insecure">Небезопасно!</string>
+  <string name="openpgp_result_signature_missing_key">Открытый ключ неиизвестен</string>
+  <string name="openpgp_result_encrypted">Зашифровано</string>
+  <string name="openpgp_result_not_encrypted">Не зашифровано</string>
+  <string name="openpgp_result_decryption_insecure">Небезопасно</string>
+  <string name="openpgp_result_action_show">Показать</string>
+  <string name="openpgp_result_action_lookup">Искать</string>
+  <string name="openpgp_result_no_name">Нет имени</string>
+  <string name="openpgp_result_no_email">Нет адреса</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Использовать сертификат клиента</string>
   <string name="client_certificate_spinner_empty">Не использовать сертификат клиента</string>
@@ -884,4 +917,19 @@ K-9 Mail — почтовый клиент для Android.
   <string name="client_certificate_retrieval_failure">Не найден сертификат клиента для алиаса \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Дополнительно</string>
   <string name="client_certificate_expired">Срок действия сертификата клиента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" истёк или ещё не наступил (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Неполное сообщение</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Нажмите \'Загрузить полностью\' для дешифрования.</string>
+  <string name="preview_encrypted">*Зашифровано*</string>
+  <string name="add_from_contacts">Добавить из Контактов</string>
+  <string name="crypto_settings_ok">Продолжить</string>
+  <string name="recipient_cc">Копия</string>
+  <string name="recipient_bcc">Скрытая</string>
+  <string name="recipient_to">Кому</string>
+  <string name="recipient_from">От</string>
+  <string name="unknown_recipient"><![CDATA[<Неизвестный получатель>]]></string>
+  <string name="address_type_home">Дом</string>
+  <string name="address_type_work">Работа</string>
+  <string name="address_type_other">Прочее</string>
+  <string name="address_type_mobile">Мобильный</string>
 </resources>

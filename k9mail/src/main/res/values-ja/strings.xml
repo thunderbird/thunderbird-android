@@ -14,35 +14,6 @@
   <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Mailへようこそ</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 はAndroidにおける強力なフリーのメールクライアントです。
-</p><p>
-K-9で改良された機能:
-</p>
-<ul>
-  <li>IMAP IDLEを利用したプッシュメール</li>
-  <li>パフォーマンス改善</li>
-  <li>メッセージ整理</li>
-  <li>電子メール署名</li>
-  <li>Bcc-to-self</li>
-  <li>フォルダ購読</li>
-  <li>全フォルダ同期</li>
-  <li>返信先の設定</li>
-  <li>キーボードショートカット</li>
-  <li>より良いIMAPサポート</li>
-  <li>添付ファイルのSDカードへの保存</li>
-  <li>ゴミ箱を空にする機能</li>
-  <li>メッセージのソート</li>
-  <li>…他にもたくさんあります</li>
-</ul>
-<p>
-K-9 は大多数のメールクライアントと同様に、ほとんどのフリーHotmailアカウントをサポートしていません。また、 Microsoft Exchange との通信において少し癖を持っていることに注意してください。
-</p><p>
-バグレポートや新機能の貢献、質問は http://k9mail.googlecode.com/ にお願いします。<br>
-日本語で質問などがある場合は <a href=\"http://groups.google.co.jp/group/k9mail_ja/\">http://groups.google.co.jp/group/k9mail_ja/</a> を参照してください。
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
@@ -159,7 +130,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 件の新着メッセージ</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 未読 (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> more on <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">返信</string>
   <string name="notification_action_mark_as_read">既読</string>
   <string name="notification_action_delete">削除</string>
@@ -449,7 +419,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_folders">フォルダ</string>
   <string name="account_settings_quote_prefix_label">引用記号</string>
   <string name="account_settings_crypto">暗号化</string>
-  <string name="account_settings_crypto_app">OpenPGPの利用</string>
   <string name="account_settings_mail_check_frequency_label">同期フォルダの同期間隔</string>
   <string name="account_settings_storage_title">ストレージ</string>
   <string name="account_settings_color_label">アカウントの色</string>
@@ -867,4 +836,5 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="client_certificate_retrieval_failure">別名 \"<xliff:g id="alias">%s</xliff:g>\" のためのクライアント証明書の取得に失敗しました</string>
   <string name="client_certificate_advanced_options">拡張オプション</string>
   <string name="client_certificate_expired">クライアント証明書 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" が、期限切れまたは不正です (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <!--Note: This references message_view_download_remainder-->
 </resources>

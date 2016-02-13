@@ -14,35 +14,6 @@
   <string name="app_license">Wszelkie prawa zastrzeżone</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Witaj w K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android.
-</p><p>
-Najistotniejsze ulepszenia wprowadzone w K-9 względem systemowej aplikacji, to:
-</p>
-<ul>
-  <li>Obsługa Push Mail z użyciem IMAP IDLE</li>
-  <li>Lepsza wydajność</li>
-  <li>Reorganizaowanie wiadomości</li>
-  <li>Obsługa sygnaturek</li>
-  <li>Kopia UDW-do-siebie</li>
-  <li>Subscrypcja wybranych folderów</li>
-  <li>Synchronizacja wszystkich folderów</li>
-  <li>Konfiguracja adresu zwrotnego</li>
-  <li>Skróty klawiszowe</li>
-  <li>Lepsza obsługa protokołu IMAP</li>
-  <li>Zapisywanie załączników na kartę SD</li>
-  <li>Opróźnianie folderu \"Trash\"</li>
-  <li>Sortowanie wiadomości</li>
-  <li>… i wiele innych</li>
-</ul>
-<p>
-K-9 nie obsługuje darmowych kont Hotmail oraz, jak wiele innych programów pocztowych może być kapryśny przy połączeniach z serwerem Microsoft Exchange.
-</p><p>
-Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać za pośrednictwem strony projektu:
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9.</string>
@@ -156,10 +127,10 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="recreating_account">Odtwarzam konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nowa wiadomość</string>
   <string name="notification_new_one_account_fmt">Nowe: <xliff:g id="unread_message_count">%d</xliff:g> (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> więcej na <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Odpowiedz</string>
   <string name="notification_action_mark_as_read">Oznacz jako przeczytane</string>
   <string name="notification_action_delete">Usuń</string>
+  <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_title">Błąd certyfikatu dla <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Sprawdź ustawienia serwera</string>
   <string name="notification_bg_sync_ticker">Sprawdzam: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -249,7 +220,10 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="global_settings_confirm_action_delete">Usuń</string>
   <string name="global_settings_confirm_action_delete_starred">Usuń oznacz. gwiazkdą (tylko widok wiadomości)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Odrzuć wiadomość</string>
   <string name="global_settings_confirm_action_delete_notif">Usuń (powiadomienie)</string>
+  <string name="global_settings_privacy_hide_useragent">Usuń User-Agent K-9 z nagłówka wiadomości</string>
+  <string name="global_settings_privacy_hide_timezone">Użyj UTC jako strefy czasowej w nagłówku wiadomości</string>
   <string name="global_settings_notification_hide_subject_title">Ukryj temat w powiadomieniach</string>
   <string name="global_settings_notification_hide_subject_never">Nigdy</string>
   <string name="global_settings_notification_hide_subject_when_locked">Gdy urządzenie jest zablokowane</string>
@@ -259,6 +233,10 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="global_settings_notification_quick_delete_when_single_msg">Dla powiadomień o pojedynczych wiadomościach</string>
   <string name="global_settings_notification_quick_delete_always">Zawsze</string>
   <string name="global_settings_notification_quick_delete_description">Pokazuj w oknie powiadomień przycisk pozwalający na szybkie usunięcie wiadomości</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Powiadomienia na ekranie blokady</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Bez powiadomień na ekranie blokady</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Nazwa aplikacji</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Liczba nieprzeczytanych wiadomości</string>
   <string name="quiet_time">Okres ciszy</string>
   <string name="quiet_time_description">Wyłącz dzwonienie, wibracje i mruganie w nocy</string>
   <string name="quiet_time_starts">Początek okresu ciszy</string>
@@ -284,6 +262,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
   <string name="account_setup_auth_type_normal_password">Normalne hasło</string>
+  <string name="account_setup_auth_type_encrypted_password">Zaszyfrowane hasło</string>
   <string name="account_setup_incoming_title">Poczta przychodząca</string>
   <string name="account_setup_incoming_username_label">Identyfikator</string>
   <string name="account_setup_incoming_password_label">Hasło</string>
@@ -382,6 +361,8 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_setup_options_mail_display_count_all">Wszystkie wiadomości</string>
   <string name="move_copy_cannot_copy_unsynced_message">Nie mogę skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
   <string name="account_setup_failed_dlg_title">Wystąpił błąd</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Nazwa użytkownika lub hasło nieprawidłowe.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Nie można połączyć z serwerem.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Popraw ustawienia</string>
   <string name="account_setup_failed_dlg_continue_action">Kontynuuj</string>
   <string name="account_settings_push_advanced_title">Zaawansowane</string>
@@ -389,6 +370,11 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_settings_default_label">Konto domyślne</string>
   <string name="account_settings_default_summary">Domyślnie wysyłaj wiadomości z tego konta</string>
   <string name="account_settings_notify_label">Nowe wiadomości</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Powiadomienia z folderów</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Wszystkie</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Tylko foldery klasy 1</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Foldery klasy 1 oraz 2</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Wszystkie poza klasą 2</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">Żadna</string>
   <string name="account_settings_notify_sync_label">Synchronizacja konta</string>
   <string name="account_settings_email_label">Twój adres email</string>
@@ -407,7 +393,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_settings_composition">Tworzenie wiadomości</string>
   <string name="account_settings_default_quoted_text_shown_label">Cytuj oryginał</string>
   <string name="account_settings_default_quoted_text_shown_summary">Gdy odpowiadasz tekst oryginalnej wiadomości zostanie cytowany</string>
-  <string name="account_settings_reply_after_quote_label">Cytat pod spodem</string>
+  <string name="account_settings_reply_after_quote_label">Odpowiedź pod cytatem</string>
   <string name="account_settings_reply_after_quote_summary">Podczas odpowiadania, wiadomość oryginalna (cytowana) pojawi się nad Twoją odpowiedzią</string>
   <string name="account_settings_strip_signature_label">Wycinaj podpis z tekstu</string>
   <string name="account_settings_strip_signature_summary">Gdy odpowiadasz na wiadomość, cytowany tekst nie bedzie zawierał podpisu</string>
@@ -427,7 +413,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_settings_folders">Foldery</string>
   <string name="account_settings_quote_prefix_label">Prefiks cytowania</string>
   <string name="account_settings_crypto">Kryptografia</string>
-  <string name="account_settings_crypto_app">Dostawca OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Sprawdzanie konta</string>
   <string name="account_settings_storage_title">Przechowanie</string>
   <string name="account_settings_color_label">Kolor konta</string>
@@ -505,9 +490,11 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="folder_settings_folder_push_mode_first_class">Klasa 1</string>
   <string name="folder_settings_folder_push_mode_second_class">Klasa 2</string>
   <string name="folder_settings_folder_push_mode_inherited">Taka sama jak klasa synchronizacji</string>
+  <string name="folder_settings_folder_notify_mode_label">Klasa powiadamiania</string>
   <string name="folder_settings_folder_notify_mode_normal">Żadna</string>
   <string name="folder_settings_folder_notify_mode_first_class">Klasa 1</string>
   <string name="folder_settings_folder_notify_mode_second_class">Klasa 2</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Taka jak klasa Push</string>
   <string name="account_settings_incoming_label">Poczta przychodząca</string>
   <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>
   <string name="account_settings_outgoing_label">Poczta wychodząca</string>
@@ -608,7 +595,7 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="network_preferences">Sieć</string>
   <string name="interaction_preferences">Interakcja</string>
   <string name="accountlist_preferences">Lista kont</string>
-  <string name="messagelist_preferences">Listy widomości</string>
+  <string name="messagelist_preferences">Listy wiadomości</string>
   <string name="messageview_preferences">Wiadomości</string>
   <string name="folderlist_preferences">Listy folderów</string>
   <string name="settings_theme_label">Kolorystyka</string>
@@ -835,4 +822,5 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <string name="client_certificate_advanced_options">Zaawansowane ustawienia</string>
+  <!--Note: This references message_view_download_remainder-->
 </resources>

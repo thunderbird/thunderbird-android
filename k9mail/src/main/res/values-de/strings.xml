@@ -17,30 +17,31 @@ Teile \u00a9 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
+K-9 Mail ist ein leistungsstarker, freier E-Mail-Client für Android.
 </p><p>
-Verbesserte Funktionen in K-9:
+Seine verbesserten Funktionen beinhalten:
 </p>
 <ul>
-  <li>Benachrichtigung über neue Nachrichten per IMAP IDLE</li>
-  <li>Höhere Performance</li>
+  <li>Push-Mail unter Verwendung von IMAP IDLE</li>
+  <li>Bessere Leistung</li>
+  <li>Nachrichtenneuordnung</li>
   <li>E-Mail-Signaturen</li>
-  <li>Automatische Blindkopie an sich selbst</li>
-  <li>Ordner-Abonnements</li>
+  <li>Bcc-to-self</li>
+  <li>Ordnerabonnements</li>
   <li>Synchronisation aller Ordner</li>
-  <li>Konfiguration einer Antwort-Adresse</li>
-  <li>Tastatur-Shortcuts</li>
-  <li>Verbesserte IMAP-Unterstützung</li>
-  <li>Speichern von Anhängen auf SD-Karte</li>
+  <li>Rücksendeadresskonfiguration</li>
+  <li>Tastaturkürzel</li>
+  <li>Bessere IMAP-Unterstützung</li>
+  <li>Speichern von Anhängen auf SD</li>
   <li>Papierkorb leeren</li>
-  <li>Sortieren der Nachrichten</li>
-  <li>…und viele mehr</li>
+  <li>Nachrichtensortierung</li>
+  <li>…und weitere</li>
 </ul>
 <p>
-Bitte beachten Sie, dass K-9, wie viele andere E-Mail-Anwendungen auch, die meisten kostenlosen Hotmail-Accounts nicht unterstützt. Zudem gibt es einige Probleme mit Microsoft Exchange-Servern.
+Bitte beachten Sie, dass K-9 die meisten kostenlosen Hotmail-Konten nicht unterstützt und, wie viele andere E-Mail-Clients, einige Macken bei der Kommunikation mit Microsoft Exchange hat.
 </p><p>
-Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuchen Sie die Homepage unter
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Fragen an
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -161,12 +162,15 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> neue Nachrichten</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ungelesen (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">und <xliff:g id="additional_messages">%d</xliff:g> weitere (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> weitere auf <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Antworten</string>
   <string name="notification_action_mark_as_read">Gelesen</string>
+  <string name="notification_action_mark_all_as_read">Alle als gelesen markieren</string>
   <string name="notification_action_delete">Löschen</string>
+  <string name="notification_action_delete_all">Alle löschen</string>
+  <string name="notification_action_archive">Archiv</string>
+  <string name="notification_action_archive_all">Alle archivieren</string>
   <string name="notification_action_spam">Spam</string>
-  <string name="notification_action_archive">Archivieren</string>
   <string name="notification_certificate_error_title">Zertifikatsproblem (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_certificate_error_text">Überprüfen Sie Ihre Servereinstellungen</string>
   <string name="notification_bg_sync_ticker">Neue E-Mails in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> werden abgerufen</string>
@@ -206,6 +210,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schrieb:</string>
   <string name="message_compose_reply_header_fmt_with_date">Am <xliff:g id="sent_date">%1$s</xliff:g>, schrieb <xliff:g id="sender">%2$s</xliff:g>:</string>
   <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger auswählen.</string>
+  <string name="compose_error_incomplete_recipient">Empfänger-Feld enthält unvollständigen Inhalt!</string>
   <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
   <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
   <string name="message_compose_show_quoted_text_action">Ursprüngliche Nachricht zitieren</string>
@@ -256,6 +261,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="global_settings_confirm_action_delete">Löschen</string>
   <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Nachricht verwerfen</string>
   <string name="global_settings_confirm_action_delete_notif">Löschen (aus Benachrichtigung)</string>
   <string name="global_settings_privacy_hide_useragent">K-9 nicht als Mailprogramm in Kopfzeilen eintragen</string>
   <string name="global_settings_privacy_hide_timezone">UTC als Zeitzone in Kopfzeilen verwenden</string>
@@ -276,6 +282,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="global_settings_lock_screen_notification_visibility_everything">Gleiche wie bei entsperrtem Bildschirm</string>
   <string name="quiet_time">Ruhezeit</string>
   <string name="quiet_time_description">Klingeln, Vibrieren und Leuchten in der Nacht deaktivieren</string>
+  <string name="quiet_time_notification">Benachrichtigungen deaktivieren</string>
+  <string name="quiet_time_notification_description">Benachrichtigungen während der Ruhezeit komplett deaktivieren</string>
   <string name="quiet_time_starts">Ruhezeit startet</string>
   <string name="quiet_time_ends">Ruhezeit endet</string>
   <string name="account_setup_basics_title">E-Mail-Konto einrichten</string>
@@ -456,8 +464,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_folders">Ordner</string>
   <string name="account_settings_quote_prefix_label">Zitat-Präfix</string>
   <string name="account_settings_crypto">Kryptographie</string>
-  <string name="account_settings_crypto_app">OpenPGP-Anbieter</string>
-  <string name="account_settings_no_openpgp_provider_installed">Kein OpenPGP-Anbieter installiert</string>
+  <string name="account_settings_crypto_app">OpenPGP App</string>
+  <string name="account_settings_crypto_key">Mein Schlüssel</string>
+  <string name="account_settings_no_openpgp_provider_installed">Keine OpenPGP App installiert</string>
   <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
   <string name="account_settings_storage_title">Speicher</string>
   <string name="account_settings_color_label">Kontofarbe</string>
@@ -873,6 +882,24 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
   <string name="auth_external_error">Authentifizierung fehlgeschlagen. Der Server bietet nicht Simple Authentication and Security Layer, kurz SASL, an. Dies könnte durch ein Problem des Client Zertifikats (Zertifikat abgelaufen, unbekannte Zertifizierungsstelle) oder ein Konfigurationsproblem ausgelöst werden.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decryption_failed">Entschlüsselung fehlgeschlagen: %s</string>
+  <string name="openpgp_unknown_error">Unbekannter OpenPGP Fehler</string>
+  <string name="openpgp_canceled_by_user">Vom Benutzer abgebrochen</string>
+  <string name="openpgp_result_no_signature">Nicht signiert</string>
+  <string name="openpgp_result_invalid_signature">Ungültige Signatur</string>
+  <string name="openpgp_result_signature_uncertified">Unterschrieben von (nicht bestätigt!)</string>
+  <string name="openpgp_result_signature_certified">Signiert von</string>
+  <string name="openpgp_result_signature_expired_key">Schlüssel ist abgelaufen!</string>
+  <string name="openpgp_result_signature_revoked_key">Schlüssel wurde wiederrufen!</string>
+  <string name="openpgp_result_signature_insecure">Unsicher!</string>
+  <string name="openpgp_result_signature_missing_key">Unbekannter öffentlicher Schlüssel</string>
+  <string name="openpgp_result_encrypted">Verschlüsselt</string>
+  <string name="openpgp_result_not_encrypted">Nicht verschlüsselt</string>
+  <string name="openpgp_result_decryption_insecure">Unsicher</string>
+  <string name="openpgp_result_action_show">Anzeigen</string>
+  <string name="openpgp_result_action_lookup">Nachschlagen</string>
+  <string name="openpgp_result_no_name">Kein Name</string>
+  <string name="openpgp_result_no_email">Keine E-Mail</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Client-Zertifikat verwenden</string>
   <string name="client_certificate_spinner_empty">Kein Client-Zertifikat</string>
@@ -880,4 +907,27 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="client_certificate_retrieval_failure">Das Abrufen des Client-Zertifikats für den Pfad \"<xliff:g id="alias">%s</xliff:g>\" ist fehlgeschlagen</string>
   <string name="client_certificate_advanced_options">Erweiterte Optionen</string>
   <string name="client_certificate_expired">Client-Zertifikat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ist abgelaufen oder noch nicht gültig (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Unvollständige Nachricht</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Klicken Sie auf \'Gesamte Nachricht herunterladen\', um die Entschlüsselung zu genehmigen.</string>
+  <string name="preview_encrypted">*Verschlüsselt*</string>
+  <string name="add_from_contacts">Vom Adressbuch hinzufügen</string>
+  <string name="crypto_settings_ok">Fortfahren</string>
+  <string name="recipient_cc">CC</string>
+  <string name="recipient_bcc">BCC</string>
+  <string name="recipient_to">An</string>
+  <string name="recipient_from">Von</string>
+  <string name="unknown_recipient"><![CDATA[<Unbekannter Empfänger>]]></string>
+  <string name="address_type_home">Zuhause</string>
+  <string name="address_type_work">Arbeit</string>
+  <string name="address_type_other">Anderes</string>
+  <string name="address_type_mobile">Mobil</string>
+  <string name="warn_search_disabled">Die Suche im Nachrichtentext ist in der Entwicklerversion deaktiviert!</string>
+  <string name="compose_error_no_draft_folder">Kein Ordner für Entwürfe für dieses Konto festgelegt!</string>
+  <string name="compose_error_no_signing_key">Unterschrift angefordert, aber keinen Schlüssel ausgewählt!</string>
+  <string name="compose_error_private_missing_keys">Privater Modus aktiviert, aber Verschlüsselung ist nicht für alle Empfänger möglich!</string>
+  <string name="crypto_mode_disabled">Niemals Unterschreiben oder Verschlüsseln.</string>
+  <string name="crypto_mode_sign_only">Immer Unterschreiben, Niemals Verschlüsseln.</string>
+  <string name="crypto_mode_opportunistic">Immer Unterschreiben, Verschlüsseln wenn möglich.</string>
+  <string name="crypto_mode_private">Immer Unterschreiben, Immer Verschlüsseln.</string>
 </resources>

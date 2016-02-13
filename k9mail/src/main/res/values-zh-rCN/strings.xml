@@ -3,7 +3,7 @@
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 Mail</string>
+  <string name="app_name">K-9 邮箱</string>
   <string name="shortcuts_title">K-9 账户</string>
   <string name="unread_widget_label">K-9 未读</string>
   <string name="remote_control_label">K-9 Mail 远程控制</string>
@@ -14,34 +14,6 @@
   <string name="app_license">根据Apache License 2.0 协议授权。</string>
   <!--Welcome message-->
   <string name="welcome_message_title">欢迎来到 K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail是Android下的开源电子邮件客户端，其最初的代码来自Android默认的电子邮件程序。
-</p><p>
-K-9改进的功能包括：
-</p>
-<ul>
-  <li>利用IMAP IDEL进行Push mail</li>
-  <li>更好的性能</li>
-  <li>重新装入邮件</li>
-  <li>邮件签名</li>
-  <li>暗送给自己</li>
-  <li>文件夹订阅</li>
-  <li>同步全部文件夹</li>
-  <li>可以编辑回件地址</li>
-  <li>键盘快捷键</li>
-  <li>更好的IMAP支持</li>
-  <li>保存附件到SD卡</li>
-  <li>清空垃圾箱</li>
-  <li>邮件排序</li>
-  <li>以及其他很多哦～</li>
-</ul>
-<p>
-请注意K-9不支持绝大多数免费Hotmail账户，以及，和很多邮件客户端一样，在和Microsoft Exchange沟通的时候存在一些奇妙的问题。
-</p><p>
-请到<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>提交错误报告、贡献新功能或提出您的问题。
-</p>
-    ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \n使用 K-9 Mail 发送自我的Android设备。</string>
   <!--General strings that include the app name-->
@@ -159,7 +131,6 @@ K-9改进的功能包括：
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 条新消息</item>
   </plurals>
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string>
-  <string name="notification_additional_messages">再加载 <xliff:g id="additional_messages">%d</xliff:g> 条信息, 账户 <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">回复</string>
   <string name="notification_action_mark_as_read">标记为已读</string>
   <string name="notification_action_delete">删除</string>
@@ -452,8 +423,6 @@ K-9改进的功能包括：
   <string name="account_settings_folders">文件夹</string>
   <string name="account_settings_quote_prefix_label">引用文本前缀</string>
   <string name="account_settings_crypto">加密</string>
-  <string name="account_settings_crypto_app">OpenPGP 提供者</string>
-  <string name="account_settings_no_openpgp_provider_installed">未安装OpenPGP提供程序</string>
   <string name="account_settings_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_settings_storage_title">存储</string>
   <string name="account_settings_color_label">账户颜色</string>
@@ -871,4 +840,5 @@ K-9改进的功能包括：
   <string name="client_certificate_retrieval_failure">无法获取别名 \"<xliff:g id="alias">%s</xliff:g>\" 的客户端证书</string>
   <string name="client_certificate_advanced_options">高级选项</string>
   <string name="client_certificate_expired">客户端证书 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 已经过期，或者尚未开始生效。 (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <!--Note: This references message_view_download_remainder-->
 </resources>

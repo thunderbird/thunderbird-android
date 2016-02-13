@@ -3,48 +3,51 @@
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 Mail</string>
+  <string name="app_name">Courriel K-9 Mail</string>
   <string name="shortcuts_title">Comptes K-9</string>
   <string name="unread_widget_label">K-9 non lus</string>
-  <string name="remote_control_label">Contrôle à distance de K-9 Mail</string>
-  <string name="remote_control_desc">Permet à cette application de contrôler les activités et les paramètres de K-9 Mail</string>
+  <string name="remote_control_label">Contrôle à distance de Courriel K-9 Mail</string>
+  <string name="remote_control_desc">Permet à cette application de contrôler les activités et les paramètres de Courriel K-9 Mail</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Tous droits réservés 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Parties protégées par droits d\'auteur 2006-<xliff:g>%s</xliff:g> le projet libre Android.</string>
   <string name="app_license">Sous licence Apache, version 2.0.</string>
   <!--Welcome message-->
-  <string name="welcome_message_title">Bienvenue sur K-9 Mail</string>
+  <string name="welcome_message_title">Bienvenue sur Courriel K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail est un client de courriel libre puissant pour Android.
+Courriel K-9 Mail est un client de courriel puissant et ouvert pour Android.
 </p><p>
-Ces fonctions améliorées incluent :
+Ses fonctions améliorées incluent :
 </p>
 <ul>
   <li>Courriel poussé utilisant IMAP IDLE</li>
   <li>Meilleures performances</li>
-  <li>Signature des courriels</li>
-  <li>Cci à soi</li>
+  <li>Réarchivage des messages</li>
+  <li>Signatures des courriels</li>
+  <li>Cci-à-soi</li>
   <li>Abonnement aux dossiers</li>
-  <li>Synchronisation de tous les dossiers</li>
+  <li>Synchronisation de tous les dossiers </li>
   <li>Configuration de l\'adresse de retour</li>
   <li>Raccourcis clavier</li>
   <li>Meilleure prise en charge IMAP</li>
-  <li>Enregistrement des pièces jointes sur la carte SD</li>
-  <li>Vider la corbeille</li>
+  <li>Enregistrements des pièces jointes sur la carte SD</li>
+  <li>Vidage de la corbeille</li>
   <li>Tri des messages</li>
-  <li>…et plus</li>
+  <li>et plus…</li>
 </ul>
 <p>
-Veuillez noter que K-9 Mail ne prend pas en charge la plupart des comptes gratuits Hotmail et a, comme beaucoup de courrielleurs, quelques ennuis à communiquer avec Microsoft Exchange.
+Veuillez noter que K-9 ne prend pas en charge la plupart des comptes 
+Hotmail gratuits et que, comme pour beaucoup de clients de courriel, la communication avec Microsoft Exchange est capricieuse.
 </p><p>
-Veuillez envoyer les rapports de bogues, suggérer de nouvelles fonctions et poser des questions (en anglais) sur <a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+Veuillez rapporter les bogues, recommander de nouvelles fonctions et poser vos questions sur
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
-    ]]></string>
+]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nEnvoyé de mon appareil Android avec K-9 Mail. Veuillez excuser ma brièveté.</string>
+  <string name="default_signature">-- \nEnvoyé de mon appareil Android avec Courriel K-9 Mail. Veuillez excuser ma brièveté.</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera enlevé de K-9 Mail.</string>
+  <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera enlevé de Courriel K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Toutes les données de  «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» seront enlevées. Les paramètres du compte seront conservés.</string>
   <string name="account_clear_dlg_instructions_fmt">Les copies locales des messages de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» seront enlevées. Les paramètres du compte seront conservés.</string>
   <!--=== App Store-specific strings =======================================================-->
@@ -98,7 +101,7 @@ Veuillez envoyer les rapports de bogues, suggérer de nouvelles fonctions et pos
   <string name="single_message_options_action">Envoyer…</string>
   <string name="refile_action">Reclasser…</string>
   <string name="done_action">Terminé</string>
-  <string name="discard_action">Abandonner</string>
+  <string name="discard_action">Éliminer</string>
   <string name="save_draft_action">Enregistrer comme brouillon</string>
   <string name="check_mail_action">Vérif. courriels</string>
   <string name="send_messages_action">Envoyer les messages</string>
@@ -160,10 +163,15 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nouveaux messages</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> de plus sur <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> de plus sur <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Répondre</string>
   <string name="notification_action_mark_as_read">Marquer comme lu</string>
+  <string name="notification_action_mark_all_as_read">Tout marquer comme lu</string>
   <string name="notification_action_delete">Supprimer</string>
+  <string name="notification_action_delete_all">Tout supprimer</string>
+  <string name="notification_action_archive">Archiver</string>
+  <string name="notification_action_archive_all">Tout archiver</string>
+  <string name="notification_action_spam">Pourriel</string>
   <string name="notification_certificate_error_title">Erreur de certificat pour (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_certificate_error_text">Vérifier vos paramètres de serveur</string>
   <string name="notification_bg_sync_ticker">Vérification des courriels\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -222,7 +230,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="message_no_additional_headers_available">Toutes les entêtes ont été téléchargées, mais il n\'y en a pas d\'autres à montrer.</string>
   <string name="message_additional_headers_retrieval_failed">La récupération d\'entêtes supplémentaires de la base de données ou du serveur de courriel a échouée.</string>
   <string name="from_same_sender">Plus de cet expéditeur</string>
-  <string name="message_discarded_toast">Message abandonné</string>
+  <string name="message_discarded_toast">Message éliminé</string>
   <string name="message_saved_toast">Message enregistré comme brouillon</string>
   <string name="global_settings_flag_label">Montrer les étoiles</string>
   <string name="global_settings_flag_summary">Les étoiles indiquent des messages suivis</string>
@@ -253,6 +261,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="global_settings_confirm_action_delete">Supprimer</string>
   <string name="global_settings_confirm_action_delete_starred">Supprimer étoilé (en mode lecture)</string>
   <string name="global_settings_confirm_action_spam">Pourriel</string>
+  <string name="global_settings_confirm_menu_discard">Éliminer le message</string>
   <string name="global_settings_confirm_action_delete_notif">Supprimer (depuis notification)</string>
   <string name="global_settings_privacy_hide_useragent">Enlever l\'agent utilisateur K-9 des en-têtes de courriels</string>
   <string name="global_settings_privacy_hide_timezone">Utiliser UTC comme fuseau horaire dans les en-têtes de courriels</string>
@@ -271,10 +280,12 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Nombre de messages non lus</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Nombre de messages et d\'expéditeurs</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Identiques à celles de l\'écran verrouillé</string>
-  <string name="quiet_time">Heures silencieuses</string>
+  <string name="quiet_time">Période calme</string>
   <string name="quiet_time_description">Désactiver la sonnerie, la vibration et le clignotement pendant la nuit</string>
-  <string name="quiet_time_starts">Début des heures silencieuses</string>
-  <string name="quiet_time_ends">Fin des heures silencieuses</string>
+  <string name="quiet_time_notification">Désactiver les notifications</string>
+  <string name="quiet_time_notification_description">Désactiver complètement les notifications en période calme</string>
+  <string name="quiet_time_starts">Début de la période calme</string>
+  <string name="quiet_time_ends">Fin de la période calme</string>
   <string name="account_setup_basics_title">Configurer un nouveau compte</string>
   <string name="account_setup_basics_email_hint">Adresse courriel</string>
   <string name="account_setup_basics_password_hint">Mot de passe</string>
@@ -453,8 +464,9 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_settings_folders">Dossiers</string>
   <string name="account_settings_quote_prefix_label">Préfixe de citation</string>
   <string name="account_settings_crypto">Cryptographie</string>
-  <string name="account_settings_crypto_app">Fournisseur OpenPGP</string>
-  <string name="account_settings_no_openpgp_provider_installed">Aucun fournisseur OpnPGP installé</string>
+  <string name="account_settings_crypto_app">Appli OpenPGP</string>
+  <string name="account_settings_crypto_key">Ma clef</string>
+  <string name="account_settings_no_openpgp_provider_installed">Aucune appli OpenPGP installée</string>
   <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
   <string name="account_settings_storage_title">Stockage</string>
   <string name="account_settings_color_label">Couleur du compte</string>
@@ -616,8 +628,8 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="provider_note_naver">Assurez-vous d\'activer IMAP ou POP3 dans la page des paramètres du courriel Naver.</string>
   <string name="provider_note_hanmail">Assurez-vous d\'activer IMAP ou POP3 dans la page des paramètres du courriel Hanmail (Daum).</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat non reconnu</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter la clé</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeter la clé</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter la clef</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeter la clef</string>
   <string name="message_list_help_key">Suppr (ou D) - Supprimer\nR - Répondre\nA - Répondre à tous\nC - Composer\nF - Transférer\nM - Déplacer\nV - Archive\nY - Copier\nZ - Marquer lu/non lu\nG - Étoile\nO - Type de tri\nI - Ordre de tri\nQ - Retourner aux dossiers\nS - Sélectionner/Dessélectionner\nJ ou P - Message précédent\nK ou N - Prochain message </string>
   <string name="folder_list_help_key">1 - Afficher seulement les dossiers de 1re classe\n2 - Afficher les dossiers de 1re et 2e classe\n3 - Afficher tous les dossiers sauf 2e classe\n4 - Afficher tous les dossiers\nQ - Retourner aux Comptes\nS - Modifier les paramètres du compte</string>
   <string name="folder_list_filter_hint">le nom de dossier contient</string>
@@ -728,9 +740,9 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="error_activity_not_found">Aucune application adéquate n\'a été trouvée pour cette action.</string>
   <string name="send_aborted">Envoi interrompu.</string>
   <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
-  <string name="confirm_discard_draft_message_title">Abandonner le message\u00A0?</string>
-  <string name="confirm_discard_draft_message">Êtes-vous sûr de vouloir abandonner ce message\u00A0?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou éliminer ce message\u00A0?</string>
+  <string name="confirm_discard_draft_message_title">Éliminer le message\u00A0?</string>
+  <string name="confirm_discard_draft_message">Êtes-vous sûr de vouloir éliminer ce message\u00A0?</string>
   <string name="select_text_now">Sélectionner le texte à copier</string>
   <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
   <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
@@ -870,6 +882,24 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="fetching_attachment_dialog_message">Récupération de la pièce jointe…</string>
   <string name="auth_external_error">Authentification impossible. Le serveur n\'annonce pas la fonction SASL EXTERNE. Ceci pourrait être causé par un problème avec le certificat client (expiré, autorité de certification inconnue) ou quelque autre problème de configuration. </string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decryption_failed">Échec de déchiffrement : %s</string>
+  <string name="openpgp_unknown_error">Erreur OpenPGP inconnue</string>
+  <string name="openpgp_canceled_by_user">Annulé par l\'utilisateur</string>
+  <string name="openpgp_result_no_signature">Non signé</string>
+  <string name="openpgp_result_invalid_signature">Signature invalide !</string>
+  <string name="openpgp_result_signature_uncertified">Signé par (non certifié !)</string>
+  <string name="openpgp_result_signature_certified">Signer par</string>
+  <string name="openpgp_result_signature_expired_key">La clef est expirée !</string>
+  <string name="openpgp_result_signature_revoked_key">La clef a été révoquée !</string>
+  <string name="openpgp_result_signature_insecure">Non sécurisée !</string>
+  <string name="openpgp_result_signature_missing_key">Clef publique inconnue</string>
+  <string name="openpgp_result_encrypted">Chiffré</string>
+  <string name="openpgp_result_not_encrypted">Non chiffré</string>
+  <string name="openpgp_result_decryption_insecure">Non sécurisé</string>
+  <string name="openpgp_result_action_show">Montrer</string>
+  <string name="openpgp_result_action_lookup">Rechercher</string>
+  <string name="openpgp_result_no_name">Aucun nom</string>
+  <string name="openpgp_result_no_email">Aucune adresse courriel</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Utiliser le certificat client</string>
   <string name="client_certificate_spinner_empty">Aucun certificat client</string>
@@ -877,4 +907,24 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="client_certificate_retrieval_failure">Impossible de d\'obtenir le certificat client pour l\'alias \« <xliff:g id="alias">%s</xliff:g>\ »</string>
   <string name="client_certificate_advanced_options">Options avancées</string>
   <string name="client_certificate_expired">Le certificat client \« <xliff:g id="certificate_alias">%1$s</xliff:g>\ » est expiré ou n\'est pas encore valide (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Message incomplet</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Cliquer sur « Télécharger le message complet » pour permettre le déchiffrement.</string>
+  <string name="preview_encrypted">*Chiffré*</string>
+  <string name="add_from_contacts">Ajouter à partir des contacts</string>
+  <string name="crypto_settings_ok">Continuer</string>
+  <string name="recipient_cc">Cc</string>
+  <string name="recipient_bcc">Cci</string>
+  <string name="recipient_to">À</string>
+  <string name="recipient_from">De</string>
+  <string name="unknown_recipient"><![CDATA[<Destinataire inconnu>]]></string>
+  <string name="address_type_home">Domicile</string>
+  <string name="address_type_work">Travail</string>
+  <string name="address_type_other">Autre</string>
+  <string name="address_type_mobile">Mobile</string>
+  <string name="warn_search_disabled">La recherche dans les corps des messages est désactivée dans cette version de développement !</string>
+  <string name="crypto_mode_disabled">Jamais signer ou chiffrer.</string>
+  <string name="crypto_mode_sign_only">Toujours signer, jamais chiffrer.</string>
+  <string name="crypto_mode_opportunistic">Toujours signer, chiffrer si possible.</string>
+  <string name="crypto_mode_private">Toujours signer, toujours chiffrer.</string>
 </resources>
