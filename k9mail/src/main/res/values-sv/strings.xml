@@ -16,31 +16,31 @@
   <string name="welcome_message_title">Välkommen till K-9 E-post</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail är en kraftfull e-postklient för Android. K-9 är fri programvara.
+K-9 Epost är en kraftfull fri epostklient för Android.
 </p><p>
-K-9s har en rad förbättrade funktioner:
+Några av funktionerna som förbättrats är:
 </p>
 <ul>
-  <li>Push-mail med hjälp av IMAP IDLE</li>
+  <li>Push med IMAP IDLE</li>
   <li>Bättre prestanda</li>
-  <li>Omarkivering av e-post</li>
-  <li>E-postsignaturer</li>
-  <li>Bcc till dig själv</li>
+  <li>Meddelandelagring</li>
+  <li>Epostsignaturer</li>
+  <li>Bcc-to-self</li>
   <li>Mapprenumerationer</li>
-  <li>Synkronisering av alla mappar</li>
+  <li>Synkronisera alla mappar</li>
   <li>Inställning av svarsadress</li>
   <li>Tangentbordsgenvägar</li>
-  <li>Bättre stöf för IMAP</li>
-  <li>Spara bilagor till SD-kort</li>
-  <li>Töm papperskorgen</li>
-  <li>Sortering av meddelanden</li>
-  <li>…och mer</li>
+  <li>Bättre stöd för IMAP</li>
+  <li>Spara bilagor till minneskort</li>
+  <li>Tömma papperskorgen</li>
+  <li>Meddelandesortering</li>
+  <li>…och mycket annat</li>
 </ul>
 <p>
-Observera att K-9 inte stödjer gratiskonton på Hotmail och, liksom många andra e-postklienter, har vissa problem vid kommunikation med Microsoft Exchange.
+Observera att K-9 inte stödjer gratiskonton på Hotmail och har, som så många andra epostklienter, svårt att prata med Microsoft Exchange.
 </p><p>
-Anmäl fel, hjälp till med nya funktioner och ställ frågor på
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller ställ frågor på 
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -162,10 +162,15 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> olästa (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> ytterligare på <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> fler på <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Svara</string>
   <string name="notification_action_mark_as_read">Markera som läst</string>
+  <string name="notification_action_mark_all_as_read">Markera alla som lästa</string>
   <string name="notification_action_delete">Ta bort</string>
+  <string name="notification_action_delete_all">Radera alla</string>
+  <string name="notification_action_archive">Arkiv</string>
+  <string name="notification_action_archive_all">Arkivera alla</string>
+  <string name="notification_action_spam">Skräppost</string>
   <string name="notification_certificate_error_title">Certifikatsfel för <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Kontrollera dina serverinställningar</string>
   <string name="notification_bg_sync_ticker">Kontrollerar e-post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -255,6 +260,7 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="global_settings_confirm_action_delete">Ta bort</string>
   <string name="global_settings_confirm_action_delete_starred">Ta bort stjärnmärkta (i meddelandevyn)</string>
   <string name="global_settings_confirm_action_spam">Skräp</string>
+  <string name="global_settings_confirm_menu_discard">Kasta meddelande?</string>
   <string name="global_settings_confirm_action_delete_notif">Ta bort (från avisering)</string>
   <string name="global_settings_privacy_hide_useragent">Ta bort K-9 User-Agent från brevhuvudet</string>
   <string name="global_settings_privacy_hide_timezone">Använd UTC som tidszon i brevhuvud</string>
@@ -275,6 +281,8 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="global_settings_lock_screen_notification_visibility_everything">Samma som när skärmen är olåst</string>
   <string name="quiet_time">Tyst tid</string>
   <string name="quiet_time_description">Inaktivera ringsignaler, vibration och blinkande på natten</string>
+  <string name="quiet_time_notification">Stäng av aviseringar</string>
+  <string name="quiet_time_notification_description">Stäng av avisering under \"Quiet time\"</string>
   <string name="quiet_time_starts">Tyst tid börjar</string>
   <string name="quiet_time_ends">Tyst tid slutar</string>
   <string name="account_setup_basics_title">Konfigurera ett nytt konto</string>
@@ -455,8 +463,9 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="account_settings_folders">Mappar</string>
   <string name="account_settings_quote_prefix_label">Citatprefix</string>
   <string name="account_settings_crypto">Kryptering</string>
-  <string name="account_settings_crypto_app">OpenPGP-leverantör</string>
-  <string name="account_settings_no_openpgp_provider_installed">Ingen OpenPGP-leverantör installerad</string>
+  <string name="account_settings_crypto_app">OpenPGP-app</string>
+  <string name="account_settings_crypto_key">Min nyckel</string>
+  <string name="account_settings_no_openpgp_provider_installed">Ingen OpenPGP-app installerad</string>
   <string name="account_settings_mail_check_frequency_label">Frekvens för att kontrollera mappar</string>
   <string name="account_settings_storage_title">Lagring</string>
   <string name="account_settings_color_label">Kontofärg</string>
@@ -872,6 +881,24 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="fetching_attachment_dialog_message">Hämtar bilaga…</string>
   <string name="auth_external_error">Misslyckades med att autentisera. Servern annonserar inte SASL EXTERNAL-förmågan. Det kan bero på ett problem med klientcertifikatet (utgånget, okänd certifikatutfärdare) eller något annat konfigurationsproblem.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decryption_failed">Dekrypteringen misslyckades: %s</string>
+  <string name="openpgp_unknown_error">Okänt OpenPGP fel</string>
+  <string name="openpgp_canceled_by_user">Inställd av användaren</string>
+  <string name="openpgp_result_no_signature">Inte signerad</string>
+  <string name="openpgp_result_invalid_signature">Ogiltig signatur!</string>
+  <string name="openpgp_result_signature_uncertified">Signerad av (inte certifierad!)</string>
+  <string name="openpgp_result_signature_certified">Signerad av</string>
+  <string name="openpgp_result_signature_expired_key">Nyckel har löpt ut!</string>
+  <string name="openpgp_result_signature_revoked_key">Nyckel har återkallats!</string>
+  <string name="openpgp_result_signature_insecure">Osäker!</string>
+  <string name="openpgp_result_signature_missing_key">Okänd publik nyckel</string>
+  <string name="openpgp_result_encrypted">Krypterad</string>
+  <string name="openpgp_result_not_encrypted">Inte krypterad</string>
+  <string name="openpgp_result_decryption_insecure">Osäker</string>
+  <string name="openpgp_result_action_show">Visa</string>
+  <string name="openpgp_result_action_lookup">Slå upp</string>
+  <string name="openpgp_result_no_name">Inget namn</string>
+  <string name="openpgp_result_no_email">Ingen email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Använd klientcertifikat</string>
   <string name="client_certificate_spinner_empty">Inget klientcertifikat</string>
@@ -879,4 +906,19 @@ Anmäl fel, hjälp till med nya funktioner och ställ frågor på
   <string name="client_certificate_retrieval_failure">Kunde inte hitta klientcertifikat för \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Avancerade inställningar</string>
   <string name="client_certificate_expired">Klientcertifikatet \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" har gått ut eller är inte giltigt ännu (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Ofullständigt meddelande</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Klicka på \'Ladda ner hela brevet\' för att tillåta kryptering.</string>
+  <string name="preview_encrypted">*Krypterad*</string>
+  <string name="add_from_contacts">Lägg till från kontakter</string>
+  <string name="crypto_settings_ok">Fortsätt</string>
+  <string name="recipient_cc">Cc</string>
+  <string name="recipient_bcc">Bcc</string>
+  <string name="recipient_to">Till</string>
+  <string name="recipient_from">Från</string>
+  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
+  <string name="address_type_home">Hem</string>
+  <string name="address_type_work">Arbete</string>
+  <string name="address_type_other">Annat</string>
+  <string name="address_type_mobile">Mobil</string>
 </resources>

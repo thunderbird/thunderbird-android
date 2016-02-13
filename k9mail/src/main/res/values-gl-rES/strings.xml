@@ -14,34 +14,6 @@
   <string name="app_license">Baixo licenza Apache, versión 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Benvido/a a K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail é un poderoso cliente de correo electrónico para Android.
-</p><p>
-Dispón das seguintes característias ou funcionalidades:
-</p>
-<ul>
-  <li>Push mail using IMAP IDLE</li>
-  <li>Rendemento mellorado</li>
-  <li>Reclasificación de mensaxes</li>
-  <li>Sinaturas nas mensaxes</li>
-  <li>Autocopia oculta</li>
-  <li>Subscricións a cartafoles</li>
-  <li>Sincronización de todos os cartafoles</li>
-  <li>Configuración do enderezo de retorno</li>
-  <li>Atallos no teclado</li>
-  <li>Soporte IMAP mellorado</li>
-  <li>Gardar os anexos na tarxeta SD</li>
-  <li>Baleirado da papeleira</li>
-  <li>Ordenación de mensaxes</li>
-  <li>…e moito máis</li>
-</ul>
-<p>
-Por favor, repara en que K-9 non admite a maioría das contas de Hotmail e, ao igual que moitos outros clientes de correo, presenta certas peculiaridades cando se conecta co Microsoft Exchange.
-</p><p>
-Envía informes de erro, contribúe con novas funcionalidades e pregunta o que desexes en <a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada do K-9 Mail.</string>
@@ -155,7 +127,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="recreating_account">Volvendo crear a conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Correo novo</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> sen ler (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> máis en <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como lida</string>
   <string name="notification_action_delete">Eliminar</string>
@@ -421,7 +392,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="account_settings_folders">Cartafoles</string>
   <string name="account_settings_quote_prefix_label">Prefixo da cita</string>
   <string name="account_settings_crypto">Cifraxe</string>
-  <string name="account_settings_crypto_app">Provedor OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -801,4 +771,5 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="fetching_attachment_dialog_message">Obtendo anexo…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

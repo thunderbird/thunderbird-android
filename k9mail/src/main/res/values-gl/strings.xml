@@ -13,35 +13,6 @@
   <string name="app_license">Licienciado baixo a Licencia Apache, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Benvido/a a K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 é un cliente de correo de código aberto para Android, baseado no Android Mail.
-</p><p>
-K-9 implementa estas características:
-</p>
-<ul>
-  <li>Push mail e IMAP IDLE</li>
-  <li>Mellor rendemento</li>
-  <li>Reclasificación de mensaxes</li>
-  <li>Sinaturas</li>
-  <li>Copia oculta a un mesmo</li>
-  <li>Subscricións a cartafoles</li>
-  <li>Todos os cartafoles sincronizados</li>
-  <li>Correo de retorno</li>
-  <li>Atallos de teclado</li>
-  <li>Mellor soporte para IMAP</li>
-  <li>Almacenamento de anexos na tarxeta SD</li>
-  <li>Baleirado da papeleira</li>
-  <li>Ordenación de mensaxes</li>
-  <li>… e moitas máis.</li>
-</ul>
-<p>
-Repara en que K-9 non admite moitas das contas de Hotmail, coma moitos outros clientes de correo, que teñen certas peculiaridades cando se comunican con Microsoft Exchange.
-</p><p>
-Por favor, envía os erros que detectes, contribúe con novas funcionalidades e pregunta en
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
@@ -379,7 +350,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="account_settings_folders">Carpetas</string>
   <string name="account_settings_quote_prefix_label">Prefixo de cita</string>
   <string name="account_settings_crypto">Cifrado</string>
-  <string name="account_settings_crypto_app">OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -709,4 +679,5 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="fetching_attachment_dialog_message">Obtendo anexo…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

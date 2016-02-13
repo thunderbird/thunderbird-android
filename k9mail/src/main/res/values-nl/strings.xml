@@ -14,35 +14,6 @@
   <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Welkom bij K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail is een open source mail cliënt voor Android, gebaseerd op de standaard Android Mail cliënt.
-</p><p>
-Toevoegingen en verbeteringen omvatten:
-</p>
-<ul>
-  <li>Push mail die IMAP IDLE gebruikt</li>
-  <li>Betere prestaties</li>
-  <li>Bericht heropenen</li>
-  <li>E-mail handtekeningen</li>
-  <li>Bcc naar jezelf</li>
-  <li>Map abonnementen</li>
-  <li>Alle mappen synchronisatie</li>
-  <li>Return-adres configuratie</li>
-  <li>Toetsenbord snelkoppelingen</li>
-  <li>Betere IMAP ondersteuning</li>
-  <li>Bijlage opslaan naar SD</li>
-  <li>Prullenbak legen</li>
-  <li>Berichten sorteren</li>
-  <li>…en meer</li>
-</ul>
-<p>
-Houd er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange.
-</p><p>
-Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nVerstuurd vanaf mijn Android apparaat met K-9 Mail. Excuseer mijn beknoptheid.</string>
   <!--General strings that include the app name-->
@@ -161,10 +132,15 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nieuwe berichten</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ongelezen (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> meer op <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> meer bij <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Antwoorden</string>
   <string name="notification_action_mark_as_read">Gelezen</string>
+  <string name="notification_action_mark_all_as_read">Alles als gelezen markeren</string>
   <string name="notification_action_delete">Verwijderen</string>
+  <string name="notification_action_delete_all">Alles verwijderen</string>
+  <string name="notification_action_archive">Archiveren</string>
+  <string name="notification_action_archive_all">Alles Archiveren</string>
+  <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_title">Certificaat fout voor <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Kijk de server instellingen na</string>
   <string name="notification_bg_sync_ticker">Controleer mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -254,6 +230,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="global_settings_confirm_action_delete">Verwijder</string>
   <string name="global_settings_confirm_action_delete_starred">Gemarkeerd verwijderen (in bericht-view)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Bericht afbreken</string>
   <string name="global_settings_confirm_action_delete_notif">Verwijder (van notificaties)</string>
   <string name="global_settings_privacy_hide_useragent">Verwijder K-9 User-Agent van de mail headers</string>
   <string name="global_settings_privacy_hide_timezone">Gebruik UT als tijdzone in mail headers</string>
@@ -274,6 +251,8 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="global_settings_lock_screen_notification_visibility_everything">Het zelfde. Ook na schermontgrendeling</string>
   <string name="quiet_time">Stilteperiode</string>
   <string name="quiet_time_description">Schakel beltoon, vibratie en leds uit gedurende de nacht</string>
+  <string name="quiet_time_notification">Notificaties uitzetten</string>
+  <string name="quiet_time_notification_description">Notificatie compleet uitzetten tijdens stilte modus</string>
   <string name="quiet_time_starts">Stilteperiode start</string>
   <string name="quiet_time_ends">Stilteperiode eindigt</string>
   <string name="account_setup_basics_title">Een nieuwe account instellen</string>
@@ -454,8 +433,9 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="account_settings_folders">Mappen</string>
   <string name="account_settings_quote_prefix_label">Quote voorvoegsel</string>
   <string name="account_settings_crypto">Cryptografie</string>
-  <string name="account_settings_crypto_app">OpenPGP Provider</string>
-  <string name="account_settings_no_openpgp_provider_installed">Geen OpenPGP provider geïnstalleerd</string>
+  <string name="account_settings_crypto_app">OpenPGP app</string>
+  <string name="account_settings_crypto_key">Mijn sleutel</string>
+  <string name="account_settings_no_openpgp_provider_installed">Er is geen OpenPGP app geinstalleerd</string>
   <string name="account_settings_mail_check_frequency_label">Mappen poll controleer frequentie</string>
   <string name="account_settings_storage_title">Opslag</string>
   <string name="account_settings_color_label">Account kleur</string>
@@ -791,7 +771,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="settings_import_use_incoming_server_password">Gebruik het inkomende server wachtwoord</string>
   <string name="activate_account_action">Activeer</string>
   <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is niet beschikbaar; controleer opslag</string>
-  <string name="settings_attachment_default_path">Sla bijlagen op naar…</string>
+  <string name="settings_attachment_default_path">Sla bijlagen op in...</string>
   <string name="attachment_save_title">Sla bijlage op</string>
   <string name="attachment_save_desc">Geen bestandsverkenner gevonden. Waar wil je deze bijlage opslaan?</string>
   <string name="manage_accounts_move_up_action">Omhoog</string>
@@ -871,6 +851,23 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
   <string name="auth_external_error">Kan niet authenticeren. De server ondersteunt geen SASL EXTERNAL. Dit kan komen door een probleem met het client certificaat (verlopen of onbekende CA) of een ander configuratieprobleem.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_unknown_error">Onbekend OpenPGP Fout</string>
+  <string name="openpgp_canceled_by_user">Geannuleerd door gebruiker</string>
+  <string name="openpgp_result_no_signature">Niet Ondertekend</string>
+  <string name="openpgp_result_invalid_signature">Ongeldige handtekening!</string>
+  <string name="openpgp_result_signature_uncertified">Ondertekend door (niet gecertificeerd!)</string>
+  <string name="openpgp_result_signature_certified">Ondertekend door</string>
+  <string name="openpgp_result_signature_expired_key">Sleutel is verlopen!</string>
+  <string name="openpgp_result_signature_revoked_key">Sleutel is ingetrokken!</string>
+  <string name="openpgp_result_signature_insecure">Onveilig!</string>
+  <string name="openpgp_result_signature_missing_key">Onbekende publieke sleutel</string>
+  <string name="openpgp_result_encrypted">Gecodeerd</string>
+  <string name="openpgp_result_not_encrypted">Niet gecodeerd</string>
+  <string name="openpgp_result_decryption_insecure">Onveilig</string>
+  <string name="openpgp_result_action_show">Weergeven</string>
+  <string name="openpgp_result_action_lookup">Zoeken</string>
+  <string name="openpgp_result_no_name">Geen naam</string>
+  <string name="openpgp_result_no_email">Geen email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Gebruik cliënt certificaat</string>
   <string name="client_certificate_spinner_empty">Geen cliënt certificaat</string>
@@ -878,4 +875,7 @@ Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op
   <string name="client_certificate_retrieval_failure">Alias client certificaat niet ontvangen \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Geavanceerde opties</string>
   <string name="client_certificate_expired">Cliënt certificaat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" is verlopen of niet geldig (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Incompleet bericht</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Klik \'Download compleet bericht\' om decodering toe te staan</string>
 </resources>

@@ -12,35 +12,6 @@
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Visse dele Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="app_license">Licenseret under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
-</p><p>
-K-9\'s forbedrede funktioner inkluderer:
-</p>
-<ul>
-  <li>Push mail ved hjælp af IMAP IDLE</li>
-  <li>Bedre performance</li>
-  <li>Omflytning af mails</li>
-  <li>Mailsignaturer</li>
-  <li>Bcc til dig selv</li>
-  <li>Mappe subscriptions</li>
-  <li>Synkronisering af alle mapper</li>
-  <li>Indstil afsender-adresse</li>
-  <li>Tastatur genveje</li>
-  <li>Bedre IMAP understøttelse</li>
-  <li>Gem vedhæftninger til SD kort</li>
-  <li>Tøm papirkurv</li>
-  <li>Sortering af mails</li>
-  <li>…og mere</li>
-</ul>
-<p>
-Bemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
-</p><p>
-Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
@@ -154,7 +125,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="recreating_account">Genskaber konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny mail</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> yderligere på <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Svar</string>
   <string name="notification_action_mark_as_read">Marker som læst</string>
   <string name="notification_action_delete">Slet</string>
@@ -413,7 +383,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_settings_folders">Mapper</string>
   <string name="account_settings_quote_prefix_label">Citeret tekst prefix</string>
   <string name="account_settings_crypto">Kryptering</string>
-  <string name="account_settings_crypto_app">OpenPGP leverandør</string>
   <string name="account_settings_mail_check_frequency_label">Frekvens for hentning af mails</string>
   <string name="account_settings_storage_title">Lagring</string>
   <string name="account_settings_color_label">Kontofarve</string>
@@ -819,4 +788,5 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="fetching_attachment_dialog_message">Henter vedhæftning…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

@@ -14,35 +14,6 @@
   <string name="app_license">Apache lizentziarekin, 2.0 bertsioa</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Ongi etorri K-9 Mail-era</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail Androiderako eposta bezero poteretsu bat da.
-</p><p>
-Ezaugarri nagusienak:
-</p>
-<ul>
-  <li>IMAP IDLE erabiliz eposta bidali</li>
-  <li>Lan-etekin hobea</li>
-  <li>Mezuen berkokapena</li>
-  <li>Eposta sinadurak</li>
-  <li>Bcc-no-bere-buruari</li>
-  <li>Karpeta harpidetzeak</li>
-  <li>Karpeta guztien sinkronizazioa</li>
-  <li>Erantzuteko helbidearen konfigurazioa</li>
-  <li>Teklatu lasterbideak</li>
-  <li>IMAP erabilpen hobea</li>
-  <li>Eranskinak SDan gorde</li>
-  <li>Zakarrontzia hustu</li>
-  <li>Mezuak ordenatu</li>
-  <li>…eta gehiago</li>
-</ul>
-<p>
-Mesedez kontutan hartu K-9 ezin dituela Hotmail kontu gehienak erabili, eta eposta bezero asko bezala, arazoak dituela Microsoft Exchangerekin komunikatzean.
-</p><p>
-Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko 
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a> erabili.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik ezabatuko da.</string>
@@ -156,7 +127,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="recreating_account">\"<xliff:g id="account">%s</xliff:g>\" kontua birsortzen</string>
   <string name="notification_new_title">Eposta berria</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> irakurgabe (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> gehiago <xliff:g id="account">%s</xliff:g> kontuan</string>
   <string name="notification_action_reply">Erantzun</string>
   <string name="notification_action_mark_as_read">Irakurrita markatu</string>
   <string name="notification_action_delete">Ezabatu</string>
@@ -433,7 +403,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_folders">Karpetak</string>
   <string name="account_settings_quote_prefix_label">Aipamen testuaren aurrizkia</string>
   <string name="account_settings_crypto">Kriptografia</string>
-  <string name="account_settings_crypto_app">OpenPGP hornitzailea</string>
   <string name="account_settings_mail_check_frequency_label">Karpeta aztertzeko maiztasuna</string>
   <string name="account_settings_storage_title">Biltegia</string>
   <string name="account_settings_color_label">Kontuaren kolorea</string>
@@ -844,4 +813,5 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <string name="client_certificate_advanced_options">Aukera aurreratuak</string>
+  <!--Note: This references message_view_download_remainder-->
 </resources>

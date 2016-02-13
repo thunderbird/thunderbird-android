@@ -16,32 +16,31 @@
   <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail on tehokas avoimen lähdekoodin sähköpostiohjelma Android-käyttöjärjestelmälle.
+K-9 Mail on monipuolinen ja vapaa sähköpostisovellus Androidille.
 </p><p>
-K-9:n parannettuja ominaisuuksia ovat mm.:
+Sen moniin ominaisuuksiin kuuluu muun muassa:
 </p>
 <ul>
-  <li>Ilmoitus uusista viesteistä IMAP IDLE -ominaisuuden avulla</li>
-  <li>Parempi suorituskyky</li>
+  <li>Push-viestit käyttäen IMAP IDLE -toteutusta</li>
+  <li>Aiempaa parempi suorituskyky</li>
   <li>Viestien arkistointi</li>
-  <li>Viestien allekirjoitukset</li>
-  <li>Piilokopion lähetys itselle</li>
-  <li>Kansioiden tilaukset</li>
-  <li>Kansioiden synkronointi</li>
-  <li>Vastaus-osoitteen määrittely</li>
+  <li>Sähköpostin allekirjoitukset</li>
+  <li>Piilokopioiden lähetys itselle</li>
+  <li>Kansiotilaukset</li>
+  <li>Kaikkien kansioiden synkronointi</li>
+  <li>Vastausosoitteen määritys</li>
   <li>Pikanäppäimet</li>
-  <li>Parempi IMAP-tuki</li>
-  <li>Liitetiedostojen tallennus SD-kortille</li>
+  <li>Aiempaa parempi IMAP-tuki</li>
+  <li>Liitteiden tallennus muistikortille</li>
   <li>Roskakorin tyhjennys</li>
-  <li>Viestien lajittelu</li>
+  <li>Viestien järjestely</li>
   <li>…ja paljon muuta</li>
 </ul>
 <p>
-K-9 ei valitettavasti tue suurinta osaa ilmaisista Hotmail-tileistä. Lisäksi Microsoft Exchange -toimivuudessa on
-ongelmia, kuten useissa muissakin sähköpostiohjelmissa.
+Huomioitan ettei K-9 tue useimpia ilmaisia Hotmail-tilejä, ja kuten monet muut sovellukset, saattaa kärsiä pienistä ongelmista Microsoft Exchange -ympäristössä.
 </p><p>
-Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoitteessa
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -162,10 +161,15 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> uutta viestiä</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> lukematonta (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> viestiä lisää tilillä <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> lisää tilillä <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Vastaa</string>
   <string name="notification_action_mark_as_read">Lue</string>
+  <string name="notification_action_mark_all_as_read">Merkitse kaikki luetuiksi</string>
   <string name="notification_action_delete">Poista</string>
+  <string name="notification_action_delete_all">Poista kaikki</string>
+  <string name="notification_action_archive">Arkistoi</string>
+  <string name="notification_action_archive_all">Arkistoi kaikki</string>
+  <string name="notification_action_spam">Roskaposti</string>
   <string name="notification_certificate_error_title">Varmennevirhe tilissä <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Tarkista palvelinasetuksesi</string>
   <string name="notification_bg_sync_ticker">Tarkistetaan viestejä: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -205,6 +209,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjoitti:</string>
   <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g> <xliff:g id="sender">%2$s</xliff:g> kirjoitti:</string>
   <string name="message_compose_error_no_recipients">Valitse vähintään yksi vastaanottaja.</string>
+  <string name="compose_error_incomplete_recipient">Vastaanottajakenttä sisältää virheellistä syötettä!</string>
   <string name="error_contact_address_not_found">Tämän henkilön sähköpostiosoitetta ei löytynyt.</string>
   <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida lähettää edelleen, koska niitä ei ole ladattu.</string>
   <string name="message_compose_show_quoted_text_action">Lainaa viestiä</string>
@@ -255,6 +260,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="global_settings_confirm_action_delete">Poista</string>
   <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (viestinäkymässä)</string>
   <string name="global_settings_confirm_action_spam">Roskaposti</string>
+  <string name="global_settings_confirm_menu_discard">Hylkää viesti</string>
   <string name="global_settings_confirm_action_delete_notif">Poista (ilmoituksessa)</string>
   <string name="global_settings_privacy_hide_useragent">Poista K-9-käyttötietue sähköpostin otsikoista</string>
   <string name="global_settings_privacy_hide_timezone">Käytä UTC:tä aikavyöhykkeenä sähköpostin otsikoissa</string>
@@ -275,6 +281,8 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="global_settings_lock_screen_notification_visibility_everything">Sama kuin näytön ollessa lukittuna</string>
   <string name="quiet_time">Hiljainen aika</string>
   <string name="quiet_time_description">Poista käytöstä soittoäänen pirinä, pärinä ja vilkkuminen yöllä</string>
+  <string name="quiet_time_notification">Poista ilmoitukset käytöstä</string>
+  <string name="quiet_time_notification_description">Poista ilmoitukset kokonaan käytöstä hiljaisena aikana</string>
   <string name="quiet_time_starts">Hiljainen aika alkaa</string>
   <string name="quiet_time_ends">Hiljainen aika päättyy</string>
   <string name="account_setup_basics_title">Lisää uusi tili</string>
@@ -337,7 +345,7 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="sent_folder_label">Lähetetyt-kansio</string>
   <string name="trash_folder_label">Roskakori-kansio</string>
   <string name="archive_folder_label">Arkisto-kansio</string>
-  <string name="spam_folder_label">Roskaposti-kansio</string>
+  <string name="spam_folder_label">Roskapostikansio</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
   <string name="account_setup_auto_expand_folder">Avaa kansio automaattisesti</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA-polku</string>
@@ -455,8 +463,9 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_settings_folders">Kansiot</string>
   <string name="account_settings_quote_prefix_label">Lainauksen etuliite</string>
   <string name="account_settings_crypto">Salausmenetelmä</string>
-  <string name="account_settings_crypto_app">OpenPGP</string>
-  <string name="account_settings_no_openpgp_provider_installed">OpenPGP-tarjoajaa ei ole asennettu</string>
+  <string name="account_settings_crypto_app">OpenPGP-sovellus</string>
+  <string name="account_settings_crypto_key">Oma avain</string>
+  <string name="account_settings_no_openpgp_provider_installed">OpenPGP-sovellusta ei ole asennettu</string>
   <string name="account_settings_mail_check_frequency_label">Kansioiden tarkistus</string>
   <string name="account_settings_storage_title">Tallennus</string>
   <string name="account_settings_color_label">Tilin väri</string>
@@ -872,6 +881,24 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="fetching_attachment_dialog_message">Noudetaan liitettä…</string>
   <string name="auth_external_error">Autentikointi ei onnistu.  Palvelin ei ilmoita SASL EXTERNAL -kelpoisuudesta.  Tämä saattaa johtua vanhentuneesta asiakasvarmenteesta, tuntemattomasta varmentajasta tai jostakin muusta asetusongelmasta.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decryption_failed">Salauksen purkaminen epäonnistui: %s</string>
+  <string name="openpgp_unknown_error">Tuntematon OpenPGP-virhe</string>
+  <string name="openpgp_canceled_by_user">Peruttu käyttäjän toimesta</string>
+  <string name="openpgp_result_no_signature">Ei allekirjoitettu</string>
+  <string name="openpgp_result_invalid_signature">Virheellinen allekirjoitus</string>
+  <string name="openpgp_result_signature_uncertified">Allekirjoittanut (ei vahvistettu!)</string>
+  <string name="openpgp_result_signature_certified">Allekirjoittanut</string>
+  <string name="openpgp_result_signature_expired_key">Avain on vanhentunut!</string>
+  <string name="openpgp_result_signature_revoked_key">Avain on kumottu!</string>
+  <string name="openpgp_result_signature_insecure">Ei turvallinen!</string>
+  <string name="openpgp_result_signature_missing_key">Tuntematon julkinen avain</string>
+  <string name="openpgp_result_encrypted">Salattu</string>
+  <string name="openpgp_result_not_encrypted">Ei salattu</string>
+  <string name="openpgp_result_decryption_insecure">Ei turvallinen</string>
+  <string name="openpgp_result_action_show">Näytä</string>
+  <string name="openpgp_result_action_lookup">Etsi</string>
+  <string name="openpgp_result_no_name">Ei nimeä</string>
+  <string name="openpgp_result_no_email">Ei sähköpostia</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Käytä asiakasvarmennetta</string>
   <string name="client_certificate_spinner_empty">Ei asiakasvarmennetta</string>
@@ -879,4 +906,24 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="client_certificate_retrieval_failure">Asiakasvarmenteen noutaminen epäonnistui aliakselle \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Lisäasetukset</string>
   <string name="client_certificate_expired">Asiakasvarmenne \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" on vanhentunut tai ei ole vielä voimassa (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Puutteellinen viesti</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Napauta \"Lataa koko viesti\" salliaksesi salauksen purkamisen</string>
+  <string name="preview_encrypted">*Salattu*</string>
+  <string name="add_from_contacts">Lisää yhteystiedoista</string>
+  <string name="crypto_settings_ok">Jatka</string>
+  <string name="recipient_to">Vastaanottaja</string>
+  <string name="recipient_from">Lähettäjä</string>
+  <string name="address_type_home">Koti</string>
+  <string name="address_type_work">Työ</string>
+  <string name="address_type_other">Muu</string>
+  <string name="address_type_mobile">Mobiili</string>
+  <string name="warn_search_disabled">Haku viestien sisällöstä on poistettu käytöstä tässä kehitysversiossa!</string>
+  <string name="compose_error_no_draft_folder">Tälle tilille ei ole määritelty luonnoskansiota!</string>
+  <string name="compose_error_no_signing_key">Allekirjoitus pyydetty, mutta avainta ei ole valittu!</string>
+  <string name="compose_error_private_missing_keys">Yksityinen tila otettu käyttöön, mutta salaus ei ole mahdollinen kaikkien vastaanottajien kohdalla!</string>
+  <string name="crypto_mode_disabled">Älä koskaan allekirjoita tai salaa.</string>
+  <string name="crypto_mode_sign_only">Allekirjoita aina, älä koskaan salaa.</string>
+  <string name="crypto_mode_opportunistic">Allekirjoita aina, salaa jos mahdollista.</string>
+  <string name="crypto_mode_private">Allekirjoita aina, salaa aina.</string>
 </resources>

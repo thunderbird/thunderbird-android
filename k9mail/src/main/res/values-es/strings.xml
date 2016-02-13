@@ -14,43 +14,14 @@
   <string name="app_license">Licenciado con Licencia Apache, Versión 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bienvenido a K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail es un cliente de correo OpenSource para Android, basado en el estándar Android Mail.
-</p><p>
-K-9 implementa estas características:
-</p>
-<ul>
-  <li>Push mail y IMAP IDLE</li>
-  <li>Mejor rendimiento</li>
-  <li>Reclasificación de mensajes</li>
-  <li>Firmas</li>
-  <li>Autocopia oculta</li>
-  <li>Suscripciones a carpetas</li>
-  <li>Sincronización de todas las carpetas</li>
-  <li>Correo de retorno</li>
-  <li>Atajos de teclado</li>
-  <li>Mejor soporte para IMAP</li>
-  <li>Almacenamiento de adjuntos en la SD</li>
-  <li>Vaciado de papelera</li>
-  <li>Ordenación de mensajes</li>
-  <li>…y muchas más.</li>
-</ul>
-<p>
-Conviene señalar que K-9 no soporta la mayoría de las cuentas de Hotmail y que, como muchos otros clientes de correo, tiene ciertas peculiaridades cuando se comunica con Microsoft Exchange.
-</p><p>
-Por favor, envía los errores detectados, contribuye con nuevas funcionalidades y pregunta en
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nEnviado desde mi dispositivo Android con K-9 Mail. Por favor disculpa mi brevedad.</string>
+  <string name="default_signature">-- \nEnviado desde mi dispositivo Android con K-9 Mail. Por favor, disculpa mi brevedad.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Los datos de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero se mantendrá su configuración.</string>
   <string name="account_clear_dlg_instructions_fmt">Todos los mensajes en \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero la configuración de la cuenta se mantendrá.</string>
   <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Por favor instale un gestor de archivos para continuar con esta importación.</string>
+  <string name="import_dialog_error_message">Por favor, instale un gestor de archivos para continuar con la importación.</string>
   <string name="open_market">Abrir Google Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
@@ -156,11 +127,20 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="clearing_account">Limpiando cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Recreando cuenta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Correo nuevo</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> mensaje nuevo</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> mensajes nuevos</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Sin Leer (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> más en <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> más en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como leído</string>
+  <string name="notification_action_mark_all_as_read">Marcar todo como leído</string>
   <string name="notification_action_delete">Borrar</string>
+  <string name="notification_action_delete_all">Borrar todo</string>
+  <string name="notification_action_archive">Archivo</string>
+  <string name="notification_action_archive_all">Archivar todo</string>
+  <string name="notification_action_spam">Correo no deseado</string>
   <string name="notification_certificate_error_title">Error de certificado para <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Compruebe su configuración de servidor</string>
   <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -250,6 +230,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="global_settings_confirm_action_delete">Borrar</string>
   <string name="global_settings_confirm_action_delete_starred">Borrar destacados (sólo en vista de mensajes)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Descartar mensaje</string>
   <string name="global_settings_confirm_action_delete_notif">Borrar (de notificaciones)</string>
   <string name="global_settings_privacy_hide_useragent">Eliminar el agente de usuario K-9 de las cabeceras de correo</string>
   <string name="global_settings_privacy_hide_timezone">Usar UTC como zona horaria en las cabeceras de correo</string>
@@ -270,6 +251,8 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="global_settings_lock_screen_notification_visibility_everything">Igual que con la pantalla desbloqueada</string>
   <string name="quiet_time">Horario de Silencio</string>
   <string name="quiet_time_description">Desactivar sonidos, alertas y luces por la noche</string>
+  <string name="quiet_time_notification">Desactivar notificaciones</string>
+  <string name="quiet_time_notification_description">Desactivar completamente las notificaciones durante el tiempo de descanso</string>
   <string name="quiet_time_starts">Silencio comienza</string>
   <string name="quiet_time_ends">Silencio termina</string>
   <string name="account_setup_basics_title">Configurar nueva cuenta</string>
@@ -450,8 +433,9 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="account_settings_folders">Carpetas</string>
   <string name="account_settings_quote_prefix_label">Prefijo de texto citado</string>
   <string name="account_settings_crypto">Cifrado</string>
-  <string name="account_settings_crypto_app">Proveedor OpenPGP</string>
-  <string name="account_settings_no_openpgp_provider_installed">No hay instalado un proveedor de OpenPGP</string>
+  <string name="account_settings_crypto_app">Aplicación OpenPGP</string>
+  <string name="account_settings_crypto_key">Mi clave</string>
+  <string name="account_settings_no_openpgp_provider_installed">No hay aplicación OpenPGP instalada</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamiento</string>
   <string name="account_settings_color_label">Color de la cuenta</string>
@@ -867,6 +851,23 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="fetching_attachment_dialog_message">Recuperando adjunto…</string>
   <string name="auth_external_error">No ha sido posible autenticarse. El servidor no anuncia la capacidad SASL EXTERNAL. Esto puede ser debido a un problema con el certificado de cliente (expirado, autoridad certificadora desconocida) o algún otro problema de configuración.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_unknown_error">Error desconocido de OpenPGP</string>
+  <string name="openpgp_canceled_by_user">Cancelado por el usuario</string>
+  <string name="openpgp_result_no_signature">No firmado</string>
+  <string name="openpgp_result_invalid_signature">¡Firma no válida!</string>
+  <string name="openpgp_result_signature_uncertified">Firmado por (¡sin certificar!)</string>
+  <string name="openpgp_result_signature_certified">Firmado por</string>
+  <string name="openpgp_result_signature_expired_key">¡Ha expirado la clave!</string>
+  <string name="openpgp_result_signature_revoked_key">¡La clave ha sido revocada!</string>
+  <string name="openpgp_result_signature_insecure">¡Peligroso!</string>
+  <string name="openpgp_result_signature_missing_key">Clave pública desconocida</string>
+  <string name="openpgp_result_encrypted">Cifrado</string>
+  <string name="openpgp_result_not_encrypted">No cifrado</string>
+  <string name="openpgp_result_decryption_insecure">Peligroso</string>
+  <string name="openpgp_result_action_show">Mostrar</string>
+  <string name="openpgp_result_action_lookup">Buscar</string>
+  <string name="openpgp_result_no_name">Sin nombre</string>
+  <string name="openpgp_result_no_email">Sin correo electrónico</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Usar certificado de cliente</string>
   <string name="client_certificate_spinner_empty">Sin certificado de cliente</string>
@@ -874,4 +875,7 @@ Por favor, envía los errores detectados, contribuye con nuevas funcionalidades 
   <string name="client_certificate_retrieval_failure">Fallo al recuperar certificado de cliente para el alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Opciones avanzadas</string>
   <string name="client_certificate_expired">El certificado de cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ha expirado o aún no es válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Mensaje incompleto</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Pulsa \'Descargar mensaje completo\' para poder descifrarlo.</string>
 </resources>

@@ -14,35 +14,6 @@
   <string name="app_license">Apache License, Sürüm 2.0 altında lisanslanmıştır.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Mail\'e Hoşgeldiniz</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail standart Android E-posta istemcisi üzerinde yazılmış açık kaynak kodlu bir e-posta istemcisidir.
-</p><p>
-K-9\'un iyileştirilmiş özellikleri:
-</p>
-<ul>
-  <li>IMAP IDLE kullanarak PUSH mail</li>
-  <li>Daha iyi performans</li>
-  <li>Mesaj bekletimi</li>
-  <li>E-posta imzaları</li>
-  <li>Kendine BCC (gizli karbon kopya)</li>
-  <li>Klasör abonelikleri</li>
-  <li>Tüm klasör senkronizasyonları</li>
-  <li>Yanıtlama adres yapılandırması</li>
-  <li>Klavye kısayolları</li>
-  <li>İyileştirilmiş IMAP desteği</li>
-  <li>Ekleri SD karta kaydetme</li>
-  <li>Çöp kutusu boşaltma</li>
-  <li>Mesaj sıralama</li>
-  <li>…ve daha fazlası</li>
-</ul>
-<p>
-Lütfen K-9\'un diğer çoğu e-posta istemcisi gibi Microsoft Exchange haberleşme problemi nedeniyle ücretsiz Hotmail hesaplarını desteklemediğini bilin.
-</p><p>
-Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a> adresine gönderin.
-</p>
-    ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
   <!--General strings that include the app name-->
@@ -161,10 +132,12 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> yeni mesaj</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Okunmadı (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages"><xliff:g id="additional_messages">%d</xliff:g> daha fazla <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages"><xliff:g id="additional_messages">%1$d</xliff:g> daha fazla <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Yanıtla</string>
   <string name="notification_action_mark_as_read">Okundu olarak işaretle</string>
   <string name="notification_action_delete">Sil</string>
+  <string name="notification_action_archive">Arşiv</string>
+  <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> için sertifika hatası</string>
   <string name="notification_certificate_error_text">Sunucu ayarlarınızı kontrol edin</string>
   <string name="notification_bg_sync_ticker">Posta kontrol ediliyor: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -454,8 +427,9 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="account_settings_folders">Klasörler</string>
   <string name="account_settings_quote_prefix_label">Alınan metinden önek</string>
   <string name="account_settings_crypto">Şifreleme</string>
-  <string name="account_settings_crypto_app">OpenPGP Sağlayıcı</string>
-  <string name="account_settings_no_openpgp_provider_installed">Hiç OpenPGP Sağlayıcı yüklenmemiş</string>
+  <string name="account_settings_crypto_app">OpenPGP prg</string>
+  <string name="account_settings_crypto_key">Anahtarım</string>
+  <string name="account_settings_no_openpgp_provider_installed">Hiç OpenPGP prg yüklenmemiş</string>
   <string name="account_settings_mail_check_frequency_label">Klasör veri toplama sıklığı</string>
   <string name="account_settings_storage_title">Depolama</string>
   <string name="account_settings_color_label">Hesap rengi</string>
@@ -871,6 +845,20 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="fetching_attachment_dialog_message">Ekler alınıyor…</string>
   <string name="auth_external_error">Yetkilendirme yapılamıyor. Sunucu SASL EXTERNAL kabiliyeti olduğunu bildirmedi. Bu istemci sertifikasıyla ilgili bir sorun (tarihi geçmiş, bilinmeyen sertifika otoritesi) veya yapılandırma sorunu olabilir.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_unknown_error">Bilinmeyen OpenPGP Hatası</string>
+  <string name="openpgp_result_no_signature">İmzalanmamış</string>
+  <string name="openpgp_result_invalid_signature">Geçersiz imza</string>
+  <string name="openpgp_result_signature_uncertified">Geçerli imza (sertifikalı değil!)</string>
+  <string name="openpgp_result_signature_certified">İmzalayan</string>
+  <string name="openpgp_result_signature_expired_key">Anahtarın süresi dolmuş!</string>
+  <string name="openpgp_result_signature_revoked_key">Anahtar iptal edilmiş!</string>
+  <string name="openpgp_result_signature_missing_key">Bilinmeyen genel anahtar</string>
+  <string name="openpgp_result_encrypted">Şifreli</string>
+  <string name="openpgp_result_not_encrypted">Şifreli değil</string>
+  <string name="openpgp_result_action_show">Göster</string>
+  <string name="openpgp_result_action_lookup">Bak</string>
+  <string name="openpgp_result_no_name">İsimsiz</string>
+  <string name="openpgp_result_no_email">Mesaj yok</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">İstemci sertifikası kullan</string>
   <string name="client_certificate_spinner_empty">İstemci sertifikası yok</string>
@@ -878,4 +866,7 @@ Lütfen hata raporlarınızı, istediğiniz yeni özellikleri ve sorularınızı
   <string name="client_certificate_retrieval_failure"> \"<xliff:g id="alias">%s</xliff:g>\" için istemci sertifikası alımı başarısız oldu</string>
   <string name="client_certificate_advanced_options">Gelişmiş seçenekler</string>
   <string name="client_certificate_expired">İstemci sertifikası \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" tarihi geçmiş veya artık geçerli değil (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Eksik mesaj</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Çözmek için \"Mesajın tamamını indir\"\'e tıklayın</string>
 </resources>

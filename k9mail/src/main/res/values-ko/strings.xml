@@ -14,35 +14,8 @@
   <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 메일을 사용하시게 된 것을 환영합니다</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 메일은 강력한 안드로이드용 무료 메일 클라이언트 입니다.
-</p><p>
-K-9의 향상된 기능:
-</p>
-<ul>
-  <li>IMAP IDLE를 이용한 메일 푸시(PUSH)기능</li>
-  <li>더 나은 성능</li>
-  <li>메시지 재정리</li>
-  <li>이메일 서명</li>
-  <li>Bcc-to-self</li>
-  <li>폴더 구독</li>
-  <li>모든 폴더 동기화</li>
-  <li>회신주소 수정</li>
-  <li>키보드 단축키</li>
-  <li>향상된 IMAP 지원</li>
-  <li>SD 카드에 첨부 파일 저장</li>
-  <li>휴지통 비우기</li>
-  <li>메시지 정렬</li>
-  <li>… 등등</li>
-</ul>
-<p>
-K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다른 메일 클라이언트와 마찬가지로 Microsoft Exchange와 연결할 때 다소 문제가 발생할 수 있습니다.
-</p><p>
-버그 리포트, 새로운 기능 그리고 질문에 대한 문의는 <a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a> 로 남겨주시기바랍니다.
-</p>
-    ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \n안드로이드 기기에서 K-9 메일을 사용해 보낸 메일입니다.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 K-9에서 삭제됩니다.</string>
   <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"의 모든 데이터가 K-9에서 삭제됩니다. 하지만 계정 설정은 보존됩니다.</string>
@@ -154,11 +127,16 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="clearing_account">계정 비우기 \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">계정 재생성 \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">새 메일</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 새 메세지</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> 통의 읽지 않은 메일 (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> 통의 메일 추가됨 (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">답장</string>
   <string name="notification_action_mark_as_read">읽음</string>
   <string name="notification_action_delete">삭제</string>
+  <string name="notification_action_archive">보관</string>
+  <string name="notification_action_spam">스팸</string>
   <string name="notification_certificate_error_title">계정 인증 오류 (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_certificate_error_text">서버 설정을 점검하십시오.</string>
   <string name="notification_bg_sync_ticker">메일 체크 중: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -196,6 +174,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="message_compose_quote_header_to">받는 사람:</string>
   <string name="message_compose_quote_header_cc">참조:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>이 씀:</string>
+  <string name="message_compose_reply_header_fmt_with_date">On <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> 작성함:</string>
   <string name="message_compose_error_no_recipients">한 명 이상의 받는 사람을 입력하십시오.</string>
   <string name="error_contact_address_not_found">이메일 주소를 찾을 수 없습니다.</string>
   <string name="message_compose_attachments_skipped_toast">일부 첨부 파일이 다운로드되지 않아 전달될 수 없습니다.</string>
@@ -244,9 +223,12 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="global_settings_messageview_show_next_summary">메시지 삭제 후 다음 메시지를 보도록 기본값으로 설정합니다</string>
   <string name="global_settings_confirm_actions_title">동작시 행동</string>
   <string name="global_settings_confirm_actions_summary">설정한 행동을 할 경우 대화 상자를 보여 줍니다</string>
+  <string name="global_settings_confirm_action_delete">삭제</string>
   <string name="global_settings_confirm_action_delete_starred">별표된 메시지 삭제 (메시지 보기에서만)</string>
   <string name="global_settings_confirm_action_spam">스팸</string>
   <string name="global_settings_confirm_action_delete_notif">삭제 (알림에서)</string>
+  <string name="global_settings_privacy_hide_useragent">메일 헤더에서 K-9 User Agent 제거</string>
+  <string name="global_settings_privacy_hide_timezone">메일 헤더에서 시간대로 협정세계시(UTC)를 사용</string>
   <string name="global_settings_notification_hide_subject_title">알림에 제목 숨기기</string>
   <string name="global_settings_notification_hide_subject_never">하지 않음</string>
   <string name="global_settings_notification_hide_subject_when_locked">폰이 잠겨 있을 때</string>
@@ -256,6 +238,12 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="global_settings_notification_quick_delete_when_single_msg">알림에 메시지가 하나뿐일 때만</string>
   <string name="global_settings_notification_quick_delete_always">항상</string>
   <string name="global_settings_notification_quick_delete_description">알림에서 메시지를 바로 삭제하는 버튼을 보여 줍니다</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">잠금 화면 알림</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">잠금 화면 알림 없음</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">앱 이름</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">읽지 않은 메세지 개수</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">메세지 개수와 발신자</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">화면이 잠금 해제되었을때와 동일</string>
   <string name="quiet_time">무음 시간</string>
   <string name="quiet_time_description">밤에는 벨소리, 버저, 플래시를 비활성화합니다</string>
   <string name="quiet_time_starts">무음 시작 시간</string>
@@ -263,6 +251,7 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_setup_basics_title">계정 추가</string>
   <string name="account_setup_basics_email_hint">이메일 주소</string>
   <string name="account_setup_basics_password_hint">비밀번호</string>
+  <string name="account_setup_basics_show_password">암호 표시</string>
   <string name="account_setup_basics_manual_setup_action">수동 설정</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">계정 정보 복구\u2026</string>
@@ -279,9 +268,14 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+  <string name="account_setup_auth_type_normal_password">일반 암호</string>
+  <string name="account_setup_auth_type_insecure_password">암호가 안전하지 않은 방법으로 전송됨</string>
+  <string name="account_setup_auth_type_encrypted_password">암호화된 암호</string>
+  <string name="account_setup_auth_type_tls_client_certificate">클라이언트 인증서</string>
   <string name="account_setup_incoming_title">받기 서버 설정</string>
   <string name="account_setup_incoming_username_label">아이디</string>
   <string name="account_setup_incoming_password_label">비밀번호</string>
+  <string name="account_setup_incoming_client_certificate_label">클라이언트 인증서</string>
   <string name="account_setup_incoming_pop_server_label">POP3 서버</string>
   <string name="account_setup_incoming_imap_server_label">IMAP 서버</string>
   <string name="account_setup_incoming_webdav_server_label">Exchange 서버</string>
@@ -289,6 +283,8 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_setup_incoming_security_label">보안 연결</string>
   <string name="account_setup_incoming_auth_type_label">인증 방식</string>
   <string name="account_setup_incoming_security_none_label">없음</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">메시지 삭제 시</string>
   <string name="account_setup_incoming_delete_policy_never_label">서버에는 메일을 삭제하지 않음</string>
   <string name="account_setup_incoming_delete_policy_delete_label">서버에도 메일 삭제</string>
@@ -369,9 +365,15 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_setup_options_mail_display_count_250">250 메시지</string>
   <string name="account_setup_options_mail_display_count_500">500 메시지</string>
   <string name="account_setup_options_mail_display_count_1000">1000 메시지</string>
+  <string name="account_setup_options_mail_display_count_2500">2500개의 메세지</string>
+  <string name="account_setup_options_mail_display_count_5000">5000개의 메세지</string>
+  <string name="account_setup_options_mail_display_count_10000">10000개의 메세지</string>
   <string name="account_setup_options_mail_display_count_all">모든 메시지</string>
   <string name="move_copy_cannot_copy_unsynced_message">서버와 동기화되지 않은 메시지를 복사하거나 이동할 수 없습니다.</string>
   <string name="account_setup_failed_dlg_title">설정이 완료되지 않았습니다</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">사용자 이름 또는 비밀번호가 올바르지 않습니다.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">서버가 올바르지 않은 SSL 인증서를 제출했습니다. 이것은 가끔 서버 설정이 잘못된 경우에 발생합니다. 하지만 누군가가 당신 혹은 당신의 메일 서버를 공격하려 할 때 발생하기도 합니다. 자세한 상황을 잘 모르신다면 일단 \'거부\'를 선택하신 다음, 당신의 메일 서버 관리자에게 연락하세요.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">서버에 접속할 수 없습니다.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">내용 수정</string>
   <string name="account_setup_failed_dlg_continue_action">계속</string>
   <string name="account_settings_push_advanced_title">고급</string>
@@ -379,6 +381,12 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_settings_default_label">기본 계정</string>
   <string name="account_settings_default_summary">보내기 기본 계정으로 사용합니다</string>
   <string name="account_settings_notify_label">새 메일 알림</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">알림 폴더</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">모두</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">제 1종 폴더만</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">제 1종 및 2종 폴더</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">제 2종 폴더 외 모두</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">없음</string>
   <string name="account_settings_notify_sync_label">동기화 알림</string>
   <string name="account_settings_email_label">당신의 이메일 주소</string>
   <string name="account_settings_notify_summary">메일 도착시 상태 바에 알림</string>
@@ -416,7 +424,9 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="account_settings_folders">폴더</string>
   <string name="account_settings_quote_prefix_label">본문 인용 앞 표시</string>
   <string name="account_settings_crypto">암호화 방법</string>
-  <string name="account_settings_crypto_app">OpenPGP 제공자</string>
+  <string name="account_settings_crypto_app">OpenPGP 앱</string>
+  <string name="account_settings_crypto_key">내 키</string>
+  <string name="account_settings_no_openpgp_provider_installed">OpenPGP 앱이 설치되지 않음</string>
   <string name="account_settings_mail_check_frequency_label">폴더 수신 빈도</string>
   <string name="account_settings_storage_title">저장 장치</string>
   <string name="account_settings_color_label">계정 색깔</string>
@@ -494,6 +504,11 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="folder_settings_folder_push_mode_first_class">제 1종</string>
   <string name="folder_settings_folder_push_mode_second_class">제 2종</string>
   <string name="folder_settings_folder_push_mode_inherited">동기화 클래스와 같음</string>
+  <string name="folder_settings_folder_notify_mode_label">폴더 알림 클래스</string>
+  <string name="folder_settings_folder_notify_mode_normal">없음</string>
+  <string name="folder_settings_folder_notify_mode_first_class">제 1종</string>
+  <string name="folder_settings_folder_notify_mode_second_class">제 2종</string>
+  <string name="folder_settings_folder_notify_mode_inherited">푸시 클래스와 같음</string>
   <string name="account_settings_incoming_label">받기 서버</string>
   <string name="account_settings_incoming_summary">메일 받기 서버 수정</string>
   <string name="account_settings_outgoing_label">보내기 서버</string>
@@ -687,9 +702,15 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="select_text_now">복사할 텍스트 선택</string>
   <string name="dialog_confirm_delete_title">삭제 확인</string>
   <string name="dialog_confirm_delete_message">이 메시지를 삭제하시겠습니까?</string>
+  <plurals name="dialog_confirm_delete_messages">
+    <item quantity="other">정말로 <xliff:g id="message_count">%1$d</xliff:g> 메세지를 삭제하시겠습니까?</item>
+  </plurals>
   <string name="dialog_confirm_delete_confirm_button">삭제함</string>
   <string name="dialog_confirm_delete_cancel_button">삭제하지 않음</string>
   <string name="dialog_confirm_spam_title">스팸폴더로 이동 확인</string>
+  <plurals name="dialog_confirm_spam_message">
+    <item quantity="other">정말로 <xliff:g id="message_count">%1$d</xliff:g> 메세지를 스팸 폴더로 옮기시겠습니까?</item>
+  </plurals>
   <string name="dialog_confirm_spam_confirm_button">예</string>
   <string name="dialog_confirm_spam_cancel_button">아니오</string>
   <string name="dialog_attachment_progress_title">첨부 파일 다운로드 중</string>
@@ -710,6 +731,9 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="settings_export_success">설정을 파일 <xliff:g id="filename">%s</xliff:g>로 내보냄</string>
   <string name="settings_import_global_settings_success">설정을 <xliff:g id="filename">%s</xliff:g>로부터 가져옴</string>
   <string name="settings_import_success"><xliff:g id="filename">%s</xliff:g>에서 <xliff:g id="accounts">%s</xliff:g>를 가져옴</string>
+  <plurals name="settings_import_accounts">
+    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> 계정</item>
+  </plurals>
   <string name="settings_export_failure">설정 내보내기 실패</string>
   <string name="settings_import_failure"><xliff:g id="filename">%s</xliff:g>로부터 설정 가져오기 실패</string>
   <string name="settings_export_success_header">내보내기 성공</string>
@@ -718,8 +742,14 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="settings_import_failed_header">가져오기 실패</string>
   <string name="settings_import_activate_account_header">계정 활성화</string>
   <string name="settings_import_activate_account_intro">계정 \"<xliff:g id="account">%s</xliff:g>\"을 활성화하기 위해 <xliff:g id="server_passwords">%s</xliff:g>를 입력하십시오.</string>
+  <plurals name="settings_import_server_passwords">
+    <item quantity="other">서버 암호</item>
+  </plurals>
   <string name="settings_import_incoming_server">수신 서버 (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">발신 서버 (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <plurals name="settings_import_setting_passwords">
+    <item quantity="other">암호 설정 중...</item>
+  </plurals>
   <string name="settings_import_use_incoming_server_password">수신 서버 비밀번호 사용</string>
   <string name="activate_account_action">활성화</string>
   <string name="account_unavailable">\"<xliff:g id="account">%s</xliff:g>\" 계정을 이용할 수 없습니다. 저장장치를 확인하십시오.</string>
@@ -801,6 +831,29 @@ K-9 메일은 대부분의 무료 hotmail 계정을 지원하지 않으며, 다�
   <string name="fetching_attachment_dialog_title_send">메시지 전송</string>
   <string name="fetching_attachment_dialog_title_save">임시 저장</string>
   <string name="fetching_attachment_dialog_message">첨부 파일 부치는 중…</string>
+  <string name="auth_external_error">인증할 수 없습니다. 서버가 SASL EXTERNAL을 사용할 수 있는지를 공지하지 않았습니다. 이것은 클라이언트 인증서 문제(알 수 없는 기관이거나 인증서가 만료됨) 또는 다른 설정 문제로 인해 발생했을 가능성이 있습니다.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_unknown_error">알 수 없는 OpenPGP 오류</string>
+  <string name="openpgp_result_no_signature">서명되지 않음</string>
+  <string name="openpgp_result_invalid_signature">서명이 올바르지 않습니다!</string>
+  <string name="openpgp_result_signature_uncertified">다음으로부터 서명됨 (인증되지 않음)</string>
+  <string name="openpgp_result_signature_certified">다음으로부터 서명됨</string>
+  <string name="openpgp_result_signature_expired_key">키가 만료되었습니다!</string>
+  <string name="openpgp_result_signature_revoked_key">키가 폐기되었습니다!</string>
+  <string name="openpgp_result_signature_missing_key">알 수 없는 공개 키</string>
+  <string name="openpgp_result_encrypted">암호화됨</string>
+  <string name="openpgp_result_not_encrypted">암호화되지 않음</string>
+  <string name="openpgp_result_action_show">표시</string>
+  <string name="openpgp_result_action_lookup">검색</string>
+  <string name="openpgp_result_no_name">이름 없음</string>
+  <string name="openpgp_result_no_email">이메일 없음</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">클라이언트 인증서 사용</string>
+  <string name="client_certificate_spinner_empty">클라이언트 인증서 없음</string>
+  <string name="client_certificate_spinner_delete">클라이언트 인증서 선택 제거</string>
+  <string name="client_certificate_advanced_options">고급 옵션</string>
+  <string name="client_certificate_expired">클라이언트 인증서 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 이(가) 만료되었거나 올바르지 않습니다 (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">완성되지 않은 메세지</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">복호화를 허용하려면 \'메세지의 남은 부분 다운로드\'를 선택하세요.</string>
 </resources>

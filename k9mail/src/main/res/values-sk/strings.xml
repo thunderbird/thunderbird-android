@@ -16,35 +16,36 @@
   <string name="welcome_message_title">Vitajte v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail je výkonný a bezplatný e-mailový klient pre Android.
+K-9 Mail je výkonný a slobodný e-mailový klient pre Android.
 </p><p>
-Jeho vylepšené funkcie zahŕňajú:
+Medzi jeho vylepšené funkcie patria:
 </p>
 <ul>
-  <li>Push pošta pri použití IMAP IDLE</li>
-  <li>Lepší výkon</li>
-  <li>Doplňovanie správ</li>
-  <li>Podpisy správ</li>
-  <li>Skrytá kópia sebe</li>
-  <li>Odbery priečinkov</li>
-  <li>Synchronizácia všetkých priečinkov</li>
-  <li>Nastavenie spiatočnej adresy</li>
-  <li>Klávesové skratky</li>
-  <li>Lepšia podpora pre IMAP</li>
-  <li>Ukladanie príloh na kartu SD</li>
-  <li>Vyprázdňovanie koša</li>
-  <li>Zoraďovanie správ</li>
-  <li>…a ďalšie</li>
+<li>Push pošta pri použití IMAP IDLE</li>
+<li>Lepší výkon</li>
+<li>Doplňovanie správ</li>
+<li>Podpisy správ</li>
+<li>Skrytá kópia sebe</li>
+<li>Odbery priečinkov</li>
+<li>Synchronizácia všetkých priečinkov</li>
+<li>Nastavenie spiatočnej adresy</li>
+<li>Klávesové skratky</li>
+<li>Lepšia podpora IMAP protokolu</li>
+<li>Ukladanie príloh na SD kartu</li>
+<li>Vyprázdňovanie koša</li>
+<li>Zoraďovanie správ</li>
+<li>…a ďalšie</li>
 </ul>
 <p>
-Vezmite, prosím, na vedomie, že K-9 Mail nepodporuje väčšinu bezplatných účtov Hotmail a ako mnoho ďalších e-mailových klientov vykazuje zvláštnosti pri komunikácii s Microsoft Exchange.
+Prosím, vezmite na vedomie, že K-9 Mail nepodporuje väčšinu bezplatných účtov složby Hotmail a ako mnoho ďalších e-mailových klientov
+vykazuje isté zvláštnosti pri komunikácii s Microsoft Exchange.
 </p><p>
 Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte sa na
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
-    ]]></string>
+]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nOdoslané z môjho Android zariadenia pomocou K-9 Mail.</string>
+  <string name="default_signature">-- \nOdoslané z môjho Android zariadenia prostredníctvom K-9 Mail. Prosím, ospravedlňte moju statočnosť.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstránený z K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Všetky lokálne údaje pre účet \"<xliff:g id="account">%s</xliff:g>\" budú odstránené. Nastavenia účtu budú zachované.</string>
@@ -162,10 +163,15 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových správ</item>
   </plurals>
   <string name="notification_new_one_account_fmt">Počet neprečítaných správ: <xliff:g id="unread_message_count">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_additional_messages">+ ďalších <xliff:g id="additional_messages">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> ďalších v <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odpovedať</string>
   <string name="notification_action_mark_as_read">Označiť ako prečítané</string>
+  <string name="notification_action_mark_all_as_read">Označiť všetky ako prečítané</string>
   <string name="notification_action_delete">Vymazať</string>
+  <string name="notification_action_delete_all">Vymazať všetko</string>
+  <string name="notification_action_archive">Archivovať</string>
+  <string name="notification_action_archive_all">Archivovať všetko</string>
+  <string name="notification_action_spam">Nevyžiadaná pošta</string>
   <string name="notification_certificate_error_title">Chyba certifikátu pre <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Skontrolujte nastavenia servera</string>
   <string name="notification_bg_sync_ticker">Kontrolovanie pošty: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -205,6 +211,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="message_compose_reply_header_fmt">Používateľ <xliff:g id="sender">%s</xliff:g> napísal:</string>
   <string name="message_compose_reply_header_fmt_with_date">Dňa <xliff:g id="sent_date">%1$s</xliff:g> používateľ <xliff:g id="sender">%2$s</xliff:g> napísal:</string>
   <string name="message_compose_error_no_recipients">Musíte pridať aspoň jedného príjemcu.</string>
+  <string name="compose_error_incomplete_recipient">Pole príjemcov obsahuje neúplný vstup!</string>
   <string name="error_contact_address_not_found">Nebola nájdená žiadna e-mailová adresa pre tento kontakt.</string>
   <string name="message_compose_attachments_skipped_toast">Niektoré prílohy nemožno preposlať, pretože neboli stiahnuté.</string>
   <string name="message_compose_show_quoted_text_action">Citovať správu</string>
@@ -255,6 +262,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_confirm_action_delete">Vymazať</string>
   <string name="global_settings_confirm_action_delete_starred">Vymazať správy s hviezdičkou (v zobrazení správ)</string>
   <string name="global_settings_confirm_action_spam">Nevyžiadaná pošta</string>
+  <string name="global_settings_confirm_menu_discard">Zahodiť správu</string>
   <string name="global_settings_confirm_action_delete_notif">Vymazať (z oznámení)</string>
   <string name="global_settings_privacy_hide_useragent">Odstrániť používateľského agenta K-9 z hlavičiek správ</string>
   <string name="global_settings_privacy_hide_timezone">Použiť UTC ako časové pásmo v hlavičkách správ</string>
@@ -275,6 +283,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_lock_screen_notification_visibility_everything">Rovnaké ako pri odomknutej obrazovke</string>
   <string name="quiet_time">Čas ticha</string>
   <string name="quiet_time_description">Zakázať vyzváňanie, bzučanie a blikanie v noci</string>
+  <string name="quiet_time_notification">Vypnúť oznámenia</string>
+  <string name="quiet_time_notification_description">Úplne vypnúť upozornenia počas Času ticha</string>
   <string name="quiet_time_starts">Čas ticha začína o</string>
   <string name="quiet_time_ends">Čas ticha končí o</string>
   <string name="account_setup_basics_title">Nastaviť nový účet</string>
@@ -418,7 +428,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Priečinky 1. a 2. triedy</string>
   <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Všetky okrem priečinkov 2. triedy</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">Žiadne</string>
-  <string name="account_settings_notify_sync_label">Oznámenie o synchronizácii</string>
+  <string name="account_settings_notify_sync_label">Oznámenia o synchronizácii</string>
   <string name="account_settings_email_label">Vaša e-mailová adresa</string>
   <string name="account_settings_notify_summary">Oznamovať v stavovej lište, keď príde nová pošta</string>
   <string name="account_settings_notify_sync_summary">Oznamovať v stavovej lište, keď je pošta kontrolovaná</string>
@@ -455,8 +465,9 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_folders">Priečinky</string>
   <string name="account_settings_quote_prefix_label">Predpona citovaného textu</string>
   <string name="account_settings_crypto">Šifrovanie</string>
-  <string name="account_settings_crypto_app">Poskytovateľ OpenPGP</string>
-  <string name="account_settings_no_openpgp_provider_installed">Nenainštalovaný poskytovateľ OpenPGP</string>
+  <string name="account_settings_crypto_app">Aplikácia OpenPGP</string>
+  <string name="account_settings_crypto_key">Môj kľúč</string>
+  <string name="account_settings_no_openpgp_provider_installed">Žiadna nainštalovaná aplikácia OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
   <string name="account_settings_storage_title">Ukladací priestor</string>
   <string name="account_settings_color_label">Farba účtu</string>
@@ -877,6 +888,24 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="fetching_attachment_dialog_message">Sťahujem prílohu…</string>
   <string name="auth_external_error">Nie je možné overiť. Server nenaznačil schopnosť SASL EXTERNAL. To sa mohlo stať kvôli problému s klientským certifikátom (vypršal, neznáma certifikačná autorita), alebo kvôli nejakému inému problému konfigurácie.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decryption_failed">Dešifrovanie zlyhalo: %s</string>
+  <string name="openpgp_unknown_error">Neznáma chyba OpenPGP</string>
+  <string name="openpgp_canceled_by_user">Zrušené používateľom</string>
+  <string name="openpgp_result_no_signature">Nepodpísané</string>
+  <string name="openpgp_result_invalid_signature">Neplatný podpis!</string>
+  <string name="openpgp_result_signature_uncertified">Podpísané (nie certifikované!)</string>
+  <string name="openpgp_result_signature_certified">Podpísané</string>
+  <string name="openpgp_result_signature_expired_key">Kľúč vypršal!</string>
+  <string name="openpgp_result_signature_revoked_key">Kľúč bol odvolaný!</string>
+  <string name="openpgp_result_signature_insecure">Nezabezpečené!</string>
+  <string name="openpgp_result_signature_missing_key">Neznáma verejný kľúč</string>
+  <string name="openpgp_result_encrypted">Šifrované</string>
+  <string name="openpgp_result_not_encrypted">Nešifrované</string>
+  <string name="openpgp_result_decryption_insecure">Nezabezpečené</string>
+  <string name="openpgp_result_action_show">Zobraziť</string>
+  <string name="openpgp_result_action_lookup">Vyhľadať</string>
+  <string name="openpgp_result_no_name">Žiadne meno</string>
+  <string name="openpgp_result_no_email">Žiadne e-mail</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Použiť klientský certifikát</string>
   <string name="client_certificate_spinner_empty">Žiadny klientský certifikát</string>
@@ -884,4 +913,27 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="client_certificate_retrieval_failure">Nepodarilo sa získať klientský certifikát pre identitu \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Pokročilé možnosti</string>
   <string name="client_certificate_expired">Klientský certifikát \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" vypršal alebo nie je zatiaľ platný (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Nedokončená správa</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Kliknite na \'Stiahnuť kompletnú správu\' pre povolenie dešifrovania.</string>
+  <string name="preview_encrypted">*Šifrované*</string>
+  <string name="add_from_contacts">Pridať z kontaktov</string>
+  <string name="crypto_settings_ok">Pokračovať</string>
+  <string name="recipient_cc">Kópia</string>
+  <string name="recipient_bcc">Skrytá kópia</string>
+  <string name="recipient_to">Komu</string>
+  <string name="recipient_from">Od</string>
+  <string name="unknown_recipient"><![CDATA[<Neznámy príjemca>]]></string>
+  <string name="address_type_home">Domov</string>
+  <string name="address_type_work">Práca</string>
+  <string name="address_type_other">Iná</string>
+  <string name="address_type_mobile">Mobilná</string>
+  <string name="warn_search_disabled">Vyhľadávanie v telách správ je v tejto vývojovej verzii deaktivované!</string>
+  <string name="compose_error_no_draft_folder">Pre tento účet nie je zadefinovaný priečinok pre koncepty správ.</string>
+  <string name="compose_error_no_signing_key">Pre podpísanie správy je potrebné vybrať kľúč!</string>
+  <string name="compose_error_private_missing_keys">Je aktivovaný Súkromný režim, nie je však možné správu šifrovať pre všetkých príjemcov!</string>
+  <string name="crypto_mode_disabled">Nepodpisovať a nešifrovať.</string>
+  <string name="crypto_mode_sign_only">Vždy podpísať, nešifrovať.</string>
+  <string name="crypto_mode_opportunistic">Vždy podpísať, šifrovať ak je to možné.</string>
+  <string name="crypto_mode_private">Vždy podpísať, vždy šifrovať.</string>
 </resources>

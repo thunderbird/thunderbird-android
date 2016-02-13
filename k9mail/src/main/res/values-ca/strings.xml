@@ -14,35 +14,6 @@
   <string name="app_license">Llicenciat sota Llicència Apache, Versió 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Us donem la benvinguda a K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-El K-9 és un client de codi obert per Android, originalment basat en l\'estàndard de client de Correu d\'Android.
-</p><p>
-El K-9 inclou les característiques millorades de:
-</p>
-<ul>
-  <li>Push mail utilitzant IMAP IDLE</li>
-  <li>Millor rendiment</li>
-  <li>Reclassificació de missatges</li>
-  <li>Signatura de correu</li>
-  <li>C/o a un mateix</li>
-  <li>Subscripció a carpetes</li>
-  <li>Sincronització a totes les carpetes</li>
-  <li>Configuració de l\'adreça de retorn</li>
-  <li>Dreceres de teclat</li>
-  <li>Millor suport IMAP</li>
-  <li>Desat dels adjunts a la SD</li>
-  <li>Buidat de la paperera</li>
-  <li>Ordenació de missatges</li>
-  <li>…i més</li>
-</ul>
-<p>
-Si us plau, tingueu en compte que el K-9 no funciona amb la majoria de comptes Hotmail gratuïts i, com molts clients de correu, fa coses estranyes quan es comunica amb Microsoft Exchange.
-</p><p>
-Si us plau, envia\'ns els errors, contribueix a millorar-lo a
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" serà esborrat de K-9 Mail.</string>
@@ -157,10 +128,12 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="recreating_account">S\'està creant un compte \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nou correu</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> no llegit(s) (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">i <xliff:g id="additional_messages">%d</xliff:g> més a <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Respon</string>
-  <string name="notification_action_mark_as_read">Mostra</string>
+  <string name="notification_action_mark_as_read">Marca Llegit</string>
+  <string name="notification_action_mark_all_as_read">Marca\'ls tots com a llegits</string>
   <string name="notification_action_delete">Elimina</string>
+  <string name="notification_action_archive">Arxiva</string>
+  <string name="notification_action_spam">Correu Brossa</string>
   <string name="notification_certificate_error_title">Error en el certificat de <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Comproveu els paràmetres del servidor.</string>
   <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -246,8 +219,10 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="global_settings_messageview_show_next_summary">Mostra, per defecte, el proper missatge després d\'eliminar-ne un.</string>
   <string name="global_settings_confirm_actions_title">Confirma accions</string>
   <string name="global_settings_confirm_actions_summary">Mostra un diàleg cada vegada que executis accions seleccionades</string>
+  <string name="global_settings_confirm_action_delete">Esborra</string>
   <string name="global_settings_confirm_action_delete_starred">Elimina els missatges amb estel (només a la vista de missatges)</string>
   <string name="global_settings_confirm_action_spam">Brossa</string>
+  <string name="global_settings_confirm_menu_discard">Descartar el missatge</string>
   <string name="global_settings_confirm_action_delete_notif">Elimina (des de notificacions)</string>
   <string name="global_settings_notification_hide_subject_title">Amaga l\'assumpte a les notificacions</string>
   <string name="global_settings_notification_hide_subject_never">Mai</string>
@@ -291,6 +266,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_setup_incoming_security_label">Tipus de seguretat</string>
   <string name="account_setup_incoming_auth_type_label">Tipus d\'autenticació</string>
   <string name="account_setup_incoming_security_none_label">Cap</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Quan esborro missatges</string>
   <string name="account_setup_incoming_delete_policy_never_label">No els esborris del servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Esborra\'ls servidor</string>
@@ -418,7 +395,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_settings_folders">Carpetes</string>
   <string name="account_settings_quote_prefix_label">Prefix de cita del text</string>
   <string name="account_settings_crypto">Criptografia</string>
-  <string name="account_settings_crypto_app">Proveïdor d\'OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Freqüència de comprovació de les carpetes</string>
   <string name="account_settings_storage_title">Emmagatzematge</string>
   <string name="account_settings_color_label">Color del compte</string>
@@ -825,4 +801,5 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="fetching_attachment_dialog_message">Recuperant adjunt…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>
