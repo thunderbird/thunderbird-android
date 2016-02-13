@@ -29,11 +29,11 @@ import android.text.TextUtils;
 public class OpenPgpUtils {
 
     public static final Pattern PGP_MESSAGE = Pattern.compile(
-            ".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
+            "(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
             Pattern.DOTALL);
 
     public static final Pattern PGP_SIGNED_MESSAGE = Pattern.compile(
-            ".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
+            "(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
             Pattern.DOTALL);
 
     public static final int PARSE_RESULT_NO_PGP = -1;
@@ -41,12 +41,16 @@ public class OpenPgpUtils {
     public static final int PARSE_RESULT_SIGNED_MESSAGE = 1;
 
     public static int parseMessage(String message) {
+        return parseMessage(message, false);
+    }
+
+    public static int parseMessage(String message, boolean anchorToStart) {
         Matcher matcherSigned = PGP_SIGNED_MESSAGE.matcher(message);
         Matcher matcherMessage = PGP_MESSAGE.matcher(message);
 
-        if (matcherMessage.matches()) {
+        if (anchorToStart ? matcherMessage.matches() : matcherMessage.find()) {
             return PARSE_RESULT_MESSAGE;
-        } else if (matcherSigned.matches()) {
+        } else if (anchorToStart ? matcherSigned.matches() : matcherSigned.find()) {
             return PARSE_RESULT_SIGNED_MESSAGE;
         } else {
             return PARSE_RESULT_NO_PGP;
