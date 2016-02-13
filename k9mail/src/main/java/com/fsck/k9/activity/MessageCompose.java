@@ -937,7 +937,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
 
         updateFrom();
-        updateSignature();
 
         updateMessageFormat();
     }
