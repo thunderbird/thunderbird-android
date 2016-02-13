@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -256,7 +257,7 @@ public class FolderList extends K9ListActivity {
             return;
         }
 
-        mActionBarProgressView = getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
+        mActionBarProgressView = getActionBarProgressView();
         mActionBar = getActionBar();
         initializeActionBar();
         setContentView(R.layout.folder_list);
@@ -292,6 +293,11 @@ public class FolderList extends K9ListActivity {
         if (cl.isFirstRun()) {
             cl.getLogDialog().show();
         }
+    }
+
+    @SuppressLint("InflateParams")
+    private View getActionBarProgressView() {
+        return getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
     }
 
     private void initializeActionBar() {
