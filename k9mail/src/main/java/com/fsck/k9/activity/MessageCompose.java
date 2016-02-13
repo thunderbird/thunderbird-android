@@ -2195,9 +2195,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (name != null) {
             if (part instanceof LocalBodyPart) {
                 LocalBodyPart localBodyPart = (LocalBodyPart) part;
-                String mAccountUuid = localBodyPart.getAccountUuid();
-                long mContentId = localBodyPart.getId();
-                Uri uri = AttachmentProvider.getAttachmentUri(mAccountUuid, mContentId);
+                String accountUuid = localBodyPart.getAccountUuid();
+                long attachmentId = localBodyPart.getId();
+                Uri uri = AttachmentProvider.getAttachmentUri(accountUuid, attachmentId);
                 addAttachment(uri);
                 return true;
             }
