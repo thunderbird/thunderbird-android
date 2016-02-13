@@ -634,6 +634,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mSignatureView = lowerSignature;
             upperSignature.setVisibility(View.GONE);
         }
+        updateSignature();
         mSignatureView.addTextChangedListener(signTextWatcher);
 
         if (!mIdentity.getSignatureUse()) {
@@ -646,8 +647,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateFrom();
 
         if (!mSourceMessageProcessed) {
-            updateSignature();
-
             if (mAction == Action.REPLY || mAction == Action.REPLY_ALL ||
                     mAction == Action.FORWARD || mAction == Action.EDIT_DRAFT) {
                 /*
@@ -938,7 +937,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
 
         updateFrom();
-        updateSignature();
 
         updateMessageFormat();
     }
