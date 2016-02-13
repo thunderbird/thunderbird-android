@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">Account di K-9</string>
   <string name="unread_widget_label">Nuovi messaggi di K-9</string>
   <string name="remote_control_label">Controllo remoto di K-9 Mail</string>
@@ -129,7 +128,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="message_view_theme_action_dark">Passa al tema scuro</string>
   <string name="message_view_theme_action_light">Passa al tema chiaro</string>
   <string name="mark_as_unread_action">Marca come da leggere</string>
-  <string name="add_cc_bcc_action">Aggiungi Cc/Ccn</string>
   <string name="read_receipt">Notifica di lettura</string>
   <string name="read_receipt_enabled">Notifica di lettura attiva</string>
   <string name="read_receipt_disabled">Non richiederà la notifica di lettura</string>
@@ -194,9 +192,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="debug_enable_sensitive_logging_summary">Può mostrare le password nei file di log.</string>
   <string name="message_list_load_more_messages_action">Carica altri messaggi</string>
   <string name="message_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">A</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Ccn</string>
   <string name="message_compose_subject_hint">Oggetto</string>
   <string name="message_compose_content_hint">Testo del messaggio</string>
   <string name="message_compose_signature_hint">Firma</string>
@@ -212,9 +207,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="error_contact_address_not_found">Nessun indirizzo email trovato per questo contatto.</string>
   <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati poiché non sono stati scaricati.</string>
   <string name="message_compose_show_quoted_text_action">Cita messaggio</string>
-  <string name="message_compose_description_add_to">Aggiungi destinatario (A)</string>
-  <string name="message_compose_description_add_cc">Aggiungi destinatario (CC)</string>
-  <string name="message_compose_description_add_bcc">Aggiungi destinatario (Ccn)</string>
   <string name="message_compose_description_delete_quoted_text">Rimuovi testo citato</string>
   <string name="message_compose_description_edit_quoted_text">Modifica testo citato</string>
   <string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -222,18 +214,12 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Apri</string>
   <string name="message_view_attachment_download_action">Salva</string>
-  <string name="message_view_status_attachment_saved">Allegato salvato su scheda SD come <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato sulla scheda SD.</string>
   <string name="message_view_show_pictures_action">Mostra immagini</string>
-  <string name="message_view_show_message_action">Mostra messaggio</string>
-  <string name="message_view_show_attachments_action">Mostra allegati</string>
   <string name="message_view_show_more_attachments_action">Altro…</string>
-  <string name="message_view_fetching_attachment_toast">Recupero allegato in corso.</string>
   <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Scarica intero messaggio</string>
-  <string name="message_view_downloading">Scaricamento in corso…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Non tutte le intestazioni sono state scaricate o salvate. Seleziona \"Salva tutte le intestazioni localmente\" nelle impostazioni del server della posta in arrivo per abilitare questa funzionalità.</string>
   <string name="message_no_additional_headers_available">Tutte le intestazioni sono state scaricate, non ci sono intestazioni aggiuntive da mostrare.</string>
   <string name="message_additional_headers_retrieval_failed">Recupero di intestazioni aggiuntive dal database o dal server di posta non riuscito.</string>
   <string name="from_same_sender">Altri da questo mittente</string>
@@ -741,18 +727,11 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="font_size_larger">Più grande</string>
   <string name="miscellaneous_preferences">Varie</string>
   <string name="error_activity_not_found">Nessuna applicazione trovata per questa azione.</string>
-  <string name="btn_crypto_sign">Firma</string>
-  <string name="btn_encrypt">Cifra</string>
-  <string name="unknown_crypto_signature_user_id">&lt;sconosciuto&gt;</string>
-  <string name="pgp_mime_unsupported">I messaggi PGP/MIME non sono ancora supportati.</string>
-  <string name="attachment_encryption_unsupported">Attenzione: gli allegati NON sono ancora firmati o cifrati.</string>
   <string name="send_aborted">Invio interrotto.</string>
   <string name="save_or_discard_draft_message_dlg_title">Vuoi salvare la bozza?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Vuoi salvare o scartare questo messaggio?</string>
   <string name="confirm_discard_draft_message_title">Vuoi eliminare il messaggio?</string>
   <string name="confirm_discard_draft_message">Sei sicuro di voler eliminare questo messaggio?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Impossibile salvare il messaggio in bozze.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Impossibile salvare il messaggio cifrato in bozze.</string>
   <string name="select_text_now">Seleziona il testo da copiare.</string>
   <string name="dialog_confirm_delete_title">Conferma l\'eliminazione</string>
   <string name="dialog_confirm_delete_message">Vuoi eliminare questo messaggio?</string>
@@ -773,7 +752,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="debug_logging_enabled">Registrazione dei log per il debug abilitata</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Impossibile connettersi.</string>
   <string name="import_export_action">Importa ed esporta impostazioni</string>
   <string name="settings_export_account">Esporta impostazioni account</string>
   <string name="settings_export_all">Esporta impostazioni e account</string>
@@ -853,8 +831,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Limite risultati di ricerca sul server</string>
   <string name="account_settings_remote_search_num_summary">La ricerca si fermerà dopo aver trovato <xliff:g id="num_results">%s</xliff:g> risultati.</string>
-  <string name="account_settings_remote_search_full_text">Includi il testo del corpo nella ricerca sul server</string>
-  <string name="account_settings_remote_search_full_text_summary">Le ricerche sull\'intero testo possono risultare lente.</string>
   <string name="remote_search_sending_query">Invio della richiesta al server</string>
   <string name="remote_search_downloading">Recupero di %d risultati</string>
   <string name="remote_search_downloading_limited">Recupero di %1$d di %2$d risultati</string>
@@ -895,18 +871,6 @@ Invia le tue segnalazioni, suggerisci nuove funzionalità e chiedi informazioni 
   <string name="fetching_attachment_dialog_message">Recupero allegati…</string>
   <string name="auth_external_error">Impossibile autenticare. Il server non offre la funzionalità SASL EXTERNAL. Ciò potrebbe essere causato da un problema con il certificato client (scaduto, autorità di certificazione sconosciuta) o da un altro problema di configurazione.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Decifratura/Verifica…</string>
-  <string name="openpgp_successful_decryption">Decifratura avvenuta</string>
-  <string name="openpgp_signature_valid_certified">Firma valida (certificata)</string>
-  <string name="openpgp_signature_valid_uncertified">Firma valida ma non certificata</string>
-  <string name="openpgp_signature_unknown">Firmatario sconosciuto</string>
-  <string name="openpgp_signature_invalid">Firma non valida</string>
-  <string name="openpgp_signature_unknown_text">Chiave pubblica mancante per questa firma</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Decifratura avvenuta e firma valida (certificata)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Decifratura avvenuta e firma valida ma non certificata</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Decifratura avvenuta ma chiave pubblica mancante</string>
-  <string name="openpgp_get_key">Cerca chiave mancante</string>
-  <string name="openpgp_user_id">ID utente</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Usa certificato client</string>
   <string name="client_certificate_spinner_empty">Nessun certificato client</string>

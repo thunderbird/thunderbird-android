@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">K-9 kontuak</string>
   <string name="unread_widget_label">K-9 irakurgabeak</string>
   <string name="remote_control_label">K-9 urruneko kontrola</string>
@@ -128,7 +127,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="message_view_theme_action_dark">Itxura ilunera aldatu</string>
   <string name="message_view_theme_action_light">Itxura argira aldatu</string>
   <string name="mark_as_unread_action">Irakurgabe markatu</string>
-  <string name="add_cc_bcc_action">Cc/Bcc gehitu</string>
   <string name="read_receipt">Irakurragiria</string>
   <string name="read_receipt_enabled">Irakurragiria eskatuko da</string>
   <string name="read_receipt_disabled">Ez da irakurragiria eskatuko</string>
@@ -189,9 +187,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="debug_enable_sensitive_logging_summary">Logetan pasahitzak ikus daitezke.</string>
   <string name="message_list_load_more_messages_action">Mezu gehiago kargatu</string>
   <string name="message_to_fmt">Nori:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Nori</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Bcc</string>
   <string name="message_compose_subject_hint">Gaia</string>
   <string name="message_compose_content_hint">Mezuaren edukia</string>
   <string name="message_compose_signature_hint">Sinadura</string>
@@ -206,9 +201,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="error_contact_address_not_found">Kontaktu honen eposta helbidea ez da topatu.</string>
   <string name="message_compose_attachments_skipped_toast">Eranskin batzuk ezin izan dira berbidali deskargatu ez direlako.</string>
   <string name="message_compose_show_quoted_text_action">Mezua aipatu</string>
-  <string name="message_compose_description_add_to">Jasotzailea gehitu (Nori)</string>
-  <string name="message_compose_description_add_cc">Jasotzailea gehitu (CC)</string>
-  <string name="message_compose_description_add_bcc">Jasotzailea gehitu (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Aipamena ezabatu</string>
   <string name="message_compose_description_edit_quoted_text">Aipamena editatu</string>
   <string name="message_view_from_format">Nondik: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -216,18 +208,12 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Ireki</string>
   <string name="message_view_attachment_download_action">Gorde</string>
-  <string name="message_view_status_attachment_saved">Eranskina SD txartelan gordeta: <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Ezin da eranskina SD txartelan gorde.</string>
   <string name="message_view_show_pictures_action">Irudiak ikusi</string>
-  <string name="message_view_show_message_action">Mezua ikusi</string>
-  <string name="message_view_show_attachments_action">Eranskinak ikusi</string>
   <string name="message_view_show_more_attachments_action">Gehiago…</string>
-  <string name="message_view_fetching_attachment_toast">Eranskina eskuratzen.</string>
   <string name="message_view_no_viewer">Ez da <xliff:g id="mimetype">%s</xliff:g> ikusteko aplikaziorik topatu.</string>
   <string name="message_view_download_remainder">Mezu osoa deskargatu</string>
-  <string name="message_view_downloading">Deskargatzen…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Ez dira goiburu guztiak deskargatu edo gorde. Hautatu \"Gorder goiburu guztiak lokalki\" kontuaren sarrerako zerbitzariaren ezarpenetan etorkizunerako hau ahalbidetzeko.</string>
   <string name="message_no_additional_headers_available">Goiburu guztiak deskargatu dira, baina ez dago erakusteko goiburu gehiago.</string>
   <string name="message_additional_headers_retrieval_failed">Datubasetik edo zerbitzaritik goiburu gehiago eskuratzeak errorea eman du.</string>
   <string name="from_same_sender">Bidaltzaile honengandik gehiago</string>
@@ -713,18 +699,11 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="font_size_larger">Handiagoa</string>
   <string name="miscellaneous_preferences">Bestelakoak</string>
   <string name="error_activity_not_found">Ez da honetarako aplikaziorik topatu.</string>
-  <string name="btn_crypto_sign">Sinatu</string>
-  <string name="btn_encrypt">Zifratu</string>
-  <string name="unknown_crypto_signature_user_id">&lt;ezezaguna&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME mezurik oraindik ez.</string>
-  <string name="attachment_encryption_unsupported">Kontuz: oraindik ez dira eranskinak zinatzen edo zifratzen.</string>
   <string name="send_aborted">Bidalketa ezeztatua.</string>
   <string name="save_or_discard_draft_message_dlg_title">Zirriborroa gorde?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Mezu hau gorde edo baztertu?</string>
   <string name="confirm_discard_draft_message_title">Mezua baztertu</string>
   <string name="confirm_discard_draft_message">Ziur mezu hau baztertu nahi duzula?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Zirriborroa gordetzea ukatu.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Zifratuko diren zirriborroak gordetzea ukatu.</string>
   <string name="select_text_now">Kopiatuko den testua hautatu</string>
   <string name="dialog_confirm_delete_title">Ezabatzea baieztatu</string>
   <string name="dialog_confirm_delete_message">Mezu hau ezabatu nahi duzu?</string>
@@ -745,7 +724,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="debug_logging_enabled">Arazketa logak gaituta</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Ezin da konektatu</string>
   <string name="import_export_action">Ezarpenen inportazio eta esportazioa</string>
   <string name="settings_export_account">Kontu ezarpenak esportatu</string>
   <string name="settings_export_all">Ezarpenak eta kontuak esportatu</string>
@@ -825,8 +803,6 @@ Arazoen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Zerbitzarian bilatzeko limitea</string>
   <string name="account_settings_remote_search_num_summary"><xliff:g id="num_results">%s</xliff:g> emaitza topatzean bilatzeari utzi.</string>
-  <string name="account_settings_remote_search_full_text">Zerbitzarian bilatzerakoan edukian ere bilatu</string>
-  <string name="account_settings_remote_search_full_text_summary">Testu osoan bilatzea mantsoa izan daiteke.</string>
   <string name="remote_search_sending_query">Galdera zerbitzarira bidaltzen</string>
   <string name="remote_search_downloading">%d emaitz eskuratzen</string>
   <string name="remote_search_downloading_limited">%1$d-tik %2$d emaitz eskuratzen</string>

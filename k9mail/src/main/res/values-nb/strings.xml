@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 E-post</string>
-  <string name="beta_app_name">K-9 E-post BETA</string>
   <string name="shortcuts_title">K-9 Konti</string>
   <string name="unread_widget_label">K-9 Ulest</string>
   <string name="remote_control_label">K-9 Fjernkontroll</string>
@@ -130,7 +129,6 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål på
   <string name="message_view_theme_action_dark">Bytt til mørkt tema</string>
   <string name="message_view_theme_action_light">Bytt til lyst tema</string>
   <string name="mark_as_unread_action">Merk uleste</string>
-  <string name="add_cc_bcc_action">Legg til kopi/blindkopi</string>
   <string name="read_receipt">Lesekvittering</string>
   <string name="read_receipt_enabled">Kommer til å be om lesekvittering</string>
   <string name="read_receipt_disabled">Kommer ikke til å be om lesekvittering</string>
@@ -192,9 +190,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="debug_enable_sensitive_logging_summary">Passord kan vises i logger.</string>
   <string name="message_list_load_more_messages_action">Last flere meldinger</string>
   <string name="message_to_fmt">Til:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Til</string>
-  <string name="message_compose_cc_hint">Kopi</string>
-  <string name="message_compose_bcc_hint">Blindkopi</string>
   <string name="message_compose_subject_hint">Emne</string>
   <string name="message_compose_content_hint">Meldingstekst</string>
   <string name="message_compose_signature_hint">Signatur</string>
@@ -210,9 +205,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="error_contact_address_not_found">Ingen e-postadresse ble funnet for denne kontakten.</string>
   <string name="message_compose_attachments_skipped_toast">Noen vedlegg kunne ikke bli videresendt fordi de ikke har blitt lastet ned.</string>
   <string name="message_compose_show_quoted_text_action">Siter melding</string>
-  <string name="message_compose_description_add_to">Legg til mottaker (til)</string>
-  <string name="message_compose_description_add_cc">Legg til mottaker (kopi)</string>
-  <string name="message_compose_description_add_bcc">Legg til mottaker (blindkopi)</string>
   <string name="message_compose_description_delete_quoted_text">Fjern sitert tekst</string>
   <string name="message_compose_description_edit_quoted_text">Rediger sitert tekst</string>
   <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -220,18 +212,12 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="message_view_cc_label">Kopi:</string>
   <string name="message_view_attachment_view_action">Åpne</string>
   <string name="message_view_attachment_download_action">Lagre</string>
-  <string name="message_view_status_attachment_saved">Vedlegg lagret til SD-kort som <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Kunne ikke lagre vedlegget til SD-kortet.</string>
   <string name="message_view_show_pictures_action">Vis bilder</string>
-  <string name="message_view_show_message_action">Vis melding</string>
-  <string name="message_view_show_attachments_action">Vis vedlegg</string>
   <string name="message_view_show_more_attachments_action">Mer …</string>
-  <string name="message_view_fetching_attachment_toast">Henter vedlegg.</string>
   <string name="message_view_no_viewer">Finner ikke visningsprogram for <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Nedlaster komplett melding</string>
-  <string name="message_view_downloading">Nedlaster…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Ikke alle meldingshoder har blitt nedlastet eller lagret. Velg \"Lagre alle meldingshoder lokalt\" i kontoens innstilling for innkommende tjener for å tillate dette i framtiden.</string>
   <string name="message_no_additional_headers_available">Alle meldingshoder har blitt nedlastet, men det er ingen flere meldingshoder å vise.</string>
   <string name="message_additional_headers_retrieval_failed">Hentingen av flere meldigshoder fra databasen eller e-posttjener feilet.</string>
   <string name="from_same_sender">Mer fra denne avsender</string>
@@ -734,18 +720,11 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="font_size_larger">Større</string>
   <string name="miscellaneous_preferences">Diverse</string>
   <string name="error_activity_not_found">Ingen egnede program ble funnet for denne handlingen.</string>
-  <string name="btn_crypto_sign">Signer</string>
-  <string name="btn_encrypt">Krypter</string>
-  <string name="unknown_crypto_signature_user_id">&lt;ukjent&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME-meldinger støttes ikke enda.</string>
-  <string name="attachment_encryption_unsupported">Advarsel: vedlegg er IKKE signert eller kryptert enda.</string>
   <string name="send_aborted">Sending avbrudt</string>
   <string name="save_or_discard_draft_message_dlg_title">Lagre utkast?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Lagre eller Forkast denne meldingen?</string>
   <string name="confirm_discard_draft_message_title">Forkast melding?</string>
   <string name="confirm_discard_draft_message">Er du sikker på at du vil forkaste denne meldingen?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Nekt å lagre utkast.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Nekt å lagre utkast som er merket kryptert.</string>
   <string name="select_text_now">Velg tekst til å kopiere</string>
   <string name="dialog_confirm_delete_title">Bekreft sletting</string>
   <string name="dialog_confirm_delete_message">Vil du slette denne meldingen?</string>
@@ -766,7 +745,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="debug_logging_enabled">Feilsøk-logging aktivert</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Kan ikke koble til.</string>
   <string name="import_export_action">Importer &amp; Eksporter innstillinger</string>
   <string name="settings_export_account">Eksporter kontoinnstillinger</string>
   <string name="settings_export_all">Eksporter innstillinger og kontoer</string>
@@ -846,8 +824,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Begrensning for søk på tjener</string>
   <string name="account_settings_remote_search_num_summary">Søk vil stoppe etter å ha funnet <xliff:g id="num_results">%s</xliff:g> resultater.</string>
-  <string name="account_settings_remote_search_full_text">Inkluder meldingstekst ved søk på tjener</string>
-  <string name="account_settings_remote_search_full_text_summary">Fulltekstsøk kan være tregt.</string>
   <string name="remote_search_sending_query">Sender forespørsel til tjener</string>
   <string name="remote_search_downloading">Henter %d resultater</string>
   <string name="remote_search_downloading_limited">Henter %1$d av %2$d resultater</string>
@@ -888,18 +864,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="fetching_attachment_dialog_message">Henter vedlegg …</string>
   <string name="auth_external_error">Ikke mulig å autentisere. Tjeneren annonserer ikke at den har støtte for \"SASL EXTERNAL\". Dette kan være på grunn av et problem med klientsertifikatet (utgått, ukjent sertifiseringsinstans) eller andre konfigurasjonsproblem.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Dekrypterer/Bekrefter …</string>
-  <string name="openpgp_successful_decryption">Dekryptering vellykket</string>
-  <string name="openpgp_signature_valid_certified">Gyldig signatur (sertifisert)</string>
-  <string name="openpgp_signature_valid_uncertified">Gyldig signatur, men ikke sertifisert</string>
-  <string name="openpgp_signature_unknown">Ukjent signerer</string>
-  <string name="openpgp_signature_invalid">Ugyldig signatur</string>
-  <string name="openpgp_signature_unknown_text">Mangler offentlig nøkkel for denne signaturen</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Vellykket dekryptering og gyldig signatur (sertifisert)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Vellykket dekryptering og gyldig signatur, men ikke sertifisert</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Vellykket dekryptering, men mangler offentlig nøkkel</string>
-  <string name="openpgp_get_key">Se etter manglende nøkkel</string>
-  <string name="openpgp_user_id">BrukerID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Bruk klientsertifikat</string>
   <string name="client_certificate_spinner_empty">Ingen klientsertifikat</string>

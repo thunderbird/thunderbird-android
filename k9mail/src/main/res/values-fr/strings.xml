@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BÊTA</string>
   <string name="shortcuts_title">Comptes K-9</string>
   <string name="unread_widget_label">K-9 non lus</string>
   <string name="remote_control_label">Contrôle à distance de K-9 Mail</string>
@@ -127,7 +126,6 @@ Veuillez envoyer les rapports de bogues, suggérer de nouvelles fonctions et pos
   <string name="message_view_theme_action_dark">Basculer vers le thème foncé</string>
   <string name="message_view_theme_action_light">Basculer vers le thème clair</string>
   <string name="mark_as_unread_action">Marquer comme non lu</string>
-  <string name="add_cc_bcc_action">Ajouter Cc/Cci</string>
   <string name="read_receipt">Accusé de lecture</string>
   <string name="read_receipt_enabled">Un accusé de lecture sera demandé</string>
   <string name="read_receipt_disabled">Un accusé de lecture ne sera pas demandé</string>
@@ -193,9 +191,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="debug_enable_sensitive_logging_summary">Pourrait montrer les mots de passe dans les journaux.</string>
   <string name="message_list_load_more_messages_action">Charger plus de messages</string>
   <string name="message_to_fmt">À\u00A0: <xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">À</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Cci</string>
   <string name="message_compose_subject_hint">Objet</string>
   <string name="message_compose_content_hint">Texte du message</string>
   <string name="message_compose_signature_hint">Signature</string>
@@ -211,9 +206,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="error_contact_address_not_found">Aucune adresse courriel de trouvée pour ce contact.</string>
   <string name="message_compose_attachments_skipped_toast">Certaines pièces jointes ne peuvent pas être transférées car elles n\'ont pas été téléchargées.</string>
   <string name="message_compose_show_quoted_text_action">Citer le message</string>
-  <string name="message_compose_description_add_to">Ajouter un destinataire (À)</string>
-  <string name="message_compose_description_add_cc">Ajouter un destinataire (Cc)</string>
-  <string name="message_compose_description_add_bcc">Ajouter un destinataire (Cci)</string>
   <string name="message_compose_description_delete_quoted_text">Enlever le texte entre guillemets</string>
   <string name="message_compose_description_edit_quoted_text">Modifier le texte entre guillemets</string>
   <string name="message_view_from_format">De : <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -221,18 +213,12 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="message_view_cc_label">Cc\u00A0:</string>
   <string name="message_view_attachment_view_action">Ouvrir</string>
   <string name="message_view_attachment_download_action">Enregistrer</string>
-  <string name="message_view_status_attachment_saved">Pièce jointe enregistrée sur la carte SD en tant que <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Impossible d\'enregistrer la pièce jointe sur la carte SD.</string>
   <string name="message_view_show_pictures_action">Afficher les images</string>
-  <string name="message_view_show_message_action">Afficher le message</string>
-  <string name="message_view_show_attachments_action">Afficher les pièces jointes</string>
   <string name="message_view_show_more_attachments_action">Plus…</string>
-  <string name="message_view_fetching_attachment_toast">Récupération de la pièce jointe</string>
   <string name="message_view_no_viewer">Impossible de trouver un visualiseur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Télécharger le message complet</string>
-  <string name="message_view_downloading">Téléchargement…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Les entêtes n\'ont pas toutes été téléchargées ou enregistrées. Choisir «\u00A0Enregistrer toutes les entêtes localement\u00A0» dans les paramètres du serveur entrant du compte pour activer cette fonction pour le futur.</string>
   <string name="message_no_additional_headers_available">Toutes les entêtes ont été téléchargées, mais il n\'y en a pas d\'autres à montrer.</string>
   <string name="message_additional_headers_retrieval_failed">La récupération d\'entêtes supplémentaires de la base de données ou du serveur de courriel a échouée.</string>
   <string name="from_same_sender">Plus de cet expéditeur</string>
@@ -740,18 +726,11 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="font_size_larger">Plus grand</string>
   <string name="miscellaneous_preferences">Divers</string>
   <string name="error_activity_not_found">Aucune application adéquate n\'a été trouvée pour cette action.</string>
-  <string name="btn_crypto_sign">Signer</string>
-  <string name="btn_encrypt">Chiffrer</string>
-  <string name="unknown_crypto_signature_user_id">«\u00A0inconnu\u00A0»</string>
-  <string name="pgp_mime_unsupported">Les messages PGP/MIME ne sont pas encore pris en charge</string>
-  <string name="attachment_encryption_unsupported">Avertissement\u00A0: La signature et le chiffrement des pièces jointes ne sont PAS encore pris en charge.</string>
   <string name="send_aborted">Envoi interrompu.</string>
   <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
   <string name="confirm_discard_draft_message_title">Abandonner le message\u00A0?</string>
   <string name="confirm_discard_draft_message">Êtes-vous sûr de vouloir abandonner ce message\u00A0?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuser d\'enregistrer les brouillons.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuser d\'enregistrer un message marqué comme étant chiffré.</string>
   <string name="select_text_now">Sélectionner le texte à copier</string>
   <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
   <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
@@ -772,7 +751,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="debug_logging_enabled">Journalisation du débogage activée</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Connexion impossible.</string>
   <string name="import_export_action">Paramètres d\'importation &amp; d\'exportation</string>
   <string name="settings_export_account">Exporter les paramètres du compte</string>
   <string name="settings_export_all">Exporter les paramètres et les comptes</string>
@@ -852,8 +830,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
   <string name="account_settings_remote_search_num_label">Limite de recherche du serveur</string>
   <string name="account_settings_remote_search_num_summary">La recherche s\'arrêtera après que <xliff:g id="num_results">%s</xliff:g> résultats aient été trouvés.</string>
-  <string name="account_settings_remote_search_full_text">Inclure le texte des messages à la recherche sur le serveur</string>
-  <string name="account_settings_remote_search_full_text_summary">Les recherches plein texte peuvent être lentes.</string>
   <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
   <string name="remote_search_downloading">Récupération de %d résultats</string>
   <string name="remote_search_downloading_limited">Récupération de %1$d résultats sur %2$d</string>
@@ -894,18 +870,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="fetching_attachment_dialog_message">Récupération de la pièce jointe…</string>
   <string name="auth_external_error">Authentification impossible. Le serveur n\'annonce pas la fonction SASL EXTERNE. Ceci pourrait être causé par un problème avec le certificat client (expiré, autorité de certification inconnue) ou quelque autre problème de configuration. </string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Déchiffrement/vérification…</string>
-  <string name="openpgp_successful_decryption">Déchiffrement réussi</string>
-  <string name="openpgp_signature_valid_certified">Signature valide (certifiée)</string>
-  <string name="openpgp_signature_valid_uncertified">Signature valide mais non certifiée</string>
-  <string name="openpgp_signature_unknown">Signataire inconnu</string>
-  <string name="openpgp_signature_invalid">Signature invalide</string>
-  <string name="openpgp_signature_unknown_text">Clef publique manquante pour cette signature</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Déchiffrement réussi et signature valide (certifiée)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Déchiffrement réussi et signature valide mais non certifiée</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Déchiffrement réussi mais clef publique manquante</string>
-  <string name="openpgp_get_key">Rechercher la clef manquante </string>
-  <string name="openpgp_user_id">ID utilisateur</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Utiliser le certificat client</string>
   <string name="client_certificate_spinner_empty">Aucun certificat client</string>

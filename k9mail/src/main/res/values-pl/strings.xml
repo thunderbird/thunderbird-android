@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">Konta K-9</string>
   <string name="unread_widget_label">K-9 Mail nieprzeczytane</string>
   <string name="remote_control_label">K-9 Mail zdalne sterowanie</string>
@@ -128,7 +127,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="message_view_theme_action_dark">Przełącz na ciemny styl</string>
   <string name="message_view_theme_action_light">Przełącz na jasny styl</string>
   <string name="mark_as_unread_action">Oznacz jako nieprzeczytane</string>
-  <string name="add_cc_bcc_action">Dodaj DW/UDW</string>
   <string name="read_receipt">Powiadomienie o przeczytaniu</string>
   <string name="read_receipt_enabled">Żadaj powiadomienia o przeczytaniu</string>
   <string name="read_receipt_disabled">Nie wymagaj powiadomienia o przeczytaniu</string>
@@ -189,9 +187,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="debug_enable_sensitive_logging_summary">Logi mogą zawierać Twoje hasła</string>
   <string name="message_list_load_more_messages_action">Pobierz więcej wiadomości</string>
   <string name="message_to_fmt">Do:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Do</string>
-  <string name="message_compose_cc_hint">DW</string>
-  <string name="message_compose_bcc_hint">UDW</string>
   <string name="message_compose_subject_hint">Temat</string>
   <string name="message_compose_content_hint">Treść wiadomości</string>
   <string name="message_compose_signature_hint">Podpis</string>
@@ -207,9 +202,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="error_contact_address_not_found">Żaden adres email nie został znaleziony.</string>
   <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą być przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>
   <string name="message_compose_show_quoted_text_action">Cytuj wiadomość</string>
-  <string name="message_compose_description_add_to">Dodaj odbiorcę (Do)</string>
-  <string name="message_compose_description_add_cc">Dodaj odbiorcę (DW)</string>
-  <string name="message_compose_description_add_bcc">Dodaj odbiorcę (UDW)</string>
   <string name="message_compose_description_delete_quoted_text">Usuń cytowany tekst</string>
   <string name="message_compose_description_edit_quoted_text">Edytuj cytowany tekst</string>
   <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -217,18 +209,12 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="message_view_cc_label">DW:</string>
   <string name="message_view_attachment_view_action">Otwórz</string>
   <string name="message_view_attachment_download_action">Zapisz</string>
-  <string name="message_view_status_attachment_saved">Załącznik zapisano na karcie SD jako <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Zapisywanie załącznika na karcie SD nie powiodło się.</string>
   <string name="message_view_show_pictures_action">Wyświetl grafikę</string>
-  <string name="message_view_show_message_action">Pokaż wiadomość</string>
-  <string name="message_view_show_attachments_action">Pokaż załączniki</string>
   <string name="message_view_show_more_attachments_action">Więcej…</string>
-  <string name="message_view_fetching_attachment_toast">Pobieram załącznik…</string>
   <string name="message_view_no_viewer">Nie moge znaleźć programu do wyświetlenia pliku <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Pobierz całą wiadomość</string>
-  <string name="message_view_downloading">Pobieranie…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Nie wszystkie nagłówki zostały pobrane lub zapisane. Wybierz \"Zapisuj nagłówki lokalnie\" w ustawieniach serwera poczty przychodzącej, aby tę funcje aktywować</string>
   <string name="message_no_additional_headers_available">Wszystkie nagłówki pobrano, niemniej nie znaleziono żadnych dodatkowych do wyświetlenia.</string>
   <string name="message_additional_headers_retrieval_failed">Pobieranie nagłówkow nie powiodło się.</string>
   <string name="from_same_sender">Więcej od tego nadawcy</string>
@@ -709,18 +695,11 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="font_size_larger">Wielka</string>
   <string name="miscellaneous_preferences">Różne</string>
   <string name="error_activity_not_found">Nie znaleiono odpowiedniej aplikacji.</string>
-  <string name="btn_crypto_sign">Podpisz</string>
-  <string name="btn_encrypt">Szyfruj</string>
-  <string name="unknown_crypto_signature_user_id">&lt;nieznany&gt;</string>
-  <string name="pgp_mime_unsupported">Wiadomości PGP/MIME nie są jeszcze wspierane.</string>
-  <string name="attachment_encryption_unsupported">Uwaga: załączniki nie są jeszcze podpisane i kodowane.</string>
   <string name="send_aborted">Anulowano.</string>
   <string name="save_or_discard_draft_message_dlg_title">Zapisać szkic?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Zapisać czy porzucić wiadomość?</string>
   <string name="confirm_discard_draft_message_title">Usunąć wiadomość?</string>
   <string name="confirm_discard_draft_message">Czy na pewno chcesz usunąć tą wiadomość?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Odrzuć zapisywanie szablonów.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Odrzuć zapisywanie szablonów oznaczonych jako zaszyfrowane.</string>
   <string name="select_text_now">Wybierz tekst do skopiowania.</string>
   <string name="dialog_confirm_delete_title">Potwiedź usunięcie</string>
   <string name="dialog_confirm_delete_message">Czy chcesz usunąć tą wiadomość?</string>
@@ -743,7 +722,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="debug_logging_enabled">Loguj debug do systemowego logera</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Błąd połączenia.</string>
   <string name="import_export_action">Kopia zapasowa</string>
   <string name="settings_export_account">Eksportuj ustawienia konta</string>
   <string name="settings_export_all">Eksport</string>
@@ -816,8 +794,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Maksymalna ilość wyników</string>
   <string name="account_settings_remote_search_num_summary">Wyszukiwanie zostanie zatrzymane po odnalezieniu <xliff:g id="num_results">%s</xliff:g> wyników.</string>
-  <string name="account_settings_remote_search_full_text">Przeszukuj również treść wiadomości w trybie wyszukiwania na serwerze</string>
-  <string name="account_settings_remote_search_full_text_summary">Wyszukiwanie według treści może być powolne.</string>
   <string name="remote_search_sending_query">Wysyłam żądanie do serwera</string>
   <string name="remote_search_downloading">Pobieram wyniki (%d)</string>
   <string name="remote_search_downloading_limited">Pobieram %1$d z %2$d results</string>
@@ -857,7 +833,6 @@ Wszelkie zgłoszenia usterek, zapytania oraz nowe pomysły prosimy przesyłać z
   <string name="fetching_attachment_dialog_title_save">Zapisywanie szkicu</string>
   <string name="fetching_attachment_dialog_message">Pobieranie załącznika…</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_user_id">ID użytkownika</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="client_certificate_advanced_options">Zaawansowane ustawienia</string>
 </resources>

@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">K-9 Konten</string>
   <string name="unread_widget_label">K-9 Ungelesen</string>
   <string name="remote_control_label">K-9 Mail Fernsteuerung</string>
@@ -129,7 +128,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="message_view_theme_action_dark">Dunkles Theme verwenden</string>
   <string name="message_view_theme_action_light">Helles Theme verwenden</string>
   <string name="mark_as_unread_action">Als ungelesen markieren</string>
-  <string name="add_cc_bcc_action">CC/BCC hinzufügen</string>
   <string name="read_receipt">Empfangsbestätigung</string>
   <string name="read_receipt_enabled">Eine Empfangsbestätigung wird angefordert</string>
   <string name="read_receipt_disabled">Es wird keine Empfangsbestätigung angefordert</string>
@@ -196,9 +194,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau protokollieren.</string>
   <string name="message_list_load_more_messages_action">Weitere Nachrichten laden</string>
   <string name="message_to_fmt">An:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">An</string>
-  <string name="message_compose_cc_hint">CC</string>
-  <string name="message_compose_bcc_hint">BCC</string>
   <string name="message_compose_subject_hint">Betreff</string>
   <string name="message_compose_content_hint">Nachrichtentext</string>
   <string name="message_compose_signature_hint">Signatur</string>
@@ -214,9 +209,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
   <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
   <string name="message_compose_show_quoted_text_action">Ursprüngliche Nachricht zitieren</string>
-  <string name="message_compose_description_add_to">Empfänger hinzufügen (An)</string>
-  <string name="message_compose_description_add_cc">Empfänger hinzufügen (CC)</string>
-  <string name="message_compose_description_add_bcc">Empfänger hinzufügen (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Zitierten Text entfernen</string>
   <string name="message_compose_description_edit_quoted_text">Zitierten Text bearbeiten</string>
   <string name="message_view_from_format">Von: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -224,18 +216,12 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="message_view_cc_label">CC:</string>
   <string name="message_view_attachment_view_action">Öffnen</string>
   <string name="message_view_attachment_download_action">Speichern</string>
-  <string name="message_view_status_attachment_saved">Anhang wurde unter dem Dateinamen \'<xliff:g id="filename">%s</xliff:g>\' auf die SD-Karte gespeichert.</string>
   <string name="message_view_status_attachment_not_saved">Anhang konnte nicht auf die SD-Karte gespeichert werden.</string>
   <string name="message_view_show_pictures_action">Bilder anzeigen</string>
-  <string name="message_view_show_message_action">Nachricht anzeigen</string>
-  <string name="message_view_show_attachments_action">Anhänge anzeigen</string>
   <string name="message_view_show_more_attachments_action">Mehr…</string>
-  <string name="message_view_fetching_attachment_toast">Anhang wird abgerufen.</string>
   <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
   <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
-  <string name="message_view_downloading">Nachricht wird heruntergeladen…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Es wurden nicht alle Kopfzeilen heruntergeladen oder gespeichert. Wählen Sie \'Alle Kopfzeilen lokal speichern\' in den Einstellungen für den Posteingangsserver, um dies zukünftig zu ermöglichen.</string>
   <string name="message_no_additional_headers_available">Alle Kopfzeilen wurden heruntergeladen, es sind allerdings keine neuen Kopfzeilen vorhanden.</string>
   <string name="message_additional_headers_retrieval_failed">Die weiteren Kopfzeilen konnten nicht aus der Datenbank oder vom Mailserver geladen werden.</string>
   <string name="from_same_sender">Mehr von diesem Absender</string>
@@ -743,18 +729,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="font_size_larger">Größer</string>
   <string name="miscellaneous_preferences">Verschiedenes</string>
   <string name="error_activity_not_found">Keine geeignete Anwendung für diese Aktion gefunden.</string>
-  <string name="btn_crypto_sign">Signieren</string>
-  <string name="btn_encrypt">Verschlüsseln</string>
-  <string name="unknown_crypto_signature_user_id">&lt;unbekannt&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME-Nachrichten werden noch nicht unterstützt.</string>
-  <string name="attachment_encryption_unsupported">Achtung: Anhänge werden zur Zeit weder signiert noch verschlüsselt.</string>
   <string name="send_aborted">Senden abgebrochen.</string>
   <string name="save_or_discard_draft_message_dlg_title">Entwurf speichern?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Entwurf speichern oder verwerfen?</string>
   <string name="confirm_discard_draft_message_title">Nachricht verwerfen?</string>
   <string name="confirm_discard_draft_message">Sind Sie sicher, dass Sie die Nachricht verwerfen möchten?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Speichern des Entwurfs verweigern</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Die Speicherung von als verschlüsselt markierten Entwürfen verweigern.</string>
   <string name="select_text_now">Text auswählen, um ihn zu kopieren.</string>
   <string name="dialog_confirm_delete_title">Löschen bestätigen</string>
   <string name="dialog_confirm_delete_message">Möchten Sie diese Nachricht löschen?</string>
@@ -775,7 +754,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="debug_logging_enabled">Debug-Meldungen werden mit Hilfe des Android-Logging-Systems aufgezeichnet.</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Verbindungsfehler</string>
   <string name="import_export_action">Einstellungen im- &amp; exportieren</string>
   <string name="settings_export_account">Kontoeinstellungen exportieren</string>
   <string name="settings_export_all">Einstellungen und Konten exportieren</string>
@@ -855,8 +833,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Maximale Resultat-Anzahl</string>
   <string name="account_settings_remote_search_num_summary">Suche wird nach <xliff:g id="num_results">%s</xliff:g> Resultaten beendet</string>
-  <string name="account_settings_remote_search_full_text">Nachrichtentext durchsuchen</string>
-  <string name="account_settings_remote_search_full_text_summary">Kann den Suchprozess verlangsamen</string>
   <string name="remote_search_sending_query">Sende Anfrage an den Server</string>
   <string name="remote_search_downloading">Lade %d Resultate</string>
   <string name="remote_search_downloading_limited">Lade %1$d von %2$d Resultaten</string>
@@ -897,18 +873,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
   <string name="auth_external_error">Authentifizierung fehlgeschlagen. Der Server bietet nicht Simple Authentication and Security Layer, kurz SASL, an. Dies könnte durch ein Problem des Client Zertifikats (Zertifikat abgelaufen, unbekannte Zertifizierungsstelle) oder ein Konfigurationsproblem ausgelöst werden.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Entschlüssle/Verifiziere…</string>
-  <string name="openpgp_successful_decryption">Erfolgreiche Entschlüsselung</string>
-  <string name="openpgp_signature_valid_certified">Gültige Signatur (beglaubigt)</string>
-  <string name="openpgp_signature_valid_uncertified">Gültige, aber unbeglaubigte Signatur</string>
-  <string name="openpgp_signature_unknown">Unbekannter Unterzeichner</string>
-  <string name="openpgp_signature_invalid">Ungültige Signatur</string>
-  <string name="openpgp_signature_unknown_text">Fehlender öffentlicher Schlüssel für diese Signatur</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Erfolgreiche Entschlüsselung und gültige Signatur (beglaubigt)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Erfolgreiche Entschlüsselung und gültige, aber nicht beglaubigte Signatur</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Erfolgreiche Entschlüsselung, aber fehlender öffentlicher Schlüssel</string>
-  <string name="openpgp_get_key">Schlage fehlenden Schlüssel nach</string>
-  <string name="openpgp_user_id">Benutzer-ID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Client-Zertifikat verwenden</string>
   <string name="client_certificate_spinner_empty">Kein Client-Zertifikat</string>

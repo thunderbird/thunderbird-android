@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">К-9 Пошта</string>
-  <string name="beta_app_name">К-9 Пошта БЕТА</string>
   <string name="shortcuts_title">К-9 налози</string>
   <string name="unread_widget_label">К-9 непрочитане</string>
   <string name="remote_control_label">К-9 даљинско управљање</string>
@@ -130,7 +129,6 @@
   <string name="message_view_theme_action_dark">Пребаци на тамну тему</string>
   <string name="message_view_theme_action_light">Пребаци на светлу тему</string>
   <string name="mark_as_unread_action">Означи непрочитаним</string>
-  <string name="add_cc_bcc_action">Додај Цц/Бцц</string>
   <string name="read_receipt">Потврда о читању</string>
   <string name="read_receipt_enabled">Потврда о читању је захтевана</string>
   <string name="read_receipt_disabled">Потврда о читању није захтевана</string>
@@ -197,9 +195,6 @@
   <string name="debug_enable_sensitive_logging_summary">Лозинке се могу видети у записнику.</string>
   <string name="message_list_load_more_messages_action">Учитај још порука</string>
   <string name="message_to_fmt">За:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">За</string>
-  <string name="message_compose_cc_hint">Цц</string>
-  <string name="message_compose_bcc_hint">Бцц</string>
   <string name="message_compose_subject_hint">Предмет</string>
   <string name="message_compose_content_hint">Текст поруке</string>
   <string name="message_compose_signature_hint">Потпис</string>
@@ -215,9 +210,6 @@
   <string name="error_contact_address_not_found">Адреса е-поште овог контакта није нађена.</string>
   <string name="message_compose_attachments_skipped_toast">Неки прилози не могу бити прослеђени јер нису преузети.</string>
   <string name="message_compose_show_quoted_text_action">Цитирај поруку</string>
-  <string name="message_compose_description_add_to">Додај примаоца (За)</string>
-  <string name="message_compose_description_add_cc">Додај примаоца (ЦЦ)</string>
-  <string name="message_compose_description_add_bcc">Додај примаоца (БЦЦ)</string>
   <string name="message_compose_description_delete_quoted_text">Уклони цитирани текст</string>
   <string name="message_compose_description_edit_quoted_text">Уреди цитирани текст</string>
   <string name="message_view_from_format">Од: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -225,18 +217,12 @@
   <string name="message_view_cc_label">Цц:</string>
   <string name="message_view_attachment_view_action">Отвори</string>
   <string name="message_view_attachment_download_action">Сачувај</string>
-  <string name="message_view_status_attachment_saved">Прилог сачуван на СД картицу као <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Не могу да сачувам прилог на СД картицу.</string>
   <string name="message_view_show_pictures_action">Прикажи слике</string>
-  <string name="message_view_show_message_action">Прикажи поруку</string>
-  <string name="message_view_show_attachments_action">Прикажи прилоге</string>
   <string name="message_view_show_more_attachments_action">Још…</string>
-  <string name="message_view_fetching_attachment_toast">Добављам прилог.</string>
   <string name="message_view_no_viewer">Не могу да нађем прегледач за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Преузми читаву поруку</string>
-  <string name="message_view_downloading">Преузимам…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Нису сва заглавља преузета или сачувана. Укључите „Сачувај сва заглавља локално“ у поставкама налога за долазни сервер да бисте омогућили ово за убудуће.</string>
   <string name="message_no_additional_headers_available">Сва заглавља су преузета, али нема додатних заглавља за приказ.</string>
   <string name="message_additional_headers_retrieval_failed">Добављање додатних заглавља из базе података или са сервера поште није успело.</string>
   <string name="from_same_sender">Још од овог пошиљаоца</string>
@@ -741,18 +727,11 @@
   <string name="font_size_larger">Већи</string>
   <string name="miscellaneous_preferences">Разно</string>
   <string name="error_activity_not_found">Нема подесне апликације за ову радњу.</string>
-  <string name="btn_crypto_sign">Потпиши</string>
-  <string name="btn_encrypt">Шифруј</string>
-  <string name="unknown_crypto_signature_user_id">&lt;непознат&gt;</string>
-  <string name="pgp_mime_unsupported">ПГП/МИМЕ поруке још нису подржане.</string>
-  <string name="attachment_encryption_unsupported">Упозорење: потписивање или шифровање прилога још НИЈЕ подржано.</string>
   <string name="send_aborted">Слање прекинуто.</string>
   <string name="save_or_discard_draft_message_dlg_title">Сачувати нацрт поруке?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Да сачувам или одбацим ову поруку?</string>
   <string name="confirm_discard_draft_message_title">Одбацити поруку?</string>
   <string name="confirm_discard_draft_message">Желите ли заиста да одбаците ову поруку?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Нацрт поруке одбијен.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Одбијен нацрт поруке означене за шифровање.</string>
   <string name="select_text_now">Изаберите текст за копирање.</string>
   <string name="dialog_confirm_delete_title">Потврда брисања</string>
   <string name="dialog_confirm_delete_message">Желите ли заиста да обришете ову поруку?</string>
@@ -775,7 +754,6 @@
   <string name="debug_logging_enabled">Бележење за отклањање грешака укључено</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Не могу да се повежем.</string>
   <string name="import_export_action">Увоз и извоз поставки</string>
   <string name="settings_export_account">Извези поставке налога</string>
   <string name="settings_export_all">Извези поставке и налоге</string>
@@ -858,8 +836,6 @@
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Ограничење претраге сервера</string>
   <string name="account_settings_remote_search_num_summary">Тражење ће стати након <xliff:g id="num_results">%s</xliff:g> нађених ставки.</string>
-  <string name="account_settings_remote_search_full_text">Укључи текст порука у претрагу сервера</string>
-  <string name="account_settings_remote_search_full_text_summary">Пуна текстуална претрага може бити спора.</string>
   <string name="remote_search_sending_query">Шаљем упит серверу</string>
   <string name="remote_search_downloading">Добављам %d резултата</string>
   <string name="remote_search_downloading_limited">Добављам %1$d од %2$d резултата</string>
@@ -900,19 +876,6 @@
   <string name="fetching_attachment_dialog_message">Добављам прилог…</string>
   <string name="auth_external_error">Не могу да се аутентификујем.  Сервер не оглашава САСЛ ЕКСТЕРНАЛ могућност.  Узрок може да буде проблем са сертификатом клијента (истекао, непознат ауторитет сертификата) или неки други проблем у подешавању.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Дешифрујем/оверавам…</string>
-  <string name="openpgp_successful_decryption">Успешно дешифровање</string>
-  <string name="openpgp_signature_valid_certified">Исправан потпис (оверен)</string>
-  <string name="openpgp_signature_valid_uncertified">Исправан потпис али неоверен</string>
-  <string name="openpgp_signature_unknown">Непознат потписивач</string>
-  <string name="openpgp_signature_invalid">Неисправан потпис</string>
-  <string name="openpgp_signature_unknown_text">Недостаје јавни кључ за овај потпис</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Успешно дешифровање и исправан потпис (оверен)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Успешно дешифровање и исправан потпис али неоверен</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Успешно дешифровање али недостаје јавни кључ</string>
-  <string name="openpgp_get_key">Потражи недостајући кључ</string>
-  <string name="openpgp_error">ОпенПГП грешка:</string>
-  <string name="openpgp_user_id">Кориснички ИД</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Користи сертификат клијента</string>
   <string name="client_certificate_spinner_empty">Нема сертификата клијента</string>

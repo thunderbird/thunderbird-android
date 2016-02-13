@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">K-9 Облікові записи</string>
   <string name="unread_widget_label">K-9 Непрочитані</string>
   <string name="remote_control_label">Дситанційне управління K-9 Mail</string>
@@ -127,7 +126,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="message_view_theme_action_dark">Застосувати темну тему</string>
   <string name="message_view_theme_action_light">Застосувати світлу тему</string>
   <string name="mark_as_unread_action">Відмітити як непрочитаний</string>
-  <string name="add_cc_bcc_action">Додати копію/приховану</string>
   <string name="read_receipt">Повідомлення про прочитання</string>
   <string name="read_receipt_enabled">Включити запит повідомлень про прочитання</string>
   <string name="read_receipt_disabled">Вимкнути запит повідомлень про прочитання</string>
@@ -188,9 +186,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="debug_enable_sensitive_logging_summary">Можна записувати паролі в журнали.</string>
   <string name="message_list_load_more_messages_action">Завантажити більше повідомлень</string>
   <string name="message_to_fmt">До:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Кому</string>
-  <string name="message_compose_cc_hint">Копія</string>
-  <string name="message_compose_bcc_hint">Прихована</string>
   <string name="message_compose_subject_hint">Тема</string>
   <string name="message_compose_content_hint">Текст повідомлення</string>
   <string name="message_compose_signature_hint">Підпис</string>
@@ -205,9 +200,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="error_contact_address_not_found">Не знайденої адреси електронної пошти.</string>
   <string name="message_compose_attachments_skipped_toast">Деякі вкладення не можуть бути переслані бо вони не завантажилися.</string>
   <string name="message_compose_show_quoted_text_action">Цитувати повідомлення</string>
-  <string name="message_compose_description_add_to">Додати одержувача (Кому)</string>
-  <string name="message_compose_description_add_cc">Додати одержувача (Копія)</string>
-  <string name="message_compose_description_add_bcc">Додати одержувача (Прихована)</string>
   <string name="message_compose_description_delete_quoted_text">Видалити цитований текст</string>
   <string name="message_compose_description_edit_quoted_text">Редагувати цитований текст</string>
   <string name="message_view_from_format">Від: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -215,18 +207,12 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="message_view_cc_label">Копія:</string>
   <string name="message_view_attachment_view_action">Відкрити</string>
   <string name="message_view_attachment_download_action">Зберегти</string>
-  <string name="message_view_status_attachment_saved">Вкладення збережено на карту пам’яті як <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Не вдалося зберегти вкладення на карту пам’яті.</string>
   <string name="message_view_show_pictures_action">Показати зобарження</string>
-  <string name="message_view_show_message_action">Показати повідомлення</string>
-  <string name="message_view_show_attachments_action">Показати вкладення</string>
   <string name="message_view_show_more_attachments_action">Більше…</string>
-  <string name="message_view_fetching_attachment_toast">Отримання вкладення.</string>
   <string name="message_view_no_viewer">Не знайдено програму для перегляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Завантажити усе повідомлення</string>
-  <string name="message_view_downloading">Завантажується…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Не всі заголовки завантажені або збережені. Виберіть \"Зберегти всі заголовки локально\" у налаштуваннях сервера вхідних повідомлень для використання цієї можливості.</string>
   <string name="message_no_additional_headers_available">Всі заголовки завантажено, нема додаткових заголовків для відображення.</string>
   <string name="message_additional_headers_retrieval_failed">Не вдалося завантажити додаткові заголовки з бази даних або поштового сервера.</string>
   <string name="from_same_sender">Більше від цього відправника</string>
@@ -696,18 +682,11 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="font_size_larger">Найбільший</string>
   <string name="miscellaneous_preferences">Різне</string>
   <string name="error_activity_not_found">Відсутня програма для цієї дії.</string>
-  <string name="btn_crypto_sign">Підписати</string>
-  <string name="btn_encrypt">Зашифрувати</string>
-  <string name="unknown_crypto_signature_user_id">&lt;невідомий&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME повідомлення ще не підтримуються.</string>
-  <string name="attachment_encryption_unsupported">Увага: вкладення ще не підписані та не зашифровані.</string>
   <string name="send_aborted">Надсилання скасовано.</string>
   <string name="save_or_discard_draft_message_dlg_title">Зберегти чернетку повідомлення?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Зберегти чи відмінити це повідомлення?</string>
   <string name="confirm_discard_draft_message_title">Відмінити повідомлення?</string>
   <string name="confirm_discard_draft_message">Ви дійсно хочете відмінити це повідомлення?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Скасувати збереження чернетки повідомлення.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Скасувати збереження чернетки повідомлення, позначеного як зашифроване.</string>
   <string name="select_text_now">Виберіть текст для копіювання.</string>
   <string name="dialog_confirm_delete_title">Підтвердіть вилучення</string>
   <string name="dialog_confirm_delete_message">Ви хочете вилучити це повідомлення?</string>
@@ -720,7 +699,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="debug_logging_enabled">Включити запис у журнал відлагоджувальної інформації</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Не вдається з’єднатися.</string>
   <string name="import_export_action">Іморт і експорт налаштувань</string>
   <string name="settings_export_account">Експортувати налаштування облікового запису</string>
   <string name="settings_export_all">Експортувати налаштування та облікові записи</string>
@@ -798,8 +776,6 @@ K-9 Mail це поштовий клієнт з відкритим вихідни
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Межа серверу</string>
   <string name="account_settings_remote_search_num_summary">Пошук зупинити після знаходження <xliff:g id="num_results">%s</xliff:g> результатів.</string>
-  <string name="account_settings_remote_search_full_text">Включити текст повідомлення в пошуку на сервері</string>
-  <string name="account_settings_remote_search_full_text_summary">Пошук повного тексту буде повільним</string>
   <string name="remote_search_sending_query">Відправлення запиту до сервера</string>
   <string name="remote_search_downloading">Відібрано  %d результатів</string>
   <string name="remote_search_downloading_limited">Відібрано %1$d з %2$d результатів</string>

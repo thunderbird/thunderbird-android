@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">K-9 Računi</string>
   <string name="unread_widget_label">K-9 Nepročitano</string>
   <string name="remote_control_label">K-9 Mail daljinski upravljač</string>
@@ -129,7 +128,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="message_view_theme_action_dark">Prebaci na tamnu temu</string>
   <string name="message_view_theme_action_light">Prebaci na svijetlu temu</string>
   <string name="mark_as_unread_action">Označi nepročitanim</string>
-  <string name="add_cc_bcc_action">Dodaj Cc/Bcc</string>
   <string name="read_receipt">Potvrda čitanja</string>
   <string name="read_receipt_enabled">Zahtjeva potvrdu čitanja</string>
   <string name="read_receipt_disabled">Ne zahtjeva potvrdu čitanja</string>
@@ -196,9 +194,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="debug_enable_sensitive_logging_summary">Mpže prikazati lozinke u zapisnicima.</string>
   <string name="message_list_load_more_messages_action">Učitaj više poruka</string>
   <string name="message_to_fmt">Za:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Za</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Bcc</string>
   <string name="message_compose_subject_hint">Subjekt</string>
   <string name="message_compose_content_hint">Tekst poruke</string>
   <string name="message_compose_signature_hint">Potpis</string>
@@ -214,9 +209,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="error_contact_address_not_found">Nije poronađena adrese e-pošte za ovaj kontakt.</string>
   <string name="message_compose_attachments_skipped_toast">Neki privici ne mogu biti proslijeđeni zato jer nisu preuzeti.</string>
   <string name="message_compose_show_quoted_text_action">Citat poruke</string>
-  <string name="message_compose_description_add_to">Dodaj primatelja (Za)</string>
-  <string name="message_compose_description_add_cc">Dodaj primatelja (CC)</string>
-  <string name="message_compose_description_add_bcc">Dodaj primatelja (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Maknuti citirani tekst</string>
   <string name="message_compose_description_edit_quoted_text">Urediti citirani tekst</string>
   <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -224,18 +216,12 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Otvori</string>
   <string name="message_view_attachment_download_action">Spremi</string>
-  <string name="message_view_status_attachment_saved">Privitak je spremljen na SD karticu kao <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Spremanje privitka na SD karticu nije moguće.</string>
   <string name="message_view_show_pictures_action">Prikaži slike</string>
-  <string name="message_view_show_message_action">Prikaži poruke</string>
-  <string name="message_view_show_attachments_action">Prikaži privitke</string>
   <string name="message_view_show_more_attachments_action">Više…</string>
-  <string name="message_view_fetching_attachment_toast">Dohvaćanje privitka.</string>
   <string name="message_view_no_viewer">Ne mogu pronaći preglednik za <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Preuzmi cijelu poruku</string>
-  <string name="message_view_downloading">Preuzimam…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Nisu sva zgalavlja preuzeta i sppemljena. Odaberite \"Spremi sva zaglavlja lokalno\" u postavkama dolaznog poslužitelja računa za omogućavanje ove značajke u buduće.</string>
   <string name="message_no_additional_headers_available">Sva zaglavlja su preuzeta, ali nema dodatnih zaglavlja za prikaz.</string>
   <string name="message_additional_headers_retrieval_failed">Dohvat dodatnih zaglavlja iz baze podataka ili poslužitelja pošte nije uspio.</string>
   <string name="from_same_sender">Više od ovog pošiljatelja</string>
@@ -743,18 +729,11 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="font_size_larger">Veća</string>
   <string name="miscellaneous_preferences">Razna</string>
   <string name="error_activity_not_found">Nema prikladne aplikacije za ovu radnju.</string>
-  <string name="btn_crypto_sign">Potpis</string>
-  <string name="btn_encrypt">Enkriptiraj</string>
-  <string name="unknown_crypto_signature_user_id">&lt;nepoznato&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME poruke još nisu podržane.</string>
-  <string name="attachment_encryption_unsupported">Upozorenje: privici još NISU potpisani ili enkriptirani</string>
   <string name="send_aborted">Slanje prekinuto.</string>
   <string name="save_or_discard_draft_message_dlg_title">Spremiti predložak poruke?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Spremiti ili Odbaciti ovu poruku?</string>
   <string name="confirm_discard_draft_message_title">Odbaciti poruku?</string>
   <string name="confirm_discard_draft_message">Jeste li sigurni da želite odbaciti ovu poruku?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Odbijanje spremanja predloška poruke.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Odbij spremanje predloška enkriptirane poruke.</string>
   <string name="select_text_now">Odaberi tekst za kopiranje..</string>
   <string name="dialog_confirm_delete_title">Potvrda brisanja</string>
   <string name="dialog_confirm_delete_message">Da li želite obrisati ovu poruku?</string>
@@ -777,7 +756,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="debug_logging_enabled">Opcija ispravljanja grešaka omogućena</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Ne mogu se povezati.</string>
   <string name="import_export_action">Podešenja Uvoz &amp; Izvoz</string>
   <string name="settings_export_account">Izvoz postavki računa</string>
   <string name="settings_export_all">Izvoz postavki i računa</string>
@@ -860,8 +838,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Granica pretrage poslužitelja</string>
   <string name="account_settings_remote_search_num_summary">Traženje će se zaustaviti nakon pronalaska <xliff:g id="num_results">%s</xliff:g> rezultata.</string>
-  <string name="account_settings_remote_search_full_text">Uključi tekst poruke u pretraživanje poslužitelja</string>
-  <string name="account_settings_remote_search_full_text_summary">Pretraga cijelog teksta može biti spora.</string>
   <string name="remote_search_sending_query">Šaljem upit poslužitelju</string>
   <string name="remote_search_downloading">Zahvaćam %d rezultate</string>
   <string name="remote_search_downloading_limited">Dohvaćam  %1$d of %2$d rezultata</string>
@@ -902,18 +878,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="fetching_attachment_dialog_message">Dohvaćanje privitka…</string>
   <string name="auth_external_error">Ne mogu identificirati. Poslužitelj ne oglašava SASL VANJSKU sposobnost. To može biti problem sa certifikatom klijenta (istekao, nepoznat izdavatelj certifikata) ili neki drugi konfiguracijski problem.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Dekriptiranje/Verificiranje…</string>
-  <string name="openpgp_successful_decryption">Dekripcija uspjela</string>
-  <string name="openpgp_signature_valid_certified">Važeći potpis (certificiran)</string>
-  <string name="openpgp_signature_valid_uncertified">Važeći potpis ali ne certificiran</string>
-  <string name="openpgp_signature_unknown">Nepoznati potpisatelj</string>
-  <string name="openpgp_signature_invalid">Nevažeći potpis</string>
-  <string name="openpgp_signature_unknown_text">Nedostaje javni ključ za ovaj potpis</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Uspješna dekripcija i važeći potpis (certificiran)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Uspješna dekripcija i važeći potpis ali ne certificiran</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Uspješna dekripcija ali nedostaje javni kjuč</string>
-  <string name="openpgp_get_key">Potraži nedostajući ključ</string>
-  <string name="openpgp_user_id">Korisnički ID</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Koristi certifikat klijenta</string>
   <string name="client_certificate_spinner_empty">Nema certifikata klijenta</string>

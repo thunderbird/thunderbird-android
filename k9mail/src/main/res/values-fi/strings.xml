@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">K-9-tilit</string>
   <string name="unread_widget_label">K-9-lukematon</string>
   <string name="remote_control_label">K-9 Mailin etäkäyttö</string>
@@ -130,7 +129,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="message_view_theme_action_dark">Vaihda tummaan teemaan</string>
   <string name="message_view_theme_action_light">Vaihda vaaleaan teemaan</string>
   <string name="mark_as_unread_action">Merkitse Lukemattomaksi</string>
-  <string name="add_cc_bcc_action">Lisää kopio/piilokopio</string>
   <string name="read_receipt">Vastaanottokuittaus</string>
   <string name="read_receipt_enabled">Vastaanottokuittaus pyydetään</string>
   <string name="read_receipt_disabled">Ei pyydä lukukuittausta</string>
@@ -195,9 +193,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="debug_enable_sensitive_logging_summary">Salasanat saattavat näkyä lokeissa.</string>
   <string name="message_list_load_more_messages_action">Lataa lisää viestejä</string>
   <string name="message_to_fmt">Vastaanottaja: <xliff:g id="counterParty"> %s </xliff:g></string>
-  <string name="message_compose_to_hint">Vastaanottaja</string>
-  <string name="message_compose_cc_hint">Kopio</string>
-  <string name="message_compose_bcc_hint">Piilokopio</string>
   <string name="message_compose_subject_hint">Aihe</string>
   <string name="message_compose_content_hint">Viesti</string>
   <string name="message_compose_signature_hint">Allekirjoitus</string>
@@ -213,9 +208,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="error_contact_address_not_found">Tämän henkilön sähköpostiosoitetta ei löytynyt.</string>
   <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida lähettää edelleen, koska niitä ei ole ladattu.</string>
   <string name="message_compose_show_quoted_text_action">Lainaa viestiä</string>
-  <string name="message_compose_description_add_to">Lisää vastaanottaja</string>
-  <string name="message_compose_description_add_cc">Lisää kopion vastaanottaja</string>
-  <string name="message_compose_description_add_bcc">Lisää piilokopion vastaanottaja</string>
   <string name="message_compose_description_delete_quoted_text">Poista lainattu teksti</string>
   <string name="message_compose_description_edit_quoted_text">Muokkaa lainattua tekstiä</string>
   <string name="message_view_from_format">Lähettäjä: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -223,18 +215,12 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="message_view_cc_label">Kopio:</string>
   <string name="message_view_attachment_view_action">Avaa</string>
   <string name="message_view_attachment_download_action">Tallenna</string>
-  <string name="message_view_status_attachment_saved">Liite tallennettu SD -kortille nimellä <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Liitteen tallennus SD-kortille epäonnistui.</string>
   <string name="message_view_show_pictures_action">Näytä kuvat</string>
-  <string name="message_view_show_message_action">Näytä viesti</string>
-  <string name="message_view_show_attachments_action">Näytä liitteet</string>
   <string name="message_view_show_more_attachments_action">Lisää…</string>
-  <string name="message_view_fetching_attachment_toast">Haetaan liitettä.</string>
   <string name="message_view_no_viewer">Tiedostotyypille <xliff:g id="mimetype">%s</xliff:g> ei löydy katseluohjelmaa.</string>
   <string name="message_view_download_remainder">Lataa koko viesti</string>
-  <string name="message_view_downloading">Ladataan…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Kaikkia otsikkotietoja ei ole ladattu tai tallennettu. Valitse \"Tallenna kaikki otsikkotiedot\" tilin saapuvan postin palvelimen asetuksissa.</string>
   <string name="message_no_additional_headers_available">Kaikki otsikkotiedot on ladattu, mutta näytettäviä ei ole enempää.</string>
   <string name="message_additional_headers_retrieval_failed">Lisäotsikkotietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
   <string name="from_same_sender">Lisää samalta lähettäjältä</string>
@@ -742,18 +728,11 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="font_size_larger">Suurin</string>
   <string name="miscellaneous_preferences">Muut</string>
   <string name="error_activity_not_found">Toiminnolle ei löytynyt sopivaa ohjelmaa.</string>
-  <string name="btn_crypto_sign">Allekirjoita</string>
-  <string name="btn_encrypt">Salaa</string>
-  <string name="unknown_crypto_signature_user_id">&lt;tuntematon&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME-viestejä ei vielä tueta.</string>
-  <string name="attachment_encryption_unsupported">Varoitus: Liitteitä ei allekirjoiteta tai salata tässä versiossa.</string>
   <string name="send_aborted">Lähetys keskeytetty.</string>
   <string name="save_or_discard_draft_message_dlg_title">Tallennetaanko luonnos?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Tallennetaanko vai hylätäänkö tämä viesti?</string>
   <string name="confirm_discard_draft_message_title">Hylkää viesti?</string>
   <string name="confirm_discard_draft_message">Haluatko varmasti hylätä tämän viestin?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Hylkää luonnoksen tallennus.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Hylkää salatuksi merkityn luonnoksen tallennus.</string>
   <string name="select_text_now">Valitse kopioitava teksti.</string>
   <string name="dialog_confirm_delete_title">Vahvista poisto</string>
   <string name="dialog_confirm_delete_message">Haluatko poistaa tämän viestin?</string>
@@ -774,7 +753,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="debug_logging_enabled">Virheenkorjauslokin tallennus Androidin lokijärjestelmään otettu käyttöön</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Yhteyden muodostus epäonnistui.</string>
   <string name="import_export_action">Asetusten tuominen ja vieminen</string>
   <string name="settings_export_account">Vie tilin asetukset</string>
   <string name="settings_export_all">Vie asetukset ja tilit</string>
@@ -854,8 +832,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Etähaun tulosten rajoitus</string>
   <string name="account_settings_remote_search_num_summary">Haku päättyy, kun <xliff:g id="num_results">%s</xliff:g> tulosta on löytynyt.</string>
-  <string name="account_settings_remote_search_full_text">Sisällytä etähakuun viestin teksti</string>
-  <string name="account_settings_remote_search_full_text_summary">Koko tekstin haut voivat olla hitaita.</string>
   <string name="remote_search_sending_query">Lähetetään pyyntöä palvelimelle</string>
   <string name="remote_search_downloading">Noudetaan %d tulosta</string>
   <string name="remote_search_downloading_limited">Noudetaan tulosta %1$d / %2$d</string>
@@ -896,18 +872,6 @@ Virheraportit, osallistuminen projektiin ja kysymykset: Mene osoitteeseen
   <string name="fetching_attachment_dialog_message">Noudetaan liitettä…</string>
   <string name="auth_external_error">Autentikointi ei onnistu.  Palvelin ei ilmoita SASL EXTERNAL -kelpoisuudesta.  Tämä saattaa johtua vanhentuneesta asiakasvarmenteesta, tuntemattomasta varmentajasta tai jostakin muusta asetusongelmasta.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Puretaan salausta/varmennetaan…</string>
-  <string name="openpgp_successful_decryption">Salauksen purku onnistui</string>
-  <string name="openpgp_signature_valid_certified">Kelvollinen allekirjoitus (varmennettu)</string>
-  <string name="openpgp_signature_valid_uncertified">Kelvollinen, mutta varmentamaton allekirjoitus</string>
-  <string name="openpgp_signature_unknown">Tuntematon allekirjoittaja</string>
-  <string name="openpgp_signature_invalid">Virheellinen allekirjoitus</string>
-  <string name="openpgp_signature_unknown_text">Tämän allekirjoituksen julkinen avain puuttuu</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Salauksen purku onnistui ja kelvollinen allekirjoitus (varmennettu)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Salauksen purku onnistui ja kelvollinen, mutta varmentamaton allekirjoitus</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Salauksen purku onnistui, mutta julkinen avain puuttuu</string>
-  <string name="openpgp_get_key">Etsi puuttuva avain</string>
-  <string name="openpgp_user_id">Käyttäjätunniste</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Käytä asiakasvarmennetta</string>
   <string name="client_certificate_spinner_empty">Ei asiakasvarmennetta</string>

@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">K-9 Kontod</string>
   <string name="unread_widget_label">K-9 Lugemata</string>
   <string name="remote_control_label">K-9 Mail kaughaldus</string>
@@ -129,7 +128,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="message_view_theme_action_dark">Lülitu tumedale teemale</string>
   <string name="message_view_theme_action_light">Lülitu heledale teemale</string>
   <string name="mark_as_unread_action">Märgi mitteloetuks</string>
-  <string name="add_cc_bcc_action">Lisa Cc/Bcc</string>
   <string name="read_receipt">Lugemise kinnitus</string>
   <string name="read_receipt_enabled">Taotleb lugemise kinnitust</string>
   <string name="read_receipt_disabled">Ei taotle lugemise kinnitust</string>
@@ -191,9 +189,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="debug_enable_sensitive_logging_summary">Logides võib sisalduda salasõnu.</string>
   <string name="message_list_load_more_messages_action">Laadi veel sõnumeid</string>
   <string name="message_to_fmt">Kelele:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Kellele</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Bcc</string>
   <string name="message_compose_subject_hint">Teema</string>
   <string name="message_compose_content_hint">Sõnumi tekst</string>
   <string name="message_compose_signature_hint">Allkiri</string>
@@ -209,9 +204,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="error_contact_address_not_found">Selle kontakti emaili aadressi ei leita</string>
   <string name="message_compose_attachments_skipped_toast">Mõnda manust ei saa edasi saata, kuna seda pole alla laetud</string>
   <string name="message_compose_show_quoted_text_action">Noteeri sõnum</string>
-  <string name="message_compose_description_add_to">Lisa adressaat (Kelele)</string>
-  <string name="message_compose_description_add_cc">Lisa adressaat (Cc)</string>
-  <string name="message_compose_description_add_bcc">Lisa adressaat (Bcc)</string>
   <string name="message_compose_description_delete_quoted_text">Eemalda osundatud tekst</string>
   <string name="message_compose_description_edit_quoted_text">Muuda osundatud teksti</string>
   <string name="message_view_from_format">Kellelt: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -219,18 +211,12 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Ava</string>
   <string name="message_view_attachment_download_action">Salvesta</string>
-  <string name="message_view_status_attachment_saved">Manus salvestatud SD kaardile nimega  <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Ei saanud manust salvestada SD kaardile</string>
   <string name="message_view_show_pictures_action">Näita pilte</string>
-  <string name="message_view_show_message_action">Näita sõnumit</string>
-  <string name="message_view_show_attachments_action">Näita manuseid</string>
   <string name="message_view_show_more_attachments_action">Veel…</string>
-  <string name="message_view_fetching_attachment_toast">Too manus.</string>
   <string name="message_view_no_viewer">Ei leia <xliff:g id="mimetype">%s</xliff:g> käivitamiseks programmi.</string>
   <string name="message_view_download_remainder">Laadi kogu meilisõnim alla</string>
-  <string name="message_view_downloading">Laeb alla…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Kõik pealkirjad ei ole alla laaditud või salvestatud. Vali \"Salvesta lokaalselt kõik pealkirjad\" konto sissetuleva serveri sätetes, et lubada see edaspidiseks.</string>
   <string name="message_no_additional_headers_available">Kõik pealkirjad on alla laetud kuid näitamiseks ei ole ühtegi täiendavat pealkirja.</string>
   <string name="message_additional_headers_retrieval_failed">Pealkirjade toomine andmebaasist või emaili serverist ebaõnnestus.</string>
   <string name="from_same_sender">Veel sellelt saatjalt</string>
@@ -698,18 +684,11 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="font_size_large">Suur</string>
   <string name="font_size_larger">Suurem</string>
   <string name="miscellaneous_preferences">Muu</string>
-  <string name="btn_crypto_sign">Allkirjasta</string>
-  <string name="btn_encrypt">Krüpteeri</string>
-  <string name="unknown_crypto_signature_user_id">&lt;tundmatu&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME ei ole praegu toetatud.</string>
-  <string name="attachment_encryption_unsupported">Hoiatus: manused EI ole praegu allkirjastatud või krüpteeritud.</string>
   <string name="send_aborted">Saatmine katkestatud.</string>
   <string name="save_or_discard_draft_message_dlg_title">Salvesta mustandina?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Salvesta sõnum või loobu sellest?</string>
   <string name="confirm_discard_draft_message_title">Loobu sõnumist?</string>
   <string name="confirm_discard_draft_message">Oled kindel, et soovid sõnumist loobuda?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Keeldu mustandina salvestamisest.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Keeldu krüpteerituna märgitud sõnumite mustandina salvestamisest.</string>
   <string name="select_text_now">Vali kopeerimiseks teks.</string>
   <string name="dialog_confirm_delete_title">Kinnita kustutamine</string>
   <string name="dialog_confirm_delete_message">Kas soovid sõnumit kustutada?</string>
@@ -730,7 +709,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="debug_logging_enabled">Veateadete logimine lubatud</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Ei suuda ühenduda.</string>
   <string name="import_export_action">Sätete Import &amp; Eksport</string>
   <string name="settings_export_account">Ekspordi konto sätted</string>
   <string name="settings_export_all">Ekspordi sätted ja kontod</string>
@@ -800,8 +778,6 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Serverist otsingu limiit</string>
   <string name="account_settings_remote_search_num_summary">Server lõpetad otsingu kui on leidnud <xliff:g id="num_results">%s</xliff:g> tuemust.</string>
-  <string name="account_settings_remote_search_full_text">Serveri otsingu korral otsi ka sõnumi tekstist</string>
-  <string name="account_settings_remote_search_full_text_summary">Kogu teksti otsingud võivad olla aeglased.</string>
   <string name="remote_search_sending_query">Saadab serverile päringut</string>
   <string name="remote_search_downloading">Toob %d tulemust</string>
   <string name="remote_search_downloading_limited">Toob %1$d  %2$d -st tulemusest</string>
@@ -834,17 +810,5 @@ Palun saada infot probleemidest, soovitavatest lisafunktsioonidest ja küsi küs
   <string name="fetching_attachment_dialog_title_save">Salvestab mustandit</string>
   <string name="fetching_attachment_dialog_message">Toob manust…</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Dekrüpteerib/kinnitab…</string>
-  <string name="openpgp_successful_decryption">Dekrüpteerimine õnnestus</string>
-  <string name="openpgp_signature_valid_certified">Kehtiv allkiri (sertifitseeritud)</string>
-  <string name="openpgp_signature_valid_uncertified">Kehtiv allkiri kuid sertifitseerimata</string>
-  <string name="openpgp_signature_unknown">Tundmatu allkirjastaja</string>
-  <string name="openpgp_signature_invalid">Vigane allkiri</string>
-  <string name="openpgp_signature_unknown_text">Sellel allkirjal puudub avalik võti</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Edukalt dekrüpteeritud ja kehtiv allkiri (sertifitseeritud)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Edukalt dekrüpteeritud ja kehtiv allkiri kuid sertifitseerimata</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Edukalt dekrüpteeritud kuid puudub avalik võti</string>
-  <string name="openpgp_get_key">Otsi puuduvat võtit</string>
-  <string name="openpgp_user_id">Kasutaja Id</string>
   <!--=== Client certificates specific ==================================================================-->
 </resources>
