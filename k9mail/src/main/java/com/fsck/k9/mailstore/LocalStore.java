@@ -805,7 +805,7 @@ public class LocalStore extends Store implements Serializable {
     }
 
 
-    String serializeFlags(Iterable<Flag> flags) {
+    static String serializeFlags(Iterable<Flag> flags) {
         List<Flag> extraFlags = new ArrayList<>();
 
         for (Flag flag : flags) {

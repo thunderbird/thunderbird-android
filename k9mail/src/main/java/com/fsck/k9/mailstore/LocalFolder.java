@@ -65,7 +65,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
-    private static final long INVALID_MESSAGE_PART_ID = -1;
+    static final long INVALID_MESSAGE_PART_ID = -1;
 
     private final LocalStore localStore;
 
@@ -2038,7 +2038,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     // Note: The contents of the 'message_parts' table depend on these values.
-    private static class MessagePartType {
+    static class MessagePartType {
         static final int UNKNOWN = 0;
         static final int ALTERNATIVE_PLAIN = 1;
         static final int ALTERNATIVE_HTML = 2;
