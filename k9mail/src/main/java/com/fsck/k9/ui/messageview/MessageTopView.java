@@ -43,6 +43,8 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
     @Override
     public void onFinishInflate() {
+        super.onFinishInflate();
+
         mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
         // mHeaderContainer.setOnLayoutChangedListener(this);
         mInflater = LayoutInflater.from(getContext());

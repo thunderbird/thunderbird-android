@@ -79,6 +79,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     @Override
     public void onFinishInflate() {
+        super.onFinishInflate();
+
         mSidebar = findViewById(R.id.message_sidebar);
 
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
