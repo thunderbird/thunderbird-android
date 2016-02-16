@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 import java.util.Collection;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.app.FragmentManager.OnBackStackChangedListener;
 import android.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -341,7 +343,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private void initializeLayout() {
         mMessageViewContainer = (ViewGroup) findViewById(R.id.message_view_container);
-        mMessageViewPlaceHolder = getLayoutInflater().inflate(R.layout.empty_message_view, null);
+
+        LayoutInflater layoutInflater = getLayoutInflater();
+        mMessageViewPlaceHolder = layoutInflater.inflate(R.layout.empty_message_view, mMessageViewContainer, false);
     }
 
     private void displayViews() {
@@ -532,10 +536,14 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
         mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
         mActionBarProgress = (ProgressBar) customView.findViewById(R.id.actionbar_progress);
-        mActionButtonIndeterminateProgress =
-                getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
+        mActionButtonIndeterminateProgress = getActionButtonIndeterminateProgress();
 
         mActionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @SuppressLint("InflateParams")
+    private View getActionButtonIndeterminateProgress() {
+        return getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
     }
 
     @Override

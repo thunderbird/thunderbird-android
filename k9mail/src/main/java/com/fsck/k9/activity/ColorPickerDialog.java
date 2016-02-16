@@ -1,6 +1,8 @@
 package com.fsck.k9.activity;
 
 import com.fsck.k9.R;
+
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.*;
 import android.view.LayoutInflater;
@@ -35,6 +37,7 @@ public class ColorPickerDialog extends AlertDialog {
         super(context);
         mColorChangedListener = listener;
 
+        @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.color_picker_dialog, null);
 
         mColorPicker = (ColorPicker) view.findViewById(R.id.color_picker);

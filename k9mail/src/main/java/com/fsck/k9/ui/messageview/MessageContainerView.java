@@ -20,6 +20,7 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
@@ -79,6 +80,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     @Override
     public void onFinishInflate() {
+        super.onFinishInflate();
+
         mSidebar = findViewById(R.id.message_sidebar);
 
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
@@ -492,26 +495,14 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {
         for (AttachmentViewInfo attachment : messageContainer.attachments) {
-            AttachmentView view = (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, null);
+            ViewGroup parent = attachment.firstClassAttachment ? mAttachments : mHiddenAttachments;
+            AttachmentView view = (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, parent, false);
             view.setCallback(attachmentCallback);
             view.setAttachment(attachment);
 
             attachments.put(attachment, view);
-
-            if (attachment.firstClassAttachment) {
-                addAttachment(view);
-            } else {
-                addHiddenAttachment(view);
-            }
+            parent.addView(view);
         }
-    }
-
-    public void addAttachment(View attachmentView) {
-        mAttachments.addView(attachmentView);
-    }
-
-    public void addHiddenAttachment(View attachmentView) {
-        mHiddenAttachments.addView(attachmentView);
     }
 
     public void zoom(KeyEvent event) {
