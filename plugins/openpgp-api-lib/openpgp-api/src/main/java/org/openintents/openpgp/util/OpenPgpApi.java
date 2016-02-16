@@ -57,6 +57,8 @@ public class OpenPgpApi {
      * PendingIntent RESULT_INTENT               (if RESULT_CODE == RESULT_CODE_USER_INTERACTION_REQUIRED)
      */
 
+    public static final String ACTION_CHECK_PERMISSION = "org.openintents.openpgp.action.CHECK_PERMISSION";
+
     /**
      * DEPRECATED
      * Same as ACTION_CLEARTEXT_SIGN
@@ -202,7 +204,6 @@ public class OpenPgpApi {
      *
      */
     public static final String ACTION_GET_KEY = "org.openintents.openpgp.action.GET_KEY";
-
 
     /* Intent extras */
     public static final String EXTRA_API_VERSION = "api_version";
@@ -418,4 +419,18 @@ public class OpenPgpApi {
         }
     }
 
+
+    public interface PermissionPingCallback {
+        void onPgpPermissionCheckResult(Intent result);
+    }
+
+    public void checkPermissionPing(final PermissionPingCallback permissionPingCallback) {
+        Intent intent = new Intent(OpenPgpApi.ACTION_CHECK_PERMISSION);
+        executeApiAsync(intent, null, null, new IOpenPgpCallback() {
+            @Override
+            public void onReturn(Intent result) {
+                permissionPingCallback.onPgpPermissionCheckResult(result);
+            }
+        });
+    }
 }

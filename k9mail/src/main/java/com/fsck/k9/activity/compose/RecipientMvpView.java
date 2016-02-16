@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.PendingIntent;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,11 +26,15 @@ import com.fsck.k9.view.RecipientSelectView.TokenListener;
 
 
 public class RecipientMvpView implements OnFocusChangeListener, OnClickListener {
+    private static final int VIEW_INDEX_HIDDEN = -1;
     private static final int VIEW_INDEX_CRYPTO_STATUS_DISABLED = 0;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_NO_KEY = 1;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED = 2;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_TRUSTED = 3;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY = 4;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_ERROR = 1;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_NO_RECIPIENTS = 2;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_ERROR_NO_KEY = 3;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_DISABLED_NO_KEY = 4;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED = 5;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_TRUSTED = 6;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY = 7;
 
     private static final int VIEW_INDEX_BCC_EXPANDER_VISIBLE = 0;
     private static final int VIEW_INDEX_BCC_EXPANDER_HIDDEN = 1;
@@ -223,20 +228,6 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         return bccView.getObjects();
     }
 
-    public void hideCryptoStatus() {
-        if (cryptoStatusView.getVisibility() == View.GONE) {
-            return;
-        }
-
-        cryptoStatusView.animate().translationX(100).setDuration(300).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                cryptoStatusView.setVisibility(View.GONE);
-            }
-        }).start();
-    }
-
     public boolean recipientToHasUncompletedText() {
         return toView.hasUncompletedText();
     }
@@ -261,17 +252,16 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccView.setError(bccView.getContext().getString(R.string.compose_error_incomplete_recipient));
     }
 
-    public void showMissingSignKeyError() {
-        Toast.makeText(activity, R.string.compose_error_no_signing_key, Toast.LENGTH_LONG).show();
-    }
+    public void showCryptoStatus(final CryptoStatusDisplayType cryptoStatusDisplayType) {
+        boolean shouldBeHidden = cryptoStatusDisplayType.childToDisplay == VIEW_INDEX_HIDDEN;
+        if (shouldBeHidden) {
+            hideCryptoStatus();
+            return;
+        }
 
-    public void showPrivateAndIncompleteError() {
-        Toast.makeText(activity, R.string.compose_error_private_missing_keys, Toast.LENGTH_LONG).show();
-    }
-
-    public void showCryptoStatus(final CryptoStatusDisplayType childToDisplay) {
-        if (cryptoStatusView.getVisibility() == View.VISIBLE) {
-            switchCryptoStatus(childToDisplay);
+        boolean alreadyVisible = cryptoStatusView.getVisibility() == View.VISIBLE;
+        if (alreadyVisible) {
+            switchCryptoStatus(cryptoStatusDisplayType);
             return;
         }
 
@@ -280,7 +270,22 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         cryptoStatusView.animate().translationX(0).setDuration(300).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                switchCryptoStatus(childToDisplay);
+                switchCryptoStatus(cryptoStatusDisplayType);
+            }
+        }).start();
+    }
+
+
+    private void hideCryptoStatus() {
+        if (cryptoStatusView.getVisibility() == View.GONE) {
+            return;
+        }
+
+        cryptoStatusView.animate().translationX(100).setDuration(300).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                cryptoStatusView.setVisibility(View.GONE);
             }
         }).start();
     }
@@ -297,8 +302,23 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     }
 
     public void showErrorContactNoAddress() {
-        String errorMessage = activity.getString(R.string.error_contact_address_not_found);
-        Toast.makeText(activity, errorMessage, Toast.LENGTH_LONG).show();
+        Toast.makeText(activity, R.string.error_contact_address_not_found, Toast.LENGTH_LONG).show();
+    }
+
+    public void showErrorOpenPgpConnection() {
+        Toast.makeText(activity, R.string.error_crypto_provider_connect, Toast.LENGTH_LONG).show();
+    }
+
+    public void showErrorOpenPgpUserInteractionRequired() {
+        Toast.makeText(activity, R.string.error_crypto_provider_ui_required, Toast.LENGTH_LONG).show();
+    }
+
+    public void showErrorMissingSignKey() {
+        Toast.makeText(activity, R.string.compose_error_no_signing_key, Toast.LENGTH_LONG).show();
+    }
+
+    public void showErrorPrivateButMissingKeys() {
+        Toast.makeText(activity, R.string.compose_error_private_missing_keys, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -342,15 +362,27 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         dialog.show(activity.getFragmentManager(), "crypto_settings");
     }
 
+    public void checkOpenPgpServicePermission(RecipientPresenter recipientPresenter) {
+        activity.getOpenPgpApi().checkPermissionPing(recipientPresenter);
+    }
+
+    public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
+        activity.launchUserInteractionPendingIntent(pendingIntent, requestCode);
+    }
+
     public enum CryptoStatusDisplayType {
+        UNINITIALIZED(VIEW_INDEX_HIDDEN),
         DISABLED(VIEW_INDEX_CRYPTO_STATUS_DISABLED),
         SIGN_ONLY(VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY),
-        OPPORTUNISTIC_NOKEY(VIEW_INDEX_CRYPTO_STATUS_NO_KEY),
+        OPPORTUNISTIC_EMPTY(VIEW_INDEX_CRYPTO_STATUS_NO_RECIPIENTS),
+        OPPORTUNISTIC_NOKEY(VIEW_INDEX_CRYPTO_STATUS_DISABLED_NO_KEY),
         OPPORTUNISTIC_UNTRUSTED(VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED),
         OPPORTUNISTIC_TRUSTED(VIEW_INDEX_CRYPTO_STATUS_TRUSTED),
-        PRIVATE_NOKEY(VIEW_INDEX_CRYPTO_STATUS_NO_KEY),
+        PRIVATE_EMPTY(VIEW_INDEX_CRYPTO_STATUS_NO_RECIPIENTS),
+        PRIVATE_NOKEY(VIEW_INDEX_CRYPTO_STATUS_ERROR_NO_KEY),
         PRIVATE_UNTRUSTED(VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED),
-        PRIVATE_TRUSTED(VIEW_INDEX_CRYPTO_STATUS_TRUSTED);
+        PRIVATE_TRUSTED(VIEW_INDEX_CRYPTO_STATUS_TRUSTED),
+        ERROR(VIEW_INDEX_CRYPTO_STATUS_ERROR);
 
 
         final int childToDisplay;

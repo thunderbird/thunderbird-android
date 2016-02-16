@@ -255,9 +255,14 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         List<String> recipientList = new ArrayList<>(recipientMap.keySet());
         String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
 
+        Cursor cursor;
         Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/email_status");
-        Cursor cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_STATUS, null,
-                recipientAddresses, null);
+        try {
+            cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_STATUS, null,
+                    recipientAddresses, null);
+        } catch (SecurityException e) {
+            return;
+        }
 
         initializeCryptoStatusForAllRecipients(recipientMap);
 

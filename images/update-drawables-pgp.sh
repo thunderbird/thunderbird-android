@@ -9,11 +9,20 @@ XXXDPI_DIR=$APP_DIR/res/drawable-xxxhdpi
 SRC_DIR=./drawables-pgp/
 
 
-for NAME in "status_lock_closed" "status_lock_error" "status_lock_open" "status_lock_disabled" "status_lock_opportunistic" "status_signature_expired_cutout" "status_signature_invalid_cutout" "status_signature_revoked_cutout" "status_signature_unknown_cutout" "status_signature_unverified_cutout" "status_signature_verified_cutout"
+for NAME in "status_lock" "status_lock_closed" "status_lock_error" "status_lock_open" "status_lock_disabled" "status_lock_opportunistic" "status_signature_expired_cutout" "status_signature_invalid_cutout" "status_signature_revoked_cutout" "status_signature_unknown_cutout" "status_signature_unverified_cutout" "status_signature_verified_cutout"
 do
 echo $NAME
 inkscape -w 24 -h 24 -e "$MDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
 inkscape -w 32 -h 32 -e "$HDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
 inkscape -w 48 -h 48 -e "$XDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
 inkscape -w 64 -h 64 -e "$XXDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
+done
+
+for NAME in "status_dots" "status_lock_disabled_dots_1" "status_lock_error_dots_1" "status_lock_dots_2" "status_lock_dots_3" 
+do
+echo $NAME
+inkscape -w 36 -h 24 -e "$MDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
+inkscape -w 48 -h 32 -e "$HDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
+inkscape -w 72 -h 48 -e "$XDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
+inkscape -w 96 -h 64 -e "$XXDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
 done
