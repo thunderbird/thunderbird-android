@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import android.content.SharedPreferences;
-
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -56,7 +54,7 @@ public class IdentitySettings {
         return Settings.convert(settings, SETTINGS);
     }
 
-    public static Map<String, String> getIdentitySettings(SharedPreferences storage, String uuid,
+    public static Map<String, String> getIdentitySettings(Storage storage, String uuid,
             int identityIndex) {
         Map<String, String> result = new HashMap<String, String>();
         String prefix = uuid + ".";

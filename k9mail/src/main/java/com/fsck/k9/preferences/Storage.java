@@ -2,7 +2,6 @@ package com.fsck.k9.preferences;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -17,19 +16,14 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Storage implements SharedPreferences {
+public class Storage {
     private static ConcurrentMap<Context, Storage> storages =
         new ConcurrentHashMap<Context, Storage>();
 
     private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<String, String>();
-
-    private CopyOnWriteArrayList<OnSharedPreferenceChangeListener> listeners =
-        new CopyOnWriteArrayList<OnSharedPreferenceChangeListener>();
 
     private int DB_VERSION = 2;
     private String DB_NAME = "preferences_storage";
@@ -276,11 +270,6 @@ public class Storage implements SharedPreferences {
             dbWork.run();
             mDb.setTransactionSuccessful();
             storage = newStorage;
-            for (String changedKey : changedKeys) {
-                for (OnSharedPreferenceChangeListener listener : listeners) {
-                    listener.onSharedPreferenceChanged(this, changedKey);
-                }
-            }
         } finally {
             workingDB.remove();
             workingStorage.remove();
@@ -294,7 +283,6 @@ public class Storage implements SharedPreferences {
         return storage.isEmpty();
     }
 
-    //@Override
     public boolean contains(String key) {
         // TODO this used to be ConcurrentHashMap#contains which is
         // actually containsValue. But looking at the usage of this method,
@@ -303,17 +291,14 @@ public class Storage implements SharedPreferences {
         return storage.containsKey(key);
     }
 
-    //@Override
-    public com.fsck.k9.preferences.Editor edit() {
-        return new com.fsck.k9.preferences.Editor(this);
+    public StorageEditor edit() {
+        return new StorageEditor(this);
     }
 
-    //@Override
     public Map<String, String> getAll() {
         return storage;
     }
 
-    //@Override
     public boolean getBoolean(String key, boolean defValue) {
         String val = storage.get(key);
         if (val == null) {
@@ -322,7 +307,6 @@ public class Storage implements SharedPreferences {
         return Boolean.parseBoolean(val);
     }
 
-    //@Override
     public float getFloat(String key, float defValue) {
         String val = storage.get(key);
         if (val == null) {
@@ -336,7 +320,6 @@ public class Storage implements SharedPreferences {
         }
     }
 
-    //@Override
     public int getInt(String key, int defValue) {
         String val = storage.get(key);
         if (val == null) {
@@ -350,7 +333,6 @@ public class Storage implements SharedPreferences {
         }
     }
 
-    //@Override
     public long getLong(String key, long defValue) {
         String val = storage.get(key);
         if (val == null) {
@@ -364,25 +346,12 @@ public class Storage implements SharedPreferences {
         }
     }
 
-    //@Override
     public String getString(String key, String defValue) {
         String val = storage.get(key);
         if (val == null) {
             return defValue;
         }
         return val;
-    }
-
-    //@Override
-    public void registerOnSharedPreferenceChangeListener(
-        OnSharedPreferenceChangeListener listener) {
-        listeners.addIfAbsent(listener);
-    }
-
-    //@Override
-    public void unregisterOnSharedPreferenceChangeListener(
-        OnSharedPreferenceChangeListener listener) {
-        listeners.remove(listener);
     }
 
     private String readValue(SQLiteDatabase mDb, String key) {
@@ -421,11 +390,5 @@ public class Storage implements SharedPreferences {
         if (result == -1) {
             Log.e(K9.LOG_TAG, "Error writing key '" + key + "', value = '" + value + "'");
         }
-    }
-
-
-    @Override
-    public Set<String> getStringSet(String arg0, Set<String> arg1) {
-        throw new RuntimeException("Not implemented");
     }
 }

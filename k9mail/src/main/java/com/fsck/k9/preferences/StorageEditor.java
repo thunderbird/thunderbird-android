@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
-public class Editor implements android.content.SharedPreferences.Editor {
+
+public class StorageEditor {
     private Storage storage;
     private Map<String, String> changes = new HashMap<String, String>();
     private List<String> removals = new ArrayList<String>();
@@ -19,7 +19,7 @@ public class Editor implements android.content.SharedPreferences.Editor {
     Map<String, String> snapshot = new HashMap<String, String>();
 
 
-    protected Editor(Storage storage) {
+    protected StorageEditor(Storage storage) {
         this.storage = storage;
         snapshot.putAll(storage.getAll());
     }
@@ -42,8 +42,7 @@ public class Editor implements android.content.SharedPreferences.Editor {
         }
     }
 
-    //@Override
-    public android.content.SharedPreferences.Editor clear() {
+    public StorageEditor clear() {
         removeAll = true;
         return this;
     }
@@ -97,35 +96,28 @@ public class Editor implements android.content.SharedPreferences.Editor {
 
     }
 
-    //@Override
-    public android.content.SharedPreferences.Editor putBoolean(String key,
+    public StorageEditor putBoolean(String key,
             boolean value) {
         changes.put(key, "" + value);
         return this;
     }
 
-    //@Override
-    public android.content.SharedPreferences.Editor putFloat(String key,
-            float value) {
+    public StorageEditor putFloat(String key, float value) {
         changes.put(key, "" + value);
         return this;
     }
 
-    //@Override
-    public android.content.SharedPreferences.Editor putInt(String key, int value) {
+    public StorageEditor putInt(String key, int value) {
         changes.put(key, "" + value);
         return this;
     }
 
-    //@Override
-    public android.content.SharedPreferences.Editor putLong(String key, long value) {
+    public StorageEditor putLong(String key, long value) {
         changes.put(key, "" + value);
         return this;
     }
 
-    //@Override
-    public android.content.SharedPreferences.Editor putString(String key,
-            String value) {
+    public StorageEditor putString(String key, String value) {
         if (value == null) {
             remove(key);
         } else {
@@ -134,15 +126,8 @@ public class Editor implements android.content.SharedPreferences.Editor {
         return this;
     }
 
-    //@Override
-    public android.content.SharedPreferences.Editor remove(String key) {
+    public StorageEditor remove(String key) {
         removals.add(key);
         return this;
     }
-
-    @Override
-    public android.content.SharedPreferences.Editor putStringSet(String arg0, Set<String> arg1) {
-        throw new RuntimeException("Not implemented");
-    }
-
 }

@@ -7,7 +7,6 @@ import java.util.Date;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -18,6 +17,9 @@ import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Pusher;
+import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
+
 
 public class MailService extends CoreService {
     private static final String ACTION_CHECK_MAIL = "com.fsck.k9.intent.action.MAIL_SERVICE_WAKEUP";
@@ -176,8 +178,8 @@ public class MailService extends CoreService {
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "Saving lastCheckEnd = " + new Date(lastCheckEnd));
         Preferences prefs = Preferences.getPreferences(context);
-        SharedPreferences sPrefs = prefs.getPreferences();
-        SharedPreferences.Editor editor = sPrefs.edit();
+        Storage storage = prefs.getStorage();
+        StorageEditor editor = storage.edit();
         editor.putLong(LAST_CHECK_END, lastCheckEnd);
         editor.commit();
     }
@@ -243,9 +245,9 @@ public class MailService extends CoreService {
         }
 
         Preferences prefs = Preferences.getPreferences(MailService.this);
-        SharedPreferences sPrefs = prefs.getPreferences();
-        int previousInterval = sPrefs.getInt(PREVIOUS_INTERVAL, -1);
-        long lastCheckEnd = sPrefs.getLong(LAST_CHECK_END, -1);
+        Storage storage = prefs.getStorage();
+        int previousInterval = storage.getInt(PREVIOUS_INTERVAL, -1);
+        long lastCheckEnd = storage.getLong(LAST_CHECK_END, -1);
 
         if (lastCheckEnd > System.currentTimeMillis()) {
             Log.i(K9.LOG_TAG, "The database claims that the last time mail was checked was in " +
@@ -263,7 +265,7 @@ public class MailService extends CoreService {
                 shortestInterval = account.getAutomaticCheckIntervalMinutes();
             }
         }
-        SharedPreferences.Editor editor = sPrefs.edit();
+        StorageEditor editor = storage.edit();
         editor.putInt(PREVIOUS_INTERVAL, shortestInterval);
         editor.commit();
 

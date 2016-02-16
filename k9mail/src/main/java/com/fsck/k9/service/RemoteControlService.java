@@ -2,6 +2,8 @@ package com.fsck.k9.service;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -12,8 +14,6 @@ import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -127,9 +127,9 @@ public class RemoteControlService extends CoreService {
                             K9.setK9Theme(K9RemoteControl.K9_THEME_DARK.equals(theme) ? K9.Theme.DARK : K9.Theme.LIGHT);
                         }
 
-                        SharedPreferences sPrefs = preferences.getPreferences();
+                        Storage storage = preferences.getStorage();
 
-                        Editor editor = sPrefs.edit();
+                        StorageEditor editor = storage.edit();
                         K9.save(editor);
                         editor.commit();
 

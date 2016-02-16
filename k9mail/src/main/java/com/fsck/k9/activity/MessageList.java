@@ -8,7 +8,6 @@ import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
@@ -42,6 +41,7 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.mailstore.StorageManager;
@@ -1530,7 +1530,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             public void run() {
                 Context appContext = getApplicationContext();
                 Preferences prefs = Preferences.getPreferences(appContext);
-                Editor editor = prefs.getPreferences().edit();
+                StorageEditor editor = prefs.getStorage().edit();
                 K9.save(editor);
                 editor.commit();
             }

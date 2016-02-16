@@ -17,7 +17,6 @@ import com.fsck.k9.helper.FileHelper;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
@@ -129,7 +128,7 @@ public class SettingsExporter {
             Log.i(K9.LOG_TAG, "Exporting preferences");
 
             Preferences preferences = Preferences.getPreferences(context);
-            SharedPreferences storage = preferences.getPreferences();
+            Storage storage = preferences.getStorage();
 
             Set<String> exportAccounts;
             if (accountUuids == null) {
