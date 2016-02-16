@@ -14,12 +14,11 @@ public class StorageEditor {
     private Storage storage;
     private Map<String, String> changes = new HashMap<String, String>();
     private List<String> removals = new ArrayList<String>();
-    private boolean removeAll = false;
 
     Map<String, String> snapshot = new HashMap<String, String>();
 
 
-    protected StorageEditor(Storage storage) {
+    StorageEditor(Storage storage) {
         this.storage = storage;
         snapshot.putAll(storage.getAll());
     }
@@ -42,21 +41,6 @@ public class StorageEditor {
         }
     }
 
-    public StorageEditor clear() {
-        removeAll = true;
-        return this;
-    }
-
-
-    // TODO Android 2.3 provides a sexy new "apply" method we need to implement
-    public void apply() {
-        commit();
-    }
-
-
-
-    /* This method is poorly defined.  It should throw an Exception on failure */
-    //@Override
     public boolean commit() {
         try {
             commitChanges();
@@ -67,14 +51,11 @@ public class StorageEditor {
         }
     }
 
-    public void commitChanges() {
+    private void commitChanges() {
         long startTime = System.currentTimeMillis();
         Log.i(K9.LOG_TAG, "Committing preference changes");
         Runnable committer = new Runnable() {
             public void run() {
-                if (removeAll) {
-                    storage.removeAll();
-                }
                 for (String removeKey : removals) {
                     storage.remove(removeKey);
                 }
@@ -83,7 +64,7 @@ public class StorageEditor {
                     String key = entry.getKey();
                     String newValue = entry.getValue();
                     String oldValue = snapshot.get(key);
-                    if (removeAll || removals.contains(key) || !newValue.equals(oldValue)) {
+                    if (removals.contains(key) || !newValue.equals(oldValue)) {
                         insertables.put(key, newValue);
                     }
                 }
@@ -98,11 +79,6 @@ public class StorageEditor {
 
     public StorageEditor putBoolean(String key,
             boolean value) {
-        changes.put(key, "" + value);
-        return this;
-    }
-
-    public StorageEditor putFloat(String key, float value) {
         changes.put(key, "" + value);
         return this;
     }

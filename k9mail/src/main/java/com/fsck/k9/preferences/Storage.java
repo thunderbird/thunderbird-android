@@ -204,13 +204,7 @@ public class Storage {
         }
     }
 
-    protected void put(String key, String value) {
-        ContentValues cv = generateCV(key, value);
-        workingDB.get().insert("preferences_storage", "primkey", cv);
-        liveUpdate(key, value);
-    }
-
-    protected void put(Map<String, String> insertables) {
+    void put(Map<String, String> insertables) {
         String sql = "INSERT INTO preferences_storage (primkey, value) VALUES (?, ?)";
         SQLiteStatement stmt = workingDB.get().compileStatement(sql);
 
@@ -226,35 +220,20 @@ public class Storage {
         stmt.close();
     }
 
-    private ContentValues generateCV(String key, String value) {
-        ContentValues cv = new ContentValues();
-        cv.put("primkey", key);
-        cv.put("value", value);
-        return cv;
-    }
-
     private void liveUpdate(String key, String value) {
         workingStorage.get().put(key, value);
 
         keyChange(key);
     }
 
-    protected void remove(String key) {
+    void remove(String key) {
         workingDB.get().delete("preferences_storage", "primkey = ?", new String[] { key });
         workingStorage.get().remove(key);
 
         keyChange(key);
     }
 
-    protected void removeAll() {
-        for (String key : workingStorage.get().keySet()) {
-            keyChange(key);
-        }
-        workingDB.get().execSQL("DELETE FROM preferences_storage");
-        workingStorage.get().clear();
-    }
-
-    protected void doInTransaction(Runnable dbWork) {
+    void doInTransaction(Runnable dbWork) {
         ConcurrentMap<String, String> newStorage = new ConcurrentHashMap<String, String>();
         newStorage.putAll(storage);
         workingStorage.set(newStorage);
@@ -305,19 +284,6 @@ public class Storage {
             return defValue;
         }
         return Boolean.parseBoolean(val);
-    }
-
-    public float getFloat(String key, float defValue) {
-        String val = storage.get(key);
-        if (val == null) {
-            return defValue;
-        }
-        try {
-            return Float.parseFloat(val);
-        } catch (NumberFormatException nfe) {
-            Log.e(K9.LOG_TAG, "Could not parse float", nfe);
-            return defValue;
-        }
     }
 
     public int getInt(String key, int defValue) {
