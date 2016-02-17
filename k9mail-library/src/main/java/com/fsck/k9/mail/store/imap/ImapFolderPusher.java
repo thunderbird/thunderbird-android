@@ -202,7 +202,7 @@ class ImapFolderPusher extends ImapFolder {
                     pushReceiver.setPushActive(getName(), false);
 
                     try {
-                        close();
+                        connection.close();
                     } catch (Exception me) {
                         Log.e(LOG_TAG, "Got exception while closing for exception for " + getLogId(), me);
                     }
@@ -301,7 +301,7 @@ class ImapFolderPusher extends ImapFolder {
                     idleStopper.stopAcceptingDoneContinuation();
                 }
             } catch (IOException e) {
-                close();
+                conn.close();
                 throw e;
             }
 
