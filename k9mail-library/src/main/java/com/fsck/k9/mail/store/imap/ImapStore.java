@@ -308,22 +308,26 @@ public class ImapStore extends RemoteStore {
     }
 
     ImapConnection getConnection() throws MessagingException {
+        ImapConnection connection;
+        while ((connection = pollConnection()) != null) {
+            try {
+                connection.executeSimpleCommand(Commands.NOOP);
+                break;
+            } catch (IOException ioe) {
+                connection.close();
+            }
+        }
+
+        if (connection == null) {
+            connection = createImapConnection();
+        }
+
+        return connection;
+    }
+
+    private ImapConnection pollConnection() {
         synchronized (connections) {
-            ImapConnection connection;
-            while ((connection = connections.poll()) != null) {
-                try {
-                    connection.executeSimpleCommand(Commands.NOOP);
-                    break;
-                } catch (IOException ioe) {
-                    connection.close();
-                }
-            }
-
-            if (connection == null) {
-                connection = createImapConnection();
-            }
-
-            return connection;
+            return connections.poll();
         }
     }
 
