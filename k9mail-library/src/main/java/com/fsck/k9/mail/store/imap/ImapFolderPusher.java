@@ -151,20 +151,13 @@ class ImapFolderPusher extends ImapFolder {
                         oldUidNext = lastUidNext;
                     }
 
-                    ImapConnection oldConnection = connection;
-                    internalOpen(OPEN_MODE_RO);
-
-                    ImapConnection conn = connection;
-
-                    checkConnectionNotNull(conn);
-                    checkConnectionIdleCapable(conn);
+                    boolean openedNewConnection = openConnectionIfNecessary();
 
                     if (stop) {
                         break;
                     }
 
                     boolean pushPollOnConnect = store.getStoreConfig().isPushPollOnConnect();
-                    boolean openedNewConnection = conn != oldConnection;
                     if (pushPollOnConnect && (openedNewConnection || needsPoll)) {
                         needsPoll = false;
                         syncFolderOnConnect();
@@ -189,6 +182,7 @@ class ImapFolderPusher extends ImapFolder {
 
                         prepareForIdle();
 
+                        ImapConnection conn = connection;
                         setReadTimeoutForIdle(conn);
                         sendIdle(conn);
 
@@ -312,6 +306,18 @@ class ImapFolderPusher extends ImapFolder {
             idling = false;
             delayTime = NORMAL_DELAY_TIME;
             idleFailureCount = 0;
+        }
+
+        private boolean openConnectionIfNecessary() throws MessagingException {
+            ImapConnection oldConnection = connection;
+            internalOpen(OPEN_MODE_RO);
+
+            ImapConnection conn = connection;
+
+            checkConnectionNotNull(conn);
+            checkConnectionIdleCapable(conn);
+
+            return conn != oldConnection;
         }
 
         private void checkConnectionNotNull(ImapConnection conn) throws MessagingException {
