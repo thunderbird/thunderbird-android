@@ -36,6 +36,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
@@ -425,16 +427,7 @@ public class K9 extends Application {
         Log.i(K9.LOG_TAG, "Registered: shutdown receiver");
     }
 
-
-    /**
-     * Save settings from our statics into the app database.
-     * <p/>
-     * If you're adding a preference here, odds are you'll need to add it to
-     * {@link com.fsck.k9.preferences.GlobalSettings}, too.
-     *
-     * @param editor Preferences to save into
-     */
-    public static void save(SharedPreferences.Editor editor) {
+    public static void save(StorageEditor editor) {
         editor.putBoolean("enableDebugLogging", K9.DEBUG);
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
         editor.putString("backgroundOperations", K9.backgroundOps.name());
@@ -623,7 +616,7 @@ public class K9 extends Application {
 
     /**
      * Loads the last known database version of the accounts' databases from a
-     * {@link SharedPreference}.
+     * {@code SharedPreference}.
      *
      * <p>
      * If the stored version matches {@link LocalStore#DB_VERSION} we know that the databases are
@@ -655,108 +648,108 @@ public class K9 extends Application {
      * @param prefs Preferences to load
      */
     public static void loadPrefs(Preferences prefs) {
-        SharedPreferences sprefs = prefs.getPreferences();
-        DEBUG = sprefs.getBoolean("enableDebugLogging", BuildConfig.DEVELOPER_MODE);
-        DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
-        mAnimations = sprefs.getBoolean("animations", true);
-        mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", false);
-        mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
-        mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
-        mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
-        mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
-        mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
-        mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
-        mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
-        mMessageListStars = sprefs.getBoolean("messageListStars", true);
-        mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
+        Storage storage = prefs.getStorage();
+        DEBUG = storage.getBoolean("enableDebugLogging", BuildConfig.DEVELOPER_MODE);
+        DEBUG_SENSITIVE = storage.getBoolean("enableSensitiveLogging", false);
+        mAnimations = storage.getBoolean("animations", true);
+        mGesturesEnabled = storage.getBoolean("gesturesEnabled", false);
+        mUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false);
+        mUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false);
+        mStartIntegratedInbox = storage.getBoolean("startIntegratedInbox", false);
+        mMeasureAccounts = storage.getBoolean("measureAccounts", true);
+        mCountSearchMessages = storage.getBoolean("countSearchMessages", true);
+        mHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false);
+        mMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false);
+        mMessageListCheckboxes = storage.getBoolean("messageListCheckboxes", false);
+        mMessageListStars = storage.getBoolean("messageListStars", true);
+        mMessageListPreviewLines = storage.getInt("messageListPreviewLines", 2);
 
-        mAutofitWidth = sprefs.getBoolean("autofitWidth", true);
+        mAutofitWidth = storage.getBoolean("autofitWidth", true);
 
-        mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
-        mNotificationDuringQuietTimeEnabled = sprefs.getBoolean("notificationDuringQuietTimeEnabled", true);
-        mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
-        mQuietTimeEnds = sprefs.getString("quietTimeEnds", "7:00");
+        mQuietTimeEnabled = storage.getBoolean("quietTimeEnabled", false);
+        mNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true);
+        mQuietTimeStarts = storage.getString("quietTimeStarts", "21:00");
+        mQuietTimeEnds = storage.getString("quietTimeEnds", "7:00");
 
-        mShowCorrespondentNames = sprefs.getBoolean("showCorrespondentNames", true);
-        mShowContactName = sprefs.getBoolean("showContactName", false);
-        sShowContactPicture = sprefs.getBoolean("showContactPicture", true);
-        mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
-        mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
-        mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
-        mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
-        mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
-        mWrapFolderNames = sprefs.getBoolean("wrapFolderNames", false);
-        mHideUserAgent = sprefs.getBoolean("hideUserAgent", false);
-        mHideTimeZone = sprefs.getBoolean("hideTimeZone", false);
+        mShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true);
+        mShowContactName = storage.getBoolean("showContactName", false);
+        sShowContactPicture = storage.getBoolean("showContactPicture", true);
+        mChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false);
+        mContactNameColor = storage.getInt("registeredNameColor", 0xff00008f);
+        mMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false);
+        mMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false);
+        mMessageViewShowNext = storage.getBoolean("messageViewShowNext", false);
+        mWrapFolderNames = storage.getBoolean("wrapFolderNames", false);
+        mHideUserAgent = storage.getBoolean("hideUserAgent", false);
+        mHideTimeZone = storage.getBoolean("hideTimeZone", false);
 
-        mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
-        mConfirmDiscardMessage = sprefs.getBoolean("confirmDiscardMessage", true);
-        mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
-        mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
-        mConfirmDeleteFromNotification = sprefs.getBoolean("confirmDeleteFromNotification", true);
+        mConfirmDelete = storage.getBoolean("confirmDelete", false);
+        mConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true);
+        mConfirmDeleteStarred = storage.getBoolean("confirmDeleteStarred", false);
+        mConfirmSpam = storage.getBoolean("confirmSpam", false);
+        mConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true);
 
         try {
-            String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
+            String value = storage.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
             mSortType = SortType.valueOf(value);
         } catch (Exception e) {
             mSortType = Account.DEFAULT_SORT_TYPE;
         }
 
-        boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
+        boolean sortAscending = storage.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        String notificationHideSubject = sprefs.getString("notificationHideSubject", null);
+        String notificationHideSubject = storage.getString("notificationHideSubject", null);
         if (notificationHideSubject == null) {
             // If the "notificationHideSubject" setting couldn't be found, the app was probably
             // updated. Look for the old "keyguardPrivacy" setting and map it to the new enum.
-            sNotificationHideSubject = (sprefs.getBoolean("keyguardPrivacy", false)) ?
+            sNotificationHideSubject = (storage.getBoolean("keyguardPrivacy", false)) ?
                     NotificationHideSubject.WHEN_LOCKED : NotificationHideSubject.NEVER;
         } else {
             sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
         }
 
-        String notificationQuickDelete = sprefs.getString("notificationQuickDelete", null);
+        String notificationQuickDelete = storage.getString("notificationQuickDelete", null);
         if (notificationQuickDelete != null) {
             sNotificationQuickDelete = NotificationQuickDelete.valueOf(notificationQuickDelete);
         }
 
-        String lockScreenNotificationVisibility = sprefs.getString("lockScreenNotificationVisibility", null);
+        String lockScreenNotificationVisibility = storage.getString("lockScreenNotificationVisibility", null);
         if(lockScreenNotificationVisibility != null) {
             sLockScreenNotificationVisibility = LockScreenNotificationVisibility.valueOf(lockScreenNotificationVisibility);
         }
 
-        String splitViewMode = sprefs.getString("splitViewMode", null);
+        String splitViewMode = storage.getString("splitViewMode", null);
         if (splitViewMode != null) {
             sSplitViewMode = SplitViewMode.valueOf(splitViewMode);
         }
 
-        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",
+        mAttachmentDefaultPath = storage.getString("attachmentdefaultpath",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
-        sUseBackgroundAsUnreadIndicator = sprefs.getBoolean("useBackgroundAsUnreadIndicator", true);
-        sThreadedViewEnabled = sprefs.getBoolean("threadedView", true);
-        fontSizes.load(sprefs);
+        sUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true);
+        sThreadedViewEnabled = storage.getBoolean("threadedView", true);
+        fontSizes.load(storage);
 
         try {
-            setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString(
+            setBackgroundOps(BACKGROUND_OPS.valueOf(storage.getString(
                     "backgroundOperations",
                     BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC.name())));
         } catch (Exception e) {
             setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC);
         }
 
-        sColorizeMissingContactPictures = sprefs.getBoolean("colorizeMissingContactPictures", true);
+        sColorizeMissingContactPictures = storage.getBoolean("colorizeMissingContactPictures", true);
 
-        sMessageViewArchiveActionVisible = sprefs.getBoolean("messageViewArchiveActionVisible", false);
-        sMessageViewDeleteActionVisible = sprefs.getBoolean("messageViewDeleteActionVisible", true);
-        sMessageViewMoveActionVisible = sprefs.getBoolean("messageViewMoveActionVisible", false);
-        sMessageViewCopyActionVisible = sprefs.getBoolean("messageViewCopyActionVisible", false);
-        sMessageViewSpamActionVisible = sprefs.getBoolean("messageViewSpamActionVisible", false);
+        sMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false);
+        sMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true);
+        sMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false);
+        sMessageViewCopyActionVisible = storage.getBoolean("messageViewCopyActionVisible", false);
+        sMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false);
 
 
-        K9.setK9Language(sprefs.getString("language", ""));
+        K9.setK9Language(storage.getString("language", ""));
 
-        int themeValue = sprefs.getInt("theme", Theme.LIGHT.ordinal());
+        int themeValue = storage.getInt("theme", Theme.LIGHT.ordinal());
         // We used to save the resource ID of the theme. So convert that to the new format if
         // necessary.
         if (themeValue == Theme.DARK.ordinal() || themeValue == android.R.style.Theme) {
@@ -765,11 +758,11 @@ public class K9 extends Application {
             K9.setK9Theme(Theme.LIGHT);
         }
 
-        themeValue = sprefs.getInt("messageViewTheme", Theme.USE_GLOBAL.ordinal());
+        themeValue = storage.getInt("messageViewTheme", Theme.USE_GLOBAL.ordinal());
         K9.setK9MessageViewThemeSetting(Theme.values()[themeValue]);
-        themeValue = sprefs.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
+        themeValue = storage.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
         K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
-        K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
+        K9.setUseFixedMessageViewTheme(storage.getBoolean("fixedMessageViewTheme", true));
     }
 
     /**

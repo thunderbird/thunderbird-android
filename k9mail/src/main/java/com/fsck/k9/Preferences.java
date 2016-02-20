@@ -10,12 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.preferences.Editor;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.Storage;
 
 public class Preferences {
@@ -42,7 +41,7 @@ public class Preferences {
         mContext = context;
         if (mStorage.isEmpty()) {
             Log.i(K9.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
-            Editor editor = mStorage.edit();
+            StorageEditor editor = mStorage.edit();
             editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
             editor.commit();
         }
@@ -51,7 +50,7 @@ public class Preferences {
     public synchronized void loadAccounts() {
         accounts = new HashMap<String, Account>();
         accountsInOrder = new LinkedList<Account>();
-        String accountUuids = getPreferences().getString("accountUuids", null);
+        String accountUuids = getStorage().getString("accountUuids", null);
         if ((accountUuids != null) && (accountUuids.length() != 0)) {
             String[] uuids = accountUuids.split(",");
             for (String uuid : uuids) {
@@ -145,7 +144,7 @@ public class Preferences {
      * there are no accounts on the system the method returns null.
      */
     public Account getDefaultAccount() {
-        String defaultAccountUuid = getPreferences().getString("defaultAccountUuid", null);
+        String defaultAccountUuid = getStorage().getString("defaultAccountUuid", null);
         Account defaultAccount = getAccount(defaultAccountUuid);
 
         if (defaultAccount == null) {
@@ -160,15 +159,15 @@ public class Preferences {
     }
 
     public void setDefaultAccount(Account account) {
-        getPreferences().edit().putString("defaultAccountUuid", account.getUuid()).commit();
+        getStorage().edit().putString("defaultAccountUuid", account.getUuid()).commit();
     }
 
-    public SharedPreferences getPreferences() {
+    public Storage getStorage() {
         return mStorage;
     }
 
-    public static <T extends Enum<T>> T getEnumStringPref(SharedPreferences prefs, String key, T defaultEnum) {
-        String stringPref = prefs.getString(key, null);
+    public static <T extends Enum<T>> T getEnumStringPref(Storage storage, String key, T defaultEnum) {
+        String stringPref = storage.getString(key, null);
 
         if (stringPref == null) {
             return defaultEnum;

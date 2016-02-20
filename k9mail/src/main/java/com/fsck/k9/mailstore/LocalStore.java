@@ -4,7 +4,6 @@ package com.fsck.k9.mailstore;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -26,6 +25,7 @@ import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.message.preview.MessagePreviewCreator;
+import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
@@ -236,8 +236,8 @@ public class LocalStore extends Store implements Serializable {
         return mAccount;
     }
 
-    protected SharedPreferences getPreferences() {
-        return Preferences.getPreferences(context).getPreferences();
+    protected Storage getStorage() {
+        return Preferences.getPreferences(context).getStorage();
     }
 
     public long getSize() throws MessagingException {

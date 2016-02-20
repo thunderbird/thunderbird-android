@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import android.content.ContentValues;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -32,6 +31,8 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LocalFolder.MessagePartType;
+import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -1033,13 +1034,13 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     private static void db41UpdateFolderMetadata(SQLiteDatabase db, LocalStore localStore) {
         Cursor cursor = null;
         try {
-            SharedPreferences prefs = localStore.getPreferences();
+            Storage storage = localStore.getStorage();
             cursor = db.rawQuery("SELECT id, name FROM folders", null);
             while (cursor.moveToNext()) {
                 try {
                     int id = cursor.getInt(0);
                     String name = cursor.getString(1);
-                    update41Metadata(db, localStore, prefs, id, name);
+                    update41Metadata(db, localStore, storage, id, name);
                 } catch (Exception e) {
                     Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder class", e);
                 }
@@ -1051,7 +1052,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
     }
 
-    private static void update41Metadata(SQLiteDatabase db, LocalStore localStore, SharedPreferences prefs,
+    private static void update41Metadata(SQLiteDatabase db, LocalStore localStore, Storage storage,
             int id, String name) {
 
         Folder.FolderClass displayClass = Folder.FolderClass.NO_CLASS;
@@ -1068,11 +1069,11 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         }
 
         try {
-            displayClass = Folder.FolderClass.valueOf(prefs.getString(localStore.uUid + "." + name + ".displayMode", displayClass.name()));
-            syncClass = Folder.FolderClass.valueOf(prefs.getString(localStore.uUid + "." + name + ".syncMode", syncClass.name()));
-            pushClass = Folder.FolderClass.valueOf(prefs.getString(localStore.uUid + "." + name + ".pushMode", pushClass.name()));
-            inTopGroup = prefs.getBoolean(localStore.uUid + "." + name + ".inTopGroup", inTopGroup);
-            integrate = prefs.getBoolean(localStore.uUid + "." + name + ".integrate", integrate);
+            displayClass = Folder.FolderClass.valueOf(storage.getString(localStore.uUid + "." + name + ".displayMode", displayClass.name()));
+            syncClass = Folder.FolderClass.valueOf(storage.getString(localStore.uUid + "." + name + ".syncMode", syncClass.name()));
+            pushClass = Folder.FolderClass.valueOf(storage.getString(localStore.uUid + "." + name + ".pushMode", pushClass.name()));
+            inTopGroup = storage.getBoolean(localStore.uUid + "." + name + ".inTopGroup", inTopGroup);
+            integrate = storage.getBoolean(localStore.uUid + "." + name + ".integrate", integrate);
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, " Throwing away an error while trying to upgrade folder metadata", e);
         }
@@ -1109,7 +1110,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     private static void db42From41MoveFolderPreferences(LocalStore localStore) {
         try {
             long startTime = System.currentTimeMillis();
-            SharedPreferences.Editor editor = localStore.getPreferences().edit();
+            StorageEditor editor = localStore.getStorage().edit();
 
             List<? extends Folder > folders = localStore.getPersonalNamespaces(true);
             for (Folder folder : folders) {
