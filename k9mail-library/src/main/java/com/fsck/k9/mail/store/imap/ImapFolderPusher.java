@@ -214,7 +214,8 @@ class ImapFolderPusher extends ImapFolder {
                             delayTime = MAX_DELAY_TIME;
                         }
 
-                        if (++idleFailureCount > IDLE_FAILURE_COUNT_LIMIT) {
+                        idleFailureCount++;
+                        if (idleFailureCount > IDLE_FAILURE_COUNT_LIMIT) {
                             Log.e(LOG_TAG, "Disabling pusher for " + getLogId() + " after " + idleFailureCount +
                                     " consecutive errors");
                             pushReceiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount +
