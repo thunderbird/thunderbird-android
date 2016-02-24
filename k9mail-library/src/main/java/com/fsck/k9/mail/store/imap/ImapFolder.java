@@ -40,7 +40,12 @@ import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
 class ImapFolder extends Folder<ImapMessage> {
-    private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+    private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+        }
+    };
     private static final int MORE_MESSAGES_WINDOW_SIZE = 500;
     private static final int FETCH_WINDOW_SIZE = 100;
 
@@ -533,9 +538,7 @@ class ImapFolder extends Folder<ImapMessage> {
             return "";
         }
 
-        synchronized (RFC3501_DATE) {
-            return " SINCE " + RFC3501_DATE.format(earliestDate);
-        }
+        return " SINCE " + RFC3501_DATE.get().format(earliestDate);
     }
 
     @Override
