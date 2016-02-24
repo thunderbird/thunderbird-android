@@ -1,9 +1,9 @@
-package com.fsck.k9.mailstore;
+package com.fsck.k9.mailstore.migrations;
 
 
 import android.content.ContentValues;
 
-import com.fsck.k9.mailstore.StoreSchemaDefinition.MimeStructureState;
+import com.fsck.k9.mailstore.migrations.MigrationTo51.MimeStructureState;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -146,5 +146,4 @@ public class MigrationMimeStructureStateTest {
         Assert.assertEquals(2, cv.get("seq"));
         Assert.assertEquals(3, cv.size());
     }
-
 }
