@@ -132,7 +132,7 @@ class ImapResponseParser {
 
         if (isStatusResponse(firstToken)) {
             parseResponseText(response);
-        } else if (equalsIgnoreCase(firstToken, Responses.LIST)) {
+        } else if (equalsIgnoreCase(firstToken, Responses.LIST) || equalsIgnoreCase(firstToken, Responses.LSUB)) {
             parseListResponse(response);
         } else {
             Object token;
@@ -189,6 +189,7 @@ class ImapResponseParser {
         expect(' ');
         parseList(response, '(', ')');
         expect(' ');
+        //TODO: Add support for NIL
         String delimiter = parseQuoted();
         response.add(delimiter);
         expect(' ');

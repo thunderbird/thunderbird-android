@@ -50,6 +50,9 @@ import java.util.zip.GZIPInputStream;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_WEBDAV;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
+
 
 /**
  * <pre>
@@ -1451,35 +1454,6 @@ public class WebDavStore extends RemoteStore {
         @Override
         public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate) {
             return indexOfOldestMessage > 1;
-        }
-
-        @Override
-        public List<WebDavMessage> getMessages(MessageRetrievalListener<WebDavMessage> listener) throws MessagingException {
-            return getMessages(null, listener);
-        }
-
-        @Override
-        public List<WebDavMessage> getMessages(String[] uids, MessageRetrievalListener<WebDavMessage> listener) throws MessagingException {
-            List<WebDavMessage> messageList = new ArrayList<WebDavMessage>();
-
-            if (uids == null ||
-                    uids.length == 0) {
-                return messageList;
-            }
-
-            for (int i = 0, count = uids.length; i < count; i++) {
-                if (listener != null) {
-                    listener.messageStarted(uids[i], i, count);
-                }
-
-                WebDavMessage message = new WebDavMessage(uids[i], this);
-                messageList.add(message);
-
-                if (listener != null) {
-                    listener.messageFinished(message, i, count);
-                }
-            }
-            return messageList;
         }
 
         private Map<String, String> getMessageUrls(String[] uids) throws MessagingException {

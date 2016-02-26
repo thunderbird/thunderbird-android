@@ -1,14 +1,13 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
-import com.fsck.k9.mail.filter.PeekableInputStream;
 import org.junit.Test;
 
+import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -95,14 +94,6 @@ public class NamespaceResponseTest {
         assertEquals(".", result.getHierarchyDelimiter());
     }
 
-
-    private ImapResponse createImapResponse(String response) throws IOException {
-        String input = response + "\r\n";
-        PeekableInputStream inputStream = new PeekableInputStream(new ByteArrayInputStream(input.getBytes()));
-        ImapResponseParser parser = new ImapResponseParser(inputStream);
-
-        return parser.readResponse();
-    }
 
     private NamespaceResponse parse(String response) throws IOException {
         ImapResponse imapResponse = createImapResponse(response);

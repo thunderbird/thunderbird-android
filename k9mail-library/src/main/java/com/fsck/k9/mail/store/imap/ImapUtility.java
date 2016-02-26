@@ -130,4 +130,28 @@ class ImapUtility {
     private static boolean is32bitValue(long value) {
         return ((value & ~0xFFFFFFFFL) == 0L);
     }
+
+    /**
+     * Encode a string to be able to use it in an IMAP command.
+     *
+     * "A quoted string is a sequence of zero or more 7-bit characters,
+     *  excluding CR and LF, with double quote (<">) characters at each
+     *  end." - Section 4.3, RFC 3501
+     *
+     * Double quotes and backslash are escaped by prepending a backslash.
+     *
+     * @param str
+     *         The input string (only 7-bit characters allowed).
+     *
+     * @return The string encoded as quoted (IMAP) string.
+     */
+    public static String encodeString(String str) {
+        return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    }
+
+    public static ImapResponse getLastResponse(List<ImapResponse> responses) {
+        int lastIndex = responses.size() - 1;
+
+        return responses.get(lastIndex);
+    }
 }
