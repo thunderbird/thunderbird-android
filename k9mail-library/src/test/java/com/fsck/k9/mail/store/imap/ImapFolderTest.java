@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
@@ -525,6 +526,7 @@ public class ImapFolderTest {
 
     @Test
     public void getMessages_withDateConstraint() throws Exception {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = asList(
