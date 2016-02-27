@@ -235,6 +235,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
     private boolean mFinishAfterDraftSaved;
+    private boolean firstTimeEmptyObject = true;
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
@@ -1024,6 +1025,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void checkToSendMessage() {
+        if (mSubjectView.getText().length() == 0 && firstTimeEmptyObject) {
+            Toast.makeText(this, R.string.empty_object, Toast.LENGTH_LONG).show();
+            firstTimeEmptyObject = false;
+            return;
+        }
+
         if (recipientPresenter.checkRecipientsOkForSending()) {
             return;
         }
