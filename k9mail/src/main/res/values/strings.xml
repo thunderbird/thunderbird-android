@@ -117,7 +117,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
     <string name="send_again_action">Send Again</string>
-    <string name="empty_object">Object is empty, click again to send anyway</string>
+    <string name="empty_subject">Subject is empty, click again to send anyway</string>
     <string name="select_action">Select</string>
     <string name="deselect_action">Deselect</string>
     <string name="reply_action">Reply</string>
