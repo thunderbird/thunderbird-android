@@ -96,17 +96,17 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
         switch (cryptoStatus) {
             case AVAILABLE_TRUSTED: {
-                cryptoStatusRes = R.drawable.status_lock_closed;
+                cryptoStatusRes = R.drawable.status_lock_dots_3;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_green);
                 break;
             }
             case AVAILABLE_UNTRUSTED: {
-                cryptoStatusRes = R.drawable.status_lock_opportunistic;
+                cryptoStatusRes = R.drawable.status_lock_dots_2;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
                 break;
             }
             case UNAVAILABLE: {
-                cryptoStatusRes = R.drawable.status_lock_open;
+                cryptoStatusRes = R.drawable.status_lock_disabled_dots_1;
                 cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
                 break;
             }
