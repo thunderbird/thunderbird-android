@@ -22,6 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:id="@+id/from_label"
             android:minWidth="50dp"
             android:text="@string/recipient_from"
@@ -211,6 +213,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:id="@+id/to_label"
             android:labelFor="@+id/to"
             android:minWidth="50dp"
@@ -285,7 +289,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:minWidth="50dp"
+            android:id="@+id/cc_label"
             android:labelFor="@+id/cc"
             android:text="@string/recipient_cc"
             style="@style/ComposeTextLabel" />
@@ -327,7 +334,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:minWidth="50dp"
+            android:id="@+id/bcc_label"
             android:labelFor="@+id/bcc"
             android:text="@string/recipient_bcc"
             style="@style/ComposeTextLabel" />
