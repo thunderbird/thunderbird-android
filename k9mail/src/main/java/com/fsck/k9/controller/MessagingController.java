@@ -2871,6 +2871,7 @@ public class MessagingController implements Runnable {
         localFolder.fetch(Collections.singletonList(message), fp, null);
         localFolder.close();
 
+        notificationController.removeNewMailNotification(account, message.makeMessageReference());
         markMessageAsReadOnView(account, message);
 
         return message;
