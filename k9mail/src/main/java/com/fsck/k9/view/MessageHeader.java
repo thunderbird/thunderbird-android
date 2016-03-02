@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
@@ -30,6 +31,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
+import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
@@ -39,7 +41,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 
-public class MessageHeader extends LinearLayout implements OnClickListener {
+public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private Context mContext;
     private TextView mFromView;
     private TextView mDateView;
@@ -122,6 +124,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
 
+        mFromView.setOnLongClickListener(this);
+        mToView.setOnLongClickListener(this);
+        mCcView.setOnLongClickListener(this);
+
         mMessageHelper = MessageHelper.getInstance(mContext);
 
         mSubjectView.setVisibility(VISIBLE);
@@ -130,6 +136,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
 
     @Override
     public void onClick(View view) {
+        Toast toast = Toast.makeText(view.getContext(), "bonjour", Toast.LENGTH_SHORT);
+        toast.show();
         switch (view.getId()) {
             case R.id.from: {
                 onAddSenderToContacts();
@@ -143,6 +151,31 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         }
     }
 
+    @Override
+    public boolean onLongClick(View view) {
+        switch (view.getId()) {
+            case R.id.from:
+                onAddAddressesToClipboard(mMessage.getFrom());
+                break;
+            case R.id.to:
+                try {
+                    onAddAddressesToClipboard(mMessage.getRecipients(Message.RecipientType.TO));
+                } catch (MessagingException e) {
+                    Log.e(K9.LOG_TAG, "Couldn't get recipients address", e);
+                }
+                break;
+            case R.id.cc:
+                try {
+                    onAddAddressesToClipboard(mMessage.getRecipients(Message.RecipientType.CC));
+                } catch (MessagingException e) {
+                    Log.e(K9.LOG_TAG, "Couldn't get recipients address", e);
+                }
+                break;
+        }
+
+        return true;
+    }
+
     private void onAddSenderToContacts() {
         if (mMessage != null) {
             try {
@@ -154,8 +187,29 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         }
     }
 
+    private void onAddAddressesToClipboard(Address[] addresses){
+        if(mMessage != null){
+            try{
+                String addressesToCopy = "";
+                for(Address addressTemp : addresses){
+                    addressesToCopy += addressTemp.getAddress() + " ";
+                }
+                addressesToCopy = addressesToCopy.substring(0,addressesToCopy.length()-1);
+                ClipboardManager.getInstance(mContext).setText("addresses", addressesToCopy);
+                Toast.makeText(mContext, R.string.copy_address_to_clipboard, Toast.LENGTH_LONG).show();
+            }
+            catch (Exception e){
+                Log.e(K9.LOG_TAG, "Couldn't add addresses to clipboard");
+            }
+        }
+    }
+
     public void setOnFlagListener(OnClickListener listener) {
         mFlagged.setOnClickListener(listener);
+    }
+
+    public void setOnFlagListener(OnLongClickListener listener){
+        mFlagged.setOnLongClickListener(listener);
     }
 
 

@@ -126,6 +126,10 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         mHeaderContainer.setOnFlagListener(listener);
     }
 
+    public void setOnToggleFlagLongClickListener(OnLongClickListener listener){
+        mHeaderContainer.setOnFlagListener(listener);
+    }
+
     public void showAllHeaders() {
         mHeaderContainer.onShowAdditionalHeaders();
     }

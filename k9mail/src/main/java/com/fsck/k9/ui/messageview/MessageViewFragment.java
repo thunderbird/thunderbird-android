@@ -25,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -155,6 +156,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             @Override
             public void onClick(View v) {
                 onToggleFlagged();
+            }
+        });
+
+        mMessageView.setOnToggleFlagLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onToggleFlagged();
+                return true;
             }
         });
 
