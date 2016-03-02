@@ -811,9 +811,8 @@ public class SettingsImporter {
                     versionString);
         }
 
-        if (version < 1 || version > Settings.VERSION) {
-            throw new SettingsImportExportException("Unsupported content version: " +
-                    versionString);
+        if (version < 1) {
+            throw new SettingsImportExportException("Unsupported content version: " + versionString);
         }
 
         return version;
