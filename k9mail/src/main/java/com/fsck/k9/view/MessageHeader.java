@@ -136,8 +136,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     @Override
     public void onClick(View view) {
-        Toast toast = Toast.makeText(view.getContext(), "bonjour", Toast.LENGTH_SHORT);
-        toast.show();
         switch (view.getId()) {
             case R.id.from: {
                 onAddSenderToContacts();
