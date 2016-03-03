@@ -15,8 +15,9 @@
         />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@android:id/text1"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="8dp"
@@ -27,38 +28,38 @@
         />
 
     <ImageView
-        android:layout_width="14dp"
-        android:layout_height="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginRight="6dp"
         android:layout_marginEnd="6dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/contact_crypto_status_red"
-        android:src="@drawable/status_lock_open"
+        android:src="@drawable/status_dots_1"
         android:tint="@color/openpgp_red"
         android:visibility="gone"
         />
 
     <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginRight="6dp"
         android:layout_marginEnd="6dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/contact_crypto_status_orange"
-        android:src="@drawable/status_lock_opportunistic"
+        android:src="@drawable/status_dots_2"
         android:tint="@color/openpgp_orange"
         android:visibility="gone"
         tools:visibility="visible"
         />
 
     <ImageView
-        android:layout_width="14dp"
-        android:layout_height="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginRight="6dp"
         android:layout_marginEnd="6dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/contact_crypto_status_green"
-        android:src="@drawable/status_lock_closed"
+        android:src="@drawable/status_dots_3"
         android:tint="@color/openpgp_green"
         android:visibility="gone"
         />

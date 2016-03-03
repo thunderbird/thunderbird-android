@@ -164,15 +164,15 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     private void configureCryptoStatusView(RecipientTokenHolder holder, Recipient recipient) {
         switch (recipient.getCryptoStatus()) {
             case AVAILABLE_TRUSTED: {
-                setCryptoStatusView(holder, R.drawable.status_lock_closed, R.color.openpgp_green);
+                setCryptoStatusView(holder, R.drawable.status_lock_dots_3, R.color.openpgp_green);
                 break;
             }
             case AVAILABLE_UNTRUSTED: {
-                setCryptoStatusView(holder, R.drawable.status_lock_error, R.color.openpgp_orange);
+                setCryptoStatusView(holder, R.drawable.status_lock_dots_2, R.color.openpgp_orange);
                 break;
             }
             case UNAVAILABLE: {
-                setCryptoStatusView(holder, R.drawable.status_lock_open, R.color.openpgp_red);
+                setCryptoStatusView(holder, R.drawable.status_lock_disabled_dots_1, R.color.openpgp_red);
                 break;
             }
             case UNDEFINED: {

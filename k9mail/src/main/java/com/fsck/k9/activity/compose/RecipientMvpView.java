@@ -72,6 +72,13 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
         View recipientExpander = activity.findViewById(R.id.recipient_expander);
         recipientExpander.setOnClickListener(this);
+
+        View toLabel = activity.findViewById(R.id.to_label);
+        View ccLabel = activity.findViewById(R.id.cc_label);
+        View bccLabel = activity.findViewById(R.id.bcc_label);
+        toLabel.setOnClickListener(this);
+        ccLabel.setOnClickListener(this);
+        bccLabel.setOnClickListener(this);
     }
 
     public void setPresenter(final RecipientPresenter presenter) {
@@ -150,6 +157,14 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
     public void requestFocusOnToField() {
         toView.requestFocus();
+    }
+
+    public void requestFocusOnCcField() {
+        ccView.requestFocus();
+    }
+
+    public void requestFocusOnBccField() {
+        bccView.requestFocus();
     }
 
     public void setFontSizes(FontSizes fontSizes, int fontSize) {
@@ -346,6 +361,18 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.to_label: {
+                presenter.onClickToLabel();
+                break;
+            }
+            case R.id.cc_label: {
+                presenter.onClickCcLabel();
+                break;
+            }
+            case R.id.bcc_label: {
+                presenter.onClickBccLabel();
+                break;
+            }
             case R.id.recipient_expander: {
                 presenter.onClickRecipientExpander();
                 break;

@@ -18,30 +18,23 @@ public class ComposeCryptoStatus {
 
 
     private CryptoMode cryptoMode;
-    private List<String> keyReferences;
     private boolean allKeysAvailable;
     private boolean allKeysVerified;
     private boolean hasRecipients;
     private Long signingKeyId;
     private Long selfEncryptKeyId;
+    private String[] recipientAddresses;
 
 
-    @SuppressWarnings("UnusedParameters")
-    public long[] getEncryptKeyIds(boolean isDraft) {
+    public long[] getEncryptKeyIds() {
         if (selfEncryptKeyId == null) {
             return null;
         }
         return new long[] { selfEncryptKeyId };
     }
 
-    public String[] getEncryptKeyReferences(boolean isDraft) {
-        if (isDraft) {
-            return null;
-        }
-        if (keyReferences.isEmpty()) {
-            return null;
-        }
-        return keyReferences.toArray(new String[keyReferences.size()]);
+    public String[] getRecipientAddresses() {
+        return recipientAddresses;
     }
 
     public Long getSigningKeyId() {
@@ -141,14 +134,14 @@ public class ComposeCryptoStatus {
                 throw new AssertionError("recipients must be set. this is a bug!");
             }
 
-            ArrayList<String> keyReferences = new ArrayList<>();
+            ArrayList<String> recipientAddresses = new ArrayList<>();
             boolean allKeysAvailable = true;
             boolean allKeysVerified = true;
             boolean hasRecipients = !recipients.isEmpty();
             for (Recipient recipient : recipients) {
                 RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
+                recipientAddresses.add(recipient.address.getAddress());
                 if (cryptoStatus.isAvailable()) {
-                    keyReferences.add(recipient.getKeyReference());
                     if (cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED) {
                         allKeysVerified = false;
                     }
@@ -159,7 +152,7 @@ public class ComposeCryptoStatus {
 
             ComposeCryptoStatus result = new ComposeCryptoStatus();
             result.cryptoMode = cryptoMode;
-            result.keyReferences = Collections.unmodifiableList(keyReferences);
+            result.recipientAddresses = recipientAddresses.toArray(new String[0]);
             result.allKeysAvailable = allKeysAvailable;
             result.allKeysVerified = allKeysVerified;
             result.hasRecipients = hasRecipients;

@@ -107,14 +107,29 @@
             tools:text="address@example.com"
             />
 
-        <ImageView
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:padding="13dp"
-            android:id="@+id/alternate_crypto_status"
-            tools:src="@drawable/status_lock_open"
-            />
+            android:padding="13dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:src="@drawable/status_dots"
+                android:tint="@color/openpgp_grey"
+                />
+
+            <ImageView
+                android:id="@+id/alternate_crypto_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                tools:src="@drawable/status_lock_dots_2"
+                tools:tint="@color/openpgp_grey"
+                />
+
+        </FrameLayout>
 
     </LinearLayout>
 

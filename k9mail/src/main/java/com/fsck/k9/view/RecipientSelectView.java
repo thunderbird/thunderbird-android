@@ -477,9 +477,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         @NonNull
         private RecipientCryptoStatus cryptoStatus;
-        @Nullable // null iff cryptoStatus == UNDEFINED || cryptoStatus == UNAVAILABLE
-        private String keyReference;
-
 
         public Recipient(@NonNull Address address) {
             this.address = address;
@@ -541,9 +538,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             return cryptoStatus;
         }
 
-        public void setCryptoStatus(@NonNull RecipientCryptoStatus cryptoStatus, @Nullable String keyReference) {
+        public void setCryptoStatus(@NonNull RecipientCryptoStatus cryptoStatus) {
             this.cryptoStatus = cryptoStatus;
-            this.keyReference = keyReference;
         }
 
         @Nullable
@@ -581,11 +577,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 String uriString = ois.readUTF();
                 photoThumbnailUri = Uri.parse(uriString);
             }
-        }
-
-        @Nullable
-        public String getKeyReference() {
-            return keyReference;
         }
     }
 }

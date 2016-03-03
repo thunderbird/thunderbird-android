@@ -131,25 +131,23 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        boolean isDraft = isDraft();
-        long[] encryptKeyIds = cryptoStatus.getEncryptKeyIds(isDraft);
-        String[] encryptKeyReferences = cryptoStatus.getEncryptKeyReferences(isDraft);
-
-        if (encryptKeyIds == null && encryptKeyReferences == null) {
-            // TODO safeguard here once this is better handled by the caller?
-            // throw new MessagingException("Encryption is enabled, but no encryption key specified!");
-            return;
-        }
-
         Intent encryptIntent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
         encryptIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 
+        long[] encryptKeyIds = cryptoStatus.getEncryptKeyIds();
         if (encryptKeyIds != null) {
             encryptIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, encryptKeyIds);
         }
 
-        if (encryptKeyReferences != null) {
-            encryptIntent.putExtra(OpenPgpApi.EXTRA_KEY_REFERENCES, encryptKeyReferences);
+        if(!isDraft()) {
+            String[] encryptRecipientAddresses = cryptoStatus.getRecipientAddresses();
+            boolean hasRecipientAddresses = encryptRecipientAddresses != null && encryptRecipientAddresses.length > 0;
+            if (!hasRecipientAddresses) {
+                // TODO safeguard here once this is better handled by the caller?
+                // throw new MessagingException("Encryption is enabled, but no encryption key specified!");
+                return;
+            }
+            encryptIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, encryptRecipientAddresses);
         }
 
         currentState = State.OPENPGP_ENCRYPT;

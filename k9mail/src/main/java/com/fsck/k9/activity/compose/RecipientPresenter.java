@@ -282,6 +282,18 @@ public class RecipientPresenter implements PermissionPingCallback {
         return result.toArray(new Address[result.size()]);
     }
 
+    public void onClickToLabel() {
+        recipientMvpView.requestFocusOnToField();
+    }
+
+    public void onClickCcLabel() {
+        recipientMvpView.requestFocusOnCcField();
+    }
+
+    public void onClickBccLabel() {
+        recipientMvpView.requestFocusOnBccField();
+    }
+
     public void onClickRecipientExpander() {
         recipientMvpView.setCcVisibility(true);
         recipientMvpView.setBccVisibility(true);
