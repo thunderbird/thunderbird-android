@@ -158,7 +158,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             "com.fsck.k9.activity.MessageCompose.quotedTextFormat";
     private static final String STATE_KEY_NUM_ATTACHMENTS_LOADING = "numAttachmentsLoading";
     private static final String STATE_KEY_WAITING_FOR_ATTACHMENTS = "waitingForAttachments";
-    private static final String STATE_FIRST_TIME_EMPTY_SUBJECT = "firstTimeEmpySubject";
+    private static final String STATE_FIRST_TIME_EMPTY_SUBJECT = "firstTimeEmptySubject";
     private static final String LOADER_ARG_ATTACHMENT = "attachment";
 
     private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
