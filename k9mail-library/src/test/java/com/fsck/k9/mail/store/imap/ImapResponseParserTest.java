@@ -17,6 +17,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -310,6 +311,18 @@ public class ImapResponseParserTest {
         ImapResponse responseTwo = parser.readResponse();
 
         assertEquals("TAG", responseTwo.getTag());
+    }
+
+    @Test
+    public void readResponse_withListAsFirstToken_shouldThrow() throws Exception {
+        ImapResponseParser parser = createParser("* [1 2] 3\r\n");
+
+        try {
+            parser.readResponse();
+            fail("Expected exception");
+        } catch (IOException e) {
+            assertEquals("Unexpected non-string token: [1, 2]", e.getMessage());
+        }
     }
 
     @Test

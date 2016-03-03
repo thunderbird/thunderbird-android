@@ -127,12 +127,16 @@ class ImapResponseParser {
     private void readTokens(ImapResponse response) throws IOException {
         response.clear();
 
-        String firstToken = (String) readToken(response);
-        response.add(firstToken);
+        Object firstToken = readToken(response);
 
-        if (isStatusResponse(firstToken)) {
+        checkTokenIsString(firstToken);
+        String symbol = (String) firstToken;
+
+        response.add(symbol);
+
+        if (isStatusResponse(symbol)) {
             parseResponseText(response);
-        } else if (equalsIgnoreCase(firstToken, Responses.LIST) || equalsIgnoreCase(firstToken, Responses.LSUB)) {
+        } else if (equalsIgnoreCase(symbol, Responses.LIST) || equalsIgnoreCase(symbol, Responses.LSUB)) {
             parseListResponse(response);
         } else {
             Object token;
@@ -451,5 +455,11 @@ class ImapResponseParser {
         }
 
         return symbol.equalsIgnoreCase((String) token);
+    }
+
+    private void checkTokenIsString(Object token) throws IOException {
+        if (!(token instanceof String)) {
+            throw new IOException("Unexpected non-string token: " + token);
+        }
     }
 }
