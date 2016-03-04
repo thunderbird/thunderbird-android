@@ -158,7 +158,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             "com.fsck.k9.activity.MessageCompose.quotedTextFormat";
     private static final String STATE_KEY_NUM_ATTACHMENTS_LOADING = "numAttachmentsLoading";
     private static final String STATE_KEY_WAITING_FOR_ATTACHMENTS = "waitingForAttachments";
-    private static final String STATE_FIRST_TIME_EMPTY_SUBJECT = "firstTimeEmptySubject";
+    private static final String STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT = "alreadyNotifiedUserOfEmptySubject";
+
     private static final String LOADER_ARG_ATTACHMENT = "attachment";
 
     private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
@@ -235,7 +236,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
     private boolean mFinishAfterDraftSaved;
-    private boolean mFirstTimeEmptySubject = true;
+    private boolean alreadyNotifiedUserOfEmptySubject = false;
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
@@ -885,7 +886,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         outState.putBoolean(STATE_KEY_DRAFT_NEEDS_SAVING, draftNeedsSaving);
         outState.putBoolean(STATE_KEY_FORCE_PLAIN_TEXT, mForcePlainText);
         outState.putSerializable(STATE_KEY_QUOTED_TEXT_FORMAT, mQuotedTextFormat);
-        outState.putBoolean(STATE_FIRST_TIME_EMPTY_SUBJECT, mFirstTimeEmptySubject);
+        outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
+
         recipientPresenter.onSaveInstanceState(outState);
     }
 
@@ -946,7 +948,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mReferences = savedInstanceState.getString(STATE_REFERENCES);
         draftNeedsSaving = savedInstanceState.getBoolean(STATE_KEY_DRAFT_NEEDS_SAVING);
         mForcePlainText = savedInstanceState.getBoolean(STATE_KEY_FORCE_PLAIN_TEXT);
-        mFirstTimeEmptySubject = savedInstanceState.getBoolean(STATE_FIRST_TIME_EMPTY_SUBJECT);
+        alreadyNotifiedUserOfEmptySubject = savedInstanceState.getBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT);
         mQuotedTextFormat = (SimpleMessageFormat) savedInstanceState.getSerializable(
                 STATE_KEY_QUOTED_TEXT_FORMAT);
 
@@ -1026,9 +1028,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void checkToSendMessage() {
-        if (mSubjectView.getText().length() == 0 && mFirstTimeEmptySubject) {
+        if (mSubjectView.getText().length() == 0 && !alreadyNotifiedUserOfEmptySubject) {
             Toast.makeText(this, R.string.empty_subject, Toast.LENGTH_LONG).show();
-            mFirstTimeEmptySubject = false;
+            alreadyNotifiedUserOfEmptySubject = true;
             return;
         }
 
