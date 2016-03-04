@@ -656,7 +656,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
-    public Context getContext() {
+    public Context getApplicationContext() {
         return mContext;
     }
 

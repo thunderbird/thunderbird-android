@@ -829,8 +829,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             mDialog = builder.create();
 
             // Use the dialog's layout inflater so its theme is used (and not the activity's theme).
-            View layout = mDialog.getLayoutInflater().inflate(
-                              R.layout.accounts_password_prompt, null);
+            View layout = mDialog.getLayoutInflater().inflate(R.layout.accounts_password_prompt, scrollView);
 
             // Set the intro text that tells the user what to do
             TextView intro = (TextView) layout.findViewById(R.id.password_prompt_intro);
@@ -889,9 +888,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             } else {
                 layout.findViewById(R.id.outgoing_server_prompt).setVisibility(View.GONE);
             }
-
-            // Add the layout to the ScrollView
-            scrollView.addView(layout);
 
             // Show the dialog
             mDialog.show();

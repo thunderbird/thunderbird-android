@@ -89,6 +89,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
 
     @Override
     protected void onFinishInflate() {
+        super.onFinishInflate();
+
         mAnsweredIcon = findViewById(R.id.answered);
         mForwardedIcon = findViewById(R.id.forwarded);
         mFromView = (TextView) findViewById(R.id.from);

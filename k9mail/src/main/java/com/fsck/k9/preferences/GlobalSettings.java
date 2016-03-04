@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import android.content.SharedPreferences;
 import android.os.Environment;
 
 import com.fsck.k9.Account;
@@ -297,7 +296,7 @@ public class GlobalSettings {
         return Settings.convert(settings, SETTINGS);
     }
 
-    public static Map<String, String> getGlobalSettings(SharedPreferences storage) {
+    public static Map<String, String> getGlobalSettings(Storage storage) {
         Map<String, String> result = new HashMap<String, String>();
         for (String key : SETTINGS.keySet()) {
             String value = storage.getString(key, null);

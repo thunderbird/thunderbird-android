@@ -43,6 +43,10 @@ class ImapResponse extends ImapList {
         return tag;
     }
 
+    public boolean isTagged() {
+        return tag != null;
+    }
+
     public ImapResponseCallback getCallback() {
         return callback;
     }

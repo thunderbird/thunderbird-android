@@ -92,6 +92,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.IdentityHeaderParser;
@@ -101,14 +102,18 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
+import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
+import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
+
 
 @SuppressWarnings("deprecation")
 public class MessageCompose extends K9Activity implements OnClickListener,
@@ -634,6 +639,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mSignatureView = lowerSignature;
             upperSignature.setVisibility(View.GONE);
         }
+        updateSignature();
         mSignatureView.addTextChangedListener(signTextWatcher);
 
         if (!mIdentity.getSignatureUse()) {
@@ -646,8 +652,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateFrom();
 
         if (!mSourceMessageProcessed) {
-            updateSignature();
-
             if (mAction == Action.REPLY || mAction == Action.REPLY_ALL ||
                     mAction == Action.FORWARD || mAction == Action.EDIT_DRAFT) {
                 /*
@@ -694,7 +698,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 //            attachKeyCheckBox = (CheckBox) findViewById(R.id.cb_attach_key);
 //            attachKeyCheckBox.setEnabled(mAccount.getCryptoKey() != 0);
 
-            mOpenPgpServiceConnection = new OpenPgpServiceConnection(this, mOpenPgpProvider);
+            mOpenPgpServiceConnection = new OpenPgpServiceConnection(this, mOpenPgpProvider, new OnBound() {
+                @Override
+                public void onBound(IOpenPgpService2 service) {
+                    recipientPresenter.onCryptoProviderBound();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    recipientPresenter.onCryptoProviderError(e);
+                }
+            });
             mOpenPgpServiceConnection.bindToService();
 
             updateMessageFormat();
@@ -938,7 +952,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
 
         updateFrom();
-        updateSignature();
 
         updateMessageFormat();
     }
@@ -1320,16 +1333,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-        if (data == null) {
+        if ((requestCode & REQUEST_MASK_RECIPIENT_PRESENTER) == REQUEST_MASK_RECIPIENT_PRESENTER) {
+            requestCode ^= REQUEST_MASK_RECIPIENT_PRESENTER;
+            recipientPresenter.onActivityResult(resultCode, requestCode, data);
             return;
         }
 
-        if ((requestCode & REQUEST_MASK_RECIPIENT_PRESENTER) == REQUEST_MASK_RECIPIENT_PRESENTER) {
-            requestCode ^= REQUEST_MASK_RECIPIENT_PRESENTER;
-            recipientPresenter.onActivityResult(requestCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        if (data == null) {
             return;
         }
 
@@ -1738,21 +1752,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
         String name = MimeUtility.getHeaderParameter(contentType, "name");
-        // noinspection RedundantIfStatement, to keep the fix-me below
         if (name != null) {
-            // FIXME
-//            Body body = part.getBody();
-//            if (body instanceof LocalAttachmentBody) {
-//                final Uri uri = ((LocalAttachmentBody) body).getContentUri();
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        addAttachment(uri);
-//                    }
-//                });
-//            } else {
-//                return false;
-//            }
+            if (part instanceof LocalBodyPart) {
+                LocalBodyPart localBodyPart = (LocalBodyPart) part;
+                String accountUuid = localBodyPart.getAccountUuid();
+                long attachmentId = localBodyPart.getId();
+                Uri uri = AttachmentProvider.getAttachmentUri(accountUuid, attachmentId);
+                addAttachment(uri);
+                return true;
+            }
             return false;
         }
         return true;
@@ -1874,7 +1882,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         populateUIWithQuotedMessage(true);
 
         if (!mSourceMessageProcessed) {
-            if (!loadAttachments(message, 0)) {
+            if (message.isSet(Flag.X_DOWNLOADED_PARTIAL) || !loadAttachments(message, 0)) {
                 mHandler.sendEmptyMessage(MSG_SKIPPED_ATTACHMENTS);
             }
         }
@@ -3004,9 +3012,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onMessageBuildException(MessagingException me) {
         Log.e(K9.LOG_TAG, "Error sending message", me);
-        Toast.makeText(MessageCompose.this,
-                getString(R.string.send_aborted, me.getLocalizedMessage()),
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(MessageCompose.this, getString(R.string.send_aborted), Toast.LENGTH_LONG).show();
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
     }
@@ -3021,4 +3027,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
+    public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
+        requestCode |= REQUEST_MASK_RECIPIENT_PRESENTER;
+        try {
+            startIntentSenderForResult(pendingIntent.getIntentSender(), requestCode, null, 0, 0, 0);
+        } catch (SendIntentException e) {
+            e.printStackTrace();
+        }
+    }
 }

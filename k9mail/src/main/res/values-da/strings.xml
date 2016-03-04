@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">K-9 Konti</string>
   <string name="remote_control_label">K-9 Mail fjernkontrol</string>
   <string name="remote_control_desc">Tillad dette program at kontrollere K-9 Mail aktiviteter og indstillinger.</string>
@@ -13,35 +12,6 @@
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Visse dele Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="app_license">Licenseret under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 er en open source mail klient for Android, som oprindeligt baserede sig på standard mail klienten i Android.
-</p><p>
-K-9\'s forbedrede funktioner inkluderer:
-</p>
-<ul>
-  <li>Push mail ved hjælp af IMAP IDLE</li>
-  <li>Bedre performance</li>
-  <li>Omflytning af mails</li>
-  <li>Mailsignaturer</li>
-  <li>Bcc til dig selv</li>
-  <li>Mappe subscriptions</li>
-  <li>Synkronisering af alle mapper</li>
-  <li>Indstil afsender-adresse</li>
-  <li>Tastatur genveje</li>
-  <li>Bedre IMAP understøttelse</li>
-  <li>Gem vedhæftninger til SD kort</li>
-  <li>Tøm papirkurv</li>
-  <li>Sortering af mails</li>
-  <li>…og mere</li>
-</ul>
-<p>
-Bemærk at K-9 ikke understøtter gratis hotmail konti, og at K-9 (som de fleste andre mailklienter) har visse problemer med at kommunikerer med Microsoft Exchange.
-</p><p>
-Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål til
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
@@ -125,7 +95,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="message_view_theme_action_dark">Skift til mørkt theme</string>
   <string name="message_view_theme_action_light">Skift til lyst theme</string>
   <string name="mark_as_unread_action">Marker som ulæst</string>
-  <string name="add_cc_bcc_action">Tilføj Cc/Bcc</string>
   <string name="read_receipt">Kvittering for modtagelse</string>
   <string name="read_receipt_enabled">Der vil blive anmodet om kvittering for modtagelse</string>
   <string name="read_receipt_disabled">Der vil ikke blive anmodet om kvittering for modtagelse</string>
@@ -156,7 +125,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="recreating_account">Genskaber konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny mail</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> yderligere på <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Svar</string>
   <string name="notification_action_mark_as_read">Marker som læst</string>
   <string name="notification_action_delete">Slet</string>
@@ -187,9 +155,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="debug_enable_sensitive_logging_summary">Kan eksponere passwords i logs.</string>
   <string name="message_list_load_more_messages_action">Hent flere mails</string>
   <string name="message_to_fmt">Til:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Til</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Bcc</string>
   <string name="message_compose_subject_hint">Emne</string>
   <string name="message_compose_content_hint">Meddelelsestekst</string>
   <string name="message_compose_signature_hint">Signatur</string>
@@ -204,9 +169,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="error_contact_address_not_found">Mail addresse ikke fundet.</string>
   <string name="message_compose_attachments_skipped_toast">Nogle vedhæftninger kunne ikke videresendes fordi de ikke er blevet hentet fra server.</string>
   <string name="message_compose_show_quoted_text_action">Citer meddelelse</string>
-  <string name="message_compose_description_add_to">Tilføj modtager (Til)</string>
-  <string name="message_compose_description_add_cc">ATilføj modtager (CC)</string>
-  <string name="message_compose_description_add_bcc">Tilføj modtager (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Fjern citeret tekst</string>
   <string name="message_compose_description_edit_quoted_text">Rediger citeret tekst</string>
   <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -214,18 +176,12 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Åben</string>
   <string name="message_view_attachment_download_action">Gem</string>
-  <string name="message_view_status_attachment_saved">Vedhæftning gemt på SD kort som <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Kan ikke gemme vedhæftning på SD kort.</string>
   <string name="message_view_show_pictures_action">Vis billeder</string>
-  <string name="message_view_show_message_action">Vis meddelelse</string>
-  <string name="message_view_show_attachments_action">Vis vedhæftning</string>
   <string name="message_view_show_more_attachments_action">Mere…</string>
-  <string name="message_view_fetching_attachment_toast">Henter vedhæftede filer.</string>
   <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hent hele meddelelsen</string>
-  <string name="message_view_downloading">Henter…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Ikke alle mail headers blev hentet eller gemt. Vælg \"Gem alle headers lokalt\" under kontoens indstillinger for indgående server, for at aktivere denne funktion fremover.</string>
   <string name="message_no_additional_headers_available">Alle mail headers er blevet hentet, og der kan ikke vises yderligere headers.</string>
   <string name="message_additional_headers_retrieval_failed">Hentning af yderligere headers fra database eller mail server mislykkedes.</string>
   <string name="from_same_sender">Flere fra denne afsender</string>
@@ -427,7 +383,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_settings_folders">Mapper</string>
   <string name="account_settings_quote_prefix_label">Citeret tekst prefix</string>
   <string name="account_settings_crypto">Kryptering</string>
-  <string name="account_settings_crypto_app">OpenPGP leverandør</string>
   <string name="account_settings_mail_check_frequency_label">Frekvens for hentning af mails</string>
   <string name="account_settings_storage_title">Lagring</string>
   <string name="account_settings_color_label">Kontofarve</string>
@@ -689,11 +644,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="font_size_larger">Størst</string>
   <string name="miscellaneous_preferences">Diverse</string>
   <string name="error_activity_not_found">Kunne ikke finde noget program som kan udføre denne handling.</string>
-  <string name="btn_crypto_sign">Signer</string>
-  <string name="btn_encrypt">Krypter</string>
-  <string name="unknown_crypto_signature_user_id">&lt;ukendt&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME meddelelser er ikke understøttet endnu.</string>
-  <string name="attachment_encryption_unsupported">Advarsel: vedhæftninger er IKKE signerede eller krypterede endnu.</string>
   <string name="send_aborted">Send afbrudt.</string>
   <string name="save_or_discard_draft_message_dlg_title">Gem kladde?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Gem eller fortryd denne meddelelse?</string>
@@ -719,7 +669,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="debug_logging_enabled">Fejllogning til Android logsystem aktiveret</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Kunne ikke opnå forbindelse.</string>
   <string name="import_export_action">Import &amp; eksport af indstillinger</string>
   <string name="settings_export_account">Eksporter kontoindstillinger</string>
   <string name="settings_export_all">Eksporter indstillinger og konti</string>
@@ -799,8 +748,6 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Server søge begrænsning</string>
   <string name="account_settings_remote_search_num_summary">Søgning vil stoppe når der er fundet <xliff:g id="num_results">%s</xliff:g> resultater</string>
-  <string name="account_settings_remote_search_full_text">Medtag meddelelsestekst i server søgning</string>
-  <string name="account_settings_remote_search_full_text_summary">Fuldtekstsøgning kan være langsom.</string>
   <string name="remote_search_sending_query">Sender forspørgsel til server</string>
   <string name="remote_search_downloading">Henter %d resultater</string>
   <string name="remote_search_downloading_limited">Henter %1$d ud af %2$d resultater</string>
@@ -841,4 +788,5 @@ Vær venlig at sende fejlrapporter, anmodning om nye funktioner, og spørgsmål 
   <string name="fetching_attachment_dialog_message">Henter vedhæftning…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

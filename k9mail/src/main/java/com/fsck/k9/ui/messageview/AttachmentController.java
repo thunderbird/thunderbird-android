@@ -47,7 +47,7 @@ public class AttachmentController {
 
     AttachmentController(MessagingController controller, DownloadManager downloadManager,
             MessageViewFragment messageViewFragment, AttachmentViewInfo attachment) {
-        this.context = messageViewFragment.getContext();
+        this.context = messageViewFragment.getApplicationContext();
         this.controller = controller;
         this.downloadManager = downloadManager;
         this.messageViewFragment = messageViewFragment;

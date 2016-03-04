@@ -6,17 +6,22 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MailTo;
@@ -27,15 +32,18 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
+import org.openintents.openpgp.util.OpenPgpApi;
+import org.openintents.openpgp.util.OpenPgpApi.PermissionPingCallback;
 
 
-public class RecipientPresenter {
+public class RecipientPresenter implements PermissionPingCallback {
     private static final String STATE_KEY_CC_SHOWN = "state:ccShown";
     private static final String STATE_KEY_BCC_SHOWN = "state:bccShown";
 
     private static final int CONTACT_PICKER_TO = 1;
     private static final int CONTACT_PICKER_CC = 2;
     private static final int CONTACT_PICKER_BCC = 3;
+    private static final int OPENPGP_USER_INTERACTION = 4;
 
 
     private final Context context;
@@ -44,8 +52,9 @@ public class RecipientPresenter {
     private String cryptoProvider;
     private RecipientType lastFocusedType = RecipientType.TO;
     private Boolean hasContactPicker;
-    private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
+    private CryptoMode currentCryptoMode = CryptoMode.UNINITIALIZED;
     private ComposeCryptoStatus currentCryptoStatus;
+    private PendingIntent pendingUserInteractionIntent;
 
 
     public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account) {
@@ -273,6 +282,18 @@ public class RecipientPresenter {
         return result.toArray(new Address[result.size()]);
     }
 
+    public void onClickToLabel() {
+        recipientMvpView.requestFocusOnToField();
+    }
+
+    public void onClickCcLabel() {
+        recipientMvpView.requestFocusOnCcField();
+    }
+
+    public void onClickBccLabel() {
+        recipientMvpView.requestFocusOnBccField();
+    }
+
     public void onClickRecipientExpander() {
         recipientMvpView.setCcVisibility(true);
         recipientMvpView.setBccVisibility(true);
@@ -301,8 +322,6 @@ public class RecipientPresenter {
     }
 
     public void updateCryptoStatus() {
-        List<Recipient> recipients = getAllRecipients();
-
         ComposeCryptoStatusBuilder builder =  new ComposeCryptoStatusBuilder()
             .setCryptoMode(currentCryptoMode)
             .setRecipients(getAllRecipients());
@@ -315,13 +334,6 @@ public class RecipientPresenter {
         }
 
         currentCryptoStatus = builder.build();
-
-        boolean hasNoCryptoProviderOrRecipients = cryptoProvider == null || recipients.isEmpty();
-        if (hasNoCryptoProviderOrRecipients) {
-            recipientMvpView.hideCryptoStatus();
-            return;
-        }
-
         recipientMvpView.showCryptoStatus(currentCryptoStatus.getCryptoStatusDisplayType());
     }
 
@@ -438,13 +450,21 @@ public class RecipientPresenter {
         recipientMvpView.showContactPicker(requestCode);
     }
 
-    public void onActivityResult(int requestCode, Intent data) {
-        if (requestCode != CONTACT_PICKER_TO && requestCode != CONTACT_PICKER_CC && requestCode != CONTACT_PICKER_BCC) {
-            return;
+    public void onActivityResult(int resultCode, int requestCode, Intent data) {
+        switch (requestCode) {
+            case CONTACT_PICKER_TO:
+            case CONTACT_PICKER_CC:
+            case CONTACT_PICKER_BCC:
+                if (resultCode != Activity.RESULT_OK || data == null) {
+                    return;
+                }
+                RecipientType recipientType = recipientTypeFromRequestCode(requestCode);
+                addRecipientFromContactUri(recipientType, data.getData());
+                break;
+            case OPENPGP_USER_INTERACTION:
+                recipientMvpView.checkOpenPgpServicePermission(this);
+                break;
         }
-
-        RecipientType recipientType = recipientTypeFromRequestCode(requestCode);
-        addRecipientFromContactUri(recipientType, data.getData());
     }
 
     private static int recipientTypeToRequestCode(RecipientType type) {
@@ -482,6 +502,16 @@ public class RecipientPresenter {
     }
 
     public void onClickCryptoStatus() {
+        if (currentCryptoMode == CryptoMode.ERROR) {
+            if (pendingUserInteractionIntent != null) {
+                recipientMvpView
+                        .launchUserInteractionPendingIntent(pendingUserInteractionIntent, OPENPGP_USER_INTERACTION);
+                pendingUserInteractionIntent = null;
+            } else {
+                recipientMvpView.checkOpenPgpServicePermission(this);
+            }
+            return;
+        }
         recipientMvpView.showCryptoDialog(currentCryptoMode);
     }
 
@@ -510,22 +540,67 @@ public class RecipientPresenter {
         }
 
         ComposeCryptoStatus cryptoStatus = getCurrentCryptoStatus();
+        if (cryptoStatus.isPgpErrorState()) {
+            // TODO: be more specific about this error
+            recipientMvpView.showErrorOpenPgpConnection();
+            return false;
+        }
         if (cryptoStatus.isMissingSignKey()) {
-            recipientMvpView.showMissingSignKeyError();
+            recipientMvpView.showErrorMissingSignKey();
             return false;
         }
         if (cryptoStatus.isPrivateAndIncomplete()) {
-            recipientMvpView.showPrivateAndIncompleteError();
+            recipientMvpView.showErrorPrivateButMissingKeys();
             return false;
         }
 
         return true;
     }
 
+    public void onCryptoProviderBound() {
+        recipientMvpView.checkOpenPgpServicePermission(this);
+    }
+
+    public void onCryptoProviderError(Exception e) {
+        // TODO handle error case better
+        recipientMvpView.showErrorOpenPgpConnection();
+        currentCryptoMode = CryptoMode.ERROR;
+        Log.e(K9.LOG_TAG, "error connecting to crypto provider!", e);
+        updateCryptoStatus();
+    }
+
+    @Override
+    public void onPgpPermissionCheckResult(Intent result) {
+        int resultCode = result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
+        switch (resultCode) {
+            case OpenPgpApi.RESULT_CODE_SUCCESS:
+                if (currentCryptoMode == CryptoMode.UNINITIALIZED || currentCryptoMode == CryptoMode.ERROR) {
+                    // TODO initialize to other values under some circumstances, e.g. if we reply to an encrypted e-mail
+                    currentCryptoMode = CryptoMode.OPPORTUNISTIC;
+                }
+                break;
+
+            case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+                recipientMvpView.showErrorOpenPgpUserInteractionRequired();
+                pendingUserInteractionIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                currentCryptoMode = CryptoMode.ERROR;
+                break;
+
+            case OpenPgpApi.RESULT_CODE_ERROR:
+            default:
+                recipientMvpView.showErrorOpenPgpConnection();
+                currentCryptoMode = CryptoMode.ERROR;
+                break;
+        }
+        updateCryptoStatus();
+    }
+
     public enum CryptoMode {
-        PRIVATE,
-        OPPORTUNISTIC,
-        SIGN_ONLY,
+        UNINITIALIZED,
         DISABLE,
+        SIGN_ONLY,
+        OPPORTUNISTIC,
+        PRIVATE,
+        ERROR,
     }
 }

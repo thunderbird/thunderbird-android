@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">חשבונות K-9</string>
   <string name="remote_control_label">K-9 Mail שליטה מרחוק</string>
   <string name="remote_control_desc">אפשר לK-9 לשלוט בהגדרות פעילות הדואר.</string>
@@ -13,35 +12,6 @@
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
-  <string name="accounts_welcome"><![CDATA[
-<p>
-ברוכים הבאים ל-K-9 הגדרת דואר. K-9 הוא קוד פתוח של תוכנת מייל לאנדרואיד המבוססת במקור על תוכנת המייל הסטנדרטית של האנדרואיד
-</p><p>
-תכונות משופרות של K-9 כוללת:
-</p>
-<ul>
-  <li>דחוף דואר באמצעות IMAP IDLE</li>
-  <li>ביצועים טובים יותר</li>
-  <li>הודעה refiling</li>
-  <li>חתימות דוא\"ל</li>
-  <li>עותק מוסתר אל עצמי</li>
-  <li>תיקיות מנויים</li>
-  <li>כל התיקיות מסונכרנות</li>
-  <li>חזור- כתובת תצורה</li>
-  <li>מקלדת קיצורי דרך</li>
-  <li>תמיכה טובה יותר ב-IMAP</li>
-  <li>שמירת קבצים מצורפים אל SD</li>
-  <li>רוקן אשפה</li>
-  <li>מיון הודעת</li>
-  <li>ועוד …</li>
-</ul>
-<p>
-לידיעתך, K-9 אינו תומך ברוב חשבונות Hotmail החינמיים, כמו תוכנות דואר רבות, יש כמה מוזרויות כאשר מדברים על Microsoft Exchange.
-</p><p>
-נא לשלוח דיווחי באגים, לתרום תכונות חדשות ולשאול שאלות על
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
@@ -106,7 +76,6 @@
   <string name="copy_action">העתק</string>
   <string name="select_text_action">בחר טקסט</string>
   <string name="mark_as_unread_action">סמן כלא נקרא</string>
-  <string name="add_cc_bcc_action">הוסף עותק / עותק מוסתר</string>
   <string name="read_receipt">אישור קריאה</string>
   <string name="read_receipt_enabled">נדרש אישור לקריאה</string>
   <string name="read_receipt_disabled">לא נדרש אישור קריאה</string>
@@ -158,9 +127,6 @@
   <string name="debug_enable_sensitive_logging_summary">עשוי להציג סיסמאות ביומן.</string>
   <string name="message_list_load_more_messages_action">טען עוד הודעות</string>
   <string name="message_to_fmt">ל:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">ל</string>
-  <string name="message_compose_cc_hint">עותק</string>
-  <string name="message_compose_bcc_hint">עותק מוסתר</string>
   <string name="message_compose_subject_hint">נושא</string>
   <string name="message_compose_content_hint">הודעת טקסט</string>
   <string name="message_compose_quote_header_separator">-------- ההודעה המורית --------</string>
@@ -179,14 +145,11 @@
   <string name="message_view_cc_label">עותק:</string>
   <string name="message_view_attachment_view_action">פתח</string>
   <string name="message_view_attachment_download_action">שמור</string>
-  <string name="message_view_status_attachment_saved">הקובץ המצורף נשמר בכרטיס ה SD בתור <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">אין אפשרות לשמור את הקובץ המצורף לכרטיס ה SD.</string>
   <string name="message_view_show_pictures_action">הצג תמונות</string>
-  <string name="message_view_fetching_attachment_toast">מוריד קובץ מצורף.</string>
   <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">לא כל הכותרות הורדו או נשמרו. בחר \" שמור את כל הכותרות המקומיות \"בהגדרות של שרת חשבון הודעות נכנסות כדי לאפשר את זה בעתיד.</string>
   <string name="message_no_additional_headers_available">כל הכותרות הורדו, אבל אין כותרות נוספות להצגה.</string>
   <string name="message_additional_headers_retrieval_failed">שליפה של כותרות נוספות מהשרת של מסד הנתונים או מהדואר נכשל.</string>
   <string name="from_same_sender">עוד מהשולח הזה</string>
@@ -361,7 +324,6 @@
   <string name="account_settings_folders">תיקיות</string>
   <string name="account_settings_quote_prefix_label">קידומת טקסט מצוטט</string>
   <string name="account_settings_crypto">הצפנה</string>
-  <string name="account_settings_crypto_app">OpenPGP Provider</string>
   <string name="account_settings_storage_title">אחסון</string>
   <string name="account_settings_color_label">צבע חשבון</string>
   <string name="account_settings_color_summary">בחר את הצבע של החשבון המשומש בתיקייה וברשימת החשבונות</string>
@@ -577,10 +539,6 @@
   <string name="font_size_larger">ענק</string>
   <string name="miscellaneous_preferences">שונות</string>
   <string name="error_activity_not_found">לא נמצא ישום שיכול לבצע פעולה זו.</string>
-  <string name="btn_crypto_sign">חתום</string>
-  <string name="btn_encrypt">הצפן</string>
-  <string name="pgp_mime_unsupported">הודעות PGP /MIME אינן נתמכות עדיין.</string>
-  <string name="attachment_encryption_unsupported">אזהרה: הקבצים המצורפים אינם חתומים או מוצפנים עדיין.</string>
   <string name="send_aborted">שליחה בוטלה.</string>
   <string name="save_or_discard_draft_message_dlg_title">לשמור הודעה כטיוטה?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">לשמור או למחוק הודעה זו?</string>
@@ -600,7 +558,6 @@
   <string name="debug_logging_enabled">רישום איתור באגים למערכת רישום של האנדרואיד מאופשרת</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">לא ניתן להתחבר</string>
   <string name="import_export_action">הגדרות ייבוא &amp; ייצוא </string>
   <string name="settings_export_account">יצא הגדרות חשבון</string>
   <string name="settings_export_all">יצא הגדרות וחשבונות</string>
@@ -641,4 +598,5 @@
   <string name="manage_accounts_moving_message">מעביר חשבון…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

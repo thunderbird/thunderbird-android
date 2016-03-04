@@ -9,8 +9,6 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -29,11 +27,12 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
-import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.preferences.CheckBoxListPreference;
+import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.TimePickerPreference;
 
 import com.fsck.k9.service.MailService;
@@ -443,7 +442,7 @@ public class Prefs extends K9PreferenceActivity {
     }
 
     private void saveSettings() {
-        SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
+        Storage storage = Preferences.getPreferences(this).getStorage();
 
         K9.setK9Language(mLanguage.getValue());
 
@@ -522,7 +521,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setHideUserAgent(mHideUserAgent.isChecked());
         K9.setHideTimeZone(mHideTimeZone.isChecked());
 
-        Editor editor = preferences.edit();
+        StorageEditor editor = storage.edit();
         K9.save(editor);
         editor.commit();
 

@@ -10,6 +10,5 @@ class Capabilities {
     public static final String NAMESPACE = "NAMESPACE";
     public static final String COMPRESS_DEFLATE = "COMPRESS=DEFLATE";
     public static final String STARTTLS = "STARTTLS";
-    public static final String XLIST = "XLIST";
     public static final String SPECIAL_USE = "SPECIAL-USE";
 }

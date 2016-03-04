@@ -600,16 +600,11 @@ class ImapConnection {
     }
 
     public List<ImapResponse> executeSimpleCommand(String command) throws IOException, MessagingException {
-        return executeSimpleCommand(command, false, null);
+        return executeSimpleCommand(command, false);
     }
 
     public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
             MessagingException {
-        return executeSimpleCommand(command, sensitive, null);
-    }
-
-    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
-            throws IOException, MessagingException {
         String commandToLog = command;
 
         if (sensitive && !K9MailLib.isDebugSensitive()) {
@@ -619,11 +614,16 @@ class ImapConnection {
         String tag = sendCommand(command, sensitive);
 
         try {
-            return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+            return responseParser.readStatusResponse(tag, commandToLog, getLogId(), null);
         } catch (IOException e) {
             close();
             throw e;
         }
+    }
+
+    public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
+            throws IOException, NegativeImapResponseException {
+        return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
     }
 
     public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
@@ -639,7 +639,7 @@ class ImapConnection {
                 if (sensitive && !K9MailLib.isDebugSensitive()) {
                     Log.v(LOG_TAG, getLogId() + ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
                 } else {
-                    Log.v(LOG_TAG, getLogId() + ">>> " + commandToSend);
+                    Log.v(LOG_TAG, getLogId() + ">>> " + tag + " " + command);
                 }
             }
 

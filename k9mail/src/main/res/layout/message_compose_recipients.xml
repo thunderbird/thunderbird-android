@@ -13,13 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dip"
-        android:layout_marginRight="12dip"
+        android:layout_marginStart="12dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginEnd="10dip"
         android:minHeight="50dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:id="@+id/from_label"
             android:minWidth="50dp"
             android:text="@string/recipient_from"
@@ -32,8 +36,8 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/from_label"
             android:layout_toEndOf="@id/from_label"
-            android:layout_marginRight="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginEnd="36dp"
             android:singleLine="true"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
@@ -42,7 +46,7 @@
             />
 
         <ViewAnimator
-            android:layout_width="32dp"
+            android:layout_width="36dp"
             android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -52,7 +56,6 @@
             android:inAnimation="@anim/fade_in"
             android:outAnimation="@anim/fade_out"
             tools:visibility="visible">
-
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -66,25 +69,120 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/status_lock_open"
+                android:src="@drawable/status_lock_error"
                 android:tint="@color/openpgp_red"
                 />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/status_lock_error"
-                android:tint="@color/openpgp_orange"
-                />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/status_lock_closed"
-                android:tint="@color/openpgp_green"
-                />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_dots"
+                    android:tint="@color/openpgp_grey"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_lock"
+                    android:tint="@color/openpgp_grey"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_dots"
+                    android:tint="@color/openpgp_grey"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_lock_error_dots_1"
+                    android:tint="@color/openpgp_red"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_dots"
+                    android:tint="@color/openpgp_grey"
+                    />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_lock_disabled_dots_1"
+                    android:tint="@color/openpgp_red"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_dots"
+                    android:tint="@color/openpgp_grey"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_lock_dots_2"
+                    android:tint="@color/openpgp_orange"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_dots"
+                    android:tint="@color/openpgp_grey"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_lock_dots_3"
+                    android:tint="@color/openpgp_green"
+                    />
+
+            </FrameLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -115,6 +213,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:id="@+id/to_label"
             android:labelFor="@+id/to"
             android:minWidth="50dp"
@@ -189,7 +289,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:minWidth="50dp"
+            android:id="@+id/cc_label"
             android:labelFor="@+id/cc"
             android:text="@string/recipient_cc"
             style="@style/ComposeTextLabel" />
@@ -231,7 +334,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:minWidth="50dp"
+            android:id="@+id/bcc_label"
             android:labelFor="@+id/bcc"
             android:text="@string/recipient_bcc"
             style="@style/ComposeTextLabel" />

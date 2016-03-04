@@ -6,7 +6,6 @@
 
     <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
 
     <string name="shortcuts_title">K-9 Accounts</string>
     <string name="unread_widget_label">K-9 Unread</string>
@@ -248,9 +247,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_list_load_more_messages_action">Load more messages</string>
     <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
 
-    <string name="message_compose_to_hint">To</string>
-    <string name="message_compose_cc_hint">Cc</string>
-    <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Subject</string>
     <string name="message_compose_content_hint">Message text</string>
     <string name="message_compose_signature_hint">Signature</string>
@@ -267,9 +263,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="message_compose_show_quoted_text_action">Quote message</string>
-    <string name="message_compose_description_add_to">Add recipient (To)</string>
-    <string name="message_compose_description_add_cc">Add recipient (CC)</string>
-    <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
 
@@ -278,19 +271,13 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_attachment_view_action">Open</string>
     <string name="message_view_attachment_download_action">Save</string>
-    <string name="message_view_status_attachment_saved">Attachment saved to SD card as <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
     <string name="message_view_show_pictures_action">Show pictures</string>
-    <string name="message_view_show_message_action">Show message</string>
-    <string name="message_view_show_attachments_action">Show attachments</string>
     <string name="message_view_show_more_attachments_action">More…</string>
-    <string name="message_view_fetching_attachment_toast">Fetching attachment.</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>
-    <string name="message_view_downloading">Downloading…</string>
 
     <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
-    <string name="message_additional_headers_not_downloaded">Not all headers have been downloaded or saved. Select \"Save all headers locally\" in the account\'s incoming server settings to enable this for the future.</string>
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
     <string name="message_additional_headers_retrieval_failed">The retrieval of additional headers from the database or mail server failed.</string>
 
@@ -920,8 +907,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="miscellaneous_preferences">Miscellaneous</string>
 
     <string name="error_activity_not_found">No suitable application for this action found.</string>
-    <string name="pgp_mime_unsupported">PGP/MIME messages are not supported yet.</string>
-    <string name="attachment_encryption_unsupported">Warning: attachments are NOT signed or encrypted yet.</string>
     <string name="send_aborted">Send aborted.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
@@ -956,7 +941,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
-    <string name="error_unable_to_connect">Unable to connect.</string>
 
     <string name="import_export_action">Settings Import &amp; Export</string>
     <string name="settings_export_account">Export account settings</string>
@@ -1049,8 +1033,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Server search limit</string>
     <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>
-    <string name="account_settings_remote_search_full_text">Include messages text in server search</string>
-    <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>
     <string name="remote_search_sending_query">Sending query to server</string>
     <string name="remote_search_downloading">Fetching %d results</string>
     <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>
@@ -1106,20 +1088,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="auth_external_error">Unable to authenticate.  The server does not advertise the SASL EXTERNAL capability.  This could be due to a problem with the client certificate (expired, unknown certificate authority) or some other configuration problem.</string>
     
     <!-- === OpenPGP specific ================================================================== -->
-    <string name="openpgp_decrypting_verifying">Decrypting/Verifying…</string>
-    <string name="openpgp_successful_decryption">Successful decryption</string>
-    <string name="openpgp_signature_valid_certified">Valid signature (certified)</string>
-    <string name="openpgp_signature_valid_uncertified">Valid signature but uncertified</string>
-    <string name="openpgp_signature_unknown">Unknown signer</string>
-    <string name="openpgp_signature_invalid">Invalid signature</string>
-    <string name="openpgp_signature_unknown_text">Missing public key for this signature</string>
-    <string name="openpgp_successful_decryption_valid_signature_certified">Successful decryption and valid signature (certified)</string>
-    <string name="openpgp_successful_decryption_valid_signature_uncertified">Successful decryption and valid signature but uncertified</string>
-    <string name="openpgp_successful_decryption_unknown_signature">Successful decryption but missing public key</string>
-    <string name="openpgp_get_key">Lookup missing key</string>
     <string name="openpgp_decryption_failed">Decryption failed: %s</string>
     <string name="openpgp_unknown_error">Unknown OpenPGP Error</string>
-    <string name="openpgp_user_id">User Id</string>
     <string name="openpgp_canceled_by_user">Canceled by user</string>
     
     <string name="openpgp_result_no_signature">"Not Signed"</string>
@@ -1146,9 +1116,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="client_certificate_advanced_options">Advanced options</string>
     <string name="client_certificate_expired">"Client certificate \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" has expired or is not yet valid (<xliff:g id="exception_message">%2$s</xliff:g>)"</string>
 
-    <string name="preview_inner_message">"Includes message titled \"%s\" containing: "</string>
-    <string name="preview_untitled_inner_message">"Includes untitled message containing: "</string>
-
     <string name="crypto_incomplete_message">Incomplete message</string>
     <!-- Note: This references message_view_download_remainder -->
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
@@ -1165,14 +1132,16 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="address_type_other">Other</string>
     <string name="address_type_mobile">Mobile</string>
     <string name="warn_search_disabled">Search in message bodies is disabled in this development version!</string>
-    <string name="compose_confirm_draft_unencrypted">Draft will be saved unencrypted! Repeat to confirm.</string>
     <string name="compose_error_no_draft_folder">No Drafts folder configured for this account!</string>
     <string name="compose_not_saving_unencrypted">Draft NOT saved without encryption!</string>
-    <string name="compose_error_no_signing_key">Signing requested, but no key selected!</string>
-    <string name="compose_error_private_missing_keys">Private mode enabled, but cannot encrypt to all recipients!</string>
+    <string name="compose_error_pgp_error">Error with OpenPGP provider. Check your settings!</string>
+    <string name="compose_error_no_signing_key">No key configured for signing! Please check your settings.</string>
+    <string name="compose_error_private_missing_keys">Private mode is enabled, but some recipients do not have keys!</string>
     <string name="crypto_mode_disabled">Never Sign or Encrypt.</string>
     <string name="crypto_mode_sign_only">Always Sign, Never Encrypt.</string>
     <string name="crypto_mode_opportunistic">Always Sign, Encrypt if possible.</string>
     <string name="crypto_mode_private">Always Sign, Always Encrypt.</string>
+    <string name="error_crypto_provider_connect">Cannot connect to crypto provider, check your settings or click crypto icon to retry!</string>
+    <string name="error_crypto_provider_ui_required">Crypto provider access denied, click crypto icon to retry!</string>
 
 </resources>

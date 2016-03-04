@@ -48,4 +48,13 @@ public enum Flag {
      * Indicates that the copy of a message to the Sent folder has started.
      */
     X_REMOTE_COPY_STARTED,
+
+    /**
+     * Messages with this flag have been migrated from database version 50 or earlier.
+     * This earlier database format did not preserve the original mime structure of a
+     * mail, which means messages migrated to the newer database structure may be
+     * incomplete or broken.
+     * TODO Messages with this flag should be redownloaded, if possible.
+     */
+    X_MIGRATED_FROM_V50,
 }

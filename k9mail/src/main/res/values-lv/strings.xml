@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Pasts</string>
-  <string name="beta_app_name">K-9 Pasts BETA</string>
   <string name="shortcuts_title">K-9 Konti</string>
   <string name="unread_widget_label">K-9 Nelasīts</string>
   <string name="remote_control_label">K-9 Pasta attālinātā vadīšana</string>
@@ -17,34 +16,33 @@
   <string name="welcome_message_title">Laipni lūdzam K-9 Pastā</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Pasts ir efektīva bezmaksas e-pasta aplikācija Android sistēmai.
+K-9 Mail ir spēcīga bezmaksas e-pasta programma Android operētājsistēmai.
 </p><p>
 Tās uzlaboto iespēju skaitā ir:
 </p>
 <ul>
-<li>E-pastu saņemšana izmantojot IMAP IDLE</li>
-<li>Labāka veiktspēja</li>
-<li>Vēstuļu arhivēšana</li>
-<li>E-pasta paraksti</li>
-<li>Bcc-pašam</li>
-<li>Pieteikšanās mapēm</li>
-<li>Visu mapju sinhronizēšana</li>
-<li>Atpakaļadreses iestatīšana</li>
-<li>Ātrie taustiņi</li>
-<li>Labāks IMAP atbalsts</li>
-<li>Pielikumu saglabāšana uz SD</li>
-<li>Miskastes iztukšošana</li>
-<li>Vēstuļu kārtošana</li>
-<li>…un daudz kas cits</li>
+  <li>Pasta lejupielādēšana, izmantojot IMAP IDLE</li>
+  <li>Labāka veiktspēja</li>
+  <li>Vēstuļu arhivēšana</li>
+  <li>E-pasta paraksti</li>
+  <li>Bcc-pašam sev</li>
+  <li>Pieteikšanās mapēm</li>
+  <li>Visu mapju sinhronizēšana</li>
+  <li>Atpakaļsūtīšanas adreses iestatīšana</li>
+  <li>Tastatūras īsceļi</li>
+  <li>Labāks IMAP atbalsts</li>
+  <li>Pielikumu saglabāšana uz SD kartes</li>
+  <li>Miskastes iztukšošana</li>
+  <li>Vēstuļu kārtošana</li>
+  <li>…un daudz kas cits</li>
 </ul>
 <p>
-Lūdzu ņemiet vērā, ka K-9 neatbalsta lielāko daļu Hotmail kontu un līdzīgi kā citas aplikācijas
-īsti labi nesaprotas ar Microsoft Exchange.
+Lūdzu, ņemiet vērā, kā K-9 neatbalsta lielāko daļu bezmaksas Hotmail kontu, un tāpat kā daudzām citām e-pasta programmām tai mēdz būt problēmas ar Microsoft Exchange.
 </p><p>
-Lūdzu sūtiet kļūdu ziņojumus, iesakiet uzlabojumus un uzdodiet jautājumus
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet jautājumus
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
-]]></string>
+    ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nNosūtīts ar K-9 Pastu no manas Android ierīces. Atvainojiet, ka esmu tik kodolīgs.</string>
   <!--General strings that include the app name-->
@@ -130,7 +128,6 @@ Lūdzu sūtiet kļūdu ziņojumus, iesakiet uzlabojumus un uzdodiet jautājumus
   <string name="message_view_theme_action_dark">Pārslēgt uz tumšo motīvu</string>
   <string name="message_view_theme_action_light">Pārslēgt uz gaišo motīvu</string>
   <string name="mark_as_unread_action">Atzīmēt kā nelasītu</string>
-  <string name="add_cc_bcc_action">Pievienot Cc/Bc</string>
   <string name="read_receipt">Izlasīšanas atskaite</string>
   <string name="read_receipt_enabled">Pieprasīt izlasīšanas atskaiti</string>
   <string name="read_receipt_disabled">Neprasīt izlasīšanas atskaiti</string>
@@ -166,10 +163,15 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> jaunas vēstules</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nelasītas (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> vairāk <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> vairāk <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Atbildēt</string>
   <string name="notification_action_mark_as_read">Atzīmēt kā lasītu</string>
+  <string name="notification_action_mark_all_as_read">Atzīmēt visu kā lasītu</string>
   <string name="notification_action_delete">Izdzēst</string>
+  <string name="notification_action_delete_all">Izdzēst visu</string>
+  <string name="notification_action_archive">Arhīvs</string>
+  <string name="notification_action_archive_all">Arhivēt visu</string>
+  <string name="notification_action_spam">Surogātpasts</string>
   <string name="notification_certificate_error_title">Sertifikāta kļūda kontam <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Pārbaudiet sava servera iestatījumus</string>
   <string name="notification_bg_sync_ticker">Pārbauda pastu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -197,9 +199,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="debug_enable_sensitive_logging_summary">Drīkst reģistros rādīt paroles.</string>
   <string name="message_list_load_more_messages_action">Ielādēt vairāk vēstuļu</string>
   <string name="message_to_fmt">Kam:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Kam</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Bcc</string>
   <string name="message_compose_subject_hint">Temats</string>
   <string name="message_compose_content_hint">Vēstules teksts</string>
   <string name="message_compose_signature_hint">Paraksts</string>
@@ -215,9 +214,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="error_contact_address_not_found">Šim kontaktam nav atrasta neviena e-pasta adrese</string>
   <string name="message_compose_attachments_skipped_toast">Dažus pielikumus nevar pārsūtīt, jo tie nav lejupielādēti.</string>
   <string name="message_compose_show_quoted_text_action">Citēt vēstuli</string>
-  <string name="message_compose_description_add_to">Pievienot saņēmēju (Kam)</string>
-  <string name="message_compose_description_add_cc">Pievienot saņēmēju (CC)</string>
-  <string name="message_compose_description_add_bcc">Pievienot saņēmēju (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Noņemt citēto tekstu</string>
   <string name="message_compose_description_edit_quoted_text">Redigēt citēto tekstu</string>
   <string name="message_view_from_format">No: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -225,18 +221,12 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Atvērt</string>
   <string name="message_view_attachment_download_action">Saglabāt</string>
-  <string name="message_view_status_attachment_saved">Pielikums saglabāts uz SD kartes kā <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Nevar saglabāt pielikumu uz SD kartes.</string>
   <string name="message_view_show_pictures_action">Rādīt bildes</string>
-  <string name="message_view_show_message_action">Rādīt vēstuli</string>
-  <string name="message_view_show_attachments_action">Rādīt pielikumus</string>
   <string name="message_view_show_more_attachments_action">Vairāk…</string>
-  <string name="message_view_fetching_attachment_toast">Saņem pielikumu.</string>
   <string name="message_view_no_viewer">Nevar atrast programmu, lai atvērtu <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">lejupielādēt pilnu vēstuli</string>
-  <string name="message_view_downloading">Lejupielādē…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Ne visa vēstules papildinformācija tika ielādēta vai saglabāta. Izvēlieties \"Saglabāt visu vēstules papildinformāciju uz ierīces\" konta ienākošā servera iestatījumos, lai turpmāk šo iespēju varētu izmantot.</string>
   <string name="message_no_additional_headers_available">Visa vēstules papildinformācija tika lejupielādēta, bet nav nekādas papildinformācijas, ko parādīt.</string>
   <string name="message_additional_headers_retrieval_failed">Vēstules papildinformācijas iegūšana no datu bāzes vai e-pasta servera neizdevās.</string>
   <string name="from_same_sender">Vairāk no šī sūtītāja</string>
@@ -271,6 +261,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="global_settings_confirm_action_delete">Dzēst</string>
   <string name="global_settings_confirm_action_delete_starred">Dzēst ar zvaigznītēm iezīmētās (vēstules skatā)</string>
   <string name="global_settings_confirm_action_spam">Surogātpasts</string>
+  <string name="global_settings_confirm_menu_discard">Izmest vēstuli</string>
   <string name="global_settings_confirm_action_delete_notif">Dzēst (no paziņojuma)</string>
   <string name="global_settings_privacy_hide_useragent">Noņemt K-9 lietotāju-aģentu no vēstules papildinformācijas</string>
   <string name="global_settings_privacy_hide_timezone">Izmantot UTC laika zonu vēstules papildinformācijā</string>
@@ -291,6 +282,8 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">Tāds pats, kad ekrāns ir atbloķēts</string>
   <string name="quiet_time">Miera laiks</string>
   <string name="quiet_time_description">Noņemt zvanīšanu, vibrēšanu un mirgošanu naktī</string>
+  <string name="quiet_time_notification">Noņemt paziņojumus</string>
+  <string name="quiet_time_notification_description">Pilnībā noņemt paziņojumus Miera laikā</string>
   <string name="quiet_time_starts">Miera laiks sākas</string>
   <string name="quiet_time_ends">Miera laiks beidzas</string>
   <string name="account_setup_basics_title">Uzlikt jaunu kontu</string>
@@ -471,8 +464,9 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_folders">Mapes</string>
   <string name="account_settings_quote_prefix_label">Citētā teksta galvene</string>
   <string name="account_settings_crypto">Šifrēšana</string>
-  <string name="account_settings_crypto_app">OpenPGP nodrošinātājs</string>
-  <string name="account_settings_no_openpgp_provider_installed">OpenPGP nodrošinātājs nav instalēts</string>
+  <string name="account_settings_crypto_app">OpenPGP lietotne</string>
+  <string name="account_settings_crypto_key">Mana atslēga</string>
+  <string name="account_settings_no_openpgp_provider_installed">OpenPGP lietotne nav instalēta</string>
   <string name="account_settings_mail_check_frequency_label">Mapes pārbaudes biežums</string>
   <string name="account_settings_storage_title">Krātuve</string>
   <string name="account_settings_color_label">Konta krāsa</string>
@@ -744,18 +738,11 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="font_size_larger">Lielāks</string>
   <string name="miscellaneous_preferences">Dažādi</string>
   <string name="error_activity_not_found">Šai darbībai nav atrasta atbilstoša aplikācija.</string>
-  <string name="btn_crypto_sign">Pierakstīties</string>
-  <string name="btn_encrypt">Iešifrēt</string>
-  <string name="unknown_crypto_signature_user_id">&lt;nezināms&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME ziņas pagaidām netiek atbalstītas.</string>
-  <string name="attachment_encryption_unsupported">Brīdinājums: pielikumi vēl NAV iezīmēti un iešifrēti.</string>
   <string name="send_aborted">Sūtīšana atcelta.</string>
   <string name="save_or_discard_draft_message_dlg_title">Saglabāt vēstuli melnrakstos?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Saglabāt vai izmest šo vēstuli?</string>
   <string name="confirm_discard_draft_message_title">Izmest vēstuli?</string>
   <string name="confirm_discard_draft_message">Vai tiešām izmest šo vēstuli?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Atteikties saglabāt vēstuli melnrakstos.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Atteikties saglabāt vēstuli, kura atzīmēta kā šifrēta, melnrakstos.</string>
   <string name="select_text_now">Iezīmēt tekstu, lai kopētu.</string>
   <string name="dialog_confirm_delete_title">Apstiprināt dzēšanu</string>
   <string name="dialog_confirm_delete_message">Vai gribat izdzēst šo vēstuli?</string>
@@ -778,7 +765,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="debug_logging_enabled">Atkļūdošanas reģistrs ir iestatīts</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Nevar savienoties.</string>
   <string name="import_export_action">Iestatījumi importēšanai un eksportēšanai</string>
   <string name="settings_export_account">Eskportēt konta iestatījumus</string>
   <string name="settings_export_all">Eksportēt iestatījumus un kontus</string>
@@ -861,8 +847,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Meklēšanas ierobežojums serverī</string>
   <string name="account_settings_remote_search_num_summary">Meklēšana beigsies pēc <xliff:g id="num_results">%s</xliff:g> rezultātiem.</string>
-  <string name="account_settings_remote_search_full_text">Iekļaut vēstules tekstu servera meklēšanā</string>
-  <string name="account_settings_remote_search_full_text_summary">Pilna teksta meklēšana var izrādīties lēna.</string>
   <string name="remote_search_sending_query">Sūta uz serveri pieprasījumu</string>
   <string name="remote_search_downloading">Saņem %d rezultātus</string>
   <string name="remote_search_downloading_limited">Saņem %1$d no %2$d rezultāta/-iem</string>
@@ -903,18 +887,23 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="fetching_attachment_dialog_message">Pielikuma saņemšana…</string>
   <string name="auth_external_error">Nevar pārbaudīt identitāti. Serveris nepiedāvā SASL EXTERNAL iespējas. Varētu būt kādas problēmas ar klienta sertifikātu (beidzies derīguma termiņš, nezināms sertifikāta izdevējs) vai arī kādas iestatījumu nepilnības.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Atkodēšana/pārbaudīšana…</string>
-  <string name="openpgp_successful_decryption">Atkodēšana izdevusies</string>
-  <string name="openpgp_signature_valid_certified">Derīgs paraksts (sertificēts)</string>
-  <string name="openpgp_signature_valid_uncertified">Derīgs, bet nesertificēts paraksts</string>
-  <string name="openpgp_signature_unknown">Nezināms parakstītājs</string>
-  <string name="openpgp_signature_invalid">Nederīgs paraksts</string>
-  <string name="openpgp_signature_unknown_text">Šim parakstam trūkst publiskās atslēgas</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Atkodēšana sekmīga un paraksts (sertificēts) derīgs</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Atkodēšana sekmīga un paraksts derīgs, bet nesertificēts</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Atkodēšana sekmīga bet trūkst publiskās atslēgas</string>
-  <string name="openpgp_get_key">Meklēt trūkstošo atslēgu</string>
-  <string name="openpgp_user_id">Lietotāja ID</string>
+  <string name="openpgp_unknown_error">Nezināma OpenPGP kļūda</string>
+  <string name="openpgp_canceled_by_user">Lietotājs atcēlis</string>
+  <string name="openpgp_result_no_signature">Nav parakstīts</string>
+  <string name="openpgp_result_invalid_signature">Nederīgs paraksts!</string>
+  <string name="openpgp_result_signature_uncertified">Paraksta īpašnieks (nav sertificēts!)</string>
+  <string name="openpgp_result_signature_certified">Paraksta īpašnieks</string>
+  <string name="openpgp_result_signature_expired_key">Atslēga vairs nav derīga!</string>
+  <string name="openpgp_result_signature_revoked_key">Atslēga ir atsaukta!</string>
+  <string name="openpgp_result_signature_insecure">Nav droši!</string>
+  <string name="openpgp_result_signature_missing_key">Nezināma publiska atslēga</string>
+  <string name="openpgp_result_encrypted">Šifrēts</string>
+  <string name="openpgp_result_not_encrypted">Nav šifrēts</string>
+  <string name="openpgp_result_decryption_insecure">Nedrošs</string>
+  <string name="openpgp_result_action_show">Parādīt</string>
+  <string name="openpgp_result_action_lookup">Meklēt</string>
+  <string name="openpgp_result_no_name">Nav vārda</string>
+  <string name="openpgp_result_no_email">Nav e-pasta</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Izmantot klienta sertifikātu</string>
   <string name="client_certificate_spinner_empty">Nav klienta sertifikāta</string>
@@ -922,4 +911,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="client_certificate_retrieval_failure">Neizdevās saņemt klienta sertifikātu aizstājvārdam \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Papildus iespējas</string>
   <string name="client_certificate_expired">Klienta sertifikātam \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" beidzies derīguma termiņš vai arī tas vēl nav derīgs (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Nepabeigta vēstule</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Noklikšķināt \"lejupielādēt pilnu vēstuli\", lai to varētu atšifrēt</string>
 </resources>

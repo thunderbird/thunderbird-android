@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fsck.k9.K9;
+import org.apache.james.mime4j.util.MimeUtil;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -42,6 +43,15 @@ public class Utility {
     public static boolean arrayContains(Object[] a, Object o) {
         for (Object element : a) {
             if (element.equals(o)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isAnyMimeType(String o, String... a) {
+        for (String element : a) {
+            if (MimeUtil.isSameMimeType(element, o)) {
                 return true;
             }
         }

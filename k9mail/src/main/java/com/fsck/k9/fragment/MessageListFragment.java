@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -25,7 +26,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
-import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -92,6 +92,7 @@ import com.fsck.k9.mailstore.DatabasePreviewType;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.provider.EmailProvider.SpecialColumns;
@@ -1120,7 +1121,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void initializePullToRefresh(LayoutInflater inflater, View layout) {
         mPullToRefreshView = (PullToRefreshListView) layout.findViewById(R.id.message_list);
 
-        // Set empty view
+        @SuppressLint("InflateParams")
         View loadingView = inflater.inflate(R.layout.message_list_loading, null);
         mPullToRefreshView.setEmptyView(loadingView);
 
@@ -1268,7 +1269,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             K9.setSortAscending(mSortType, mSortAscending);
             mSortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
 
-            Editor editor = mPreferences.getPreferences().edit();
+            StorageEditor editor = mPreferences.getStorage().edit();
             K9.save(editor);
             editor.commit();
         }
@@ -1838,7 +1839,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             View view = mInflater.inflate(R.layout.message_list_item, parent, false);
-            view.setId(R.layout.message_list_item);
 
             MessageViewHolder holder = new MessageViewHolder();
             holder.date = (TextView) view.findViewById(R.id.date);
@@ -2151,7 +2151,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private View getFooterView(ViewGroup parent) {
         if (mFooterView == null) {
             mFooterView = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
-            mFooterView.setId(R.layout.message_list_item_footer);
             FooterViewHolder holder = new FooterViewHolder();
             holder.main = (TextView) mFooterView.findViewById(R.id.main_text);
             mFooterView.setTag(holder);

@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">Contas K-9</string>
   <string name="unread_widget_label">K-9 non lidas</string>
   <string name="remote_control_label">Control remoto de K-9 Mail</string>
@@ -15,34 +14,6 @@
   <string name="app_license">Baixo licenza Apache, versión 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Benvido/a a K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail é un poderoso cliente de correo electrónico para Android.
-</p><p>
-Dispón das seguintes característias ou funcionalidades:
-</p>
-<ul>
-  <li>Push mail using IMAP IDLE</li>
-  <li>Rendemento mellorado</li>
-  <li>Reclasificación de mensaxes</li>
-  <li>Sinaturas nas mensaxes</li>
-  <li>Autocopia oculta</li>
-  <li>Subscricións a cartafoles</li>
-  <li>Sincronización de todos os cartafoles</li>
-  <li>Configuración do enderezo de retorno</li>
-  <li>Atallos no teclado</li>
-  <li>Soporte IMAP mellorado</li>
-  <li>Gardar os anexos na tarxeta SD</li>
-  <li>Baleirado da papeleira</li>
-  <li>Ordenación de mensaxes</li>
-  <li>…e moito máis</li>
-</ul>
-<p>
-Por favor, repara en que K-9 non admite a maioría das contas de Hotmail e, ao igual que moitos outros clientes de correo, presenta certas peculiaridades cando se conecta co Microsoft Exchange.
-</p><p>
-Envía informes de erro, contribúe con novas funcionalidades e pregunta o que desexes en <a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada do K-9 Mail.</string>
@@ -126,7 +97,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="message_view_theme_action_dark">Tema escuro</string>
   <string name="message_view_theme_action_light">Tema claro</string>
   <string name="mark_as_unread_action">Marcar como non lida</string>
-  <string name="add_cc_bcc_action">Engadir Cc/Bcc</string>
   <string name="read_receipt">Confirmación de lectura</string>
   <string name="read_receipt_enabled">Pedirase confirmación de lectura</string>
   <string name="read_receipt_disabled">Non se pedirá confirmación de lectura</string>
@@ -157,7 +127,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="recreating_account">Volvendo crear a conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Correo novo</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> sen ler (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> máis en <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como lida</string>
   <string name="notification_action_delete">Eliminar</string>
@@ -188,9 +157,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="debug_enable_sensitive_logging_summary">Permitir mostrar os contrasinais nos informes.</string>
   <string name="message_list_load_more_messages_action">Cargar máis mensaxes</string>
   <string name="message_to_fmt">Para:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Para</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Bcc</string>
   <string name="message_compose_subject_hint">Asunto</string>
   <string name="message_compose_content_hint">Texto da mensaxe</string>
   <string name="message_compose_signature_hint">Sinatura</string>
@@ -206,9 +172,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="error_contact_address_not_found">Non se puido atopar un enderezo electrónico para este contacto.</string>
   <string name="message_compose_attachments_skipped_toast">Algúns anexos non poden reenviarse porque non foron descargados previamente.</string>
   <string name="message_compose_show_quoted_text_action">Cita da mensaxe</string>
-  <string name="message_compose_description_add_to">Engadir destinatario (Para)</string>
-  <string name="message_compose_description_add_cc">Engadir destintario (Cc)</string>
-  <string name="message_compose_description_add_bcc">Engadir destinatario (Bcc)</string>
   <string name="message_compose_description_delete_quoted_text">Eliminar texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
   <string name="message_view_from_format">Desde: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -216,18 +179,12 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Abrir</string>
   <string name="message_view_attachment_download_action">Gardar</string>
-  <string name="message_view_status_attachment_saved">Anexo gardado na tarxeta SD como <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Non é posible gardar o anexo na tarxeta SD.</string>
   <string name="message_view_show_pictures_action">Mostrar imaxes</string>
-  <string name="message_view_show_message_action">Mostrar mensaxe</string>
-  <string name="message_view_show_attachments_action">Mostrar anexos</string>
   <string name="message_view_show_more_attachments_action">Máis…</string>
-  <string name="message_view_fetching_attachment_toast">Obtendo anexo.</string>
   <string name="message_view_no_viewer">Non é posible atopar un visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
-  <string name="message_view_downloading">A descargar…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Non se descargaron ou gardaron todas as cabeceiras. Selecciona \"Gardar todas as cabeceiras localmente\" nos axustes do servidor entrante da conta para permitir esta acción no futuro.</string>
   <string name="message_no_additional_headers_available">Descargáronse todas as cabeceiras, mais non hai cabeceiras adicionais para mostrar.</string>
   <string name="message_additional_headers_retrieval_failed">Houbo un erro ao recuperar as cabeceiras adicionais desde a base de datos ou do servidor.</string>
   <string name="from_same_sender">Máis deste remitente</string>
@@ -435,7 +392,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="account_settings_folders">Cartafoles</string>
   <string name="account_settings_quote_prefix_label">Prefixo da cita</string>
   <string name="account_settings_crypto">Cifraxe</string>
-  <string name="account_settings_crypto_app">Provedor OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -685,18 +641,11 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="font_size_larger">Moi grande</string>
   <string name="miscellaneous_preferences">Miscelánea</string>
   <string name="error_activity_not_found">Non hai un aplicativo para executar esta acción.</string>
-  <string name="btn_crypto_sign">Asinar</string>
-  <string name="btn_encrypt">Cifrar</string>
-  <string name="unknown_crypto_signature_user_id">&lt;descoñecido&gt;</string>
-  <string name="pgp_mime_unsupported">As mensaxes PGP/MIME non se admiten aínda.</string>
-  <string name="attachment_encryption_unsupported">Aviso: os anexos AÍNDA NON son asinados nin cifrados.</string>
   <string name="send_aborted">Envío cancelado.</string>
   <string name="save_or_discard_draft_message_dlg_title">Gardar mensaxe como borrador?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Gardar ou descartar esta mensaxe?</string>
   <string name="confirm_discard_draft_message_title">Descartar mensaxe?</string>
   <string name="confirm_discard_draft_message">Tes a certeza de querer descartar esta mensaxe?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Rexeitar gardar o borrador da mensaxe.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Rexeitar gardar o borrador dunha mensaxe marcada como cifrada.</string>
   <string name="select_text_now">Seleccionar texto para copiar.</string>
   <string name="dialog_confirm_delete_title">Confirmar borrado</string>
   <string name="dialog_confirm_delete_message">Queres eliminar esta mensaxe?</string>
@@ -717,7 +666,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="debug_logging_enabled">Opción de depuración activa</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Imposible conectar.</string>
   <string name="import_export_action">Axustes importar/exportar</string>
   <string name="settings_export_account">Axustes de exportar conta</string>
   <string name="settings_export_all">Exportar axustes de conta</string>
@@ -797,7 +745,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Limitar resultados nas procuras no servidor</string>
   <string name="account_settings_remote_search_num_summary">A procura deterase cando se alcancen os <xliff:g id="num_results">%s</xliff:g> resultados.</string>
-  <string name="account_settings_remote_search_full_text_summary">As procuras de textos completos poden resultar lentas.</string>
   <string name="remote_search_downloading">Obtendo %d resultados</string>
   <string name="remote_search_downloading_limited">Obtendo %1$d de %2$d resultados</string>
   <string name="remote_search_error">Erro na procura en remoto</string>
@@ -823,15 +770,6 @@ Envía informes de erro, contribúe con novas funcionalidades e pregunta o que d
   <string name="fetching_attachment_dialog_title_save">A gardar borrador</string>
   <string name="fetching_attachment_dialog_message">Obtendo anexo…</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Descifrando/verificando…</string>
-  <string name="openpgp_successful_decryption">Descifraxe correcta</string>
-  <string name="openpgp_signature_valid_certified">Sinatura válida (certificada)</string>
-  <string name="openpgp_signature_valid_uncertified">Sinatura válida, mais sen certificar</string>
-  <string name="openpgp_signature_unknown">Asinante descoñecido</string>
-  <string name="openpgp_signature_invalid">Sinatura non válida</string>
-  <string name="openpgp_signature_unknown_text">Falta unha chave pública para esta sinatura</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Descifraxe correcta e sinatura válida (certificada)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Descifraxe correcta e sinatura válida, mais sen certificar</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Descifraxe correcta pero falta a chave pública</string>
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

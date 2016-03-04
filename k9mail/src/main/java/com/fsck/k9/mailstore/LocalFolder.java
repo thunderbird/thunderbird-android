@@ -23,7 +23,6 @@ import java.util.Stack;
 import java.util.UUID;
 
 import android.content.ContentValues;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -57,6 +56,8 @@ import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.message.preview.MessagePreviewCreator;
 import com.fsck.k9.message.preview.PreviewResult;
 import com.fsck.k9.message.preview.PreviewResult.PreviewType;
+import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -65,7 +66,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
-    private static final long INVALID_MESSAGE_PART_ID = -1;
+    static final long INVALID_MESSAGE_PART_ID = -1;
 
     private final LocalStore localStore;
 
@@ -542,7 +543,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public void delete() throws MessagingException {
         String id = getPrefId();
 
-        SharedPreferences.Editor editor = this.localStore.getPreferences().edit();
+        StorageEditor editor = this.localStore.getStorage().edit();
 
         editor.remove(id + ".displayMode");
         editor.remove(id + ".syncMode");
@@ -554,12 +555,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     public void save() throws MessagingException {
-        SharedPreferences.Editor editor = this.localStore.getPreferences().edit();
+        StorageEditor editor = this.localStore.getStorage().edit();
         save(editor);
         editor.commit();
     }
 
-    public void save(SharedPreferences.Editor editor) throws MessagingException {
+    public void save(StorageEditor editor) throws MessagingException {
         String id = getPrefId();
 
         // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
@@ -595,10 +596,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public void refresh(String name, PreferencesHolder prefHolder) {
         String id = getPrefId(name);
 
-        SharedPreferences preferences = this.localStore.getPreferences();
+        Storage storage = this.localStore.getStorage();
 
         try {
-            prefHolder.displayClass = FolderClass.valueOf(preferences.getString(id + ".displayMode",
+            prefHolder.displayClass = FolderClass.valueOf(storage.getString(id + ".displayMode",
                                       prefHolder.displayClass.name()));
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Unable to load displayMode for " + getName(), e);
@@ -608,7 +609,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         try {
-            prefHolder.syncClass = FolderClass.valueOf(preferences.getString(id  + ".syncMode",
+            prefHolder.syncClass = FolderClass.valueOf(storage.getString(id  + ".syncMode",
                                    prefHolder.syncClass.name()));
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Unable to load syncMode for " + getName(), e);
@@ -619,7 +620,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         try {
-            prefHolder.notifyClass = FolderClass.valueOf(preferences.getString(id  + ".notifyMode",
+            prefHolder.notifyClass = FolderClass.valueOf(storage.getString(id  + ".notifyMode",
                                    prefHolder.notifyClass.name()));
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Unable to load notifyMode for " + getName(), e);
@@ -629,7 +630,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         try {
-            prefHolder.pushClass = FolderClass.valueOf(preferences.getString(id  + ".pushMode",
+            prefHolder.pushClass = FolderClass.valueOf(storage.getString(id  + ".pushMode",
                                    prefHolder.pushClass.name()));
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Unable to load pushMode for " + getName(), e);
@@ -637,8 +638,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         if (prefHolder.pushClass == FolderClass.NONE) {
             prefHolder.pushClass = FolderClass.INHERITED;
         }
-        prefHolder.inTopGroup = preferences.getBoolean(id + ".inTopGroup", prefHolder.inTopGroup);
-        prefHolder.integrate = preferences.getBoolean(id + ".integrate", prefHolder.integrate);
+        prefHolder.inTopGroup = storage.getBoolean(id + ".inTopGroup", prefHolder.inTopGroup);
+        prefHolder.integrate = storage.getBoolean(id + ".integrate", prefHolder.integrate);
     }
 
     @Override
@@ -872,12 +873,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    @Override
     public List<LocalMessage> getMessages(MessageRetrievalListener<LocalMessage> listener) throws MessagingException {
         return getMessages(listener, true);
     }
 
-    @Override
     public List<LocalMessage> getMessages(final MessageRetrievalListener<LocalMessage> listener,
             final boolean includeDeleted) throws MessagingException {
         try {
@@ -904,9 +903,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    @Override
     public List<LocalMessage> getMessages(String[] uids, MessageRetrievalListener<LocalMessage> listener)
-    throws MessagingException {
+            throws MessagingException {
         open(OPEN_MODE_RW);
         if (uids == null) {
             return getMessages(listener);
@@ -2038,7 +2036,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     // Note: The contents of the 'message_parts' table depend on these values.
-    private static class MessagePartType {
+    static class MessagePartType {
         static final int UNKNOWN = 0;
         static final int ALTERNATIVE_PLAIN = 1;
         static final int ALTERNATIVE_HTML = 2;
