@@ -653,7 +653,6 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
     public List<? extends Message> appendWebDavMessages(List<? extends Message> messages) throws MessagingException {
         List<Message> retMessages = new ArrayList<Message>(messages.size());
-        int ind = 0;
 
         WebDavHttpClient httpclient = store.getHttpClient();
 
@@ -707,7 +706,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 WebDavMessage retMessage = new WebDavMessage(message.getUid(), this);
 
                 retMessage.setUrl(messageURL);
-                retMessages.set(ind++, retMessage);
+                retMessages.add(retMessage);
             } catch (Exception e) {
                 throw new MessagingException("Unable to append", e);
             }
