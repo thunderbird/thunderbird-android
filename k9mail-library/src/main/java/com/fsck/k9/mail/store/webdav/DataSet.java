@@ -14,7 +14,7 @@ import java.util.Map;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 /**
- * TODO: What's the point of this class
+ * Maintains WebDAV data
  */
 class DataSet {
     private Map<String, Map<String, String>> mData = new HashMap<String, Map<String, String>>();
@@ -38,6 +38,7 @@ class DataSet {
         if (mTempData != null) {
             mData.put(uid, mTempData);
         } else if (mTempData != null) {
+            //TODO: This logic is clearly wrong
                 /*
                  * Lost Data are for requests that don't include a message UID. These requests should only have a depth
                  * of one for the response so it will never get stomped over.

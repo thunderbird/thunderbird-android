@@ -1,9 +1,5 @@
 package com.fsck.k9.mail.store.webdav;
 
-/**
- * Created by philip on 05/03/2016.
- */
-
 import android.util.Log;
 
 import com.fsck.k9.mail.FetchProfile;
@@ -64,7 +60,6 @@ class WebDavFolder extends Folder<WebDavMessage> {
         buildFolderUrl();
     }
 
-    //TODO: This is just generally terrible
     private void buildFolderUrl() {
         String encodedName;
         String[] urlParts = this.mName.split("/");
