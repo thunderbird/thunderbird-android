@@ -16,6 +16,13 @@ public enum AuthType {
     CRAM_MD5,
     EXTERNAL,
 
+    /**
+     * XOAUTH2 is an OAuth2.0 protocol designed/used by GMail.
+     *
+     * https://developers.google.com/gmail/xoauth2_protocol#the_sasl_xoauth2_mechanism
+     */
+    XOAUTH2,
+
     /*
      * The following are obsolete authentication settings that were used with
      * SMTP. They are no longer presented to the user as options, but they may

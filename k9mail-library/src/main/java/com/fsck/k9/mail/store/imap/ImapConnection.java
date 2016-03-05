@@ -316,6 +316,13 @@ class ImapConnection {
     @SuppressWarnings("EnumSwitchStatementWhichMissesCases")
     private void authenticate() throws MessagingException, IOException {
         switch (settings.getAuthType()) {
+            case XOAUTH2:
+                if (hasCapability(Capabilities.AUTH_XOAUTH2) && hasCapability(Capabilities.SASL_IR)) {
+                    authXoauth2withSASLIR();
+                } else {
+                    throw new MessagingException("Server doesn't support SASL XOAUTH2.");
+                }
+                break;
             case CRAM_MD5: {
                 if (hasCapability(Capabilities.AUTH_CRAM_MD5)) {
                     authCramMD5();
@@ -347,6 +354,18 @@ class ImapConnection {
             default: {
                 throw new MessagingException("Unhandled authentication method found in the server settings (bug).");
             }
+        }
+    }
+
+    private void authXoauth2withSASLIR() throws IOException, MessagingException {
+        String command = Commands.AUTHENTICATE_XOAUTH2;
+        String tag = sendSaslIrCommand(command,
+                Authentication.computeXoauth(settings.getUsername(), settings.getPassword()), false);
+
+        try {
+            extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
+        } catch (NegativeImapResponseException e) {
+            throw new AuthenticationFailedException(e.getMessage());
         }
     }
 
@@ -624,6 +643,31 @@ class ImapConnection {
     public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
             throws IOException, NegativeImapResponseException {
         return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+    }
+
+    public String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
+    throws IOException, MessagingException {
+        try {
+            open();
+
+            String tag = Integer.toString(nextCommandTag++);
+            String commandToSend = tag + " " + command + " " + initialClientResponse+ "\r\n";
+            outputStream.write(commandToSend.getBytes());
+            outputStream.flush();
+
+//            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+//                if (sensitive && !K9MailLib.isDebugSensitive()) {
+//                    Log.v(LOG_TAG, getLogId() + ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
+//                } else {
+                    System.out.println(LOG_TAG+": "+ getLogId() + ">>> " + tag + " " + command+ " " + initialClientResponse);
+//                }
+//            }
+
+            return tag;
+        } catch (IOException | MessagingException e) {
+            close();
+            throw e;
+        }
     }
 
     public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {

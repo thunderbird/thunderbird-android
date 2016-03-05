@@ -254,6 +254,23 @@ public class ImapConnectionTest {
     }
 
     @Test
+    public void open_authXoauthWithSaslIr() throws Exception {
+        settings.setAuthType(AuthType.XOAUTH2);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
+        server.expect("2 AUTHENTICATE XOAUTH2 "+ByteString.encodeUtf8(
+                "user=user\001auth=Bearer 123456\001\001"
+        ).base64());
+        server.output("2 OK Success");
+        simplePostAuthenticationDialog(server);
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+        imapConnection.open();
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+
+    }
+
+    @Test
     public void open_authExternal() throws Exception {
         settings.setAuthType(AuthType.EXTERNAL);
         MockImapServer server = new MockImapServer();

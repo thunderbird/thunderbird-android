@@ -1,5 +1,6 @@
 package com.fsck.k9.mail;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 
 import com.fsck.k9.mail.filter.Base64;
@@ -81,5 +82,11 @@ public class Authentication {
         } catch (Exception e) {
             throw new MessagingException("Something went wrong during CRAM-MD5 computation", e);
         }
+    }
+
+    public static String computeXoauth(String username, String authToken) throws UnsupportedEncodingException {
+        return new String(Base64.encodeBase64(
+                ("user="+username+"\001auth=Bearer "+authToken+"\001\001").getBytes()
+        ),US_ASCII);
     }
 }
