@@ -28,7 +28,7 @@ public final class TrustManagerFactory {
 
 
     private static class SecureX509TrustManager implements X509TrustManager {
-        private static final Map<String, SecureX509TrustManager> mTrustManager =
+        private static final Map<String, SecureX509TrustManager> TRUST_MANAGERS =
             new HashMap<String, SecureX509TrustManager>();
 
         private final String mHost;
@@ -39,14 +39,14 @@ public final class TrustManagerFactory {
             mPort = port;
         }
 
-        public synchronized static X509TrustManager getInstance(String host, int port) {
+        public static synchronized X509TrustManager getInstance(String host, int port) {
             String key = host + ":" + port;
             SecureX509TrustManager trustManager;
-            if (mTrustManager.containsKey(key)) {
-                trustManager = mTrustManager.get(key);
+            if (TRUST_MANAGERS.containsKey(key)) {
+                trustManager = TRUST_MANAGERS.get(key);
             } else {
                 trustManager = new SecureX509TrustManager(host, port);
-                mTrustManager.put(key, trustManager);
+                TRUST_MANAGERS.put(key, trustManager);
             }
 
             return trustManager;

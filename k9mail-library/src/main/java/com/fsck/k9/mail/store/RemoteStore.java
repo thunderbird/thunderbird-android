@@ -37,7 +37,7 @@ public abstract class RemoteStore extends Store {
     /**
      * Get an instance of a remote mail store.
      */
-    public synchronized static Store getInstance(Context context,
+    public static synchronized Store getInstance(Context context,
                                                  StoreConfig storeConfig) throws MessagingException {
         String uri = storeConfig.getStoreUri();
 

@@ -1049,7 +1049,9 @@ class ImapFolder extends Folder<ImapMessage> {
 //                  contains, immediately after the basic fields, the
 //                  envelope structure, body structure, and size in
 //                  text lines of the encapsulated message.
-//                    [MESSAGE, RFC822, [NAME, Fwd: [#HTR-517941]:  update plans at 1am Friday - Memory allocation - displayware.eml], NIL, NIL, 7BIT, 5974, NIL, [INLINE, [FILENAME*0, Fwd: [#HTR-517941]:  update plans at 1am Friday - Memory all, FILENAME*1, ocation - displayware.eml]], NIL]
+//                    [MESSAGE, RFC822, [NAME, Fwd: [#HTR-517941]:  update plans at 1am Friday - Memory allocation - displayware.eml],
+//                      NIL, NIL, 7BIT, 5974, NIL, [INLINE, [FILENAME*0,
+//                      Fwd: [#HTR-517941]:  update plans at 1am Friday - Memory all, FILENAME*1, ocation - displayware.eml]], NIL]
                 /*
                  * This will be caught by fetch and handled appropriately.
                  */

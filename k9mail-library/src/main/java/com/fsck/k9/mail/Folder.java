@@ -15,8 +15,8 @@ public abstract class Folder<T extends Message> {
     private long lastChecked = 0;
     private long lastPush = 0;
 
-    public static final int OPEN_MODE_RW=0;
-    public static final int OPEN_MODE_RO=1;
+    public static final int OPEN_MODE_RW = 0;
+    public static final int OPEN_MODE_RO = 1;
 
     // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
     public enum FolderClass {
@@ -85,7 +85,8 @@ public abstract class Folder<T extends Message> {
      * @return List of messages
      * @throws MessagingException
      */
-    public abstract List<T> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<T> listener) throws MessagingException;
+    public abstract List<T> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<T> listener)
+    throws MessagingException;
 
     public abstract boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate)
             throws IOException, MessagingException;
@@ -114,8 +115,8 @@ public abstract class Folder<T extends Message> {
 
     public abstract String getUidFromMessageId(Message message) throws MessagingException;
 
-    public void expunge() throws MessagingException
-        {}
+    public void expunge() throws MessagingException {
+    }
 
     /**
      * Populate a list of messages based upon a FetchProfile.  See {@link FetchProfile} for the things that can
@@ -133,8 +134,9 @@ public abstract class Folder<T extends Message> {
         // This is causing trouble. Disabled for now. See issue 1733
         //throw new RuntimeException("fetchPart() not implemented.");
 
-        if (K9MailLib.isDebug())
+        if (K9MailLib.isDebug()) {
             Log.d(LOG_TAG, "fetchPart() not implemented.");
+        }
     }
 
     public abstract void delete(boolean recurse) throws MessagingException;
