@@ -4534,10 +4534,11 @@ public class MessagingController implements Runnable {
                     String rootMessage = getRootCauseMessage(e);
                     String errorMessage = "Push failed: " + rootMessage;
                     try {
-                        // Oddly enough, using a local variable gets rid of a
-                        // potential null pointer access warning with Eclipse.
-                        LocalFolder folder = localFolder;
-                        folder.setStatus(errorMessage);
+                        if(localFolder != null) {
+                            localFolder.setStatus(errorMessage);
+                        } else {
+                            Log.e(K9.LOG_TAG, "Unable to set failed status on localFolder - failed to retrieve localFolder from store", e);
+                        }
                     } catch (Exception se) {
                         Log.e(K9.LOG_TAG, "Unable to set failed status on localFolder", se);
                     }
