@@ -21,8 +21,8 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
+import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.Utility;
@@ -534,27 +534,20 @@ public class RecipientPresenter implements PermissionPingCallback {
         return hasContactPicker;
     }
 
-    public boolean canSendOrError(boolean isDraft) {
-        if (isDraft) {
-            return true;
+    public void showPgpSendError(SendErrorState sendErrorState) {
+        switch (sendErrorState) {
+            case PROVIDER_ERROR:
+                recipientMvpView.showErrorOpenPgpConnection();
+                break;
+            case SIGN_KEY_NOT_CONFIGURED:
+                recipientMvpView.showErrorMissingSignKey();
+                break;
+            case PRIVATE_BUT_MISSING_KEYS:
+                recipientMvpView.showErrorPrivateButMissingKeys();
+                break;
+            default:
+                throw new AssertionError("not all error states handled, this is a bug!");
         }
-
-        ComposeCryptoStatus cryptoStatus = getCurrentCryptoStatus();
-        if (cryptoStatus.isPgpErrorState()) {
-            // TODO: be more specific about this error
-            recipientMvpView.showErrorOpenPgpConnection();
-            return false;
-        }
-        if (cryptoStatus.isMissingSignKey()) {
-            recipientMvpView.showErrorMissingSignKey();
-            return false;
-        }
-        if (cryptoStatus.isPrivateAndIncomplete()) {
-            recipientMvpView.showErrorPrivateButMissingKeys();
-            return false;
-        }
-
-        return true;
     }
 
     public void onCryptoProviderBound() {

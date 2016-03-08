@@ -65,6 +65,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
+import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.CryptoSettingsDialog.OnCryptoModeChangedListener;
 import com.fsck.k9.activity.compose.RecipientMvpView;
 import com.fsck.k9.activity.compose.RecipientPresenter;
@@ -986,13 +987,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private MessageBuilder createMessageBuilder(boolean isDraft) {
         MessageBuilder builder;
 
-        if (!recipientPresenter.canSendOrError(isDraft)) {
-            return null;
-        }
-
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
         // TODO encrypt drafts for storage
         if(!isDraft && cryptoStatus.shouldUsePgpMessageBuilder()) {
+            SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
+            if (maybeSendErrorState != null) {
+                recipientPresenter.showPgpSendError(maybeSendErrorState);
+                return null;
+            }
+
             PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), getOpenPgpApi());
             pgpBuilder.setCryptoStatus(cryptoStatus);
             builder = pgpBuilder;

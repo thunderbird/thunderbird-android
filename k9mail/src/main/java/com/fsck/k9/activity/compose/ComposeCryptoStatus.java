@@ -2,7 +2,6 @@ package com.fsck.k9.activity.compose;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
@@ -73,10 +72,6 @@ public class ComposeCryptoStatus {
         }
     }
 
-    public boolean isPgpErrorState() {
-        return cryptoMode == CryptoMode.ERROR;
-    }
-
     public boolean shouldUsePgpMessageBuilder() {
         return cryptoMode == CryptoMode.PRIVATE || cryptoMode == CryptoMode.OPPORTUNISTIC
                 || cryptoMode == CryptoMode.SIGN_ONLY;
@@ -88,14 +83,6 @@ public class ComposeCryptoStatus {
 
     public boolean isSigningEnabled() {
         return cryptoMode != CryptoMode.DISABLE && signingKeyId != null;
-    }
-
-    public boolean isMissingSignKey() {
-        return signingKeyId == null;
-    }
-
-    public boolean isPrivateAndIncomplete() {
-        return cryptoMode == CryptoMode.PRIVATE && !allKeysAvailable;
     }
 
 
@@ -160,6 +147,28 @@ public class ComposeCryptoStatus {
             result.selfEncryptKeyId = selfEncryptKeyId;
             return result;
         }
+    }
+
+    public enum SendErrorState {
+        PROVIDER_ERROR, SIGN_KEY_NOT_CONFIGURED, PRIVATE_BUT_MISSING_KEYS
+    }
+
+    public SendErrorState getSendErrorStateOrNull() {
+        boolean isPgpErrorState = cryptoMode == CryptoMode.ERROR;
+        if (isPgpErrorState) {
+            // TODO: be more specific about this error
+            return SendErrorState.PROVIDER_ERROR;
+        }
+        boolean isSignKeyMissing = signingKeyId == null;
+        if (isSignKeyMissing) {
+            return SendErrorState.SIGN_KEY_NOT_CONFIGURED;
+        }
+        boolean isPrivateModeAndNotAllKeysAvailable = cryptoMode == CryptoMode.PRIVATE && !allKeysAvailable;
+        if (isPrivateModeAndNotAllKeysAvailable) {
+            return SendErrorState.PRIVATE_BUT_MISSING_KEYS;
+        }
+
+        return null;
     }
 
 }
