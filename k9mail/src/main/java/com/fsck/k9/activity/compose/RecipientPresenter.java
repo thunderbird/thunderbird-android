@@ -39,6 +39,8 @@ import org.openintents.openpgp.util.OpenPgpApi.PermissionPingCallback;
 public class RecipientPresenter implements PermissionPingCallback {
     private static final String STATE_KEY_CC_SHOWN = "state:ccShown";
     private static final String STATE_KEY_BCC_SHOWN = "state:bccShown";
+    private static final String STATE_KEY_LAST_FOCUSED_TYPE = "state:lastFocusedType";
+    private static final String STATE_KEY_CURRENT_CRYPTO_MODE = "key:initialOrFormerCryptoMode";
 
     private static final int CONTACT_PICKER_TO = 1;
     private static final int CONTACT_PICKER_CC = 2;
@@ -46,15 +48,20 @@ public class RecipientPresenter implements PermissionPingCallback {
     private static final int OPENPGP_USER_INTERACTION = 4;
 
 
+    // transient state, which is either obtained during construction and initialization, or cached
     private final Context context;
     private final RecipientMvpView recipientMvpView;
     private Account account;
     private String cryptoProvider;
-    private RecipientType lastFocusedType = RecipientType.TO;
     private Boolean hasContactPicker;
-    private CryptoMode currentCryptoMode = CryptoMode.UNINITIALIZED;
     private ComposeCryptoStatus currentCryptoStatus;
     private PendingIntent pendingUserInteractionIntent;
+    private CryptoProviderState cryptoProviderState = CryptoProviderState.UNINITIALIZED;
+
+    // persistent state, saved during onSaveInstanceState
+    private RecipientType lastFocusedType = RecipientType.TO;
+    // TODO initialize cryptoMode to other values under some circumstances, e.g. if we reply to an encrypted e-mail
+    private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
 
 
     public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account) {
@@ -185,12 +192,16 @@ public class RecipientPresenter implements PermissionPingCallback {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         recipientMvpView.setCcVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN));
         recipientMvpView.setBccVisibility(savedInstanceState.getBoolean(STATE_KEY_BCC_SHOWN));
+        lastFocusedType = RecipientType.valueOf(savedInstanceState.getString(STATE_KEY_LAST_FOCUSED_TYPE));
+        currentCryptoMode = CryptoMode.valueOf(savedInstanceState.getString(STATE_KEY_CURRENT_CRYPTO_MODE));
         updateRecipientExpanderVisibility();
     }
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean(STATE_KEY_CC_SHOWN, recipientMvpView.isCcVisible());
         outState.putBoolean(STATE_KEY_BCC_SHOWN, recipientMvpView.isBccVisible());
+        outState.putString(STATE_KEY_LAST_FOCUSED_TYPE, lastFocusedType.toString());
+        outState.putString(STATE_KEY_CURRENT_CRYPTO_MODE, currentCryptoMode.toString());
     }
 
     public void initFromDraftMessage(LocalMessage message) {
@@ -323,6 +334,7 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     public void updateCryptoStatus() {
         ComposeCryptoStatusBuilder builder =  new ComposeCryptoStatusBuilder()
+            .setCryptoProviderState(cryptoProviderState)
             .setCryptoMode(currentCryptoMode)
             .setRecipients(getAllRecipients());
 
@@ -502,17 +514,17 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void onClickCryptoStatus() {
-        if (currentCryptoMode == CryptoMode.ERROR) {
-            if (pendingUserInteractionIntent != null) {
-                recipientMvpView
-                        .launchUserInteractionPendingIntent(pendingUserInteractionIntent, OPENPGP_USER_INTERACTION);
-                pendingUserInteractionIntent = null;
-            } else {
-                recipientMvpView.checkOpenPgpServicePermission(this);
-            }
+        if (cryptoProviderState == CryptoProviderState.OK) {
+            recipientMvpView.showCryptoDialog(currentCryptoMode);
             return;
         }
-        recipientMvpView.showCryptoDialog(currentCryptoMode);
+        if (pendingUserInteractionIntent != null) {
+            recipientMvpView
+                    .launchUserInteractionPendingIntent(pendingUserInteractionIntent, OPENPGP_USER_INTERACTION);
+            pendingUserInteractionIntent = null;
+        } else {
+            recipientMvpView.checkOpenPgpServicePermission(this);
+        }
     }
 
     /**
@@ -557,7 +569,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     public void onCryptoProviderError(Exception e) {
         // TODO handle error case better
         recipientMvpView.showErrorOpenPgpConnection();
-        currentCryptoMode = CryptoMode.ERROR;
+        cryptoProviderState = CryptoProviderState.ERROR;
         Log.e(K9.LOG_TAG, "error connecting to crypto provider!", e);
         updateCryptoStatus();
     }
@@ -567,33 +579,34 @@ public class RecipientPresenter implements PermissionPingCallback {
         int resultCode = result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
         switch (resultCode) {
             case OpenPgpApi.RESULT_CODE_SUCCESS:
-                if (currentCryptoMode == CryptoMode.UNINITIALIZED || currentCryptoMode == CryptoMode.ERROR) {
-                    // TODO initialize to other values under some circumstances, e.g. if we reply to an encrypted e-mail
-                    currentCryptoMode = CryptoMode.OPPORTUNISTIC;
-                }
+                cryptoProviderState = CryptoProviderState.OK;
                 break;
 
             case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
                 recipientMvpView.showErrorOpenPgpUserInteractionRequired();
                 pendingUserInteractionIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-                currentCryptoMode = CryptoMode.ERROR;
+                cryptoProviderState = CryptoProviderState.ERROR;
                 break;
 
             case OpenPgpApi.RESULT_CODE_ERROR:
             default:
                 recipientMvpView.showErrorOpenPgpConnection();
-                currentCryptoMode = CryptoMode.ERROR;
+                cryptoProviderState = CryptoProviderState.ERROR;
                 break;
         }
         updateCryptoStatus();
     }
 
-    public enum CryptoMode {
+    public enum CryptoProviderState {
         UNINITIALIZED,
+        ERROR,
+        OK
+    }
+
+    public enum CryptoMode {
         DISABLE,
         SIGN_ONLY,
         OPPORTUNISTIC,
         PRIVATE,
-        ERROR,
     }
 }
