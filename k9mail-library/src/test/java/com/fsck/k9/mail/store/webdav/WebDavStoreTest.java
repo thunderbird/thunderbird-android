@@ -1,7 +1,5 @@
 package com.fsck.k9.mail.store.webdav;
 
-import android.net.http.HttpResponseCache;
-
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
@@ -217,8 +215,6 @@ public class WebDavStoreTest {
                 .thenThrow(new SSLException("Test"));
         webDavStore.checkSettings();
     }
-
-
 
     @Test
     public void registers_https_scheme_with_registry_when_creating_client() throws IOException, MessagingException {
