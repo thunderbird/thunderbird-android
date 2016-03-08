@@ -52,6 +52,7 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
  * </pre>
  */
 public class WebDavStore extends RemoteStore {
+
     /**
      * Decodes a WebDavStore URI.
      *
@@ -151,6 +152,7 @@ public class WebDavStore extends RemoteStore {
                 null, alias, path, authPath, mailboxPath);
     }
 
+
     /**
      * Creates a WebDavStore URI with the supplied settings.
      *
@@ -213,6 +215,7 @@ public class WebDavStore extends RemoteStore {
     private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
     private String mMailboxPath; /* Stores the user specified path to the mailbox */
 
+    private final WebDavHttpClient.WebDavHttpClientFactory mHttpClientFactory;
     private WebDavHttpClient mHttpClient = null;
     private HttpContext mContext = null;
     private String mAuthString;
@@ -223,12 +226,14 @@ public class WebDavStore extends RemoteStore {
     private Folder mSendFolder = null;
     private Map<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
-    public WebDavStore(StoreConfig storeConfig) throws MessagingException {
+    public WebDavStore(StoreConfig storeConfig, WebDavHttpClient.WebDavHttpClientFactory clientFactory)
+    throws MessagingException {
         super(storeConfig, null);
+        mHttpClientFactory = clientFactory;
 
         WebDavStoreSettings settings;
         try {
-            settings = decodeUri(storeConfig.getStoreUri());
+            settings = WebDavStore.decodeUri(storeConfig.getStoreUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding store URI", e);
         }
@@ -637,7 +642,7 @@ public class WebDavStore extends RemoteStore {
                     request.setMethod("GET");
                     request.setHeader("Authorization", mAuthString);
 
-                    WebDavHttpClient httpClient = new WebDavHttpClient();
+                    WebDavHttpClient httpClient = getHttpClient();
                     HttpResponse response = httpClient.executeOverride(request, mContext);
 
                     int statusCode = response.getStatusLine().getStatusCode();
@@ -745,7 +750,7 @@ public class WebDavStore extends RemoteStore {
     public void doFBA(ConnectionInfo info)
     throws IOException, MessagingException {
         // Clear out cookies from any previous authentication.
-        mAuthCookies.clear();
+        if(mAuthCookies != null) mAuthCookies.clear();
 
         WebDavHttpClient httpClient = getHttpClient();
 
@@ -887,7 +892,6 @@ public class WebDavStore extends RemoteStore {
     throws MessagingException {
         boolean authenticated = false;
         int statusCode = response.getStatusLine().getStatusCode();
-
         // Exchange 2007 will return a 302 status code no matter what.
         if (((statusCode >= 200 && statusCode < 300) || statusCode == 302) &&
                 mAuthCookies != null && !mAuthCookies.getCookies().isEmpty()) {
@@ -949,7 +953,7 @@ public class WebDavStore extends RemoteStore {
 
     public WebDavHttpClient getHttpClient() throws MessagingException {
         if (mHttpClient == null) {
-            mHttpClient = new WebDavHttpClient();
+            mHttpClient = mHttpClientFactory.create();
             // Disable automatic redirects on the http client.
             mHttpClient.getParams().setBooleanParameter("http.protocol.handle-redirects", false);
 

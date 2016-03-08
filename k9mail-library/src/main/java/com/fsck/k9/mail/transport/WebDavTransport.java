@@ -9,6 +9,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.StoreConfig;
+import com.fsck.k9.mail.store.webdav.WebDavHttpClient;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
 
 import java.util.Collections;
@@ -45,7 +46,7 @@ public class WebDavTransport extends Transport {
     private WebDavStore store;
 
     public WebDavTransport(StoreConfig storeConfig) throws MessagingException {
-        store = new WebDavStore(storeConfig);
+        store = new WebDavStore(storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
 
         if (K9MailLib.isDebug())
             Log.d(LOG_TAG, ">>> New WebDavTransport creation complete");
