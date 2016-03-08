@@ -83,11 +83,10 @@ class WebDavMessage extends MimeMessage {
     public void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
         String[] headers = envelope.getHeaderList();
         Map<String, String> messageHeaders = envelope.getMessageHeaders();
-
         for (String header : headers) {
             String headerValue = messageHeaders.get(header);
             if (header.equals("Content-Length")) {
-                int size = Integer.parseInt(messageHeaders.get(header));
+                int size = Integer.parseInt(headerValue);
                 this.setSize(size);
             }
 
