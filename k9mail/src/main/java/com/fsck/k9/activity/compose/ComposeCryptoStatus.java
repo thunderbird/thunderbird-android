@@ -87,7 +87,7 @@ public class ComposeCryptoStatus {
     }
 
     public boolean shouldUsePgpMessageBuilder() {
-        return cryptoMode != CryptoMode.DISABLE;
+        return cryptoProviderState != CryptoProviderState.UNCONFIGURED && cryptoMode != CryptoMode.DISABLE;
     }
 
     public boolean isEncryptionEnabled() {
