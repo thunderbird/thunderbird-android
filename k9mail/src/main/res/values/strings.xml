@@ -908,7 +908,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="miscellaneous_preferences">Miscellaneous</string>
 
     <string name="error_activity_not_found">No suitable application for this action found.</string>
-    <string name="send_aborted">Send aborted.</string>
+    <string name="send_failed_reason">Send failed: %s</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>

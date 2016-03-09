@@ -2995,7 +2995,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onMessageBuildException(MessagingException me) {
         Log.e(K9.LOG_TAG, "Error sending message", me);
-        Toast.makeText(MessageCompose.this, getString(R.string.send_aborted), Toast.LENGTH_LONG).show();
+        Toast.makeText(MessageCompose.this,
+                getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
     }
