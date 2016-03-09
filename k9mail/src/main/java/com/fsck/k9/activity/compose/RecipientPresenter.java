@@ -32,8 +32,11 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
+import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.PermissionPingCallback;
+import org.openintents.openpgp.util.OpenPgpServiceConnection;
+import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
 public class RecipientPresenter implements PermissionPingCallback {
@@ -56,7 +59,9 @@ public class RecipientPresenter implements PermissionPingCallback {
     private Boolean hasContactPicker;
     private ComposeCryptoStatus currentCryptoStatus;
     private PendingIntent pendingUserInteractionIntent;
-    private CryptoProviderState cryptoProviderState = CryptoProviderState.UNINITIALIZED;
+    private CryptoProviderState cryptoProviderState = CryptoProviderState.UNCONFIGURED;
+    private OpenPgpServiceConnection mOpenPgpServiceConnection;
+
 
     // persistent state, saved during onSaveInstanceState
     private RecipientType lastFocusedType = RecipientType.TO;
@@ -261,8 +266,8 @@ public class RecipientPresenter implements PermissionPingCallback {
             updateRecipientExpanderVisibility();
         }
 
-        cryptoProvider = account.getOpenPgpProvider();
-        recipientMvpView.setCryptoProvider(cryptoProvider);
+        String cryptoProvider = account.getOpenPgpProvider();
+        setCryptoProvider(cryptoProvider);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -474,7 +479,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 addRecipientFromContactUri(recipientType, data.getData());
                 break;
             case OPENPGP_USER_INTERACTION:
-                recipientMvpView.checkOpenPgpServicePermission(this);
+                cryptoProviderBindOrCheckPermission();
                 break;
         }
     }
@@ -514,16 +519,17 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void onClickCryptoStatus() {
-        if (cryptoProviderState == CryptoProviderState.OK) {
-            recipientMvpView.showCryptoDialog(currentCryptoMode);
-            return;
-        }
-        if (pendingUserInteractionIntent != null) {
-            recipientMvpView
-                    .launchUserInteractionPendingIntent(pendingUserInteractionIntent, OPENPGP_USER_INTERACTION);
-            pendingUserInteractionIntent = null;
-        } else {
-            recipientMvpView.checkOpenPgpServicePermission(this);
+        switch (cryptoProviderState) {
+            case UNCONFIGURED:
+                Log.e(K9.LOG_TAG, "click on crypto status while unconfigured - this should not really happen?!");
+                return;
+            case OK:
+                recipientMvpView.showCryptoDialog(currentCryptoMode);
+                return;
+
+            case UNINITIALIZED:
+            case ERROR:
+                cryptoProviderBindOrCheckPermission();
         }
     }
 
@@ -562,11 +568,63 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
-    public void onCryptoProviderBound() {
-        recipientMvpView.checkOpenPgpServicePermission(this);
+    private void setCryptoProvider(String cryptoProvider) {
+
+        boolean providerIsBound = mOpenPgpServiceConnection != null && mOpenPgpServiceConnection.isBound();
+        // noinspection StringEquality, we check for null-state here
+        boolean isSameProvider = cryptoProvider != this.cryptoProvider && cryptoProvider.equals(this.cryptoProvider);
+        if (isSameProvider && providerIsBound) {
+            cryptoProviderBindOrCheckPermission();
+            return;
+        }
+
+        if (providerIsBound) {
+            mOpenPgpServiceConnection.unbindFromService();
+            mOpenPgpServiceConnection = null;
+        }
+
+        this.cryptoProvider = cryptoProvider;
+
+        if (cryptoProvider == null) {
+            cryptoProviderState = CryptoProviderState.UNCONFIGURED;
+            return;
+        }
+
+        cryptoProviderState = CryptoProviderState.UNINITIALIZED;
+        mOpenPgpServiceConnection = new OpenPgpServiceConnection(context, cryptoProvider, new OnBound() {
+            @Override
+            public void onBound(IOpenPgpService2 service) {
+                cryptoProviderBindOrCheckPermission();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                onCryptoProviderError(e);
+            }
+        });
+        cryptoProviderBindOrCheckPermission();
+
+        recipientMvpView.setCryptoProvider(cryptoProvider);
     }
 
-    public void onCryptoProviderError(Exception e) {
+    private void cryptoProviderBindOrCheckPermission() {
+        if (!mOpenPgpServiceConnection.isBound()) {
+            pendingUserInteractionIntent = null;
+            mOpenPgpServiceConnection.bindToService();
+            return;
+        }
+
+        if (pendingUserInteractionIntent != null) {
+            recipientMvpView
+                    .launchUserInteractionPendingIntent(pendingUserInteractionIntent, OPENPGP_USER_INTERACTION);
+            pendingUserInteractionIntent = null;
+            return;
+        }
+
+        getOpenPgpApi().checkPermissionPing(this);
+    }
+
+    private void onCryptoProviderError(Exception e) {
         // TODO handle error case better
         recipientMvpView.showErrorOpenPgpConnection();
         cryptoProviderState = CryptoProviderState.ERROR;
@@ -597,7 +655,22 @@ public class RecipientPresenter implements PermissionPingCallback {
         updateCryptoStatus();
     }
 
+    public void onActivityDestroy() {
+        if (mOpenPgpServiceConnection != null && mOpenPgpServiceConnection.isBound()) {
+            mOpenPgpServiceConnection.unbindFromService();
+            mOpenPgpServiceConnection = null;
+        }
+    }
+
+    public OpenPgpApi getOpenPgpApi() {
+        if (mOpenPgpServiceConnection == null || !mOpenPgpServiceConnection.isBound()) {
+            Log.e(K9.LOG_TAG, "obtained openpgpapi object, but service is not bound! inconsistent state?");
+        }
+        return new OpenPgpApi(context, mOpenPgpServiceConnection.getService());
+    }
+
     public enum CryptoProviderState {
+        UNCONFIGURED,
         UNINITIALIZED,
         ERROR,
         OK

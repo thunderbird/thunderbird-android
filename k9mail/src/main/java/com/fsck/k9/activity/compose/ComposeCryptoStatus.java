@@ -44,10 +44,12 @@ public class ComposeCryptoStatus {
 
     public CryptoStatusDisplayType getCryptoStatusDisplayType() {
         switch (cryptoProviderState) {
-            case ERROR:
-                return CryptoStatusDisplayType.ERROR;
+            case UNCONFIGURED:
+                return CryptoStatusDisplayType.UNCONFIGURED;
             case UNINITIALIZED:
                 return CryptoStatusDisplayType.UNINITIALIZED;
+            case ERROR:
+                return CryptoStatusDisplayType.ERROR;
             case OK:
                 // provider status is ok -> return value is based on cryptoMode
                 break;

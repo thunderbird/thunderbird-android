@@ -296,9 +296,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private MessageWebView mQuotedHTML;
     private InsertableHtmlContent mQuotedHtmlContent;   // Container for HTML reply as it's being built.
 
-    private String mOpenPgpProvider;
-    private OpenPgpServiceConnection mOpenPgpServiceConnection;
-
     private String mReferences;
     private String mInReplyTo;
 
@@ -696,26 +693,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mMessageReference = mMessageReference.withModifiedFlag(Flag.FORWARDED);
         }
 
-        mOpenPgpProvider = mAccount.getOpenPgpProvider();
-        if (isCryptoProviderEnabled()) {
-//            attachKeyCheckBox = (CheckBox) findViewById(R.id.cb_attach_key);
-//            attachKeyCheckBox.setEnabled(mAccount.getCryptoKey() != 0);
-
-            mOpenPgpServiceConnection = new OpenPgpServiceConnection(this, mOpenPgpProvider, new OnBound() {
-                @Override
-                public void onBound(IOpenPgpService2 service) {
-                    recipientPresenter.onCryptoProviderBound();
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    recipientPresenter.onCryptoProviderError(e);
-                }
-            });
-            mOpenPgpServiceConnection.bindToService();
-
-            updateMessageFormat();
-        }
+        updateMessageFormat();
 
         // Set font size of input controls
         int fontSize = mFontSizes.getMessageComposeInput();
@@ -741,9 +719,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void onDestroy() {
         super.onDestroy();
 
-        if (mOpenPgpServiceConnection != null) {
-            mOpenPgpServiceConnection.unbindFromService();
-        }
+        recipientPresenter.onActivityDestroy();
     }
 
     /**
@@ -996,7 +972,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 return null;
             }
 
-            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), getOpenPgpApi());
+            OpenPgpApi openPgpApi = recipientPresenter.getOpenPgpApi();
+            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), openPgpApi);
             pgpBuilder.setCryptoStatus(cryptoStatus);
             builder = pgpBuilder;
         } else {
@@ -1286,10 +1263,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             onFetchAttachmentFinished();
         }
     };
-
-    public OpenPgpApi getOpenPgpApi() {
-        return new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
-    }
 
     private void onFetchAttachmentStarted() {
         mNumAttachmentsLoading += 1;
@@ -2984,10 +2957,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } catch (Exception e) {
             return "";
         }
-    }
-
-    private boolean isCryptoProviderEnabled() {
-        return mOpenPgpProvider != null;
     }
 
     @Override
