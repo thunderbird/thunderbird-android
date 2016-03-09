@@ -132,10 +132,15 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.from: {
-                onAddSenderToContacts();
+                onAddSenderToContacts(mMessage.getFrom()[0]);
                 break;
             }
             case R.id.to:
+                try {
+                    onAddSenderToContacts(mMessage.getRecipients(Message.RecipientType.TO)[0]);
+                } catch (MessagingException e) {
+                    System.out.println(e.getMessage());
+                }
             case R.id.cc: {
                 expand((TextView)view, ((TextView)view).getEllipsize() != null);
                 layoutChanged();
@@ -143,11 +148,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         }
     }
 
-    private void onAddSenderToContacts() {
+    private void onAddSenderToContacts(Address mail) {
         if (mMessage != null) {
             try {
-                final Address senderEmail = mMessage.getFrom()[0];
-                mContacts.createContact(senderEmail);
+                mContacts.createContact(mail);
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Couldn't create contact", e);
             }
