@@ -4,16 +4,25 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.store.StoreConfig;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.protocol.HttpContext;
+import org.apache.tools.ant.taskdefs.condition.Http;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
@@ -27,8 +36,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,7 +48,10 @@ import static org.mockito.Mockito.when;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -56,20 +71,30 @@ public class WebDavFolderTest {
     @Mock
     private WebDavHttpClient mockHttpClient;
     @Mock
+    private StoreConfig mockStoreConfig;
+    @Mock
     private HttpResponse mockHttpResponse;
     @Mock
     private StatusLine mockStatusLine;
 
     private WebDavFolder folder;
+    private File tempDirectory;
 
     @Before
     public void before() throws MessagingException, IOException {
         MockitoAnnotations.initMocks(this);
         when(mockStore.getUrl()).thenReturn("https://localhost/webDavStoreUrl");
         when(mockStore.getHttpClient()).thenReturn(mockHttpClient);
-        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenReturn(mockHttpResponse);
-        when(mockHttpResponse.getStatusLine()).thenReturn(mockStatusLine);
+        when(mockStore.getStoreConfig()).thenReturn(mockStoreConfig);
         folder = new WebDavFolder(mockStore, "testFolder");
+
+
+        tempDirectory = new File("temp");
+        if (!tempDirectory.exists()) {
+            assertTrue(tempDirectory.mkdir());
+            tempDirectory.deleteOnExit();
+        }
+        BinaryTempFileBody.setTempDirectory(new File("temp"));
     }
 
     private WebDavFolder setupDestinationFolder() {
@@ -150,6 +175,109 @@ public class WebDavFolderTest {
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.FLAGS);
         folder.fetch(messages, profile, listener);
+    }
+
+    @Test
+    public void folder_can_fetch_sensible_body_data_and_notifies_listener()
+    throws MessagingException, IOException, URISyntaxException {
+        setupStoreForMessageFetching();
+        List<WebDavMessage> messages = setup25MessagesToFetch();
+
+        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenAnswer(
+            new Answer<HttpResponse>() {
+                @Override
+                public HttpResponse answer(InvocationOnMock invocation) throws Throwable {
+                    HttpResponse httpResponse = mock(HttpResponse.class);
+                    StatusLine statusLine = mock(StatusLine.class);
+                    when(httpResponse.getStatusLine()).thenReturn(statusLine);
+                    when(statusLine.getStatusCode()).thenReturn(200);
+
+                    BasicHttpEntity httpEntity = new BasicHttpEntity();
+                    String body = "";
+                    httpEntity.setContent(new ByteArrayInputStream(body.getBytes("UTF-8")));
+                    when(httpResponse.getEntity()).thenReturn(httpEntity);
+                    return httpResponse;
+                }
+            });
+
+        FetchProfile profile = new FetchProfile();
+        profile.add(FetchProfile.Item.BODY_SANE);
+        folder.fetch(messages, profile, listener);
+        verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
+        verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
+    }
+
+    private void setupStoreForMessageFetching() {
+        String authString = "authString";
+        when(mockStoreConfig.getMaximumAutoDownloadMessageSize()).thenReturn(1900);
+        when(mockStore.getAuthentication()).thenReturn(WebDavConstants.AUTH_TYPE_BASIC);
+        when(mockStore.getAuthString()).thenReturn(authString);
+    }
+
+    private List<WebDavMessage> setup25MessagesToFetch() {
+
+        List<WebDavMessage> messages = new ArrayList<>();
+        for(int i = 0; i < 25; i++) {
+            WebDavMessage message = new WebDavMessage("message"+i, folder);
+            message.setUrl("http://example.org/Exchange/user/Inbox/message"+i+".EML");
+            messages.add(message);
+        }
+        return messages;
+    }
+
+    @Test
+    public void folder_can_handle_empty_response_to_body_request() throws MessagingException, IOException {
+        setupStoreForMessageFetching();
+        List<WebDavMessage> messages = setup25MessagesToFetch();
+
+        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenAnswer(
+            new Answer<HttpResponse>() {
+                @Override
+                public HttpResponse answer(InvocationOnMock invocation) throws Throwable {
+                    HttpResponse httpResponse = mock(HttpResponse.class);
+                    StatusLine statusLine = mock(StatusLine.class);
+                    when(httpResponse.getStatusLine()).thenReturn(statusLine);
+                    when(statusLine.getStatusCode()).thenReturn(200);
+                    return httpResponse;
+                }
+            });
+
+        FetchProfile profile = new FetchProfile();
+        profile.add(FetchProfile.Item.BODY_SANE);
+        folder.fetch(messages, profile, listener);
+        verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
+        verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
+    }
+
+    @Test
+    public void folder_ignores_exception_thrown_when_closing() throws MessagingException, IOException {
+        setupStoreForMessageFetching();
+        List<WebDavMessage> messages = setup25MessagesToFetch();
+
+        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenAnswer(
+            new Answer<HttpResponse>() {
+                @Override
+                public HttpResponse answer(InvocationOnMock invocation) throws Throwable {
+                    HttpResponse httpResponse = mock(HttpResponse.class);
+                    StatusLine statusLine = mock(StatusLine.class);
+                    when(httpResponse.getStatusLine()).thenReturn(statusLine);
+                    when(statusLine.getStatusCode()).thenReturn(200);
+
+                    BasicHttpEntity httpEntity = new BasicHttpEntity();
+                    InputStream mockInputStream = mock(InputStream.class);
+                    when(mockInputStream.read(any(byte[].class), anyInt(), anyInt())).thenReturn(1).thenReturn(-1);
+                    doThrow(new IOException("Test")).when(mockInputStream).close();
+                    httpEntity.setContent(mockInputStream);
+                    when(httpResponse.getEntity()).thenReturn(httpEntity);
+                    return httpResponse;
+                }
+            });
+
+        FetchProfile profile = new FetchProfile();
+        profile.add(FetchProfile.Item.BODY_SANE);
+        folder.fetch(messages, profile, listener);
+        verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
+        verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
     }
 
     @Test
@@ -254,7 +382,9 @@ public class WebDavFolderTest {
     }
 
     @Test
-    public void appendWebDavMessages_replaces_messages_with_WebDAV_versions() throws MessagingException {
+    public void appendWebDavMessages_replaces_messages_with_WebDAV_versions() throws MessagingException, IOException {
+        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenReturn(mockHttpResponse);
+        when(mockHttpResponse.getStatusLine()).thenReturn(mockStatusLine);
         when(mockStatusLine.getStatusCode()).thenReturn(200);
 
         List<Message> existingMessages = new ArrayList<>();

@@ -331,9 +331,9 @@ class WebDavFolder extends Folder<WebDavMessage> {
     }
 
     /**
-     * Fetches the full messages or up to lines lines and passes them to the message parser.
+     * Fetches the full messages or up to {@param lines} lines and passes them to the message parser.
      */
-    private void fetchMessages(List<? extends Message> messages, MessageRetrievalListener<WebDavMessage> listener, int lines)
+    private void fetchMessages(List<WebDavMessage> messages, MessageRetrievalListener<WebDavMessage> listener, int lines)
             throws MessagingException {
         WebDavHttpClient httpclient;
         httpclient = store.getHttpClient();
@@ -342,14 +342,8 @@ class WebDavFolder extends Folder<WebDavMessage> {
          * We can't hand off to processRequest() since we need the stream to parse.
          */
         for (int i = 0, count = messages.size(); i < count; i++) {
-            WebDavMessage wdMessage;
+            WebDavMessage wdMessage = messages.get(i);
             int statusCode = 0;
-
-            if (!(messages.get(i) instanceof WebDavMessage)) {
-                throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
-            }
-
-            wdMessage = (WebDavMessage) messages.get(i);
 
             if (listener != null) {
                 listener.messageStarted(wdMessage.getUid(), i, count);
@@ -403,6 +397,8 @@ class WebDavFolder extends Folder<WebDavMessage> {
                         istream = WebDavHttpClient.getUngzippedContent(entity);
 
                         if (lines != -1) {
+                            //Convert the ungzipped input stream into a StringBuilder
+                            //containing the given line count
                             reader = new BufferedReader(new InputStreamReader(istream), 8192);
 
                             while ((tempText = reader.readLine()) != null &&
@@ -411,17 +407,24 @@ class WebDavFolder extends Folder<WebDavMessage> {
                                 currentLines++;
                             }
 
-                            istream.close();
+                            IOUtils.closeQuietly(istream);
+
                             resultText = buffer.toString();
                             istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
                         }
-
+                        //Parse either the entire message stream, or a stream of the given lines
                         wdMessage.parse(istream);
 
+                    } catch (IOException ioe) {
+                        Log.e(LOG_TAG, "IOException: " + ioe.getMessage() + "\nTrace: "
+                                + WebDavUtils.processException(ioe));
+                        throw new MessagingException("I/O Error", ioe);
                     } finally {
                         IOUtils.closeQuietly(reader);
                         IOUtils.closeQuietly(istream);
                     }
+                } else {
+                    Log.v(LOG_TAG, "Empty response");
                 }
 
             } catch (IllegalArgumentException iae) {
