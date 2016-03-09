@@ -1298,7 +1298,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 db.update("messages", cv, "id = ?", new String[] { Long.toString(oldMessageId) });
             }
         } catch (Exception e) {
-            throw new MessagingException("Error appending message", e);
+            throw new MessagingException("Error appending message: " + message.getSubject(), e);
         }
     }
 
