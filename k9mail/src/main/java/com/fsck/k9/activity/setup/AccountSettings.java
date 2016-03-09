@@ -783,6 +783,9 @@ public class AccountSettings extends K9PreferenceActivity {
         if (mHasCrypto) {
             mAccount.setCryptoApp(mCryptoApp.getValue());
             mAccount.setCryptoKey(mCryptoKey.getValue());
+        } else {
+            mAccount.setCryptoApp(Account.NO_OPENPGP_PROVIDER);
+            mAccount.setCryptoKey(Account.NO_OPENPGP_KEY);
         }
 
         // In webdav account we use the exact folder name also for inbox,
