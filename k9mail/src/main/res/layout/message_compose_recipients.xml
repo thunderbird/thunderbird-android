@@ -129,13 +129,20 @@
                     android:tint="@color/openpgp_grey"
                     />
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/status_lock_none_dots_1"
+                    android:tint="@color/openpgp_red"
+                    />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_lock_disabled_dots_1"
-                    android:tint="@color/openpgp_red"
+                    android:src="@drawable/status_lock_disabled"
+                    android:tint="@color/openpgp_grey"
                     />
 
             </FrameLayout>
