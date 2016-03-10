@@ -16,7 +16,9 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.StoreConfig;
+
 import javax.net.ssl.SSLException;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -45,6 +47,9 @@ import org.mockito.stubbing.OngoingStubbing;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.Collections;
+
+import static junit.framework.Assert.assertSame;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -102,22 +107,6 @@ public class WebDavStoreTest {
         String result = WebDavStore.createUri(serverSettings);
 
         assertEquals("webdav+ssl+://user:password@example.org:123456/%7C%7C", result);
-    }
-
-    @Test
-    public void createUri_withSettingsWithExtras_shouldProvideUriWithExtras() {
-        HashMap<String, String> extras = new HashMap<>();
-        extras.put(WebDavStoreSettings.PATH_KEY, "path");
-        extras.put(WebDavStoreSettings.AUTH_PATH_KEY, "authPath");
-        extras.put(WebDavStoreSettings.MAILBOX_PATH_KEY, "mailboxPath");
-        ServerSettings serverSettings = new ServerSettings(
-                ServerSettings.Type.WebDAV, "example.org", 123456,
-                ConnectionSecurity.NONE, AuthType.PLAIN,
-                "user", "password", null, extras);
-
-        String result = WebDavStore.createUri(serverSettings);
-
-        assertEquals("webdav://user:password@example.org:123456/path%7CauthPath%7CmailboxPath", result);
     }
 
     @Test(expected = MessagingException.class)
@@ -253,7 +242,6 @@ public class WebDavStoreTest {
         assertEquals(WebDavFolder.class, result.getClass());
     }
 
-    //FIXME: This doesn't check if the same instance is returned. Fails when changed to use assertSame().
     @Test
     public void getFolder_calledTwice_shouldReturnFirstInstance() throws Exception {
         WebDavStore webDavStore = createDefaultWebDavStore();
@@ -262,12 +250,51 @@ public class WebDavStoreTest {
 
         Folder result = webDavStore.getFolder(folderName);
 
-        assertEquals(webDavFolder, result);
+        assertSame(webDavFolder, result);
     }
 
-    //TODO: Break apart. This is testing more than one thing.
     @Test
-    public void getPersonalNamespaces_shouldProvideListOfAllFolders() throws Exception {
+    public void getPersonalNamespaces_shouldRequestSpecialFolders() throws Exception {
+        StoreConfig storeConfig = createStoreConfig("webdav://user:password@example.org:80");
+        WebDavStore webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+        configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
+                createOkSearchResponse());
+
+        webDavStore.getPersonalNamespaces(true);
+
+        List<HttpGeneric> requests = requestCaptor.getAllValues();
+        assertEquals(4, requests.size()); // AUTH + 2
+        assertEquals("PROPFIND", requests.get(2).getMethod()); //Special Folders
+    }
+
+    @Test
+    public void getPersonalNamespaces_shouldSetSpecialFolderNames() throws Exception {
+        StoreConfig storeConfig = createStoreConfig("webdav://user:password@example.org:80");
+        WebDavStore webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+        configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
+                createOkSearchResponse());
+
+        webDavStore.getPersonalNamespaces(true);
+
+        verify(storeConfig).setInboxFolderName("Inbox");
+    }
+
+    @Test
+    public void getPersonalNamespaces_shouldRequestFolderList() throws Exception {
+        StoreConfig storeConfig = createStoreConfig("webdav://user:password@example.org:80");
+        WebDavStore webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+        configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
+                createOkSearchResponse());
+
+        webDavStore.getPersonalNamespaces(true);
+
+        List<HttpGeneric> requests = requestCaptor.getAllValues();
+        assertEquals(4, requests.size()); // AUTH + SPECIALFOLDERS + 1
+        assertEquals("SEARCH", requests.get(3).getMethod());
+    }
+
+    @Test
+    public void getPersonalNamespaces_shouldProvideListOfAllFoldersSentFromResponses() throws Exception {
         StoreConfig storeConfig = createStoreConfig("webdav://user:password@example.org:80");
         WebDavStore webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
@@ -275,11 +302,8 @@ public class WebDavStoreTest {
 
         List<? extends Folder> folders = webDavStore.getPersonalNamespaces(true);
 
-        verify(storeConfig).setInboxFolderName("Inbox");
         List<HttpGeneric> requests = requestCaptor.getAllValues();
-        assertEquals(4, requests.size()); // AUTH + 2
-        assertEquals("PROPFIND", requests.get(2).getMethod()); //Special Folders
-        assertEquals("SEARCH", requests.get(3).getMethod()); //Folder List
+
         assertEquals(3, folders.size());
     }
 

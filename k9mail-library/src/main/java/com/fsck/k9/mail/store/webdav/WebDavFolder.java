@@ -161,7 +161,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
             messageCount = dataset.getMessageCount();
         }
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
-            Log.v(LOG_TAG, "Counted messages and webdav returned: "+messageCount);
+            Log.v(LOG_TAG, "Counted messages and webdav returned: " + messageCount);
         }
 
         return messageCount;
@@ -257,7 +257,6 @@ class WebDavFolder extends Folder<WebDavMessage> {
         headers.put("Brief", "t");
         headers.put("Range", "rows=" + start + "-" + end);
         DataSet dataset = store.processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-
         uids = dataset.getUids();
         Map<String, String> uidToUrl = dataset.getUidToUrl();
         uidsLength = uids.length;
@@ -354,7 +353,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
              * associated. Verify and fix that
              */
             if (wdMessage.getUrl().equals("")) {
-                wdMessage.setUrl(getMessageUrls(new String[] { wdMessage.getUid() }).get(wdMessage.getUid()));
+                wdMessage.setUrl(getMessageUrls(new String[]{wdMessage.getUid()}).get(wdMessage.getUid()));
                 Log.i(LOG_TAG, "Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '"
                         + wdMessage.getUrl() + "'");
                 if (wdMessage.getUrl().equals("")) {
@@ -505,7 +504,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
             try {
                 wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
             } catch (NullPointerException e) {
-                Log.v(LOG_TAG,"Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
+                Log.v(LOG_TAG, "Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
             }
 
             if (listener != null) {
@@ -532,12 +531,12 @@ class WebDavFolder extends Folder<WebDavMessage> {
         }
 
         if (startMessages.size() > 10) {
-            List<WebDavMessage> newMessages =  new ArrayList<WebDavMessage>(startMessages.size() - 10);
+            List<WebDavMessage> newMessages = new ArrayList<WebDavMessage>(startMessages.size() - 10);
             for (int i = 0, count = startMessages.size(); i < count; i++) {
                 if (i < 10) {
                     messages.add(i, startMessages.get(i));
                 } else {
-                    newMessages.add(i - 10,startMessages.get(i));
+                    newMessages.add(i - 10, startMessages.get(i));
                 }
             }
 
