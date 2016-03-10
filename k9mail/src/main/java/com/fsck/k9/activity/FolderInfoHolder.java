@@ -100,6 +100,8 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
             } else if (mess.startsWith("GaiException: android_getaddrinfo failed:") ||
                     mess.startsWith("UnknownHostException: Unable to resolve host")) {
                 return context.getString(R.string.folder_error_hostname_lookup_failed);
+            } else if (mess.startsWith("SocketTimeoutException: SSL handshake timed out")) {
+                return context.getString(R.string.folder_error_connection_attempt_failed);
             } else if (mess.startsWith("ErrnoException: open failed: ENOENT")) {
                 return context.getString(R.string.folder_error_open_failed_enoent);
             } else if (mess.contains("Connection timed out")) {
