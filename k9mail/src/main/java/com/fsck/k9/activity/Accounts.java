@@ -154,7 +154,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (mUnreadMessageCount == 0) {
                 mActionBarUnread.setVisibility(View.GONE);
             } else {
-                mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
+                mActionBarUnread.setText(String.format("%d", mUnreadMessageCount));
                 mActionBarUnread.setVisibility(View.VISIBLE);
             }
 
@@ -1786,10 +1786,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             Integer unreadMessageCount = null;
             if (stats != null) {
                 unreadMessageCount = stats.unreadMessageCount;
-                holder.newMessageCount.setText(Integer.toString(unreadMessageCount));
+                holder.newMessageCount.setText(String.format("%d", unreadMessageCount));
                 holder.newMessageCountWrapper.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
 
-                holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
+                holder.flaggedMessageCount.setText(String.format("%d", stats.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setVisibility(K9.messageListStars() && stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearchListener(account));

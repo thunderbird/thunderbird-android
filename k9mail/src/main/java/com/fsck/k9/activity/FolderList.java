@@ -109,7 +109,7 @@ public class FolderList extends K9ListActivity {
                     if (mUnreadMessageCount == 0) {
                         mActionBarUnread.setVisibility(View.GONE);
                     } else {
-                        mActionBarUnread.setText(Integer.toString(mUnreadMessageCount));
+                        mActionBarUnread.setText(String.format("%d", mUnreadMessageCount));
                         mActionBarUnread.setVisibility(View.VISIBLE);
                     }
 
@@ -1044,7 +1044,7 @@ public class FolderList extends K9ListActivity {
                 }
             }
             if (folder.unreadMessageCount > 0) {
-                holder.newMessageCount.setText(Integer.toString(folder.unreadMessageCount));
+                holder.newMessageCount.setText(String.format("%d", folder.unreadMessageCount));
                 holder.newMessageCountWrapper.setOnClickListener(
                         createUnreadSearch(mAccount, folder));
                 holder.newMessageCountWrapper.setVisibility(View.VISIBLE);
@@ -1066,7 +1066,7 @@ public class FolderList extends K9ListActivity {
                     }
 
             if (K9.messageListStars() && folder.flaggedMessageCount > 0) {
-                holder.flaggedMessageCount.setText(Integer.toString(folder.flaggedMessageCount));
+                holder.flaggedMessageCount.setText(String.format("%d", folder.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setOnClickListener(
                         createFlaggedSearch(mAccount, folder));
                 holder.flaggedMessageCountWrapper.setVisibility(View.VISIBLE);

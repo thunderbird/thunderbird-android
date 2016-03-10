@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Not Encrypted"
+                android:text="@string/openpgp_result_not_encrypted"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp" />
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Not signed"
+                android:text="@string/openpgp_result_no_signature"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp" />
@@ -95,14 +95,14 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Alice" />
+                            android:text="@string/example_signature_name" />
 
                         <TextView
                             android:id="@+id/result_signature_email"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="alice@example.com"
+                            android:text="@string/example_signature_email"
                             android:gravity="center_vertical" />
 
                     </LinearLayout>
@@ -113,7 +113,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Show"
+                        android:text="@string/openpgp_result_action_show"
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical" />
 
