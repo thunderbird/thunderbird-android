@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
 
@@ -44,13 +45,6 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
 
     }
 
-    private String truncateStatus(String mess) {
-        if (mess != null && mess.length() > 27) {
-            mess = mess.substring(0, 27);
-        }
-        return mess;
-    }
-
     // constructor for an empty object for comparisons
     public FolderInfoHolder() {
     }
@@ -79,10 +73,47 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         this.name = folder.getName();
         this.lastChecked = folder.getLastUpdate();
 
-        this.status = truncateStatus(folder.getStatus());
+        this.status = formatStatus(context, folder.getStatus());
 
         this.displayName = getDisplayName(context, account, name);
         setMoreMessagesFromFolder(folder);
+    }
+
+    /**
+     * Translate a folder status (which can be an opaque exception in error cases) into a
+     * user-friendly, translated string where possible.
+     *
+     * Truncate non-translated strings to 27 characters.
+     *
+     * @return formatted status
+     */
+    private String formatStatus(Context context, String mess) {
+        if (mess != null) {
+            if (mess.startsWith(MessagingController.PUSH_FAILED_ERROR_PREFIX)) {
+                String remainder = formatStatus(context, mess.substring(
+                        MessagingController.PUSH_FAILED_ERROR_PREFIX.length()));
+                String.format(context.getString(R.string.folder_error_push_failed), remainder);
+            }
+
+            if (mess.equals("SocketException: Socket is closed")) {
+                return context.getString(R.string.folder_error_remote_socket_closed);
+            } else if (mess.startsWith("GaiException: android_getaddrinfo failed:") ||
+                    mess.startsWith("UnknownHostException: Unable to resolve host")) {
+                return context.getString(R.string.folder_error_hostname_lookup_failed);
+            } else if (mess.startsWith("SocketTimeoutException: SSL handshake timed out")) {
+                return context.getString(R.string.folder_error_connection_attempt_failed);
+            } else if (mess.startsWith("ErrnoException: open failed: ENOENT")) {
+                return context.getString(R.string.folder_error_open_failed_enoent);
+            } else if (mess.contains("Connection timed out")) {
+                //SSLException: Read error: ssl=0x7f7392e200: I/O error during system call, Connection timed out
+                return context.getString(R.string.folder_error_connnection_timed_out);
+            }
+
+            if (mess.length() > 27) {
+                mess = mess.substring(0, 27);
+            }
+        }
+        return mess;
     }
 
     /**
