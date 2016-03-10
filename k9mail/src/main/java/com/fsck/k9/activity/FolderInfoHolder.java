@@ -102,6 +102,9 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
                 return context.getString(R.string.folder_error_hostname_lookup_failed);
             } else if (mess.startsWith("ErrnoException: open failed: ENOENT")) {
                 return context.getString(R.string.folder_error_open_failed_enoent);
+            } else if (mess.contains("Connection timed out")) {
+                //SSLException: Read error: ssl=0x7f7392e200: I/O error during system call, Connection timed out
+                return context.getString(R.string.folder_error_connnection_timed_out);
             }
 
             if (mess.length() > 27) {

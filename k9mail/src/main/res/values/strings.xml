@@ -1154,4 +1154,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folder_error_remote_socket_closed">Remote socket closed</string>
     <string name="folder_error_hostname_lookup_failed">Hostname resolution failed</string>
     <string name="folder_error_open_failed_enoent">Opening email failed</string>
+    <string name="folder_error_connnection_timed_out">Connection timed out</string>
 </resources>
