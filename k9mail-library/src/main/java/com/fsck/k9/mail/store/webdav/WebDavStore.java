@@ -1634,7 +1634,7 @@ public class WebDavStore extends RemoteStore {
                 List<WebDavMessage> newMessages = new ArrayList<WebDavMessage>(startMessages.size() - 20);
                 for (int i = 0, count = startMessages.size(); i < count; i++) {
                     if (i < 20) {
-                        messages.set(i,  startMessages.get(i));
+                        messages.add(startMessages.get(i));
                     } else {
                         newMessages.set(i - 20, startMessages.get(i));
                     }
@@ -1704,7 +1704,7 @@ public class WebDavStore extends RemoteStore {
                 List<WebDavMessage> newMessages =  new ArrayList<WebDavMessage>(startMessages.size() - 10);
                 for (int i = 0, count = startMessages.size(); i < count; i++) {
                     if (i < 10) {
-                        messages.set(i, startMessages.get(i));
+                        messages.add(startMessages.get(i));
                     } else {
                         newMessages.set(i - 10,startMessages.get(i));
                     }
