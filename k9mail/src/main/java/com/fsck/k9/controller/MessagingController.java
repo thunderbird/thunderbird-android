@@ -137,6 +137,7 @@ public class MessagingController implements Runnable {
      * Maximum number of unsynced messages to store at once
      */
     private static final int UNSYNC_CHUNK_SIZE = 5;
+    public static final String PUSH_FAILED_ERROR_PREFIX = "Push failed: ";
 
     private static MessagingController inst = null;
     private BlockingQueue<Command> mCommands = new PriorityBlockingQueue<Command>();
@@ -4532,7 +4533,7 @@ public class MessagingController implements Runnable {
 
                 } catch (Exception e) {
                     String rootMessage = getRootCauseMessage(e);
-                    String errorMessage = "Push failed: " + rootMessage;
+                    String errorMessage = PUSH_FAILED_ERROR_PREFIX + rootMessage;
                     try {
                         // Oddly enough, using a local variable gets rid of a
                         // potential null pointer access warning with Eclipse.
