@@ -1,8 +1,11 @@
 package com.fsck.k9.mail.store.webdav;
 
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.StoreConfig;
 
@@ -33,6 +36,8 @@ import org.robolectric.annotation.Config;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.net.ssl.SSLException;
@@ -108,6 +113,34 @@ public class WebDavStoreTest {
                 .thenReturn(UNAUTHORIZARD_401_RESPONSE).thenReturn(OK_200_RESPONSE);
         webDavStore.checkSettings();
         return requestCaptor.getValue().getURI().getScheme().startsWith("https");
+    }
+
+    @Test
+    public void can_create_uris_from_server_settings() {
+
+        assertEquals("webdav://username:password@example.org:123456/%7C%7C",
+                WebDavStore.createUri(new ServerSettings(ServerSettings.Type.WebDAV,
+                    "example.org", 123456, ConnectionSecurity.NONE,
+                    AuthType.PLAIN, "username", "password", null)));
+        assertEquals("webdav+ssl+://username:password@example.org:123456/%7C%7C",
+                WebDavStore.createUri(new ServerSettings(ServerSettings.Type.WebDAV,
+                        "example.org", 123456, ConnectionSecurity.SSL_TLS_REQUIRED,
+                        AuthType.PLAIN, "username", "password", null)));
+        assertEquals("webdav://username:password@example.org:123456/customPath%7C%7C",
+                WebDavStore.createUri(new ServerSettings(ServerSettings.Type.WebDAV,
+                        "example.org", 123456, ConnectionSecurity.NONE,
+                        AuthType.PLAIN, "username", "password", null,
+                        Collections.singletonMap("path","customPath"))));
+        assertEquals("webdav://username:password@example.org:123456/%7CcustomAuthPath%7C",
+                WebDavStore.createUri(new ServerSettings(ServerSettings.Type.WebDAV,
+                        "example.org", 123456, ConnectionSecurity.NONE,
+                        AuthType.PLAIN, "username", "password", null,
+                        Collections.singletonMap("authPath","customAuthPath"))));
+        assertEquals("webdav://username:password@example.org:123456/%7C%7CcustomMailboxPath",
+                WebDavStore.createUri(new ServerSettings(ServerSettings.Type.WebDAV,
+                        "example.org", 123456, ConnectionSecurity.NONE,
+                        AuthType.PLAIN, "username", "password", null,
+                        Collections.singletonMap("mailboxPath","customMailboxPath"))));
     }
 
     @Test(expected = MessagingException.class)

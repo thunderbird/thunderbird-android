@@ -55,6 +55,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,6 +102,22 @@ public class WebDavFolderTest {
         WebDavFolder destinationFolder = new WebDavFolder(mockStore, "destFolder");
         when(mockStore.getFolder("destFolder")).thenReturn(destinationFolder);
         return destinationFolder;
+    }
+
+    private void setupFolderWith23Messages() throws MessagingException {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Brief", "t");
+        String messageCountXml = "<xml>MessageCountXml</xml>";
+        when(mockStore.getMessageCountXml("True")).thenReturn(messageCountXml);
+        when(mockStore.processRequest("https://localhost/webDavStoreUrl/testFolder",
+                "SEARCH", messageCountXml, headers)).thenReturn(mockDataSet);
+        when(mockDataSet.getMessageCount()).thenReturn(23);
+    }
+
+    private WebDavMessage createWebDavMessage(String uid) {
+        WebDavMessage webDavMessage = mock(WebDavMessage.class);
+        when(webDavMessage.getUid()).thenReturn(uid);
+        return webDavMessage;
     }
 
     private void verifyUrlMappingRequest(String uid, String url) throws MessagingException {
@@ -311,13 +328,7 @@ public class WebDavFolderTest {
 
     @Test
     public void can_fetch_message_count() throws Exception {
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("Brief", "t");
-        String messageCountXml = "<xml>MessageCountXml</xml>";
-        when(mockStore.getMessageCountXml("True")).thenReturn(messageCountXml);
-        when(mockStore.processRequest("https://localhost/webDavStoreUrl/testFolder",
-                "SEARCH", messageCountXml, headers)).thenReturn(mockDataSet);
-        when(mockDataSet.getMessageCount()).thenReturn(23);
+        setupFolderWith23Messages();
         assertEquals(23, folder.getMessageCount());
     }
 
@@ -331,6 +342,37 @@ public class WebDavFolderTest {
                 "SEARCH", messageCountXml, headers)).thenReturn(mockDataSet);
         when(mockDataSet.getMessageCount()).thenReturn(13);
         assertEquals(13, folder.getUnreadMessageCount());
+    }
+
+    @Test
+    public void getMessages_should_request_message_search() throws MessagingException {
+        setupFolderWith23Messages();
+        folder.getMessageCount();
+        String messagesXml = "<xml>MessagesXml</xml>";
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Brief", "t");
+        headers.put("Range", "rows=13-23");
+        when(mockStore.getMessagesXml()).thenReturn(messagesXml);
+        when(mockStore.processRequest(eq("https://localhost/webDavStoreUrl/testFolder"), eq("SEARCH"),
+                eq(messagesXml), eq(headers))).thenReturn(mockDataSet);
+        String[] uids = new String[]{"uid1","uid2","uid3","uid4","uid5"};
+        HashMap<String, String> uidToUrls = new HashMap<>();
+        uidToUrls.put("uid1","url1");
+        uidToUrls.put("uid2","url2");
+        uidToUrls.put("uid3","url3");
+        uidToUrls.put("uid4","url4");
+        uidToUrls.put("uid5","url5");
+        when(mockDataSet.getUids()).thenReturn(uids);
+        when(mockDataSet.getUidToUrl()).thenReturn(uidToUrls);
+        folder.getMessages(0, 10, new Date(), listener);
+        verify(listener, times(5)).messageStarted(anyString(), anyInt(), eq(5));
+        verify(listener, times(5)).messageFinished(any(WebDavMessage.class), anyInt(), eq(5));
+    }
+
+    @Test(expected = MessagingException.class)
+    public void getMessages_should_throw_message_exception_if_requesting_messages_from_empty_folder()
+            throws MessagingException {
+        folder.getMessages(0, 10, new Date(), listener);
     }
 
     @Test
@@ -373,12 +415,6 @@ public class WebDavFolderTest {
                 .thenReturn(mockDataSet);
         Map<String, String> result = folder.copyMessages(messages, destinationFolder);
         assertNull(result);
-    }
-
-    private WebDavMessage createWebDavMessage(String uid) {
-        WebDavMessage webDavMessage = mock(WebDavMessage.class);
-        when(webDavMessage.getUid()).thenReturn(uid);
-        return webDavMessage;
     }
 
     @Test
