@@ -158,6 +158,15 @@
                 android:summary="@string/global_settings_show_correspondent_names_summary"
 
                 />
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messagelist_show_correspondent_names_and_mail_addresses"
+                android:title="@string/global_settings_show_correspondent_names_and_mail_addresses_label"
+                android:summary="@string/global_settings_show_correspondent_names_and_mail_addresses_summary"
+                android:dependency="messagelist_show_correspondent_names"
+                />
+
               <CheckBoxPreference
                   android:persistent="false"
                  android:key="messagelist_sender_above_subject"

@@ -132,6 +132,7 @@ public class MessageHelper {
     public static CharSequence toFriendly(Address address, Contacts contacts) {
         return toFriendly(address,contacts,
                 K9.showCorrespondentNames(),
+                K9.showCorrespondentNamesAndEmailAddresses(),
                 K9.changeContactNameColor(),
                 K9.getContactNameColor());
     }
@@ -158,14 +159,16 @@ public class MessageHelper {
 
     /* package, for testing */ static CharSequence toFriendly(Address address, Contacts contacts,
                                                  boolean showCorrespondentNames,
+                                                 boolean showCorrespondentNamesAndEmailAdresses,
                                                  boolean changeContactNameColor,
                                                  int contactNameColor) {
         if (!showCorrespondentNames) {
             return address.getAddress();
-        } else if (contacts != null) {
-            final String name = contacts.getNameForAddress(address.getAddress());
+        } else if (contacts != null){
+            String name = contacts.getNameForAddress(address.getAddress());
             // TODO: The results should probably be cached for performance reasons.
             if (name != null) {
+                if (showCorrespondentNamesAndEmailAdresses) name += " <" + address.getAddress() + ">";
                 if (changeContactNameColor) {
                     final SpannableString coloredName = new SpannableString(name);
                     coloredName.setSpan(new ForegroundColorSpan(contactNameColor),
@@ -179,7 +182,7 @@ public class MessageHelper {
                 }
             }
         }
-
+        if(showCorrespondentNamesAndEmailAdresses) return (!TextUtils.isEmpty(address.getPersonal())) ? address.getPersonal() + " <" + address.getAddress() + ">" : address.getAddress();
         return (!TextUtils.isEmpty(address.getPersonal())) ? address.getPersonal() : address.getAddress();
     }
 }

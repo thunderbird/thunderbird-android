@@ -215,6 +215,7 @@ public class K9 extends Application {
     private static int mMessageListPreviewLines = 2;
 
     private static boolean mShowCorrespondentNames = true;
+    private static boolean mShowCorrespondentNamesAndEmailAddresses = false;
     private static boolean mMessageListSenderAboveSubject = false;
     private static boolean mShowContactName = false;
     private static boolean mChangeContactNameColor = false;
@@ -450,6 +451,7 @@ public class K9 extends Application {
         editor.putInt("messageListPreviewLines", mMessageListPreviewLines);
         editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
         editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
+        editor.putBoolean("showCorrespondentNamesAndEmailAddresses", mShowCorrespondentNamesAndEmailAddresses);
         editor.putBoolean("showContactName", mShowContactName);
         editor.putBoolean("showContactPicture", sShowContactPicture);
         editor.putBoolean("changeRegisteredNameColor", mChangeContactNameColor);
@@ -672,6 +674,7 @@ public class K9 extends Application {
         mQuietTimeEnds = storage.getString("quietTimeEnds", "7:00");
 
         mShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true);
+        mShowCorrespondentNamesAndEmailAddresses = storage.getBoolean("showCorrespondentNamesAndEmailAddresses", true);
         mShowContactName = storage.getBoolean("showContactName", false);
         sShowContactPicture = storage.getBoolean("showContactPicture", true);
         mChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false);
@@ -1045,6 +1048,10 @@ public class K9 extends Application {
         return mShowCorrespondentNames;
     }
 
+    public static boolean showCorrespondentNamesAndEmailAddresses(){
+        return mShowCorrespondentNamesAndEmailAddresses;
+    }
+
      public static boolean messageListSenderAboveSubject() {
          return mMessageListSenderAboveSubject;
      }
@@ -1054,6 +1061,9 @@ public class K9 extends Application {
     }
     public static void setShowCorrespondentNames(boolean showCorrespondentNames) {
         mShowCorrespondentNames = showCorrespondentNames;
+    }
+    public static void setmShowCorrespondentNamesAndEmailAddresses(boolean showCorrespondentNames) {
+        mShowCorrespondentNamesAndEmailAddresses = showCorrespondentNames;
     }
 
     public static boolean showContactName() {
