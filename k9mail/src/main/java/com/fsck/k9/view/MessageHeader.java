@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
@@ -30,6 +31,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
+import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
@@ -39,7 +41,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 
-public class MessageHeader extends LinearLayout implements OnClickListener {
+public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private Context mContext;
     private TextView mFromView;
     private TextView mDateView;
@@ -122,6 +124,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
 
+        mFromView.setOnLongClickListener(this);
+        mToView.setOnLongClickListener(this);
+        mCcView.setOnLongClickListener(this);
+
         mMessageHelper = MessageHelper.getInstance(mContext);
 
         mSubjectView.setVisibility(VISIBLE);
@@ -143,6 +149,23 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         }
     }
 
+    @Override
+    public boolean onLongClick(View view) {
+        switch (view.getId()) {
+            case R.id.from:
+                onAddAddressesToClipboard(mMessage.getFrom());
+                break;
+            case R.id.to:
+                onAddRecipientsToClipboard(Message.RecipientType.TO);
+                break;
+            case R.id.cc:
+                onAddRecipientsToClipboard(Message.RecipientType.CC);
+                break;
+        }
+
+        return true;
+    }
+
     private void onAddSenderToContacts() {
         if (mMessage != null) {
             try {
@@ -154,10 +177,31 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         }
     }
 
+    public String createMessage(int addressesCount){
+        return mContext.getResources().getQuantityString(R.plurals.copy_address_to_clipboard,addressesCount);
+    }
+
+    private void onAddAddressesToClipboard(Address[] addresses){
+        StringBuilder addressesToCopy = new StringBuilder();
+        for(Address addressTemp : addresses){
+            addressesToCopy.append(addressTemp.getAddress() + " ");
+        }
+        addressesToCopy = addressesToCopy.deleteCharAt(addressesToCopy.length()-1);
+        ClipboardManager.getInstance(mContext).setText("addresses", addressesToCopy.toString());
+        Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();
+    }
+
+    private void onAddRecipientsToClipboard(Message.RecipientType recipientType){
+        try {
+            onAddAddressesToClipboard(mMessage.getRecipients(recipientType));
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Couldn't get recipients address", e);
+        }
+    }
+
     public void setOnFlagListener(OnClickListener listener) {
         mFlagged.setOnClickListener(listener);
     }
-
 
     public boolean additionalHeadersVisible() {
         return (mAdditionalHeadersView != null &&
