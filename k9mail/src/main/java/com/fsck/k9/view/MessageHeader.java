@@ -191,9 +191,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();
     }
 
-    private void onAddRecipientsToClipboard(Message.RecipientType r){
+    private void onAddRecipientsToClipboard(Message.RecipientType recipientType){
         try {
-            onAddAddressesToClipboard(mMessage.getRecipients(r));
+            onAddAddressesToClipboard(mMessage.getRecipients(recipientType));
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Couldn't get recipients address", e);
         }
