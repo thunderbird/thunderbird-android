@@ -57,7 +57,7 @@
         <item name="messageViewBackgroundColor">#ffffffff</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_light</item>
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_light</item>
-        <item name="compatDividerVertical">?attr/messageListDividerColor</item>
+        <item name="compatDividerVertical">#ffcccccc</item>
         <item name="compatSelectableItemBackground">@android:color/transparent</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
     </style>
@@ -111,7 +111,7 @@
         <item name="messageViewBackgroundColor">#000000</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_dark</item>
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_dark</item>
-        <item name="compatDividerVertical">?attr/messageListDividerColor</item>
+        <item name="compatDividerVertical">#ff333333</item>
         <item name="compatSelectableItemBackground">@android:color/transparent</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
     </style>

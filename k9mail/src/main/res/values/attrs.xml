@@ -53,6 +53,8 @@
         <attr name="messageComposeAddContactImage" format="reference"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
+        <attr name="compatDividerVertical" format="color"/>
+        <attr name="compatSelectableItemBackground" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="SliderPreference">

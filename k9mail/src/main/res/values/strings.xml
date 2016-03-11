@@ -1157,4 +1157,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folder_error_connection_attempt_failed">Connection attempt failed</string>
     <string name="folder_error_open_failed_enoent">Opening email failed</string>
     <string name="folder_error_connnection_timed_out">Connection timed out</string>
+
+    <!-- Certificate validation errors -->
+    <string name="certificate_error_unknown">Unknown error with certification</string>
+    <string name="certificate_error_hostname_did_not_match">Hostname did not match - expected %1$s but found %2$s</string>
 </resources>
