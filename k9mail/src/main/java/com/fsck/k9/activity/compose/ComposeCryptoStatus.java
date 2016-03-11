@@ -2,11 +2,11 @@ package com.fsck.k9.activity.compose;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
+import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
@@ -17,6 +17,7 @@ import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 public class ComposeCryptoStatus {
 
 
+    private CryptoProviderState cryptoProviderState;
     private CryptoMode cryptoMode;
     private boolean allKeysAvailable;
     private boolean allKeysVerified;
@@ -42,6 +43,21 @@ public class ComposeCryptoStatus {
     }
 
     public CryptoStatusDisplayType getCryptoStatusDisplayType() {
+        switch (cryptoProviderState) {
+            case UNCONFIGURED:
+                return CryptoStatusDisplayType.UNCONFIGURED;
+            case UNINITIALIZED:
+                return CryptoStatusDisplayType.UNINITIALIZED;
+            case LOST_CONNECTION:
+            case ERROR:
+                return CryptoStatusDisplayType.ERROR;
+            case OK:
+                // provider status is ok -> return value is based on cryptoMode
+                break;
+            default:
+                throw new AssertionError("all CryptoProviderStates must be handled, this is a bug!");
+        }
+
         switch (cryptoMode) {
             case PRIVATE:
                 if (!hasRecipients) {
@@ -65,21 +81,13 @@ public class ComposeCryptoStatus {
                 return CryptoStatusDisplayType.SIGN_ONLY;
             case DISABLE:
                 return CryptoStatusDisplayType.DISABLED;
-            case ERROR:
-                return CryptoStatusDisplayType.ERROR;
             default:
-            case UNINITIALIZED:
-                return CryptoStatusDisplayType.UNINITIALIZED;
+                throw new AssertionError("all CryptoModes must be handled, this is a bug!");
         }
     }
 
-    public boolean isPgpErrorState() {
-        return cryptoMode == CryptoMode.ERROR;
-    }
-
     public boolean shouldUsePgpMessageBuilder() {
-        return cryptoMode == CryptoMode.PRIVATE || cryptoMode == CryptoMode.OPPORTUNISTIC
-                || cryptoMode == CryptoMode.SIGN_ONLY;
+        return cryptoProviderState != CryptoProviderState.UNCONFIGURED && cryptoMode != CryptoMode.DISABLE;
     }
 
     public boolean isEncryptionEnabled() {
@@ -90,21 +98,19 @@ public class ComposeCryptoStatus {
         return cryptoMode != CryptoMode.DISABLE && signingKeyId != null;
     }
 
-    public boolean isMissingSignKey() {
-        return signingKeyId == null;
-    }
-
-    public boolean isPrivateAndIncomplete() {
-        return cryptoMode == CryptoMode.PRIVATE && !allKeysAvailable;
-    }
-
 
     public static class ComposeCryptoStatusBuilder {
 
+        private CryptoProviderState cryptoProviderState;
         private CryptoMode cryptoMode;
         private Long signingKeyId;
         private Long selfEncryptKeyId;
         private List<Recipient> recipients;
+
+        public ComposeCryptoStatusBuilder setCryptoProviderState(CryptoProviderState cryptoProviderState) {
+            this.cryptoProviderState = cryptoProviderState;
+            return this;
+        }
 
         public ComposeCryptoStatusBuilder setCryptoMode(CryptoMode cryptoMode) {
             this.cryptoMode = cryptoMode;
@@ -127,6 +133,9 @@ public class ComposeCryptoStatus {
         }
 
         public ComposeCryptoStatus build() {
+            if (cryptoProviderState == null) {
+                throw new AssertionError("cryptoProviderState must be set. this is a bug!");
+            }
             if (cryptoMode == null) {
                 throw new AssertionError("crypto mode must be set. this is a bug!");
             }
@@ -151,6 +160,7 @@ public class ComposeCryptoStatus {
             }
 
             ComposeCryptoStatus result = new ComposeCryptoStatus();
+            result.cryptoProviderState = cryptoProviderState;
             result.cryptoMode = cryptoMode;
             result.recipientAddresses = recipientAddresses.toArray(new String[0]);
             result.allKeysAvailable = allKeysAvailable;
@@ -160,6 +170,27 @@ public class ComposeCryptoStatus {
             result.selfEncryptKeyId = selfEncryptKeyId;
             return result;
         }
+    }
+
+    public enum SendErrorState {
+        PROVIDER_ERROR, SIGN_KEY_NOT_CONFIGURED, PRIVATE_BUT_MISSING_KEYS
+    }
+
+    public SendErrorState getSendErrorStateOrNull() {
+        if (cryptoProviderState != CryptoProviderState.OK) {
+            // TODO: be more specific about this error
+            return SendErrorState.PROVIDER_ERROR;
+        }
+        boolean isSignKeyMissing = signingKeyId == null;
+        if (isSignKeyMissing) {
+            return SendErrorState.SIGN_KEY_NOT_CONFIGURED;
+        }
+        boolean isPrivateModeAndNotAllKeysAvailable = cryptoMode == CryptoMode.PRIVATE && !allKeysAvailable;
+        if (isPrivateModeAndNotAllKeysAvailable) {
+            return SendErrorState.PRIVATE_BUT_MISSING_KEYS;
+        }
+
+        return null;
     }
 
 }
