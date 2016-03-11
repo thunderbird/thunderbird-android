@@ -156,18 +156,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 onAddAddressesToClipboard(mMessage.getFrom());
                 break;
             case R.id.to:
-                try {
-                    onAddAddressesToClipboard(mMessage.getRecipients(Message.RecipientType.TO));
-                } catch (MessagingException e) {
-                    Log.e(K9.LOG_TAG, "Couldn't get recipients address", e);
-                }
+                onAddRecipientsToClipboard(Message.RecipientType.TO);
                 break;
             case R.id.cc:
-                try {
-                    onAddAddressesToClipboard(mMessage.getRecipients(Message.RecipientType.CC));
-                } catch (MessagingException e) {
-                    Log.e(K9.LOG_TAG, "Couldn't get recipients address", e);
-                }
+                onAddRecipientsToClipboard(Message.RecipientType.CC);
                 break;
         }
 
@@ -185,31 +177,31 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
     }
 
+    public String createMessage(int addressesCount){
+        return mContext.getResources().getQuantityString(R.plurals.copy_address_to_clipboard,addressesCount);
+    }
+
     private void onAddAddressesToClipboard(Address[] addresses){
-        if(mMessage != null){
-            try{
-                String addressesToCopy = "";
-                for(Address addressTemp : addresses){
-                    addressesToCopy += addressTemp.getAddress() + " ";
-                }
-                addressesToCopy = addressesToCopy.substring(0,addressesToCopy.length()-1);
-                ClipboardManager.getInstance(mContext).setText("addresses", addressesToCopy);
-                Toast.makeText(mContext, R.string.copy_address_to_clipboard, Toast.LENGTH_LONG).show();
-            }
-            catch (Exception e){
-                Log.e(K9.LOG_TAG, "Couldn't add addresses to clipboard");
-            }
+        StringBuilder addressesToCopy = new StringBuilder();
+        for(Address addressTemp : addresses){
+            addressesToCopy.append(addressTemp.getAddress() + " ");
+        }
+        addressesToCopy = addressesToCopy.deleteCharAt(addressesToCopy.length()-1);
+        ClipboardManager.getInstance(mContext).setText("addresses", addressesToCopy.toString());
+        Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();
+    }
+
+    private void onAddRecipientsToClipboard(Message.RecipientType r){
+        try {
+            onAddAddressesToClipboard(mMessage.getRecipients(r));
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Couldn't get recipients address", e);
         }
     }
 
     public void setOnFlagListener(OnClickListener listener) {
         mFlagged.setOnClickListener(listener);
     }
-
-    public void setOnFlagListener(OnLongClickListener listener){
-        mFlagged.setOnLongClickListener(listener);
-    }
-
 
     public boolean additionalHeadersVisible() {
         return (mAdditionalHeadersView != null &&
