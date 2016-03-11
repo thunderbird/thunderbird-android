@@ -148,6 +148,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                 return;
             }
             encryptIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, encryptRecipientAddresses);
+            encryptIntent.putExtra(OpenPgpApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
         }
 
         currentState = State.OPENPGP_ENCRYPT;
@@ -232,6 +233,11 @@ public class PgpMessageBuilder extends MessageBuilder {
 
             case OpenPgpApi.RESULT_CODE_ERROR:
                 OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                boolean isOpportunisticError = error.getErrorId() == OpenPgpError.OPPORTUNISTIC_MISSING_KEYS;
+                if (isOpportunisticError) {
+                    skipEncryptingMessage();
+                    return;
+                }
                 throw new MessagingException(error.getMessage());
 
             default:
@@ -291,6 +297,13 @@ public class PgpMessageBuilder extends MessageBuilder {
                 multipartEncrypted.getBoundary());
         currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
 
+        currentState = State.OPENPGP_ENCRYPT_OK;
+    }
+
+    private void skipEncryptingMessage() throws MessagingException {
+        if (!cryptoStatus.isEncryptionOpportunistic()) {
+            throw new AssertionError("Got opportunistic error, but encryption wasn't supposed to be opportunistic!");
+        }
         currentState = State.OPENPGP_ENCRYPT_OK;
     }
 

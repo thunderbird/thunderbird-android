@@ -94,6 +94,10 @@ public class ComposeCryptoStatus {
         return cryptoMode == CryptoMode.PRIVATE || cryptoMode == CryptoMode.OPPORTUNISTIC;
     }
 
+    public boolean isEncryptionOpportunistic() {
+        return cryptoMode == CryptoMode.OPPORTUNISTIC;
+    }
+
     public boolean isSigningEnabled() {
         return cryptoMode != CryptoMode.DISABLE && signingKeyId != null;
     }
