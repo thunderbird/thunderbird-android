@@ -42,6 +42,7 @@ import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.preferences.StorageEditor;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.mailstore.StorageManager;
@@ -507,6 +508,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             return;
         }
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
+
+        HtmlConverter.buildActiveUriPatterns(this);
     }
 
     @Override

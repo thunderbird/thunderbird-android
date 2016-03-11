@@ -818,6 +818,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void onResume() {
         super.onResume();
         MessagingController.getInstance(getApplication()).addListener(mListener);
+
+        HtmlConverter.buildActiveUriPatterns(this);
     }
 
     @Override
