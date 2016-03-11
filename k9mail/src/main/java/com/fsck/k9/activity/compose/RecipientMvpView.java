@@ -389,15 +389,12 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         dialog.show(activity.getFragmentManager(), "crypto_settings");
     }
 
-    public void checkOpenPgpServicePermission(RecipientPresenter recipientPresenter) {
-        activity.getOpenPgpApi().checkPermissionPing(recipientPresenter);
-    }
-
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
         activity.launchUserInteractionPendingIntent(pendingIntent, requestCode);
     }
 
     public enum CryptoStatusDisplayType {
+        UNCONFIGURED(VIEW_INDEX_HIDDEN),
         UNINITIALIZED(VIEW_INDEX_HIDDEN),
         DISABLED(VIEW_INDEX_CRYPTO_STATUS_DISABLED),
         SIGN_ONLY(VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY),

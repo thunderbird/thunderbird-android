@@ -65,6 +65,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
+import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.CryptoSettingsDialog.OnCryptoModeChangedListener;
 import com.fsck.k9.activity.compose.RecipientMvpView;
 import com.fsck.k9.activity.compose.RecipientPresenter;
@@ -158,6 +159,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             "com.fsck.k9.activity.MessageCompose.quotedTextFormat";
     private static final String STATE_KEY_NUM_ATTACHMENTS_LOADING = "numAttachmentsLoading";
     private static final String STATE_KEY_WAITING_FOR_ATTACHMENTS = "waitingForAttachments";
+    private static final String STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT = "alreadyNotifiedUserOfEmptySubject";
 
     private static final String LOADER_ARG_ATTACHMENT = "attachment";
 
@@ -235,6 +237,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
     private boolean mFinishAfterDraftSaved;
+    private boolean alreadyNotifiedUserOfEmptySubject = false;
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
@@ -292,9 +295,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private EolConvertingEditText mQuotedText;
     private MessageWebView mQuotedHTML;
     private InsertableHtmlContent mQuotedHtmlContent;   // Container for HTML reply as it's being built.
-
-    private String mOpenPgpProvider;
-    private OpenPgpServiceConnection mOpenPgpServiceConnection;
 
     private String mReferences;
     private String mInReplyTo;
@@ -693,26 +693,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mMessageReference = mMessageReference.withModifiedFlag(Flag.FORWARDED);
         }
 
-        mOpenPgpProvider = mAccount.getOpenPgpProvider();
-        if (isCryptoProviderEnabled()) {
-//            attachKeyCheckBox = (CheckBox) findViewById(R.id.cb_attach_key);
-//            attachKeyCheckBox.setEnabled(mAccount.getCryptoKey() != 0);
-
-            mOpenPgpServiceConnection = new OpenPgpServiceConnection(this, mOpenPgpProvider, new OnBound() {
-                @Override
-                public void onBound(IOpenPgpService2 service) {
-                    recipientPresenter.onCryptoProviderBound();
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    recipientPresenter.onCryptoProviderError(e);
-                }
-            });
-            mOpenPgpServiceConnection.bindToService();
-
-            updateMessageFormat();
-        }
+        updateMessageFormat();
 
         // Set font size of input controls
         int fontSize = mFontSizes.getMessageComposeInput();
@@ -738,9 +719,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void onDestroy() {
         super.onDestroy();
 
-        if (mOpenPgpServiceConnection != null) {
-            mOpenPgpServiceConnection.unbindFromService();
-        }
+        recipientPresenter.onActivityDestroy();
     }
 
     /**
@@ -884,6 +863,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         outState.putBoolean(STATE_KEY_DRAFT_NEEDS_SAVING, draftNeedsSaving);
         outState.putBoolean(STATE_KEY_FORCE_PLAIN_TEXT, mForcePlainText);
         outState.putSerializable(STATE_KEY_QUOTED_TEXT_FORMAT, mQuotedTextFormat);
+        outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
 
         recipientPresenter.onSaveInstanceState(outState);
     }
@@ -945,6 +925,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mReferences = savedInstanceState.getString(STATE_REFERENCES);
         draftNeedsSaving = savedInstanceState.getBoolean(STATE_KEY_DRAFT_NEEDS_SAVING);
         mForcePlainText = savedInstanceState.getBoolean(STATE_KEY_FORCE_PLAIN_TEXT);
+        alreadyNotifiedUserOfEmptySubject = savedInstanceState.getBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT);
         mQuotedTextFormat = (SimpleMessageFormat) savedInstanceState.getSerializable(
                 STATE_KEY_QUOTED_TEXT_FORMAT);
 
@@ -982,14 +963,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private MessageBuilder createMessageBuilder(boolean isDraft) {
         MessageBuilder builder;
 
-        if (!recipientPresenter.canSendOrError(isDraft)) {
-            return null;
-        }
-
+        recipientPresenter.updateCryptoStatus();
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
         // TODO encrypt drafts for storage
         if(!isDraft && cryptoStatus.shouldUsePgpMessageBuilder()) {
-            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), getOpenPgpApi());
+            SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
+            if (maybeSendErrorState != null) {
+                recipientPresenter.showPgpSendError(maybeSendErrorState);
+                return null;
+            }
+
+            OpenPgpApi openPgpApi = recipientPresenter.getOpenPgpApi();
+            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), openPgpApi);
             pgpBuilder.setCryptoStatus(cryptoStatus);
             builder = pgpBuilder;
         } else {
@@ -1024,6 +1009,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void checkToSendMessage() {
+        if (mSubjectView.getText().length() == 0 && !alreadyNotifiedUserOfEmptySubject) {
+            Toast.makeText(this, R.string.empty_subject, Toast.LENGTH_LONG).show();
+            alreadyNotifiedUserOfEmptySubject = true;
+            return;
+        }
+
         if (recipientPresenter.checkRecipientsOkForSending()) {
             return;
         }
@@ -1273,10 +1264,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             onFetchAttachmentFinished();
         }
     };
-
-    public OpenPgpApi getOpenPgpApi() {
-        return new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
-    }
 
     private void onFetchAttachmentStarted() {
         mNumAttachmentsLoading += 1;
@@ -2973,10 +2960,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private boolean isCryptoProviderEnabled() {
-        return mOpenPgpProvider != null;
-    }
-
     @Override
     public void onMessageBuildSuccess(MimeMessage message, boolean isDraft) {
         if (isDraft) {
@@ -3012,7 +2995,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onMessageBuildException(MessagingException me) {
         Log.e(K9.LOG_TAG, "Error sending message", me);
-        Toast.makeText(MessageCompose.this, getString(R.string.send_aborted), Toast.LENGTH_LONG).show();
+        Toast.makeText(MessageCompose.this,
+                getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
     }
