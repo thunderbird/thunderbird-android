@@ -2750,7 +2750,7 @@ public class MessagingController implements Runnable {
                 l.loadMessageForViewFinished(account, folder, uid, message);
             }
             return true;
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             for (MessagingListener l : getListeners(listener)) {
                 l.loadMessageForViewFailed(account, folder, uid, e);
             }

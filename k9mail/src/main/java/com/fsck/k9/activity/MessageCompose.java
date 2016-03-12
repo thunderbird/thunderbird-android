@@ -2525,7 +2525,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         @Override
-        public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t) {
+        public void loadMessageForViewFailed(Account account, String folder, String uid, MessagingException e) {
             if ((mMessageReference == null) || !mMessageReference.getUid().equals(uid)) {
                 return;
             }

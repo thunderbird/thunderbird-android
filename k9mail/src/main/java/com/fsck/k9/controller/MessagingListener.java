@@ -9,6 +9,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -94,7 +95,7 @@ public class MessagingListener {
             LocalMessage message) {}
 
     public void loadMessageForViewFailed(Account account, String folder, String uid,
-            Throwable t) {}
+            MessagingException e) {}
 
     /**
      * Called when a message for view has been fully displayed on the screen.
