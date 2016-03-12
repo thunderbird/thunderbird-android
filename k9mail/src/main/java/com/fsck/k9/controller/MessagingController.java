@@ -104,25 +104,6 @@ public class MessagingController implements Runnable {
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    /**
-     * The maximum message size that we'll consider to be "small". A small message is downloaded
-     * in full immediately instead of in pieces. Anything over this size will be downloaded in
-     * pieces with attachments being left off completely and downloaded on demand.
-     *
-     *
-     * 25k for a "small" message was picked by educated trial and error.
-     * http://answers.google.com/answers/threadview?id=312463 claims that the
-     * average size of an email is 59k, which I feel is too large for our
-     * blind download. The following tests were performed on a download of
-     * 25 random messages.
-     * <pre>
-     * 5k - 61 seconds,
-     * 25k - 51 seconds,
-     * 55k - 53 seconds,
-     * </pre>
-     * So 25k gives good performance and a reasonable data footprint. Sounds good to me.
-     */
-
     private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.fsck.k9.MessagingController.moveOrCopy";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.fsck.k9.MessagingController.moveOrCopyBulk";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW = "com.fsck.k9.MessagingController.moveOrCopyBulkNew";
@@ -135,28 +116,22 @@ public class MessagingController implements Runnable {
 
     /**
      * Maximum number of unsynced messages to store at once
+     * TODO: Unused
      */
     private static final int UNSYNC_CHUNK_SIZE = 5;
+    //TODO: Move this to a R.string
     public static final String PUSH_FAILED_ERROR_PREFIX = "Push failed: ";
-
     private static MessagingController inst = null;
-    private BlockingQueue<Command> mCommands = new PriorityBlockingQueue<Command>();
 
+    private BlockingQueue<Command> mCommands = new PriorityBlockingQueue<Command>();
     private Thread mThread;
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
-
     private final ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
-
-    ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
-
+    private ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
-
     private MessagingListener checkMailListener = null;
-
     private MemorizingListener memorizingListener = new MemorizingListener();
-
     private boolean mBusy;
-
     private final Context context;
     private final NotificationController notificationController;
 
@@ -778,9 +753,7 @@ public class MessagingController implements Runnable {
      *
      * @param account
      * @param folder
-     *
-     * TODO Break this method up into smaller chunks.
-     * @param providedRemoteFolder TODO
+     * @param providedRemoteFolder
      */
     private void synchronizeMailboxSynchronous(
             final Account account, final String folder, final MessagingListener listener,
@@ -812,15 +785,10 @@ public class MessagingController implements Runnable {
                 Log.e(K9.LOG_TAG, "Failure processing command, but allow message sync attempt", e);
                 commandException = e;
             }
-            /*
-             * Get the message list from the local store and create an index of
-             * the uids within the list.
-             */
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "SYNC: About to get local folder " + folder);
 
-            final LocalStore localStore = account.getLocalStore();
-            tLocalFolder = localStore.getFolder(folder);
+            tLocalFolder = account.getLocalStore().getFolder(folder);
             final LocalFolder localFolder = tLocalFolder;
             localFolder.open(Folder.OPEN_MODE_RW);
             localFolder.updateLastUid();
