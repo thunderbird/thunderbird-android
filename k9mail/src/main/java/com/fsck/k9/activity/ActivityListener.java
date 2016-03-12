@@ -43,7 +43,8 @@ public class ActivityListener extends MessagingListener {
                         context.getString(R.string.folder_progress, mFolderCompleted, mFolderTotal) : "");
 
             if (mLoadingFolderName != null || mLoadingHeaderFolderName != null) {
-                String displayName = mLoadingFolderName;
+                String displayName = mLoadingHeaderFolderName != null ?
+                        mLoadingHeaderFolderName : mLoadingFolderName;
                 if ((mAccount != null) && (mAccount.getInboxFolderName() != null) && mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
                     displayName = context.getString(R.string.special_mailbox_name_inbox);
                 } else if ((mAccount != null) && mAccount.getOutboxFolderName().equals(displayName)) {
@@ -119,6 +120,7 @@ public class ActivityListener extends MessagingListener {
     @Override
     public void synchronizeMailboxHeadersStarted(Account account, String folder) {
         mLoadingHeaderFolderName = folder;
+        mLoadingAccountDescription = account.getDescription();
         informUserOfStatus();
     }
 
@@ -224,5 +226,7 @@ public class ActivityListener extends MessagingListener {
     public int getFolderTotal() {
         return mFolderTotal;
     }
+
+
 
 }
