@@ -908,20 +908,14 @@ public class MessagingController implements Runnable {
                 }
 
 
-                List<? extends Message> remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteEnd, earliestDate, null);
+                List<? extends Message> remoteMessageArray = remoteFolder.getMessages(
+                        remoteStart, remoteEnd, earliestDate, null);
 
                 int messageCount = remoteMessageArray.size();
 
-                for (Message thisMess : remoteMessageArray) {
-                    headerProgress.incrementAndGet();
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
-                    }
-                    Message localMessage = localUidMap.get(thisMess.getUid());
-                    if (localMessage == null || !localMessage.olderThan(earliestDate)) {
-                        remoteMessages.add(thisMess);
-                        remoteUidMap.put(thisMess.getUid(), thisMess);
-                    }
+                for (Message remoteMessage : remoteMessageArray) {
+                    processRemoteMessage(remoteMessage, headerProgress, listener, localUidMap,
+                            remoteMessages, remoteUidMap, account, folder, messageCount, earliestDate);
                 }
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: Got " + remoteUidMap.size() + " messages for folder " + folder);
@@ -937,32 +931,9 @@ public class MessagingController implements Runnable {
             /*
              * Remove any messages that are in the local store but no longer on the remote store or are too old
              */
-            MoreMessages moreMessages = localFolder.getMoreMessages();
-            if (account.syncRemoteDeletions()) {
-                List<Message> destroyMessages = new ArrayList<Message>();
-                for (Message localMessage : localMessages) {
-                    if (remoteUidMap.get(localMessage.getUid()) == null) {
-                        destroyMessages.add(localMessage);
-                    }
-                }
 
-                if (!destroyMessages.isEmpty()) {
-                    moreMessages = MoreMessages.UNKNOWN;
-
-                    localFolder.destroyMessages(destroyMessages);
-
-                    for (Message destroyMessage : destroyMessages) {
-                        for (MessagingListener l : getListeners(listener)) {
-                            l.synchronizeMailboxRemovedMessage(account, folder, destroyMessage);
-                        }
-                    }
-                }
-            }
-            localMessages = null;
-
-            if (moreMessages == MoreMessages.UNKNOWN) {
-                updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
-            }
+            removeOldAndDeletedMessages(account, localFolder, remoteUidMap, localMessages,
+                    listener, folder, remoteFolder, earliestDate, remoteStart);
 
             /*
              * Now we download the actual content of messages.
@@ -974,63 +945,129 @@ public class MessagingController implements Runnable {
                 l.folderStatusChanged(account, folder, unreadMessageCount);
             }
 
-            /* Notify listeners that we're finally done. */
-
             localFolder.setLastChecked(System.currentTimeMillis());
             localFolder.setStatus(null);
 
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder +
-                      " @ " + new Date() + " with " + newMessages + " new messages");
+            /* Notify listeners that we're finally done. */
 
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFinished(account, folder, remoteMessageCount, newMessages);
-            }
+            handleFinishedSynchronization(account, folder, newMessages, listener, remoteMessageCount);
 
-
-            if (commandException != null) {
-                String rootMessage = getRootCauseMessage(commandException);
-                Log.e(K9.LOG_TAG, "Root cause failure in " + account.getDescription() + ":" +
-                      tLocalFolder.getName() + " was '" + rootMessage + "'");
-                localFolder.setStatus(rootMessage);
-                for (MessagingListener l : getListeners(listener)) {
-                    l.synchronizeMailboxFailed(account, folder, rootMessage);
-                }
-            }
+            processCommandExceptionIfPresent(commandException, account, listener,
+                    localFolder, folder, tLocalFolder);
 
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder);
 
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "synchronizeMailbox", e);
-            // If we don't set the last checked, it can try too often during
-            // failure conditions
-            String rootMessage = getRootCauseMessage(e);
-            if (tLocalFolder != null) {
-                try {
-                    tLocalFolder.setStatus(rootMessage);
-                    tLocalFolder.setLastChecked(System.currentTimeMillis());
-                } catch (MessagingException me) {
-                    Log.e(K9.LOG_TAG, "Could not set last checked on folder " + account.getDescription() + ":" +
-                          tLocalFolder.getName(), e);
-                }
-            }
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFailed(account, folder, rootMessage);
-            }
-            notifyUserIfCertificateProblem(account, e, true);
-            addErrorMessage(account, null, e);
-            Log.e(K9.LOG_TAG, "Failed synchronizing folder " + account.getDescription() + ":" + folder + " @ " + new Date());
+            handleExceptionDuringSynchronization(e, listener, account, folder, tLocalFolder);
 
         } finally {
             if (providedRemoteFolder == null) {
                 closeFolder(remoteFolder);
             }
-
             closeFolder(tLocalFolder);
         }
 
+    }
+
+    private void processRemoteMessage(
+            Message remoteMessage,
+            AtomicInteger headerProgress, MessagingListener listener,
+            Map<String, Message> localUidMap, List<Message> remoteMessages,
+            Map<String, Message> remoteUidMap, Account account, String folder, int messageCount,
+            Date earliestDate) {
+        headerProgress.incrementAndGet();
+        for (MessagingListener l : getListeners(listener)) {
+            l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
+        }
+        Message localMessage = localUidMap.get(remoteMessage.getUid());
+        if (localMessage == null || !localMessage.olderThan(earliestDate)) {
+            remoteMessages.add(remoteMessage);
+            remoteUidMap.put(remoteMessage.getUid(), remoteMessage);
+        }
+    }
+
+    private void removeOldAndDeletedMessages(
+            Account account, LocalFolder localFolder, Map remoteUidMap, List<? extends Message> localMessages,
+            MessagingListener listener, String folder, Folder remoteFolder, Date earliestDate,
+            int remoteStart) throws IOException, MessagingException {
+        MoreMessages moreMessages = localFolder.getMoreMessages();
+        if (account.syncRemoteDeletions()) {
+            List<Message> destroyMessages = new ArrayList<Message>();
+            for (Message localMessage : localMessages) {
+                if (remoteUidMap.get(localMessage.getUid()) == null) {
+                    destroyMessages.add(localMessage);
+                }
+            }
+
+            if (!destroyMessages.isEmpty()) {
+                moreMessages = MoreMessages.UNKNOWN;
+
+                localFolder.destroyMessages(destroyMessages);
+
+                for (Message destroyMessage : destroyMessages) {
+                    for (MessagingListener l : getListeners(listener)) {
+                        l.synchronizeMailboxRemovedMessage(account, folder, destroyMessage);
+                    }
+                }
+            }
+        }
+        localMessages = null;
+
+        if (moreMessages == MoreMessages.UNKNOWN) {
+            updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
+        }
+    }
+
+    private void handleExceptionDuringSynchronization(
+            Exception e, MessagingListener listener,Account account, String folder,
+            Folder tLocalFolder) {
+        Log.e(K9.LOG_TAG, "synchronizeMailbox", e);
+        // If we don't set the last checked, it can try too often during
+        // failure conditions
+        String rootMessage = getRootCauseMessage(e);
+        if (tLocalFolder != null) {
+            try {
+                tLocalFolder.setStatus(rootMessage);
+                tLocalFolder.setLastChecked(System.currentTimeMillis());
+            } catch (MessagingException me) {
+                Log.e(K9.LOG_TAG, "Could not set last checked on folder " + account.getDescription() + ":" +
+                        tLocalFolder.getName(), e);
+            }
+        }
+
+        for (MessagingListener l : getListeners(listener)) {
+            l.synchronizeMailboxFailed(account, folder, rootMessage);
+        }
+        notifyUserIfCertificateProblem(account, e, true);
+        addErrorMessage(account, null, e);
+        Log.e(K9.LOG_TAG, "Failed synchronizing folder " + account.getDescription() + ":" + folder + " @ " + new Date());
+    }
+
+    private void handleFinishedSynchronization(
+            Account account, String folder, int newMessages, MessagingListener listener,
+            int remoteMessageCount) {
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder +
+                    " @ " + new Date() + " with " + newMessages + " new messages");
+
+        for (MessagingListener l : getListeners(listener)) {
+            l.synchronizeMailboxFinished(account, folder, remoteMessageCount, newMessages);
+        }
+    }
+
+    private void processCommandExceptionIfPresent(
+            Exception commandException, Account account, MessagingListener listener,
+            LocalFolder localFolder, String folder, Folder tLocalFolder) throws MessagingException {
+        if (commandException != null) {
+            String rootMessage = getRootCauseMessage(commandException);
+            Log.e(K9.LOG_TAG, "Root cause failure in " + account.getDescription() + ":" +
+                    tLocalFolder.getName() + " was '" + rootMessage + "'");
+            localFolder.setStatus(rootMessage);
+            for (MessagingListener l : getListeners(listener)) {
+                l.synchronizeMailboxFailed(account, folder, rootMessage);
+            }
+        }
     }
 
     private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
