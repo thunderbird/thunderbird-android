@@ -95,7 +95,9 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
                 String.format(context.getString(R.string.folder_error_push_failed), remainder);
             }
 
-            if (mess.equals("SocketException: Socket is closed")) {
+            if (mess.equals("SocketException: Socket is closed") ||
+                    mess.contains("Connection reset by peer")) {
+                    //SSLException: Read error: ... I/O error during system call, Connection reset by peer - closed
                 return context.getString(R.string.folder_error_remote_socket_closed);
             } else if (mess.startsWith("GaiException: android_getaddrinfo failed:") ||
                     mess.startsWith("UnknownHostException: Unable to resolve host")) {
