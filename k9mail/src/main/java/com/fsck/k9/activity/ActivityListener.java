@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.service.MailService;
@@ -49,7 +51,6 @@ public class ActivityListener extends MessagingListener {
                 }
 
                 if (mLoadingHeaderFolderName != null) {
-
                     operation = context.getString(R.string.status_loading_account_folder_headers, mLoadingAccountDescription, displayName, progress);
                 } else {
                     operation = context.getString(R.string.status_loading_account_folder, mLoadingAccountDescription, displayName, progress);
@@ -124,6 +125,7 @@ public class ActivityListener extends MessagingListener {
 
     @Override
     public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total) {
+        Log.i(K9.LOG_TAG, "For account: "+ account.getName()+" completed:"+folder+". TODO: "+completed+"/"+total);
         mFolderCompleted = completed;
         mFolderTotal = total;
         informUserOfStatus();
