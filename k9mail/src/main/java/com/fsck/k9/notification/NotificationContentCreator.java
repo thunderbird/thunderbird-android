@@ -47,7 +47,8 @@ class NotificationContentCreator {
         String snippet = getPreview(message);
 
         boolean isSubjectEmpty = TextUtils.isEmpty(subject);
-        boolean isSnippetPresent = message.getPreviewType() != PreviewType.NONE;
+        boolean isSnippetPresent = message.getPreviewType() != PreviewType.NONE
+                                        && message.getPreviewType() != PreviewType.FAILED_TO_LOAD;
         if (isSubjectEmpty && isSnippetPresent) {
             return snippet;
         }
@@ -70,6 +71,7 @@ class NotificationContentCreator {
         PreviewType previewType = message.getPreviewType();
         switch (previewType) {
             case NONE:
+            case FAILED_TO_LOAD:
                 return null;
             case TEXT:
                 return message.getPreview();
