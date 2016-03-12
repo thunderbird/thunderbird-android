@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Stack;
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.MessagingException;
@@ -87,7 +89,12 @@ public class MessageDecryptVerifier {
             Body body = part.getBody();
 
             if (isSameMimeType(mimeType, TEXT_PLAIN)) {
-                String text = MessageExtractor.getTextFromPart(part);
+                String text = null;
+                try {
+                    text = MessageExtractor.getTextFromPart(part);
+                } catch (MessagingException e) {
+                    Log.i(K9.LOG_TAG, "Unable to fetch part to in order to parse message for PGP data", e);
+                }
                 if (TextUtils.isEmpty(text)) {
                     continue;
                 }

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
@@ -41,12 +42,16 @@ class EncryptionDetector {
             return false;
         }
 
-        String text = MessageExtractor.getTextFromPart(textPart);
-        if (text == null) {
+        try {
+            String text = MessageExtractor.getTextFromPart(textPart);
+            if (text == null) {
+                return false;
+            } else {
+                return PGP_MESSAGE_PATTERN.matcher(text).find();
+            }
+        } catch (MessagingException e) {
             return false;
         }
-
-        return PGP_MESSAGE_PATTERN.matcher(text).find();
     }
 
     private boolean isUsableTextPart(Part textPart) {

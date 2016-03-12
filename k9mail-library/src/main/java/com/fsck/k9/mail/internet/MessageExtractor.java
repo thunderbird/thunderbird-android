@@ -31,7 +31,7 @@ import static com.fsck.k9.mail.internet.Viewable.Textual;
 public class MessageExtractor {
     private MessageExtractor() {}
 
-    public static String getTextFromPart(Part part) {
+    public static String getTextFromPart(Part part) throws MessagingException {
         try {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
@@ -83,23 +83,16 @@ public class MessageExtractor {
                             MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);
                         } catch (IOException e) { /* Ignore */ }
                     }
+                } else {
+                    throw new MessagingException("Provided non-text part: "+part);
                 }
+            } else {
+                throw new MessagingException("Provided invalid part: "+part);
             }
-
-        } catch (OutOfMemoryError oom) {
-            /*
-             * If we are not able to process the body there's nothing we can do about it. Return
-             * null and let the upper layers handle the missing content.
-             */
-            Log.e(LOG_TAG, "Unable to getTextFromPart " + oom.toString());
-        } catch (Exception e) {
-            /*
-             * If we are not able to process the body there's nothing we can do about it. Return
-             * null and let the upper layers handle the missing content.
-             */
+        } catch (IOException e) {
             Log.e(LOG_TAG, "Unable to getTextFromPart", e);
+            throw new MessagingException("Unable to get text from part: "+part, e);
         }
-        return null;
     }
 
 
