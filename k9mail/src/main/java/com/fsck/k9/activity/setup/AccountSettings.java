@@ -41,6 +41,7 @@ import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
@@ -1005,8 +1006,8 @@ public class AccountSettings extends K9PreferenceActivity {
         protected Void doInBackground(Void... params) {
             try {
                 folders = mAccount.getLocalStore().getPersonalNamespaces(false);
-            } catch (Exception e) {
-                /// this can't be checked in
+            } catch (MessagingException e) {
+                Log.i(K9.LOG_TAG, "Unable to fetch local store: "+ e.getMessage(), e);
             }
 
             // TODO: In the future the call above should be changed to only return remote folders.

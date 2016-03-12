@@ -1555,7 +1555,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         @Override
         protected String generateMessage(Accounts activity) {
-            //TODO: display names of imported accounts (name from file *and* possibly new name)
+            //TODO: display any change in name for imported accounts (name from file *and* possibly new name)
 
             int imported = mImportResults.importedAccounts.size();
             String accounts = activity.getResources().getQuantityString(
@@ -1918,7 +1918,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     /**
      * Handles exporting of global settings and/or accounts in a background thread.
      */
-    private static class ExportAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
+    private static class ExportAsyncTask extends ExtendedAsyncTask<Void, Void, SettingsImportExportException> {
         private boolean mIncludeGlobals;
         private Set<String> mAccountUuids;
         private String mFileName;
@@ -1939,19 +1939,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected SettingsImportExportException doInBackground(Void... params) {
             try {
                 mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
                             mAccountUuids);
             } catch (SettingsImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
-                return false;
+                return e;
             }
-            return true;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(Boolean success) {
+        protected void onPostExecute(SettingsImportExportException exception) {
             Accounts activity = (Accounts) mActivity;
 
             // Let the activity know that the background task is complete
@@ -1959,13 +1959,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             removeProgressDialog();
 
-            if (success) {
+            if (exception == null) {
                 activity.showSimpleDialog(R.string.settings_export_success_header,
                                           R.string.settings_export_success, mFileName);
             } else {
-                //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_export_failed_header,
-                                          R.string.settings_export_failure);
+                                          R.string.settings_export_failure, exception.getMessage());
             }
         }
     }
@@ -1973,7 +1972,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     /**
      * Handles importing of global settings and/or accounts in a background thread.
      */
-    private static class ImportAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
+    private static class ImportAsyncTask extends ExtendedAsyncTask<Void, Void, SettingsImportExportException> {
         private boolean mIncludeGlobals;
         private List<String> mAccountUuids;
         private boolean mOverwrite;
@@ -1997,7 +1996,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected SettingsImportExportException doInBackground(Void... params) {
             try {
                 InputStream is = mContext.getContentResolver().openInputStream(mUri);
                 try {
@@ -2012,19 +2011,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 }
             } catch (SettingsImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during import", e);
-                return false;
+                return e;
             } catch (FileNotFoundException e) {
                 Log.w(K9.LOG_TAG, "Couldn't open import file", e);
-                return false;
-            } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Unknown error", e);
-                return false;
+                return new SettingsImportExportException("File not found", e);
             }
-            return true;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(Boolean success) {
+        protected void onPostExecute(SettingsImportExportException exception) {
             Accounts activity = (Accounts) mActivity;
 
             // Let the activity know that the background task is complete
@@ -2035,7 +2031,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             String filename = mUri.getLastPathSegment();
             boolean globalSettings = mImportResults.globalSettings;
             int imported = mImportResults.importedAccounts.size();
-            if (success && (globalSettings || imported > 0)) {
+            if (exception != null && (globalSettings || imported > 0)) {
                 if (imported == 0) {
                     activity.showSimpleDialog(R.string.settings_import_success_header,
                                               R.string.settings_import_global_settings_success, filename);
@@ -2045,14 +2041,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
                 activity.refresh();
             } else {
-                //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_import_failed_header,
-                                          R.string.settings_import_failure, filename);
+                                          R.string.settings_import_failure, filename, exception.getMessage());
             }
         }
     }
 
-    private static class ListImportContentsAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
+    private static class ListImportContentsAsyncTask extends ExtendedAsyncTask<Void, Void, SettingsImportExportException> {
         private Uri mUri;
         private ImportContents mImportContents;
 
@@ -2070,7 +2065,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected SettingsImportExportException doInBackground(Void... params) {
             try {
                 ContentResolver resolver = mContext.getContentResolver();
                 InputStream is = resolver.openInputStream(mUri);
@@ -2085,30 +2080,28 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 }
             } catch (SettingsImportExportException e) {
                 Log.w(K9.LOG_TAG, "Exception during export", e);
-                return false;
+                return e;
             } catch (FileNotFoundException e) {
                 Log.w(K9.LOG_TAG, "Couldn't read content from URI " + mUri);
-                return false;
+                return new SettingsImportExportException("File not found", e);
             }
-            return true;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(Boolean success) {
+        protected void onPostExecute(SettingsImportExportException exception) {
             Accounts activity = (Accounts) mActivity;
-
             // Let the activity know that the background task is complete
             activity.setNonConfigurationInstance(null);
 
             removeProgressDialog();
 
-            if (success) {
+            if (exception != null) {
                 activity.showImportSelectionDialog(mImportContents, mUri);
             } else {
                 String filename = mUri.getLastPathSegment();
-                //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_import_failed_header,
-                                          R.string.settings_import_failure, filename);
+                                          R.string.settings_import_failure, filename, exception.getMessage());
             }
         }
     }

@@ -90,8 +90,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
             }
         } catch (URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.d(K9.LOG_TAG, "Account store URI was invalid:" + mAccount.getStoreUri(), e);
         }
 
 

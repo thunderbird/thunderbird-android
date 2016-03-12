@@ -1,6 +1,7 @@
 package com.fsck.k9.preferences;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -82,8 +83,7 @@ public class SettingsExporter {
 
         OutputStream os = null;
         String filename = null;
-        try
-        {
+        try {
             File dir = new File(Environment.getExternalStorageDirectory() + File.separator
                                 + context.getPackageName());
             dir.mkdirs();
@@ -95,8 +95,8 @@ public class SettingsExporter {
 
             // If all went well, we return the name of the file just written.
             return filename;
-        } catch (Exception e) {
-            throw new SettingsImportExportException(e);
+        } catch (FileNotFoundException e) {
+            throw new SettingsImportExportException("Unable to create file", e);
         } finally {
             if (os != null) {
                 try {
