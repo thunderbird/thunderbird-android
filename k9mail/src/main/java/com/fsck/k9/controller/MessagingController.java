@@ -766,7 +766,9 @@ public class MessagingController implements Runnable {
      * TODO Break this method up into smaller chunks.
      * @param providedRemoteFolder TODO
      */
-    private void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener, Folder providedRemoteFolder) {
+    private void synchronizeMailboxSynchronous(
+            final Account account, final String folder, final MessagingListener listener,
+            Folder providedRemoteFolder) {
         Folder remoteFolder = null;
         LocalFolder tLocalFolder = null;
 
@@ -887,7 +889,7 @@ public class MessagingController implements Runnable {
             final Date earliestDate = account.getEarliestPollDate();
 
 
-            int remoteStart;
+            int remoteStart = 1;
             if (remoteMessageCount > 0) {
                 /* Message numbers start at 1.  */
                 if (visibleLimit > 0) {
@@ -928,7 +930,7 @@ public class MessagingController implements Runnable {
                     l.synchronizeMailboxHeadersFinished(account, folder, headerProgress.get(), remoteUidMap.size());
                 }
 
-            } else {
+            } else if(remoteMessageCount < 0) {
                 throw new Exception("Message count " + remoteMessageCount + " for folder " + folder);
             }
 
