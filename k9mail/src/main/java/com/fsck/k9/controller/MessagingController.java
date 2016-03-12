@@ -2814,7 +2814,7 @@ public class MessagingController implements Runnable {
                     }
                     markMessageAsReadOnView(account, message);
 
-                } catch (Exception e) {
+                } catch (MessagingException e) {
                     for (MessagingListener l : getListeners(listener)) {
                         l.loadMessageForViewFailed(account, folder, uid, e);
                     }

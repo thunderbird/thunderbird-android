@@ -812,12 +812,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         @Override
-        public void loadMessageForViewFailed(Account account, String folder, String uid, final Throwable t) {
+        public void loadMessageForViewFailed(Account account, String folder, String uid, final MessagingException e) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     if (isAdded()) {
-                        onDownloadMessageFailed(t);
+                        onDownloadMessageFailed(e);
                     }
                 }
             });
