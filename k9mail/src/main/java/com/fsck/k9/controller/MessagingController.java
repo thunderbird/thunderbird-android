@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -158,6 +159,7 @@ public class MessagingController implements Runnable {
 
     private final Context context;
     private final NotificationController notificationController;
+    private volatile boolean stopped = false;
 
     private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
@@ -214,7 +216,8 @@ public class MessagingController implements Runnable {
     }
 
 
-    private MessagingController(Context context, NotificationController notificationController) {
+    @VisibleForTesting
+    MessagingController(Context context, NotificationController notificationController) {
         this.context = context;
         this.notificationController = notificationController;
         mThread = new Thread(this);
@@ -223,6 +226,13 @@ public class MessagingController implements Runnable {
         if (memorizingListener != null) {
             addListener(memorizingListener);
         }
+    }
+
+    @VisibleForTesting
+    void stop() throws InterruptedException {
+        stopped = true;
+        mThread.interrupt();
+        mThread.join(1000L);
     }
 
     public synchronized static MessagingController getInstance(Context context) {
@@ -241,7 +251,7 @@ public class MessagingController implements Runnable {
     @Override
     public void run() {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-        while (true) {
+        while (!stopped) {
             String commandDescription = null;
             try {
                 final Command command = mCommands.take();

@@ -9,11 +9,12 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 
+import com.fsck.k9.notification.NotificationController;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -29,7 +30,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -50,15 +50,25 @@ public class MessagingControllerTest {
     private Folder remoteFolder;
     @Mock
     private LocalStore localStore;
+    @Mock
+    private NotificationController notificationController;
+
 
     @Before
     public void before() throws MessagingException {
         MockitoAnnotations.initMocks(this);
-        controller = MessagingController.getInstance(
-                ShadowApplication.getInstance().getApplicationContext());
+        Context appContext = ShadowApplication.getInstance().getApplicationContext();
+
+        controller = new MessagingController(appContext, notificationController);
+
         when(account.getLocalStore()).thenReturn(localStore);
         when(account.getStats(any(Context.class))).thenReturn(accountStats);
         when(localStore.getFolder("Folder")).thenReturn(localFolder);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        controller.stop();
     }
 
     @Test
@@ -82,8 +92,7 @@ public class MessagingControllerTest {
             }
         }).when(listener).synchronizeMailboxFinished(account, "Folder", 1, 0);
         when(remoteFolder.getMessageCount()).thenReturn(1);
-        Thread thread = new Thread(controller);
-        thread.start();
+
         controller.synchronizeMailbox(account, "Folder", listener, remoteFolder);
         assertTrue(commandStarted.await(1, TimeUnit.SECONDS));
         assertTrue(commandFinished.await(1, TimeUnit.SECONDS));
@@ -111,8 +120,6 @@ public class MessagingControllerTest {
         }).when(listener).synchronizeMailboxFinished(account, "Folder", 0, 0);
         when(remoteFolder.getMessageCount()).thenReturn(0);
 
-        Thread thread = new Thread(controller);
-        thread.start();
         controller.synchronizeMailbox(account, "Folder", listener, remoteFolder);
         assertTrue(commandStarted.await(1, TimeUnit.SECONDS));
         assertTrue(commandFinished.await(1, TimeUnit.SECONDS));
@@ -140,8 +147,6 @@ public class MessagingControllerTest {
         }).when(listener).synchronizeMailboxFailed(eq(account), eq("Folder"), anyString());
         when(remoteFolder.getMessageCount()).thenReturn(-1);
 
-        Thread thread = new Thread(controller);
-        thread.start();
         controller.synchronizeMailbox(account, "Folder", listener, remoteFolder);
         assertTrue(commandStarted.await(1, TimeUnit.SECONDS));
         assertTrue(commandFinished.await(1, TimeUnit.SECONDS));
