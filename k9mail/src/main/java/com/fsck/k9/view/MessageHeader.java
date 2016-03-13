@@ -177,21 +177,23 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
     }
 
-    public String createMessage(int addressesCount){
-        return mContext.getResources().getQuantityString(R.plurals.copy_address_to_clipboard,addressesCount);
+    public String createMessage(int addressesCount) {
+        return mContext.getResources().getQuantityString(R.plurals.copy_address_to_clipboard, addressesCount);
     }
 
-    private void onAddAddressesToClipboard(Address[] addresses){
+    private void onAddAddressesToClipboard(Address[] addresses) {
         StringBuilder addressesToCopy = new StringBuilder();
-        for(Address addressTemp : addresses){
+        for (Address addressTemp : addresses) {
             addressesToCopy.append(addressTemp.getAddress() + " ");
         }
-        addressesToCopy = addressesToCopy.deleteCharAt(addressesToCopy.length()-1);
+
+        addressesToCopy = addressesToCopy.deleteCharAt(addressesToCopy.length() - 1);
         ClipboardManager.getInstance(mContext).setText("addresses", addressesToCopy.toString());
+
         Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();
     }
 
-    private void onAddRecipientsToClipboard(Message.RecipientType recipientType){
+    private void onAddRecipientsToClipboard(Message.RecipientType recipientType) {
         try {
             onAddAddressesToClipboard(mMessage.getRecipients(recipientType));
         } catch (MessagingException e) {
