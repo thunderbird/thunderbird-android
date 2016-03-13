@@ -119,7 +119,6 @@ public class MessagingController implements Runnable {
      * TODO: Unused
      */
     private static final int UNSYNC_CHUNK_SIZE = 5;
-    //TODO: Move this to a R.string
     public static final String PUSH_FAILED_ERROR_PREFIX = "Push failed: ";
     private static MessagingController inst = null;
 
@@ -2920,7 +2919,7 @@ public class MessagingController implements Runnable {
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
             localFolder.close();
             sendPendingMessages(account, listener);
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             /*
             for (MessagingListener l : getListeners())
             {

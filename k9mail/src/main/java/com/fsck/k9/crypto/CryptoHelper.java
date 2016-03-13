@@ -1,9 +1,12 @@
 
 package com.fsck.k9.crypto;
 
+import android.util.Log;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -42,8 +45,7 @@ public class CryptoHelper {
                 data = MessageExtractor.getTextFromPart(part);
             }
         } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
+            Log.d(K9.LOG_TAG, "Error while fetching message part to check for encryption", e);
         }
 
         if (data == null) {
