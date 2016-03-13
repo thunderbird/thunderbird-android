@@ -157,6 +157,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="select_text_action">Select text</string>
     <string name="show_headers_action">Show headers</string>
     <string name="hide_headers_action">Hide headers</string>
+    <plurals name="copy_address_to_clipboard">
+        <item quantity="one">Address copied to clipboard</item>
+        <item quantity="other">Addresses copied to clipboard</item>
+    </plurals>
 
     <string name="message_view_theme_action_dark">Switch to dark theme</string>
     <string name="message_view_theme_action_light">Switch to light theme</string>
