@@ -1,5 +1,6 @@
 package com.fsck.k9.controller;
 
+
 import android.content.Context;
 
 import com.fsck.k9.Account;
@@ -8,7 +9,6 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
-
 import com.fsck.k9.notification.NotificationController;
 import org.junit.After;
 import org.junit.Before;
@@ -16,26 +16,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 public class MessagingControllerTest {
+    private static final String FOLDER_NAME = "Folder";
+
 
     private MessagingController controller;
     @Mock
@@ -55,15 +49,14 @@ public class MessagingControllerTest {
 
 
     @Before
-    public void before() throws MessagingException {
+    public void setUp() throws MessagingException {
         MockitoAnnotations.initMocks(this);
         Context appContext = ShadowApplication.getInstance().getApplicationContext();
 
         controller = new MessagingController(appContext, notificationController);
 
-        when(account.getLocalStore()).thenReturn(localStore);
-        when(account.getStats(any(Context.class))).thenReturn(accountStats);
-        when(localStore.getFolder("Folder")).thenReturn(localFolder);
+        configureAccount();
+        configureLocalStore();
     }
 
     @After
@@ -72,84 +65,44 @@ public class MessagingControllerTest {
     }
 
     @Test
-    public void can_synchronize_folder_with_message() throws InterruptedException, MessagingException {
-        final CountDownLatch commandStarted = new CountDownLatch(1);
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                System.out.println("answer");
-                commandStarted.countDown();
-                return null;
-            }
-        }).when(listener).synchronizeMailboxStarted(account, "Folder");
+    public void synchronizeMailboxSynchronous_withOneMessageInRemoteFolder_shouldFinishWithoutError() throws Exception {
+        messageCountInRemoteFolder(1);
 
-        final CountDownLatch commandFinished = new CountDownLatch(1);
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                commandFinished.countDown();
-                return null;
-            }
-        }).when(listener).synchronizeMailboxFinished(account, "Folder", 1, 0);
-        when(remoteFolder.getMessageCount()).thenReturn(1);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
 
-        controller.synchronizeMailbox(account, "Folder", listener, remoteFolder);
-        assertTrue(commandStarted.await(1, TimeUnit.SECONDS));
-        assertTrue(commandFinished.await(1, TimeUnit.SECONDS));
-        verify(localFolder).setStatus(null);
+        verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 1, 0);
     }
 
     @Test
-    public void can_synchronize_empty_folder() throws InterruptedException, MessagingException {
-        final CountDownLatch commandStarted = new CountDownLatch(1);
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                commandStarted.countDown();
-                return null;
-            }
-        }).when(listener).synchronizeMailboxStarted(account, "Folder");
+    public void synchronizeMailboxSynchronous_withEmptyRemoteFolder_shouldFinishWithoutError() throws Exception {
+        messageCountInRemoteFolder(0);
 
-        final CountDownLatch commandFinished = new CountDownLatch(1);
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                commandFinished.countDown();
-                return null;
-            }
-        }).when(listener).synchronizeMailboxFinished(account, "Folder", 0, 0);
-        when(remoteFolder.getMessageCount()).thenReturn(0);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
 
-        controller.synchronizeMailbox(account, "Folder", listener, remoteFolder);
-        assertTrue(commandStarted.await(1, TimeUnit.SECONDS));
-        assertTrue(commandFinished.await(1, TimeUnit.SECONDS));
-        verify(localFolder).setStatus(null);
+        verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 0, 0);
     }
 
     @Test
-    public void cant_synchronize_folder_with_negative_message_count() throws InterruptedException, MessagingException {
-        final CountDownLatch commandStarted = new CountDownLatch(1);
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                commandStarted.countDown();
-                return null;
-            }
-        }).when(listener).synchronizeMailboxStarted(account, "Folder");
+    public void synchronizeMailboxSynchronous_withNegativeMessageCountInRemoteFolder_shouldFinishWithError()
+            throws Exception {
+        messageCountInRemoteFolder(-1);
 
-        final CountDownLatch commandFinished = new CountDownLatch(1);
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                commandFinished.countDown();
-                return null;
-            }
-        }).when(listener).synchronizeMailboxFailed(eq(account), eq("Folder"), anyString());
-        when(remoteFolder.getMessageCount()).thenReturn(-1);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
 
-        controller.synchronizeMailbox(account, "Folder", listener, remoteFolder);
-        assertTrue(commandStarted.await(1, TimeUnit.SECONDS));
-        assertTrue(commandFinished.await(1, TimeUnit.SECONDS));
-        verify(localFolder).setStatus("Exception: Message count -1 for folder Folder");
+        verify(listener).synchronizeMailboxFailed(account, FOLDER_NAME,
+                "Exception: Message count -1 for folder Folder");
+    }
+
+    private void messageCountInRemoteFolder(int value) throws MessagingException {
+        when(remoteFolder.getMessageCount()).thenReturn(value);
+    }
+
+    private void configureAccount() throws MessagingException {
+        when(account.getLocalStore()).thenReturn(localStore);
+        when(account.getStats(any(Context.class))).thenReturn(accountStats);
+    }
+
+    private void configureLocalStore() {
+        when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
     }
 }
