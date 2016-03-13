@@ -182,13 +182,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     private void onAddAddressesToClipboard(Address[] addresses) {
-        StringBuilder addressesToCopy = new StringBuilder();
-        for (Address addressTemp : addresses) {
-            addressesToCopy.append(addressTemp.getAddress() + " ");
-        }
+        String addressList = Address.toString(addresses);
 
-        addressesToCopy = addressesToCopy.deleteCharAt(addressesToCopy.length() - 1);
-        ClipboardManager.getInstance(mContext).setText("addresses", addressesToCopy.toString());
+        ClipboardManager clipboardManager = ClipboardManager.getInstance(mContext);
+        clipboardManager.setText("addresses", addressList);
 
         Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();
     }
