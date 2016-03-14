@@ -20,7 +20,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
-import com.fsck.k9.message.preview.PreviewResult.PreviewType;
+import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 
 
 public class LocalMessage extends MimeMessage {
