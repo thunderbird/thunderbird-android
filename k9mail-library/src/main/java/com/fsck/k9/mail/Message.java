@@ -92,6 +92,8 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract Address[] getRecipients(RecipientType type) throws MessagingException;
 
+    public abstract Address[] getListPost();
+
     public abstract void setRecipients(RecipientType type, Address[] addresses)
     throws MessagingException;
 

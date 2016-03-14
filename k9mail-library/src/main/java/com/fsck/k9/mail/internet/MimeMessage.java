@@ -220,6 +220,12 @@ public class MimeMessage extends Message {
     }
 
     @Override
+    public Address[] getListPost() {
+        return ListHeaders.parsePostAddress(MimeUtility.unfold(
+                getFirstHeader(ListHeaders.LIST_POST_HEADER)));
+    }
+
+    @Override
     public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException {
         if (type == RecipientType.TO) {
             if (addresses == null || addresses.length == 0) {
