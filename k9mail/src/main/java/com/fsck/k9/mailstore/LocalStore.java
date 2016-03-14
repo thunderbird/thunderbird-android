@@ -25,6 +25,7 @@ import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
+import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
@@ -162,6 +163,7 @@ public class LocalStore extends Store implements Serializable {
     private ContentResolver mContentResolver;
     private final Account mAccount;
     private final MessagePreviewCreator messagePreviewCreator;
+    private final MessageFulltextCreator messageFulltextCreator;
     private final AttachmentCounter attachmentCounter;
 
     /**
@@ -179,6 +181,7 @@ public class LocalStore extends Store implements Serializable {
         uUid = account.getUuid();
 
         messagePreviewCreator = MessagePreviewCreator.newInstance();
+        messageFulltextCreator = MessageFulltextCreator.newInstance();
         attachmentCounter = new AttachmentCounter();
 
         database.open();
@@ -833,6 +836,10 @@ public class LocalStore extends Store implements Serializable {
 
     public MessagePreviewCreator getMessagePreviewCreator() {
         return messagePreviewCreator;
+    }
+
+    public MessageFulltextCreator getMessageFulltextCreator() {
+        return messageFulltextCreator;
     }
 
     public AttachmentCounter getAttachmentCounter() {

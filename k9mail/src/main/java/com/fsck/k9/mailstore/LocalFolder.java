@@ -56,6 +56,7 @@ import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
 import com.fsck.k9.message.extractors.PreviewResult;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
+import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import org.apache.commons.io.IOUtils;
@@ -1223,6 +1224,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         long rootId = -1;
         long parentId = -1;
+        long msgId;
 
         if (oldMessageId == -1) {
             // This is a new message. Do the message threading.
@@ -1237,6 +1239,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             PreviewResult previewResult = previewCreator.createPreview(message);
             PreviewType previewType = previewResult.getPreviewType();
             DatabasePreviewType databasePreviewType = DatabasePreviewType.fromPreviewType(previewType);
+
+            MessageFulltextCreator fulltextCreator = localStore.getMessageFulltextCreator();
+            String fulltext = fulltextCreator.createFulltext(message);
 
             AttachmentCounter attachmentCounter = localStore.getAttachmentCounter();
             int attachmentCount = attachmentCounter.getAttachmentCount(message);
@@ -1280,7 +1285,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             }
 
             if (oldMessageId == -1) {
-                long msgId = db.insert("messages", "uid", cv);
+                msgId = db.insert("messages", "uid", cv);
 
                 // Create entry in 'threads' table
                 cv.clear();
@@ -1295,7 +1300,15 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
                 db.insert("threads", null, cv);
             } else {
+                msgId = oldMessageId;
                 db.update("messages", cv, "id = ?", new String[] { Long.toString(oldMessageId) });
+            }
+
+            if (fulltext != null) {
+                cv.clear();
+                cv.put("docid", msgId);
+                cv.put("fulltext", fulltext);
+                db.replace("messages_fulltext", null, cv);
             }
         } catch (Exception e) {
             throw new MessagingException("Error appending message: " + message.getSubject(), e);

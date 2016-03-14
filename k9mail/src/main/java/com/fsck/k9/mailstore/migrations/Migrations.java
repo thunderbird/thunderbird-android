@@ -62,6 +62,8 @@ public class Migrations {
                 MigrationTo53.removeNullValuesFromEmptyColumnInMessagesTable(db);
             case 53:
                 MigrationTo54.addPreviewTypeColumn(db);
+            case 54:
+                MigrationTo55.createFtsSearchTable(db, migrationsHelper);
         }
     }
 }

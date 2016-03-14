@@ -410,9 +410,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
                 mSearch.or(new SearchCondition(SearchField.SENDER, Attribute.CONTAINS, query));
                 mSearch.or(new SearchCondition(SearchField.SUBJECT, Attribute.CONTAINS, query));
-                // TODO re-enable search in message contents
-                // mSearch.or(new SearchCondition(SearchField.MESSAGE_CONTENTS, Attribute.CONTAINS, query));
-                Toast.makeText(this, R.string.warn_search_disabled, Toast.LENGTH_LONG).show();
+                mSearch.or(new SearchCondition(SearchField.MESSAGE_CONTENTS, Attribute.CONTAINS, query));
 
                 Bundle appData = intent.getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
