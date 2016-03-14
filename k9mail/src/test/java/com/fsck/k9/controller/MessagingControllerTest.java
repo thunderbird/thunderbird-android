@@ -135,12 +135,34 @@ public class MessagingControllerTest {
     @Test
     public void synchronizeMailboxSynchronous_withNoRemoteFolderProvided_shouldOpenRemoteFolderFromStore() throws Exception {
         messageCountInRemoteFolder(1);
-        when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_ON_POLL);
         when(account.getRemoteStore()).thenReturn(remoteStore);
+        when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
 
         controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
 
         verify(remoteFolder).open(Folder.OPEN_MODE_RW);
+
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withRemoteFolderProvided_shouldNotCloseRemoteFolder() throws Exception {
+        messageCountInRemoteFolder(1);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(remoteFolder, never()).close();
+
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withNoRemoteFolderProvided_shouldCloseRemoteFolderFromStore() throws Exception {
+        messageCountInRemoteFolder(1);
+        when(account.getRemoteStore()).thenReturn(remoteStore);
+        when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
+
+        verify(remoteFolder).close();
 
     }
 
@@ -285,6 +307,8 @@ public class MessagingControllerTest {
         assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
         assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
     }
+
+
 
     private void respondToFetchEnvelopesWithMessage(final Message message) throws MessagingException {
         doAnswer(new Answer() {
