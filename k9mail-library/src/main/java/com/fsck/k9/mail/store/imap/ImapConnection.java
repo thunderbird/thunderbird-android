@@ -655,13 +655,13 @@ class ImapConnection {
             outputStream.write(commandToSend.getBytes());
             outputStream.flush();
 
-//            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-//                if (sensitive && !K9MailLib.isDebugSensitive()) {
-//                    Log.v(LOG_TAG, getLogId() + ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
-//                } else {
-                    System.out.println(LOG_TAG+": "+ getLogId() + ">>> " + tag + " " + command+ " " + initialClientResponse);
-//                }
-//            }
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+                if (sensitive && !K9MailLib.isDebugSensitive()) {
+                    Log.v(LOG_TAG, getLogId() + ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
+                } else {
+                    Log.v(LOG_TAG, getLogId() + ">>> " + tag + " " + command+ " " + initialClientResponse);
+                }
+            }
 
             return tag;
         } catch (IOException | MessagingException e) {
