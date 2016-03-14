@@ -7,6 +7,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.notification.NotificationController;
@@ -21,6 +22,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -44,6 +46,9 @@ public class MessagingControllerTest {
     private Folder remoteFolder;
     @Mock
     private LocalStore localStore;
+    @Mock
+    private Store remoteStore;
+
     @Mock
     private NotificationController notificationController;
 
@@ -91,6 +96,51 @@ public class MessagingControllerTest {
 
         verify(listener).synchronizeMailboxFailed(account, FOLDER_NAME,
                 "Exception: Message count -1 for folder Folder");
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withRemoteFolderProvided_shouldNotOpenRemoteFolder() throws Exception {
+        messageCountInRemoteFolder(1);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(remoteFolder, never()).open(Folder.OPEN_MODE_RW);
+
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withNoRemoteFolderProvided_shouldOpenRemoteFolderFromStore() throws Exception {
+        messageCountInRemoteFolder(1);
+        when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_ON_POLL);
+        when(account.getRemoteStore()).thenReturn(remoteStore);
+        when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
+
+        verify(remoteFolder).open(Folder.OPEN_MODE_RW);
+
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withAccountPolicySetToExpungeOnPoll_shouldExpungeRemoteFolder() throws Exception {
+        messageCountInRemoteFolder(1);
+        when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_ON_POLL);
+        when(account.getRemoteStore()).thenReturn(remoteStore);
+        when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
+
+        verify(remoteFolder).expunge();
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withAccountPolicySetToExpungeManually_shouldNotExpungeRemoteFolder() throws Exception {
+        messageCountInRemoteFolder(1);
+        when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_MANUALLY);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
+
+        verify(remoteFolder, never()).expunge();
     }
 
     private void messageCountInRemoteFolder(int value) throws MessagingException {
