@@ -17,7 +17,7 @@ class PreviewTextExtractor {
 
     @NonNull
     public String extractPreview(@NonNull Part textPart) throws PreviewExtractionException {
-        String text = MessageExtractor.getTextFromPart(textPart);
+        String text = MessageExtractor.getTextFromPart(textPart, MAX_CHARACTERS_CHECKED_FOR_PREVIEW);
         if (text == null) {
             throw new PreviewExtractionException("Couldn't get text from part");
         }
@@ -37,11 +37,8 @@ class PreviewTextExtractor {
     }
 
     private String stripTextForPreview(String text) {
-        // Only look at the first 8k of a message when calculating
-        // the preview.  This should avoid unnecessary
-        // memory usage on large messages
-        if (text.length() > MAX_CHARACTERS_CHECKED_FOR_PREVIEW) {
-            text = text.substring(0, MAX_CHARACTERS_CHECKED_FOR_PREVIEW);
+        if (text == null) {
+            return "";
         }
 
         // Remove (correctly delimited by '-- \n') signatures
