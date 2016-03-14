@@ -137,7 +137,6 @@ public class MessagingControllerTest {
         messageCountInRemoteFolder(1);
         when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_ON_POLL);
         when(account.getRemoteStore()).thenReturn(remoteStore);
-        when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
 
         controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
 
@@ -254,26 +253,12 @@ public class MessagingControllerTest {
 
     @Test
     public void synchronizeMailboxSynchronous_withUnsyncedNewSmallMessage_shouldFetchBodyOfSmallMessage() throws Exception {
-        final Message smallMessageEnvelope = mock(Message.class);
-        when(smallMessageEnvelope.olderThan(any(Date.class))).thenReturn(false);
-        when(smallMessageEnvelope.getSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
+        final Message smallMessage = buildSmallNewMessage();
 
         messageCountInRemoteFolder(1);
         hasUnsychedRemoteMessage();
         when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
-        doAnswer(new Answer() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                FetchProfile fp = (FetchProfile) invocation.getArguments()[1];
-                MessageRetrievalListener l = (MessageRetrievalListener) invocation.getArguments()[2];
-                if(fp.contains(FetchProfile.Item.ENVELOPE)) {
-                    l.messageStarted("UID", 1, 1);
-                    l.messageFinished(smallMessageEnvelope, 1, 1);
-                    l.messagesFinished(1);
-                }
-                return null;
-            }
-        }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), any(MessageRetrievalListener.class));
+        respondToFetchEnvelopesWithMessage(smallMessage);
 
         controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
 
@@ -283,24 +268,34 @@ public class MessagingControllerTest {
     }
 
     @Test
-    public void synchronizeMailboxSynchronous_withUnsyncedNewSmallMessage_shouldOnlyFetchStructureOfLargeMessage() throws Exception {
-        final Message largeMessageEnvelope = mock(Message.class);
-        when(largeMessageEnvelope.olderThan(any(Date.class))).thenReturn(false);
-        when(largeMessageEnvelope.getSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE+1);
+    public void synchronizeMailboxSynchronous_withUnsyncedNewSmallMessage_shouldFetchStructureAndLimitedBodyOfLargeMessage() throws Exception {
+        final Message largeMessage = buildLargeNewMessage();
 
         messageCountInRemoteFolder(1);
         hasUnsychedRemoteMessage();
         when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
+        respondToFetchEnvelopesWithMessage(largeMessage);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        //TODO: Don't bother fetching messages of a size we don't have
+        verify(remoteFolder, atLeast(4)).fetch(any(List.class), fetchProfileCaptor.capture(), any(MessageRetrievalListener.class));
+        assertEquals(1, fetchProfileCaptor.getAllValues().get(2).size());
+        assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(2).get(0));
+        assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
+        assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
+    }
+
+    private void respondToFetchEnvelopesWithMessage(final Message message) throws MessagingException {
         doAnswer(new Answer() {
             @Override
             public Void answer(InvocationOnMock invocation) throws Throwable {
                 FetchProfile fp = (FetchProfile) invocation.getArguments()[1];
-                System.out.println(fp);
                 if(invocation.getArguments()[2] != null) {
                     MessageRetrievalListener l = (MessageRetrievalListener) invocation.getArguments()[2];
                     if (fp.contains(FetchProfile.Item.ENVELOPE)) {
                         l.messageStarted("UID", 1, 1);
-                        l.messageFinished(largeMessageEnvelope, 1, 1);
+                        l.messageFinished(message, 1, 1);
                         l.messagesFinished(1);
                     }
                 }
@@ -308,15 +303,20 @@ public class MessagingControllerTest {
             }
         }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), any(MessageRetrievalListener.class));
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+    }
 
-        //TODO: Don't bother fetching messages of a size we don't have
-        verify(remoteFolder, atLeast(4)).fetch(any(List.class), fetchProfileCaptor.capture(), any(MessageRetrievalListener.class));
+    private Message buildSmallNewMessage() {
+        Message message = mock(Message.class);
+        when(message.olderThan(any(Date.class))).thenReturn(false);
+        when(message.getSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
+        return message;
+    }
 
-        assertEquals(1, fetchProfileCaptor.getAllValues().get(2).size());
-        assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(2).get(0));
-        assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
-        assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
+    private Message buildLargeNewMessage() {
+        Message message = mock(Message.class);
+        when(message.olderThan(any(Date.class))).thenReturn(false);
+        when(message.getSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE+1);
+        return message;
     }
 
     private void messageCountInRemoteFolder(int value) throws MessagingException {
