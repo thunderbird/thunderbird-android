@@ -19,6 +19,7 @@ import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.fsck.k9.Features;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
@@ -447,14 +448,24 @@ public class Prefs extends K9PreferenceActivity {
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
 
-        mUseSocksProxy = (CheckBoxPreference) findPreference(PREFERENCE_SOCKS_PROXY);
-        mUseSocksProxy.setChecked(K9.isSocksProxyEnabled());
+        CheckBoxPreference useSocksProxy = (CheckBoxPreference) findPreference(PREFERENCE_SOCKS_PROXY);
+        EditTextPreference socksProxyHost = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_HOST);
+        EditTextPreference socksProxyPort = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_PORT);
 
-        mSocksProxyHost = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_HOST);
-        mSocksProxyHost.setText(K9.getSocksProxyHost());
+        if (Features.isSocksProxySupportEnabled()) {
+            mUseSocksProxy = useSocksProxy;
+            mSocksProxyHost = socksProxyHost;
+            mSocksProxyPort = socksProxyPort;
 
-        mSocksProxyPort = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_PORT);
-        mSocksProxyPort.setText(Integer.toString(K9.getSocksProxyPort()));
+            useSocksProxy.setChecked(K9.isSocksProxyEnabled());
+            socksProxyHost.setText(K9.getSocksProxyHost());
+            socksProxyPort.setText(Integer.toString(K9.getSocksProxyPort()));
+        } else {
+            PreferenceScreen networkPreferences = (PreferenceScreen) findPreference("network_preferences");
+            networkPreferences.removePreference(useSocksProxy);
+            networkPreferences.removePreference(socksProxyHost);
+            networkPreferences.removePreference(socksProxyPort);
+        }
     }
 
     private static String themeIdToName(K9.Theme theme) {
@@ -557,9 +568,11 @@ public class Prefs extends K9PreferenceActivity {
         K9.setOpenPgpProvider(mOpenPgpProvider.getValue());
         K9.setOpenPgpSupportSignOnly(mOpenPgpSupportSignOnly.isChecked());
 
-        K9.setUseSocksProxy(mUseSocksProxy.isChecked());
-        K9.setSocksProxyHost(mSocksProxyHost.getText());
-        K9.setSocksProxyPort(Integer.parseInt(mSocksProxyPort.getText()));
+        if (Features.isSocksProxySupportEnabled()) {
+            K9.setUseSocksProxy(mUseSocksProxy.isChecked());
+            K9.setSocksProxyHost(mSocksProxyHost.getText());
+            K9.setSocksProxyPort(Integer.parseInt(mSocksProxyPort.getText()));
+        }
 
         StorageEditor editor = storage.edit();
         K9.save(editor);
