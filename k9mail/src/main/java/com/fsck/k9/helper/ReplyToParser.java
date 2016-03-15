@@ -10,11 +10,9 @@ public class ReplyToParser {
         Address[] replyToAddresses;
         if (message.getReplyTo().length > 0)
             return message.getReplyTo();
-        if (message instanceof MimeMessage) {
-            Address[] listPostAddresses = ListHeaders.getListPostAddresses((MimeMessage) message);
-            if (listPostAddresses.length > 0) {
-                return listPostAddresses;
-            }
+        Address[] listPostAddresses = ListHeaders.getListPostAddresses(message);
+        if (listPostAddresses.length > 0) {
+            return listPostAddresses;
         }
         return message.getFrom();
     }

@@ -36,7 +36,7 @@ public class ListHeaders {
     public static final String LIST_POST_HEADER = "List-Post";
     private static final Pattern mailtoContainerPattern = Pattern.compile("<(.+)>");
 
-    public static Address[] getListPostAddresses(MimeMessage message) {
+    public static Address[] getListPostAddresses(Message message) {
         String[] headerValues = new String[0];
         try {
             headerValues = message.getHeader(LIST_POST_HEADER);
