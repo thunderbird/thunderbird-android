@@ -359,6 +359,7 @@
         <EditTextPreference
             android:persistent="false"
             android:key="socks_proxy_host"
+            android:dependency="socks_proxy"
             android:singleLine="true"
             android:title="@string/socks_proxy_host_label"
             android:summary=""
@@ -367,6 +368,7 @@
         <EditTextPreference
             android:persistent="false"
             android:key="socks_proxy_port"
+            android:dependency="socks_proxy"
             android:singleLine="true"
             android:title="@string/socks_proxy_port_label"
             android:summary=""
