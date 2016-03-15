@@ -19,7 +19,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
@@ -1282,7 +1281,8 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public ProxySettings getProxySettings() {
-        return new ProxySettings(K9.isSocksProxyEnabled(), K9.getSocksProxyHost(), K9.getSocksProxyPort());
+        boolean enabled = Features.isSocksProxySupportEnabled() && K9.isSocksProxyEnabled();
+        return new ProxySettings(enabled, K9.getSocksProxyHost(), K9.getSocksProxyPort());
     }
 
     // It'd be great if this actually went into the store implementation
