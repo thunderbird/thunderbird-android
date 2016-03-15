@@ -15,6 +15,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.message.BasicNameValuePair;
@@ -970,7 +971,10 @@ public class WebDavStore extends RemoteStore {
             // For HTTPS based WebDAV we want to replace the default
             // SSLSocketFactory with one that allows us to inject our own certificates.
             SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
-            Scheme s = new Scheme("https", new WebDavSocketFactory(mTrustedSocketFactory, mHost, 443, mCertificateAlias), 443);
+            WebDavSocketFactory webDavSocketFactory =
+                    new WebDavSocketFactory(mTrustedSocketFactory,
+                            SSLSocketFactory.getSocketFactory(), mHost, 443, mCertificateAlias);
+            Scheme s = new Scheme("https", webDavSocketFactory, 443);
             reg.register(s);
         }
         return mHttpClient;

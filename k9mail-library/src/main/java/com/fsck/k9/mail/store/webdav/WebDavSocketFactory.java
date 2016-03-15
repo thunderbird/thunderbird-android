@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import javax.net.ssl.SSLSocketFactory;
-
 /**
  * Provides a factory for creating WebDAV capable sockets.
  *

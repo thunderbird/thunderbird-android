@@ -47,11 +47,15 @@ public class WebDavSocketFactoryTest {
     @Mock
     private TrustedSocketFactory trustedSocketFactory;
     @Mock
+    private SSLSocketFactory apacheSocketFactory;
+    @Mock
     private SSLSocket trustedSocket;
     @Mock
     private SSLSocket customAddressTrustedSocket;
     @Mock
     private SSLSocket wrappedTrustedSocket;
+    @Mock
+    private SSLSocket wrappedCustomAddressTrustedSocket;
     @Mock
     private Socket unknownSocket;
     @Mock
@@ -60,10 +64,9 @@ public class WebDavSocketFactoryTest {
     private HttpParams params;
 
     private ArgumentCaptor<InetSocketAddress> inetSocketAddressCaptor;
-    private SSLSocketFactory apacheSocketFactory;
 
     private String otherHost = "otherHost.com";
-    private int port = 10001;
+    private int otherPort = 10001;
     private InetAddress localAddress = mock(InetAddress.class);
     private int localPort = 10001;
     private int connectionTimeout = 1030;
@@ -77,10 +80,12 @@ public class WebDavSocketFactoryTest {
         when(trustedSocketFactory.createSocket(null, DEFAULT_HOST, DEFAULT_PORT, CERTIFICATE_ALIAS))
                 .thenReturn(trustedSocket);
 
-        when(trustedSocketFactory.createSocket(null, otherHost, port, CERTIFICATE_ALIAS))
+        when(trustedSocketFactory.createSocket(null, otherHost, otherPort, CERTIFICATE_ALIAS))
                 .thenReturn(customAddressTrustedSocket);
-        when(apacheSocketFactory.connectSocket(trustedSocket, otherHost, port, localAddress, localPort, params))
+        when(apacheSocketFactory.connectSocket(trustedSocket, otherHost, otherPort, localAddress, localPort, params))
                 .thenReturn(wrappedTrustedSocket);
+        when(apacheSocketFactory.connectSocket(customAddressTrustedSocket, otherHost, otherPort,
+                localAddress, localPort, params)).thenReturn(wrappedCustomAddressTrustedSocket);
         when(params.getIntParameter(eq(CoreConnectionPNames.CONNECTION_TIMEOUT), anyInt()))
                 .thenReturn(connectionTimeout);
         when(customAddressTrustedSocket.getSession()).thenReturn(sslSession);
@@ -108,30 +113,30 @@ public class WebDavSocketFactoryTest {
 
 
     @Test
-    public void connectSocket_withNoSocket_usesTrustedSocketFactoryToCreateSocket()
+    public void connectSocket_withNoSocket_passesTrustedSocketToApacheSocketFactory()
             throws IOException, NoSuchAlgorithmException, MessagingException, KeyManagementException {
-        Socket socket = webDavSocketFactory.connectSocket(null, otherHost, port,
+        webDavSocketFactory.connectSocket(null, otherHost, otherPort,
                 localAddress, localPort, params);
 
-        assertSame(customAddressTrustedSocket, socket);
+        verify(apacheSocketFactory).connectSocket(customAddressTrustedSocket, otherHost, otherPort,
+                localAddress, localPort, params);
     }
 
-
     @Test
-    public void connectSocket_bindsTrustedSocketToLocalAddressAndUsesHttpParams()
+    public void connectSocket_withNoSocket_providesWrappedCustomSocket()
             throws IOException, NoSuchAlgorithmException, MessagingException, KeyManagementException {
-        webDavSocketFactory.connectSocket(null, otherHost, port, localAddress, localPort, params);
-
-        verify(apacheSocketFactory).connectSocket(customAddressTrustedSocket, otherHost, port,
+        Socket socket = webDavSocketFactory.connectSocket(null, otherHost, otherPort,
                 localAddress, localPort, params);
+
+        assertSame(wrappedCustomAddressTrustedSocket, socket);
     }
 
     @Test
     public void connectSocket_bindsProvidedSocketToLocalAddressAndUsesHttpParams()
             throws IOException, NoSuchAlgorithmException, MessagingException, KeyManagementException {
-        webDavSocketFactory.connectSocket(unknownSocket, otherHost, port, localAddress, localPort, params);
+        webDavSocketFactory.connectSocket(unknownSocket, otherHost, otherPort, localAddress, localPort, params);
 
-        verify(apacheSocketFactory).connectSocket(unknownSocket, otherHost, port,
+        verify(apacheSocketFactory).connectSocket(unknownSocket, otherHost, otherPort,
                 localAddress, localPort, params);
     }
 
