@@ -14,6 +14,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
@@ -453,13 +454,32 @@ public class Prefs extends K9PreferenceActivity {
         EditTextPreference socksProxyPort = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_PORT);
 
         if (Features.isSocksProxySupportEnabled()) {
+            //TODO: Add input validation for hostname and port
+
             mUseSocksProxy = useSocksProxy;
             mSocksProxyHost = socksProxyHost;
             mSocksProxyPort = socksProxyPort;
 
             useSocksProxy.setChecked(K9.isSocksProxyEnabled());
-            socksProxyHost.setText(K9.getSocksProxyHost());
-            socksProxyPort.setText(Integer.toString(K9.getSocksProxyPort()));
+
+            String currentSockProxyHost = K9.getSocksProxyHost();
+            socksProxyHost.setText(currentSockProxyHost);
+            socksProxyHost.setSummary(currentSockProxyHost);
+
+            String currentSocksProxyPort = Integer.toString(K9.getSocksProxyPort());
+            socksProxyPort.setText(currentSocksProxyPort);
+            socksProxyPort.setSummary(currentSocksProxyPort);
+
+            OnPreferenceChangeListener changeListener = new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    preference.setSummary(newValue.toString());
+                    return true;
+                }
+            };
+
+            socksProxyHost.setOnPreferenceChangeListener(changeListener);
+            socksProxyPort.setOnPreferenceChangeListener(changeListener);
         } else {
             PreferenceScreen networkPreferences = (PreferenceScreen) findPreference("network_preferences");
             networkPreferences.removePreference(useSocksProxy);
