@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MimeHeader implements Cloneable {
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
@@ -224,7 +227,7 @@ public class MimeHeader implements Cloneable {
             MimeHeader header = (MimeHeader) super.clone();
             header.mFields = new ArrayList<Field>(mFields);
             return header;
-        } catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
     }

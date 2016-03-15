@@ -121,11 +121,11 @@ public class MimeMessage extends Message {
     public Date getSentDate() {
         if (mSentDate == null) {
             try {
-                DateTimeField field = (DateTimeField)DefaultFieldParser.parse("Date: "
+                DateTimeField field = (DateTimeField) DefaultFieldParser.parse("Date: "
                                       + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
                 mSentDate = field.getDate();
             } catch (Exception e) {
-
+                //TODO: Should we log bad sent dates
             }
         }
         return mSentDate;
@@ -354,7 +354,8 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setReferences(String references) throws MessagingException {
+    public void setReferences(String providedReferences) throws MessagingException {
+        String references = providedReferences;
         /*
          * Make sure the References header doesn't exceed the maximum header
          * line length and won't get (Q-)encoded later. Otherwise some clients
@@ -468,10 +469,10 @@ public class MimeMessage extends Message {
     public void setCharset(String charset) throws MessagingException {
         mHeader.setCharset(charset);
         if (mBody instanceof Multipart) {
-            ((Multipart)mBody).setCharset(charset);
+            ((Multipart) mBody).setCharset(charset);
         } else if (mBody instanceof TextBody) {
             CharsetSupport.setCharset(charset, this);
-            ((TextBody)mBody).setCharset(charset);
+            ((TextBody) mBody).setCharset(charset);
         }
     }
 
@@ -522,7 +523,7 @@ public class MimeMessage extends Message {
         public void startMultipart(BodyDescriptor bd) {
             expect(Part.class);
 
-            Part e = (Part)stack.peek();
+            Part e = (Part) stack.peek();
             try {
                 String contentType = e.getContentType();
                 String mimeType = MimeUtility.getHeaderParameter(contentType, null);
@@ -540,7 +541,7 @@ public class MimeMessage extends Message {
             expect(Part.class);
             try {
                 Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType());
-                ((Part)stack.peek()).setBody(body);
+                ((Part) stack.peek()).setBody(body);
             } catch (MessagingException me) {
                 throw new Error(me);
             }
@@ -571,7 +572,7 @@ public class MimeMessage extends Message {
 
             try {
                 MimeBodyPart bodyPart = new MimeBodyPart();
-                ((MimeMultipart)stack.peek()).addBodyPart(bodyPart);
+                ((MimeMultipart) stack.peek()).addBodyPart(bodyPart);
                 stack.addFirst(bodyPart);
             } catch (MessagingException me) {
                 throw new Error(me);
@@ -589,7 +590,7 @@ public class MimeMessage extends Message {
             expect(MimeMultipart.class);
             ByteArrayOutputStream preamble = new ByteArrayOutputStream();
             IOUtils.copy(is, preamble);
-            ((MimeMultipart)stack.peek()).setPreamble(preamble.toByteArray());
+            ((MimeMultipart) stack.peek()).setPreamble(preamble.toByteArray());
         }
 
         @Override

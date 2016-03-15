@@ -15,7 +15,7 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
 public class TracingPowerManager {
-    private final static boolean TRACE = false;
+    private static final boolean TRACE = false;
     public static AtomicInteger wakeLockId = new AtomicInteger(0);
     PowerManager pm = null;
     private static TracingPowerManager tracingPowerManager;
@@ -77,7 +77,8 @@ public class TracingPowerManager {
             }
             raiseNotification();
             if (K9MailLib.isDebug()) {
-                Log.w(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": acquired with no timeout.  K-9 Mail should not do this");
+                Log.w(LOG_TAG, "TracingWakeLock for tag " + tag +
+                        " / id " + id + ": acquired with no timeout.  K-9 Mail should not do this");
             }
             if (startTime == null) {
                 startTime = System.currentTimeMillis();
@@ -93,11 +94,13 @@ public class TracingPowerManager {
             if (startTime != null) {
                 Long endTime = System.currentTimeMillis();
                 if (K9MailLib.isDebug()) {
-                    Log.v(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": releasing after " + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
+                    Log.v(LOG_TAG, "TracingWakeLock for tag " + tag +
+                            " / id " + id + ": releasing after " + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
                 }
             } else {
                 if (K9MailLib.isDebug()) {
-                    Log.v(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ", timeout = " + timeout + " ms: releasing");
+                    Log.v(LOG_TAG, "TracingWakeLock for tag " + tag +
+                            " / id " + id + ", timeout = " + timeout + " ms: releasing");
                 }
             }
             cancelNotification();
@@ -127,11 +130,13 @@ public class TracingPowerManager {
                         public void run() {
                             if (startTime != null) {
                                 Long endTime = System.currentTimeMillis();
-                                Log.i(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": has been active for "
+                                Log.i(LOG_TAG, "TracingWakeLock for tag " + tag
+                                      + " / id " + id + ": has been active for "
                                       + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
 
                             } else {
-                                Log.i(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": still active, timeout = " + timeout + " ms");
+                                Log.i(LOG_TAG, "TracingWakeLock for tag " + tag
+                                      + " / id " + id + ": still active, timeout = " + timeout + " ms");
                             }
                         }
 

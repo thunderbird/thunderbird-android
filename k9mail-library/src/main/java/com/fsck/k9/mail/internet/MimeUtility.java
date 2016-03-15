@@ -917,15 +917,15 @@ public class MimeUtility {
      * field the entire field is returned. Otherwise the named parameter is
      * searched for in a case insensitive fashion and returned.
      *
-     * @param headerValue the header value
+     * @param providedHeaderValue the header value
      * @param parameterName the parameter name
      * @return the value. if the parameter cannot be found the method returns null.
      */
-    public static String getHeaderParameter(String headerValue, String parameterName) {
-        if (headerValue == null) {
+    public static String getHeaderParameter(String providedHeaderValue, String parameterName) {
+        if (providedHeaderValue == null) {
             return null;
         }
-        headerValue = headerValue.replaceAll("\r|\n", "");
+        String headerValue = providedHeaderValue.replaceAll("\r|\n", "");
         String[] parts = headerValue.split(";");
         if (parameterName == null && parts.length > 0) {
             return parts[0].trim();
@@ -950,7 +950,7 @@ public class MimeUtility {
 
     public static Part findFirstPartByMimeType(Part part, String mimeType) throws MessagingException {
         if (part.getBody() instanceof Multipart) {
-            Multipart multipart = (Multipart)part.getBody();
+            Multipart multipart = (Multipart) part.getBody();
             for (BodyPart bodyPart : multipart.getBodyParts()) {
                 Part ret = MimeUtility.findFirstPartByMimeType(bodyPart, mimeType);
                 if (ret != null) {
@@ -979,8 +979,9 @@ public class MimeUtility {
         return isSameMimeType(mimeType, DEFAULT_ATTACHMENT_MIME_TYPE);
     }
 
-    public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
+    public static Body createBody(InputStream in, String providedContentTransferEncoding, String contentType)
             throws IOException, MessagingException {
+        String contentTransferEncoding = providedContentTransferEncoding;
 
         if (contentTransferEncoding != null) {
             contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);

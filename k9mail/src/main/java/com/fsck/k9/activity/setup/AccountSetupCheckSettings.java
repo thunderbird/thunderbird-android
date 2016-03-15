@@ -135,20 +135,50 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 }
                 String exMessage = "Unknown Error";
 
-                if (ex != null) {
-                    if (ex.getCause() != null) {
-                        if (ex.getCause().getCause() != null) {
-                            exMessage = ex.getCause().getCause().getMessage();
+                if (ex.getCause() != null) {
+                    if (ex.getCause().getCause() != null) {
+                        exMessage = ex.getCause().getCause().getMessage();
 
-                        } else {
-                            exMessage = ex.getCause().getMessage();
-                        }
                     } else {
-                        exMessage = ex.getMessage();
+                        exMessage = ex.getCause().getMessage();
                     }
+                } else {
+                    exMessage = ex.getMessage();
                 }
 
                 mProgressBar.setIndeterminate(false);
+
+                String chainInfo = "";
+                chainInfo = buildChainInfo(ex.getCertChain());
+                final X509Certificate certToAccept = ex.getCertChain()[0];
+
+                // TODO: refactor with DialogFragment.
+                // This is difficult because we need to pass through chain[0] for onClick()
+                new AlertDialog.Builder(AccountSetupCheckSettings.this)
+                .setTitle(getString(R.string.account_setup_failed_dlg_invalid_certificate_title))
+                //.setMessage(getString(R.string.account_setup_failed_dlg_invalid_certificate)
+                .setMessage(getString(msgResId, exMessage)
+                            + " " + chainInfo
+                           )
+                .setCancelable(true)
+                .setPositiveButton(
+                    getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        acceptCertificate(certToAccept);
+                    }
+                })
+                .setNegativeButton(
+                    getString(R.string.account_setup_failed_dlg_invalid_certificate_reject),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
+            }
+
+            private String buildChainInfo(X509Certificate[] chain) {
                 StringBuilder chainInfo = new StringBuilder(100);
                 MessageDigest sha1 = null;
                 try {
@@ -157,8 +187,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     Log.e(K9.LOG_TAG, "Error while initializing MessageDigest", e);
                 }
 
-                final X509Certificate[] chain = ex.getCertChain();
-                // We already know chain != null (tested before calling this method)
                 for (int i = 0; i < chain.length; i++) {
                     // display certificate chain information
                     //TODO: localize this strings
@@ -170,7 +198,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     //  by a subjectDN not matching the server even though a
                     //  SubjectAltName matches)
                     try {
-                        final Collection < List<? >> subjectAlternativeNames = chain[i].getSubjectAlternativeNames();
+                        final Collection<List<?>> subjectAlternativeNames = chain[i].getSubjectAlternativeNames();
                         if (subjectAlternativeNames != null) {
                             // The list of SubjectAltNames may be very long
                             //TODO: localize this string
@@ -182,37 +210,37 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             String transportURIHost = (Uri.parse(mAccount.getTransportUri())).getHost();
 
                             for (List<?> subjectAlternativeName : subjectAlternativeNames) {
-                                Integer type = (Integer)subjectAlternativeName.get(0);
+                                Integer type = (Integer) subjectAlternativeName.get(0);
                                 Object value = subjectAlternativeName.get(1);
                                 String name;
                                 switch (type.intValue()) {
-                                case 0:
-                                    Log.w(K9.LOG_TAG, "SubjectAltName of type OtherName not supported.");
-                                    continue;
-                                case 1: // RFC822Name
-                                    name = (String)value;
-                                    break;
-                                case 2:  // DNSName
-                                    name = (String)value;
-                                    break;
-                                case 3:
-                                    Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type x400Address");
-                                    continue;
-                                case 4:
-                                    Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type directoryName");
-                                    continue;
-                                case 5:
-                                    Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type ediPartyName");
-                                    continue;
-                                case 6:  // Uri
-                                    name = (String)value;
-                                    break;
-                                case 7: // ip-address
-                                    name = (String)value;
-                                    break;
-                                default:
-                                    Log.w(K9.LOG_TAG, "unsupported SubjectAltName of unknown type");
-                                    continue;
+                                    case 0:
+                                        Log.w(K9.LOG_TAG, "SubjectAltName of type OtherName not supported.");
+                                        continue;
+                                    case 1: // RFC822Name
+                                        name = (String) value;
+                                        break;
+                                    case 2:  // DNSName
+                                        name = (String) value;
+                                        break;
+                                    case 3:
+                                        Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type x400Address");
+                                        continue;
+                                    case 4:
+                                        Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type directoryName");
+                                        continue;
+                                    case 5:
+                                        Log.w(K9.LOG_TAG, "unsupported SubjectAltName of type ediPartyName");
+                                        continue;
+                                    case 6:  // Uri
+                                        name = (String) value;
+                                        break;
+                                    case 7: // ip-address
+                                        name = (String) value;
+                                        break;
+                                    default:
+                                        Log.w(K9.LOG_TAG, "unsupported SubjectAltName of unknown type");
+                                        continue;
                                 }
 
                                 // if some of the SubjectAltNames match the store or transport -host,
@@ -221,8 +249,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                     //TODO: localize this string
                                     altNamesText.append("Subject(alt): ").append(name).append(",...\n");
                                 } else if (name.startsWith("*.") && (
-                                            storeURIHost.endsWith(name.substring(2)) ||
-                                            transportURIHost.endsWith(name.substring(2)))) {
+                                        storeURIHost.endsWith(name.substring(2)) ||
+                                                transportURIHost.endsWith(name.substring(2)))) {
                                     //TODO: localize this string
                                     altNamesText.append("Subject(alt): ").append(name).append(",...\n");
                                 }
@@ -245,31 +273,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         }
                     }
                 }
-
-                // TODO: refactor with DialogFragment.
-                // This is difficult because we need to pass through chain[0] for onClick()
-                new AlertDialog.Builder(AccountSetupCheckSettings.this)
-                .setTitle(getString(R.string.account_setup_failed_dlg_invalid_certificate_title))
-                //.setMessage(getString(R.string.account_setup_failed_dlg_invalid_certificate)
-                .setMessage(getString(msgResId, exMessage)
-                            + " " + chainInfo.toString()
-                           )
-                .setCancelable(true)
-                .setPositiveButton(
-                    getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        acceptCertificate(chain[0]);
-                    }
-                })
-                .setNegativeButton(
-                    getString(R.string.account_setup_failed_dlg_invalid_certificate_reject),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .show();
+                return chainInfo.toString();
             }
         });
     }

@@ -12,7 +12,7 @@ public enum NetworkType {
     MOBILE,
     OTHER;
 
-    public static NetworkType fromConnectivityManagerType(int type){
+    public static NetworkType fromConnectivityManagerType(int type) {
         switch (type) {
             case ConnectivityManager.TYPE_MOBILE:
                 return MOBILE;

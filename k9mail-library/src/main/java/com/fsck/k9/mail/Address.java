@@ -83,7 +83,7 @@ public class Address implements Serializable {
             return null;
         }
 
-        return mAddress.substring(hostIdx+1);
+        return mAddress.substring(hostIdx + 1);
     }
 
     public void setAddress(String address) {
@@ -95,13 +95,14 @@ public class Address implements Serializable {
     }
 
     public void setPersonal(String personal) {
-        if ("".equals(personal)) {
-            personal = null;
+        String newPersonal = personal;
+        if ("".equals(newPersonal)) {
+            newPersonal = null;
         }
-        if (personal != null) {
-            personal = personal.trim();
+        if (newPersonal != null) {
+            newPersonal = newPersonal.trim();
         }
-        this.mPersonal = personal;
+        this.mPersonal = newPersonal;
     }
 
     /**
@@ -143,7 +144,7 @@ public class Address implements Serializable {
             for (int i = 0, count = parsedList.size(); i < count; i++) {
                 org.apache.james.mime4j.dom.address.Address address = parsedList.get(i);
                 if (address instanceof Mailbox) {
-                    Mailbox mailbox = (Mailbox)address;
+                    Mailbox mailbox = (Mailbox) address;
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
                 } else {
                     Log.e(LOG_TAG, "Unknown address type from Mime4J: "
@@ -298,7 +299,8 @@ public class Address implements Serializable {
     }
 
     /**
-     * Ensures that the given string starts and ends with the double quote character. The string is not modified in any way except to add the
+     * Ensures that the given string starts and ends with the double quote character.
+     * The string is not modified in any way except to add the
      * double quote character to start and end if it's not already there.
      * sample -> "sample"
      * "sample" -> "sample"

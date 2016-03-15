@@ -64,8 +64,12 @@ public class Authentication {
             byte[] opad = new byte[64];
             System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
             System.arraycopy(secretBytes, 0, opad, 0, secretBytes.length);
-            for (int i = 0; i < ipad.length; i++) ipad[i] ^= 0x36;
-            for (int i = 0; i < opad.length; i++) opad[i] ^= 0x5c;
+            for (int i = 0; i < ipad.length; i++) {
+                ipad[i] ^= 0x36;
+            }
+            for (int i = 0; i < opad.length; i++) {
+                opad[i] ^= 0x5c;
+            }
 
             md.update(ipad);
             byte[] firstPass = md.digest(nonce);

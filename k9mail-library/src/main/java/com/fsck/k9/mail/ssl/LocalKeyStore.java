@@ -56,9 +56,9 @@ public class LocalKeyStore {
 
     /**
      * Reinitialize the local key store with certificates contained in
-     * {@code file}
+     * {@code providedFile}
      *
-     * @param file
+     * @param providedFile
      *            {@link File} containing locally saved certificates. May be 0
      *            length, in which case it is deleted and recreated. May be
      *            {@code null}, in which case a default file location is used.
@@ -66,7 +66,8 @@ public class LocalKeyStore {
      *            Occurs if {@code file == null} and
      *            {@code setKeyStoreLocation(directory)} was not called previously.
      */
-    public synchronized void setKeyStoreFile(File file) throws CertificateException {
+    public synchronized void setKeyStoreFile(File providedFile) throws CertificateException {
+        File file = providedFile;
         if (file == null) {
             file = new File(getKeyStoreFilePath(KEY_STORE_FILE_VERSION));
         }

@@ -64,7 +64,7 @@ public class LineWrapOutputStream extends FilterOutputStream {
             }
 
             // Write character to the buffer
-            buffer[lineLength] = (byte)oneByte;
+            buffer[lineLength] = (byte) oneByte;
             lineLength++;
         }
     }

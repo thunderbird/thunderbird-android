@@ -23,6 +23,6 @@ public interface CompositeBody extends Body {
      * @throws MessagingException
      *
      */
-    public abstract void setUsing7bitTransport() throws MessagingException;
+    void setUsing7bitTransport() throws MessagingException;
 
 }

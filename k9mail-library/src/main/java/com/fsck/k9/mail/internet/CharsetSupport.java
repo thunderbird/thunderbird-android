@@ -42,8 +42,9 @@ public class CharsetSupport {
         String variant = JisSupport.getJisVariantFromAddress(address);
         if (variant != null) {
             String charset = "x-" + variant + "-shift_jis-2007";
-            if (Charset.isSupported(charset))
+            if (Charset.isSupported(charset)) {
                 return charset;
+            }
         }
 
         return "UTF-8";
@@ -57,25 +58,31 @@ public class CharsetSupport {
         }
     }
 
-    static String fixupCharset(String charset, Message message) throws MessagingException {
-        if (charset == null || "0".equals(charset))
+    static String fixupCharset(String providedCharset, Message message) throws MessagingException {
+        String charset = providedCharset;
+        if (charset == null || "0".equals(charset)) {
             charset = "US-ASCII";  // No encoding, so use us-ascii, which is the standard.
+        }
 
         charset = charset.toLowerCase(Locale.US);
-        if (charset.equals("cp932"))
+        if (charset.equals("cp932")) {
             charset = SHIFT_JIS;
+        }
 
         if (charset.equals(SHIFT_JIS) || charset.equals("iso-2022-jp")) {
             String variant = JisSupport.getJisVariantFromMessage(message);
-            if (variant != null)
+            if (variant != null) {
                 charset = "x-" + variant + "-" + charset + "-2007";
+            }
         }
         return charset;
     }
 
 
-    static String readToString(InputStream in, String charset) throws IOException {
+    static String readToString(InputStream providedInputStream, String providedCharset) throws IOException {
         boolean isIphoneString = false;
+        InputStream in = providedInputStream;
+        String charset = providedCharset;
 
         // iso-2022-jp variants are supported by no versions as of Dec 2010.
         if (charset.length() > 19 && charset.startsWith("x-") &&
@@ -88,8 +95,9 @@ public class CharsetSupport {
         if (JisSupport.isShiftJis(charset) && !Charset.isSupported(charset)) {
             // If the JIS variant is iPhone, map the Unicode private use area in iPhone to the one in Android after
             // converting the character set from the standard Shift JIS to Unicode.
-            if (charset.substring(2, charset.length() - 15).equals("iphone"))
+            if (charset.substring(2, charset.length() - 15).equals("iphone")) {
                 isIphoneString = true;
+            }
 
             charset = SHIFT_JIS;
         }
@@ -127,8 +135,9 @@ public class CharsetSupport {
          */
         String str = IOUtils.toString(in, charset);
 
-        if (isIphoneString)
+        if (isIphoneString) {
             str = importStringFromIphone(str);
+        }
         return str;
     }
 

@@ -21,7 +21,7 @@ class ImapList extends ArrayList<Object> {
     private static final DateFormat BAD_DATE_TIME_FORMAT_3 = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss", Locale.US);
 
     public ImapList getList(int index) {
-        return (ImapList)get(index);
+        return (ImapList) get(index);
     }
 
     public boolean isList(int index) {
@@ -33,7 +33,7 @@ class ImapList extends ArrayList<Object> {
     }
 
     public String getString(int index) {
-        return (String)get(index);
+        return (String) get(index);
     }
 
     public boolean isString(int index) {
@@ -78,11 +78,11 @@ class ImapList extends ArrayList<Object> {
     }
 
     public ImapList getKeyedList(String key) {
-        return (ImapList)getKeyedValue(key);
+        return (ImapList) getKeyedValue(key);
     }
 
     public String getKeyedString(String key) {
-        return (String)getKeyedValue(key);
+        return (String) getKeyedValue(key);
     }
 
     public int getKeyedNumber(String key) {

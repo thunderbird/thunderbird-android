@@ -15,7 +15,7 @@ import java.util.List;
 public abstract class Store {
     public abstract Folder getFolder(String name);
 
-    public abstract List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException;
+    public abstract List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException;
 
     public abstract void checkSettings() throws MessagingException;
 

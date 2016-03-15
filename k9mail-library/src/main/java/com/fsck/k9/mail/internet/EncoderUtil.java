@@ -61,12 +61,15 @@ class EncoderUtil {
      * @return the encoded word (or sequence of encoded words if the given text
      *         does not fit in a single encoded word).
      */
-    public static String encodeEncodedWord(String text, Charset charset) {
-        if (text == null)
+    public static String encodeEncodedWord(String text, Charset providedCharset) {
+        Charset charset = providedCharset;
+        if (text == null) {
             throw new IllegalArgumentException();
+        }
 
-        if (charset == null)
+        if (charset == null) {
             charset = determineCharset(text);
+        }
 
         String mimeCharset = CharsetSupport.getExternalCharset(charset.name());
 
@@ -113,7 +116,8 @@ class EncoderUtil {
         int totalLength = prefix.length() + encodedLength
                           + ENC_WORD_SUFFIX.length();
         if (totalLength <= ENCODED_WORD_MAX_LENGTH) {
-            return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeQ(bytes, org.apache.james.mime4j.codec.EncoderUtil.Usage.WORD_ENTITY) + ENC_WORD_SUFFIX;
+            return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeQ(bytes,
+                    org.apache.james.mime4j.codec.EncoderUtil.Usage.WORD_ENTITY) + ENC_WORD_SUFFIX;
         } else {
             String part1 = text.substring(0, text.length() / 2);
             byte[] bytes1 = encode(part1, charset);
@@ -169,8 +173,9 @@ class EncoderUtil {
     }
 
     private static Encoding determineEncoding(byte[] bytes) {
-        if (bytes.length == 0)
+        if (bytes.length == 0) {
             return Encoding.Q;
+        }
 
         int qEncoded = 0;
         for (int i = 0; i < bytes.length; i++) {

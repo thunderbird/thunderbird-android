@@ -150,12 +150,14 @@ class DecoderUtil {
     // return null on error
     private static String decodeEncodedWord(String body, int begin, int end, Message message) {
         int qm1 = body.indexOf('?', begin + 2);
-        if (qm1 == end - 2)
+        if (qm1 == end - 2) {
             return null;
+        }
 
         int qm2 = body.indexOf('?', qm1 + 1);
-        if (qm2 == end - 2)
+        if (qm2 == end - 2) {
             return null;
+        }
 
         String mimeCharset = body.substring(begin + 2, qm1);
         String encoding = body.substring(qm1 + 1, qm2);

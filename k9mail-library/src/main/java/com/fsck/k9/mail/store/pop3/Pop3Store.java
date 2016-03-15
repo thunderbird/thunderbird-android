@@ -4,12 +4,22 @@ package com.fsck.k9.mail.store.pop3;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.Authentication;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
@@ -17,8 +27,16 @@ import com.fsck.k9.mail.store.StoreConfig;
 
 import javax.net.ssl.SSLException;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -127,7 +145,7 @@ public class Pop3Store extends RemoteStore {
             int userIndex = 0, passwordIndex = 1;
             String userinfo = pop3Uri.getUserInfo();
             String[] userInfoParts = userinfo.split(":");
-            if (userInfoParts.length > 2 || userinfo.endsWith(":") ) {
+            if (userInfoParts.length > 2 || userinfo.endsWith(":")) {
                 // If 'userinfo' ends with ":" the password is empty. This can only happen
                 // after an account was imported (so authType and username are present).
                 userIndex++;
@@ -247,7 +265,7 @@ public class Pop3Store extends RemoteStore {
     }
 
     @Override
-    public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folders = new LinkedList<Folder>();
         folders.add(getFolder(mStoreConfig.getInboxFolderName()));
         return folders;
@@ -278,6 +296,7 @@ public class Pop3Store extends RemoteStore {
         return false;
     }
 
+    //TODO: Extract this class into a separate file
     class Pop3Folder extends Folder<Pop3Message> {
         private Socket mSocket;
         private InputStream mIn;
@@ -1020,12 +1039,12 @@ public class Pop3Store extends RemoteStore {
                 throw new IOException("End of stream reached while trying to read line.");
             }
             do {
-                if (((char)d) == '\r') {
+                if (((char) d) == '\r') {
                     continue;
-                } else if (((char)d) == '\n') {
+                } else if (((char) d) == '\n') {
                     break;
                 } else {
-                    sb.append((char)d);
+                    sb.append((char) d);
                 }
             } while ((d = mIn.read()) != -1);
             String ret = sb.toString();
@@ -1073,6 +1092,7 @@ public class Pop3Store extends RemoteStore {
             } catch (MessagingException e) {
                 // Assume AUTH command with no arguments is not supported.
             }
+
             try {
                 String response = executeSimpleCommand(CAPA_COMMAND);
                 while ((response = readLine()) != null) {
@@ -1171,7 +1191,7 @@ public class Pop3Store extends RemoteStore {
             return mName.hashCode();
         }
 
-    }//Pop3Folder
+    } //Pop3Folder
 
     static class Pop3Message extends MimeMessage {
         public Pop3Message(String uid, Pop3Folder folder) {

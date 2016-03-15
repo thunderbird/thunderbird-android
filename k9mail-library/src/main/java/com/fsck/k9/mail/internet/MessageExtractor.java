@@ -29,14 +29,14 @@ import static com.fsck.k9.mail.internet.Viewable.Text;
 import static com.fsck.k9.mail.internet.Viewable.Textual;
 
 public class MessageExtractor {
-    private MessageExtractor() {}
+    private MessageExtractor() { }
 
     public static String getTextFromPart(Part part) {
         try {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
                 if (body instanceof TextBody) {
-                    return ((TextBody)body).getText();
+                    return ((TextBody) body).getText();
                 }
 
                 final String mimeType = part.getMimeType();
@@ -58,7 +58,9 @@ public class MessageExtractor {
                             if (str.isEmpty()) {
                                 return "";
                             }
-                            Pattern p = Pattern.compile("<meta http-equiv=\"?Content-Type\"? content=\"text/html; charset=(.+?)\">", Pattern.CASE_INSENSITIVE);
+                            Pattern p = Pattern.compile(
+                                    "<meta http-equiv=\"?Content-Type\"? content=\"text/html; charset=(.+?)\">",
+                                    Pattern.CASE_INSENSITIVE);
                             Matcher m = p.matcher(str);
                             if (m.find()) {
                                 charset = m.group(1);
@@ -210,17 +212,21 @@ public class MessageExtractor {
         }
     }
 
-    private static Message getMessageFromPart(Part part) {
+    private static Message getMessageFromPart(Part providedPart) {
+        Part part = providedPart;
         while (part != null) {
-            if (part instanceof Message)
-                return (Message)part;
+            if (part instanceof Message) {
+                return (Message) part;
+            }
 
-            if (!(part instanceof BodyPart))
+            if (!(part instanceof BodyPart)) {
                 return null;
+            }
 
-            Multipart multipart = ((BodyPart)part).getParent();
-            if (multipart == null)
+            Multipart multipart = ((BodyPart) part).getParent();
+            if (multipart == null) {
                 return null;
+            }
 
             part = multipart.getParent();
         }
@@ -406,20 +412,14 @@ public class MessageExtractor {
          */
         boolean attachment = ("attachment".equalsIgnoreCase(dispositionType) || (dispositionFilename != null));
 
-        if ((!attachment) && (isSameMimeType(part.getMimeType(), "text/html"))) {
-            return true;
-        }
-        /*
-         * If the part is plain text and it got this far it's part of a
-         * mixed (et al) and should be rendered inline.
-         */
-        else if ((!attachment) && (isSameMimeType(part.getMimeType(), "text/plain"))) {
-            return true;
-        }
-        /*
-         * Finally, if it's nothing else we will include it as an attachment.
-         */
-        else {
+        if (!attachment) {
+            if (isSameMimeType(part.getMimeType(), "text/html")) {
+                return true;
+            } else if (isSameMimeType(part.getMimeType(), "text/plain")) {
+                return true;
+            }
+            return false;
+        } else {
             return false;
         }
     }
