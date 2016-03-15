@@ -2727,15 +2727,8 @@ public class MessagingController {
             Timber.i("Scanning folder '%s' (%d) for messages to send",
                     account.getOutboxFolderName(), localFolder.getId());
 
-            Transport transport = transportProvider.getTransport(K9.app, account);
+            Transport transport = transportProvider.getTransport(K9.app, account, account.getProxySettings());
 
-<<<<<<< HEAD
-=======
-            Transport transport = Transport.getInstance(K9.app, account, new ProxySettings(
-                    K9.isSocksProxyEnabled(),
-                    K9.getSocksProxyHost(),
-                    K9.getSocksProxyPort()));
->>>>>>> Add support for SOCKS proxy.
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
                     message.destroy();

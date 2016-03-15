@@ -447,14 +447,14 @@ public class Prefs extends K9PreferenceActivity {
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
 
-        mUseSocksProxy = (CheckBoxPreference)findPreference(PREFERENCE_SOCKS_PROXY);
+        mUseSocksProxy = (CheckBoxPreference) findPreference(PREFERENCE_SOCKS_PROXY);
         mUseSocksProxy.setChecked(K9.isSocksProxyEnabled());
 
-        mSocksProxyHost = (EditTextPreference)findPreference(PREFERENCE_SOCKS_PROXY_HOST);
+        mSocksProxyHost = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_HOST);
         mSocksProxyHost.setText(K9.getSocksProxyHost());
 
-        mSocksProxyPort = (EditTextPreference)findPreference(PREFERENCE_SOCKS_PROXY_PORT);
-        mSocksProxyPort.setText(K9.getSocksProxyPort()+"");
+        mSocksProxyPort = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_PORT);
+        mSocksProxyPort.setText(Integer.toString(K9.getSocksProxyPort()));
     }
 
     private static String themeIdToName(K9.Theme theme) {

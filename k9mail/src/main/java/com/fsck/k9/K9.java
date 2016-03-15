@@ -1392,6 +1392,7 @@ public class K9 extends Application {
         return sPgpInlineDialogCounter;
     }
 
+
     public static void setPgpInlineDialogCounter(int pgpInlineDialogCounter) {
         K9.sPgpInlineDialogCounter = pgpInlineDialogCounter;
     }
@@ -1403,18 +1404,26 @@ public class K9 extends Application {
     public static void setPgpSignOnlyDialogCounter(int pgpSignOnlyDialogCounter) {
         K9.sPgpSignOnlyDialogCounter = pgpSignOnlyDialogCounter;
     }
-    public static boolean isSocksProxyEnabled() { return sUseSocksProxy; }
+
+    public static boolean isSocksProxyEnabled() {
+        return sUseSocksProxy;
+    }
 
     public static void setUseSocksProxy(boolean useSocksProxy) {
         sUseSocksProxy = useSocksProxy;
     }
-    public static String getSocksProxyHost() { return sSocksProxyHost; }
+
+    public static String getSocksProxyHost() {
+        return sSocksProxyHost;
+    }
 
     public static void setSocksProxyHost(String socksProxyHost) {
         sSocksProxyHost = socksProxyHost;
     }
 
-    public static int getSocksProxyPort() { return sSocksProxyPort; }
+    public static int getSocksProxyPort() {
+        return sSocksProxyPort;
+    }
 
     public static void setSocksProxyPort(int socksProxyPort) {
         sSocksProxyPort = socksProxyPort;

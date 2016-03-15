@@ -19,6 +19,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+
 import timber.log.Timber;
 
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
@@ -1270,12 +1271,12 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public Store getRemoteStore() throws MessagingException {
-        return RemoteStore.getInstance(K9.app,
-                                       this,
-                                       new ProxySettings(
-                                            K9.isSocksProxyEnabled(),
-                                            K9.getSocksProxyHost(),
-                                            K9.getSocksProxyPort()));
+        ProxySettings proxySettings = getProxySettings();
+        return RemoteStore.getInstance(K9.app, this, proxySettings);
+    }
+
+    public ProxySettings getProxySettings() {
+        return new ProxySettings(K9.isSocksProxyEnabled(), K9.getSocksProxyHost(), K9.getSocksProxyPort());
     }
 
     // It'd be great if this actually went into the store implementation
