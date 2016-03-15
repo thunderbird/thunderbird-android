@@ -1,6 +1,7 @@
 
 package com.fsck.k9;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,11 +36,11 @@ import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.UnreadWidgetProvider;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -1335,19 +1336,25 @@ public class K9 extends Application {
         sMessageViewSpamActionVisible = visible;
     }
 
-    public static boolean isSocksProxyEnabled() { return sUseSocksProxy; }
+    public static boolean isSocksProxyEnabled() {
+        return sUseSocksProxy;
+    }
 
     public static void setUseSocksProxy(boolean useSocksProxy) {
         sUseSocksProxy = useSocksProxy;
     }
 
-    public static String getSocksProxyHost() { return sSocksProxyHost; }
+    public static String getSocksProxyHost() {
+        return sSocksProxyHost;
+    }
 
     public static void setSocksProxyHost(String socksProxyHost) {
         sSocksProxyHost = socksProxyHost;
     }
 
-    public static int getSocksProxyPort() { return sSocksProxyPort; }
+    public static int getSocksProxyPort() {
+        return sSocksProxyPort;
+    }
 
     public static void setSocksProxyPort(int socksProxyPort) {
         sSocksProxyPort = socksProxyPort;
