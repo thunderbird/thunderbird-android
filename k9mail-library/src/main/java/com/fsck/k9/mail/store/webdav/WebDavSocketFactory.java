@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import javax.net.ssl.SSLSocketFactory;
+
 /**
  * Provides a factory for creating WebDAV capable sockets.
  *
@@ -68,12 +70,12 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
      * Create a new socket factory, using the given trusted socket factory and alias.
      */
     public WebDavSocketFactory(TrustedSocketFactory trustedSocketFactory,
+                               org.apache.http.conn.ssl.SSLSocketFactory internalSocketFactory,
                                String defaultHost,
                                int defaultPort,
                                String certificateAlias) {
         mTrustedSocketFactory = trustedSocketFactory;
-
-        mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();
+        mSchemeSocketFactory = internalSocketFactory;
         mSchemeSocketFactory.setHostnameVerifier(
                 org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
