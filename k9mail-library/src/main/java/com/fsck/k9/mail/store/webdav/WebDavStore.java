@@ -150,7 +150,7 @@ public class WebDavStore extends RemoteStore {
             }
         }
 
-        //TODO: decode clientCertAlias
+        //TODO: Support client-side certificates
 
         return new WebDavStoreSettings(host, port, connectionSecurity, null, username, password,
                 clientCertificateAlias, alias, path, authPath, mailboxPath);
