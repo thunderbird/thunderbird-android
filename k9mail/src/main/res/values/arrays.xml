@@ -754,4 +754,16 @@
         <item>NEVER</item>
         <item>WHEN_IN_LANDSCAPE</item>
     </string-array>
+
+    <string-array name="global_settings_contactview_mode_entries">
+        <item>@string/global_settings_contactview_email</item>
+        <item>@string/global_settings_contactview_name</item>
+        <item>@string/global_settings_contactview_both</item>
+    </string-array>
+
+    <string-array name="global_settings_contactview_mode_values" translatable="false">
+        <item>EMAIL</item>
+        <item>NAME</item>
+        <item>BOTH</item>
+    </string-array>
 </resources>

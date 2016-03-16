@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.text.SpannableString;
 
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.K9;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,7 +68,7 @@ public class MessageHelperTest {
     @Test
     public void testToFriendlyWithChangeContactColor() throws Exception {
         Address address = new Address("test@testor.com");
-        CharSequence friendly = MessageHelper.toFriendly(address, mockContacts, true, true, Color.RED);
+        CharSequence friendly = MessageHelper.toFriendly(address, mockContacts, K9.ContactViewMode.NAME, true, Color.RED);
         assertTrue(friendly instanceof SpannableString);
         assertEquals("Tim Testor", friendly.toString());
     }
@@ -75,7 +76,7 @@ public class MessageHelperTest {
     @Test
     public void testToFriendlyWithoutCorrespondentNames() throws Exception {
         Address address = new Address("test@testor.com", "Tim Testor");
-        CharSequence friendly = MessageHelper.toFriendly(address, mockContacts, false, false, 0);
+        CharSequence friendly = MessageHelper.toFriendly(address, mockContacts, K9.ContactViewMode.EMAIL, false, 0);
         assertEquals("test@testor.com", friendly.toString());
     }
 }

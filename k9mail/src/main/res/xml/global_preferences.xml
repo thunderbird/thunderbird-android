@@ -153,31 +153,23 @@
 
             <CheckBoxPreference
                 android:persistent="false"
-                android:key="messagelist_show_correspondent_names"
-                android:title="@string/global_settings_show_correspondent_names_label"
-                android:summary="@string/global_settings_show_correspondent_names_summary"
+                android:key="messagelist_sender_above_subject"
+                android:title="@string/global_settings_sender_above_subject_label"
+                android:summary="@string/global_settings_sender_above_subject_summary" />
 
-                />
-
-            <CheckBoxPreference
+            <ListPreference
                 android:persistent="false"
-                android:key="messagelist_show_correspondent_names_and_mail_addresses"
-                android:title="@string/global_settings_show_correspondent_names_and_mail_addresses_label"
-                android:summary="@string/global_settings_show_correspondent_names_and_mail_addresses_summary"
-                android:dependency="messagelist_show_correspondent_names"
-                />
+                android:key="contactview_mode"
+                android:title="@string/global_settings_contactview_mode_label"
+                android:entries="@array/global_settings_contactview_mode_entries"
+                android:entryValues="@array/global_settings_contactview_mode_values"
+                android:dialogTitle="@string/global_settings_contactview_mode_label" />
 
-              <CheckBoxPreference
-                  android:persistent="false"
-                 android:key="messagelist_sender_above_subject"
-                 android:title="@string/global_settings_sender_above_subject_label"
-                 android:summary="@string/global_settings_sender_above_subject_summary" />
             <CheckBoxPreference
                 android:persistent="false"
                 android:key="messagelist_show_contact_name"
                 android:title="@string/global_settings_show_contact_name_label"
                 android:summary="@string/global_settings_show_contact_name_summary"
-                android:dependency="messagelist_show_correspondent_names"
                 />
 
             <CheckBoxPreference
@@ -185,7 +177,6 @@
                 android:key="messagelist_contact_name_color"
                 android:title="@string/global_settings_registered_name_color_label"
                 android:summary="@string/global_settings_registered_name_color_default"
-                android:dependency="messagelist_show_contact_name"
                 />
 
             <CheckBoxPreference

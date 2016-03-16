@@ -210,12 +210,17 @@ public class K9 extends Application {
         WHEN_IN_LANDSCAPE
     }
 
+    public enum ContactViewMode {
+        EMAIL,
+        NAME,
+        BOTH
+    }
+
     private static boolean mMessageListCheckboxes = true;
     private static boolean mMessageListStars = true;
     private static int mMessageListPreviewLines = 2;
 
-    private static boolean mShowCorrespondentNames = true;
-    private static boolean mShowCorrespondentNamesAndEmailAddresses = false;
+    private static ContactViewMode mContactViewMode = ContactViewMode.NAME;
     private static boolean mMessageListSenderAboveSubject = false;
     private static boolean mShowContactName = false;
     private static boolean mChangeContactNameColor = false;
@@ -446,13 +451,12 @@ public class K9 extends Application {
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
         editor.putBoolean("messageListSenderAboveSubject", mMessageListSenderAboveSubject);
+        editor.putBoolean("showContactName", mShowContactName);
         editor.putBoolean("hideSpecialAccounts", mHideSpecialAccounts);
         editor.putBoolean("messageListStars", mMessageListStars);
         editor.putInt("messageListPreviewLines", mMessageListPreviewLines);
         editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
-        editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
-        editor.putBoolean("showCorrespondentNamesAndEmailAddresses", mShowCorrespondentNamesAndEmailAddresses);
-        editor.putBoolean("showContactName", mShowContactName);
+        editor.putString("contactViewMode", mContactViewMode.name());
         editor.putBoolean("showContactPicture", sShowContactPicture);
         editor.putBoolean("changeRegisteredNameColor", mChangeContactNameColor);
         editor.putInt("registeredNameColor", mContactNameColor);
@@ -555,17 +559,17 @@ public class K9 extends Application {
                     K9.this.sendBroadcast(intent);
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Broadcasted: action=" + action
-                              + " account=" + account.getDescription()
-                              + " folder=" + folder
-                              + " message uid=" + message.getUid()
-                             );
+                                        + " account=" + account.getDescription()
+                                        + " folder=" + folder
+                                        + " message uid=" + message.getUid()
+                        );
 
                 } catch (MessagingException e) {
                     Log.w(K9.LOG_TAG, "Error: action=" + action
-                          + " account=" + account.getDescription()
-                          + " folder=" + folder
-                          + " message uid=" + message.getUid()
-                         );
+                                    + " account=" + account.getDescription()
+                                    + " folder=" + folder
+                                    + " message uid=" + message.getUid()
+                    );
                 }
             }
 
@@ -599,7 +603,7 @@ public class K9 extends Application {
 
             @Override
             public void folderStatusChanged(Account account, String folderName,
-                    int unreadMessageCount) {
+                                            int unreadMessageCount) {
 
                 updateUnreadWidget();
 
@@ -669,13 +673,15 @@ public class K9 extends Application {
         mAutofitWidth = storage.getBoolean("autofitWidth", true);
 
         mQuietTimeEnabled = storage.getBoolean("quietTimeEnabled", false);
+        mShowContactName = storage.getBoolean("showContactName", false);
         mNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true);
         mQuietTimeStarts = storage.getString("quietTimeStarts", "21:00");
         mQuietTimeEnds = storage.getString("quietTimeEnds", "7:00");
 
-        mShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true);
-        mShowCorrespondentNamesAndEmailAddresses = storage.getBoolean("showCorrespondentNamesAndEmailAddresses", true);
-        mShowContactName = storage.getBoolean("showContactName", false);
+        String contactViewMode = storage.getString("contactViewMode", "NAME");
+        if (contactViewMode != null) {
+            mContactViewMode = ContactViewMode.valueOf(contactViewMode);
+        }
         sShowContactPicture = storage.getBoolean("showContactPicture", true);
         mChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false);
         mContactNameColor = storage.getInt("registeredNameColor", 0xff00008f);
@@ -1044,14 +1050,6 @@ public class K9 extends Application {
         mMessageListStars = stars;
     }
 
-    public static boolean showCorrespondentNames() {
-        return mShowCorrespondentNames;
-    }
-
-    public static boolean showCorrespondentNamesAndEmailAddresses(){
-        return mShowCorrespondentNamesAndEmailAddresses;
-    }
-
      public static boolean messageListSenderAboveSubject() {
          return mMessageListSenderAboveSubject;
      }
@@ -1059,11 +1057,13 @@ public class K9 extends Application {
     public static void setMessageListSenderAboveSubject(boolean sender) {
          mMessageListSenderAboveSubject = sender;
     }
-    public static void setShowCorrespondentNames(boolean showCorrespondentNames) {
-        mShowCorrespondentNames = showCorrespondentNames;
+
+    public static synchronized void setContactViewMode(ContactViewMode mode){
+        mContactViewMode = mode;
     }
-    public static void setmShowCorrespondentNamesAndEmailAddresses(boolean showCorrespondentNames) {
-        mShowCorrespondentNamesAndEmailAddresses = showCorrespondentNames;
+
+    public static ContactViewMode getContactViewMode(){
+        return mContactViewMode;
     }
 
     public static boolean showContactName() {
