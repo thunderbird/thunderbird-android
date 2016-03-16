@@ -3650,6 +3650,11 @@ public class MessagingController implements Runnable {
             //We need to make these callbacks before moving the messages to the trash
             //as messages get a new UID after being moved
             for (Message message : messages) {
+                try {
+                    markMessageAsReadOnView(account, (LocalMessage) message);
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "Error to mark message as read before deleting it");
+                }
                 for (MessagingListener l : getListeners(listener)) {
                     l.messageDeleted(account, folder, message);
                 }
