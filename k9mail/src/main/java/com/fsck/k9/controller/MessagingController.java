@@ -2810,7 +2810,7 @@ public class MessagingController implements Runnable {
 
                     LocalMessage message = localFolder.getMessage(uid);
                     if (message == null
-                    || message.getId() == 0) {
+                            || message.getId() == 0) {
                         throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
                     }
                     // IMAP search results will usually need to be downloaded before viewing.
