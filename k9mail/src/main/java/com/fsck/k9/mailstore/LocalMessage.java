@@ -332,6 +332,8 @@ public class LocalMessage extends MimeMessage {
 
                         localFolder.deleteMessagePartsAndDataFromDisk(messagePartId);
 
+                        deleteFulltextIndexEntry(db, mId);
+
                         if (hasThreadChildren(db, mId)) {
                             // This message has children in the thread structure so we need to
                             // make it an empty message.
@@ -436,6 +438,11 @@ public class LocalMessage extends MimeMessage {
         } finally {
             cursor.close();
         }
+    }
+
+    private void deleteFulltextIndexEntry(SQLiteDatabase db, long messageId) {
+        String[] idArg = { Long.toString(messageId) };
+        db.delete("fulltext_messages", "id = ?", idArg);
     }
 
     /**
