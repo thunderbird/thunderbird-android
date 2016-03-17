@@ -18,7 +18,7 @@ import com.fsck.k9.notification.NotificationRuleSet;
 import java.io.ObjectStreamException;
 
 /**
- * Created by jean-noelguillerme on 15/03/16.
+ * Activity to setup notification rule set
  */
 public class NotificationRuleSetSettings  extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";

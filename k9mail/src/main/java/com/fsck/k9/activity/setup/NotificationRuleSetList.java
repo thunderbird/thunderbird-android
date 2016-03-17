@@ -15,7 +15,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.K9ListActivity;
 
 /**
- * Created by jean-noelguillerme on 16/03/16.
+ * Activity for notification rule sets list
  */
 public class NotificationRuleSetList extends K9ListActivity implements AdapterView.OnItemClickListener {
     private static final String EXTRA_ACCOUNT = "account";
