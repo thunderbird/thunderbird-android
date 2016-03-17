@@ -4265,22 +4265,16 @@ public class MessagingController implements Runnable {
         }
 
 
-        // if notification rules are set, check if any matches the message received
-        // if so we notify or not depending on how the rule is set
-        // if many rules could match the message, we use the 1st one assuming that
-        // a rule created 1st would have a higher priority
-        if ( account.getNotificationSetting().getNotificationRuleSets().size() > 0) {
-            boolean shouldNotify = false;
-
-            for  (NotificationRuleSet ruleSet : account.getNotificationSetting().getNotificationRuleSets() ) {
-                if (ruleSet.matches(message)) {
-                    shouldNotify = ruleSet.getShouldNotify();
-                }
-            }
-            
-            return shouldNotify;
+        // check if any ruleset should apply to notifications
+        boolean shouldNotify = true;
+        try {
+            LocalMessage localMessage = localFolder.getMessage(message.getUid());
+            shouldNotify = notificationController.checkNotificationRuleSets(account, message.getFrom()[0].getAddress(), localMessage);
+        } catch (MessagingException e)  {
+            /* any exception occurs, ruleset will not apply */
         }
-       return true;
+
+       return shouldNotify;
     }
 
     public void deleteAccount(Context context, Account account) {

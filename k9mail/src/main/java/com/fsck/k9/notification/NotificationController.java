@@ -31,7 +31,7 @@ public class NotificationController {
     private final SyncNotifications syncNotifications;
     private final SendFailedNotifications sendFailedNotifications;
     private final NewMailNotifications newMailNotifications;
-
+    private final RuleSetCheckNotification ruleSetCheckerNotification;
 
     public static NotificationController newInstance(Context context) {
         Context appContext = context.getApplicationContext();
@@ -57,6 +57,7 @@ public class NotificationController {
         syncNotifications = new SyncNotifications(this, actionBuilder);
         sendFailedNotifications = new SendFailedNotifications(this, actionBuilder);
         newMailNotifications = NewMailNotifications.newInstance(this, actionBuilder);
+        ruleSetCheckerNotification = RuleSetCheckNotification.newInstance(this, actionBuilder);
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
@@ -135,6 +136,9 @@ public class NotificationController {
         }
     }
 
+    public boolean checkNotificationRuleSets(Account account, String senderAddress, LocalMessage message) {
+        return ruleSetCheckerNotification.check(account, senderAddress, message);
+    }
     String getAccountName(Account account) {
         String accountDescription = account.getDescription();
         return TextUtils.isEmpty(accountDescription) ? account.getEmail() : accountDescription;

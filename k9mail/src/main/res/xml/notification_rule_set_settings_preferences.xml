@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:persistent="false"
+        android:key="notification_rule_set_settings_name"
+        android:singleLine="true"
+        android:title="@string/notification_rule_set_settings_name_label"
+        android:summary=""
+        android:dialogTitle="@string/notification_rule_set_settings_name_label" />
+
+    <EditTextPreference
+        android:persistent="false"
+        android:key="notification_rule_set_settings_sender_name"
+        android:singleLine="true"
+        android:title="@string/notification_rule_set_settings_sender_name_label"
+        android:summary=""
+        android:dialogTitle="@string/notification_rule_set_settings_sender_name_label" />
+
+    <EditTextPreference
+        android:persistent="false"
+        android:key="notification_rule_set_settings_sender_address"
+        android:singleLine="true"
+        android:title="@string/notification_rule_set_settings_sender_address_label"
+        android:summary=""
+        android:dialogTitle="@string/notification_rule_set_settings_sender_address_label" />
+
+    <EditTextPreference
+        android:persistent="false"
+        android:key="notification_rule_set_settings_subject"
+        android:singleLine="true"
+        android:title="@string/notification_rule_set_settings_subject_label"
+        android:summary=""
+        android:dialogTitle="@string/notification_rule_set_settings_subject_label" />
+
+    <EditTextPreference
+        android:persistent="false"
+        android:key="notification_rule_set_settings_body"
+        android:singleLine="true"
+        android:title="@string/notification_rule_set_settings_body_label"
+        android:summary=""
+        android:dialogTitle="@string/notification_rule_set_settings_body_label" />
+
+    <CheckBoxPreference
+        android:persistent="false"
+        android:key="notification_rule_set_settings_should_notify"
+        android:title="@string/notification_rule_set_settings_should_notify_label"
+        android:summary="@string/notification_rule_set_settings_should_notify_summary" />
+</PreferenceScreen>
