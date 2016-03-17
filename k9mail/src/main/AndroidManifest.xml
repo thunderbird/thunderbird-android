@@ -288,6 +288,15 @@
             android:name=".activity.UpgradeDatabases"
             android:label="@string/upgrade_databases_title"/>
 
+        <activity
+            android:name=".activity.setup.NotificationRuleSetSettings"
+            android:configChanges="locale"
+            android:label="@string/notification_rule_set_settings_title"/>
+
+        <activity android:name=".activity.setup.NotificationRuleSetList"
+            android:configChanges="locale"
+            android:label="@string/notification_rule_set_list_title"/>
+			
         <receiver
             android:name=".service.BootReceiver"
             android:enabled="true">

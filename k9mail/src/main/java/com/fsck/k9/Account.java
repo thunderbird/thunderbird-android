@@ -19,6 +19,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
@@ -34,6 +35,7 @@ import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.notification.NotificationRuleSet;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.provider.EmailProvider;
@@ -451,6 +453,8 @@ public class Account implements BaseAccount, StoreConfig {
         mNotificationSetting.setLed(storage.getBoolean(mUuid + ".led", true));
         mNotificationSetting.setLedColor(storage.getInt(mUuid + ".ledColor", mChipColor));
 
+        loadNotificationRuleSets(storage);
+
         mFolderDisplayMode = getEnumStringPref(storage, mUuid  + ".folderDisplayMode", FolderMode.NOT_SECOND_CLASS);
 
         mFolderSyncMode = getEnumStringPref(storage, mUuid  + ".folderSyncMode", FolderMode.FIRST_CLASS);
@@ -541,6 +545,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".chipColor");
         editor.remove(mUuid + ".led");
         editor.remove(mUuid + ".ledColor");
+        deleteNotificationRuleSets(preferences.getStorage(), editor);
         editor.remove(mUuid + ".goToUnreadMessageSearch");
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
@@ -743,7 +748,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putString(mUuid + ".ringtone", mNotificationSetting.getRingtone());
         editor.putBoolean(mUuid + ".led", mNotificationSetting.isLed());
         editor.putInt(mUuid + ".ledColor", mNotificationSetting.getLedColor());
-
+        saveNotificationRuleSets(preferences.getStorage(), editor);
         for (NetworkType type : NetworkType.values()) {
             Boolean useCompression = compressionMap.get(type);
             if (useCompression != null) {
@@ -1886,4 +1891,59 @@ public class Account implements BaseAccount, StoreConfig {
             localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
         }
     }
+
+    private synchronized List<NotificationRuleSet> loadNotificationRuleSets(Storage storage) {
+        String[] notificationNames = storage.getString(mUuid + ".notificationRuleSets", "").split(",");
+        List<NotificationRuleSet> NotificationRuleSets = new ArrayList<NotificationRuleSet>(notificationNames.length);
+
+        for (String ruleSetName : notificationNames) {
+            if (!ruleSetName.isEmpty()) {
+                NotificationRuleSet ruleSet = new NotificationRuleSet();
+                ruleSet.setName(ruleSetName);
+                ruleSet.setSenderName(storage.getString(mUuid + ".notificationRuleSet." + ruleSetName + ".'senderName", null));
+                ruleSet.setSenderAddress(storage.getString(mUuid + ".notificationRuleSet." + ruleSetName + ".'senderAddress", null));
+                ruleSet.setSubject(storage.getString(mUuid + ".notificationRuleSet." + ruleSetName + ".'subject", null));
+                ruleSet.setBody(storage.getString(mUuid + ".notificationRuleSet." + ruleSetName + ".'body", null));
+                ruleSet.setShouldNotify(storage.getBoolean(mUuid + ".notificationRuleSet." + ruleSetName + ".'shouldNotify", true));
+                mNotificationSetting.addNotificationRuleSet(ruleSet);
+            }
+        }
+
+        return NotificationRuleSets;
+    }
+
+    private synchronized void deleteNotificationRuleSets(Storage storage, StorageEditor editor) {
+        String[] notificationNames = storage.getString(mUuid + ".notificationRuleSets", "").split(",");
+        List<NotificationRuleSet> NotificationRuleSets = new ArrayList<NotificationRuleSet>(notificationNames.length);
+
+        for (String ruleSetName : notificationNames) {
+            editor.remove(mUuid + ".notificationRuleSet." + ruleSetName + ".'senderName");
+            editor.remove(mUuid + ".notificationRuleSet." + ruleSetName + ".'senderAddress");
+            editor.remove(mUuid + ".notificationRuleSet." + ruleSetName + ".'subject");
+            editor.remove(mUuid + ".notificationRuleSet." + ruleSetName + ".'body");
+            editor.remove(mUuid + ".notificationRuleSet." + ruleSetName + ".'shouldNotify");
+        }
+        editor.remove(mUuid + ".notificationRuleSets");
+    }
+
+    private synchronized void saveNotificationRuleSets(Storage storage, StorageEditor editor) {
+        deleteNotificationRuleSets(storage, editor);
+
+        List<String> newRuleSetNames = new ArrayList<String>(getNotificationSetting().getNotificationRuleSets().size());
+
+
+        for (NotificationRuleSet ruleSet : getNotificationSetting().getNotificationRuleSets()) {
+            if (ruleSet != null && !ruleSet.getName().isEmpty()) {
+                newRuleSetNames.add(ruleSet.getName());
+                editor.putString(mUuid + ".notificationRuleSet." + ruleSet.getName() + ".'senderName", ruleSet.getSenderName());
+                editor.putString(mUuid + ".notificationRuleSet." + ruleSet.getName() + ".'senderAddress", ruleSet.getSenderAddress());
+                editor.putString(mUuid + ".notificationRuleSet." + ruleSet.getName() + ".'subject", ruleSet.getSubject());
+                editor.putString(mUuid + ".notificationRuleSet." + ruleSet.getName() + ".'body", ruleSet.getBody());
+                editor.putBoolean(mUuid + ".notificationRuleSet." + ruleSet.getName() + ".'shouldNotify", ruleSet.getShouldNotify());
+            }
+        }
+
+        editor.putString(mUuid + ".notificationRuleSets", TextUtils.join(",", newRuleSetNames));
+    }
+
 }

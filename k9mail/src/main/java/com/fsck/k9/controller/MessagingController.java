@@ -75,6 +75,7 @@ import com.fsck.k9.mailstore.LocalStore.PendingCommand;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
+import com.fsck.k9.notification.NotificationRuleSet;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.StatsColumns;
 import com.fsck.k9.search.ConditionsTreeNode;
@@ -4263,7 +4264,23 @@ public class MessagingController implements Runnable {
             return false;
         }
 
-        return true;
+
+        // if notification rules are set, check if any matches the message received
+        // if so we notify or not depending on how the rule is set
+        // if many rules could match the message, we use the 1st one assuming that
+        // a rule created 1st would have a higher priority
+        if ( account.getNotificationSetting().getNotificationRuleSets().size() > 0) {
+            boolean shouldNotify = false;
+
+            for  (NotificationRuleSet ruleSet : account.getNotificationSetting().getNotificationRuleSets() ) {
+                if (ruleSet.matches(message)) {
+                    shouldNotify = ruleSet.getShouldNotify();
+                }
+            }
+            
+            return shouldNotify;
+        }
+       return true;
     }
 
     public void deleteAccount(Context context, Account account) {
