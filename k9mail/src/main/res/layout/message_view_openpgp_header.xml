@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fsck.k9.ui.messageview.OpenPgpHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_decrypt_openpgp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -28,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/openpgp_result_not_encrypted"
+                tools:text="Not Encrypted"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp" />
@@ -51,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/openpgp_result_no_signature"
+                tools:text="Not signed"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp" />
@@ -95,14 +96,14 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/example_signature_name" />
+                            tools:text="Alice" />
 
                         <TextView
                             android:id="@+id/result_signature_email"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/example_signature_email"
+                            tools:text="alice@example.com"
                             android:gravity="center_vertical" />
 
                     </LinearLayout>
