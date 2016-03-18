@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
@@ -52,7 +53,6 @@ class SyncNotifications {
                     account.getNotificationSetting().getLedColor(),
                     NOTIFICATION_LED_BLINK_FAST, true);
         }
-
         getNotificationManager().notify(notificationId, builder.build());
     }
 
