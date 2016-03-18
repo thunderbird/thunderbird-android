@@ -3085,6 +3085,12 @@ public class MessagingController implements Runnable {
         processPendingCommands(account);
     }
 
+    private void SendPendingMessagesConfigurException(Exception e, boolean prmVal){
+        lastFailure = e;
+        wasPermanentFailure = prmVal;
+    }
+
+
     public void sendPendingMessagesSynchronous(final Account account) {
         try {
             initialisationSendPendingMessageSynchronous(account);
@@ -3152,25 +3158,20 @@ public class MessagingController implements Runnable {
                         }
 
                     } catch (CertificateValidationException e) {
-                        lastFailure = e;
-                        wasPermanentFailure = false;
-
+                        SendPendingMessagesConfigurException(e,false);
                         notifyUserIfCertificateProblem(account, e, false);
                         handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     } catch (MessagingException e) {
-                        lastFailure = e;
-                        wasPermanentFailure = e.isPermanentFailure();
+                        SendPendingMessagesConfigurException(e,e.isPermanentFailure());
 
                         handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     } catch (Exception e) {
-                        lastFailure = e;
-                        wasPermanentFailure = true;
+                        SendPendingMessagesConfigurException(e,true);
 
                         handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     }
                 } catch (Exception e) {
-                    lastFailure = e;
-                    wasPermanentFailure = false;
+                    SendPendingMessagesConfigurException(e,false);
 
                     Log.e(K9.LOG_TAG, "Failed to fetch message for sending", e);
 
