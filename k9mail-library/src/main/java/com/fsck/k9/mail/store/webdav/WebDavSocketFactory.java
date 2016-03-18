@@ -35,7 +35,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
         mSocketFactory = sslContext.getSocketFactory();
         mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();
         mSchemeSocketFactory.setHostnameVerifier(
-                org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+                org.apache.http.conn.ssl.SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
     }
 
     public Socket connectSocket(Socket sock, String host, int port,
@@ -44,6 +44,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
         return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
     }
 
+    @Override
     public Socket createSocket() throws IOException {
         return mSocketFactory.createSocket();
     }

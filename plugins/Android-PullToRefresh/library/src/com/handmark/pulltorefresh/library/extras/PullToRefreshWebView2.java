@@ -86,6 +86,8 @@ public class PullToRefreshWebView2 extends PullToRefreshWebView {
 		WebView webView = super.createRefreshableView(context, attrs);
 
 		// Need to add JS Interface so we can get the response back
+		// TODO: Potiential security vulnerability in minSdkVersion < 17
+		// TODO: Missing annotation for API 17
 		mJsCallback = new JsValueCallback();
 		webView.addJavascriptInterface(mJsCallback, JS_INTERFACE_PKG);
 

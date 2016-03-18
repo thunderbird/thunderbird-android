@@ -2018,7 +2018,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
             // Thread count
             if (threadCount > 1) {
-                holder.threadCount.setText(Integer.toString(threadCount));
+                holder.threadCount.setText(String.format("%d", threadCount));
                 holder.threadCount.setVisibility(View.VISIBLE);
             } else {
                 holder.threadCount.setVisibility(View.GONE);
