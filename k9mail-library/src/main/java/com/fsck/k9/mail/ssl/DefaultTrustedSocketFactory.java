@@ -121,8 +121,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
 
 
     private Context context;
-    private ProxySettings proxySettings;
-
+    private ProxySettings proxySettings = new ProxySettings(false, "", 0);
 
     public DefaultTrustedSocketFactory(Context context, ProxySettings proxySettings) {
         this.context = context;
@@ -223,4 +222,6 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             Log.e(LOG_TAG, "Could not call SSLSocket#setHostname(String) method ", e);
         }
     }
+
+    public ProxySettings getProxySettings() { return proxySettings; }
 }

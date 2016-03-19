@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
@@ -37,6 +38,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mail.ProxySettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -206,7 +208,14 @@ class ImapConnection {
         if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
             socket = socketFactory.createSocket(null, host, port, clientCertificateAlias);
         } else {
-            socket = new Socket();
+            ProxySettings proxySettings = socketFactory.getProxySettings();
+            if (proxySettings.enabled) {
+                InetSocketAddress proxyAddr = new InetSocketAddress(proxySettings.host, proxySettings.port);
+                Proxy proxy = new Proxy(Proxy.Type.SOCKS, proxyAddr);
+                socket = new Socket(proxy);
+            } else {
+                socket = new Socket();
+            }
             socket.connect(socketAddress, socketConnectTimeout);
         }
 
