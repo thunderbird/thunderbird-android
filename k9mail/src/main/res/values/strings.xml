@@ -859,7 +859,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="integrated_inbox_title">Unified Inbox</string>
     <string name="integrated_inbox_detail">All messages in unified folders</string>
 
-    <string name="tap_hint">Tap envelope or star for unread or starred messages</string>
+    <string name="tap_hint">Tap circle or star for unread or starred messages</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">All messages are shown in Unified Inbox</string>
