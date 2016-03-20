@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayDeque;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -30,6 +31,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.DecryptStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageHelper;
@@ -113,7 +115,7 @@ public class MessageCryptoHelper {
         OpenPgpResultAnnotation annotation = new OpenPgpResultAnnotation();
         annotation.setErrorType(error);
         annotation.setOutputData(outputData);
-        messageAnnotations.put(part, annotation);
+        messageAnnotations.put(part, Collections.singletonList((CryptoResultAnnotation) annotation));
     }
 
     private void addFoundInlinePgpParts(List<Part> foundParts) {
@@ -440,7 +442,7 @@ public class MessageCryptoHelper {
 
     private void addOpenPgpResultPartToMessage(OpenPgpResultAnnotation resultAnnotation) {
         Part part = currentCryptoPart.part;
-        messageAnnotations.put(part, resultAnnotation);
+        messageAnnotations.put(part, Collections.singletonList((CryptoResultAnnotation) resultAnnotation));
     }
 
     private void onCryptoFailed(OpenPgpError error) {

@@ -61,6 +61,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private ComposeCryptoStatus cachedCryptoStatus;
     private PendingIntent pendingUserInteractionIntent;
     private CryptoProviderState cryptoProviderState = CryptoProviderState.UNCONFIGURED;
+    private CryptoMethod cryptoMethod = CryptoMethod.NONE;
     private OpenPgpServiceConnection openPgpServiceConnection;
 
 
@@ -349,16 +350,27 @@ public class RecipientPresenter implements PermissionPingCallback {
     public ComposeCryptoStatus getCurrentCryptoStatus() {
         if (cachedCryptoStatus == null) {
             ComposeCryptoStatusBuilder builder = new ComposeCryptoStatusBuilder()
+                    .setCryptoMethod(cryptoMethod)
                     .setCryptoProviderState(cryptoProviderState)
                     .setCryptoMode(currentCryptoMode)
                     .setRecipients(getAllRecipients());
 
-            long accountCryptoKey = account.getCryptoKey();
-            if (accountCryptoKey != Account.NO_OPENPGP_KEY) {
-                // TODO split these into individual settings? maybe after key is bound to identity
-                builder.setSigningKeyId(accountCryptoKey);
-                builder.setSelfEncryptId(accountCryptoKey);
+            if(cryptoMethod == CryptoMethod.OPENPGP) {
+                long accountCryptoKey = account.getOpenPgpKey();
+                if (accountCryptoKey != Account.NO_OPENPGP_KEY) {
+                    // TODO split these into individual settings? maybe after key is bound to identity
+                    builder.setSigningKeyId(accountCryptoKey);
+                    builder.setSelfEncryptId(accountCryptoKey);
+                }
+            } else if (cryptoMethod == CryptoMethod.SMIME) {
+                long accountCryptoKey = account.getOpenPgpKey();
+                if (accountCryptoKey != Account.NO_SMIME_KEY) {
+                    // TODO split these into individual settings? maybe after key is bound to identity
+                    builder.setSigningKeyId(accountCryptoKey);
+                    builder.setSelfEncryptId(accountCryptoKey);
+                }
             }
+            //TODO: BOTH?
 
             cachedCryptoStatus = builder.build();
         }
@@ -695,5 +707,11 @@ public class RecipientPresenter implements PermissionPingCallback {
         SIGN_ONLY,
         OPPORTUNISTIC,
         PRIVATE,
+    }
+
+    public enum CryptoMethod {
+        NONE,
+        OPENPGP,
+        SMIME,
     }
 }

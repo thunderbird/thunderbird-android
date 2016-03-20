@@ -10,7 +10,7 @@ import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
-public final class OpenPgpResultAnnotation {
+public final class OpenPgpResultAnnotation extends CryptoResultAnnotation {
     private OpenPgpDecryptionResult decryptionResult;
     private OpenPgpSignatureResult signatureResult;
     private OpenPgpError error;

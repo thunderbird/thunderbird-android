@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
+import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMethod;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
@@ -105,11 +106,17 @@ public class ComposeCryptoStatus {
 
     public static class ComposeCryptoStatusBuilder {
 
+        private CryptoMethod cryptoMethod;
         private CryptoProviderState cryptoProviderState;
         private CryptoMode cryptoMode;
         private Long signingKeyId;
         private Long selfEncryptKeyId;
         private List<Recipient> recipients;
+
+        public ComposeCryptoStatusBuilder setCryptoMethod(CryptoMethod cryptoMethod) {
+            this.cryptoMethod = cryptoMethod;
+            return this;
+        }
 
         public ComposeCryptoStatusBuilder setCryptoProviderState(CryptoProviderState cryptoProviderState) {
             this.cryptoProviderState = cryptoProviderState;
@@ -151,6 +158,7 @@ public class ComposeCryptoStatus {
             boolean allKeysAvailable = true;
             boolean allKeysVerified = true;
             boolean hasRecipients = !recipients.isEmpty();
+            //TODO: Crypto Method
             for (Recipient recipient : recipients) {
                 RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
                 recipientAddresses.add(recipient.address.getAddress());

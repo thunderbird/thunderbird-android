@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_scroll"
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Encrypt UserIds (split with &apos;,&apos;)"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+        <EditText
+            android:id="@+id/crypto_provider_demo_encrypt_user_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="dominik@dominikschuermann.de"
+            android:textAppearance="@android:style/TextAppearance.Small" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Message"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+        <ScrollView
+            android:id="@+id/child_scroll1"
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+
+            <EditText
+                android:id="@+id/crypto_provider_demo_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollHorizontally="true"
+                android:scrollbars="vertical"
+                android:text="message"
+                android:hint="cleartext message"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+        </ScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ciphertext"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ScrollView
+            android:id="@+id/child_scroll2"
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+
+            <EditText
+                android:id="@+id/crypto_provider_demo_ciphertext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ciphertext"
+                android:hint="ciphertext"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+        </ScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Detached signature"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ScrollView
+            android:id="@+id/child_scroll3"
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <EditText
+                android:id="@+id/crypto_provider_demo_detached_signature"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="detached signature"
+                android:hint="detached signature"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/crypto_provider_demo_cleartext_sign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cleartext Sign"
+                android:layout_gravity="center_vertical" />
+
+            <Button
+                android:id="@+id/crypto_provider_demo_detached_sign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Detached Sign"
+                android:layout_gravity="center_vertical" />
+
+            <Button
+                android:id="@+id/crypto_provider_demo_encrypt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Encrypt"
+                android:layout_gravity="center_vertical" />
+
+            <Button
+                android:id="@+id/crypto_provider_demo_sign_and_encrypt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sign and Encrypt"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/crypto_provider_demo_decrypt_and_verify"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Decrypt and Verify" />
+
+            <Button
+                android:id="@+id/crypto_provider_demo_verify_detached_signature"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Verify detached signature" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get key:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0x718c070100012282"
+            android:id="@+id/crypto_provider_demo_get_key_edit" />
+
+        <Button
+            android:id="@+id/crypto_provider_demo_get_key"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get key" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get key ids:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="dominik@dominikschuermann.de"
+            android:id="@+id/crypto_provider_demo_get_key_ids_edit" />
+
+        <Button
+            android:id="@+id/crypto_provider_demo_get_key_ids"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get key ids" />
+
+    </LinearLayout>
+</ScrollView>

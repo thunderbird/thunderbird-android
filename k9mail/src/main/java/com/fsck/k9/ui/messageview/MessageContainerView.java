@@ -36,10 +36,12 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
+import com.fsck.k9.mailstore.SmimeResultAnnotation;
 import com.fsck.k9.view.K9WebViewClient;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
@@ -398,7 +400,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     public void displayMessageViewContainer(MessageViewContainer messageViewContainer,
             boolean automaticallyLoadPictures, ShowPicturesController showPicturesController,
             AttachmentViewCallback attachmentCallback, OpenPgpHeaderViewCallback openPgpHeaderViewCallback,
-            boolean displayPgpHeader) throws MessagingException {
+            SmimeHeaderViewCallback smimeHeaderViewCallback,
+            boolean displayPgpHeader, boolean displaySmimeHeader) throws MessagingException {
 
         this.attachmentCallback = attachmentCallback;
 
@@ -443,9 +446,17 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             ViewStub openPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
             OpenPgpHeaderView openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
 
-            OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
-            openPgpHeaderView.setOpenPgpData(cryptoAnnotation);
+            OpenPgpResultAnnotation openPgpAnnotation = messageViewContainer.openPgpAnnotation;
+            openPgpHeaderView.setOpenPgpData(openPgpAnnotation);
             openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
+            mSidebar.setVisibility(View.VISIBLE);
+        } else if (displaySmimeHeader) {
+            ViewStub smimeHeaderStub = (ViewStub) findViewById(R.id.smime_header_stub);
+            SmimeHeaderView smimeHeaderView = (SmimeHeaderView) smimeHeaderStub.inflate();
+
+            SmimeResultAnnotation smimeAnnotation = messageViewContainer.smimeAnnotation;
+            smimeHeaderView.setSmimeData(smimeAnnotation);
+            smimeHeaderView.setCallback(smimeHeaderViewCallback);
             mSidebar.setVisibility(View.VISIBLE);
         } else {
             mSidebar.setVisibility(View.GONE);
@@ -462,27 +473,48 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     }
 
     private String getTextToDisplay(MessageViewContainer messageViewContainer) {
-        OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
-        if (cryptoAnnotation == null) {
+        //TODO List of annotations?
+        if (messageViewContainer.openPgpAnnotation == null && messageViewContainer.smimeAnnotation == null) {
             return messageViewContainer.text;
-        }
+        } else if (messageViewContainer.openPgpAnnotation != null) {
+            OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.openPgpAnnotation;
 
-        CryptoError errorType = cryptoAnnotation.getErrorType();
-        switch (errorType) {
-            case CRYPTO_API_RETURNED_ERROR: {
-                // TODO make a nice view for this
-                return wrapStatusMessage(cryptoAnnotation.getError().getMessage());
+            OpenPgpResultAnnotation.CryptoError errorType = cryptoAnnotation.getErrorType();
+            switch (errorType) {
+                case CRYPTO_API_RETURNED_ERROR: {
+                    // TODO make a nice view for this
+                    return wrapStatusMessage(cryptoAnnotation.getError().getMessage());
+                }
+                case ENCRYPTED_BUT_INCOMPLETE: {
+                    return wrapStatusMessage(getContext().getString(R.string.crypto_download_complete_message_to_decrypt));
+                }
+                case NONE:
+                case SIGNED_BUT_INCOMPLETE: {
+                    return messageViewContainer.text;
+                }
             }
-            case ENCRYPTED_BUT_INCOMPLETE: {
-                return wrapStatusMessage(getContext().getString(R.string.crypto_download_complete_message_to_decrypt));
-            }
-            case NONE:
-            case SIGNED_BUT_INCOMPLETE: {
-                return messageViewContainer.text;
-            }
-        }
 
-        throw new IllegalStateException("Unknown error type: " + errorType);
+            throw new IllegalStateException("Unknown error type: " + errorType);
+        } else {
+            SmimeResultAnnotation cryptoAnnotation = messageViewContainer.smimeAnnotation;
+
+            SmimeResultAnnotation.CryptoError errorType = cryptoAnnotation.getErrorType();
+            switch (errorType) {
+                case CRYPTO_API_RETURNED_ERROR: {
+                    // TODO make a nice view for this
+                    return wrapStatusMessage(cryptoAnnotation.getError().getMessage());
+                }
+                case ENCRYPTED_BUT_INCOMPLETE: {
+                    return wrapStatusMessage(getContext().getString(R.string.crypto_download_complete_message_to_decrypt));
+                }
+                case NONE:
+                case SIGNED_BUT_INCOMPLETE: {
+                    return messageViewContainer.text;
+                }
+            }
+
+            throw new IllegalStateException("Unknown error type: " + errorType);
+        }
     }
 
     public String wrapStatusMessage(String status) {

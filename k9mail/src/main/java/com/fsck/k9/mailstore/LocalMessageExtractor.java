@@ -42,7 +42,7 @@ public class LocalMessageExtractor {
     private static final int FILENAME_PREFIX_LENGTH = FILENAME_PREFIX.length();
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
-    private static final OpenPgpResultAnnotation NO_ANNOTATIONS = null;
+    private static final CryptoResultAnnotation NO_ANNOTATIONS = null;
 
     private LocalMessageExtractor() {}
     /**
@@ -428,11 +428,22 @@ public class LocalMessageExtractor {
         // 2. extract viewables/attachments of parts
         ArrayList<MessageViewContainer> containers = new ArrayList<>();
         for (Part part : parts) {
-            OpenPgpResultAnnotation pgpAnnotation = annotations.get(part);
+            List<CryptoResultAnnotation> cryptoResultAnnotations = annotations.get(part);
+            OpenPgpResultAnnotation pgpAnnotation = null;
+            SmimeResultAnnotation smimeAnnotation = null;
+            for(CryptoResultAnnotation cryptoResultAnnotation: cryptoResultAnnotations) {
+                if(cryptoResultAnnotation instanceof OpenPgpResultAnnotation) {
+                    pgpAnnotation = (OpenPgpResultAnnotation) cryptoResultAnnotation;
+                } else if(cryptoResultAnnotation instanceof SmimeResultAnnotation) {
+                    smimeAnnotation = (SmimeResultAnnotation) cryptoResultAnnotation;
+                }
+            }
 
             // TODO properly handle decrypted data part - this just replaces the part
             if (pgpAnnotation != NO_ANNOTATIONS && pgpAnnotation.hasOutputData()) {
                 part = pgpAnnotation.getOutputData();
+            } else if (smimeAnnotation != NO_ANNOTATIONS && smimeAnnotation.hasOutputData()) {
+                part = smimeAnnotation.getOutputData();
             }
 
             ArrayList<Part> attachments = new ArrayList<>();
@@ -444,7 +455,7 @@ public class LocalMessageExtractor {
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
 
             MessageViewContainer messageViewContainer =
-                    new MessageViewContainer(viewable.html, part, attachmentInfos, pgpAnnotation);
+                    new MessageViewContainer(viewable.html, part, attachmentInfos, pgpAnnotation, smimeAnnotation);
 
             containers.add(messageViewContainer);
         }

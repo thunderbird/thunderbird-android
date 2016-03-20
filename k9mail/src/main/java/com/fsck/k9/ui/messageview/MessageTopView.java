@@ -33,6 +33,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
     private OpenPgpHeaderViewCallback openPgpHeaderViewCallback;
+    private SmimeHeaderViewCallback smimeHeaderViewCallback;
     private Button showPicturesButton;
     private List<MessageContainerView> messageContainerViewsWithPictures = new ArrayList<MessageContainerView>();
 
@@ -94,8 +95,9 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
             MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container,
                     containerViews, false);
             boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
+            boolean displaySmimeHeader = account.isSmimeProviderConfigured();
             view.displayMessageViewContainer(container, automaticallyLoadPictures, this, attachmentCallback,
-                    openPgpHeaderViewCallback, displayPgpHeader);
+                    openPgpHeaderViewCallback, smimeHeaderViewCallback, displayPgpHeader, displaySmimeHeader);
 
             containerViews.addView(view);
         }
@@ -148,6 +150,10 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
     public void setOpenPgpHeaderViewCallback(OpenPgpHeaderViewCallback callback) {
         openPgpHeaderViewCallback = callback;
+    }
+
+    public void setSmimeHeaderViewCallback(SmimeHeaderViewCallback callback) {
+        smimeHeaderViewCallback = callback;
     }
 
     public void enableDownloadButton() {
