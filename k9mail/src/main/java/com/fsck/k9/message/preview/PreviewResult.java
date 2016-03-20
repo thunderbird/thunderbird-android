@@ -26,8 +26,8 @@ public class PreviewResult {
         return new PreviewResult(PreviewType.NONE, null);
     }
 
-    public static PreviewResult failedToLoad() {
-        return new PreviewResult(PreviewType.FAILED_TO_LOAD, null);
+    public static PreviewResult failed() {
+        return new PreviewResult(PreviewType.FAILED, null);
     }
 
     public PreviewType getPreviewType() {
@@ -51,6 +51,6 @@ public class PreviewResult {
         NONE,
         TEXT,
         ENCRYPTED,
-        FAILED_TO_LOAD
+        FAILED
     }
 }

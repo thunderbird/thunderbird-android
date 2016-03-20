@@ -8,7 +8,7 @@ public enum DatabasePreviewType {
     NONE("none", PreviewType.NONE),
     TEXT("text", PreviewType.TEXT),
     ENCRYPTED("encrypted", PreviewType.ENCRYPTED),
-    FAILED_TO_LOAD("failedToLoad", PreviewType.FAILED_TO_LOAD);
+    FAILED("failed", PreviewType.FAILED);
 
 
     private final String databaseValue;

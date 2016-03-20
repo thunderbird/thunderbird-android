@@ -44,14 +44,11 @@ public class MessagePreviewCreator {
         if (textPart == null || hasEmptyBody(textPart)) {
             return PreviewResult.none();
         }
-        try {
-            String previewText = previewTextExtractor.extractPreview(textPart);
-            return PreviewResult.text(previewText);
-        } catch (MessagingException e) {
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "Unable to get text preview from part" + e.getMessage(), e);
-            return PreviewResult.failedToLoad();
+        String previewText = previewTextExtractor.extractPreview(textPart);
+        if (previewText == null) {
+            return PreviewResult.failed();
         }
+        return PreviewResult.text(previewText);
     }
 
     private boolean hasEmptyBody(Part textPart) {

@@ -31,7 +31,7 @@ import static com.fsck.k9.mail.internet.Viewable.Textual;
 public class MessageExtractor {
     private MessageExtractor() {}
 
-    public static String getTextFromPart(Part part) throws MessagingException {
+    public static String getTextFromPart(Part part) {
         try {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
@@ -91,8 +91,10 @@ public class MessageExtractor {
             }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Unable to getTextFromPart", e);
-            throw new MessagingException("Unable to get text from part: "+part, e);
+        } catch (MessagingException e) {
+            Log.e(LOG_TAG, "Unable to getTextFromPart", e);
         }
+        return null;
     }
 
 

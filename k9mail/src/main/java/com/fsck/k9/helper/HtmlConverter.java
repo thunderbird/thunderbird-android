@@ -1,5 +1,7 @@
 package com.fsck.k9.helper;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.*;
 import android.text.Html.TagHandler;
 import com.fsck.k9.K9;
@@ -257,11 +259,14 @@ public class HtmlConverter {
      *         Plain text string.
      * @return HTML string.
      */
-    public static String textToHtml(String text) {
+    @Nullable
+    public static String textToHtml(@Nullable String text) {
         // Our HTMLification code is somewhat memory intensive
         // and was causing lots of OOM errors on the market
         // if the message is big and plain text, just do
         // a trivial htmlification
+        if (text == null)
+            return null;
         if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH) {
             return simpleTextToHtml(text);
         }
