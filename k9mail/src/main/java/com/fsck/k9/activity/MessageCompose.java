@@ -2097,8 +2097,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
             }
 
-            // If we had a body length (and it was valid), separate the composition from the quoted text
-            // and put them in their respective places in the UI.
             if (bodyLength > 0) {
                 processSourceMessageTextValidBody(text, bodyOffset, bodyLength, viewMessageContent);
             } else {
@@ -2109,6 +2107,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
+
+    // If we had a body length (and it was valid), separate the composition from the quoted text
+    // and put them in their respective places in the UI.
     private void processSourceMessageTextValidBody(String text, Integer bodyOffset, Integer bodyLength,
                                                    boolean viewMessageContent) {
         try {
