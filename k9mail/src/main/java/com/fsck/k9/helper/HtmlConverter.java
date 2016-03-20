@@ -261,12 +261,12 @@ public class HtmlConverter {
      */
     @Nullable
     public static String textToHtml(@Nullable String text) {
+        if (text == null)
+            return null;
         // Our HTMLification code is somewhat memory intensive
         // and was causing lots of OOM errors on the market
         // if the message is big and plain text, just do
         // a trivial htmlification
-        if (text == null)
-            return null;
         if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH) {
             return simpleTextToHtml(text);
         }

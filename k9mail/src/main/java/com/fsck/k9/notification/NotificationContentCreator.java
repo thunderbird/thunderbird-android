@@ -1,7 +1,5 @@
 package com.fsck.k9.notification;
 
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -48,8 +46,7 @@ class NotificationContentCreator {
         String snippet = getPreview(message);
 
         boolean isSubjectEmpty = TextUtils.isEmpty(subject);
-        boolean isSnippetPresent = message.getPreviewType() != PreviewType.NONE
-                                        && message.getPreviewType() != PreviewType.FAILED;
+        boolean isSnippetPresent = message.getPreviewType() != PreviewType.NONE;
         if (isSubjectEmpty && isSnippetPresent) {
             return snippet;
         }
@@ -72,8 +69,9 @@ class NotificationContentCreator {
         PreviewType previewType = message.getPreviewType();
         switch (previewType) {
             case NONE:
-            case FAILED:
                 return null;
+            case FAILED:
+                return context.getString(R.string.preview_failed);
             case TEXT:
                 return message.getPreview();
             case ENCRYPTED:

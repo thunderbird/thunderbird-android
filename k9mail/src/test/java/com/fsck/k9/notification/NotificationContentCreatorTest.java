@@ -18,6 +18,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -84,6 +85,18 @@ public class NotificationContentCreatorTest {
 
         assertEquals(SUBJECT, content.subject);
         assertEquals(SUBJECT, content.preview.toString());
+    }
+
+    @Test
+    public void createFromMessage_withFailedPreview() throws Exception {
+        when(message.getPreviewType()).thenReturn(PreviewType.FAILED);
+        when(message.getPreview()).thenReturn(null);
+
+        NotificationContent content = contentCreator.createFromMessage(account, message);
+
+        String failed = "*Failed To Create Preview*";
+        assertEquals(SUBJECT, content.subject);
+        assertEquals(SUBJECT + "\n" + failed, content.preview.toString());
     }
 
     @Test

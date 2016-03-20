@@ -45,9 +45,8 @@ class EncryptionDetector {
         String text = MessageExtractor.getTextFromPart(textPart);
         if (text == null) {
             return false;
-        } else {
-            return PGP_MESSAGE_PATTERN.matcher(text).find();
         }
+        return PGP_MESSAGE_PATTERN.matcher(text).find();
     }
 
     private boolean isUsableTextPart(Part textPart) {

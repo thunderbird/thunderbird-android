@@ -74,6 +74,20 @@ public class MessagePreviewCreatorTest {
     }
 
     @Test
+    public void createPreview_withNullTextPart() throws Exception {
+        Message message = createDummyMessage();
+        Part textPart = createTextPart("text/plain");
+        when(encryptionDetector.isEncrypted(message)).thenReturn(false);
+        when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
+        when(previewTextExtractor.extractPreview(textPart)).thenReturn(null);
+
+        PreviewResult result = previewCreator.createPreview(message);
+
+        assertFalse(result.isPreviewTextAvailable());
+        assertEquals(PreviewType.FAILED, result.getPreviewType());
+    }
+
+    @Test
     public void createPreview_withTextPart() throws Exception {
         Message message = createDummyMessage();
         Part textPart = createTextPart("text/plain");

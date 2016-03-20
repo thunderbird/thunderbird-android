@@ -2,12 +2,8 @@ package com.fsck.k9.message.preview;
 
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 
