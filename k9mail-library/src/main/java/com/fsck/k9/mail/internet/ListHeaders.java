@@ -48,7 +48,7 @@ public class ListHeaders {
         }
         List<Address> listPostAddresses = new ArrayList<>();
         for (String headerValue : headerValues) {
-            if (headerValue == null || headerValues[0].isEmpty()) {
+            if (headerValue == null || headerValue.isEmpty()) {
                 continue;
             }
             Matcher m = mailtoContainerPattern.matcher(headerValue);
