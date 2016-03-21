@@ -639,6 +639,8 @@ public class Account implements BaseAccount, StoreConfig {
     public synchronized void save(Preferences preferences) {
         StorageEditor editor = preferences.getStorage().edit();
 
+        //TODO: GH-992 Expect to add a new account here.
+
         if (!preferences.getStorage().getString("accountUuids", "").contains(mUuid)) {
             /*
              * When the account is first created we assign it a unique account number. The
