@@ -65,7 +65,7 @@ public class Pop3StoreTest {
     public void setUp() throws Exception {
         //Using a SSL socket allows us to mock it
         when(mockStoreConfig.getStoreUri()).thenReturn(
-                "pop3+ssl+://user:password@server:12345");
+                "pop3+ssl+://PLAIN:user:password@server:12345");
         when(mockStoreConfig.getInboxFolderName()).thenReturn("Inbox");
         when(mockTrustedSocketFactory.createSocket(null, "server", 12345, null)).thenReturn(mockSocket);
         when(mockSocket.isConnected()).thenReturn(true);
