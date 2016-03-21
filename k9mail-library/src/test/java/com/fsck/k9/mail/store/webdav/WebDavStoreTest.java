@@ -1,11 +1,15 @@
 package com.fsck.k9.mail.store.webdav;
 
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.StoreConfig;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.protocol.ClientContext;
@@ -13,6 +17,7 @@ import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.BasicHttpEntity;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHttpResponse;
@@ -33,6 +38,8 @@ import org.robolectric.annotation.Config;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.net.ssl.SSLException;
@@ -82,8 +89,14 @@ public class WebDavStoreTest {
     @Mock
     private SchemeRegistry mockSchemeRegistry;
 
+    private HttpResponse okPropfindResponse;
+
+    private HttpResponse okSearchResponse;
+
     @Before
     public void setUp() throws Exception {
+        buildResponses();
+
         MockitoAnnotations.initMocks(this);
         httpParams = new BasicHttpParams();
         when(mockHttpClientFactory.create()).thenReturn(mockHttpClient);
@@ -93,6 +106,42 @@ public class WebDavStoreTest {
 
         storeConfig = createStoreConfig("webdav://user:password@example.org:80");
         webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+    }
+
+    //TODO: Replace XML with actual XML from an Exchange server
+    private void buildResponses() throws UnsupportedEncodingException {
+        okPropfindResponse =
+                new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, 200, null));
+        HttpEntity propfindResponseEntity = new StringEntity(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<D:multistatus xmlns:D=\"DAV:\" xmlns:e=\"urn:schemas:httpmail:\">\n" +
+                "  <D:response><e:inbox>http://example.org/Exchange/user/Inbox</e:inbox></D:response>\n" +
+                "</D:multistatus>");
+        okPropfindResponse.setEntity(propfindResponseEntity);
+
+        okSearchResponse =
+                new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, 200, null));
+        HttpEntity searchResponseEntity = new StringEntity(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "   <D:multistatus xmlns:D=\"DAV:\"\n" +
+                "      xmlns:R=\"http://example.org/propschema\">\n" +
+                "     <D:response>" +
+                "       <D:propstat>\n" +
+                "       <uid>Inbox</uid>" +
+                "       <href>http://example.org/Exchange/user/Inbox</href>\n" +
+                "     </D:propstat></D:response>\n" +
+                "     <D:response>" +
+                "       <D:propstat>\n" +
+                "       <uid>Drafts</uid>" +
+                "       <href>http://example.org/Exchange/user/Drafts</href>\n" +
+                "     </D:propstat></D:response>\n" +
+                "     <D:response>" +
+                "       <D:propstat>\n" +
+                "       <uid>Folder2</uid>" +
+                "       <href>http://example.org/Exchange/user/Folder2</href>\n" +
+                "     </D:propstat></D:response>\n" +
+                "   </D:multistatus>");
+        okSearchResponse.setEntity(searchResponseEntity);
     }
 
     private StoreConfig createStoreConfig(String storeUri) {
@@ -108,6 +157,38 @@ public class WebDavStoreTest {
                 .thenReturn(UNAUTHORIZARD_401_RESPONSE).thenReturn(OK_200_RESPONSE);
         webDavStore.checkSettings();
         return requestCaptor.getValue().getURI().getScheme().startsWith("https");
+    }
+
+    @Test
+    public void createUri_withSetting_shouldProvideUri() {
+        assertEquals("webdav://user:password@example.org:123456/%7C%7C",
+                WebDavStore.createUri(new ServerSettings(
+                    ServerSettings.Type.WebDAV, "example.org", 123456,
+                    ConnectionSecurity.NONE, AuthType.PLAIN, "user", "password", null)));
+    }
+
+    @Test
+    public void createUri_withSettingsWithTLS_shouldProvideSSLUri() {
+        assertEquals("webdav+ssl+://user:password@example.org:123456/%7C%7C",
+                WebDavStore.createUri(new ServerSettings(
+                        ServerSettings.Type.WebDAV, "example.org", 123456,
+                        ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN,
+                        "user", "password", null)));
+    }
+
+    @Test
+    public void createUri_withSettingsWithExtras_shouldProvideUriWithExtras() {
+        HashMap<String,String> extras = new HashMap<>();
+        extras.put(WebDavStoreSettings.PATH_KEY, "path");
+        extras.put(WebDavStoreSettings.AUTH_PATH_KEY, "authPath");
+        extras.put(WebDavStoreSettings.MAILBOX_PATH_KEY, "mailboxPath");
+        ServerSettings serverSettings = new ServerSettings(
+                ServerSettings.Type.WebDAV, "example.org", 123456,
+                ConnectionSecurity.NONE, AuthType.PLAIN,
+                "user", "password", null, extras);
+
+        assertEquals("webdav://user:password@example.org:123456/path%7CauthPath%7CmailboxPath",
+                WebDavStore.createUri(serverSettings));
     }
 
     @Test(expected = MessagingException.class)
@@ -239,6 +320,26 @@ public class WebDavStoreTest {
         Folder webDavFolder = webDavStore.getFolder(folderName);
         Folder result = webDavStore.getFolder(folderName);
         assertEquals(webDavFolder, result);
+    }
+
+    @Test
+    public void getPersonalNamespaces_shouldProvideListOfAllFolders() throws MessagingException, IOException {
+        ArgumentCaptor<HttpGeneric> requestCaptor = ArgumentCaptor.forClass(HttpGeneric.class);
+        when(mockHttpClient.executeOverride(requestCaptor.capture(), any(HttpContext.class)))
+                .thenReturn(UNAUTHORIZARD_401_RESPONSE).thenReturn(OK_200_RESPONSE)
+                .thenReturn(okPropfindResponse).thenReturn(okSearchResponse);
+        assertEquals("INBOX", webDavStore.getStoreConfig().getInboxFolderName());
+
+
+        List<? extends Folder> folders = webDavStore.getPersonalNamespaces(true);
+        verify(storeConfig).setInboxFolderName("Inbox");
+
+        List<HttpGeneric> requests = requestCaptor.getAllValues();
+        assertEquals(4, requests.size()); // AUTH + 2
+        assertEquals("PROPFIND", requests.get(2).getMethod()); //Special Folders
+        assertEquals("SEARCH", requests.get(3).getMethod()); //Folder List
+
+        assertEquals(3, folders.size());
     }
 
 
