@@ -70,13 +70,16 @@ public class Pop3Store extends RemoteStore {
      *
      * <p>Possible forms:</p>
      * <pre>
-     * pop3://user:password@server:port
+     * pop3://authType:user:password@server:port
      *      ConnectionSecurity.NONE
-     * pop3+tls+://user:password@server:port
+     * pop3+tls+://authType:user:password@server:port
      *      ConnectionSecurity.STARTTLS_REQUIRED
-     * pop3+ssl+://user:password@server:port
+     * pop3+ssl+://authType:user:password@server:port
      *      ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
+     * 
+     * e.g.
+     * <pre>pop3://PLAIN:admin:pass123@example.org:12345</pre>
      */
     public static ServerSettings decodeUri(String uri) {
         String host;
