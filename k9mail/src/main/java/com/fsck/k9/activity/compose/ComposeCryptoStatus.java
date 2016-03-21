@@ -103,6 +103,9 @@ public class ComposeCryptoStatus {
         return cryptoMode != CryptoMode.DISABLE && signingKeyId != null;
     }
 
+    public boolean isPgpInlineModeEnabled() {
+        return enablePgpInline;
+    }
 
     public static class ComposeCryptoStatusBuilder {
 
