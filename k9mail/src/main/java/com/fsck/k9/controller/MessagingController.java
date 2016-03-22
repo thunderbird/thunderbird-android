@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -133,6 +134,7 @@ public class MessagingController implements Runnable {
     private boolean mBusy;
     private final Context context;
     private final NotificationController notificationController;
+    private volatile boolean stopped = false;
 
     private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
@@ -189,7 +191,8 @@ public class MessagingController implements Runnable {
     }
 
 
-    private MessagingController(Context context, NotificationController notificationController) {
+    @VisibleForTesting
+    MessagingController(Context context, NotificationController notificationController) {
         this.context = context;
         this.notificationController = notificationController;
         mThread = new Thread(this);
@@ -198,6 +201,13 @@ public class MessagingController implements Runnable {
         if (memorizingListener != null) {
             addListener(memorizingListener);
         }
+    }
+
+    @VisibleForTesting
+    void stop() throws InterruptedException {
+        stopped = true;
+        mThread.interrupt();
+        mThread.join(1000L);
     }
 
     public synchronized static MessagingController getInstance(Context context) {
@@ -216,7 +226,7 @@ public class MessagingController implements Runnable {
     @Override
     public void run() {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-        while (true) {
+        while (!stopped) {
             String commandDescription = null;
             try {
                 final Command command = mCommands.take();
@@ -754,7 +764,8 @@ public class MessagingController implements Runnable {
      * @param folder
      * @param providedRemoteFolder
      */
-    private void synchronizeMailboxSynchronous(
+    @VisibleForTesting
+    void synchronizeMailboxSynchronous(
             final Account account, final String folder, final MessagingListener listener,
             Folder providedRemoteFolder) {
         Folder remoteFolder = null;
@@ -1132,7 +1143,6 @@ public class MessagingController implements Runnable {
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "SYNC: About to fetch " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
 
-
             fetchUnsyncedMessages(account, remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress, todo, fp);
 
             String updatedPushState = localFolder.getPushState();
@@ -1147,10 +1157,7 @@ public class MessagingController implements Runnable {
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
             }
-
-
         }
-
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Have "
                   + largeMessages.size() + " large messages and "
@@ -1158,26 +1165,24 @@ public class MessagingController implements Runnable {
                   + unsyncedMessages.size() + " unsynced messages");
 
         unsyncedMessages.clear();
-
         /*
          * Grab the content of the small messages first. This is going to
          * be very fast and at very worst will be a single up of a few bytes and a single
          * download of 625k.
          */
         FetchProfile fp = new FetchProfile();
+        //TODO: Only fetch small and large messages if we have some
         fp.add(FetchProfile.Item.BODY);
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
-
         downloadSmallMessages(account, remoteFolder, localFolder, smallMessages, progress, unreadBeforeStart, newMessages, todo, fp);
         smallMessages.clear();
-
         /*
          * Now do the large messages that require more round trips.
          */
-        fp.clear();
+        fp = new FetchProfile();
         fp.add(FetchProfile.Item.STRUCTURE);
-        downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress, unreadBeforeStart,  newMessages, todo, fp);
+        downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress, unreadBeforeStart, newMessages, todo, fp);
         largeMessages.clear();
 
         /*
@@ -1290,7 +1295,6 @@ public class MessagingController implements Runnable {
         final String folder = remoteFolder.getName();
 
         final Date earliestDate = account.getEarliestPollDate();
-
         remoteFolder.fetch(unsyncedMessages, fp,
         new MessageRetrievalListener<T>() {
             @Override
@@ -1308,6 +1312,7 @@ public class MessagingController implements Runnable {
                         }
                         progress.incrementAndGet();
                         for (MessagingListener l : getListeners()) {
+                            //TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal
                             l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
                         }
                         return;
@@ -1457,7 +1462,7 @@ public class MessagingController implements Runnable {
                  * incomplete so the entire thing can be downloaded later if the user
                  * wishes to download it.
                  */
-                fp.clear();
+                fp = new FetchProfile();
                 fp.add(FetchProfile.Item.BODY_SANE);
                 /*
                  *  TODO a good optimization here would be to make sure that all Stores set
@@ -1875,7 +1880,6 @@ public class MessagingController implements Runnable {
                     /*
                      * Otherwise we'll upload our message and then delete the remote message.
                      */
-                    fp.clear();
                     fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
                     localFolder.fetch(Collections.singletonList(localMessage), fp, null);
