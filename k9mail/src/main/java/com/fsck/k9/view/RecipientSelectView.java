@@ -13,6 +13,7 @@ import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -193,6 +194,22 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         attachedToWindow = false;
+    }
+
+    @Override
+    public void onFocusChanged(boolean hasFocus, int direction, Rect previous) {
+        super.onFocusChanged(hasFocus, direction, previous);
+        if (hasFocus) {
+            displayKeyboard();
+        }
+    }
+
+    private void displayKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) {
+            return;
+        }
+        imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
     }
 
     @Override
