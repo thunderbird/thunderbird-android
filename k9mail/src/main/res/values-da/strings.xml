@@ -604,7 +604,6 @@
   <string name="search_all_messages_detail">Alle mails i søgbare mapper</string>
   <string name="integrated_inbox_title">Fælles indbakke</string>
   <string name="integrated_inbox_detail">Alle mails i fælles mapper</string>
-  <string name="tap_hint">Klip på konvolut eller stjerne for ulæste eller stjernemarkerede mails</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Inkluder i fælles indbakke</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Alle mails vises i fælles indbakke</string>
   <string name="account_settings_searchable_label">Søgbare mapper</string>
@@ -644,7 +643,6 @@
   <string name="font_size_larger">Størst</string>
   <string name="miscellaneous_preferences">Diverse</string>
   <string name="error_activity_not_found">Kunne ikke finde noget program som kan udføre denne handling.</string>
-  <string name="send_aborted">Send afbrudt.</string>
   <string name="save_or_discard_draft_message_dlg_title">Gem kladde?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Gem eller fortryd denne meddelelse?</string>
   <string name="confirm_discard_draft_message_title">Annuler meddelelse?</string>

@@ -695,7 +695,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="search_all_messages_detail">Kaikki viestit kansioissa, joihin voidaan tehdä hakuja</string>
   <string name="integrated_inbox_title">Yhdistetty Saapuneet-kansio</string>
   <string name="integrated_inbox_detail">Kaikki viestit yhdistetyssä Saapuneet-kansiossa</string>
-  <string name="tap_hint">Napauta kirjekuorta tai tähteä nähdäksesi tähdellä merkityt lukemattomat viestit</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Yhdistä</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Kaikki viestit näytetään yhdistetyssä Saapuneet-kansiossa</string>
   <string name="account_settings_searchable_label">Etsi kansioista</string>
@@ -737,7 +736,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="font_size_larger">Suurin</string>
   <string name="miscellaneous_preferences">Muut</string>
   <string name="error_activity_not_found">Toiminnolle ei löytynyt sopivaa ohjelmaa.</string>
-  <string name="send_aborted">Lähetys keskeytetty.</string>
   <string name="save_or_discard_draft_message_dlg_title">Tallennetaanko luonnos?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Tallennetaanko vai hylätäänkö tämä viesti?</string>
   <string name="confirm_discard_draft_message_title">Hylkää viesti?</string>
@@ -920,8 +918,10 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="address_type_mobile">Mobiili</string>
   <string name="warn_search_disabled">Haku viestien sisällöstä on poistettu käytöstä tässä kehitysversiossa!</string>
   <string name="compose_error_no_draft_folder">Tälle tilille ei ole määritelty luonnoskansiota!</string>
-  <string name="compose_error_no_signing_key">Allekirjoitus pyydetty, mutta avainta ei ole valittu!</string>
-  <string name="compose_error_private_missing_keys">Yksityinen tila otettu käyttöön, mutta salaus ei ole mahdollinen kaikkien vastaanottajien kohdalla!</string>
+  <string name="compose_not_saving_unencrypted">Luonnos tallennettu ILMAN salausta!</string>
+  <string name="compose_error_pgp_error">Virhe OpenPGP-tarjoajan kanssa. Tarkista asetukset!</string>
+  <string name="compose_error_no_signing_key">Allekirjoitusta varten ei ole määritelty avainta! Tarkista asetukset.</string>
+  <string name="compose_error_private_missing_keys">Yksityinen tila on käytössä, mutta joillain vastaanottajilla ei ole avaimia!</string>
   <string name="crypto_mode_disabled">Älä koskaan allekirjoita tai salaa.</string>
   <string name="crypto_mode_sign_only">Allekirjoita aina, älä koskaan salaa.</string>
   <string name="crypto_mode_opportunistic">Allekirjoita aina, salaa jos mahdollista.</string>

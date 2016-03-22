@@ -654,7 +654,6 @@
   <string name="search_all_messages_detail">검색 가능한 모든 편지</string>
   <string name="integrated_inbox_title">통합 편지함</string>
   <string name="integrated_inbox_detail">통합된 폴더의 모든 이메일</string>
-  <string name="tap_hint">봉투나 별을 눌러 읽지 않은 메시지나 별표된 메시지를 봅니다.</string>
   <string name="folder_settings_include_in_integrated_inbox_label">통합</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">통합 편지함에서 모든 메시지를 볼 수 있습니다</string>
   <string name="account_settings_searchable_label">찾을 폴더</string>
@@ -694,7 +693,6 @@
   <string name="font_size_larger">더 크게</string>
   <string name="miscellaneous_preferences">기타 설정</string>
   <string name="error_activity_not_found">이 작동에 대해 적절한 애플리케이션을 찾을 수 없습니다.</string>
-  <string name="send_aborted">보내기 실패.</string>
   <string name="save_or_discard_draft_message_dlg_title">임시 보관함에 저장합니까?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">이 메시지를 저장하거나 버리시겠습니까?</string>
   <string name="confirm_discard_draft_message_title">메시지 버림</string>

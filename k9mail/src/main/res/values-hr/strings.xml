@@ -664,7 +664,6 @@
   <string name="search_all_messages_detail">Sve poruke uključene u mape pretraživanja</string>
   <string name="integrated_inbox_title">Objedinjena Dolazna Pošta</string>
   <string name="integrated_inbox_detail">Sve poruke u objedinjenim mapama</string>
-  <string name="tap_hint">Dodirnite omotnicu ili zvijezdicu za nepročitane ili za poruke sa zvjezdicom </string>
   <string name="folder_settings_include_in_integrated_inbox_label">Objedini</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Sve poruke su prikazane u Objedinjenoj Dolaznoj Pošti</string>
   <string name="account_settings_searchable_label">Mape za pretragu</string>
@@ -706,7 +705,6 @@
   <string name="font_size_larger">Veća</string>
   <string name="miscellaneous_preferences">Razna</string>
   <string name="error_activity_not_found">Nema prikladne aplikacije za ovu radnju.</string>
-  <string name="send_aborted">Slanje prekinuto.</string>
   <string name="save_or_discard_draft_message_dlg_title">Spremiti predložak poruke?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Spremiti ili Odbaciti ovu poruku?</string>
   <string name="confirm_discard_draft_message_title">Odbaciti poruku?</string>

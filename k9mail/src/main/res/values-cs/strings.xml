@@ -697,7 +697,6 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="search_all_messages_detail">Všechny zprávy v prohledávaných složkách</string>
   <string name="integrated_inbox_title">Integrovaná doručená pošta</string>
   <string name="integrated_inbox_detail">Všechny zprávy v integrovaných složkách</string>
-  <string name="tap_hint">S hvězdičkou nebo nepřečtené zprávy zvolíte klepnutím na obálku nebo hvězdičku</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Integrovat</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Všechny zprávy jsou zobrazeny v Integrované doručené poště</string>
   <string name="account_settings_searchable_label">Prohledávané složky</string>
@@ -739,7 +738,6 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="font_size_larger">Největší</string>
   <string name="miscellaneous_preferences">Různé</string>
   <string name="error_activity_not_found">Pro tuto akci nebyla nalezena žádná vhodná aplikace.</string>
-  <string name="send_aborted">Odeslání přerušeno.</string>
   <string name="save_or_discard_draft_message_dlg_title">Uložit koncept zprávy?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Uložit nebo zahodit tuto zprávu?</string>
   <string name="confirm_discard_draft_message_title">Zahodit zprávu?</string>
@@ -930,10 +928,14 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="address_type_mobile">Mobilní</string>
   <string name="warn_search_disabled">Hledání v těle zpráv je v této vývojové verzi vypnuto!</string>
   <string name="compose_error_no_draft_folder">Tento účet nemá nastaven žádný adresář pro koncepty!</string>
-  <string name="compose_error_no_signing_key">Vyžádáno podepsání, ale nebyl vybrán klíč!</string>
-  <string name="compose_error_private_missing_keys">Povolen privátní mód, ale nelze zašifrovat pro všechny příjemce!</string>
+  <string name="compose_not_saving_unencrypted">Koncept NEULOŽEN bez zašifrování!</string>
+  <string name="compose_error_pgp_error">Chyba poskytovatele OpenPGP. Zkontrolujte svá nastavení!</string>
+  <string name="compose_error_no_signing_key">Není nastaven podpisový klíč! Zkontrolujte prosím své nastavení.</string>
+  <string name="compose_error_private_missing_keys">Soukromý mód je povolen, někteří příjemci ale nemají šifrovací klíče!</string>
   <string name="crypto_mode_disabled">Nikdy nepodepisovat nebo šifrovat.</string>
   <string name="crypto_mode_sign_only">Vždy podepisovat, nikdy nešifrovat.</string>
   <string name="crypto_mode_opportunistic">Vždy podepisovat, šifrovat pokud je možno.</string>
   <string name="crypto_mode_private">Vždy podepisovat, vždy šifrovat.</string>
+  <string name="error_crypto_provider_connect">Nelze se spojit se službou šifrování, zkontrolujte své nastavení nebo ťukněte na ikonu šifrování pro nový pokus.</string>
+  <string name="error_crypto_provider_ui_required">Přístup ke službě šifrování zamítnut, ťuknout na ikonu šifrování pro nový pokus!</string>
 </resources>

@@ -697,7 +697,6 @@
   <string name="search_all_messages_detail">Све поруке у претраживим фасциклама</string>
   <string name="integrated_inbox_title">Обједињено пријемно сандуче</string>
   <string name="integrated_inbox_detail">Све поруке у обједињеном сандучету</string>
-  <string name="tap_hint">Тапните коверту или звездицу за непрочитане или звездицом означене поруке</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Обједини</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Све поруке се приказују у обједињеном сандучету</string>
   <string name="account_settings_searchable_label">Фасцикле за претрагу</string>
@@ -739,7 +738,6 @@
   <string name="font_size_larger">Већи</string>
   <string name="miscellaneous_preferences">Разно</string>
   <string name="error_activity_not_found">Нема подесне апликације за ову радњу.</string>
-  <string name="send_aborted">Слање прекинуто.</string>
   <string name="save_or_discard_draft_message_dlg_title">Сачувати нацрт поруке?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Да сачувам или одбацим ову поруку?</string>
   <string name="confirm_discard_draft_message_title">Одбацити поруку?</string>
@@ -930,10 +928,14 @@
   <string name="address_type_mobile">Мобилни</string>
   <string name="warn_search_disabled">Претрага тела поруке је онемогућена у овом развојном издању!</string>
   <string name="compose_error_no_draft_folder">Фасцикла за нацрте није подешена за овај налог!</string>
-  <string name="compose_error_no_signing_key">Захтевано је потписивање, али ниједан кључ није одређен!</string>
-  <string name="compose_error_private_missing_keys">Приватни режим укључен, али не могу да шифрујем свим примаоцима!</string>
+  <string name="compose_not_saving_unencrypted">Нацрт НИЈЕ сачуван без шифровања!</string>
+  <string name="compose_error_pgp_error">Грешка ОпенПГП снабдевача. Проверите ваше поставке!</string>
+  <string name="compose_error_no_signing_key">Ниједан кључ није подешен за потписивање! Проверите ваше поставке.</string>
+  <string name="compose_error_private_missing_keys">Приватни режим је укључен, али неки примаоци немају кључеве!</string>
   <string name="crypto_mode_disabled">Никад не потписуј и не шифруј.</string>
   <string name="crypto_mode_sign_only">Увек потписуј, никад не шифруј.</string>
   <string name="crypto_mode_opportunistic">Увек потписуј, шифруј ако је могуће.</string>
   <string name="crypto_mode_private">Увек потписуј, увек шифруј.</string>
+  <string name="error_crypto_provider_connect">Не могу да се повежем са снабдевачем криптографије, проверите ваше поставке или покушајте поново тапом на икону криптографије!</string>
+  <string name="error_crypto_provider_ui_required">Приступ снабдевачу криптографије одбијен, тапните икону криптографије да покушате поново!</string>
 </resources>

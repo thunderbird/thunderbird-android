@@ -135,8 +135,11 @@
   <string name="notification_additional_messages"><xliff:g id="additional_messages">%1$d</xliff:g> daha fazla <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Yanıtla</string>
   <string name="notification_action_mark_as_read">Okundu olarak işaretle</string>
+  <string name="notification_action_mark_all_as_read">Hepsini Okunmuş İşaretle</string>
   <string name="notification_action_delete">Sil</string>
+  <string name="notification_action_delete_all">Hepsini Sil</string>
   <string name="notification_action_archive">Arşiv</string>
+  <string name="notification_action_archive_all">Hepsini Arşivle</string>
   <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> için sertifika hatası</string>
   <string name="notification_certificate_error_text">Sunucu ayarlarınızı kontrol edin</string>
@@ -247,6 +250,7 @@
   <string name="global_settings_lock_screen_notification_visibility_everything">Ekran kilidi açıkken olduğu gibi</string>
   <string name="quiet_time">Sessiz Zaman</string>
   <string name="quiet_time_description">Zil sesi, titreşim ve flaşı devre dışı bırak</string>
+  <string name="quiet_time_notification">Bildirimleri devre dışı bırak</string>
   <string name="quiet_time_starts">Sessiz Zaman başlangıcı</string>
   <string name="quiet_time_ends">Sessiz Zaman bitişi</string>
   <string name="account_setup_basics_title">Bir yeni hesap kurun</string>
@@ -659,7 +663,6 @@
   <string name="search_all_messages_detail">Bütün mesajlar aranabilir klasörlerde</string>
   <string name="integrated_inbox_title">Birleşik Gelen Kutusu</string>
   <string name="integrated_inbox_detail">Bütün mesajlar birleşik gelen kutusunda</string>
-  <string name="tap_hint">Okunmamış veya yıldızlı mesajlar için yıldızı veya zarfı tıklayın</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Birleştir</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Birleşik Gelen Kutusunda bütün mesajlar görünür</string>
   <string name="account_settings_searchable_label">Arama için Klasörler</string>
@@ -701,7 +704,6 @@
   <string name="font_size_larger">Daha büyük</string>
   <string name="miscellaneous_preferences">Çeşitli</string>
   <string name="error_activity_not_found">Bu eylem için uygun program bulunamadı.</string>
-  <string name="send_aborted">Gönderme iptal edildi.</string>
   <string name="save_or_discard_draft_message_dlg_title">Taslak mesajı kaydet?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Bu mesajı kaydet veya sil?</string>
   <string name="confirm_discard_draft_message_title">Mesajı sil?</string>
@@ -846,15 +848,18 @@
   <string name="auth_external_error">Yetkilendirme yapılamıyor. Sunucu SASL EXTERNAL kabiliyeti olduğunu bildirmedi. Bu istemci sertifikasıyla ilgili bir sorun (tarihi geçmiş, bilinmeyen sertifika otoritesi) veya yapılandırma sorunu olabilir.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_unknown_error">Bilinmeyen OpenPGP Hatası</string>
+  <string name="openpgp_canceled_by_user">Kullanıcı tarafından iptal edildi</string>
   <string name="openpgp_result_no_signature">İmzalanmamış</string>
   <string name="openpgp_result_invalid_signature">Geçersiz imza</string>
   <string name="openpgp_result_signature_uncertified">Geçerli imza (sertifikalı değil!)</string>
   <string name="openpgp_result_signature_certified">İmzalayan</string>
   <string name="openpgp_result_signature_expired_key">Anahtarın süresi dolmuş!</string>
   <string name="openpgp_result_signature_revoked_key">Anahtar iptal edilmiş!</string>
+  <string name="openpgp_result_signature_insecure">Güvensiz!</string>
   <string name="openpgp_result_signature_missing_key">Bilinmeyen genel anahtar</string>
   <string name="openpgp_result_encrypted">Şifreli</string>
   <string name="openpgp_result_not_encrypted">Şifreli değil</string>
+  <string name="openpgp_result_decryption_insecure">Güvensiz</string>
   <string name="openpgp_result_action_show">Göster</string>
   <string name="openpgp_result_action_lookup">Bak</string>
   <string name="openpgp_result_no_name">İsimsiz</string>
@@ -869,4 +874,26 @@
   <string name="crypto_incomplete_message">Eksik mesaj</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="crypto_download_complete_message_to_decrypt">Çözmek için \"Mesajın tamamını indir\"\'e tıklayın</string>
+  <string name="preview_encrypted">*Şifreli*</string>
+  <string name="add_from_contacts">Kişilerden Ekle</string>
+  <string name="crypto_settings_ok">İlerle</string>
+  <string name="recipient_cc">Kopya</string>
+  <string name="recipient_bcc">Gizli Kopya</string>
+  <string name="recipient_to">Kime</string>
+  <string name="recipient_from">Kimden</string>
+  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
+  <string name="address_type_home">Ev</string>
+  <string name="address_type_work">İş</string>
+  <string name="address_type_other">Diğer</string>
+  <string name="address_type_mobile">Mobil</string>
+  <string name="warn_search_disabled">Bu geliştirme sürümünde mesaj içeriklerinde arama yapmak devre dışı bırakılmıştır!</string>
+  <string name="compose_error_no_draft_folder">Bu hesap için Taslak klasörü ayarlanmamış!</string>
+  <string name="compose_not_saving_unencrypted">Taslak şifrelenmeden kaydedilemez!</string>
+  <string name="compose_error_pgp_error">OpenPGP sağlayıcıyla sorun yaşandı. Ayarlarınızı kontrol edin!</string>
+  <string name="compose_error_no_signing_key">İmzalamak için hiçbir anahtar ayarlanmamış! Lütfen ayarlarınızı kontrol edin.</string>
+  <string name="compose_error_private_missing_keys">Özel mod etkinleştirildi, fakat bazı alıcıların anahtarı yok!</string>
+  <string name="crypto_mode_disabled">Hiçbir zaman imzalama ve şifreleme.</string>
+  <string name="crypto_mode_sign_only">Her zaman imzala, hiçbir zaman şifreleme.</string>
+  <string name="crypto_mode_opportunistic">Her zaman imzala, Mümkünse Şifrele.</string>
+  <string name="crypto_mode_private">Her zaman imzala, Her zaman Şifrele.</string>
 </resources>

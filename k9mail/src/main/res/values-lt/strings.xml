@@ -610,7 +610,6 @@
   <string name="search_all_messages_detail">Visi laiškai ieškomųjų aplankuose</string>
   <string name="integrated_inbox_title">Suvestiniai gautieji</string>
   <string name="integrated_inbox_detail">Visi laiškai suvestiniuose aplankuose</string>
-  <string name="tap_hint">Norėdami matyti neskaitytus arba pažymėtus laiškus paspauskite ant voko arba žvaigždės</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Suvesti</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Visi laiškai rodomi suvestiniame gautųjų aplanke</string>
   <string name="account_settings_searchable_label">Aplankai kuriuose ieškoti</string>
@@ -650,7 +649,6 @@
   <string name="font_size_larger">Didesnis</string>
   <string name="miscellaneous_preferences">Kita</string>
   <string name="error_activity_not_found">Šiai programai nerasta tinkamo veiksmo.</string>
-  <string name="send_aborted">Siuntimas nutrauktas.</string>
   <string name="save_or_discard_draft_message_dlg_title">Išsaugoti laišką kaip juodraštį?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Išsaugoti ar nepaisyti šio laiško?</string>
   <string name="confirm_discard_draft_message_title">Nepaisyti laiško?</string>

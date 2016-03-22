@@ -696,7 +696,6 @@
   <string name="search_all_messages_detail">Όλα τα μηνύματα σε φακέλους αναζήτησης</string>
   <string name="integrated_inbox_title">Ενιαία Εισερχόμενα</string>
   <string name="integrated_inbox_detail">Όλα τα μηνύματα στους ενοποιημένους φακέλους</string>
-  <string name="tap_hint">Αγγίξτε το φάκελο για μη αναγνωσμένα ή μηνύματα με αστέρι.</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Ενιαία Εισερχόμενα</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Όλα τα μηνύματα προβάλλονται στα Ενιαία Εισερχόμενα.</string>
   <string name="account_settings_searchable_label">Φάκελοι αναζήτησης</string>
@@ -738,7 +737,6 @@
   <string name="font_size_larger">Μεγαλύτερο</string>
   <string name="miscellaneous_preferences">Διάφορα</string>
   <string name="error_activity_not_found">Δεν βρέθηκε κατάλληλη εφαρμογή για αυτή την ενέργεια.</string>
-  <string name="send_aborted">Αποστολή ματαιώθηκε.</string>
   <string name="save_or_discard_draft_message_dlg_title">Αποθήκευση πρόχειρου μηνύματος;</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Αποθήκευση ή απόρριψη αυτού του μηνύματος;</string>
   <string name="confirm_discard_draft_message_title">Απόρριψη μηνύματος;</string>

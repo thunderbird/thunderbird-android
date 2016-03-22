@@ -661,7 +661,6 @@
   <string name="search_all_messages_detail">Todas as mensagens em pastas pesquisáveis</string>
   <string name="integrated_inbox_title">Entrada Unificada</string>
   <string name="integrated_inbox_detail">Todas as mensagens nas pastas unificadas</string>
-  <string name="tap_hint">Toque em um envelope, uma mensagem não lida com estrela ou mensagem favorita</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Todas as mensagens são mostradas na caixa de entrada unificada</string>
   <string name="account_settings_searchable_label">Pasta para pesquisar</string>
@@ -703,7 +702,6 @@
   <string name="font_size_larger">Grande</string>
   <string name="miscellaneous_preferences">Diversos</string>
   <string name="error_activity_not_found">Nenhum aplicativo adequado para esta ação foi encontrado.</string>
-  <string name="send_aborted">Envio abortado.</string>
   <string name="save_or_discard_draft_message_dlg_title">Salvar mensagem de rascunho?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Salvar ou descartar esta mensagem?</string>
   <string name="confirm_discard_draft_message_title">Descartar mensagens?</string>

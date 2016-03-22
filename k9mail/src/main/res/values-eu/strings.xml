@@ -628,7 +628,6 @@
   <string name="search_all_messages_detail">Bilatzeko karpetetako mezu guztiak</string>
   <string name="integrated_inbox_title">Bateratutako sarrera</string>
   <string name="integrated_inbox_detail">Bateratutako karpetetako mezu guztiak</string>
-  <string name="tap_hint">Gutunazala edo izarra ikutu irakurgabeko edo izardun epostetarako</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Bateratu</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Mezu guztiak bateratutako sarreran ikusten dira</string>
   <string name="account_settings_searchable_label">Bilatzeko karpetak</string>
@@ -668,7 +667,6 @@
   <string name="font_size_larger">Handiagoa</string>
   <string name="miscellaneous_preferences">Bestelakoak</string>
   <string name="error_activity_not_found">Ez da honetarako aplikaziorik topatu.</string>
-  <string name="send_aborted">Bidalketa ezeztatua.</string>
   <string name="save_or_discard_draft_message_dlg_title">Zirriborroa gorde?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Mezu hau gorde edo baztertu?</string>
   <string name="confirm_discard_draft_message_title">Mezua baztertu</string>

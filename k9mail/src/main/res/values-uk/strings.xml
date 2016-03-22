@@ -611,7 +611,6 @@
   <string name="search_all_messages_detail">Всі повідомлення у папках для пошуку</string>
   <string name="integrated_inbox_title">Спільна папка вхідної пошти</string>
   <string name="integrated_inbox_detail">Усі повідомлення у об’єднаних папках</string>
-  <string name="tap_hint">Натисніть конверт або зірочку для непрочитаних або відмічених зірочкою повідомлень</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Об’єднати</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Показувати усі повідомлення у спільній папці „Вхідні“</string>
   <string name="account_settings_searchable_label">Папки для пошуку</string>
@@ -651,7 +650,6 @@
   <string name="font_size_larger">Найбільший</string>
   <string name="miscellaneous_preferences">Різне</string>
   <string name="error_activity_not_found">Відсутня програма для цієї дії.</string>
-  <string name="send_aborted">Надсилання скасовано.</string>
   <string name="save_or_discard_draft_message_dlg_title">Зберегти чернетку повідомлення?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Зберегти чи відмінити це повідомлення?</string>
   <string name="confirm_discard_draft_message_title">Відмінити повідомлення?</string>

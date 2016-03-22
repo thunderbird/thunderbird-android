@@ -697,7 +697,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="search_all_messages_detail">Všetky správy v prehľadávaných priečinkoch</string>
   <string name="integrated_inbox_title">Zjednotená doručená pošta</string>
   <string name="integrated_inbox_detail">Všetky správy v zjednotených priečinkoch</string>
-  <string name="tap_hint">Správy s hviezdičkou alebo neprečítané správy vyberte kliknutím na obálku alebo hviezdičku</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Zjednotiť</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Všetky správy budú zobrazené v zjednotenej doručenej pošte</string>
   <string name="account_settings_searchable_label">Prehľadávané priečinky</string>
@@ -739,7 +738,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="font_size_larger">Väčšie</string>
   <string name="miscellaneous_preferences">Rôzne</string>
   <string name="error_activity_not_found">Nebola nájdená žiadna vhodná aplikácia pre túto akciu.</string>
-  <string name="send_aborted">Odosielanie prerušené.</string>
   <string name="save_or_discard_draft_message_dlg_title">Uložiť koncept správy?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Uložiť alebo zahodiť túto správu?</string>
   <string name="confirm_discard_draft_message_title">Zahodiť správu?</string>
@@ -930,8 +928,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="address_type_mobile">Mobilná</string>
   <string name="warn_search_disabled">Vyhľadávanie v telách správ je v tejto vývojovej verzii deaktivované!</string>
   <string name="compose_error_no_draft_folder">Pre tento účet nie je zadefinovaný priečinok pre koncepty správ.</string>
-  <string name="compose_error_no_signing_key">Pre podpísanie správy je potrebné vybrať kľúč!</string>
-  <string name="compose_error_private_missing_keys">Je aktivovaný Súkromný režim, nie je však možné správu šifrovať pre všetkých príjemcov!</string>
   <string name="crypto_mode_disabled">Nepodpisovať a nešifrovať.</string>
   <string name="crypto_mode_sign_only">Vždy podpísať, nešifrovať.</string>
   <string name="crypto_mode_opportunistic">Vždy podpísať, šifrovať ak je to možné.</string>
