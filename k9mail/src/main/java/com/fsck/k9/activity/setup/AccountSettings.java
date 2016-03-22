@@ -69,6 +69,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_MARK_MESSAGE_AS_READ_ON_VIEW = "mark_message_as_read_on_view";
+    private static final String PREFERENCE_MARK_MESSAGE_AS_READ_ON_DELETE = "mark_message_as_read_on_delete";
     private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_MANAGE_IDENTITIES = "manage_identities";
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
@@ -138,6 +139,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private EditTextPreference mAccountDescription;
     private CheckBoxPreference mMarkMessageAsReadOnView;
+    private CheckBoxPreference mMarkMessageAsReadOnDelete;
     private ListPreference mCheckFrequency;
     private ListPreference mDisplayCount;
     private ListPreference mMessageAge;
@@ -239,6 +241,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mMarkMessageAsReadOnView = (CheckBoxPreference) findPreference(PREFERENCE_MARK_MESSAGE_AS_READ_ON_VIEW);
         mMarkMessageAsReadOnView.setChecked(mAccount.isMarkMessageAsReadOnView());
+
+        mMarkMessageAsReadOnDelete = (CheckBoxPreference) findPreference(PREFERENCE_MARK_MESSAGE_AS_READ_ON_DELETE);
+        mMarkMessageAsReadOnDelete.setChecked(mAccount.isMarkMessageAsReadOnDelete());
 
         mMessageFormat = (ListPreference) findPreference(PREFERENCE_MESSAGE_FORMAT);
         mMessageFormat.setValue(mAccount.getMessageFormat().name());
@@ -750,6 +755,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setMarkMessageAsReadOnView(mMarkMessageAsReadOnView.isChecked());
+        mAccount.setMarkMessageAsReadOnDelete(mMarkMessageAsReadOnDelete.isChecked());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setFolderNotifyNewMailMode(FolderMode.valueOf(mAccountNotifyNewMailMode.getValue()));
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
@@ -992,7 +998,8 @@ public class AccountSettings extends K9PreferenceActivity {
                 maxResults = getString(R.string.account_settings_remote_search_num_results_entries_all);
             }
 
-            mRemoteSearchNumResults.setSummary(String.format(getString(R.string.account_settings_remote_search_num_summary), maxResults));
+            mRemoteSearchNumResults.setSummary(
+                    String.format(getString(R.string.account_settings_remote_search_num_summary), maxResults));
         }
     }
 

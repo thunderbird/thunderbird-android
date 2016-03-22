@@ -2536,6 +2536,8 @@ public class MessagingController implements Runnable {
             return;
         }
 
+        Log.v(K9.LOG_TAG, "Updating flags for "+folderMap.size()+ " folders");
+
         // Loop over all folders
         for (Entry<String, List<String>> entry : folderMap.entrySet()) {
             String folderName = entry.getKey();
@@ -3570,12 +3572,13 @@ public class MessagingController implements Runnable {
     }
 
     public void deleteThreads(final List<LocalMessage> messages) {
+
+        markThreadsAsReadOnDelete(messages);
         actOnMessages(messages, new MessageActor() {
 
             @Override
             public void act(final Account account, final Folder folder,
-                    final List<Message> accountMessages) {
-
+                    final List<LocalMessage> accountMessages) {
                 suppressMessages(account, messages);
 
                 putBackground("deleteThreads", null, new Runnable() {
@@ -3589,8 +3592,7 @@ public class MessagingController implements Runnable {
     }
 
     public void deleteThreadsSynchronous(Account account, String folderName,
-            List<Message> messages) {
-
+            List<LocalMessage> messages) {
         try {
             List<Message> messagesToDelete = collectMessagesInThreads(account, messages);
 
@@ -3621,11 +3623,11 @@ public class MessagingController implements Runnable {
     }
 
     public void deleteMessages(final List<LocalMessage> messages, final MessagingListener listener) {
+        markMessageAsReadOnDelete(messages);
         actOnMessages(messages, new MessageActor() {
-
             @Override
             public void act(final Account account, final Folder folder,
-                    final List<Message> accountMessages) {
+                    final List<LocalMessage> accountMessages) {
                 suppressMessages(account, messages);
 
                 putBackground("deleteMessages", null, new Runnable() {
@@ -3636,9 +3638,44 @@ public class MessagingController implements Runnable {
                     }
                 });
             }
+        });
+    }
 
+    private void markThreadsAsReadOnDelete(final List<LocalMessage> messages) {
+        actOnMessages(messages, new MessageActor() {
+            @Override
+            public void act ( final Account account, final Folder folder,
+                              final List<LocalMessage> accountMessages) {
+                if(account.isMarkMessageAsReadOnDelete()) {
+                    try {
+                        List<Message> threadMessages = collectMessagesInThreads(account, accountMessages);
+                        String[] uids = new String[threadMessages.size()];
+                        for (int i = 0; i < threadMessages.size(); i++)
+                            uids[i] = threadMessages.get(0).getUid();
+                        queueSetFlag(account, folder.getName(), Boolean.toString(true),
+                                Flag.SEEN.name(), uids);
+                    } catch (MessagingException e) {
+                    }
+                }
+            }
         });
 
+    }
+
+    private void markMessageAsReadOnDelete(final List<LocalMessage> messages) {
+        actOnMessages(messages, new MessageActor() {
+            @Override
+            public void act ( final Account account, final Folder folder,
+                              final List<LocalMessage> accountMessages) {
+                if(account.isMarkMessageAsReadOnDelete()) {
+                    String[] uids = new String[accountMessages.size()];
+                    for (int i = 0; i < accountMessages.size(); i++)
+                        uids[i] = accountMessages.get(0).getUid();
+                    queueSetFlag(account, folder.getName(), Boolean.toString(true),
+                            Flag.SEEN.name(), new String[]{messages.get(0).getUid()});
+                }
+            }
+        });
     }
 
     private void deleteMessagesSynchronous(final Account account, final String folder, final List<? extends Message> messages,
@@ -4825,7 +4862,7 @@ public class MessagingController implements Runnable {
     }
 
     private void actOnMessages(List<LocalMessage> messages, MessageActor actor) {
-        Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
+        Map<Account, Map<Folder, List<LocalMessage>>> accountMap = new HashMap<>();
 
         for (LocalMessage message : messages) {
             if ( message == null) {
@@ -4834,33 +4871,33 @@ public class MessagingController implements Runnable {
             Folder folder = message.getFolder();
             Account account = message.getAccount();
 
-            Map<Folder, List<Message>> folderMap = accountMap.get(account);
+            Map<Folder, List<LocalMessage>> folderMap = accountMap.get(account);
             if (folderMap == null) {
-                folderMap = new HashMap<Folder, List<Message>>();
+                folderMap = new HashMap<Folder, List<LocalMessage>>();
                 accountMap.put(account, folderMap);
             }
-            List<Message> messageList = folderMap.get(folder);
+            List<LocalMessage> messageList = folderMap.get(folder);
             if (messageList == null) {
-                messageList = new LinkedList<Message>();
+                messageList = new LinkedList<LocalMessage>();
                 folderMap.put(folder, messageList);
             }
 
             messageList.add(message);
         }
-        for (Map.Entry<Account, Map<Folder, List<Message>>> entry : accountMap.entrySet()) {
+        for (Map.Entry<Account, Map<Folder, List<LocalMessage>>> entry : accountMap.entrySet()) {
             Account account = entry.getKey();
 
             //account.refresh(Preferences.getPreferences(K9.app));
-            Map<Folder, List<Message>> folderMap = entry.getValue();
-            for (Map.Entry<Folder, List<Message>> folderEntry : folderMap.entrySet()) {
+            Map<Folder, List<LocalMessage>> folderMap = entry.getValue();
+            for (Map.Entry<Folder, List<LocalMessage>> folderEntry : folderMap.entrySet()) {
                 Folder folder = folderEntry.getKey();
-                List<Message> messageList = folderEntry.getValue();
+                List<LocalMessage> messageList = folderEntry.getValue();
                 actor.act(account, folder, messageList);
             }
         }
     }
 
     interface MessageActor {
-        public void act(final Account account, final Folder folder, final List<Message> messages);
+        public void act(final Account account, final Folder folder, final List<LocalMessage> messages);
     }
 }
