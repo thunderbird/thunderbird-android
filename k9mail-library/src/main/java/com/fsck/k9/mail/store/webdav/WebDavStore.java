@@ -1089,6 +1089,7 @@ public class WebDavStore extends RemoteStore {
                     needsParsing) {
                 try {
                     SAXParserFactory spf = SAXParserFactory.newInstance();
+                    spf.setNamespaceAware(true); //This should be a no-op on Android, but makes the tests work
                     SAXParser sp = spf.newSAXParser();
                     XMLReader xr = sp.getXMLReader();
                     WebDavHandler myHandler = new WebDavHandler();
