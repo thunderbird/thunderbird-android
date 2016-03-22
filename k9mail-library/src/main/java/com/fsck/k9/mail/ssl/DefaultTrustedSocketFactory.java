@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,6 +16,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.mail.MessagingException;
+
+import org.apache.http.conn.scheme.SocketFactory;
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
+
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
@@ -170,6 +175,21 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         setSniHost(socketFactory, sslSocket, host);
 
         return trustedSocket;
+    }
+
+    /**
+     * This isn't bulletproof but it's much better than other implementations.
+     */
+    @Override
+    public boolean isSecure(Socket socket) {
+        if(!(socket instanceof SSLSocket))
+            return false;
+        SSLSocket sslSocket = (SSLSocket) socket;
+        if(Arrays.asList(BLACKLISTED_PROTOCOLS).contains(sslSocket.getSession().getProtocol()))
+            return false;
+        if(Arrays.asList(BLACKLISTED_CIPHERS).contains(sslSocket.getSession().getCipherSuite()))
+            return false;
+        return true;
     }
 
     private static void hardenSocket(SSLSocket sock) {
