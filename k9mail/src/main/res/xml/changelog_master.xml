@@ -8,6 +8,24 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.108" versioncode="23080" >
+        <change>Added rudimentary support for reading and composing PGP/MIME messages</change>
+        <change>Added support for stacked single message notifications on Android Wear</change>
+        <change>Added setting to disable notifications during quiet time</change>
+        <change>Added setting to show confirmation dialog when discarding message</change>
+        <change>Added option to copy sender/recipient addresses to clipboard</change>
+        <change>Show warning when user tries to send an email without a subject</change>
+        <change>Allow importing of settings created with newer versions of K-9 Mail</change>
+        <change>Added support for Server Name Indication</change>
+        <change>Disabled support for SSLv3 protocol/ciphers and all RC4 ciphers</change>
+        <change>Fixed bug where third-party apps couldn't delete messages from certain folders</change>
+        <change>Fixed bug in settings export with certain folder names</change>
+        <change>IMAP: Fall back to LOGIN command when AUTHENTICATE PLAIN fails</change>
+        <change>Added auto-configuration support for more providers</change>
+        <change>Added translations for Persian (Farsi) and Slovenian</change>
+        <change>Updated translations</change>
+        <change>More bug fixes</change>
+    </release>
     <release version="5.107" versioncode="23070" >
         <change>Fixed an issue caused by the latest Android System WebView update</change>
     </release>
