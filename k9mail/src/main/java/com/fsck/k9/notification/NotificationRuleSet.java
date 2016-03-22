@@ -71,7 +71,7 @@ public class NotificationRuleSet {
         }
 
         String[] preview = notificationContent.preview.toString().split("\n");
-        if (preview.length > 0) {
+        if (preview.length > 1) {
             if (!mBody.isEmpty() && !preview[1].contains(mBody)) {
                 return false;
             }

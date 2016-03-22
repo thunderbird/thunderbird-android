@@ -87,7 +87,7 @@ public class NotificationRuleSetSettings  extends K9PreferenceActivity {
         mSenderAddress.setText(ruleSet.getSenderAddress());
         mSenderAddress.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (!isEmailAddressValid(newValue.toString())) {
+                if (!newValue.toString().isEmpty() && !isEmailAddressValid(newValue.toString())) {
                     Toast toast = Toast.makeText(getApplication(), getString(R.string.invalid_email_address), Toast.LENGTH_LONG);
                     toast.show();
                 } else {
@@ -109,8 +109,8 @@ public class NotificationRuleSetSettings  extends K9PreferenceActivity {
 
 
         mBody = (EditTextPreference) findPreference(PREFERENCE_NOTIFICATION_RULE_SET_BODY);
-        mBody.setSummary(ruleSet.getSubject());
-        mBody.setText(ruleSet.getSubject());
+        mBody.setSummary(ruleSet.getBody());
+        mBody.setText(ruleSet.getBody());
         mBody.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 onPreferenceChanged(mBody, newValue);
@@ -137,11 +137,8 @@ public class NotificationRuleSetSettings  extends K9PreferenceActivity {
     }
     @Override
     public void onBackPressed() {
-        if (mRuleSetName.getText() == null) {
-            Toast toast = Toast.makeText(getApplication(), getString(R.string.ignoring_empty_notification_rule_set_name), Toast.LENGTH_LONG);
-            toast.show();
-        } else if (mSenderName.getText() == null && mSenderAddress.getText() == null
-                && mSubject.getText() == null && mBody.getText() == null ) {
+        if (mSenderName.getText().isEmpty() && mSenderAddress.getText().isEmpty()
+                && mSubject.getText().isEmpty() && mBody.getText().isEmpty()) {
             Toast toast = Toast.makeText(getApplication(), getString(R.string.ignoring_empty_notification_rule_set), Toast.LENGTH_LONG);
             toast.show();
         } else {

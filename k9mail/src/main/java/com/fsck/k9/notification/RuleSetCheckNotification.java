@@ -12,7 +12,7 @@ class RuleSetCheckNotification {
         this.contentCreator = contentCreator;
     }
 
-    public static RuleSetCheckNotification newInstance(NotificationController controller, NotificationActionCreator actionCreator) {
+    public static RuleSetCheckNotification newInstance(NotificationController controller) {
         NotificationContentCreator contentCreator = new NotificationContentCreator(controller.getContext());
         return new RuleSetCheckNotification(controller, contentCreator);
     }

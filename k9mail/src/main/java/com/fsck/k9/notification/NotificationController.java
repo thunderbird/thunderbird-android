@@ -57,7 +57,7 @@ public class NotificationController {
         syncNotifications = new SyncNotifications(this, actionBuilder);
         sendFailedNotifications = new SendFailedNotifications(this, actionBuilder);
         newMailNotifications = NewMailNotifications.newInstance(this, actionBuilder);
-        ruleSetCheckerNotification = RuleSetCheckNotification.newInstance(this, actionBuilder);
+        ruleSetCheckerNotification = RuleSetCheckNotification.newInstance(this);
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
