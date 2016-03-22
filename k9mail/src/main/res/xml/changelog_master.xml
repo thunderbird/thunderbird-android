@@ -15,6 +15,7 @@
         <change>Added setting to show confirmation dialog when discarding message</change>
         <change>Added option to copy sender/recipient addresses to clipboard</change>
         <change>Show warning when user tries to send an email without a subject</change>
+        <change>New database structure; temporarily disables fulltext search</change>
         <change>Allow importing of settings created with newer versions of K-9 Mail</change>
         <change>Added support for Server Name Indication</change>
         <change>Disabled support for SSLv3 protocol/ciphers and all RC4 ciphers</change>
