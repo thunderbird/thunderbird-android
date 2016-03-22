@@ -569,14 +569,15 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_sync">Fetching mail</string>
     <string name="account_settings_folders">Folders</string>
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
+    <string name="account_settings_crypto">Cryptography</string>
     <string name="account_settings_openpgp">OpenPGP</string>
     <string name="account_settings_openpgp_app">OpenPGP app</string>
     <string name="account_settings_openpgp_key">My OpenPGP Key</string>
     <string name="account_settings_no_openpgp_provider_installed">No OpenPGP app installed</string>
     <string name="account_settings_smime">S/MIME</string>
-    <string name="account_settings_smime_app">OpenPGP app</string>
-    <string name="account_settings_smime_key">My OpenPGP Key</string>
-    <string name="account_settings_no_smime_provider_installed">No SMIME app installed</string>
+    <string name="account_settings_smime_app">S/MIME app</string>
+    <string name="account_settings_smime_key">My S/MIME certificate</string>
+    <string name="account_settings_no_smime_provider_installed">No S/MIME app installed</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
