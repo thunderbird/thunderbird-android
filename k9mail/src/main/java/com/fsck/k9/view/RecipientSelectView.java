@@ -343,7 +343,13 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     public boolean hasUncompletedText() {
-        return !TextUtils.isEmpty(currentCompletionText());
+        String currentCompletionText = currentCompletionText();
+        return !TextUtils.isEmpty(currentCompletionText) && !isPlaceholderText(currentCompletionText);
+    }
+
+    static private boolean isPlaceholderText(String currentCompletionText) {
+        // TODO string matching here is sort of a hack, but it's somewhat reliable and the info isn't easily available
+        return currentCompletionText.startsWith("+") && currentCompletionText.substring(1).matches("[0-9]+");
     }
 
     @Override
