@@ -112,6 +112,15 @@ public class ListHeadersTest {
         assertEquals("list2@example.org", result[1].getAddress());
     }
 
+    @Test
+    public void getListPostAddresses_withoutMailtoUriInBrackets_shouldReturnEmptyList() throws Exception {
+        MimeMessage message = buildMimeMessageWithListPostValue("<x-mailto:something>");
+
+        Address[] result = ListHeaders.getListPostAddresses(message);
+
+        assertEquals(0, result.length);
+    }
+
     private void assertExtractedAddressMatchesEmail(String emailAddress, Address[] result) {
         assertNotNull(result);
         assertEquals(1, result.length);

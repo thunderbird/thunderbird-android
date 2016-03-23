@@ -36,7 +36,7 @@ import com.fsck.k9.mail.MessagingException;
  **/
 public class ListHeaders {
     public static final String LIST_POST_HEADER = "List-Post";
-    private static final Pattern MAILTO_CONTAINER_PATTERN = Pattern.compile("<(.+)>");
+    private static final Pattern MAILTO_CONTAINER_PATTERN = Pattern.compile("<(mailto:.+)>");
 
 
     public static Address[] getListPostAddresses(Message message) {
