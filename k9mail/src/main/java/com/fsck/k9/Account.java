@@ -1699,6 +1699,13 @@ public class Account implements BaseAccount, StoreConfig {
         return !NO_OPENPGP_PROVIDER.equals(getOpenPgpApp());
     }
 
+    public synchronized String getSmimeProvider() {
+        if (!isSmimeProviderConfigured()) {
+            return null;
+        }
+        return getSmimeApp();
+    }
+
     public synchronized boolean isSmimeProviderConfigured() {
         return !NO_SMIME_PROVIDER.equals(getSmimeApp());
     }

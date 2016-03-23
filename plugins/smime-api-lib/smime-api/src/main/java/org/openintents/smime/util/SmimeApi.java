@@ -53,7 +53,7 @@ public class SmimeApi {
      *
      * returned extras:
      * int           RESULT_CODE                 (RESULT_CODE_ERROR, RESULT_CODE_SUCCESS or RESULT_CODE_USER_INTERACTION_REQUIRED)
-     * OpenPgpError  RESULT_ERROR                (if RESULT_CODE == RESULT_CODE_ERROR)
+     * SmimeError  RESULT_ERROR                (if RESULT_CODE == RESULT_CODE_ERROR)
      * PendingIntent RESULT_INTENT               (if RESULT_CODE == RESULT_CODE_USER_INTERACTION_REQUIRED)
      */
 
@@ -139,7 +139,7 @@ public class SmimeApi {
      * and also signed-only input.
      * OutputStream is optional, e.g., for verifying detached signatures!
      * <p/>
-     * If OpenPgpSignatureResult.getResult() == OpenPgpSignatureResult.RESULT_KEY_MISSING
+     * If SmimeSignatureResult.getResult() == SmimeSignatureResult.RESULT_KEY_MISSING
      * in addition a PendingIntent is returned via RESULT_INTENT to download missing keys.
      * On all other status, in addition a PendingIntent is returned via RESULT_INTENT to open
      * the key view in OpenKeychain.
@@ -148,9 +148,9 @@ public class SmimeApi {
      * byte[]        EXTRA_DETACHED_SIGNATURE    (detached signature)
      * <p/>
      * returned extras:
-     * OpenPgpSignatureResult   RESULT_SIGNATURE
-     * OpenPgpDecryptionResult  RESULT_DECRYPTION
-     * OpenPgpDecryptMetadata   RESULT_METADATA
+     * SmimeSignatureResult   RESULT_SIGNATURE
+     * SmimeDecryptionResult  RESULT_DECRYPTION
+     * SmimeDecryptMetadata   RESULT_METADATA
      * String                   RESULT_CHARSET   (charset which was specified in the headers of ascii armored input, if any)
      */
     public static final String ACTION_DECRYPT_VERIFY = "org.openintents.smime.action.DECRYPT_VERIFY";
@@ -161,7 +161,7 @@ public class SmimeApi {
      * This does not decrypt the actual content of the file.
      * <p/>
      * returned extras:
-     * OpenPgpDecryptMetadata   RESULT_METADATA
+     * SmimeDecryptMetadata   RESULT_METADATA
      * String                   RESULT_CHARSET   (charset which was specified in the headers of ascii armored input, if any)
      */
     public static final String ACTION_DECRYPT_METADATA = "org.openintents.smime.action.DECRYPT_METADATA";
@@ -189,7 +189,7 @@ public class SmimeApi {
     public static final String ACTION_GET_KEY_IDS = "org.openintents.smime.action.GET_KEY_IDS";
 
     /**
-     * This action returns RESULT_CODE_SUCCESS if the OpenPGP Provider already has the key
+     * This action returns RESULT_CODE_SUCCESS if the Smime Provider already has the key
      * corresponding to the given key id in its database.
      * <p/>
      * It returns RESULT_CODE_USER_INTERACTION_REQUIRED if the Provider does not have the key.
@@ -213,7 +213,7 @@ public class SmimeApi {
 
     // ACTION_DETACHED_SIGN, ENCRYPT, SIGN_AND_ENCRYPT, DECRYPT_VERIFY
     // request ASCII Armor for output
-    // OpenPGP Radix-64, 33 percent overhead compared to binary, see http://tools.ietf.org/html/rfc4880#page-53)
+    // Smime Radix-64, 33 percent overhead compared to binary, see http://tools.ietf.org/html/rfc4880#page-53)
     public static final String EXTRA_REQUEST_ASCII_ARMOR = "ascii_armor";
 
     // ACTION_DETACHED_SIGN
@@ -272,17 +272,17 @@ public class SmimeApi {
         this.mService = service;
     }
 
-    public interface IOpenPgpCallback {
+    public interface ISmimeCallback {
         void onReturn(final Intent result);
     }
 
-    private class OpenPgpAsyncTask extends AsyncTask<Void, Integer, Intent> {
+    private class SmimeAsyncTask extends AsyncTask<Void, Integer, Intent> {
         Intent data;
         InputStream is;
         OutputStream os;
-        IOpenPgpCallback callback;
+        ISmimeCallback callback;
 
-        private OpenPgpAsyncTask(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {
+        private SmimeAsyncTask(Intent data, InputStream is, OutputStream os, ISmimeCallback callback) {
             this.data = data;
             this.is = is;
             this.os = os;
@@ -301,8 +301,8 @@ public class SmimeApi {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void executeApiAsync(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {
-        OpenPgpAsyncTask task = new OpenPgpAsyncTask(data, is, os, callback);
+    public void executeApiAsync(Intent data, InputStream is, OutputStream os, ISmimeCallback callback) {
+        SmimeAsyncTask task = new SmimeAsyncTask(data, is, os, callback);
 
         // don't serialize async tasks!
         // http://commonsware.com/blog/2012/04/20/asynctask-threading-regression-confirmed.html
@@ -383,7 +383,7 @@ public class SmimeApi {
             result = mService.execute(data, input, outputPipeId);
 
             // set class loader to current context to allow unparcelling
-            // of OpenPgpError and OpenPgpSignatureResult
+            // of SmimeError and SmimeSignatureResult
             // http://stackoverflow.com/a/3806769
             result.setExtrasClassLoader(mContext.getClassLoader());
 
@@ -421,15 +421,15 @@ public class SmimeApi {
 
 
     public interface PermissionPingCallback {
-        void onPgpPermissionCheckResult(Intent result);
+        void onSmimePermissionCheckResult(Intent result);
     }
 
     public void checkPermissionPing(final PermissionPingCallback permissionPingCallback) {
         Intent intent = new Intent(SmimeApi.ACTION_CHECK_PERMISSION);
-        executeApiAsync(intent, null, null, new IOpenPgpCallback() {
+        executeApiAsync(intent, null, null, new ISmimeCallback() {
             @Override
             public void onReturn(Intent result) {
-                permissionPingCallback.onPgpPermissionCheckResult(result);
+                permissionPingCallback.onSmimePermissionCheckResult(result);
             }
         });
     }
