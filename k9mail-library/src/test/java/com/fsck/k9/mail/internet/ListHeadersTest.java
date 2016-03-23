@@ -1,27 +1,30 @@
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.MessagingException;
 
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class ListHeadersTest {
-    private String[] testEmailAddresses = new String [] {
-        "prettyandsimple@example.com",
-        "very.common@example.com",
-        "disposable.style.email.with+symbol@example.com",
-        "other.email-with-dash@example.com",
-        //TODO: Fix Address.parse()
-        /**
+    private static final String[] TEST_EMAIL_ADDRESSES = new String[] {
+            "prettyandsimple@example.com",
+            "very.common@example.com",
+            "disposable.style.email.with+symbol@example.com",
+            "other.email-with-dash@example.com",
+            //TODO: Fix Address.parse()
+            /*
             "\"much.more unusual\"@example.com",
             "\"very.unusual.@.unusual.com\"@example.com",
             //"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com
@@ -35,70 +38,48 @@ public class ListHeadersTest {
             "user@com",
             "user@localserver",
             "user@[IPv6:2001:db8::1]"
-        **/
+             */
     };
 
-    private MimeMessage buildMimeMessageWithListPostValue(String value) throws MessagingException {
-        MimeMessage message = new MimeMessage();
-        message.addHeader("List-Post", value);
-        return message;
-    }
 
     @Test
-    public void getListPostAddresses_withMailTo_shouldReturnCorrectAddress() throws MessagingException {
-        MimeMessage[] messages = new MimeMessage[testEmailAddresses.length];
-        for (int i = 0; i < testEmailAddresses.length; i++)
-            messages[i] = buildMimeMessageWithListPostValue(
-                    "<mailto:" + testEmailAddresses[i] + ">");
-        Address[][] results = new Address[testEmailAddresses.length][];
+    public void getListPostAddresses_withMailTo_shouldReturnCorrectAddress() throws Exception {
+        for (String emailAddress : TEST_EMAIL_ADDRESSES) {
+            String headerValue = "<mailto:" + emailAddress + ">";
+            Message message = buildMimeMessageWithListPostValue(headerValue);
 
-        for (int i = 0; i < messages.length; i++) {
-            results[i] =  ListHeaders.getListPostAddresses(messages[i]);
-        }
+            Address[] result = ListHeaders.getListPostAddresses(message);
 
-        for (int i = 0; i < results.length; i++) {
-            assertEquals(1, results[i].length);
-            assertEquals(testEmailAddresses[i], results[i][0].getAddress());
-        }
-    }
-    @Test
-    public void parsePostAddress_withMailtoWithNote_shouldReturnCorrectAddress() throws MessagingException {
-        MimeMessage[] messages = new MimeMessage[testEmailAddresses.length];
-        for (int i = 0; i < testEmailAddresses.length; i++)
-            messages[i] = buildMimeMessageWithListPostValue(
-                    "<mailto:" + testEmailAddresses[i] + "> (Postings are Moderated)");
-        Address[][] results = new Address[testEmailAddresses.length][];
-
-        for (int i = 0; i < messages.length; i++) {
-            results[i] =  ListHeaders.getListPostAddresses(messages[i]);
-        }
-
-        for (int i = 0; i < results.length; i++) {
-            assertEquals(1, results[i].length);
-            assertEquals(testEmailAddresses[i], results[i][0].getAddress());
+            assertExtractedAddressMatchesEmail(emailAddress, result);
         }
     }
 
     @Test
-    public void getListPostAddresses_withMailtoWithSubject_shouldReturnCorrectAddress() throws MessagingException {
-        MimeMessage[] messages = new MimeMessage[testEmailAddresses.length];
-        for (int i = 0; i < testEmailAddresses.length; i++)
-            messages[i] = buildMimeMessageWithListPostValue(
-                    "<mailto:" + testEmailAddresses[i] + "?subject=list%20posting>");
-        Address[][] results = new Address[testEmailAddresses.length][];
+    public void getListPostAddresses_withMailtoWithNote_shouldReturnCorrectAddress() throws Exception {
+        for (String emailAddress : TEST_EMAIL_ADDRESSES) {
+            String headerValue = "<mailto:" + emailAddress + "> (Postings are Moderated)";
+            Message message = buildMimeMessageWithListPostValue(headerValue);
 
-        for (int i = 0; i < messages.length; i++) {
-            results[i] =  ListHeaders.getListPostAddresses(messages[i]);
-        }
+            Address[] result = ListHeaders.getListPostAddresses(message);
 
-        for (int i = 0; i < results.length; i++) {
-            assertEquals(1, results[i].length);
-            assertEquals(testEmailAddresses[i], results[i][0].getAddress());
+            assertExtractedAddressMatchesEmail(emailAddress, result);
         }
     }
 
     @Test
-    public void getListPostAddresses_withMessageWithNo_shouldReturnEmptyList() throws MessagingException {
+    public void getListPostAddresses_withMailtoWithSubject_shouldReturnCorrectAddress() throws Exception {
+        for (String emailAddress : TEST_EMAIL_ADDRESSES) {
+            String headerValue = "<mailto:" + emailAddress + "?subject=list%20posting>";
+            Message message = buildMimeMessageWithListPostValue(headerValue);
+
+            Address[] result = ListHeaders.getListPostAddresses(message);
+
+            assertExtractedAddressMatchesEmail(emailAddress, result);
+        }
+    }
+
+    @Test
+    public void getListPostAddresses_withMessageWithNo_shouldReturnEmptyList() throws Exception {
         MimeMessage message = buildMimeMessageWithListPostValue("NO (posting not allowed on this list)");
 
         Address[] result = ListHeaders.getListPostAddresses(message);
@@ -107,7 +88,7 @@ public class ListHeadersTest {
     }
 
     @Test
-    public void getListPostAddresses_withExceptionThrownGettingHeader_shouldReturnEmptyList() throws MessagingException {
+    public void getListPostAddresses_withExceptionThrownGettingHeader_shouldReturnEmptyList() throws Exception {
         MimeMessage message = mock(MimeMessage.class);
         when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenThrow(new MessagingException("Test"));
 
@@ -117,14 +98,33 @@ public class ListHeadersTest {
     }
 
     @Test
-    public void getListPostAddresses_shouldProvideAllListPostHeaders() throws MessagingException {
-        MimeMessage message = buildMimeMessageWithListPostValue("<mailto:list1@example.org>");
-        message.addHeader("List-Post","<mailto:list2@example.org>");
+    public void getListPostAddresses_shouldProvideAllListPostHeaders() throws Exception {
+        MimeMessage message = buildMimeMessageWithListPostValue(
+                "<mailto:list1@example.org>", "<mailto:list2@example.org>");
 
         Address[] result = ListHeaders.getListPostAddresses(message);
 
+        assertNotNull(result);
         assertEquals(2, result.length);
+        assertNotNull(result[0]);
         assertEquals("list1@example.org", result[0].getAddress());
+        assertNotNull(result[1]);
         assertEquals("list2@example.org", result[1].getAddress());
+    }
+
+    private void assertExtractedAddressMatchesEmail(String emailAddress, Address[] result) {
+        assertNotNull(result);
+        assertEquals(1, result.length);
+        assertNotNull(result[0]);
+        assertEquals(emailAddress, result[0].getAddress());
+    }
+
+    private MimeMessage buildMimeMessageWithListPostValue(String... values) throws MessagingException {
+        MimeMessage message = new MimeMessage();
+        for (String value : values) {
+            message.addHeader("List-Post", value);
+        }
+
+        return message;
     }
 }
