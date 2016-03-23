@@ -1571,9 +1571,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //TODO: How do we know it's an OpenPGP result?
         if (mMessageViewFragment != null) {
-            mMessageViewFragment.handleOpenPgpResult(requestCode, resultCode, data);
+            mMessageViewFragment.handleCryptoResult(requestCode, resultCode, data);
         }
     }
 }
