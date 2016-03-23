@@ -272,6 +272,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void onDecodeMessageFinished(MessageViewInfo messageViewInfo) {
+        if(messageViewInfo == null) {
+            Toast.makeText(getActivity().getApplicationContext(),
+                    R.string.message_view_toast_unable_to_display_message, Toast.LENGTH_SHORT)
+                .show();
+            messageViewInfo = new MessageViewInfo(Collections.EMPTY_LIST, mMessage);
+        }
         this.messageViewInfo = messageViewInfo;
         showMessage(messageViewInfo);
     }
