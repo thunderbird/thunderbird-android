@@ -25,6 +25,7 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuild
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MailTo;
+import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -125,13 +126,8 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void initFromReplyToMessage(Message message) {
-        Address[] replyToAddresses;
-        if (message.getReplyTo().length > 0) {
-            replyToAddresses = message.getReplyTo();
-        } else {
-            replyToAddresses = message.getFrom();
-        }
-
+        Address[] replyToAddresses = ReplyToParser.getRecipientsToReplyTo(message);
+        
         try {
             // if we're replying to a message we sent, we probably meant
             // to reply to the recipient of that message
