@@ -556,9 +556,12 @@ class MigrationTo51 {
         mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                 String.format("multipart/alternative; boundary=\"%s\";", boundary));
 
+        int dataLocation = textContent != null || htmlContent != null
+                ? DATA_LOCATION__IN_DATABASE : DATA_LOCATION__MISSING;
+
         ContentValues cv = new ContentValues();
         cv.put("type", MESSAGE_PART_TYPE__UNKNOWN);
-        cv.put("data_location", DATA_LOCATION__IN_DATABASE);
+        cv.put("data_location", dataLocation);
         cv.put("mime_type", "multipart/alternative");
         cv.put("header", mimeHeader.toString());
         cv.put("boundary", boundary);
@@ -567,11 +570,11 @@ class MigrationTo51 {
         long multipartAlternativePartId = db.insertOrThrow("message_parts", null, cv);
         structureState = structureState.nextMultipartChild(multipartAlternativePartId);
 
-        if (!TextUtils.isEmpty(textContent)) {
+        if (textContent != null) {
             structureState = insertTextualPartIntoDatabase(db, structureState, null, textContent, false);
         }
 
-        if (!TextUtils.isEmpty(htmlContent)) {
+        if (htmlContent != null) {
             structureState = insertTextualPartIntoDatabase(db, structureState, null, htmlContent, true);
         }
 
@@ -587,20 +590,32 @@ class MigrationTo51 {
                 isHtml ? "text/html; charset=\"utf-8\"" : "text/plain; charset=\"utf-8\"");
         mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, MimeUtil.ENC_QUOTED_PRINTABLE);
 
-        ByteArrayOutputStream contentOutputStream = new ByteArrayOutputStream();
-        QuotedPrintableOutputStream quotedPrintableOutputStream =
-                new QuotedPrintableOutputStream(contentOutputStream, false);
-        quotedPrintableOutputStream.write(content.getBytes());
-        quotedPrintableOutputStream.flush();
-        byte[] contentBytes = contentOutputStream.toByteArray();
+        byte[] contentBytes;
+        int decodedBodySize;
+        int dataLocation;
+        if (content != null) {
+            ByteArrayOutputStream contentOutputStream = new ByteArrayOutputStream();
+            QuotedPrintableOutputStream quotedPrintableOutputStream =
+                    new QuotedPrintableOutputStream(contentOutputStream, false);
+            quotedPrintableOutputStream.write(content.getBytes());
+            quotedPrintableOutputStream.flush();
+
+            dataLocation = DATA_LOCATION__IN_DATABASE;
+            contentBytes = contentOutputStream.toByteArray();
+            decodedBodySize = content.length();
+        } else {
+            dataLocation = DATA_LOCATION__MISSING;
+            contentBytes = null;
+            decodedBodySize = 0;
+        }
 
         ContentValues cv = new ContentValues();
         cv.put("type", MESSAGE_PART_TYPE__UNKNOWN);
-        cv.put("data_location", DATA_LOCATION__IN_DATABASE);
+        cv.put("data_location", dataLocation);
         cv.put("mime_type", isHtml ? "text/html" : "text/plain");
         cv.put("header", mimeHeader.toString());
         cv.put("data", contentBytes);
-        cv.put("decoded_body_size", content.length());
+        cv.put("decoded_body_size", decodedBodySize);
         cv.put("encoding", MimeUtil.ENC_QUOTED_PRINTABLE);
         cv.put("charset", "utf-8");
         structureState.applyValues(cv);
