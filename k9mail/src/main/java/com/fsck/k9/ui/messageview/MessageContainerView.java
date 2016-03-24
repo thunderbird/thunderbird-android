@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
@@ -36,6 +37,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
+import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
@@ -74,7 +76,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private View mAttachmentsContainer;
     private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
+    private Account.DisplayPreference mDisplayPreference;
     private String mText;
+    private boolean mIsHtml;
     private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<AttachmentViewInfo, AttachmentView>();
 
 
@@ -380,7 +384,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     public void showPictures() {
         setLoadPictures(true);
-        loadBodyFromText(mText);
+        loadBodyFromText(mText, mIsHtml);
     }
 
     public void enableAttachmentButtons() {
@@ -398,9 +402,10 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     public void displayMessageViewContainer(MessageViewContainer messageViewContainer,
             boolean automaticallyLoadPictures, ShowPicturesController showPicturesController,
             AttachmentViewCallback attachmentCallback, OpenPgpHeaderViewCallback openPgpHeaderViewCallback,
-            boolean displayPgpHeader) throws MessagingException {
+            boolean displayPgpHeader, Account.DisplayPreference displayPreference) throws MessagingException {
 
         this.attachmentCallback = attachmentCallback;
+        this.mDisplayPreference = displayPreference;
 
         resetView();
 
@@ -458,13 +463,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             text = wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
 
-        loadBodyFromText(text);
+        loadBodyFromText(text, mIsHtml);
     }
 
     private String getTextToDisplay(MessageViewContainer messageViewContainer) {
         OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
         if (cryptoAnnotation == null) {
-            return messageViewContainer.text;
+            return selectTextFromContainer(messageViewContainer);
         }
 
         CryptoError errorType = cryptoAnnotation.getErrorType();
@@ -478,19 +483,42 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             }
             case NONE:
             case SIGNED_BUT_INCOMPLETE: {
-                return messageViewContainer.text;
+                return selectTextFromContainer(messageViewContainer);
             }
         }
 
         throw new IllegalStateException("Unknown error type: " + errorType);
     }
 
+    private String selectTextFromContainer(MessageViewContainer messageViewContainer) {
+        switch(mDisplayPreference) {
+            default:
+            case HTML_PREFERRED:
+                if(messageViewContainer.viewable.html != null) {
+                    mIsHtml = true;
+                    return messageViewContainer.viewable.html;
+                }
+                mIsHtml = false;
+                return messageViewContainer.viewable.text;
+            case TEXT_PREFERRED:
+                if(messageViewContainer.viewable.text != null) {
+                    mIsHtml = false;
+                    return messageViewContainer.viewable.text;
+                }
+                mIsHtml = true;
+                return messageViewContainer.viewable.html;
+            case TEXT_ALWAYS:
+                mIsHtml = false;
+                return messageViewContainer.viewable.text;
+        }
+    }
+
     public String wrapStatusMessage(String status) {
         return "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
     }
 
-    private void loadBodyFromText(String emailText) {
-        mMessageContentView.setText(emailText);
+    private void loadBodyFromText(String emailText, boolean isHtml) {
+        mMessageContentView.setText(emailText, isHtml);
     }
 
     public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {
@@ -529,7 +557,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
          * its size because the button to download the complete message was previously shown and
          * is now hidden.
          */
-        loadBodyFromText("");
+        loadBodyFromText("", false);
     }
 
     @Override

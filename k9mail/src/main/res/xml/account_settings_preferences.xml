@@ -60,6 +60,14 @@
 
         <ListPreference
             android:persistent="false"
+            android:key="display_preference_enum"
+            android:title="@string/account_settings_display_preference_label"
+            android:entries="@array/account_settings_display_preference_entries"
+            android:entryValues="@array/account_settings_display_preference_values"
+            android:dialogTitle="@string/account_settings_display_preference_label" />
+
+        <ListPreference
+            android:persistent="false"
             android:key="show_pictures_enum"
             android:title="@string/account_settings_show_pictures_label"
             android:entries="@array/account_settings_show_pictures_entries"

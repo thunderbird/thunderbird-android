@@ -19,15 +19,15 @@ public class MessageViewInfo {
 
 
     public static class MessageViewContainer {
-        public final String text;
+        public final ViewableContainer viewable;
         public final Part rootPart;
         public final List<AttachmentViewInfo> attachments;
         public final OpenPgpResultAnnotation cryptoAnnotation;
 
 
-        MessageViewContainer(String text, Part rootPart, List<AttachmentViewInfo> attachments,
+        MessageViewContainer(ViewableContainer viewable, Part rootPart, List<AttachmentViewInfo> attachments,
                 OpenPgpResultAnnotation cryptoAnnotation) {
-            this.text = text;
+            this.viewable = viewable;
             this.rootPart = rootPart;
             this.attachments = attachments;
             this.cryptoAnnotation = cryptoAnnotation;

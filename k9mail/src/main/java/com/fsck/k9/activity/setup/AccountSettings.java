@@ -74,6 +74,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
+    private static final String PREFERENCE_DISPLAY_PREFERENCE = "display_preference_enum";
     private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_NEW_MAIL_MODE = "folder_notify_new_mail_mode";
@@ -146,6 +147,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mAccountNotify;
     private ListPreference mAccountNotifyNewMailMode;
     private CheckBoxPreference mAccountNotifySelf;
+    private ListPreference mAccountDisplayPreference;
     private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
@@ -461,6 +463,20 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountDefault = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT);
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
+
+        mAccountDisplayPreference = (ListPreference) findPreference(PREFERENCE_DISPLAY_PREFERENCE);
+
+        mAccountDisplayPreference.setValue("" + mAccount.getDisplayPreference());
+        mAccountDisplayPreference.setSummary(mAccountDisplayPreference.getEntry());
+        mAccountDisplayPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mAccountDisplayPreference.findIndexOfValue(summary);
+                mAccountDisplayPreference.setSummary(mAccountDisplayPreference.getEntries()[index]);
+                mAccountDisplayPreference.setValue(summary);
+                return false;
+            }
+        });
 
         mAccountShowPictures = (ListPreference) findPreference(PREFERENCE_SHOW_PICTURES);
         mAccountShowPictures.setValue("" + mAccount.getShowPictures());
@@ -828,6 +844,8 @@ public class AccountSettings extends K9PreferenceActivity {
                 mAccount.getNotificationSetting().setRingtone(null);
             }
         }
+
+        mAccount.setDisplayPreference(Account.DisplayPreference.valueOf(mAccountDisplayPreference.getValue()));
 
         mAccount.setShowPictures(ShowPictures.valueOf(mAccountShowPictures.getValue()));
 

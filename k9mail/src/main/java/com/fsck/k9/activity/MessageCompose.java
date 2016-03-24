@@ -110,10 +110,7 @@ import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
-import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpServiceConnection;
-import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
 @SuppressWarnings("deprecation")
@@ -915,7 +912,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mQuotedHtmlContent =
                 (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
         if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null) {
-            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
+            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), true);
         }
 
         mDraftId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
@@ -2053,7 +2050,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     } else {
                         mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
                     }
-                    mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
+                    mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), true);
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {
@@ -2245,7 +2242,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mQuoteStyle);
 
             // Load the message with the reply header.
-            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
+            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent(), true);
 
             // TODO: Also strip the signature from the text/plain part
             mQuotedText.setCharacters(quoteOriginalTextMessage(mSourceMessage,
