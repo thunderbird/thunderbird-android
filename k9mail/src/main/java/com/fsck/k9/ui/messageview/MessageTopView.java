@@ -97,7 +97,8 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
             boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
             boolean displaySmimeHeader = account.isSmimeProviderConfigured();
             view.displayMessageViewContainer(container, automaticallyLoadPictures, this, attachmentCallback,
-                    openPgpHeaderViewCallback, smimeHeaderViewCallback, displayPgpHeader, displaySmimeHeader);
+                    openPgpHeaderViewCallback, smimeHeaderViewCallback,
+                    displayPgpHeader, displaySmimeHeader, account.getDisplayPreference());
 
             containerViews.addView(view);
         }

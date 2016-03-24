@@ -200,6 +200,7 @@ public class Account implements BaseAccount, StoreConfig {
     private SortType mSortType;
     private Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
     private ShowPictures mShowPictures;
+    private DisplayPreference mDisplayPreference;
     private boolean mIsSignatureBeforeQuotedText;
     private Expunge mExpungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
@@ -269,6 +270,10 @@ public class Account implements BaseAccount, StoreConfig {
         NEVER, ALWAYS, ONLY_FROM_CONTACTS
     }
 
+    public enum DisplayPreference {
+        HTML_PREFERRED, TEXT_PREFERRED, TEXT_ALWAYS
+    }
+
     public enum Searchable {
         ALL, DISPLAYABLE, NONE
     }
@@ -299,6 +304,7 @@ public class Account implements BaseAccount, StoreConfig {
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mSortType = DEFAULT_SORT_TYPE;
         mSortAscending.put(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING);
+        mDisplayPreference = DisplayPreference.HTML_PREFERRED;
         mShowPictures = ShowPictures.NEVER;
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
@@ -445,6 +451,8 @@ public class Account implements BaseAccount, StoreConfig {
         mSortType = getEnumStringPref(storage, mUuid + ".sortTypeEnum", SortType.SORT_DATE);
 
         mSortAscending.put(mSortType, storage.getBoolean(mUuid + ".sortAscending", false));
+
+        mDisplayPreference = getEnumStringPref(storage, mUuid + ".displayPreferenceEnum", DisplayPreference.HTML_PREFERRED);
 
         mShowPictures = getEnumStringPref(storage, mUuid + ".showPicturesEnum", ShowPictures.NEVER);
 
@@ -1240,6 +1248,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setShowPictures(ShowPictures showPictures) {
         mShowPictures = showPictures;
+    }
+
+    public synchronized DisplayPreference getDisplayPreference() {
+        return mDisplayPreference;
+    }
+
+    public synchronized void setDisplayPreference(DisplayPreference displayPreference) {
+        mDisplayPreference = displayPreference;
     }
 
     public synchronized FolderMode getFolderTargetMode() {

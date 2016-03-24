@@ -155,6 +155,18 @@
         <item>NOT_SECOND_CLASS</item>
     </string-array>
 
+    <string-array name="account_settings_display_preference_entries">
+        <item>@string/account_settings_display_preference_html</item>
+        <item>@string/account_settings_display_preference_text</item>
+        <item>@string/account_settings_display_preference_text_only</item>
+    </string-array>
+
+    <string-array name="account_settings_display_preference_values" translatable="false">
+        <item>HTML_PREFERRED</item>
+        <item>TEXT_PREFERRED</item>
+        <item>TEXT_ALWAYS</item>
+    </string-array>
+
     <string-array name="account_settings_show_pictures_entries">
         <item>@string/account_settings_show_pictures_never</item>
         <item>@string/account_settings_show_pictures_only_from_contacts</item>
