@@ -273,6 +273,9 @@ public class GlobalSettings {
         s.put("confirmDiscardMessage", Settings.versions(
                 new V(40, new BooleanSetting(true))
             ));
+        s.put("makeMessageAsReadBeforeDeletingIt", Settings.versions(
+                new V(42, new BooleanSetting(false))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

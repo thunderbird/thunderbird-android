@@ -2815,7 +2815,7 @@ public class MessagingController implements Runnable {
 
                     LocalMessage message = localFolder.getMessage(uid);
                     if (message == null
-                    || message.getId() == 0) {
+                            || message.getId() == 0) {
                         throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
                     }
                     // IMAP search results will usually need to be downloaded before viewing.
@@ -3655,6 +3655,13 @@ public class MessagingController implements Runnable {
             //We need to make these callbacks before moving the messages to the trash
             //as messages get a new UID after being moved
             for (Message message : messages) {
+                if(K9.markMessageAsReadBeforeDeletingIt()) {
+                    try {
+                        markMessageAsReadOnView(account, (LocalMessage) message);
+                    } catch (Exception e) {
+                        Log.e(K9.LOG_TAG, "Error to mark message as read before deleting it");
+                    }
+                }
                 for (MessagingListener l : getListeners(listener)) {
                     l.messageDeleted(account, folder, message);
                 }
