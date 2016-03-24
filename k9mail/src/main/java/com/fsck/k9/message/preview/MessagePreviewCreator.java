@@ -45,7 +45,7 @@ public class MessagePreviewCreator {
             String previewText = previewTextExtractor.extractPreview(textPart);
             return PreviewResult.text(previewText);
         } catch (PreviewExtractionException e) {
-            return PreviewResult.none();
+            return PreviewResult.error();
         }
     }
 

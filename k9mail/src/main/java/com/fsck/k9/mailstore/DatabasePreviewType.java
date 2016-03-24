@@ -7,7 +7,8 @@ import com.fsck.k9.message.preview.PreviewResult.PreviewType;
 public enum DatabasePreviewType {
     NONE("none", PreviewType.NONE),
     TEXT("text", PreviewType.TEXT),
-    ENCRYPTED("encrypted", PreviewType.ENCRYPTED);
+    ENCRYPTED("encrypted", PreviewType.ENCRYPTED),
+    ERROR("error", PreviewType.ERROR);
 
 
     private final String databaseValue;

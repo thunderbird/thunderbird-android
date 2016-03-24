@@ -87,6 +87,17 @@ public class NotificationContentCreatorTest {
     }
 
     @Test
+    public void createFromMessage_withErrorPreview() throws Exception {
+        when(message.getPreviewType()).thenReturn(PreviewType.ERROR);
+        when(message.getPreview()).thenReturn(null);
+
+        NotificationContent content = contentCreator.createFromMessage(account, message);
+
+        assertEquals(SUBJECT, content.subject);
+        assertEquals(SUBJECT, content.preview.toString());
+    }
+
+    @Test
     public void createFromMessage_withEncryptedMessage() throws Exception {
         when(message.getPreviewType()).thenReturn(PreviewType.ENCRYPTED);
         when(message.getPreview()).thenReturn(null);
