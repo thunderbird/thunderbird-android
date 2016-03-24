@@ -776,8 +776,7 @@ public class MessagingController implements Runnable {
      * @param providedRemoteFolder TODO
      */
     @VisibleForTesting
-    void synchronizeMailboxSynchronous(
-            final Account account, final String folder, final MessagingListener listener,
+    void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener,
             Folder providedRemoteFolder) {
         Folder remoteFolder = null;
         LocalFolder tLocalFolder = null;
