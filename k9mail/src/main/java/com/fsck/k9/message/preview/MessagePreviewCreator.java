@@ -41,8 +41,12 @@ public class MessagePreviewCreator {
             return PreviewResult.none();
         }
 
-        String previewText = previewTextExtractor.extractPreview(textPart);
-        return PreviewResult.text(previewText);
+        try {
+            String previewText = previewTextExtractor.extractPreview(textPart);
+            return PreviewResult.text(previewText);
+        } catch (PreviewExtractionException e) {
+            return PreviewResult.none();
+        }
     }
 
     private boolean hasEmptyBody(Part textPart) {
