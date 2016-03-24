@@ -67,7 +67,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGELIST_PREVIEW_LINES = "messagelist_preview_lines";
     private static final String PREFERENCE_MESSAGELIST_SENDER_ABOVE_SUBJECT = "messagelist_sender_above_subject";
     private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
-    private static final String PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES = "messagelist_show_correspondent_names";
+    private static final String PREFERENCE_MESSAGELIST_CONTACT_VIEW_MODE = "contactview_mode";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
     private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE = "messagelist_show_contact_picture";
@@ -126,7 +126,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mSenderAboveSubject;
     private CheckBoxPreference mCheckboxes;
     private CheckBoxPreference mStars;
-    private CheckBoxPreference mShowCorrespondentNames;
+    private ListPreference mContactViewMode;
     private CheckBoxPreference mShowContactName;
     private CheckBoxPreference mChangeContactNameColor;
     private CheckBoxPreference mShowContactPicture;
@@ -179,8 +179,8 @@ public class Prefs extends K9PreferenceActivity {
             }
         }
         initListPreference(mLanguage, K9.getK9Language(),
-                           entryVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY),
-                           entryValueVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
+                entryVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY),
+                entryValueVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
 
         mTheme = setupListPreference(PREFERENCE_THEME, themeIdToName(K9.getK9Theme()));
         mFixedMessageTheme = (CheckBoxPreference) findPreference(PREFERENCE_FIXED_MESSAGE_THEME);
@@ -191,12 +191,12 @@ public class Prefs extends K9PreferenceActivity {
                 themeIdToName(K9.getK9ComposerThemeSetting()));
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
-        new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                onFontSizeSettings();
-                return true;
-            }
-        });
+                new Preference.OnPreferenceClickListener() {
+                    public boolean onPreferenceClick(Preference preference) {
+                        onFontSizeSettings();
+                        return true;
+                    }
+                });
 
         mAnimations = (CheckBoxPreference)findPreference(PREFERENCE_ANIMATIONS);
         mAnimations.setChecked(K9.showAnimations());
@@ -248,7 +248,7 @@ public class Prefs extends K9PreferenceActivity {
 
 
         mPreviewLines = setupListPreference(PREFERENCE_MESSAGELIST_PREVIEW_LINES,
-                                            Integer.toString(K9.messageListPreviewLines()));
+                Integer.toString(K9.messageListPreviewLines()));
 
         mSenderAboveSubject = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SENDER_ABOVE_SUBJECT);
         mSenderAboveSubject.setChecked(K9.messageListSenderAboveSubject());
@@ -257,9 +257,6 @@ public class Prefs extends K9PreferenceActivity {
 
         mStars = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_STARS);
         mStars.setChecked(K9.messageListStars());
-
-        mShowCorrespondentNames = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES);
-        mShowCorrespondentNames.setChecked(K9.showCorrespondentNames());
 
         mShowContactName = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME);
         mShowContactName.setChecked(K9.showContactName());
@@ -296,6 +293,17 @@ public class Prefs extends K9PreferenceActivity {
                 }
                 mChangeContactNameColor.setChecked(checked);
                 return false;
+            }
+        });
+
+        mContactViewMode = (ListPreference) findPreference(PREFERENCE_MESSAGELIST_CONTACT_VIEW_MODE);
+        initListPreference(mContactViewMode, K9.getContactViewMode().name(), mContactViewMode.getEntries(), mContactViewMode.getEntryValues());
+        enableColorAndContactNamePref();
+
+        mContactViewMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                enableColorAndContactNamePref();
+                return true;
             }
         });
 
@@ -348,10 +356,10 @@ public class Prefs extends K9PreferenceActivity {
         }
 
         mLockScreenNotificationVisibility = setupListPreference(PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
-            K9.getLockScreenNotificationVisibility().toString());
+                K9.getLockScreenNotificationVisibility().toString());
         if (!NotificationController.platformSupportsLockScreenNotifications()) {
             ((PreferenceScreen) findPreference("notification_preferences"))
-                .removePreference(mLockScreenNotificationVisibility);
+                    .removePreference(mLockScreenNotificationVisibility);
             mLockScreenNotificationVisibility = null;
         }
 
@@ -370,32 +378,32 @@ public class Prefs extends K9PreferenceActivity {
         mAttachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
         mAttachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
         mAttachmentPathPreference
-        .setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                FileBrowserHelper
-                .getInstance()
-                .showFileBrowserActivity(Prefs.this,
-                                         new File(K9.getAttachmentDefaultPath()),
-                                         ACTIVITY_CHOOSE_FOLDER, callback);
+                .setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        FileBrowserHelper
+                                .getInstance()
+                                .showFileBrowserActivity(Prefs.this,
+                                        new File(K9.getAttachmentDefaultPath()),
+                                        ACTIVITY_CHOOSE_FOLDER, callback);
 
-                return true;
-            }
+                        return true;
+                    }
 
-            FileBrowserFailOverCallback callback = new FileBrowserFailOverCallback() {
+                    FileBrowserFailOverCallback callback = new FileBrowserFailOverCallback() {
 
-                @Override
-                public void onPathEntered(String path) {
-                    mAttachmentPathPreference.setSummary(path);
-                    K9.setAttachmentDefaultPath(path);
-                }
+                        @Override
+                        public void onPathEntered(String path) {
+                            mAttachmentPathPreference.setSummary(path);
+                            K9.setAttachmentDefaultPath(path);
+                        }
 
-                @Override
-                public void onCancel() {
-                    // canceled, do nothing
-                }
-            };
-        });
+                        @Override
+                        public void onCancel() {
+                            // canceled, do nothing
+                        }
+                    };
+                });
 
         mWrapFolderNames = (CheckBoxPreference)findPreference(PREFERENCE_FOLDERLIST_WRAP_NAME);
         mWrapFolderNames.setChecked(K9.wrapFolderNames());
@@ -421,6 +429,19 @@ public class Prefs extends K9PreferenceActivity {
         mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
+    }
+
+    private void enableColorAndContactNamePref(){
+        if (K9.getContactViewMode() == K9.ContactViewMode.NAME || K9.getContactViewMode() == K9.ContactViewMode.BOTH) {
+            mChangeContactNameColor.setEnabled(true);
+            mShowContactName.setEnabled(true);
+        }
+        else {
+            mChangeContactNameColor.setChecked(false);
+            mChangeContactNameColor.setEnabled(false);
+            mShowContactName.setChecked(false);
+            mShowContactName.setEnabled(false);
+        }
     }
 
     private static String themeIdToName(K9.Theme theme) {
@@ -473,8 +494,8 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMessageListPreviewLines(Integer.parseInt(mPreviewLines.getValue()));
         K9.setMessageListCheckboxes(mCheckboxes.isChecked());
         K9.setMessageListStars(mStars.isChecked());
-        K9.setShowCorrespondentNames(mShowCorrespondentNames.isChecked());
         K9.setMessageListSenderAboveSubject(mSenderAboveSubject.isChecked());
+        K9.setContactViewMode(K9.ContactViewMode.valueOf(mContactViewMode.getValue()));
         K9.setShowContactName(mShowContactName.isChecked());
         K9.setShowContactPicture(mShowContactPicture.isChecked());
         K9.setColorizeMissingContactPictures(mColorizeMissingContactPictures.isChecked());
@@ -506,7 +527,7 @@ public class Prefs extends K9PreferenceActivity {
 
         if(mLockScreenNotificationVisibility != null) {
             K9.setLockScreenNotificationVisibility(
-                K9.LockScreenNotificationVisibility.valueOf(mLockScreenNotificationVisibility.getValue()));
+                    K9.LockScreenNotificationVisibility.valueOf(mLockScreenNotificationVisibility.getValue()));
         }
 
         K9.setSplitViewMode(SplitViewMode.valueOf(mSplitViewMode.getValue()));
@@ -546,25 +567,25 @@ public class Prefs extends K9PreferenceActivity {
                 K9.setContactNameColor(color);
             }
         },
-        K9.getContactNameColor()).show();
+                K9.getContactNameColor()).show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-        case ACTIVITY_CHOOSE_FOLDER:
-            if (resultCode == RESULT_OK && data != null) {
-                // obtain the filename
-                Uri fileUri = data.getData();
-                if (fileUri != null) {
-                    String filePath = fileUri.getPath();
-                    if (filePath != null) {
-                        mAttachmentPathPreference.setSummary(filePath.toString());
-                        K9.setAttachmentDefaultPath(filePath.toString());
+            case ACTIVITY_CHOOSE_FOLDER:
+                if (resultCode == RESULT_OK && data != null) {
+                    // obtain the filename
+                    Uri fileUri = data.getData();
+                    if (fileUri != null) {
+                        String filePath = fileUri.getPath();
+                        if (filePath != null) {
+                            mAttachmentPathPreference.setSummary(filePath.toString());
+                            K9.setAttachmentDefaultPath(filePath.toString());
+                        }
                     }
                 }
-            }
-            break;
+                break;
         }
 
         super.onActivityResult(requestCode, resultCode, data);

@@ -130,8 +130,9 @@ public class MessageHelper {
      * @return A "friendly" name for this {@link Address}.
      */
     public static CharSequence toFriendly(Address address, Contacts contacts) {
+        //This line is here to set a default case when the contactviewmode is not set (In unit test for example)
         return toFriendly(address,contacts,
-                K9.showCorrespondentNames(),
+                K9.getContactViewMode(),
                 K9.changeContactNameColor(),
                 K9.getContactNameColor());
     }
@@ -156,16 +157,18 @@ public class MessageHelper {
         return sb;
     }
 
-    /* package, for testing */ static CharSequence toFriendly(Address address, Contacts contacts,
-                                                 boolean showCorrespondentNames,
-                                                 boolean changeContactNameColor,
-                                                 int contactNameColor) {
-        if (!showCorrespondentNames) {
+    public static CharSequence toFriendly(Address address, Contacts contacts,
+                                           K9.ContactViewMode contactViewMode,
+                                           boolean changeContactNameColor,
+                                           int contactNameColor) {
+        if (contactViewMode == K9.ContactViewMode.EMAIL) {
             return address.getAddress();
         } else if (contacts != null) {
-            final String name = contacts.getNameForAddress(address.getAddress());
+            String name = contacts.getNameForAddress(address.getAddress());
             // TODO: The results should probably be cached for performance reasons.
             if (name != null) {
+                if (contactViewMode == K9.ContactViewMode.BOTH)
+                    name += " <" + address.getAddress() + ">";
                 if (changeContactNameColor) {
                     final SpannableString coloredName = new SpannableString(name);
                     coloredName.setSpan(new ForegroundColorSpan(contactNameColor),
@@ -179,7 +182,13 @@ public class MessageHelper {
                 }
             }
         }
-
+        if (contactViewMode == K9.ContactViewMode.BOTH) {
+            if (!TextUtils.isEmpty(address.getPersonal())) {
+                return address.getPersonal() + " <" + address.getAddress() + ">";
+            } else {
+                return address.getAddress();
+            }
+        }
         return (!TextUtils.isEmpty(address.getPersonal())) ? address.getPersonal() : address.getAddress();
     }
 }

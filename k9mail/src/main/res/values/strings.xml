@@ -296,8 +296,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_checkbox_label">Multi-select checkboxes</string>
     <string name="global_settings_checkbox_summary">Always show multi-select checkboxes</string>
     <string name="global_settings_preview_lines_label">Preview lines</string>
-    <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>
-    <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>
+    <string name="global_settings_contactview_mode_label">Contact displaying</string>
+    <string name="global_settings_contactview_email">Email</string>
+    <string name="global_settings_contactview_name">Name</string>
+    <string name="global_settings_contactview_both">Both</string>
 
     <string name="global_settings_sender_above_subject_label">Correspondent above subject</string>
     <string name="global_settings_sender_above_subject_summary">Show correspondent names above the subject line, rather than below it</string>
