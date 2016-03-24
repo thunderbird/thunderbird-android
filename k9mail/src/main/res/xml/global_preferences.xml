@@ -242,6 +242,12 @@
                 android:title="@string/global_settings_messageview_autofit_width_label"
                 android:summary="@string/global_settings_messageview_autofit_width_summary"/>
 
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="mark_messages_read"
+                android:title="@string/global_settings_mark_messages_read_label"
+                android:summary="@string/global_settings_mark_messages_read_summary"/>
+
         </PreferenceCategory>
 
     </PreferenceScreen>

@@ -167,6 +167,7 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmDeleteFromNotification = true;
+    private static boolean mMarkMessageAsReadBeforeDeletingIt = false;
 
     private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
 
@@ -472,6 +473,7 @@ public class K9 extends Application {
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmDeleteFromNotification", mConfirmDeleteFromNotification);
+        editor.putBoolean("markMessageAsReadBeforeDeletingIt", mMarkMessageAsReadBeforeDeletingIt);
 
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
@@ -553,17 +555,17 @@ public class K9 extends Application {
                     K9.this.sendBroadcast(intent);
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Broadcasted: action=" + action
-                              + " account=" + account.getDescription()
-                              + " folder=" + folder
-                              + " message uid=" + message.getUid()
-                             );
+                                        + " account=" + account.getDescription()
+                                        + " folder=" + folder
+                                        + " message uid=" + message.getUid()
+                        );
 
                 } catch (MessagingException e) {
                     Log.w(K9.LOG_TAG, "Error: action=" + action
-                          + " account=" + account.getDescription()
-                          + " folder=" + folder
-                          + " message uid=" + message.getUid()
-                         );
+                                    + " account=" + account.getDescription()
+                                    + " folder=" + folder
+                                    + " message uid=" + message.getUid()
+                    );
                 }
             }
 
@@ -597,7 +599,7 @@ public class K9 extends Application {
 
             @Override
             public void folderStatusChanged(Account account, String folderName,
-                    int unreadMessageCount) {
+                                            int unreadMessageCount) {
 
                 updateUnreadWidget();
 
@@ -688,6 +690,7 @@ public class K9 extends Application {
         mConfirmDeleteStarred = storage.getBoolean("confirmDeleteStarred", false);
         mConfirmSpam = storage.getBoolean("confirmSpam", false);
         mConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true);
+        mMarkMessageAsReadBeforeDeletingIt = storage.getBoolean("markMessageAsReadBeforeDeletingIt", false);
 
         try {
             String value = storage.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
@@ -1170,6 +1173,14 @@ public class K9 extends Application {
 
     public static void setConfirmDeleteFromNotification(final boolean confirm) {
         mConfirmDeleteFromNotification = confirm;
+    }
+
+    public static boolean markMessageAsReadBeforeDeletingIt() {
+        return mMarkMessageAsReadBeforeDeletingIt;
+    }
+
+    public static void setMarkMessageAsReadBeforeDeletingIt(final boolean confirm) {
+        mMarkMessageAsReadBeforeDeletingIt = confirm;
     }
 
     public static NotificationHideSubject getNotificationHideSubject() {
