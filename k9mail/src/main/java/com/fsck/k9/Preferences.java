@@ -109,7 +109,6 @@ public class Preferences {
 
     public synchronized Account newAccount() {
         newAccount = new Account(mContext);
-        //TODO: GH-992 Don't add the account here, add it on finishing.
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
 
