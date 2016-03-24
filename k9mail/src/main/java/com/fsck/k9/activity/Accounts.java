@@ -2031,7 +2031,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             String filename = mUri.getLastPathSegment();
             boolean globalSettings = mImportResults.globalSettings;
             int imported = mImportResults.importedAccounts.size();
-            if (exception != null && (globalSettings || imported > 0)) {
+            if (exception == null && (globalSettings || imported > 0)) {
                 if (imported == 0) {
                     activity.showSimpleDialog(R.string.settings_import_success_header,
                                               R.string.settings_import_global_settings_success, filename);
