@@ -70,10 +70,16 @@ public class Pop3Store extends RemoteStore {
      *
      * <p>Possible forms:</p>
      * <pre>
-     * pop3://auth:user:password@server:port ConnectionSecurity.NONE
-     * pop3+tls+://auth:user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
-     * pop3+ssl+://auth:user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
+     * pop3://authType:user:password@server:port
+     *      ConnectionSecurity.NONE
+     * pop3+tls+://authType:user:password@server:port
+     *      ConnectionSecurity.STARTTLS_REQUIRED
+     * pop3+ssl+://authType:user:password@server:port
+     *      ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
+     * 
+     * e.g.
+     * <pre>pop3://PLAIN:admin:pass123@example.org:12345</pre>
      */
     public static ServerSettings decodeUri(String uri) {
         String host;
@@ -256,8 +262,9 @@ public class Pop3Store extends RemoteStore {
     @Override
     public void checkSettings() throws MessagingException {
         Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
-        folder.open(Folder.OPEN_MODE_RW);
-        if (!mCapabilities.uidl) {
+        try {
+            folder.open(Folder.OPEN_MODE_RW);
+            if (!mCapabilities.uidl) {
             /*
              * Run an additional test to see if UIDL is supported on the server. If it's not we
              * can't service this account.
@@ -267,10 +274,13 @@ public class Pop3Store extends RemoteStore {
              * If the server doesn't support UIDL it will return a - response, which causes
              * executeSimpleCommand to throw a MessagingException, exiting this method.
              */
-            folder.executeSimpleCommand(UIDL_COMMAND);
+                folder.executeSimpleCommand(UIDL_COMMAND);
 
+            }
         }
-        folder.close();
+        finally {
+            folder.close();
+        }
     }
 
     @Override
