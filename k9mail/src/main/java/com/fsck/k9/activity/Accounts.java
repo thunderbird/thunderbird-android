@@ -2096,12 +2096,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             removeProgressDialog();
 
-            if (exception != null) {
+            if (exception == null) {
                 activity.showImportSelectionDialog(mImportContents, mUri);
             } else {
                 String filename = mUri.getLastPathSegment();
                 activity.showSimpleDialog(R.string.settings_import_failed_header,
-                                          R.string.settings_import_failure, filename, exception.getMessage());
+                      R.string.settings_import_failure, filename, exception.getMessage());
             }
         }
     }
