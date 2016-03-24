@@ -1,6 +1,7 @@
 package com.fsck.k9.message.preview;
 
 
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import org.junit.Before;
@@ -27,11 +28,7 @@ public class PreviewTextExtractorTest {
     @Test
     public void extractPreview_withEmptyBody() throws Exception {
         Part part = new MimeBodyPart(null, "text/plain");
-
-        //TODO: throw exception
-        String preview = previewTextExtractor.extractPreview(part);
-
-        assertEquals("", preview);
+        assertEquals("", previewTextExtractor.extractPreview(part));
     }
 
     @Test

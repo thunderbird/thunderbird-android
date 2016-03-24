@@ -26,6 +26,10 @@ public class PreviewResult {
         return new PreviewResult(PreviewType.NONE, null);
     }
 
+    public static PreviewResult failed() {
+        return new PreviewResult(PreviewType.FAILED, null);
+    }
+
     public PreviewType getPreviewType() {
         return previewType;
     }
@@ -46,6 +50,7 @@ public class PreviewResult {
     public enum PreviewType {
         NONE,
         TEXT,
-        ENCRYPTED
+        ENCRYPTED,
+        FAILED
     }
 }

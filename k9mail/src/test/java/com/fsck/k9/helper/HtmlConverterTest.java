@@ -23,6 +23,11 @@ public class HtmlConverterTest {
     private static final String OUTPUT_FILE = "C:/temp/parse.html";
 
     @Test
+    public void testNullText() {
+        assertEquals(null, HtmlConverter.textToHtml(null));
+    }
+
+    @Test
     public void testTextQuoteToHtmlBlockquote() {
         String message = "Panama!\r\n" +
                 "\r\n" +

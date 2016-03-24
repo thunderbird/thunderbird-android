@@ -1,6 +1,5 @@
 package com.fsck.k9.notification;
 
-
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -71,6 +70,8 @@ class NotificationContentCreator {
         switch (previewType) {
             case NONE:
                 return null;
+            case FAILED:
+                return context.getString(R.string.preview_failed);
             case TEXT:
                 return message.getPreview();
             case ENCRYPTED:

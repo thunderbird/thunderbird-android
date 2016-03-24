@@ -13,10 +13,8 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.jcraft:jzlib:1.0.7'
     compile 'com.beetstra.jutf7:jutf7:1.0.0'
-
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
-
     testCompile 'com.squareup.okio:okio:1.6.0'
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'junit:junit:4.12'

@@ -18,7 +18,6 @@ class PreviewTextExtractor {
     public String extractPreview(@NonNull Part textPart) {
         String text = MessageExtractor.getTextFromPart(textPart);
         String plainText = convertFromHtmlIfNecessary(textPart, text);
-
         return stripTextForPreview(plainText);
     }
 

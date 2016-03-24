@@ -2,8 +2,12 @@ package com.fsck.k9.message.preview;
 
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.fsck.k9.K9;
+import com.fsck.k9.R;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 
 
@@ -40,8 +44,10 @@ public class MessagePreviewCreator {
         if (textPart == null || hasEmptyBody(textPart)) {
             return PreviewResult.none();
         }
-
         String previewText = previewTextExtractor.extractPreview(textPart);
+        if (previewText == null) {
+            return PreviewResult.failed();
+        }
         return PreviewResult.text(previewText);
     }
 

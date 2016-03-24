@@ -2022,38 +2022,41 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         if (messageFormat == MessageFormat.HTML) {
             Part part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            if (part != null) { // Shouldn't happen if we were the one who saved it.
+            String text;
+            if (part != null && (text = MessageExtractor.getTextFromPart(part)) != null) {
+                // Both the part and text should be non-null if we were the one who saved it.
                 mQuotedTextFormat = SimpleMessageFormat.HTML;
-                String text = MessageExtractor.getTextFromPart(part);
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
-                }
-
-                if (bodyOffset + bodyLength > text.length()) {
-                    // The draft was edited outside of K-9 Mail?
-                    Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid LENGTH/OFFSET");
-                    bodyOffset = 0;
-                    bodyLength = 0;
-                }
-                // Grab our reply text.
-                String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
-                mMessageContentView.setCharacters(HtmlConverter.htmlToText(bodyText));
-
-                // Regenerate the quoted html without our user content in it.
-                StringBuilder quotedHTML = new StringBuilder();
-                quotedHTML.append(text.substring(0, bodyOffset));   // stuff before the reply
-                quotedHTML.append(text.substring(bodyOffset + bodyLength));
-                if (quotedHTML.length() > 0) {
-                    mQuotedHtmlContent = new InsertableHtmlContent();
-                    mQuotedHtmlContent.setQuotedContent(quotedHTML);
-                    // We don't know if bodyOffset refers to the header or to the footer
-                    mQuotedHtmlContent.setHeaderInsertionPoint(bodyOffset);
-                    if (bodyFooterOffset != null) {
-                        mQuotedHtmlContent.setFooterInsertionPoint(bodyFooterOffset);
-                    } else {
-                        mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
+                if (text == null) {
+                    if (K9.DEBUG) {
+                        Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
                     }
-                    mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
+
+                    if (bodyOffset + bodyLength > text.length()) {
+                        // The draft was edited outside of K-9 Mail?
+                        Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid LENGTH/OFFSET");
+                        bodyOffset = 0;
+                        bodyLength = 0;
+                    }
+                    // Grab our reply text.
+                    String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
+                    mMessageContentView.setCharacters(HtmlConverter.htmlToText(bodyText));
+
+                    // Regenerate the quoted html without our user content in it.
+                    StringBuilder quotedHTML = new StringBuilder();
+                    quotedHTML.append(text.substring(0, bodyOffset));   // stuff before the reply
+                    quotedHTML.append(text.substring(bodyOffset + bodyLength));
+                    if (quotedHTML.length() > 0) {
+                        mQuotedHtmlContent = new InsertableHtmlContent();
+                        mQuotedHtmlContent.setQuotedContent(quotedHTML);
+                        // We don't know if bodyOffset refers to the header or to the footer
+                        mQuotedHtmlContent.setHeaderInsertionPoint(bodyOffset);
+                        if (bodyFooterOffset != null) {
+                            mQuotedHtmlContent.setFooterInsertionPoint(bodyFooterOffset);
+                        } else {
+                            mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
+                        }
+                        mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
+                    }
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {
@@ -2088,48 +2091,54 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void processSourceMessageText(Message message, Integer bodyOffset, Integer bodyLength,
             boolean viewMessageContent) throws MessagingException {
         Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-        if (textPart != null) {
-            String text = MessageExtractor.getTextFromPart(textPart);
+        String text;
+        if (textPart != null && (text = MessageExtractor.getTextFromPart(textPart)) != null) {
             if (K9.DEBUG) {
                 Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
             }
 
-            // If we had a body length (and it was valid), separate the composition from the quoted text
-            // and put them in their respective places in the UI.
             if (bodyLength > 0) {
-                try {
-                    String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
-
-                    // Regenerate the quoted text without our user content in it nor added newlines.
-                    StringBuilder quotedText = new StringBuilder();
-                    if (bodyOffset == 0 && text.substring(bodyLength, bodyLength + 4).equals("\r\n\r\n")) {
-                        // top-posting: ignore two newlines at start of quote
-                        quotedText.append(text.substring(bodyLength + 4));
-                    } else if (bodyOffset + bodyLength == text.length() &&
-                            text.substring(bodyOffset - 2, bodyOffset).equals("\r\n")) {
-                        // bottom-posting: ignore newline at end of quote
-                        quotedText.append(text.substring(0, bodyOffset - 2));
-                    } else {
-                        quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
-                        quotedText.append(text.substring(bodyOffset + bodyLength));
-                    }
-
-                    if (viewMessageContent) {
-                        mMessageContentView.setCharacters(bodyText);
-                    }
-
-                    mQuotedText.setCharacters(quotedText);
-                } catch (IndexOutOfBoundsException e) {
-                    // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
-                    Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid bodyOffset/bodyLength");
-                    if (viewMessageContent) {
-                        mMessageContentView.setCharacters(text);
-                    }
-                }
+                processSourceMessageTextValidBody(text, bodyOffset, bodyLength, viewMessageContent);
             } else {
                 if (viewMessageContent) {
                     mMessageContentView.setCharacters(text);
                 }
+            }
+        }
+    }
+
+
+    // If we had a body length (and it was valid), separate the composition from the quoted text
+    // and put them in their respective places in the UI.
+    private void processSourceMessageTextValidBody(String text, Integer bodyOffset, Integer bodyLength,
+                                                   boolean viewMessageContent) {
+        try {
+            String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
+
+            // Regenerate the quoted text without our user content in it nor added newlines.
+            StringBuilder quotedText = new StringBuilder();
+            if (bodyOffset == 0 && text.substring(bodyLength, bodyLength + 4).equals("\r\n\r\n")) {
+                // top-posting: ignore two newlines at start of quote
+                quotedText.append(text.substring(bodyLength + 4));
+            } else if (bodyOffset + bodyLength == text.length() &&
+                    text.substring(bodyOffset - 2, bodyOffset).equals("\r\n")) {
+                // bottom-posting: ignore newline at end of quote
+                quotedText.append(text.substring(0, bodyOffset - 2));
+            } else {
+                quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
+                quotedText.append(text.substring(bodyOffset + bodyLength));
+            }
+
+            if (viewMessageContent) {
+                mMessageContentView.setCharacters(bodyText);
+            }
+
+            mQuotedText.setCharacters(quotedText);
+        } catch (IndexOutOfBoundsException e) {
+            // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
+            Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid bodyOffset/bodyLength");
+            if (viewMessageContent) {
+                mMessageContentView.setCharacters(text);
             }
         }
     }
@@ -2277,6 +2286,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * @return Text in desired format.
      * @throws MessagingException
      */
+    @Nullable
     private String getBodyTextFromMessage(final Message message, final SimpleMessageFormat format)
             throws MessagingException {
         Part part;
@@ -2297,6 +2307,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
                 String text = MessageExtractor.getTextFromPart(part);
                 return HtmlConverter.textToHtml(text);
+
             }
         } else if (format == SimpleMessageFormat.TEXT) {
             // Text takes precedence, then html.

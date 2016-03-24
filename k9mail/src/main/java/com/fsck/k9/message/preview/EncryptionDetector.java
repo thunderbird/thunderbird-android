@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
@@ -45,7 +46,6 @@ class EncryptionDetector {
         if (text == null) {
             return false;
         }
-
         return PGP_MESSAGE_PATTERN.matcher(text).find();
     }
 
