@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -553,6 +554,7 @@ public abstract class MessageBuilder {
             if (queuedMimeMessage != null) {
                 asyncCallback.onMessageBuildSuccess(queuedMimeMessage, isDraft);
                 queuedMimeMessage = null;
+
             } else if (queuedException != null) {
                 asyncCallback.onMessageBuildException(queuedException);
                 queuedException = null;

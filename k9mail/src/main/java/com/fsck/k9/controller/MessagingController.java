@@ -31,6 +31,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -2994,7 +2995,9 @@ public class MessagingController implements Runnable {
                     } finally {
                         clearSendingNotificationIfNecessary(account);
                     }
+
                 }
+                Toast.makeText(context,"message envoyée ", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -3037,40 +3040,75 @@ public class MessagingController implements Runnable {
      * Attempt to send any messages that are sitting in the Outbox.
      * @param account
      */
-    public void sendPendingMessagesSynchronous(final Account account) {
-        LocalFolder localFolder = null;
-        Exception lastFailure = null;
-        boolean wasPermanentFailure = false;
-        try {
-            LocalStore localStore = account.getLocalStore();
-            localFolder = localStore.getFolder(
-                              account.getOutboxFolderName());
-            if (!localFolder.exists()) {
-                return;
-            }
-            for (MessagingListener l : getListeners()) {
-                l.sendPendingMessagesStarted(account);
-            }
-            localFolder.open(Folder.OPEN_MODE_RW);
+    private LocalFolder localFolder = null;
+    private Exception lastFailure = null;
+    private boolean wasPermanentFailure = false;
+    private List<LocalMessage> localMessages;
+    private LocalStore localStore;
+    private Transport transport;
+    private FetchProfile fp;
+    private int progress, todo ;
 
-            List<LocalMessage> localMessages = localFolder.getMessages(null);
-            int progress = 0;
-            int todo = localMessages.size();
-            for (MessagingListener l : getListeners()) {
-                l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
-            }
+    private void initialisationSendPendingMessageSynchronous(final Account account) throws MessagingException {
+        localStore = account.getLocalStore();
+        localFolder = localStore.getFolder(
+                account.getOutboxFolderName());
+        if (!localFolder.exists()) {
+            return;
+        }
+        for (MessagingListener l : getListeners()) {
+            l.sendPendingMessagesStarted(account);
+        }
+        localFolder.open(Folder.OPEN_MODE_RW);
+
+        localMessages = localFolder.getMessages(null);
+        progress = 0;
+        todo = localMessages.size();
+        for (MessagingListener l : getListeners()) {
+            l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
+        }
+    }
+    private void moveSentMessageToFolder(final Account account, LocalMessage message) throws MessagingException {
+        LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+
+        localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
+
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+
+        PendingCommand command = new PendingCommand();
+        command.command = PENDING_COMMAND_APPEND;
+        command.arguments = new String[] { localSentFolder.getName(), message.getUid() };
+        queuePendingCommand(account, command);
+        processPendingCommands(account);
+    }
+
+    private void SendPendingMessagesConfigurException(Exception e, boolean prmVal){
+        lastFailure = e;
+        wasPermanentFailure = prmVal;
+    }
+
+
+    public void sendPendingMessagesSynchronous(final Account account) {
+        try {
+            initialisationSendPendingMessageSynchronous(account);
+
             /*
              * The profile we will use to pull all of the content
              * for a given local message into memory for sending.
              */
-            FetchProfile fp = new FetchProfile();
+
+            fp = new FetchProfile();
             fp.add(FetchProfile.Item.ENVELOPE);
             fp.add(FetchProfile.Item.BODY);
 
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + localFolder.getId() + ") for messages to send");
 
-            Transport transport = Transport.getInstance(K9.app, account);
+            transport = Transport.getInstance(K9.app, account);
+
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
                     message.destroy();
@@ -3085,20 +3123,14 @@ public class MessagingController implements Runnable {
 
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Send count for message " + message.getUid() + " is " + count.get());
-
                     if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS) {
                         Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() + " can't be delivered after " + K9.MAX_SEND_ATTEMPTS + " attempts.  Giving up until the user restarts the device");
                         notificationController.showSendFailedNotification(account,
                                 new MessagingException(message.getSubject()));
                         continue;
                     }
-
-
-
                     localFolder.fetch(Collections.singletonList(message), fp, null);
                     try {
-
-
                         if (message.getHeader(K9.IDENTITY_HEADER).length > 0) {
                             Log.v(K9.LOG_TAG, "The user has set the Outbox and Drafts folder to the same thing. " +
                                   "This message appears to be a draft, so K-9 will not send it");
@@ -3122,48 +3154,31 @@ public class MessagingController implements Runnable {
                                 Log.i(K9.LOG_TAG, "Account does not have a sent mail folder; deleting sent message");
                             message.setFlag(Flag.DELETED, true);
                         } else {
-                            LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
-                            if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
-
-                            localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
-
-                            if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
-
-                            PendingCommand command = new PendingCommand();
-                            command.command = PENDING_COMMAND_APPEND;
-                            command.arguments = new String[] { localSentFolder.getName(), message.getUid() };
-                            queuePendingCommand(account, command);
-                            processPendingCommands(account);
+                            moveSentMessageToFolder(account, message);
                         }
 
                     } catch (CertificateValidationException e) {
-                        lastFailure = e;
-                        wasPermanentFailure = false;
-
+                        SendPendingMessagesConfigurException(e,false);
                         notifyUserIfCertificateProblem(account, e, false);
                         handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     } catch (MessagingException e) {
-                        lastFailure = e;
-                        wasPermanentFailure = e.isPermanentFailure();
+                        SendPendingMessagesConfigurException(e,e.isPermanentFailure());
 
                         handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     } catch (Exception e) {
-                        lastFailure = e;
-                        wasPermanentFailure = true;
+                        SendPendingMessagesConfigurException(e,true);
 
                         handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     }
                 } catch (Exception e) {
-                    lastFailure = e;
-                    wasPermanentFailure = false;
+                    SendPendingMessagesConfigurException(e,false);
 
                     Log.e(K9.LOG_TAG, "Failed to fetch message for sending", e);
 
                     addErrorMessage(account, "Failed to fetch message for sending", e);
                     notifySynchronizeMailboxFailed(account, localFolder, e);
                 }
+
             }
 
             for (MessagingListener l : getListeners()) {

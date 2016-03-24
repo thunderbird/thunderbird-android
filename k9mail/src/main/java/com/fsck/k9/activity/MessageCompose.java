@@ -138,17 +138,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
 
     private static final String STATE_KEY_ATTACHMENTS =
-        "com.fsck.k9.activity.MessageCompose.attachments";
+            "com.fsck.k9.activity.MessageCompose.attachments";
     private static final String STATE_KEY_QUOTED_TEXT_MODE =
-        "com.fsck.k9.activity.MessageCompose.QuotedTextShown";
+            "com.fsck.k9.activity.MessageCompose.QuotedTextShown";
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
-        "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
+            "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
     private static final String STATE_KEY_DRAFT_ID = "com.fsck.k9.activity.MessageCompose.draftId";
     private static final String STATE_KEY_HTML_QUOTE = "com.fsck.k9.activity.MessageCompose.HTMLQuote";
     private static final String STATE_IDENTITY_CHANGED =
-        "com.fsck.k9.activity.MessageCompose.identityChanged";
+            "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
-        "com.fsck.k9.activity.MessageCompose.identity";
+            "com.fsck.k9.activity.MessageCompose.identity";
     private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
     private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
@@ -352,22 +352,22 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 case MSG_SKIPPED_ATTACHMENTS:
                     Toast.makeText(
-                        MessageCompose.this,
-                        getString(R.string.message_compose_attachments_skipped_toast),
-                        Toast.LENGTH_LONG).show();
+                            MessageCompose.this,
+                            getString(R.string.message_compose_attachments_skipped_toast),
+                            Toast.LENGTH_LONG).show();
                     break;
                 case MSG_SAVED_DRAFT:
                     mDraftId = (Long) msg.obj;
                     Toast.makeText(
-                        MessageCompose.this,
-                        getString(R.string.message_saved_toast),
-                        Toast.LENGTH_LONG).show();
+                            MessageCompose.this,
+                            getString(R.string.message_saved_toast),
+                            Toast.LENGTH_LONG).show();
                     break;
                 case MSG_DISCARDED_DRAFT:
                     Toast.makeText(
-                        MessageCompose.this,
-                        getString(R.string.message_discarded_toast),
-                        Toast.LENGTH_LONG).show();
+                            MessageCompose.this,
+                            getString(R.string.message_discarded_toast),
+                            Toast.LENGTH_LONG).show();
                     break;
                 case MSG_PERFORM_STALLED_ACTION:
                     performStalledAction();
@@ -435,10 +435,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
     public static void actionReply(
-        Context context,
-        LocalMessage message,
-        boolean replyAll,
-        String messageBody) {
+            Context context,
+            LocalMessage message,
+            boolean replyAll,
+            String messageBody) {
         context.startActivity(getActionReplyIntent(context, message, replyAll, messageBody));
     }
 
@@ -486,7 +486,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             ContextThemeWrapper themeContext = new ContextThemeWrapper(this,
                     K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
             @SuppressLint("InflateParams") // this is the top level activity element, it has no root
-            View v = LayoutInflater.from(themeContext).inflate(R.layout.message_compose, null);
+                    View v = LayoutInflater.from(themeContext).inflate(R.layout.message_compose, null);
             TypedValue outValue = new TypedValue();
             // background color needs to be forced
             themeContext.getTheme().resolveAttribute(R.attr.messageViewBackgroundColor, outValue, true);
@@ -506,8 +506,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         final String accountUuid = (mMessageReference != null) ?
-                                   mMessageReference.getAccountUuid() :
-                                   intent.getStringExtra(EXTRA_ACCOUNT);
+                mMessageReference.getAccountUuid() :
+                intent.getStringExtra(EXTRA_ACCOUNT);
 
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
@@ -1197,73 +1197,73 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private LoaderManager.LoaderCallbacks<Attachment> mAttachmentInfoLoaderCallback =
             new LoaderManager.LoaderCallbacks<Attachment>() {
-        @Override
-        public Loader<Attachment> onCreateLoader(int id, Bundle args) {
-            onFetchAttachmentStarted();
-            Attachment attachment = args.getParcelable(LOADER_ARG_ATTACHMENT);
-            return new AttachmentInfoLoader(MessageCompose.this, attachment);
-        }
+                @Override
+                public Loader<Attachment> onCreateLoader(int id, Bundle args) {
+                    onFetchAttachmentStarted();
+                    Attachment attachment = args.getParcelable(LOADER_ARG_ATTACHMENT);
+                    return new AttachmentInfoLoader(MessageCompose.this, attachment);
+                }
 
-        @Override
-        public void onLoadFinished(Loader<Attachment> loader, Attachment attachment) {
-            int loaderId = loader.getId();
+                @Override
+                public void onLoadFinished(Loader<Attachment> loader, Attachment attachment) {
+                    int loaderId = loader.getId();
 
-            View view = getAttachmentView(loaderId);
-            if (view != null) {
-                view.setTag(attachment);
+                    View view = getAttachmentView(loaderId);
+                    if (view != null) {
+                        view.setTag(attachment);
 
-                TextView nameView = (TextView) view.findViewById(R.id.attachment_name);
-                nameView.setText(attachment.name);
+                        TextView nameView = (TextView) view.findViewById(R.id.attachment_name);
+                        nameView.setText(attachment.name);
 
-                attachment.loaderId = ++mMaxLoaderId;
-                initAttachmentContentLoader(attachment);
-            } else {
-                onFetchAttachmentFinished();
-            }
+                        attachment.loaderId = ++mMaxLoaderId;
+                        initAttachmentContentLoader(attachment);
+                    } else {
+                        onFetchAttachmentFinished();
+                    }
 
-            getLoaderManager().destroyLoader(loaderId);
-        }
+                    getLoaderManager().destroyLoader(loaderId);
+                }
 
-        @Override
-        public void onLoaderReset(Loader<Attachment> loader) {
-            onFetchAttachmentFinished();
-        }
-    };
+                @Override
+                public void onLoaderReset(Loader<Attachment> loader) {
+                    onFetchAttachmentFinished();
+                }
+            };
 
     private LoaderManager.LoaderCallbacks<Attachment> mAttachmentContentLoaderCallback =
             new LoaderManager.LoaderCallbacks<Attachment>() {
-        @Override
-        public Loader<Attachment> onCreateLoader(int id, Bundle args) {
-            Attachment attachment = args.getParcelable(LOADER_ARG_ATTACHMENT);
-            return new AttachmentContentLoader(MessageCompose.this, attachment);
-        }
-
-        @Override
-        public void onLoadFinished(Loader<Attachment> loader, Attachment attachment) {
-            int loaderId = loader.getId();
-
-            View view = getAttachmentView(loaderId);
-            if (view != null) {
-                if (attachment.state == Attachment.LoadingState.COMPLETE) {
-                    view.setTag(attachment);
-
-                    View progressBar = view.findViewById(R.id.progressBar);
-                    progressBar.setVisibility(View.GONE);
-                } else {
-                    mAttachments.removeView(view);
+                @Override
+                public Loader<Attachment> onCreateLoader(int id, Bundle args) {
+                    Attachment attachment = args.getParcelable(LOADER_ARG_ATTACHMENT);
+                    return new AttachmentContentLoader(MessageCompose.this, attachment);
                 }
-            }
 
-            onFetchAttachmentFinished();
+                @Override
+                public void onLoadFinished(Loader<Attachment> loader, Attachment attachment) {
+                    int loaderId = loader.getId();
 
-            getLoaderManager().destroyLoader(loaderId);
-        }
+                    View view = getAttachmentView(loaderId);
+                    if (view != null) {
+                        if (attachment.state == Attachment.LoadingState.COMPLETE) {
+                            view.setTag(attachment);
 
-        @Override
-        public void onLoaderReset(Loader<Attachment> loader) {
-            onFetchAttachmentFinished();
-        }
-    };
+                            View progressBar = view.findViewById(R.id.progressBar);
+                            progressBar.setVisibility(View.GONE);
+                        } else {
+                            mAttachments.removeView(view);
+                        }
+                    }
+
+                    onFetchAttachmentFinished();
+
+                    getLoaderManager().destroyLoader(loaderId);
+                }
+
+                @Override
+                public void onLoaderReset(Loader<Attachment> loader) {
+                    onFetchAttachmentFinished();
+                }
+            };
 
     private void onFetchAttachmentStarted() {
         mNumAttachmentsLoading += 1;
@@ -1393,7 +1393,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (previousDraftId != INVALID_DRAFT_ID) {
                     if (K9.DEBUG) {
                         Log.v(K9.LOG_TAG, "Account switch, deleting draft from previous account: "
-                              + previousDraftId);
+                                + previousDraftId);
                     }
                     MessagingController.getInstance(getApplication()).deleteDraft(previousAccount,
                             previousDraftId);
@@ -1635,49 +1635,49 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         switch (id) {
             case DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE:
                 return new AlertDialog.Builder(this)
-                       .setTitle(R.string.save_or_discard_draft_message_dlg_title)
-                       .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
-                .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-                        checkToSaveDraftAndSave();
-                    }
-                })
-                .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-                        onDiscard();
-                    }
-                })
-                .create();
+                        .setTitle(R.string.save_or_discard_draft_message_dlg_title)
+                        .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
+                        .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+                                checkToSaveDraftAndSave();
+                            }
+                        })
+                        .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+                                onDiscard();
+                            }
+                        })
+                        .create();
             case DIALOG_CONFIRM_DISCARD_ON_BACK:
                 return new AlertDialog.Builder(this)
-                       .setTitle(R.string.confirm_discard_draft_message_title)
-                       .setMessage(R.string.confirm_discard_draft_message)
-                .setPositiveButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
-                    }
-                })
-                .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
-                        Toast.makeText(MessageCompose.this,
-                                       getString(R.string.message_discarded_toast),
-                                       Toast.LENGTH_LONG).show();
-                        onDiscard();
-                    }
-                })
-                .create();
+                        .setTitle(R.string.confirm_discard_draft_message_title)
+                        .setMessage(R.string.confirm_discard_draft_message)
+                        .setPositiveButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+                            }
+                        })
+                        .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+                                Toast.makeText(MessageCompose.this,
+                                        getString(R.string.message_discarded_toast),
+                                        Toast.LENGTH_LONG).show();
+                                onDiscard();
+                            }
+                        })
+                        .create();
             case DIALOG_CHOOSE_IDENTITY:
                 Context context = new ContextThemeWrapper(this,
                         (K9.getK9Theme() == K9.Theme.LIGHT) ?
-                        R.style.Theme_K9_Dialog_Light :
-                        R.style.Theme_K9_Dialog_Dark);
+                                R.style.Theme_K9_Dialog_Light :
+                                R.style.Theme_K9_Dialog_Dark);
                 Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle(R.string.send_as);
                 final IdentityAdapter adapter = new IdentityAdapter(context);
@@ -1968,11 +1968,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateFrom();
 
         Integer bodyLength = k9identity.get(IdentityField.LENGTH) != null
-                             ? Integer.valueOf(k9identity.get(IdentityField.LENGTH))
-                             : 0;
+                ? Integer.valueOf(k9identity.get(IdentityField.LENGTH))
+                : 0;
         Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
-                             ? Integer.valueOf(k9identity.get(IdentityField.OFFSET))
-                             : 0;
+                ? Integer.valueOf(k9identity.get(IdentityField.OFFSET))
+                : 0;
         Integer bodyFooterOffset = k9identity.get(IdentityField.FOOTER_OFFSET) != null
                 ? Integer.valueOf(k9identity.get(IdentityField.FOOTER_OFFSET))
                 : null;
@@ -2086,7 +2086,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * @throws MessagingException
      */
     private void processSourceMessageText(Message message, Integer bodyOffset, Integer bodyLength,
-            boolean viewMessageContent) throws MessagingException {
+                                          boolean viewMessageContent) throws MessagingException {
         Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
         if (textPart != null) {
             String text = MessageExtractor.getTextFromPart(textPart);
@@ -2602,7 +2602,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         boolean saveRemotely;
 
         SaveMessageTask(Context context, Account account, Contacts contacts,
-                Handler handler, Message message, long draftId, boolean saveRemotely) {
+                        Handler handler, Message message, long draftId, boolean saveRemotely) {
             this.context = context;
             this.account = account;
             this.contacts = contacts;
@@ -2647,9 +2647,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         Address.toString(originalMessage.getFrom())));
             } else {
                 quotedText.append(String.format(
-                                      getString(R.string.message_compose_reply_header_fmt) + "\r\n",
-                                      Address.toString(originalMessage.getFrom()))
-                                 );
+                                getString(R.string.message_compose_reply_header_fmt) + "\r\n",
+                                Address.toString(originalMessage.getFrom()))
+                );
             }
 
             final String prefix = mAccount.getQuotePrefix();
@@ -2708,18 +2708,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             header.append("<div class=\"gmail_quote\">");
             if (sentDate.length() != 0) {
                 header.append(HtmlConverter.textToHtmlFragment(String.format(
-                        getString(R.string.message_compose_reply_header_fmt_with_date),
-                        sentDate,
-                        Address.toString(originalMessage.getFrom()))
-                                                    ));
+                                getString(R.string.message_compose_reply_header_fmt_with_date),
+                                sentDate,
+                                Address.toString(originalMessage.getFrom()))
+                ));
             } else {
                 header.append(HtmlConverter.textToHtmlFragment(String.format(
-                                  getString(R.string.message_compose_reply_header_fmt),
-                                  Address.toString(originalMessage.getFrom()))
-                                                              ));
+                                getString(R.string.message_compose_reply_header_fmt),
+                                Address.toString(originalMessage.getFrom()))
+                ));
             }
             header.append("<blockquote class=\"gmail_quote\" " +
-                          "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\r\n");
+                    "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\r\n");
 
             String footer = "</blockquote></div>";
 
@@ -2732,28 +2732,28 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\r\n"); // This gets converted into a horizontal line during html to text conversion.
             if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getFrom())))
-                    .append("<br>\r\n");
+                        .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getFrom())))
+                        .append("<br>\r\n");
             }
             if (sentDate.length() != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_send_date)).append("</b> ")
-                    .append(sentDate)
-                    .append("<br>\r\n");
+                        .append(sentDate)
+                        .append("<br>\r\n");
             }
             if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_to)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.TO))))
-                    .append("<br>\r\n");
+                        .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.TO))))
+                        .append("<br>\r\n");
             }
             if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_cc)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.CC))))
-                    .append("<br>\r\n");
+                        .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.CC))))
+                        .append("<br>\r\n");
             }
             if (originalMessage.getSubject() != null) {
                 header.append("<b>").append(getString(R.string.message_compose_quote_header_subject)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(originalMessage.getSubject()))
-                    .append("<br>\r\n");
+                        .append(HtmlConverter.textToHtmlFragment(originalMessage.getSubject()))
+                        .append("<br>\r\n");
             }
             header.append("</div>\r\n");
             header.append("<br>\r\n");
