@@ -1,52 +1,56 @@
 package com.fsck.k9.account;
 
 
-import com.fsck.k9.Account;
+import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-
+import com.fsck.k9.mail.ServerSettings.Type;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+
 public class AccountCreatorTest {
 
     @Test
-    public void defaultIMAPdeletePolicy_is_ON_DELETE() {
-        assertEquals(Account.DeletePolicy.ON_DELETE,
-                AccountCreator.getDefaultDeletePolicy(ServerSettings.Type.IMAP));
+    public void getDefaultDeletePolicy_withImap_shouldReturn_ON_DELETE() {
+        DeletePolicy result = AccountCreator.getDefaultDeletePolicy(Type.IMAP);
+
+        assertEquals(DeletePolicy.ON_DELETE, result);
     }
 
     @Test
-    public void defaultPOP3deletePolicy_is_NEVER() {
-        assertEquals(Account.DeletePolicy.NEVER,
-                AccountCreator.getDefaultDeletePolicy(ServerSettings.Type.POP3));
+    public void getDefaultDeletePolicy_withPop3_shouldReturn_NEVER() {
+        DeletePolicy result = AccountCreator.getDefaultDeletePolicy(Type.POP3);
+
+        assertEquals(DeletePolicy.NEVER, result);
     }
 
     @Test
-    public void defaultWebDAVdeletePolicy_is_ON_DELETE() {
-        assertEquals(Account.DeletePolicy.ON_DELETE,
-                AccountCreator.getDefaultDeletePolicy(ServerSettings.Type.WebDAV));
+    public void getDefaultDeletePolicy_withWebDav_shouldReturn_ON_DELETE() {
+        DeletePolicy result = AccountCreator.getDefaultDeletePolicy(Type.WebDAV);
+
+        assertEquals(DeletePolicy.ON_DELETE, result);
     }
 
     @Test
-    public void defaultPort_is_the_insecure_port_for_noSecurity() {
-        assertEquals(ServerSettings.Type.IMAP.defaultPort,
-                AccountCreator.getDefaultPort(ConnectionSecurity.NONE,
-                        ServerSettings.Type.IMAP));
+    public void getDefaultPort_withNoConnectionSecurityAndImap_shouldReturnDefaultPort() {
+        int result = AccountCreator.getDefaultPort(ConnectionSecurity.NONE, Type.IMAP);
+
+        assertEquals(Type.IMAP.defaultPort, result);
     }
 
     @Test
-    public void defaultPort_is_the_insecure_port_for_starttls() {
-        assertEquals(ServerSettings.Type.IMAP.defaultPort,
-                AccountCreator.getDefaultPort(ConnectionSecurity.STARTTLS_REQUIRED,
-                        ServerSettings.Type.IMAP));
+    public void getDefaultPort_withStartTlsAndImap_shouldReturnDefaultPort() {
+        int result = AccountCreator.getDefaultPort(ConnectionSecurity.STARTTLS_REQUIRED, Type.IMAP);
+
+        assertEquals(Type.IMAP.defaultPort, result);
     }
 
     @Test
-    public void defaultPort_is_the_secure_port_for_ssltls() {
-        assertEquals(ServerSettings.Type.IMAP.defaultTlsPort,
-                AccountCreator.getDefaultPort(ConnectionSecurity.SSL_TLS_REQUIRED,
-                        ServerSettings.Type.IMAP));
+    public void getDefaultPort_withTlsAndImap_shouldReturnDefaultTlsPort() {
+        int result = AccountCreator.getDefaultPort(ConnectionSecurity.SSL_TLS_REQUIRED, Type.IMAP);
+
+        assertEquals(Type.IMAP.defaultTlsPort, result);
     }
 }
