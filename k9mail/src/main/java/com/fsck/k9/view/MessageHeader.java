@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.SpannableString;
@@ -21,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
@@ -40,6 +44,8 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.ReceivedHeaders;
+import com.fsck.k9.mail.internet.SecureTransportState;
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private Context mContext;
@@ -53,6 +59,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private View mChip;
     private CheckBox mFlagged;
+    private ImageView mSecureTransport;
     private int defaultSubjectColor;
     private TextView mAdditionalHeadersView;
     private View mAnsweredIcon;
@@ -108,6 +115,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mChip = findViewById(R.id.chip);
         mDateView = (TextView) findViewById(R.id.date);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
+        mSecureTransport = (ImageView) findViewById(R.id.secureTransport);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mFontSizes.setViewTextSize(mSubjectView, mFontSizes.getMessageViewSubject());
@@ -322,6 +330,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+
+        SecureTransportState state = ReceivedHeaders.wasMessageTransmittedSecurely(message);
+        Drawable secureTransportDrawable = mContext.getResources().getDrawable(state.getDrawableId());
+        mSecureTransport.setImageDrawable(secureTransportDrawable);
+        int color = mContext.getResources().getColor(state.getColorId());
+        mSecureTransport.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
         mChip.setBackgroundColor(mAccount.getChipColor());
 

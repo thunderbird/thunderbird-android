@@ -17,4 +17,9 @@
     <color name="smime_grey">#bbb</color>
     <color name="smime_sidebar">#D8D8D8</color>
 
+    <color name="transportSecurity_red">#CC0000</color>
+    <color name="transportSecurity_orange">#FF8800</color>
+    <color name="transportSecurity_green">#669900</color>
+    <color name="transportSecurity_blue">#336699</color>
+
 </resources>
