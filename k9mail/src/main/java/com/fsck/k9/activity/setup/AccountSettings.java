@@ -740,7 +740,7 @@ public class AccountSettings extends K9PreferenceActivity {
             mSmimeApp = (SmimeAppPreference) findPreference(PREFERENCE_SMIME_APP);
             mSmimeKey = (SmimeKeyPreference) findPreference(PREFERENCE_SMIME_KEY);
 
-            mSmimeApp.setValue(String.valueOf(mAccount.getOpenPgpApp()));
+            mSmimeApp.setValue(String.valueOf(mAccount.getSmimeApp()));
             mSmimeApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String value = newValue.toString();
@@ -751,7 +751,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
 
-            mSmimeKey.setValue(mAccount.getOpenPgpKey());
+            mSmimeKey.setValue(mAccount.getSmimeKey());
             mSmimeKey.setSmimeProvider(mSmimeApp.getValue());
             // TODO: other identities?
             mSmimeKey.setDefaultUserId(SmimeApiHelper.buildUserId(mAccount.getIdentity(0)));

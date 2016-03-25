@@ -100,7 +100,7 @@ public class SmimeKeyPreference extends Preference {
         api.executeApiAsync(data, null, null, new MyCallback(REQUEST_CODE_KEY_PREFERENCE));
     }
 
-    private class MyCallback implements SmimeApi.IOpenPgpCallback {
+    private class MyCallback implements SmimeApi.ISmimeCallback {
         int requestCode;
 
         private MyCallback(int requestCode) {

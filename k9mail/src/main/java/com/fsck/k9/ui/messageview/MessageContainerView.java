@@ -40,7 +40,7 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
+import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.SmimeResultAnnotation;
 import com.fsck.k9.view.K9WebViewClient;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;

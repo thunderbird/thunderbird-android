@@ -70,12 +70,4 @@ public final class SmimeResultAnnotation extends CryptoResultAnnotation {
     public MimeBodyPart getOutputData() {
         return outputData;
     }
-
-
-    public enum CryptoError {
-        NONE,
-        CRYPTO_API_RETURNED_ERROR,
-        SIGNED_BUT_INCOMPLETE,
-        ENCRYPTED_BUT_INCOMPLETE
-    }
 }

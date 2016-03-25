@@ -443,11 +443,13 @@ public class LocalMessageExtractor {
             List<CryptoResultAnnotation> cryptoResultAnnotations = annotations.get(part);
             OpenPgpResultAnnotation pgpAnnotation = null;
             SmimeResultAnnotation smimeAnnotation = null;
-            for(CryptoResultAnnotation cryptoResultAnnotation: cryptoResultAnnotations) {
-                if(cryptoResultAnnotation instanceof OpenPgpResultAnnotation) {
-                    pgpAnnotation = (OpenPgpResultAnnotation) cryptoResultAnnotation;
-                } else if(cryptoResultAnnotation instanceof SmimeResultAnnotation) {
-                    smimeAnnotation = (SmimeResultAnnotation) cryptoResultAnnotation;
+            if(cryptoResultAnnotations != null) {
+                for (CryptoResultAnnotation cryptoResultAnnotation : cryptoResultAnnotations) {
+                    if (cryptoResultAnnotation instanceof OpenPgpResultAnnotation) {
+                        pgpAnnotation = (OpenPgpResultAnnotation) cryptoResultAnnotation;
+                    } else if (cryptoResultAnnotation instanceof SmimeResultAnnotation) {
+                        smimeAnnotation = (SmimeResultAnnotation) cryptoResultAnnotation;
+                    }
                 }
             }
 

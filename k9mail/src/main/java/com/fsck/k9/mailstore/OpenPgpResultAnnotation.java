@@ -72,10 +72,4 @@ public final class OpenPgpResultAnnotation extends CryptoResultAnnotation {
     }
 
 
-    public enum CryptoError {
-        NONE,
-        CRYPTO_API_RETURNED_ERROR,
-        SIGNED_BUT_INCOMPLETE,
-        ENCRYPTED_BUT_INCOMPLETE
-    }
 }

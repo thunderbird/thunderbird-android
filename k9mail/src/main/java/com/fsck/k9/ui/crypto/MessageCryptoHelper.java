@@ -36,8 +36,8 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.DecryptStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageHelper;
+import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.SmimeResultAnnotation;
 
 import org.openintents.openpgp.IOpenPgpService2;
@@ -91,31 +91,37 @@ public class MessageCryptoHelper {
     public void decryptOrVerifyMessagePartsIfNecessary(LocalMessage message) {
         this.message = message;
 
-        if (!account.isOpenPgpProviderConfigured()) {
+        if (!account.isOpenPgpProviderConfigured() && !account.isSmimeProviderConfigured()) {
             returnResultToFragment();
             return;
         }
 
-        List<Part> pgpEncryptedParts = CryptoPartFinder.findPgpEncryptedParts(message);
-        processFoundParts(pgpEncryptedParts, CryptoPartType.ENCRYPTED, CryptoMethod.OPENPGP,
-                CryptoError.ENCRYPTED_BUT_INCOMPLETE,
-                MessageHelper.createEmptyPart());
+        if (account.isOpenPgpProviderConfigured()) {
 
-        List<Part> pgpSignedParts = CryptoPartFinder.findPgpSignedParts(message);
-        processFoundParts(pgpSignedParts, CryptoPartType.SIGNED, CryptoMethod.OPENPGP,
-                CryptoError.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
+            List<Part> pgpEncryptedParts = CryptoPartFinder.findPgpEncryptedParts(message);
+            processFoundParts(pgpEncryptedParts, CryptoPartType.ENCRYPTED, CryptoMethod.OPENPGP,
+                    CryptoError.ENCRYPTED_BUT_INCOMPLETE,
+                    MessageHelper.createEmptyPart());
 
-        List<Part> inlineParts = CryptoPartFinder.findPgpInlineParts(message);
-        addFoundInlinePgpParts(inlineParts);
+            List<Part> pgpSignedParts = CryptoPartFinder.findPgpSignedParts(message);
+            processFoundParts(pgpSignedParts, CryptoPartType.SIGNED, CryptoMethod.OPENPGP,
+                    CryptoError.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
 
-        List<Part> smimeEncryptedParts = CryptoPartFinder.findSmimeEncryptedParts(message);
-        processFoundParts(pgpEncryptedParts, CryptoPartType.ENCRYPTED, CryptoMethod.SMIME,
-                CryptoError.ENCRYPTED_BUT_INCOMPLETE,
-                MessageHelper.createEmptyPart());
+            List<Part> inlineParts = CryptoPartFinder.findPgpInlineParts(message);
+            addFoundInlinePgpParts(inlineParts);
+        }
 
-        List<Part> smimeSignedParts = CryptoPartFinder.findSmimeSignedParts(message);
-        processFoundParts(pgpSignedParts, CryptoPartType.SIGNED, CryptoMethod.SMIME,
-                CryptoError.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
+        if(account.isSmimeProviderConfigured()) {
+
+            List<Part> smimeEncryptedParts = CryptoPartFinder.findSmimeEncryptedParts(message);
+            processFoundParts(smimeEncryptedParts, CryptoPartType.ENCRYPTED, CryptoMethod.SMIME,
+                    CryptoError.ENCRYPTED_BUT_INCOMPLETE,
+                    MessageHelper.createEmptyPart());
+
+            List<Part> smimeSignedParts = CryptoPartFinder.findSmimeSignedParts(message);
+            processFoundParts(smimeSignedParts, CryptoPartType.SIGNED, CryptoMethod.SMIME,
+                    CryptoError.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
+        }
 
         decryptOrVerifyNextPart();
     }
@@ -138,13 +144,25 @@ public class MessageCryptoHelper {
                 CryptoPart cryptoPart = new CryptoPart(cryptoPartType, cryptoMethod, part);
                 partsToDecryptOrVerify.add(cryptoPart);
             } else {
-                addErrorAnnotation(part, errorIfIncomplete, replacementPart);
+                Log.w(K9.LOG_TAG, "Found part was incomplete");
+                if(cryptoMethod == CryptoMethod.OPENPGP)
+                    addOpenPgpErrorAnnotation(part, errorIfIncomplete, replacementPart);
+                else if(cryptoMethod == CryptoMethod.SMIME)
+                    addSmimeErrorAnnotation(part, errorIfIncomplete, replacementPart);
+
             }
         }
     }
 
-    private void addErrorAnnotation(Part part, CryptoError error, MimeBodyPart outputData) {
+    private void addOpenPgpErrorAnnotation(Part part, CryptoError error, MimeBodyPart outputData) {
         OpenPgpResultAnnotation annotation = new OpenPgpResultAnnotation();
+        annotation.setErrorType(error);
+        annotation.setOutputData(outputData);
+        messageAnnotations.put(part, Collections.singletonList((CryptoResultAnnotation) annotation));
+    }
+
+    private void addSmimeErrorAnnotation(Part part, CryptoError error, MimeBodyPart outputData) {
+        SmimeResultAnnotation annotation = new SmimeResultAnnotation();
         annotation.setErrorType(error);
         annotation.setOutputData(outputData);
         messageAnnotations.put(part, Collections.singletonList((CryptoResultAnnotation) annotation));
@@ -236,10 +254,13 @@ public class MessageCryptoHelper {
         if (decryptIntent == null) {
             decryptIntent = new Intent();
         }
-        decryptVerify(decryptIntent);
+        if (cryptoPart.method == CryptoMethod.OPENPGP)
+            openPgpDecryptVerify(decryptIntent);
+        else if (cryptoPart.method == CryptoMethod.SMIME)
+            smimeDecryptVerify(decryptIntent);
     }
 
-    private void decryptVerify(Intent intent) {
+    private void openPgpDecryptVerify(Intent intent) {
         intent.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
 
         try {
@@ -255,6 +276,29 @@ public class MessageCryptoHelper {
                 }
                 case INLINE_PGP: {
                     callAsyncInlineOperation(intent);
+                    return;
+                }
+            }
+
+            throw new IllegalStateException("Unknown crypto part type: " + cryptoPartType);
+        } catch (IOException e) {
+            Log.e(K9.LOG_TAG, "IOException", e);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "MessagingException", e);
+        }
+    }
+
+    private void smimeDecryptVerify(Intent intent) {
+        intent.setAction(SmimeApi.ACTION_DECRYPT_VERIFY);
+        try {
+            CryptoPartType cryptoPartType = currentCryptoPart.type;
+            switch (cryptoPartType) {
+                case SIGNED: {
+                    callAsyncDetachedVerify(intent);
+                    return;
+                }
+                case ENCRYPTED: {
+                    callAsyncDecrypt(intent);
                     return;
                 }
             }
@@ -441,6 +485,7 @@ public class MessageCryptoHelper {
     }
 
     private void onOpenPgpOperationReturned(MimeBodyPart outputPart) {
+
         if (currentCryptoResult == null) {
             Log.e(K9.LOG_TAG, "Internal error: we should have a result here!");
             return;

@@ -334,6 +334,14 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         Toast.makeText(activity, R.string.error_crypto_provider_ui_required, Toast.LENGTH_LONG).show();
     }
 
+    public void showErrorSmimeConnection() {
+        Toast.makeText(activity, R.string.error_crypto_provider_connect, Toast.LENGTH_LONG).show();
+    }
+
+    public void showErrorSmimeUserInteractionRequired() {
+        Toast.makeText(activity, R.string.error_crypto_provider_ui_required, Toast.LENGTH_LONG).show();
+    }
+
     public void showErrorMissingSignKey() {
         Toast.makeText(activity, R.string.compose_error_no_signing_key, Toast.LENGTH_LONG).show();
     }

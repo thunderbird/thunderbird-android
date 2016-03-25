@@ -475,7 +475,7 @@ public class Account implements BaseAccount, StoreConfig {
         mOpenPgpKey = storage.getLong(mUuid + ".openPgpKey", NO_OPENPGP_KEY);
         String smimeApp = storage.getString(mUuid + ".smimeApp", NO_SMIME_PROVIDER);
         setSmimeApp(smimeApp);
-        mSmimeKey = storage.getLong(mUuid + ".openPgpKey", NO_SMIME_KEY);
+        mSmimeKey = storage.getLong(mUuid + ".smimeKey", NO_SMIME_KEY);
 
         mAllowRemoteSearch = storage.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = storage.getBoolean(mUuid + ".remoteSearchFullText", false);
@@ -741,6 +741,8 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
         editor.putString(mUuid + ".openPgpApp", mOpenPgpApp);
         editor.putLong(mUuid + ".openPgpKey", mOpenPgpKey);
+        editor.putString(mUuid + ".smimeApp", mSmimeApp);
+        editor.putLong(mUuid + ".smimeKey", mSmimeKey);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1611,7 +1613,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public String getOpenPgpApp() {
-        return mOpenPgpApp;
+        return mOpenPgpApp != null ? mOpenPgpApp : NO_OPENPGP_PROVIDER;
     }
 
     public void setOpenPgpApp(String cryptoApp) {
@@ -1631,12 +1633,12 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public String getSmimeApp() {
-        return mSmimeApp;
+        return mSmimeApp != null ? mSmimeApp : NO_SMIME_PROVIDER;
     }
 
     public void setSmimeApp(String smimeApp) {
         if (smimeApp == null) {
-            mSmimeApp = NO_OPENPGP_PROVIDER;
+            mSmimeApp = NO_SMIME_PROVIDER;
         } else {
             mSmimeApp = mSmimeApp;
         }
@@ -1709,6 +1711,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized boolean isSmimeProviderConfigured() {
+        Log.v(K9.LOG_TAG, "SMIME APP: " + getSmimeApp());
         return !NO_SMIME_PROVIDER.equals(getSmimeApp());
     }
 

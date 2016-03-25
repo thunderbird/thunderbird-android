@@ -965,37 +965,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Nullable
     private MessageBuilder createMessageBuilder(boolean isDraft) {
-        MessageBuilder builder;
-
-        recipientPresenter.updateCryptoStatus();
-        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
-        // TODO encrypt drafts for storage
-        if(!isDraft && cryptoStatus.shouldUsePgpMessageBuilder()) {
-            SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
-            if (maybeSendErrorState != null) {
-                recipientPresenter.showCryptoSendError(maybeSendErrorState);
-                return null;
-            }
-
-            OpenPgpApi openPgpApi = recipientPresenter.getOpenPgpApi();
-            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), openPgpApi);
-            pgpBuilder.setCryptoStatus(cryptoStatus);
-            builder = pgpBuilder;
-        } else if(!isDraft && cryptoStatus.shouldUseSmimeMessageBuilder()) {
-            SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
-            if (maybeSendErrorState != null) {
-                recipientPresenter.showCryptoSendError(maybeSendErrorState);
-                return null;
-            }
-
-            SmimeApi smimeApi = recipientPresenter.getSmimeApi();
-            SmimeMessageBuilder smimeBuilder = new SmimeMessageBuilder(getApplicationContext(), smimeApi);
-            smimeBuilder.setCryptoStatus(cryptoStatus);
-            builder = smimeBuilder;
-        } else {
-            builder = new SimpleMessageBuilder(getApplicationContext());
-        }
-
+        MessageBuilder builder = selectBuilder(isDraft);
+        if(builder == null)
+            return null;
         builder.setSubject(mSubjectView.getText().toString())
                 .setTo(recipientPresenter.getToAddresses())
                 .setCc(recipientPresenter.getCcAddresses())
@@ -1019,8 +991,37 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setCursorPosition(mMessageContentView.getSelectionStart())
                 .setMessageReference(mMessageReference)
                 .setDraft(isDraft);
-
         return builder;
+    }
+
+    private MessageBuilder selectBuilder(boolean isDraft) {
+        recipientPresenter.updateCryptoStatus();
+        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
+        // TODO encrypt drafts for storage
+        if(!isDraft && cryptoStatus.shouldUsePgpMessageBuilder()) {
+            SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
+            if (maybeSendErrorState != null) {
+                recipientPresenter.showCryptoSendError(maybeSendErrorState);
+                return null;
+            }
+            OpenPgpApi openPgpApi = recipientPresenter.getOpenPgpApi();
+            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), openPgpApi);
+            pgpBuilder.setCryptoStatus(cryptoStatus);
+            return pgpBuilder;
+        } else if(!isDraft && cryptoStatus.shouldUseSmimeMessageBuilder()) {
+            SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
+            if (maybeSendErrorState != null) {
+                recipientPresenter.showCryptoSendError(maybeSendErrorState);
+                return null;
+            }
+
+            SmimeApi smimeApi = recipientPresenter.getSmimeApi();
+            SmimeMessageBuilder smimeBuilder = new SmimeMessageBuilder(getApplicationContext(), smimeApi);
+            smimeBuilder.setCryptoStatus(cryptoStatus);
+            return smimeBuilder;
+        } else {
+            return new SimpleMessageBuilder(getApplicationContext());
+        }
     }
 
     private void checkToSendMessage() {
