@@ -4,6 +4,9 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -11,6 +14,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 public class ReceivedHeadersTest {
 
     @Test
@@ -34,8 +39,6 @@ public class ReceivedHeadersTest {
                         "by localhost (scarlet.richardwhiuk.com [127.0.0.1]) (amavisd-new, port 10024)\n" +
                         "with ESMTP id kEaYiQPLCxiT for <philip@whiuk.com>;	Fri, 25 Mar 2016 10:38:27 +0000 (GMT)\n",
                 " from serpentine.unitedhosting.co.uk (serpentine.unitedhosting.co.uk [83.223.125.16])\n" +
-                        "(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))\n" +
-                        "(No client certificate requested)\n" +
                         "by scarlet.richardwhiuk.com (Postfix)\n" +
                         "with ESMTPS id C19917A8E9\n" +
                         "for <philip@whiuk.com>; Fri, 25 Mar 2016 10:38:27 +0000 (GMT)\n",

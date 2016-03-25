@@ -17,30 +17,37 @@ public class ReceivedHeaders {
     public static final String RECEIVED = "Received";
     public static Pattern fromPattern = Pattern.compile("from ([A-Za-z0-9.]*?) ");
     public static Pattern byPattern = Pattern.compile("by ([A-Za-z0-9.]*?) ");
-    public static Pattern usingPattern = Pattern.compile("using (.*?) with cipher (.*?) (([0-9]*/[0-9]*?) bits)");
+    public static Pattern usingPattern = Pattern.compile("using (.*?)");
+    public static Pattern cipherPattern = Pattern.compile("cipher (.*?)");
+    public static Pattern bitsPattern = Pattern.compile("([0-9]*?)/([0-9]*?) bits");
 
     public static SecureTransportState wasMessageTransmittedSecurely(Message message) {
         try {
             String[] headers = message.getHeader(RECEIVED);
             Log.e(K9.LOG_TAG, "Received headers: " + headers.length);
 
-            for(String header: headers) {
-                String fromAddress = "", toAddress = "", sslVersion = null, cipher, bits;
+            for (String header: headers) {
+                String fromAddress = "", toAddress = "", sslVersion = null, cipher, bits1, bits2;
                 header = header.trim();
 
                 Matcher matcher = fromPattern.matcher(header);
-                if(matcher.find())
-                    fromAddress = matcher.group();
+                if (matcher.find())
+                    fromAddress = matcher.group(1);
 
                 matcher = byPattern.matcher(header);
-                if(matcher.find())
-                    toAddress = matcher.group();
+                if (matcher.find())
+                    toAddress = matcher.group(1);
 
                 matcher = usingPattern.matcher(header);
-                if(matcher.find()) {
-                    sslVersion = matcher.group(0);
-                    cipher = matcher.group(0);
-                    bits = matcher.group(0);
+                if (matcher.find()) {
+                    sslVersion = matcher.group(1);
+                    matcher = cipherPattern.matcher(header);
+                    if (matcher.find())
+                        cipher = matcher.group(1);
+                    matcher = bitsPattern.matcher(header);
+                    if (matcher.find())
+                        bits1 = matcher.group(1);
+                        bits1 = matcher.group(2);
                 }
 
                 if (fromAddress.equals("localhost") || fromAddress.equals("127.0.0.1") ||
