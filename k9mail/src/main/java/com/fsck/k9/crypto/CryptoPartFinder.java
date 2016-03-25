@@ -23,16 +23,17 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
 
-public class MessageDecryptVerifier {
+public class CryptoPartFinder {
     private static final String MULTIPART_ENCRYPTED = "multipart/encrypted";
     private static final String MULTIPART_SIGNED = "multipart/signed";
     private static final String PROTOCOL_PARAMETER = "protocol";
     private static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
     private static final String APPLICATION_PGP_SIGNATURE = "application/pgp-signature";
+    private static final String SMIME_ENCRYPTED = "application/pkcs7-mime";
     private static final String TEXT_PLAIN = "text/plain";
 
 
-    public static List<Part> findEncryptedParts(Part startPart) {
+    public static List<Part> findPgpEncryptedParts(Part startPart) {
         List<Part> encryptedParts = new ArrayList<Part>();
         Stack<Part> partsToCheck = new Stack<Part>();
         partsToCheck.push(startPart);
@@ -55,7 +56,7 @@ public class MessageDecryptVerifier {
         return encryptedParts;
     }
 
-    public static List<Part> findSignedParts(Part startPart) {
+    public static List<Part> findPgpSignedParts(Part startPart) {
         List<Part> signedParts = new ArrayList<Part>();
         Stack<Part> partsToCheck = new Stack<Part>();
         partsToCheck.push(startPart);
@@ -150,5 +151,64 @@ public class MessageDecryptVerifier {
         String contentType = part.getContentType();
         String protocol = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);
         return APPLICATION_PGP_ENCRYPTED.equalsIgnoreCase(protocol);
+    }
+
+
+    public static List<Part> findSmimeEncryptedParts(Part startPart) {
+        List<Part> encryptedParts = new ArrayList<Part>();
+        Stack<Part> partsToCheck = new Stack<Part>();
+        partsToCheck.push(startPart);
+
+        while (!partsToCheck.isEmpty()) {
+            Part part = partsToCheck.pop();
+            Body body = part.getBody();
+
+            if (isSmimeEncryptedPart(part)) {
+                encryptedParts.add(part);
+            } else if (body instanceof Multipart) {
+                Multipart multipart = (Multipart) body;
+                for (int i = multipart.getCount() - 1; i >= 0; i--) {
+                    BodyPart bodyPart = multipart.getBodyPart(i);
+                    partsToCheck.push(bodyPart);
+                }
+            }
+        }
+
+        return encryptedParts;
+    }
+
+    public static List<Part> findSmimeSignedParts(Part startPart) {
+        List<Part> signedParts = new ArrayList<Part>();
+        Stack<Part> partsToCheck = new Stack<Part>();
+        partsToCheck.push(startPart);
+
+        while (!partsToCheck.isEmpty()) {
+            Part part = partsToCheck.pop();
+            Body body = part.getBody();
+
+            if (isSmimeSignedPart(part)) {
+                signedParts.add(part);
+            } else if (body instanceof Multipart) {
+                Multipart multipart = (Multipart) body;
+                for (int i = multipart.getCount() - 1; i >= 0; i--) {
+                    BodyPart bodyPart = multipart.getBodyPart(i);
+                    partsToCheck.push(bodyPart);
+                }
+            }
+        }
+
+        return signedParts;
+    }
+
+    private static boolean isSmimeSignedPart(Part part) {
+        return false;
+    }
+
+    private static boolean isSmimeEncryptedPart(Part part) {
+        if (!isSameMimeType(part.getMimeType(), SMIME_ENCRYPTED)) {
+            return false;
+        }
+        //TODO: Do we need to care about name and smime-type?
+        return true;
     }
 }

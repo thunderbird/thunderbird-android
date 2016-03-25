@@ -211,6 +211,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пишет:</string>
   <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> пишет:</string>
   <string name="message_compose_error_no_recipients">Укажите адресата</string>
+  <string name="compose_error_incomplete_recipient">Поле адресата заполнено неполностью!</string>
   <string name="error_contact_address_not_found">Контакт не содержит сведений о email</string>
   <string name="message_compose_attachments_skipped_toast">Некоторые вложения не были загружены и не могут быть отправлены</string>
   <string name="message_compose_show_quoted_text_action">Цитировать</string>
@@ -696,7 +697,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="search_all_messages_detail">в видимых папках</string>
   <string name="integrated_inbox_title">Входящие</string>
   <string name="integrated_inbox_detail">из всех ящиков</string>
-  <string name="tap_hint">Нажмите звезду или кружок для фильтрации важных или непрочитанных</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Общие \"Входящие\"</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Показать почту в общих \"Входящих\"</string>
   <string name="account_settings_searchable_label">Папки для поиска</string>
@@ -738,7 +738,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="font_size_larger">Гигантский</string>
   <string name="miscellaneous_preferences">Разное</string>
   <string name="error_activity_not_found">Подходящее приложение не найдено</string>
-  <string name="send_aborted">Отправка отменена</string>
   <string name="save_or_discard_draft_message_dlg_title">Выберите действие</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Сохранить черновик или отменить сообщение?</string>
   <string name="confirm_discard_draft_message_title">Удаление</string>
@@ -927,9 +926,21 @@ K-9 Mail — почтовый клиент для Android.
   <string name="recipient_bcc">Скрытая</string>
   <string name="recipient_to">Кому</string>
   <string name="recipient_from">От</string>
-  <string name="unknown_recipient"><![CDATA[<Неизвестный получатель>]]></string>
+  <string name="unknown_recipient"><![CDATA[<Неизвестный адресат>]]></string>
   <string name="address_type_home">Дом</string>
   <string name="address_type_work">Работа</string>
   <string name="address_type_other">Прочее</string>
   <string name="address_type_mobile">Мобильный</string>
+  <string name="warn_search_disabled">Поиск по содержимому писем в этой разрабатываемой версии отключён!</string>
+  <string name="compose_error_no_draft_folder">Для данного ящика не настроена папка Черновики!</string>
+  <string name="compose_not_saving_unencrypted">Черновик НЕ сохранён без шифрования!</string>
+  <string name="compose_error_pgp_error">Ошибка провайдера OpenPGP. Проверьте настройки!</string>
+  <string name="compose_error_no_signing_key">Не найден ключ для подписания. Проверьте настройки.</string>
+  <string name="compose_error_private_missing_keys">Защищенный режим включён, но некоторые адресаты не имеют ключей!</string>
+  <string name="crypto_mode_disabled">Не подписывать и не шифровать.</string>
+  <string name="crypto_mode_sign_only">Подписывать, но не шифровать.</string>
+  <string name="crypto_mode_opportunistic">Подписывать, пытаться шифровать.</string>
+  <string name="crypto_mode_private">Подписывать и шифровать.</string>
+  <string name="error_crypto_provider_connect">Нет доступа к криптопровайдеру. Проверьте настройки или нажмите значок шифрования для повтора!</string>
+  <string name="error_crypto_provider_ui_required">Нет доступа к криптопровайдеру, нажмите значок шифрования для повтора!</string>
 </resources>

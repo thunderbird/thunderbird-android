@@ -396,8 +396,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             }
             Transport transport = Transport.getInstance(K9.app, account);
             transport.close();
-            transport.open();
-            transport.close();
+            try {
+                transport.open();
+            } finally {
+                transport.close();
+            }
         }
 
         private void checkIncoming() throws MessagingException {

@@ -666,7 +666,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="search_all_messages_detail">Alle meldinger i søkbare mapper</string>
   <string name="integrated_inbox_title">Samlet innboks</string>
   <string name="integrated_inbox_detail">Alle meldinger i samlede mapper</string>
-  <string name="tap_hint">Trykk på konvolutt eller stjerne for uleste eller stjernede meldinger</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Samle</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Alle meldinger vises i samlet innboks</string>
   <string name="account_settings_searchable_label">Mapper å søke</string>
@@ -708,7 +707,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="font_size_larger">Større</string>
   <string name="miscellaneous_preferences">Diverse</string>
   <string name="error_activity_not_found">Ingen egnede program ble funnet for denne handlingen.</string>
-  <string name="send_aborted">Sending avbrutt</string>
   <string name="save_or_discard_draft_message_dlg_title">Lagre utkast?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Lagre eller Forkast denne meldingen?</string>
   <string name="confirm_discard_draft_message_title">Forkast melding?</string>

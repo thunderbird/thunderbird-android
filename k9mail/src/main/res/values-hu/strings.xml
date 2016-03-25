@@ -695,7 +695,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="search_all_messages_detail">Az összes levél egy helyen</string>
   <string name="integrated_inbox_title">Összes beérkezett levél</string>
   <string name="integrated_inbox_detail">Minden üzenet egy helyen</string>
-  <string name="tap_hint">Érintse meg a borítékot vagy a csillagot a kijelölésekhez</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Egyesítés</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Minden üzenetet az Összes beérkezett mappába</string>
   <string name="account_settings_searchable_label">Keresés ezekben mappákban</string>
@@ -737,7 +736,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="font_size_larger">Nagyobb</string>
   <string name="miscellaneous_preferences">Egyéb</string>
   <string name="error_activity_not_found">Nincs megfelelő alkalmazás ehhez a művelethez.</string>
-  <string name="send_aborted">Küldés megszakítva.</string>
   <string name="save_or_discard_draft_message_dlg_title">Menti piszkozatként?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Menti vagy mégsem az üzenetet?</string>
   <string name="confirm_discard_draft_message_title">Üzenet elvetése?</string>

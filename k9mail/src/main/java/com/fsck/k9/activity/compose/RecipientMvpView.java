@@ -149,10 +149,16 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccView.addTextChangedListener(textWatcher);
     }
 
-    public void setCryptoProvider(String openPgpProvider) {
-        toView.setCryptoProvider(openPgpProvider);
-        ccView.setCryptoProvider(openPgpProvider);
-        bccView.setCryptoProvider(openPgpProvider);
+    public void setOpenPgpProvider(String openPgpProvider) {
+        toView.setOpenPgpProvider(openPgpProvider);
+        ccView.setOpenPgpProvider(openPgpProvider);
+        bccView.setOpenPgpProvider(openPgpProvider);
+    }
+
+    public void setSmimeProvider(String smimeProvider) {
+        toView.setSmimeProvider(smimeProvider);
+        ccView.setSmimeProvider(smimeProvider);
+        bccView.setSmimeProvider(smimeProvider);
     }
 
     public void requestFocusOnToField() {

@@ -652,7 +652,6 @@
   <string name="search_all_messages_detail">可搜索文件夹中的所有邮件</string>
   <string name="integrated_inbox_title">全局收件箱</string>
   <string name="integrated_inbox_detail">全局收件箱中的所有邮件</string>
-  <string name="tap_hint">点击信封或星标来标记邮件为未读或添加星标</string>
   <string name="folder_settings_include_in_integrated_inbox_label">全局</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">所有邮件都显示在全局收件箱中</string>
   <string name="account_settings_searchable_label">搜索的文件夹</string>
@@ -694,7 +693,6 @@
   <string name="font_size_larger">更大</string>
   <string name="miscellaneous_preferences">杂项</string>
   <string name="error_activity_not_found">没有找到可以用于这一操作的程序。</string>
-  <string name="send_aborted">发送操作已经取消。</string>
   <string name="save_or_discard_draft_message_dlg_title">保存邮件草稿？</string>
   <string name="save_or_discard_draft_message_instructions_fmt">保存还是忽略这封邮件？</string>
   <string name="confirm_discard_draft_message_title">舍弃该邮件？</string>

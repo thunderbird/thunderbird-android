@@ -665,7 +665,6 @@
   <string name="search_all_messages_detail">Alle berichten in doorzoekbare mappen</string>
   <string name="integrated_inbox_title">Geïntegreerde Inbox</string>
   <string name="integrated_inbox_detail">Alle berichten in geïntegreerde mappen</string>
-  <string name="tap_hint">Tik envelop of ster voor ongelezen of berichten met sterren</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Integreer</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Ongelezen berichten worden weergegeven in de geïntegreerde Inbox</string>
   <string name="account_settings_searchable_label">Mappen om te doorzoeken</string>
@@ -707,7 +706,6 @@
   <string name="font_size_larger">Groter</string>
   <string name="miscellaneous_preferences">Diversen</string>
   <string name="error_activity_not_found">Geen geschikte applicatie gevonden voor deze aktie.</string>
-  <string name="send_aborted">Verzenden geannuleerd.</string>
   <string name="save_or_discard_draft_message_dlg_title">Ontwerp opslaan?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Opslaan of negeren van dit bericht?</string>
   <string name="confirm_discard_draft_message_title">Bericht afbreken?</string>

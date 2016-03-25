@@ -502,7 +502,6 @@
   <string name="search_all_messages_detail">כל הודעות שבתיקיות שניתנות לחיפוש</string>
   <string name="integrated_inbox_title">תיבת דואר נכנס אחידה</string>
   <string name="integrated_inbox_detail">כל ההודעות בתיקיות המאוחדות</string>
-  <string name="tap_hint">הקש על המעטפה או על הכוכב בשביל הודעות שלא נקראו או שמסומנות בכוכב</string>
   <string name="folder_settings_include_in_integrated_inbox_label">לאחד</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">כל ההדועות מוצגות בתיבת דואר נכנס אחידה</string>
   <string name="account_settings_searchable_label">תיקיות לחיפוש</string>
@@ -539,7 +538,6 @@
   <string name="font_size_larger">ענק</string>
   <string name="miscellaneous_preferences">שונות</string>
   <string name="error_activity_not_found">לא נמצא ישום שיכול לבצע פעולה זו.</string>
-  <string name="send_aborted">שליחה בוטלה.</string>
   <string name="save_or_discard_draft_message_dlg_title">לשמור הודעה כטיוטה?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">לשמור או למחוק הודעה זו?</string>
   <string name="select_text_now">בחר טקסט כדי להעתיק.</string>

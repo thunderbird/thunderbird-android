@@ -7,6 +7,7 @@ import java.util.List;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
+import com.fsck.k9.ui.crypto.CryptoMethod;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
@@ -18,6 +19,7 @@ public class ComposeCryptoStatus {
 
 
     private CryptoProviderState cryptoProviderState;
+    private CryptoMethod cryptoMethod;
     private CryptoMode cryptoMode;
     private boolean allKeysAvailable;
     private boolean allKeysVerified;
@@ -87,7 +89,15 @@ public class ComposeCryptoStatus {
     }
 
     public boolean shouldUsePgpMessageBuilder() {
-        return cryptoProviderState != CryptoProviderState.UNCONFIGURED && cryptoMode != CryptoMode.DISABLE;
+        return cryptoProviderState != CryptoProviderState.UNCONFIGURED
+                && cryptoMethod == CryptoMethod.OPENPGP
+                && cryptoMode != CryptoMode.DISABLE;
+    }
+
+    public boolean shouldUseSmimeMessageBuilder() {
+        return cryptoProviderState != CryptoProviderState.UNCONFIGURED
+                && cryptoMethod == CryptoMethod.SMIME
+                && cryptoMode != CryptoMode.DISABLE;
     }
 
     public boolean isEncryptionEnabled() {
@@ -105,11 +115,17 @@ public class ComposeCryptoStatus {
 
     public static class ComposeCryptoStatusBuilder {
 
+        private CryptoMethod cryptoMethod;
         private CryptoProviderState cryptoProviderState;
         private CryptoMode cryptoMode;
         private Long signingKeyId;
         private Long selfEncryptKeyId;
         private List<Recipient> recipients;
+
+        public ComposeCryptoStatusBuilder setCryptoMethod(CryptoMethod cryptoMethod) {
+            this.cryptoMethod = cryptoMethod;
+            return this;
+        }
 
         public ComposeCryptoStatusBuilder setCryptoProviderState(CryptoProviderState cryptoProviderState) {
             this.cryptoProviderState = cryptoProviderState;
@@ -166,6 +182,7 @@ public class ComposeCryptoStatus {
             ComposeCryptoStatus result = new ComposeCryptoStatus();
             result.cryptoProviderState = cryptoProviderState;
             result.cryptoMode = cryptoMode;
+            result.cryptoMethod = cryptoMethod;
             result.recipientAddresses = recipientAddresses.toArray(new String[0]);
             result.allKeysAvailable = allKeysAvailable;
             result.allKeysVerified = allKeysVerified;

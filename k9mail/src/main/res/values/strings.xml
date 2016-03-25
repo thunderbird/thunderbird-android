@@ -281,6 +281,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_show_more_attachments_action">More…</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>
+    <string name="message_view_toast_unable_to_display_message">Unable to display message</string>
 
     <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
@@ -570,9 +571,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_folders">Folders</string>
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
     <string name="account_settings_crypto">Cryptography</string>
-    <string name="account_settings_crypto_app">OpenPGP app</string>
-    <string name="account_settings_crypto_key">My Key</string>
+    <string name="account_settings_openpgp">OpenPGP</string>
+    <string name="account_settings_openpgp_app">OpenPGP app</string>
+    <string name="account_settings_openpgp_key">My OpenPGP Key</string>
     <string name="account_settings_no_openpgp_provider_installed">No OpenPGP app installed</string>
+    <string name="account_settings_smime">S/MIME</string>
+    <string name="account_settings_smime_app">S/MIME app</string>
+    <string name="account_settings_smime_key">My S/MIME certificate</string>
+    <string name="account_settings_no_smime_provider_installed">No S/MIME app installed</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -1113,6 +1119,26 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_result_action_lookup">"Lookup"</string>
     <string name="openpgp_result_no_name">"No name"</string>
     <string name="openpgp_result_no_email">"No email"</string>
+
+    <!-- === SMIME specific ================================================================== -->
+    <string name="smime_decryption_failed">Decryption failed: %s</string>
+    <string name="smime_unknown_error">Unknown OpenPGP Error</string>
+    <string name="smime_canceled_by_user">Canceled by user</string>
+    <string name="smime_result_no_signature">"Not Signed"</string>
+    <string name="smime_result_invalid_signature">"Invalid signature!"</string>
+    <string name="smime_result_signature_uncertified">"Signed by (not certified!)"</string>
+    <string name="smime_result_signature_certified">"Signed by"</string>
+    <string name="smime_result_signature_expired_key">"Key is expired!"</string>
+    <string name="smime_result_signature_revoked_key">"Key has been revoked!"</string>
+    <string name="smime_result_signature_insecure">"Insecure!"</string>
+    <string name="smime_result_signature_missing_key">"Unknown public key"</string> <!-- TODO: Req'd? -->
+    <string name="smime_result_encrypted">"Encrypted"</string>
+    <string name="smime_result_not_encrypted">"Not Encrypted"</string>
+    <string name="smime_result_decryption_insecure">"Insecure"</string>
+    <string name="smime_result_action_show">"Show"</string>
+    <string name="smime_result_action_lookup">"Lookup"</string>
+    <string name="smime_result_no_name">"No name"</string>
+    <string name="smime_result_no_email">"No email"</string>
 
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>

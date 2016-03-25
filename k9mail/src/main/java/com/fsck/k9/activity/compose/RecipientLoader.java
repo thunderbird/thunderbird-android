@@ -64,37 +64,41 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private final Address[] addresses;
     private final Uri contactUri;
     private final Uri lookupKeyUri;
-    private final String cryptoProvider;
+    private final String openPgpProvider;
+    private final String smimeProvider;
 
     private List<Recipient> cachedRecipients;
     private ForceLoadContentObserver observerContact, observerKey;
 
 
-    public RecipientLoader(Context context, String cryptoProvider, String query) {
+    public RecipientLoader(Context context, String openPgpProvider, String smimeProvider, String query) {
         super(context);
         this.query = query;
         this.lookupKeyUri = null;
         this.addresses = null;
         this.contactUri = null;
-        this.cryptoProvider = cryptoProvider;
+        this.openPgpProvider = openPgpProvider;
+        this.smimeProvider = smimeProvider;
     }
 
-    public RecipientLoader(Context context, String cryptoProvider, Address... addresses) {
+    public RecipientLoader(Context context, String openPgpProvider, String smimeProvider,  Address... addresses) {
         super(context);
         this.query = null;
         this.addresses = addresses;
         this.contactUri = null;
-        this.cryptoProvider = cryptoProvider;
+        this.openPgpProvider = openPgpProvider;
+        this.smimeProvider = smimeProvider;
         this.lookupKeyUri = null;
     }
 
-    public RecipientLoader(Context context, String cryptoProvider, Uri contactUri, boolean isLookupKey) {
+    public RecipientLoader(Context context, String openPgpProvider, String smimeProvider, Uri contactUri, boolean isLookupKey) {
         super(context);
         this.query = null;
         this.addresses = null;
         this.contactUri = isLookupKey ? null : contactUri;
         this.lookupKeyUri = isLookupKey ? contactUri : null;
-        this.cryptoProvider = cryptoProvider;
+        this.openPgpProvider = openPgpProvider;
+        this.smimeProvider = smimeProvider;
     }
 
     @Override
@@ -118,8 +122,12 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             return recipients;
         }
 
-        if (cryptoProvider != null) {
-            fillCryptoStatusData(recipientMap);
+        if (openPgpProvider != null) {
+            fillOpenPgpStatusData(recipientMap);
+        }
+
+        if (smimeProvider != null) {
+            fillSmimeStatusData(recipientMap);
         }
 
         return recipients;
@@ -249,12 +257,65 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         cursor.close();
     }
 
-    private void fillCryptoStatusData(Map<String, Recipient> recipientMap) {
+    private void fillOpenPgpStatusData(Map<String, Recipient> recipientMap) {
         List<String> recipientList = new ArrayList<>(recipientMap.keySet());
         String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
 
         Cursor cursor;
-        Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/email_status");
+        Uri queryUri = Uri.parse("content://" + openPgpProvider + ".provider.exported/email_status");
+        try {
+            cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_STATUS, null,
+                    recipientAddresses, null);
+        } catch (SecurityException e) {
+            // TODO escalate error to crypto status?
+            return;
+        }
+
+        initializeCryptoStatusForAllRecipients(recipientMap);
+
+        if (cursor == null) {
+            return;
+        }
+
+        while (cursor.moveToNext()) {
+            String email = cursor.getString(INDEX_EMAIL_ADDRESS);
+            int status = cursor.getInt(INDEX_EMAIL_STATUS);
+
+            for (Address address : Address.parseUnencoded(email)) {
+                String emailAddress = address.getAddress();
+                if (recipientMap.containsKey(emailAddress)) {
+                    Recipient recipient = recipientMap.get(emailAddress);
+                    switch (status) {
+                        case CRYPTO_PROVIDER_STATUS_UNTRUSTED: {
+                            if (recipient.getCryptoStatus() == RecipientCryptoStatus.UNAVAILABLE) {
+                                recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_UNTRUSTED);
+                            }
+                            break;
+                        }
+                        case CRYPTO_PROVIDER_STATUS_TRUSTED: {
+                            if (recipient.getCryptoStatus() != RecipientCryptoStatus.AVAILABLE_TRUSTED) {
+                                recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_TRUSTED);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        cursor.close();
+
+        if (observerKey != null) {
+            observerKey = new ForceLoadContentObserver();
+            getContext().getContentResolver().registerContentObserver(queryUri, false, observerKey);
+        }
+    }
+
+    private void fillSmimeStatusData(Map<String, Recipient> recipientMap) {
+        List<String> recipientList = new ArrayList<>(recipientMap.keySet());
+        String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
+
+        Cursor cursor;
+        Uri queryUri = Uri.parse("content://" + smimeProvider + ".provider.exported/email_status");
         try {
             cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_STATUS, null,
                     recipientAddresses, null);

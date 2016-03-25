@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="smime_list_preference_none">None</string>
+    <string name="smime_install_openkeychain_via">Install OpenKeychain via %s</string>
+    <string name="smime_no_key_selected">No key selected</string>
+    <string name="smime_key_selected">Key has been selected</string>
+
+</resources>

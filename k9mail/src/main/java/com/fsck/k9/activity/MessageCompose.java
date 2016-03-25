@@ -103,6 +103,7 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.SmimeMessageBuilder;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
@@ -114,6 +115,7 @@ import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
+import org.openintents.smime.util.SmimeApi;
 
 
 @SuppressWarnings("deprecation")
@@ -971,7 +973,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if(!isDraft && cryptoStatus.shouldUsePgpMessageBuilder()) {
             SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
             if (maybeSendErrorState != null) {
-                recipientPresenter.showPgpSendError(maybeSendErrorState);
+                recipientPresenter.showCryptoSendError(maybeSendErrorState);
                 return null;
             }
 
@@ -979,6 +981,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), openPgpApi);
             pgpBuilder.setCryptoStatus(cryptoStatus);
             builder = pgpBuilder;
+        } else if(!isDraft && cryptoStatus.shouldUseSmimeMessageBuilder()) {
+            SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
+            if (maybeSendErrorState != null) {
+                recipientPresenter.showCryptoSendError(maybeSendErrorState);
+                return null;
+            }
+
+            SmimeApi smimeApi = recipientPresenter.getSmimeApi();
+            SmimeMessageBuilder smimeBuilder = new SmimeMessageBuilder(getApplicationContext(), smimeApi);
+            smimeBuilder.setCryptoStatus(cryptoStatus);
+            builder = smimeBuilder;
         } else {
             builder = new SimpleMessageBuilder(getApplicationContext());
         }

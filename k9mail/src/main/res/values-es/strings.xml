@@ -665,7 +665,6 @@
   <string name="search_all_messages_detail">Mensajes en las carpetas de búsqueda</string>
   <string name="integrated_inbox_title">Entrada unificada</string>
   <string name="integrated_inbox_detail">Todos los mensajes en la Entrada unificada</string>
-  <string name="tap_hint">Pulsar para marcar como leído o poner una estrella</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Todos los mensajes se mostrarán en una bandeja unificada</string>
   <string name="account_settings_searchable_label">Carpetas para buscar</string>
@@ -707,7 +706,6 @@
   <string name="font_size_larger">Muy Grande</string>
   <string name="miscellaneous_preferences">Varios</string>
   <string name="error_activity_not_found">No existe aplicación para realizar esta acción.</string>
-  <string name="send_aborted">Envío cancelado.</string>
   <string name="save_or_discard_draft_message_dlg_title">¿Guardar como borrador?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">¿Guardar o descartar este mensaje?</string>
   <string name="confirm_discard_draft_message_title">¿Descartar mensaje?</string>

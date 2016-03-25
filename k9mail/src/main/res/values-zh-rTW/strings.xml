@@ -609,7 +609,6 @@
   <string name="search_all_messages_detail">可搜尋信件匣中的所有郵件</string>
   <string name="integrated_inbox_title">全域收件匣</string>
   <string name="integrated_inbox_detail">將所有郵件集中到全域收件匣</string>
-  <string name="tap_hint">點擊信件或星號來標記郵件為未讀或加上星號</string>
   <string name="folder_settings_include_in_integrated_inbox_label">全域</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">所有郵件都顯示在全域收件匣中</string>
   <string name="account_settings_searchable_label">搜尋的信件匣</string>
@@ -649,7 +648,6 @@
   <string name="font_size_larger">最大</string>
   <string name="miscellaneous_preferences">偏好設定</string>
   <string name="error_activity_not_found">沒有找到可以用於此操作的程式。</string>
-  <string name="send_aborted">寄送操作已經取消。</string>
   <string name="save_or_discard_draft_message_dlg_title">儲存郵件草稿？</string>
   <string name="save_or_discard_draft_message_instructions_fmt">儲存還是忽略這封郵件？</string>
   <string name="confirm_discard_draft_message_title">放棄信件?</string>

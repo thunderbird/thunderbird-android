@@ -156,7 +156,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" ridimensionato da <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Compattazione account \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="clearing_account">Svuotamento account \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="recreating_account">Ricreazione account \"<xliff:g id="account">%s</xliff:g>\"</string>
+  <string name="recreating_account">Rigenerazione account \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nuova posta</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nuovo messaggio</item>
@@ -211,7 +211,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> ha scritto:</string>
   <string name="message_compose_reply_header_fmt_with_date">Il <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> ha scritto:</string>
   <string name="message_compose_error_no_recipients">Devi aggiungere almeno un destinatario.</string>
-  <string name="compose_error_incomplete_recipient">Il campo destinatario è incompleto!</string>
+  <string name="compose_error_incomplete_recipient">Il campo del destinatario è incompleto!</string>
   <string name="error_contact_address_not_found">Nessun indirizzo email trovato per questo contatto.</string>
   <string name="message_compose_attachments_skipped_toast">Alcuni allegati non possono essere inoltrati poiché non sono stati scaricati.</string>
   <string name="message_compose_show_quoted_text_action">Cita messaggio</string>
@@ -697,7 +697,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="search_all_messages_detail">Tutti i messaggi nelle cartelle abilitate per la ricerca</string>
   <string name="integrated_inbox_title">Posta in arrivo combinata</string>
   <string name="integrated_inbox_detail">Tutti i messaggi nella Posta in arrivo combinata</string>
-  <string name="tap_hint">Tocca la busta o la stella per i messaggi non letti o con stella</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Combina</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Tutti i messaggi sono visualizzati nella Posta in arrivo combinata</string>
   <string name="account_settings_searchable_label">Cartelle da analizzare</string>
@@ -739,7 +738,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="font_size_larger">Più grande</string>
   <string name="miscellaneous_preferences">Varie</string>
   <string name="error_activity_not_found">Nessuna applicazione trovata per questa azione.</string>
-  <string name="send_aborted">Invio interrotto.</string>
   <string name="save_or_discard_draft_message_dlg_title">Vuoi salvare la bozza?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Vuoi salvare o scartare questo messaggio?</string>
   <string name="confirm_discard_draft_message_title">Vuoi eliminare il messaggio?</string>
@@ -925,10 +923,14 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="address_type_mobile">Cellulare</string>
   <string name="warn_search_disabled">Cerca nel corpo dei messaggi è disabilitato in questa versione di sviluppo!</string>
   <string name="compose_error_no_draft_folder">Non è stata configurata una cartella Bozze per questo account!</string>
-  <string name="compose_error_no_signing_key">Firma richiesta, ma nessuna chiave selezionata!</string>
-  <string name="compose_error_private_missing_keys">Modalità privata abilitata, ma è impossibile cifrare per tutti i destinatari!</string>
+  <string name="compose_not_saving_unencrypted">Bozza NON salvata senza cifratura!</string>
+  <string name="compose_error_pgp_error">Errore con il fornitore OpenPGP. Controlla le impostazioni!</string>
+  <string name="compose_error_no_signing_key">Nessuna chiave configurata per la firma! Controlla le impostazioni.</string>
+  <string name="compose_error_private_missing_keys">Modalità privata abilitata, ma alcuni destinatari non hanno chiavi!</string>
   <string name="crypto_mode_disabled">Non firmare o cifrare mai</string>
   <string name="crypto_mode_sign_only">Firma sempre, non cifrare mai.</string>
   <string name="crypto_mode_opportunistic">Firma sempre, cifra se possibile.</string>
   <string name="crypto_mode_private">Firma sempre, cifra sempre.</string>
+  <string name="error_crypto_provider_connect">Impossibile connettersi al fornitore della crittografia, controlla le impostazioni oppure fai clic sull\'icona di cifratura per riprovare!</string>
+  <string name="error_crypto_provider_ui_required">Accesso al fornitore della crittografia negato, fai clic sull\'icona di cifratura per riprovare!</string>
 </resources>

@@ -10,4 +10,11 @@
     <color name="openpgp_grey">#bbb</color>
     <color name="openpgp_sidebar">#D8D8D8</color>
 
+    <color name="smime_red">#CC0000</color>
+    <color name="smime_orange">#FF8800</color>
+    <color name="smime_green">#669900</color>
+    <color name="smime_blue">#336699</color>
+    <color name="smime_grey">#bbb</color>
+    <color name="smime_sidebar">#D8D8D8</color>
+
 </resources>

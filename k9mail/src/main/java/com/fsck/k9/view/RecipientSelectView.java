@@ -13,6 +13,7 @@ import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,7 +56,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
 
     private RecipientAdapter adapter;
-    private String cryptoProvider;
+    private String openPgpProvider;
+    private String smimeProvider;
     private LoaderManager loaderManager;
 
     private ListPopupWindow alternatesPopup;
@@ -123,7 +125,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
 
-        boolean hasCryptoProvider = cryptoProvider != null;
+        boolean hasCryptoProvider = openPgpProvider != null || smimeProvider != null;
         if (!hasCryptoProvider) {
             holder.cryptoStatusRed.setVisibility(View.GONE);
             holder.cryptoStatusOrange.setVisibility(View.GONE);
@@ -196,6 +198,22 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     @Override
+    public void onFocusChanged(boolean hasFocus, int direction, Rect previous) {
+        super.onFocusChanged(hasFocus, direction, previous);
+        if (hasFocus) {
+            displayKeyboard();
+        }
+    }
+
+    private void displayKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) {
+            return;
+        }
+        imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    @Override
     public void showDropDown() {
         boolean cursorIsValid = adapter != null;
         if (!cursorIsValid) {
@@ -236,8 +254,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         loaderManager.restartLoader(LOADER_ID_FILTERING, args, this);
     }
 
-    public void setCryptoProvider(String cryptoProvider) {
-        this.cryptoProvider = cryptoProvider;
+    public void setOpenPgpProvider(String cryptoProvider) {
+        this.openPgpProvider = cryptoProvider;
+    }
+
+    public void setSmimeProvider(String cryptoProvider) {
+        this.smimeProvider = cryptoProvider;
     }
 
     public void addRecipients(Recipient... recipients) {
@@ -303,15 +325,15 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             case LOADER_ID_FILTERING: {
                 String query = args != null && args.containsKey(ARG_QUERY) ? args.getString(ARG_QUERY) : "";
                 adapter.setHighlight(query);
-                return new RecipientLoader(getContext(), cryptoProvider, query);
+                return new RecipientLoader(getContext(), openPgpProvider, smimeProvider, query);
             }
             case LOADER_ID_ALTERNATES: {
                 Uri contactLookupUri = alternatesPopupRecipient.getContactLookupUri();
                 if (contactLookupUri != null) {
-                    return new RecipientLoader(getContext(), cryptoProvider, contactLookupUri, true);
+                    return new RecipientLoader(getContext(), openPgpProvider, smimeProvider, contactLookupUri, true);
                 } else {
                     String address = alternatesPopupRecipient.address.getAddress();
-                    return new RecipientLoader(getContext(), cryptoProvider, address);
+                    return new RecipientLoader(getContext(), openPgpProvider, smimeProvider, address);
                 }
             }
         }
@@ -343,7 +365,13 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     public boolean hasUncompletedText() {
-        return !TextUtils.isEmpty(currentCompletionText());
+        String currentCompletionText = currentCompletionText();
+        return !TextUtils.isEmpty(currentCompletionText) && !isPlaceholderText(currentCompletionText);
+    }
+
+    static private boolean isPlaceholderText(String currentCompletionText) {
+        // TODO string matching here is sort of a hack, but it's somewhat reliable and the info isn't easily available
+        return currentCompletionText.startsWith("+") && currentCompletionText.substring(1).matches("[0-9]+");
     }
 
     @Override

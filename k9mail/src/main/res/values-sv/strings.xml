@@ -210,6 +210,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:</string>
   <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sender">%2$s</xliff:g> skrev: (<xliff:g id="sent_date">%1$s</xliff:g>)</string>
   <string name="message_compose_error_no_recipients">Du måste ange minst en mottagare.</string>
+  <string name="compose_error_incomplete_recipient">Mottagarfältet är inte komplett!</string>
   <string name="error_contact_address_not_found">Hittar ingen e-postadress för denna kontakt.</string>
   <string name="message_compose_attachments_skipped_toast">Vissa bilagor kan inte vidarebefordras eftersom de inte har laddats ned.</string>
   <string name="message_compose_show_quoted_text_action">Citera meddelande</string>
@@ -695,7 +696,6 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="search_all_messages_detail">Alla meddelanden i sökbara mappar</string>
   <string name="integrated_inbox_title">Integrerad inkorg</string>
   <string name="integrated_inbox_detail">Alla meddelanden i integrerade mappar</string>
-  <string name="tap_hint">Tryck på kuvertet eller stjärnan för olästa eller stjärnmärkta brev</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Integrera</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Alla brev visas i den integrerade inkorgen</string>
   <string name="account_settings_searchable_label">Mappar att söka i</string>
@@ -737,7 +737,6 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="font_size_larger">Störst</string>
   <string name="miscellaneous_preferences">Diverse</string>
   <string name="error_activity_not_found">Hittade ingen passande applikation för denna åtgärd.</string>
-  <string name="send_aborted">Sändningen avbruten.</string>
   <string name="save_or_discard_draft_message_dlg_title">Spara utkast?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Spara eller kasta detta brev?</string>
   <string name="confirm_discard_draft_message_title">Kasta meddelande?</string>
@@ -921,4 +920,16 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="address_type_work">Arbete</string>
   <string name="address_type_other">Annat</string>
   <string name="address_type_mobile">Mobil</string>
+  <string name="warn_search_disabled">Sökning i meddelandefältet är inaktiverat i denna utvecklingsversion!</string>
+  <string name="compose_error_no_draft_folder">Ingen Utkast mapp konfigurerad för detta konto!</string>
+  <string name="compose_not_saving_unencrypted">Utkast INTE sparat utan kryptering!</string>
+  <string name="compose_error_pgp_error">Fel för OpenPGP leverantör. Granska dina inställningar!</string>
+  <string name="compose_error_no_signing_key">Ingen nyckel är konfigurerad för signering! Var god granska dina inställningar.</string>
+  <string name="compose_error_private_missing_keys">Privat läge är aktivt, men några mottagare har inte nycklar!</string>
+  <string name="crypto_mode_disabled">Signera eller Kryptera aldrig.</string>
+  <string name="crypto_mode_sign_only">Signera alltid, Kryptera aldrig.</string>
+  <string name="crypto_mode_opportunistic">Signera alltid, Kryptera om möjligt.</string>
+  <string name="crypto_mode_private">Signera alltid, Kryptera alltid.</string>
+  <string name="error_crypto_provider_connect">Kan inte ansluta till crypto leverantör, granska dina inställningar eller klicka på crypto ikonen för nytt försök.</string>
+  <string name="error_crypto_provider_ui_required">Crypto leverantör tillträde nekad, klicka på crypto ikonen för nytt försök.</string>
 </resources>
