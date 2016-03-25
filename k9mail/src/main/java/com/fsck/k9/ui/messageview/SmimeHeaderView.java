@@ -360,6 +360,13 @@ public class SmimeHeaderView extends LinearLayout {
     }
 
     private void setStatusImageAndTextColor(ImageView statusIcon, TextView statusText, CryptoState state) {
+        if (state.equals(CryptoState.NOT_ENCRYPTED) || state.equals(CryptoState.NOT_SIGNED)) {
+            //TODO: Control this using an option
+            statusIcon.setVisibility(View.GONE);
+            statusText.setVisibility(View.GONE);
+            return;
+        }
+
         Drawable statusImageDrawable = context.getResources().getDrawable(state.getDrawableId());
         statusIcon.setImageDrawable(statusImageDrawable);
 
