@@ -31,58 +31,16 @@ import static com.fsck.k9.mail.internet.Viewable.Textual;
 public class MessageExtractor {
     private MessageExtractor() {}
 
-    public static String getTextFromPart(Part part) throws MessagingException {
+    public static String getTextFromPart(Part part) {
         try {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
                 if (body instanceof TextBody) {
                     return ((TextBody)body).getText();
                 }
-
                 final String mimeType = part.getMimeType();
                 if ((mimeType != null) && MimeUtility.mimeTypeMatches(mimeType, "text/*")) {
-                    /*
-                     * We've got a text part, so let's see if it needs to be processed further.
-                     */
-                    String charset = getHeaderParameter(part.getContentType(), "charset");
-                    /*
-                     * determine the charset from HTML message.
-                     */
-                    if (isSameMimeType(mimeType, "text/html") && charset == null) {
-                        InputStream in = MimeUtility.decodeBody(body);
-                        try {
-                            byte[] buf = new byte[256];
-                            in.read(buf, 0, buf.length);
-                            String str = new String(buf, "US-ASCII");
-
-                            if (str.isEmpty()) {
-                                return "";
-                            }
-                            Pattern p = Pattern.compile("<meta http-equiv=\"?Content-Type\"? content=\"text/html; charset=(.+?)\">", Pattern.CASE_INSENSITIVE);
-                            Matcher m = p.matcher(str);
-                            if (m.find()) {
-                                charset = m.group(1);
-                            }
-                        } finally {
-                            try {
-                                MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);
-                            } catch (IOException e) { /* ignore */ }
-                        }
-                    }
-                    charset = fixupCharset(charset, getMessageFromPart(part));
-
-                    /*
-                     * Now we read the part into a buffer for further processing. Because
-                     * the stream is now wrapped we'll remove any transfer encoding at this point.
-                     */
-                    InputStream in = MimeUtility.decodeBody(body);
-                    try {
-                        return CharsetSupport.readToString(in, charset);
-                    } finally {
-                        try {
-                            MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);
-                        } catch (IOException e) { /* Ignore */ }
-                    }
+                    return getTextFromTextPart(part, body, mimeType);
                 } else {
                     throw new MessagingException("Provided non-text part: "+part);
                 }
@@ -91,7 +49,54 @@ public class MessageExtractor {
             }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Unable to getTextFromPart", e);
-            throw new MessagingException("Unable to get text from part: "+part, e);
+            return null;
+        } catch (MessagingException e) {
+            Log.e(LOG_TAG, "Unable to getTextFromPart", e);
+            return null;
+        }
+    }
+
+    private static String getTextFromTextPart(Part part, Body body, String mimeType) throws IOException, MessagingException {
+        /*
+         * We've got a text part, so let's see if it needs to be processed further.
+         */
+        String charset = getHeaderParameter(part.getContentType(), "charset");
+        /*
+         * determine the charset from HTML message.
+         */
+        if (isSameMimeType(mimeType, "text/html") && charset == null) {
+            InputStream in = MimeUtility.decodeBody(body);
+            try {
+                byte[] buf = new byte[256];
+                in.read(buf, 0, buf.length);
+                String str = new String(buf, "US-ASCII");
+
+                if (str.isEmpty()) {
+                    return "";
+                }
+                Pattern p = Pattern.compile("<meta http-equiv=\"?Content-Type\"? content=\"text/html; charset=(.+?)\">", Pattern.CASE_INSENSITIVE);
+                Matcher m = p.matcher(str);
+                if (m.find()) {
+                    charset = m.group(1);
+                }
+            } finally {
+                try {
+                    MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);
+                } catch (IOException e) { /* ignore */ }
+            }
+        }
+        charset = fixupCharset(charset, getMessageFromPart(part));
+        /*
+         * Now we read the part into a buffer for further processing. Because
+         * the stream is now wrapped we'll remove any transfer encoding at this point.
+         */
+        InputStream in = MimeUtility.decodeBody(body);
+        try {
+            return CharsetSupport.readToString(in, charset);
+        } finally {
+            try {
+                MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);
+            } catch (IOException e) { /* Ignore */ }
         }
     }
 

@@ -90,12 +90,7 @@ public class CryptoPartFinder {
             Body body = part.getBody();
 
             if (isSameMimeType(mimeType, TEXT_PLAIN)) {
-                String text = null;
-                try {
-                    text = MessageExtractor.getTextFromPart(part);
-                } catch (MessagingException e) {
-                    Log.i(K9.LOG_TAG, "Unable to fetch part to in order to parse message for PGP data", e);
-                }
+                String text = MessageExtractor.getTextFromPart(part);
                 if (TextUtils.isEmpty(text)) {
                     continue;
                 }

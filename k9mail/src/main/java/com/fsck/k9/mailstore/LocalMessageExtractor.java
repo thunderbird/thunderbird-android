@@ -152,12 +152,7 @@ public class LocalMessageExtractor {
             Part part = ((Textual)viewable).getPart();
             addHtmlDivider(html, part, prependDivider);
 
-            String t = null;
-            try {
-                t = MessageExtractor.getTextFromPart(part);
-            } catch (MessagingException e) {
-                Log.i(K9.LOG_TAG, "Failed to get text from part in order to build HTML", e);
-            }
+            String t = MessageExtractor.getTextFromPart(part);
             if (t == null) {
                 t = "";
             } else if (viewable instanceof Text) {
@@ -189,12 +184,7 @@ public class LocalMessageExtractor {
             Part part = ((Textual)viewable).getPart();
             addTextDivider(text, part, prependDivider);
 
-            String t = null;
-            try {
-                t = MessageExtractor.getTextFromPart(part);
-            } catch (MessagingException e) {
-                Log.i(K9.LOG_TAG, "Failed to get text from part in order to build HTML", e);
-            }
+            String t = MessageExtractor.getTextFromPart(part);
             if (t == null) {
                 t = "";
             } else if (viewable instanceof Html) {

@@ -42,15 +42,11 @@ class EncryptionDetector {
             return false;
         }
 
-        try {
-            String text = MessageExtractor.getTextFromPart(textPart);
-            if (text == null) {
-                return false;
-            } else {
-                return PGP_MESSAGE_PATTERN.matcher(text).find();
-            }
-        } catch (MessagingException e) {
+        String text = MessageExtractor.getTextFromPart(textPart);
+        if (text == null) {
             return false;
+        } else {
+            return PGP_MESSAGE_PATTERN.matcher(text).find();
         }
     }
 
