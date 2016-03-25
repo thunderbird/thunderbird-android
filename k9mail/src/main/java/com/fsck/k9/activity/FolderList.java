@@ -308,7 +308,6 @@ public class FolderList extends K9ListActivity {
         mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
         mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
         mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
-
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -753,6 +752,7 @@ public class FolderList extends K9ListActivity {
 
                     Account.FolderMode aMode = account.getFolderDisplayMode();
                     for (LocalFolder folder : folders) {
+
                         Folder.FolderClass fMode = folder.getDisplayClass();
 
                         if ((aMode == FolderMode.FIRST_CLASS && fMode != Folder.FolderClass.FIRST_CLASS)
@@ -776,10 +776,14 @@ public class FolderList extends K9ListActivity {
                             holder.populate(context, folder, mAccount, -1);
 
                         }
-                        if (folder.isInTopGroup()) {
-                            topFolders.add(holder);
-                        } else {
-                            newFolders.add(holder);
+
+                        //LocalFolders are occasionally duplicated for some reason
+                        if (!topFolders.contains(holder) && !newFolders.contains(holder)) {
+                            if (folder.isInTopGroup()) {
+                                topFolders.add(holder);
+                            } else {
+                                newFolders.add(holder);
+                            }
                         }
                     }
                     Collections.sort(newFolders);

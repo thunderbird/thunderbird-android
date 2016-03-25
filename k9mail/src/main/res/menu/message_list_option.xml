@@ -30,14 +30,14 @@
     <item
         android:id="@+id/search"
         android:icon="?attr/iconActionSearch"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/search_action"/>
 
     <!-- MessageList -->
     <item
         android:id="@+id/search_remote"
         android:icon="?attr/iconActionRemoteSearch"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/action_remote_search"
         android:visible="false"/>
 
@@ -46,7 +46,7 @@
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/check_mail_action"/>
 
     <!-- MessageView -->
@@ -181,7 +181,7 @@
         android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:icon="?attr/iconActionCompose"
-        android:showAsAction="ifRoom"
+        android:showAsAction="never"
         android:title="@string/compose_action"/>
 
     <!-- MessageList -->

@@ -3,25 +3,25 @@
     <item
         android:id="@+id/search"
         android:icon="?attr/iconActionSearch"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/search_action"/>
     <item
         android:id="@+id/filter_folders"
         android:icon="?attr/iconActionSearchFolder"
-        android:showAsAction="always|collapseActionView"
+        android:showAsAction="never|collapseActionView"
         android:title="@string/filter_folders_action"
         android:actionViewClass="android.widget.SearchView"/>
     <item
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/check_mail_action"/>
     <item
         android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:icon="?attr/iconActionCompose"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/compose_action"/>
     <item
         android:icon="?attr/iconFolder"

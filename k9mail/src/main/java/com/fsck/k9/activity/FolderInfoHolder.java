@@ -137,31 +137,56 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
      */
     public static String getDisplayName(Context context, Account account, String name) {
         final String displayName;
-        if (name.equals(account.getSpamFolderName())) {
+        if(nameIsSpecialButDifferent(context,
+                name, account.getSpamFolderName(), R.string.special_mailbox_name_spam)) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_spam_fmt), name);
-        } else if (name.equals(account.getArchiveFolderName())) {
+
+        } else if(nameIsSpecialButDifferent(context,
+                name, account.getArchiveFolderName(), R.string.special_mailbox_name_archive)) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_archive_fmt), name);
-        } else if (name.equals(account.getSentFolderName())) {
+
+        } else if(nameIsSpecialButDifferent(context,
+                name, account.getSentFolderName(), R.string.special_mailbox_name_sent)) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_sent_fmt), name);
-        } else if (name.equals(account.getTrashFolderName())) {
+
+        } else if(nameIsSpecialButDifferent(context,
+                name, account.getTrashFolderName(), R.string.special_mailbox_name_trash)) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_trash_fmt), name);
-        } else if (name.equals(account.getDraftsFolderName())) {
+
+        } else if(nameIsSpecialButDifferent(context,
+                name, account.getDraftsFolderName(), R.string.special_mailbox_name_drafts)) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_drafts_fmt), name);
-        } else if (name.equals(account.getOutboxFolderName())) {
+
+        } else if(nameIsSpecialButDifferent(context,
+                name, account.getOutboxFolderName(), R.string.special_mailbox_name_outbox)) {
             displayName = context.getString(R.string.special_mailbox_name_outbox);
+
         // FIXME: We really shouldn't do a case-insensitive comparison here
         } else if (name.equalsIgnoreCase(account.getInboxFolderName())) {
             displayName = context.getString(R.string.special_mailbox_name_inbox);
+
+        } else if (name.contains(".")) {
+            StringBuilder displayNameBuilder = new StringBuilder("");
+            int count = name.length() - name.replace(".", "").length();
+            for (int i = 0; i < count; i++)
+                displayNameBuilder.append("> ");
+            displayNameBuilder.append(name.substring(name.lastIndexOf('.')+1));
+            displayName = displayNameBuilder.toString();
         } else {
             displayName = name;
         }
 
         return displayName;
+    }
+
+    private static boolean nameIsSpecialButDifferent(Context context,
+               String name, String folderWithSpecialName, int specialNameKey) {
+        return name.equals(folderWithSpecialName) && !name.equals(context.getString(specialNameKey));
     }
 
     public void setMoreMessagesFromFolder(LocalFolder folder) {
