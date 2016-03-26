@@ -1,6 +1,7 @@
 package com.fsck.k9.mail.ssl;
 
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ProxySettings;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -12,4 +13,6 @@ public interface TrustedSocketFactory {
             throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException;
 
     boolean isSecure(Socket socket);
+
+    ProxySettings getProxySettings();
 }

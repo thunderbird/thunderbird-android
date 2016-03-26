@@ -1,6 +1,7 @@
 
 package com.fsck.k9;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,11 +36,11 @@ import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.UnreadWidgetProvider;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -255,6 +256,9 @@ public class K9 extends Application {
     private static boolean sMessageViewCopyActionVisible = false;
     private static boolean sMessageViewSpamActionVisible = false;
 
+    private static boolean sUseSocksProxy = false;
+    private static String sSocksProxyHost = "";
+    private static int sSocksProxyPort = 0;
 
     /**
      * @see #areDatabasesUpToDate()
@@ -491,6 +495,10 @@ public class K9 extends Application {
         editor.putBoolean("messageViewMoveActionVisible", sMessageViewMoveActionVisible);
         editor.putBoolean("messageViewCopyActionVisible", sMessageViewCopyActionVisible);
         editor.putBoolean("messageViewSpamActionVisible", sMessageViewSpamActionVisible);
+
+        editor.putBoolean("useSocksProxy", sUseSocksProxy);
+        editor.putString("socksProxyHost", sSocksProxyHost);
+        editor.putInt("useSocksPort", sSocksProxyPort);
 
         fontSizes.save(editor);
     }
@@ -745,6 +753,10 @@ public class K9 extends Application {
         sMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false);
         sMessageViewCopyActionVisible = storage.getBoolean("messageViewCopyActionVisible", false);
         sMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false);
+
+        sUseSocksProxy = storage.getBoolean("useSocksProxy", false);
+        sSocksProxyHost = storage.getString("socksProxyHost", "127.0.0.1");
+        sSocksProxyPort = storage.getInt("socksProxyPort", 12345);
 
 
         K9.setK9Language(storage.getString("language", ""));
@@ -1322,6 +1334,30 @@ public class K9 extends Application {
 
     public static void setMessageViewSpamActionVisible(boolean visible) {
         sMessageViewSpamActionVisible = visible;
+    }
+
+    public static boolean isSocksProxyEnabled() {
+        return sUseSocksProxy;
+    }
+
+    public static void setUseSocksProxy(boolean useSocksProxy) {
+        sUseSocksProxy = useSocksProxy;
+    }
+
+    public static String getSocksProxyHost() {
+        return sSocksProxyHost;
+    }
+
+    public static void setSocksProxyHost(String socksProxyHost) {
+        sSocksProxyHost = socksProxyHost;
+    }
+
+    public static int getSocksProxyPort() {
+        return sSocksProxyPort;
+    }
+
+    public static void setSocksProxyPort(int socksProxyPort) {
+        sSocksProxyPort = socksProxyPort;
     }
 
     /**
