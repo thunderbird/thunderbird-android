@@ -1,5 +1,7 @@
 package com.fsck.k9.mail.ssl;
 
+import com.fsck.k9.mail.ProxySettings;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +28,7 @@ public class DefaultTrustedSocketFactoryTest {
     @Before
     public void setUp() throws Exception {
         defaultTrustedSocketFactory = new DefaultTrustedSocketFactory(
-                ShadowApplication.getInstance().getApplicationContext());
+                ShadowApplication.getInstance().getApplicationContext(), mock(ProxySettings.class));
     }
 
     @Test
