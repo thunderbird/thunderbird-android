@@ -23,7 +23,7 @@ import com.fsck.k9.mailstore.SmimeResultAnnotation;
 import org.openintents.smime.SmimeDecryptionResult;
 import org.openintents.smime.SmimeError;
 import org.openintents.smime.SmimeSignatureResult;
-import org.openintents.smime.util.SmimeUtils;
+import org.openintents.smime.util.SMimeUtils;
 
 
 public class SmimeHeaderView extends LinearLayout {
@@ -329,7 +329,7 @@ public class SmimeHeaderView extends LinearLayout {
     }
 
     private void setUserId(SmimeSignatureResult signatureResult) {
-        final SmimeUtils.UserId userInfo = SmimeUtils.splitUserId(signatureResult.getPrimaryUserId());
+        final SMimeUtils.UserId userInfo = SMimeUtils.splitUserId(signatureResult.getPrimaryUserId());
         if (userInfo.name != null) {
             resultSignatureName.setText(userInfo.name);
         } else {

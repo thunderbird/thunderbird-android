@@ -47,12 +47,12 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
+import org.openintents.smime.ISMimeService;
 import org.openintents.smime.SmimeDecryptionResult;
 import org.openintents.smime.SmimeError;
-import org.openintents.smime.SmimeService;
 import org.openintents.smime.SmimeSignatureResult;
-import org.openintents.smime.util.SmimeApi;
-import org.openintents.smime.util.SmimeServiceConnection;
+import org.openintents.smime.util.SMimeApi;
+import org.openintents.smime.util.SMimeServiceConnection;
 
 
 public class MessageCryptoHelper {
@@ -71,7 +71,7 @@ public class MessageCryptoHelper {
 
     private Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<CryptoPart>();
     private OpenPgpApi openPgpApi;
-    private SmimeApi smimeApi;
+    private SMimeApi smimeApi;
     private CryptoPart currentCryptoPart;
     private Intent currentCryptoResult;
 
@@ -231,11 +231,11 @@ public class MessageCryptoHelper {
 
     private void connectToSmimeProviderService() {
         String smimeProvider = account.getSmimeProvider();
-        new SmimeServiceConnection(context, smimeProvider,
-                new org.openintents.smime.util.SmimeServiceConnection.OnBound() {
+        new SMimeServiceConnection(context, smimeProvider,
+                new org.openintents.smime.util.SMimeServiceConnection.OnBound() {
                     @Override
-                    public void onBound(SmimeService service) {
-                        smimeApi = new SmimeApi(context, service);
+                    public void onBound(ISMimeService service) {
+                        smimeApi = new SMimeApi(context, service);
 
                         decryptOrVerifyNextPart();
                     }
@@ -289,7 +289,7 @@ public class MessageCryptoHelper {
     }
 
     private void smimeDecryptVerify(Intent intent) {
-        intent.setAction(SmimeApi.ACTION_DECRYPT_VERIFY);
+        intent.setAction(SMimeApi.ACTION_DECRYPT_VERIFY);
         try {
             CryptoPartType cryptoPartType = currentCryptoPart.type;
             switch (cryptoPartType) {
@@ -355,7 +355,7 @@ public class MessageCryptoHelper {
                 break;
             case SMIME:
                 smimeApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream,
-                new SmimeApi.ISmimeCallback() {
+                new SMimeApi.ISmimeCallback() {
                     @Override
                     public void onReturn(Intent result) {
                         currentCryptoResult = result;
@@ -382,7 +382,7 @@ public class MessageCryptoHelper {
                 });
                 break;
             case SMIME:
-                smimeApi.executeApiAsync(intent, pipedInputStream, null, new SmimeApi.ISmimeCallback() {
+                smimeApi.executeApiAsync(intent, pipedInputStream, null, new SMimeApi.ISmimeCallback() {
                     @Override
                     public void onReturn(Intent result) {
                         currentCryptoResult = result;
@@ -606,7 +606,7 @@ public class MessageCryptoHelper {
     }
 
     private void handleSmimeOperationResult(MimeBodyPart outputPart) {
-        int resultCode = currentCryptoResult.getIntExtra(SmimeApi.RESULT_CODE, INVALID_SMIME_RESULT_CODE);
+        int resultCode = currentCryptoResult.getIntExtra(SMimeApi.RESULT_CODE, INVALID_SMIME_RESULT_CODE);
         if (K9.DEBUG) {
             Log.d(K9.LOG_TAG, "S/MIME API decryptVerify result code: " + resultCode);
         }
@@ -616,15 +616,15 @@ public class MessageCryptoHelper {
                 Log.e(K9.LOG_TAG, "Internal error: no result code!");
                 break;
             }
-            case SmimeApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
+            case SMimeApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
                 handleSmimeUserInteractionRequest();
                 break;
             }
-            case SmimeApi.RESULT_CODE_ERROR: {
+            case SMimeApi.RESULT_CODE_ERROR: {
                 handleSmimeOperationError();
                 break;
             }
-            case SmimeApi.RESULT_CODE_SUCCESS: {
+            case SMimeApi.RESULT_CODE_SUCCESS: {
                 handleSmimeOperationSuccess(outputPart);
                 break;
             }
@@ -632,7 +632,7 @@ public class MessageCryptoHelper {
     }
 
     private void handleSmimeUserInteractionRequest() {
-        PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(SmimeApi.RESULT_INTENT);
+        PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(SMimeApi.RESULT_INTENT);
         if (pendingIntent == null) {
             throw new AssertionError("Expecting PendingIntent on USER_INTERACTION_REQUIRED!");
         }
@@ -645,7 +645,7 @@ public class MessageCryptoHelper {
     }
 
     private void handleSmimeOperationError() {
-        SmimeError error = currentCryptoResult.getParcelableExtra(SmimeApi.RESULT_ERROR);
+        SmimeError error = currentCryptoResult.getParcelableExtra(SMimeApi.RESULT_ERROR);
         if (K9.DEBUG) {
             Log.w(K9.LOG_TAG, "S/MIME API error: " + error.getMessage());
         }
@@ -655,10 +655,10 @@ public class MessageCryptoHelper {
 
     private void handleSmimeOperationSuccess(MimeBodyPart outputPart) {
         SmimeDecryptionResult decryptionResult =
-                currentCryptoResult.getParcelableExtra(SmimeApi.RESULT_DECRYPTION);
+                currentCryptoResult.getParcelableExtra(SMimeApi.RESULT_DECRYPTION);
         SmimeSignatureResult signatureResult =
-                currentCryptoResult.getParcelableExtra(SmimeApi.RESULT_SIGNATURE);
-        PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(SmimeApi.RESULT_INTENT);
+                currentCryptoResult.getParcelableExtra(SMimeApi.RESULT_SIGNATURE);
+        PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(SMimeApi.RESULT_INTENT);
 
         SmimeResultAnnotation resultAnnotation = new SmimeResultAnnotation();
         resultAnnotation.setOutputData(outputPart);

@@ -43,7 +43,7 @@ import java.util.List;
  * Does not extend ListPreference, but is very similar to it!
  * http://grepcode.com/file_/repository.grepcode.com/java/ext/com.google.android/android/4.4_r1/android/preference/ListPreference.java/?v=source
  */
-public class SmimeAppPreference extends DialogPreference {
+public class SMimeAppPreference extends DialogPreference {
     private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";
     private static final String MARKET_INTENT_URI_BASE = "market://details?id=%s";
     private static final Intent MARKET_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse(
@@ -61,12 +61,12 @@ public class SmimeAppPreference extends DialogPreference {
 
     private String mSelectedPackage;
 
-    public SmimeAppPreference(Context context, AttributeSet attrs) {
+    public SMimeAppPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         populateAppList();
     }
 
-    public SmimeAppPreference(Context context) {
+    public SMimeAppPreference(Context context) {
         this(context, null);
     }
 
@@ -134,7 +134,7 @@ public class SmimeAppPreference extends DialogPreference {
                          * Clicking on an item simulates the positive button click, and dismisses
                          * the dialog.
                          */
-                        SmimeAppPreference.this.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+                        SMimeAppPreference.this.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
                         dialog.dismiss();
                     }
                 });
@@ -263,9 +263,9 @@ public class SmimeAppPreference extends DialogPreference {
 
         // search for SMIME providers...
         ArrayList<SmimeProviderEntry> providerList = new ArrayList<>();
-        Intent intent = new Intent(SmimeApi.SERVICE_INTENT_2);
+        Intent intent = new Intent(SMimeApi.SERVICE_INTENT_2);
         List<ResolveInfo> resInfo = getContext().getPackageManager().queryIntentServices(intent, 0);
-        if (!resInfo.isEmpty()) {
+        if (resInfo != null && !resInfo.isEmpty()) {
             for (ResolveInfo resolveInfo : resInfo) {
                 if (resolveInfo.serviceInfo == null)
                     continue;

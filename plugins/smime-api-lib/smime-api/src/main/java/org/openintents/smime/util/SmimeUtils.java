@@ -26,7 +26,7 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.text.TextUtils;
 
-public class SmimeUtils {
+public class SMimeUtils {
 
     public static final Pattern PGP_MESSAGE = Pattern.compile(
             "(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
@@ -58,7 +58,7 @@ public class SmimeUtils {
     }
 
     public static boolean isAvailable(Context context) {
-        Intent intent = new Intent(SmimeApi.SERVICE_INTENT_2);
+        Intent intent = new Intent(SMimeApi.SERVICE_INTENT_2);
         List<ResolveInfo> resInfo = context.getPackageManager().queryIntentServices(intent, 0);
         return !resInfo.isEmpty();
     }

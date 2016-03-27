@@ -16,15 +16,15 @@
  
 package org.openintents.smime;
 
-interface SmimeService {
+interface ISMimeService {
 
     /**
-     * see org.openintents.smime.util.SmimeApi for documentation
+     * see org.openintents.smime.util.SMimeApi for documentation
      */
     ParcelFileDescriptor createOutputPipe(in int pipeId);
 
     /**
-     * see org.openintents.smime.util.SmimeApi for documentation
+     * see org.openintents.smime.util.SMimeApi for documentation
      */
     Intent execute(in Intent data, in ParcelFileDescriptor input, int pipeId);
 }

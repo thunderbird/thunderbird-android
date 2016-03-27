@@ -22,20 +22,20 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import org.openintents.smime.SmimeService;
+import org.openintents.smime.ISMimeService;
 
-public class SmimeServiceConnection {
+public class SMimeServiceConnection {
 
     // callback interface
     public interface OnBound {
-        public void onBound(SmimeService service);
+        public void onBound(ISMimeService service);
 
         public void onError(Exception e);
     }
 
     private Context mApplicationContext;
 
-    private SmimeService mService;
+    private ISMimeService mService;
     private String mProviderPackageName;
 
     private OnBound mOnBoundListener;
@@ -47,7 +47,7 @@ public class SmimeServiceConnection {
      * @param providerPackageName specify package name of OpenPGP provider,
      *                            e.g., "org.sufficientlysecure.keychain"
      */
-    public SmimeServiceConnection(Context context, String providerPackageName) {
+    public SMimeServiceConnection(Context context, String providerPackageName) {
         this.mApplicationContext = context.getApplicationContext();
         this.mProviderPackageName = providerPackageName;
     }
@@ -60,13 +60,13 @@ public class SmimeServiceConnection {
      *                            e.g., "org.sufficientlysecure.keychain"
      * @param onBoundListener     callback, executed when connection to service has been established
      */
-    public SmimeServiceConnection(Context context, String providerPackageName,
+    public SMimeServiceConnection(Context context, String providerPackageName,
                                     OnBound onBoundListener) {
         this(context, providerPackageName);
         this.mOnBoundListener = onBoundListener;
     }
 
-    public SmimeService getService() {
+    public ISMimeService getService() {
         return mService;
     }
 
@@ -76,7 +76,7 @@ public class SmimeServiceConnection {
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mService = SmimeService.Stub.asInterface(service);
+            mService = ISMimeService.Stub.asInterface(service);
             if (mOnBoundListener != null) {
                 mOnBoundListener.onBound(mService);
             }
@@ -96,7 +96,7 @@ public class SmimeServiceConnection {
         // if not already bound...
         if (mService == null) {
             try {
-                Intent serviceIntent = new Intent(SmimeApi.SERVICE_INTENT_2);
+                Intent serviceIntent = new Intent(SMimeApi.SERVICE_INTENT_2);
                 // NOTE: setPackage is very important to restrict the intent to this provider only!
                 serviceIntent.setPackage(mProviderPackageName);
                 boolean connect = mApplicationContext.bindService(serviceIntent, mServiceConnection,

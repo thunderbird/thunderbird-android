@@ -29,21 +29,21 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import org.openintents.smime.SmimeService;
+import org.openintents.smime.ISMimeService;
 import org.openintents.smime.SmimeError;
 import org.openintents.smime.R;
 
-public class SmimeKeyPreference extends Preference {
+public class SMimeKeyPreference extends Preference {
     private long mKeyId;
     private String mSmimeProvider;
-    private SmimeServiceConnection mServiceConnection;
+    private SMimeServiceConnection mServiceConnection;
     private String mDefaultUserId;
 
     public static final int REQUEST_CODE_KEY_PREFERENCE = 9999;
 
     private static final int NO_KEY = 0;
 
-    public SmimeKeyPreference(Context context, AttributeSet attrs) {
+    public SMimeKeyPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -73,19 +73,19 @@ public class SmimeKeyPreference extends Preference {
     @Override
     protected void onClick() {
         // bind to service
-        mServiceConnection = new SmimeServiceConnection(
+        mServiceConnection = new SMimeServiceConnection(
                 getContext().getApplicationContext(),
                 mSmimeProvider,
-                new SmimeServiceConnection.OnBound() {
+                new SMimeServiceConnection.OnBound() {
                     @Override
-                    public void onBound(SmimeService service) {
+                    public void onBound(ISMimeService service) {
 
                         getSignKeyId(new Intent());
                     }
 
                     @Override
                     public void onError(Exception e) {
-                        Log.e(SmimeApi.TAG, "exception on binding!", e);
+                        Log.e(SMimeApi.TAG, "exception on binding!", e);
                     }
                 }
         );
@@ -93,14 +93,14 @@ public class SmimeKeyPreference extends Preference {
     }
 
     private void getSignKeyId(Intent data) {
-        data.setAction(SmimeApi.ACTION_GET_SIGN_KEY_ID);
-        data.putExtra(SmimeApi.EXTRA_USER_ID, mDefaultUserId);
+        data.setAction(SMimeApi.ACTION_GET_SIGN_KEY_ID);
+        data.putExtra(SMimeApi.EXTRA_USER_ID, mDefaultUserId);
 
-        SmimeApi api = new SmimeApi(getContext(), mServiceConnection.getService());
+        SMimeApi api = new SMimeApi(getContext(), mServiceConnection.getService());
         api.executeApiAsync(data, null, null, new MyCallback(REQUEST_CODE_KEY_PREFERENCE));
     }
 
-    private class MyCallback implements SmimeApi.ISmimeCallback {
+    private class MyCallback implements SMimeApi.ISmimeCallback {
         int requestCode;
 
         private MyCallback(int requestCode) {
@@ -109,30 +109,30 @@ public class SmimeKeyPreference extends Preference {
 
         @Override
         public void onReturn(Intent result) {
-            switch (result.getIntExtra(SmimeApi.RESULT_CODE, SmimeApi.RESULT_CODE_ERROR)) {
-                case SmimeApi.RESULT_CODE_SUCCESS: {
+            switch (result.getIntExtra(SMimeApi.RESULT_CODE, SMimeApi.RESULT_CODE_ERROR)) {
+                case SMimeApi.RESULT_CODE_SUCCESS: {
 
-                    long keyId = result.getLongExtra(SmimeApi.EXTRA_SIGN_KEY_ID, NO_KEY);
+                    long keyId = result.getLongExtra(SMimeApi.EXTRA_SIGN_KEY_ID, NO_KEY);
                     save(keyId);
 
                     break;
                 }
-                case SmimeApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
+                case SMimeApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
 
-                    PendingIntent pi = result.getParcelableExtra(SmimeApi.RESULT_INTENT);
+                    PendingIntent pi = result.getParcelableExtra(SMimeApi.RESULT_INTENT);
                     try {
                         Activity act = (Activity) getContext();
                         act.startIntentSenderFromChild(
                                 act, pi.getIntentSender(),
                                 requestCode, null, 0, 0, 0);
                     } catch (IntentSender.SendIntentException e) {
-                        Log.e(SmimeApi.TAG, "SendIntentException", e);
+                        Log.e(SMimeApi.TAG, "SendIntentException", e);
                     }
                     break;
                 }
-                case SmimeApi.RESULT_CODE_ERROR: {
-                    SmimeError error = result.getParcelableExtra(SmimeApi.RESULT_ERROR);
-                    Log.e(SmimeApi.TAG, "RESULT_CODE_ERROR: " + error.getMessage());
+                case SMimeApi.RESULT_CODE_ERROR: {
+                    SmimeError error = result.getParcelableExtra(SMimeApi.RESULT_ERROR);
+                    Log.e(SMimeApi.TAG, "RESULT_CODE_ERROR: " + error.getMessage());
 
                     break;
                 }

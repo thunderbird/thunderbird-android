@@ -494,12 +494,12 @@
             android:title="@string/account_settings_smime"
             android:key="smime">
 
-            <org.openintents.smime.util.SmimeAppPreference
+            <org.openintents.smime.util.SMimeAppPreference
                 android:persistent="false"
                 android:key="smime_app"
                 android:title="@string/account_settings_smime_app" />
 
-            <org.openintents.smime.util.SmimeKeyPreference
+            <org.openintents.smime.util.SMimeKeyPreference
                 android:persistent="false"
                 android:key="smime_key"
                 android:title="@string/account_settings_smime_key" />

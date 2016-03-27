@@ -19,7 +19,7 @@ package org.openintents.smime;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.openintents.smime.util.SmimeUtils;
+import org.openintents.smime.util.SMimeUtils;
 
 import java.util.ArrayList;
 
@@ -177,7 +177,7 @@ public class SmimeSignatureResult implements Parcelable {
         out += "\nprimaryUserId: " + primaryUserId;
         out += "\nuserIds: " + userIds;
         out += "\nsignatureOnly: " + signatureOnly;
-        out += "\nkeyId: " + SmimeUtils.convertKeyIdToHex(keyId);
+        out += "\nkeyId: " + SMimeUtils.convertKeyIdToHex(keyId);
         return out;
     }
 

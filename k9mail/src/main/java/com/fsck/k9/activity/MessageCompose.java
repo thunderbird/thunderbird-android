@@ -113,7 +113,7 @@ import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
 
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.smime.util.SmimeApi;
+import org.openintents.smime.util.SMimeApi;
 
 
 @SuppressWarnings("deprecation")
@@ -1013,7 +1013,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 return null;
             }
 
-            SmimeApi smimeApi = recipientPresenter.getSmimeApi();
+            SMimeApi smimeApi = recipientPresenter.getSMimeApi();
             SmimeMessageBuilder smimeBuilder = new SmimeMessageBuilder(getApplicationContext(), smimeApi);
             smimeBuilder.setCryptoStatus(cryptoStatus);
             return smimeBuilder;

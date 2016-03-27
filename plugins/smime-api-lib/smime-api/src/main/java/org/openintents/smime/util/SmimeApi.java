@@ -30,14 +30,14 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import org.openintents.smime.SmimeService;
+import org.openintents.smime.ISMimeService;
 import org.openintents.smime.SmimeError;
 
-public class SmimeApi {
+public class SMimeApi {
 
     public static final String TAG = "SMIME API";
 
-    public static final String SERVICE_INTENT_2 = "org.openintents.smime.SmimeService";
+    public static final String SERVICE_INTENT_2 = "org.openintents.smime.ISMimeService";
 
     /**
      * see CHANGELOG.md
@@ -263,11 +263,11 @@ public class SmimeApi {
     public static final String EXTRA_CALL_UUID1 = "call_uuid1";
     public static final String EXTRA_CALL_UUID2 = "call_uuid2";
 
-    SmimeService mService;
+    ISMimeService mService;
     Context mContext;
     final AtomicInteger mPipeIdGen = new AtomicInteger();
 
-    public SmimeApi(Context context, SmimeService service) {
+    public SMimeApi(Context context, ISMimeService service) {
         this.mContext = context;
         this.mService = service;
     }
@@ -325,7 +325,7 @@ public class SmimeApi {
 
             return executeApi(data, input, os);
         } catch (Exception e) {
-            Log.e(SmimeApi.TAG, "Exception in executeApi call", e);
+            Log.e(SMimeApi.TAG, "Exception in executeApi call", e);
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -334,14 +334,14 @@ public class SmimeApi {
         }
     }
 
-    public interface SmimeDataSource {
+    public interface SMimeDataSource {
         void writeTo(OutputStream os) throws IOException;
     }
 
     /**
      * InputStream and OutputStreams are always closed after operating on them!
      */
-    public Intent executeApi(Intent data, SmimeDataSource dataSource, OutputStream os) {
+    public Intent executeApi(Intent data, SMimeDataSource dataSource, OutputStream os) {
         ParcelFileDescriptor input = null;
         try {
             if (dataSource != null) {
@@ -350,7 +350,7 @@ public class SmimeApi {
 
             return executeApi(data, input, os);
         } catch (Exception e) {
-            Log.e(SmimeApi.TAG, "Exception in executeApi call", e);
+            Log.e(SMimeApi.TAG, "Exception in executeApi call", e);
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -366,7 +366,7 @@ public class SmimeApi {
         ParcelFileDescriptor output = null;
         try {
             // always send version from client
-            data.putExtra(EXTRA_API_VERSION, SmimeApi.API_VERSION);
+            data.putExtra(EXTRA_API_VERSION, SMimeApi.API_VERSION);
 
             Intent result;
 
@@ -394,7 +394,7 @@ public class SmimeApi {
 
             return result;
         } catch (Exception e) {
-            Log.e(SmimeApi.TAG, "Exception in executeApi call", e);
+            Log.e(SMimeApi.TAG, "Exception in executeApi call", e);
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -406,14 +406,14 @@ public class SmimeApi {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    Log.e(SmimeApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
+                    Log.e(SMimeApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
                 }
             }
             if (output != null) {
                 try {
                     output.close();
                 } catch (IOException e) {
-                    Log.e(SmimeApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
+                    Log.e(SMimeApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
                 }
             }
         }
@@ -425,7 +425,7 @@ public class SmimeApi {
     }
 
     public void checkPermissionPing(final PermissionPingCallback permissionPingCallback) {
-        Intent intent = new Intent(SmimeApi.ACTION_CHECK_PERMISSION);
+        Intent intent = new Intent(SMimeApi.ACTION_CHECK_PERMISSION);
         executeApiAsync(intent, null, null, new ISmimeCallback() {
             @Override
             public void onReturn(Intent result) {

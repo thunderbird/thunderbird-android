@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.openintents.smime.util.SmimeApi.SmimeDataSource;
+import org.openintents.smime.util.SMimeApi.SMimeDataSource;
 
 
 public class ParcelFileDescriptorUtil {
@@ -72,7 +72,7 @@ public class ParcelFileDescriptorUtil {
                     mOut.write(buf, 0, len);
                 }
             } catch (IOException e) {
-                Log.e(SmimeApi.TAG, "IOException when writing to out", e);
+                Log.e(SMimeApi.TAG, "IOException when writing to out", e);
             } finally {
                 try {
                     mIn.close();
@@ -86,7 +86,7 @@ public class ParcelFileDescriptorUtil {
         }
     }
 
-    public static ParcelFileDescriptor asyncPipeFromDataSource(SmimeDataSource dataSource) throws IOException {
+    public static ParcelFileDescriptor asyncPipeFromDataSource(SMimeDataSource dataSource) throws IOException {
         ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
         ParcelFileDescriptor readSide = pipe[0];
         ParcelFileDescriptor writeSide = pipe[1];
@@ -97,10 +97,10 @@ public class ParcelFileDescriptorUtil {
     }
 
     static class DataSourceTransferThread extends Thread {
-        final SmimeDataSource dataSource;
+        final SMimeDataSource dataSource;
         final OutputStream outputStream;
 
-        DataSourceTransferThread(SmimeDataSource dataSource, OutputStream outputStream) {
+        DataSourceTransferThread(SMimeDataSource dataSource, OutputStream outputStream) {
             super("IPC Transfer Thread");
             this.dataSource = dataSource;
             this.outputStream = outputStream;
@@ -112,7 +112,7 @@ public class ParcelFileDescriptorUtil {
             try {
                 dataSource.writeTo(outputStream);
             } catch (IOException e) {
-                Log.e(SmimeApi.TAG, "IOException when writing to out", e);
+                Log.e(SMimeApi.TAG, "IOException when writing to out", e);
             } finally {
                 try {
                     outputStream.close();

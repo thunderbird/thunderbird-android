@@ -22,8 +22,8 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
 
 import org.apache.james.mime4j.util.MimeUtil;
-import org.openintents.smime.util.SmimeApi;
-import org.openintents.smime.util.SmimeApi.SmimeDataSource;
+import org.openintents.smime.util.SMimeApi;
+import org.openintents.smime.util.SMimeApi.SMimeDataSource;
 import org.openintents.smime.SmimeError;
 
 import java.io.IOException;
@@ -35,12 +35,12 @@ public class SmimeMessageBuilder extends MessageBuilder {
     public static final int REQUEST_SIGN_INTERACTION = 1;
     public static final int REQUEST_ENCRYPT_INTERACTION = 2;
 
-    private final SmimeApi smimeApi;
+    private final SMimeApi smimeApi;
 
     private MimeMessage currentProcessedMimeMessage;
     private ComposeCryptoStatus cryptoStatus;
 
-    public SmimeMessageBuilder(Context context, SmimeApi smimeApi) {
+    public SmimeMessageBuilder(Context context, SMimeApi smimeApi) {
         super(context);
         this.smimeApi = smimeApi;
     }
@@ -132,12 +132,12 @@ public class SmimeMessageBuilder extends MessageBuilder {
             return;
         }
 
-        Intent encryptIntent = new Intent(SmimeApi.ACTION_ENCRYPT);
-        encryptIntent.putExtra(SmimeApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+        Intent encryptIntent = new Intent(SMimeApi.ACTION_ENCRYPT);
+        encryptIntent.putExtra(SMimeApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 
         long[] encryptKeyIds = cryptoStatus.getEncryptKeyIds();
         if (encryptKeyIds != null) {
-            encryptIntent.putExtra(SmimeApi.EXTRA_KEY_IDS, encryptKeyIds);
+            encryptIntent.putExtra(SMimeApi.EXTRA_KEY_IDS, encryptKeyIds);
         }
 
         if(!isDraft()) {
@@ -148,8 +148,8 @@ public class SmimeMessageBuilder extends MessageBuilder {
                 // throw new MessagingException("Encryption is enabled, but no encryption key specified!");
                 return;
             }
-            encryptIntent.putExtra(SmimeApi.EXTRA_USER_IDS, encryptRecipientAddresses);
-            encryptIntent.putExtra(SmimeApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
+            encryptIntent.putExtra(SMimeApi.EXTRA_USER_IDS, encryptRecipientAddresses);
+            encryptIntent.putExtra(SMimeApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
         }
 
         currentState = State.OPENPGP_ENCRYPT;
@@ -170,8 +170,8 @@ public class SmimeMessageBuilder extends MessageBuilder {
             return;
         }
 
-        Intent signIntent = new Intent(SmimeApi.ACTION_DETACHED_SIGN);
-        signIntent.putExtra(SmimeApi.EXTRA_SIGN_KEY_ID, cryptoStatus.getSigningKeyId());
+        Intent signIntent = new Intent(SMimeApi.ACTION_DETACHED_SIGN);
+        signIntent.putExtra(SMimeApi.EXTRA_SIGN_KEY_ID, cryptoStatus.getSigningKeyId());
 
         currentState = State.OPENPGP_SIGN;
         mimeIntentLaunch(signIntent);
@@ -193,7 +193,7 @@ public class SmimeMessageBuilder extends MessageBuilder {
         bodyPart.setUsing7bitTransport();
 
         // This data will be read in a worker thread
-        SmimeDataSource dataSource = new SmimeDataSource() {
+        SMimeDataSource dataSource = new SMimeDataSource() {
             @Override
             public void writeTo(OutputStream os) throws IOException {
                 try {
@@ -217,8 +217,8 @@ public class SmimeMessageBuilder extends MessageBuilder {
 
         Intent result = smimeApi.executeApi(openPgpIntent, dataSource, outputStream);
 
-        switch (result.getIntExtra(SmimeApi.RESULT_CODE, SmimeApi.RESULT_CODE_ERROR)) {
-            case SmimeApi.RESULT_CODE_SUCCESS:
+        switch (result.getIntExtra(SMimeApi.RESULT_CODE, SMimeApi.RESULT_CODE_ERROR)) {
+            case SMimeApi.RESULT_CODE_SUCCESS:
                 if (currentState == State.OPENPGP_SIGN) {
                     mimeBuildSignedMessage(bodyPart, result);
                 } else if (currentState == State.OPENPGP_ENCRYPT) {
@@ -228,12 +228,12 @@ public class SmimeMessageBuilder extends MessageBuilder {
                 }
                 return;
 
-            case SmimeApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+            case SMimeApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
                 launchUserInteraction(result);
                 return;
 
-            case SmimeApi.RESULT_CODE_ERROR:
-                SmimeError error = result.getParcelableExtra(SmimeApi.RESULT_ERROR);
+            case SMimeApi.RESULT_CODE_ERROR:
+                SmimeError error = result.getParcelableExtra(SMimeApi.RESULT_ERROR);
                 boolean isOpportunisticError = error.getErrorId() == SmimeError.OPPORTUNISTIC_MISSING_KEYS;
                 if (isOpportunisticError) {
                     skipEncryptingMessage();
@@ -247,7 +247,7 @@ public class SmimeMessageBuilder extends MessageBuilder {
     }
 
     private void launchUserInteraction(Intent result) {
-        PendingIntent pendingIntent = result.getParcelableExtra(SmimeApi.RESULT_INTENT);
+        PendingIntent pendingIntent = result.getParcelableExtra(SMimeApi.RESULT_INTENT);
 
         if (currentState == State.OPENPGP_ENCRYPT) {
             currentState = State.OPENPGP_ENCRYPT_UI;
@@ -261,7 +261,7 @@ public class SmimeMessageBuilder extends MessageBuilder {
     }
 
     private void mimeBuildSignedMessage(BodyPart signedBodyPart, Intent result) throws MessagingException {
-        byte[] signedData = result.getByteArrayExtra(SmimeApi.RESULT_DETACHED_SIGNATURE);
+        byte[] signedData = result.getByteArrayExtra(SMimeApi.RESULT_DETACHED_SIGNATURE);
 
         MimeMultipart multipartSigned = new MimeMultipart();
         multipartSigned.setSubType("signed");
@@ -274,8 +274,8 @@ public class SmimeMessageBuilder extends MessageBuilder {
         String contentType = String.format(
                 "multipart/signed; boundary=\"%s\";\r\n  protocol=\"application/pgp-signature\"",
                 multipartSigned.getBoundary());
-        if (result.hasExtra(SmimeApi.RESULT_SIGNATURE_MICALG)) {
-            String micAlgParameter = result.getStringExtra(SmimeApi.RESULT_SIGNATURE_MICALG);
+        if (result.hasExtra(SMimeApi.RESULT_SIGNATURE_MICALG)) {
+            String micAlgParameter = result.getStringExtra(SMimeApi.RESULT_SIGNATURE_MICALG);
             contentType += String.format("; micalg=\"%s\"", micAlgParameter);
         } else {
             Log.e(K9.LOG_TAG, "missing micalg parameter for pgp multipart/signed!");

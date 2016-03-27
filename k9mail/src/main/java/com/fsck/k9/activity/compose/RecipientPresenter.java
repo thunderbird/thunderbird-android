@@ -37,15 +37,14 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpApi.PermissionPingCallback;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
-import org.openintents.smime.SmimeService;
-import org.openintents.smime.util.SmimeApi;
-import org.openintents.smime.util.SmimeServiceConnection;
+import org.openintents.smime.ISMimeService;
+import org.openintents.smime.util.SMimeApi;
+import org.openintents.smime.util.SMimeServiceConnection;
 
 
-public class RecipientPresenter implements OpenPgpApi.PermissionPingCallback, SmimeApi.PermissionPingCallback {
+public class RecipientPresenter implements OpenPgpApi.PermissionPingCallback, SMimeApi.PermissionPingCallback {
     private static final String STATE_KEY_CC_SHOWN = "state:ccShown";
     private static final String STATE_KEY_BCC_SHOWN = "state:bccShown";
     private static final String STATE_KEY_LAST_FOCUSED_TYPE = "state:lastFocusedType";
@@ -72,7 +71,7 @@ public class RecipientPresenter implements OpenPgpApi.PermissionPingCallback, Sm
     //TODO: Add support for switching CryptoMethod
     private CryptoMethod cryptoMethod = CryptoMethod.OPENPGP;
     private OpenPgpServiceConnection openPgpServiceConnection;
-    private SmimeServiceConnection smimeServiceConnection;
+    private SMimeServiceConnection smimeServiceConnection;
 
 
     // persistent state, saved during onSaveInstanceState
@@ -719,10 +718,10 @@ public class RecipientPresenter implements OpenPgpApi.PermissionPingCallback, Sm
         }
 
         smimeProviderState = CryptoProviderState.UNINITIALIZED;
-        smimeServiceConnection = new SmimeServiceConnection(context, smimeProvider,
-                new org.openintents.smime.util.SmimeServiceConnection.OnBound() {
+        smimeServiceConnection = new SMimeServiceConnection(context, smimeProvider,
+                new org.openintents.smime.util.SMimeServiceConnection.OnBound() {
             @Override
-            public void onBound(SmimeService service) {
+            public void onBound(ISMimeService service) {
                 smimeProviderBindOrCheckPermission();
             }
 
@@ -755,7 +754,7 @@ public class RecipientPresenter implements OpenPgpApi.PermissionPingCallback, Sm
             return;
         }
 
-        getSmimeApi().checkPermissionPing(this);
+        getSMimeApi().checkPermissionPing(this);
     }
 
     private void onOpenPgpProviderError(Exception e) {
@@ -799,19 +798,19 @@ public class RecipientPresenter implements OpenPgpApi.PermissionPingCallback, Sm
 
     @Override
     public void onSmimePermissionCheckResult(Intent result) {
-        int resultCode = result.getIntExtra(SmimeApi.RESULT_CODE, SmimeApi.RESULT_CODE_ERROR);
+        int resultCode = result.getIntExtra(SMimeApi.RESULT_CODE, SMimeApi.RESULT_CODE_ERROR);
         switch (resultCode) {
-            case SmimeApi.RESULT_CODE_SUCCESS:
+            case SMimeApi.RESULT_CODE_SUCCESS:
                 smimeProviderState = CryptoProviderState.OK;
                 break;
 
-            case SmimeApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
+            case SMimeApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
                 recipientMvpView.showErrorSmimeUserInteractionRequired();
-                pendingUserInteractionIntent = result.getParcelableExtra(SmimeApi.RESULT_INTENT);
+                pendingUserInteractionIntent = result.getParcelableExtra(SMimeApi.RESULT_INTENT);
                 smimeProviderState = CryptoProviderState.ERROR;
                 break;
 
-            case SmimeApi.RESULT_CODE_ERROR:
+            case SMimeApi.RESULT_CODE_ERROR:
             default:
                 recipientMvpView.showErrorSmimeConnection();
                 smimeProviderState = CryptoProviderState.ERROR;
@@ -838,11 +837,11 @@ public class RecipientPresenter implements OpenPgpApi.PermissionPingCallback, Sm
         return new OpenPgpApi(context, openPgpServiceConnection.getService());
     }
 
-    public SmimeApi getSmimeApi() {
+    public SMimeApi getSMimeApi() {
         if (smimeServiceConnection == null || !smimeServiceConnection.isBound()) {
             Log.e(K9.LOG_TAG, "obtained S/MIME API object, but service is not bound! inconsistent state?");
         }
-        return new SmimeApi(context, smimeServiceConnection.getService());
+        return new SMimeApi(context, smimeServiceConnection.getService());
     }
 
     public enum CryptoProviderState {

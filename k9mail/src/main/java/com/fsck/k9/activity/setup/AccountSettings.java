@@ -40,7 +40,7 @@ import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
-import com.fsck.k9.crypto.SmimeApiHelper;
+import com.fsck.k9.crypto.SMimeApiHelper;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
@@ -51,9 +51,9 @@ import com.fsck.k9.service.MailService;
 import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpUtils;
-import org.openintents.smime.util.SmimeAppPreference;
-import org.openintents.smime.util.SmimeKeyPreference;
-import org.openintents.smime.util.SmimeUtils;
+import org.openintents.smime.util.SMimeAppPreference;
+import org.openintents.smime.util.SMimeKeyPreference;
+import org.openintents.smime.util.SMimeUtils;
 
 
 public class AccountSettings extends K9PreferenceActivity {
@@ -190,8 +190,8 @@ public class AccountSettings extends K9PreferenceActivity {
     private OpenPgpAppPreference mOpenPgpApp;
     private OpenPgpKeyPreference mOpenPgpKey;
     private boolean mHasSmime = false;
-    private SmimeAppPreference mSmimeApp;
-    private SmimeKeyPreference mSmimeKey;
+    private SMimeAppPreference mSmimeApp;
+    private SMimeKeyPreference mSmimeKey;
 
     private PreferenceScreen mSearchScreen;
     private CheckBoxPreference mCloudSearchEnabled;
@@ -751,10 +751,10 @@ public class AccountSettings extends K9PreferenceActivity {
             mOpenPgpMenu.setSummary(R.string.account_settings_no_openpgp_provider_installed);
         }
 
-        mHasSmime = SmimeUtils.isAvailable(this);
+        mHasSmime = SMimeUtils.isAvailable(this);
         if (mHasSmime) {
-            mSmimeApp = (SmimeAppPreference) findPreference(PREFERENCE_SMIME_APP);
-            mSmimeKey = (SmimeKeyPreference) findPreference(PREFERENCE_SMIME_KEY);
+            mSmimeApp = (SMimeAppPreference) findPreference(PREFERENCE_SMIME_APP);
+            mSmimeKey = (SMimeKeyPreference) findPreference(PREFERENCE_SMIME_KEY);
 
             mSmimeApp.setValue(String.valueOf(mAccount.getSmimeApp()));
             mSmimeApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -770,7 +770,7 @@ public class AccountSettings extends K9PreferenceActivity {
             mSmimeKey.setValue(mAccount.getSmimeKey());
             mSmimeKey.setSmimeProvider(mSmimeApp.getValue());
             // TODO: other identities?
-            mSmimeKey.setDefaultUserId(SmimeApiHelper.buildUserId(mAccount.getIdentity(0)));
+            mSmimeKey.setDefaultUserId(SMimeApiHelper.buildUserId(mAccount.getIdentity(0)));
             mSmimeKey.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     long value = (Long) newValue;
