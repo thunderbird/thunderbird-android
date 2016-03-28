@@ -52,7 +52,7 @@ import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpUtils;
 import org.openintents.smime.util.SMimeAppPreference;
-import org.openintents.smime.util.SMimeKeyPreference;
+import org.openintents.smime.util.SMimeCertificatePreference;
 import org.openintents.smime.util.SMimeUtils;
 
 
@@ -191,7 +191,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private OpenPgpKeyPreference mOpenPgpKey;
     private boolean mHasSmime = false;
     private SMimeAppPreference mSmimeApp;
-    private SMimeKeyPreference mSmimeKey;
+    private SMimeCertificatePreference mSmimeCertificate;
 
     private PreferenceScreen mSearchScreen;
     private CheckBoxPreference mCloudSearchEnabled;
@@ -754,7 +754,8 @@ public class AccountSettings extends K9PreferenceActivity {
         mHasSmime = SMimeUtils.isAvailable(this);
         if (mHasSmime) {
             mSmimeApp = (SMimeAppPreference) findPreference(PREFERENCE_SMIME_APP);
-            mSmimeKey = (SMimeKeyPreference) findPreference(PREFERENCE_SMIME_KEY);
+            mSmimeCertificate = (SMimeCertificatePreference)
+                    findPreference(PREFERENCE_SMIME_KEY);
 
             mSmimeApp.setValue(String.valueOf(mAccount.getSmimeApp()));
             mSmimeApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -762,19 +763,19 @@ public class AccountSettings extends K9PreferenceActivity {
                     String value = newValue.toString();
                     mSmimeApp.setValue(value);
 
-                    mSmimeKey.setSmimeProvider(value);
+                    mSmimeCertificate.setSmimeProvider(value);
                     return false;
                 }
             });
 
-            mSmimeKey.setValue(mAccount.getSmimeKey());
-            mSmimeKey.setSmimeProvider(mSmimeApp.getValue());
+            mSmimeCertificate.setValue(mAccount.getSmimeCertificate());
+            mSmimeCertificate.setSmimeProvider(mSmimeApp.getValue());
             // TODO: other identities?
-            mSmimeKey.setDefaultUserId(SMimeApiHelper.buildUserId(mAccount.getIdentity(0)));
-            mSmimeKey.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            mSmimeCertificate.setDefaultUserId(SMimeApiHelper.buildUserId(mAccount.getIdentity(0)));
+            mSmimeCertificate.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     long value = (Long) newValue;
-                    mOpenPgpKey.setValue(value);
+                    mSmimeCertificate.setValue(value);
                     return false;
                 }
             });
@@ -851,10 +852,10 @@ public class AccountSettings extends K9PreferenceActivity {
         }
         if (mHasSmime) {
             mAccount.setSmimeApp(mSmimeApp.getValue());
-            mAccount.setSmimeKey(mSmimeKey.getValue());
+            mAccount.setSmimeCertificate(mSmimeCertificate.getValue());
         } else {
             mAccount.setSmimeApp(Account.NO_SMIME_PROVIDER);
-            mAccount.setSmimeKey(Account.NO_SMIME_KEY);
+            mAccount.setSmimeCertificate(Account.NO_SMIME_CERTIFICATE);
         }
 
         // In webdav account we use the exact folder name also for inbox,

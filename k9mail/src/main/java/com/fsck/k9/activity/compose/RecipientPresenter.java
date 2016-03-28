@@ -382,14 +382,14 @@ public class RecipientPresenter implements OpenPgpApi.PermissionPingCallback, SM
                 if (accountCryptoKey != Account.NO_OPENPGP_KEY) {
                     // TODO split these into individual settings? maybe after key is bound to identity
                     builder.setSigningKeyId(accountCryptoKey);
-                    builder.setSelfEncryptId(accountCryptoKey);
+                    builder.setSelfEncryptKeyId(accountCryptoKey);
                 }
             } else if (cryptoMethod == CryptoMethod.SMIME) {
-                long accountCryptoKey = account.getOpenPgpKey();
-                if (accountCryptoKey != Account.NO_SMIME_KEY) {
+                long accountCryptoCertificate = account.getSmimeCertificate();
+                if (accountCryptoCertificate != Account.NO_SMIME_CERTIFICATE) {
                     // TODO split these into individual settings? maybe after key is bound to identity
-                    builder.setSigningKeyId(accountCryptoKey);
-                    builder.setSelfEncryptId(accountCryptoKey);
+                    builder.setSigningCertificateId(accountCryptoCertificate);
+                    builder.setSelfEncryptCertificateId(accountCryptoCertificate);
                 }
             } else if (cryptoMethod == CryptoMethod.NONE) {
                 builder.setCryptoProviderState(CryptoProviderState.OK);

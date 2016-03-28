@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.ContactPicture;
+import com.fsck.k9.ui.crypto.CryptoMethod;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
@@ -30,6 +31,8 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     private final Context context;
     private List<Recipient> recipients;
     private String highlight;
+    //TODO: Change this when adding changing crypto method
+    private CryptoMethod method = CryptoMethod.OPENPGP;
 
 
     public RecipientAdapter(Context context) {
@@ -93,21 +96,21 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         setContactPhotoOrPlaceholder(context, holder.photo, recipient);
 
         Integer cryptoStatusRes = null, cryptoStatusColor = null;
-        RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
+        RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus(method);
         switch (cryptoStatus) {
             case AVAILABLE_TRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_dots_3;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_green);
+                cryptoStatusColor = context.getResources().getColor(R.color.crypto_green);
                 break;
             }
             case AVAILABLE_UNTRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_dots_2;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
+                cryptoStatusColor = context.getResources().getColor(R.color.crypto_orange);
                 break;
             }
             case UNAVAILABLE: {
                 cryptoStatusRes = R.drawable.status_lock_disabled_dots_1;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
+                cryptoStatusColor = context.getResources().getColor(R.color.crypto_red);
                 break;
             }
         }

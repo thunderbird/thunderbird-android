@@ -2,8 +2,8 @@
 <resources>
 
     <string name="smime_list_preference_none">None</string>
-    <string name="smime_install_openkeychain_via">Install OpenKeychain via %s</string>
-    <string name="smime_no_key_selected">No key selected</string>
-    <string name="smime_key_selected">Key has been selected</string>
+    <string name="smime_install_opensmime_via">Install OpenSMIME via %s</string>
+    <string name="smime_no_certificate_selected">No certificate selected</string>
+    <string name="smime_certificate_selected">Certificate has been selected</string>
 
 </resources>

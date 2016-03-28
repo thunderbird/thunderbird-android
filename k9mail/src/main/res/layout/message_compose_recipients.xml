@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/status_lock_disabled"
-                android:tint="@color/openpgp_grey"
+                android:tint="@color/crypto_grey"
                 />
 
             <ImageView
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/status_lock_error"
-                android:tint="@color/openpgp_red"
+                android:tint="@color/crypto_red"
                 />
 
             <FrameLayout
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="@color/crypto_grey"
                     />
 
                 <ImageView
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="@color/crypto_grey"
                     />
 
             </FrameLayout>
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="@color/crypto_grey"
                     />
 
                 <ImageView
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_error_dots_1"
-                    android:tint="@color/openpgp_red"
+                    android:tint="@color/crypto_red"
                     />
 
             </FrameLayout>
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="@color/crypto_grey"
                     />
 
                 <ImageView
@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_none_dots_1"
-                    android:tint="@color/openpgp_red"
+                    android:tint="@color/crypto_red"
                     />
 
                 <ImageView
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_disabled"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="@color/crypto_grey"
                     />
 
             </FrameLayout>
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="@color/crypto_grey"
                     />
 
                 <ImageView
@@ -164,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_dots_2"
-                    android:tint="@color/openpgp_orange"
+                    android:tint="@color/crypto_orange"
                     />
 
             </FrameLayout>
@@ -178,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="@color/crypto_grey"
                     />
 
                 <ImageView
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_dots_3"
-                    android:tint="@color/openpgp_green"
+                    android:tint="@color/crypto_green"
                     />
 
             </FrameLayout>
@@ -196,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/status_signature_verified_cutout"
-                android:tint="@color/openpgp_blue"
+                android:tint="@color/crypto_blue"
                 />
 
         </ViewAnimator>

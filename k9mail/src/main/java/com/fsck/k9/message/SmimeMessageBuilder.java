@@ -135,9 +135,9 @@ public class SmimeMessageBuilder extends MessageBuilder {
         Intent encryptIntent = new Intent(SMimeApi.ACTION_ENCRYPT);
         encryptIntent.putExtra(SMimeApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 
-        long[] encryptKeyIds = cryptoStatus.getEncryptKeyIds();
-        if (encryptKeyIds != null) {
-            encryptIntent.putExtra(SMimeApi.EXTRA_KEY_IDS, encryptKeyIds);
+        long[] encryptCertificateIds = cryptoStatus.getEncryptCertificateIds();
+        if (encryptCertificateIds != null) {
+            encryptIntent.putExtra(SMimeApi.EXTRA_CERTIFICATE_IDS, encryptCertificateIds);
         }
 
         if(!isDraft()) {
@@ -171,7 +171,7 @@ public class SmimeMessageBuilder extends MessageBuilder {
         }
 
         Intent signIntent = new Intent(SMimeApi.ACTION_DETACHED_SIGN);
-        signIntent.putExtra(SMimeApi.EXTRA_SIGN_KEY_ID, cryptoStatus.getSigningKeyId());
+        signIntent.putExtra(SMimeApi.EXTRA_SIGN_CERTIFICATE_ID, cryptoStatus.getSigningKeyId());
 
         currentState = State.OPENPGP_SIGN;
         mimeIntentLaunch(signIntent);

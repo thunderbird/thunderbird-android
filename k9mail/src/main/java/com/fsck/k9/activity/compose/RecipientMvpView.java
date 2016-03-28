@@ -20,6 +20,7 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.ui.crypto.CryptoMethod;
 import com.fsck.k9.view.RecipientSelectView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.TokenListener;
@@ -159,6 +160,13 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         toView.setSmimeProvider(smimeProvider);
         ccView.setSmimeProvider(smimeProvider);
         bccView.setSmimeProvider(smimeProvider);
+    }
+
+    //TODO: Call this when changing CryptoMethod
+    public void setCurrentCryptoMethod(CryptoMethod method) {
+        toView.setCurrentCryptoMethod(method);
+        ccView.setCurrentCryptoMethod(method);
+        bccView.setCurrentCryptoMethod(method);
     }
 
     public void requestFocusOnToField() {

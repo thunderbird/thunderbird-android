@@ -161,7 +161,7 @@ public class Account implements BaseAccount, StoreConfig {
     public static final String NO_OPENPGP_PROVIDER = "";
     public static final long NO_OPENPGP_KEY = 0;
     public static final String NO_SMIME_PROVIDER = "";
-    public static final long NO_SMIME_KEY = 0;
+    public static final long NO_SMIME_CERTIFICATE = 0;
 
     private DeletePolicy mDeletePolicy = DeletePolicy.NEVER;
 
@@ -227,7 +227,7 @@ public class Account implements BaseAccount, StoreConfig {
     private String mOpenPgpApp;
     private long mOpenPgpKey;
     private String mSmimeApp;
-    private long mSmimeKey;
+    private long mSmimeCertificate;
     private boolean mMarkMessageAsReadOnView;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
@@ -329,7 +329,7 @@ public class Account implements BaseAccount, StoreConfig {
         mOpenPgpApp = NO_OPENPGP_PROVIDER;
         mOpenPgpKey = NO_OPENPGP_KEY;
         mSmimeApp = NO_SMIME_PROVIDER;
-        mSmimeKey = NO_SMIME_KEY;
+        mSmimeCertificate = NO_SMIME_CERTIFICATE;
         mAllowRemoteSearch = false;
         mRemoteSearchFullText = false;
         mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
@@ -484,7 +484,7 @@ public class Account implements BaseAccount, StoreConfig {
         mOpenPgpKey = storage.getLong(mUuid + ".openPgpKey", NO_OPENPGP_KEY);
         String smimeApp = storage.getString(mUuid + ".smimeApp", NO_SMIME_PROVIDER);
         setSmimeApp(smimeApp);
-        mSmimeKey = storage.getLong(mUuid + ".smimeKey", NO_SMIME_KEY);
+        mSmimeCertificate = storage.getLong(mUuid + ".smimeCertificate", NO_SMIME_CERTIFICATE);
 
         mAllowRemoteSearch = storage.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = storage.getBoolean(mUuid + ".remoteSearchFullText", false);
@@ -751,7 +751,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putString(mUuid + ".openPgpApp", mOpenPgpApp);
         editor.putLong(mUuid + ".openPgpKey", mOpenPgpKey);
         editor.putString(mUuid + ".smimeApp", mSmimeApp);
-        editor.putLong(mUuid + ".smimeKey", mSmimeKey);
+        editor.putLong(mUuid + ".smimeCertificate", mSmimeCertificate);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1667,12 +1667,12 @@ public class Account implements BaseAccount, StoreConfig {
         }
     }
 
-    public long getSmimeKey() {
-        return mSmimeKey;
+    public long getSmimeCertificate() {
+        return mSmimeCertificate;
     }
 
-    public void setSmimeKey(long keyId) {
-        mSmimeKey = keyId;
+    public void setSmimeCertificate(long certificateId) {
+        mSmimeCertificate = certificateId;
     }
 
     public boolean allowRemoteSearch() {

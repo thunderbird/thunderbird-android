@@ -9,9 +9,9 @@ import com.fsck.k9.R;
  * Created by philip on 25/03/2016.
  */
 public enum SecureTransportState {
-    UNKNOWN(R.drawable.status_lock_open, R.color.transportSecurity_blue),
-    SECURE(R.drawable.status_lock_closed, R.color.transportSecurity_green),
-    INSECURE(R.drawable.status_lock_open, R.color.transportSecurity_red);
+    UNKNOWN(R.drawable.status_lock_open, R.color.crypto_blue),
+    SECURE(R.drawable.status_lock_closed, R.color.crypto_green),
+    INSECURE(R.drawable.status_lock_open, R.color.crypto_red);
 
     private final int drawableId;
     private final int colorId;

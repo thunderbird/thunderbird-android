@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.RecipientAdapter;
+import com.fsck.k9.ui.crypto.CryptoMethod;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 
@@ -35,7 +36,8 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     private final AlternateRecipientListener listener;
     private List<Recipient> recipients;
     private Recipient currentRecipient;
-
+    //TODO: Update this when changing to use SMIME
+    private CryptoMethod cryptoMethod = CryptoMethod.OPENPGP;
 
     public AlternateRecipientAdapter(Context context, AlternateRecipientListener listener) {
         super();
@@ -162,17 +164,17 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     }
 
     private void configureCryptoStatusView(RecipientTokenHolder holder, Recipient recipient) {
-        switch (recipient.getCryptoStatus()) {
+        switch (recipient.getCryptoStatus(cryptoMethod)) {
             case AVAILABLE_TRUSTED: {
-                setCryptoStatusView(holder, R.drawable.status_lock_dots_3, R.color.openpgp_green);
+                setCryptoStatusView(holder, R.drawable.status_lock_dots_3, R.color.crypto_green);
                 break;
             }
             case AVAILABLE_UNTRUSTED: {
-                setCryptoStatusView(holder, R.drawable.status_lock_dots_2, R.color.openpgp_orange);
+                setCryptoStatusView(holder, R.drawable.status_lock_dots_2, R.color.crypto_orange);
                 break;
             }
             case UNAVAILABLE: {
-                setCryptoStatusView(holder, R.drawable.status_lock_disabled_dots_1, R.color.openpgp_red);
+                setCryptoStatusView(holder, R.drawable.status_lock_disabled_dots_1, R.color.crypto_red);
                 break;
             }
             case UNDEFINED: {

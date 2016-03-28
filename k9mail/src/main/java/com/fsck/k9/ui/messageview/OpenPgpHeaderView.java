@@ -377,18 +377,18 @@ public class OpenPgpHeaderView extends LinearLayout {
 
 
     private enum CryptoState {
-        VERIFIED(R.drawable.status_signature_verified_cutout, R.color.openpgp_green),
-        ENCRYPTED(R.drawable.status_lock_closed, R.color.openpgp_green),
+        VERIFIED(R.drawable.status_signature_verified_cutout, R.color.crypto_green),
+        ENCRYPTED(R.drawable.status_lock_closed, R.color.crypto_green),
 
-        UNAVAILABLE(R.drawable.status_signature_unverified_cutout, R.color.openpgp_orange),
-        UNVERIFIED(R.drawable.status_signature_unverified_cutout, R.color.openpgp_orange),
-        UNKNOWN_KEY(R.drawable.status_signature_unknown_cutout, R.color.openpgp_orange),
+        UNAVAILABLE(R.drawable.status_signature_unverified_cutout, R.color.crypto_orange),
+        UNVERIFIED(R.drawable.status_signature_unverified_cutout, R.color.crypto_orange),
+        UNKNOWN_KEY(R.drawable.status_signature_unknown_cutout, R.color.crypto_orange),
 
-        REVOKED(R.drawable.status_signature_revoked_cutout, R.color.openpgp_red),
-        EXPIRED(R.drawable.status_signature_expired_cutout, R.color.openpgp_red),
-        NOT_ENCRYPTED(R.drawable.status_lock_open, R.color.openpgp_red),
-        NOT_SIGNED(R.drawable.status_signature_unknown_cutout, R.color.openpgp_red),
-        INVALID(R.drawable.status_signature_invalid_cutout, R.color.openpgp_red);
+        REVOKED(R.drawable.status_signature_revoked_cutout, R.color.crypto_red),
+        EXPIRED(R.drawable.status_signature_expired_cutout, R.color.crypto_red),
+        NOT_ENCRYPTED(R.drawable.status_lock_open, R.color.crypto_red),
+        NOT_SIGNED(R.drawable.status_signature_unknown_cutout, R.color.crypto_red),
+        INVALID(R.drawable.status_signature_invalid_cutout, R.color.crypto_red);
 
 
         private final int drawableId;

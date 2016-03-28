@@ -18,6 +18,7 @@ import android.provider.ContactsContract.Contacts.Data;
 
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.ui.crypto.CryptoMethod;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 
@@ -123,11 +124,11 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         }
 
         if (openPgpProvider != null) {
-            fillOpenPgpStatusData(recipientMap);
+            fillCryptoStatusData(recipientMap, CryptoMethod.OPENPGP);
         }
 
         if (smimeProvider != null) {
-            fillSmimeStatusData(recipientMap);
+            fillCryptoStatusData(recipientMap, CryptoMethod.SMIME);
         }
 
         return recipients;
@@ -257,12 +258,21 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         cursor.close();
     }
 
-    private void fillOpenPgpStatusData(Map<String, Recipient> recipientMap) {
+    private void fillCryptoStatusData(Map<String, Recipient> recipientMap, CryptoMethod method) {
         List<String> recipientList = new ArrayList<>(recipientMap.keySet());
         String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
 
         Cursor cursor;
-        Uri queryUri = Uri.parse("content://" + openPgpProvider + ".provider.exported/email_status");
+        String provider;
+        if (method == CryptoMethod.OPENPGP) {
+            provider = openPgpProvider;
+        } else if (method == CryptoMethod.SMIME) {
+            provider = smimeProvider;
+        } else {
+            throw new AssertionError("Unexpected CryptoMethod:" + method);
+        }
+
+        Uri queryUri = Uri.parse("content://" + provider + ".provider.exported/email_status");
         try {
             cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_STATUS, null,
                     recipientAddresses, null);
@@ -271,7 +281,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             return;
         }
 
-        initializeCryptoStatusForAllRecipients(recipientMap);
+        initializeCryptoStatusForAllRecipients(method, recipientMap);
 
         if (cursor == null) {
             return;
@@ -287,14 +297,14 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                     Recipient recipient = recipientMap.get(emailAddress);
                     switch (status) {
                         case CRYPTO_PROVIDER_STATUS_UNTRUSTED: {
-                            if (recipient.getCryptoStatus() == RecipientCryptoStatus.UNAVAILABLE) {
-                                recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_UNTRUSTED);
+                            if (recipient.getCryptoStatus(method) == RecipientCryptoStatus.UNAVAILABLE) {
+                                recipient.setCryptoStatus(method, RecipientCryptoStatus.AVAILABLE_UNTRUSTED);
                             }
                             break;
                         }
                         case CRYPTO_PROVIDER_STATUS_TRUSTED: {
-                            if (recipient.getCryptoStatus() != RecipientCryptoStatus.AVAILABLE_TRUSTED) {
-                                recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_TRUSTED);
+                            if (recipient.getCryptoStatus(method) != RecipientCryptoStatus.AVAILABLE_TRUSTED) {
+                                recipient.setCryptoStatus(method, RecipientCryptoStatus.AVAILABLE_TRUSTED);
                             }
                             break;
                         }
@@ -310,62 +320,9 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         }
     }
 
-    private void fillSmimeStatusData(Map<String, Recipient> recipientMap) {
-        List<String> recipientList = new ArrayList<>(recipientMap.keySet());
-        String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
-
-        Cursor cursor;
-        Uri queryUri = Uri.parse("content://" + smimeProvider + ".provider.exported/email_status");
-        try {
-            cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_STATUS, null,
-                    recipientAddresses, null);
-        } catch (SecurityException e) {
-            // TODO escalate error to crypto status?
-            return;
-        }
-
-        initializeCryptoStatusForAllRecipients(recipientMap);
-
-        if (cursor == null) {
-            return;
-        }
-
-        while (cursor.moveToNext()) {
-            String email = cursor.getString(INDEX_EMAIL_ADDRESS);
-            int status = cursor.getInt(INDEX_EMAIL_STATUS);
-
-            for (Address address : Address.parseUnencoded(email)) {
-                String emailAddress = address.getAddress();
-                if (recipientMap.containsKey(emailAddress)) {
-                    Recipient recipient = recipientMap.get(emailAddress);
-                    switch (status) {
-                        case CRYPTO_PROVIDER_STATUS_UNTRUSTED: {
-                            if (recipient.getCryptoStatus() == RecipientCryptoStatus.UNAVAILABLE) {
-                                recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_UNTRUSTED);
-                            }
-                            break;
-                        }
-                        case CRYPTO_PROVIDER_STATUS_TRUSTED: {
-                            if (recipient.getCryptoStatus() != RecipientCryptoStatus.AVAILABLE_TRUSTED) {
-                                recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_TRUSTED);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        cursor.close();
-
-        if (observerKey != null) {
-            observerKey = new ForceLoadContentObserver();
-            getContext().getContentResolver().registerContentObserver(queryUri, false, observerKey);
-        }
-    }
-
-    private void initializeCryptoStatusForAllRecipients(Map<String, Recipient> recipientMap) {
+    private void initializeCryptoStatusForAllRecipients(CryptoMethod method, Map<String, Recipient> recipientMap) {
         for (Recipient recipient : recipientMap.values()) {
-            recipient.setCryptoStatus(RecipientCryptoStatus.UNAVAILABLE);
+            recipient.setCryptoStatus(method, RecipientCryptoStatus.UNAVAILABLE);
         }
     }
 

@@ -44,10 +44,10 @@ import java.util.List;
  * http://grepcode.com/file_/repository.grepcode.com/java/ext/com.google.android/android/4.4_r1/android/preference/ListPreference.java/?v=source
  */
 public class SMimeAppPreference extends DialogPreference {
-    private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";
+    private static final String OPENSMIME_PACKAGE = "com.whiuk.philip.opensmime";
     private static final String MARKET_INTENT_URI_BASE = "market://details?id=%s";
     private static final Intent MARKET_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse(
-            String.format(MARKET_INTENT_URI_BASE, OPENKEYCHAIN_PACKAGE)));
+            String.format(MARKET_INTENT_URI_BASE, OPENSMIME_PACKAGE)));
 
     private static final ArrayList<String> PROVIDER_BLACKLIST = new ArrayList<String>();
 
@@ -292,8 +292,8 @@ public class SMimeAppPreference extends DialogPreference {
                 String marketName = String.valueOf(resolveInfo.activityInfo.applicationInfo
                         .loadLabel(getContext().getPackageManager()));
                 String simpleName = String.format(getContext().getString(R.string
-                        .smime_install_openkeychain_via), marketName);
-                mList.add(new SmimeProviderEntry(OPENKEYCHAIN_PACKAGE, simpleName,
+                        .smime_install_opensmime_via), marketName);
+                mList.add(new SmimeProviderEntry(OPENSMIME_PACKAGE, simpleName,
                         icon, marketIntent));
             }
         } else {

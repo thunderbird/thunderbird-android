@@ -65,10 +65,11 @@ public class SMimeApi {
      * <p/>
      * optional extras:
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (DEPRECATED: this makes no sense here)
-     * char[]        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (certificate passphrase)
      */
     public static final String ACTION_SIGN = "org.openintents.smime.action.SIGN";
 
+    //TODO: Update to match SMIME
     /**
      * Sign text resulting in a cleartext signature
      * Some magic pre-processing of the text is done to convert it to a format usable for
@@ -77,24 +78,25 @@ public class SMimeApi {
      * - remove whitespaces on line endings
      * <p/>
      * required extras:
-     * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
+     * long          EXTRA_SIGN_CERTIFICATE_ID           (certificate id of signing certificate)
      * <p/>
      * optional extras:
-     * char[]        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (certificate passphrase)
      */
     public static final String ACTION_CLEARTEXT_SIGN = "org.openintents.smime.action.CLEARTEXT_SIGN";
 
     /**
      * Sign text or binary data resulting in a detached signature.
-     * No OutputStream necessary for ACTION_DETACHED_SIGN (No magic pre-processing like in ACTION_CLEARTEXT_SIGN)!
+     * No OutputStream necessary for ACTION_DETACHED_SIGN
+     * (No magic pre-processing like in ACTION_CLEARTEXT_SIGN)!
      * The detached signature is returned separately in RESULT_DETACHED_SIGNATURE.
      * <p/>
      * required extras:
-     * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
+     * long          EXTRA_SIGN_CERTIFICATE_ID           (certificate id of signing certificate)
      * <p/>
      * optional extras:
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for detached signature)
-     * char[]        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (certificate passphrase)
      * <p/>
      * returned extras:
      * byte[]        RESULT_DETACHED_SIGNATURE
@@ -105,13 +107,13 @@ public class SMimeApi {
      * Encrypt
      * <p/>
      * required extras:
-     * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a user_id, a PendingIntent is returned via RESULT_INTENT)
+     * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one certificate has a user_id, a PendingIntent is returned via RESULT_INTENT)
      * or
-     * long[]        EXTRA_KEY_IDS
+     * long[]        EXTRA_CERTIFICATE_IDS
      * <p/>
      * optional extras:
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
-     * char[]        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (certificate passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
      * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
      */
@@ -121,14 +123,14 @@ public class SMimeApi {
      * Sign and encrypt
      * <p/>
      * required extras:
-     * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a user_id, a PendingIntent is returned via RESULT_INTENT)
+     * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one certificate has a user_id, a PendingIntent is returned via RESULT_INTENT)
      * or
-     * long[]        EXTRA_KEY_IDS
+     * long[]        EXTRA_CERTIFICATE_IDS
      * <p/>
      * optional extras:
-     * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
+     * long          EXTRA_SIGN_CERTIFICATE_ID           (certifcate id of signing certificate)
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
-     * char[]        EXTRA_PASSPHRASE            (key passphrase)
+     * char[]        EXTRA_PASSPHRASE            (certificate passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
      * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
      */
@@ -139,10 +141,10 @@ public class SMimeApi {
      * and also signed-only input.
      * OutputStream is optional, e.g., for verifying detached signatures!
      * <p/>
-     * If SmimeSignatureResult.getResult() == SmimeSignatureResult.RESULT_KEY_MISSING
-     * in addition a PendingIntent is returned via RESULT_INTENT to download missing keys.
+     * If SmimeSignatureResult.getResult() == SmimeSignatureResult.RESULT_CERTIFICATE_MISSING
+     * in addition a PendingIntent is returned via RESULT_INTENT to download missing certificates.
      * On all other status, in addition a PendingIntent is returned via RESULT_INTENT to open
-     * the key view in OpenKeychain.
+     * the certificate view in the app providing the service (e.g. OpenSMIME).
      * <p/>
      * optional extras:
      * byte[]        EXTRA_DETACHED_SIGNATURE    (detached signature)
@@ -167,43 +169,43 @@ public class SMimeApi {
     public static final String ACTION_DECRYPT_METADATA = "org.openintents.smime.action.DECRYPT_METADATA";
 
     /**
-     * Select key id for signing
+     * Select certificate id for signing
      * <p/>
      * optional extras:
      * String      EXTRA_USER_ID
      * <p/>
      * returned extras:
-     * long        EXTRA_SIGN_KEY_ID
+     * long        EXTRA_SIGN_CERTIFICATE_ID
      */
-    public static final String ACTION_GET_SIGN_KEY_ID = "org.openintents.smime.action.GET_SIGN_KEY_ID";
+    public static final String ACTION_GET_SIGN_CERTIFICATE_ID = "org.openintents.smime.action.GET_SIGN_CERTIFICATE_ID";
 
     /**
-     * Get key ids based on given user ids (=emails)
+     * Get certificate ids based on given user ids (=emails)
      * <p/>
      * required extras:
      * String[]      EXTRA_USER_IDS
      * <p/>
      * returned extras:
-     * long[]        RESULT_KEY_IDS
+     * long[]        RESULT_CERTIFICATE_IDS
      */
-    public static final String ACTION_GET_KEY_IDS = "org.openintents.smime.action.GET_KEY_IDS";
+    public static final String ACTION_GET_CERTIFICATE_IDS = "org.openintents.smime.action.GET_CERTIFICATE_IDS";
 
     /**
-     * This action returns RESULT_CODE_SUCCESS if the Smime Provider already has the key
-     * corresponding to the given key id in its database.
+     * This action returns RESULT_CODE_SUCCESS if the Smime Provider already has the certificate
+     * corresponding to the given certificate id in its database.
      * <p/>
-     * It returns RESULT_CODE_USER_INTERACTION_REQUIRED if the Provider does not have the key.
-     * The PendingIntent from RESULT_INTENT can be used to retrieve those from a keyserver.
+     * It returns RESULT_CODE_USER_INTERACTION_REQUIRED if the Provider does not have the certificate.
+     * The PendingIntent from RESULT_INTENT can be used to retrieve those from a certificate server.
      * <p/>
-     * If an Output stream has been defined the whole public key is returned.
+     * If an Output stream has been defined the whole public certificate is returned.
      * required extras:
-     * long        EXTRA_KEY_ID
+     * long        EXTRA_CERTIFICATE_ID
      * <p/>
      * optional extras:
-     * String      EXTRA_REQUEST_ASCII_ARMOR (request that the returned key is encoded in ASCII Armor)
+     * String      EXTRA_REQUEST_ASCII_ARMOR (request that the returned certificate is encoded in ASCII Armor)
      *
      */
-    public static final String ACTION_GET_KEY = "org.openintents.smime.action.GET_KEY";
+    public static final String ACTION_GET_CERTIFICATE = "org.openintents.smime.action.GET_CERTIFICATE";
 
     /* Intent extras */
     public static final String EXTRA_API_VERSION = "api_version";
@@ -222,20 +224,20 @@ public class SMimeApi {
 
     // ENCRYPT, SIGN_AND_ENCRYPT
     public static final String EXTRA_USER_IDS = "user_ids";
-    public static final String EXTRA_KEY_IDS = "key_ids";
-    public static final String EXTRA_SIGN_KEY_ID = "sign_key_id";
+    public static final String EXTRA_CERTIFICATE_IDS = "certificate_ids";
+    public static final String EXTRA_SIGN_CERTIFICATE_ID = "sign_certificate_id";
     // optional extras:
     public static final String EXTRA_PASSPHRASE = "passphrase";
     public static final String EXTRA_ORIGINAL_FILENAME = "original_filename";
     public static final String EXTRA_ENABLE_COMPRESSION = "enable_compression";
     public static final String EXTRA_ENCRYPT_OPPORTUNISTIC = "opportunistic";
 
-    // GET_SIGN_KEY_ID
+    // GET_SIGN_CERTIFICATE_ID
     public static final String EXTRA_USER_ID = "user_id";
 
-    // GET_KEY
-    public static final String EXTRA_KEY_ID = "key_id";
-    public static final String RESULT_KEY_IDS = "key_ids";
+    // GET_CERTIFICATE
+    public static final String EXTRA_CERTIFICATE_ID = "certificate_id";
+    public static final String RESULT_CERTIFICATE_IDS = "certificate_ids";
 
     /* Service Intent returns */
     public static final String RESULT_CODE = "result_code";

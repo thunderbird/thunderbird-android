@@ -33,24 +33,24 @@ import org.openintents.smime.ISMimeService;
 import org.openintents.smime.SmimeError;
 import org.openintents.smime.R;
 
-public class SMimeKeyPreference extends Preference {
-    private long mKeyId;
+public class SMimeCertificatePreference extends Preference {
+    private long mCertificateId;
     private String mSmimeProvider;
     private SMimeServiceConnection mServiceConnection;
     private String mDefaultUserId;
 
     public static final int REQUEST_CODE_KEY_PREFERENCE = 9999;
 
-    private static final int NO_KEY = 0;
+    private static final int NO_CERTIFICATE = 0;
 
-    public SMimeKeyPreference(Context context, AttributeSet attrs) {
+    public SMimeCertificatePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     public CharSequence getSummary() {
-        return (mKeyId == NO_KEY) ? getContext().getString(R.string.smime_no_key_selected)
-                : getContext().getString(R.string.smime_key_selected);
+        return (mCertificateId == NO_CERTIFICATE) ? getContext().getString(R.string.smime_no_certificate_selected)
+                : getContext().getString(R.string.smime_certificate_selected);
     }
 
     private void updateEnabled() {
@@ -80,7 +80,7 @@ public class SMimeKeyPreference extends Preference {
                     @Override
                     public void onBound(ISMimeService service) {
 
-                        getSignKeyId(new Intent());
+                        getSignCertificateId(new Intent());
                     }
 
                     @Override
@@ -92,8 +92,8 @@ public class SMimeKeyPreference extends Preference {
         mServiceConnection.bindToService();
     }
 
-    private void getSignKeyId(Intent data) {
-        data.setAction(SMimeApi.ACTION_GET_SIGN_KEY_ID);
+    private void getSignCertificateId(Intent data) {
+        data.setAction(SMimeApi.ACTION_GET_SIGN_CERTIFICATE_ID);
         data.putExtra(SMimeApi.EXTRA_USER_ID, mDefaultUserId);
 
         SMimeApi api = new SMimeApi(getContext(), mServiceConnection.getService());
@@ -112,7 +112,7 @@ public class SMimeKeyPreference extends Preference {
             switch (result.getIntExtra(SMimeApi.RESULT_CODE, SMimeApi.RESULT_CODE_ERROR)) {
                 case SMimeApi.RESULT_CODE_SUCCESS: {
 
-                    long keyId = result.getLongExtra(SMimeApi.EXTRA_SIGN_KEY_ID, NO_KEY);
+                    long keyId = result.getLongExtra(SMimeApi.EXTRA_SIGN_CERTIFICATE_ID, NO_CERTIFICATE);
                     save(keyId);
 
                     break;
@@ -132,8 +132,10 @@ public class SMimeKeyPreference extends Preference {
                 }
                 case SMimeApi.RESULT_CODE_ERROR: {
                     SmimeError error = result.getParcelableExtra(SMimeApi.RESULT_ERROR);
-                    Log.e(SMimeApi.TAG, "RESULT_CODE_ERROR: " + error.getMessage());
-
+                    if (error !=null)
+                        Log.e(SMimeApi.TAG, "RESULT_CODE_ERROR: " + error.getMessage());
+                    else
+                        Log.e(SMimeApi.TAG, "App did not provide cause of error");
                     break;
                 }
             }
@@ -162,15 +164,15 @@ public class SMimeKeyPreference extends Preference {
      * Public API
      */
     public long getValue() {
-        return mKeyId;
+        return mCertificateId;
     }
 
     private void setAndPersist(long newValue) {
-        mKeyId = newValue;
+        mCertificateId = newValue;
 
         // Save to persistent storage (this method will make sure this
         // preference should be persistent, along with other useful checks)
-        persistLong(mKeyId);
+        persistLong(mCertificateId);
 
         // Data has changed, notify so UI can be refreshed!
         notifyChanged();
@@ -183,14 +185,14 @@ public class SMimeKeyPreference extends Preference {
     protected Object onGetDefaultValue(TypedArray a, int index) {
         // This preference type's value type is Long, so we read the default
         // value from the attributes as an Integer.
-        return (long) a.getInteger(index, NO_KEY);
+        return (long) a.getInteger(index, NO_CERTIFICATE);
     }
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         if (restoreValue) {
             // Restore state
-            mKeyId = getPersistedLong(mKeyId);
+            mCertificateId = getPersistedLong(mCertificateId);
         } else {
             // Set state
             long value = (Long) defaultValue;
@@ -214,7 +216,7 @@ public class SMimeKeyPreference extends Preference {
 
         // Save the instance state
         final SavedState myState = new SavedState(superState);
-        myState.keyId = mKeyId;
+        myState.certificateId = mCertificateId;
         myState.smimeProvider = mSmimeProvider;
         myState.defaultUserId = mDefaultUserId;
         return myState;
@@ -231,7 +233,7 @@ public class SMimeKeyPreference extends Preference {
         // Restore the instance state
         SavedState myState = (SavedState) state;
         super.onRestoreInstanceState(myState.getSuperState());
-        mKeyId = myState.keyId;
+        mCertificateId = myState.certificateId;
         mSmimeProvider = myState.smimeProvider;
         mDefaultUserId = myState.defaultUserId;
         notifyChanged();
@@ -244,14 +246,14 @@ public class SMimeKeyPreference extends Preference {
      * It is important to always call through to super methods.
      */
     private static class SavedState extends BaseSavedState {
-        long keyId;
+        long certificateId;
         String smimeProvider;
         String defaultUserId;
 
         public SavedState(Parcel source) {
             super(source);
 
-            keyId = source.readInt();
+            certificateId = source.readInt();
             smimeProvider = source.readString();
             defaultUserId = source.readString();
         }
@@ -260,7 +262,7 @@ public class SMimeKeyPreference extends Preference {
         public void writeToParcel(Parcel dest, int flags) {
             super.writeToParcel(dest, flags);
 
-            dest.writeLong(keyId);
+            dest.writeLong(certificateId);
             dest.writeString(smimeProvider);
             dest.writeString(defaultUserId);
         }
@@ -283,7 +285,7 @@ public class SMimeKeyPreference extends Preference {
 
     public boolean handleOnActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_KEY_PREFERENCE && resultCode == Activity.RESULT_OK) {
-            getSignKeyId(data);
+            getSignCertificateId(data);
             return true;
         } else {
             return false;

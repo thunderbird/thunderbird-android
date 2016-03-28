@@ -67,7 +67,7 @@
                 android:layout_width="4dp"
                 android:layout_marginLeft="8dp"
                 android:layout_height="match_parent"
-                android:background="@color/smime_sidebar" />
+                android:background="@color/crypto_sidebar" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -124,7 +124,7 @@
                     android:id="@+id/result_signature_divider2"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/smime_sidebar" />
+                    android:background="@color/crypto_sidebar" />
 
             </LinearLayout>
 
