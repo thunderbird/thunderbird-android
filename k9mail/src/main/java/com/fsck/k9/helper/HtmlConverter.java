@@ -245,7 +245,7 @@ public class HtmlConverter {
      * <p>
      * No HTML headers or footers are added to the result.  Headers and footers
      * are added at display time in
-     * {@link com.fsck.k9.view.MessageWebView#setText(String) MessageWebView.setText()}
+     * {@link com.fsck.k9.view.MessageWebView#setText(String, boolean) MessageWebView.setText()}
      * </p>
      *
      * @param text
@@ -295,7 +295,7 @@ public class HtmlConverter {
      * <p>
      * No HTML headers or footers are added to the result.  Headers and footers
      * are added at display time in
-     * {@link com.fsck.k9.view.MessageWebView#setText(String) MessageWebView.setText()}
+     * {@link com.fsck.k9.view.MessageWebView#setText(String, boolean) MessageWebView.setText()}
      * </p>
      * <p>
      * To convert to a fragment, use {@link #textToHtmlFragment(String)} .
