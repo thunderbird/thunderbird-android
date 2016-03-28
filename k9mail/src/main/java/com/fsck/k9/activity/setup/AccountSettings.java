@@ -121,7 +121,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_OPENPGP_KEY = "openpgp_key";
     private static final String PREFERENCE_SMIME = "smime";
     private static final String PREFERENCE_SMIME_APP = "smime_app";
-    private static final String PREFERENCE_SMIME_KEY = "smime_key";
+    private static final String PREFERENCE_SMIME_CERTIFICATE = "smime_certificate";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -755,7 +755,7 @@ public class AccountSettings extends K9PreferenceActivity {
         if (mHasSmime) {
             mSmimeApp = (SMimeAppPreference) findPreference(PREFERENCE_SMIME_APP);
             mSmimeCertificate = (SMimeCertificatePreference)
-                    findPreference(PREFERENCE_SMIME_KEY);
+                    findPreference(PREFERENCE_SMIME_CERTIFICATE);
 
             mSmimeApp.setValue(String.valueOf(mAccount.getSmimeApp()));
             mSmimeApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

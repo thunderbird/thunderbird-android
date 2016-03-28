@@ -499,9 +499,9 @@
                 android:key="smime_app"
                 android:title="@string/account_settings_smime_app" />
 
-            <org.openintents.smime.util.SMimeKeyPreference
+            <org.openintents.smime.util.SMimeCertificatePreference
                 android:persistent="false"
-                android:key="smime_key"
+                android:key="smime_certificate"
                 android:title="@string/account_settings_smime_key" />
 
         </PreferenceScreen>
