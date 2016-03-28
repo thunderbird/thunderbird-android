@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -231,4 +232,34 @@ public class HtmlConverterTest {
         result = HtmlConverter.textToHtml(text);
         assertEquals("<pre class=\"k9mail\">hello<hr />world<br /></pre>",result);
     }
+
+    @Ignore //GH#1223
+    @Test
+    public void testLinks() {
+        String text = "http://www.google.com";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com\">http://www.google.com</a></pre>", result);
+
+        text = "http://www.google.com/";
+        result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/\">http://www.google.com/</a></pre>", result);
+
+        text = "http://google.com/";
+        result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a></pre>", result);
+
+        text = "http://google.com/ ";
+        result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a> </pre>", result);
+
+        text = "http://google.com/ \n";
+        result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a> <br></pre>", result);
+
+        text = "http://google.com/\n";
+        result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a><br></pre>", result);
+
+    }
+
 }
