@@ -83,11 +83,13 @@ class MigrationTo51 {
                 String mimeType = msgCursor.getString(4);
                 int attachmentCount = msgCursor.getInt(5);
 
-                try {
-                    updateFlagsForMessage(db, messageId, messageFlags, migrationsHelper);
-                    MimeHeader mimeHeader = loadHeaderFromHeadersTable(db, messageId);
+                updateFlagsForMessage(db, messageId, messageFlags, migrationsHelper);
 
-                    MimeStructureState structureState = MimeStructureState.getNewRootState();
+                MimeStructureState structureState = null;
+                try {
+                    structureState = MimeStructureState.getNewRootState();
+
+                    MimeHeader mimeHeader = loadHeaderFromHeadersTable(db, messageId);
 
                     boolean messageHadSpecialFormat = false;
 
@@ -117,14 +119,21 @@ class MigrationTo51 {
                                             htmlContent, textContent, mimeHeader, structureState);
                         }
                     }
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "error inserting into database! (removing remnant message parts)", e);
 
+                    if (structureState != null && structureState.rootPartId != null) {
+                        db.delete("", "root_part_id=?", new String[] { Long.toString(structureState.rootPartId) });
+                    }
+                    structureState = null;
+                }
+
+                if (structureState != null) {
                     cv.clear();
                     cv.put("mime_type", mimeType);
                     cv.put("message_part_id", structureState.rootPartId);
                     cv.put("attachment_count", attachmentCount);
                     db.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
-                } catch (IOException e) {
-                    Log.e(K9.LOG_TAG, "error inserting into database", e);
                 }
             }
 
