@@ -44,8 +44,8 @@ public class SMimeServiceConnection {
      * Create new connection
      *
      * @param context
-     * @param providerPackageName specify package name of OpenPGP provider,
-     *                            e.g., "org.sufficientlysecure.keychain"
+     * @param providerPackageName specify package name of SMime provider,
+     *                            e.g., "com.whiuk.philip.smime"
      */
     public SMimeServiceConnection(Context context, String providerPackageName) {
         this.mApplicationContext = context.getApplicationContext();
@@ -56,8 +56,8 @@ public class SMimeServiceConnection {
      * Create new connection with callback
      *
      * @param context
-     * @param providerPackageName specify package name of OpenPGP provider,
-     *                            e.g., "org.sufficientlysecure.keychain"
+     * @param providerPackageName specify package name of SMime provider,
+     *                            e.g., "com.whiuk.philip.smime"
      * @param onBoundListener     callback, executed when connection to service has been established
      */
     public SMimeServiceConnection(Context context, String providerPackageName,
@@ -96,7 +96,7 @@ public class SMimeServiceConnection {
         // if not already bound...
         if (mService == null) {
             try {
-                Intent serviceIntent = new Intent(SMimeApi.SERVICE_INTENT_2);
+                Intent serviceIntent = new Intent(SMimeApi.SERVICE_INTENT);
                 // NOTE: setPackage is very important to restrict the intent to this provider only!
                 serviceIntent.setPackage(mProviderPackageName);
                 boolean connect = mApplicationContext.bindService(serviceIntent, mServiceConnection,

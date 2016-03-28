@@ -48,20 +48,20 @@ public class SmimeMessageBuilder extends MessageBuilder {
     /** This class keeps track of its internal state explicitly. */
     private enum State {
         IDLE, START, FAILURE,
-        OPENPGP_SIGN, OPENPGP_SIGN_UI, OPENPGP_SIGN_OK,
-        OPENPGP_ENCRYPT, OPENPGP_ENCRYPT_UI, OPENPGP_ENCRYPT_OK;
+        SMIME_SIGN, SMIME_SIGN_UI, SMIME_SIGN_OK,
+        SMIME_ENCRYPT, SMIME_ENCRYPT_UI, SMIME_ENCRYPT_OK;
 
         public boolean isBreakState() {
-            return this == OPENPGP_SIGN_UI || this == OPENPGP_ENCRYPT_UI || this == FAILURE;
+            return this == SMIME_SIGN_UI || this == SMIME_ENCRYPT_UI || this == FAILURE;
         }
 
         public boolean isReentrantState() {
-            return this == OPENPGP_SIGN || this == OPENPGP_ENCRYPT;
+            return this == SMIME_SIGN || this == SMIME_ENCRYPT;
         }
 
         public boolean isSignOk() {
-            return this == OPENPGP_SIGN_OK || this == OPENPGP_ENCRYPT
-                    || this == OPENPGP_ENCRYPT_UI || this == OPENPGP_ENCRYPT_OK;
+            return this == SMIME_SIGN_OK || this == SMIME_ENCRYPT
+                    || this == SMIME_ENCRYPT_UI || this == SMIME_ENCRYPT_OK;
         }
     }
 
@@ -86,11 +86,11 @@ public class SmimeMessageBuilder extends MessageBuilder {
 
     @Override
     public void buildMessageOnActivityResult(int requestCode, Intent userInteractionResult) {
-        if (requestCode == REQUEST_SIGN_INTERACTION && currentState == State.OPENPGP_SIGN_UI) {
-            currentState = State.OPENPGP_SIGN;
+        if (requestCode == REQUEST_SIGN_INTERACTION && currentState == State.SMIME_SIGN_UI) {
+            currentState = State.SMIME_SIGN;
             startOrContinueBuildMessage(userInteractionResult);
-        } else if (requestCode == REQUEST_ENCRYPT_INTERACTION && currentState == State.OPENPGP_ENCRYPT_UI) {
-            currentState = State.OPENPGP_ENCRYPT;
+        } else if (requestCode == REQUEST_ENCRYPT_INTERACTION && currentState == State.SMIME_ENCRYPT_UI) {
+            currentState = State.SMIME_ENCRYPT;
             startOrContinueBuildMessage(userInteractionResult);
         } else {
             throw new IllegalStateException("illegal state!");
@@ -122,7 +122,7 @@ public class SmimeMessageBuilder extends MessageBuilder {
     }
 
     private void startOrContinueEncryptionIfRequested(Intent userInteractionResult) throws MessagingException {
-        boolean reenterOperation = currentState == State.OPENPGP_ENCRYPT;
+        boolean reenterOperation = currentState == State.SMIME_ENCRYPT;
         if (reenterOperation) {
             mimeIntentLaunch(userInteractionResult);
             return;
@@ -133,7 +133,8 @@ public class SmimeMessageBuilder extends MessageBuilder {
         }
 
         Intent encryptIntent = new Intent(SMimeApi.ACTION_ENCRYPT);
-        encryptIntent.putExtra(SMimeApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+        //TODO: ??
+//        encryptIntent.putExtra(SMimeApi.EXTRA_REQUEST_ASCII_ARMOR, true);
 
         long[] encryptCertificateIds = cryptoStatus.getEncryptCertificateIds();
         if (encryptCertificateIds != null) {
@@ -152,12 +153,12 @@ public class SmimeMessageBuilder extends MessageBuilder {
             encryptIntent.putExtra(SMimeApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
         }
 
-        currentState = State.OPENPGP_ENCRYPT;
+        currentState = State.SMIME_ENCRYPT;
         mimeIntentLaunch(encryptIntent);
     }
 
     private void startOrContinueSigningIfRequested(Intent userInteractionResult) throws MessagingException {
-        boolean reenterOperation = currentState == State.OPENPGP_SIGN;
+        boolean reenterOperation = currentState == State.SMIME_SIGN;
         if (reenterOperation) {
             mimeIntentLaunch(userInteractionResult);
             return;
@@ -170,10 +171,10 @@ public class SmimeMessageBuilder extends MessageBuilder {
             return;
         }
 
-        Intent signIntent = new Intent(SMimeApi.ACTION_DETACHED_SIGN);
+        Intent signIntent = new Intent(SMimeApi.ACTION_SIGN);
         signIntent.putExtra(SMimeApi.EXTRA_SIGN_CERTIFICATE_ID, cryptoStatus.getSigningKeyId());
 
-        currentState = State.OPENPGP_SIGN;
+        currentState = State.SMIME_SIGN;
         mimeIntentLaunch(signIntent);
     }
 
@@ -183,7 +184,7 @@ public class SmimeMessageBuilder extends MessageBuilder {
      * error or PendingInput is returned, this will be passed as a result to the
      * operation.
      */
-    private void mimeIntentLaunch(Intent openPgpIntent) throws MessagingException {
+    private void mimeIntentLaunch(Intent smimeIntent) throws MessagingException {
         final MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
 
         String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
@@ -206,7 +207,7 @@ public class SmimeMessageBuilder extends MessageBuilder {
 
         BinaryTempFileBody encryptedTempBody = null;
         OutputStream outputStream = null;
-        if (currentState == State.OPENPGP_ENCRYPT) {
+        if (currentState == State.SMIME_ENCRYPT) {
             try {
                 encryptedTempBody = new BinaryTempFileBody(MimeUtil.ENC_7BIT);
                 outputStream = encryptedTempBody.getOutputStream();
@@ -215,13 +216,13 @@ public class SmimeMessageBuilder extends MessageBuilder {
             }
         }
 
-        Intent result = smimeApi.executeApi(openPgpIntent, dataSource, outputStream);
+        Intent result = smimeApi.executeApi(smimeIntent, dataSource, outputStream);
 
         switch (result.getIntExtra(SMimeApi.RESULT_CODE, SMimeApi.RESULT_CODE_ERROR)) {
             case SMimeApi.RESULT_CODE_SUCCESS:
-                if (currentState == State.OPENPGP_SIGN) {
+                if (currentState == State.SMIME_SIGN) {
                     mimeBuildSignedMessage(bodyPart, result);
-                } else if (currentState == State.OPENPGP_ENCRYPT) {
+                } else if (currentState == State.SMIME_ENCRYPT) {
                     mimeBuildEncryptedMessage(encryptedTempBody, result);
                 } else {
                     throw new IllegalStateException("state error!");
@@ -249,11 +250,11 @@ public class SmimeMessageBuilder extends MessageBuilder {
     private void launchUserInteraction(Intent result) {
         PendingIntent pendingIntent = result.getParcelableExtra(SMimeApi.RESULT_INTENT);
 
-        if (currentState == State.OPENPGP_ENCRYPT) {
-            currentState = State.OPENPGP_ENCRYPT_UI;
+        if (currentState == State.SMIME_ENCRYPT) {
+            currentState = State.SMIME_ENCRYPT_UI;
             queueMessageBuildPendingIntent(pendingIntent, REQUEST_ENCRYPT_INTERACTION);
-        } else if (currentState == State.OPENPGP_SIGN) {
-            currentState = State.OPENPGP_SIGN_UI;
+        } else if (currentState == State.SMIME_SIGN) {
+            currentState = State.SMIME_SIGN_UI;
             queueMessageBuildPendingIntent(pendingIntent, REQUEST_SIGN_INTERACTION);
         } else {
             throw new IllegalStateException("illegal state!");
@@ -262,7 +263,8 @@ public class SmimeMessageBuilder extends MessageBuilder {
 
     private void mimeBuildSignedMessage(BodyPart signedBodyPart, Intent result) throws MessagingException {
         byte[] signedData = result.getByteArrayExtra(SMimeApi.RESULT_DETACHED_SIGNATURE);
-
+//todo: rewrite
+        /**
         MimeMultipart multipartSigned = new MimeMultipart();
         multipartSigned.setSubType("signed");
         multipartSigned.addBodyPart(signedBodyPart);
@@ -281,8 +283,8 @@ public class SmimeMessageBuilder extends MessageBuilder {
             Log.e(K9.LOG_TAG, "missing micalg parameter for pgp multipart/signed!");
         }
         currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
-
-        currentState = State.OPENPGP_SIGN_OK;
+**/
+        currentState = State.SMIME_SIGN_OK;
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -298,96 +300,17 @@ public class SmimeMessageBuilder extends MessageBuilder {
                 multipartEncrypted.getBoundary());
         currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
 
-        currentState = State.OPENPGP_ENCRYPT_OK;
+        currentState = State.SMIME_ENCRYPT_OK;
     }
 
     private void skipEncryptingMessage() throws MessagingException {
         if (!cryptoStatus.isEncryptionOpportunistic()) {
             throw new AssertionError("Got opportunistic error, but encryption wasn't supposed to be opportunistic!");
         }
-        currentState = State.OPENPGP_ENCRYPT_OK;
+        currentState = State.SMIME_ENCRYPT_OK;
     }
 
     public void setCryptoStatus(ComposeCryptoStatus cryptoStatus) {
         this.cryptoStatus = cryptoStatus;
     }
-
-    /* TODO re-add PGP/INLINE
-    if (isCryptoProviderEnabled() && ! mAccount.isUsePgpMime()) {
-        // OpenPGP Provider API
-
-        // If not already encrypted but user wants to encrypt...
-        if (mPgpData.getEncryptedData() == null &&
-                (mEncryptCheckbox.isChecked() || mCryptoSignatureCheckbox.isChecked())) {
-
-            String[] emailsArray = null;
-            if (mEncryptCheckbox.isChecked()) {
-                // get emails as array
-                List<String> emails = new ArrayList<String>();
-
-                for (Address address : recipientPresenter.getAllRecipientAddresses()) {
-                    emails.add(address.getAddress());
-                }
-                emailsArray = emails.toArray(new String[emails.size()]);
-            }
-            if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
-                Intent intent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
-                intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
-                intent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, mAccount.getCryptoKey());
-                executeOpenPgpMethod(intent);
-            } else if (mCryptoSignatureCheckbox.isChecked()) {
-                Intent intent = new Intent(OpenPgpApi.ACTION_SIGN);
-                intent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, mAccount.getCryptoKey());
-                executeOpenPgpMethod(intent);
-            } else if (mEncryptCheckbox.isChecked()) {
-                Intent intent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
-                intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
-                executeOpenPgpMethod(intent);
-            }
-
-            // onSend() is called again in SignEncryptCallback and with
-            // encryptedData set in pgpData!
-            return;
-        }
-    }
-    */
-
-    /* TODO re-add attach public key
-    private Attachment attachedPublicKey() throws OpenPgpApiException {
-        try {
-            Attachment publicKey = new Attachment();
-            publicKey.contentType = "application/pgp-keys";
-
-            String keyName = "0x" +  Long.toString(mAccount.getCryptoKey(), 16).substring(8);
-            publicKey.name = keyName + ".asc";
-            Intent intent = new Intent(OpenPgpApi.ACTION_GET_KEY);
-            intent.putExtra(OpenPgpApi.EXTRA_KEY_ID, mAccount.getCryptoKey());
-            intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-            OpenPgpApi api = new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
-            File keyTempFile = File.createTempFile("key", ".asc", getCacheDir());
-            keyTempFile.deleteOnExit();
-            try {
-                CountingOutputStream keyFileStream = new CountingOutputStream(new BufferedOutputStream(
-                        new FileOutputStream(keyTempFile)));
-                Intent res = api.executeApi(intent, null, new EOLConvertingOutputStream(keyFileStream));
-                if (res.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR) != OpenPgpApi.RESULT_CODE_SUCCESS
-                        || keyFileStream.getByteCount() == 0) {
-                    keyTempFile.delete();
-                    throw new OpenPgpApiException(String.format(getString(R.string.openpgp_no_public_key_returned),
-                            getString(R.string.btn_attach_key)));
-                }
-                publicKey.filename = keyTempFile.getAbsolutePath();
-                publicKey.state = Attachment.LoadingState.COMPLETE;
-                publicKey.size = keyFileStream.getByteCount();
-                return publicKey;
-            } catch(RuntimeException e){
-                keyTempFile.delete();
-                throw e;
-            }
-        } catch(IOException e){
-            throw new RuntimeException(getString(R.string.error_cant_create_temporary_file), e);
-        }
-    }
-     */
-
 }

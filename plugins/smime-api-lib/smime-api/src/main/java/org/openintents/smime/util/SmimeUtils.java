@@ -58,7 +58,7 @@ public class SMimeUtils {
     }
 
     public static boolean isAvailable(Context context) {
-        Intent intent = new Intent(SMimeApi.SERVICE_INTENT_2);
+        Intent intent = new Intent(SMimeApi.SERVICE_INTENT);
         List<ResolveInfo> resInfo = context.getPackageManager().queryIntentServices(intent, 0);
         return !resInfo.isEmpty();
     }

@@ -237,7 +237,7 @@ public class SMimeApi {
 
     // GET_CERTIFICATE
     public static final String EXTRA_CERTIFICATE_ID = "certificate_id";
-    public static final String RESULT_CERTIFICATE_IDS = "certificate_ids";
+    public static final String RESULT_CERTIFICATE_IDS = "key_ids";
 
     /* Service Intent returns */
     public static final String RESULT_CODE = "result_code";

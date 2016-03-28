@@ -263,7 +263,7 @@ public class SMimeAppPreference extends DialogPreference {
 
         // search for SMIME providers...
         ArrayList<SmimeProviderEntry> providerList = new ArrayList<>();
-        Intent intent = new Intent(SMimeApi.SERVICE_INTENT_2);
+        Intent intent = new Intent(SMimeApi.SERVICE_INTENT);
         List<ResolveInfo> resInfo = getContext().getPackageManager().queryIntentServices(intent, 0);
         if (resInfo != null && !resInfo.isEmpty()) {
             for (ResolveInfo resolveInfo : resInfo) {

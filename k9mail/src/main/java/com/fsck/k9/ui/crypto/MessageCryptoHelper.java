@@ -355,7 +355,7 @@ public class MessageCryptoHelper {
                 break;
             case SMIME:
                 smimeApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream,
-                new SMimeApi.ISmimeCallback() {
+                new SMimeApi.ISMimeCallback() {
                     @Override
                     public void onReturn(Intent result) {
                         currentCryptoResult = result;
@@ -382,7 +382,7 @@ public class MessageCryptoHelper {
                 });
                 break;
             case SMIME:
-                smimeApi.executeApiAsync(intent, pipedInputStream, null, new SMimeApi.ISmimeCallback() {
+                smimeApi.executeApiAsync(intent, pipedInputStream, null, new SMimeApi.ISMimeCallback() {
                     @Override
                     public void onReturn(Intent result) {
                         currentCryptoResult = result;
