@@ -16,6 +16,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
 
+
 public class LockableDatabase {
 
     /**
