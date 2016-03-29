@@ -15,8 +15,13 @@ class PreviewTextExtractor {
     private static final int MAX_CHARACTERS_CHECKED_FOR_PREVIEW = 8192;
 
 
-    public String extractPreview(@NonNull Part textPart) {
+    @NonNull
+    public String extractPreview(@NonNull Part textPart) throws PreviewExtractionException {
         String text = MessageExtractor.getTextFromPart(textPart);
+        if (text == null) {
+            throw new PreviewExtractionException("Couldn't get text from part");
+        }
+
         String plainText = convertFromHtmlIfNecessary(textPart, text);
 
         return stripTextForPreview(plainText);
@@ -32,10 +37,6 @@ class PreviewTextExtractor {
     }
 
     private String stripTextForPreview(String text) {
-        if (text == null) {
-            return "";
-        }
-
         // Only look at the first 8k of a message when calculating
         // the preview.  This should avoid unnecessary
         // memory usage on large messages

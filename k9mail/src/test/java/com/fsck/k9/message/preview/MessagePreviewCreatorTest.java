@@ -88,6 +88,20 @@ public class MessagePreviewCreatorTest {
         assertEquals("expected", result.getPreviewText());
     }
 
+    @Test
+    public void createPreview_withPreviewTextExtractorThrowing() throws Exception {
+        Message message = createDummyMessage();
+        Part textPart = createTextPart("text/plain");
+        when(encryptionDetector.isEncrypted(message)).thenReturn(false);
+        when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
+        when(previewTextExtractor.extractPreview(textPart)).thenThrow(new PreviewExtractionException(""));
+
+        PreviewResult result = previewCreator.createPreview(message);
+
+        assertFalse(result.isPreviewTextAvailable());
+        assertEquals(PreviewType.ERROR, result.getPreviewType());
+    }
+
     private Message createDummyMessage() {
         return new MimeMessage();
     }
