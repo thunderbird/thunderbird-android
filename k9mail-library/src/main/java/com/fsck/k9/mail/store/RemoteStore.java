@@ -57,7 +57,8 @@ public abstract class RemoteStore extends Store {
                 store = new Pop3Store(storeConfig,
                         new DefaultTrustedSocketFactory(context, proxySettings));
             } else if (uri.startsWith("webdav")) {
-                store = new WebDavStore(storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
+                store = new WebDavStore(storeConfig, new DefaultTrustedSocketFactory(context),
+                            new WebDavHttpClient.WebDavHttpClientFactory());
             }
 
             if (store != null) {

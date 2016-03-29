@@ -5,6 +5,7 @@ import android.util.Log;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
 
@@ -231,9 +232,9 @@ public class WebDavStore extends RemoteStore {
     private Folder mSendFolder = null;
     private Map<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
-    public WebDavStore(StoreConfig storeConfig, WebDavHttpClient.WebDavHttpClientFactory clientFactory)
+    public WebDavStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory, WebDavHttpClient.WebDavHttpClientFactory clientFactory)
     throws MessagingException {
-        super(storeConfig, null);
+        super(storeConfig, trustedSocketFactory);
         mHttpClientFactory = clientFactory;
 
         WebDavStoreSettings settings;

@@ -7,6 +7,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 
 import org.apache.http.HttpEntity;
@@ -89,6 +90,8 @@ public class WebDavStoreTest {
     private ClientConnectionManager mockClientConnectionManager;
     @Mock
     private SchemeRegistry mockSchemeRegistry;
+    @Mock
+    private TrustedSocketFactory mockTrustedSocketFactory;
 
     private HttpResponse okPropfindResponse;
 
@@ -106,7 +109,7 @@ public class WebDavStoreTest {
         when(mockClientConnectionManager.getSchemeRegistry()).thenReturn(mockSchemeRegistry);
 
         storeConfig = createStoreConfig("webdav://user:password@example.org:80");
-        webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+        webDavStore = new WebDavStore(storeConfig, mockTrustedSocketFactory, mockHttpClientFactory);
     }
 
     //TODO: Replace XML with actual XML from an Exchange server
@@ -222,34 +225,34 @@ public class WebDavStoreTest {
     public void should_throw_MessagingException_when_passed_IMAP_store_URI()
     throws MessagingException {
         storeConfig = createStoreConfig ("imap://user:password@imap.example.org");
-        webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+        webDavStore = new WebDavStore(storeConfig, mockTrustedSocketFactory, mockHttpClientFactory);
     }
 
     @Test
     public void should_support_http_prefixed_webdav_url() throws MessagingException, IOException {
         storeConfig = createStoreConfig ("webdav://user:password@http://server:123456");
-        webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+        webDavStore = new WebDavStore(storeConfig, mockTrustedSocketFactory, mockHttpClientFactory);
         assertFalse(clientUsesSSLConnection());
     }
 
     @Test
     public void should_provide_insecure_connection_when_passed_webdav_url() throws MessagingException, IOException {
         storeConfig = createStoreConfig ("webdav://user:password@server:123456");
-        webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+        webDavStore = new WebDavStore(storeConfig, mockTrustedSocketFactory, mockHttpClientFactory);
         assertFalse(clientUsesSSLConnection());
     }
 
     @Test
     public void should_provide_secure_connection_when_passed_webdavSsl_url() throws MessagingException, IOException {
         storeConfig = createStoreConfig ("webdav+ssl://user:password@server:123456");
-        webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+        webDavStore = new WebDavStore(storeConfig, mockTrustedSocketFactory, mockHttpClientFactory);
         assertTrue(clientUsesSSLConnection());
     }
 
     @Test
     public void should_provide_secure_connection_when_passed_webdavTls_url() throws MessagingException, IOException {
         storeConfig = createStoreConfig ("webdav+tls://user:password@server:123456");
-        webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
+        webDavStore = new WebDavStore(storeConfig, mockTrustedSocketFactory, mockHttpClientFactory);
         assertTrue(clientUsesSSLConnection());
     }
 
