@@ -5,6 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="4dp"
     android:orientation="vertical"
     tools:showIn="@layout/message_compose">
@@ -45,7 +46,7 @@
             style="@style/ComposeEditText"
             />
 
-        <ViewAnimator
+        <com.fsck.k9.view.ToolableViewAnimator
             android:layout_width="36dp"
             android:layout_height="32dp"
             android:layout_alignParentRight="true"
@@ -55,6 +56,7 @@
             android:visibility="gone"
             android:inAnimation="@anim/fade_in"
             android:outAnimation="@anim/fade_out"
+            custom:previewInitialChild="2"
             tools:visibility="visible">
 
             <ImageView
@@ -199,7 +201,7 @@
                 android:tint="@color/openpgp_blue"
                 />
 
-        </ViewAnimator>
+        </com.fsck.k9.view.ToolableViewAnimator>
 
     </RelativeLayout>
 
