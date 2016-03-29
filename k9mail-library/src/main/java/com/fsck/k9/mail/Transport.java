@@ -25,7 +25,7 @@ public abstract class Transport {
         if (uri.startsWith("smtp")) {
             return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context, proxy));
         } else if (uri.startsWith("webdav")) {
-            return new WebDavTransport(storeConfig, new DefaultTrustedSocketFactory(context));
+            return new WebDavTransport(storeConfig, new DefaultTrustedSocketFactory(context, proxy));
         } else {
             throw new MessagingException("Unable to locate an applicable Transport for " + uri);
         }
