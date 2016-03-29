@@ -4,8 +4,6 @@ package com.fsck.k9.activity.compose;
 import java.util.Arrays;
 import java.util.List;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.PendingIntent;
 import android.text.TextWatcher;
 import android.view.View;
@@ -270,46 +268,13 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     public void showCryptoStatus(final CryptoStatusDisplayType cryptoStatusDisplayType) {
         boolean shouldBeHidden = cryptoStatusDisplayType.childToDisplay == VIEW_INDEX_HIDDEN;
         if (shouldBeHidden) {
-            hideCryptoStatus();
+            cryptoStatusView.setVisibility(View.GONE);
             return;
         }
 
-        boolean alreadyVisible = cryptoStatusView.getVisibility() == View.VISIBLE;
-        if (alreadyVisible) {
-            switchCryptoStatus(cryptoStatusDisplayType);
-            return;
-        }
-
-        cryptoStatusView.setTranslationX(100);
         cryptoStatusView.setVisibility(View.VISIBLE);
-        cryptoStatusView.animate().translationX(0).setDuration(300).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                switchCryptoStatus(cryptoStatusDisplayType);
-            }
-        }).start();
-    }
-
-
-    private void hideCryptoStatus() {
-        if (cryptoStatusView.getVisibility() == View.GONE) {
-            return;
-        }
-
-        cryptoStatusView.animate().translationX(100).setDuration(300).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                cryptoStatusView.setVisibility(View.GONE);
-            }
-        }).start();
-    }
-
-    private void switchCryptoStatus(CryptoStatusDisplayType cryptoStatus) {
-        int childToDisplay = cryptoStatus.childToDisplay;
-        if (cryptoStatusView.getDisplayedChild() != childToDisplay) {
-            cryptoStatusView.setDisplayedChild(childToDisplay);
-        }
+        int childToDisplay = cryptoStatusDisplayType.childToDisplay;
+        cryptoStatusView.setDisplayedChild(childToDisplay);
     }
 
     public void showContactPicker(int requestCode) {
