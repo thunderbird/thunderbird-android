@@ -973,8 +973,14 @@ public class WebDavStore extends RemoteStore {
             // SSLSocketFactory with one that allows us to inject our own certificates.
             SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
             WebDavSocketFactory webDavSocketFactory =
-                    new WebDavSocketFactory(mTrustedSocketFactory,
-                            SSLSocketFactory.getSocketFactory(), mHost, 443, mCertificateAlias);
+                    null;
+            try {
+                webDavSocketFactory = new WebDavSocketFactory(mHost, 443);
+            } catch (NoSuchAlgorithmException e) {
+                throw new MessagingException("",e);
+            } catch (KeyManagementException e) {
+                throw new MessagingException("",e);
+            }
             Scheme s = new Scheme("https", webDavSocketFactory, 443);
             reg.register(s);
         }
