@@ -72,26 +72,71 @@ public class HtmlConverter {
         + "|(?:xn\\-\\-0zwm56d|xn\\-\\-11b5bs3a9aj6g|xn\\-\\-80akhbyknj4f|xn\\-\\-9t4b11yi5a|xn\\-\\-deba0ad|xn\\-\\-fiqs8s|xn\\-\\-fiqz9s|xn\\-\\-fzc2c9e2c|xn\\-\\-g6w251d|xn\\-\\-hgbk6aj7f53bba|xn\\-\\-hlcj6aya9esc7a|xn\\-\\-j6w193g|xn\\-\\-jxalpdlp|xn\\-\\-kgbechtv|xn\\-\\-kprw13d|xn\\-\\-kpry57d|xn\\-\\-mgbaam7a8h|xn\\-\\-mgbayh7gpa|xn\\-\\-mgberp4a5d4ar|xn\\-\\-o3cw4h|xn\\-\\-p1ai|xn\\-\\-pgbs0dh|xn\\-\\-wgbh1c|xn\\-\\-wgbl6a|xn\\-\\-xkc2al3hye2a|xn\\-\\-ygbi2ammx|xn\\-\\-zckzah)"
         + "|y[et]"
         + "|z[amw]))";
+
+    private static final String PROTOCOL_CHOICES = "(http|https|Http|Https|rtsp|Rtsp)";
+
+    private static final String IP4_ADDRESS = "(?:(?:25[0-5]|2[0-4]"
+            + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(?:25[0-5]|2[0-4][0-9]"
+            + "|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(?:25[0-5]|2[0-4][0-9]|[0-1]"
+            + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
+            + "|[1-9][0-9]|[0-9]))";
+
+
+    /**
+     * It should match:
+     * * IPv6 addresses
+     * * zero compressed IPv6 addresses (section 2.2 of rfc5952)
+     * * link-local IPv6 addresses with zone index (section 11 of rfc4007)
+     * * IPv4-Embedded IPv6 Address (section 2 of rfc6052
+     * * IPv4-mapped IPv6 addresses (section 2.1 of rfc2765)
+     * * IPv4-translated addresses (section 2.1 of rfc2765)
+     *
+     * From: http://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
+     */
+    public static final String IP6_ADDRESS =
+        "(?:\\[" +                                                 // [
+        "("
+            + "([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|"          // 1:2:3:4:5:6:7:8
+            + "([0-9a-fA-F]{1,4}:){1,7}:|"                         // 1::                              1:2:3:4:5:6:7::
+            + "([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|"         // 1::8             1:2:3:4:5:6::8  1:2:3:4:5:6::8
+            + "([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|"  // 1::7:8           1:2:3:4:5::7:8  1:2:3:4:5::8
+            + "([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|"  // 1::6:7:8         1:2:3:4::6:7:8  1:2:3:4::8
+            + "([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|"  // 1::5:6:7:8       1:2:3::5:6:7:8  1:2:3::8
+            + "([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|"  // 1::4:5:6:7:8     1:2::4:5:6:7:8  1:2::8
+            + "[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|"       // 1::3:4:5:6:7:8   1::3:4:5:6:7:8  1::8
+            + ":((:[0-9a-fA-F]{1,4}){1,7}|:)|"                     // ::2:3:4:5:6:7:8  ::2:3:4:5:6:7:8 ::8       ::
+            + "fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|"     // fe80::7:8%eth0   fe80::7:8%1     (link-local IPv6 addresses with zone index)
+            + "::(ffff(:0{1,4}){0,1}:){0,1}"
+            + "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}"
+            + "(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|"          // ::255.255.255.255   ::ffff:255.255.255.255  ::ffff:0:255.255.255.255  (IPv4-mapped IPv6 addresses and IPv4-translated addresses)
+            + "([0-9a-fA-F]{1,4}:){1,4}:"
+            + "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}:"
+            + "(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])"           // 2001:db8:3:4::192.0.2.33  64:ff9b::192.0.2.33 (IPv4-Embedded IPv6 Address)
+        + ")"
+        + "\\])";                                                  // ]
+
+    // named host
+    private static final String HOSTNAME_STRING = "(?:(?:[a-zA-Z0-9\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)"
+            + "\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,64}(?:\\:(?:[a-zA-Z0-9\\$\\-\\_"
+            + "\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,25})?\\@)?)?"
+            + "((?:(?:[" + GOOD_IRI_CHAR + "][" + GOOD_IRI_CHAR + "\\-]{0,64}\\.)+";
     /**
      *  Regular expression pattern to match most part of RFC 3987
      *  Internationalized URLs, aka IRIs.  Commonly used Unicode characters are
      *  added.
      */
-    private static final Pattern WEB_URL_PATTERN = Pattern.compile(
-                "((?:(http|https|Http|Https|rtsp|Rtsp):\\/\\/(?:(?:[a-zA-Z0-9\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)"
-                + "\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,64}(?:\\:(?:[a-zA-Z0-9\\$\\-\\_"
-                + "\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,25})?\\@)?)?"
-                + "((?:(?:[" + GOOD_IRI_CHAR + "][" + GOOD_IRI_CHAR + "\\-]{0,64}\\.)+"   // named host
+    public static final String WEB_URL_PATTERN_STRING =
+                "((?:"+PROTOCOL_CHOICES+":\\/\\/"
+                + HOSTNAME_STRING
                 + TOP_LEVEL_DOMAIN_STR_FOR_WEB_URL
-                + "|(?:(?:25[0-5]|2[0-4]" // or ip address
-                + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(?:25[0-5]|2[0-4][0-9]"
-                + "|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(?:25[0-5]|2[0-4][0-9]|[0-1]"
-                + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
-                + "|[1-9][0-9]|[0-9])))"
-                + "(?:\\:\\d{1,5})?)" // plus option port number
+                + "|"+IP4_ADDRESS+"|"+IP6_ADDRESS+")" // or ip address
+                + "(?:\\:\\d{1,5})?)" // plus optional port number
                 + "(\\/(?:(?:[" + GOOD_IRI_CHAR + "\\;\\/\\?\\:\\@\\&\\=\\#\\~"  // plus option query params
                 + "\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])|(?:\\%[a-fA-F0-9]{2}))*)?"
-                + "(?:\\b|$)"); // and finally, a word boundary or end of
+                + "(?:\\b|$)"; // and finally, a word boundary or end of
+
+
+    private static final Pattern WEB_URL_PATTERN = Pattern.compile(WEB_URL_PATTERN_STRING);
 
     /**
      * List of currently active URI scheme patterns for linkifying message contents,

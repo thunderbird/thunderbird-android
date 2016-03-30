@@ -233,33 +233,200 @@ public class HtmlConverterTest {
         assertEquals("<pre class=\"k9mail\">hello<hr />world<br /></pre>",result);
     }
 
-    @Ignore //GH#1223
     @Test
-    public void testLinks() {
+    public void textToHtml_normalDomain() {
         String text = "http://www.google.com";
         String result = HtmlConverter.textToHtml(text);
         assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com\">http://www.google.com</a></pre>", result);
-
-        text = "http://www.google.com/";
-        result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/\">http://www.google.com/</a></pre>", result);
-
-        text = "http://google.com/";
-        result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a></pre>", result);
-
-        text = "http://google.com/ ";
-        result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a> </pre>", result);
-
-        text = "http://google.com/ \n";
-        result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a> <br></pre>", result);
-
-        text = "http://google.com/\n";
-        result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a><br></pre>", result);
-
     }
 
+    @Test
+    public void textToHtml_https() {
+        String text = "https://www.google.com";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"https://www.google.com\">https://www.google.com</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_noWWW() {
+        String text = "http://google.com";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com\">http://google.com</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_localhost() {
+        String text = "http://localhost";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://localhost\">http://localhost</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_countryCode() {
+        String text = "http://www.google.co.uk";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.co.uk\">http://www.google.co.uk</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_gTld() {
+        String text = "http://www.google.xyz";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.xyz\">http://www.google.xyz</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_iccTld() {
+        String text = "http://www.google.भारत"; //http://www.google.xn--h2brj9c
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.भारत\">http://www.google.भारत</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_ipv4() {
+        String text = "http://127.0.0.1";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://127.0.0.1\">http://127.0.0.1</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_ipv4Port() {
+        String text = "http://127.0.0.1:8080";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://127.0.0.1:8080\">http://127.0.0.1:8080</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_ipv6() {
+        String text = "http://[2001:db8:0:0:0:0:2:1]";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://[2001:db8:0:0:0:0:2:1]\">http://[2001:db8:0:0:0:0:2:1]</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_ipv6Port() {
+        String text = "http://[2001:db8:0:0:0:0:2:1]:8080";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://[2001:db8:0:0:0:0:2:1]:8080\">http://[2001:db8:0:0:0:0:2:1]:8080</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_ipv6Loopback() {
+        String text = "http://[::1]";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com\">http://www.google.com</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_trailingSlash() {
+        String text = "http://www.google.com/";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/\">http://www.google.com/</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_trailingSlashSpace() {
+        String text = "http://www.google.com/";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/\">http://www.google.com/</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_trailingSlashSpaceNewLine() {
+        System.out.println(HtmlConverter.IP6_ADDRESS);
+        String text = "http://www.google.com/ \n";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a> <br></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_trailingSlashNewLine() {
+        String text = "http://google.com/\n";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://google.com/\">http://google.com/</a><br></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_file() {
+        String text = "http://www.google.com/file";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/file\">http://www.google.com/file</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_fileExtension() {
+        String text = "http://www.google.com/file.xqz";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/file.xqz\">http://www.google.com/file.xqz</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_subFolder() {
+        String text = "http://www.google.com/folder/";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/folder/\">http://www.google.com/folder/</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_fileInSubSubSubFolder() {
+        String text = "http://www.google.com/sub/sub2/sub3/file";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/sub/sub2/sub3/file\">http://www.google.com/sub/sub2/sub3/file</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_withAsciiCharacters() {
+        String text = "http://www.google.com/09azAZ_%20%30%30";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/09azAZ_%20%30%30\">http://www.google.com/09azAZ_%20%30%30</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_withUnicodeCharacters() {
+        String text = "http://www.google.com/引き割り.html";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/引き割り.html\">http://www.google.com/引き割り.html</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_query() {
+        String text = "http://www.google.com/?a=b";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/?a=b\">http://www.google.com/?a=b</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_fileQuery() {
+        String text = "http://www.google.com/file?a=b";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/file?a=b\">http://www.google.com/file?a=b</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_multiQuery() {
+        String text = "http://www.google.com/?a=b&c=d";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/?a=b&c=d\">http://www.google.com/?a=b&c=d</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_fragment() {
+        String text = "http://www.google.com/#e";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/#e\">http://www.google.com/#e</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_fileFragment() {
+        String text = "http://www.google.com/file#e";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/file#e\">http://www.google.com/file#e</a></pre>", result);
+    }
+
+    @Test
+    public void textToHtml_queryFragment() {
+        String text = "http://www.google.com/?a=b#e";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.google.com/?a=b#e\">http://www.google.com/?a=b#e</a></pre>", result);
+    }
 }
