@@ -3636,7 +3636,8 @@ public class MessagingController implements Runnable {
 
                 localFolder.setFlags(messages, Collections.singleton(Flag.DELETED), true);
             } else {
-                localTrashFolder = localStore.getFolder(account.getTrashFolderName());
+                String trashFolderName = account.getTrashFolderName();
+                localTrashFolder = localStore.getFolder(trashFolderName);
                 if (!localTrashFolder.exists()) {
                     localTrashFolder.create(Folder.FolderType.HOLDS_MESSAGES);
                 }

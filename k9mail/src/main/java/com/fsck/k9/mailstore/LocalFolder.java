@@ -245,6 +245,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         if (exists()) {
             throw new MessagingException("Folder " + mName + " already exists.");
         }
+        Log.d(K9.LOG_TAG, "Folder '"+mName+"' doesn't exist - creating it");
         List<LocalFolder> foldersToCreate = new ArrayList<>(1);
         foldersToCreate.add(this);
         this.localStore.createFolders(foldersToCreate, visibleLimit);
