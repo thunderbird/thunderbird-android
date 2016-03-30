@@ -649,6 +649,8 @@ public class Account implements BaseAccount, StoreConfig {
                 }
             }
         }
+        Log.v(K9.LOG_TAG, "Old list:" + Arrays.toString(uuids));
+        Log.v(K9.LOG_TAG, "New list:" + Arrays.toString(newUuids));
         String accountUuids = Utility.combine(newUuids, ',');
         editor.putString("accountUuids", accountUuids);
         editor.commit();
