@@ -766,7 +766,7 @@ public class LocalStore extends Store implements Serializable {
 
                     // When created, special folders should always be displayed
                     // inbox should be integrated
-                    // and the inbox and drafts folders should be syncced by default
+                    // and the inbox and drafts folders should be synced by default
                     if (mAccount.isSpecialFolder(name)) {
                         prefHolder.inTopGroup = true;
                         prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;

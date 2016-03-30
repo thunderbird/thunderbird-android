@@ -3616,8 +3616,8 @@ public class MessagingController implements Runnable {
 
     private void deleteMessagesSynchronous(final Account account, final String folder, final List<? extends Message> messages,
                                            MessagingListener listener) {
-        Folder localFolder = null;
-        Folder localTrashFolder = null;
+        LocalFolder localFolder = null;
+        LocalFolder localTrashFolder = null;
         String[] uids = getUidsFromMessages(messages);
         try {
             //We need to make these callbacks before moving the messages to the trash
@@ -3627,7 +3627,7 @@ public class MessagingController implements Runnable {
                     l.messageDeleted(account, folder, message);
                 }
             }
-            Store localStore = account.getLocalStore();
+            LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
             Map<String, String> uidMap = null;
             if (folder.equals(account.getTrashFolderName()) || !account.hasTrashFolder()) {
