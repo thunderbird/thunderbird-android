@@ -61,7 +61,9 @@ public class Preferences {
         }
         if ((newAccount != null) && newAccount.getAccountNumber() != -1) {
             accounts.put(newAccount.getUuid(), newAccount);
-            accountsInOrder.add(newAccount);
+            if (!accountsInOrder.contains(newAccount)) {
+                accountsInOrder.add(newAccount);
+            }
             newAccount = null;
         }
     }
