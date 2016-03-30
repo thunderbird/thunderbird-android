@@ -717,6 +717,7 @@ public class SmtpTransport extends Transport {
         }
     }
 
+
     private void saslAuthPlain(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
         String data = Base64.encode("\000" + username + "\000" + password);

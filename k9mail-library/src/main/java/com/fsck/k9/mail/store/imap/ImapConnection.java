@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -324,13 +325,27 @@ class ImapConnection {
     @SuppressWarnings("EnumSwitchStatementWhichMissesCases")
     private void authenticate() throws MessagingException, IOException {
         switch (settings.getAuthType()) {
+            //OAuth Mechanisms
             case XOAUTH2:
                 if (hasCapability(Capabilities.AUTH_XOAUTH2) && hasCapability(Capabilities.SASL_IR)) {
                     authXoauth2withSASLIR();
                 } else {
-                    throw new MessagingException("Server doesn't support SASL XOAUTH2.");
+                    throw new MessagingException("Server doesn't support OAuth tokens using SASL-IR XOAUTH2.");
                 }
                 break;
+            case XOAUTH:
+                //TODO: Implement support for obsolete mechanism?
+                break;
+
+            //SecureCRAM
+            case SCRAM_SHA1:
+                if (hasCapability(Capabilities.AUTH_SCRAM_SHA1)
+                        || hasCapability(Capabilities.AUTH_SCRAM_SHA1_PLUS)) {
+                    authScramSha1();
+                } else {
+                    throw new MessagingException("Server doesn't support encrypted passwords using SCRAM-SHA1.");
+                }
+            //CRAM
             case CRAM_MD5: {
                 if (hasCapability(Capabilities.AUTH_CRAM_MD5)) {
                     authCramMD5();
@@ -339,6 +354,8 @@ class ImapConnection {
                 }
                 break;
             }
+
+            //PLAIN
             case PLAIN: {
                 if (hasCapability(Capabilities.AUTH_PLAIN)) {
                     saslAuthPlainWithLoginFallback();
@@ -369,6 +386,30 @@ class ImapConnection {
         String command = Commands.AUTHENTICATE_XOAUTH2;
         String tag = sendSaslIrCommand(command,
                 Authentication.computeXoauth(settings.getUsername(), settings.getPassword()), false);
+
+        try {
+            extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
+        } catch (NegativeImapResponseException e) {
+            throw new AuthenticationFailedException(e.getMessage());
+        }
+    }
+
+    private void authScramSha1() throws MessagingException, IOException {
+        String command = Commands.AUTHENTICATE_SCRAM_SHA1;
+        String tag = sendCommand(command, false);
+
+        ImapResponse response = readContinuationResponse(tag);
+        if (response.size() != 1 || !(response.get(0) instanceof String)) {
+            throw new MessagingException("Invalid Cram-MD5 nonce received");
+        }
+
+        byte[] b64Nonce = response.getString(0).getBytes();
+        byte[] b64CRAM = Authentication.computeCramMd5Bytes(settings.getUsername(), settings.getPassword(), b64Nonce);
+
+        outputStream.write(b64CRAM);
+        outputStream.write('\r');
+        outputStream.write('\n');
+        outputStream.flush();
 
         try {
             extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
