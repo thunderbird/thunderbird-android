@@ -57,4 +57,9 @@ public enum Flag {
      * TODO Messages with this flag should be redownloaded, if possible.
      */
     X_MIGRATED_FROM_V50,
+
+    /**
+     * This flag is used for drafts where the message should be sent as PGP/INLINE.
+     */
+    X_DRAFT_OPENPGP_INLINE,
 }

@@ -808,7 +808,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setSignatureChanged(mSignatureChanged)
                 .setCursorPosition(mMessageContentView.getSelectionStart())
                 .setMessageReference(mMessageReference)
-                .setDraft(isDraft);
+                .setDraft(isDraft)
+                .setIsPgpInlineEnabled(cryptoStatus.isPgpInlineModeEnabled());
 
         quotedMessagePresenter.builderSetProperties(builder);
 
