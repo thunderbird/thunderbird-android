@@ -20,6 +20,7 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeBodyPart;
@@ -61,6 +62,7 @@ public abstract class MessageBuilder {
     private int cursorPosition;
     private MessageReference messageReference;
     private boolean isDraft;
+    private boolean isPgpInlineEnabled;
 
     public MessageBuilder(Context context) {
         this.context = context;
@@ -114,6 +116,10 @@ public abstract class MessageBuilder {
         }
 
         message.generateMessageId();
+
+        if (isDraft && isPgpInlineEnabled) {
+            message.setFlag(Flag.X_DRAFT_OPENPGP_INLINE, true);
+        }
     }
 
     private void buildBody(MimeMessage message) throws MessagingException {
@@ -432,6 +438,11 @@ public abstract class MessageBuilder {
 
     public MessageBuilder setDraft(boolean isDraft) {
         this.isDraft = isDraft;
+        return this;
+    }
+
+    public MessageBuilder setIsPgpInlineEnabled(boolean isPgpInlineEnabled) {
+        this.isPgpInlineEnabled = isPgpInlineEnabled;
         return this;
     }
 

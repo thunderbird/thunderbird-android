@@ -3,7 +3,6 @@ package com.fsck.k9.activity;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +44,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -114,10 +111,7 @@ import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
-import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpServiceConnection;
-import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
 @SuppressWarnings("deprecation")
@@ -916,7 +910,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setSignatureChanged(mSignatureChanged)
                 .setCursorPosition(mMessageContentView.getSelectionStart())
                 .setMessageReference(mMessageReference)
-                .setDraft(isDraft);
+                .setDraft(isDraft)
+                .setIsPgpInlineEnabled(cryptoStatus.isPgpInlineModeEnabled());
 
         return builder;
     }

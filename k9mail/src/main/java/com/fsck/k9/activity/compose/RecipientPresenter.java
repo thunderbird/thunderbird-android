@@ -28,6 +28,7 @@ import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
@@ -210,6 +211,11 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void initFromDraftMessage(LocalMessage message) {
+        initRecipientsFromDraftMessage(message);
+        initPgpInlineFromDraftMessage(message);
+    }
+
+    private void initRecipientsFromDraftMessage(LocalMessage message) {
         try {
             addToAddresses(message.getRecipients(RecipientType.TO));
 
@@ -222,6 +228,10 @@ public class RecipientPresenter implements PermissionPingCallback {
             // can't happen, we know the recipient types exist
             throw new AssertionError(e);
         }
+    }
+
+    private void initPgpInlineFromDraftMessage(LocalMessage message) {
+        cryptoEnablePgpInline = message.isSet(Flag.X_DRAFT_OPENPGP_INLINE);
     }
 
     void addToAddresses(Address... toAddresses) {
