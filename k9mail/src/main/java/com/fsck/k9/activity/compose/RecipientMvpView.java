@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
@@ -47,6 +49,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final RecipientSelectView bccView;
     private final ViewAnimator cryptoStatusView;
     private final ViewAnimator recipientExpanderContainer;
+    private final View pgpInlineIndicator;
     private RecipientPresenter presenter;
 
 
@@ -63,6 +66,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         recipientExpanderContainer = (ViewAnimator) activity.findViewById(R.id.recipient_expander_container);
         cryptoStatusView = (ViewAnimator) activity.findViewById(R.id.crypto_status);
         cryptoStatusView.setOnClickListener(this);
+        pgpInlineIndicator = activity.findViewById(R.id.pgp_inline_indicator);
 
         toView.setOnFocusChangeListener(this);
         ccView.setOnFocusChangeListener(this);
@@ -77,6 +81,8 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         toLabel.setOnClickListener(this);
         ccLabel.setOnClickListener(this);
         bccLabel.setOnClickListener(this);
+
+        pgpInlineIndicator.setOnClickListener(this);
     }
 
     public void setPresenter(final RecipientPresenter presenter) {
@@ -265,6 +271,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccView.setError(bccView.getContext().getString(R.string.compose_error_incomplete_recipient));
     }
 
+    public void showPgpInlineModeIndicator(boolean pgpInlineModeEnabled) {
+        pgpInlineIndicator.setVisibility(pgpInlineModeEnabled ? View.VISIBLE : View.GONE);
+        activity.invalidateOptionsMenu();
+    }
+
     public void showCryptoStatus(final CryptoStatusDisplayType cryptoStatusDisplayType) {
         boolean shouldBeHidden = cryptoStatusDisplayType.childToDisplay == VIEW_INDEX_HIDDEN;
         if (shouldBeHidden) {
@@ -346,6 +357,9 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
                 presenter.onClickCryptoStatus();
                 break;
             }
+            case R.id.pgp_inline_indicator: {
+                presenter.onClickPgpInlineIndicator();
+            }
         }
     }
 
@@ -354,8 +368,26 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         dialog.show(activity.getFragmentManager(), "crypto_settings");
     }
 
+    public void showOpenPgpInlineDialog(boolean firstTime) {
+        hideKeyboard();
+
+        PgpInlineDialog dialog = PgpInlineDialog.newInstance(firstTime);
+        dialog.show(activity.getFragmentManager(), "openpgp_inline");
+    }
+
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
         activity.launchUserInteractionPendingIntent(pendingIntent, requestCode);
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus
+        View v = activity.getCurrentFocus();
+        if (v == null)
+            return;
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     public enum CryptoStatusDisplayType {

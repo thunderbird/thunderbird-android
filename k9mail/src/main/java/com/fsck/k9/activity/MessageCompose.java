@@ -67,6 +67,7 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.CryptoSettingsDialog.OnCryptoModeChangedListener;
 import com.fsck.k9.activity.compose.IdentityAdapter;
 import com.fsck.k9.activity.compose.IdentityAdapter.IdentityContainer;
+import com.fsck.k9.activity.compose.PgpInlineDialog.OnOpenPgpInlineChangeListener;
 import com.fsck.k9.activity.compose.RecipientMvpView;
 import com.fsck.k9.activity.compose.RecipientPresenter;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
@@ -116,7 +117,8 @@ import org.openintents.openpgp.util.OpenPgpApi;
 
 @SuppressWarnings("deprecation")
 public class MessageCompose extends K9Activity implements OnClickListener,
-        CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener, MessageBuilder.Callback {
+        CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener,
+        OnOpenPgpInlineChangeListener, MessageBuilder.Callback {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
@@ -252,6 +254,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onCryptoModeChanged(CryptoMode cryptoMode) {
         recipientPresenter.onCryptoModeChanged(cryptoMode);
+    }
+
+    @Override
+    public void onOpenPgpInlineChange(boolean enabled) {
+        recipientPresenter.onCryptoPgpInlineChanged(enabled);
     }
 
     enum Action {
@@ -391,8 +398,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Listener mListener = new Listener();
 
     private FontSizes mFontSizes = K9.getFontSizes();
-
-
 
 
     @Override
@@ -1446,6 +1451,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 break;
             case R.id.add_from_contacts:
                 recipientPresenter.onMenuAddFromContacts();
+                break;
+            case R.id.openpgp_inline_enable:
+                recipientPresenter.onMenuSetPgpInline(true);
+                break;
+            case R.id.openpgp_inline_disable:
+                recipientPresenter.onMenuSetPgpInline(false);
                 break;
             case R.id.add_attachment:
                 onAddAttachment();
@@ -2663,11 +2674,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         return insertable;
     }
-
-
-
-
-
 
     private void setMessageFormat(SimpleMessageFormat format) {
         // This method will later be used to enable/disable the rich text editing mode.
