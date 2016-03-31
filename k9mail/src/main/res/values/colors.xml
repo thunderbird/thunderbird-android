@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="message_list_item_footer_background">#eeeeee</color>
-    
+
+    <color name="light_black">#444</color>
+    <color name="light_green">#77aa22</color>
+    <color name="light_red">#dd2222</color>
+
     <color name="openpgp_red">#CC0000</color>
     <color name="openpgp_orange">#FF8800</color>
     <color name="openpgp_green">#669900</color>

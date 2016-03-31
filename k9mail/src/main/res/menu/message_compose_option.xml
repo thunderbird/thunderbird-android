@@ -37,4 +37,16 @@
         android:title="@string/read_receipt"
         android:icon="?attr/iconActionRequestReadReceipt"
     />
+    <item
+        android:id="@+id/openpgp_inline_enable"
+        android:alphabeticShortcut="i"
+        android:title="@string/enable_inline_pgp"
+        android:showAsAction="never"
+        />
+    <item
+        android:id="@+id/openpgp_inline_disable"
+        android:alphabeticShortcut="i"
+        android:title="@string/disable_inline_pgp"
+        android:showAsAction="never"
+        />
 </menu>

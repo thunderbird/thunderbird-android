@@ -9,7 +9,7 @@ XXXDPI_DIR=$APP_DIR/res/drawable-xxxhdpi
 SRC_DIR=./drawables-pgp/
 
 
-for NAME in "status_lock" "status_lock_closed" "status_lock_error" "status_lock_open" "status_lock_disabled" "status_lock_opportunistic" "status_signature_expired_cutout" "status_signature_invalid_cutout" "status_signature_revoked_cutout" "status_signature_unknown_cutout" "status_signature_unverified_cutout" "status_signature_verified_cutout"
+for NAME in "bullet_point_positive" "bullet_point_negative" "compatibility" "status_lock" "status_lock_closed" "status_lock_error" "status_lock_open" "status_lock_disabled" "status_lock_opportunistic" "status_signature_expired_cutout" "status_signature_invalid_cutout" "status_signature_revoked_cutout" "status_signature_unknown_cutout" "status_signature_unverified_cutout" "status_signature_verified_cutout"
 do
 echo $NAME
 inkscape -w 24 -h 24 -e "$MDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"

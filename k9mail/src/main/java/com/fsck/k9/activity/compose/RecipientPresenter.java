@@ -262,6 +262,10 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void onPrepareOptionsMenu(Menu menu) {
+        boolean isCryptoConfigured = cryptoProviderState != CryptoProviderState.UNCONFIGURED;
+        menu.findItem(R.id.openpgp_inline_enable).setVisible(isCryptoConfigured && !cryptoEnablePgpInline);
+        menu.findItem(R.id.openpgp_inline_disable).setVisible(isCryptoConfigured && cryptoEnablePgpInline);
+
         boolean noContactPickerAvailable = !hasContactPicker();
         if (noContactPickerAvailable) {
             menu.findItem(R.id.add_from_contacts).setVisible(false);
@@ -359,6 +363,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
 
         recipientMvpView.showCryptoStatus(getCurrentCryptoStatus().getCryptoStatusDisplayType());
+        recipientMvpView.showPgpInlineModeIndicator(getCurrentCryptoStatus().isPgpInlineModeEnabled());
     }
 
     public ComposeCryptoStatus getCurrentCryptoStatus() {
@@ -703,9 +708,22 @@ public class RecipientPresenter implements PermissionPingCallback {
         return new OpenPgpApi(context, openPgpServiceConnection.getService());
     }
 
+
     public void builderSetProperties(PgpMessageBuilder pgpBuilder) {
         pgpBuilder.setOpenPgpApi(getOpenPgpApi());
         pgpBuilder.setCryptoStatus(getCurrentCryptoStatus());
+    }
+
+    public void onMenuSetPgpInline(boolean enablePgpInline) {
+        cryptoEnablePgpInline = enablePgpInline;
+        updateCryptoStatus();
+        if (enablePgpInline) {
+            recipientMvpView.showOpenPgpInlineDialog(true);
+        }
+    }
+
+    public void onClickPgpInlineIndicator() {
+        recipientMvpView.showOpenPgpInlineDialog(false);
     }
 
     public enum CryptoProviderState {
