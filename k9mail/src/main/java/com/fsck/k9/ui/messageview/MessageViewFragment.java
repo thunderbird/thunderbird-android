@@ -734,6 +734,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             } else {
                 onLoadMessageFromDatabaseFinished(message);
             }
+            getLoaderManager().destroyLoader(LOCAL_MESSAGE_LOADER_ID);
         }
 
         @Override
