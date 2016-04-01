@@ -211,4 +211,20 @@ public class ComposeCryptoStatus {
         return null;
     }
 
+    public enum AttachErrorState {
+        IS_INLINE
+    }
+
+    public AttachErrorState getAttachErrorStateOrNull() {
+        if (cryptoProviderState == CryptoProviderState.UNCONFIGURED) {
+            return null;
+        }
+
+        if (enablePgpInline) {
+            return AttachErrorState.IS_INLINE;
+        }
+
+        return null;
+    }
+
 }

@@ -310,6 +310,10 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         Toast.makeText(activity, R.string.compose_error_private_missing_keys, Toast.LENGTH_LONG).show();
     }
 
+    public void showErrorAttachInline() {
+        Toast.makeText(activity, R.string.error_crypto_inline_attach, Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
         if (!hasFocus) {
