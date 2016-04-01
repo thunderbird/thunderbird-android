@@ -40,7 +40,8 @@ public class MessageExtractor {
                 }
 
                 final String mimeType = part.getMimeType();
-                if ((mimeType != null) && MimeUtility.mimeTypeMatches(mimeType, "text/*")) {
+                if ((mimeType != null) && (MimeUtility.mimeTypeMatches(mimeType, "text/*")
+                        || mimeType.equals("text"))) {
                     /*
                      * We've got a text part, so let's see if it needs to be processed further.
                      */
@@ -160,7 +161,7 @@ public class MessageExtractor {
              * Save text/plain and text/html
              */
             String mimeType = part.getMimeType();
-            if (isSameMimeType(mimeType, "text/plain")) {
+            if (isSameMimeType(mimeType, "text/plain") || isSameMimeType(mimeType, "text")) {
                 Text text = new Text(part);
                 viewables.add(text);
             } else {
@@ -413,7 +414,8 @@ public class MessageExtractor {
          * If the part is plain text and it got this far it's part of a
          * mixed (et al) and should be rendered inline.
          */
-        else if ((!attachment) && (isSameMimeType(part.getMimeType(), "text/plain"))) {
+        else if ((!attachment) && (isSameMimeType(part.getMimeType(), "text/plain")
+                || isSameMimeType(part.getMimeType(), "text"))) {
             return true;
         }
         /*
