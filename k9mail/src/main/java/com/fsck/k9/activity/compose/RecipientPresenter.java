@@ -21,6 +21,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.helper.Contacts;
@@ -596,6 +597,16 @@ public class RecipientPresenter implements PermissionPingCallback {
                 break;
             case PRIVATE_BUT_MISSING_KEYS:
                 recipientMvpView.showErrorPrivateButMissingKeys();
+                break;
+            default:
+                throw new AssertionError("not all error states handled, this is a bug!");
+        }
+    }
+
+    public void showPgpAttachError(AttachErrorState attachErrorState) {
+        switch (attachErrorState) {
+            case IS_INLINE:
+                recipientMvpView.showErrorAttachInline();
                 break;
             default:
                 throw new AssertionError("not all error states handled, this is a bug!");

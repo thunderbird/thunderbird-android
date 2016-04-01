@@ -63,6 +63,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
+import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.CryptoSettingsDialog.OnCryptoModeChangedListener;
 import com.fsck.k9.activity.compose.IdentityAdapter;
@@ -1034,6 +1035,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     @SuppressLint("InlinedApi")
     private void onAddAttachment() {
+        AttachErrorState maybeAttachErrorState = recipientPresenter.getCurrentCryptoStatus().getAttachErrorStateOrNull();
+        if (maybeAttachErrorState != null) {
+            recipientPresenter.showPgpAttachError(maybeAttachErrorState);
+            return;
+        }
+
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         i.addCategory(Intent.CATEGORY_OPENABLE);
