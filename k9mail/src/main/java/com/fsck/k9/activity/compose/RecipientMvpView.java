@@ -5,12 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
@@ -369,25 +367,12 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     }
 
     public void showOpenPgpInlineDialog(boolean firstTime) {
-        hideKeyboard();
-
-        PgpInlineDialog dialog = PgpInlineDialog.newInstance(firstTime);
+        PgpInlineDialog dialog = PgpInlineDialog.newInstance(firstTime, R.id.pgp_inline_indicator);
         dialog.show(activity.getFragmentManager(), "openpgp_inline");
     }
 
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
         activity.launchUserInteractionPendingIntent(pendingIntent, requestCode);
-    }
-
-    private void hideKeyboard() {
-        InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        // check if no view has focus
-        View v = activity.getCurrentFocus();
-        if (v == null)
-            return;
-
-        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     public enum CryptoStatusDisplayType {
