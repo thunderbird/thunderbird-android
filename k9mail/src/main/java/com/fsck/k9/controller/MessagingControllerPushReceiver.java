@@ -83,6 +83,11 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         controller.addErrorMessage(account, errMess, e);
     }
 
+    @Override
+    public void authenticationFailed() {
+        controller.handleAuthenticationFailure(account, true);
+    }
+
     public String getPushState(String folderName) {
         LocalFolder localFolder = null;
         try {

@@ -1014,7 +1014,7 @@ public class MessagingController implements Runnable {
                 Log.i(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder);
 
         } catch (AuthenticationFailedException e) {
-            notificationController.showAuthenticationErrorNotification(account, true);
+            handleAuthenticationFailure(account, true);
 
             for (MessagingListener l : getListeners(listener)) {
                 l.synchronizeMailboxFailed(account, folder, "Authentication failure");
@@ -1049,6 +1049,10 @@ public class MessagingController implements Runnable {
             closeFolder(tLocalFolder);
         }
 
+    }
+
+    void handleAuthenticationFailure(Account account, boolean incoming) {
+        notificationController.showAuthenticationErrorNotification(account, incoming);
     }
 
     private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
@@ -3155,7 +3159,7 @@ public class MessagingController implements Runnable {
                         lastFailure = e;
                         wasPermanentFailure = false;
 
-                        notificationController.showAuthenticationErrorNotification(account, false);
+                        handleAuthenticationFailure(account, false);
                         handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     } catch (CertificateValidationException e) {
                         lastFailure = e;

@@ -13,6 +13,7 @@ import android.content.Context;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
@@ -188,18 +189,17 @@ class ImapFolderPusher extends ImapFolder {
 
                         returnFromIdle();
                     }
-                } catch (Exception e) {
-                    wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
+                } catch (AuthenticationFailedException e) {
+                    reacquireWakeLockAndCleanUp();
 
-                    clearStoredUntaggedResponses();
-                    idling = false;
-                    pushReceiver.setPushActive(getName(), false);
-
-                    try {
-                        connection.close();
-                    } catch (Exception me) {
-                        Log.e(LOG_TAG, "Got exception while closing for exception for " + getLogId(), me);
+                    if (K9MailLib.isDebug()) {
+                        Log.e(K9MailLib.LOG_TAG, "Authentication failed. Stopping ImapFolderPusher.", e);
                     }
+
+                    pushReceiver.authenticationFailed();
+                    stop = true;
+                } catch (Exception e) {
+                    reacquireWakeLockAndCleanUp();
 
                     if (stop) {
                         Log.i(LOG_TAG, "Got exception while idling, but stop is set for " + getLogId());
@@ -238,6 +238,20 @@ class ImapFolderPusher extends ImapFolder {
                 Log.e(LOG_TAG, "Got exception while closing for " + getLogId(), me);
             } finally {
                 wakeLock.release();
+            }
+        }
+
+        private void reacquireWakeLockAndCleanUp() {
+            wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
+
+            clearStoredUntaggedResponses();
+            idling = false;
+            pushReceiver.setPushActive(getName(), false);
+
+            try {
+                connection.close();
+            } catch (Exception me) {
+                Log.e(LOG_TAG, "Got exception while closing for exception for " + getLogId(), me);
             }
         }
 
