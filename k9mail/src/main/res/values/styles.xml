@@ -51,5 +51,9 @@
         <item name="android:textColorHint">#aaa</item>
     </style>
 
+    <style name="ShowcaseTheme" parent="ShowcaseView.Light">
+        <item name="sv_backgroundColor">#99444444</item>
+    </style>
+
 </resources>
 
