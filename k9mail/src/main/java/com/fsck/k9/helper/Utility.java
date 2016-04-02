@@ -5,15 +5,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.mail.Address;
+
 import org.apache.james.mime4j.util.MimeUtil;
 
 import java.nio.charset.Charset;
@@ -496,6 +502,26 @@ public class Utility {
             sMainThreadHandler = new Handler(Looper.getMainLooper());
         }
         return sMainThreadHandler;
+    }
+
+    /**
+     * Assign the contact to the badge.
+     *
+     * On 4.3, we pass the address name as extra info so that if the contact doesn't exist
+     * the name is auto-populated.
+     *
+     * @param contactBadge the badge to the set the contact for
+     * @param address the address to look for a contact for.
+     */
+    public static void setContactForBadge(QuickContactBadge contactBadge,
+                                          Address address) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Bundle extraContactInfo = new Bundle();
+            extraContactInfo.putString(ContactsContract.Intents.Insert.NAME, address.getPersonal());
+            contactBadge.assignContactFromEmail(address.getAddress(), true, extraContactInfo);
+        } else {
+            contactBadge.assignContactFromEmail(address.getAddress(), true);
+        }
     }
 
 }

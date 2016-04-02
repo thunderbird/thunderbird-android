@@ -1969,7 +1969,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
             if (holder.contactBadge != null) {
                 if (counterpartyAddress != null) {
-                    holder.contactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
+                    Utility.setContactForBadge(holder.contactBadge, counterpartyAddress);
                     /*
                      * At least in Android 2.2 a different background + padding is used when no
                      * email address is available. ListView reuses the views but QuickContactBadge
