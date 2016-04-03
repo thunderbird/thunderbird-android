@@ -68,10 +68,11 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
             name = uri.getLastPathSegment();
         }
 
-        String usableContentType = contentType;
-        if ((usableContentType == null) || (usableContentType.indexOf('*') != -1)) {
-            usableContentType = contentResolver.getType(uri);
+        String usableContentType = contentResolver.getType(uri);
+        if (usableContentType == null && contentType != null && contentType.indexOf('*') != -1) {
+            usableContentType = contentType;
         }
+
         if (usableContentType == null) {
             usableContentType = MimeUtility.getMimeTypeByExtension(name);
         }
