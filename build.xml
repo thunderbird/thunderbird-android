@@ -455,7 +455,21 @@
         </if.contrib>
     </target>
 
-    <target name="init" depends="-update-ptr, -update-cl, -update-hcp, -update-opa"
+    <target name="-update-safecontentresolver">
+        <if.contrib>
+            <resourceexists>
+                <file file="plugins/SafeContentResolver/build.xml" />
+            </resourceexists>
+            <else>
+                <echo message="android update lib-project -p plugins/SafeContentResolver/" />
+                <exec executable="${sdk.dir}/tools/${android.executable}" failonerror="true">
+                    <arg line="update lib-project -p plugins/SafeContentResolver/" />
+                </exec>
+            </else>
+        </if.contrib>
+    </target>
+
+    <target name="init" depends="-update-ptr, -update-cl, -update-hcp, -update-opa, -update-safecontentresolver"
             description="Initialize environment for building" />
 
     <!-- overrides default "debug" target" -->

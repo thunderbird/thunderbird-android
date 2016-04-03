@@ -15,6 +15,7 @@ dependencies {
   compile project(':plugins:ckChangeLog:library')
   compile project(':plugins:HoloColorPicker')
   compile project(':plugins:openpgp-api-library')
+  compile project(':plugins:SafeContentResolver')
   compile 'com.android.support:support-v13:19.1.0'
   compile fileTree(dir: 'libs', include: '*.jar')
 }

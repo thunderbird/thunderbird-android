@@ -12,6 +12,8 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.Attachment;
 
+import de.cketti.safecontentresolver.SafeContentResolver;
+import de.cketti.safecontentresolver.SafeContentResolverCompat;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -52,7 +54,8 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
                 Log.v(K9.LOG_TAG, "Saving attachment to " + file.getAbsolutePath());
             }
 
-            InputStream in = context.getContentResolver().openInputStream(mAttachment.uri);
+            SafeContentResolver safeContentResolver = SafeContentResolverCompat.newInstance(context);
+            InputStream in = safeContentResolver.openInputStream(mAttachment.uri);
             try {
                 FileOutputStream out = new FileOutputStream(file);
                 try {
