@@ -308,11 +308,19 @@ public class SmtpTransport extends Transport {
                 authExternalSupported = saslMech.contains("EXTERNAL");
             }
             if (extensions.containsKey("SIZE")) {
-                try {
-                    mLargestAcceptableMessage = Integer.parseInt(extensions.get("SIZE"));
-                } catch (Exception e) {
-                    if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
-                        Log.d(LOG_TAG, "Tried to parse " + extensions.get("SIZE") + " and get an int", e);
+                String sizeValue = extensions.get("SIZE");
+                /*
+                    An empty value is valid and indicates no limit :
+
+                    "**If** a numeric parameter..." - RFC 1870 4.
+                 */
+                if (sizeValue != null && sizeValue != "") {
+                    try {
+                        mLargestAcceptableMessage = Integer.parseInt(extensions.get("SIZE"));
+                    } catch (Exception e) {
+                        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
+                            Log.d(LOG_TAG, "Tried to parse " + extensions.get("SIZE") + " and get an int", e);
+                        }
                     }
                 }
             }
