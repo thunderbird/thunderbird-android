@@ -30,6 +30,7 @@ dependencies {
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.splitwise:tokenautocomplete:2.0.7'
+    compile 'de.cketti.safecontentresolver:safe-content-resolver-v14:0.0.1'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
 
