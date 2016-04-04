@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.010" versioncode="22010" >
+        <change>Fixed packaging error; v5.009 was missing translations</change>
+    </release>
     <release version="5.009" versioncode="22009" >
         <change>Protect against the Surreptitious Sharing vulnerability</change>
         <change>Improved MIME type handling when other apps share files to K-9 Mail</change>
