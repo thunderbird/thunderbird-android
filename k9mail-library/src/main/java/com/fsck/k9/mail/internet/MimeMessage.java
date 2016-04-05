@@ -112,8 +112,7 @@ public class MimeMessage extends Message {
         try {
             parser.parse(new EOLConvertingInputStream(in));
         } catch (MimeException me) {
-            //TODO wouldn't a MessagingException be better?
-            throw new Error(me);
+            throw new MessagingException(me.getMessage(), me);
         }
     }
 
@@ -519,7 +518,7 @@ public class MimeMessage extends Message {
         }
 
         @Override
-        public void startMultipart(BodyDescriptor bd) {
+        public void startMultipart(BodyDescriptor bd) throws MimeException {
             expect(Part.class);
 
             Part e = (Part)stack.peek();
@@ -531,18 +530,18 @@ public class MimeMessage extends Message {
                 e.setBody(multiPart);
                 stack.addFirst(multiPart);
             } catch (MessagingException me) {
-                throw new Error(me);
+                throw new MimeException(me.getMessage(), me);
             }
         }
 
         @Override
-        public void body(BodyDescriptor bd, InputStream in) throws IOException {
+        public void body(BodyDescriptor bd, InputStream in) throws IOException, MimeException {
             expect(Part.class);
             try {
                 Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType());
                 ((Part)stack.peek()).setBody(body);
             } catch (MessagingException me) {
-                throw new Error(me);
+                throw new MimeException(me.getMessage(), me);
             }
         }
 
@@ -566,7 +565,7 @@ public class MimeMessage extends Message {
         }
 
         @Override
-        public void startBodyPart() {
+        public void startBodyPart() throws MimeException {
             expect(MimeMultipart.class);
 
             try {
@@ -574,7 +573,7 @@ public class MimeMessage extends Message {
                 ((MimeMultipart)stack.peek()).addBodyPart(bodyPart);
                 stack.addFirst(bodyPart);
             } catch (MessagingException me) {
-                throw new Error(me);
+                throw new MimeException(me);
             }
         }
 
@@ -613,7 +612,7 @@ public class MimeMessage extends Message {
                 String raw = parsedField.getRaw().toString();
                 ((Part) stack.peek()).addRawHeader(name, raw);
             } catch (MessagingException me) {
-                throw new Error(me);
+                throw new MimeException(me);
             }
         }
     }
