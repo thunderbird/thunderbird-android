@@ -2982,7 +2982,27 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             currentMessageBuilder = null;
             new SendMessageTask(getApplicationContext(), mAccount, mContacts, message,
                     mDraftId != INVALID_DRAFT_ID ? mDraftId : null).execute();
+            updateReferencedMessage();
             finish();
+        }
+    }
+
+    /**
+     * Set the flag on the referenced message(indicated we replied / forwarded the message)
+     **/
+    private void updateReferencedMessage() {
+        if (mMessageReference != null && mMessageReference.getFlag() != null) {
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "Setting referenced message (" +
+                        mMessageReference.getFolderName() + ", " +
+                        mMessageReference.getUid() + ") flag to " +
+                        mMessageReference.getFlag());
+            }
+            final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.getAccountUuid());
+            final String folderName = mMessageReference.getFolderName();
+            final String sourceMessageUid = mMessageReference.getUid();
+            MessagingController.getInstance(getApplication()).setFlag(account, folderName, sourceMessageUid,
+                    mMessageReference.getFlag(), true);
         }
     }
 
