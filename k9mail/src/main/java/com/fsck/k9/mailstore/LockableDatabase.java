@@ -372,8 +372,8 @@ public class LockableDatabase {
             } catch (SQLiteException e) {
                 // TODO handle this error in a better way!
                 Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
-                if(databaseFile.exists() && !databaseFile.delete()) {
-                    Log.d(K9.LOG_TAG, "Failed to remove "+ databaseFile + " that couldn't be opened");
+                if (databaseFile.exists() && !databaseFile.delete()) {
+                    Log.d(K9.LOG_TAG, "Failed to remove " + databaseFile + " that couldn't be opened");
                 }
                 doOpenOrCreateDb(databaseFile);
             }
