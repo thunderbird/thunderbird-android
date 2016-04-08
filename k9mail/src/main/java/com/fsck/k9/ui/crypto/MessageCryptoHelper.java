@@ -1,12 +1,10 @@
 package com.fsck.k9.ui.crypto;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayDeque;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -22,7 +20,6 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.compose.RecipientPresenter;
 import com.fsck.k9.crypto.CryptoPartFinder;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -32,13 +29,13 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mailstore.CryptoErrorType;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
+import com.fsck.k9.mailstore.CryptoSignatureResult;
 import com.fsck.k9.mailstore.DecryptStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageHelper;
-import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
-import com.fsck.k9.mailstore.SmimeResultAnnotation;
+import com.fsck.k9.mailstore.CryptoError;
 
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
@@ -100,12 +97,12 @@ public class MessageCryptoHelper {
 
             List<Part> pgpEncryptedParts = CryptoPartFinder.findPgpEncryptedParts(message);
             processFoundParts(pgpEncryptedParts, CryptoPartType.ENCRYPTED, CryptoMethod.OPENPGP,
-                    CryptoError.ENCRYPTED_BUT_INCOMPLETE,
+                    CryptoErrorType.ENCRYPTED_BUT_INCOMPLETE,
                     MessageHelper.createEmptyPart());
 
             List<Part> pgpSignedParts = CryptoPartFinder.findPgpSignedParts(message);
             processFoundParts(pgpSignedParts, CryptoPartType.SIGNED, CryptoMethod.OPENPGP,
-                    CryptoError.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
+                    CryptoErrorType.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
 
             List<Part> inlineParts = CryptoPartFinder.findPgpInlineParts(message);
             addFoundInlinePgpParts(inlineParts);
@@ -115,12 +112,12 @@ public class MessageCryptoHelper {
 
             List<Part> smimeEncryptedParts = CryptoPartFinder.findSmimeEncryptedParts(message);
             processFoundParts(smimeEncryptedParts, CryptoPartType.ENCRYPTED, CryptoMethod.SMIME,
-                    CryptoError.ENCRYPTED_BUT_INCOMPLETE,
+                    CryptoErrorType.ENCRYPTED_BUT_INCOMPLETE,
                     MessageHelper.createEmptyPart());
 
             List<Part> smimeSignedParts = CryptoPartFinder.findSmimeSignedParts(message);
             processFoundParts(smimeSignedParts, CryptoPartType.SIGNED, CryptoMethod.SMIME,
-                    CryptoError.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
+                    CryptoErrorType.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
         }
 
         decryptOrVerifyNextPart();
@@ -137,7 +134,7 @@ public class MessageCryptoHelper {
     private void processFoundParts(List<Part> foundParts,
                                    CryptoPartType cryptoPartType,
                                    CryptoMethod cryptoMethod,
-                                   CryptoError errorIfIncomplete,
+                                   CryptoErrorType errorIfIncomplete,
             MimeBodyPart replacementPart) {
         for (Part part : foundParts) {
             if (MessageHelper.isCompletePartAvailable(part)) {
@@ -145,27 +142,17 @@ public class MessageCryptoHelper {
                 partsToDecryptOrVerify.add(cryptoPart);
             } else {
                 Log.w(K9.LOG_TAG, "Found part was incomplete");
-                if(cryptoMethod == CryptoMethod.OPENPGP)
-                    addOpenPgpErrorAnnotation(part, errorIfIncomplete, replacementPart);
-                else if(cryptoMethod == CryptoMethod.SMIME)
-                    addSmimeErrorAnnotation(part, errorIfIncomplete, replacementPart);
+                addCryptoErrorAnnotation(part, errorIfIncomplete, replacementPart);
 
             }
         }
     }
 
-    private void addOpenPgpErrorAnnotation(Part part, CryptoError error, MimeBodyPart outputData) {
-        OpenPgpResultAnnotation annotation = new OpenPgpResultAnnotation();
+    private void addCryptoErrorAnnotation(Part part, CryptoErrorType error, MimeBodyPart outputData) {
+        CryptoResultAnnotation annotation = new CryptoResultAnnotation();
         annotation.setErrorType(error);
         annotation.setOutputData(outputData);
-        messageAnnotations.put(part, Collections.singletonList((CryptoResultAnnotation) annotation));
-    }
-
-    private void addSmimeErrorAnnotation(Part part, CryptoError error, MimeBodyPart outputData) {
-        SmimeResultAnnotation annotation = new SmimeResultAnnotation();
-        annotation.setErrorType(error);
-        annotation.setOutputData(outputData);
-        messageAnnotations.put(part, Collections.singletonList((CryptoResultAnnotation) annotation));
+        messageAnnotations.put(part, annotation);
     }
 
     private void addFoundInlinePgpParts(List<Part> foundParts) {
@@ -543,7 +530,7 @@ public class MessageCryptoHelper {
             Log.w(K9.LOG_TAG, "OpenPGP API error: " + error.getMessage());
         }
 
-        onOpenPgpFailed(error);
+        onCryptoFailed(new CryptoError(error));
     }
 
     private void handleOpenPgpOperationSuccess(MimeBodyPart outputPart) {
@@ -553,13 +540,13 @@ public class MessageCryptoHelper {
                 currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
         PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
 
-        OpenPgpResultAnnotation resultAnnotation = new OpenPgpResultAnnotation();
+        CryptoResultAnnotation resultAnnotation = new CryptoResultAnnotation();
         resultAnnotation.setOutputData(outputPart);
-        resultAnnotation.setDecryptionResult(decryptionResult);
-        resultAnnotation.setSignatureResult(signatureResult);
+        resultAnnotation.setDecryptionResult(new CryptoDecryptionResult(decryptionResult));
+        resultAnnotation.setSignatureResult(new CryptoSignatureResult(signatureResult));
         resultAnnotation.setPendingIntent(pendingIntent);
 
-        onOpenPgpSuccess(resultAnnotation);
+        onCryptoSuccess(resultAnnotation);
     }
 
     public void handleOpenPgpResult(int requestCode, int resultCode, Intent data) {
@@ -571,24 +558,24 @@ public class MessageCryptoHelper {
             userInteractionResultIntent = data;
             decryptOrVerifyNextPart();
         } else {
-            onOpenPgpFailed(new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, context.getString(R.string.openpgp_canceled_by_user)));
+            onCryptoFailed(new CryptoError(new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, context.getString(R.string.openpgp_canceled_by_user))));
         }
     }
 
-    private void onOpenPgpSuccess(OpenPgpResultAnnotation resultAnnotation) {
-        addOpenPgpResultPartToMessage(resultAnnotation);
+    private void onCryptoSuccess(CryptoResultAnnotation resultAnnotation) {
+        addCryptoResultPartToMessage(resultAnnotation);
         onCryptoFinished();
     }
 
-    private void addOpenPgpResultPartToMessage(OpenPgpResultAnnotation resultAnnotation) {
+    private void addCryptoResultPartToMessage(CryptoResultAnnotation resultAnnotation) {
         Part part = currentCryptoPart.part;
-        messageAnnotations.put(part, Collections.singletonList((CryptoResultAnnotation) resultAnnotation));
+        messageAnnotations.put(part, resultAnnotation);
     }
 
-    private void onOpenPgpFailed(OpenPgpError error) {
-        OpenPgpResultAnnotation errorPart = new OpenPgpResultAnnotation();
+    private void onCryptoFailed(CryptoError error) {
+        CryptoResultAnnotation errorPart = new CryptoResultAnnotation();
         errorPart.setError(error);
-        addOpenPgpResultPartToMessage(errorPart);
+        addCryptoResultPartToMessage(errorPart);
         onCryptoFinished();
     }
 
@@ -650,7 +637,7 @@ public class MessageCryptoHelper {
             Log.w(K9.LOG_TAG, "S/MIME API error: " + error.getMessage());
         }
 
-        onSmimeFailed(error);
+        onCryptoFailed(new CryptoError(error));
     }
 
     private void handleSmimeOperationSuccess(MimeBodyPart outputPart) {
@@ -660,13 +647,13 @@ public class MessageCryptoHelper {
                 currentCryptoResult.getParcelableExtra(SMimeApi.RESULT_SIGNATURE);
         PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(SMimeApi.RESULT_INTENT);
 
-        SmimeResultAnnotation resultAnnotation = new SmimeResultAnnotation();
+        CryptoResultAnnotation resultAnnotation = new CryptoResultAnnotation();
         resultAnnotation.setOutputData(outputPart);
-        resultAnnotation.setDecryptionResult(decryptionResult);
-        resultAnnotation.setSignatureResult(signatureResult);
+        resultAnnotation.setDecryptionResult(new CryptoDecryptionResult(decryptionResult));
+        resultAnnotation.setSignatureResult(new CryptoSignatureResult(signatureResult));
         resultAnnotation.setPendingIntent(pendingIntent);
 
-        onSmimeSuccess(resultAnnotation);
+        onCryptoSuccess(resultAnnotation);
     }
 
     public void handleSmimeResult(int requestCode, int resultCode, Intent data) {
@@ -678,26 +665,9 @@ public class MessageCryptoHelper {
             userInteractionResultIntent = data;
             decryptOrVerifyNextPart();
         } else {
-            onSmimeFailed(new SmimeError(SmimeError.CLIENT_SIDE_ERROR,
-                    context.getString(R.string.smime_canceled_by_user)));
+            onCryptoFailed(new CryptoError(new SmimeError(SmimeError.CLIENT_SIDE_ERROR,
+                    context.getString(R.string.smime_canceled_by_user))));
         }
-    }
-
-    private void onSmimeSuccess(SmimeResultAnnotation resultAnnotation) {
-        addSmimeResultPartToMessage(resultAnnotation);
-        onCryptoFinished();
-    }
-
-    private void addSmimeResultPartToMessage(SmimeResultAnnotation resultAnnotation) {
-        Part part = currentCryptoPart.part;
-        messageAnnotations.put(part, Collections.singletonList((CryptoResultAnnotation) resultAnnotation));
-    }
-
-    private void onSmimeFailed(SmimeError error) {
-        SmimeResultAnnotation errorPart = new SmimeResultAnnotation();
-        errorPart.setError(error);
-        addSmimeResultPartToMessage(errorPart);
-        onCryptoFinished();
     }
 
     private void onCryptoFinished() {

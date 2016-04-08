@@ -32,8 +32,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     private LinearLayout containerViews;
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
-    private OpenPgpHeaderViewCallback openPgpHeaderViewCallback;
-    private SmimeHeaderViewCallback smimeHeaderViewCallback;
+    private CryptoHeaderViewCallback cryptoHeaderViewCallback;
     private Button showPicturesButton;
     private List<MessageContainerView> messageContainerViewsWithPictures = new ArrayList<MessageContainerView>();
 
@@ -94,11 +93,10 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         for (MessageViewContainer container : messageViewInfo.containers) {
             MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container,
                     containerViews, false);
-            boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
-            boolean displaySmimeHeader = account.isSmimeProviderConfigured();
+            boolean displayCryptoHeader = account.isACryptoProviderConfigured();
             view.displayMessageViewContainer(container, automaticallyLoadPictures, this, attachmentCallback,
-                    openPgpHeaderViewCallback, smimeHeaderViewCallback,
-                    displayPgpHeader, displaySmimeHeader, account.getDisplayPreference());
+                    cryptoHeaderViewCallback,
+                    displayCryptoHeader, account.getDisplayPreference());
 
             containerViews.addView(view);
         }
@@ -149,12 +147,8 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         attachmentCallback = callback;
     }
 
-    public void setOpenPgpHeaderViewCallback(OpenPgpHeaderViewCallback callback) {
-        openPgpHeaderViewCallback = callback;
-    }
-
-    public void setSmimeHeaderViewCallback(SmimeHeaderViewCallback callback) {
-        smimeHeaderViewCallback = callback;
+    public void setCryptoHeaderViewCallback(CryptoHeaderViewCallback callback) {
+        cryptoHeaderViewCallback = callback;
     }
 
     public void enableDownloadButton() {

@@ -39,6 +39,7 @@ import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.crypto.SMimeData;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.preferences.StorageEditor;
@@ -1411,17 +1412,20 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
-    public void onReply(LocalMessage message, PgpData pgpData) {
+    public void onReply(LocalMessage message, PgpData pgpData, SMimeData sMimeData) {
+        //TODO: Two sources of decryption
         MessageCompose.actionReply(this, message, false, pgpData.getDecryptedData());
     }
 
     @Override
-    public void onReplyAll(LocalMessage message, PgpData pgpData) {
+    public void onReplyAll(LocalMessage message, PgpData pgpData, SMimeData sMimeData) {
+        //TODO: Two sources of decryption
         MessageCompose.actionReply(this, message, true, pgpData.getDecryptedData());
     }
 
     @Override
-    public void onForward(LocalMessage mMessage, PgpData mPgpData) {
+    public void onForward(LocalMessage mMessage, PgpData mPgpData, SMimeData sMimeData) {
+        //TODO: Two sources of decryption
         MessageCompose.actionForward(this, mMessage, mPgpData.getDecryptedData());
     }
 

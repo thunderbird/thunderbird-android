@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.ui.messageview.OpenPgpHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fsck.k9.ui.messageview.CryptoHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_decrypt_openpgp"
+    android:id="@+id/layout_decrypt_crypto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -132,4 +132,4 @@
 
     </LinearLayout>
 
-</com.fsck.k9.ui.messageview.OpenPgpHeaderView>
+</com.fsck.k9.ui.messageview.CryptoHeaderView>

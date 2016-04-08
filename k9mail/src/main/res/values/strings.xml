@@ -1110,8 +1110,22 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
 
     <string name="auth_external_error">Unable to authenticate.  The server does not advertise the SASL EXTERNAL capability.  This could be due to a problem with the client certificate (expired, unknown certificate authority) or some other configuration problem.</string>
-    
+
+    <!-- === Crypto general ====== -->
+    <string name="default_crypto_title">Default crypto protocol</string>
+    <string name="no_crypto_provider_configured">This is an %1$s encrypted message and you have not configured a suitable crypto provider.</string>
+    <string name="crypto_decryption_failed">Decryption failed: %s</string>
+    <string name="crypto_unknown_error">Unknown Error</string>
+    <string name="crypto_canceled_by_user">Canceled by user</string>
+    <string name="crypto_result_encrypted">"Encrypted"</string>
+    <string name="crypto_result_not_encrypted">"Not Encrypted"</string>
+    <string name="crypto_result_decryption_insecure">"Insecure"</string>
+    <string name="crypto_result_no_name">"No name"</string>
+    <string name="crypto_result_no_email">"No email"</string>
+
+
     <!-- === OpenPGP specific ================================================================== -->
+    <string name="openpgp">OpenPGP</string>
     <string name="openpgp_decryption_failed">Decryption failed: %s</string>
     <string name="openpgp_unknown_error">Unknown OpenPGP Error</string>
     <string name="openpgp_canceled_by_user">Canceled by user</string>
@@ -1133,8 +1147,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_result_no_email">"No email"</string>
 
     <!-- === SMIME specific ================================================================== -->
+    <string name="smime">S/MIME</string>
     <string name="smime_decryption_failed">Decryption failed: %s</string>
-    <string name="smime_unknown_error">Unknown OpenPGP Error</string>
+    <string name="smime_unknown_error">Unknown S/MIME Error</string>
     <string name="smime_canceled_by_user">Canceled by user</string>
     <string name="smime_result_no_signature">"Not Signed"</string>
     <string name="smime_result_invalid_signature">"Invalid signature!"</string>

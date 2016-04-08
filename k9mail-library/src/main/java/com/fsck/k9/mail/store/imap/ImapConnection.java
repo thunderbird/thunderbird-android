@@ -400,7 +400,7 @@ class ImapConnection {
 
         ImapResponse response = readContinuationResponse(tag);
         if (response.size() != 1 || !(response.get(0) instanceof String)) {
-            throw new MessagingException("Invalid Cram-MD5 nonce received");
+            throw new MessagingException("Invalid Scram-SHA1 nonce received");
         }
 
         byte[] b64Nonce = response.getString(0).getBytes();

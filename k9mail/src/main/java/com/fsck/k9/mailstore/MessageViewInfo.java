@@ -22,18 +22,16 @@ public class MessageViewInfo {
         public final ViewableContainer viewable;
         public final Part rootPart;
         public final List<AttachmentViewInfo> attachments;
-        public final OpenPgpResultAnnotation openPgpAnnotation;
-        public final SmimeResultAnnotation smimeAnnotation;
+        public final CryptoResultAnnotation cryptoResultAnnotation;
 
 
         MessageViewContainer(ViewableContainer viewable, Part rootPart, List<AttachmentViewInfo> attachments,
-                OpenPgpResultAnnotation openPgpAnnotation, SmimeResultAnnotation smimeAnnotation) {
+                CryptoResultAnnotation cryptoResultAnnotation) {
             this.viewable = viewable;
             this.rootPart = rootPart;
             this.attachments = attachments;
             //TODO: List?
-            this.openPgpAnnotation = openPgpAnnotation;
-            this.smimeAnnotation = smimeAnnotation;
+            this.cryptoResultAnnotation = cryptoResultAnnotation;
         }
     }
 }

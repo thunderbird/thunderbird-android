@@ -177,7 +177,7 @@ public class MessagingControllerTest {
     @Test
     public void cant_synchronize_folder_with_negative_message_count() throws InterruptedException, MessagingException {
         final CountDownLatch commandStarted = setupLatchOnSyncMailboxStarted();
-        final CountDownLatch commandFailed = setupLatchOnSyncMailboxFailed(anyString());
+        final CountDownLatch commandFailed = setupLatchOnSyncMailboxFailed("");
         doAnswer(new Answer<Void>() {
             @Override
             public Void answer(InvocationOnMock invocation) throws Throwable {

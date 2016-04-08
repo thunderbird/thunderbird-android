@@ -1717,6 +1717,10 @@ public class Account implements BaseAccount, StoreConfig {
         lastSelectedFolderName = folderName;
     }
 
+    public synchronized boolean isACryptoProviderConfigured() {
+        return isOpenPgpProviderConfigured() || isSmimeProviderConfigured();
+    }
+
     public synchronized String getOpenPgpProvider() {
         if (!isOpenPgpProviderConfigured()) {
             return null;

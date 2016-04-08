@@ -37,6 +37,7 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.crypto.SMimeData;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
@@ -55,12 +56,13 @@ import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import com.fsck.k9.view.MessageHeader;
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback, OpenPgpHeaderViewCallback, SmimeHeaderViewCallback,
+        AttachmentViewCallback, CryptoHeaderViewCallback,
         MessageCryptoCallback {
 
     private static final String ARG_REFERENCE = "reference";
 
     private static final String STATE_PGP_DATA = "pgpData";
+    private static final String STATE_SMIME_DATA = "smimeData";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
@@ -81,6 +83,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private MessageTopView mMessageView;
     private PgpData mPgpData;
+    private SMimeData mSMimeData;
     private Account mAccount;
     private MessageReference mMessageReference;
     private LocalMessage mMessage;
@@ -150,8 +153,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
         mMessageView.setAttachmentCallback(this);
-        mMessageView.setOpenPgpHeaderViewCallback(this);
-        mMessageView.setSmimeHeaderViewCallback(this);
+        mMessageView.setCryptoHeaderViewCallback(this);
 
         mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
@@ -177,6 +179,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         super.onActivityCreated(savedInstanceState);
 
         initializePgpData(savedInstanceState);
+        initializeSMimeData(savedInstanceState);
 
         Bundle arguments = getArguments();
         MessageReference messageReference = arguments.getParcelable(ARG_REFERENCE);
@@ -192,10 +195,19 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
+    private void initializeSMimeData(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mSMimeData = (SMimeData) savedInstanceState.get(STATE_SMIME_DATA);
+        } else {
+            mSMimeData = new SMimeData();
+        }
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(STATE_PGP_DATA, mPgpData);
+        outState.putSerializable(STATE_SMIME_DATA, mSMimeData);
     }
 
     private void displayMessage(MessageReference messageReference) {
@@ -360,19 +372,19 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public void onReply() {
         if (mMessage != null) {
-            mFragmentListener.onReply(mMessage, mPgpData);
+            mFragmentListener.onReply(mMessage, mPgpData, mSMimeData);
         }
     }
 
     public void onReplyAll() {
         if (mMessage != null) {
-            mFragmentListener.onReplyAll(mMessage, mPgpData);
+            mFragmentListener.onReplyAll(mMessage, mPgpData, mSMimeData);
         }
     }
 
     public void onForward() {
         if (mMessage != null) {
-            mFragmentListener.onForward(mMessage, mPgpData);
+            mFragmentListener.onForward(mMessage, mPgpData, mSMimeData);
         }
     }
 
@@ -700,7 +712,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     @Override
-    public void onPgpSignatureButtonClick(PendingIntent pendingIntent) {
+    public void onCryptoSignatureButtonClick(PendingIntent pendingIntent) {
         try {
             //TODO: Magic number 42
             getActivity().startIntentSenderForResult(
@@ -711,23 +723,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
-    @Override
-    public void onSmimeSignatureButtonClick(PendingIntent pendingIntent) {
-        try {
-            //TODO: Check these values
-            getActivity().startIntentSenderForResult(
-                    pendingIntent.getIntentSender(),
-                    42, null, 0, 0, 0);
-        } catch (IntentSender.SendIntentException e) {
-            Log.e(K9.LOG_TAG, "SendIntentException", e);
-        }
-    }
-
     public interface MessageViewFragmentListener {
-        public void onForward(LocalMessage mMessage, PgpData mPgpData);
+        public void onForward(LocalMessage mMessage, PgpData mPgpData, SMimeData mSMimeData);
         public void disableDeleteAction();
-        public void onReplyAll(LocalMessage mMessage, PgpData mPgpData);
-        public void onReply(LocalMessage mMessage, PgpData mPgpData);
+        public void onReplyAll(LocalMessage mMessage, PgpData mPgpData, SMimeData mSMimeData);
+        public void onReply(LocalMessage mMessage, PgpData mPgpData, SMimeData mSMimeData);
         public void displayMessageSubject(String title);
         public void setProgress(boolean b);
         public void showNextMessageOrReturn();

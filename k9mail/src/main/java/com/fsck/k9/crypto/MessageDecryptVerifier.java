@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.fsck.k9.mail.Body;
@@ -22,25 +23,31 @@ import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
 
 public class MessageDecryptVerifier {
-    private static final String MULTIPART_ENCRYPTED = "multipart/encrypted";
-    private static final String MULTIPART_SIGNED = "multipart/signed";
-    private static final String PROTOCOL_PARAMETER = "protocol";
-    private static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
-    private static final String APPLICATION_PGP_SIGNATURE = "application/pgp-signature";
-    private static final String TEXT_PLAIN = "text/plain";
+    public static final String MULTIPART_ENCRYPTED = "multipart/encrypted";
+    public static final String MULTIPART_SIGNED = "multipart/signed";
+    public static final String SMIME_ENCRYPTED = "application/pkcs7-mime";
+    public static final String PROTOCOL_PARAMETER = "protocol";
+    public static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
+    public static final String APPLICATION_PGP_SIGNATURE = "application/pgp-signature";
+    public static final String APPLICATION_SMIME_SIGNATURE = "application/pkcs7-signature";
+    public static final String TEXT_PLAIN = "text/plain";
 
-
-    public static List<Part> findEncryptedParts(Part startPart) {
-        List<Part> encryptedParts = new ArrayList<Part>();
-        Stack<Part> partsToCheck = new Stack<Part>();
+    @NonNull
+    private static List<Part> findParts(final Part startPart, final String mimeType, final String protocol)
+            throws MessagingException {
+        List<Part> parts = new ArrayList<>();
+        Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(startPart);
 
         while (!partsToCheck.isEmpty()) {
             Part part = partsToCheck.pop();
+            String partMimeType = part.getMimeType();
             Body body = part.getBody();
 
-            if (isPgpMimeEncryptedPart(part)) {
-                encryptedParts.add(part);
+            if (isSameMimeType(partMimeType, mimeType)) {
+                if(checkProtocolParameter(part, protocol)) {
+                    parts.add(part);
+                }
             } else if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;
                 for (int i = multipart.getCount() - 1; i >= 0; i--) {
@@ -50,30 +57,25 @@ public class MessageDecryptVerifier {
             }
         }
 
-        return encryptedParts;
+        return parts;
     }
 
-    public static List<Part> findSignedParts(Part startPart) {
-        List<Part> signedParts = new ArrayList<Part>();
-        Stack<Part> partsToCheck = new Stack<Part>();
-        partsToCheck.push(startPart);
-
-        while (!partsToCheck.isEmpty()) {
-            Part part = partsToCheck.pop();
-            Body body = part.getBody();
-
-            if (isPgpMimeSignedPart(part)) {
-                signedParts.add(part);
-            } else if (body instanceof Multipart) {
-                Multipart multipart = (Multipart) body;
-                for (int i = multipart.getCount() - 1; i >= 0; i--) {
-                    BodyPart bodyPart = multipart.getBodyPart(i);
-                    partsToCheck.push(bodyPart);
-                }
-            }
+    private static boolean checkProtocolParameter(final Part part, final String protocol) {
+        if(protocol == null) {
+            return true;
         }
 
-        return signedParts;
+        String contentType = part.getContentType();
+        String partProtocol = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);
+        return partProtocol != null && protocol.equalsIgnoreCase(partProtocol);
+    }
+
+    public static List<Part> findPgpEncryptedParts(Part startPart) throws MessagingException {
+        return findParts(startPart, MULTIPART_ENCRYPTED, null);
+    }
+
+    public static List<Part> findPgpSignedParts(final Part startPart) throws MessagingException {
+        return findParts(startPart, MULTIPART_SIGNED, APPLICATION_PGP_SIGNATURE);
     }
 
     public static List<Part> findPgpInlineParts(Part startPart) {
@@ -108,6 +110,14 @@ public class MessageDecryptVerifier {
         return inlineParts;
     }
 
+    public static List<Part> findSmimeSignedParts(final Part startPart) throws MessagingException {
+        return findParts(startPart, MULTIPART_SIGNED, APPLICATION_SMIME_SIGNATURE);
+    }
+
+    public static List<Part> findSmimeEncryptedParts(final Part startPart) throws MessagingException {
+        return findParts(startPart, SMIME_ENCRYPTED, null);
+    }
+
     public static byte[] getSignatureData(Part part) throws IOException, MessagingException {
         if (isPgpMimeSignedPart(part)) {
             Body body = part.getBody();
@@ -135,7 +145,7 @@ public class MessageDecryptVerifier {
         return APPLICATION_PGP_SIGNATURE.equalsIgnoreCase(protocol);
     }
 
-    private static boolean isPgpMimeEncryptedPart(Part part) {
+    public static boolean isPgpMimeEncryptedPart(Part part) {
         if (!isSameMimeType(part.getMimeType(), MULTIPART_ENCRYPTED)) {
             return false;
         }
@@ -143,5 +153,21 @@ public class MessageDecryptVerifier {
         String contentType = part.getContentType();
         String protocol = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);
         return APPLICATION_PGP_ENCRYPTED.equalsIgnoreCase(protocol);
+    }
+
+    public static boolean isMimeSignedPart(Part part) throws MessagingException {
+        return isSameMimeType(part.getMimeType(), MULTIPART_SIGNED);
+    }
+
+    public static boolean isSmimePart(Part part) throws MessagingException {
+        return findSmimeEncryptedParts(part).size() > 0 || findSmimeSignedParts(part).size() > 0;
+    }
+
+    public static boolean isSmimeEncryptedPart(Part part) throws MessagingException {
+        return isSameMimeType(part.getMimeType(), SMIME_ENCRYPTED);
+    }
+
+    public static boolean isEncryptedPart(Part part) throws MessagingException {
+        return isSmimeEncryptedPart(part) || isPgpMimeEncryptedPart(part);
     }
 }

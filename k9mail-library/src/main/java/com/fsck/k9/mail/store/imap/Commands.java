@@ -10,6 +10,7 @@ class Commands {
     public static final String AUTHENTICATE_CRAM_MD5 = "AUTHENTICATE CRAM-MD5";
     public static final String AUTHENTICATE_PLAIN = "AUTHENTICATE PLAIN";
     public static final String AUTHENTICATE_EXTERNAL = "AUTHENTICATE EXTERNAL";
+    public static final String AUTHENTICATE_SCRAM_SHA1 = "AUTHENTICATE_SCRAM_SHA1";
     public static final String LOGIN = "LOGIN";
     public static final String LIST = "LIST";
     public static final String NOOP = "NOOP";

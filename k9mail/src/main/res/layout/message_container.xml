@@ -4,19 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- OpenPGP header -->
+    <!-- Crypto header -->
     <ViewStub
-        android:id="@+id/openpgp_header_stub"
-        android:inflatedId="@+id/openpgp_header"
-        android:layout="@layout/message_view_openpgp_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <!-- SMIME header -->
-    <ViewStub
-        android:id="@+id/smime_header_stub"
-        android:inflatedId="@+id/smime_header"
-        android:layout="@layout/message_view_smime_header"
+        android:id="@+id/crypto_header_stub"
+        android:inflatedId="@+id/crypto_header"
+        android:layout="@layout/message_view_crypto_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

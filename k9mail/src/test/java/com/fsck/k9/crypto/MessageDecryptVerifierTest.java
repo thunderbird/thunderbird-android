@@ -11,6 +11,8 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -25,40 +27,40 @@ import static junit.framework.Assert.assertSame;
 public class MessageDecryptVerifierTest {
 
     @Test
-    public void findEncryptedPartsShouldReturnEmptyListForEmptyMessage() throws Exception {
+    public void findPgpEncryptedPartsShouldReturnEmptyListForEmptyMessage() throws Exception {
         MimeMessage emptyMessage = new MimeMessage();
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(emptyMessage);
+        List<Part> encryptedParts = MessageDecryptVerifier.findPgpEncryptedParts(emptyMessage);
 
         assertEquals(0, encryptedParts.size());
     }
 
     @Test
-    public void findEncryptedPartsShouldReturnEmptyListForSimpleMessage() throws Exception {
+    public void findPgpEncryptedPartsShouldReturnEmptyListForSimpleMessage() throws Exception {
         MimeMessage message = new MimeMessage();
         message.setBody(new TextBody("message text"));
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
+        List<Part> encryptedParts = MessageDecryptVerifier.findPgpEncryptedParts(message);
 
         assertEquals(0, encryptedParts.size());
     }
 
     @Test
-    public void findEncryptedPartsShouldReturnEmptyEncryptedPart() throws Exception {
+    public void findPgpEncryptedPartsShouldReturnEmptyEncryptedPart() throws Exception {
         MimeMessage message = new MimeMessage();
         MimeMultipart multipartEncrypted = new MimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         MimeMessageHelper.setBody(message, multipartEncrypted);
-        addProtocolParameter(message);
+        addPgpProtocolParameter(message);
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
+        List<Part> encryptedParts = MessageDecryptVerifier.findPgpEncryptedParts(message);
 
         assertEquals(1, encryptedParts.size());
         assertSame(message, encryptedParts.get(0));
     }
 
     @Test
-    public void findEncryptedPartsShouldReturnMultipleEncryptedParts() throws Exception {
+    public void findPgpEncryptedPartsShouldReturnMultipleEncryptedParts() throws Exception {
         MimeMessage message = new MimeMessage();
         MimeMultipart multipartMixed = new MimeMultipart();
         multipartMixed.setSubType("mixed");
@@ -67,7 +69,7 @@ public class MessageDecryptVerifierTest {
         MimeMultipart multipartEncryptedOne = new MimeMultipart();
         multipartEncryptedOne.setSubType("encrypted");
         MimeBodyPart bodyPartOne = new MimeBodyPart(multipartEncryptedOne);
-        addProtocolParameter(bodyPartOne);
+        addPgpProtocolParameter(bodyPartOne);
         multipartMixed.addBodyPart(bodyPartOne);
 
         MimeBodyPart bodyPartTwo = new MimeBodyPart(null, "text/plain");
@@ -76,10 +78,10 @@ public class MessageDecryptVerifierTest {
         MimeMultipart multipartEncryptedThree = new MimeMultipart();
         multipartEncryptedThree.setSubType("encrypted");
         MimeBodyPart bodyPartThree = new MimeBodyPart(multipartEncryptedThree);
-        addProtocolParameter(bodyPartThree);
+        addPgpProtocolParameter(bodyPartThree);
         multipartMixed.addBodyPart(bodyPartThree);
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
+        List<Part> encryptedParts = MessageDecryptVerifier.findPgpEncryptedParts(message);
 
         assertEquals(2, encryptedParts.size());
         assertSame(bodyPartOne, encryptedParts.get(0));
@@ -87,8 +89,17 @@ public class MessageDecryptVerifierTest {
     }
 
     //TODO: Find a cleaner way to do this
-    private void addProtocolParameter(Part part) throws MessagingException {
+    private void addPgpProtocolParameter(Part part) throws MessagingException {
         String contentType = part.getContentType();
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType + "; protocol=\"application/pgp-encrypted\"");
     }
+
+    @Test
+    public void findSmimeEncryptedPartsShouldReturnEmptyListForEmptyMessage() throws Exception {
+        MimeMessage emptyMessage = new MimeMessage();
+        List<Part> encryptedParts = MessageDecryptVerifier.findSmimeEncryptedParts(emptyMessage);
+        assertEquals(0, encryptedParts.size());
+    }
+
+    //TODO: Test finding SMIME encrypted part
 }

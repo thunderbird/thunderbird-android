@@ -7,6 +7,7 @@ import android.util.Log;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.DecryptedTempFileBody;
+import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -26,6 +27,7 @@ import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +47,7 @@ public class LocalMessageExtractor {
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
     private static final CryptoResultAnnotation NO_ANNOTATIONS = null;
+    private static final List<AttachmentViewInfo> EMPTY_LIST = new ArrayList<>();
 
     private LocalMessageExtractor() {}
     /**
@@ -430,24 +433,27 @@ public class LocalMessageExtractor {
         // 2. extract viewables/attachments of parts
         ArrayList<MessageViewContainer> containers = new ArrayList<>();
         for (Part part : parts) {
-            List<CryptoResultAnnotation> cryptoResultAnnotations = annotations.get(part);
-            OpenPgpResultAnnotation pgpAnnotation = null;
-            SmimeResultAnnotation smimeAnnotation = null;
-            if(cryptoResultAnnotations != null) {
-                for (CryptoResultAnnotation cryptoResultAnnotation : cryptoResultAnnotations) {
-                    if (cryptoResultAnnotation instanceof OpenPgpResultAnnotation) {
-                        pgpAnnotation = (OpenPgpResultAnnotation) cryptoResultAnnotation;
-                    } else if (cryptoResultAnnotation instanceof SmimeResultAnnotation) {
-                        smimeAnnotation = (SmimeResultAnnotation) cryptoResultAnnotation;
-                    }
-                }
+            CryptoResultAnnotation cryptoResultAnnotation = annotations.get(part);
+            // TODO properly handle decrypted data part - this just replaces the part
+            if(cryptoResultAnnotation != NO_ANNOTATIONS && cryptoResultAnnotation.hasOutputData()) {
+                part = cryptoResultAnnotation.getOutputData();
             }
 
-            // TODO properly handle decrypted data part - this just replaces the part
-            if (pgpAnnotation != NO_ANNOTATIONS && pgpAnnotation.hasOutputData()) {
-                part = pgpAnnotation.getOutputData();
-            } else if (smimeAnnotation != NO_ANNOTATIONS && smimeAnnotation.hasOutputData()) {
-                part = smimeAnnotation.getOutputData();
+            else if(cryptoResultAnnotation == NO_ANNOTATIONS && MessageDecryptVerifier.isEncryptedPart(part)) {
+                String text = "";
+
+                if(MessageDecryptVerifier.isSmimeEncryptedPart(part)) {
+                    text = context.getString(R.string.no_crypto_provider_configured, R.string.smime);
+                } else if(MessageDecryptVerifier.isPgpMimeEncryptedPart(part)){
+                    text = context.getString(R.string.no_crypto_provider_configured, R.string.openpgp);
+                }
+
+                ViewableContainer viewable = new ViewableContainer(text, null, Collections.EMPTY_LIST);
+
+                MessageViewContainer container = new MessageViewContainer(viewable, part,
+                        EMPTY_LIST, cryptoResultAnnotation);
+                containers.add(container);
+                continue;
             }
 
             ArrayList<Part> attachments = new ArrayList<>();
@@ -459,7 +465,7 @@ public class LocalMessageExtractor {
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
 
             MessageViewContainer messageViewContainer =
-                    new MessageViewContainer(viewable, part, attachmentInfos, pgpAnnotation, smimeAnnotation);
+                    new MessageViewContainer(viewable, part, attachmentInfos, cryptoResultAnnotation);
 
             containers.add(messageViewContainer);
         }
