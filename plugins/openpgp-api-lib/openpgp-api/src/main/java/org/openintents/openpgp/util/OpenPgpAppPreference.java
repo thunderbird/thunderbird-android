@@ -270,19 +270,21 @@ public class OpenPgpAppPreference extends DialogPreference {
         Intent intent = new Intent(OpenPgpApi.SERVICE_INTENT_2);
         List<ResolveInfo> resInfo = getContext().getPackageManager().queryIntentServices(intent, 0);
         boolean hasNonBlacklistedChoices = false;
-        for (ResolveInfo resolveInfo : resInfo) {
-            if (resolveInfo.serviceInfo == null) {
-                continue;
-            }
+        if (resInfo != null) {
+            for (ResolveInfo resolveInfo : resInfo) {
+                if (resolveInfo.serviceInfo == null) {
+                    continue;
+                }
 
-            String packageName = resolveInfo.serviceInfo.packageName;
-            String simpleName = String.valueOf(resolveInfo.serviceInfo.loadLabel(getContext()
-                    .getPackageManager()));
-            Drawable icon = resolveInfo.serviceInfo.loadIcon(getContext().getPackageManager());
+                String packageName = resolveInfo.serviceInfo.packageName;
+                String simpleName = String.valueOf(resolveInfo.serviceInfo.loadLabel(getContext()
+                        .getPackageManager()));
+                Drawable icon = resolveInfo.serviceInfo.loadIcon(getContext().getPackageManager());
 
-            if (!PROVIDER_BLACKLIST.contains(packageName)) {
-                mList.add(new OpenPgpProviderEntry(packageName, simpleName, icon));
-                hasNonBlacklistedChoices = true;
+                if (!PROVIDER_BLACKLIST.contains(packageName)) {
+                    mList.add(new OpenPgpProviderEntry(packageName, simpleName, icon));
+                    hasNonBlacklistedChoices = true;
+                }
             }
         }
 

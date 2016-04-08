@@ -202,7 +202,7 @@ public class MessageLoaderHelper {
             return;
         }
 
-        if (account.isOpenPgpProviderConfigured()) {
+        if (K9.isCryptoProviderConfigured()) {
             startOrResumeCryptoOperation();
             return;
         }
@@ -262,7 +262,7 @@ public class MessageLoaderHelper {
         if (retainCryptoHelperFragment.hasData()) {
             messageCryptoHelper = retainCryptoHelperFragment.getData();
         } else {
-            messageCryptoHelper = new MessageCryptoHelper(context, account.getOpenPgpProvider());
+            messageCryptoHelper = new MessageCryptoHelper(context);
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(

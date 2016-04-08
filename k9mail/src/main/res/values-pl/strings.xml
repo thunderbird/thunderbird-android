@@ -442,7 +442,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_settings_crypto">Kryptografia</string>
   <string name="account_settings_crypto_app">Aplikacja OpenPGP</string>
   <string name="account_settings_crypto_key">Mój Klucz</string>
-  <string name="account_settings_no_openpgp_provider_installed">Aplikacja OpenPGP nie jest zainstalowana</string>
+  <string name="account_settings_no_openpgp_provider_configured">Aplikacja OpenPGP nie jest zainstalowana</string>
   <string name="account_settings_mail_check_frequency_label">Sprawdzanie konta</string>
   <string name="account_settings_storage_title">Przechowanie</string>
   <string name="account_settings_color_label">Kolor konta</string>

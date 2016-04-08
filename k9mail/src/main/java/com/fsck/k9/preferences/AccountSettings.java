@@ -62,10 +62,6 @@ public class AccountSettings {
         s.put("chipColor", Settings.versions(
                 new V(1, new ColorSetting(0xFF0000FF))
         ));
-        s.put("cryptoApp", Settings.versions(
-                new V(1, new StringSetting("apg")),
-                new V(36, new StringSetting(Account.NO_OPENPGP_PROVIDER))
-        ));
         s.put("defaultQuotedTextShown", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
         ));

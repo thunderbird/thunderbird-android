@@ -474,11 +474,6 @@
         android:title="@string/account_settings_crypto"
         android:key="crypto">
 
-        <org.openintents.openpgp.util.OpenPgpAppPreference
-            android:persistent="false"
-            android:key="crypto_app"
-            android:title="@string/account_settings_crypto_app" />
-
         <org.openintents.openpgp.util.OpenPgpKeyPreference
             android:persistent="false"
             android:key="crypto_key"

@@ -476,7 +476,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_settings_crypto">Salausmenetelmä</string>
   <string name="account_settings_crypto_app">OpenPGP-sovellus</string>
   <string name="account_settings_crypto_key">Oma avain</string>
-  <string name="account_settings_no_openpgp_provider_installed">OpenPGP-sovellusta ei ole asennettu</string>
+  <string name="account_settings_no_openpgp_provider_configured">OpenPGP-sovellusta ei ole asennettu</string>
   <string name="account_settings_mail_check_frequency_label">Kansioiden tarkistus</string>
   <string name="account_settings_storage_title">Tallennus</string>
   <string name="account_settings_color_label">Tilin väri</string>

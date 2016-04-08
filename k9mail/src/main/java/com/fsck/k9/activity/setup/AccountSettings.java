@@ -9,8 +9,6 @@ import java.util.Map;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -21,9 +19,11 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -48,10 +48,7 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
-import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
-import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
-import org.openintents.openpgp.util.OpenPgpUtils;
 
 
 public class AccountSettings extends K9PreferenceActivity {
@@ -59,7 +56,6 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
     private static final int DIALOG_COLOR_PICKER_LED = 2;
-    private static final int DIALOG_APG_DEPRECATION_WARNING = 3;
 
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
@@ -116,7 +112,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_STRIP_SIGNATURE = "strip_signature";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
-    private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
     private static final String PREFERENCE_CRYPTO_SUPPORT_SIGN_ONLY = "crypto_support_sign_only";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
@@ -131,7 +126,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
-    public static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
 
 
     private Account mAccount;
@@ -185,7 +179,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mIdleRefreshPeriod;
     private ListPreference mMaxPushFolders;
     private boolean mHasCrypto = false;
-    private OpenPgpAppPreference mCryptoApp;
     private OpenPgpKeyPreference mCryptoKey;
     private CheckBoxPreference mCryptoSupportSignOnly;
 
@@ -701,34 +694,14 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        mHasCrypto = OpenPgpUtils.isAvailable(this);
+        mHasCrypto = K9.isCryptoProviderConfigured();
+        PreferenceScreen cryptoMenu = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
         if (mHasCrypto) {
-            mCryptoApp = (OpenPgpAppPreference) findPreference(PREFERENCE_CRYPTO_APP);
             mCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
             mCryptoSupportSignOnly = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_SUPPORT_SIGN_ONLY);
 
-            mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
-            if (OpenPgpAppPreference.isApgInstalled(getApplicationContext())) {
-                mCryptoApp.addLegacyProvider(APG_PROVIDER_PLACEHOLDER, getString(R.string.apg), R.drawable.ic_apg_small);
-            }
-            mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    String value = newValue.toString();
-                    if (APG_PROVIDER_PLACEHOLDER.equals(value)) {
-                        mCryptoApp.setValue("");
-                        mCryptoKey.setOpenPgpProvider("");
-                        showDialog(DIALOG_APG_DEPRECATION_WARNING);
-                    } else {
-                        mCryptoApp.setValue(value);
-                        mCryptoKey.setOpenPgpProvider(value);
-                    }
-
-                    return false;
-                }
-            });
-
             mCryptoKey.setValue(mAccount.getCryptoKey());
-            mCryptoKey.setOpenPgpProvider(mCryptoApp.getValue());
+            mCryptoKey.setOpenPgpProvider(K9.getCryptoProvider());
             // TODO: other identities?
             mCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(mAccount.getIdentity(0)));
             mCryptoKey.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -740,10 +713,21 @@ public class AccountSettings extends K9PreferenceActivity {
             });
 
             mCryptoSupportSignOnly.setChecked(mAccount.getCryptoSupportSignOnly());
+            cryptoMenu.setOnPreferenceClickListener(null);
         } else {
-            final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
-            mCryptoMenu.setEnabled(false);
-            mCryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_installed);
+            cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
+            cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Dialog dialog = ((PreferenceScreen) preference).getDialog();
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                    Toast.makeText(AccountSettings.this,
+                            R.string.no_crypto_provider_see_global, Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
         }
     }
 
@@ -806,11 +790,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setStripSignature(mStripSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
         if (mHasCrypto) {
-            mAccount.setCryptoApp(mCryptoApp.getValue());
             mAccount.setCryptoKey(mCryptoKey.getValue());
             mAccount.setCryptoSupportSignOnly(mCryptoSupportSignOnly.isChecked());
         } else {
-            mAccount.setCryptoApp(Account.NO_OPENPGP_PROVIDER);
             mAccount.setCryptoKey(Account.NO_OPENPGP_KEY);
             mAccount.setCryptoSupportSignOnly(false);
         }
@@ -951,16 +933,6 @@ public class AccountSettings extends K9PreferenceActivity {
                         },
                         mAccount.getNotificationSetting().getLedColor());
 
-                break;
-            }
-            case DIALOG_APG_DEPRECATION_WARNING: {
-                dialog = new ApgDeprecationWarningDialog(this);
-                dialog.setOnCancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        mCryptoApp.show();
-                    }
-                });
                 break;
             }
         }

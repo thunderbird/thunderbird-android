@@ -476,7 +476,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_crypto">Криптография</string>
   <string name="account_settings_crypto_app">OpenPGP приложение</string>
   <string name="account_settings_crypto_key">Моят ключ</string>
-  <string name="account_settings_no_openpgp_provider_installed">Липсва инсталирано OpenPGP приложение</string>
+  <string name="account_settings_no_openpgp_provider_configured">Липсва инсталирано OpenPGP приложение</string>
   <string name="account_settings_mail_check_frequency_label">Честота на проверка на папката</string>
   <string name="account_settings_storage_title">Място</string>
   <string name="account_settings_color_label">Цвят на профила</string>

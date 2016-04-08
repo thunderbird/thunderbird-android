@@ -98,20 +98,20 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             }
 
             case CANCELLED: {
-                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext(), account);
+                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext());
                 messageView.showMessageCryptoCancelledView(messageViewInfo, providerIcon);
                 break;
             }
 
             case INCOMPLETE_ENCRYPTED: {
-                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext(), account);
+                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext());
                 messageView.showMessageEncryptedButIncomplete(messageViewInfo, providerIcon);
                 break;
             }
 
             case ENCRYPTED_ERROR:
             case UNSUPPORTED_ENCRYPTED: {
-                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext(), account);
+                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext());
                 messageView.showMessageCryptoErrorView(messageViewInfo, providerIcon);
                 break;
             }
@@ -137,7 +137,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             messageView.showMessage(account, messageViewInfo);
             return;
         }
-        Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext(), account);
+        Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext());
         messageView.showMessageCryptoWarning(messageViewInfo, providerIcon, warningStringRes);
     }
 
@@ -220,10 +220,10 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
     }
 
     @Nullable
-    private static Drawable getOpenPgpApiProviderIcon(Context context, Account account) {
+    private static Drawable getOpenPgpApiProviderIcon(Context context) {
         try {
-            String openPgpProvider = account.getOpenPgpProvider();
-            if (Account.NO_OPENPGP_PROVIDER.equals(openPgpProvider)) {
+            String openPgpProvider = K9.getCryptoProvider();
+            if (K9.NO_CRYPTO_PROVIDER.equals(openPgpProvider)) {
                 return null;
             }
             return context.getPackageManager().getApplicationIcon(openPgpProvider);

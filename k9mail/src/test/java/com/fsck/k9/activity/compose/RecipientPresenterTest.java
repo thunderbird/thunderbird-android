@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.ParcelFileDescriptor;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
@@ -253,8 +254,8 @@ public class RecipientPresenterTest {
         IOpenPgpService2 openPgpService2 = mock(IOpenPgpService2.class);
         Intent permissionPingIntent = new Intent();
 
+        K9.setCryptoProvider(CRYPTO_PROVIDER);
         permissionPingIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        when(account.getOpenPgpProvider()).thenReturn(CRYPTO_PROVIDER);
         when(account.getCryptoKey()).thenReturn(CRYPTO_KEY_ID);
         when(openPgpServiceConnection.isBound()).thenReturn(true);
         when(openPgpServiceConnection.getService()).thenReturn(openPgpService2);

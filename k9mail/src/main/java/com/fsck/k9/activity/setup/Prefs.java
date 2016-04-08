@@ -7,7 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +39,8 @@ import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.TimePickerPreference;
 
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
+import org.openintents.openpgp.util.OpenPgpAppPreference;
 
 
 public class Prefs extends K9PreferenceActivity {
@@ -88,6 +93,8 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_HIDE_USERAGENT = "privacy_hide_useragent";
     private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
 
+    private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
+
     private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
@@ -99,7 +106,11 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
     private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
 
+    private static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
+
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
+
+    private static final int DIALOG_APG_DEPRECATION_WARNING = 1;
 
     // Named indices for the mVisibleRefileActions field
     private static final int VISIBLE_REFILE_ACTIONS_DELETE = 0;
@@ -142,6 +153,8 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mHideTimeZone;
     private CheckBoxPreference mWrapFolderNames;
     private CheckBoxListPreference mVisibleRefileActions;
+
+    private OpenPgpAppPreference mCryptoProvider;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private CheckBoxPreference mDisableNotificationDuringQuietTime;
@@ -369,6 +382,25 @@ public class Prefs extends K9PreferenceActivity {
         mHideUserAgent.setChecked(K9.hideUserAgent());
         mHideTimeZone.setChecked(K9.hideTimeZone());
 
+        mCryptoProvider = (OpenPgpAppPreference) findPreference(PREFERENCE_CRYPTO_APP);
+        mCryptoProvider.setValue(K9.getCryptoProvider());
+        if (OpenPgpAppPreference.isApgInstalled(getApplicationContext())) {
+            mCryptoProvider.addLegacyProvider(
+                    APG_PROVIDER_PLACEHOLDER, getString(R.string.apg), R.drawable.ic_apg_small);
+        }
+        mCryptoProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String value = newValue.toString();
+                if (APG_PROVIDER_PLACEHOLDER.equals(value)) {
+                    mCryptoProvider.setValue("");
+                    showDialog(DIALOG_APG_DEPRECATION_WARNING);
+                } else {
+                    mCryptoProvider.setValue(value);
+                }
+                return false;
+            }
+        });
+
         mAttachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
         mAttachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
         mAttachmentPathPreference
@@ -524,6 +556,8 @@ public class Prefs extends K9PreferenceActivity {
         K9.setHideUserAgent(mHideUserAgent.isChecked());
         K9.setHideTimeZone(mHideTimeZone.isChecked());
 
+        K9.setCryptoProvider(mCryptoProvider.getValue());
+
         StorageEditor editor = storage.edit();
         K9.save(editor);
         editor.commit();
@@ -550,6 +584,25 @@ public class Prefs extends K9PreferenceActivity {
             }
         },
         K9.getContactNameColor()).show();
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+        switch (id) {
+            case DIALOG_APG_DEPRECATION_WARNING: {
+                dialog = new ApgDeprecationWarningDialog(this);
+                dialog.setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        mCryptoProvider.show();
+                    }
+                });
+                break;
+            }
+
+        }
+        return dialog;
     }
 
     @Override

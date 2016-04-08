@@ -389,7 +389,6 @@
             android:persistent="false"
             android:key="privacy_hide_timezone"
             android:title="@string/global_settings_privacy_hide_timezone"/>
-
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -409,4 +408,9 @@
             android:summary="@string/debug_enable_sensitive_logging_summary" />
 
     </PreferenceScreen>
+
+    <org.openintents.openpgp.util.OpenPgpAppPreference
+        android:persistent="false"
+        android:key="crypto_app"
+        android:title="@string/account_settings_crypto_app" />
 </PreferenceScreen>

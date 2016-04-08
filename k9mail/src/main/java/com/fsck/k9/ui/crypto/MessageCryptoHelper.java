@@ -18,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Address;
@@ -63,7 +62,6 @@ public class MessageCryptoHelper {
 
 
     private final Context context;
-    private final String openPgpProviderPackage;
     private final Object callbackLock = new Object();
     private final Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<>();
 
@@ -88,11 +86,10 @@ public class MessageCryptoHelper {
     private OpenPgpServiceConnection openPgpServiceConnection;
 
 
-    public MessageCryptoHelper(Context context, String openPgpProviderPackage) {
+    public MessageCryptoHelper(Context context) {
         this.context = context.getApplicationContext();
-        this.openPgpProviderPackage = openPgpProviderPackage;
 
-        if (openPgpProviderPackage == null || Account.NO_OPENPGP_PROVIDER.equals(openPgpProviderPackage)) {
+        if (!K9.isCryptoProviderConfigured()) {
             throw new IllegalStateException("MessageCryptoHelper must only be called with a openpgp provider!");
         }
     }
@@ -210,6 +207,7 @@ public class MessageCryptoHelper {
     }
 
     private void connectToCryptoProviderService() {
+        String openPgpProviderPackage = K9.getCryptoProvider();
         openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProviderPackage,
                 new OnBound() {
                     @Override
