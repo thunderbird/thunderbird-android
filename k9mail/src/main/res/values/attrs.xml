@@ -71,4 +71,9 @@
         <attr name="upOutAnimation" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="ToolableViewAnimator">
+        <attr name="previewInitialChild" format="integer" />
+    </declare-styleable>
+
+
 </resources>
