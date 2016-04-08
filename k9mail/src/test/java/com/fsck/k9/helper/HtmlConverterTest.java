@@ -142,10 +142,10 @@ public class HtmlConverterTest {
         FileWriter fstream = null;
 
         try {
-            System.err.println(content);
-
             File f = new File(OUTPUT_FILE);
-            f.delete();
+            if (f.exists() && !f.delete()) {
+                throw new RuntimeException("Unable to delete existing output");
+            }
 
             fstream = new FileWriter(OUTPUT_FILE);
             BufferedWriter out = new BufferedWriter(fstream);

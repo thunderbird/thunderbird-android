@@ -164,10 +164,15 @@ class MigrationTo51 {
     private static void cleanUpOldAttachmentDirectory(File attachmentDirOld) {
         for (File file : attachmentDirOld.listFiles()) {
             Log.d(K9.LOG_TAG, "deleting stale attachment file: " + file.getName());
-            file.delete();
+            if (file.exists() && !file.delete()) {
+                Log.d(K9.LOG_TAG, "Failed to delete stale attachement file: " + file.getAbsolutePath());
+            }
         }
+
         Log.d(K9.LOG_TAG, "deleting old attachment directory");
-        attachmentDirOld.delete();
+        if (attachmentDirOld.exists() && !attachmentDirOld.delete()) {
+            Log.d(K9.LOG_TAG, "Failed to delete old attachement directory: " + attachmentDirOld.getAbsolutePath());
+        }
     }
 
     private static void copyMessageMetadataToNewTable(SQLiteDatabase db) {
