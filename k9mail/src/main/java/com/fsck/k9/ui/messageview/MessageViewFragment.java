@@ -47,6 +47,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.message.DecodeMessageLoader;
@@ -272,8 +273,18 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void onDecodeMessageFinished(MessageViewInfo messageViewInfo) {
+        if (messageViewInfo == null) {
+            showUnableToDecodeError();
+            messageViewInfo = new MessageViewInfo(Collections.<MessageViewContainer>emptyList(), mMessage);
+        }
+
         this.messageViewInfo = messageViewInfo;
         showMessage(messageViewInfo);
+    }
+
+    private void showUnableToDecodeError() {
+        Context context = getActivity().getApplicationContext();
+        Toast.makeText(context, R.string.message_view_toast_unable_to_display_message, Toast.LENGTH_SHORT).show();
     }
 
     private void showMessage(MessageViewInfo messageViewInfo) {
