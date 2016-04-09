@@ -148,7 +148,10 @@ public class FolderList extends K9ListActivity {
         public void accountSizeChanged(final long oldSize, final long newSize) {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    String toastText = getString(R.string.account_size_changed, mAccount.getDescription(), SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));
+                    String toastText = getString(R.string.account_size_changed,
+                            mAccount.getDescription(),
+                            SizeFormatter.formatSize(getApplication(), oldSize),
+                            SizeFormatter.formatSize(getApplication(), newSize));
 
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
