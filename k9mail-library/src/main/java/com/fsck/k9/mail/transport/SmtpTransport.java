@@ -307,15 +307,7 @@ public class SmtpTransport extends Transport {
                 authCramMD5Supported = saslMech.contains("CRAM-MD5");
                 authExternalSupported = saslMech.contains("EXTERNAL");
             }
-            if (extensions.containsKey("SIZE")) {
-                try {
-                    mLargestAcceptableMessage = Integer.parseInt(extensions.get("SIZE"));
-                } catch (Exception e) {
-                    if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
-                        Log.d(LOG_TAG, "Tried to parse " + extensions.get("SIZE") + " and get an int", e);
-                    }
-                }
-            }
+            parseOptionalSizeValue(extensions);
 
             if (mUsername != null
                     && mUsername.length() > 0
@@ -410,6 +402,21 @@ public class SmtpTransport extends Transport {
                 "Unable to open connection to SMTP server due to security error.", gse);
         } catch (IOException ioe) {
             throw new MessagingException("Unable to open connection to SMTP server.", ioe);
+        }
+    }
+
+    private void parseOptionalSizeValue(Map<String, String> extensions) {
+        if (extensions.containsKey("SIZE")) {
+            String optionalsizeValue = extensions.get("SIZE");
+            if (optionalsizeValue != null && optionalsizeValue != "") {
+                try {
+                    mLargestAcceptableMessage = Integer.parseInt(optionalsizeValue);
+                } catch (NumberFormatException e) {
+                    if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
+                        Log.d(LOG_TAG, "Tried to parse " + optionalsizeValue + " and get an int", e);
+                    }
+                }
+            }
         }
     }
 
