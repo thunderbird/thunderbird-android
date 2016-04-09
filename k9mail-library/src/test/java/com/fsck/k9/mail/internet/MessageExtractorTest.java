@@ -1,10 +1,14 @@
 package com.fsck.k9.mail.internet;
 
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-
 import org.apache.james.mime4j.util.MimeUtil;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
@@ -12,145 +16,167 @@ import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class MessageExtractorTest {
-    @Test
-    public void getTextFromPart_withNoBody_shouldReturnNull()
-            throws MessagingException {
-        Part part = mock(Part.class);
-        when(part.getBody()).thenReturn(null);
-
-        String content = MessageExtractor.getTextFromPart(part);
-
-        assertNull(content);
-    }
+    private Part part;
 
 
-    @Test
-    public void getTextFromPart_WithTextBody_shouldReturnText()
-            throws MessagingException, UnsupportedEncodingException {
-        Part part = mock(Part.class);
-        TextBody body = mock(TextBody.class);
-        when(part.getMimeType()).thenReturn("text/plain");
-        when(part.getContentType()).thenReturn("UTF-8");
-        when(part.getBody()).thenReturn(body);
-        when(body.getText()).thenReturn("Sample text body");
-
-        String content = MessageExtractor.getTextFromPart(part);
-
-        assertEquals("Sample text body", content);
+    @Before
+    public void setUp() throws Exception {
+        part = mock(Part.class);
     }
 
     @Test
-    public void getTextFromPart_WithRawDataBodyWithNonText_shouldReturnNull()
-            throws MessagingException {
-        Part part = mock(Part.class);
-        Body body = mock(RawDataBody.class);
-        when(part.getMimeType()).thenReturn("image/jpeg");
-        when(part.getBody()).thenReturn(body);
+    public void getTextFromPart_withNoBody_shouldReturnNull() throws Exception {
+        withBody(null);
 
-        String content = MessageExtractor.getTextFromPart(part);
+        String result = MessageExtractor.getTextFromPart(part);
 
-        assertNull(content);
+        assertNull(result);
     }
 
     @Test
-    public void getTextFromPart_WithExceptionThrownGettingInputStream_shouldReturnNull()
-            throws MessagingException {
-        Part part = mock(Part.class);
-        Body body = mock(RawDataBody.class);
-        when(part.getMimeType()).thenReturn("text/html");
+    public void getTextFromPart_withTextBody_shouldReturnText() throws Exception {
+        withMimeType("text/plain");
+        withContentType("UTF-8");
+        withBody(createTextBody("Sample text body"));
+
+        String result = MessageExtractor.getTextFromPart(part);
+
+        assertEquals("Sample text body", result);
+    }
+
+    @Test
+    public void getTextFromPart_withRawDataBodyWithNonText_shouldReturnNull() throws Exception {
+        withMimeType("image/jpeg");
+        withBody(createRawDataBody());
+
+        String result = MessageExtractor.getTextFromPart(part);
+
+        assertNull(result);
+    }
+
+    @Test
+    public void getTextFromPart_withExceptionThrownGettingInputStream_shouldReturnNull() throws Exception {
+        withMimeType("text/html");
+        Body body = createRawDataBody();
         when(body.getInputStream()).thenThrow(new MessagingException("Test"));
-        when(part.getBody()).thenReturn(body);
+        withBody(body);
 
-        MessageExtractor.getTextFromPart(part);
-    }
+        String result = MessageExtractor.getTextFromPart(part);
 
-
-    @Test(expected = RuntimeException.class)
-    public void getTextFromPart_WithUnknownEncoding_shouldThrowRuntimeException()
-            throws MessagingException, UnsupportedEncodingException {
-        Part part = mock(Part.class);
-        RawDataBody body = mock(RawDataBody.class);
-        when(part.getMimeType()).thenReturn("text/plain");
-        when(part.getContentType()).thenReturn("UTF-8");
-        when(body.getInputStream()).thenReturn(new ByteArrayInputStream("Sample text body".getBytes("UTF-8")));
-        when(part.getBody()).thenReturn(body);
-        when(body.getEncoding()).thenReturn("Unknown encoding");
-
-        MessageExtractor.getTextFromPart(part);
+        assertNull(result);
     }
 
     @Test
-    public void getTextFromPart_withPlainTextWithCharsetInContentTypeRawDataBody_shouldReturnText()
-            throws MessagingException, UnsupportedEncodingException {
-        Part part = mock(Part.class);
-        RawDataBody body = mock(RawDataBody.class);
-        when(part.getMimeType()).thenReturn("text/plain");
-        when(part.getContentType()).thenReturn("text/html; charset=UTF-8");
-        when(body.getInputStream()).thenReturn(new ByteArrayInputStream("Sample text body".getBytes("UTF-8")));
-        when(part.getBody()).thenReturn(body);
-        when(body.getEncoding()).thenReturn(MimeUtil.ENC_8BIT);
+    public void getTextFromPart_withUnknownEncoding_shouldThrowRuntimeException() throws Exception {
+        withMimeType("text/plain");
+        withContentType("UTF-8");
+        RawDataBody body = createRawDataBody();
+        withBodyContent(body, "Sample text body");
+        withEncoding(body, "Unknown encoding");
+        withBody(body);
 
-        String content = MessageExtractor.getTextFromPart(part);
-
-        assertEquals("Sample text body", content);
+        try {
+            MessageExtractor.getTextFromPart(part);
+            fail("Expected exception");
+        } catch (RuntimeException e) {
+            assertEquals("Encoding for RawDataBody not supported: Unknown encoding", e.getMessage());
+        }
     }
 
     @Test
-    public void getTextFromPart_withHtmlWithCharsetInContentTypeRawDataBody_shouldReturnHtmlText()
-            throws MessagingException, UnsupportedEncodingException {
-        Part part = mock(Part.class);
-        RawDataBody body = mock(RawDataBody.class);
-        when(part.getMimeType()).thenReturn("text/html");
-        when(part.getContentType()).thenReturn("text/html; charset=UTF-8");
-        when(body.getInputStream()).thenReturn(new ByteArrayInputStream("<html><body>Sample text body</body></html>".getBytes("UTF-8")));
-        when(part.getBody()).thenReturn(body);
-        when(body.getEncoding()).thenReturn(MimeUtil.ENC_8BIT);
+    public void getTextFromPart_withPlainTextWithCharsetInContentTypeRawDataBody_shouldReturnText() throws Exception {
+        RawDataBody body = createRawDataBody();
+        withMimeType("text/plain");
+        withContentType("text/html; charset=UTF-8");
+        withBodyContent(body, "Sample text body");
+        withBody(body);
+        withEncoding(body, MimeUtil.ENC_8BIT);
 
-        String content = MessageExtractor.getTextFromPart(part);
+        String result = MessageExtractor.getTextFromPart(part);
 
-        assertEquals("<html><body>Sample text body</body></html>", content);
+        assertEquals("Sample text body", result);
     }
 
     @Test
-    public void getTextFromPart_withHtmlWithCharsetInHtmlRawDataBody_shouldReturnHtmlText()
-            throws MessagingException, UnsupportedEncodingException {
-        Part part = mock(Part.class);
-        RawDataBody body = mock(RawDataBody.class);
-        when(part.getMimeType()).thenReturn("text/html");
-        when(part.getContentType()).thenReturn("text/html");
-        when(body.getInputStream()).thenAnswer(new Answer<InputStream>() {
+    public void getTextFromPart_withHtmlWithCharsetInContentTypeRawDataBody_shouldReturnHtmlText() throws Exception {
+        RawDataBody body = createRawDataBody();
+        withMimeType("text/html");
+        withContentType("text/html; charset=UTF-8");
+        withBodyContent(body, "<html><body>Sample text body</body></html>");
+        withBody(body);
+        withEncoding(body, MimeUtil.ENC_8BIT);
+
+        String result = MessageExtractor.getTextFromPart(part);
+
+        assertEquals("<html><body>Sample text body</body></html>", result);
+    }
+
+    @Test
+    public void getTextFromPart_withHtmlWithCharsetInHtmlRawDataBody_shouldReturnHtmlText() throws Exception {
+        String bodyText = "<html><head>" +
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" +
+                "</head><body>Sample text body</body></html>";
+        RawDataBody body = createRawDataBody();
+        withMimeType("text/html");
+        withContentType("text/html");
+        withBodyContent(body, bodyText);
+        withBody(body);
+        withEncoding(body, MimeUtil.ENC_8BIT);
+
+        String result = MessageExtractor.getTextFromPart(part);
+
+        assertNotNull(result);
+        assertEquals(bodyText, result);
+    }
+
+    private void withMimeType(String mimeType) {
+        when(part.getMimeType()).thenReturn(mimeType);
+    }
+
+    private void withContentType(String contentType) {
+        when(part.getContentType()).thenReturn(contentType);
+    }
+
+    private void withBody(Body body) {
+        when(part.getBody()).thenReturn(body);
+    }
+
+    private void withEncoding(RawDataBody body, String encoding) {
+        when(body.getEncoding()).thenReturn(encoding);
+    }
+
+    private void withBodyContent(RawDataBody body, final String text) throws Exception {
+        when(body.getInputStream()).then(new Answer<InputStream>() {
             @Override
             public InputStream answer(InvocationOnMock invocation) throws Throwable {
-                return new ByteArrayInputStream(
-                    ("<html><head>" +
-                            "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" +
-                    "</head><body>Sample text body</body></html>").getBytes("UTF-8"));
+                return createInputStream(text);
             }
         });
-        when(part.getBody()).thenReturn(body);
-        when(body.getEncoding()).thenReturn(MimeUtil.ENC_8BIT);
+    }
 
-        String content = MessageExtractor.getTextFromPart(part);
+    private TextBody createTextBody(String text) {
+        TextBody body = mock(TextBody.class);
+        when(body.getText()).thenReturn(text);
 
-        assertNotNull(content);
-        assertEquals("<html><head>" +
-                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" +
-                "</head><body>Sample text body</body></html>", content);
+        return body;
+    }
+
+    private InputStream createInputStream(String text) throws Exception {
+        return new ByteArrayInputStream(text.getBytes("UTF-8"));
+    }
+
+    private RawDataBody createRawDataBody() {
+        return mock(RawDataBody.class);
     }
 }
