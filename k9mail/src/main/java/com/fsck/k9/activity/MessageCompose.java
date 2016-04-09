@@ -2454,18 +2454,21 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
-        Context context;
-        Account account;
-        Contacts contacts;
-        Message message;
-        Long draftId;
+        final Context context;
+        final Account account;
+        final Contacts contacts;
+        final Message message;
+        final Long draftId;
+        final MessageReference messageReference;
 
-        SendMessageTask(Context context, Account account, Contacts contacts, Message message, Long draftId) {
+        SendMessageTask(Context context, Account account, Contacts contacts, Message message,
+                        Long draftId, MessageReference messageReference) {
             this.context = context;
             this.account = account;
             this.contacts = contacts;
             this.message = message;
             this.draftId = draftId;
+            this.messageReference = messageReference;
         }
 
         @Override
@@ -2474,6 +2477,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 contacts.markAsContacted(message.getRecipients(RecipientType.TO));
                 contacts.markAsContacted(message.getRecipients(RecipientType.CC));
                 contacts.markAsContacted(message.getRecipients(RecipientType.BCC));
+                updateReferencedMessage();
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Failed to mark contact as contacted.", e);
             }
@@ -2485,6 +2489,26 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             return null;
+        }
+
+        /**
+         * Set the flag on the referenced message(indicated we replied / forwarded the message)
+         **/
+        private void updateReferencedMessage() {
+            if (messageReference != null && messageReference.getFlag() != null) {
+                if (K9.DEBUG) {
+                    Log.d(K9.LOG_TAG, "Setting referenced message (" +
+                            messageReference.getFolderName() + ", " +
+                            messageReference.getUid() + ") flag to " +
+                            messageReference.getFlag());
+                }
+                final Account account = Preferences.getPreferences(context)
+                        .getAccount(messageReference.getAccountUuid());
+                final String folderName = messageReference.getFolderName();
+                final String sourceMessageUid = messageReference.getUid();
+                MessagingController.getInstance(context).setFlag(account, folderName,
+                        sourceMessageUid, messageReference.getFlag(), true);
+            }
         }
     }
 
@@ -2981,7 +3005,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             currentMessageBuilder = null;
             new SendMessageTask(getApplicationContext(), mAccount, mContacts, message,
-                    mDraftId != INVALID_DRAFT_ID ? mDraftId : null).execute();
+                    mDraftId != INVALID_DRAFT_ID ? mDraftId : null, mMessageReference).execute();
             finish();
         }
     }
