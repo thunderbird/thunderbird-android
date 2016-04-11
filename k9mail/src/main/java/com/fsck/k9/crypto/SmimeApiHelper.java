@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.fsck.k9.Identity;
 
 
-public class SMimeApiHelper {
+public class SmimeApiHelper {
 
     /**
      * Create an "account name" from the supplied identity for use with the SMime API's

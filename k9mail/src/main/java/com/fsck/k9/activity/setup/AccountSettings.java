@@ -40,7 +40,7 @@ import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
-import com.fsck.k9.crypto.SMimeApiHelper;
+import com.fsck.k9.crypto.SmimeApiHelper;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
@@ -771,7 +771,7 @@ public class AccountSettings extends K9PreferenceActivity {
             mSmimeCertificate.setValue(mAccount.getSmimeCertificate());
             mSmimeCertificate.setSmimeProvider(mSmimeApp.getValue());
             // TODO: other identities?
-            mSmimeCertificate.setDefaultUserId(SMimeApiHelper.buildUserId(mAccount.getIdentity(0)));
+            mSmimeCertificate.setDefaultUserId(SmimeApiHelper.buildUserId(mAccount.getIdentity(0)));
             mSmimeCertificate.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     long value = (Long) newValue;

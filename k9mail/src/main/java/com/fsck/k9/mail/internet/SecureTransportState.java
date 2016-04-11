@@ -5,9 +5,6 @@ import android.support.annotation.DrawableRes;
 
 import com.fsck.k9.R;
 
-/**
- * Created by philip on 25/03/2016.
- */
 public enum SecureTransportState {
     UNKNOWN(R.drawable.status_lock_open, R.color.crypto_blue),
     SECURE(R.drawable.status_lock_closed, R.color.crypto_green),
