@@ -14,6 +14,7 @@ public interface PushReceiver {
     void messagesRemoved(Folder folder, List<Message> mess);
     String getPushState(String folderName);
     void pushError(String errorMessage, Exception e);
+    void authenticationFailed();
     void setPushActive(String folderName, boolean enabled);
     void sleep(TracingWakeLock wakeLock, long millis);
 }

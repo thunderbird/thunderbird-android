@@ -221,6 +221,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
 
+    <string name="notification_authentication_error_title">Authentication failed</string>
+    <string name="notification_authentication_error_text">Authentication failed for <xliff:g id="account">%s</xliff:g>. Update your server settings.</string>
+
     <string name="notification_bg_sync_ticker">Checking mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Checking mail</string>
     <string name="notification_bg_send_ticker">Sending mail: <xliff:g id="account">%s</xliff:g></string>

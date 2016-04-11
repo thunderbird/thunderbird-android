@@ -44,6 +44,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
+import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
@@ -879,6 +880,8 @@ public class MessagingController implements Runnable {
 
             }
 
+            notificationController.clearAuthenticationErrorNotification(account, true);
+
             /*
              * Get the remote message count.
              */
@@ -1010,6 +1013,12 @@ public class MessagingController implements Runnable {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder);
 
+        } catch (AuthenticationFailedException e) {
+            handleAuthenticationFailure(account, true);
+
+            for (MessagingListener l : getListeners(listener)) {
+                l.synchronizeMailboxFailed(account, folder, "Authentication failure");
+            }
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "synchronizeMailbox", e);
             // If we don't set the last checked, it can try too often during
@@ -1040,6 +1049,10 @@ public class MessagingController implements Runnable {
             closeFolder(tLocalFolder);
         }
 
+    }
+
+    void handleAuthenticationFailure(Account account, boolean incoming) {
+        notificationController.showAuthenticationErrorNotification(account, incoming);
     }
 
     private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
@@ -3142,7 +3155,12 @@ public class MessagingController implements Runnable {
                             queuePendingCommand(account, command);
                             processPendingCommands(account);
                         }
+                    } catch (AuthenticationFailedException e) {
+                        lastFailure = e;
+                        wasPermanentFailure = false;
 
+                        handleAuthenticationFailure(account, false);
+                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
                     } catch (CertificateValidationException e) {
                         lastFailure = e;
                         wasPermanentFailure = false;

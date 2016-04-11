@@ -23,7 +23,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
-        assertEquals(4, notificationId);
+        assertEquals(6, notificationId);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
-        assertEquals(5, notificationId);
+        assertEquals(7, notificationId);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
@@ -56,7 +56,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
-        assertEquals(17, notificationId);
+        assertEquals(21, notificationId);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
-        assertEquals(25, notificationId);
+        assertEquals(29, notificationId);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
 
-        assertEquals(3, notificationId);
+        assertEquals(5, notificationId);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
 
-        assertEquals(16, notificationId);
+        assertEquals(20, notificationId);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getSendFailedNotificationId(account);
 
-        assertEquals(13, notificationId);
+        assertEquals(15, notificationId);
     }
 
     @Test
@@ -120,7 +120,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING);
 
-        assertEquals(14, notificationId);
+        assertEquals(16, notificationId);
     }
 
     @Test
@@ -138,7 +138,43 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING);
 
-        assertEquals(15, notificationId);
+        assertEquals(17, notificationId);
+    }
+
+    @Test
+    public void getAuthenticationErrorNotificationId_forIncomingServerWithDefaultAccount() throws Exception {
+        Account account = createMockAccountWithAccountNumber(0);
+
+        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING);
+
+        assertEquals(3, notificationId);
+    }
+
+    @Test
+    public void getAuthenticationErrorNotificationId_forIncomingServerWithSecondAccount() throws Exception {
+        Account account = createMockAccountWithAccountNumber(1);
+
+        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING);
+
+        assertEquals(18, notificationId);
+    }
+
+    @Test
+    public void getAuthenticationErrorNotificationId_forOutgoingServerWithDefaultAccount() throws Exception {
+        Account account = createMockAccountWithAccountNumber(0);
+
+        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING);
+
+        assertEquals(4, notificationId);
+    }
+
+    @Test
+    public void getAuthenticationErrorNotificationId_forOutgoingServerWithSecondAccount() throws Exception {
+        Account account = createMockAccountWithAccountNumber(1);
+
+        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING);
+
+        assertEquals(19, notificationId);
     }
 
     private Account createMockAccountWithAccountNumber(int accountNumber) {
