@@ -1,8 +1,10 @@
 
 package com.fsck.k9.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -342,7 +344,10 @@ public class MailService extends CoreService {
 
     private void setupPushers() {
         boolean pushing = false;
-        for (Account account : Preferences.getPreferences(MailService.this).getAccounts()) {
+        List<Account> accounts =
+                new ArrayList<Account>(Preferences.getPreferences(MailService.this)
+                        .getAccounts());
+        for (Account account : accounts) {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Setting up pushers for account " + account.getDescription());
             if (account.isEnabled() && account.isAvailable(getApplicationContext())) {
