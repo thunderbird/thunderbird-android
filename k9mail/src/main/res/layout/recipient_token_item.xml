@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="32dp"
-    android:background="#ccc">
+    android:background="?attr/contactTokenBackgroundColor">
 
     <ImageView
         android:layout_width="32dp"
