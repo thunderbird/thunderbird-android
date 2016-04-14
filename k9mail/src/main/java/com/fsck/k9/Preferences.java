@@ -79,7 +79,7 @@ public class Preferences {
             loadAccounts();
         }
 
-        return Collections.unmodifiableList(accountsInOrder);
+        return Collections.unmodifiableList(new ArrayList<Account>(accountsInOrder));
     }
 
     /**
