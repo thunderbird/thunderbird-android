@@ -403,19 +403,23 @@ public class EmailProvider extends ContentProvider {
 
                     query.append(") a ");
 
-                    query.append("LEFT JOIN " + THREADS_TABLE + " t " +
+                    query.append("JOIN " + THREADS_TABLE + " t " +
                             "ON (t." + ThreadColumns.ROOT + " = a.thread_root) " +
-                            "LEFT JOIN " + MESSAGES_TABLE + " m " +
-                            "ON (m." + MessageColumns.ID + " = t." + ThreadColumns.MESSAGE_ID +
+                            "JOIN " + MESSAGES_TABLE + " m " +
+                            "ON (m." + MessageColumns.ID + " = t." + ThreadColumns.MESSAGE_ID + " AND " +
+                            "m." + InternalMessageColumns.EMPTY + "=0 AND " +
+                            "m." + InternalMessageColumns.DELETED + "=0 AND " +
+                            "m." + MessageColumns.DATE + " = a." + MessageColumns.DATE +
                             ") ");
 
                     if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
-                        query.append("LEFT JOIN " + FOLDERS_TABLE + " f " +
+                        query.append("JOIN " + FOLDERS_TABLE + " f " +
                                 "ON (m." + MessageColumns.FOLDER_ID + " = f." + FolderColumns.ID +
                                 ") ");
                     }
 
-                    query.append("WHERE m." + MessageColumns.DATE + " = a." + MessageColumns.DATE);
+                    query.append(" GROUP BY " + ThreadColumns.ROOT);
+
                     if (!TextUtils.isEmpty(sortOrder)) {
                         query.append(" ORDER BY ");
                         query.append(SqlQueryBuilder.addPrefixToSelection(
@@ -456,26 +460,44 @@ public class EmailProvider extends ContentProvider {
 
         query.append(
                 " FROM " + MESSAGES_TABLE + " m " +
-                "LEFT JOIN " + THREADS_TABLE + " t " +
+                "JOIN " + THREADS_TABLE + " t " +
                 "ON (t." + ThreadColumns.MESSAGE_ID + " = m." + MessageColumns.ID + ")");
 
         if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
-            query.append("LEFT JOIN " + FOLDERS_TABLE + " f " +
+            query.append("JOIN " + FOLDERS_TABLE + " f " +
                     "ON (m." + MessageColumns.FOLDER_ID + " = f." + FolderColumns.ID +
                     ")");
         }
 
-        query.append(" WHERE (" +
-                InternalMessageColumns.DELETED + " = 0 AND " +
-                InternalMessageColumns.EMPTY + " = 0" +
-                ")");
+        query.append(" WHERE (t." + ThreadColumns.ROOT + " IN (" +
+                "SELECT DISTINCT t." + ThreadColumns.ROOT + " " +
+                "FROM " + MESSAGES_TABLE + " mf " +
+                "JOIN " + THREADS_TABLE + " tf " +
+                "ON (tf." + ThreadColumns.MESSAGE_ID + " = mf." + MessageColumns.ID + ") " +
+                "JOIN " + THREADS_TABLE + " t " +
+                "ON (tf." + ThreadColumns.ROOT + " = t." + ThreadColumns.ROOT + ") " +
+                "JOIN " + MESSAGES_TABLE + " m " +
+                "ON (m." + MessageColumns.ID + " = t." + ThreadColumns.MESSAGE_ID + ") " +
+                "WHERE " +
+                "mf." + InternalMessageColumns.EMPTY + " = 0 AND " +
+                "mf." + InternalMessageColumns.DELETED + " = 0 AND " +
+                "m." + InternalMessageColumns.EMPTY + " = 0 AND " +
+                "m." + InternalMessageColumns.DELETED + " = 0");
 
 
         if (!TextUtils.isEmpty(selection)) {
+            //TODO: Create more generic solution
+            String prefixedSelection = selection.replace("folder_id", "mf.folder_id");
+
             query.append(" AND (");
-            query.append(selection);
+            query.append(prefixedSelection);
             query.append(")");
         }
+
+        query.append(
+                ") AND " +
+                InternalMessageColumns.DELETED + " = 0 AND " +
+                InternalMessageColumns.EMPTY + " = 0)");
 
         query.append(" GROUP BY t." + ThreadColumns.ROOT);
     }
@@ -631,7 +653,7 @@ public class EmailProvider extends ContentProvider {
     }
 
     /**
-     * This class is needed to make {@link CursorAdapter} work with our database schema.
+     * This class is needed to make {@link android.support.v4.widget.CursorAdapter} work with our database schema.
      *
      * <p>
      * {@code CursorAdapter} requires a column named {@code "_id"} containing a stable id. We use
