@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.messageview;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
@@ -36,10 +36,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
-
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
+import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.view.K9WebViewClient;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
@@ -63,7 +60,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private static final int MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1;
     private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
 
-    private View mSidebar;
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
     private Button mShowHiddenAttachments;
@@ -81,8 +77,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
-
-        mSidebar = findViewById(R.id.message_sidebar);
 
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mMessageContentView.configure();
@@ -395,21 +389,20 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
     }
 
-    public void displayMessageViewContainer(MessageViewContainer messageViewContainer,
+    public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
             boolean automaticallyLoadPictures, ShowPicturesController showPicturesController,
-            AttachmentViewCallback attachmentCallback, OpenPgpHeaderViewCallback openPgpHeaderViewCallback,
-            boolean displayPgpHeader) throws MessagingException {
+            AttachmentViewCallback attachmentCallback) throws MessagingException {
 
         this.attachmentCallback = attachmentCallback;
 
         resetView();
 
-        WebViewClient webViewClient = K9WebViewClient.newInstance(messageViewContainer.rootPart);
+        WebViewClient webViewClient = K9WebViewClient.newInstance(messageViewInfo.rootPart);
         mMessageContentView.setWebViewClient(webViewClient);
 
-        boolean hasAttachments = !messageViewContainer.attachments.isEmpty();
+        boolean hasAttachments = !messageViewInfo.attachments.isEmpty();
         if (hasAttachments) {
-            renderAttachments(messageViewContainer);
+            renderAttachments(messageViewInfo);
         }
 
         mHiddenAttachments.setVisibility(View.GONE);
@@ -428,7 +421,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             mSavedState = null;
         }
 
-        mText = getTextToDisplay(messageViewContainer);
+        mText = messageViewInfo.text;
         if (mText != null && lookForImages) {
             if (Utility.hasExternalImages(mText) && !isShowingPictures()) {
                 if (automaticallyLoadPictures) {
@@ -437,18 +430,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                     showPicturesController.notifyMessageContainerContainsPictures(this);
                 }
             }
-        }
-
-        if (displayPgpHeader) {
-            ViewStub openPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
-            OpenPgpHeaderView openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
-
-            OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
-            openPgpHeaderView.setOpenPgpData(cryptoAnnotation);
-            openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
-            mSidebar.setVisibility(View.VISIBLE);
-        } else {
-            mSidebar.setVisibility(View.GONE);
         }
 
         String text;
@@ -461,30 +442,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         loadBodyFromText(text);
     }
 
-    private String getTextToDisplay(MessageViewContainer messageViewContainer) {
-        OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
-        if (cryptoAnnotation == null) {
-            return messageViewContainer.text;
-        }
-
-        CryptoError errorType = cryptoAnnotation.getErrorType();
-        switch (errorType) {
-            case CRYPTO_API_RETURNED_ERROR: {
-                // TODO make a nice view for this
-                return wrapStatusMessage(cryptoAnnotation.getError().getMessage());
-            }
-            case ENCRYPTED_BUT_INCOMPLETE: {
-                return wrapStatusMessage(getContext().getString(R.string.crypto_download_complete_message_to_decrypt));
-            }
-            case NONE:
-            case SIGNED_BUT_INCOMPLETE: {
-                return messageViewContainer.text;
-            }
-        }
-
-        throw new IllegalStateException("Unknown error type: " + errorType);
-    }
-
     public String wrapStatusMessage(String status) {
         return "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
     }
@@ -493,8 +450,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mMessageContentView.setText(emailText);
     }
 
-    public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {
-        for (AttachmentViewInfo attachment : messageContainer.attachments) {
+    public void renderAttachments(MessageViewInfo messageViewInfo) throws MessagingException {
+        for (AttachmentViewInfo attachment : messageViewInfo.attachments) {
             ViewGroup parent = attachment.firstClassAttachment ? mAttachments : mHiddenAttachments;
             AttachmentView view = (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, parent, false);
             view.setCallback(attachmentCallback);

@@ -36,9 +36,9 @@
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
-            <LinearLayout
+            <FrameLayout
                 android:orientation="vertical"
-                android:id="@+id/message_containers"
+                android:id="@+id/message_container"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 

@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.messageview;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.fsck.k9.Account;
@@ -21,7 +23,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.MessageViewInfo;
-import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.view.MessageHeader;
 
 
@@ -29,10 +30,9 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
     private MessageHeader mHeaderContainer;
     private LayoutInflater mInflater;
-    private LinearLayout containerViews;
+    private FrameLayout containerView;
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
-    private OpenPgpHeaderViewCallback openPgpHeaderViewCallback;
     private Button showPicturesButton;
     private List<MessageContainerView> messageContainerViewsWithPictures = new ArrayList<MessageContainerView>();
 
@@ -55,7 +55,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         showPicturesButton = (Button) findViewById(R.id.show_pictures);
         setShowPicturesButtonListener();
 
-        containerViews = (LinearLayout) findViewById(R.id.message_containers);
+        containerView = (FrameLayout) findViewById(R.id.message_container);
 
         hideHeaderView();
     }
@@ -79,7 +79,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
     public void resetView() {
         mDownloadRemainder.setVisibility(View.GONE);
-        containerViews.removeAllViews();
+        containerView.removeAllViews();
     }
 
     public void setMessage(Account account, MessageViewInfo messageViewInfo)
@@ -90,15 +90,12 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         boolean automaticallyLoadPictures =
                 shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
 
-        for (MessageViewContainer container : messageViewInfo.containers) {
-            MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container,
-                    containerViews, false);
-            boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
-            view.displayMessageViewContainer(container, automaticallyLoadPictures, this, attachmentCallback,
-                    openPgpHeaderViewCallback, displayPgpHeader);
+        MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container,
+                containerView, false);
+        boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
+        view.displayMessageViewContainer(messageViewInfo, automaticallyLoadPictures, this, attachmentCallback);
 
-            containerViews.addView(view);
-        }
+        containerView.addView(view);
 
     }
 
@@ -147,7 +144,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     }
 
     public void setOpenPgpHeaderViewCallback(OpenPgpHeaderViewCallback callback) {
-        openPgpHeaderViewCallback = callback;
+
     }
 
     public void enableDownloadButton() {
