@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.widget.Button;
@@ -60,7 +59,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private static final int MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1;
     private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
 
-    private View mSidebar;
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
     private Button mShowHiddenAttachments;
@@ -80,8 +78,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
-
-        mSidebar = findViewById(R.id.message_sidebar);
 
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         mMessageContentView.configure();
@@ -396,8 +392,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
             boolean automaticallyLoadPictures, ShowPicturesController showPicturesController,
-            AttachmentViewCallback attachmentCallback, boolean displayPgpHeader,
-            OpenPgpHeaderViewCallback openPgpHeaderViewCallback) throws MessagingException {
+            AttachmentViewCallback attachmentCallback) throws MessagingException {
 
         this.attachmentCallback = attachmentCallback;
 
@@ -433,17 +428,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                     showPicturesController.notifyMessageContainerContainsPictures(this);
                 }
             }
-        }
-
-        if (displayPgpHeader) {
-            ViewStub openPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
-            OpenPgpHeaderView openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
-
-            openPgpHeaderView.setOpenPgpData(messageViewInfo.cryptoResultAnnotation);
-            openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
-            mSidebar.setVisibility(View.VISIBLE);
-        } else {
-            mSidebar.setVisibility(View.GONE);
         }
 
         if (textToDisplay == null) {
