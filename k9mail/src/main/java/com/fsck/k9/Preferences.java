@@ -61,7 +61,9 @@ public class Preferences {
         }
         if ((newAccount != null) && newAccount.getAccountNumber() != -1) {
             accounts.put(newAccount.getUuid(), newAccount);
-            accountsInOrder.add(newAccount);
+            if (!accountsInOrder.contains(newAccount)) {
+                accountsInOrder.add(newAccount);
+            }
             newAccount = null;
         }
     }
@@ -77,7 +79,7 @@ public class Preferences {
             loadAccounts();
         }
 
-        return Collections.unmodifiableList(accountsInOrder);
+        return Collections.unmodifiableList(new ArrayList<Account>(accountsInOrder));
     }
 
     /**
@@ -109,7 +111,6 @@ public class Preferences {
 
     public synchronized Account newAccount() {
         newAccount = new Account(mContext);
-        //TODO: GH-992 Don't add the account here, add it on finishing.
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
 

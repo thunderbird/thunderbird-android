@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.internet;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;

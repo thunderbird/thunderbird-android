@@ -1,5 +1,6 @@
 package com.fsck.k9.helper;
 
+
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.ListHeaders;
