@@ -9,30 +9,20 @@ import com.fsck.k9.mail.Part;
 
 public class MessageViewInfo {
     public final Message message;
-    public final List<MessageViewContainer> containers;
+    public final Part rootPart;
+    public final AttachmentResolver attachmentResolver;
+    public final String text;
+    public final List<AttachmentViewInfo> attachments;
+    public final CryptoResultAnnotation cryptoResultAnnotation;
 
 
-    public MessageViewInfo(List<MessageViewContainer> containers, Message message) {
-        this.containers = containers;
+    public MessageViewInfo(Message message, Part rootPart, String text, List<AttachmentViewInfo> attachments,
+            CryptoResultAnnotation cryptoResultAnnotation, AttachmentResolver attachmentResolver) {
         this.message = message;
-    }
-
-
-    public static class MessageViewContainer {
-        public final String text;
-        public final AttachmentResolver attachmentResolver;
-        public final Part rootPart;
-        public final List<AttachmentViewInfo> attachments;
-        public final CryptoResultAnnotation cryptoAnnotation;
-
-
-        MessageViewContainer(String text, AttachmentResolver attachmentResolver, Part rootPart,
-                List<AttachmentViewInfo> attachments, CryptoResultAnnotation cryptoAnnotation) {
-            this.text = text;
-            this.rootPart = rootPart;
-            this.attachments = attachments;
-            this.cryptoAnnotation = cryptoAnnotation;
-            this.attachmentResolver = attachmentResolver;
-        }
+        this.rootPart = rootPart;
+        this.text = text;
+        this.attachments = attachments;
+        this.cryptoResultAnnotation = cryptoResultAnnotation;
+        this.attachmentResolver = attachmentResolver;
     }
 }
