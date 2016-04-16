@@ -63,4 +63,13 @@ public class PeekableInputStream extends InputStream {
         return String.format(Locale.US, "PeekableInputStream(in=%s, peeked=%b, peekedByte=%d)",
                              mIn.toString(), mPeeked, mPeekedByte);
     }
+
+    @Override
+    public void close() throws IOException {
+        InputStream localIn = mIn;
+        mIn = null;
+        if (localIn != null) {
+            localIn.close();
+        }
+    }
 }
