@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fsck.k9.view.MessageHeader
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/header_container"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -94,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/flagged"
+                        android:layout_toLeftOf="@+id/status_icon_strip"
                         android:paddingTop="0dp"
                         android:paddingRight="6dip"
                         android:singleLine="true"
@@ -124,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/to_label"
                         android:layout_below="@+id/from"
-                        android:layout_toLeftOf="@+id/flagged"
+                        android:layout_toLeftOf="@+id/status_icon_strip"
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:paddingTop="2dp"
@@ -152,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/cc_label"
                         android:layout_below="@+id/to"
-                        android:layout_toLeftOf="@+id/flagged"
+                        android:layout_toLeftOf="@+id/status_icon_strip"
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:paddingTop="2dp"
@@ -172,15 +174,27 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="?android:attr/textColorSecondary" />
 
-                    <CheckBox
-                        android:id="@+id/flagged"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignTop="@id/from"
-                        android:focusable="false"
-                        style="?android:attr/starStyle"
-                        android:checked="false" />
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/status_icon_strip"
+                        >
+
+                        <CheckBox
+                            android:id="@+id/flagged"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            style="?android:attr/starStyle"
+                            android:checked="false" />
+
+                        <include layout="@layout/message_crypto_status_view" />
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 

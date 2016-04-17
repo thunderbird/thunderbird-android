@@ -437,7 +437,7 @@ public class LocalMessageExtractor {
                 attachments);
         List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
 
-        return new MessageViewInfo(message, rootPart, viewable.html, attachmentInfos);
+        return new MessageViewInfo(message, rootPart, viewable.html, attachmentInfos, pgpAnnotation);
     }
 
     private static List<AttachmentViewInfo> extractAttachmentInfos(Context context, List<Part> attachmentParts)
