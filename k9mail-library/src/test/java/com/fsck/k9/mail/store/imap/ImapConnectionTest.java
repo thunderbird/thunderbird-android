@@ -115,6 +115,27 @@ public class ImapConnectionTest {
     }
 
     @Test
+    public void open_afterCloseWasCalled_shouldThrow() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server);
+        server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
+        server.output("2 OK LOGIN completed");
+        simplePostAuthenticationDialog(server);
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+        imapConnection.open();
+        imapConnection.close();
+
+        try {
+            imapConnection.open();
+            fail("Expected exception");
+        } catch (IllegalStateException e) {
+            assertEquals("open() called after close(). Check wrapped exception to see where close() was called.",
+                    e.getMessage());
+        }
+    }
+
+    @Test
     public void open_authPlainWithLoginDisabled_shouldThrow() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
