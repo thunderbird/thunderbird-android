@@ -373,7 +373,7 @@ public class ImapConnectionTest {
         } catch (UnknownHostException ignored) {
         }
 
-        assertFalse(imapConnection.isOpen());
+        assertFalse(imapConnection.isConnected());
     }
 
     @Test
@@ -532,20 +532,20 @@ public class ImapConnectionTest {
     }
 
     @Test
-    public void isOpen_withoutPreviousOpen_shouldReturnFalse() throws Exception {
+    public void isConnected_withoutPreviousOpen_shouldReturnFalse() throws Exception {
         ImapConnection imapConnection = createImapConnection(settings, socketFactory, connectivityManager);
 
-        boolean result = imapConnection.isOpen();
+        boolean result = imapConnection.isConnected();
 
         assertFalse(result);
     }
 
     @Test
-    public void isOpen_afterOpen_shouldReturnTrue() throws Exception {
+    public void isConnected_afterOpen_shouldReturnTrue() throws Exception {
         MockImapServer server = new MockImapServer();
         ImapConnection imapConnection = simpleOpen(server);
 
-        boolean result = imapConnection.isOpen();
+        boolean result = imapConnection.isConnected();
 
         assertTrue(result);
         server.verifyConnectionStillOpen();
@@ -554,12 +554,12 @@ public class ImapConnectionTest {
     }
 
     @Test
-    public void isOpen_afterOpenAndClose_shouldReturnFalse() throws Exception {
+    public void isConnected_afterOpenAndClose_shouldReturnFalse() throws Exception {
         MockImapServer server = new MockImapServer();
         ImapConnection imapConnection = simpleOpen(server);
         imapConnection.close();
 
-        boolean result = imapConnection.isOpen();
+        boolean result = imapConnection.isConnected();
 
         assertFalse(result);
         server.verifyConnectionClosed();

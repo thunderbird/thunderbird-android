@@ -160,7 +160,7 @@ class ImapConnection {
         }
     }
 
-    public boolean isOpen() {
+    public boolean isConnected() {
         return inputStream != null && outputStream != null && socket != null &&
                 socket.isConnected() && !socket.isClosed();
     }
