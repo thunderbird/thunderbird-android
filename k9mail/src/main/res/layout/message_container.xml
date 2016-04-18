@@ -4,54 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- OpenPGP header -->
-    <ViewStub
-        android:id="@+id/openpgp_header_stub"
-        android:inflatedId="@+id/openpgp_header"
-        android:layout="@layout/message_view_openpgp_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <!-- Content area -->
+    <com.fsck.k9.view.MessageWebView
+        android:id="@+id/message_content"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
 
-    <!-- sidebar -->
+    <!-- Attachments area -->
     <LinearLayout
+        android:id="@+id/attachments_container"
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <!-- Content area -->
-        <com.fsck.k9.view.MessageWebView
-            android:id="@+id/message_content"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
-
-        <!-- Attachments area -->
         <LinearLayout
-            android:id="@+id/attachments_container"
+            android:id="@+id/attachments"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="4dip" />
 
-            <LinearLayout
-                android:id="@+id/attachments"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dip" />
+        <Button
+            android:id="@+id/show_hidden_attachments"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/message_view_show_more_attachments_action" />
 
-            <Button
-                android:id="@+id/show_hidden_attachments"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/message_view_show_more_attachments_action" />
-
-            <LinearLayout
-                android:id="@+id/hidden_attachments"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dip" />
-
-        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/hidden_attachments"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dip" />
 
     </LinearLayout>
 
