@@ -56,7 +56,7 @@ import com.fsck.k9.ui.message.LocalMessageLoader;
 import com.fsck.k9.view.MessageHeader;
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback, OpenPgpHeaderViewCallback, MessageCryptoCallback {
+        AttachmentViewCallback, OnCryptoClickListener, MessageCryptoCallback {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -150,7 +150,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
         mMessageView.setAttachmentCallback(this);
-        mMessageView.setOpenPgpHeaderViewCallback(this);
+        mMessageView.setOnCryptoClickListener(this);
 
         mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
@@ -703,11 +703,15 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     @Override
-    public void onPgpSignatureButtonClick(PendingIntent pendingIntent) {
+    public void onCryptoClick() {
         try {
-            getActivity().startIntentSenderForResult(
-                    pendingIntent.getIntentSender(),
-                    42, null, 0, 0, 0);
+            if (messageViewInfo.openPgpResultAnnotation == null) {
+                return;
+            }
+            PendingIntent pendingIntent = messageViewInfo.openPgpResultAnnotation.getPendingIntent();
+            if (pendingIntent != null) {
+                getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(), 0, null, 0, 0, 0);
+            }
         } catch (IntentSender.SendIntentException e) {
             Log.e(K9.LOG_TAG, "SendIntentException", e);
         }
