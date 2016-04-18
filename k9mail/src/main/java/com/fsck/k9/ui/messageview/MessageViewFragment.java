@@ -53,10 +53,11 @@ import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
+import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback, MessageCryptoCallback {
+        AttachmentViewCallback, OnCryptoClickListener, MessageCryptoCallback {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -149,6 +150,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
         mMessageView.setAttachmentCallback(this);
+        mMessageView.setOnCryptoClickListener(this);
 
         mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
@@ -706,6 +708,15 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
         // mMessageView.refreshAttachmentThumbnail(attachment);
+    }
+
+    @Override
+    public void onCryptoClick() {
+        MessageCryptoDisplayStatus displayStatus =
+                MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation);
+
+        CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus);
+        dialog.show(getFragmentManager(), "crypto_info_dialog");
     }
 
     @Override

@@ -2,22 +2,21 @@ package com.fsck.k9.view;
 
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+
+import com.fsck.k9.R;
 
 
-public class MessageCryptoStatusView extends ToolableViewAnimator {
-    private static final int STATUS_DISABLED = 0;
-    private static final int STATUS_SIGN_3_OK = 1;
-    private static final int STATUS_SIGN_2_WARNING = 2;
-    private static final int STATUS_SIGN_1_ERROR = 3;
-    private static final int STATUS_SIGN_0_UNKNOWN = 4;
-    private static final int STATUS_LOCK_3_OK = 5;
-    private static final int STATUS_LOCK_2_WARNING = 6;
-    private static final int STATUS_LOCK_1_ERROR = 7;
-    private static final int STATUS_LOCK_0_UNKNOWN = 8;
-    private static final int STATUS_LOCK_UNKNOWN = 9;
-    private static final int STATUS_LOCK_ERROR = 10;
+public class MessageCryptoStatusView extends FrameLayout {
 
+    private ImageView iconSingle;
+    private ImageView iconCombinedFirst;
+    private ImageView iconCombinedSecond;
+    private ImageView iconDotsBackground;
 
     public MessageCryptoStatusView(Context context) {
         super(context);
@@ -31,49 +30,36 @@ public class MessageCryptoStatusView extends ToolableViewAnimator {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
-        int whichChild = displayStatusToChildIndex(displayStatus);
-        setDisplayedChild(whichChild);
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        iconSingle = (ImageView) findViewById(R.id.crypto_status_single);
+        iconCombinedFirst = (ImageView) findViewById(R.id.crypto_status_combined_1);
+        iconCombinedSecond = (ImageView) findViewById(R.id.crypto_status_combined_2);
+        iconDotsBackground = (ImageView) findViewById(R.id.crypto_status_dots_bg);
     }
 
-    private int displayStatusToChildIndex(MessageCryptoDisplayStatus displayStatus) {
-        switch (displayStatus) {
-            case DISABLED:
-                return STATUS_DISABLED;
+    public void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
+        @ColorInt int color = getResources().getColor(displayStatus.color);
 
-            case UNENCRYPTED_SIGN_UNKNOWN:
-                return STATUS_SIGN_0_UNKNOWN;
-            case UNENCRYPTED_SIGN_VERIFIED:
-                return STATUS_SIGN_3_OK;
-            case UNENCRYPTED_SIGN_UNVERIFIED:
-                return STATUS_SIGN_2_WARNING;
-            case UNENCRYPTED_SIGN_ERROR:
-                return STATUS_SIGN_1_ERROR;
-            case UNENCRYPTED_SIGN_MISMATCH:
-            case UNENCRYPTED_SIGN_EXPIRED:
-            case UNENCRYPTED_SIGN_REVOKED:
-            case UNENCRYPTED_SIGN_INSECURE:
-                return STATUS_SIGN_1_ERROR;
+        if (displayStatus.iconResSecond != null) {
+            iconCombinedFirst.setVisibility(View.VISIBLE);
+            iconCombinedSecond.setVisibility(View.VISIBLE);
+            iconDotsBackground.setVisibility(View.VISIBLE);
+            iconSingle.setVisibility(View.GONE);
 
-            case ENCRYPTED_SIGN_UNKNOWN:
-                return STATUS_LOCK_0_UNKNOWN;
-            case ENCRYPTED_SIGN_VERIFIED:
-                return STATUS_LOCK_3_OK;
-            case ENCRYPTED_SIGN_UNVERIFIED:
-                return STATUS_LOCK_2_WARNING;
-            case ENCRYPTED_SIGN_ERROR:
-            case ENCRYPTED_SIGN_MISMATCH:
-            case ENCRYPTED_SIGN_EXPIRED:
-            case ENCRYPTED_SIGN_REVOKED:
-            case ENCRYPTED_SIGN_INSECURE:
-                return STATUS_LOCK_1_ERROR;
+            iconCombinedFirst.setImageResource(displayStatus.iconResFirst);
+            iconCombinedFirst.setColorFilter(color);
+            iconCombinedSecond.setImageResource(displayStatus.iconResSecond);
+            iconCombinedSecond.setColorFilter(color);
+        } else {
+            iconCombinedFirst.setVisibility(View.GONE);
+            iconCombinedSecond.setVisibility(View.GONE);
+            iconDotsBackground.setVisibility(View.GONE);
+            iconSingle.setVisibility(View.VISIBLE);
 
-            case ENCRYPTED_ERROR:
-                return STATUS_LOCK_ERROR;
-            case ENCRYPTED_UNSIGNED:
-                return STATUS_LOCK_UNKNOWN;
+            iconSingle.setImageResource(displayStatus.iconResFirst);
+            iconSingle.setColorFilter(color);
         }
-
-        throw new AssertionError("all cases must be handled, this is a bug!");
     }
 }

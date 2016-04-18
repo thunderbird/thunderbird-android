@@ -18,7 +18,7 @@ inkscape -w 48 -h 48 -e "$XDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
 inkscape -w 64 -h 64 -e "$XXDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"
 done
 
-for NAME in "status_check_dots_1" "status_check_dots_1" "status_check_dots_3" "status_dots" "status_lock_none_dots_1" "status_lock_disabled_dots_1" "status_lock_dots_1" "status_lock_error_dots_1" "status_lock_dots_2" "status_lock_dots_3"
+for NAME in "status_none_dots_1" "status_none_dots_2" "status_none_dots_3" "status_check_dots_1" "status_check_dots_1" "status_check_dots_3" "status_dots" "status_lock_none_dots_1" "status_lock_disabled_dots_1" "status_lock_dots_1" "status_lock_error_dots_1" "status_lock_dots_2" "status_lock_dots_3"
 do
 echo $NAME
 inkscape -w 36 -h 24 -e "$MDPI_DIR/$NAME.png" "$SRC_DIR/$NAME.svg"

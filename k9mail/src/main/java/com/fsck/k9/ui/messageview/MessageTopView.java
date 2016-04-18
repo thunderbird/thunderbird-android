@@ -147,6 +147,10 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         attachmentCallback = callback;
     }
 
+    public void setOnCryptoClickListener(OnCryptoClickListener listener) {
+        mHeaderContainer.setOnCryptoClickListener(listener);
+    }
+
     public void enableDownloadButton() {
         mDownloadRemainder.setEnabled(true);
     }

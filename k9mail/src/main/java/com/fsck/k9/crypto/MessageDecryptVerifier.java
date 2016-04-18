@@ -183,6 +183,7 @@ public class MessageDecryptVerifier {
         return isSameMimeType(part.getMimeType(), MULTIPART_ENCRYPTED);
     }
 
+    // TODO also guess by mime-type of contained part?
     public static boolean isPgpMimeEncryptedOrSignedPart(Part part) {
         String contentType = part.getContentType();
         String protocolParameter = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);

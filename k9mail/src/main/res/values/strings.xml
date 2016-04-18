@@ -1164,4 +1164,25 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_inline_disable">Disable</string>
     <string name="openpgp_inline_keep_enabled">Keep Enabled</string>
 
+    <string name="crypto_msg_disabled">Message is not encrypted</string>
+
+    <string name="crypto_msg_encrypted_error">Message is encrypted, but there was an error decrypting.</string>
+    <string name="crypto_msg_signed_unsupported">Message is signed, but with an unsupported format.</string>
+
+    <string name="crypto_msg_signed_unencrypted">Message is signed, but not encrypted.</string>
+    <string name="crypto_msg_encrypted_unsigned">Message was encrypted, but not signed.</string>
+
+    <string name="crypto_msg_sign_unknown">Signature made by unknown key.</string>
+    <string name="crypto_msg_sign_verified">Signature made by trusted key.</string>
+    <string name="crypto_msg_sign_unverified">Signature made by trusted key.</string>
+    <string name="crypto_msg_sign_error">Signature contained an error.</string>
+    <string name="crypto_msg_sign_mismatch">Signature made by wrong key.</string>
+    <string name="crypto_msg_sign_expired">Signature made by expired key.</string>
+    <string name="crypto_msg_sign_revoked">Signature made by revoked key.</string>
+    <string name="crypto_msg_sign_insecure">Signature made by insecure key.</string>
+
+    <string name="crypto_msg_signed_encrypted">Message is signed and encrypted.</string>
+    <string name="crypto_msg_unsigned_encrypted">There is no signature, this message may have been intercepted.</string>
+    <string name="crypto_info_ok">OK</string>
+
 </resources>

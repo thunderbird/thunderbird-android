@@ -42,6 +42,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
+import com.fsck.k9.ui.messageview.OnCryptoClickListener;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
@@ -72,6 +73,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private QuickContactBadge mContactBadge;
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
+    private OnCryptoClickListener onCryptoClickListener;
 
     /**
      * Pair class is only available since API Level 5, so we need
@@ -133,6 +135,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mCcView.setOnLongClickListener(this);
 
         mCryptoStatusIcon = (MessageCryptoStatusView) findViewById(R.id.crypto_status_icon);
+        mCryptoStatusIcon.setOnClickListener(this);
 
         mMessageHelper = MessageHelper.getInstance(mContext);
 
@@ -150,6 +153,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             case R.id.cc: {
                 expand((TextView)view, ((TextView)view).getEllipsize() != null);
                 layoutChanged();
+                break;
+            }
+            case R.id.crypto_status_icon: {
+                onCryptoClickListener.onCryptoClick();
+                break;
             }
         }
     }
@@ -491,5 +499,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public void showSubjectLine() {
         mSubjectView.setVisibility(VISIBLE);
+    }
+
+    public void setOnCryptoClickListener(OnCryptoClickListener onCryptoClickListener) {
+        this.onCryptoClickListener = onCryptoClickListener;
     }
 }
