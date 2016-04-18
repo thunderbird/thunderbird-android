@@ -1,5 +1,6 @@
 package com.fsck.k9.controller;
 
+import android.os.SystemClock;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -319,10 +320,7 @@ public class MessagingController implements Runnable {
                 queue.put(command);
                 return;
             } catch (InterruptedException ie) {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ne) {
-                }
+                SystemClock.sleep(200);
                 e = ie;
             }
         }
