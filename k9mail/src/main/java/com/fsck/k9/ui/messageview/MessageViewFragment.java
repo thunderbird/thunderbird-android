@@ -53,6 +53,7 @@ import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.message.DecodeMessageLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
+import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
@@ -704,17 +705,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     @Override
     public void onCryptoClick() {
-        try {
-            if (messageViewInfo.cryptoResultAnnotation == null) {
-                return;
-            }
-            PendingIntent pendingIntent = messageViewInfo.cryptoResultAnnotation.getOpenPgpPendingIntent();
-            if (pendingIntent != null) {
-                getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(), 0, null, 0, 0, 0);
-            }
-        } catch (IntentSender.SendIntentException e) {
-            Log.e(K9.LOG_TAG, "SendIntentException", e);
-        }
+        MessageCryptoDisplayStatus displayStatus =
+                MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation);
+
+        CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus);
+        dialog.show(getFragmentManager(), "crypto_info_dialog");
     }
 
     public interface MessageViewFragmentListener {

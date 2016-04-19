@@ -95,6 +95,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         mHeaderContainer.setCryptoStatus(displayStatus);
 
         View view;
+        // TODO handle other CryptoError states
         boolean isCryptoError = messageViewInfo.cryptoResultAnnotation != null &&
                 messageViewInfo.cryptoResultAnnotation.getErrorType() == CryptoError.OPENPGP_API_RETURNED_ERROR;
         if (isCryptoError) {
