@@ -57,12 +57,12 @@ public final class CryptoResultAnnotation {
 
     public static CryptoResultAnnotation createOpenPgpResultAnnotation(OpenPgpDecryptionResult decryptionResult,
             OpenPgpSignatureResult signatureResult, PendingIntent pendingIntent, MimeBodyPart replacementPart) {
-        return new CryptoResultAnnotation(CryptoError.NONE, replacementPart,
+        return new CryptoResultAnnotation(CryptoError.OPENPGP_OK, replacementPart,
                 decryptionResult, signatureResult, pendingIntent, null);
     }
 
     public static CryptoResultAnnotation createErrorAnnotation(CryptoError error, MimeBodyPart replacementData) {
-        if (error == CryptoError.NONE) {
+        if (error == CryptoError.OPENPGP_OK) {
             throw new AssertionError("CryptoError must be actual error state!");
         }
         return new CryptoResultAnnotation(error, replacementData, null, null, null, null);
@@ -134,11 +134,11 @@ public final class CryptoResultAnnotation {
 
 
     public enum CryptoError {
-        NONE,
+        OPENPGP_OK,
         OPENPGP_UI_CANCELED,
         OPENPGP_API_RETURNED_ERROR,
-        SIGNED_BUT_INCOMPLETE,
-        ENCRYPTED_BUT_INCOMPLETE,
+        OPENPGP_SIGNED_BUT_INCOMPLETE,
+        OPENPGP_ENCRYPTED_BUT_INCOMPLETE,
         SIGNED_BUT_UNSUPPORTED,
         ENCRYPTED_BUT_UNSUPPORTED,
     }

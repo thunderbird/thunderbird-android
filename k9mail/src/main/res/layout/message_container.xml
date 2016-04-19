@@ -11,12 +11,15 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 
-    <!-- Content area -->
+    <!-- Unsigned content area -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/message_unsigned_container">
+        android:id="@+id/message_unsigned_container"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"

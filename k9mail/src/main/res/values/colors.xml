@@ -9,6 +9,7 @@
     <color name="openpgp_green">#669900</color>
     <color name="openpgp_blue">#336699</color>
     <color name="openpgp_grey">#bbb</color>
+    <color name="openpgp_black">#000</color>
     <color name="openpgp_sidebar">#D8D8D8</color>
 
 </resources>

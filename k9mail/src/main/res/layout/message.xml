@@ -94,4 +94,5 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_width="fill_parent"/>
+
 </com.fsck.k9.ui.messageview.MessageTopView>

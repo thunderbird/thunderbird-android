@@ -8,7 +8,6 @@ import android.support.annotation.StringRes;
 
 import com.fsck.k9.R;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
-import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
@@ -19,6 +18,12 @@ public enum MessageCryptoDisplayStatus {
             R.drawable.status_lock
     ),
 
+    CANCELLED (
+            R.color.openpgp_black,
+            R.drawable.status_lock,
+            R.string.crypto_msg_cancelled
+    ),
+
     DISABLED (
             R.color.openpgp_grey,
             R.drawable.status_lock_disabled,
@@ -26,9 +31,9 @@ public enum MessageCryptoDisplayStatus {
     ),
 
     UNENCRYPTED_SIGN_UNKNOWN (
-            R.color.openpgp_grey,
+            R.color.openpgp_black,
             R.drawable.status_signature_unverified_cutout, R.drawable.status_dots,
-            R.string.crypto_msg_signed_unencrypted, null
+            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_unknown
     ),
 
     UNENCRYPTED_SIGN_VERIFIED (
@@ -40,11 +45,6 @@ public enum MessageCryptoDisplayStatus {
             R.color.openpgp_orange, 
             R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_2,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_unverified
-    ),
-    UNENCRYPTED_SIGN_ERROR (
-            R.color.openpgp_red, 
-            R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_error
     ),
     UNENCRYPTED_SIGN_MISMATCH (
             R.color.openpgp_red, 
@@ -66,11 +66,16 @@ public enum MessageCryptoDisplayStatus {
             R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_insecure
     ),
+    UNENCRYPTED_SIGN_ERROR (
+            R.color.openpgp_red,
+            R.drawable.status_signature_verified_cutout, R.drawable.status_dots,
+            R.string.crypto_msg_signed_error, null
+    ),
 
     ENCRYPTED_SIGN_UNKNOWN (
-            R.color.openpgp_grey, 
+            R.color.openpgp_black,
             R.drawable.status_lock_opportunistic, R.drawable.status_dots,
-            R.string.crypto_msg_signed_encrypted, null
+            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_unknown
     ),
 
     ENCRYPTED_SIGN_VERIFIED (
@@ -82,11 +87,6 @@ public enum MessageCryptoDisplayStatus {
             R.color.openpgp_orange, 
             R.drawable.status_lock, R.drawable.status_none_dots_2,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_unverified
-    ),
-    ENCRYPTED_SIGN_ERROR (
-            R.color.openpgp_red, 
-            R.drawable.status_lock, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_error
     ),
     ENCRYPTED_SIGN_MISMATCH (
             R.color.openpgp_red, 
@@ -110,8 +110,13 @@ public enum MessageCryptoDisplayStatus {
     ),
     ENCRYPTED_UNSIGNED (
             R.color.openpgp_red, 
-            R.drawable.status_lock, R.drawable.status_none_dots_1,
+            R.drawable.status_lock, R.drawable.status_dots,
             R.string.crypto_msg_encrypted_unsigned, R.string.crypto_msg_unsigned_encrypted
+    ),
+    ENCRYPTED_SIGN_ERROR (
+            R.color.openpgp_red,
+            R.drawable.status_lock, R.drawable.status_dots,
+            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_error
     ),
 
     ENCRYPTED_ERROR (
@@ -120,10 +125,26 @@ public enum MessageCryptoDisplayStatus {
             R.string.crypto_msg_encrypted_error
     ),
 
-    SIGNED_UNSUPPORTED (
+    INCOMPLETE_ENCRYPTED (
+            R.color.openpgp_black,
+            R.drawable.status_lock_opportunistic,
+            R.string.crypto_msg_incomplete_encrypted
+    ),
+    INCOMPLETE_SIGNED (
+            R.color.openpgp_black,
+            R.drawable.status_signature_unverified_cutout, R.drawable.status_dots,
+            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_incomplete
+    ),
+
+    UNSUPPORTED_ENCRYPTED (
             R.color.openpgp_red,
-            R.drawable.status_signature_verified_cutout,
-            R.string.crypto_msg_signed_unsupported
+            R.drawable.status_lock_error,
+            R.string.crypto_msg_unsupported_encrypted
+    ),
+    UNSUPPORTED_SIGNED (
+            R.color.openpgp_grey,
+            R.drawable.status_lock_disabled,
+            R.string.crypto_msg_unsupported_signed
     ),
     ;
 
@@ -168,15 +189,29 @@ public enum MessageCryptoDisplayStatus {
             return DISABLED;
         }
 
-        if (cryptoResult.getErrorType() != CryptoError.NONE) {
-            return ENCRYPTED_ERROR;
-        }
+        switch (cryptoResult.getErrorType()) {
+            case OPENPGP_OK:
+                return getDisplayStatusForPgpResult(cryptoResult);
 
-        if (cryptoResult.isOpenPgpResult()) {
-            return getDisplayStatusForPgpResult(cryptoResult);
-        }
+            case OPENPGP_ENCRYPTED_BUT_INCOMPLETE:
+                return INCOMPLETE_ENCRYPTED;
 
-        throw new AssertionError("all cases must be handled, this is a bug!");
+            case OPENPGP_SIGNED_BUT_INCOMPLETE:
+                return INCOMPLETE_SIGNED;
+
+            case ENCRYPTED_BUT_UNSUPPORTED:
+                return UNSUPPORTED_ENCRYPTED;
+
+            case SIGNED_BUT_UNSUPPORTED:
+                return UNSUPPORTED_SIGNED;
+
+            case OPENPGP_UI_CANCELED:
+                return CANCELLED;
+
+            case OPENPGP_API_RETURNED_ERROR:
+                return ENCRYPTED_ERROR;
+        }
+        throw new IllegalStateException("Unhandled case!");
     }
 
     @NonNull

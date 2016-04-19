@@ -123,7 +123,7 @@ public class MessageCryptoHelper {
     private void processFoundEncryptedParts(List<Part> foundParts) {
         for (Part part : foundParts) {
             if (!MessageHelper.isCompletePartAvailable(part)) {
-                addErrorAnnotation(part, CryptoError.ENCRYPTED_BUT_INCOMPLETE, MessageHelper.createEmptyPart());
+                addErrorAnnotation(part, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, MessageHelper.createEmptyPart());
                 continue;
             }
             if (MessageDecryptVerifier.isPgpMimeEncryptedOrSignedPart(part)) {
@@ -139,7 +139,7 @@ public class MessageCryptoHelper {
         for (Part part : foundParts) {
             if (!MessageHelper.isCompletePartAvailable(part)) {
                 MimeBodyPart replacementPart = getMultipartSignedContentPartIfAvailable(part);
-                addErrorAnnotation(part, CryptoError.SIGNED_BUT_INCOMPLETE, replacementPart);
+                addErrorAnnotation(part, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, replacementPart);
                 continue;
             }
             if (MessageDecryptVerifier.isPgpMimeEncryptedOrSignedPart(part)) {

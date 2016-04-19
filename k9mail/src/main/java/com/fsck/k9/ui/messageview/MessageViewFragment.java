@@ -98,7 +98,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private Handler handler = new Handler();
     private DownloadMessageListener downloadMessageListener = new DownloadMessageListener();
     private MessageCryptoHelper messageCryptoHelper;
-    private MessageCryptoPresenter messageCryptoPresenter = new MessageCryptoPresenter(this);
+    private MessageCryptoPresenter messageCryptoPresenter;
 
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
@@ -145,6 +145,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         Context context = getActivity().getApplicationContext();
         mController = MessagingController.getInstance(context);
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        messageCryptoPresenter = new MessageCryptoPresenter(this);
         mInitialized = true;
     }
 
@@ -793,6 +794,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     @Override
     public void restartMessageCryptoProcessing() {
         cancelAndClearMessageCryptoHelper();
+        mMessageView.setToLoadingState();
         startOrResumeProcessingInCryptoHelper(mMessage);
     }
 
