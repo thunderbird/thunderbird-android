@@ -35,7 +35,6 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageHelper;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
-import org.openintents.openpgp.IOpenPgpService;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
@@ -56,7 +55,6 @@ public class MessageCryptoHelper {
     private final Activity activity;
     private final MessageCryptoCallback callback;
     private final Account account;
-    private LocalMessage message;
 
     private Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<CryptoPart>();
     private OpenPgpApi openPgpApi;
@@ -77,19 +75,18 @@ public class MessageCryptoHelper {
     }
 
     public void decryptOrVerifyMessagePartsIfNecessary(LocalMessage message) {
-        this.message = message;
-
         if (!account.isOpenPgpProviderConfigured()) {
             returnResultToFragment();
             return;
         }
 
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
-        processFoundParts(encryptedParts, CryptoPartType.ENCRYPTED, CryptoError.ENCRYPTED_BUT_INCOMPLETE,
+        processFoundEncryptedParts(encryptedParts,
                 MessageHelper.createEmptyPart());
 
         List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
-        processFoundParts(signedParts, CryptoPartType.SIGNED, CryptoError.SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
+        processFoundSignedParts(signedParts,
+                NO_REPLACEMENT_PART);
 
         List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(message);
         addFoundInlinePgpParts(inlineParts);
@@ -97,15 +94,33 @@ public class MessageCryptoHelper {
         decryptOrVerifyNextPart();
     }
 
-    private void processFoundParts(List<Part> foundParts, CryptoPartType cryptoPartType, CryptoError errorIfIncomplete,
-            MimeBodyPart replacementPart) {
+    private void processFoundEncryptedParts(List<Part> foundParts, MimeBodyPart replacementPart) {
         for (Part part : foundParts) {
-            if (MessageHelper.isCompletePartAvailable(part)) {
-                CryptoPart cryptoPart = new CryptoPart(cryptoPartType, part);
-                partsToDecryptOrVerify.add(cryptoPart);
-            } else {
-                addErrorAnnotation(part, errorIfIncomplete, replacementPart);
+            if (!MessageHelper.isCompletePartAvailable(part)) {
+                addErrorAnnotation(part, CryptoError.ENCRYPTED_BUT_INCOMPLETE, replacementPart);
+                continue;
             }
+            if (MessageDecryptVerifier.isPgpMimeEncryptedOrSignedPart(part)) {
+                CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PGP_ENCRYPTED, part);
+                partsToDecryptOrVerify.add(cryptoPart);
+                continue;
+            }
+            addErrorAnnotation(part, CryptoError.ENCRYPTED_BUT_UNSUPPORTED, replacementPart);
+        }
+    }
+
+    private void processFoundSignedParts(List<Part> foundParts, MimeBodyPart replacementPart) {
+        for (Part part : foundParts) {
+            if (!MessageHelper.isCompletePartAvailable(part)) {
+                addErrorAnnotation(part, CryptoError.SIGNED_BUT_INCOMPLETE, replacementPart);
+                continue;
+            }
+            if (MessageDecryptVerifier.isPgpMimeEncryptedOrSignedPart(part)) {
+                CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PGP_SIGNED, part);
+                partsToDecryptOrVerify.add(cryptoPart);
+                continue;
+            }
+            addErrorAnnotation(part, CryptoError.SIGNED_BUT_UNSUPPORTED, replacementPart);
         }
     }
 
@@ -118,7 +133,7 @@ public class MessageCryptoHelper {
 
     private void addFoundInlinePgpParts(List<Part> foundParts) {
         for (Part part : foundParts) {
-            CryptoPart cryptoPart = new CryptoPart(CryptoPartType.INLINE_PGP, part);
+            CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PGP_INLINE, part);
             partsToDecryptOrVerify.add(cryptoPart);
         }
     }
@@ -179,15 +194,15 @@ public class MessageCryptoHelper {
         try {
             CryptoPartType cryptoPartType = currentCryptoPart.type;
             switch (cryptoPartType) {
-                case SIGNED: {
+                case PGP_SIGNED: {
                     callAsyncDetachedVerify(intent);
                     return;
                 }
-                case ENCRYPTED: {
+                case PGP_ENCRYPTED: {
                     callAsyncDecrypt(intent);
                     return;
                 }
-                case INLINE_PGP: {
+                case PGP_INLINE: {
                     callAsyncInlineOperation(intent);
                     return;
                 }
@@ -289,12 +304,12 @@ public class MessageCryptoHelper {
                 try {
                     Part part = currentCryptoPart.part;
                     CryptoPartType cryptoPartType = currentCryptoPart.type;
-                    if (cryptoPartType == CryptoPartType.ENCRYPTED) {
+                    if (cryptoPartType == CryptoPartType.PGP_ENCRYPTED) {
                         Multipart multipartEncryptedMultipart = (Multipart) part.getBody();
                         BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
                         Body encryptionPayloadBody = encryptionPayloadPart.getBody();
                         encryptionPayloadBody.writeTo(out);
-                    } else if (cryptoPartType == CryptoPartType.INLINE_PGP) {
+                    } else if (cryptoPartType == CryptoPartType.PGP_INLINE) {
                         String text = MessageExtractor.getTextFromPart(part);
                         out.write(text.getBytes());
                     } else {
@@ -471,8 +486,8 @@ public class MessageCryptoHelper {
     }
 
     private enum CryptoPartType {
-        INLINE_PGP,
-        ENCRYPTED,
-        SIGNED
+        PGP_INLINE,
+        PGP_ENCRYPTED,
+        PGP_SIGNED
     }
 }

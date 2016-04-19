@@ -2,6 +2,7 @@ package com.fsck.k9.view;
 
 
 import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
+import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
@@ -32,6 +33,10 @@ public enum MessageCryptoDisplayStatus {
     public static MessageCryptoDisplayStatus fromResultAnnotation(OpenPgpResultAnnotation cryptoResult) {
         if (cryptoResult == null) {
             return DISABLED;
+        }
+
+        if (cryptoResult.getErrorType() != CryptoError.NONE) {
+            return ENCRYPTED_ERROR;
         }
 
         OpenPgpSignatureResult signatureResult = cryptoResult.getSignatureResult();

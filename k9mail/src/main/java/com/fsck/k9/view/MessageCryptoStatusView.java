@@ -15,7 +15,8 @@ public class MessageCryptoStatusView extends ToolableViewAnimator {
     private static final int STATUS_LOCK_2_WARNING = 6;
     private static final int STATUS_LOCK_1_ERROR = 7;
     private static final int STATUS_LOCK_0_UNKNOWN = 8;
-    private static final int STATUS_LOCK_ERROR = 9;
+    private static final int STATUS_LOCK_UNKNOWN = 9;
+    private static final int STATUS_LOCK_ERROR = 10;
 
 
     public MessageCryptoStatusView(Context context) {
@@ -70,7 +71,7 @@ public class MessageCryptoStatusView extends ToolableViewAnimator {
             case ENCRYPTED_ERROR:
                 return STATUS_LOCK_ERROR;
             case ENCRYPTED_UNSIGNED:
-                return STATUS_LOCK_1_ERROR;
+                return STATUS_LOCK_UNKNOWN;
         }
 
         throw new AssertionError("all cases must be handled, this is a bug!");

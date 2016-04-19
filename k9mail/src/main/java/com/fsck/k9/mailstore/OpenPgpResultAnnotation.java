@@ -76,6 +76,8 @@ public final class OpenPgpResultAnnotation {
         NONE,
         CRYPTO_API_RETURNED_ERROR,
         SIGNED_BUT_INCOMPLETE,
-        ENCRYPTED_BUT_INCOMPLETE
+        ENCRYPTED_BUT_INCOMPLETE,
+        SIGNED_BUT_UNSUPPORTED,
+        ENCRYPTED_BUT_UNSUPPORTED,
     }
 }
