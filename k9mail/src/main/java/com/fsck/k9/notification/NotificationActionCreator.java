@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.MessageActions;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.FolderList;
@@ -91,7 +92,7 @@ class NotificationActionCreator {
     }
 
     public PendingIntent createReplyPendingIntent(MessageReference messageReference, int notificationId) {
-        Intent intent = MessageCompose.getActionReplyIntent(context, messageReference);
+        Intent intent = MessageActions.getActionReplyIntent(context, messageReference);
 
         return PendingIntent.getActivity(context, notificationId, intent,
                 PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);

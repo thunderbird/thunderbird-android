@@ -65,6 +65,7 @@ import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
+import com.fsck.k9.MessageActions;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
@@ -643,7 +644,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private void onCompose() {
         Account defaultAccount = Preferences.getPreferences(this).getDefaultAccount();
         if (defaultAccount != null) {
-            MessageCompose.actionCompose(this, defaultAccount);
+            MessageActions.actionCompose(this, defaultAccount);
         } else {
             onAddNewAccount();
         }

@@ -61,9 +61,12 @@ import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.Identity;
+import com.fsck.k9.IdentityAdapter;
+import com.fsck.k9.IdentityAdapter.IdentityContainer;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.SaveMessageTask;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.CryptoSettingsDialog.OnCryptoModeChangedListener;
@@ -127,15 +130,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
 
-    private static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
-    private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
-    private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
-    private static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
-    private static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
+    public static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
+    public static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
+    public static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
+    public static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
+    public static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
 
-    private static final String EXTRA_ACCOUNT = "account";
-    private static final String EXTRA_MESSAGE_BODY  = "messageBody";
-    private static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
+    public static final String EXTRA_ACCOUNT = "account";
+    public static final String EXTRA_MESSAGE_BODY  = "messageBody";
+    public static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
 
     private static final String STATE_KEY_ATTACHMENTS =
         "com.fsck.k9.activity.MessageCompose.attachments";
@@ -168,7 +171,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
     private static final int MSG_SKIPPED_ATTACHMENTS = 3;
-    private static final int MSG_SAVED_DRAFT = 4;
+    public static final int MSG_SAVED_DRAFT = 4;
     private static final int MSG_DISCARDED_DRAFT = 5;
     private static final int MSG_PERFORM_STALLED_ACTION = 6;
 
@@ -384,91 +387,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private FontSizes mFontSizes = K9.getFontSizes();
 
 
-    /**
-     * Compose a new message using the given account. If account is null the default account
-     * will be used.
-     */
-    public static void actionCompose(Context context, Account account) {
-        String accountUuid = (account == null) ?
-                Preferences.getPreferences(context).getDefaultAccount().getUuid() :
-                account.getUuid();
 
-        Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, accountUuid);
-        i.setAction(ACTION_COMPOSE);
-        context.startActivity(i);
-    }
-
-    /**
-     * Get intent for composing a new message as a reply to the given message. If replyAll is true
-     * the function is reply all instead of simply reply.
-     * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
-     */
-    public static Intent getActionReplyIntent(
-            Context context,
-            LocalMessage message,
-            boolean replyAll,
-            String messageBody) {
-        Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
-        i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
-        if (replyAll) {
-            i.setAction(ACTION_REPLY_ALL);
-        } else {
-            i.setAction(ACTION_REPLY);
-        }
-        return i;
-    }
-
-    public static Intent getActionReplyIntent(Context context, MessageReference messageReference) {
-        Intent intent = new Intent(context, MessageCompose.class);
-        intent.setAction(ACTION_REPLY);
-        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        return intent;
-    }
-
-    /**
-     * Compose a new message as a reply to the given message. If replyAll is true the function
-     * is reply all instead of simply reply.
-     * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
-     */
-    public static void actionReply(
-        Context context,
-        LocalMessage message,
-        boolean replyAll,
-        String messageBody) {
-        context.startActivity(getActionReplyIntent(context, message, replyAll, messageBody));
-    }
-
-    /**
-     * Compose a new message as a forward of the given message.
-     * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
-     */
-    public static void actionForward(
-            Context context,
-            LocalMessage message,
-            String messageBody) {
-        Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
-        i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
-        i.setAction(ACTION_FORWARD);
-        context.startActivity(i);
-    }
-
-    /**
-     * Continue composition of the given message. This action modifies the way this Activity
-     * handles certain actions.
-     * Save will attempt to replace the message in the given folder with the updated version.
-     * Discard will delete the message from the given folder.
-     */
-    public static void actionEditDraft(Context context, MessageReference messageReference) {
-        Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
-        i.setAction(ACTION_EDIT_DRAFT);
-        context.startActivity(i);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -2346,8 +2265,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * contains both the insertion points and potentially modified HTML. The modified HTML should be
      * used in place of the HTML in the original message.</p>
      *
-     * <p>This method loosely mimics the HTML forward/reply behavior of BlackBerry OS 4.5/BIS 2.5, which in turn mimics
-     * Outlook 2003 (as best I can tell).</p>
+     * <p>This method loosely mimics the HTML forward/reply behavior of BlackBerry OS 4.5/BIS 2.5,
+     * which in turn mimics Outlook 2003 (as best I can tell).</p>
      *
      * @param content Content to examine for HTML insertion points
      * @return Insertion points and HTML to use for insertion.
@@ -2616,38 +2535,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private static class SaveMessageTask extends AsyncTask<Void, Void, Void> {
-        Context context;
-        Account account;
-        Contacts contacts;
-        Handler handler;
-        Message message;
-        long draftId;
-        boolean saveRemotely;
-
-        SaveMessageTask(Context context, Account account, Contacts contacts,
-                Handler handler, Message message, long draftId, boolean saveRemotely) {
-            this.context = context;
-            this.account = account;
-            this.contacts = contacts;
-            this.handler = handler;
-            this.message = message;
-            this.draftId = draftId;
-            this.saveRemotely = saveRemotely;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            final MessagingController messagingController = MessagingController.getInstance(context);
-            Message draftMessage = messagingController.saveDraft(account, message, draftId, saveRemotely);
-            draftId = messagingController.getId(draftMessage);
-
-            android.os.Message msg = android.os.Message.obtain(handler, MSG_SAVED_DRAFT, draftId);
-            handler.sendMessage(msg);
-            return null;
-        }
-    }
-
     private static final int REPLY_WRAP_LINE_WIDTH = 72;
     private static final int QUOTE_BUFFER_LENGTH = 512; // amount of extra buffer to allocate to accommodate quoting headers or prefixes
 
@@ -2788,139 +2675,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return insertable;
     }
 
-    /**
-     * Used to store an {@link Identity} instance together with the {@link Account} it belongs to.
-     *
-     * @see IdentityAdapter
-     */
-    static class IdentityContainer {
-        public final Identity identity;
-        public final Account account;
 
-        IdentityContainer(Identity identity, Account account) {
-            this.identity = identity;
-            this.account = account;
-        }
-    }
 
-    /**
-     * Adapter for the <em>Choose identity</em> list view.
-     *
-     * <p>
-     * Account names are displayed as section headers, identities as selectable list items.
-     * </p>
-     */
-    static class IdentityAdapter extends BaseAdapter {
-        private LayoutInflater mLayoutInflater;
-        private List<Object> mItems;
 
-        public IdentityAdapter(Context context) {
-            mLayoutInflater = (LayoutInflater) context.getSystemService(
-                    Context.LAYOUT_INFLATER_SERVICE);
 
-            List<Object> items = new ArrayList<>();
-            Preferences prefs = Preferences.getPreferences(context.getApplicationContext());
-            Collection<Account> accounts = prefs.getAvailableAccounts();
-            for (Account account : accounts) {
-                items.add(account);
-                List<Identity> identities = account.getIdentities();
-                for (Identity identity : identities) {
-                    items.add(new IdentityContainer(identity, account));
-                }
-            }
-            mItems = items;
-        }
-
-        @Override
-        public int getCount() {
-            return mItems.size();
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 2;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return (mItems.get(position) instanceof Account) ? 0 : 1;
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            return (mItems.get(position) instanceof IdentityContainer);
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mItems.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Object item = mItems.get(position);
-
-            View view = null;
-            if (item instanceof Account) {
-                if (convertView != null && convertView.getTag() instanceof AccountHolder) {
-                    view = convertView;
-                } else {
-                    view = mLayoutInflater.inflate(R.layout.choose_account_item, parent, false);
-                    AccountHolder holder = new AccountHolder();
-                    holder.name = (TextView) view.findViewById(R.id.name);
-                    holder.chip = view.findViewById(R.id.chip);
-                    view.setTag(holder);
-                }
-
-                Account account = (Account) item;
-                AccountHolder holder = (AccountHolder) view.getTag();
-                holder.name.setText(account.getDescription());
-                holder.chip.setBackgroundColor(account.getChipColor());
-            } else if (item instanceof IdentityContainer) {
-                if (convertView != null && convertView.getTag() instanceof IdentityHolder) {
-                    view = convertView;
-                } else {
-                    view = mLayoutInflater.inflate(R.layout.choose_identity_item, parent, false);
-                    IdentityHolder holder = new IdentityHolder();
-                    holder.name = (TextView) view.findViewById(R.id.name);
-                    holder.description = (TextView) view.findViewById(R.id.description);
-                    view.setTag(holder);
-                }
-
-                IdentityContainer identityContainer = (IdentityContainer) item;
-                Identity identity = identityContainer.identity;
-                IdentityHolder holder = (IdentityHolder) view.getTag();
-                holder.name.setText(identity.getDescription());
-                holder.description.setText(getIdentityDescription(identity));
-            }
-
-            return view;
-        }
-
-        static class AccountHolder {
-            public TextView name;
-            public View chip;
-        }
-
-        static class IdentityHolder {
-            public TextView name;
-            public TextView description;
-        }
-    }
-
-    private static String getIdentityDescription(Identity identity) {
-        return String.format("%s <%s>", identity.getName(), identity.getEmail());
-    }
 
     private void setMessageFormat(SimpleMessageFormat format) {
         // This method will later be used to enable/disable the rich text editing mode.
