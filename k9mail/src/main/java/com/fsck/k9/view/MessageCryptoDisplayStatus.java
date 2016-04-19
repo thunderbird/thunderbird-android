@@ -1,8 +1,8 @@
 package com.fsck.k9.view;
 
 
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
+import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
@@ -30,7 +30,7 @@ public enum MessageCryptoDisplayStatus {
     ENCRYPTED_SIGN_INSECURE,
     ENCRYPTED_ERROR;
 
-    public static MessageCryptoDisplayStatus fromResultAnnotation(OpenPgpResultAnnotation cryptoResult) {
+    public static MessageCryptoDisplayStatus fromResultAnnotation(CryptoResultAnnotation cryptoResult) {
         if (cryptoResult == null) {
             return DISABLED;
         }
@@ -39,8 +39,8 @@ public enum MessageCryptoDisplayStatus {
             return ENCRYPTED_ERROR;
         }
 
-        OpenPgpSignatureResult signatureResult = cryptoResult.getSignatureResult();
-        OpenPgpDecryptionResult decryptionResult = cryptoResult.getDecryptionResult();
+        OpenPgpSignatureResult signatureResult = cryptoResult.getOpenPgpSignatureResult();
+        OpenPgpDecryptionResult decryptionResult = cryptoResult.getOpenPgpDecryptionResult();
 
         // TODO handle mismatched user id
 

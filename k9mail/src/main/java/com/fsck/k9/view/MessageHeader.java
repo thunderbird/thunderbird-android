@@ -41,7 +41,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.ui.messageview.OnCryptoClickListener;
 
 
@@ -351,7 +351,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
     }
 
-    public void setCryptoStatus(final OpenPgpResultAnnotation cryptoResult) {
+    public void setCryptoStatus(final CryptoResultAnnotation cryptoResult) {
         MessageCryptoDisplayStatus displayStatus = MessageCryptoDisplayStatus.fromResultAnnotation(cryptoResult);
         mCryptoStatusIcon.setVisibility(View.VISIBLE);
         mCryptoStatusIcon.setCryptoDisplayStatus(displayStatus);

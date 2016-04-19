@@ -4,21 +4,21 @@ package com.fsck.k9.ui.crypto;
 import java.util.HashMap;
 
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
 
 
 public class MessageCryptoAnnotations {
-    private HashMap<Part, OpenPgpResultAnnotation> annotations = new HashMap<Part, OpenPgpResultAnnotation>();
+    private HashMap<Part, CryptoResultAnnotation> annotations = new HashMap<Part, CryptoResultAnnotation>();
 
     MessageCryptoAnnotations() {
         // Package-private constructor
     }
 
-    void put(Part part, OpenPgpResultAnnotation annotation) {
+    void put(Part part, CryptoResultAnnotation annotation) {
         annotations.put(part, annotation);
     }
 
-    public OpenPgpResultAnnotation get(Part part) {
+    public CryptoResultAnnotation get(Part part) {
         return annotations.get(part);
     }
 

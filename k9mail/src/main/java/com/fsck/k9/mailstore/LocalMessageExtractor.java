@@ -40,7 +40,7 @@ public class LocalMessageExtractor {
     private static final int FILENAME_PREFIX_LENGTH = FILENAME_PREFIX.length();
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
-    private static final OpenPgpResultAnnotation NO_ANNOTATIONS = null;
+    private static final CryptoResultAnnotation NO_ANNOTATIONS = null;
 
     private LocalMessageExtractor() {}
     /**
@@ -421,10 +421,10 @@ public class LocalMessageExtractor {
             Message message, MessageCryptoAnnotations annotations) throws MessagingException {
 
         // TODO properly handle decrypted data part - this just replaces the part
-        OpenPgpResultAnnotation pgpAnnotation = annotations.get(message);
+        CryptoResultAnnotation pgpAnnotation = annotations.get(message);
         Part rootPart;
-        if (pgpAnnotation != NO_ANNOTATIONS && pgpAnnotation.hasOutputData()) {
-            rootPart = pgpAnnotation.getOutputData();
+        if (pgpAnnotation != NO_ANNOTATIONS && pgpAnnotation.hasReplacementData()) {
+            rootPart = pgpAnnotation.getReplacementData();
         } else {
             rootPart = message;
         }

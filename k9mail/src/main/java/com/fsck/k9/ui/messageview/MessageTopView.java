@@ -96,7 +96,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
         boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
         if (displayPgpHeader) {
-            mHeaderContainer.setCryptoStatus(messageViewInfo.openPgpResultAnnotation);
+            mHeaderContainer.setCryptoStatus(messageViewInfo.cryptoResultAnnotation);
         }
 
         containerView.addView(view);

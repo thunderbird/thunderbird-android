@@ -12,15 +12,15 @@ public class MessageViewInfo {
     public final Part rootPart;
     public final String text;
     public final List<AttachmentViewInfo> attachments;
-    public final OpenPgpResultAnnotation openPgpResultAnnotation;
+    public final CryptoResultAnnotation cryptoResultAnnotation;
 
 
     public MessageViewInfo(Message message, Part rootPart, String text, List<AttachmentViewInfo> attachments,
-            OpenPgpResultAnnotation openPgpResultAnnotation) {
+            CryptoResultAnnotation cryptoResultAnnotation) {
         this.message = message;
         this.rootPart = rootPart;
         this.text = text;
         this.attachments = attachments;
-        this.openPgpResultAnnotation = openPgpResultAnnotation;
+        this.cryptoResultAnnotation = cryptoResultAnnotation;
     }
 }
