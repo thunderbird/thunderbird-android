@@ -52,6 +52,10 @@ public final class CryptoResultAnnotation {
         return new CryptoResultAnnotation(CryptoError.OPENPGP_API_RETURNED_ERROR, null, null, null, null, error);
     }
 
+    public boolean isOpenPgpResult() {
+        return openPgpDecryptionResult != null && openPgpSignatureResult != null;
+    }
+
     @Nullable
     public OpenPgpDecryptionResult getOpenPgpDecryptionResult() {
         return openPgpDecryptionResult;
