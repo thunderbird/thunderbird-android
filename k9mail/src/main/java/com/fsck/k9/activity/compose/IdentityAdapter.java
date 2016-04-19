@@ -1,4 +1,4 @@
-package com.fsck.k9;
+package com.fsck.k9.activity.compose;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.Identity;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 
 import java.util.ArrayList;
 import java.util.Collection;

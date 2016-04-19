@@ -1,8 +1,10 @@
-package com.fsck.k9;
+package com.fsck.k9.activity.compose;
 
 import android.content.Context;
 import android.content.Intent;
 
+import com.fsck.k9.Account;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mailstore.LocalMessage;
