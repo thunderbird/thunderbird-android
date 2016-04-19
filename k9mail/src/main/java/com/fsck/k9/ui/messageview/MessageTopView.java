@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.ShowPictures;
@@ -22,8 +23,11 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
+import org.openintents.openpgp.OpenPgpError;
 
 
 public class MessageTopView extends LinearLayout implements ShowPicturesController {
@@ -34,7 +38,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
     private Button showPicturesButton;
-    private List<MessageContainerView> messageContainerViewsWithPictures = new ArrayList<MessageContainerView>();
+    private List<MessageContainerView> messageContainerViewsWithPictures = new ArrayList<>();
 
 
     public MessageTopView(Context context, AttributeSet attrs) {
@@ -86,6 +90,24 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
             throws MessagingException {
         resetView();
 
+        MessageCryptoDisplayStatus displayStatus =
+                MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation);
+        mHeaderContainer.setCryptoStatus(displayStatus);
+
+        View view;
+        boolean isCryptoError = messageViewInfo.cryptoResultAnnotation != null &&
+                messageViewInfo.cryptoResultAnnotation.getErrorType() == CryptoError.OPENPGP_API_RETURNED_ERROR;
+        if (isCryptoError) {
+            view = createMessageCryptoErrorView(messageViewInfo);
+        } else {
+            view = createMessageContentView(account, messageViewInfo);
+        }
+
+        containerView.addView(view);
+    }
+
+    private MessageContainerView createMessageContentView(Account account, MessageViewInfo messageViewInfo)
+            throws MessagingException {
         ShowPictures showPicturesSetting = account.getShowPictures();
         boolean automaticallyLoadPictures =
                 shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
@@ -94,13 +116,20 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
                 containerView, false);
         view.displayMessageViewContainer(messageViewInfo, automaticallyLoadPictures, this, attachmentCallback);
 
-        boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
-        if (displayPgpHeader) {
-            mHeaderContainer.setCryptoStatus(messageViewInfo.cryptoResultAnnotation);
+        return view;
+    }
+
+    private View createMessageCryptoErrorView(MessageViewInfo messageViewInfo) {
+        View view = mInflater.inflate(R.layout.message_content_crypto_error, containerView, false);
+        TextView cryptoErrorText = (TextView) view.findViewById(R.id.crypto_error_text);
+
+        OpenPgpError openPgpError = messageViewInfo.cryptoResultAnnotation.getOpenPgpError();
+        if (openPgpError != null) {
+            String errorText = openPgpError.getMessage();
+            cryptoErrorText.setText(errorText);
         }
 
-        containerView.addView(view);
-
+        return view;
     }
 
     /**
