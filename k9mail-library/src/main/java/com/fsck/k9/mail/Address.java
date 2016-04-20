@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail;
 
+import android.support.annotation.VisibleForTesting;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -302,16 +303,17 @@ public class Address implements Serializable {
      * double quote character to start and end if it's not already there.
      * sample -> "sample"
      * "sample" -> "sample"
-     * ""sample"" -> "sample"
+     * ""sample"" -> ""sample""
      * "sample"" -> "sample"
      * sa"mp"le -> "sa"mp"le"
      * "sa"mp"le" -> "sa"mp"le"
      * (empty string) -> ""
-     * " -> ""
+     * " -> """
      * @param s
      * @return
      */
-    private static String quoteString(String s) {
+    @VisibleForTesting
+    static String quoteString(String s) {
         if (s == null) {
             return null;
         }
