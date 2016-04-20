@@ -79,4 +79,14 @@ public class AddressTest {
         assertEquals("mark@twain.com", addresses[1].getAddress());
         assertEquals(null, addresses[1].getPersonal());
     }
+
+    @Test
+    public void stringQuotationShouldCorrectlyQuote() {
+        assertEquals("\"sample\"", Address.quoteString("sample"));
+        assertEquals("\"\"sample\"\"", Address.quoteString("\"\"sample\"\""));
+        assertEquals("\"sample\"", Address.quoteString("\"sample\""));
+        assertEquals("\"sa\"mp\"le\"", Address.quoteString("sa\"mp\"le"));
+        assertEquals("\"sa\"mp\"le\"", Address.quoteString("\"sa\"mp\"le\""));
+        assertEquals("\"\"\"", Address.quoteString("\""));
+    }
 }
