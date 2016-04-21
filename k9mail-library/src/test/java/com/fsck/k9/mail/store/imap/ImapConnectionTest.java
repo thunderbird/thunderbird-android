@@ -115,6 +115,27 @@ public class ImapConnectionTest {
     }
 
     @Test
+    public void open_afterCloseWasCalled_shouldThrow() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server);
+        server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
+        server.output("2 OK LOGIN completed");
+        simplePostAuthenticationDialog(server);
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+        imapConnection.open();
+        imapConnection.close();
+
+        try {
+            imapConnection.open();
+            fail("Expected exception");
+        } catch (IllegalStateException e) {
+            assertEquals("open() called after close(). Check wrapped exception to see where close() was called.",
+                    e.getMessage());
+        }
+    }
+
+    @Test
     public void open_authPlainWithLoginDisabled_shouldThrow() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
@@ -352,7 +373,7 @@ public class ImapConnectionTest {
         } catch (UnknownHostException ignored) {
         }
 
-        assertFalse(imapConnection.isOpen());
+        assertFalse(imapConnection.isConnected());
     }
 
     @Test
@@ -511,20 +532,20 @@ public class ImapConnectionTest {
     }
 
     @Test
-    public void isOpen_withoutPreviousOpen_shouldReturnFalse() throws Exception {
+    public void isConnected_withoutPreviousOpen_shouldReturnFalse() throws Exception {
         ImapConnection imapConnection = createImapConnection(settings, socketFactory, connectivityManager);
 
-        boolean result = imapConnection.isOpen();
+        boolean result = imapConnection.isConnected();
 
         assertFalse(result);
     }
 
     @Test
-    public void isOpen_afterOpen_shouldReturnTrue() throws Exception {
+    public void isConnected_afterOpen_shouldReturnTrue() throws Exception {
         MockImapServer server = new MockImapServer();
         ImapConnection imapConnection = simpleOpen(server);
 
-        boolean result = imapConnection.isOpen();
+        boolean result = imapConnection.isConnected();
 
         assertTrue(result);
         server.verifyConnectionStillOpen();
@@ -533,12 +554,12 @@ public class ImapConnectionTest {
     }
 
     @Test
-    public void isOpen_afterOpenAndClose_shouldReturnFalse() throws Exception {
+    public void isConnected_afterOpenAndClose_shouldReturnFalse() throws Exception {
         MockImapServer server = new MockImapServer();
         ImapConnection imapConnection = simpleOpen(server);
         imapConnection.close();
 
-        boolean result = imapConnection.isOpen();
+        boolean result = imapConnection.isConnected();
 
         assertFalse(result);
         server.verifyConnectionClosed();
