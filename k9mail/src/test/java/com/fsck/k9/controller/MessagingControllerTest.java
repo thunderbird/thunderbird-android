@@ -1,13 +1,17 @@
 package com.fsck.k9.controller;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -18,6 +22,8 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.notification.NotificationController;
+import com.fsck.k9.search.LocalSearch;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,6 +68,8 @@ public class MessagingControllerTest {
     @Mock
     private MessagingListener listener;
     @Mock
+    private LocalSearch search;
+    @Mock
     private LocalFolder localFolder;
     @Mock
     private Folder remoteFolder;
@@ -77,6 +85,8 @@ public class MessagingControllerTest {
     private ArgumentCaptor<List<LocalFolder>> localFolderListCaptor;
     @Captor
     private ArgumentCaptor<FetchProfile> fetchProfileCaptor;
+    @Captor
+    private ArgumentCaptor<MessageRetrievalListener<LocalMessage>> messageRetrievalListenerCaptor;
 
     private Context appContext;
 
@@ -246,6 +256,57 @@ public class MessagingControllerTest {
         verify(listener, never()).listFoldersFinished(account);
     }
 
+    @Test
+    public void searchLocalMessagesSynchronous_shouldNotifyStartedListingLocalMessages()
+            throws Exception {
+        setAccountsInPreferences(Collections.singletonMap("1", account));
+        when(search.getAccountUuids()).thenReturn(new String[]{"allAccounts"});
+
+        controller.searchLocalMessagesSynchronous(search, listener);
+
+        verify(listener).listLocalMessagesStarted(account, null);
+    }
+
+    @Test
+    public void searchLocalMessagesSynchronous_shouldCallSearchForMessagesOnLocalStore()
+            throws Exception {
+        setAccountsInPreferences(Collections.singletonMap("1", account));
+        when(search.getAccountUuids()).thenReturn(new String[]{"allAccounts"});
+
+        controller.searchLocalMessagesSynchronous(search, listener);
+
+        verify(localStore).searchForMessages(any(MessageRetrievalListener.class), eq(search));
+    }
+
+    @Test
+    public void searchLocalMessagesSynchronous_shouldNotifyFailureIfStoreThrowsException() throws Exception {
+        setAccountsInPreferences(Collections.singletonMap("1", account));
+        when(search.getAccountUuids()).thenReturn(new String[]{"allAccounts"});
+        when(localStore.searchForMessages(any(MessageRetrievalListener.class), eq(search)))
+                .thenThrow(new MessagingException("Test"));
+
+        controller.searchLocalMessagesSynchronous(search, listener);
+
+        verify(listener).listLocalMessagesFailed(account, null, "Test");
+    }
+
+    @Test
+    public void searchLocalMessagesSynchronous_shouldNotifyWhenStoreFinishesRetrievingAMessage()
+            throws Exception {
+        setAccountsInPreferences(Collections.singletonMap("1", account));
+        LocalMessage localMessage = mock(LocalMessage.class);
+        when(localMessage.getFolder()).thenReturn(localFolder);
+        when(search.getAccountUuids()).thenReturn(new String[]{"allAccounts"});
+        when(localStore.searchForMessages(any(MessageRetrievalListener.class), eq(search)))
+                .thenThrow(new MessagingException("Test"));
+
+        controller.searchLocalMessagesSynchronous(search, listener);
+
+        verify(localStore).searchForMessages(messageRetrievalListenerCaptor.capture(), eq(search));
+        messageRetrievalListenerCaptor.getValue().messageFinished(localMessage, 1, 1);
+        verify(listener).listLocalMessagesAddMessages(eq(account),
+                eq((String) null), eq(Collections.singletonList(localMessage)));
+    }
 
     @Test
     public void synchronizeMailboxSynchronous_withOneMessageInRemoteFolder_shouldFinishWithoutError()
@@ -539,5 +600,18 @@ public class MessagingControllerTest {
     private void configureRemoteStoreWithFolder() throws MessagingException {
         when(account.getRemoteStore()).thenReturn(remoteStore);
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
+    }
+
+    private void setAccountsInPreferences(Map<String, Account> newAccounts)
+            throws Exception {
+        Field accounts = Preferences.class.getDeclaredField("accounts");
+        accounts.setAccessible(true);
+        accounts.set(Preferences.getPreferences(appContext), newAccounts);
+
+        Field accountsInOrder = Preferences.class.getDeclaredField("accountsInOrder");
+        accountsInOrder.setAccessible(true);
+        ArrayList<Account> newAccountsInOrder = new ArrayList<>();
+        newAccountsInOrder.addAll(newAccounts.values());
+        accountsInOrder.set(Preferences.getPreferences(appContext), newAccountsInOrder);
     }
 }
