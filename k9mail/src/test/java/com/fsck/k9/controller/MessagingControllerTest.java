@@ -1,6 +1,5 @@
 package com.fsck.k9.controller;
 
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +36,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
@@ -74,13 +74,17 @@ public class MessagingControllerTest {
     @Captor
     private ArgumentCaptor<List<Message>> messageListCaptor;
     @Captor
+    private ArgumentCaptor<List<LocalFolder>> localFolderListCaptor;
+    @Captor
     private ArgumentCaptor<FetchProfile> fetchProfileCaptor;
+
+    private Context appContext;
 
 
     @Before
     public void setUp() throws MessagingException {
         MockitoAnnotations.initMocks(this);
-        Context appContext = ShadowApplication.getInstance().getApplicationContext();
+        appContext = ShadowApplication.getInstance().getApplicationContext();
 
         controller = new MessagingController(appContext, notificationController);
 
@@ -92,6 +96,156 @@ public class MessagingControllerTest {
     public void tearDown() throws Exception {
         controller.stop();
     }
+
+    @Test
+    public void listFoldersSynchronous_shouldNotifyTheListenerListingStarted() throws MessagingException {
+        List<LocalFolder> folders = Collections.singletonList(localFolder);
+        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
+
+        controller.listFoldersSynchronous(account, false, listener);
+
+        verify(listener).listFoldersStarted(account);
+    }
+
+    @Test
+    public void listFoldersSynchronous_shouldNotifyTheListenerOfTheListOfFolders() throws MessagingException {
+        List<LocalFolder> folders = Collections.singletonList(localFolder);
+        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
+
+        controller.listFoldersSynchronous(account, false, listener);
+
+        verify(listener).listFolders(eq(account), localFolderListCaptor.capture());
+        assertEquals(folders, localFolderListCaptor.getValue());
+    }
+
+    @Test
+    public void listFoldersSynchronous_shouldNotifyFailureOnException() throws MessagingException {
+        when(localStore.getPersonalNamespaces(false)).thenThrow(new MessagingException("Test"));
+
+        controller.listFoldersSynchronous(account, true, listener);
+
+        verify(listener).listFoldersFailed(account, "Test");
+    }
+
+    @Test
+    public void listFoldersSynchronous_shouldNotNotifyFinishedAfterFailure() throws MessagingException {
+        when(localStore.getPersonalNamespaces(false)).thenThrow(new MessagingException("Test"));
+
+        controller.listFoldersSynchronous(account, true, listener);
+
+        verify(listener, never()).listFoldersFinished(account);
+    }
+
+    @Test
+    public void listFoldersSynchronous_shouldNotifyFinishedAfterSuccess() throws MessagingException {
+        List<LocalFolder> folders = Collections.singletonList(localFolder);
+        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
+
+        controller.listFoldersSynchronous(account, false, listener);
+
+        verify(listener).listFoldersFinished(account);
+    }
+
+    @Test
+    public void refreshRemoteSynchronous_shouldCreateFoldersFromRemote() throws MessagingException {
+        configureRemoteStoreWithFolder();
+        LocalFolder newLocalFolder = mock(LocalFolder.class);
+
+        List<Folder> folders = Collections.singletonList(remoteFolder);
+        when(remoteStore.getPersonalNamespaces(false)).thenAnswer(createAnswer(folders));
+        when(remoteFolder.getName()).thenReturn("NewFolder");
+        when(localStore.getFolder("NewFolder")).thenReturn(newLocalFolder);
+
+        controller.refreshRemoteSynchronous(account, listener);
+
+        verify(localStore).createFolders(eq(Collections.singletonList(newLocalFolder)), anyInt());
+    }
+
+    @Test
+    public void refreshRemoteSynchronous_shouldDeleteFoldersNotOnRemote() throws MessagingException {
+        configureRemoteStoreWithFolder();
+        LocalFolder oldLocalFolder = mock(LocalFolder.class);
+        when(oldLocalFolder.getName()).thenReturn("OldLocalFolder");
+        when(localStore.getPersonalNamespaces(false))
+                .thenReturn(Collections.singletonList(oldLocalFolder));
+        List<Folder> folders = Collections.emptyList();
+        when(remoteStore.getPersonalNamespaces(false)).thenAnswer(createAnswer(folders));
+
+        controller.refreshRemoteSynchronous(account, listener);
+
+        verify(oldLocalFolder).delete(false);
+    }
+
+    @Test
+    public void refreshRemoteSynchronous_shouldNotDeleteFoldersOnRemote() throws MessagingException {
+        configureRemoteStoreWithFolder();
+        when(localStore.getPersonalNamespaces(false))
+                .thenReturn(Collections.singletonList(localFolder));
+        List<Folder> folders = Collections.singletonList(remoteFolder);
+        when(remoteStore.getPersonalNamespaces(false)).thenAnswer(createAnswer(folders));
+
+        controller.refreshRemoteSynchronous(account, listener);
+
+        verify(localFolder, never()).delete(false);
+    }
+
+    @Test
+    public void refreshRemoteSynchronous_shouldNotDeleteSpecialFoldersNotOnRemote() throws MessagingException {
+        configureRemoteStoreWithFolder();
+        LocalFolder missingSpecialFolder = mock(LocalFolder.class);
+        when(account.isSpecialFolder("Outbox")).thenReturn(true);
+        when(missingSpecialFolder.getName()).thenReturn("Outbox");
+        when(localStore.getPersonalNamespaces(false))
+                .thenReturn(Collections.singletonList(missingSpecialFolder));
+        List<Folder> folders = Collections.emptyList();
+        when(remoteStore.getPersonalNamespaces(false)).thenAnswer(createAnswer(folders));
+
+        controller.refreshRemoteSynchronous(account, listener);
+
+        verify(missingSpecialFolder, never()).delete(false);
+    }
+
+    public static <T> Answer<T> createAnswer(final T value) {
+        return new Answer<T>() {
+            @Override
+            public T answer(InvocationOnMock invocation) throws Throwable {
+                return value;
+            }
+        };
+    }
+
+    @Test
+    public void refreshRemoteSynchronous_shouldProvideFolderList() throws MessagingException {
+        configureRemoteStoreWithFolder();
+        List<LocalFolder> folders = Collections.singletonList(localFolder);
+        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
+
+        controller.refreshRemoteSynchronous(account, listener);
+
+        verify(listener).listFolders(account, folders);
+    }
+
+    @Test
+    public void refreshRemoteSynchronous_shouldNotifyFinishedAfterSuccess() throws MessagingException {
+        configureRemoteStoreWithFolder();
+        List<LocalFolder> folders = Collections.singletonList(localFolder);
+        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
+
+        controller.refreshRemoteSynchronous(account, listener);
+
+        verify(listener).listFoldersFinished(account);
+    }
+
+    @Test
+    public void refreshRemoteSynchronous_shouldNotNotifyFinishedAfterFailure() throws MessagingException {
+        configureRemoteStoreWithFolder();
+        when(localStore.getPersonalNamespaces(false)).thenThrow(new MessagingException("Test"));
+
+        controller.refreshRemoteSynchronous(account, listener);
+
+        verify(listener, never()).listFoldersFinished(account);
+    }
+
 
     @Test
     public void synchronizeMailboxSynchronous_withOneMessageInRemoteFolder_shouldFinishWithoutError()
@@ -372,6 +526,7 @@ public class MessagingControllerTest {
     }
 
     private void configureAccount() throws MessagingException {
+        when(account.isAvailable(appContext)).thenReturn(true);
         when(account.getLocalStore()).thenReturn(localStore);
         when(account.getStats(any(Context.class))).thenReturn(accountStats);
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
