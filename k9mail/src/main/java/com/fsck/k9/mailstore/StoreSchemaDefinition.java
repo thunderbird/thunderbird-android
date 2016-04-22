@@ -236,4 +236,5 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             return LocalStore.serializeFlags(flags);
         }
     }
+
 }

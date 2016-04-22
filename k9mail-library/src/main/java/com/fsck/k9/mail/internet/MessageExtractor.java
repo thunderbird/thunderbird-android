@@ -8,6 +8,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import org.apache.commons.io.input.BoundedInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,9 +30,16 @@ import static com.fsck.k9.mail.internet.Viewable.Text;
 import static com.fsck.k9.mail.internet.Viewable.Textual;
 
 public class MessageExtractor {
+    public static final long NO_TEXT_SIZE_LIMIT = -1L;
+
+
     private MessageExtractor() {}
 
     public static String getTextFromPart(Part part) {
+        return getTextFromPart(part, NO_TEXT_SIZE_LIMIT);
+    }
+
+    public static String getTextFromPart(Part part, long textSizeLimit) {
         try {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
@@ -40,12 +48,12 @@ public class MessageExtractor {
                 }
                 final String mimeType = part.getMimeType();
                 if ((mimeType != null) && MimeUtility.mimeTypeMatches(mimeType, "text/*")) {
-                    return getTextFromTextPart(part, body, mimeType);
+                    return getTextFromTextPart(part, body, mimeType, textSizeLimit);
                 } else {
-                    throw new MessagingException("Provided non-text part: "+part);
+                    throw new MessagingException("Provided non-text part: " + part);
                 }
             } else {
-                throw new MessagingException("Provided invalid part: "+part);
+                throw new MessagingException("Provided invalid part: " + part);
             }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Unable to getTextFromPart", e);
@@ -55,7 +63,8 @@ public class MessageExtractor {
         return null;
     }
 
-    private static String getTextFromTextPart(Part part, Body body, String mimeType) throws IOException, MessagingException {
+    private static String getTextFromTextPart(Part part, Body body, String mimeType, long textSizeLimit)
+            throws IOException, MessagingException {
         /*
          * We've got a text part, so let's see if it needs to be processed further.
          */
@@ -90,8 +99,10 @@ public class MessageExtractor {
          * the stream is now wrapped we'll remove any transfer encoding at this point.
          */
         InputStream in = MimeUtility.decodeBody(body);
+        InputStream possiblyLimitedIn =
+                textSizeLimit != NO_TEXT_SIZE_LIMIT ? new BoundedInputStream(in, textSizeLimit) : in;
         try {
-            return CharsetSupport.readToString(in, charset);
+            return CharsetSupport.readToString(possiblyLimitedIn, charset);
         } finally {
             try {
                 MimeUtility.closeInputStreamWithoutDeletingTemporaryFiles(in);

@@ -20,7 +20,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
-import com.fsck.k9.message.preview.PreviewResult.PreviewType;
+import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 
 
 public class LocalMessage extends MimeMessage {
@@ -332,6 +332,8 @@ public class LocalMessage extends MimeMessage {
 
                         localFolder.deleteMessagePartsAndDataFromDisk(messagePartId);
 
+                        deleteFulltextIndexEntry(db, mId);
+
                         if (hasThreadChildren(db, mId)) {
                             // This message has children in the thread structure so we need to
                             // make it an empty message.
@@ -436,6 +438,11 @@ public class LocalMessage extends MimeMessage {
         } finally {
             cursor.close();
         }
+    }
+
+    private void deleteFulltextIndexEntry(SQLiteDatabase db, long messageId) {
+        String[] idArg = { Long.toString(messageId) };
+        db.delete("fulltext_messages", "id = ?", idArg);
     }
 
     /**

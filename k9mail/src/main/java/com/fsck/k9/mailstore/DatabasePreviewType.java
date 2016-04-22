@@ -1,7 +1,7 @@
 package com.fsck.k9.mailstore;
 
 
-import com.fsck.k9.message.preview.PreviewResult.PreviewType;
+import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 
 
 public enum DatabasePreviewType {

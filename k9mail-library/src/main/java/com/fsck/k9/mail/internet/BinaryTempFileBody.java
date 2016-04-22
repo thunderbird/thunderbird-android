@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.internet;
 
+import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
@@ -7,6 +8,9 @@ import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 
 import java.io.*;
+
+import android.util.Log;
+
 
 /**
  * A Body that is backed by a temp file. The Body exposes a getOutputStream method that allows
@@ -125,6 +129,7 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
             try {
                 super.close();
             } finally {
+                Log.d(K9MailLib.LOG_TAG, "deleting temp file");
                 mFile.delete();
             }
         }

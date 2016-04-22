@@ -1,4 +1,4 @@
-package com.fsck.k9.message.preview;
+package com.fsck.k9.message.extractors;
 
 
 class PreviewExtractionException extends Exception {

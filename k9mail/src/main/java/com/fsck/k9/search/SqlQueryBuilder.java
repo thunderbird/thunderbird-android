@@ -2,7 +2,10 @@ package com.fsck.k9.search;
 
 import java.util.List;
 
+import android.util.Log;
+
 import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -72,6 +75,15 @@ public class SqlQueryBuilder {
                     }
                     break;
                 }
+                case MESSAGE_CONTENTS: {
+                    String fulltextQueryString = condition.value;
+                    if (condition.attribute != Attribute.CONTAINS) {
+                        Log.e(K9.LOG_TAG, "message contents can only be matched!");
+                    }
+                    query.append("(EXISTS (SELECT docid FROM messages_fulltext WHERE docid = id AND fulltext MATCH ?))");
+                    selectionArgs.add(fulltextQueryString);
+                    break;
+                }
                 default: {
                     appendCondition(condition, query, selectionArgs);
                 }
@@ -139,9 +151,6 @@ public class SqlQueryBuilder {
                 columnName = "id";
                 break;
             }
-            case MESSAGE_CONTENTS: {
-                throw new RuntimeException("Searching in message bodies is currently not supported");
-            }
             case REPLY_TO: {
                 columnName = "reply_to_list";
                 break;
@@ -182,6 +191,7 @@ public class SqlQueryBuilder {
                 columnName = "threads.root";
                 break;
             }
+            case MESSAGE_CONTENTS:
             case FOLDER:
             case SEARCHABLE: {
                 // Special cases handled in buildWhereClauseInternal()
