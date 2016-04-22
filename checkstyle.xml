@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <!--
+        If you set the basedir property below, then all reported file
+        names will be relative to the specified directory. See
+        http://checkstyle.sourceforge.net/5.x/config.html#Checker
+
+        <property name="basedir" value="${basedir}"/>
+    -->
+
+    <property name="severity" value="info"/>
+
+    <!--
+    <module name="SuppressionFilter">
+        <property name="file" value="${checkstyle.suppressions.file}"/>
+    </module>
+    -->
+
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="false"/>
+    </module>
+
+    <module name="NewlineAtEndOfFile"/>
+
+    <module name="TreeWalker">
+        <property name="tabWidth" value="4"/>
+
+        <module name="AvoidStarImport"/>
+        <module name="ConstantName">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="EmptyBlock">
+            <property name="option" value="text"/>
+            <property name="tokens" value="LITERAL_CATCH"/>
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="EmptyForIteratorPad"/>
+        <module name="EqualsHashCode">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="OneStatementPerLine"/>
+
+        <!-- module name="IllegalCatch"/ -->
+        <module name="IllegalImport">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="IllegalThrows">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="InnerAssignment">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <module name="LeftCurly">
+            <property name="option" value="eol"/>
+        </module>
+
+        <module name="LineLength">
+            <property name="max" value="140"/>
+        </module>
+
+        <module name="LocalFinalVariableName">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="LocalVariableName">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="MemberName">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="MethodName">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="MethodParamPad"/>
+        <module name="ModifierOrder"/>
+        <module name="NeedBraces"/>
+        <module name="NoWhitespaceAfter">
+            <property name="tokens" value="BNOT"/>
+            <property name="tokens" value="DEC"/>
+            <property name="tokens" value="DOT"/>
+            <property name="tokens" value="INC"/>
+            <property name="tokens" value="LNOT"/>
+            <property name="tokens" value="UNARY_MINUS"/>
+            <property name="tokens" value="UNARY_PLUS"/>
+        </module>
+
+        <module name="NoWhitespaceBefore"/>
+        <module name="NoWhitespaceBefore">
+            <property name="tokens" value="DOT"/>
+            <property name="allowLineBreaks" value="true"/>
+        </module>
+
+        <module name="PackageName">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="ParameterName">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="RedundantImport"/>
+        <module name="RedundantModifier"/>
+        <module name="RightCurly">
+            <property name="option" value="alone"/>
+            <property name="tokens" value="LITERAL_ELSE"/>
+        </module>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="TypeName">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="UnusedImports"/>
+        <module name="UpperEll"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+        <module name="GenericWhitespace"/>
+
+        <!--
+        <module name="MissingSwitchDefault"/>
+        <module name="MagicNumber"/>
+        <module name="Indentation"/>
+
+        <module name="OperatorWrap">
+            <property name="option" value="eol"/>
+        </module>
+
+        <module name="EqualsAvoidNull">
+            <property name="severity" value="warning"/>
+        </module>
+        -->
+
+        <module name="ParameterAssignment">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <module name="DefaultComesLast"/>
+        <module name="MissingDeprecated"/>
+        <module name="MissingOverride">
+            <property name="javaFiveCompatibility" value="true"/>
+        </module>
+        <module name="OuterTypeFilename">
+            <property name="severity" value="warning"/>
+        </module>
+    </module>
+</module>
