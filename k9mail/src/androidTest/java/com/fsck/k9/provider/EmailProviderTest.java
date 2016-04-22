@@ -273,7 +273,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
                 .appendMessages(Collections.singletonList(message));
 
         account.getLocalStore().getFolder("Inbox")
-                .appendMessages(Collections.singletonList(reply));
+                .appendMessages(Collections.singletonList(replyAtSameTime));
 
         Cursor cursor = this.getProvider().query(
                 Uri.parse("content://"+EmailProvider.AUTHORITY
