@@ -2,7 +2,7 @@ language: android
 android:
  components:
     - build-tools-23.0.1
-    - android-22
+    - android-23
     - extra-android-m2repository
 
 jdk: oraclejdk7
