@@ -10,8 +10,6 @@ jdk: oraclejdk7
 script: ./gradlew testDebug
 
 after_success:
-   - pwd
-   - python <(curl -s https://raw.githubusercontent.com/TouK/sputnik-ci/master/sputnik-ci.py)
-   - pwd
+   - python sputnik-ci.py
    - cat sputnik.properties
    - cat checkstyle.xml
