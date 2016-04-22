@@ -19,6 +19,7 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.NotificationDeleteConfirmation;
+import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.search.LocalSearch;
 
 
@@ -91,7 +92,7 @@ class NotificationActionCreator {
     }
 
     public PendingIntent createReplyPendingIntent(MessageReference messageReference, int notificationId) {
-        Intent intent = MessageCompose.getActionReplyIntent(context, messageReference);
+        Intent intent = MessageActions.getActionReplyIntent(context, messageReference);
 
         return PendingIntent.getActivity(context, notificationId, intent,
                 PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);

@@ -46,6 +46,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
@@ -517,7 +518,7 @@ public class FolderList extends K9ListActivity {
             return true;
 
         case R.id.compose:
-            MessageCompose.actionCompose(this, mAccount);
+            MessageActions.actionCompose(this, mAccount);
 
             return true;
 

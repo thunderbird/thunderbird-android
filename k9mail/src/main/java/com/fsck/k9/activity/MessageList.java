@@ -34,6 +34,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -1181,7 +1182,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         String folderName = messageReference.getFolderName();
 
         if (folderName.equals(account.getDraftsFolderName())) {
-            MessageCompose.actionEditDraft(this, messageReference);
+            MessageActions.actionEditDraft(this, messageReference);
         } else {
             mMessageViewContainer.removeView(mMessageViewPlaceHolder);
 
@@ -1203,27 +1204,27 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void onResendMessage(LocalMessage message) {
-        MessageCompose.actionEditDraft(this, message.makeMessageReference());
+        MessageActions.actionEditDraft(this, message.makeMessageReference());
     }
 
     @Override
     public void onForward(LocalMessage message) {
-        MessageCompose.actionForward(this, message, null);
+        MessageActions.actionForward(this, message, null);
     }
 
     @Override
     public void onReply(LocalMessage message) {
-        MessageCompose.actionReply(this, message, false, null);
+        MessageActions.actionReply(this, message, false, null);
     }
 
     @Override
     public void onReplyAll(LocalMessage message) {
-        MessageCompose.actionReply(this, message, true, null);
+        MessageActions.actionReply(this, message, true, null);
     }
 
     @Override
     public void onCompose(Account account) {
-        MessageCompose.actionCompose(this, account);
+        MessageActions.actionCompose(this, account);
     }
 
     @Override
@@ -1409,17 +1410,17 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void onReply(LocalMessage message, PgpData pgpData) {
-        MessageCompose.actionReply(this, message, false, pgpData.getDecryptedData());
+        MessageActions.actionReply(this, message, false, pgpData.getDecryptedData());
     }
 
     @Override
     public void onReplyAll(LocalMessage message, PgpData pgpData) {
-        MessageCompose.actionReply(this, message, true, pgpData.getDecryptedData());
+        MessageActions.actionReply(this, message, true, pgpData.getDecryptedData());
     }
 
     @Override
     public void onForward(LocalMessage mMessage, PgpData mPgpData) {
-        MessageCompose.actionForward(this, mMessage, mPgpData.getDecryptedData());
+        MessageActions.actionForward(this, mMessage, mPgpData.getDecryptedData());
     }
 
     @Override
