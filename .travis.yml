@@ -7,9 +7,7 @@ android:
 
 jdk: oraclejdk7
 
-script: ./gradlew testDebug
+script: ./gradlew tasks
 
 after_success:
    - python sputnik-ci.py
-   - cat sputnik.properties
-   - cat checkstyle.xml

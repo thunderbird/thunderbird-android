@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import logging, os, subprocess, sys, urllib, urllib2, zipfile
+import logging, os, subprocess, sys, urllib, urllib2, zipfile, re, tempfile, shutil
 
 sputnik_version='1.7.1'
 sputnik_base_url='https://sputnik.ci/'
@@ -145,9 +145,11 @@ def download_files_and_run_sputnik(ci_variables):
             return
 
         configs_url = sputnik_base_url + "conf/" + ci_variables.repo_slug + "/configs?" + query_params(ci_variables)
-        logging.debug('Sputnik configs url: ' + configs_url)
         download_file(configs_url, "configs.zip")
         unzip("configs.zip")
+
+        # K-9 Mail hack - patch config
+        replace("sputnik.properties", r'^checkstyle\.configurationFile=', "checkstyle.configurationFile=config/checkstyle/checkstyle.xml")
 
         global sputnik_version
         sputnik_jar_url = "http://repo1.maven.org/maven2/pl/touk/sputnik/" + sputnik_version + "/sputnik-" + sputnik_version + "-all.jar"
@@ -162,6 +164,20 @@ def download_files_and_run_sputnik(ci_variables):
         subprocess.call(['java', '-jar', 'sputnik.jar'] + sputnik_params)
 
 
+def replace(file_path, pattern, subst):
+    #Create temp file
+    fh, abs_path = tempfile.mkstemp()
+    with open(abs_path,'w') as new_file:
+        with open(file_path) as old_file:
+            for line in old_file:
+                new_file.write(re.sub(pattern, subst, line))
+    os.close(fh)
+    #Remove original file
+    os.remove(file_path)
+    #Move new file
+    shutil.move(abs_path, file_path)
+
+
 def sputnik_ci():
     configure_logger()
     ci_variables = init_variables()
@@ -170,6 +186,5 @@ def sputnik_ci():
         download_files_and_run_sputnik(ci_variables)
     else:
         logging.info("Env variables needed to run not set. Aborting.")
-
 
 sputnik_ci()
