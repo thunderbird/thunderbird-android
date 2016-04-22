@@ -149,7 +149,7 @@ def download_files_and_run_sputnik(ci_variables):
         unzip("configs.zip")
 
         # K-9 Mail hack - patch config
-        replace("sputnik.properties", r'^checkstyle\.configurationFile=', "checkstyle.configurationFile=config/checkstyle/checkstyle.xml")
+        replace("sputnik.properties", r'^checkstyle\.configurationFile=.*$', "checkstyle.configurationFile=config/checkstyle/checkstyle.xml")
 
         global sputnik_version
         sputnik_jar_url = "http://repo1.maven.org/maven2/pl/touk/sputnik/" + sputnik_version + "/sputnik-" + sputnik_version + "-all.jar"

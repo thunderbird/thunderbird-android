@@ -7,7 +7,7 @@ android:
 
 jdk: oraclejdk7
 
-script: ./gradlew tasks
+script: echo "1"
 
 after_success:
    - python sputnik-ci.py
