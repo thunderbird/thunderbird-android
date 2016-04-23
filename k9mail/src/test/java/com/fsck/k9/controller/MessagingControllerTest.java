@@ -4,8 +4,10 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import android.content.Context;
 
@@ -13,6 +15,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -30,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -42,12 +46,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anySet;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -89,6 +97,21 @@ public class MessagingControllerTest {
     private ArgumentCaptor<MessageRetrievalListener<LocalMessage>> messageRetrievalListenerCaptor;
 
     private Context appContext;
+    private Set<Flag> reqFlags;
+    private Set<Flag> forbiddenFlags;
+
+    private List<Message> remoteMessages;
+    @Mock
+    private Message remoteOldMessage;
+    @Mock
+    private Message remoteNewMessage1;
+    @Mock
+    private Message remoteNewMessage2;
+    @Mock
+    private LocalMessage localNewMessage1;
+    @Mock
+    private LocalMessage localNewMessage2;
+    private volatile boolean hasFetchedMessage = false;
 
 
     @Before
@@ -307,6 +330,147 @@ public class MessagingControllerTest {
         verify(listener).listLocalMessagesAddMessages(eq(account),
                 eq((String) null), eq(Collections.singletonList(localMessage)));
     }
+
+    private void setupRemoteSearch() throws Exception {
+        setAccountsInPreferences(Collections.singletonMap("1", account));
+        configureRemoteStoreWithFolder();
+
+        remoteMessages = new ArrayList<>();
+        Collections.addAll(remoteMessages, remoteOldMessage, remoteNewMessage1, remoteNewMessage2);
+        List<Message> newRemoteMessages = new ArrayList<>();
+        Collections.addAll(newRemoteMessages, remoteNewMessage1, remoteNewMessage2);
+
+        when(remoteOldMessage.getUid()).thenReturn("oldMessageUid");
+        when(remoteNewMessage1.getUid()).thenReturn("newMessageUid1");
+        when(localNewMessage1.getUid()).thenReturn("newMessageUid1");
+        when(remoteNewMessage2.getUid()).thenReturn("newMessageUid2");
+        when(localNewMessage2.getUid()).thenReturn("newMessageUid2");
+        when(remoteFolder.search(anyString(), anySet(), anySet())).thenReturn(remoteMessages);
+        when(localFolder.extractNewMessages(Matchers.<List<Message>>any())).thenReturn(newRemoteMessages);
+        when(localFolder.getMessage("newMessageUid1")).thenReturn(localNewMessage1);
+        when(localFolder.getMessage("newMessageUid2")).thenAnswer(
+            new Answer<LocalMessage>() {
+                @Override
+                public LocalMessage answer(InvocationOnMock invocation) throws Throwable {
+                    if(hasFetchedMessage) {
+                        return localNewMessage2;
+                    }
+                    else
+                        return null;
+                }
+            }
+        );
+        doAnswer(new Answer<Void>() {
+             @Override
+             public Void answer(InvocationOnMock invocation) throws Throwable {
+                 hasFetchedMessage = true;
+                 return null;
+             }
+        }).when(remoteFolder).fetch(
+            Matchers.<List<Message>>eq(Collections.singletonList(remoteNewMessage2)),
+            any(FetchProfile.class),
+            Matchers.<MessageRetrievalListener>eq(null));
+        reqFlags = Collections.singleton(Flag.ANSWERED);
+        forbiddenFlags = Collections.singleton(Flag.DELETED);
+
+        when(account.getRemoteSearchNumResults()).thenReturn(50);
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldNotifyStartedListingRemoteMessages() throws Exception {
+        setupRemoteSearch();
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(listener).remoteSearchStarted(FOLDER_NAME);
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldQueryRemoteFolder() throws Exception {
+        setupRemoteSearch();
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(remoteFolder).search("query", reqFlags, forbiddenFlags);
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldAskLocalFolderToDetermineNewMessages() throws Exception {
+        setupRemoteSearch();
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(localFolder).extractNewMessages(remoteMessages);
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldTryAndGetNewMessages() throws Exception {
+        setupRemoteSearch();
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(localFolder).getMessage("newMessageUid1");
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldNotTryAndGetOldMessages() throws Exception {
+        setupRemoteSearch();
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(localFolder, never()).getMessage("oldMessageUid");
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldFetchNewMessages() throws Exception {
+        setupRemoteSearch();
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(remoteFolder, times(2)).fetch(eq(Collections.singletonList(remoteNewMessage2)),
+                fetchProfileCaptor.capture(), Matchers.<MessageRetrievalListener>eq(null));
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldNotFetchExistingMessages() throws Exception {
+        setupRemoteSearch();
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(remoteFolder, never()).fetch(eq(Collections.singletonList(remoteNewMessage1)),
+                fetchProfileCaptor.capture(), Matchers.<MessageRetrievalListener>eq(null));
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldNotifyListenerOfNewMessages() throws Exception {
+        setupRemoteSearch();
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(listener).remoteSearchAddMessage(FOLDER_NAME, localNewMessage1, 1, 2);
+        verify(listener).remoteSearchAddMessage(FOLDER_NAME, localNewMessage2, 2, 2);
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldNotifyOnFailure() throws Exception {
+        setupRemoteSearch();
+        when(account.getRemoteStore()).thenThrow(new MessagingException("Test"));
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(listener).remoteSearchFailed(null, "Test");
+    }
+
+    @Test
+    public void searchRemoteMessagesSynchronous_shouldNotifyOnFinish() throws Exception {
+        setupRemoteSearch();
+        when(account.getRemoteStore()).thenThrow(new MessagingException("Test"));
+
+        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+
+        verify(listener).remoteSearchFinished(FOLDER_NAME, 0, 50, Collections.<Message>emptyList());
+    }
+
 
     @Test
     public void synchronizeMailboxSynchronous_withOneMessageInRemoteFolder_shouldFinishWithoutError()
@@ -595,11 +759,13 @@ public class MessagingControllerTest {
 
     private void configureLocalStore() {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
+        when(localFolder.getName()).thenReturn(FOLDER_NAME);
     }
 
     private void configureRemoteStoreWithFolder() throws MessagingException {
         when(account.getRemoteStore()).thenReturn(remoteStore);
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
+        when(remoteFolder.getName()).thenReturn(FOLDER_NAME);
     }
 
     private void setAccountsInPreferences(Map<String, Account> newAccounts)
