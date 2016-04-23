@@ -72,7 +72,7 @@ public abstract class MessageBuilder {
      * Build the message to be sent (or saved). If there is another message quoted in this one, it will be baked
      * into the message here.
      */
-    public MimeMessage build() throws MessagingException {
+    protected MimeMessage build() throws MessagingException {
         //FIXME: check arguments
 
         MimeMessage message = new MimeMessage();

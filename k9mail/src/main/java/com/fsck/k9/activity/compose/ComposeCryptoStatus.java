@@ -107,6 +107,14 @@ public class ComposeCryptoStatus {
         return enablePgpInline;
     }
 
+    public boolean isCryptoDisabled() {
+        return cryptoMode == CryptoMode.DISABLE;
+    }
+
+    public boolean isProviderStateOk() {
+        return cryptoProviderState == CryptoProviderState.OK;
+    }
+
     public static class ComposeCryptoStatusBuilder {
 
         private CryptoProviderState cryptoProviderState;

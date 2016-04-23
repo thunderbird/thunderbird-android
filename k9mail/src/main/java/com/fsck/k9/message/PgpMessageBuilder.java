@@ -51,7 +51,21 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     @Override
     protected void buildMessageInternal() {
+        if (currentProcessedMimeMessage != null) {
+            throw new IllegalStateException("message can only be built once!");
+        }
+        if (cryptoStatus == null) {
+            throw new IllegalStateException("PgpMessageBuilder must have cryptoStatus set before building!");
+        }
+        if (cryptoStatus.isCryptoDisabled()) {
+            throw new AssertionError("PgpMessageBuilder must not be used if crypto is disabled!");
+        }
+
         try {
+            if (!cryptoStatus.isProviderStateOk()) {
+                throw new MessagingException("OpenPGP Provider is not ready!");
+            }
+
             currentProcessedMimeMessage = build();
         } catch (MessagingException me) {
             queueMessageBuildException(me);
@@ -62,7 +76,10 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     @Override
-    public void buildMessageOnActivityResult(int requestCode, Intent userInteractionResult) {
+    public void buildMessageOnActivityResult(int requestCode, @NonNull Intent userInteractionResult) {
+        if (currentProcessedMimeMessage == null) {
+            throw new AssertionError("build message from activity result must not be called individually");
+        }
         startOrContinueBuildMessage(userInteractionResult);
     }
 
@@ -119,7 +136,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                 String[] encryptRecipientAddresses = cryptoStatus.getRecipientAddresses();
                 boolean hasRecipientAddresses = encryptRecipientAddresses != null && encryptRecipientAddresses.length > 0;
                 if (!hasRecipientAddresses) {
-                    throw new MessagingException("encryption is enabled, but no encryption key specified!");
+                    throw new MessagingException("encryption is enabled, but no recipient specified!");
                 }
                 pgpApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, encryptRecipientAddresses);
                 pgpApiIntent.putExtra(OpenPgpApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
@@ -231,7 +248,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     private void mimeBuildSignedMessage(@NonNull BodyPart signedBodyPart, Intent result) throws MessagingException {
-        if (!cryptoStatus.isEncryptionEnabled()) {
+        if (!cryptoStatus.isSigningEnabled()) {
             throw new IllegalStateException("call to mimeBuildSignedMessage while signing isn't enabled!");
         }
 
