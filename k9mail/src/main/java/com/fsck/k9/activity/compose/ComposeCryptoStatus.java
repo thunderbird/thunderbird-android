@@ -25,6 +25,7 @@ public class ComposeCryptoStatus {
     private Long signingKeyId;
     private Long selfEncryptKeyId;
     private String[] recipientAddresses;
+    private boolean enablePgpInline;
 
 
     public long[] getEncryptKeyIds() {
@@ -102,6 +103,9 @@ public class ComposeCryptoStatus {
         return cryptoMode != CryptoMode.DISABLE && signingKeyId != null;
     }
 
+    public boolean isPgpInlineModeEnabled() {
+        return enablePgpInline;
+    }
 
     public static class ComposeCryptoStatusBuilder {
 
@@ -110,6 +114,7 @@ public class ComposeCryptoStatus {
         private Long signingKeyId;
         private Long selfEncryptKeyId;
         private List<Recipient> recipients;
+        private Boolean enablePgpInline;
 
         public ComposeCryptoStatusBuilder setCryptoProviderState(CryptoProviderState cryptoProviderState) {
             this.cryptoProviderState = cryptoProviderState;
@@ -136,6 +141,11 @@ public class ComposeCryptoStatus {
             return this;
         }
 
+        public ComposeCryptoStatusBuilder setEnablePgpInline(boolean cryptoEnableCompat) {
+            this.enablePgpInline = cryptoEnableCompat;
+            return this;
+        }
+
         public ComposeCryptoStatus build() {
             if (cryptoProviderState == null) {
                 throw new AssertionError("cryptoProviderState must be set. this is a bug!");
@@ -145,6 +155,9 @@ public class ComposeCryptoStatus {
             }
             if (recipients == null) {
                 throw new AssertionError("recipients must be set. this is a bug!");
+            }
+            if (enablePgpInline == null) {
+                throw new AssertionError("enablePgpInline must be set. this is a bug!");
             }
 
             ArrayList<String> recipientAddresses = new ArrayList<>();
@@ -172,6 +185,7 @@ public class ComposeCryptoStatus {
             result.hasRecipients = hasRecipients;
             result.signingKeyId = signingKeyId;
             result.selfEncryptKeyId = selfEncryptKeyId;
+            result.enablePgpInline = enablePgpInline;
             return result;
         }
     }
@@ -192,6 +206,22 @@ public class ComposeCryptoStatus {
         boolean isPrivateModeAndNotAllKeysAvailable = cryptoMode == CryptoMode.PRIVATE && !allKeysAvailable;
         if (isPrivateModeAndNotAllKeysAvailable) {
             return SendErrorState.PRIVATE_BUT_MISSING_KEYS;
+        }
+
+        return null;
+    }
+
+    public enum AttachErrorState {
+        IS_INLINE
+    }
+
+    public AttachErrorState getAttachErrorStateOrNull() {
+        if (cryptoProviderState == CryptoProviderState.UNCONFIGURED) {
+            return null;
+        }
+
+        if (enablePgpInline) {
+            return AttachErrorState.IS_INLINE;
         }
 
         return null;
