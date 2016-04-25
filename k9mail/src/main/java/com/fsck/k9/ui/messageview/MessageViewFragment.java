@@ -11,10 +11,10 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.IntentSender.SendIntentException;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
@@ -69,6 +69,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private static final int LOCAL_MESSAGE_LOADER_ID = 1;
     private static final int DECODE_MESSAGE_LOADER_ID = 2;
+
+    public static final int REQUEST_MASK_CRYPTO_HELPER = 1 << 8;
 
     public static MessageViewFragment newInstance(MessageReference reference) {
         MessageViewFragment fragment = new MessageViewFragment();
@@ -214,9 +216,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         mFragmentListener.updateMenu();
     }
 
-    public void handleCryptoResult(int requestCode, int resultCode, Intent data) {
-        if (messageCryptoHelper != null) {
-            messageCryptoHelper.handleCryptoResult(requestCode, resultCode, data);
+
+
+    public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode & REQUEST_MASK_CRYPTO_HELPER) == REQUEST_MASK_CRYPTO_HELPER) {
+            requestCode ^= REQUEST_MASK_CRYPTO_HELPER;
+            messageCryptoHelper.onActivityResult(requestCode, resultCode, data);
+            return;
         }
     }
 
@@ -710,6 +716,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus);
         dialog.show(getFragmentManager(), "crypto_info_dialog");
+    }
+
+    @Override
+    public void startPendingIntentForCryptoHelper(IntentSender si, int requestCode, Intent fillIntent,
+            int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
+        requestCode |= REQUEST_MASK_CRYPTO_HELPER;
+        getActivity().startIntentSenderForResult(
+                si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
     }
 
     public interface MessageViewFragmentListener {
