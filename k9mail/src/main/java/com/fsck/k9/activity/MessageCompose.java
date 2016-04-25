@@ -1140,13 +1140,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         "this is an illegal state!");
                 return;
             }
-            currentMessageBuilder.onActivityResult(this, requestCode, resultCode, data);
+            currentMessageBuilder.onActivityResult(requestCode, resultCode, data, this);
             return;
         }
 
         if ((requestCode & REQUEST_MASK_RECIPIENT_PRESENTER) == REQUEST_MASK_RECIPIENT_PRESENTER) {
             requestCode ^= REQUEST_MASK_RECIPIENT_PRESENTER;
-            recipientPresenter.onActivityResult(resultCode, requestCode, data);
+            recipientPresenter.onActivityResult(requestCode, resultCode, data);
             return;
         }
 

@@ -15,6 +15,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.IntentSender.SendIntentException;
 import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -65,6 +67,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private static final int LOCAL_MESSAGE_LOADER_ID = 1;
     private static final int DECODE_MESSAGE_LOADER_ID = 2;
+
+    public static final int REQUEST_MASK_CRYPTO_HELPER = 1 << 8;
 
     public static MessageViewFragment newInstance(MessageReference reference) {
         MessageViewFragment fragment = new MessageViewFragment();
@@ -193,9 +197,27 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         mFragmentListener.updateMenu();
     }
 
-    public void handleCryptoResult(int requestCode, int resultCode, Intent data) {
-        if (messageCryptoHelper != null) {
-            messageCryptoHelper.handleCryptoResult(requestCode, resultCode, data);
+
+
+    public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode & REQUEST_MASK_CRYPTO_HELPER) == REQUEST_MASK_CRYPTO_HELPER) {
+            hideKeyboard();
+
+            requestCode ^= REQUEST_MASK_CRYPTO_HELPER;
+            messageCryptoHelper.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+    }
+
+    private void hideKeyboard() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        View decorView = activity.getWindow().getDecorView();
+        if (decorView != null) {
+            imm.hideSoftInputFromWindow(decorView.getApplicationWindowToken(), 0);
         }
     }
 
@@ -697,6 +719,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         } catch (IntentSender.SendIntentException e) {
             Log.e(K9.LOG_TAG, "SendIntentException", e);
         }
+    }
+
+    @Override
+    public void startPendingIntentForCryptoHelper(IntentSender si, int requestCode, Intent fillIntent,
+            int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
+        requestCode |= REQUEST_MASK_CRYPTO_HELPER;
+        getActivity().startIntentSenderForResult(
+                si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
     }
 
     public interface MessageViewFragmentListener {

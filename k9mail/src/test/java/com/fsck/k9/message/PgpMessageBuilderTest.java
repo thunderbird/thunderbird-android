@@ -221,7 +221,7 @@ public class PgpMessageBuilderTest {
                     .thenReturn(returnIntent);
 
             Callback mockCallback = mock(Callback.class);
-            pgpMessageBuilder.onActivityResult(mockCallback, returnedRequestCode, Activity.RESULT_OK, mockReturnIntent);
+            pgpMessageBuilder.onActivityResult(returnedRequestCode, Activity.RESULT_OK, mockReturnIntent, mockCallback);
             verify(openPgpApi).executeApi(same(mockReturnIntent), any(OpenPgpDataSource.class), any(OutputStream.class));
             verify(returnIntent).getIntExtra(eq(OpenPgpApi.RESULT_CODE), anyInt());
         }
