@@ -39,7 +39,6 @@ import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
-import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.preferences.StorageEditor;
@@ -1404,21 +1403,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
             mActionBarSubject.setText(subject);
         }
-    }
-
-    @Override
-    public void onReply(LocalMessage message, PgpData pgpData) {
-        MessageActions.actionReply(this, message, false, pgpData.getDecryptedData());
-    }
-
-    @Override
-    public void onReplyAll(LocalMessage message, PgpData pgpData) {
-        MessageActions.actionReply(this, message, true, pgpData.getDecryptedData());
-    }
-
-    @Override
-    public void onForward(LocalMessage mMessage, PgpData mPgpData) {
-        MessageActions.actionForward(this, mMessage, mPgpData.getDecryptedData());
     }
 
     @Override
