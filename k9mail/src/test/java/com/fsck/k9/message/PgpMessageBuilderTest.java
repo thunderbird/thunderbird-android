@@ -424,7 +424,7 @@ public class PgpMessageBuilderTest {
         }
     }
 
-    static void assertIntentEqualsActionAndExtras(Intent expected, Intent actual) {
+    private static void assertIntentEqualsActionAndExtras(Intent expected, Intent actual) {
         Assert.assertEquals(expected.getAction(), actual.getAction());
 
         Bundle expectedExtras = expected.getExtras();
