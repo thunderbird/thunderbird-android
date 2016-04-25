@@ -37,7 +37,6 @@ import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
@@ -85,7 +84,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private MessageTopView mMessageView;
-    private PgpData mPgpData;
     private Account mAccount;
     private MessageReference mMessageReference;
     private LocalMessage mMessage;
@@ -181,26 +179,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        initializePgpData(savedInstanceState);
-
         Bundle arguments = getArguments();
         MessageReference messageReference = arguments.getParcelable(ARG_REFERENCE);
 
         displayMessage(messageReference);
-    }
-
-    private void initializePgpData(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            mPgpData = (PgpData) savedInstanceState.get(STATE_PGP_DATA);
-        } else {
-            mPgpData = new PgpData();
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(STATE_PGP_DATA, mPgpData);
     }
 
     private void displayMessage(MessageReference messageReference) {
@@ -377,19 +359,19 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public void onReply() {
         if (mMessage != null) {
-            mFragmentListener.onReply(mMessage, mPgpData);
+            mFragmentListener.onReply(mMessage);
         }
     }
 
     public void onReplyAll() {
         if (mMessage != null) {
-            mFragmentListener.onReplyAll(mMessage, mPgpData);
+            mFragmentListener.onReplyAll(mMessage);
         }
     }
 
     public void onForward() {
         if (mMessage != null) {
-            mFragmentListener.onForward(mMessage, mPgpData);
+            mFragmentListener.onForward(mMessage);
         }
     }
 
@@ -751,10 +733,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public interface MessageViewFragmentListener {
-        public void onForward(LocalMessage mMessage, PgpData mPgpData);
+        public void onForward(LocalMessage mMessage);
         public void disableDeleteAction();
-        public void onReplyAll(LocalMessage mMessage, PgpData mPgpData);
-        public void onReply(LocalMessage mMessage, PgpData mPgpData);
+        public void onReplyAll(LocalMessage mMessage);
+        public void onReply(LocalMessage mMessage);
         public void displayMessageSubject(String title);
         public void setProgress(boolean b);
         public void showNextMessageOrReturn();
