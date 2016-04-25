@@ -53,11 +53,12 @@ import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
+import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback, OnCryptoClickListener, MessageCryptoCallback {
+        AttachmentViewCallback, MessageCryptoCallback, MessageCryptoMvpView {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -69,6 +70,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private static final int DECODE_MESSAGE_LOADER_ID = 2;
 
     public static final int REQUEST_MASK_CRYPTO_HELPER = 1 << 8;
+    public static final int REQUEST_MASK_CRYPTO_PRESENTER = 2 << 8;
 
     public static MessageViewFragment newInstance(MessageReference reference) {
         MessageViewFragment fragment = new MessageViewFragment();
@@ -90,6 +92,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private Handler handler = new Handler();
     private DownloadMessageListener downloadMessageListener = new DownloadMessageListener();
     private MessageCryptoHelper messageCryptoHelper;
+    private MessageCryptoPresenter messageCryptoPresenter = new MessageCryptoPresenter(this);
 
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
@@ -110,7 +113,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private LoaderCallbacks<LocalMessage> localMessageLoaderCallback = new LocalMessageLoaderCallback();
     private LoaderCallbacks<MessageViewInfo> decodeMessageLoaderCallback = new DecodeMessageLoaderCallback();
-    private MessageViewInfo messageViewInfo;
     private AttachmentViewInfo currentAttachmentViewInfo;
 
     @Override
@@ -150,7 +152,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
         mMessageView.setAttachmentCallback(this);
-        mMessageView.setOnCryptoClickListener(this);
+        mMessageView.setMessageCryptoPresenter(messageCryptoPresenter);
 
         mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
@@ -198,7 +200,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
 
-
     public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode & REQUEST_MASK_CRYPTO_HELPER) == REQUEST_MASK_CRYPTO_HELPER) {
             hideKeyboard();
@@ -206,6 +207,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             requestCode ^= REQUEST_MASK_CRYPTO_HELPER;
             messageCryptoHelper.onActivityResult(requestCode, resultCode, data);
             return;
+        }
+
+        if ((requestCode & REQUEST_MASK_CRYPTO_PRESENTER) == REQUEST_MASK_CRYPTO_PRESENTER) {
+            requestCode ^= REQUEST_MASK_CRYPTO_PRESENTER;
+            messageCryptoPresenter.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -277,7 +283,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private void startExtractingTextAndAttachments(MessageCryptoAnnotations annotations) {
         this.messageAnnotations = annotations;
-        getLoaderManager().initLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
+        getLoaderManager().restartLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
     }
 
     private void onDecodeMessageFinished(MessageViewInfo messageViewInfo) {
@@ -286,7 +292,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             messageViewInfo = MessageViewInfo.createWithErrorState(mMessage);
         }
 
-        this.messageViewInfo = messageViewInfo;
         showMessage(messageViewInfo);
     }
 
@@ -296,6 +301,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void showMessage(MessageViewInfo messageViewInfo) {
+        messageCryptoPresenter.setMessageViewInfo(messageViewInfo);
         try {
             mMessageView.setMessage(mAccount, messageViewInfo);
             mMessageView.setShowDownloadButton(mMessage);
@@ -452,6 +458,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
+
+        messageCryptoPresenter.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
             case ACTIVITY_CHOOSE_DIRECTORY: {
@@ -711,12 +719,22 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     @Override
-    public void onCryptoClick() {
-        MessageCryptoDisplayStatus displayStatus =
-                MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation);
+    public void startPendingIntentForCryptoPresenter(IntentSender si, int requestCode, Intent fillIntent,
+            int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
+        requestCode |= REQUEST_MASK_CRYPTO_PRESENTER;
+        getActivity().startIntentSenderForResult(
+                si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
+    }
 
+    @Override
+    public void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus) {
         CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus);
         dialog.show(getFragmentManager(), "crypto_info_dialog");
+    }
+
+    @Override
+    public void restartMessageCryptoProcessing() {
+        messageCryptoHelper.decryptOrVerifyMessagePartsIfNecessary(mMessage);
     }
 
     @Override

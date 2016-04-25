@@ -36,6 +36,8 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     private Button showPicturesButton;
     private List<MessageContainerView> messageContainerViewsWithPictures = new ArrayList<MessageContainerView>();
 
+    private MessageCryptoPresenter messageCryptoPresenter;
+
 
     public MessageTopView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -147,8 +149,9 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         attachmentCallback = callback;
     }
 
-    public void setOnCryptoClickListener(OnCryptoClickListener listener) {
-        mHeaderContainer.setOnCryptoClickListener(listener);
+    public void setMessageCryptoPresenter(MessageCryptoPresenter messageCryptoPresenter) {
+        this.messageCryptoPresenter = messageCryptoPresenter;
+        mHeaderContainer.setOnCryptoClickListener(messageCryptoPresenter);
     }
 
     public void enableDownloadButton() {
