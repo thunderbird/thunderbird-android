@@ -132,4 +132,8 @@ public class TextBody implements Body, SizeAware {
 
         return countingOutputStream.getCount();
     }
+
+    public String getEncoding() {
+        return mEncoding;
+    }
 }
