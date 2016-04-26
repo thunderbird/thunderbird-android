@@ -434,11 +434,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         afe.getMessage() == null ? "" : afe.getMessage());
             } catch (CertificateValidationException cve) {
                 handleCertificateValidationException(cve);
-            } catch (Throwable t) {
-                Log.e(K9.LOG_TAG, "Error while testing settings", t);
-                showErrorDialog(
-                        R.string.account_setup_failed_dlg_server_message_fmt,
-                        (t.getMessage() == null ? "" : t.getMessage()));
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Error while testing settings", e);
+                String message = e.getMessage() == null ? "" : e.getMessage();
+                showErrorDialog(R.string.account_setup_failed_dlg_server_message_fmt, message);
             }
             return null;
         }

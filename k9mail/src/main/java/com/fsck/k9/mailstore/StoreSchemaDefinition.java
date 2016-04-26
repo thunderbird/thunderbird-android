@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mailstore.migrations.Migrations;
@@ -34,6 +35,10 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         try {
             upgradeDatabase(db);
         } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                throw new Error("Exception while upgrading database", e);
+            }
+
             Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0", e);
             db.setVersion(0);
             upgradeDatabase(db);
