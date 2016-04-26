@@ -3,6 +3,7 @@ package com.fsck.k9.message;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +24,15 @@ import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
+import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +59,7 @@ import static org.mockito.Mockito.when;
 public class PgpMessageBuilderTest {
     public static final long TEST_SIGN_KEY_ID = 123L;
     public static final long TEST_SELF_ENCRYPT_KEY_ID = 234L;
-    public static final String TEST_MESSAGE_TEXT = "message text";
+    public static final String TEST_MESSAGE_TEXT = "message text with a ☭ CCCP symbol";
 
 
     private ComposeCryptoStatusBuilder cryptoStatusBuilder = createDefaultComposeCryptoStatusBuilder();
@@ -138,10 +143,11 @@ public class PgpMessageBuilderTest {
         Assert.assertEquals("multipart/signed must consist of two parts", 2, multipart.getCount());
 
         BodyPart contentBodyPart = multipart.getBodyPart(0);
-        Assert.assertEquals("first part must be the text content",
+        Assert.assertEquals("first part must have content type text/plain",
                 "text/plain", MimeUtility.getHeaderParameter(contentBodyPart.getContentType(), null));
-        assertContentOfBodyPartEquals("content must match the supplied detached signature",
-                contentBodyPart, TEST_MESSAGE_TEXT);
+        Assert.assertTrue("signed message body must be TextBody", contentBodyPart.getBody() instanceof TextBody);
+        Assert.assertEquals(MimeUtil.ENC_QUOTED_PRINTABLE, ((TextBody) contentBodyPart.getBody()).getEncoding());
+        assertContentOfBodyPartEquals("content must match the message text", contentBodyPart, TEST_MESSAGE_TEXT);
 
         BodyPart signatureBodyPart = multipart.getBodyPart(1);
         Assert.assertEquals("second part must be pgp signature",
@@ -279,14 +285,17 @@ public class PgpMessageBuilderTest {
         Assert.assertEquals("multipart/encrypted must consist of two parts", 2, multipart.getCount());
 
         BodyPart dummyBodyPart = multipart.getBodyPart(0);
-        Assert.assertEquals("second part must be pgp encrypted dummy part",
+        Assert.assertEquals("first part must be pgp encrypted dummy part",
                 "application/pgp-encrypted", dummyBodyPart.getContentType());
         assertContentOfBodyPartEquals("content must match the supplied detached signature",
                 dummyBodyPart, "Version: 1");
 
-        BodyPart signatureBodyPart = multipart.getBodyPart(1);
-        Assert.assertEquals("second part must be octet-stream",
-                "application/octet-stream", signatureBodyPart.getContentType());
+        BodyPart encryptedBodyPart = multipart.getBodyPart(1);
+        Assert.assertEquals("second part must be octet-stream of encrypted data",
+                "application/octet-stream", encryptedBodyPart.getContentType());
+        Assert.assertTrue("message body must be BinaryTempFileBody",
+                encryptedBodyPart.getBody() instanceof BinaryTempFileBody);
+        Assert.assertEquals(MimeUtil.ENC_7BIT, ((BinaryTempFileBody) encryptedBodyPart.getBody()).getEncoding());
     }
 
     @Test
@@ -322,7 +331,9 @@ public class PgpMessageBuilderTest {
         verifyNoMoreInteractions(mockCallback);
 
         MimeMessage message = captor.getValue();
-        Assert.assertEquals("message must be text/plain", "text/plain", message.getMimeType());
+        Assert.assertEquals("text/plain", message.getMimeType());
+        Assert.assertTrue("message body must be BinaryTempFileBody", message.getBody() instanceof BinaryTempFileBody);
+        Assert.assertEquals(MimeUtil.ENC_7BIT, ((BinaryTempFileBody) message.getBody()).getEncoding());
     }
 
     @Test
@@ -417,7 +428,8 @@ public class PgpMessageBuilderTest {
     private static void assertContentOfBodyPartEquals(String reason, BodyPart signatureBodyPart, String expected) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            signatureBodyPart.getBody().writeTo(bos);
+            InputStream inputStream = MimeUtility.decodeBody(signatureBodyPart.getBody());
+            IOUtils.copy(inputStream, bos);
             Assert.assertEquals(reason, expected, new String(bos.toByteArray()));
         } catch (IOException | MessagingException e) {
             Assert.fail();

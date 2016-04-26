@@ -2,6 +2,7 @@ package com.fsck.k9.message;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.app.PendingIntent;
@@ -22,8 +23,10 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
+import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -97,8 +100,8 @@ public class PgpMessageBuilder extends MessageBuilder {
                 pgpApiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, isPgpInlineMode);
             }
 
-            PendingIntent returnedPendingIntent =
-                    launchOpenPgpApiIntent(pgpApiIntent, shouldEncrypt || isPgpInlineMode, isPgpInlineMode);
+            PendingIntent returnedPendingIntent = launchOpenPgpApiIntent(
+                    pgpApiIntent, shouldEncrypt || isPgpInlineMode, shouldEncrypt || !isPgpInlineMode, isPgpInlineMode);
             if (returnedPendingIntent != null) {
                 queueMessageBuildPendingIntent(returnedPendingIntent, REQUEST_USER_INTERACTION);
                 return;
@@ -154,7 +157,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     private PendingIntent launchOpenPgpApiIntent(@NonNull Intent openPgpIntent,
-            boolean captureOutputPart, boolean writeBodyContentOnly) throws MessagingException {
+            boolean captureOutputPart, boolean capturedOutputPartIs7Bit, boolean writeBodyContentOnly) throws MessagingException {
         final MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
         String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
         if (contentType.length > 0) {
@@ -168,7 +171,8 @@ public class PgpMessageBuilder extends MessageBuilder {
         OutputStream outputStream = null;
         if (captureOutputPart) {
             try {
-                pgpResultTempBody = new BinaryTempFileBody(MimeUtil.ENC_7BIT);
+                pgpResultTempBody = new BinaryTempFileBody(
+                        capturedOutputPartIs7Bit ? MimeUtil.ENC_7BIT : MimeUtil.ENC_8BIT);
                 outputStream = pgpResultTempBody.getOutputStream();
             } catch (IOException e) {
                 throw new MessagingException("could not allocate temp file for storage!", e);
@@ -214,7 +218,9 @@ public class PgpMessageBuilder extends MessageBuilder {
             public void writeTo(OutputStream os) throws IOException {
                 try {
                     if (writeBodyContentOnly) {
-                        bodyPart.getBody().writeTo(os);
+                        Body body = bodyPart.getBody();
+                        InputStream inputStream = body.getInputStream();
+                        IOUtils.copy(inputStream, os);
                     } else {
                         bodyPart.writeTo(os);
                     }
@@ -298,6 +304,10 @@ public class PgpMessageBuilder extends MessageBuilder {
             throw new IllegalStateException("call to mimeBuildInlineMessage while pgp/inline isn't enabled!");
         }
 
+        boolean isCleartextSignature = !cryptoStatus.isEncryptionEnabled();
+        if (isCleartextSignature) {
+            inlineBodyPart.setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
+        }
         MimeMessageHelper.setBody(currentProcessedMimeMessage, inlineBodyPart);
     }
 
