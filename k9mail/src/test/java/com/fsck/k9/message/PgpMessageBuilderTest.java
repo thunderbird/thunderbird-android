@@ -369,6 +369,40 @@ public class PgpMessageBuilderTest {
         Assert.assertEquals("message must be text/plain", "text/plain", message.getMimeType());
     }
 
+    @Test
+    public void buildSignWithAttach__withInlineEnabled__shouldThrow() throws MessagingException {
+        ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
+                .setCryptoMode(CryptoMode.SIGN_ONLY)
+                .setEnablePgpInline(true)
+                .build();
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus);
+        pgpMessageBuilder.setAttachments(Collections.singletonList(new Attachment()));
+
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+
+        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
+        verifyNoMoreInteractions(mockCallback);
+        verifyNoMoreInteractions(openPgpApi);
+    }
+
+    @Test
+    public void buildEncryptWithAttach__withInlineEnabled__shouldThrow() throws MessagingException {
+        ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
+                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
+                .setEnablePgpInline(true)
+                .build();
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus);
+        pgpMessageBuilder.setAttachments(Collections.singletonList(new Attachment()));
+
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+
+        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
+        verifyNoMoreInteractions(mockCallback);
+        verifyNoMoreInteractions(openPgpApi);
+    }
+
     private ComposeCryptoStatusBuilder createDefaultComposeCryptoStatusBuilder() {
         return new ComposeCryptoStatusBuilder()
                 .setEnablePgpInline(false)

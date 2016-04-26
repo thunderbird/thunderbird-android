@@ -96,6 +96,12 @@ public class PgpMessageBuilder extends MessageBuilder {
                 return;
             }
 
+            boolean isSimpleTextMessage =
+                    MimeUtility.isSameMimeType("text/plain", currentProcessedMimeMessage.getMimeType());
+            if (isPgpInlineMode && !isSimpleTextMessage) {
+                throw new MessagingException("Attachments are not supported in PGP/INLINE format!");
+            }
+
             if (pgpApiIntent == null) {
                 pgpApiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, isPgpInlineMode);
             }
