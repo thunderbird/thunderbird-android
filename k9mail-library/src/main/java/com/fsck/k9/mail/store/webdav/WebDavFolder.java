@@ -497,19 +497,12 @@ class WebDavFolder extends Folder<WebDavMessage> {
             }
             WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
 
-            if (listener != null) {
-                listener.messageStarted(wdMessage.getUid(), i, count);
-            }
-
             try {
                 wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
             } catch (NullPointerException e) {
                 Log.v(LOG_TAG, "Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
             }
 
-            if (listener != null) {
-                listener.messageFinished(wdMessage, i, count);
-            }
         }
     }
 

@@ -7,15 +7,11 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.store.StoreConfig;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.protocol.HttpContext;
-import org.apache.tools.ant.taskdefs.condition.Http;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,18 +31,15 @@ import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,7 +50,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,6 +57,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class WebDavFolderTest {
@@ -142,14 +135,14 @@ public class WebDavFolderTest {
         headers.put("Brief", "t");
         when(mockStore.processRequest("https://localhost/webDavStoreUrl/testFolder", "SEARCH", getUrlsXml, headers))
                 .thenReturn(mockDataSet);
-        Map<String, String> urlUids = new HashMap<String, String>();
+        Map<String, String> urlUids = new HashMap<>();
         urlUids.put(uid, url);
         when(mockDataSet.getUidToUrl()).thenReturn(urlUids);
     }
 
     @Test
     public void folder_can_fetch_less_than_10_envelopes() throws MessagingException {
-        when(mockStore.processRequest(anyString(), anyString(), anyString(), anyMap()))
+        when(mockStore.processRequest(anyString(), anyString(), anyString(), anyMapOf(String.class, String.class)))
                 .thenReturn(mockDataSet);
 
         List<WebDavMessage> messages = new ArrayList<>();
@@ -165,7 +158,8 @@ public class WebDavFolderTest {
 
     @Test
     public void folder_can_fetch_more_than_10_envelopes() throws MessagingException {
-        when(mockStore.processRequest(anyString(), anyString(), anyString(), anyMap()))
+        when(mockStore.processRequest(anyString(), anyString(), anyString(),
+                anyMapOf(String.class, String.class)))
                 .thenReturn(mockDataSet);
 
         List<WebDavMessage> messages = new ArrayList<>();
@@ -180,7 +174,8 @@ public class WebDavFolderTest {
 
     @Test
     public void folder_can_fetch_less_than_20_flags() throws MessagingException {
-        when(mockStore.processRequest(anyString(), anyString(), anyString(), anyMap()))
+        when(mockStore.processRequest(anyString(), anyString(), anyString(),
+                anyMapOf(String.class, String.class)))
                 .thenReturn(mockDataSet);
 
         List<WebDavMessage> messages = new ArrayList<>();
@@ -195,7 +190,8 @@ public class WebDavFolderTest {
 
     @Test
     public void folder_can_fetch_more_than_20_flags() throws MessagingException {
-        when(mockStore.processRequest(anyString(), anyString(), anyString(), anyMap()))
+        when(mockStore.processRequest(anyString(), anyString(), anyString(),
+                anyMapOf(String.class, String.class)))
                 .thenReturn(mockDataSet);
 
         List<WebDavMessage> messages = new ArrayList<>();
@@ -237,6 +233,39 @@ public class WebDavFolderTest {
         folder.fetch(messages, profile, listener);
         verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
         verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
+    }
+
+    @Test
+    public void folder_does_not_notify_listener_twice_when_fetching_flags_and_bodies()
+            throws MessagingException, IOException, URISyntaxException {
+        setupStoreForMessageFetching();
+        when(mockStore.processRequest(anyString(), anyString(), anyString(),
+                anyMapOf(String.class, String.class)))
+                .thenReturn(mockDataSet);
+        List<WebDavMessage> messages = setup25MessagesToFetch();
+        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenAnswer(
+                new Answer<HttpResponse>() {
+                    @Override
+                    public HttpResponse answer(InvocationOnMock invocation) throws Throwable {
+                        HttpResponse httpResponse = mock(HttpResponse.class);
+                        StatusLine statusLine = mock(StatusLine.class);
+                        when(httpResponse.getStatusLine()).thenReturn(statusLine);
+                        when(statusLine.getStatusCode()).thenReturn(200);
+
+                        BasicHttpEntity httpEntity = new BasicHttpEntity();
+                        String body = "";
+                        httpEntity.setContent(new ByteArrayInputStream(body.getBytes("UTF-8")));
+                        when(httpResponse.getEntity()).thenReturn(httpEntity);
+                        return httpResponse;
+                    }
+                });
+
+        FetchProfile profile = new FetchProfile();
+        profile.add(FetchProfile.Item.FLAGS);
+        profile.add(FetchProfile.Item.BODY);
+        folder.fetch(messages, profile, listener);
+        verify(listener, times(25)).messageStarted(any(String.class), anyInt(), anyInt());
+        verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), anyInt());
     }
 
     private void setupStoreForMessageFetching() {
@@ -385,7 +414,7 @@ public class WebDavFolderTest {
         when(mockStore.processRequest(eq("https://localhost/webDavStoreUrl/testFolder"), eq("SEARCH"),
                 eq(messagesXml), Matchers.<Map<String, String>>any())).thenReturn(mockDataSet);
 
-        folder.getMessages(1, 11, new Date(), listener);
+        folder.getMessages(messageStart, messageEnd, new Date(), listener);
 
         verify(listener, times(5)).messageStarted(anyString(), anyInt(), eq(5));
         verify(listener, times(5)).messageFinished(any(WebDavMessage.class), anyInt(), eq(5));
