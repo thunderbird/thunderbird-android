@@ -88,7 +88,7 @@ public class MessagingListener {
             Message message) {}
 
     public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-            Message message) {}
+            LocalMessage message) {}
 
     public void loadMessageForViewFinished(Account account, String folder, String uid,
             LocalMessage message) {}

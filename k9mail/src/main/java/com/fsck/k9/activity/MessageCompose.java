@@ -1,15 +1,11 @@
 package com.fsck.k9.activity;
 
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
@@ -45,12 +41,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -59,7 +50,6 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
-import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
@@ -82,11 +72,9 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.SimpleTextWatcher;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -94,14 +82,12 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.IdentityHeaderParser;
-import com.fsck.k9.message.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
@@ -109,15 +95,8 @@ import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.ui.EolConvertingEditText;
-import com.fsck.k9.view.MessageWebView;
-import org.htmlcleaner.CleanerProperties;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.SimpleHtmlSerializer;
-import org.htmlcleaner.TagNode;
-import org.openintents.openpgp.IOpenPgpService2;
-import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpServiceConnection;
-import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
+import com.fsck.k9.ui.compose.QuotedMessageMvpView;
+import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 
 
 @SuppressWarnings("deprecation")
@@ -143,12 +122,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private static final String STATE_KEY_ATTACHMENTS =
         "com.fsck.k9.activity.MessageCompose.attachments";
-    private static final String STATE_KEY_QUOTED_TEXT_MODE =
-        "com.fsck.k9.activity.MessageCompose.QuotedTextShown";
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
         "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
     private static final String STATE_KEY_DRAFT_ID = "com.fsck.k9.activity.MessageCompose.draftId";
-    private static final String STATE_KEY_HTML_QUOTE = "com.fsck.k9.activity.MessageCompose.HTMLQuote";
     private static final String STATE_IDENTITY_CHANGED =
         "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
@@ -157,10 +133,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
     private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
     private static final String STATE_KEY_DRAFT_NEEDS_SAVING = "com.fsck.k9.activity.MessageCompose.draftNeedsSaving";
-    private static final String STATE_KEY_FORCE_PLAIN_TEXT =
-            "com.fsck.k9.activity.MessageCompose.forcePlainText";
-    private static final String STATE_KEY_QUOTED_TEXT_FORMAT =
-            "com.fsck.k9.activity.MessageCompose.quotedTextFormat";
     private static final String STATE_KEY_NUM_ATTACHMENTS_LOADING = "numAttachmentsLoading";
     private static final String STATE_KEY_WAITING_FOR_ATTACHMENTS = "waitingForAttachments";
     private static final String STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT = "alreadyNotifiedUserOfEmptySubject";
@@ -188,6 +160,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * - "Aw:" (german: abbreviation for "Antwort")
      */
     private static final Pattern PREFIX = Pattern.compile("^AW[:\\s]\\s*", Pattern.CASE_INSENSITIVE);
+    private QuotedMessagePresenter quotedMessagePresenter;
 
     /**
      * The account used for message composition.
@@ -211,24 +184,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * draft actions).
      */
     private MessageReference mMessageReference;
-
-    private Message mSourceMessage;
-
-    /**
-     * "Original" message body
-     *
-     * <p>
-     * The contents of this string will be used instead of the body of a referenced message when
-     * replying to or forwarding a message.<br>
-     * Right now this is only used when replying to a signed or encrypted message. It then contains
-     * the stripped/decrypted body of that message.
-     * </p>
-     * <p><strong>Note:</strong>
-     * When this field is not {@code null} we assume that the message we are composing right now
-     * should be encrypted.
-     * </p>
-     */
-    private String mSourceMessageBody;
 
     /**
      * Indicates that the source message has been processed at least once and should not
@@ -260,7 +215,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         recipientPresenter.onCryptoModeChanged(cryptoMode);
     }
 
-    enum Action {
+    public enum Action {
         COMPOSE(R.string.compose_title_compose),
         REPLY(R.string.compose_title_reply),
         REPLY_ALL(R.string.compose_title_reply_all),
@@ -284,32 +239,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private Action mAction;
 
+    private Listener mListener = new Listener();
+
     private boolean mReadReceipt = false;
-
-    private QuotedTextMode mQuotedTextMode = QuotedTextMode.NONE;
-
-    /**
-     * Contains the format of the quoted text (text vs. HTML).
-     */
-    private SimpleMessageFormat mQuotedTextFormat;
-
-    /**
-     * When this it {@code true} the message format setting is ignored and we're always sending
-     * a text/plain message.
-     */
-    private boolean mForcePlainText = false;
 
     private TextView mChooseIdentityButton;
     private EditText mSubjectView;
     private EolConvertingEditText mSignatureView;
     private EolConvertingEditText mMessageContentView;
     private LinearLayout mAttachments;
-    private Button mQuotedTextShow;
-    private View mQuotedTextBar;
-    private ImageButton mQuotedTextEdit;
-    private EolConvertingEditText mQuotedText;
-    private MessageWebView mQuotedHTML;
-    private InsertableHtmlContent mQuotedHtmlContent;   // Container for HTML reply as it's being built.
 
     private String mReferences;
     private String mInReplyTo;
@@ -325,8 +263,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * </p>
      */
     private SimpleMessageFormat mMessageFormat;
-
-    private QuoteStyle mQuoteStyle;
 
     private boolean draftNeedsSaving = false;
     private boolean isInSubActivity = false;
@@ -394,8 +330,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     };
 
-    private Listener mListener = new Listener();
-
     private FontSizes mFontSizes = K9.getFontSizes();
 
 
@@ -430,11 +364,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         final Intent intent = getIntent();
 
         mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
-        mSourceMessageBody = intent.getStringExtra(EXTRA_MESSAGE_BODY);
-
-        if (K9.DEBUG && mSourceMessageBody != null) {
-            Log.d(K9.LOG_TAG, "Composing message with explicitly specified message body.");
-        }
 
         final String accountUuid = (mMessageReference != null) ?
                                    mMessageReference.getAccountUuid() :
@@ -471,27 +400,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         EolConvertingEditText upperSignature = (EolConvertingEditText)findViewById(R.id.upper_signature);
         EolConvertingEditText lowerSignature = (EolConvertingEditText)findViewById(R.id.lower_signature);
 
+        String sourceMessageBody = intent.getStringExtra(EXTRA_MESSAGE_BODY);
+
+        QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
+        quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, mAccount, sourceMessageBody);
+
         mMessageContentView = (EolConvertingEditText)findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
-        mQuotedTextShow = (Button)findViewById(R.id.quoted_text_show);
-        mQuotedTextBar = findViewById(R.id.quoted_text_bar);
-        mQuotedTextEdit = (ImageButton)findViewById(R.id.quoted_text_edit);
-        ImageButton mQuotedTextDelete = (ImageButton) findViewById(R.id.quoted_text_delete);
-        mQuotedText = (EolConvertingEditText)findViewById(R.id.quoted_text);
-        mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
-
-        mQuotedHTML = (MessageWebView) findViewById(R.id.quoted_html);
-        mQuotedHTML.configure();
-        // Disable the ability to click links in the quoted HTML page. I think this is a nice feature, but if someone
-        // feels this should be a preference (or should go away all together), I'm ok with that too. -achen 20101130
-        mQuotedHTML.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return true;
-            }
-        });
 
         TextWatcher draftNeedsChangingTextWatcher = new SimpleTextWatcher() {
             @Override
@@ -509,25 +426,21 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         };
 
         recipientMvpView.addTextChangedListener(draftNeedsChangingTextWatcher);
+        quotedMessageMvpView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
         mSubjectView.addTextChangedListener(draftNeedsChangingTextWatcher);
 
         mMessageContentView.addTextChangedListener(draftNeedsChangingTextWatcher);
-        mQuotedText.addTextChangedListener(draftNeedsChangingTextWatcher);
 
         /*
          * We set this to invisible by default. Other methods will turn it back on if it's
          * needed.
          */
 
-        showOrHideQuotedText(QuotedTextMode.NONE);
+        quotedMessagePresenter.showOrHideQuotedText(QuotedTextMode.NONE);
 
         mSubjectView.setOnFocusChangeListener(this);
         mMessageContentView.setOnFocusChangeListener(this);
-
-        mQuotedTextShow.setOnClickListener(this);
-        mQuotedTextEdit.setOnClickListener(this);
-        mQuotedTextDelete.setOnClickListener(this);
 
         if (savedInstanceState != null) {
             /*
@@ -578,7 +491,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         mReadReceipt = mAccount.isMessageReadReceiptAlways();
-        mQuoteStyle = mAccount.getQuoteStyle();
 
         updateFrom();
 
@@ -629,9 +541,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // Set font size of input controls
         int fontSize = mFontSizes.getMessageComposeInput();
         recipientMvpView.setFontSizes(mFontSizes, fontSize);
+        quotedMessageMvpView.setFontSizes(mFontSizes, fontSize);
         mFontSizes.setViewTextSize(mSubjectView, fontSize);
         mFontSizes.setViewTextSize(mMessageContentView, fontSize);
-        mFontSizes.setViewTextSize(mQuotedText, fontSize);
         mFontSizes.setViewTextSize(mSignatureView, fontSize);
 
 
@@ -782,21 +694,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         outState.putInt(STATE_KEY_NUM_ATTACHMENTS_LOADING, mNumAttachmentsLoading);
         outState.putString(STATE_KEY_WAITING_FOR_ATTACHMENTS, mWaitingForAttachments.name());
         outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, createAttachmentList());
-        outState.putSerializable(STATE_KEY_QUOTED_TEXT_MODE, mQuotedTextMode);
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, mSourceMessageProcessed);
         outState.putLong(STATE_KEY_DRAFT_ID, mDraftId);
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
         outState.putString(STATE_IN_REPLY_TO, mInReplyTo);
         outState.putString(STATE_REFERENCES, mReferences);
-        outState.putSerializable(STATE_KEY_HTML_QUOTE, mQuotedHtmlContent);
         outState.putBoolean(STATE_KEY_READ_RECEIPT, mReadReceipt);
         outState.putBoolean(STATE_KEY_DRAFT_NEEDS_SAVING, draftNeedsSaving);
-        outState.putBoolean(STATE_KEY_FORCE_PLAIN_TEXT, mForcePlainText);
-        outState.putSerializable(STATE_KEY_QUOTED_TEXT_FORMAT, mQuotedTextFormat);
         outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
 
         recipientPresenter.onSaveInstanceState(outState);
+        quotedMessagePresenter.onSaveInstanceState(outState);
     }
 
     @Override
@@ -842,12 +751,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mReadReceipt = savedInstanceState.getBoolean(STATE_KEY_READ_RECEIPT);
 
         recipientPresenter.onRestoreInstanceState(savedInstanceState);
-
-        mQuotedHtmlContent =
-                (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
-        if (mQuotedHtmlContent != null && mQuotedHtmlContent.getQuotedContent() != null) {
-            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
-        }
+        quotedMessagePresenter.onRestoreInstanceState(savedInstanceState);
 
         mDraftId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
@@ -855,13 +759,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mInReplyTo = savedInstanceState.getString(STATE_IN_REPLY_TO);
         mReferences = savedInstanceState.getString(STATE_REFERENCES);
         draftNeedsSaving = savedInstanceState.getBoolean(STATE_KEY_DRAFT_NEEDS_SAVING);
-        mForcePlainText = savedInstanceState.getBoolean(STATE_KEY_FORCE_PLAIN_TEXT);
         alreadyNotifiedUserOfEmptySubject = savedInstanceState.getBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT);
-        mQuotedTextFormat = (SimpleMessageFormat) savedInstanceState.getSerializable(
-                STATE_KEY_QUOTED_TEXT_FORMAT);
-
-        showOrHideQuotedText(
-                (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
 
         updateFrom();
 
@@ -886,9 +784,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 return null;
             }
 
-            OpenPgpApi openPgpApi = recipientPresenter.getOpenPgpApi();
-            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), openPgpApi);
-            pgpBuilder.setCryptoStatus(cryptoStatus);
+            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext());
+            recipientPresenter.builderSetProperties(pgpBuilder);
             builder = pgpBuilder;
         } else {
             builder = new SimpleMessageBuilder(getApplicationContext());
@@ -906,17 +803,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setText(mMessageContentView.getCharacters())
                 .setAttachments(createAttachmentList())
                 .setSignature(mSignatureView.getCharacters())
-                .setQuoteStyle(mQuoteStyle)
-                .setQuotedTextMode(mQuotedTextMode)
-                .setQuotedText(mQuotedText.getCharacters())
-                .setQuotedHtmlContent(mQuotedHtmlContent)
-                .setReplyAfterQuote(mAccount.isReplyAfterQuote())
                 .setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText())
                 .setIdentityChanged(mIdentityChanged)
                 .setSignatureChanged(mSignatureChanged)
                 .setCursorPosition(mMessageContentView.getSelectionStart())
                 .setMessageReference(mMessageReference)
                 .setDraft(isDraft);
+
+        quotedMessagePresenter.builderSetProperties(builder);
 
         return builder;
     }
@@ -1320,6 +1214,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // Please note that we're not hiding the fields if the user switches back to an account
             // that doesn't have this setting checked.
             recipientPresenter.onSwitchAccount(mAccount);
+            quotedMessagePresenter.onSwitchAccount(mAccount);
 
             // not sure how to handle mFolder, mSourceMessage?
         }
@@ -1362,74 +1257,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 mAttachments.removeView((View) view.getTag());
                 draftNeedsSaving = true;
                 break;
-            case R.id.quoted_text_show:
-                showOrHideQuotedText(QuotedTextMode.SHOW);
-                updateMessageFormat();
-                draftNeedsSaving = true;
-                break;
-            case R.id.quoted_text_delete:
-                showOrHideQuotedText(QuotedTextMode.HIDE);
-                updateMessageFormat();
-                draftNeedsSaving = true;
-                break;
-            case R.id.quoted_text_edit:
-                mForcePlainText = true;
-                if (mMessageReference != null) { // shouldn't happen...
-                    // TODO - Should we check if mSourceMessageBody is already present and bypass the MessagingController call?
-                    MessagingController.getInstance(getApplication()).addListener(mListener);
-                    final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.getAccountUuid());
-                    final String folderName = mMessageReference.getFolderName();
-                    final String sourceMessageUid = mMessageReference.getUid();
-                    MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
-                }
-                break;
             case R.id.identity:
                 showDialog(DIALOG_CHOOSE_IDENTITY);
                 break;
         }
     }
 
-    /**
-     * Show or hide the quoted text.
-     *
-     * @param mode
-     *         The value to set {@link #mQuotedTextMode} to.
-     */
-    private void showOrHideQuotedText(QuotedTextMode mode) {
-        mQuotedTextMode = mode;
-        switch (mode) {
-            case NONE:
-            case HIDE: {
-                if (mode == QuotedTextMode.NONE) {
-                    mQuotedTextShow.setVisibility(View.GONE);
-                } else {
-                    mQuotedTextShow.setVisibility(View.VISIBLE);
-                }
-                mQuotedTextBar.setVisibility(View.GONE);
-                mQuotedText.setVisibility(View.GONE);
-                mQuotedHTML.setVisibility(View.GONE);
-                mQuotedTextEdit.setVisibility(View.GONE);
-                break;
-            }
-            case SHOW: {
-                mQuotedTextShow.setVisibility(View.GONE);
-                mQuotedTextBar.setVisibility(View.VISIBLE);
-
-                if (mQuotedTextFormat == SimpleMessageFormat.HTML) {
-                    mQuotedText.setVisibility(View.GONE);
-                    mQuotedHTML.setVisibility(View.VISIBLE);
-                    mQuotedTextEdit.setVisibility(View.VISIBLE);
-                } else {
-                    mQuotedText.setVisibility(View.VISIBLE);
-                    mQuotedHTML.setVisibility(View.GONE);
-                    mQuotedTextEdit.setVisibility(View.GONE);
-                }
-                break;
-            }
-        }
-    }
-
-    private void askBeforeDiscard(){
+    private void askBeforeDiscard() {
         if (K9.confirmDiscardMessage()) {
             showDialog(DIALOG_CONFIRM_DISCARD);
         } else {
@@ -1666,6 +1500,24 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return true;
     }
 
+
+    public void saveDraftEventually() {
+        draftNeedsSaving = true;
+    }
+
+    public void loadQuotedTextForEdit() {
+        if (mMessageReference == null) { // shouldn't happen...
+            throw new IllegalStateException("tried to edit quoted message with no referenced message");
+        }
+
+        // TODO - Should we check if mSourceMessageBody is already present and bypass the MessagingController call?
+        MessagingController.getInstance(getApplication()).addListener(mListener);
+        final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.getAccountUuid());
+        final String folderName = mMessageReference.getFolderName();
+        final String sourceMessageUid = mMessageReference.getUid();
+        MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
+    }
+
     /**
      * Pull out the parts of the now loaded source message and apply them to the new message
      * depending on the type of message being composed.
@@ -1744,7 +1596,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         // Quote the message and setup the UI.
-        populateUIWithQuotedMessage(mAccount.isDefaultQuotedTextShown());
+        quotedMessagePresenter.initFromReplyToMessage(message, mAction);
 
         if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
             Identity useIdentity = IdentityHelper.getRecipientIdentityFromMessage(mAccount, message);
@@ -1763,7 +1615,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             mSubjectView.setText(subject);
         }
-        mQuoteStyle = QuoteStyle.HEADER;
 
         // "Be Like Thunderbird" - on forwarded messages, set the message ID
         // of the forwarded message in the references and the reply to.  TB
@@ -1779,7 +1630,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         // Quote the message and setup the UI.
-        populateUIWithQuotedMessage(true);
+        quotedMessagePresenter.processMessageToForward(message);
 
         if (!mSourceMessageProcessed) {
             if (message.isSet(Flag.X_DOWNLOADED_PARTIAL) || !loadAttachments(message, 0)) {
@@ -1789,8 +1640,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void processDraftMessage(LocalMessage message) throws MessagingException {
-        String showQuotedTextMode = "NONE";
-
         mDraftId = MessagingController.getInstance(getApplication()).getId(message);
         mSubjectView.setText(message.getSubject());
 
@@ -1862,508 +1711,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         }
 
-        int cursorPosition = 0;
-        if (k9identity.containsKey(IdentityField.CURSOR_POSITION)) {
-            try {
-                cursorPosition = Integer.parseInt(k9identity.get(IdentityField.CURSOR_POSITION));
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Could not parse cursor position for MessageCompose; continuing.", e);
-            }
-        }
-
-        if (k9identity.containsKey(IdentityField.QUOTED_TEXT_MODE)) {
-            showQuotedTextMode = k9identity.get(IdentityField.QUOTED_TEXT_MODE);
-        }
-
         mIdentity = newIdentity;
 
         updateSignature();
         updateFrom();
 
-        Integer bodyLength = k9identity.get(IdentityField.LENGTH) != null
-                             ? Integer.valueOf(k9identity.get(IdentityField.LENGTH))
-                             : 0;
-        Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
-                             ? Integer.valueOf(k9identity.get(IdentityField.OFFSET))
-                             : 0;
-        Integer bodyFooterOffset = k9identity.get(IdentityField.FOOTER_OFFSET) != null
-                ? Integer.valueOf(k9identity.get(IdentityField.FOOTER_OFFSET))
-                : null;
-        Integer bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null
-                ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_LENGTH))
-                : null;
-        Integer bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
-                ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_OFFSET))
-                : null;
-        mQuoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
-                ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
-                : mAccount.getQuoteStyle();
-
-
-        QuotedTextMode quotedMode;
-        try {
-            quotedMode = QuotedTextMode.valueOf(showQuotedTextMode);
-        } catch (Exception e) {
-            quotedMode = QuotedTextMode.NONE;
-        }
-
-        // Always respect the user's current composition format preference, even if the
-        // draft was saved in a different format.
-        // TODO - The current implementation doesn't allow a user in HTML mode to edit a draft that wasn't saved with K9mail.
-        String messageFormatString = k9identity.get(IdentityField.MESSAGE_FORMAT);
-
-        MessageFormat messageFormat = null;
-        if (messageFormatString != null) {
-            try {
-                messageFormat = MessageFormat.valueOf(messageFormatString);
-            } catch (Exception e) { /* do nothing */ }
-        }
-
-        if (messageFormat == null) {
-            // This message probably wasn't created by us. The exception is legacy
-            // drafts created before the advent of HTML composition. In those cases,
-            // we'll display the whole message (including the quoted part) in the
-            // composition window. If that's the case, try and convert it to text to
-            // match the behavior in text mode.
-            mMessageContentView.setCharacters(getBodyTextFromMessage(message, SimpleMessageFormat.TEXT));
-            mForcePlainText = true;
-
-            showOrHideQuotedText(quotedMode);
-            return;
-        }
-
-
-        if (messageFormat == MessageFormat.HTML) {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            if (part != null) { // Shouldn't happen if we were the one who saved it.
-                mQuotedTextFormat = SimpleMessageFormat.HTML;
-                String text = MessageExtractor.getTextFromPart(part);
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
-                }
-
-                if (bodyOffset + bodyLength > text.length()) {
-                    // The draft was edited outside of K-9 Mail?
-                    Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid LENGTH/OFFSET");
-                    bodyOffset = 0;
-                    bodyLength = 0;
-                }
-                // Grab our reply text.
-                String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
-                mMessageContentView.setCharacters(HtmlConverter.htmlToText(bodyText));
-
-                // Regenerate the quoted html without our user content in it.
-                StringBuilder quotedHTML = new StringBuilder();
-                quotedHTML.append(text.substring(0, bodyOffset));   // stuff before the reply
-                quotedHTML.append(text.substring(bodyOffset + bodyLength));
-                if (quotedHTML.length() > 0) {
-                    mQuotedHtmlContent = new InsertableHtmlContent();
-                    mQuotedHtmlContent.setQuotedContent(quotedHTML);
-                    // We don't know if bodyOffset refers to the header or to the footer
-                    mQuotedHtmlContent.setHeaderInsertionPoint(bodyOffset);
-                    if (bodyFooterOffset != null) {
-                        mQuotedHtmlContent.setFooterInsertionPoint(bodyFooterOffset);
-                    } else {
-                        mQuotedHtmlContent.setFooterInsertionPoint(bodyOffset);
-                    }
-                    mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
-                }
-            }
-            if (bodyPlainOffset != null && bodyPlainLength != null) {
-                processSourceMessageText(message, bodyPlainOffset, bodyPlainLength, false);
-            }
-        } else if (messageFormat == MessageFormat.TEXT) {
-            mQuotedTextFormat = SimpleMessageFormat.TEXT;
-            processSourceMessageText(message, bodyOffset, bodyLength, true);
-        } else {
-            Log.e(K9.LOG_TAG, "Unhandled message format.");
-        }
-
-        // Set the cursor position if we have it.
-        try {
-            mMessageContentView.setSelection(cursorPosition);
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not set cursor position in MessageCompose; ignoring.", e);
-        }
-
-        showOrHideQuotedText(quotedMode);
-    }
-
-    /**
-     * Pull out the parts of the now loaded source message and apply them to the new message
-     * depending on the type of message being composed.
-     * @param message Source message
-     * @param bodyOffset Insertion point for reply.
-     * @param bodyLength Length of reply.
-     * @param viewMessageContent Update mMessageContentView or not.
-     * @throws MessagingException
-     */
-    private void processSourceMessageText(Message message, Integer bodyOffset, Integer bodyLength,
-            boolean viewMessageContent) throws MessagingException {
-        Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-        if (textPart != null) {
-            String text = MessageExtractor.getTextFromPart(textPart);
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
-            }
-
-            // If we had a body length (and it was valid), separate the composition from the quoted text
-            // and put them in their respective places in the UI.
-            if (bodyLength > 0) {
-                try {
-                    String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
-
-                    // Regenerate the quoted text without our user content in it nor added newlines.
-                    StringBuilder quotedText = new StringBuilder();
-                    if (bodyOffset == 0 && text.substring(bodyLength, bodyLength + 4).equals("\r\n\r\n")) {
-                        // top-posting: ignore two newlines at start of quote
-                        quotedText.append(text.substring(bodyLength + 4));
-                    } else if (bodyOffset + bodyLength == text.length() &&
-                            text.substring(bodyOffset - 2, bodyOffset).equals("\r\n")) {
-                        // bottom-posting: ignore newline at end of quote
-                        quotedText.append(text.substring(0, bodyOffset - 2));
-                    } else {
-                        quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
-                        quotedText.append(text.substring(bodyOffset + bodyLength));
-                    }
-
-                    if (viewMessageContent) {
-                        mMessageContentView.setCharacters(bodyText);
-                    }
-
-                    mQuotedText.setCharacters(quotedText);
-                } catch (IndexOutOfBoundsException e) {
-                    // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
-                    Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid bodyOffset/bodyLength");
-                    if (viewMessageContent) {
-                        mMessageContentView.setCharacters(text);
-                    }
-                }
-            } else {
-                if (viewMessageContent) {
-                    mMessageContentView.setCharacters(text);
-                }
-            }
-        }
-    }
-
-    // Regexes to check for signature.
-    private static final Pattern DASH_SIGNATURE_PLAIN = Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
-    private static final Pattern DASH_SIGNATURE_HTML = Pattern.compile("(<br( /)?>|\r?\n)-- <br( /)?>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern BLOCKQUOTE_START = Pattern.compile("<blockquote", Pattern.CASE_INSENSITIVE);
-    private static final Pattern BLOCKQUOTE_END = Pattern.compile("</blockquote>", Pattern.CASE_INSENSITIVE);
-
-    /**
-     * Build and populate the UI with the quoted message.
-     *
-     * @param showQuotedText
-     *         {@code true} if the quoted text should be shown, {@code false} otherwise.
-     *
-     * @throws MessagingException
-     */
-    private void populateUIWithQuotedMessage(boolean showQuotedText) throws MessagingException {
-        MessageFormat origMessageFormat = mAccount.getMessageFormat();
-        if (mForcePlainText || origMessageFormat == MessageFormat.TEXT) {
-            // Use plain text for the quoted message
-            mQuotedTextFormat = SimpleMessageFormat.TEXT;
-        } else if (origMessageFormat == MessageFormat.AUTO) {
-            // Figure out which message format to use for the quoted text by looking if the source
-            // message contains a text/html part. If it does, we use that.
-            mQuotedTextFormat =
-                    (MimeUtility.findFirstPartByMimeType(mSourceMessage, "text/html") == null) ?
-                            SimpleMessageFormat.TEXT : SimpleMessageFormat.HTML;
-        } else {
-            mQuotedTextFormat = SimpleMessageFormat.HTML;
-        }
-
-        // TODO -- I am assuming that mSourceMessageBody will always be a text part.  Is this a safe assumption?
-
-        // Handle the original message in the reply
-        // If we already have mSourceMessageBody, use that.  It's pre-populated if we've got crypto going on.
-        String content = (mSourceMessageBody != null) ?
-                mSourceMessageBody :
-                getBodyTextFromMessage(mSourceMessage, mQuotedTextFormat);
-
-        if (mQuotedTextFormat == SimpleMessageFormat.HTML) {
-            // Strip signature.
-            // closing tags such as </div>, </span>, </table>, </pre> will be cut off.
-            if (mAccount.isStripSignature() &&
-                    (mAction == Action.REPLY || mAction == Action.REPLY_ALL)) {
-                Matcher dashSignatureHtml = DASH_SIGNATURE_HTML.matcher(content);
-                if (dashSignatureHtml.find()) {
-                    Matcher blockquoteStart = BLOCKQUOTE_START.matcher(content);
-                    Matcher blockquoteEnd = BLOCKQUOTE_END.matcher(content);
-                    List<Integer> start = new ArrayList<>();
-                    List<Integer> end = new ArrayList<>();
-
-                    while (blockquoteStart.find()) {
-                        start.add(blockquoteStart.start());
-                    }
-                    while (blockquoteEnd.find()) {
-                        end.add(blockquoteEnd.start());
-                    }
-                    if (start.size() != end.size()) {
-                        Log.d(K9.LOG_TAG, "There are " + start.size() + " <blockquote> tags, but " +
-                                end.size() + " </blockquote> tags. Refusing to strip.");
-                    } else if (start.size() > 0) {
-                        // Ignore quoted signatures in blockquotes.
-                        dashSignatureHtml.region(0, start.get(0));
-                        if (dashSignatureHtml.find()) {
-                            // before first <blockquote>.
-                            content = content.substring(0, dashSignatureHtml.start());
-                        } else {
-                            for (int i = 0; i < start.size() - 1; i++) {
-                                // within blockquotes.
-                                if (end.get(i) < start.get(i + 1)) {
-                                    dashSignatureHtml.region(end.get(i), start.get(i + 1));
-                                    if (dashSignatureHtml.find()) {
-                                        content = content.substring(0, dashSignatureHtml.start());
-                                        break;
-                                    }
-                                }
-                            }
-                            if (end.get(end.size() - 1) < content.length()) {
-                                // after last </blockquote>.
-                                dashSignatureHtml.region(end.get(end.size() - 1), content.length());
-                                if (dashSignatureHtml.find()) {
-                                    content = content.substring(0, dashSignatureHtml.start());
-                                }
-                            }
-                        }
-                    } else {
-                        // No blockquotes found.
-                        content = content.substring(0, dashSignatureHtml.start());
-                    }
-                }
-
-                // Fix the stripping off of closing tags if a signature was stripped,
-                // as well as clean up the HTML of the quoted message.
-                HtmlCleaner cleaner = new HtmlCleaner();
-                CleanerProperties properties = cleaner.getProperties();
-
-                // see http://htmlcleaner.sourceforge.net/parameters.php for descriptions
-                properties.setNamespacesAware(false);
-                properties.setAdvancedXmlEscape(false);
-                properties.setOmitXmlDeclaration(true);
-                properties.setOmitDoctypeDeclaration(false);
-                properties.setTranslateSpecialEntities(false);
-                properties.setRecognizeUnicodeChars(false);
-
-                TagNode node = cleaner.clean(content);
-                SimpleHtmlSerializer htmlSerialized = new SimpleHtmlSerializer(properties);
-                content = htmlSerialized.getAsString(node, "UTF8");
-            }
-
-            // Add the HTML reply header to the top of the content.
-            mQuotedHtmlContent = quoteOriginalHtmlMessage(mSourceMessage, content, mQuoteStyle);
-
-            // Load the message with the reply header.
-            mQuotedHTML.setText(mQuotedHtmlContent.getQuotedContent());
-
-            // TODO: Also strip the signature from the text/plain part
-            mQuotedText.setCharacters(quoteOriginalTextMessage(mSourceMessage,
-                    getBodyTextFromMessage(mSourceMessage, SimpleMessageFormat.TEXT), mQuoteStyle));
-
-        } else if (mQuotedTextFormat == SimpleMessageFormat.TEXT) {
-            if (mAccount.isStripSignature() &&
-                    (mAction == Action.REPLY || mAction == Action.REPLY_ALL)) {
-                if (DASH_SIGNATURE_PLAIN.matcher(content).find()) {
-                    content = DASH_SIGNATURE_PLAIN.matcher(content).replaceFirst("\r\n");
-                }
-            }
-
-            mQuotedText.setCharacters(quoteOriginalTextMessage(mSourceMessage, content, mQuoteStyle));
-        }
-
-        if (showQuotedText) {
-            showOrHideQuotedText(QuotedTextMode.SHOW);
-        } else {
-            showOrHideQuotedText(QuotedTextMode.HIDE);
-        }
-    }
-
-    /**
-     * Fetch the body text from a message in the desired message format. This method handles
-     * conversions between formats (html to text and vice versa) if necessary.
-     * @param message Message to analyze for body part.
-     * @param format Desired format.
-     * @return Text in desired format.
-     * @throws MessagingException
-     */
-    private String getBodyTextFromMessage(final Message message, final SimpleMessageFormat format)
-            throws MessagingException {
-        Part part;
-        if (format == SimpleMessageFormat.HTML) {
-            // HTML takes precedence, then text.
-            part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, HTML found.");
-                }
-                return MessageExtractor.getTextFromPart(part);
-            }
-
-            part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, text found.");
-                }
-                String text = MessageExtractor.getTextFromPart(part);
-                return HtmlConverter.textToHtml(text);
-            }
-        } else if (format == SimpleMessageFormat.TEXT) {
-            // Text takes precedence, then html.
-            part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, text found.");
-                }
-                return MessageExtractor.getTextFromPart(part);
-            }
-
-            part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, HTML found.");
-                }
-                String text = MessageExtractor.getTextFromPart(part);
-                return HtmlConverter.htmlToText(text);
-            }
-        }
-
-        // If we had nothing interesting, return an empty string.
-        return "";
-    }
-
-    // Regular expressions to look for various HTML tags. This is no HTML::Parser, but hopefully it's good enough for
-    // our purposes.
-    private static final Pattern FIND_INSERTION_POINT_HTML = Pattern.compile("(?si:.*?(<html(?:>|\\s+[^>]*>)).*)");
-    private static final Pattern FIND_INSERTION_POINT_HEAD = Pattern.compile("(?si:.*?(<head(?:>|\\s+[^>]*>)).*)");
-    private static final Pattern FIND_INSERTION_POINT_BODY = Pattern.compile("(?si:.*?(<body(?:>|\\s+[^>]*>)).*)");
-    private static final Pattern FIND_INSERTION_POINT_HTML_END = Pattern.compile("(?si:.*(</html>).*?)");
-    private static final Pattern FIND_INSERTION_POINT_BODY_END = Pattern.compile("(?si:.*(</body>).*?)");
-    // The first group in a Matcher contains the first capture group. We capture the tag found in the above REs so that
-    // we can locate the *end* of that tag.
-    private static final int FIND_INSERTION_POINT_FIRST_GROUP = 1;
-    // HTML bits to insert as appropriate
-    // TODO is it safe to assume utf-8 here?
-    private static final String FIND_INSERTION_POINT_HTML_CONTENT = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\r\n<html>";
-    private static final String FIND_INSERTION_POINT_HTML_END_CONTENT = "</html>";
-    private static final String FIND_INSERTION_POINT_HEAD_CONTENT = "<head><meta content=\"text/html; charset=utf-8\" http-equiv=\"Content-Type\"></head>";
-    // Index of the start of the beginning of a String.
-    private static final int FIND_INSERTION_POINT_START_OF_STRING = 0;
-
-    /**
-     * <p>Find the start and end positions of the HTML in the string. This should be the very top
-     * and bottom of the displayable message. It returns a {@link InsertableHtmlContent}, which
-     * contains both the insertion points and potentially modified HTML. The modified HTML should be
-     * used in place of the HTML in the original message.</p>
-     *
-     * <p>This method loosely mimics the HTML forward/reply behavior of BlackBerry OS 4.5/BIS 2.5,
-     * which in turn mimics Outlook 2003 (as best I can tell).</p>
-     *
-     * @param content Content to examine for HTML insertion points
-     * @return Insertion points and HTML to use for insertion.
-     */
-    private InsertableHtmlContent findInsertionPoints(final String content) {
-        InsertableHtmlContent insertable = new InsertableHtmlContent();
-
-        // If there is no content, don't bother doing any of the regex dancing.
-        if (content == null || content.equals("")) {
-            return insertable;
-        }
-
-        // Search for opening tags.
-        boolean hasHtmlTag = false;
-        boolean hasHeadTag = false;
-        boolean hasBodyTag = false;
-        // First see if we have an opening HTML tag.  If we don't find one, we'll add one later.
-        Matcher htmlMatcher = FIND_INSERTION_POINT_HTML.matcher(content);
-        if (htmlMatcher.matches()) {
-            hasHtmlTag = true;
-        }
-        // Look for a HEAD tag.  If we're missing a BODY tag, we'll use the close of the HEAD to start our content.
-        Matcher headMatcher = FIND_INSERTION_POINT_HEAD.matcher(content);
-        if (headMatcher.matches()) {
-            hasHeadTag = true;
-        }
-        // Look for a BODY tag.  This is the ideal place for us to start our content.
-        Matcher bodyMatcher = FIND_INSERTION_POINT_BODY.matcher(content);
-        if (bodyMatcher.matches()) {
-            hasBodyTag = true;
-        }
-
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Open: hasHtmlTag:" + hasHtmlTag + " hasHeadTag:" + hasHeadTag + " hasBodyTag:" + hasBodyTag);
-        }
-
-        // Given our inspections, let's figure out where to start our content.
-        // This is the ideal case -- there's a BODY tag and we insert ourselves just after it.
-        if (hasBodyTag) {
-            insertable.setQuotedContent(new StringBuilder(content));
-            insertable.setHeaderInsertionPoint(bodyMatcher.end(FIND_INSERTION_POINT_FIRST_GROUP));
-        } else if (hasHeadTag) {
-            // Now search for a HEAD tag.  We can insert after there.
-
-            // If BlackBerry sees a HEAD tag, it inserts right after that, so long as there is no BODY tag. It doesn't
-            // try to add BODY, either.  Right or wrong, it seems to work fine.
-            insertable.setQuotedContent(new StringBuilder(content));
-            insertable.setHeaderInsertionPoint(headMatcher.end(FIND_INSERTION_POINT_FIRST_GROUP));
-        } else if (hasHtmlTag) {
-            // Lastly, check for an HTML tag.
-            // In this case, it will add a HEAD, but no BODY.
-            StringBuilder newContent = new StringBuilder(content);
-            // Insert the HEAD content just after the HTML tag.
-            newContent.insert(htmlMatcher.end(FIND_INSERTION_POINT_FIRST_GROUP), FIND_INSERTION_POINT_HEAD_CONTENT);
-            insertable.setQuotedContent(newContent);
-            // The new insertion point is the end of the HTML tag, plus the length of the HEAD content.
-            insertable.setHeaderInsertionPoint(htmlMatcher.end(FIND_INSERTION_POINT_FIRST_GROUP) + FIND_INSERTION_POINT_HEAD_CONTENT.length());
-        } else {
-            // If we have none of the above, we probably have a fragment of HTML.  Yahoo! and Gmail both do this.
-            // Again, we add a HEAD, but not BODY.
-            StringBuilder newContent = new StringBuilder(content);
-            // Add the HTML and HEAD tags.
-            newContent.insert(FIND_INSERTION_POINT_START_OF_STRING, FIND_INSERTION_POINT_HEAD_CONTENT);
-            newContent.insert(FIND_INSERTION_POINT_START_OF_STRING, FIND_INSERTION_POINT_HTML_CONTENT);
-            // Append the </HTML> tag.
-            newContent.append(FIND_INSERTION_POINT_HTML_END_CONTENT);
-            insertable.setQuotedContent(newContent);
-            insertable.setHeaderInsertionPoint(FIND_INSERTION_POINT_HTML_CONTENT.length() + FIND_INSERTION_POINT_HEAD_CONTENT.length());
-        }
-
-        // Search for closing tags. We have to do this after we deal with opening tags since it may
-        // have modified the message.
-        boolean hasHtmlEndTag = false;
-        boolean hasBodyEndTag = false;
-        // First see if we have an opening HTML tag.  If we don't find one, we'll add one later.
-        Matcher htmlEndMatcher = FIND_INSERTION_POINT_HTML_END.matcher(insertable.getQuotedContent());
-        if (htmlEndMatcher.matches()) {
-            hasHtmlEndTag = true;
-        }
-        // Look for a BODY tag.  This is the ideal place for us to place our footer.
-        Matcher bodyEndMatcher = FIND_INSERTION_POINT_BODY_END.matcher(insertable.getQuotedContent());
-        if (bodyEndMatcher.matches()) {
-            hasBodyEndTag = true;
-        }
-
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Close: hasHtmlEndTag:" + hasHtmlEndTag + " hasBodyEndTag:" + hasBodyEndTag);
-        }
-
-        // Now figure out where to put our footer.
-        // This is the ideal case -- there's a BODY tag and we insert ourselves just before it.
-        if (hasBodyEndTag) {
-            insertable.setFooterInsertionPoint(bodyEndMatcher.start(FIND_INSERTION_POINT_FIRST_GROUP));
-        } else if (hasHtmlEndTag) {
-            // Check for an HTML tag.  Add ourselves just before it.
-            insertable.setFooterInsertionPoint(htmlEndMatcher.start(FIND_INSERTION_POINT_FIRST_GROUP));
-        } else {
-            // If we have none of the above, we probably have a fragment of HTML.
-            // Set our footer insertion point as the end of the string.
-            insertable.setFooterInsertionPoint(insertable.getQuotedContent().length());
-        }
-
-        return insertable;
+        quotedMessagePresenter.processDraftMessage(message, k9identity);
     }
 
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
@@ -2425,89 +1778,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    class Listener extends MessagingListener {
-        @Override
-        public void loadMessageForViewStarted(Account account, String folder, String uid) {
-            if ((mMessageReference == null) || !mMessageReference.getUid().equals(uid)) {
-                return;
-            }
-
-            mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
-        }
-
-        @Override
-        public void loadMessageForViewFinished(Account account, String folder, String uid, LocalMessage message) {
-            if ((mMessageReference == null) || !mMessageReference.getUid().equals(uid)) {
-                return;
-            }
-
-            mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
-        }
-
-        @Override
-        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid, final Message message) {
-            if ((mMessageReference == null) || !mMessageReference.getUid().equals(uid)) {
-                return;
-            }
-
-            mSourceMessage = message;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    loadLocalMessageForDisplay((LocalMessage) message);
-                }
-            });
-        }
-
-        @Override
-        public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t) {
-            if ((mMessageReference == null) || !mMessageReference.getUid().equals(uid)) {
-                return;
-            }
-            mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
-            // TODO show network error
-        }
-
-        @Override
-        public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
-            // Track UID changes of the source message
-            if (mMessageReference != null) {
-                final Account sourceAccount = Preferences.getPreferences(MessageCompose.this).getAccount(mMessageReference.getAccountUuid());
-                final String sourceFolder = mMessageReference.getFolderName();
-                final String sourceMessageUid = mMessageReference.getUid();
-
-                if (account.equals(sourceAccount) && (folder.equals(sourceFolder))) {
-                    if (oldUid.equals(sourceMessageUid)) {
-                        mMessageReference = mMessageReference.withModifiedUid(newUid);
-                    }
-                    if ((mSourceMessage != null) && (oldUid.equals(mSourceMessage.getUid()))) {
-                        mSourceMessage.setUid(newUid);
-                    }
-                }
-            }
-        }
-    }
-
-    private void loadLocalMessageForDisplay(LocalMessage message) {
-        // We check to see if we've previously processed the source message since this
-        // could be called when switching from HTML to text replies. If that happens, we
-        // only want to update the UI with quoted text (which picks the appropriate
-        // part).
-        if (mSourceProcessed) {
-            try {
-                populateUIWithQuotedMessage(true);
-            } catch (MessagingException e) {
-                // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
-                showOrHideQuotedText(QuotedTextMode.HIDE);
-                Log.e(K9.LOG_TAG, "Could not re-process source message; deleting quoted text to be safe.", e);
-            }
-            updateMessageFormat();
-        } else {
-            processSourceMessage(message);
-            mSourceProcessed = true;
-        }
-    }
-
     /**
      * When we are launched with an intent that includes a mailto: URI, we can actually
      * gather quite a few of our message fields from it.
@@ -2529,165 +1799,21 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private static final int REPLY_WRAP_LINE_WIDTH = 72;
-    private static final int QUOTE_BUFFER_LENGTH = 512; // amount of extra buffer to allocate to accommodate quoting headers or prefixes
-
-    /**
-     * Add quoting markup to a text message.
-     * @param originalMessage Metadata for message being quoted.
-     * @param messageBody Text of the message to be quoted.
-     * @param quoteStyle Style of quoting.
-     * @return Quoted text.
-     * @throws MessagingException
-     */
-    private String quoteOriginalTextMessage(final Message originalMessage, final String messageBody, final QuoteStyle quoteStyle) throws MessagingException {
-        String body = messageBody == null ? "" : messageBody;
-        String sentDate = getSentDateText(originalMessage);
-        if (quoteStyle == QuoteStyle.PREFIX) {
-            StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
-            if (sentDate.length() != 0) {
-                quotedText.append(String.format(
-                        getString(R.string.message_compose_reply_header_fmt_with_date) + "\r\n",
-                        sentDate,
-                        Address.toString(originalMessage.getFrom())));
-            } else {
-                quotedText.append(String.format(
-                                      getString(R.string.message_compose_reply_header_fmt) + "\r\n",
-                                      Address.toString(originalMessage.getFrom()))
-                                 );
-            }
-
-            final String prefix = mAccount.getQuotePrefix();
-            final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
-
-            // "$" and "\" in the quote prefix have to be escaped for
-            // the replaceAll() invocation.
-            final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
-            quotedText.append(wrappedText.replaceAll("(?m)^", escapedPrefix));
-
-            return quotedText.toString().replaceAll("\\\r", "");
-        } else if (quoteStyle == QuoteStyle.HEADER) {
-            StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
-            quotedText.append("\r\n");
-            quotedText.append(getString(R.string.message_compose_quote_header_separator)).append("\r\n");
-            if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_from)).append(" ").append(Address.toString(originalMessage.getFrom())).append("\r\n");
-            }
-            if (sentDate.length() != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_send_date)).append(" ").append(sentDate).append("\r\n");
-            }
-            if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_to)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.TO))).append("\r\n");
-            }
-            if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0) {
-                quotedText.append(getString(R.string.message_compose_quote_header_cc)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.CC))).append("\r\n");
-            }
-            if (originalMessage.getSubject() != null) {
-                quotedText.append(getString(R.string.message_compose_quote_header_subject)).append(" ").append(originalMessage.getSubject()).append("\r\n");
-            }
-            quotedText.append("\r\n");
-
-            quotedText.append(body);
-
-            return quotedText.toString();
-        } else {
-            // Shouldn't ever happen.
-            return body;
-        }
-    }
-
-    /**
-     * Add quoting markup to a HTML message.
-     * @param originalMessage Metadata for message being quoted.
-     * @param messageBody Text of the message to be quoted.
-     * @param quoteStyle Style of quoting.
-     * @return Modified insertable message.
-     * @throws MessagingException
-     */
-    private InsertableHtmlContent quoteOriginalHtmlMessage(final Message originalMessage, final String messageBody, final QuoteStyle quoteStyle) throws MessagingException {
-        InsertableHtmlContent insertable = findInsertionPoints(messageBody);
-
-        String sentDate = getSentDateText(originalMessage);
-        if (quoteStyle == QuoteStyle.PREFIX) {
-            StringBuilder header = new StringBuilder(QUOTE_BUFFER_LENGTH);
-            header.append("<div class=\"gmail_quote\">");
-            if (sentDate.length() != 0) {
-                header.append(HtmlConverter.textToHtmlFragment(String.format(
-                        getString(R.string.message_compose_reply_header_fmt_with_date),
-                        sentDate,
-                        Address.toString(originalMessage.getFrom()))
-                                                    ));
-            } else {
-                header.append(HtmlConverter.textToHtmlFragment(String.format(
-                                  getString(R.string.message_compose_reply_header_fmt),
-                                  Address.toString(originalMessage.getFrom()))
-                                                              ));
-            }
-            header.append("<blockquote class=\"gmail_quote\" " +
-                          "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\r\n");
-
-            String footer = "</blockquote></div>";
-
-            insertable.insertIntoQuotedHeader(header.toString());
-            insertable.insertIntoQuotedFooter(footer);
-        } else if (quoteStyle == QuoteStyle.HEADER) {
-
-            StringBuilder header = new StringBuilder();
-            header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\r\n");
-            header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\r\n"); // This gets converted into a horizontal line during html to text conversion.
-            if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_from)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getFrom())))
-                    .append("<br>\r\n");
-            }
-            if (sentDate.length() != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_send_date)).append("</b> ")
-                    .append(sentDate)
-                    .append("<br>\r\n");
-            }
-            if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_to)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.TO))))
-                    .append("<br>\r\n");
-            }
-            if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_cc)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.CC))))
-                    .append("<br>\r\n");
-            }
-            if (originalMessage.getSubject() != null) {
-                header.append("<b>").append(getString(R.string.message_compose_quote_header_subject)).append("</b> ")
-                    .append(HtmlConverter.textToHtmlFragment(originalMessage.getSubject()))
-                    .append("<br>\r\n");
-            }
-            header.append("</div>\r\n");
-            header.append("<br>\r\n");
-
-            insertable.insertIntoQuotedHeader(header.toString());
-        }
-
-        return insertable;
-    }
-
-
-
-
-
-
     private void setMessageFormat(SimpleMessageFormat format) {
         // This method will later be used to enable/disable the rich text editing mode.
 
         mMessageFormat = format;
     }
 
-    private void updateMessageFormat() {
+    public void updateMessageFormat() {
         MessageFormat origMessageFormat = mAccount.getMessageFormat();
         SimpleMessageFormat messageFormat;
         if (origMessageFormat == MessageFormat.TEXT) {
             // The user wants to send text/plain messages. We don't override that choice under
             // any circumstances.
             messageFormat = SimpleMessageFormat.TEXT;
-        } else if (mForcePlainText && includeQuotedText()) {
+        } else if (quotedMessagePresenter.isForcePlainText()
+                && quotedMessagePresenter.includeQuotedText()) {
             // Right now we send a text/plain-only message when the quoted text was edited, no
             // matter what the user selected for the message format.
             messageFormat = SimpleMessageFormat.TEXT;
@@ -2696,8 +1822,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // plain text in those cases.
             messageFormat = SimpleMessageFormat.TEXT;
         } else if (origMessageFormat == MessageFormat.AUTO) {
-            if (mAction == Action.COMPOSE || mQuotedTextFormat == SimpleMessageFormat.TEXT ||
-                    !includeQuotedText()) {
+            if (mAction == Action.COMPOSE || quotedMessagePresenter.isQuotedTextText() ||
+                    !quotedMessagePresenter.includeQuotedText()) {
                 // If the message format is set to "AUTO" we use text/plain whenever possible. That
                 // is, when composing new messages and replying to or forwarding text/plain
                 // messages.
@@ -2711,29 +1837,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         setMessageFormat(messageFormat);
-    }
-
-    private boolean includeQuotedText() {
-        return (mQuotedTextMode == QuotedTextMode.SHOW);
-    }
-
-    /**
-     * Extract the date from a message and convert it into a locale-specific
-     * date string suitable for use in a header for a quoted message.
-     *
-     * @return A string with the formatted date/time
-     */
-    private String getSentDateText(Message message) {
-        try {
-            final int dateStyle = DateFormat.LONG;
-            final int timeStyle = DateFormat.LONG;
-            Date date = message.getSentDate();
-            Locale locale = getResources().getConfiguration().locale;
-            return DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale)
-                    .format(date);
-        } catch (Exception e) {
-            return "";
-        }
     }
 
     @Override
@@ -2795,4 +1898,90 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             e.printStackTrace();
         }
     }
+
+    public void loadLocalMessageForDisplay(LocalMessage message, Action action) {
+        // We check to see if we've previously processed the source message since this
+        // could be called when switching from HTML to text replies. If that happens, we
+        // only want to update the UI with quoted text (which picks the appropriate
+        // part).
+        if (mSourceMessageProcessed) {
+            try {
+                quotedMessagePresenter.populateUIWithQuotedMessage(message, true, action);
+            } catch (MessagingException e) {
+                // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
+                quotedMessagePresenter.showOrHideQuotedText(QuotedTextMode.HIDE);
+                Log.e(K9.LOG_TAG, "Could not re-process source message; deleting quoted text to be safe.", e);
+            }
+            updateMessageFormat();
+        } else {
+            processSourceMessage(message);
+            mSourceMessageProcessed = true;
+        }
+    }
+
+    class Listener extends MessagingListener {
+        @Override
+        public void loadMessageForViewStarted(Account account, String folder, String uid) {
+            if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
+                return;
+            }
+
+            mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
+        }
+
+        @Override
+        public void loadMessageForViewFinished(Account account, String folder, String uid, LocalMessage message) {
+            if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
+                return;
+            }
+
+            mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
+        }
+
+        @Override
+        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
+                final LocalMessage message) {
+            if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
+                return;
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // We check to see if we've previously processed the source message since this
+                    // could be called when switching from HTML to text replies. If that happens, we
+                    // only want to update the UI with quoted text (which picks the appropriate
+                    // part).
+                    loadLocalMessageForDisplay(message, mAction);
+                }
+            });
+        }
+
+        @Override
+        public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t) {
+            if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
+                return;
+            }
+            mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
+            // TODO show network error
+        }
+
+        @Override
+        public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
+            // Track UID changes of the source message
+            if (mMessageReference != null) {
+                final Account sourceAccount = Preferences.getPreferences(MessageCompose.this)
+                        .getAccount(mMessageReference.getAccountUuid());
+                final String sourceFolder = mMessageReference.getFolderName();
+                final String sourceMessageUid = mMessageReference.getUid();
+
+                if (account.equals(sourceAccount) && (folder.equals(sourceFolder))) {
+                    if (oldUid.equals(sourceMessageUid)) {
+                        mMessageReference = mMessageReference.withModifiedUid(newUid);
+                    }
+                }
+            }
+        }
+    }
+
 }
