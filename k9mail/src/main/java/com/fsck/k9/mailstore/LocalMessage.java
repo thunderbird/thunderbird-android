@@ -442,7 +442,7 @@ public class LocalMessage extends MimeMessage {
 
     private void deleteFulltextIndexEntry(SQLiteDatabase db, long messageId) {
         String[] idArg = { Long.toString(messageId) };
-        db.delete("fulltext_messages", "id = ?", idArg);
+        db.delete("messages_fulltext", "id = ?", idArg);
     }
 
     /**
