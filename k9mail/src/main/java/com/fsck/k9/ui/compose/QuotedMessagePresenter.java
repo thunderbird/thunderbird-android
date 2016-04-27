@@ -1,11 +1,7 @@
 package com.fsck.k9.ui.compose;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -30,10 +26,6 @@ import com.fsck.k9.message.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
-import org.htmlcleaner.CleanerProperties;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.SimpleHtmlSerializer;
-import org.htmlcleaner.TagNode;
 
 
 public class QuotedMessagePresenter {
@@ -42,11 +34,7 @@ public class QuotedMessagePresenter {
     private static final String STATE_KEY_QUOTED_TEXT_FORMAT = "state:quotedTextFormat";
     private static final String STATE_KEY_FORCE_PLAIN_TEXT = "state:forcePlainText";
 
-    // Regexes to check for signature.
-    private static final Pattern DASH_SIGNATURE_PLAIN = Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
-    private static final Pattern DASH_SIGNATURE_HTML = Pattern.compile("(<br( /)?>|\r?\n)-- <br( /)?>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern BLOCKQUOTE_START = Pattern.compile("<blockquote", Pattern.CASE_INSENSITIVE);
-    private static final Pattern BLOCKQUOTE_END = Pattern.compile("</blockquote>", Pattern.CASE_INSENSITIVE);
+    private static final int UNKNOWN_LENGTH = 0;
 
 
     private final QuotedMessageMvpView view;
@@ -134,71 +122,8 @@ public class QuotedMessagePresenter {
         if (quotedTextFormat == SimpleMessageFormat.HTML) {
             // Strip signature.
             // closing tags such as </div>, </span>, </table>, </pre> will be cut off.
-            if (account.isStripSignature() &&
-                    (action == Action.REPLY || action == Action.REPLY_ALL)) {
-                Matcher dashSignatureHtml = DASH_SIGNATURE_HTML.matcher(content);
-                if (dashSignatureHtml.find()) {
-                    Matcher blockquoteStart = BLOCKQUOTE_START.matcher(content);
-                    Matcher blockquoteEnd = BLOCKQUOTE_END.matcher(content);
-                    List<Integer> start = new ArrayList<>();
-                    List<Integer> end = new ArrayList<>();
-
-                    while (blockquoteStart.find()) {
-                        start.add(blockquoteStart.start());
-                    }
-                    while (blockquoteEnd.find()) {
-                        end.add(blockquoteEnd.start());
-                    }
-                    if (start.size() != end.size()) {
-                        Log.d(K9.LOG_TAG, "There are " + start.size() + " <blockquote> tags, but " +
-                                end.size() + " </blockquote> tags. Refusing to strip.");
-                    } else if (start.size() > 0) {
-                        // Ignore quoted signatures in blockquotes.
-                        dashSignatureHtml.region(0, start.get(0));
-                        if (dashSignatureHtml.find()) {
-                            // before first <blockquote>.
-                            content = content.substring(0, dashSignatureHtml.start());
-                        } else {
-                            for (int i = 0; i < start.size() - 1; i++) {
-                                // within blockquotes.
-                                if (end.get(i) < start.get(i + 1)) {
-                                    dashSignatureHtml.region(end.get(i), start.get(i + 1));
-                                    if (dashSignatureHtml.find()) {
-                                        content = content.substring(0, dashSignatureHtml.start());
-                                        break;
-                                    }
-                                }
-                            }
-                            if (end.get(end.size() - 1) < content.length()) {
-                                // after last </blockquote>.
-                                dashSignatureHtml.region(end.get(end.size() - 1), content.length());
-                                if (dashSignatureHtml.find()) {
-                                    content = content.substring(0, dashSignatureHtml.start());
-                                }
-                            }
-                        }
-                    } else {
-                        // No blockquotes found.
-                        content = content.substring(0, dashSignatureHtml.start());
-                    }
-                }
-
-                // Fix the stripping off of closing tags if a signature was stripped,
-                // as well as clean up the HTML of the quoted message.
-                HtmlCleaner cleaner = new HtmlCleaner();
-                CleanerProperties properties = cleaner.getProperties();
-
-                // see http://htmlcleaner.sourceforge.net/parameters.php for descriptions
-                properties.setNamespacesAware(false);
-                properties.setAdvancedXmlEscape(false);
-                properties.setOmitXmlDeclaration(true);
-                properties.setOmitDoctypeDeclaration(false);
-                properties.setTranslateSpecialEntities(false);
-                properties.setRecognizeUnicodeChars(false);
-
-                TagNode node = cleaner.clean(content);
-                SimpleHtmlSerializer htmlSerialized = new SimpleHtmlSerializer(properties);
-                content = htmlSerialized.getAsString(node, "UTF8");
+            if (account.isStripSignature() && (action == Action.REPLY || action == Action.REPLY_ALL)) {
+                content = QuotedMessageHelper.stripSignatureForHtmlMessage(content);
             }
 
             // Add the HTML reply header to the top of the content.
@@ -215,9 +140,7 @@ public class QuotedMessagePresenter {
 
         } else if (quotedTextFormat == SimpleMessageFormat.TEXT) {
             if (account.isStripSignature() && (action == Action.REPLY || action == Action.REPLY_ALL)) {
-                if (DASH_SIGNATURE_PLAIN.matcher(content).find()) {
-                    content = DASH_SIGNATURE_PLAIN.matcher(content).replaceFirst("\r\n");
-                }
+                content = QuotedMessageHelper.stripSignatureForTextMessage(content);
             }
 
             view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(
@@ -292,21 +215,16 @@ public class QuotedMessagePresenter {
             showQuotedTextMode = "NONE";
         }
 
-        Integer bodyLength = k9identity.get(IdentityField.LENGTH) != null
-                ? Integer.valueOf(k9identity.get(IdentityField.LENGTH))
-                : 0;
-        Integer bodyOffset = k9identity.get(IdentityField.OFFSET) != null
-                ? Integer.valueOf(k9identity.get(IdentityField.OFFSET))
-                : 0;
-        Integer bodyFooterOffset = k9identity.get(IdentityField.FOOTER_OFFSET) != null
-                ? Integer.valueOf(k9identity.get(IdentityField.FOOTER_OFFSET))
-                : null;
-        Integer bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null
-                ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_LENGTH))
-                : null;
-        Integer bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null
-                ? Integer.valueOf(k9identity.get(IdentityField.PLAIN_OFFSET))
-                : null;
+        int bodyLength = k9identity.get(IdentityField.LENGTH) != null ?
+                Integer.valueOf(k9identity.get(IdentityField.LENGTH)) : UNKNOWN_LENGTH;
+        int bodyOffset = k9identity.get(IdentityField.OFFSET) != null ?
+                Integer.valueOf(k9identity.get(IdentityField.OFFSET)) : UNKNOWN_LENGTH;
+        Integer bodyFooterOffset = k9identity.get(IdentityField.FOOTER_OFFSET) != null ?
+                Integer.valueOf(k9identity.get(IdentityField.FOOTER_OFFSET)) : null;
+        Integer bodyPlainLength = k9identity.get(IdentityField.PLAIN_LENGTH) != null ?
+                Integer.valueOf(k9identity.get(IdentityField.PLAIN_LENGTH)) : null;
+        Integer bodyPlainOffset = k9identity.get(IdentityField.PLAIN_OFFSET) != null ?
+                Integer.valueOf(k9identity.get(IdentityField.PLAIN_OFFSET)) : null;
 
         QuotedTextMode quotedMode;
         try {
@@ -333,7 +251,8 @@ public class QuotedMessagePresenter {
             // we'll display the whole message (including the quoted part) in the
             // composition window. If that's the case, try and convert it to text to
             // match the behavior in text mode.
-            view.setMessageContentCharacters(QuotedMessageHelper.getBodyTextFromMessage(message, SimpleMessageFormat.TEXT));
+            view.setMessageContentCharacters(
+                    QuotedMessageHelper.getBodyTextFromMessage(message, SimpleMessageFormat.TEXT));
             forcePlainText = true;
 
             showOrHideQuotedText(quotedMode);
@@ -346,7 +265,8 @@ public class QuotedMessagePresenter {
                 quotedTextFormat = SimpleMessageFormat.HTML;
                 String text = MessageExtractor.getTextFromPart(part);
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
+                    Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength +
+                            ". Text length is " + text.length() + ".");
                 }
 
                 if (bodyOffset + bodyLength > text.length()) {
@@ -403,54 +323,50 @@ public class QuotedMessagePresenter {
      * @param bodyOffset Insertion point for reply.
      * @param bodyLength Length of reply.
      * @param viewMessageContent Update mMessageContentView or not.
-     * @throws MessagingException
      */
-    private void processSourceMessageText(Message message, Integer bodyOffset, Integer bodyLength,
-            boolean viewMessageContent) throws MessagingException {
+    private void processSourceMessageText(Message message, int bodyOffset, int bodyLength, boolean viewMessageContent)
+            throws MessagingException {
         Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-        if (textPart != null) {
-            String text = MessageExtractor.getTextFromPart(textPart);
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength + ". Text length is " + text.length() + ".");
-            }
+        if (textPart == null) {
+            return;
+        }
 
-            // If we had a body length (and it was valid), separate the composition from the quoted text
-            // and put them in their respective places in the UI.
-            if (bodyLength > 0) {
-                try {
-                    String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
+        String messageText = MessageExtractor.getTextFromPart(textPart);
+        if (K9.DEBUG) {
+            Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength +
+                    ". Text length is " + messageText.length() + ".");
+        }
 
-                    // Regenerate the quoted text without our user content in it nor added newlines.
-                    StringBuilder quotedText = new StringBuilder();
-                    if (bodyOffset == 0 && text.substring(bodyLength, bodyLength + 4).equals("\r\n\r\n")) {
-                        // top-posting: ignore two newlines at start of quote
-                        quotedText.append(text.substring(bodyLength + 4));
-                    } else if (bodyOffset + bodyLength == text.length() &&
-                            text.substring(bodyOffset - 2, bodyOffset).equals("\r\n")) {
-                        // bottom-posting: ignore newline at end of quote
-                        quotedText.append(text.substring(0, bodyOffset - 2));
-                    } else {
-                        quotedText.append(text.substring(0, bodyOffset));   // stuff before the reply
-                        quotedText.append(text.substring(bodyOffset + bodyLength));
-                    }
-
-                    if (viewMessageContent) {
-                        view.setMessageContentCharacters(bodyText);
-                    }
-
-                    view.setQuotedText(quotedText.toString());
-                } catch (IndexOutOfBoundsException e) {
-                    // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
-                    Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid bodyOffset/bodyLength");
-                    if (viewMessageContent) {
-                        view.setMessageContentCharacters(text);
-                    }
+        // If we had a body length (and it was valid), separate the composition from the quoted text
+        // and put them in their respective places in the UI.
+        if (bodyLength != UNKNOWN_LENGTH) {
+            try {
+                // Regenerate the quoted text without our user content in it nor added newlines.
+                StringBuilder quotedText = new StringBuilder();
+                if (bodyOffset == UNKNOWN_LENGTH &&
+                        messageText.substring(bodyLength, bodyLength + 4).equals("\r\n\r\n")) {
+                    // top-posting: ignore two newlines at start of quote
+                    quotedText.append(messageText.substring(bodyLength + 4));
+                } else if (bodyOffset + bodyLength == messageText.length() &&
+                        messageText.substring(bodyOffset - 2, bodyOffset).equals("\r\n")) {
+                    // bottom-posting: ignore newline at end of quote
+                    quotedText.append(messageText.substring(0, bodyOffset - 2));
+                } else {
+                    quotedText.append(messageText.substring(0, bodyOffset));   // stuff before the reply
+                    quotedText.append(messageText.substring(bodyOffset + bodyLength));
                 }
-            } else {
-                if (viewMessageContent) {
-                    view.setMessageContentCharacters(text);
-                }
+
+                view.setQuotedText(quotedText.toString());
+
+                messageText = messageText.substring(bodyOffset, bodyOffset + bodyLength);
+            } catch (IndexOutOfBoundsException e) {
+                // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
+                Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid bodyOffset/bodyLength");
             }
+        }
+
+        if (viewMessageContent) {
+            view.setMessageContentCharacters(messageText);
         }
     }
 
