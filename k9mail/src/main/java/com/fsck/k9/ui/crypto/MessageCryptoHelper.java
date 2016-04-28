@@ -62,14 +62,14 @@ public class MessageCryptoHelper {
 
     private MessageCryptoAnnotations messageAnnotations;
     private Intent userInteractionResultIntent;
+    private LocalMessage currentMessage;
+    private boolean secondPassStarted;
 
 
     public MessageCryptoHelper(Activity activity, Account account, MessageCryptoCallback callback) {
         this.context = activity.getApplicationContext();
         this.callback = callback;
         this.account = account;
-
-        this.messageAnnotations = new MessageCryptoAnnotations();
     }
 
     public void decryptOrVerifyMessagePartsIfNecessary(LocalMessage message) {
@@ -78,13 +78,24 @@ public class MessageCryptoHelper {
             return;
         }
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
+        this.messageAnnotations = new MessageCryptoAnnotations();
+        this.currentMessage = message;
+
+        runFirstPass();
+    }
+
+    private void runFirstPass() {
+        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(currentMessage);
         processFoundEncryptedParts(encryptedParts);
 
-        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
+        decryptOrVerifyNextPart();
+    }
+
+    private void runSecondPass() {
+        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(currentMessage, messageAnnotations);
         processFoundSignedParts(signedParts);
 
-        List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(message);
+        List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(currentMessage);
         addFoundInlinePgpParts(inlineParts);
 
         decryptOrVerifyNextPart();
@@ -134,7 +145,7 @@ public class MessageCryptoHelper {
 
     private void decryptOrVerifyNextPart() {
         if (partsToDecryptOrVerify.isEmpty()) {
-            returnResultToFragment();
+            runSecondPassOrReturnResultToFragment();
             return;
         }
 
@@ -444,6 +455,17 @@ public class MessageCryptoHelper {
         onCryptoFinished();
     }
 
+    private void propagateEncapsulatedSignedPart(CryptoResultAnnotation resultAnnotation, Part part) {
+        Part encapsulatingPart = messageAnnotations.findKeyForAnnotationWithReplacementPart(part);
+        CryptoResultAnnotation encapsulatingPartAnnotation = messageAnnotations.get(encapsulatingPart);
+
+        if (encapsulatingPart != null && resultAnnotation.hasSignatureResult()) {
+            CryptoResultAnnotation replacementAnnotation =
+                    encapsulatingPartAnnotation.withEncapsulatedResult(resultAnnotation);
+            messageAnnotations.put(encapsulatingPart, replacementAnnotation);
+        }
+    }
+
     private void onCryptoFailed(OpenPgpError error) {
         CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpErrorAnnotation(error);
         addCryptoResultAnnotationToMessage(errorPart);
@@ -453,11 +475,22 @@ public class MessageCryptoHelper {
     private void addCryptoResultAnnotationToMessage(CryptoResultAnnotation resultAnnotation) {
         Part part = currentCryptoPart.part;
         messageAnnotations.put(part, resultAnnotation);
+
+        propagateEncapsulatedSignedPart(resultAnnotation, part);
     }
 
     private void onCryptoFinished() {
         partsToDecryptOrVerify.removeFirst();
         decryptOrVerifyNextPart();
+    }
+
+    private void runSecondPassOrReturnResultToFragment() {
+        if (secondPassStarted) {
+            callback.onCryptoOperationsFinished(messageAnnotations);
+            return;
+        }
+        secondPassStarted = true;
+        runSecondPass();
     }
 
     private void returnResultToFragment() {

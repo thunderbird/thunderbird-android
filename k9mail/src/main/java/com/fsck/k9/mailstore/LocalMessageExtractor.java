@@ -419,7 +419,6 @@ public class LocalMessageExtractor {
 
     public static MessageViewInfo decodeMessageForView(Context context,
             Message message, MessageCryptoAnnotations annotations) throws MessagingException {
-
         // TODO properly handle decrypted data part - this just replaces the part
         CryptoResultAnnotation pgpAnnotation = annotations.get(message);
         Part rootPart;
@@ -432,7 +431,6 @@ public class LocalMessageExtractor {
         ArrayList<Part> attachments = new ArrayList<>();
         List<Viewable> viewables = MessageExtractor.getViewables(rootPart, attachments);
 
-        // 3. parse viewables into html string
         ViewableContainer viewable = LocalMessageExtractor.extractTextAndAttachments(context, viewables,
                 attachments);
         List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
