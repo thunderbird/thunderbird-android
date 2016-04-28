@@ -6,7 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class Migrations {
     @SuppressWarnings("fallthrough")
-    public static void upgradeDatabase(SQLiteDatabase db, MigrationsHelper migrationsHelper) {
+    public static void upgradeDatabase(SQLiteDatabase db, MigrationsHelper migrationsHelper)
+            throws DatabaseUpgradeException {
         switch (db.getVersion()) {
             case 29:
                 MigrationTo30.addDeletedColumn(db);

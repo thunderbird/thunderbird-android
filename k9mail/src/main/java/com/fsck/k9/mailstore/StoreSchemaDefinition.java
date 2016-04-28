@@ -6,11 +6,14 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mailstore.migrations.DatabaseUpgradeException;
 import com.fsck.k9.mailstore.migrations.Migrations;
 import com.fsck.k9.mailstore.migrations.MigrationsHelper;
 import com.fsck.k9.preferences.Storage;
@@ -33,14 +36,29 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     public void doDbUpgrade(final SQLiteDatabase db) {
         try {
             upgradeDatabase(db);
+        } catch (DatabaseUpgradeException e) {
+            Log.e(K9.LOG_TAG, "Database upgrade failed. Resetting the DB to v0", e);
+            createDatabaseFromScratchAfterFailure(db);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0", e);
-            db.setVersion(0);
-            upgradeDatabase(db);
+            Log.e(K9.LOG_TAG, "Unhandled exception while upgrading database! Resetting the DB to v0", e);
+            createDatabaseFromScratchAfterFailure(db);
         }
     }
 
-    private void upgradeDatabase(final SQLiteDatabase db) {
+    private void createDatabaseFromScratchAfterFailure(SQLiteDatabase db) {
+        try {
+            db.setVersion(0);
+            upgradeDatabase(db);
+        } catch (Exception e) {
+            if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
+                throw new AssertionError("Irrecoverable state: Failed to set up database from scratch!", e);
+            } else {
+                throw new AssertionError("Irrecoverable state: Failed to set up database from scratch!");
+            }
+        }
+    }
+
+    private void upgradeDatabase(final SQLiteDatabase db) throws DatabaseUpgradeException {
         Log.i(K9.LOG_TAG, String.format(Locale.US, "Upgrading database from version %d to version %d",
                 db.getVersion(), LocalStore.DB_VERSION));
 

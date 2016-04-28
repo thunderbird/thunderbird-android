@@ -36,6 +36,7 @@ class MigrationTo51 {
     private static final int DATA_LOCATION__MISSING = 0;
     private static final int DATA_LOCATION__IN_DATABASE = 1;
     private static final int DATA_LOCATION__ON_DISK = 2;
+    private static final int MAX_FAILED_MIGRATIONS = 100;
 
     /**
      * This method converts from the old message table structure to the new one.
@@ -58,7 +59,8 @@ class MigrationTo51 {
      *    + otherwise, use multipart/mixed, adding attachments after textual content
      *    + revert content:// URIs in htmlContent to original cid: URIs.
      */
-    public static void db51MigrateMessageFormat(SQLiteDatabase db, MigrationsHelper migrationsHelper) {
+    public static void db51MigrateMessageFormat(SQLiteDatabase db, MigrationsHelper migrationsHelper)
+            throws DatabaseUpgradeException {
         renameOldMessagesTableAndCreateNew(db);
 
         copyMessageMetadataToNewTable(db);
@@ -74,6 +76,8 @@ class MigrationTo51 {
                 null, null, null, null, null);
         try {
             Log.d(K9.LOG_TAG, "migrating " + msgCursor.getCount() + " messages");
+            int failedMigrations = 0;
+
             ContentValues cv = new ContentValues();
             while (msgCursor.moveToNext()) {
                 long messageId = msgCursor.getLong(0);
@@ -83,11 +87,13 @@ class MigrationTo51 {
                 String mimeType = msgCursor.getString(4);
                 int attachmentCount = msgCursor.getInt(5);
 
-                try {
-                    updateFlagsForMessage(db, messageId, messageFlags, migrationsHelper);
-                    MimeHeader mimeHeader = loadHeaderFromHeadersTable(db, messageId);
+                updateFlagsForMessage(db, messageId, messageFlags, migrationsHelper);
 
-                    MimeStructureState structureState = MimeStructureState.getNewRootState();
+                MimeStructureState structureState = null;
+                try {
+                    structureState = MimeStructureState.getNewRootState();
+
+                    MimeHeader mimeHeader = loadHeaderFromHeadersTable(db, messageId);
 
                     boolean messageHadSpecialFormat = false;
 
@@ -117,14 +123,26 @@ class MigrationTo51 {
                                             htmlContent, textContent, mimeHeader, structureState);
                         }
                     }
+                } catch (Exception e) {
+                    Log.e(K9.LOG_TAG, "error inserting into database! (removing remnant message parts)", e);
 
+                    if (structureState != null && structureState.rootPartId != null) {
+                        db.delete("", "root_part_id=?", new String[] { Long.toString(structureState.rootPartId) });
+                    }
+                    structureState = null;
+                    failedMigrations += 1;
+
+                    if (failedMigrations > MAX_FAILED_MIGRATIONS) {
+                        throw new DatabaseUpgradeException("Too many failed migrations - giving up!", e);
+                    }
+                }
+
+                if (structureState != null) {
                     cv.clear();
                     cv.put("mime_type", mimeType);
                     cv.put("message_part_id", structureState.rootPartId);
                     cv.put("attachment_count", attachmentCount);
                     db.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
-                } catch (IOException e) {
-                    Log.e(K9.LOG_TAG, "error inserting into database", e);
                 }
             }
 
