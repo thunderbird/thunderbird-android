@@ -74,7 +74,7 @@ class ImapConnection {
     private ImapSettings settings;
     private Exception stacktraceForClose;
     private boolean open = false;
-
+    private boolean closed = false;
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager) {
@@ -588,7 +588,6 @@ class ImapConnection {
     }
 
     public void close() {
-        open = false;
         stacktraceForClose = new Exception();
 
         IOUtils.closeQuietly(inputStream);
@@ -598,6 +597,12 @@ class ImapConnection {
         inputStream = null;
         outputStream = null;
         socket = null;
+        open = false;
+        closed = true;
+    }
+
+    public boolean hasBeenClosed() {
+        return closed;
     }
 
     public OutputStream getOutputStream() {
