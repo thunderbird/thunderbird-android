@@ -55,7 +55,7 @@ public class WebDavStore extends RemoteStore {
 
     /**
      * Decodes a WebDavStore URI.
-     *
+     * <p/>
      * <p>Possible forms:</p>
      * <pre>
      * webdav://user:password@server:port ConnectionSecurity.NONE
@@ -156,11 +156,8 @@ public class WebDavStore extends RemoteStore {
     /**
      * Creates a WebDavStore URI with the supplied settings.
      *
-     * @param server
-     *         The {@link ServerSettings} object that holds the server settings.
-     *
+     * @param server The {@link ServerSettings} object that holds the server settings.
      * @return A WebDavStore URI that holds the same information as the {@code server} parameter.
-     *
      * @see StoreConfig#getStoreUri()
      * @see WebDavStore#decodeUri(String)
      */
@@ -198,7 +195,7 @@ public class WebDavStore extends RemoteStore {
 
         try {
             return new URI(scheme, userInfo, server.host, server.port, uriPath,
-                null, null).toString();
+                    null, null).toString();
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create WebDavStore URI", e);
         }
@@ -227,7 +224,7 @@ public class WebDavStore extends RemoteStore {
     private Map<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
     public WebDavStore(StoreConfig storeConfig, WebDavHttpClient.WebDavHttpClientFactory clientFactory)
-    throws MessagingException {
+            throws MessagingException {
         super(storeConfig, null);
         mHttpClientFactory = clientFactory;
 
@@ -306,7 +303,7 @@ public class WebDavStore extends RemoteStore {
     }
 
     @Override
-    public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folderList = new LinkedList<Folder>();
         /**
          * We have to check authentication here so we have the proper URL stored
@@ -383,10 +380,9 @@ public class WebDavStore extends RemoteStore {
         WebDavFolder wdFolder = null;
         String folderName = getFolderName(folderUrl);
         if (folderName != null) {
-            if (!this.mFolderList.containsKey(folderName)) {
-                wdFolder = new WebDavFolder(this, folderName);
+            wdFolder = getFolder(folderName);
+            if (wdFolder != null) {
                 wdFolder.setUrl(folderUrl);
-                mFolderList.put(folderName, wdFolder);
             }
         }
         // else: Unknown URL format => NO Folder created
@@ -426,11 +422,12 @@ public class WebDavStore extends RemoteStore {
     }
 
     @Override
-    public Folder getFolder(String name) {
+    public WebDavFolder getFolder(String name) {
         WebDavFolder folder;
 
         if ((folder = this.mFolderList.get(name)) == null) {
             folder = new WebDavFolder(this, name);
+            mFolderList.put(name, folder);
         }
 
         return folder;
@@ -494,7 +491,7 @@ public class WebDavStore extends RemoteStore {
         builder.append("SELECT \"DAV:visiblecount\"\r\n");
         builder.append(" FROM \"\"\r\n");
         builder.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"=")
-        .append(messageState).append("\r\n");
+                .append(messageState).append("\r\n");
         builder.append(" GROUP BY \"DAV:ishidden\"\r\n");
         builder.append("</a:sql></a:searchrequest>\r\n");
         return builder.toString();
@@ -632,7 +629,7 @@ public class WebDavStore extends RemoteStore {
      * @throws MessagingException
      */
     public boolean authenticate()
-    throws MessagingException {
+            throws MessagingException {
         try {
             if (mAuthentication == WebDavConstants.AUTH_TYPE_NONE) {
                 ConnectionInfo info = doInitialConnection();
@@ -652,7 +649,7 @@ public class WebDavStore extends RemoteStore {
                         throw new MessagingException("Invalid username or password for authentication.");
                     } else {
                         throw new MessagingException("Error with code " + response.getStatusLine().getStatusCode() +
-                                                     " during request processing: " + response.getStatusLine().toString());
+                                " during request processing: " + response.getStatusLine().toString());
                     }
                 } else if (info.requiredAuthType == WebDavConstants.AUTH_TYPE_FORM_BASED) {
                     doFBA(info);
@@ -679,7 +676,7 @@ public class WebDavStore extends RemoteStore {
      * @throws MessagingException
      */
     private ConnectionInfo doInitialConnection()
-    throws MessagingException {
+            throws MessagingException {
         // For our initial connection we are sending an empty GET request to
         // the configured URL, which should be in the following form:
         // https://mail.server.com/Exchange/alias
@@ -706,8 +703,8 @@ public class WebDavStore extends RemoteStore {
                 // an authentication header for basic authentication.
                 info.requiredAuthType = WebDavConstants.AUTH_TYPE_BASIC;
             } else if ((info.statusCode >= 200 && info.statusCode < 300) || // Success
-                       (info.statusCode >= 300 && info.statusCode < 400) || // Redirect
-                       (info.statusCode == 440)) { // Unauthorized
+                    (info.statusCode >= 300 && info.statusCode < 400) || // Redirect
+                    (info.statusCode == 440)) { // Unauthorized
                 // We will handle all 3 situations the same. First we take an educated
                 // guess at where the authorization DLL is located. If this is this
                 // doesn't work, then we'll use the redirection URL for OWA login given
@@ -730,7 +727,7 @@ public class WebDavStore extends RemoteStore {
                 }
             } else {
                 throw new IOException("Error with code " + info.statusCode + " during request processing: " +
-                                      response.getStatusLine().toString());
+                        response.getStatusLine().toString());
             }
         } catch (SSLException e) {
             throw new CertificateValidationException(e.getMessage(), e);
@@ -748,9 +745,9 @@ public class WebDavStore extends RemoteStore {
      * @throws MessagingException
      */
     public void doFBA(ConnectionInfo info)
-    throws IOException, MessagingException {
+            throws IOException, MessagingException {
         // Clear out cookies from any previous authentication.
-        if(mAuthCookies != null) mAuthCookies.clear();
+        if (mAuthCookies != null) mAuthCookies.clear();
 
         WebDavHttpClient httpClient = getHttpClient();
 
@@ -820,12 +817,12 @@ public class WebDavStore extends RemoteStore {
 
                         // Reconstruct the login URL based on the original login URL and the form action.
                         URI finalUri = new URI(loginUri.getScheme(),
-                                               loginUri.getUserInfo(),
-                                               loginUri.getHost(),
-                                               loginUri.getPort(),
-                                               urlPath,
-                                               null,
-                                               null);
+                                loginUri.getUserInfo(),
+                                loginUri.getHost(),
+                                loginUri.getPort(),
+                                urlPath,
+                                null,
+                                null);
                         loginUrl = finalUri.toString();
                     }
 
@@ -859,7 +856,7 @@ public class WebDavStore extends RemoteStore {
      * @throws IOException
      */
     private String findFormAction(InputStream istream)
-    throws IOException {
+            throws IOException {
         String formAction = null;
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
@@ -889,7 +886,7 @@ public class WebDavStore extends RemoteStore {
     }
 
     private boolean testAuthenticationResponse(HttpResponse response)
-    throws MessagingException {
+            throws MessagingException {
         boolean authenticated = false;
         int statusCode = response.getStatusLine().getStatusCode();
         // Exchange 2007 will return a 302 status code no matter what.
@@ -979,7 +976,7 @@ public class WebDavStore extends RemoteStore {
 
     private InputStream sendRequest(String url, String method, StringEntity messageBody,
                                     Map<String, String> headers, boolean tryAuth)
-    throws MessagingException {
+            throws MessagingException {
         if (url == null || method == null) {
             return null;
         }
@@ -1028,7 +1025,7 @@ public class WebDavStore extends RemoteStore {
                 }
             } else if (statusCode < 200 || statusCode >= 300) {
                 throw new IOException("Error with code " + statusCode + " during request processing: " +
-                                      response.getStatusLine().toString());
+                        response.getStatusLine().toString());
             }
 
             if (entity != null) {
@@ -1055,17 +1052,17 @@ public class WebDavStore extends RemoteStore {
      * response.
      */
     DataSet processRequest(String url, String method, String messageBody, Map<String, String> headers)
-    throws MessagingException {
+            throws MessagingException {
         return processRequest(url, method, messageBody, headers, true);
     }
 
     DataSet processRequest(String url, String method, String messageBody, Map<String, String> headers,
                            boolean needsParsing)
-    throws MessagingException {
+            throws MessagingException {
         DataSet dataset = new DataSet();
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
             Log.v(LOG_TAG, "processRequest url = '" + url + "', method = '" + method + "', messageBody = '"
-                  + messageBody + "'");
+                    + messageBody + "'");
         }
 
         if (url == null ||
@@ -1101,7 +1098,7 @@ public class WebDavStore extends RemoteStore {
                     throw new MessagingException("SAXException in processRequest() ", se);
                 } catch (ParserConfigurationException pce) {
                     Log.e(LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: "
-                          + WebDavUtils.processException(pce));
+                            + WebDavUtils.processException(pce));
                     throw new MessagingException("ParserConfigurationException in processRequest() ", pce);
                 }
 
