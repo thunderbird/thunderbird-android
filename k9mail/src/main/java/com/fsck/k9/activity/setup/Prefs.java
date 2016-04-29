@@ -99,6 +99,8 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
     private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
 
+    private static final String PREFERENCE_MARK_MESSAGES_AS_READ = "mark_messages_read";
+
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
     // Named indices for the mVisibleRefileActions field
@@ -142,6 +144,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mHideTimeZone;
     private CheckBoxPreference mWrapFolderNames;
     private CheckBoxListPreference mVisibleRefileActions;
+    private CheckBoxPreference mMarkMessageAsReadBeforeDeletingIt;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private CheckBoxPreference mDisableNotificationDuringQuietTime;
@@ -421,6 +424,9 @@ public class Prefs extends K9PreferenceActivity {
         mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
+
+        mMarkMessageAsReadBeforeDeletingIt = (CheckBoxPreference)findPreference(PREFERENCE_MARK_MESSAGES_AS_READ);
+        mMarkMessageAsReadBeforeDeletingIt.setChecked(K9.markMessageAsReadBeforeDeletingIt());
     }
 
     private static String themeIdToName(K9.Theme theme) {
@@ -486,6 +492,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMessageViewShowNext(mShowNext.isChecked());
         K9.setAutofitWidth(mAutofitWidth.isChecked());
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
+        K9.setMarkMessageAsReadBeforeDeletingIt(mMarkMessageAsReadBeforeDeletingIt.isChecked());
 
         boolean[] enabledRefileActions = mVisibleRefileActions.getCheckedItems();
         K9.setMessageViewDeleteActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_DELETE]);
