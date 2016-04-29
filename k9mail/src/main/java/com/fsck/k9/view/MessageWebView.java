@@ -112,8 +112,9 @@ public class MessageWebView extends RigidWebView {
      *
      * @param text
      *      The message body to display.  Assumed to be MIME type text/html.
+     * @param isHtml
      */
-    public void setText(String text) {
+    public void setText(String text, boolean isHtml) {
      // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
         String content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
         if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
@@ -121,6 +122,10 @@ public class MessageWebView extends RigidWebView {
                    "* { background: black ! important; color: #F3F3F3 !important }" +
                    ":link, :link * { color: #CCFF33 !important }" +
                    ":visited, :visited * { color: #551A8B !important }</style> ";
+        }
+        if (!isHtml) {
+            content += "<style type=\"text/css\"> body" +
+                    " {white-space: pre-wrap; word-wrap:break-word; }</style>";
         }
         content += HtmlConverter.cssStylePre();
         content += "</head><body>" + text + "</body></html>";

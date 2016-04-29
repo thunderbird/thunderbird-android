@@ -444,7 +444,7 @@ public class LocalMessageExtractor {
             List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
 
             MessageViewContainer messageViewContainer =
-                    new MessageViewContainer(viewable.html, part, attachmentInfos, pgpAnnotation);
+                    new MessageViewContainer(viewable, part, attachmentInfos, pgpAnnotation);
 
             containers.add(messageViewContainer);
         }
