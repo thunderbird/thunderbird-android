@@ -3838,7 +3838,7 @@ public class MessagingController implements Runnable {
         message.getUid(), new MessagingListener() {
             @Override
             public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-            Message message) {
+            LocalMessage message) {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Got message " + account.getDescription() + ":" + folder
                           + ":" + message.getUid() + " for sendAlternate");

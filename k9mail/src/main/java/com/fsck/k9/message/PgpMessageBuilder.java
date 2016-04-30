@@ -34,13 +34,16 @@ public class PgpMessageBuilder extends MessageBuilder {
     public static final int REQUEST_SIGN_INTERACTION = 1;
     public static final int REQUEST_ENCRYPT_INTERACTION = 2;
 
-    private final OpenPgpApi openPgpApi;
+    private OpenPgpApi openPgpApi;
 
     private MimeMessage currentProcessedMimeMessage;
     private ComposeCryptoStatus cryptoStatus;
 
-    public PgpMessageBuilder(Context context, OpenPgpApi openPgpApi) {
+    public PgpMessageBuilder(Context context) {
         super(context);
+    }
+
+    public void setOpenPgpApi(OpenPgpApi openPgpApi) {
         this.openPgpApi = openPgpApi;
     }
 
