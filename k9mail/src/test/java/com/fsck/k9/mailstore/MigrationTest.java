@@ -48,7 +48,7 @@ public class MigrationTest {
         ShadowLog.stream = System.out;
         ShadowSQLiteConnection.reset();
 
-        account = Preferences.getPreferences(RuntimeEnvironment.application).newAccount();
+        account = getNewAccount();
 
         StorageManager storageManager = StorageManager.getInstance(RuntimeEnvironment.application);
         databaseFile = storageManager.getDatabase(account.getUuid(), account.getLocalStorageProviderId());
@@ -720,4 +720,12 @@ public class MigrationTest {
         Assert.assertEquals(expectedFilesize, copied);
     }
 
+    private Account getNewAccount() {
+        Preferences preferences = Preferences.getPreferences(RuntimeEnvironment.application);
+
+        //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
+        preferences.loadAccounts();
+
+        return preferences.newAccount();
+    }
 }
