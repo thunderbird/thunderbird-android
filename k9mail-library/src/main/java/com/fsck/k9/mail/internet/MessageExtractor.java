@@ -1,5 +1,7 @@
 package com.fsck.k9.mail.internet;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.fsck.k9.mail.Body;
@@ -111,8 +113,14 @@ public class MessageExtractor {
     }
 
     /** Traverse the MIME tree of a message an extract viewable parts. */
-    public static void findViewablesAndAttachments(Part part, List<Viewable> outputViewableParts,
-            List<Part> outputNonViewableParts) throws MessagingException {
+    public static void findViewablesAndAttachments(Part part,
+                @Nullable List<Viewable> outputViewableParts, @Nullable List<Part> outputNonViewableParts)
+            throws MessagingException {
+        boolean skipSavingNonViewableParts = outputNonViewableParts == null;
+        boolean skipSavingViewableParts = outputViewableParts == null;
+        if (skipSavingNonViewableParts && skipSavingViewableParts) {
+            throw new IllegalArgumentException("method was called but no output is to be collected - this a bug!");
+        }
 
         Body body = part.getBody();
         if (body instanceof Multipart) {
@@ -127,6 +135,9 @@ public class MessageExtractor {
                 Set<Part> knownTextParts = getParts(text);
                 List<Viewable> html = findHtmlPart(multipart, knownTextParts, outputNonViewableParts, true);
 
+                if (skipSavingViewableParts) {
+                    return;
+                }
                 if (!text.isEmpty() || !html.isEmpty()) {
                     Alternative alternative = new Alternative(text, html);
                     outputViewableParts.add(alternative);
@@ -139,6 +150,9 @@ public class MessageExtractor {
             }
         } else if (body instanceof Message &&
                 !("attachment".equalsIgnoreCase(getContentDisposition(part)))) {
+            if (skipSavingViewableParts) {
+                return;
+            }
             /*
              * We only care about message/rfc822 parts whose Content-Disposition header has a value
              * other than "attachment".
@@ -151,9 +165,9 @@ public class MessageExtractor {
             // Recurse to grab all viewable parts and attachments from that message.
             findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
         } else if (isPartTextualBody(part)) {
-            /*
-             * Save text/plain and text/html
-             */
+            if (skipSavingViewableParts) {
+                return;
+            }
             String mimeType = part.getMimeType();
             if (isSameMimeType(mimeType, "text/plain")) {
                 Text text = new Text(part);
@@ -165,6 +179,9 @@ public class MessageExtractor {
         } else if (isSameMimeType(part.getMimeType(), "application/pgp-signature")) {
             // ignore this type explicitly
         } else {
+            if (skipSavingNonViewableParts) {
+                return;
+            }
             // Everything else is treated as attachment.
             outputNonViewableParts.add(part);
         }
@@ -279,7 +296,7 @@ public class MessageExtractor {
      *
      * @param multipart The {@code Multipart} to search through.
      * @param knownTextParts A set of {@code text/plain} parts that shouldn't be added to 'attachments'.
-     * @param nonViewableParts A list that will receive the parts that are considered attachments.
+     * @param outputNonViewableParts A list that will receive the parts that are considered attachments.
      * @param directChild If {@code true}, this method will add all {@code text/html} parts except the first
      *         found to 'attachments'.
      *
@@ -288,7 +305,8 @@ public class MessageExtractor {
      * @throws MessagingException In case of an error.
      */
     private static List<Viewable> findHtmlPart(Multipart multipart, Set<Part> knownTextParts,
-            List<Part> nonViewableParts, boolean directChild) throws MessagingException {
+            @Nullable List<Part> outputNonViewableParts, boolean directChild) throws MessagingException {
+        boolean saveNonViewableParts = outputNonViewableParts != null;
         List<Viewable> viewables = new ArrayList<>();
 
         boolean partFound = false;
@@ -298,8 +316,10 @@ public class MessageExtractor {
                 Multipart innerMultipart = (Multipart) body;
 
                 if (directChild && partFound) {
-                    // We already found our text/html part. Now we're only looking for attachments.
-                    findAttachments(innerMultipart, knownTextParts, nonViewableParts);
+                    if (saveNonViewableParts) {
+                        // We already found our text/html part. Now we're only looking for attachments.
+                        findAttachments(innerMultipart, knownTextParts, outputNonViewableParts);
+                    }
                 } else {
                     /*
                      * Recurse to find HTML parts. Since this is a multipart that is a child of a
@@ -314,7 +334,7 @@ public class MessageExtractor {
                      * 1.3. image/jpeg
                      */
                     List<Viewable> htmlViewables = findHtmlPart(innerMultipart, knownTextParts,
-                            nonViewableParts, false);
+                            outputNonViewableParts, false);
 
                     if (!htmlViewables.isEmpty()) {
                         partFound = true;
@@ -327,9 +347,10 @@ public class MessageExtractor {
                 viewables.add(html);
                 partFound = true;
             } else if (!knownTextParts.contains(part)) {
-                // Only add this part as attachment if it's not a viewable text/plain part found
-                // earlier.
-                nonViewableParts.add(part);
+                if (saveNonViewableParts) {
+                    // Only add this part as attachment if it's not a viewable text/plain part found earlier
+                    outputNonViewableParts.add(part);
+                }
             }
         }
 
@@ -347,7 +368,7 @@ public class MessageExtractor {
      *         A list that will receive the parts that are considered attachments.
      */
     private static void findAttachments(Multipart multipart, Set<Part> knownTextParts,
-                                        List<Part> attachments) {
+            @NonNull List<Part> attachments) {
         for (Part part : multipart.getBodyParts()) {
             Body body = part.getBody();
             if (body instanceof Multipart) {
