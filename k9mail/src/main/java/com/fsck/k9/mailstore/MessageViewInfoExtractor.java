@@ -1,9 +1,15 @@
 package com.fsck.k9.mailstore;
 
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import android.content.Context;
-import android.net.Uri;
+import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.R;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -11,20 +17,12 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.internet.MessageExtractor;
-import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
-import com.fsck.k9.provider.AttachmentProvider;
-import com.fsck.k9.provider.K9FileProvider;
+import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
@@ -33,7 +31,7 @@ import static com.fsck.k9.mail.internet.Viewable.MessageHeader;
 import static com.fsck.k9.mail.internet.Viewable.Text;
 import static com.fsck.k9.mail.internet.Viewable.Textual;
 
-public class LocalMessageExtractor {
+public class MessageViewInfoExtractor {
     private static final String TEXT_DIVIDER =
             "------------------------------------------------------------------------";
     private static final int TEXT_DIVIDER_LENGTH = TEXT_DIVIDER.length();
@@ -43,7 +41,84 @@ public class LocalMessageExtractor {
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
     private static final OpenPgpResultAnnotation NO_ANNOTATIONS = null;
 
-    private LocalMessageExtractor() {}
+    private MessageViewInfoExtractor() {}
+
+    public static MessageViewInfo extractMessageForView(Context context,
+            Message message, MessageCryptoAnnotations annotations) throws MessagingException {
+        // TODO note that we will move away from ViewableContainers, so this method is subject to changes!
+
+        // 1. break mime structure on encryption/signature boundaries
+        List<Part> parts = getCryptPieces(message, annotations);
+
+        // 2. extract viewables/attachments of parts
+        ArrayList<MessageViewContainer> containers = new ArrayList<>();
+        for (Part part : parts) {
+            OpenPgpResultAnnotation pgpAnnotation = annotations.get(part);
+
+            // TODO properly handle decrypted data part - this just replaces the part
+            if (pgpAnnotation != NO_ANNOTATIONS && pgpAnnotation.hasOutputData()) {
+                part = pgpAnnotation.getOutputData();
+            }
+
+            ArrayList<Viewable> viewableParts = new ArrayList<>();
+            ArrayList<Part> attachments = new ArrayList<>();
+            MessageExtractor.findViewablesAndAttachments(part, viewableParts, attachments);
+
+            // 3. parse viewables into html string
+            ViewableContainer viewable = MessageViewInfoExtractor.extractTextAndAttachments(context, viewableParts);
+            List<AttachmentViewInfo> attachmentInfos = AttachmentInfoExtractor.extractAttachmentInfos(context, attachments);
+
+            MessageViewContainer messageViewContainer =
+                    new MessageViewContainer(viewable.html, part, attachmentInfos, pgpAnnotation);
+
+            containers.add(messageViewContainer);
+        }
+
+        return new MessageViewInfo(containers, message);
+    }
+
+    public static List<Part> getCryptPieces(Message message, MessageCryptoAnnotations annotations) throws MessagingException {
+
+        // TODO make sure this method does what it is supposed to
+        /* This method returns a list of mime parts which are to be parsed into
+         * individual MessageViewContainers for display, which each have their
+         * own crypto header. This means parts should be individual for each
+         * multipart/encrypted, multipart/signed, or a multipart/* which does
+         * not contain children of the former types.
+         */
+
+
+        ArrayList<Part> parts = new ArrayList<>();
+        if (!getCryptSubPieces(message, parts, annotations)) {
+            parts.add(message);
+        }
+
+        return parts;
+    }
+
+    public static boolean getCryptSubPieces(Part part, ArrayList<Part> parts,
+            MessageCryptoAnnotations annotations) throws MessagingException {
+
+        Body body = part.getBody();
+        if (body instanceof Multipart) {
+            Multipart multi = (Multipart) body;
+            if (MimeUtility.isSameMimeType(part.getMimeType(), "multipart/mixed")) {
+                boolean foundSome = false;
+                for (BodyPart sub : multi.getBodyParts()) {
+                    foundSome |= getCryptSubPieces(sub, parts, annotations);
+                }
+                if (!foundSome) {
+                    parts.add(part);
+                    return true;
+                }
+            } else if (annotations.has(part)) {
+                parts.add(part);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Extract the viewable textual parts of a message and return the rest as attachments.
      *
@@ -54,10 +129,10 @@ public class LocalMessageExtractor {
      * @throws com.fsck.k9.mail.MessagingException
      *          In case of an error.
      */
-    public static ViewableContainer extractTextAndAttachments(Context context, List<Viewable> viewables,
-            List<Part> attachments) throws MessagingException {
+    @VisibleForTesting
+    static ViewableContainer extractTextAndAttachments(Context context, List<Viewable> viewables)
+            throws MessagingException {
         try {
-
             // Collect all viewable parts
 
             /*
@@ -120,7 +195,7 @@ public class LocalMessageExtractor {
                 }
             }
 
-            return new ViewableContainer(text.toString(), html.toString(), attachments);
+            return new ViewableContainer(text.toString(), html.toString());
         } catch (Exception e) {
             throw new MessagingException("Couldn't extract viewable parts", e);
         }
@@ -142,8 +217,7 @@ public class LocalMessageExtractor {
      *
      * @return The contents of the supplied viewable instance as HTML.
      */
-    private static StringBuilder buildHtml(Viewable viewable, boolean prependDivider)
-    {
+    private static StringBuilder buildHtml(Viewable viewable, boolean prependDivider) {
         StringBuilder html = new StringBuilder();
         if (viewable instanceof Textual) {
             Part part = ((Textual)viewable).getPart();
@@ -174,8 +248,7 @@ public class LocalMessageExtractor {
         return html;
     }
 
-    private static StringBuilder buildText(Viewable viewable, boolean prependDivider)
-    {
+    private static StringBuilder buildText(Viewable viewable, boolean prependDivider) {
         StringBuilder text = new StringBuilder();
         if (viewable instanceof Textual) {
             Part part = ((Textual)viewable).getPart();
@@ -416,169 +489,5 @@ public class LocalMessageExtractor {
         html.append("<td>");
         html.append(value);
         html.append("</td></tr>");
-    }
-
-    public static MessageViewInfo decodeMessageForView(Context context,
-            Message message, MessageCryptoAnnotations annotations) throws MessagingException {
-
-        // 1. break mime structure on encryption/signature boundaries
-        List<Part> parts = getCryptPieces(message, annotations);
-
-        // 2. extract viewables/attachments of parts
-        ArrayList<MessageViewContainer> containers = new ArrayList<>();
-        for (Part part : parts) {
-            OpenPgpResultAnnotation pgpAnnotation = annotations.get(part);
-
-            // TODO properly handle decrypted data part - this just replaces the part
-            if (pgpAnnotation != NO_ANNOTATIONS && pgpAnnotation.hasOutputData()) {
-                part = pgpAnnotation.getOutputData();
-            }
-
-            ArrayList<Part> attachments = new ArrayList<>();
-            List<Viewable> viewables = MessageExtractor.getViewables(part, attachments);
-
-            // 3. parse viewables into html string
-            ViewableContainer viewable = LocalMessageExtractor.extractTextAndAttachments(context, viewables,
-                    attachments);
-            List<AttachmentViewInfo> attachmentInfos = extractAttachmentInfos(context, attachments);
-
-            MessageViewContainer messageViewContainer =
-                    new MessageViewContainer(viewable.html, part, attachmentInfos, pgpAnnotation);
-
-            containers.add(messageViewContainer);
-        }
-
-        return new MessageViewInfo(containers, message);
-    }
-
-    public static List<Part> getCryptPieces(Message message, MessageCryptoAnnotations annotations) throws MessagingException {
-
-        // TODO make sure this method does what it is supposed to
-        /* This method returns a list of mime parts which are to be parsed into
-         * individual MessageViewContainers for display, which each have their
-         * own crypto header. This means parts should be individual for each
-         * multipart/encrypted, multipart/signed, or a multipart/* which does
-         * not contain children of the former types.
-         */
-
-
-        ArrayList<Part> parts = new ArrayList<>();
-        if (!getCryptSubPieces(message, parts, annotations)) {
-            parts.add(message);
-        }
-
-        return parts;
-    }
-
-    public static boolean getCryptSubPieces(Part part, ArrayList<Part> parts,
-            MessageCryptoAnnotations annotations) throws MessagingException {
-
-        Body body = part.getBody();
-        if (body instanceof Multipart) {
-            Multipart multi = (Multipart) body;
-            if (MimeUtility.isSameMimeType(part.getMimeType(), "multipart/mixed")) {
-                boolean foundSome = false;
-                for (BodyPart sub : multi.getBodyParts()) {
-                    foundSome |= getCryptSubPieces(sub, parts, annotations);
-                }
-                if (!foundSome) {
-                    parts.add(part);
-                    return true;
-                }
-            } else if (annotations.has(part)) {
-                parts.add(part);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static List<AttachmentViewInfo> extractAttachmentInfos(Context context, List<Part> attachmentParts)
-            throws MessagingException {
-
-        List<AttachmentViewInfo> attachments = new ArrayList<>();
-        for (Part part : attachmentParts) {
-            attachments.add(extractAttachmentInfo(context, part));
-        }
-
-        return attachments;
-    }
-
-    public static AttachmentViewInfo extractAttachmentInfo(Context context, Part part) throws MessagingException {
-        if (part instanceof LocalPart) {
-            LocalPart localPart = (LocalPart) part;
-            String accountUuid = localPart.getAccountUuid();
-            long messagePartId = localPart.getId();
-            String mimeType = part.getMimeType();
-            String displayName = localPart.getDisplayName();
-            long size = localPart.getSize();
-            boolean firstClassAttachment = localPart.isFirstClassAttachment();
-            Uri uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
-
-            return new AttachmentViewInfo(mimeType, displayName, size, uri, firstClassAttachment, part);
-        } else {
-            Body body = part.getBody();
-            if (body instanceof DecryptedTempFileBody) {
-                DecryptedTempFileBody decryptedTempFileBody = (DecryptedTempFileBody) body;
-                File file = decryptedTempFileBody.getFile();
-                Uri uri = K9FileProvider.getUriForFile(context, file, part.getMimeType());
-                long size = file.length();
-                return extractAttachmentInfo(part, uri, size);
-            } else {
-                throw new RuntimeException("Not supported");
-            }
-        }
-    }
-
-    public static AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
-        return extractAttachmentInfo(part, Uri.EMPTY, AttachmentViewInfo.UNKNOWN_SIZE);
-    }
-
-    private static AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size) throws MessagingException {
-        boolean firstClassAttachment = true;
-
-        String mimeType = part.getMimeType();
-        String contentTypeHeader = MimeUtility.unfoldAndDecode(part.getContentType());
-        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
-
-        String name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
-        if (name == null) {
-            name = MimeUtility.getHeaderParameter(contentTypeHeader, "name");
-        }
-
-        if (name == null) {
-            firstClassAttachment = false;
-            String extension = MimeUtility.getExtensionByMimeType(mimeType);
-            name = "noname" + ((extension != null) ? "." + extension : "");
-        }
-
-        // Inline parts with a content-id are almost certainly components of an HTML message
-        // not attachments. Only show them if the user pressed the button to show more
-        // attachments.
-        if (contentDisposition != null &&
-                MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)") &&
-                part.getHeader(MimeHeader.HEADER_CONTENT_ID).length > 0) {
-            firstClassAttachment = false;
-        }
-
-        long attachmentSize = extractAttachmentSize(contentDisposition, size);
-
-        return new AttachmentViewInfo(mimeType, name, attachmentSize, uri, firstClassAttachment, part);
-    }
-
-    private static long extractAttachmentSize(String contentDisposition, long size) {
-        if (size != AttachmentViewInfo.UNKNOWN_SIZE) {
-            return size;
-        }
-
-        long result = AttachmentViewInfo.UNKNOWN_SIZE;
-        String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
-        if (sizeParam != null) {
-            try {
-                result = Integer.parseInt(sizeParam);
-            } catch (NumberFormatException e) { /* ignore */ }
-        }
-
-        return result;
     }
 }

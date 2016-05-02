@@ -4,11 +4,14 @@ import com.fsck.k9.mail.Part;
 
 import java.util.List;
 
+import android.content.Context;
+
+
 /**
  * Store viewable text of a message as plain text and HTML, and the parts considered
  * attachments.
  *
- * @see LocalMessageExtractor#extractTextAndAttachments(android.content.Context, com.fsck.k9.mail.Message)
+ * @see MessageViewInfoExtractor#extractTextAndAttachments(Context, Part, List) (Context, List, List)
  */
 public class ViewableContainer {
     /**
@@ -21,14 +24,8 @@ public class ViewableContainer {
      */
     public final String html;
 
-    /**
-     * The parts of the message considered attachments (everything not viewable).
-     */
-    public final List<Part> attachments;
-
-    public ViewableContainer(String text, String html, List<Part> attachments) {
+    public ViewableContainer(String text, String html) {
         this.text = text;
         this.html = html;
-        this.attachments = attachments;
     }
 }

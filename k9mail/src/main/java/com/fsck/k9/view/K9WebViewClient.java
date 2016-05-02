@@ -25,7 +25,7 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.LocalMessageExtractor;
+import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
 
 /**
@@ -101,7 +101,7 @@ public abstract class K9WebViewClient extends WebViewClient {
         Context context = webView.getContext();
         ContentResolver contentResolver = context.getContentResolver();
         try {
-            AttachmentViewInfo attachmentInfo = LocalMessageExtractor.extractAttachmentInfo(context, part);
+            AttachmentViewInfo attachmentInfo = AttachmentInfoExtractor.extractAttachmentInfo(context, part);
             String mimeType = attachmentInfo.mimeType;
             InputStream inputStream = contentResolver.openInputStream(attachmentInfo.uri);
 

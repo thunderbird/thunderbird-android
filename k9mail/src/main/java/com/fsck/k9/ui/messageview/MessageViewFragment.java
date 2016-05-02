@@ -49,7 +49,7 @@ import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.crypto.MessageCryptoHelper;
-import com.fsck.k9.ui.message.DecodeMessageLoader;
+import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import com.fsck.k9.view.MessageHeader;
@@ -739,18 +739,27 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     class DecodeMessageLoaderCallback implements LoaderCallbacks<MessageViewInfo> {
         @Override
         public Loader<MessageViewInfo> onCreateLoader(int id, Bundle args) {
+            if (id != DECODE_MESSAGE_LOADER_ID) {
+                throw new IllegalStateException("loader id must be message decoder id");
+            }
             setProgress(true);
-            return new DecodeMessageLoader(mContext, mMessage, messageAnnotations);
+            return new LocalMessageExtractorLoader(mContext, mMessage, messageAnnotations);
         }
 
         @Override
         public void onLoadFinished(Loader<MessageViewInfo> loader, MessageViewInfo messageViewInfo) {
+            if (loader.getId() != DECODE_MESSAGE_LOADER_ID) {
+                throw new IllegalStateException("loader id must be message decoder id");
+            }
             setProgress(false);
             onDecodeMessageFinished(messageViewInfo);
         }
 
         @Override
         public void onLoaderReset(Loader<MessageViewInfo> loader) {
+            if (loader.getId() != DECODE_MESSAGE_LOADER_ID) {
+                throw new IllegalStateException("loader id must be message decoder id");
+            }
             // Do nothing
         }
     }
