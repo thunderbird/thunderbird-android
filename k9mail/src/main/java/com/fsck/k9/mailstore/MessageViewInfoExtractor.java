@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.R;
+import com.fsck.k9.ui.crypto.MessageCryptoSplitter;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -18,6 +20,7 @@ import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
+import com.fsck.k9.ui.crypto.MessageCryptoSplitter.CryptoMessageParts;
 
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
@@ -34,33 +37,57 @@ public class MessageViewInfoExtractor {
     private static final int FILENAME_PREFIX_LENGTH = FILENAME_PREFIX.length();
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
-    private static final CryptoResultAnnotation NO_ANNOTATIONS = null;
 
     private MessageViewInfoExtractor() {}
 
     public static MessageViewInfo extractMessageForView(Context context,
             Message message, MessageCryptoAnnotations annotations) throws MessagingException {
 
-        // TODO properly handle decrypted data part - this just replaces the part
-        CryptoResultAnnotation pgpAnnotation = annotations.get(message);
         Part rootPart;
-        if (pgpAnnotation != NO_ANNOTATIONS && pgpAnnotation.hasReplacementData()) {
-            rootPart = pgpAnnotation.getReplacementData();
+        CryptoResultAnnotation cryptoResultAnnotation;
+        List<Part> extraParts;
+
+        CryptoMessageParts cryptoMessageParts = MessageCryptoSplitter.split(message, annotations);
+        if (cryptoMessageParts != null) {
+            rootPart = cryptoMessageParts.contentPart;
+            cryptoResultAnnotation = cryptoMessageParts.contentCryptoAnnotation;
+            extraParts = cryptoMessageParts.extraParts;
         } else {
             rootPart = message;
+            cryptoResultAnnotation = null;
+            extraParts = null;
         }
 
-        ArrayList<Viewable> viewableParts = new ArrayList<>();
-        ArrayList<Part> attachments = new ArrayList<>();
-        MessageExtractor.findViewablesAndAttachments(rootPart, viewableParts, attachments);
+        List<AttachmentViewInfo> attachmentInfos = new ArrayList<>();
+        ViewableExtractedText viewable = extractViewableAndAttachments(
+                context, Collections.singletonList(rootPart), attachmentInfos);
 
-        ViewableExtractedText viewable = MessageViewInfoExtractor.extractTextFromViewables(context, viewableParts);
-        List<AttachmentViewInfo> attachmentInfos = AttachmentInfoExtractor.extractAttachmentInfos(context, attachments);
+        List<AttachmentViewInfo> extraAttachmentInfos = new ArrayList<>();
+        String extraViewableText = null;
+        if (extraParts != null) {
+            ViewableExtractedText extraViewable =
+                    extractViewableAndAttachments(context, extraParts, extraAttachmentInfos);
+            extraViewableText = extraViewable.text;
+        }
 
         AttachmentResolver attachmentResolver =
                 AttachmentResolver.createFromPart(context, rootPart);
 
-        return new MessageViewInfo(message, rootPart, viewable.html, attachmentInfos, pgpAnnotation, attachmentResolver);
+        return MessageViewInfo.createWithExtractedContent(message, rootPart, viewable.html,
+                attachmentInfos, cryptoResultAnnotation, extraViewableText, extraAttachmentInfos, attachmentResolver);
+    }
+
+    private static ViewableExtractedText extractViewableAndAttachments(Context context, List<Part> parts,
+            List<AttachmentViewInfo> attachmentInfos) throws MessagingException {
+        ArrayList<Viewable> viewableParts = new ArrayList<>();
+        ArrayList<Part> attachments = new ArrayList<>();
+
+        for (Part part : parts) {
+            MessageExtractor.findViewablesAndAttachments(part, viewableParts, attachments);
+        }
+
+        attachmentInfos.addAll(AttachmentInfoExtractor.extractAttachmentInfos(context, attachments));
+        return MessageViewInfoExtractor.extractTextFromViewables(context, viewableParts);
     }
 
     /**
