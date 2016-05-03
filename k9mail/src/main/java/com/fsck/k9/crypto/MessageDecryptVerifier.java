@@ -30,6 +30,28 @@ public class MessageDecryptVerifier {
     private static final String TEXT_PLAIN = "text/plain";
 
 
+    public static Part findPrimaryEncryptedOrSignedPart(Part part, List<Part> outputExtraParts) {
+        if (isPartEncryptedOrSigned(part)) {
+            return part;
+        }
+
+        Body body = part.getBody();
+        if (part.isMimeType("multipart/mixed") && body instanceof Multipart) {
+            Multipart multipart = (Multipart) body;
+            BodyPart firstBodyPart = multipart.getBodyPart(0);
+            if (isPartEncryptedOrSigned(firstBodyPart)) {
+                if (outputExtraParts != null) {
+                    for (int i = 1; i < multipart.getCount(); i++) {
+                        outputExtraParts.add(multipart.getBodyPart(i));
+                    }
+                }
+                return firstBodyPart;
+            }
+        }
+
+        return null;
+    }
+
     public static List<Part> findEncryptedParts(Part startPart) {
         List<Part> encryptedParts = new ArrayList<>();
         Stack<Part> partsToCheck = new Stack<>();
@@ -123,6 +145,26 @@ public class MessageDecryptVerifier {
         }
 
         return null;
+    }
+
+    private static boolean isPartPgpInline(Part part) {
+        if (!part.isMimeType(TEXT_PLAIN)) {
+            return false;
+        }
+        String text = MessageExtractor.getTextFromPart(part);
+        if (TextUtils.isEmpty(text)) {
+            return false;
+        }
+        switch (OpenPgpUtils.parseMessage(text, true)) {
+            case OpenPgpUtils.PARSE_RESULT_MESSAGE:
+            case OpenPgpUtils.PARSE_RESULT_SIGNED_MESSAGE:
+                return true;
+        }
+        return false;
+    }
+
+    private static boolean isPartEncryptedOrSigned(Part part) {
+        return isPartMultipartEncrypted(part) || isPartMultipartSigned(part) || isPartPgpInline(part);
     }
 
     private static boolean isPartMultipartSigned(Part part) {

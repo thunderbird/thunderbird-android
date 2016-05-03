@@ -121,7 +121,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public boolean isMimeType(String mimeType) throws MessagingException {
+    public boolean isMimeType(String mimeType) {
         return getMimeType().equalsIgnoreCase(mimeType);
     }
 
