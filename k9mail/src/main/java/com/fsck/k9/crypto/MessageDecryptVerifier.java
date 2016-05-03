@@ -31,8 +31,8 @@ public class MessageDecryptVerifier {
 
 
     public static List<Part> findEncryptedParts(Part startPart) {
-        List<Part> encryptedParts = new ArrayList<Part>();
-        Stack<Part> partsToCheck = new Stack<Part>();
+        List<Part> encryptedParts = new ArrayList<>();
+        Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(startPart);
 
         while (!partsToCheck.isEmpty()) {
@@ -54,8 +54,8 @@ public class MessageDecryptVerifier {
     }
 
     public static List<Part> findSignedParts(Part startPart) {
-        List<Part> signedParts = new ArrayList<Part>();
-        Stack<Part> partsToCheck = new Stack<Part>();
+        List<Part> signedParts = new ArrayList<>();
+        Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(startPart);
 
         while (!partsToCheck.isEmpty()) {
@@ -77,8 +77,8 @@ public class MessageDecryptVerifier {
     }
 
     public static List<Part> findPgpInlineParts(Part startPart) {
-        List<Part> inlineParts = new ArrayList<Part>();
-        Stack<Part> partsToCheck = new Stack<Part>();
+        List<Part> inlineParts = new ArrayList<>();
+        Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(startPart);
 
         while (!partsToCheck.isEmpty()) {
