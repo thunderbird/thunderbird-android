@@ -65,7 +65,7 @@ public class MessageViewInfoExtractor {
             MessageExtractor.findViewablesAndAttachments(part, viewableParts, attachments);
 
             // 3. parse viewables into html string
-            ViewableContainer viewable = MessageViewInfoExtractor.extractTextAndAttachments(context, viewableParts);
+            ViewableExtractedText viewable = MessageViewInfoExtractor.extractTextFromViewables(context, viewableParts);
             List<AttachmentViewInfo> attachmentInfos = AttachmentInfoExtractor.extractAttachmentInfos(context, attachments);
 
             MessageViewContainer messageViewContainer =
@@ -86,7 +86,6 @@ public class MessageViewInfoExtractor {
          * multipart/encrypted, multipart/signed, or a multipart/* which does
          * not contain children of the former types.
          */
-
 
         ArrayList<Part> parts = new ArrayList<>();
         if (!getCryptSubPieces(message, parts, annotations)) {
@@ -123,14 +122,14 @@ public class MessageViewInfoExtractor {
      * Extract the viewable textual parts of a message and return the rest as attachments.
      *
      * @param context A {@link android.content.Context} instance that will be used to get localized strings.
-     * @return A {@link ViewableContainer} instance containing the textual parts of the message as
+     * @return A {@link ViewableExtractedText} instance containing the textual parts of the message as
      *         plain text and HTML, and a list of message parts considered attachments.
      *
      * @throws com.fsck.k9.mail.MessagingException
      *          In case of an error.
      */
     @VisibleForTesting
-    static ViewableContainer extractTextAndAttachments(Context context, List<Viewable> viewables)
+    static ViewableExtractedText extractTextFromViewables(Context context, List<Viewable> viewables)
             throws MessagingException {
         try {
             // Collect all viewable parts
@@ -195,7 +194,7 @@ public class MessageViewInfoExtractor {
                 }
             }
 
-            return new ViewableContainer(text.toString(), html.toString());
+            return new ViewableExtractedText(text.toString(), html.toString());
         } catch (Exception e) {
             throw new MessagingException("Couldn't extract viewable parts", e);
         }
@@ -489,5 +488,16 @@ public class MessageViewInfoExtractor {
         html.append("<td>");
         html.append(value);
         html.append("</td></tr>");
+    }
+
+    @VisibleForTesting
+    static class ViewableExtractedText {
+        public final String text;
+        public final String html;
+
+        public ViewableExtractedText(String text, String html) {
+            this.text = text;
+            this.html = html;
+        }
     }
 }
