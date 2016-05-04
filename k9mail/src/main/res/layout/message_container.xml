@@ -14,19 +14,19 @@
     <LinearLayout
         android:id="@+id/attachments_container"
         android:orientation="vertical"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/attachments"
             android:orientation="vertical"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dip" />
 
         <Button
             android:id="@+id/show_hidden_attachments"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/message_view_show_more_attachments_action" />
 
