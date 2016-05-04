@@ -253,6 +253,8 @@ class ImapFolderPusher extends ImapFolder {
             } catch (Exception me) {
                 Log.e(LOG_TAG, "Got exception while closing for exception for " + getLogId(), me);
             }
+
+            connection = null;
         }
 
         private long getNewUidNext() throws MessagingException {
