@@ -478,7 +478,7 @@ public class WebDavStore extends RemoteStore {
         builder.append("<?xml version='1.0' ?>");
         builder.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         builder.append("SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n");
-        builder.append(" FROM SCOPE('hierarchical traversal of \"").append(this.mUrl).append("\"')\r\n");
+        builder.append(" FROM SCOPE('deep traversal of \"").append(this.mUrl).append("\"')\r\n");
         builder.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
         builder.append("</a:sql></a:searchrequest>\r\n");
         return builder.toString();
