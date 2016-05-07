@@ -549,6 +549,7 @@ public class MimeUtility {
     { "pkg", "application/octet-stream"},
     { "pki", "application/pkixcmp"},
     { "pkipath", "application/pkix-pkipath"},
+    { "pkpass", "application/vnd-com.apple.pkpass"},
     { "pko", "application/ynd.ms-pkipko"},
     { "plb", "application/vnd.3gpp.pic-bw-large"},
     { "plc", "application/vnd.mobius.plc"},
