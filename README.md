@@ -28,8 +28,8 @@ in each version of K-9 Mail.
 
 If the app is not behaving like it should, you might find these resources helpful:
 
-- [User Manual](https://github.com/k9mail/k-9/wiki/Manual)
-- [Frequently Asked Questions](https://github.com/k9mail/k-9/wiki/FrequentlyAskedQuestions)
+- [User Manual](https://k9mail.github.io/documentation.html)
+- [Frequently Asked Questions](https://k9mail.github.io/documentation/faq.html)
 - [Support Forum/Mailing List](http://groups.google.com/group/k-9-mail)
 - [Google+ Community](https://plus.google.com/communities/109228641058741937099)
 
