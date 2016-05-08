@@ -40,6 +40,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
@@ -4311,6 +4312,17 @@ public class MessagingController implements Runnable {
         // to be notified for such messages.
         if (account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail()) {
             return false;
+        }
+
+        if (account.isNotifyContactsMailOnly()) {
+            Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                    new String[]{ContactsContract.Contacts.DISPLAY_NAME},
+                    ContactsContract.CommonDataKinds.Email.ADDRESS + " LIKE ? AND " +
+                            ContactsContract.Contacts.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE+"'",
+                    new String[]{message.getFrom()[0].getAddress()}, "");
+            if (cursor.getCount() == 0) {
+                return false;
+            }
         }
 
         return true;
