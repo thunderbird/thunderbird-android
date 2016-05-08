@@ -181,6 +181,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mNotifyNewMail;
     private FolderMode mFolderNotifyNewMailMode;
     private boolean mNotifySelfNewMail;
+    private boolean mNotifyContactsMailOnly;
     private String mInboxFolderName;
     private String mDraftsFolderName;
     private String mSentFolderName;
@@ -289,6 +290,7 @@ public class Account implements BaseAccount, StoreConfig {
         mFolderNotifyNewMailMode = FolderMode.ALL;
         mNotifySync = true;
         mNotifySelfNewMail = true;
+        mNotifyContactsMailOnly = false;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
         mFolderSyncMode = FolderMode.FIRST_CLASS;
         mFolderPushMode = FolderMode.FIRST_CLASS;
@@ -397,6 +399,7 @@ public class Account implements BaseAccount, StoreConfig {
 
         mFolderNotifyNewMailMode = getEnumStringPref(storage, mUuid + ".folderNotifyNewMailMode", FolderMode.ALL);
         mNotifySelfNewMail = storage.getBoolean(mUuid + ".notifySelfNewMail", true);
+        mNotifyContactsMailOnly = storage.getBoolean(mUuid + ".notifyContactsMailOnly", false);
         mNotifySync = storage.getBoolean(mUuid + ".notifyMailCheck", false);
         mDeletePolicy =  DeletePolicy.fromInt(storage.getInt(mUuid + ".deletePolicy", DeletePolicy.NEVER.setting));
         mInboxFolderName = storage.getString(mUuid  + ".inboxFolderName", INBOX);
@@ -684,6 +687,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
         editor.putString(mUuid + ".folderNotifyNewMailMode", mFolderNotifyNewMailMode.name());
         editor.putBoolean(mUuid + ".notifySelfNewMail", mNotifySelfNewMail);
+        editor.putBoolean(mUuid + ".notifyContactsMailOnly", mNotifyContactsMailOnly);
         editor.putBoolean(mUuid + ".notifyMailCheck", mNotifySync);
         editor.putInt(mUuid + ".deletePolicy", mDeletePolicy.setting);
         editor.putString(mUuid + ".inboxFolderName", mInboxFolderName);
@@ -1250,6 +1254,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setNotifySelfNewMail(boolean notifySelfNewMail) {
         mNotifySelfNewMail = notifySelfNewMail;
+    }
+
+    public synchronized boolean isNotifyContactsMailOnly() {
+        return mNotifyContactsMailOnly;
+    }
+
+    public synchronized void setNotifyContactsMailOnly(boolean notifyContactsMailOnly) {
+        this.mNotifyContactsMailOnly = notifyContactsMailOnly;
     }
 
     public synchronized Expunge getExpungePolicy() {
