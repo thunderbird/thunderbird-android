@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ProxySettings;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
@@ -38,8 +39,8 @@ public abstract class RemoteStore extends Store {
     /**
      * Get an instance of a remote mail store.
      */
-    public synchronized static Store getInstance(Context context,
-                                                 StoreConfig storeConfig) throws MessagingException {
+    public static synchronized Store getInstance(Context context, StoreConfig storeConfig, ProxySettings proxySettings)
+            throws MessagingException {
         String uri = storeConfig.getStoreUri();
 
         if (uri.startsWith("local")) {
@@ -50,11 +51,11 @@ public abstract class RemoteStore extends Store {
         if (store == null) {
             if (uri.startsWith("imap")) {
                 store = new ImapStore(storeConfig,
-                        new DefaultTrustedSocketFactory(context),
+                        new DefaultTrustedSocketFactory(context, proxySettings),
                         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
             } else if (uri.startsWith("pop3")) {
                 store = new Pop3Store(storeConfig,
-                        new DefaultTrustedSocketFactory(context));
+                        new DefaultTrustedSocketFactory(context, proxySettings));
             } else if (uri.startsWith("webdav")) {
                 store = new WebDavStore(storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
             }
