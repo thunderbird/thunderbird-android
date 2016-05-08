@@ -16,6 +16,7 @@
 
 package org.openintents.openpgp.util;
 
+
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;

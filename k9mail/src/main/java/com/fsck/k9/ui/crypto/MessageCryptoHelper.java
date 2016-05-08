@@ -3,19 +3,17 @@ package com.fsck.k9.ui.crypto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -32,17 +30,20 @@ import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.DecryptStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageHelper;
-import com.fsck.k9.mailstore.CryptoResultAnnotation;
+import org.apache.commons.io.IOUtils;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
+import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpSinkResultCallback;
+import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
+import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
@@ -218,90 +219,84 @@ public class MessageCryptoHelper {
     }
 
     private void callAsyncInlineOperation(Intent intent) throws IOException {
-        PipedInputStream pipedInputStream = getPipedInputStreamForEncryptedOrInlineData();
-        final ByteArrayOutputStream decryptedOutputStream = new ByteArrayOutputStream();
+        OpenPgpDataSource dataSource = getDataSourceForEncryptedOrInlineData();
+        OpenPgpDataSink<MimeBodyPart> dataSink = getDataSinkForDecryptedInlineData();
 
-        openPgpApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream, new IOpenPgpCallback() {
+        openPgpApi.executeApiAsync(intent, dataSource, dataSink, new IOpenPgpSinkResultCallback<MimeBodyPart>() {
             @Override
-            public void onReturn(Intent result) {
+            public void onReturn(Intent result, MimeBodyPart bodyPart) {
                 currentCryptoResult = result;
+                onCryptoOperationReturned(bodyPart);
+            }
+        });
+    }
 
-                MimeBodyPart decryptedPart = null;
+    private OpenPgpDataSink<MimeBodyPart> getDataSinkForDecryptedInlineData() {
+        return new OpenPgpDataSink<MimeBodyPart>() {
+            @Override
+            public MimeBodyPart processData(InputStream is) throws IOException {
                 try {
-                    TextBody body = new TextBody(new String(decryptedOutputStream.toByteArray()));
-                    decryptedPart = new MimeBodyPart(body, "text/plain");
+                    ByteArrayOutputStream decryptedByteOutputStream = new ByteArrayOutputStream();
+                    IOUtils.copy(is, decryptedByteOutputStream);
+                    TextBody body = new TextBody(new String(decryptedByteOutputStream.toByteArray()));
+                    return new MimeBodyPart(body, "text/plain");
                 } catch (MessagingException e) {
                     Log.e(K9.LOG_TAG, "MessagingException", e);
                 }
 
+                return null;
+            }
+        };
+    }
+
+    private void callAsyncDecrypt(Intent intent) throws IOException {
+        OpenPgpDataSource dataSource = getDataSourceForEncryptedOrInlineData();
+        OpenPgpDataSink<MimeBodyPart> openPgpDataSink = getDataSinkForDecryptedData();
+
+        openPgpApi.executeApiAsync(intent, dataSource, openPgpDataSink, new IOpenPgpSinkResultCallback<MimeBodyPart>() {
+            @Override
+            public void onReturn(Intent result, MimeBodyPart decryptedPart) {
+                currentCryptoResult = result;
                 onCryptoOperationReturned(decryptedPart);
             }
         });
     }
 
-    private void callAsyncDecrypt(Intent intent) throws IOException {
-        final CountDownLatch latch = new CountDownLatch(1);
-        PipedInputStream pipedInputStream = getPipedInputStreamForEncryptedOrInlineData();
-        PipedOutputStream decryptedOutputStream = getPipedOutputStreamForDecryptedData(latch);
-
-        openPgpApi.executeApiAsync(intent, pipedInputStream, decryptedOutputStream, new IOpenPgpCallback() {
-            @Override
-            public void onReturn(Intent result) {
-                currentCryptoResult = result;
-                latch.countDown();
-            }
-        });
-    }
-
     private void callAsyncDetachedVerify(Intent intent) throws IOException, MessagingException {
-        PipedInputStream pipedInputStream = getPipedInputStreamForSignedData();
+        OpenPgpDataSource dataSource = getDataSourceForSignedData();
 
         byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentCryptoPart.part);
         intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
 
-        openPgpApi.executeApiAsync(intent, pipedInputStream, null, new IOpenPgpCallback() {
+        openPgpApi.executeApiAsync(intent, dataSource, new IOpenPgpSinkResultCallback<Void>() {
             @Override
-            public void onReturn(Intent result) {
+            public void onReturn(Intent result, Void dummy) {
                 currentCryptoResult = result;
                 onCryptoOperationReturned(null);
             }
         });
     }
 
-    private PipedInputStream getPipedInputStreamForSignedData() throws IOException {
-        PipedInputStream pipedInputStream = new PipedInputStream();
-
-        final PipedOutputStream out = new PipedOutputStream(pipedInputStream);
-        new Thread(new Runnable() {
+    private OpenPgpDataSource getDataSourceForSignedData() throws IOException {
+        return new OpenPgpDataSource() {
             @Override
-            public void run() {
+            public void writeTo(OutputStream os) throws IOException {
                 try {
                     Multipart multipartSignedMultipart = (Multipart) currentCryptoPart.part.getBody();
                     BodyPart signatureBodyPart = multipartSignedMultipart.getBodyPart(0);
                     Log.d(K9.LOG_TAG, "signed data type: " + signatureBodyPart.getMimeType());
-                    signatureBodyPart.writeTo(out);
-                } catch (Exception e) {
+                    signatureBodyPart.writeTo(os);
+                } catch (MessagingException e) {
                     Log.e(K9.LOG_TAG, "Exception while writing message to crypto provider", e);
-                } finally {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // don't care
-                    }
                 }
             }
-        }).start();
-
-        return pipedInputStream;
+        };
     }
 
-    private PipedInputStream getPipedInputStreamForEncryptedOrInlineData() throws IOException {
-        PipedInputStream pipedInputStream = new PipedInputStream();
-
-        final PipedOutputStream out = new PipedOutputStream(pipedInputStream);
-        new Thread(new Runnable() {
+    private OpenPgpDataSource getDataSourceForEncryptedOrInlineData() throws IOException {
+        return new OpenPgpApi.OpenPgpDataSource() {
             @Override
-            public void run() {
+            public void writeTo(OutputStream os) throws IOException {
                 try {
                     Part part = currentCryptoPart.part;
                     CryptoPartType cryptoPartType = currentCryptoPart.type;
@@ -309,64 +304,43 @@ public class MessageCryptoHelper {
                         Multipart multipartEncryptedMultipart = (Multipart) part.getBody();
                         BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
                         Body encryptionPayloadBody = encryptionPayloadPart.getBody();
-                        encryptionPayloadBody.writeTo(out);
+                        encryptionPayloadBody.writeTo(os);
                     } else if (cryptoPartType == CryptoPartType.PGP_INLINE) {
                         String text = MessageExtractor.getTextFromPart(part);
-                        out.write(text.getBytes());
+                        os.write(text.getBytes());
                     } else {
-                        Log.wtf(K9.LOG_TAG, "No suitable data to stream found!");
+                        throw new IllegalStateException("part to stream must be encrypted or inline!");
                     }
-                } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Exception while writing message to crypto provider", e);
-                } finally {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // don't care
-                    }
+                } catch (MessagingException e) {
+                    Log.e(K9.LOG_TAG, "MessagingException while writing message to crypto provider", e);
                 }
             }
-        }).start();
-
-        return pipedInputStream;
+        };
     }
 
-    private PipedOutputStream getPipedOutputStreamForDecryptedData(final CountDownLatch latch) throws IOException {
-        PipedOutputStream decryptedOutputStream = new PipedOutputStream();
-        final PipedInputStream decryptedInputStream = new PipedInputStream(decryptedOutputStream);
-        new AsyncTask<Void, Void, MimeBodyPart>() {
+    private OpenPgpDataSink<MimeBodyPart> getDataSinkForDecryptedData() throws IOException {
+        return new OpenPgpDataSink<MimeBodyPart>() {
             @Override
-            protected MimeBodyPart doInBackground(Void... params) {
-                MimeBodyPart decryptedPart = null;
+            public MimeBodyPart processData(InputStream is) throws IOException {
                 try {
-                    decryptedPart = DecryptStreamParser.parse(context, decryptedInputStream);
-
-                    latch.await();
-                } catch (InterruptedException e) {
-                    Log.w(K9.LOG_TAG, "we were interrupted while waiting for onReturn!", e);
-                } catch (Exception e) {
+                    return DecryptStreamParser.parse(context, is);
+                } catch (MessagingException e) {
                     Log.e(K9.LOG_TAG, "Something went wrong while parsing the decrypted MIME part", e);
                     //TODO: pass error to main thread and display error message to user
+                    return null;
                 }
-                return decryptedPart;
             }
-
-            @Override
-            protected void onPostExecute(MimeBodyPart decryptedPart) {
-                onCryptoOperationReturned(decryptedPart);
-            }
-        }.execute();
-        return decryptedOutputStream;
+        };
     }
 
-    private void onCryptoOperationReturned(MimeBodyPart outputPart) {
+    private void onCryptoOperationReturned(MimeBodyPart decryptedPart) {
         if (currentCryptoResult == null) {
             Log.e(K9.LOG_TAG, "Internal error: we should have a result here!");
             return;
         }
 
         try {
-            handleCryptoOperationResult(outputPart);
+            handleCryptoOperationResult(decryptedPart);
         } finally {
             currentCryptoResult = null;
         }
