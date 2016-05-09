@@ -52,8 +52,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/bullet_point_positive"
-            android:tint="@color/light_green"
+            style="@style/PositiveBulletPoint"
             />
 
         <TextView
@@ -77,8 +76,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/bullet_point_negative"
-            android:tint="@color/light_red"
+            style="@style/NegativeBulletPoint"
             />
 
         <TextView
@@ -103,8 +101,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/bullet_point_negative"
-            android:tint="@color/light_red"
+            style="@style/NegativeBulletPoint"
             />
 
         <TextView

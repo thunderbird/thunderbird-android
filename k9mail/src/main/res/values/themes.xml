@@ -61,6 +61,8 @@
         <item name="contactPictureFallbackDefaultBackgroundColor">#ffababab</item>
         <item name="contactTokenBackgroundColor">#ccc</item>
         <item name="composerBackgroundColor">@android:color/background_light</item>
+        <item name="tintColorBulletPointPositive">#77aa22</item>
+        <item name="tintColorBulletPointNegative">#dd2222</item>
     </style>
 
     <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Base">
@@ -115,6 +117,8 @@
         <item name="contactTokenBackgroundColor">#313131</item>
         <item name="contactPictureFallbackDefaultBackgroundColor">#ff606060</item>
         <item name="composerBackgroundColor">@android:color/background_dark</item>
+        <item name="tintColorBulletPointPositive">#77aa22</item>
+        <item name="tintColorBulletPointNegative">#dd2222</item>
     </style>
 
     <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">

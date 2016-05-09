@@ -54,6 +54,8 @@
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
         <attr name="contactTokenBackgroundColor" format="reference|color"/>
+        <attr name="tintColorBulletPointPositive" format="reference|color"/>
+        <attr name="tintColorBulletPointNegative" format="reference|color"/>
     </declare-styleable>
 
     <declare-styleable name="SliderPreference">
