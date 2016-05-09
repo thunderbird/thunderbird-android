@@ -26,6 +26,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
@@ -255,6 +258,8 @@ public class OpenPgpApi {
 
     // DECRYPT_VERIFY
     public static final String EXTRA_DETACHED_SIGNATURE = "detached_signature";
+    public static final String EXTRA_PROGRESS_MESSENGER = "progress_messenger";
+    public static final String EXTRA_DATA_LENGTH = "data_length";
     public static final String RESULT_SIGNATURE = "signature";
     public static final String RESULT_DECRYPTION = "decryption";
     public static final String RESULT_METADATA = "metadata";
@@ -279,6 +284,7 @@ public class OpenPgpApi {
     }
 
     public interface IOpenPgpSinkResultCallback<T> {
+        void onProgress(int current, int max);
         void onReturn(final Intent result, T sinkResult);
     }
 
@@ -330,7 +336,16 @@ public class OpenPgpApi {
     }
 
     public <T> void executeApiAsync(Intent data, OpenPgpDataSource dataSource, OpenPgpDataSink<T> dataSink,
-            IOpenPgpSinkResultCallback<T> callback) {
+            final IOpenPgpSinkResultCallback<T> callback) {
+        Messenger messenger = new Messenger(new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                callback.onProgress(message.arg1, message.arg2);
+                return true;
+            }
+        }));
+        data.putExtra(EXTRA_PROGRESS_MESSENGER, messenger);
+
         OpenPgpSourceSinkAsyncTask<T> task = new OpenPgpSourceSinkAsyncTask<>(data, dataSource, dataSink, callback);
 
         // don't serialize async tasks!
@@ -383,6 +398,10 @@ public class OpenPgpApi {
         ParcelFileDescriptor output = null;
         try {
             if (dataSource != null) {
+                Long expectedSize = dataSource.getTotalDataSize();
+                if (expectedSize != null) {
+                    data.putExtra(EXTRA_DATA_LENGTH, (long) expectedSize);
+                }
                 input = ParcelFileDescriptorUtil.asyncPipeFromDataSource(dataSource);
             }
 
@@ -465,8 +484,11 @@ public class OpenPgpApi {
         }
     }
 
-    public interface OpenPgpDataSource {
-        void writeTo(OutputStream os) throws IOException;
+    public static abstract class OpenPgpDataSource {
+        public abstract void writeTo(OutputStream os) throws IOException;
+        public Long getTotalDataSize() {
+            return null;
+        }
     }
 
     public interface OpenPgpDataSink<T> {
@@ -478,6 +500,10 @@ public class OpenPgpApi {
         ParcelFileDescriptor output;
         try {
             if (dataSource != null) {
+                Long expectedSize = dataSource.getTotalDataSize();
+                if (expectedSize != null) {
+                    data.putExtra(EXTRA_DATA_LENGTH, (long) expectedSize);
+                }
                 input = ParcelFileDescriptorUtil.asyncPipeFromDataSource(dataSource);
             }
 

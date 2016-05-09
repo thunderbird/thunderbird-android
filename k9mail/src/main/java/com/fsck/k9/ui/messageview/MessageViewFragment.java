@@ -244,6 +244,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     @Override
+    public void onCryptoHelperProgress(int current, int max) {
+        // TODO implement
+    }
+
+    @Override
     public void onCryptoOperationsFinished(MessageCryptoAnnotations annotations) {
         startExtractingTextAndAttachments(annotations);
     }
