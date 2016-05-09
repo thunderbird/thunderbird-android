@@ -60,6 +60,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     // transient state, which is either obtained during construction and initialization, or cached
     private final Context context;
     private final RecipientMvpView recipientMvpView;
+    private final ComposePgpInlineDecider composePgpInlineDecider;
     private Account account;
     private String cryptoProvider;
     private Boolean hasContactPicker;
@@ -76,9 +77,11 @@ public class RecipientPresenter implements PermissionPingCallback {
     private boolean cryptoEnablePgpInline = false;
 
 
-    public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account) {
+    public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account,
+            ComposePgpInlineDecider composePgpInlineDecider) {
         this.recipientMvpView = recipientMvpView;
         this.context = context;
+        this.composePgpInlineDecider = composePgpInlineDecider;
 
         recipientMvpView.setPresenter(this);
         onSwitchAccount(account);
@@ -167,7 +170,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 }
             }
 
-            boolean shouldSendAsPgpInline = ComposePgpInlineDecider.getInstance().shouldReplyInline(message);
+            boolean shouldSendAsPgpInline = composePgpInlineDecider.shouldReplyInline(message);
             if (shouldSendAsPgpInline) {
                 cryptoEnablePgpInline = true;
             }

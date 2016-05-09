@@ -88,6 +88,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.IdentityHeaderParser;
 import com.fsck.k9.message.MessageBuilder;
@@ -398,7 +399,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         mChooseIdentityButton.setOnClickListener(this);
 
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
-        recipientPresenter = new RecipientPresenter(this, recipientMvpView, mAccount);
+        ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
+        recipientPresenter = new RecipientPresenter(this, recipientMvpView, mAccount, composePgpInlineDecider);
 
         mSubjectView = (EditText) findViewById(R.id.subject);
         mSubjectView.getInputExtras(true).putBoolean("allowEmoji", true);
