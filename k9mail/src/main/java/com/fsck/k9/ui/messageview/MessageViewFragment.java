@@ -57,6 +57,7 @@ import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
 
+
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
         AttachmentViewCallback, MessageCryptoCallback, MessageCryptoMvpView {
 
@@ -83,6 +84,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private MessageTopView mMessageView;
+
     private Account mAccount;
     private MessageReference mMessageReference;
     private LocalMessage mMessage;
@@ -234,6 +236,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private void onLoadMessageFromDatabaseFinished(LocalMessage message) {
         displayMessageHeader(message);
 
+        mMessageView.setToLoadingState();
+
         if (message.isBodyMissing()) {
             startDownloadingMessageBody();
         } else {
@@ -273,7 +277,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     @Override
     public void onCryptoHelperProgress(int current, int max) {
-        // TODO implement
+        mMessageView.setLoadingProgress(current, max);
     }
 
     @Override

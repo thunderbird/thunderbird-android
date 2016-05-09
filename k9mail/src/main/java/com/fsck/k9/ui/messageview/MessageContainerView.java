@@ -41,6 +41,7 @@ import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
+import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
 
 
 public class MessageContainerView extends LinearLayout implements OnClickListener,
@@ -401,7 +402,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     }
 
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
-            boolean automaticallyLoadPictures, ShowPicturesController showPicturesController,
+            final OnRenderingFinishedListener onRenderingFinishedListener, boolean automaticallyLoadPictures,
+            ShowPicturesController showPicturesController,
             AttachmentViewCallback attachmentCallback) throws MessagingException {
 
         this.attachmentCallback = attachmentCallback;
@@ -441,7 +443,15 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             textToDisplay = wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
 
-        displayHtmlContentWithInlineAttachments(textToDisplay, messageViewInfo.attachmentResolver);
+        OnPageFinishedListener onPageFinishedListener = new OnPageFinishedListener() {
+            @Override
+            public void onPageFinished() {
+                onRenderingFinishedListener.onLoadFinished();
+            }
+        };
+
+        displayHtmlContentWithInlineAttachments(
+                textToDisplay, messageViewInfo.attachmentResolver, onPageFinishedListener);
 
         if (!TextUtils.isEmpty(messageViewInfo.extraText)) {
             unsignedTextContainer.setVisibility(View.VISIBLE);
@@ -453,18 +463,19 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         return "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
     }
 
-    private void displayHtmlContentWithInlineAttachments(String htmlText, AttachmentResolver attachmentResolver) {
+    private void displayHtmlContentWithInlineAttachments(String htmlText, AttachmentResolver attachmentResolver,
+            OnPageFinishedListener onPageFinishedListener) {
         currentHtmlText = htmlText;
         currentAttachmentResolver = attachmentResolver;
-        mMessageContentView.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver);
+        mMessageContentView.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver, onPageFinishedListener);
     }
 
     private void refreshDisplayedContent() {
-        mMessageContentView.displayHtmlContentWithInlineAttachments(currentHtmlText, currentAttachmentResolver);
+        mMessageContentView.displayHtmlContentWithInlineAttachments(currentHtmlText, currentAttachmentResolver, null);
     }
 
     private void clearDisplayedContent() {
-        mMessageContentView.displayHtmlContentWithInlineAttachments("", null);
+        mMessageContentView.displayHtmlContentWithInlineAttachments("", null, null);
     }
 
     public void renderAttachments(MessageViewInfo messageViewInfo) throws MessagingException {
@@ -613,5 +624,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             out.writeInt((this.hiddenAttachmentsVisible) ? 1 : 0);
             out.writeInt((this.showingPictures) ? 1 : 0);
         }
+    }
+
+    interface OnRenderingFinishedListener {
+        void onLoadFinished();
     }
 }

@@ -53,6 +53,7 @@ public class MessageCryptoHelper {
     private static final int INVALID_OPENPGP_RESULT_CODE = -1;
     private static final MimeBodyPart NO_REPLACEMENT_PART = null;
     public static final int REQUEST_CODE_USER_INTERACTION = 124;
+    public static final int PROGRESS_SIZE_THRESHOLD = 4096;
 
 
     private final Context context;
@@ -277,7 +278,8 @@ public class MessageCryptoHelper {
 
             @Override
             public void onProgress(int current, int max) {
-                Log.d(K9.LOG_TAG, "got progress: " + current + " / " + max);
+                Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
+                callback.onCryptoHelperProgress(current, max);
             }
         });
     }
@@ -297,7 +299,8 @@ public class MessageCryptoHelper {
 
             @Override
             public void onProgress(int current, int max) {
-                Log.d(K9.LOG_TAG, "got progress: " + current + " / " + max);
+                Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
+                callback.onCryptoHelperProgress(current, max);
             }
         });
     }
@@ -321,7 +324,7 @@ public class MessageCryptoHelper {
     private OpenPgpDataSource getDataSourceForEncryptedOrInlineData() throws IOException {
         return new OpenPgpApi.OpenPgpDataSource() {
             @Override
-            public Long getTotalDataSize() {
+            public Long getSizeForProgress() {
                 Part part = currentCryptoPart.part;
                 CryptoPartType cryptoPartType = currentCryptoPart.type;
                 Body body;
@@ -335,7 +338,10 @@ public class MessageCryptoHelper {
                     throw new IllegalStateException("part to stream must be encrypted or inline!");
                 }
                 if (body instanceof SizeAware) {
-                    return ((SizeAware) body).getSize();
+                    long bodySize = ((SizeAware) body).getSize();
+                    if (bodySize > PROGRESS_SIZE_THRESHOLD) {
+                        return bodySize;
+                    }
                 }
                 return null;
             }

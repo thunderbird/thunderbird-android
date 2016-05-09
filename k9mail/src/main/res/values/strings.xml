@@ -1188,5 +1188,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="locked_attach_unsigned">This part was not encrypted, and may be insecure.</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
     <string name="locked_attach_title">Unprotected Attachment</string>
+    <string name="message_progress_text">Loading…</string>
 
 </resources>

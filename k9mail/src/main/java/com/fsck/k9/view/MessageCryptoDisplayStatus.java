@@ -14,6 +14,11 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 
 
 public enum MessageCryptoDisplayStatus {
+    LOADING (
+            R.color.openpgp_grey,
+            R.drawable.status_lock
+    ),
+
     DISABLED (
             R.color.openpgp_grey,
             R.drawable.status_lock_disabled,
@@ -126,7 +131,7 @@ public enum MessageCryptoDisplayStatus {
     @DrawableRes public final int iconResFirst;
     @DrawableRes public final Integer iconResSecond;
 
-    @StringRes public final int textResFirst;
+    @StringRes public final Integer textResFirst;
     @StringRes public final Integer textResSecond;
 
     MessageCryptoDisplayStatus(@ColorRes int color, @DrawableRes int iconResFirst, @DrawableRes Integer iconResSecond,
@@ -145,6 +150,15 @@ public enum MessageCryptoDisplayStatus {
         this.iconResSecond = null;
 
         this.textResFirst = textResFirst;
+        this.textResSecond = null;
+    }
+
+    MessageCryptoDisplayStatus(@ColorRes int color, @DrawableRes int iconResFirst) {
+        this.color = color;
+        this.iconResFirst = iconResFirst;
+        this.iconResSecond = null;
+
+        this.textResFirst = null;
         this.textResSecond = null;
     }
 

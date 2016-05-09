@@ -84,6 +84,9 @@ public class CryptoInfoDialog extends DialogFragment {
     }
 
     private void setMessageForDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
+        if (displayStatus.textResFirst == null) {
+            throw new AssertionError("Crypto info dialog can only be displayed for items with text!");
+        }
 
         if (displayStatus.textResSecond == null) {
             setMessageSingleLine(displayStatus.color, displayStatus.textResFirst, displayStatus.iconResFirst, displayStatus.iconResSecond);

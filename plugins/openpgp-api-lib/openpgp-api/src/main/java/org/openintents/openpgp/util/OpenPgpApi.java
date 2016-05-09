@@ -398,9 +398,11 @@ public class OpenPgpApi {
         ParcelFileDescriptor output = null;
         try {
             if (dataSource != null) {
-                Long expectedSize = dataSource.getTotalDataSize();
+                Long expectedSize = dataSource.getSizeForProgress();
                 if (expectedSize != null) {
                     data.putExtra(EXTRA_DATA_LENGTH, (long) expectedSize);
+                } else {
+                    data.removeExtra(EXTRA_PROGRESS_MESSENGER);
                 }
                 input = ParcelFileDescriptorUtil.asyncPipeFromDataSource(dataSource);
             }
@@ -486,7 +488,7 @@ public class OpenPgpApi {
 
     public static abstract class OpenPgpDataSource {
         public abstract void writeTo(OutputStream os) throws IOException;
-        public Long getTotalDataSize() {
+        public Long getSizeForProgress() {
             return null;
         }
     }
@@ -500,9 +502,11 @@ public class OpenPgpApi {
         ParcelFileDescriptor output;
         try {
             if (dataSource != null) {
-                Long expectedSize = dataSource.getTotalDataSize();
+                Long expectedSize = dataSource.getSizeForProgress();
                 if (expectedSize != null) {
                     data.putExtra(EXTRA_DATA_LENGTH, (long) expectedSize);
+                } else {
+                    data.removeExtra(EXTRA_PROGRESS_MESSENGER);
                 }
                 input = ParcelFileDescriptorUtil.asyncPipeFromDataSource(dataSource);
             }
@@ -571,7 +575,6 @@ public class OpenPgpApi {
             }
         }
     }
-
 
     public interface PermissionPingCallback {
         void onPgpPermissionCheckResult(Intent result);

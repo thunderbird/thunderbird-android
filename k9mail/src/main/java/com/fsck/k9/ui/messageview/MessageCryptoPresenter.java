@@ -37,11 +37,14 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
         MessageCryptoDisplayStatus displayStatus =
                 MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation);
         switch (displayStatus) {
+            case LOADING:
+                // no need to do anything, there is a progress bar...
+                break;
             case UNENCRYPTED_SIGN_UNKNOWN:
                 launchPendingIntent(messageViewInfo);
                 break;
             default:
-                displaySignatureInfoDialog(displayStatus);
+                displayCryptoInfoDialog(displayStatus);
                 break;
         }
     }
@@ -59,7 +62,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
         messageCryptoMvpView.restartMessageCryptoProcessing();
     }
 
-    private void displaySignatureInfoDialog(MessageCryptoDisplayStatus displayStatus) {
+    private void displayCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus) {
         messageCryptoMvpView.showCryptoInfoDialog(displayStatus);
     }
 
