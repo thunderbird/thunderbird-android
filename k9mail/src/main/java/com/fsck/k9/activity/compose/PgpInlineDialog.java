@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -19,14 +20,12 @@ public class PgpInlineDialog extends HighlightDialogFragment {
     public static final String ARG_FIRST_TIME = "first_time";
 
 
-    public static PgpInlineDialog newInstance(boolean firstTime, Integer showcaseView) {
+    public static PgpInlineDialog newInstance(boolean firstTime, @IdRes int showcaseView) {
         PgpInlineDialog dialog = new PgpInlineDialog();
 
         Bundle args = new Bundle();
         args.putInt(ARG_FIRST_TIME, firstTime ? 1 : 0);
-        if (showcaseView != null) {
-            args.putInt(ARG_HIGHLIGHT_VIEW, showcaseView);
-        }
+        args.putInt(ARG_HIGHLIGHT_VIEW, showcaseView);
         dialog.setArguments(args);
 
         return dialog;
