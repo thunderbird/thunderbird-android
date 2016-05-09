@@ -212,7 +212,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                 throw new MessagingException(error.getMessage());
         }
 
-        throw new IllegalStateException("unreachable code segment reached - this is a bug");
+        throw new IllegalStateException("unreachable code segment reached");
     }
 
     @NonNull
@@ -244,7 +244,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             boolean shouldHaveResultPart = cryptoStatus.isPgpInlineModeEnabled() ||
                     (cryptoStatus.isEncryptionEnabled() && !opportunisticSkipEncryption);
             if (shouldHaveResultPart) {
-                throw new AssertionError("encryption or pgp/inline is enabled, but no output part - this is a bug!");
+                throw new AssertionError("encryption or pgp/inline is enabled, but no output part!");
             }
 
             mimeBuildSignedMessage(bodyPart, result);

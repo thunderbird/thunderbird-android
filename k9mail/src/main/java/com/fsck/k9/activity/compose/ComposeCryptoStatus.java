@@ -56,7 +56,7 @@ public class ComposeCryptoStatus {
                 // provider status is ok -> return value is based on cryptoMode
                 break;
             default:
-                throw new AssertionError("all CryptoProviderStates must be handled, this is a bug!");
+                throw new AssertionError("all CryptoProviderStates must be handled!");
         }
 
         switch (cryptoMode) {
@@ -83,7 +83,7 @@ public class ComposeCryptoStatus {
             case DISABLE:
                 return CryptoStatusDisplayType.DISABLED;
             default:
-                throw new AssertionError("all CryptoModes must be handled, this is a bug!");
+                throw new AssertionError("all CryptoModes must be handled!");
         }
     }
 
@@ -156,16 +156,16 @@ public class ComposeCryptoStatus {
 
         public ComposeCryptoStatus build() {
             if (cryptoProviderState == null) {
-                throw new AssertionError("cryptoProviderState must be set. this is a bug!");
+                throw new AssertionError("cryptoProviderState must be set!");
             }
             if (cryptoMode == null) {
-                throw new AssertionError("crypto mode must be set. this is a bug!");
+                throw new AssertionError("crypto mode must be set!");
             }
             if (recipients == null) {
-                throw new AssertionError("recipients must be set. this is a bug!");
+                throw new AssertionError("recipients must be set!");
             }
             if (enablePgpInline == null) {
-                throw new AssertionError("enablePgpInline must be set. this is a bug!");
+                throw new AssertionError("enablePgpInline must be set!");
             }
 
             ArrayList<String> recipientAddresses = new ArrayList<>();
