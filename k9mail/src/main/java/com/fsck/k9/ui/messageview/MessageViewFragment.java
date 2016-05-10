@@ -19,6 +19,7 @@ import android.content.Loader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.UiThread;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -144,6 +145,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         mInitialized = true;
     }
 
+    @UiThread
+    private void cancelAndClearMessageCryptoHelper() {
+        if (messageCryptoHelper != null) {
+            messageCryptoHelper.cancelIfRunning();
+            messageCryptoHelper = null;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -233,6 +242,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         getLoaderManager().initLoader(LOCAL_MESSAGE_LOADER_ID, null, localMessageLoaderCallback);
     }
 
+    @UiThread
     private void onLoadMessageFromDatabaseFinished(LocalMessage message) {
         displayMessageHeader(message);
 

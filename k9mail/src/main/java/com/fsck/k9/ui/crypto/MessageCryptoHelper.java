@@ -42,6 +42,7 @@ import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
+import org.openintents.openpgp.util.OpenPgpApi.CancelableBackgroundOperation;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpSinkResultCallback;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
@@ -69,6 +70,8 @@ public class MessageCryptoHelper {
     private Intent userInteractionResultIntent;
     private LocalMessage currentMessage;
     private boolean secondPassStarted;
+    private CancelableBackgroundOperation cancelableBackgroundOperation;
+    private boolean isCancelled;
 
 
     public MessageCryptoHelper(Activity activity, Account account, MessageCryptoCallback callback) {
@@ -151,6 +154,10 @@ public class MessageCryptoHelper {
     }
 
     private void decryptOrVerifyNextPart() {
+        if (isCancelled) {
+            return;
+        }
+
         if (partsToDecryptOrVerify.isEmpty()) {
             runSecondPassOrReturnResultToFragment();
             return;
@@ -232,7 +239,8 @@ public class MessageCryptoHelper {
         OpenPgpDataSource dataSource = getDataSourceForEncryptedOrInlineData();
         OpenPgpDataSink<MimeBodyPart> dataSink = getDataSinkForDecryptedInlineData();
 
-        openPgpApi.executeApiAsync(intent, dataSource, dataSink, new IOpenPgpSinkResultCallback<MimeBodyPart>() {
+        cancelableBackgroundOperation = openPgpApi.executeApiAsync(intent, dataSource, dataSink,
+                new IOpenPgpSinkResultCallback<MimeBodyPart>() {
             @Override
             public void onProgress(int current, int max) {
                 Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
@@ -245,6 +253,13 @@ public class MessageCryptoHelper {
                 onCryptoOperationReturned(bodyPart);
             }
         });
+    }
+
+    public void cancelIfRunning() {
+        isCancelled = true;
+        if (cancelableBackgroundOperation != null) {
+            cancelableBackgroundOperation.cancelOperation();
+        }
     }
 
     private OpenPgpDataSink<MimeBodyPart> getDataSinkForDecryptedInlineData() {
@@ -269,7 +284,8 @@ public class MessageCryptoHelper {
         OpenPgpDataSource dataSource = getDataSourceForEncryptedOrInlineData();
         OpenPgpDataSink<MimeBodyPart> openPgpDataSink = getDataSinkForDecryptedData();
 
-        openPgpApi.executeApiAsync(intent, dataSource, openPgpDataSink, new IOpenPgpSinkResultCallback<MimeBodyPart>() {
+        cancelableBackgroundOperation = openPgpApi.executeApiAsync(intent, dataSource, openPgpDataSink,
+                new IOpenPgpSinkResultCallback<MimeBodyPart>() {
             @Override
             public void onReturn(Intent result, MimeBodyPart decryptedPart) {
                 currentCryptoResult = result;
@@ -462,6 +478,10 @@ public class MessageCryptoHelper {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (isCancelled) {
+            return;
+        }
+
         if (requestCode != REQUEST_CODE_USER_INTERACTION) {
             throw new IllegalStateException("got an activity result that wasn't meant for us. this is a bug!");
         }
@@ -525,7 +545,6 @@ public class MessageCryptoHelper {
     private void returnResultToFragment() {
         callback.onCryptoOperationsFinished(messageAnnotations);
     }
-
 
     private static class CryptoPart {
         public final CryptoPartType type;

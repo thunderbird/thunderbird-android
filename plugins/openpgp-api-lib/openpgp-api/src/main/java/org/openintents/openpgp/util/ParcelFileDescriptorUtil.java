@@ -99,16 +99,6 @@ public class ParcelFileDescriptorUtil {
         return dataSinkTransferThread;
     }
 
-    public static ParcelFileDescriptor asyncPipeFromDataSource(OpenPgpDataSource dataSource) throws IOException {
-        ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
-        ParcelFileDescriptor readSide = pipe[0];
-        ParcelFileDescriptor writeSide = pipe[1];
-
-        new DataSourceTransferThread(dataSource, new ParcelFileDescriptor.AutoCloseOutputStream(writeSide)).start();
-
-        return readSide;
-    }
-
     static class DataSourceTransferThread extends Thread {
         final OpenPgpDataSource dataSource;
         final OutputStream outputStream;
@@ -125,8 +115,10 @@ public class ParcelFileDescriptorUtil {
             try {
                 dataSource.writeTo(outputStream);
             } catch (IOException e) {
-                if (isIOExceptionCausedByEPIPE(e)) {
-                    Log.e(OpenPgpApi.TAG, "Stopped writing due to broken pipe (other end closed pipe?)");
+                if (dataSource.isCancelled()) {
+                    Log.d(OpenPgpApi.TAG, "Stopped writing because operation was cancelled.");
+                } else if (isIOExceptionCausedByEPIPE(e)) {
+                    Log.d(OpenPgpApi.TAG, "Stopped writing due to broken pipe (other end closed pipe?)");
                 } else {
                     Log.e(OpenPgpApi.TAG, "IOException when writing to out", e);
                 }

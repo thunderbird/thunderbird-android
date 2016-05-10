@@ -35,6 +35,7 @@ import android.util.Log;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.ParcelFileDescriptorUtil.DataSinkTransferThread;
+import org.openintents.openpgp.util.ParcelFileDescriptorUtil.DataSourceTransferThread;
 
 
 @SuppressWarnings("unused")
@@ -288,7 +289,12 @@ public class OpenPgpApi {
         void onReturn(final Intent result, T sinkResult);
     }
 
-    private class OpenPgpSourceSinkAsyncTask<T> extends AsyncTask<Void, Integer, OpenPgpDataResult<T>> {
+    public interface CancelableBackgroundOperation {
+        void cancelOperation();
+    }
+
+    private class OpenPgpSourceSinkAsyncTask<T> extends AsyncTask<Void, Integer, OpenPgpDataResult<T>>
+            implements CancelableBackgroundOperation {
         Intent data;
         OpenPgpDataSource dataSource;
         OpenPgpDataSink<T> dataSink;
@@ -309,6 +315,14 @@ public class OpenPgpApi {
 
         protected void onPostExecute(OpenPgpDataResult<T> result) {
             callback.onReturn(result.apiResult, result.sinkResult);
+        }
+
+        @Override
+        public void cancelOperation() {
+            cancel(true);
+            if (dataSource != null) {
+                dataSource.cancel();
+            }
         }
     }
 
@@ -335,8 +349,8 @@ public class OpenPgpApi {
         }
     }
 
-    public <T> void executeApiAsync(Intent data, OpenPgpDataSource dataSource, OpenPgpDataSink<T> dataSink,
-            final IOpenPgpSinkResultCallback<T> callback) {
+    public <T> CancelableBackgroundOperation executeApiAsync(Intent data, OpenPgpDataSource dataSource,
+            OpenPgpDataSink<T> dataSink, final IOpenPgpSinkResultCallback<T> callback) {
         Messenger messenger = new Messenger(new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message message) {
@@ -356,9 +370,10 @@ public class OpenPgpApi {
             task.execute((Void[]) null);
         }
 
+        return task;
     }
 
-    public void executeApiAsync(Intent data, OpenPgpDataSource dataSource, IOpenPgpSinkResultCallback<Void> callback) {
+    public AsyncTask executeApiAsync(Intent data, OpenPgpDataSource dataSource, IOpenPgpSinkResultCallback<Void> callback) {
         OpenPgpSourceSinkAsyncTask<Void> task = new OpenPgpSourceSinkAsyncTask<>(data, dataSource, null, callback);
 
         // don't serialize async tasks!
@@ -369,6 +384,7 @@ public class OpenPgpApi {
             task.execute((Void[]) null);
         }
 
+        return task;
     }
 
     public void executeApiAsync(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {
@@ -404,7 +420,7 @@ public class OpenPgpApi {
                 } else {
                     data.removeExtra(EXTRA_PROGRESS_MESSENGER);
                 }
-                input = ParcelFileDescriptorUtil.asyncPipeFromDataSource(dataSource);
+                input = dataSource.startPumpThread();
             }
 
             DataSinkTransferThread<T> pumpThread = null;
@@ -487,9 +503,40 @@ public class OpenPgpApi {
     }
 
     public static abstract class OpenPgpDataSource {
+        private boolean isCancelled;
+        private ParcelFileDescriptor writeSidePfd;
+
+
         public abstract void writeTo(OutputStream os) throws IOException;
+
         public Long getSizeForProgress() {
             return null;
+        }
+
+        public boolean isCancelled() {
+            return isCancelled;
+        }
+
+        private ParcelFileDescriptor startPumpThread() throws IOException {
+            if (writeSidePfd != null) {
+                throw new IllegalStateException("startPumpThread() must only be called once!");
+            }
+            ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
+            ParcelFileDescriptor readSidePfd = pipe[0];
+            writeSidePfd = pipe[1];
+
+            new DataSourceTransferThread(this, new ParcelFileDescriptor.AutoCloseOutputStream(writeSidePfd)).start();
+
+            return readSidePfd;
+        }
+
+        private void cancel() {
+            isCancelled = true;
+            try {
+                writeSidePfd.close();
+            } catch (IOException e) {
+                // this is fine
+            }
         }
     }
 
@@ -508,7 +555,7 @@ public class OpenPgpApi {
                 } else {
                     data.removeExtra(EXTRA_PROGRESS_MESSENGER);
                 }
-                input = ParcelFileDescriptorUtil.asyncPipeFromDataSource(dataSource);
+                input = dataSource.startPumpThread();
             }
 
             Thread pumpThread = null;
