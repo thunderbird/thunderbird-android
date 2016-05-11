@@ -555,12 +555,20 @@ public class LocalMessage extends MimeMessage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
-        final LocalMessage that = (LocalMessage) o;
-        return !(getAccountUuid() != null ? !getAccountUuid().equals(that.getAccountUuid()) : that.getAccountUuid() != null);
+        // distinguish by account uuid, in addition to what Message.equals() does above
+        String thisAccountUuid = getAccountUuid();
+        String thatAccountUuid = ((LocalMessage) o).getAccountUuid();
+        return thisAccountUuid != null ? thisAccountUuid.equals(thatAccountUuid) : thatAccountUuid == null;
     }
 
     @Override
