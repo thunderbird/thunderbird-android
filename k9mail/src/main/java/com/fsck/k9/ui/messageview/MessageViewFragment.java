@@ -44,6 +44,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
+import com.fsck.k9.helper.RetainFragment;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
@@ -73,6 +74,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public static final int REQUEST_MASK_CRYPTO_HELPER = 1 << 8;
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = 2 << 8;
+    private RetainFragment<MessageCryptoHelper> retainCryptoHelperFragment;
 
     public static MessageViewFragment newInstance(MessageReference reference) {
         MessageViewFragment fragment = new MessageViewFragment();
@@ -145,11 +147,31 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         mInitialized = true;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Activity activity = getActivity();
+        boolean isChangingConfigurations = activity != null && activity.isChangingConfigurations();
+        if (isChangingConfigurations) {
+            messageCryptoHelper.detachCallback();
+            return;
+        }
+
+        if (messageCryptoHelper != null) {
+            cancelAndClearMessageCryptoHelper();
+        }
+    }
+
     @UiThread
     private void cancelAndClearMessageCryptoHelper() {
         if (messageCryptoHelper != null) {
             messageCryptoHelper.cancelIfRunning();
             messageCryptoHelper = null;
+        }
+        if (retainCryptoHelperFragment != null) {
+            retainCryptoHelperFragment.clearAndRemove(getFragmentManager());
+            retainCryptoHelperFragment = null;
         }
     }
 
@@ -250,12 +272,23 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         if (mAccount.isOpenPgpProviderConfigured()) {
-            messageCryptoHelper = new MessageCryptoHelper(getActivity(), mAccount.getOpenPgpProvider(), this);
-            messageCryptoHelper.decryptOrVerifyMessagePartsIfNecessary(message);
+            startOrResumeProcessingInCryptoHelper(message);
             return;
         }
 
         startExtractingTextAndAttachments();
+    }
+
+    private void startOrResumeProcessingInCryptoHelper(LocalMessage message) {
+        retainCryptoHelperFragment =
+                RetainFragment.findOrCreate(getFragmentManager(), "crypto_helper_" + message.hashCode());
+        if (retainCryptoHelperFragment.hasData()) {
+            messageCryptoHelper = retainCryptoHelperFragment.getData();
+        } else {
+            messageCryptoHelper = new MessageCryptoHelper(getActivity(), mAccount.getOpenPgpProvider());
+            retainCryptoHelperFragment.setData(messageCryptoHelper);
+        }
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, this);
     }
 
     private void onLoadMessageFromDatabaseFailed() {
@@ -273,6 +306,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         LoaderManager loaderManager = getLoaderManager();
         loaderManager.destroyLoader(LOCAL_MESSAGE_LOADER_ID);
         loaderManager.destroyLoader(DECODE_MESSAGE_LOADER_ID);
+        cancelAndClearMessageCryptoHelper();
 
         onLoadMessageFromDatabaseFinished(mMessage);
     }
@@ -751,7 +785,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     @Override
     public void restartMessageCryptoProcessing() {
-        messageCryptoHelper.decryptOrVerifyMessagePartsIfNecessary(mMessage);
+        cancelAndClearMessageCryptoHelper();
+        startOrResumeProcessingInCryptoHelper(mMessage);
     }
 
     @Override
