@@ -529,10 +529,10 @@ public class SmtpTransport extends Transport {
             message.writeTo(msgOut);
 
             // We use BufferedOutputStream. So make sure to call flush() !
-            msgOut.flush();
+            msgOut.writeEOB();
 
             entireMessageSent = true; // After the "\r\n." is attempted, we may have sent the message
-            executeSimpleCommand("\r\n.");
+            executeSimpleCommand(".");
         } catch (NegativeSmtpReplyException e) {
             throw e;
         } catch (Exception e) {
