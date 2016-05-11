@@ -200,10 +200,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
         }
 
-        Activity activity = getActivity();
-        Context appContext = activity.getApplicationContext();
-        mAccount = Preferences.getPreferences(appContext).getAccount(mMessageReference.getAccountUuid());
-        messageCryptoHelper = new MessageCryptoHelper(activity, mAccount, this);
+        mAccount = Preferences.getPreferences(getApplicationContext()).getAccount(mMessageReference.getAccountUuid());
 
         startLoadingMessageFromDatabase();
 
@@ -245,14 +242,20 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     @UiThread
     private void onLoadMessageFromDatabaseFinished(LocalMessage message) {
         displayMessageHeader(message);
-
         mMessageView.setToLoadingState();
 
         if (message.isBodyMissing()) {
             startDownloadingMessageBody();
-        } else {
-            messageCryptoHelper.decryptOrVerifyMessagePartsIfNecessary(message);
+            return;
         }
+
+        if (mAccount.isOpenPgpProviderConfigured()) {
+            messageCryptoHelper = new MessageCryptoHelper(getActivity(), mAccount.getOpenPgpProvider(), this);
+            messageCryptoHelper.decryptOrVerifyMessagePartsIfNecessary(message);
+            return;
+        }
+
+        startExtractingTextAndAttachments();
     }
 
     private void onLoadMessageFromDatabaseFailed() {
@@ -292,11 +295,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     @Override
     public void onCryptoOperationsFinished(MessageCryptoAnnotations annotations) {
-        startExtractingTextAndAttachments(annotations);
+        this.messageAnnotations = annotations;
+        startExtractingTextAndAttachments();
     }
 
-    private void startExtractingTextAndAttachments(MessageCryptoAnnotations annotations) {
-        this.messageAnnotations = annotations;
+    private void startExtractingTextAndAttachments() {
         getLoaderManager().restartLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
     }
 
@@ -753,10 +756,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     @Override
     public void startPendingIntentForCryptoHelper(IntentSender si, int requestCode, Intent fillIntent,
-            int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
+            int flagsMask, int flagValues, int extraFlags) {
         requestCode |= REQUEST_MASK_CRYPTO_HELPER;
-        getActivity().startIntentSenderForResult(
-                si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
+        try {
+            getActivity().startIntentSenderForResult(
+                    si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
+        } catch (SendIntentException e) {
+            Log.e(K9.LOG_TAG, "Irrecoverable error calling PendingIntent!", e);
+        }
     }
 
     public interface MessageViewFragmentListener {
