@@ -70,26 +70,7 @@ public class DecryptStreamParser {
         DecryptedTempFileBody body = new DecryptedTempFileBody(transferEncoding, decryptedTempDirectory);
         OutputStream outputStream = body.getOutputStream();
         try {
-            InputStream decodingInputStream;
-            boolean closeStream;
-            if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(transferEncoding)) {
-                decodingInputStream = new QuotedPrintableInputStream(inputStream, false);
-                closeStream = true;
-            } else if (MimeUtil.ENC_BASE64.equals(transferEncoding)) {
-                decodingInputStream = new Base64InputStream(inputStream);
-                closeStream = true;
-            } else {
-                decodingInputStream = inputStream;
-                closeStream = false;
-            }
-
-            try {
-                IOUtils.copy(decodingInputStream, outputStream);
-            } finally {
-                if (closeStream) {
-                    decodingInputStream.close();
-                }
-            }
+            IOUtils.copy(inputStream, outputStream);
         } finally {
             outputStream.close();
         }
