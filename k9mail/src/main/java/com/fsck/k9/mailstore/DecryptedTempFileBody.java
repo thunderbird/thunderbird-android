@@ -1,4 +1,4 @@
-package com.fsck.k9.crypto;
+package com.fsck.k9.mailstore;
 
 
 import java.io.File;
@@ -8,31 +8,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.annotation.TargetApi;
+import android.os.Build.VERSION_CODES;
+
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.internet.RawDataBody;
 import com.fsck.k9.mail.internet.SizeAware;
 import org.apache.commons.io.IOUtils;
 
 
-public class DecryptedTempFileBody implements RawDataBody, SizeAware {
+public class DecryptedTempFileBody extends BinaryAttachmentBody implements SizeAware {
     private final File tempDirectory;
-    private final String encoding;
     private File file;
 
 
-    public DecryptedTempFileBody(String encoding, File tempDirectory) {
-        this.encoding = encoding;
+    public DecryptedTempFileBody(File tempDirectory, String transferEncoding) {
         this.tempDirectory = tempDirectory;
-    }
-
-    @Override
-    public String getEncoding() {
-        return encoding;
-    }
-
-    @Override
-    public void setEncoding(String encoding) throws MessagingException {
-        throw new RuntimeException("Not supported");
+        try {
+            setEncoding(transferEncoding);
+        } catch (MessagingException e) {
+            throw new AssertionError("setEncoding() must succeed");
+        }
     }
 
     public OutputStream getOutputStream() throws IOException {
@@ -46,16 +42,6 @@ public class DecryptedTempFileBody implements RawDataBody, SizeAware {
             return new FileInputStream(file);
         } catch (IOException ioe) {
             throw new MessagingException("Unable to open body", ioe);
-        }
-    }
-
-    @Override
-    public void writeTo(OutputStream out) throws IOException, MessagingException {
-        InputStream in = getInputStream();
-        try {
-            IOUtils.copy(in, out);
-        } finally {
-            in.close();
         }
     }
 

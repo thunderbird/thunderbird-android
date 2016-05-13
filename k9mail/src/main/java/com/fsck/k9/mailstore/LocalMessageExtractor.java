@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.fsck.k9.R;
-import com.fsck.k9.crypto.DecryptedTempFileBody;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
