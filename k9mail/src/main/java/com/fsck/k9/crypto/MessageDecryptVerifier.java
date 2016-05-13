@@ -16,7 +16,6 @@ import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
-import org.openintents.openpgp.util.OpenPgpUtils;
 
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
@@ -28,6 +27,10 @@ public class MessageDecryptVerifier {
     private static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
     private static final String APPLICATION_PGP_SIGNATURE = "application/pgp-signature";
     private static final String TEXT_PLAIN = "text/plain";
+
+    public static final String PGP_INLINE_START_MARKER = "-----BEGIN PGP MESSAGE-----";
+    public static final String PGP_INLINE_SIGNED_START_MARKER = "-----BEGIN PGP SIGNED MESSAGE-----";
+    public static final int TEXT_LENGTH_FOR_INLINE_CHECK = 36;
 
 
     public static Part findPrimaryEncryptedOrSignedPart(Part part, List<Part> outputExtraParts) {
@@ -63,7 +66,10 @@ public class MessageDecryptVerifier {
 
             if (isPartMultipartEncrypted(part)) {
                 encryptedParts.add(part);
-            } else if (body instanceof Multipart) {
+                continue;
+            }
+
+            if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;
                 for (int i = multipart.getCount() - 1; i >= 0; i--) {
                     BodyPart bodyPart = multipart.getBodyPart(i);
@@ -86,7 +92,10 @@ public class MessageDecryptVerifier {
 
             if (isPartMultipartSigned(part)) {
                 signedParts.add(part);
-            } else if (body instanceof Multipart) {
+                continue;
+            }
+
+            if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;
                 for (int i = multipart.getCount() - 1; i >= 0; i--) {
                     BodyPart bodyPart = multipart.getBodyPart(i);
@@ -105,20 +114,14 @@ public class MessageDecryptVerifier {
 
         while (!partsToCheck.isEmpty()) {
             Part part = partsToCheck.pop();
-            String mimeType = part.getMimeType();
             Body body = part.getBody();
 
-            if (isSameMimeType(mimeType, TEXT_PLAIN)) {
-                String text = MessageExtractor.getTextFromPart(part);
-                if (TextUtils.isEmpty(text)) {
-                    continue;
-                }
-                switch (OpenPgpUtils.parseMessage(text, true)) {
-                    case OpenPgpUtils.PARSE_RESULT_MESSAGE:
-                    case OpenPgpUtils.PARSE_RESULT_SIGNED_MESSAGE:
-                        inlineParts.add(part);
-                }
-            } else if (body instanceof Multipart) {
+            if (isPartPgpInline(part)) {
+                inlineParts.add(part);
+                continue;
+            }
+
+            if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;
                 for (int i = multipart.getCount() - 1; i >= 0; i--) {
                     BodyPart bodyPart = multipart.getBodyPart(i);
@@ -151,16 +154,9 @@ public class MessageDecryptVerifier {
         if (!part.isMimeType(TEXT_PLAIN)) {
             return false;
         }
-        String text = MessageExtractor.getTextFromPart(part);
-        if (TextUtils.isEmpty(text)) {
-            return false;
-        }
-        switch (OpenPgpUtils.parseMessage(text, true)) {
-            case OpenPgpUtils.PARSE_RESULT_MESSAGE:
-            case OpenPgpUtils.PARSE_RESULT_SIGNED_MESSAGE:
-                return true;
-        }
-        return false;
+        String text = MessageExtractor.getTextFromPart(part, TEXT_LENGTH_FOR_INLINE_CHECK);
+        return !TextUtils.isEmpty(text) &&
+                (text.startsWith(PGP_INLINE_START_MARKER) || text.startsWith(PGP_INLINE_SIGNED_START_MARKER));
     }
 
     private static boolean isPartEncryptedOrSigned(Part part) {
