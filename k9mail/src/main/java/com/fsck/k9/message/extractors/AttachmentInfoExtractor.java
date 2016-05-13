@@ -2,6 +2,7 @@ package com.fsck.k9.message.extractors;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,14 +46,18 @@ public class AttachmentInfoExtractor {
             Body body = part.getBody();
             if (body instanceof DecryptedTempFileBody) {
                 DecryptedTempFileBody decryptedTempFileBody = (DecryptedTempFileBody) body;
-                size = decryptedTempFileBody.getSize();
+                try {
+                    size = decryptedTempFileBody.getSize();
 
-                File file = decryptedTempFileBody.getFile();
-                uri = K9FileProvider.getUriForFile(context, file, part.getMimeType());
+                    File file = decryptedTempFileBody.getFile();
+                    uri = K9FileProvider.getUriForFile(context, file, part.getMimeType());
+                } catch (IOException e) {
+                    throw new MessagingException("Error preparing decrypted data as attachment", e);
+                }
 
                 return extractAttachmentInfo(part, uri, size);
             } else {
-                throw new RuntimeException("Not supported");
+                throw new UnsupportedOperationException();
             }
         }
 
