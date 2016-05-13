@@ -1,5 +1,15 @@
 package com.fsck.k9.mail.internet;
 
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -11,15 +21,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import org.apache.commons.io.input.BoundedInputStream;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
@@ -49,7 +50,8 @@ public class MessageExtractor {
                     return ((TextBody)body).getText();
                 }
                 final String mimeType = part.getMimeType();
-                if ((mimeType != null) && MimeUtility.mimeTypeMatches(mimeType, "text/*")) {
+                if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*") ||
+                        part.isMimeType("application/pgp")) {
                     return getTextFromTextPart(part, body, mimeType, textSizeLimit);
                 } else {
                     throw new MessagingException("Provided non-text part: " + part);
@@ -417,27 +419,24 @@ public class MessageExtractor {
             dispositionFilename = MimeUtility.getHeaderParameter(disposition, "filename");
         }
 
-        /*
-         * A best guess that this part is intended to be an attachment and not inline.
-         */
-        boolean attachment = ("attachment".equalsIgnoreCase(dispositionType) || (dispositionFilename != null));
-
-        if ((!attachment) && (isSameMimeType(part.getMimeType(), "text/html"))) {
-            return true;
-        }
-        /*
-         * If the part is plain text and it got this far it's part of a
-         * mixed (et al) and should be rendered inline.
-         */
-        else if ((!attachment) && (isSameMimeType(part.getMimeType(), "text/plain"))) {
-            return true;
-        }
-        /*
-         * Finally, if it's nothing else we will include it as an attachment.
-         */
-        else {
+        boolean isAttachmentDisposition = "attachment".equalsIgnoreCase(dispositionType) || dispositionFilename != null;
+        if (isAttachmentDisposition) {
             return false;
         }
+
+        if (part.isMimeType("text/html")) {
+            return true;
+        }
+
+        if (part.isMimeType("text/plain")) {
+            return true;
+        }
+
+        if (part.isMimeType("application/pgp")) {
+            return true;
+        }
+
+        return false;
     }
 
     private static String getContentDisposition(Part part) {
