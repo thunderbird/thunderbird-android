@@ -47,6 +47,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final RecipientSelectView bccView;
     private final ViewAnimator cryptoStatusView;
     private final ViewAnimator recipientExpanderContainer;
+    private final View pgpInlineIndicator;
     private RecipientPresenter presenter;
 
 
@@ -63,6 +64,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         recipientExpanderContainer = (ViewAnimator) activity.findViewById(R.id.recipient_expander_container);
         cryptoStatusView = (ViewAnimator) activity.findViewById(R.id.crypto_status);
         cryptoStatusView.setOnClickListener(this);
+        pgpInlineIndicator = activity.findViewById(R.id.pgp_inline_indicator);
 
         toView.setOnFocusChangeListener(this);
         ccView.setOnFocusChangeListener(this);
@@ -77,6 +79,8 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         toLabel.setOnClickListener(this);
         ccLabel.setOnClickListener(this);
         bccLabel.setOnClickListener(this);
+
+        pgpInlineIndicator.setOnClickListener(this);
     }
 
     public void setPresenter(final RecipientPresenter presenter) {
@@ -265,6 +269,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccView.setError(bccView.getContext().getString(R.string.compose_error_incomplete_recipient));
     }
 
+    public void showPgpInlineModeIndicator(boolean pgpInlineModeEnabled) {
+        pgpInlineIndicator.setVisibility(pgpInlineModeEnabled ? View.VISIBLE : View.GONE);
+        activity.invalidateOptionsMenu();
+    }
+
     public void showCryptoStatus(final CryptoStatusDisplayType cryptoStatusDisplayType) {
         boolean shouldBeHidden = cryptoStatusDisplayType.childToDisplay == VIEW_INDEX_HIDDEN;
         if (shouldBeHidden) {
@@ -299,6 +308,10 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
     public void showErrorPrivateButMissingKeys() {
         Toast.makeText(activity, R.string.compose_error_private_missing_keys, Toast.LENGTH_LONG).show();
+    }
+
+    public void showErrorAttachInline() {
+        Toast.makeText(activity, R.string.error_crypto_inline_attach, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -346,12 +359,20 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
                 presenter.onClickCryptoStatus();
                 break;
             }
+            case R.id.pgp_inline_indicator: {
+                presenter.onClickPgpInlineIndicator();
+            }
         }
     }
 
     public void showCryptoDialog(CryptoMode currentCryptoMode) {
         CryptoSettingsDialog dialog = CryptoSettingsDialog.newInstance(currentCryptoMode);
         dialog.show(activity.getFragmentManager(), "crypto_settings");
+    }
+
+    public void showOpenPgpInlineDialog(boolean firstTime) {
+        PgpInlineDialog dialog = PgpInlineDialog.newInstance(firstTime, R.id.pgp_inline_indicator);
+        dialog.show(activity.getFragmentManager(), "openpgp_inline");
     }
 
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
