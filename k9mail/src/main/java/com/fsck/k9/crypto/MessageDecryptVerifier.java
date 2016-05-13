@@ -27,6 +27,8 @@ public class MessageDecryptVerifier {
     private static final String APPLICATION_PGP_ENCRYPTED = "application/pgp-encrypted";
     private static final String APPLICATION_PGP_SIGNATURE = "application/pgp-signature";
     private static final String TEXT_PLAIN = "text/plain";
+    // APPLICATION/PGP is a special case which occurs from mutt. see http://www.mutt.org/doc/PGP-Notes.txt
+    private static final String APPLICATION_PGP = "application/pgp";
 
     public static final String PGP_INLINE_START_MARKER = "-----BEGIN PGP MESSAGE-----";
     public static final String PGP_INLINE_SIGNED_START_MARKER = "-----BEGIN PGP SIGNED MESSAGE-----";
@@ -151,7 +153,7 @@ public class MessageDecryptVerifier {
     }
 
     private static boolean isPartPgpInline(Part part) {
-        if (!part.isMimeType(TEXT_PLAIN)) {
+        if (!part.isMimeType(TEXT_PLAIN) && !part.isMimeType(APPLICATION_PGP)) {
             return false;
         }
         String text = MessageExtractor.getTextFromPart(part, TEXT_LENGTH_FOR_INLINE_CHECK);
