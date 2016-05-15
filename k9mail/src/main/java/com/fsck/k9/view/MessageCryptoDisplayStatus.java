@@ -276,4 +276,26 @@ public enum MessageCryptoDisplayStatus {
         }
     }
 
+    public boolean hasAssociatedKey() {
+        switch (this) {
+            case ENCRYPTED_SIGN_UNKNOWN:
+            case ENCRYPTED_SIGN_VERIFIED:
+            case ENCRYPTED_SIGN_UNVERIFIED:
+            case ENCRYPTED_SIGN_MISMATCH:
+            case ENCRYPTED_SIGN_EXPIRED:
+            case ENCRYPTED_SIGN_REVOKED:
+            case ENCRYPTED_SIGN_INSECURE:
+
+            case UNENCRYPTED_SIGN_UNKNOWN:
+            case UNENCRYPTED_SIGN_VERIFIED:
+            case UNENCRYPTED_SIGN_UNVERIFIED:
+            case UNENCRYPTED_SIGN_MISMATCH:
+            case UNENCRYPTED_SIGN_EXPIRED:
+            case UNENCRYPTED_SIGN_REVOKED:
+            case UNENCRYPTED_SIGN_INSECURE:
+                return true;
+        }
+        return false;
+    }
+
 }

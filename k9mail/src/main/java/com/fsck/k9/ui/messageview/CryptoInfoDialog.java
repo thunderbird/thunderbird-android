@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
@@ -79,6 +80,18 @@ public class CryptoInfoDialog extends DialogFragment {
                 dismiss();
             }
         });
+        if (displayStatus.hasAssociatedKey()) {
+            b.setNeutralButton(R.string.crypto_info_view_key, new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Fragment frag = getTargetFragment();
+                    if (! (frag instanceof OnClickShowCryptoKeyListener)) {
+                        throw new AssertionError("Displaying activity must implement OnClickShowCryptoKeyListener!");
+                    }
+                    ((OnClickShowCryptoKeyListener) frag).onClickShowCryptoKey();
+                }
+            });
+        }
 
         return b.create();
     }
@@ -165,5 +178,9 @@ public class CryptoInfoDialog extends DialogFragment {
                 view.removeOnLayoutChangeListener(this);
             }
         });
+    }
+
+    public interface OnClickShowCryptoKeyListener {
+        void onClickShowCryptoKey();
     }
 }

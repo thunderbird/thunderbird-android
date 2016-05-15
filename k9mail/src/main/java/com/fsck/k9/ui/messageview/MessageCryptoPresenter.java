@@ -70,8 +70,20 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
         try {
             PendingIntent pendingIntent = messageViewInfo.cryptoResultAnnotation.getOpenPgpPendingIntent();
             if (pendingIntent != null) {
-                messageCryptoMvpView.startPendingIntentForCryptoPresenter(pendingIntent.getIntentSender(),
-                        REQUEST_CODE_UNKNOWN_KEY, null, 0, 0, 0);
+                messageCryptoMvpView.startPendingIntentForCryptoPresenter(
+                        pendingIntent.getIntentSender(), REQUEST_CODE_UNKNOWN_KEY, null, 0, 0, 0);
+            }
+        } catch (IntentSender.SendIntentException e) {
+            Log.e(K9.LOG_TAG, "SendIntentException", e);
+        }
+    }
+
+    public void onClickShowCryptoKey() {
+        try {
+            PendingIntent pendingIntent = messageViewInfo.cryptoResultAnnotation.getOpenPgpPendingIntent();
+            if (pendingIntent != null) {
+                messageCryptoMvpView.startPendingIntentForCryptoPresenter(
+                        pendingIntent.getIntentSender(), null, null, 0, 0, 0);
             }
         } catch (IntentSender.SendIntentException e) {
             Log.e(K9.LOG_TAG, "SendIntentException", e);
@@ -81,7 +93,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
     public interface MessageCryptoMvpView {
         void restartMessageCryptoProcessing();
 
-        void startPendingIntentForCryptoPresenter(IntentSender si, int requestCode, Intent fillIntent,
+        void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
                 int flagsMask, int flagValues, int extraFlags) throws IntentSender.SendIntentException;
 
         void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus);

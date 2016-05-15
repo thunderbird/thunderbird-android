@@ -1184,6 +1184,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_signed_encrypted">Message is signed and encrypted.</string>
     <string name="crypto_msg_unsigned_encrypted">There is no signature, this message may have been intercepted.</string>
     <string name="crypto_info_ok">OK</string>
+    <string name="crypto_info_view_key">View Signer</string>
     <string name="locked_attach_unlock">Unlock</string>
     <string name="locked_attach_unsigned">This part was not encrypted, and may be insecure.</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
