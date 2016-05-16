@@ -146,6 +146,12 @@ public class MessagingController implements Runnable {
 
     private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
+    /* The following is a best effort; it won't be persisted between application runs,
+       nor is it prepared to work between separate accounts. For canceled outbound messages
+       it also won't be cleaned up.
+     */
+    private ConcurrentHashMap<String, String> outboundSentFolderNamesCache = new ConcurrentHashMap<>();
+
     private void suppressMessages(Account account, List<LocalMessage> messages) {
         EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
         cache.hideMessages(messages);
@@ -2943,11 +2949,17 @@ public class MessagingController implements Runnable {
      */
     public void sendMessage(final Account account,
                             final Message message,
+                            final MessageReference parentMessageReference,
                             MessagingListener listener) {
         try {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderName());
             localFolder.open(Folder.OPEN_MODE_RW);
+            if (account.isBundleMessageFollowings()
+                    && (parentMessageReference != null)
+                    && parentMessageReference.getAccountUuid().equals(account.getUuid())) {
+                outboundSentFolderNamesCache.put(message.getMessageId(), parentMessageReference.getFolderName());
+            }
             localFolder.appendMessages(Collections.singletonList(message));
             Message localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
@@ -3056,10 +3068,28 @@ public class MessagingController implements Runnable {
             localFolder.open(Folder.OPEN_MODE_RW);
 
             List<LocalMessage> localMessages = localFolder.getMessages(null);
-            int progress = 0;
-            int todo = localMessages.size();
+            Map<String, Integer> progressPerSentFolder = new HashMap<>();
+            Map<String, Integer> todoPerSentFolder = new HashMap<>();
+            for (LocalMessage message : localMessages) {
+                String cacheSentFolderName = outboundSentFolderNamesCache.get(message.getMessageId());
+                String sentFolderName = (cacheSentFolderName == null ? account.getSentFolderName() : cacheSentFolderName);
+                Integer todo = todoPerSentFolder.get(sentFolderName);
+                if (todo == null) {
+                    progressPerSentFolder.put(sentFolderName, 0);
+                    todoPerSentFolder.put(sentFolderName, 1);
+                }
+                else {
+                    todo++;
+                }
+            }
+
             for (MessagingListener l : getListeners()) {
-                l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
+                for (Map.Entry<String, Integer> entry : progressPerSentFolder.entrySet()) {
+                    String sentFolderName = entry.getKey();
+                    Integer progress = entry.getValue();
+                    Integer todo = todoPerSentFolder.get(sentFolderName);
+                    l.synchronizeMailboxProgress(account, sentFolderName, progress, todo);
+                }
             }
             /*
              * The profile we will use to pull all of the content
@@ -3115,29 +3145,34 @@ public class MessagingController implements Runnable {
                         transport.sendMessage(message);
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
                         message.setFlag(Flag.SEEN, true);
+                        String cacheSentFolderName = outboundSentFolderNamesCache.get(message.getMessageId());
+                        String sentFolderName = (cacheSentFolderName == null ? account.getSentFolderName() : cacheSentFolderName);
+                        Integer progress = progressPerSentFolder.get(sentFolderName);
+                        Integer todo = todoPerSentFolder.get(sentFolderName);
                         progress++;
                         for (MessagingListener l : getListeners()) {
-                            l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
+                            l.synchronizeMailboxProgress(account, sentFolderName, progress, todo);
                         }
-                        if (!account.hasSentFolder()) {
+                        if (sentFolderName.equals(account.getSentFolderName()) && !account.hasSentFolder()) {
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Account does not have a sent mail folder; deleting sent message");
                             message.setFlag(Flag.DELETED, true);
                         } else {
-                            LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
+                            LocalFolder localSentFolder = localStore.getFolder(sentFolderName);
                             if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+                                Log.i(K9.LOG_TAG, "Moving sent message to folder '" + sentFolderName + "' (" + localSentFolder.getId() + ") ");
 
                             localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
 
                             if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+                                Log.i(K9.LOG_TAG, "Moved sent message to folder '" + sentFolderName + "' (" + localSentFolder.getId() + ") ");
 
                             PendingCommand command = new PendingCommand();
                             command.command = PENDING_COMMAND_APPEND;
-                            command.arguments = new String[] { localSentFolder.getName(), message.getUid() };
+                            command.arguments = new String[] { sentFolderName, message.getUid() };
                             queuePendingCommand(account, command);
                             processPendingCommands(account);
+                            outboundSentFolderNamesCache.remove(message.getMessageId());
                         }
                     } catch (AuthenticationFailedException e) {
                         lastFailure = e;

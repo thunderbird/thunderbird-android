@@ -553,6 +553,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_strip_signature_label">Strip signatures on reply</string>
     <string name="account_settings_strip_signature_summary">Signatures will be removed from quoted messages</string>
 
+    <string name="account_settings_bundle_message_followings_label">Bundle message followings</string>
+    <string name="account_settings_bundle_message_followings_summary">Replies and forwarded messages will be saved to the folder containing the original message</string>
+
     <string name="account_settings_message_format_label">Message Format</string>
     <string name="account_settings_message_format_text">Plain Text (remove images and formatting)</string>
     <string name="account_settings_message_format_html">HTML (keep images and formatting)</string>

@@ -109,6 +109,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_DEFAULT_QUOTED_TEXT_SHOWN = "default_quoted_text_shown";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_STRIP_SIGNATURE = "strip_signature";
+    private static final String PREFERENCE_BUNDLE_MESSAGE_FOLLOWINGS = "bundle_message_followings";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
@@ -172,6 +173,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mAccountDefaultQuotedTextShown;
     private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mStripSignature;
+    private CheckBoxPreference bundleMessageFollowings;
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mPushPollOnConnect;
     private ListPreference mIdleRefreshPeriod;
@@ -280,6 +282,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mStripSignature = (CheckBoxPreference) findPreference(PREFERENCE_STRIP_SIGNATURE);
         mStripSignature.setChecked(mAccount.isStripSignature());
+
+        bundleMessageFollowings = (CheckBoxPreference) findPreference(PREFERENCE_BUNDLE_MESSAGE_FOLLOWINGS);
+        bundleMessageFollowings.setChecked(mAccount.isBundleMessageFollowings());
 
         mComposingScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_COMPOSING);
 
@@ -779,6 +784,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setDefaultQuotedTextShown(mAccountDefaultQuotedTextShown.isChecked());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setStripSignature(mStripSignature.isChecked());
+        mAccount.setBundleMessageFollowings(bundleMessageFollowings.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
         if (mHasCrypto) {
             mAccount.setCryptoApp(mCryptoApp.getValue());

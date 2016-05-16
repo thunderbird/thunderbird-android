@@ -185,6 +185,9 @@ public class AccountSettings {
         s.put("stripSignature", Settings.versions(
                 new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE))
             ));
+        s.put("bundleMessageFollowings", Settings.versions(
+                new V(42, new BooleanSetting(Account.DEFAULT_BUNDLE_MESSAGE_FOLLOWINGS))
+            ));
         s.put("subscribedFoldersOnly", Settings.versions(
                 new V(1, new BooleanSetting(false))
             ));
