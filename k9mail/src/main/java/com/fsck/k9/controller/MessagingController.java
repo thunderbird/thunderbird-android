@@ -2750,25 +2750,32 @@ public class MessagingController implements Runnable {
 
                 // Get the remote message and fully download it
                 Message remoteMessage = remoteFolder.getMessage(uid);
-                FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.BODY);
 
-                remoteFolder.fetch(Collections.singletonList(remoteMessage), fp, null);
-
-                // Store the message locally and load the stored message into memory
-                localFolder.appendMessages(Collections.singletonList(remoteMessage));
                 if (loadPartialFromSearch) {
+                    downloadMessages(account, remoteFolder, localFolder,
+                            Collections.singletonList(remoteMessage), false);
+                } else {
+                    FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
+                    remoteFolder.fetch(Collections.singletonList(remoteMessage), fp, null);
+                    localFolder.appendMessages(Collections.singletonList(remoteMessage));
                 }
-                fp.add(FetchProfile.Item.ENVELOPE);
+
                 message = localFolder.getMessage(uid);
+
+                FetchProfile fp = new FetchProfile();
+                fp.add(FetchProfile.Item.ENVELOPE);
+                fp.add(FetchProfile.Item.BODY);
                 localFolder.fetch(Collections.singletonList(message), fp, null);
+
+                if (!loadPartialFromSearch) {
+                    message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                }
 
                 // Mark that this message is now fully synched
                 if (account.isMarkMessageAsReadOnView()) {
                     message.setFlag(Flag.SEEN, true);
                 }
-                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
             }
 
             // now that we have the full message, refresh the headers
