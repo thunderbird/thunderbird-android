@@ -1,5 +1,6 @@
 package com.fsck.k9.fragment;
 
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,6 +68,7 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -79,7 +81,16 @@ import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
-import com.fsck.k9.fragment.MessageListFragmentComparators.*;
+import com.fsck.k9.fragment.MessageListFragmentComparators.ArrivalComparator;
+import com.fsck.k9.fragment.MessageListFragmentComparators.AttachmentComparator;
+import com.fsck.k9.fragment.MessageListFragmentComparators.ComparatorChain;
+import com.fsck.k9.fragment.MessageListFragmentComparators.DateComparator;
+import com.fsck.k9.fragment.MessageListFragmentComparators.FlaggedComparator;
+import com.fsck.k9.fragment.MessageListFragmentComparators.ReverseComparator;
+import com.fsck.k9.fragment.MessageListFragmentComparators.ReverseIdComparator;
+import com.fsck.k9.fragment.MessageListFragmentComparators.SenderComparator;
+import com.fsck.k9.fragment.MessageListFragmentComparators.SubjectComparator;
+import com.fsck.k9.fragment.MessageListFragmentComparators.UnreadComparator;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.MessageHelper;
@@ -104,7 +115,6 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
-
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -1410,6 +1420,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 onCopy(getMessageAtPosition(adapterPosition));
                 break;
             }
+
+            // debug options
+            case R.id.debug_delete_locally: {
+                onDebugClearLocally(getMessageAtPosition(adapterPosition));
+                break;
+            }
         }
 
         mContextMenuUniqueId = 0;
@@ -1435,6 +1451,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
+        menu.findItem(R.id.debug_delete_locally).setVisible(BuildConfig.DEBUG);
 
         mContextMenuUniqueId = cursor.getLong(mUniqueIdColumn);
         Account account = getAccountFromCursor(cursor);
@@ -2316,6 +2333,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 messages.get(0).getFolder().getAccountUuid(),
                 null,
                 messages);
+    }
+
+    private void onDebugClearLocally(LocalMessage message) {
+        mController.debugClearMessagesLocally(Collections.singletonList(message));
     }
 
     /**

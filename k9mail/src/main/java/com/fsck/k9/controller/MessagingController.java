@@ -29,6 +29,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +47,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
@@ -3664,6 +3666,27 @@ public class MessagingController implements Runnable {
                 });
             }
 
+        });
+
+    }
+
+    @SuppressLint("NewApi") // used for debugging only
+    public void debugClearMessagesLocally(final List<LocalMessage> messages) {
+        if (!BuildConfig.DEBUG) {
+            throw new AssertionError("method must only be used in debug build!");
+        }
+
+        putBackground("debugClearLocalMessages", null, new Runnable() {
+            @Override
+            public void run() {
+                for (LocalMessage message : messages) {
+                    try {
+                        message.debugClearLocalData();
+                    } catch (MessagingException e) {
+                        throw new AssertionError("clearing local message content failed!", e);
+                    }
+                }
+            }
         });
 
     }
