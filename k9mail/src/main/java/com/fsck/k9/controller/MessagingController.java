@@ -2691,6 +2691,16 @@ public class MessagingController implements Runnable {
         }
     }
 
+    public void loadMessagePartialForViewRemote(final Account account, final String folder,
+            final String uid, final MessagingListener listener) {
+        put("loadMessageForViewRemote", listener, new Runnable() {
+            @Override
+            public void run() {
+                loadMessageForViewRemoteSynchronous(account, folder, uid, listener, true);
+            }
+        });
+    }
+
     //TODO: Fix the callback mess. See GH-782
     public void loadMessageForViewRemote(final Account account, final String folder,
                                          final String uid, final MessagingListener listener) {
