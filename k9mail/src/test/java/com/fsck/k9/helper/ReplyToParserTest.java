@@ -38,6 +38,7 @@ public class ReplyToParserTest {
     public static final Address[] EMPTY_ADDRESSES = new Address[0];
 
 
+    private ReplyToParser replyToParser;
     private Message message;
     private Account account;
 
@@ -46,6 +47,8 @@ public class ReplyToParserTest {
     public void setUp() throws Exception {
         message = mock(Message.class);
         account = mock(Account.class);
+
+        replyToParser = new ReplyToParser();
     }
 
     @Test
@@ -54,7 +57,7 @@ public class ReplyToParserTest {
         when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(LIST_POST_HEADER_VALUES);
         when(message.getFrom()).thenReturn(FROM_ADDRESSES);
 
-        Address[] result = ReplyToParser.getRecipientsToReplyTo(message, account);
+        Address[] result = replyToParser.getRecipientsToReplyTo(message, account);
 
         assertArrayEquals(REPLY_TO_ADDRESSES, result);
         verify(account).isAnIdentity(result);
@@ -68,7 +71,7 @@ public class ReplyToParserTest {
         when(message.getRecipients(RecipientType.TO)).thenReturn(TO_ADDRESSES);
         when(account.isAnIdentity(any(Address[].class))).thenReturn(true);
 
-        Address[] result = ReplyToParser.getRecipientsToReplyTo(message, account);
+        Address[] result = replyToParser.getRecipientsToReplyTo(message, account);
 
         assertArrayEquals(TO_ADDRESSES, result);
     }
@@ -79,7 +82,7 @@ public class ReplyToParserTest {
         when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(LIST_POST_HEADER_VALUES);
         when(message.getFrom()).thenReturn(FROM_ADDRESSES);
 
-        Address[] result = ReplyToParser.getRecipientsToReplyTo(message, account);
+        Address[] result = replyToParser.getRecipientsToReplyTo(message, account);
 
         assertArrayEquals(LIST_POST_ADDRESSES, result);
         verify(account).isAnIdentity(result);
@@ -91,7 +94,7 @@ public class ReplyToParserTest {
         when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(new String[0]);
         when(message.getFrom()).thenReturn(FROM_ADDRESSES);
 
-        Address[] result = ReplyToParser.getRecipientsToReplyTo(message, account);
+        Address[] result = replyToParser.getRecipientsToReplyTo(message, account);
 
         assertArrayEquals(FROM_ADDRESSES, result);
         verify(account).isAnIdentity(result);
@@ -104,7 +107,7 @@ public class ReplyToParserTest {
         when(message.getRecipients(RecipientType.CC)).thenReturn(CC_ADDRESSES);
 
         ReplyToAddresses recipientsToReplyAllTo =
-                ReplyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
+                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
 
         assertArrayEquals(arrayConcatenate(FROM_ADDRESSES, TO_ADDRESSES, Address.class), recipientsToReplyAllTo.to);
         assertArrayEquals(CC_ADDRESSES, recipientsToReplyAllTo.cc);
@@ -117,7 +120,7 @@ public class ReplyToParserTest {
         when(message.getRecipients(RecipientType.CC)).thenReturn(CC_ADDRESSES);
 
         ReplyToAddresses recipientsToReplyAllTo =
-                ReplyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
+                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
 
         assertArrayEquals(arrayConcatenate(FROM_ADDRESSES, TO_ADDRESSES, Address.class), recipientsToReplyAllTo.to);
         assertArrayEquals(CC_ADDRESSES, recipientsToReplyAllTo.cc);
@@ -132,7 +135,7 @@ public class ReplyToParserTest {
         when(account.isAnIdentity(eq(excludedFromAddress))).thenReturn(true);
 
         ReplyToAddresses recipientsToReplyAllTo =
-                ReplyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
+                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
 
         assertArrayEquals(arrayExcept(FROM_ADDRESSES, excludedFromAddress), recipientsToReplyAllTo.to);
         assertArrayEquals(CC_ADDRESSES, recipientsToReplyAllTo.cc);
@@ -152,7 +155,7 @@ public class ReplyToParserTest {
         when(account.isAnIdentity(eq(excludedCcAddress))).thenReturn(true);
 
         ReplyToAddresses recipientsToReplyAllTo =
-                ReplyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
+                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
 
         assertArrayEquals(arrayExcept(TO_ADDRESSES, excludedToAddress), recipientsToReplyAllTo.to);
         assertArrayEquals(arrayExcept(CC_ADDRESSES, excludedCcAddress), recipientsToReplyAllTo.cc);
@@ -168,7 +171,7 @@ public class ReplyToParserTest {
         when(message.getRecipients(RecipientType.CC)).thenReturn(arrayConcatenate(CC_ADDRESSES, TO_ADDRESSES, Address.class));
 
         ReplyToAddresses recipientsToReplyAllTo =
-                ReplyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
+                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
 
         assertArrayEquals(arrayConcatenate(FROM_ADDRESSES, TO_ADDRESSES, Address.class), recipientsToReplyAllTo.to);
         assertArrayEquals(CC_ADDRESSES, recipientsToReplyAllTo.cc);

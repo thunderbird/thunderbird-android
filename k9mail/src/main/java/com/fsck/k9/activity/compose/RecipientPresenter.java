@@ -60,6 +60,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private final Context context;
     private final RecipientMvpView recipientMvpView;
     private final ComposePgpInlineDecider composePgpInlineDecider;
+    private ReplyToParser replyToParser;
     private Account account;
     private String cryptoProvider;
     private Boolean hasContactPicker;
@@ -77,10 +78,11 @@ public class RecipientPresenter implements PermissionPingCallback {
 
 
     public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account,
-            ComposePgpInlineDecider composePgpInlineDecider) {
+            ComposePgpInlineDecider composePgpInlineDecider, ReplyToParser replyToParser) {
         this.recipientMvpView = recipientMvpView;
         this.context = context;
         this.composePgpInlineDecider = composePgpInlineDecider;
+        this.replyToParser = replyToParser;
 
         recipientMvpView.setPresenter(this);
         onSwitchAccount(account);
@@ -134,12 +136,12 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void initFromReplyToMessage(Message message, boolean isReplyAll) {
-        Address[] replyToAddresses = ReplyToParser.getRecipientsToReplyTo(message, account);
+        Address[] replyToAddresses = replyToParser.getRecipientsToReplyTo(message, account);
         addToAddresses(replyToAddresses);
 
         if (isReplyAll) {
             ReplyToAddresses replyToAllAddresses =
-                    ReplyToParser.getRecipientsToReplyAllTo(message, replyToAddresses, account);
+                    replyToParser.getRecipientsToReplyAllTo(message, replyToAddresses, account);
 
             addToAddresses(replyToAllAddresses.to);
             addCcAddresses(replyToAllAddresses.cc);

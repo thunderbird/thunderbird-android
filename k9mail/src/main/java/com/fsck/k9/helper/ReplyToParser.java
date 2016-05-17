@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.support.annotation.VisibleForTesting;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -14,7 +16,7 @@ import com.fsck.k9.mail.internet.ListHeaders;
 
 public class ReplyToParser {
 
-    public static Address[] getRecipientsToReplyTo(Message message, Account account) {
+    public Address[] getRecipientsToReplyTo(Message message, Account account) {
         Address[] result = message.getReplyTo();
 
         boolean hasNoReplyToAddresses = (result.length == 0);
@@ -35,7 +37,7 @@ public class ReplyToParser {
         return result;
     }
 
-    public static ReplyToAddresses getRecipientsToReplyAllTo(
+    public ReplyToAddresses getRecipientsToReplyAllTo(
             Message message, Address[] replyToAddresses, Account account) {
         ArrayList<Address> alreadyAddedAddresses = new ArrayList<>(Arrays.asList(replyToAddresses));
         ArrayList<Address> toAddresses = new ArrayList<>();
@@ -69,7 +71,8 @@ public class ReplyToParser {
         public final Address[] to;
         public final Address[] cc;
 
-        private ReplyToAddresses(List<Address> toAddresses, List<Address> ccAddresses) {
+        @VisibleForTesting
+        public ReplyToAddresses(List<Address> toAddresses, List<Address> ccAddresses) {
             to = toAddresses.toArray(new Address[toAddresses.size()]);
             cc = ccAddresses.toArray(new Address[ccAddresses.size()]);
         }
