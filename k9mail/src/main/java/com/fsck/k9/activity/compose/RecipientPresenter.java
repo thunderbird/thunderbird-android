@@ -133,7 +133,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         return false;
     }
 
-    public void initFromReplyToMessage(Message message) {
+    public void initFromReplyToMessage(Message message, boolean isReplyAll) {
         Address[] replyToAddresses = ReplyToParser.getRecipientsToReplyTo(message);
 
         // if we're replying to a message we sent, we probably meant
@@ -143,6 +143,15 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
 
         addRecipientsFromAddresses(RecipientType.TO, replyToAddresses);
+
+        boolean shouldSendAsPgpInline = composePgpInlineDecider.shouldReplyInline(message);
+        if (shouldSendAsPgpInline) {
+            cryptoEnablePgpInline = true;
+        }
+
+        if (!isReplyAll) {
+            return;
+        }
 
         if (message.getReplyTo().length > 0) {
             for (Address address : message.getFrom()) {
@@ -156,18 +165,12 @@ public class RecipientPresenter implements PermissionPingCallback {
             if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
                 addToAddresses(address);
             }
-
         }
 
         for (Address address : message.getRecipients(RecipientType.CC)) {
             if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
                 addCcAddresses(address);
             }
-        }
-
-        boolean shouldSendAsPgpInline = composePgpInlineDecider.shouldReplyInline(message);
-        if (shouldSendAsPgpInline) {
-            cryptoEnablePgpInline = true;
         }
     }
 
