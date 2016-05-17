@@ -538,33 +538,24 @@ public class K9 extends Application {
 
         MessagingController.getInstance(this).addListener(new MessagingListener() {
             private void broadcastIntent(String action, Account account, String folder, Message message) {
-                try {
-                    Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
-                    Intent intent = new Intent(action, uri);
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folder);
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_SENT_DATE, message.getSentDate());
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM, Address.toString(message.getFrom()));
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
-                    K9.this.sendBroadcast(intent);
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Broadcasted: action=" + action
-                              + " account=" + account.getDescription()
-                              + " folder=" + folder
-                              + " message uid=" + message.getUid()
-                             );
-
-                } catch (MessagingException e) {
-                    Log.w(K9.LOG_TAG, "Error: action=" + action
+                Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
+                Intent intent = new Intent(action, uri);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folder);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_SENT_DATE, message.getSentDate());
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM, Address.toString(message.getFrom()));
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
+                K9.this.sendBroadcast(intent);
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "Broadcasted: action=" + action
                           + " account=" + account.getDescription()
                           + " folder=" + folder
                           + " message uid=" + message.getUid()
                          );
-                }
             }
 
             private void updateUnreadWidget() {

@@ -106,29 +106,25 @@ class NotificationContentCreator {
     }
 
     private String getMessageSender(Account account, Message message) {
-        try {
-            boolean isSelf = false;
-            final Contacts contacts = K9.showContactName() ? Contacts.getInstance(context) : null;
-            final Address[] fromAddresses = message.getFrom();
+        boolean isSelf = false;
+        final Contacts contacts = K9.showContactName() ? Contacts.getInstance(context) : null;
+        final Address[] fromAddresses = message.getFrom();
 
-            if (fromAddresses != null) {
-                isSelf = account.isAnIdentity(fromAddresses);
-                if (!isSelf && fromAddresses.length > 0) {
-                    return MessageHelper.toFriendly(fromAddresses[0], contacts).toString();
-                }
+        if (fromAddresses != null) {
+            isSelf = account.isAnIdentity(fromAddresses);
+            if (!isSelf && fromAddresses.length > 0) {
+                return MessageHelper.toFriendly(fromAddresses[0], contacts).toString();
             }
+        }
 
-            if (isSelf) {
-                // show To: if the message was sent from me
-                Address[] recipients = message.getRecipients(Message.RecipientType.TO);
+        if (isSelf) {
+            // show To: if the message was sent from me
+            Address[] recipients = message.getRecipients(Message.RecipientType.TO);
 
-                if (recipients != null && recipients.length > 0) {
-                    return context.getString(R.string.message_to_fmt,
-                            MessageHelper.toFriendly(recipients[0], contacts).toString());
-                }
+            if (recipients != null && recipients.length > 0) {
+                return context.getString(R.string.message_to_fmt,
+                        MessageHelper.toFriendly(recipients[0], contacts).toString());
             }
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Unable to get sender information for notification.", e);
         }
 
         return null;

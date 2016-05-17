@@ -32,7 +32,6 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.ComposePgpInlineDecider;
@@ -136,48 +135,39 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     public void initFromReplyToMessage(Message message) {
         Address[] replyToAddresses = ReplyToParser.getRecipientsToReplyTo(message);
-        
-        try {
-            // if we're replying to a message we sent, we probably meant
-            // to reply to the recipient of that message
-            if (account.isAnIdentity(replyToAddresses)) {
-                replyToAddresses = message.getRecipients(RecipientType.TO);
-            }
 
-            addRecipientsFromAddresses(RecipientType.TO, replyToAddresses);
+        // if we're replying to a message we sent, we probably meant
+        // to reply to the recipient of that message
+        if (account.isAnIdentity(replyToAddresses)) {
+            replyToAddresses = message.getRecipients(RecipientType.TO);
+        }
 
-            if (message.getReplyTo().length > 0) {
-                for (Address address : message.getFrom()) {
-                    if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                        addRecipientsFromAddresses(RecipientType.TO, address);
-                    }
-                }
-            }
+        addRecipientsFromAddresses(RecipientType.TO, replyToAddresses);
 
-            for (Address address : message.getRecipients(RecipientType.TO)) {
+        if (message.getReplyTo().length > 0) {
+            for (Address address : message.getFrom()) {
                 if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                    addToAddresses(address);
-                }
-
-            }
-
-            if (message.getRecipients(RecipientType.CC).length > 0) {
-                for (Address address : message.getRecipients(RecipientType.CC)) {
-                    if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                        addCcAddresses(address);
-                    }
-
+                    addRecipientsFromAddresses(RecipientType.TO, address);
                 }
             }
+        }
 
-            boolean shouldSendAsPgpInline = composePgpInlineDecider.shouldReplyInline(message);
-            if (shouldSendAsPgpInline) {
-                cryptoEnablePgpInline = true;
+        for (Address address : message.getRecipients(RecipientType.TO)) {
+            if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
+                addToAddresses(address);
             }
 
-        } catch (MessagingException e) {
-            // can't happen, we know the recipient types exist
-            throw new AssertionError(e);
+        }
+
+        for (Address address : message.getRecipients(RecipientType.CC)) {
+            if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
+                addCcAddresses(address);
+            }
+        }
+
+        boolean shouldSendAsPgpInline = composePgpInlineDecider.shouldReplyInline(message);
+        if (shouldSendAsPgpInline) {
+            cryptoEnablePgpInline = true;
         }
     }
 
@@ -228,18 +218,13 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     private void initRecipientsFromDraftMessage(LocalMessage message) {
-        try {
-            addToAddresses(message.getRecipients(RecipientType.TO));
+        addToAddresses(message.getRecipients(RecipientType.TO));
 
-            Address[] ccRecipients = message.getRecipients(RecipientType.CC);
-            addCcAddresses(ccRecipients);
+        Address[] ccRecipients = message.getRecipients(RecipientType.CC);
+        addCcAddresses(ccRecipients);
 
-            Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
-            addBccAddresses(bccRecipients);
-        } catch (MessagingException e) {
-            // can't happen, we know the recipient types exist
-            throw new AssertionError(e);
-        }
+        Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
+        addBccAddresses(bccRecipients);
     }
 
     private void initPgpInlineFromDraftMessage(LocalMessage message) {

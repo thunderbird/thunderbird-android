@@ -197,25 +197,29 @@ public class MimeMessage extends Message {
      * found the method returns an empty array.
      */
     @Override
-    public Address[] getRecipients(RecipientType type) throws MessagingException {
-        if (type == RecipientType.TO) {
-            if (mTo == null) {
-                mTo = Address.parse(MimeUtility.unfold(getFirstHeader("To")));
+    public Address[] getRecipients(RecipientType type) {
+        switch (type) {
+            case TO: {
+                if (mTo == null) {
+                    mTo = Address.parse(MimeUtility.unfold(getFirstHeader("To")));
+                }
+                return mTo;
             }
-            return mTo;
-        } else if (type == RecipientType.CC) {
-            if (mCc == null) {
-                mCc = Address.parse(MimeUtility.unfold(getFirstHeader("CC")));
+            case CC: {
+                if (mCc == null) {
+                    mCc = Address.parse(MimeUtility.unfold(getFirstHeader("CC")));
+                }
+                return mCc;
             }
-            return mCc;
-        } else if (type == RecipientType.BCC) {
-            if (mBcc == null) {
-                mBcc = Address.parse(MimeUtility.unfold(getFirstHeader("BCC")));
+            case BCC: {
+                if (mBcc == null) {
+                    mBcc = Address.parse(MimeUtility.unfold(getFirstHeader("BCC")));
+                }
+                return mBcc;
             }
-            return mBcc;
-        } else {
-            throw new MessagingException("Unrecognized recipient type.");
         }
+
+        throw new IllegalArgumentException("Unrecognized recipient type.");
     }
 
     @Override
