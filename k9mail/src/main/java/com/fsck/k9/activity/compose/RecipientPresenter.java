@@ -27,14 +27,14 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
-import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.ComposePgpInlineDecider;
+import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -134,43 +134,20 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void initFromReplyToMessage(Message message, boolean isReplyAll) {
-        Address[] replyToAddresses = ReplyToParser.getRecipientsToReplyTo(message);
+        Address[] replyToAddresses = ReplyToParser.getRecipientsToReplyTo(message, account);
+        addToAddresses(replyToAddresses);
 
-        // if we're replying to a message we sent, we probably meant
-        // to reply to the recipient of that message
-        if (account.isAnIdentity(replyToAddresses)) {
-            replyToAddresses = message.getRecipients(RecipientType.TO);
+        if (isReplyAll) {
+            ReplyToAddresses replyToAllAddresses =
+                    ReplyToParser.getRecipientsToReplyAllTo(message, replyToAddresses, account);
+
+            addToAddresses(replyToAllAddresses.to);
+            addCcAddresses(replyToAllAddresses.cc);
         }
-
-        addRecipientsFromAddresses(RecipientType.TO, replyToAddresses);
 
         boolean shouldSendAsPgpInline = composePgpInlineDecider.shouldReplyInline(message);
         if (shouldSendAsPgpInline) {
             cryptoEnablePgpInline = true;
-        }
-
-        if (!isReplyAll) {
-            return;
-        }
-
-        if (message.getReplyTo().length > 0) {
-            for (Address address : message.getFrom()) {
-                if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                    addRecipientsFromAddresses(RecipientType.TO, address);
-                }
-            }
-        }
-
-        for (Address address : message.getRecipients(RecipientType.TO)) {
-            if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                addToAddresses(address);
-            }
-        }
-
-        for (Address address : message.getRecipients(RecipientType.CC)) {
-            if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                addCcAddresses(address);
-            }
         }
     }
 
