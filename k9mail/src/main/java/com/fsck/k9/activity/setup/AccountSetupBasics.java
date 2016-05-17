@@ -387,6 +387,7 @@ public class AccountSetupBasics extends K9Activity
         String[] emailParts = splitEmail(email);
         String user = email;
         String domain = emailParts[1];
+	boolean isQuad = domain.matches("[0-9.]*");
 
         String password = null;
         String clientCertificateAlias = null;
@@ -407,9 +408,9 @@ public class AccountSetupBasics extends K9Activity
 
         // set default uris
         // NOTE: they will be changed again in AccountSetupAccountType!
-        ServerSettings storeServer = new ServerSettings(ServerSettings.Type.IMAP, "mail." + domain, -1,
+        ServerSettings storeServer = new ServerSettings(ServerSettings.Type.IMAP, isQuad ? domain : "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, user, password, clientCertificateAlias);
-        ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
+        ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, isQuad ? domain : "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, user, password, clientCertificateAlias);
         String storeUri = RemoteStore.createStoreUri(storeServer);
         String transportUri = Transport.createTransportUri(transportServer);
