@@ -223,6 +223,7 @@ public class Account implements BaseAccount, StoreConfig {
     private String mCryptoApp;
     private long mCryptoKey;
     private boolean mMarkMessageAsReadOnView;
+    private boolean mMarkMessageAsReadOnDelete;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
     private boolean mRemoteSearchFullText;
@@ -473,6 +474,7 @@ public class Account implements BaseAccount, StoreConfig {
 
         mEnabled = storage.getBoolean(mUuid + ".enabled", true);
         mMarkMessageAsReadOnView = storage.getBoolean(mUuid + ".markMessageAsReadOnView", true);
+        mMarkMessageAsReadOnDelete = storage.getBoolean(mUuid + ".markMessageAsReadOnDelete", false);
         mAlwaysShowCcBcc = storage.getBoolean(mUuid + ".alwaysShowCcBcc", false);
 
         cacheChips();
@@ -558,6 +560,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".cryptoAutoEncrypt");
         editor.remove(mUuid + ".enabled");
         editor.remove(mUuid + ".markMessageAsReadOnView");
+        editor.remove(mUuid + ".markMessageAsReadOnDelete");
         editor.remove(mUuid + ".alwaysShowCcBcc");
         editor.remove(mUuid + ".allowRemoteSearch");
         editor.remove(mUuid + ".remoteSearchFullText");
@@ -734,6 +737,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
         editor.putBoolean(mUuid + ".enabled", mEnabled);
         editor.putBoolean(mUuid + ".markMessageAsReadOnView", mMarkMessageAsReadOnView);
+        editor.putBoolean(mUuid + ".markMessageAsReadOnDelete", mMarkMessageAsReadOnDelete);
         editor.putBoolean(mUuid + ".alwaysShowCcBcc", mAlwaysShowCcBcc);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
@@ -1699,6 +1703,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setMarkMessageAsReadOnView(boolean value) {
         mMarkMessageAsReadOnView = value;
+    }
+
+    public synchronized boolean isMarkMessageAsReadOnDelete() {
+        return mMarkMessageAsReadOnDelete;
+    }
+
+    public synchronized void setMarkMessageAsReadOnDelete(boolean value) {
+        mMarkMessageAsReadOnDelete = value;
     }
 
     public synchronized boolean isAlwaysShowCcBcc() {

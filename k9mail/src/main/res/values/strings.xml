@@ -536,6 +536,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_notification_opens_unread_summary">Searches for unread messages when Notification is opened</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">Mark as read when deleted</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Mark a message as read when it is deleted</string>
 
     <string name="account_settings_show_pictures_label">Always show images</string>
     <string name="account_settings_show_pictures_never">No</string>
