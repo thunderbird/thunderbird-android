@@ -61,7 +61,7 @@ public class Attachment implements Parcelable {
 
     public Attachment() {}
 
-    public static enum LoadingState {
+    public enum LoadingState {
         /**
          * The only thing we know about this attachment is {@link #uri}.
          */
@@ -84,7 +84,6 @@ public class Attachment implements Parcelable {
          */
         CANCELLED
     }
-
 
     // === Parcelable ===
 
