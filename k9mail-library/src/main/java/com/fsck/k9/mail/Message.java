@@ -200,7 +200,7 @@ public abstract class Message implements Part, CompositeBody {
             CountingOutputStream out = new CountingOutputStream();
             EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(out);
             writeTo(eolOut);
-            eolOut.writeEOB();
+            eolOut.flush();
             return out.getCount();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Failed to calculate a message size", e);

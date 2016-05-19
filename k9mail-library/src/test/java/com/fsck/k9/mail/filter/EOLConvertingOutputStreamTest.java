@@ -34,27 +34,6 @@ public class EOLConvertingOutputStreamTest {
     }
 
     @Test
-    public void testFilterEOF() throws Exception {
-        subject.write("Unchanged".getBytes());
-        subject.writeEOB();
-        assertEquals("Unchanged\r\n", out.toString());
-    }
-
-    @Test
-    public void testFilterEOF2() throws Exception {
-        subject.write("Filter\r\nNext Line".getBytes());
-        subject.writeEOB();
-        assertEquals("Filter\r\nNext Line\r\n", out.toString());
-    }
-
-    @Test
-    public void testFilterEOF3() throws Exception {
-        subject.write("Unchanged\r\n".getBytes());
-        subject.writeEOB();
-        assertEquals("Unchanged\r\n", out.toString());
-    }
-
-    @Test
     public void testFilterWithJustCR() throws Exception {
         subject.write("\n\n\n".getBytes());
         subject.flush();

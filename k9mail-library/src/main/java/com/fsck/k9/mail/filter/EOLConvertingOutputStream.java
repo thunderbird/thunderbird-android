@@ -41,17 +41,4 @@ public class EOLConvertingOutputStream extends FilterOutputStream {
         }
         super.flush();
     }
-
-    // write End of Buffer
-    //
-    // write always <CR><LF> at the end of last line.
-    public void writeEOB() throws IOException {
-        flush();
-        if (lastChar != CR && lastChar != LF && lastChar != IGNORE_LF) {
-            super.write(CR);
-            super.write(LF);
-            lastChar = LF;
-        }
-        super.flush();
-    }
 }

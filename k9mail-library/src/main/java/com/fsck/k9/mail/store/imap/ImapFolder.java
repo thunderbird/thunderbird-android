@@ -1167,7 +1167,6 @@ class ImapFolder extends Folder<ImapMessage> {
                     if (response.isContinuationRequested()) {
                         EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(connection.getOutputStream());
                         message.writeTo(eolOut);
-                        eolOut.writeEOB();
                         eolOut.write('\r');
                         eolOut.write('\n');
                         eolOut.flush();
