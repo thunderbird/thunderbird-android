@@ -8,13 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import android.annotation.TargetApi;
-import android.os.Build.VERSION_CODES;
-
-import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.SizeAware;
-import org.apache.commons.io.IOUtils;
 
 
 public class DecryptedTempFileBody extends BinaryAttachmentBody implements SizeAware {
