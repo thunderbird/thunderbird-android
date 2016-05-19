@@ -525,7 +525,6 @@ public class MessagingController implements Runnable {
                 @Override
                 public void messagesFinished(int number) {}
                 @Override
-
                 public void messageFinished(LocalMessage message, int number, int ofTotal) {
                     if (!isMessageSuppressed(message)) {
                         List<LocalMessage> messages = new ArrayList<LocalMessage>();
@@ -1396,7 +1395,7 @@ public class MessagingController implements Runnable {
         final Date earliestDate = account.getEarliestPollDate();
 
         if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
+            Log.d(K9.LOG_TAG, "SYNC: Fetching " + smallMessages.size() + " small messages for folder " + folder);
 
         remoteFolder.fetch(smallMessages,
         fp, new MessageRetrievalListener<T>() {
