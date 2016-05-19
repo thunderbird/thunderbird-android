@@ -12,7 +12,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.crypto.DecryptedTempFileBody;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -67,10 +66,29 @@ public class DecryptStreamParser {
 
     private static Body createBody(InputStream inputStream, String transferEncoding, File decryptedTempDirectory)
             throws IOException {
-        DecryptedTempFileBody body = new DecryptedTempFileBody(transferEncoding, decryptedTempDirectory);
+        DecryptedTempFileBody body = new DecryptedTempFileBody(decryptedTempDirectory, transferEncoding);
         OutputStream outputStream = body.getOutputStream();
         try {
-            IOUtils.copy(inputStream, outputStream);
+            InputStream decodingInputStream;
+            boolean closeStream;
+            if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(transferEncoding)) {
+                decodingInputStream = new QuotedPrintableInputStream(inputStream, false);
+                closeStream = true;
+            } else if (MimeUtil.ENC_BASE64.equals(transferEncoding)) {
+                decodingInputStream = new Base64InputStream(inputStream);
+                closeStream = true;
+            } else {
+                decodingInputStream = inputStream;
+                closeStream = false;
+            }
+
+            try {
+                IOUtils.copy(decodingInputStream, outputStream);
+            } finally {
+                if (closeStream) {
+                    decodingInputStream.close();
+                }
+            }
         } finally {
             outputStream.close();
         }
