@@ -38,8 +38,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
+import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.view.K9WebViewClient;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
@@ -443,7 +443,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             ViewStub openPgpHeaderStub = (ViewStub) findViewById(R.id.openpgp_header_stub);
             OpenPgpHeaderView openPgpHeaderView = (OpenPgpHeaderView) openPgpHeaderStub.inflate();
 
-            OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
+            CryptoResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
             openPgpHeaderView.setOpenPgpData(cryptoAnnotation);
             openPgpHeaderView.setCallback(openPgpHeaderViewCallback);
             mSidebar.setVisibility(View.VISIBLE);
@@ -462,16 +462,16 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     }
 
     private String getTextToDisplay(MessageViewContainer messageViewContainer) {
-        OpenPgpResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
+        CryptoResultAnnotation cryptoAnnotation = messageViewContainer.cryptoAnnotation;
         if (cryptoAnnotation == null) {
             return messageViewContainer.text;
         }
 
         CryptoError errorType = cryptoAnnotation.getErrorType();
         switch (errorType) {
-            case CRYPTO_API_RETURNED_ERROR: {
+            case OPENPGP_API_RETURNED_ERROR: {
                 // TODO make a nice view for this
-                return wrapStatusMessage(cryptoAnnotation.getError().getMessage());
+                return wrapStatusMessage(cryptoAnnotation.getOpenPgpError().getMessage());
             }
             case ENCRYPTED_BUT_INCOMPLETE: {
                 return wrapStatusMessage(getContext().getString(R.string.crypto_download_complete_message_to_decrypt));

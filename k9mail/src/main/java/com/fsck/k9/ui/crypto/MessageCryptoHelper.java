@@ -33,9 +33,8 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.DecryptStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageHelper;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation;
-import com.fsck.k9.mailstore.OpenPgpResultAnnotation.CryptoError;
-import org.openintents.openpgp.IOpenPgpService;
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
+import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
@@ -58,7 +57,7 @@ public class MessageCryptoHelper {
     private final Account account;
     private LocalMessage message;
 
-    private Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<CryptoPart>();
+    private Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<>();
     private OpenPgpApi openPgpApi;
     private CryptoPart currentCryptoPart;
     private Intent currentCryptoResult;
@@ -109,10 +108,8 @@ public class MessageCryptoHelper {
         }
     }
 
-    private void addErrorAnnotation(Part part, CryptoError error, MimeBodyPart outputData) {
-        OpenPgpResultAnnotation annotation = new OpenPgpResultAnnotation();
-        annotation.setErrorType(error);
-        annotation.setOutputData(outputData);
+    private void addErrorAnnotation(Part part, CryptoError error, MimeBodyPart replacementPart) {
+        CryptoResultAnnotation annotation = CryptoResultAnnotation.createErrorAnnotation(error, replacementPart);
         messageAnnotations.put(part, annotation);
     }
 
@@ -411,11 +408,8 @@ public class MessageCryptoHelper {
                 currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
         PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
 
-        OpenPgpResultAnnotation resultAnnotation = new OpenPgpResultAnnotation();
-        resultAnnotation.setOutputData(outputPart);
-        resultAnnotation.setDecryptionResult(decryptionResult);
-        resultAnnotation.setSignatureResult(signatureResult);
-        resultAnnotation.setPendingIntent(pendingIntent);
+        CryptoResultAnnotation resultAnnotation = CryptoResultAnnotation.createOpenPgpResultAnnotation(
+                decryptionResult, signatureResult, pendingIntent, outputPart);
 
         onCryptoSuccess(resultAnnotation);
     }
@@ -433,21 +427,20 @@ public class MessageCryptoHelper {
         }
     }
 
-    private void onCryptoSuccess(OpenPgpResultAnnotation resultAnnotation) {
-        addOpenPgpResultPartToMessage(resultAnnotation);
+    private void onCryptoSuccess(CryptoResultAnnotation resultAnnotation) {
+        addCryptoResultAnnotationToMessage(resultAnnotation);
         onCryptoFinished();
-    }
-
-    private void addOpenPgpResultPartToMessage(OpenPgpResultAnnotation resultAnnotation) {
-        Part part = currentCryptoPart.part;
-        messageAnnotations.put(part, resultAnnotation);
     }
 
     private void onCryptoFailed(OpenPgpError error) {
-        OpenPgpResultAnnotation errorPart = new OpenPgpResultAnnotation();
-        errorPart.setError(error);
-        addOpenPgpResultPartToMessage(errorPart);
+        CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpErrorAnnotation(error);
+        addCryptoResultAnnotationToMessage(errorPart);
         onCryptoFinished();
+    }
+
+    private void addCryptoResultAnnotationToMessage(CryptoResultAnnotation resultAnnotation) {
+        Part part = currentCryptoPart.part;
+        messageAnnotations.put(part, resultAnnotation);
     }
 
     private void onCryptoFinished() {

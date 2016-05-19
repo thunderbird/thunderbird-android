@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,15 +22,16 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.Viewable;
+import com.fsck.k9.mailstore.MessageViewInfoExtractor.ViewableExtractedText;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static com.fsck.k9.mailstore.LocalMessageExtractor.extractTextAndAttachments;
+import static com.fsck.k9.mailstore.MessageViewInfoExtractor.extractTextFromViewables;
 import static junit.framework.Assert.assertEquals;
 
 
 @RunWith(AndroidJUnit4.class)
-public class LocalMessageExtractorTest {
+public class MessageViewInfoExtractorTest {
 
     @Test
     public void testSimplePlainTextMessage() throws MessagingException {
@@ -43,10 +45,11 @@ public class LocalMessageExtractorTest {
         MimeMessageHelper.setBody(message, body);
 
         // Extract text
-        List<Part> attachments = new ArrayList<Part>();
-        List<Viewable> viewables = MessageExtractor.getViewables(message, attachments);
-        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(),
-                viewables, attachments);
+        List<Part> outputNonViewableParts = new ArrayList<Part>();
+        ArrayList<Viewable> outputViewableParts = new ArrayList<>();
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+        ViewableExtractedText container = extractTextFromViewables(InstrumentationRegistry.getTargetContext(),
+                outputViewableParts);
 
         String expectedText = bodyText;
         String expectedHtml =
@@ -72,9 +75,10 @@ public class LocalMessageExtractorTest {
 
         // Extract text
         List<Part> attachments = new ArrayList<Part>();
-        List<Viewable> viewables = MessageExtractor.getViewables(message, attachments);
-        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(),
-                viewables, attachments);
+        ArrayList<Viewable> outputViewableParts = new ArrayList<>();
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, attachments);
+        ViewableExtractedText container = extractTextFromViewables(InstrumentationRegistry.getTargetContext(),
+                outputViewableParts);
 
         String expectedText = "K-9 Mail rocks :>";
         String expectedHtml =
@@ -105,10 +109,11 @@ public class LocalMessageExtractorTest {
         MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
-        List<Part> attachments = new ArrayList<Part>();
-        List<Viewable> viewables = MessageExtractor.getViewables(message, attachments);
-        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(),
-                viewables, attachments);
+        List<Part> outputNonViewableParts = new ArrayList<Part>();
+        ArrayList<Viewable> outputViewableParts = new ArrayList<>();
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+        ViewableExtractedText container = extractTextFromViewables(InstrumentationRegistry.getTargetContext(),
+                outputViewableParts);
 
         String expectedText =
                 bodyText1 + "\r\n\r\n" +
@@ -165,10 +170,11 @@ public class LocalMessageExtractorTest {
         MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
-        List<Part> attachments = new ArrayList<Part>();
-        List<Viewable> viewables = MessageExtractor.getViewables(message, attachments);
-        ViewableContainer container = extractTextAndAttachments(InstrumentationRegistry.getTargetContext(),
-                viewables, attachments);
+        List<Part> outputNonViewableParts = new ArrayList<Part>();
+        ArrayList<Viewable> outputViewableParts = new ArrayList<>();
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+        ViewableExtractedText container = extractTextFromViewables(InstrumentationRegistry.getTargetContext(),
+                outputViewableParts);
 
         String expectedText =
                 bodyText +

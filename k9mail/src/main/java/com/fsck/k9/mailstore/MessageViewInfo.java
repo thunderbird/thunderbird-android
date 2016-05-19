@@ -22,11 +22,11 @@ public class MessageViewInfo {
         public final String text;
         public final Part rootPart;
         public final List<AttachmentViewInfo> attachments;
-        public final OpenPgpResultAnnotation cryptoAnnotation;
+        public final CryptoResultAnnotation cryptoAnnotation;
 
 
         MessageViewContainer(String text, Part rootPart, List<AttachmentViewInfo> attachments,
-                OpenPgpResultAnnotation cryptoAnnotation) {
+                CryptoResultAnnotation cryptoAnnotation) {
             this.text = text;
             this.rootPart = rootPart;
             this.attachments = attachments;
