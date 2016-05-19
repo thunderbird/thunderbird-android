@@ -3,6 +3,7 @@ package com.fsck.k9.helper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import android.support.annotation.VisibleForTesting;
@@ -39,26 +40,26 @@ public class ReplyToParser {
 
     public ReplyToAddresses getRecipientsToReplyAllTo(
             Message message, Address[] replyToAddresses, Account account) {
-        ArrayList<Address> alreadyAddedAddresses = new ArrayList<>(Arrays.asList(replyToAddresses));
+        HashSet<Address> alreadyAddedAddresses = new HashSet<>(Arrays.asList(replyToAddresses));
         ArrayList<Address> toAddresses = new ArrayList<>();
         ArrayList<Address> ccAddresses = new ArrayList<>();
 
         for (Address address : message.getFrom()) {
-            if (!account.isAnIdentity(address) && !alreadyAddedAddresses.contains(address)) {
+            if (!alreadyAddedAddresses.contains(address) && !account.isAnIdentity(address)) {
                 toAddresses.add(address);
                 alreadyAddedAddresses.add(address);
             }
         }
 
         for (Address address : message.getRecipients(RecipientType.TO)) {
-            if (!account.isAnIdentity(address) && !alreadyAddedAddresses.contains(address)) {
+            if (!alreadyAddedAddresses.contains(address) && !account.isAnIdentity(address)) {
                 toAddresses.add(address);
                 alreadyAddedAddresses.add(address);
             }
         }
 
         for (Address address : message.getRecipients(RecipientType.CC)) {
-            if (!account.isAnIdentity(address) && !alreadyAddedAddresses.contains(address)) {
+            if (!alreadyAddedAddresses.contains(address) && !account.isAnIdentity(address)) {
                 ccAddresses.add(address);
                 alreadyAddedAddresses.add(address);
             }
