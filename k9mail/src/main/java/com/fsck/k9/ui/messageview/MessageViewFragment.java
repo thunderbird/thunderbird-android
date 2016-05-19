@@ -209,7 +209,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         displayMessageHeader(message);
 
         if (message.isBodyMissing()) {
-            startDownloadingMessageBody(message);
+            startDownloadingMessageBody();
         } else {
             messageCryptoHelper.decryptOrVerifyMessagePartsIfNecessary(message);
         }
@@ -219,8 +219,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         // mMessageView.showStatusMessage(mContext.getString(R.string.status_invalid_id_error));
     }
 
-    private void startDownloadingMessageBody(LocalMessage message) {
-        throw new RuntimeException("Not implemented yet");
+    private void startDownloadingMessageBody() {
+        mController.loadMessagePartialForViewRemote(
+                mAccount, mMessageReference.getFolderName(), mMessageReference.getUid(), downloadMessageListener);
     }
 
     private void onMessageDownloadFinished(LocalMessage message) {
