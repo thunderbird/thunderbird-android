@@ -90,7 +90,7 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract void setSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException;
 
-    public abstract Address[] getRecipients(RecipientType type) throws MessagingException;
+    public abstract Address[] getRecipients(RecipientType type);
 
     public abstract void setRecipients(RecipientType type, Address[] addresses)
     throws MessagingException;

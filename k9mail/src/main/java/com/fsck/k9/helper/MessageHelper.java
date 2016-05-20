@@ -1,12 +1,12 @@
 package com.fsck.k9.helper;
 
+
 import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -15,7 +15,6 @@ import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mailstore.LocalMessage;
 
@@ -53,45 +52,42 @@ public class MessageHelper {
                          final FolderInfoHolder folder,
                          Account account) {
         final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
-        try {
-            target.message = message;
-            target.compareArrival = message.getInternalDate();
-            target.compareDate = message.getSentDate();
-            if (target.compareDate == null) {
-                target.compareDate = message.getInternalDate();
-            }
 
-            target.folder = folder;
-
-            target.read = message.isSet(Flag.SEEN);
-            target.answered = message.isSet(Flag.ANSWERED);
-            target.forwarded = message.isSet(Flag.FORWARDED);
-            target.flagged = message.isSet(Flag.FLAGGED);
-
-            Address[] addrs = message.getFrom();
-
-            if (addrs.length > 0 &&  account.isAnIdentity(addrs[0])) {
-                CharSequence to = toFriendly(message.getRecipients(RecipientType.TO), contactHelper);
-                target.compareCounterparty = to.toString();
-                target.sender = new SpannableStringBuilder(mContext.getString(R.string.message_to_label)).append(to);
-            } else {
-                target.sender = toFriendly(addrs, contactHelper);
-                target.compareCounterparty = target.sender.toString();
-            }
-
-            if (addrs.length > 0) {
-                target.senderAddress = addrs[0].getAddress();
-            } else {
-                // a reasonable fallback "whomever we were corresponding with
-                target.senderAddress = target.compareCounterparty;
-            }
-
-            target.uid = message.getUid();
-            target.account = message.getFolder().getAccountUuid();
-            target.uri = message.getUri();
-        } catch (MessagingException me) {
-            Log.w(K9.LOG_TAG, "Unable to load message info", me);
+        target.message = message;
+        target.compareArrival = message.getInternalDate();
+        target.compareDate = message.getSentDate();
+        if (target.compareDate == null) {
+            target.compareDate = message.getInternalDate();
         }
+
+        target.folder = folder;
+
+        target.read = message.isSet(Flag.SEEN);
+        target.answered = message.isSet(Flag.ANSWERED);
+        target.forwarded = message.isSet(Flag.FORWARDED);
+        target.flagged = message.isSet(Flag.FLAGGED);
+
+        Address[] addrs = message.getFrom();
+
+        if (addrs.length > 0 &&  account.isAnIdentity(addrs[0])) {
+            CharSequence to = toFriendly(message.getRecipients(RecipientType.TO), contactHelper);
+            target.compareCounterparty = to.toString();
+            target.sender = new SpannableStringBuilder(mContext.getString(R.string.message_to_label)).append(to);
+        } else {
+            target.sender = toFriendly(addrs, contactHelper);
+            target.compareCounterparty = target.sender.toString();
+        }
+
+        if (addrs.length > 0) {
+            target.senderAddress = addrs[0].getAddress();
+        } else {
+            // a reasonable fallback "whomever we were corresponding with
+            target.senderAddress = target.compareCounterparty;
+        }
+
+        target.uid = message.getUid();
+        target.account = message.getFolder().getAccountUuid();
+        target.uri = message.getUri();
     }
 
     public CharSequence getDisplayName(Account account, Address[] fromAddrs, Address[] toAddrs) {

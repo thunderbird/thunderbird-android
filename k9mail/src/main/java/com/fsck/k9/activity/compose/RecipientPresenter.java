@@ -27,15 +27,14 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
-import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.ComposePgpInlineDecider;
+import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -61,6 +60,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private final Context context;
     private final RecipientMvpView recipientMvpView;
     private final ComposePgpInlineDecider composePgpInlineDecider;
+    private ReplyToParser replyToParser;
     private Account account;
     private String cryptoProvider;
     private Boolean hasContactPicker;
@@ -78,10 +78,11 @@ public class RecipientPresenter implements PermissionPingCallback {
 
 
     public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account,
-            ComposePgpInlineDecider composePgpInlineDecider) {
+            ComposePgpInlineDecider composePgpInlineDecider, ReplyToParser replyToParser) {
         this.recipientMvpView = recipientMvpView;
         this.context = context;
         this.composePgpInlineDecider = composePgpInlineDecider;
+        this.replyToParser = replyToParser;
 
         recipientMvpView.setPresenter(this);
         onSwitchAccount(account);
@@ -134,50 +135,17 @@ public class RecipientPresenter implements PermissionPingCallback {
         return false;
     }
 
-    public void initFromReplyToMessage(Message message) {
-        Address[] replyToAddresses = ReplyToParser.getRecipientsToReplyTo(message);
-        
-        try {
-            // if we're replying to a message we sent, we probably meant
-            // to reply to the recipient of that message
-            if (account.isAnIdentity(replyToAddresses)) {
-                replyToAddresses = message.getRecipients(RecipientType.TO);
-            }
+    public void initFromReplyToMessage(Message message, boolean isReplyAll) {
+        ReplyToAddresses replyToAddresses = isReplyAll ?
+                replyToParser.getRecipientsToReplyAllTo(message, account) :
+                replyToParser.getRecipientsToReplyTo(message, account);
 
-            addRecipientsFromAddresses(RecipientType.TO, replyToAddresses);
+        addToAddresses(replyToAddresses.to);
+        addCcAddresses(replyToAddresses.cc);
 
-            if (message.getReplyTo().length > 0) {
-                for (Address address : message.getFrom()) {
-                    if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                        addRecipientsFromAddresses(RecipientType.TO, address);
-                    }
-                }
-            }
-
-            for (Address address : message.getRecipients(RecipientType.TO)) {
-                if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                    addToAddresses(address);
-                }
-
-            }
-
-            if (message.getRecipients(RecipientType.CC).length > 0) {
-                for (Address address : message.getRecipients(RecipientType.CC)) {
-                    if (!account.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
-                        addCcAddresses(address);
-                    }
-
-                }
-            }
-
-            boolean shouldSendAsPgpInline = composePgpInlineDecider.shouldReplyInline(message);
-            if (shouldSendAsPgpInline) {
-                cryptoEnablePgpInline = true;
-            }
-
-        } catch (MessagingException e) {
-            // can't happen, we know the recipient types exist
-            throw new AssertionError(e);
+        boolean shouldSendAsPgpInline = composePgpInlineDecider.shouldReplyInline(message);
+        if (shouldSendAsPgpInline) {
+            cryptoEnablePgpInline = true;
         }
     }
 
@@ -228,18 +196,13 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     private void initRecipientsFromDraftMessage(LocalMessage message) {
-        try {
-            addToAddresses(message.getRecipients(RecipientType.TO));
+        addToAddresses(message.getRecipients(RecipientType.TO));
 
-            Address[] ccRecipients = message.getRecipients(RecipientType.CC);
-            addCcAddresses(ccRecipients);
+        Address[] ccRecipients = message.getRecipients(RecipientType.CC);
+        addCcAddresses(ccRecipients);
 
-            Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
-            addBccAddresses(bccRecipients);
-        } catch (MessagingException e) {
-            // can't happen, we know the recipient types exist
-            throw new AssertionError(e);
-        }
+        Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
+        addBccAddresses(bccRecipients);
     }
 
     private void initPgpInlineFromDraftMessage(LocalMessage message) {

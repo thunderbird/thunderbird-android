@@ -76,6 +76,7 @@ import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.MailTo;
+import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -400,7 +401,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
-        recipientPresenter = new RecipientPresenter(this, recipientMvpView, mAccount, composePgpInlineDecider);
+        recipientPresenter = new RecipientPresenter(this, recipientMvpView, mAccount,
+                composePgpInlineDecider, new ReplyToParser());
 
         mSubjectView = (EditText) findViewById(R.id.subject);
         mSubjectView.getInputExtras(true).putBoolean("allowEmoji", true);
@@ -1598,7 +1600,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
          * If a reply-to was included with the message use that, otherwise use the from
          * or sender address.
          */
-        recipientPresenter.initFromReplyToMessage(message);
+        boolean isReplyAll = mAction == Action.REPLY_ALL;
+        recipientPresenter.initFromReplyToMessage(message, isReplyAll);
 
         if (message.getMessageId() != null && message.getMessageId().length() > 0) {
             mInReplyTo = message.getMessageId();
