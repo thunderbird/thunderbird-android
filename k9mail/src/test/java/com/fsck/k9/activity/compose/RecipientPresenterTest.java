@@ -17,7 +17,6 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.verification.VerificationModeFactory;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
@@ -26,7 +25,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
@@ -44,6 +42,7 @@ public class RecipientPresenterTest {
     private Account account;
     private RecipientMvpView recipientMvpView;
 
+
     @Before
     public void setUp() throws Exception {
         Context context = ShadowApplication.getInstance().getApplicationContext();
@@ -60,36 +59,24 @@ public class RecipientPresenterTest {
     @Test
     public void testInitFromReplyToMessage() throws Exception {
         Message message = mock(Message.class);
-
         when(replyToParser.getRecipientsToReplyTo(message, account)).thenReturn(TO_ADDRESSES);
 
         recipientPresenter.initFromReplyToMessage(message, false);
 
-        verify(replyToParser).getRecipientsToReplyTo(message, account);
-        verifyNoMoreInteractions(replyToParser);
-
         verify(composePgpInlineDecider).shouldReplyInline(message);
-        verifyNoMoreInteractions(composePgpInlineDecider);
-
         verify(recipientMvpView).addRecipients(eq(RecipientType.TO), any(Recipient[].class));
     }
 
     @Test
     public void testInitFromReplyToAllMessage() throws Exception {
         Message message = mock(Message.class);
-
         when(replyToParser.getRecipientsToReplyTo(message, account)).thenReturn(TO_ADDRESSES);
         ReplyToAddresses replyToAddresses = new ReplyToAddresses(ALL_TO_ADDRESSES, ALL_CC_ADDRESSES);
         when(replyToParser.getRecipientsToReplyAllTo(message, account)).thenReturn(replyToAddresses);
 
         recipientPresenter.initFromReplyToMessage(message, true);
 
-        verify(replyToParser).getRecipientsToReplyAllTo(message, account);
-        verifyNoMoreInteractions(replyToParser);
-
         verify(composePgpInlineDecider).shouldReplyInline(message);
-        verifyNoMoreInteractions(composePgpInlineDecider);
-
         verify(recipientMvpView).addRecipients(eq(RecipientType.TO), any(Recipient.class));
         verify(recipientMvpView).addRecipients(eq(RecipientType.CC), any(Recipient.class));
     }
