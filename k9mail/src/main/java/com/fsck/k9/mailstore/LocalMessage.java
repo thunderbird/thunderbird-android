@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore;
 
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
@@ -11,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Address;
@@ -304,6 +306,39 @@ public class LocalMessage extends MimeMessage {
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
+
+                    return null;
+                }
+            });
+        } catch (WrappedException e) {
+            throw (MessagingException) e.getCause();
+        }
+
+        localStore.notifyChange();
+    }
+
+    public void debugClearLocalData() throws MessagingException {
+        if (!BuildConfig.DEBUG) {
+            throw new AssertionError("method must only be used in debug build!");
+        }
+
+        try {
+            localStore.database.execute(true, new DbCallback<Void>() {
+                @Override
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
+                    ContentValues cv = new ContentValues();
+                    cv.putNull("message_part_id");
+
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
+
+                    try {
+                        ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    }
+
+                    setFlag(Flag.X_DOWNLOADED_FULL, false);
+                    setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
 
                     return null;
                 }
