@@ -13,16 +13,16 @@ import com.fsck.k9.mail.internet.ListHeaders;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.verification.VerificationModeFactory;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
@@ -57,10 +57,11 @@ public class ReplyToParserTest {
         when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(LIST_POST_HEADER_VALUES);
         when(message.getFrom()).thenReturn(FROM_ADDRESSES);
 
-        Address[] result = replyToParser.getRecipientsToReplyTo(message, account);
+        ReplyToAddresses result = replyToParser.getRecipientsToReplyTo(message, account);
 
-        assertArrayEquals(REPLY_TO_ADDRESSES, result);
-        verify(account).isAnIdentity(result);
+        assertArrayEquals(REPLY_TO_ADDRESSES, result.to);
+        assertArrayEquals(EMPTY_ADDRESSES, result.cc);
+        verify(account).isAnIdentity(result.to);
     }
 
     @Test
@@ -71,9 +72,10 @@ public class ReplyToParserTest {
         when(message.getRecipients(RecipientType.TO)).thenReturn(TO_ADDRESSES);
         when(account.isAnIdentity(any(Address[].class))).thenReturn(true);
 
-        Address[] result = replyToParser.getRecipientsToReplyTo(message, account);
+        ReplyToAddresses result = replyToParser.getRecipientsToReplyTo(message, account);
 
-        assertArrayEquals(TO_ADDRESSES, result);
+        assertArrayEquals(TO_ADDRESSES, result.to);
+        assertArrayEquals(EMPTY_ADDRESSES, result.cc);
     }
 
     @Test
@@ -82,10 +84,11 @@ public class ReplyToParserTest {
         when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(LIST_POST_HEADER_VALUES);
         when(message.getFrom()).thenReturn(FROM_ADDRESSES);
 
-        Address[] result = replyToParser.getRecipientsToReplyTo(message, account);
+        ReplyToAddresses result = replyToParser.getRecipientsToReplyTo(message, account);
 
-        assertArrayEquals(LIST_POST_ADDRESSES, result);
-        verify(account).isAnIdentity(result);
+        assertArrayEquals(LIST_POST_ADDRESSES, result.to);
+        assertArrayEquals(EMPTY_ADDRESSES, result.cc);
+        verify(account).isAnIdentity(result.to);
     }
 
     @Test
@@ -94,59 +97,33 @@ public class ReplyToParserTest {
         when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(new String[0]);
         when(message.getFrom()).thenReturn(FROM_ADDRESSES);
 
-        Address[] result = replyToParser.getRecipientsToReplyTo(message, account);
+        ReplyToAddresses result = replyToParser.getRecipientsToReplyTo(message, account);
 
-        assertArrayEquals(FROM_ADDRESSES, result);
-        verify(account).isAnIdentity(result);
+        assertArrayEquals(FROM_ADDRESSES, result.to);
+        assertArrayEquals(EMPTY_ADDRESSES, result.cc);
+        verify(account).isAnIdentity(result.to);
     }
 
     @Test
     public void getRecipientsToReplyAllTo_should_returnFromAndToAndCcRecipients() throws Exception {
+        when(message.getReplyTo()).thenReturn(EMPTY_ADDRESSES);
+        when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(new String[0]);
         when(message.getFrom()).thenReturn(FROM_ADDRESSES);
         when(message.getRecipients(RecipientType.TO)).thenReturn(TO_ADDRESSES);
         when(message.getRecipients(RecipientType.CC)).thenReturn(CC_ADDRESSES);
 
-        ReplyToAddresses recipientsToReplyAllTo =
-                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
+        ReplyToAddresses recipientsToReplyAllTo = replyToParser.getRecipientsToReplyAllTo(message, account);
 
         assertArrayEquals(arrayConcatenate(FROM_ADDRESSES, TO_ADDRESSES, Address.class), recipientsToReplyAllTo.to);
         assertArrayEquals(CC_ADDRESSES, recipientsToReplyAllTo.cc);
     }
 
     @Test
-    public void getRecipientsToReplyAllTo_should_returnToAndCcRecipients() throws Exception {
-        when(message.getFrom()).thenReturn(FROM_ADDRESSES);
-        when(message.getRecipients(RecipientType.TO)).thenReturn(TO_ADDRESSES);
-        when(message.getRecipients(RecipientType.CC)).thenReturn(CC_ADDRESSES);
-
-        ReplyToAddresses recipientsToReplyAllTo =
-                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
-
-        assertArrayEquals(arrayConcatenate(FROM_ADDRESSES, TO_ADDRESSES, Address.class), recipientsToReplyAllTo.to);
-        assertArrayEquals(CC_ADDRESSES, recipientsToReplyAllTo.cc);
-    }
-
-    @Test
-    public void getRecipientsToReplyAllTo_should_excludeIdentityAddressesInFrom() throws Exception {
-        when(message.getFrom()).thenReturn(FROM_ADDRESSES);
-        when(message.getRecipients(RecipientType.TO)).thenReturn(EMPTY_ADDRESSES);
-        when(message.getRecipients(RecipientType.CC)).thenReturn(CC_ADDRESSES);
-        Address excludedFromAddress = FROM_ADDRESSES[0];
-        when(account.isAnIdentity(eq(excludedFromAddress))).thenReturn(true);
-
-        ReplyToAddresses recipientsToReplyAllTo =
-                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
-
-        assertArrayEquals(arrayExcept(FROM_ADDRESSES, excludedFromAddress), recipientsToReplyAllTo.to);
-        assertArrayEquals(CC_ADDRESSES, recipientsToReplyAllTo.cc);
-        int addressesToCheck = FROM_ADDRESSES.length + CC_ADDRESSES.length;
-        verify(account, VerificationModeFactory.times(addressesToCheck)).isAnIdentity(any(Address.class));
-        verifyNoMoreInteractions(account);
-    }
-
-    @Test
-    public void getRecipientsToReplyAllTo_should_excludeIdentityAddressesInToAndCc() throws Exception {
+    public void getRecipientsToReplyAllTo_should_excludeIdentityAddresses() throws Exception {
+        when(message.getReplyTo()).thenReturn(EMPTY_ADDRESSES);
+        when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(new String[0]);
         when(message.getFrom()).thenReturn(EMPTY_ADDRESSES);
+
         when(message.getRecipients(RecipientType.TO)).thenReturn(TO_ADDRESSES);
         when(message.getRecipients(RecipientType.CC)).thenReturn(CC_ADDRESSES);
         Address excludedCcAddress = CC_ADDRESSES[1];
@@ -154,27 +131,35 @@ public class ReplyToParserTest {
         when(account.isAnIdentity(eq(excludedToAddress))).thenReturn(true);
         when(account.isAnIdentity(eq(excludedCcAddress))).thenReturn(true);
 
-        ReplyToAddresses recipientsToReplyAllTo =
-                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
+
+        ReplyToAddresses recipientsToReplyAllTo = replyToParser.getRecipientsToReplyAllTo(message, account);
+
 
         assertArrayEquals(arrayExcept(TO_ADDRESSES, excludedToAddress), recipientsToReplyAllTo.to);
         assertArrayEquals(arrayExcept(CC_ADDRESSES, excludedCcAddress), recipientsToReplyAllTo.cc);
-        int addressesToCheck = TO_ADDRESSES.length + CC_ADDRESSES.length;
-        verify(account, VerificationModeFactory.times(addressesToCheck)).isAnIdentity(any(Address.class));
-        verifyNoMoreInteractions(account);
     }
 
     @Test
     public void getRecipientsToReplyAllTo_should_excludeDuplicates() throws Exception {
+        when(message.getReplyTo()).thenReturn(REPLY_TO_ADDRESSES);
         when(message.getFrom()).thenReturn(arrayConcatenate(FROM_ADDRESSES, REPLY_TO_ADDRESSES, Address.class));
-        when(message.getRecipients(RecipientType.TO)).thenReturn(arrayConcatenate(TO_ADDRESSES, FROM_ADDRESSES, Address.class));
+        when(message.getRecipients(RecipientType.TO)).thenReturn(arrayConcatenate(FROM_ADDRESSES, TO_ADDRESSES, Address.class));
         when(message.getRecipients(RecipientType.CC)).thenReturn(arrayConcatenate(CC_ADDRESSES, TO_ADDRESSES, Address.class));
 
-        ReplyToAddresses recipientsToReplyAllTo =
-                replyToParser.getRecipientsToReplyAllTo(message, REPLY_TO_ADDRESSES, account);
+        ReplyToAddresses recipientsToReplyAllTo = replyToParser.getRecipientsToReplyAllTo(message, account);
 
-        assertArrayEquals(arrayConcatenate(FROM_ADDRESSES, TO_ADDRESSES, Address.class), recipientsToReplyAllTo.to);
+        assertArrayContainsAll(REPLY_TO_ADDRESSES, recipientsToReplyAllTo.to);
+        assertArrayContainsAll(FROM_ADDRESSES, recipientsToReplyAllTo.to);
+        assertArrayContainsAll(TO_ADDRESSES, recipientsToReplyAllTo.to);
+        int totalExpectedAddresses = REPLY_TO_ADDRESSES.length + FROM_ADDRESSES.length + TO_ADDRESSES.length;
+        assertEquals(totalExpectedAddresses, recipientsToReplyAllTo.to.length);
         assertArrayEquals(CC_ADDRESSES, recipientsToReplyAllTo.cc);
+    }
+
+    public <T> void assertArrayContainsAll(T[] expecteds, T[] actual) {
+        for (T expected : expecteds) {
+            assertTrue("Element must be in array (" + expected + ")", Utility.arrayContains(actual, expected));
+        }
     }
 
     public <T> T[] arrayConcatenate(T[] first, T[] second, Class<T> cls) {

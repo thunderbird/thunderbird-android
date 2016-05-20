@@ -136,16 +136,12 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void initFromReplyToMessage(Message message, boolean isReplyAll) {
-        Address[] replyToAddresses = replyToParser.getRecipientsToReplyTo(message, account);
-        addToAddresses(replyToAddresses);
+        ReplyToAddresses replyToAddresses = isReplyAll ?
+                replyToParser.getRecipientsToReplyAllTo(message, account) :
+                replyToParser.getRecipientsToReplyTo(message, account);
 
-        if (isReplyAll) {
-            ReplyToAddresses replyToAllAddresses =
-                    replyToParser.getRecipientsToReplyAllTo(message, replyToAddresses, account);
-
-            addToAddresses(replyToAllAddresses.to);
-            addCcAddresses(replyToAllAddresses.cc);
-        }
+        addToAddresses(replyToAddresses.to);
+        addCcAddresses(replyToAddresses.cc);
 
         boolean shouldSendAsPgpInline = composePgpInlineDecider.shouldReplyInline(message);
         if (shouldSendAsPgpInline) {

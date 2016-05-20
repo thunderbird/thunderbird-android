@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 public class RecipientPresenterTest {
-    public static final Address[] TO_ADDRESSES = Address.parse("to@example.org");
+    public static final ReplyToAddresses TO_ADDRESSES = new ReplyToAddresses(Address.parse("to@example.org"));
     public static final List<Address> ALL_TO_ADDRESSES = Arrays.asList(Address.parse("allTo@example.org"));
     public static final List<Address> ALL_CC_ADDRESSES = Arrays.asList(Address.parse("allCc@example.org"));
 
@@ -80,18 +80,17 @@ public class RecipientPresenterTest {
 
         when(replyToParser.getRecipientsToReplyTo(message, account)).thenReturn(TO_ADDRESSES);
         ReplyToAddresses replyToAddresses = new ReplyToAddresses(ALL_TO_ADDRESSES, ALL_CC_ADDRESSES);
-        when(replyToParser.getRecipientsToReplyAllTo(message, TO_ADDRESSES, account)).thenReturn(replyToAddresses);
+        when(replyToParser.getRecipientsToReplyAllTo(message, account)).thenReturn(replyToAddresses);
 
         recipientPresenter.initFromReplyToMessage(message, true);
 
-        verify(replyToParser).getRecipientsToReplyTo(message, account);
-        verify(replyToParser).getRecipientsToReplyAllTo(message, TO_ADDRESSES, account);
+        verify(replyToParser).getRecipientsToReplyAllTo(message, account);
         verifyNoMoreInteractions(replyToParser);
 
         verify(composePgpInlineDecider).shouldReplyInline(message);
         verifyNoMoreInteractions(composePgpInlineDecider);
 
-        verify(recipientMvpView, VerificationModeFactory.times(2)).addRecipients(eq(RecipientType.TO), any(Recipient.class));
+        verify(recipientMvpView).addRecipients(eq(RecipientType.TO), any(Recipient.class));
         verify(recipientMvpView).addRecipients(eq(RecipientType.CC), any(Recipient.class));
     }
 }

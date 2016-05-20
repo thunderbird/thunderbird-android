@@ -17,31 +17,34 @@ import com.fsck.k9.mail.internet.ListHeaders;
 
 public class ReplyToParser {
 
-    public Address[] getRecipientsToReplyTo(Message message, Account account) {
-        Address[] result = message.getReplyTo();
+    public ReplyToAddresses getRecipientsToReplyTo(Message message, Account account) {
+        Address[] candidateAddress;
 
-        boolean hasNoReplyToAddresses = (result.length == 0);
-        if (hasNoReplyToAddresses) {
-            result = ListHeaders.getListPostAddresses(message);
+        Address[] replyToAddresses = message.getReplyTo();
+        Address[] listPostAddresses = ListHeaders.getListPostAddresses(message);
+        Address[] fromAddresses = message.getFrom();
+
+        if (replyToAddresses.length > 0) {
+            candidateAddress = replyToAddresses;
+        } else if (listPostAddresses.length > 0) {
+            candidateAddress = listPostAddresses;
+        } else {
+            candidateAddress = fromAddresses;
         }
 
-        boolean hasNoListPostAddresses = result.length == 0;
-        if (hasNoListPostAddresses) {
-            result = message.getFrom();
-        }
-
-        boolean replyToAddressIsUserIdentity = account.isAnIdentity(result);
+        boolean replyToAddressIsUserIdentity = account.isAnIdentity(candidateAddress);
         if (replyToAddressIsUserIdentity) {
-            result = message.getRecipients(RecipientType.TO);
+            candidateAddress = message.getRecipients(RecipientType.TO);
         }
 
-        return result;
+        return new ReplyToAddresses(candidateAddress);
     }
 
-    public ReplyToAddresses getRecipientsToReplyAllTo(
-            Message message, Address[] replyToAddresses, Account account) {
-        HashSet<Address> alreadyAddedAddresses = new HashSet<>(Arrays.asList(replyToAddresses));
-        ArrayList<Address> toAddresses = new ArrayList<>();
+    public ReplyToAddresses getRecipientsToReplyAllTo(Message message, Account account) {
+        List<Address> replyToAddresses = Arrays.asList(getRecipientsToReplyTo(message, account).to);
+
+        HashSet<Address> alreadyAddedAddresses = new HashSet<>(replyToAddresses);
+        ArrayList<Address> toAddresses = new ArrayList<>(replyToAddresses);
         ArrayList<Address> ccAddresses = new ArrayList<>();
 
         for (Address address : message.getFrom()) {
@@ -76,6 +79,12 @@ public class ReplyToParser {
         public ReplyToAddresses(List<Address> toAddresses, List<Address> ccAddresses) {
             to = toAddresses.toArray(new Address[toAddresses.size()]);
             cc = ccAddresses.toArray(new Address[ccAddresses.size()]);
+        }
+
+        @VisibleForTesting
+        public ReplyToAddresses(Address[] toAddresses) {
+            to = toAddresses;
+            cc = new Address[0];
         }
     }
 
