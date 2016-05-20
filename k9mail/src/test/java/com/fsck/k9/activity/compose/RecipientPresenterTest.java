@@ -63,7 +63,6 @@ public class RecipientPresenterTest {
 
         recipientPresenter.initFromReplyToMessage(message, false);
 
-        verify(composePgpInlineDecider).shouldReplyInline(message);
         verify(recipientMvpView).addRecipients(eq(RecipientType.TO), any(Recipient[].class));
     }
 
@@ -76,8 +75,17 @@ public class RecipientPresenterTest {
 
         recipientPresenter.initFromReplyToMessage(message, true);
 
-        verify(composePgpInlineDecider).shouldReplyInline(message);
         verify(recipientMvpView).addRecipients(eq(RecipientType.TO), any(Recipient.class));
         verify(recipientMvpView).addRecipients(eq(RecipientType.CC), any(Recipient.class));
+    }
+
+    @Test
+    public void initFromReplyToMessage_shouldCallComposePgpInlineDecider() throws Exception {
+        Message message = mock(Message.class);
+        when(replyToParser.getRecipientsToReplyTo(message, account)).thenReturn(TO_ADDRESSES);
+
+        recipientPresenter.initFromReplyToMessage(message, false);
+
+        verify(composePgpInlineDecider).shouldReplyInline(message);
     }
 }
