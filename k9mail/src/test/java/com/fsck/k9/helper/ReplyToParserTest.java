@@ -145,6 +145,7 @@ public class ReplyToParserTest {
         when(message.getFrom()).thenReturn(arrayConcatenate(FROM_ADDRESSES, REPLY_TO_ADDRESSES, Address.class));
         when(message.getRecipients(RecipientType.TO)).thenReturn(arrayConcatenate(FROM_ADDRESSES, TO_ADDRESSES, Address.class));
         when(message.getRecipients(RecipientType.CC)).thenReturn(arrayConcatenate(CC_ADDRESSES, TO_ADDRESSES, Address.class));
+        when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(new String[0]);
 
         ReplyToAddresses recipientsToReplyAllTo = replyToParser.getRecipientsToReplyAllTo(message, account);
 

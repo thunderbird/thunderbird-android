@@ -41,7 +41,7 @@ public class ListHeaders {
 
     public static Address[] getListPostAddresses(Message message) {
         String[] headerValues = getHeaderValues(message, LIST_POST_HEADER);
-        if (headerValues == null || headerValues.length < 1) {
+        if (headerValues.length < 1) {
             return new Address[0];
         }
 
