@@ -8,6 +8,17 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.109" versioncode="23090" >
+        <change>Added support for List-Post header</change>
+        <change>Added support for sub-folders (WebDAV)</change>
+        <change>Display notification on authentication failures</change>
+        <change>Protect against the Surreptitious Sharing vulnerability</change>
+        <change>Re-enabled search in message bodies</change>
+        <change>Fixed support for PGP/INLINE</change>
+        <change>Fixed bug where some threads had multiple entries in the message list</change>
+        <change>Fixed 'reply to all'</change>
+        <change>More bug fixes</change>
+    </release>
     <release version="5.108" versioncode="23080" >
         <change>Added rudimentary support for reading and composing PGP/MIME messages</change>
         <change>Added support for stacked single message notifications on Android Wear</change>
