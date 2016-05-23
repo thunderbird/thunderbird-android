@@ -15,7 +15,10 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
+import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
@@ -83,13 +86,20 @@ public class MessageDecryptVerifier {
         return encryptedParts;
     }
 
-    public static List<Part> findSignedParts(Part startPart) {
+    public static List<Part> findSignedParts(Part startPart, MessageCryptoAnnotations messageCryptoAnnotations) {
         List<Part> signedParts = new ArrayList<>();
         Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(startPart);
 
         while (!partsToCheck.isEmpty()) {
             Part part = partsToCheck.pop();
+            if (messageCryptoAnnotations.has(part)) {
+                CryptoResultAnnotation resultAnnotation = messageCryptoAnnotations.get(part);
+                MimeBodyPart replacementData = resultAnnotation.getReplacementData();
+                if (replacementData != null) {
+                    part = replacementData;
+                }
+            }
             Body body = part.getBody();
 
             if (isPartMultipartSigned(part)) {
