@@ -173,6 +173,14 @@ public enum MessageCryptoDisplayStatus {
             throw new AssertionError("Both OpenPGP results must be non-null at this point!");
         }
 
+        if (signatureResult.getResult() == OpenPgpSignatureResult.RESULT_NO_SIGNATURE &&
+                cryptoResult.hasEncapsulatedResult()) {
+            CryptoResultAnnotation encapsulatedResult = cryptoResult.getEncapsulatedResult();
+            if (encapsulatedResult.isOpenPgpResult()) {
+                signatureResult = encapsulatedResult.getOpenPgpSignatureResult();
+            }
+        }
+
         // TODO handle mismatched user id
 
         switch (decryptionResult.getResult()) {
