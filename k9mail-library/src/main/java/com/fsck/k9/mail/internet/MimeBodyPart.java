@@ -92,11 +92,11 @@ public class MimeBodyPart extends BodyPart {
     @Override
     public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : contentType;
+        return (contentType == null) ? "text/plain" : MimeUtility.unfoldAndDecode(contentType);
     }
 
     @Override
-    public String getDisposition() throws MessagingException {
+    public String getDisposition() {
         return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
 

@@ -280,7 +280,7 @@ public class AttachmentPresenter {
             return ret;
         }
 
-        String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
+        String contentType = part.getContentType();
         String name = MimeUtility.getHeaderParameter(contentType, "name");
         if (name != null) {
             if (part instanceof LocalBodyPart) {

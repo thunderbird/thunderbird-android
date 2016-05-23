@@ -91,7 +91,7 @@ class DecoderUtil {
 
         // ANDROID:  Most strings will not include "=?" so a quick test can prevent unneeded
         // object creation.  This could also be handled via lazy creation of the StringBuilder.
-        if (body.indexOf("=?") == -1) {
+        if (!body.contains("=?")) {
             return body;
         }
 
