@@ -14,6 +14,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -21,6 +22,7 @@ import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
+import static org.mockito.Mockito.mock;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -28,6 +30,7 @@ import static junit.framework.Assert.assertSame;
 public class MessageDecryptVerifierTest {
 
     private List<MimeBodyPart> createdMultiparts = new ArrayList<>();
+    private MessageCryptoAnnotations messageCryptoAnnotations = mock(MessageCryptoAnnotations.class);
 
     @Test
     public void findEncryptedPartsShouldReturnEmptyListForEmptyMessage() throws Exception {
@@ -191,7 +194,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
+        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(message, signedParts.get(0));
@@ -209,7 +212,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
+        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(message, signedParts.get(0));
@@ -226,7 +229,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
+        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(createdMultiparts.get(0), signedParts.get(0));
@@ -244,7 +247,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
+        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(createdMultiparts.get(0), signedParts.get(0));
@@ -262,7 +265,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message);
+        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(createdMultiparts.get(0), signedParts.get(0));
