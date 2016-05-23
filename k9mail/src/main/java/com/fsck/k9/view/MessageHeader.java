@@ -41,7 +41,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
-
+import com.fsck.k9.mailstore.CryptoResultAnnotation;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
@@ -53,6 +53,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView mCcView;
     private TextView mCcLabel;
     private TextView mSubjectView;
+    private MessageCryptoStatusView mCryptoStatusIcon;
 
     private View mChip;
     private CheckBox mFlagged;
@@ -130,6 +131,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFromView.setOnLongClickListener(this);
         mToView.setOnLongClickListener(this);
         mCcView.setOnLongClickListener(this);
+
+        mCryptoStatusIcon = (MessageCryptoStatusView) findViewById(R.id.crypto_status_icon);
 
         mMessageHelper = MessageHelper.getInstance(mContext);
 
@@ -329,6 +332,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         } else {
             hideAdditionalHeaders();
         }
+    }
+
+    public void setCryptoStatus(CryptoResultAnnotation cryptoResult) {
+        MessageCryptoDisplayStatus displayStatus = MessageCryptoDisplayStatus.fromResultAnnotation(cryptoResult);
+        mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setCryptoDisplayStatus(displayStatus);
     }
 
     public void onShowAdditionalHeaders() {

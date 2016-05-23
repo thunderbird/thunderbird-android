@@ -94,6 +94,11 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
                 containerView, false);
         view.displayMessageViewContainer(messageViewInfo, automaticallyLoadPictures, this, attachmentCallback);
 
+        boolean displayPgpHeader = account.isOpenPgpProviderConfigured();
+        if (displayPgpHeader) {
+            mHeaderContainer.setCryptoStatus(messageViewInfo.cryptoResultAnnotation);
+        }
+
         containerView.addView(view);
 
     }

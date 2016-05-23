@@ -90,7 +90,7 @@ public class MessageCryptoHelper {
 
     private void runFirstPass() {
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(currentMessage);
-        processFoundEncryptedParts(encryptedParts, MessageHelper.createEmptyPart());
+        processFoundEncryptedParts(encryptedParts);
 
         decryptOrVerifyNextPart();
     }
@@ -98,16 +98,17 @@ public class MessageCryptoHelper {
     private void runSecondPass() {
         List<Part> signedParts = MessageDecryptVerifier.findSignedParts(currentMessage, messageAnnotations);
         processFoundSignedParts(signedParts);
+
         List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(currentMessage);
         addFoundInlinePgpParts(inlineParts);
 
         decryptOrVerifyNextPart();
     }
 
-    private void processFoundEncryptedParts(List<Part> foundParts, MimeBodyPart replacementPart) {
+    private void processFoundEncryptedParts(List<Part> foundParts) {
         for (Part part : foundParts) {
             if (!MessageHelper.isCompletePartAvailable(part)) {
-                addErrorAnnotation(part, CryptoError.ENCRYPTED_BUT_INCOMPLETE, replacementPart);
+                addErrorAnnotation(part, CryptoError.ENCRYPTED_BUT_INCOMPLETE, MessageHelper.createEmptyPart());
                 continue;
             }
             if (MessageDecryptVerifier.isPgpMimeEncryptedOrSignedPart(part)) {
@@ -115,7 +116,7 @@ public class MessageCryptoHelper {
                 partsToDecryptOrVerify.add(cryptoPart);
                 continue;
             }
-            addErrorAnnotation(part, CryptoError.ENCRYPTED_BUT_UNSUPPORTED, replacementPart);
+            addErrorAnnotation(part, CryptoError.ENCRYPTED_BUT_UNSUPPORTED, MessageHelper.createEmptyPart());
         }
     }
 
