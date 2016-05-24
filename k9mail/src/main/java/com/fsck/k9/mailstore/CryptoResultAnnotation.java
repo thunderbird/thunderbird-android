@@ -68,6 +68,10 @@ public final class CryptoResultAnnotation {
         return new CryptoResultAnnotation(error, replacementData, null, null, null, null);
     }
 
+    public static CryptoResultAnnotation createOpenPgpCanceledAnnotation() {
+        return new CryptoResultAnnotation(CryptoError.OPENPGP_UI_CANCELED, null, null, null, null, null);
+    }
+
     public static CryptoResultAnnotation createOpenPgpErrorAnnotation(OpenPgpError error) {
         return new CryptoResultAnnotation(CryptoError.OPENPGP_API_RETURNED_ERROR, null, null, null, null, error);
     }
@@ -131,6 +135,7 @@ public final class CryptoResultAnnotation {
 
     public enum CryptoError {
         NONE,
+        OPENPGP_UI_CANCELED,
         OPENPGP_API_RETURNED_ERROR,
         SIGNED_BUT_INCOMPLETE,
         ENCRYPTED_BUT_INCOMPLETE,

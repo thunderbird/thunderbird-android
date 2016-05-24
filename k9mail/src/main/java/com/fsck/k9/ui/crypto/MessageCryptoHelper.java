@@ -20,7 +20,6 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -440,7 +439,7 @@ public class MessageCryptoHelper {
             Log.w(K9.LOG_TAG, "OpenPGP API error: " + error.getMessage());
         }
 
-        onCryptoFailed(error);
+        onCryptoOperationFailed(error);
     }
 
     private void handleCryptoOperationSuccess(MimeBodyPart outputPart) {
@@ -465,7 +464,7 @@ public class MessageCryptoHelper {
             userInteractionResultIntent = data;
             decryptOrVerifyNextPart();
         } else {
-            onCryptoFailed(new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, context.getString(R.string.openpgp_canceled_by_user)));
+            onCryptoOperationCanceled();
         }
     }
 
@@ -485,7 +484,13 @@ public class MessageCryptoHelper {
         }
     }
 
-    private void onCryptoFailed(OpenPgpError error) {
+    private void onCryptoOperationCanceled() {
+        CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpCanceledAnnotation();
+        addCryptoResultAnnotationToMessage(errorPart);
+        onCryptoFinished();
+    }
+
+    private void onCryptoOperationFailed(OpenPgpError error) {
         CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpErrorAnnotation(error);
         addCryptoResultAnnotationToMessage(errorPart);
         onCryptoFinished();
