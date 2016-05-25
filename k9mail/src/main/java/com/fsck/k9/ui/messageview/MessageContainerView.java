@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -26,6 +27,7 @@ import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.R;
@@ -63,10 +65,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private LinearLayout mAttachments;
     private Button mShowHiddenAttachments;
     private LinearLayout mHiddenAttachments;
+    private View unsignedTextContainer;
+    private TextView unsignedText;
+    private View mAttachmentsContainer;
+
     private boolean showingPictures;
     private LayoutInflater mInflater;
     private AttachmentViewCallback attachmentCallback;
-    private View mAttachmentsContainer;
     private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
     private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<>();
@@ -93,6 +98,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
         mShowHiddenAttachments.setVisibility(View.GONE);
         mShowHiddenAttachments.setOnClickListener(this);
+
+        unsignedTextContainer = findViewById(R.id.message_unsigned_container);
+        unsignedText = (TextView) findViewById(R.id.message_unsigned_text);
 
         showingPictures = false;
 
@@ -434,6 +442,11 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
 
         displayHtmlContentWithInlineAttachments(textToDisplay, messageViewInfo.attachmentResolver);
+
+        if (!TextUtils.isEmpty(messageViewInfo.extraText)) {
+            unsignedTextContainer.setVisibility(View.VISIBLE);
+            unsignedText.setText(messageViewInfo.extraText);
+        }
     }
 
     public String wrapStatusMessage(String status) {
