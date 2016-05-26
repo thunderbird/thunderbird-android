@@ -195,4 +195,13 @@ public class MessageDecryptVerifier {
 
         return isPgpEncrypted || isPgpSigned;
     }
+
+    public static boolean isPartPgpInlineEncrypted(Part part) {
+        if (!part.isMimeType(TEXT_PLAIN) && !part.isMimeType(APPLICATION_PGP)) {
+            return false;
+        }
+        String text = MessageExtractor.getTextFromPart(part, TEXT_LENGTH_FOR_INLINE_CHECK);
+        return !TextUtils.isEmpty(text) && text.startsWith(PGP_INLINE_START_MARKER);
+    }
+
 }

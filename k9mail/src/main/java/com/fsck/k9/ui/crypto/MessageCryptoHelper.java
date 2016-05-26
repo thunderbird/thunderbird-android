@@ -22,6 +22,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
@@ -47,6 +48,7 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
+import org.openintents.openpgp.util.OpenPgpUtils;
 
 
 public class MessageCryptoHelper {
@@ -159,6 +161,16 @@ public class MessageCryptoHelper {
 
     private void addFoundInlinePgpParts(List<Part> foundParts) {
         for (Part part : foundParts) {
+            if (!currentMessage.getFlags().contains(Flag.X_DOWNLOADED_FULL)) {
+                if (MessageDecryptVerifier.isPartPgpInlineEncrypted(part)) {
+                    addErrorAnnotation(part, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
+                } else {
+                    MimeBodyPart replacementPart = extractClearsignedTextReplacementPart(part);
+                    addErrorAnnotation(part, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, replacementPart);
+                }
+                continue;
+            }
+
             CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PGP_INLINE, part);
             partsToDecryptOrVerify.add(cryptoPart);
         }
@@ -650,4 +662,20 @@ public class MessageCryptoHelper {
         }
         return replacementPart;
     }
+
+    private static MimeBodyPart extractClearsignedTextReplacementPart(Part part) {
+        try {
+            String clearsignedText = MessageExtractor.getTextFromPart(part);
+            String replacementText = OpenPgpUtils.extractClearsignedMessage(clearsignedText);
+            if (replacementText == null) {
+                Log.e(K9.LOG_TAG, "failed to extract clearsigned text for replacement part");
+                return NO_REPLACEMENT_PART;
+            }
+            return new MimeBodyPart(new TextBody(replacementText), "text/plain");
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "failed to create clearsigned text replacement part", e);
+            return NO_REPLACEMENT_PART;
+        }
+    }
+
 }
