@@ -1,6 +1,7 @@
 
 package com.fsck.k9;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import android.os.Looper;
 import android.os.StrictMode;
 import android.text.format.Time;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
@@ -33,13 +35,12 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.UnreadWidgetProvider;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -602,7 +603,18 @@ public class K9 extends Application {
 
         });
 
+        preloadWebViewWidget();
+
         notifyObservers();
+    }
+
+    /**
+     * This method preloads the WebView widget, which takes some 200ms to load native libraries, avoiding this
+     * time on the UI thread when we first display a message. To this end, an instance of WebView is constructed
+     * and then immediately destroyed.
+     */
+    private void preloadWebViewWidget() {
+        new WebView(this).destroy();
     }
 
     /**
