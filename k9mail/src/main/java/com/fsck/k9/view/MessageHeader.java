@@ -132,7 +132,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         mMessageHelper = MessageHelper.getInstance(mContext);
 
-        mSubjectView.setVisibility(VISIBLE);
         hideAdditionalHeaders();
     }
 
@@ -267,15 +266,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             counterpartyAddress = fromAddrs[0];
         }
 
-        /*
-         * Only reset visibility of the subject if populate() was called because a new
-         * message is shown. If it is the same, do not force the subject visible, because
-         * this breaks the MessageTitleView in the action bar, which may hide our subject
-         * if it fits in the action bar but is only called when a new message is shown
-         * or the device is rotated.
-         */
-        if (mMessage == null || mMessage.getId() != message.getId()) {
-            mSubjectView.setVisibility(VISIBLE);
+        /* We hide the subject by default for each new message, and MessageTitleView might show
+         * it later by calling showSubjectLine(). */
+        boolean newMessageShown = mMessage == null || mMessage.getId() != message.getId();
+        if (newMessageShown) {
+            mSubjectView.setVisibility(GONE);
         }
 
         mMessage = message;
@@ -484,7 +479,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
     }
 
-    public void hideSubjectLine() {
-        mSubjectView.setVisibility(GONE);
+    public void showSubjectLine() {
+        mSubjectView.setVisibility(VISIBLE);
     }
 }
