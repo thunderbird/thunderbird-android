@@ -15,74 +15,101 @@ public class Attachment implements Parcelable {
      *
      * In most cases this will be a {@code content://}-URI.
      */
-    public Uri uri;
+    public final Uri uri;
 
     /**
      * The current loading state.
      */
-    public LoadingState state;
+    public final LoadingState state;
 
     /**
      * The ID of the loader that is used to load the metadata or contents.
      */
-    public int loaderId;
+    public final int loaderId;
 
     /**
      * The content type of the attachment.
      *
-     * Only valid when {@link #state} is {@link LoadingState#METADATA} or
-     * {@link LoadingState#COMPLETE}.
+     * Valid iff {@link #state} is {@link LoadingState#METADATA} or {@link LoadingState#COMPLETE}.
      */
-    public String contentType;
+    public final String contentType;
 
     /**
      * The (file)name of the attachment.
      *
-     * Only valid when {@link #state} is {@link LoadingState#METADATA} or
-     * {@link LoadingState#COMPLETE}.
+     * Valid iff {@link #state} is {@link LoadingState#METADATA} or {@link LoadingState#COMPLETE}.
      */
-    public String name;
+    public final String name;
 
     /**
      * The size of the attachment.
      *
-     * Only valid when {@link #state} is {@link LoadingState#METADATA} or
-     * {@link LoadingState#COMPLETE}.
+     * Valid iff {@link #state} is {@link LoadingState#METADATA} or {@link LoadingState#COMPLETE}.
      */
-    public long size;
+    public final Long size;
 
     /**
      * The name of the temporary file containing the local copy of the attachment.
      *
-     * Only valid when {@link #state} is {@link LoadingState#COMPLETE}.
+     * Valid iff {@link #state} is {@link LoadingState#COMPLETE}.
      */
-    public String filename;
-
-
-    public Attachment() {}
+    public final String filename;
 
     public enum LoadingState {
-        /**
-         * The only thing we know about this attachment is {@link #uri}.
-         */
         URI_ONLY,
-
-        /**
-         * The metadata of this attachment have been loaded.
-         *
-         * {@link #contentType}, {@link #name}, and {@link #size} should contain usable values.
-         */
         METADATA,
-
-        /**
-         * The contents of the attachments have been copied to the temporary file {@link #filename}.
-         */
         COMPLETE,
-
-        /**
-         * Something went wrong while trying to fetch the attachment's contents.
-         */
         CANCELLED
+    }
+
+    private Attachment(Uri uri, LoadingState state, int loaderId, String contentType, String name, Long size,
+            String filename) {
+        this.uri = uri;
+        this.state = state;
+        this.loaderId = loaderId;
+        this.contentType = contentType;
+        this.name = name;
+        this.size = size;
+        this.filename = filename;
+    }
+
+    private Attachment(Parcel in) {
+        uri = in.readParcelable(Uri.class.getClassLoader());
+        state = (LoadingState) in.readSerializable();
+        loaderId = in.readInt();
+        contentType = in.readString();
+        name = in.readString();
+        if (in.readInt() != 0) {
+            size = in.readLong();
+        } else {
+            size = null;
+        }
+        filename = in.readString();
+    }
+
+    public static Attachment createAttachment(Uri uri, int loaderId, String contentType) {
+        return new Attachment(uri, Attachment.LoadingState.URI_ONLY, loaderId, contentType, null, null, null);
+    }
+
+    public Attachment deriveWithMetadataLoaded(String usableContentType, String name, long size) {
+        if (state != Attachment.LoadingState.URI_ONLY) {
+            throw new IllegalStateException("deriveWithMetadataLoaded can only be called on a URI_ONLY attachment!");
+        }
+        return new Attachment(uri, Attachment.LoadingState.METADATA, loaderId, usableContentType, name, size, null);
+    }
+
+    public Attachment deriveWithLoadCancelled() {
+        if (state != Attachment.LoadingState.METADATA) {
+            throw new IllegalStateException("deriveWitLoadCancelled can only be called on a METADATA attachment!");
+        }
+        return new Attachment(uri, Attachment.LoadingState.CANCELLED, loaderId, contentType, name, size, null);
+    }
+
+    public Attachment deriveWithLoadComplete(String absolutePath) {
+        if (state != Attachment.LoadingState.METADATA) {
+            throw new IllegalStateException("deriveWithLoadComplete can only be called on a METADATA attachment!");
+        }
+        return new Attachment(uri, Attachment.LoadingState.COMPLETE, loaderId, contentType, name, size, absolutePath);
     }
 
     // === Parcelable ===
@@ -99,7 +126,12 @@ public class Attachment implements Parcelable {
         dest.writeInt(loaderId);
         dest.writeString(contentType);
         dest.writeString(name);
-        dest.writeLong(size);
+        if (size != null) {
+            dest.writeInt(1);
+            dest.writeLong(size);
+        } else {
+            dest.writeInt(0);
+        }
         dest.writeString(filename);
     }
 
@@ -115,14 +147,4 @@ public class Attachment implements Parcelable {
             return new Attachment[size];
         }
     };
-
-    public Attachment(Parcel in) {
-        uri = in.readParcelable(Uri.class.getClassLoader());
-        state = (LoadingState) in.readSerializable();
-        loaderId = in.readInt();
-        contentType = in.readString();
-        name = in.readString();
-        size = in.readLong();
-        filename = in.readString();
-    }
 }

@@ -131,11 +131,8 @@ public class AttachmentPresenter {
     }
 
     public void addAttachment(Uri uri, String contentType) {
-        Attachment attachment = new Attachment();
-        attachment.uri = uri;
-        attachment.state = Attachment.LoadingState.URI_ONLY;
-        attachment.contentType = contentType;
-        attachment.loaderId = getNextFreeLoaderId();
+        int loaderId = getNextFreeLoaderId();
+        Attachment attachment = Attachment.createAttachment(uri, loaderId, contentType);
 
         if (attachments.containsKey(uri)) {
             return;
