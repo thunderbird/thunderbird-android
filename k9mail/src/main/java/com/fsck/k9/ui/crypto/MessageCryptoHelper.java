@@ -280,6 +280,7 @@ public class MessageCryptoHelper {
     }
 
     public void cancelIfRunning() {
+        detachCallback();
         isCancelled = true;
         if (cancelableBackgroundOperation != null) {
             cancelableBackgroundOperation.cancelOperation();
@@ -584,6 +585,9 @@ public class MessageCryptoHelper {
             throw new AssertionError("Callback may only be reattached for the same message!");
         }
         synchronized (callbackLock) {
+            if (queuedResult != null) {
+                Log.d(K9.LOG_TAG, "Returning cached result to reattached callback");
+            }
             this.callback = callback;
             deliverResult();
         }

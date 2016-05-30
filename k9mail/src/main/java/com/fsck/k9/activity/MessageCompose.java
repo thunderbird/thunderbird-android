@@ -1954,20 +1954,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         @Override
-        public void loadMessageForViewFinished(Account account, String folder, String uid, LocalMessage message) {
+        public void loadMessageForViewFinished(Account account, String folder, String uid) {
             if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
                 return;
             }
 
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
-        }
 
-        @Override
-        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-                final LocalMessage message) {
             if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
                 return;
             }
+
+            final LocalMessage message = null; // TODO this isn't working at the moment!
 
             runOnUiThread(new Runnable() {
                 @Override

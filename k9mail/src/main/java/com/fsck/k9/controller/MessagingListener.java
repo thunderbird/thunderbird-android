@@ -81,26 +81,10 @@ public class MessagingListener {
 
     public void synchronizeMailboxFailed(Account account, String folder, String message) {}
 
+    public void loadMessageRemoteFinished(Account account, String folder, String uid) {}
 
-    public void loadMessageForViewStarted(Account account, String folder, String uid) {}
-
-    public void loadMessageForViewHeadersAvailable(Account account, String folder, String uid,
-            Message message) {}
-
-    public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-            LocalMessage message) {}
-
-    public void loadMessageForViewFinished(Account account, String folder, String uid,
-            LocalMessage message) {}
-
-    public void loadMessageForViewFailed(Account account, String folder, String uid,
+    public void loadMessageRemoteFailed(Account account, String folder, String uid,
             Throwable t) {}
-
-    /**
-     * Called when a message for view has been fully displayed on the screen.
-     */
-    public void messageViewFinished() {}
-
 
     public void checkMailStarted(Context context, Account account) {}
 
