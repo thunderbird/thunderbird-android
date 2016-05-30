@@ -2804,57 +2804,6 @@ public class MessagingController implements Runnable {
         }
     }
 
-    public void loadMessageForView(final Account account, final String folder, final String uid,
-                                   final MessagingListener listener) {
-        for (MessagingListener l : getListeners(listener)) {
-            l.loadMessageForViewStarted(account, folder, uid);
-        }
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                try {
-                    LocalStore localStore = account.getLocalStore();
-                    LocalFolder localFolder = localStore.getFolder(folder);
-                    localFolder.open(Folder.OPEN_MODE_RW);
-
-                    LocalMessage message = localFolder.getMessage(uid);
-                    if (message == null
-                    || message.getId() == 0) {
-                        throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
-                    }
-                    // IMAP search results will usually need to be downloaded before viewing.
-                    // TODO: limit by account.getMaximumAutoDownloadMessageSize().
-                    if (!message.isSet(Flag.X_DOWNLOADED_FULL) &&
-                            !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                        if (loadMessageRemoteSynchronous(account, folder, uid, listener, true)) {
-                            markMessageAsReadOnView(account, message);
-                        }
-                        return;
-                    }
-
-                    FetchProfile fp = new FetchProfile();
-                    fp.add(FetchProfile.Item.ENVELOPE);
-                    fp.add(FetchProfile.Item.BODY);
-                    localFolder.fetch(Collections.singletonList(message), fp, null);
-                    localFolder.close();
-
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewFinished(account, folder, uid);
-                    }
-                    markMessageAsReadOnView(account, message);
-
-                } catch (Exception e) {
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.loadMessageForViewFailed(account, folder, uid, e);
-                    }
-                    addErrorMessage(account, null, e);
-
-                }
-            }
-        });
-    }
-
     public LocalMessage loadMessage(Account account, String folderName, String uid) throws MessagingException {
         LocalStore localStore = account.getLocalStore();
         LocalFolder localFolder = localStore.getFolder(folderName);
