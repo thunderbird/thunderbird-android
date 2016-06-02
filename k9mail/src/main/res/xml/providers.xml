@@ -185,6 +185,14 @@
         <incoming uri="pop3+ssl+://pop.mail.yahoo.co.uk" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.mail.yahoo.co.uk" username="$user" />
     </provider>
+    <provider id="live-uk" label="Windows Live Hotmail" domain="live.co.uk">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
+    </provider>
+    <provider id="hotmail-uk" label="Hotmail" domain="hotmail.co.uk">
+        <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
+    </provider>
     
     <!-- Germany -->
     <provider id="mailbox.org" label="mailbox.org" domain="mailbox.org">
