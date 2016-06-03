@@ -20,6 +20,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Flag;
@@ -214,6 +215,7 @@ public class MessageCryptoHelper {
 
                     @Override
                     public void onError(Exception e) {
+                        // TODO actually handle (hand to ui, offer retry?)
                         Log.e(K9.LOG_TAG, "Couldn't connect to OpenPgpService", e);
                     }
                 });
@@ -232,6 +234,10 @@ public class MessageCryptoHelper {
 
     private void decryptVerify(Intent intent) {
         intent.setAction(OpenPgpApi.ACTION_DECRYPT_VERIFY);
+        Address[] from = currentMessage.getFrom();
+        if (from.length > 0) {
+            intent.putExtra(OpenPgpApi.EXTRA_SENDER_ADDRESS, from[0].getAddress());
+        }
 
         try {
             CryptoPartType cryptoPartType = currentCryptoPart.type;

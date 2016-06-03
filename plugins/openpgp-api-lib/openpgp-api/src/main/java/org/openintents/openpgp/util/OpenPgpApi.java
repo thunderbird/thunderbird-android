@@ -261,6 +261,7 @@ public class OpenPgpApi {
     public static final String EXTRA_DETACHED_SIGNATURE = "detached_signature";
     public static final String EXTRA_PROGRESS_MESSENGER = "progress_messenger";
     public static final String EXTRA_DATA_LENGTH = "data_length";
+    public static final String EXTRA_SENDER_ADDRESS = "sender_address";
     public static final String RESULT_SIGNATURE = "signature";
     public static final String RESULT_DECRYPTION = "decryption";
     public static final String RESULT_METADATA = "metadata";
