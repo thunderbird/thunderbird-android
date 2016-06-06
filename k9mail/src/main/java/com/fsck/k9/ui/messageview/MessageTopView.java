@@ -112,6 +112,8 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     public void setMessage(Account account, MessageViewInfo messageViewInfo) throws MessagingException {
         resetView();
 
+        setShowDownloadButton(messageViewInfo.message);
+
         MessageCryptoDisplayStatus displayStatus =
                 MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation);
         mHeaderContainer.setCryptoStatus(displayStatus);
@@ -278,7 +280,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         mDownloadRemainder.setEnabled(false);
     }
 
-    public void setShowDownloadButton(Message message) {
+    private void setShowDownloadButton(Message message) {
         if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
             mDownloadRemainder.setVisibility(View.GONE);
         } else {

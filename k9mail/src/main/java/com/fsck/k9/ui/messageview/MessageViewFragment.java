@@ -238,7 +238,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         messageCryptoPresenter.setMessageViewInfo(messageViewInfo);
         try {
             mMessageView.setMessage(mAccount, messageViewInfo);
-            mMessageView.setShowDownloadButton(mMessage);
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Error while trying to display message", e);
         }
