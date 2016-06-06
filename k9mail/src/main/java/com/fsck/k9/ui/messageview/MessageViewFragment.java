@@ -53,7 +53,7 @@ import com.fsck.k9.view.MessageHeader;
 
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback, MessageCryptoMvpView, OnClickShowCryptoKeyListener {
+        AttachmentViewCallback, OnClickShowCryptoKeyListener {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -128,7 +128,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         Context context = getActivity().getApplicationContext();
         mController = MessagingController.getInstance(context);
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        messageCryptoPresenter = new MessageCryptoPresenter(this);
+        messageCryptoPresenter = new MessageCryptoPresenter(messageCryptoMvpView);
         messageLoaderHelper =
                 new MessageLoaderHelper(context, getLoaderManager(), getFragmentManager(), messageLoaderCallbacks);
         mInitialized = true;
@@ -643,31 +643,33 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         // mMessageView.refreshAttachmentThumbnail(attachment);
     }
 
-    @Override
-    public void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
-            int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
-        if (requestCode == null) {
-            getActivity().startIntentSender(si, fillIntent, flagsMask, flagValues, extraFlags);
-            return;
+    private MessageCryptoMvpView messageCryptoMvpView = new MessageCryptoMvpView() {
+        @Override
+        public void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
+                int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
+            if (requestCode == null) {
+                getActivity().startIntentSender(si, fillIntent, flagsMask, flagValues, extraFlags);
+                return;
+            }
+
+            requestCode |= REQUEST_MASK_CRYPTO_PRESENTER;
+            getActivity().startIntentSenderForResult(
+                    si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
         }
 
-        requestCode |= REQUEST_MASK_CRYPTO_PRESENTER;
-        getActivity().startIntentSenderForResult(
-                si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
-    }
+        @Override
+        public void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus) {
+            CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus);
+            dialog.setTargetFragment(MessageViewFragment.this, 0);
+            dialog.show(getFragmentManager(), "crypto_info_dialog");
+        }
 
-    @Override
-    public void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus) {
-        CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus);
-        dialog.setTargetFragment(this, 0);
-        dialog.show(getFragmentManager(), "crypto_info_dialog");
-    }
-
-    @Override
-    public void restartMessageCryptoProcessing() {
-        mMessageView.setToLoadingState();
-        messageLoaderHelper.restartMessageCryptoProcessing();
-    }
+        @Override
+        public void restartMessageCryptoProcessing() {
+            mMessageView.setToLoadingState();
+            messageLoaderHelper.restartMessageCryptoProcessing();
+        }
+    };
 
     @Override
     public void onClickShowCryptoKey() {
@@ -691,7 +693,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
 
-    MessageLoaderCallbacks messageLoaderCallbacks = new MessageLoaderCallbacks() {
+    private MessageLoaderCallbacks messageLoaderCallbacks = new MessageLoaderCallbacks() {
         @Override
         public void onMessageDataLoadFinished(LocalMessage message) {
             mMessage = message;
