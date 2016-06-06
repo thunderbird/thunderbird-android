@@ -1,5 +1,6 @@
 package com.fsck.k9.view;
 
+
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,7 +42,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.ui.messageview.OnCryptoClickListener;
 
 
@@ -340,6 +340,16 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         } else {
             hideAdditionalHeaders();
         }
+    }
+
+    public void setCryptoStatusLoading() {
+        mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.LOADING);
+    }
+
+    public void setCryptoStatusDisabled() {
+        mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.DISABLED);
     }
 
     public void setCryptoStatus(MessageCryptoDisplayStatus displayStatus) {

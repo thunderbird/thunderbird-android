@@ -127,10 +127,17 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         Context context = getActivity().getApplicationContext();
         mController = MessagingController.getInstance(context);
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        messageCryptoPresenter = new MessageCryptoPresenter(messageCryptoMvpView);
+        messageCryptoPresenter = new MessageCryptoPresenter(savedInstanceState, messageCryptoMvpView);
         messageLoaderHelper =
                 new MessageLoaderHelper(context, getLoaderManager(), getFragmentManager(), messageLoaderCallbacks);
         mInitialized = true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        messageCryptoPresenter.onSaveInstanceState(outState);
     }
 
     @Override
@@ -234,12 +241,19 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void showMessage(MessageViewInfo messageViewInfo) {
-        messageCryptoPresenter.setMessageViewInfo(messageViewInfo);
-        mMessageView.setMessage(mAccount, messageViewInfo);
+        boolean handledByCryptoPresenter = messageCryptoPresenter.maybeHandleShowMessage(
+                mMessageView, mAccount, messageViewInfo);
+        if (!handledByCryptoPresenter) {
+            mMessageView.showMessage(mAccount, messageViewInfo);
+            mMessageView.getMessageHeaderView().setCryptoStatusDisabled();
+        }
     }
 
-    private void displayMessageHeader(LocalMessage message) {
+    private void displayHeaderForLoadingMessage(LocalMessage message) {
         mMessageView.setHeaders(message, mAccount);
+        if (mAccount.isOpenPgpProviderConfigured()) {
+            mMessageView.getMessageHeaderView().setCryptoStatusLoading();
+        }
         displayMessageSubject(getSubjectForMessage(message));
         mFragmentListener.updateMenu();
     }
@@ -639,6 +653,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private MessageCryptoMvpView messageCryptoMvpView = new MessageCryptoMvpView() {
         @Override
+        public void redisplayMessage() {
+            messageLoaderHelper.asyncReloadMessage();
+        }
+
+        @Override
         public void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
                 int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
             if (requestCode == null) {
@@ -661,7 +680,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         @Override
         public void restartMessageCryptoProcessing() {
             mMessageView.setToLoadingState();
-            messageLoaderHelper.restartMessageCryptoProcessing();
+            messageLoaderHelper.asyncRestartMessageCryptoProcessing();
         }
     };
 
@@ -692,7 +711,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         public void onMessageDataLoadFinished(LocalMessage message) {
             mMessage = message;
 
-            displayMessageHeader(message);
+            displayHeaderForLoadingMessage(message);
             mMessageView.setToLoadingState();
         }
 

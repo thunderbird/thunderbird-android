@@ -106,6 +106,18 @@ public class MessageLoaderHelper {
         startOrResumeLocalMessageLoader();
     }
 
+    @UiThread
+    public void asyncReloadMessage() {
+        startOrResumeLocalMessageLoader();
+    }
+
+    @UiThread
+    public void asyncRestartMessageCryptoProcessing() {
+        cancelAndClearCryptoOperation();
+        cancelAndClearDecodeLoader();
+        startOrResumeCryptoOperation();
+    }
+
     /** Cancels all loading processes, prevents future callbacks, and destroys all loading state. */
     @UiThread
     public void onDestroy() {
@@ -134,13 +146,6 @@ public class MessageLoaderHelper {
         }
 
         startDownloadingMessageBody(true);
-    }
-
-    @UiThread
-    public void restartMessageCryptoProcessing() {
-        cancelAndClearCryptoOperation();
-        cancelAndClearDecodeLoader();
-        startOrResumeCryptoOperation();
     }
 
     @UiThread

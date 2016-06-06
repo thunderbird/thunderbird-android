@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener;
-import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.ToolableViewAnimator;
 import org.openintents.openpgp.OpenPgpError;
@@ -97,63 +97,15 @@ public class MessageTopView extends LinearLayout {
         hideShowPicturesButton();
     }
 
-    public void resetView() {
+    private void resetAndPrepareMessageView(Message message) {
         mDownloadRemainder.setVisibility(View.GONE);
         containerView.removeAllViews();
+        setShowDownloadButton(message);
     }
 
-    public void setMessage(Account account, MessageViewInfo messageViewInfo) {
-        resetView();
+    public void showMessage(Account account, MessageViewInfo messageViewInfo) {
+        resetAndPrepareMessageView(messageViewInfo.message);
 
-        setShowDownloadButton(messageViewInfo.message);
-
-        MessageCryptoDisplayStatus displayStatus =
-                MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation);
-        mHeaderContainer.setCryptoStatus(displayStatus);
-
-        switch (displayStatus) {
-            case DISABLED:
-            case INCOMPLETE_SIGNED:
-            case UNSUPPORTED_SIGNED:
-            default: {
-                // in most cases, we simply display the message
-                showMessageContentView(account, messageViewInfo);
-                break;
-            }
-
-            case CANCELLED: {
-                showMessageCryptoCancelledView(account);
-                break;
-            }
-
-            case INCOMPLETE_ENCRYPTED: {
-                showEncryptedButIncompleteView(account);
-                break;
-            }
-
-            case ENCRYPTED_ERROR:
-            case UNSUPPORTED_ENCRYPTED: {
-                showMessageCryptoErrorView(account, messageViewInfo);
-                break;
-            }
-
-            case LOADING: {
-                throw new IllegalStateException("Displaying message while in loading state!");
-            }
-        }
-    }
-
-    private void showEncryptedButIncompleteView(Account account) {
-        View view = mInflater.inflate(R.layout.message_content_crypto_incomplete, containerView, false);
-
-        ImageView cryptoProviderIcon = (ImageView) view.findViewById(R.id.crypto_error_icon);
-        setCryptoProviderIcon(account, cryptoProviderIcon);
-
-        containerView.addView(view);
-        displayViewOnLoadFinished(false);
-    }
-
-    private void showMessageContentView(Account account, MessageViewInfo messageViewInfo) {
         ShowPictures showPicturesSetting = account.getShowPictures();
         boolean automaticallyLoadPictures =
                 shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
@@ -174,11 +126,39 @@ public class MessageTopView extends LinearLayout {
         }
     }
 
-    private void showMessageCryptoErrorView(Account account, MessageViewInfo messageViewInfo) {
-        View view = mInflater.inflate(R.layout.message_content_crypto_error, containerView, false);
+    public void showMessageCryptoWarning(final MessageViewInfo messageViewInfo, Drawable providerIcon,
+            @StringRes int warningTextRes) {
+        resetAndPrepareMessageView(messageViewInfo.message);
+        View view = mInflater.inflate(R.layout.message_content_crypto_warning, containerView, false);
+        setCryptoProviderIcon(providerIcon, view);
 
-        ImageView cryptoProviderIcon = (ImageView) view.findViewById(R.id.crypto_error_icon);
-        setCryptoProviderIcon(account, cryptoProviderIcon);
+        view.findViewById(R.id.crypto_warning_override).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                messageCryptoPresenter.onClickShowMessageOverrideWarning();
+            }
+        });
+
+        TextView warningText = (TextView) view.findViewById(R.id.crypto_warning_text);
+        warningText.setText(warningTextRes);
+
+        containerView.addView(view);
+        displayViewOnLoadFinished(false);
+    }
+
+    public void showMessageEncryptedButIncomplete(MessageViewInfo messageViewInfo, Drawable providerIcon) {
+        resetAndPrepareMessageView(messageViewInfo.message);
+        View view = mInflater.inflate(R.layout.message_content_crypto_incomplete, containerView, false);
+        setCryptoProviderIcon(providerIcon, view);
+
+        containerView.addView(view);
+        displayViewOnLoadFinished(false);
+    }
+
+    public void showMessageCryptoErrorView(MessageViewInfo messageViewInfo, Drawable providerIcon) {
+        resetAndPrepareMessageView(messageViewInfo.message);
+        View view = mInflater.inflate(R.layout.message_content_crypto_error, containerView, false);
+        setCryptoProviderIcon(providerIcon, view);
 
         TextView cryptoErrorText = (TextView) view.findViewById(R.id.crypto_error_text);
         OpenPgpError openPgpError = messageViewInfo.cryptoResultAnnotation.getOpenPgpError();
@@ -191,8 +171,11 @@ public class MessageTopView extends LinearLayout {
         displayViewOnLoadFinished(false);
     }
 
-    private void showMessageCryptoCancelledView(Account account) {
+    public void showMessageCryptoCancelledView(MessageViewInfo messageViewInfo, Drawable providerIcon) {
+        resetAndPrepareMessageView(messageViewInfo.message);
         View view = mInflater.inflate(R.layout.message_content_crypto_cancelled, containerView, false);
+        setCryptoProviderIcon(providerIcon, view);
+
         view.findViewById(R.id.crypto_cancelled_retry).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,15 +183,12 @@ public class MessageTopView extends LinearLayout {
             }
         });
 
-        ImageView cryptoProviderIcon = (ImageView) view.findViewById(R.id.crypto_error_icon);
-        setCryptoProviderIcon(account, cryptoProviderIcon);
-
         containerView.addView(view);
         displayViewOnLoadFinished(false);
     }
 
-    private void setCryptoProviderIcon(Account account, ImageView cryptoProviderIcon) {
-        Drawable openPgpApiProviderIcon = MessageCryptoPresenter.getOpenPgpApiProviderIcon(getContext(), account);
+    private void setCryptoProviderIcon(Drawable openPgpApiProviderIcon, View view) {
+        ImageView cryptoProviderIcon = (ImageView) view.findViewById(R.id.crypto_error_icon);
         if (openPgpApiProviderIcon != null) {
             cryptoProviderIcon.setImageDrawable(openPgpApiProviderIcon);
         } else {
@@ -228,9 +208,6 @@ public class MessageTopView extends LinearLayout {
 
     public void setHeaders(final Message message, Account account) {
         mHeaderContainer.populate(message, account);
-        if (account.isOpenPgpProviderConfigured()) {
-            mHeaderContainer.setCryptoStatus(MessageCryptoDisplayStatus.LOADING);
-        }
         mHeaderContainer.setVisibility(View.VISIBLE);
     }
 
