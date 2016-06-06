@@ -1,16 +1,12 @@
 package com.fsck.k9.ui.messageview;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +18,11 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.ShowPictures;
-import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
@@ -37,7 +31,7 @@ import com.fsck.k9.view.ToolableViewAnimator;
 import org.openintents.openpgp.OpenPgpError;
 
 
-public class MessageTopView extends LinearLayout implements ShowPicturesController {
+public class MessageTopView extends LinearLayout {
 
     public static final int PROGRESS_MAX = 1000;
     public static final int PROGRESS_MAX_WITH_MARGIN = 950;
@@ -54,7 +48,6 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
     private Button showPicturesButton;
-    private List<MessageContainerView> messageContainerViewsWithPictures = new ArrayList<>();
     private boolean isShowingProgress;
 
     private MessageCryptoPresenter messageCryptoPresenter;
@@ -97,10 +90,10 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     }
 
     private void showPicturesInAllContainerViews() {
-        for (MessageContainerView containerView : messageContainerViewsWithPictures) {
-            containerView.showPictures();
+        View messageContainerViewCandidate = containerView.getChildAt(0);
+        if (messageContainerViewCandidate instanceof MessageContainerView) {
+            ((MessageContainerView) messageContainerViewCandidate).showPictures();
         }
-
         hideShowPicturesButton();
     }
 
@@ -109,7 +102,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         containerView.removeAllViews();
     }
 
-    public void setMessage(Account account, MessageViewInfo messageViewInfo) throws MessagingException {
+    public void setMessage(Account account, MessageViewInfo messageViewInfo) {
         resetView();
 
         setShowDownloadButton(messageViewInfo.message);
@@ -160,8 +153,7 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
         displayViewOnLoadFinished(false);
     }
 
-    private void showMessageContentView(Account account, MessageViewInfo messageViewInfo)
-            throws MessagingException {
+    private void showMessageContentView(Account account, MessageViewInfo messageViewInfo) {
         ShowPictures showPicturesSetting = account.getShowPictures();
         boolean automaticallyLoadPictures =
                 shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
@@ -175,7 +167,11 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
             public void onLoadFinished() {
                 displayViewOnLoadFinished(true);
             }
-        }, automaticallyLoadPictures, this, attachmentCallback);
+        }, automaticallyLoadPictures, attachmentCallback);
+
+        if (view.hasHiddenExternalImages()) {
+            showShowPicturesButton();
+        }
     }
 
     private void showMessageCryptoErrorView(Account account, MessageViewInfo messageViewInfo) {
@@ -231,16 +227,11 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
     }
 
     public void setHeaders(final Message message, Account account) {
-        try {
-            mHeaderContainer.populate(message, account);
-            if (account.isOpenPgpProviderConfigured()) {
-                mHeaderContainer.setCryptoStatus(MessageCryptoDisplayStatus.LOADING);
-            }
-            mHeaderContainer.setVisibility(View.VISIBLE);
-
-        } catch (Exception me) {
-            Log.e(K9.LOG_TAG, "setHeaders - error", me);
+        mHeaderContainer.populate(message, account);
+        if (account.isOpenPgpProviderConfigured()) {
+            mHeaderContainer.setCryptoStatus(MessageCryptoDisplayStatus.LOADING);
         }
+        mHeaderContainer.setVisibility(View.VISIBLE);
     }
 
     public void setOnToggleFlagClickListener(OnClickListener listener) {
@@ -295,13 +286,6 @@ public class MessageTopView extends LinearLayout implements ShowPicturesControll
 
     private void hideShowPicturesButton() {
         showPicturesButton.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void notifyMessageContainerContainsPictures(MessageContainerView messageContainerView) {
-        messageContainerViewsWithPictures.add(messageContainerView);
-
-        showShowPicturesButton();
     }
 
     private boolean shouldAutomaticallyLoadPictures(ShowPictures showPicturesSetting, Message message) {

@@ -42,7 +42,6 @@ import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
@@ -236,11 +235,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private void showMessage(MessageViewInfo messageViewInfo) {
         messageCryptoPresenter.setMessageViewInfo(messageViewInfo);
-        try {
-            mMessageView.setMessage(mAccount, messageViewInfo);
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Error while trying to display message", e);
-        }
+        mMessageView.setMessage(mAccount, messageViewInfo);
     }
 
     private void displayMessageHeader(LocalMessage message) {
