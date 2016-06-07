@@ -9,28 +9,35 @@ import com.fsck.k9.mail.Part;
 
 public class MessageViewInfo {
     public final Message message;
-    public final List<MessageViewContainer> containers;
+    public final Part rootPart;
+    public final String text;
+    public final CryptoResultAnnotation cryptoResultAnnotation;
+    public final List<AttachmentViewInfo> attachments;
+    public final String extraText;
+    public final List<AttachmentViewInfo> extraAttachments;
 
 
-    public MessageViewInfo(List<MessageViewContainer> containers, Message message) {
-        this.containers = containers;
+    private MessageViewInfo(Message message, Part rootPart, String text, List<AttachmentViewInfo> attachments,
+            CryptoResultAnnotation cryptoResultAnnotation, String extraText,
+            List<AttachmentViewInfo> extraAttachments) {
         this.message = message;
+        this.rootPart = rootPart;
+        this.text = text;
+        this.cryptoResultAnnotation = cryptoResultAnnotation;
+        this.attachments = attachments;
+        this.extraText = extraText;
+        this.extraAttachments = extraAttachments;
     }
 
-
-    public static class MessageViewContainer {
-        public final String text;
-        public final Part rootPart;
-        public final List<AttachmentViewInfo> attachments;
-        public final CryptoResultAnnotation cryptoAnnotation;
-
-
-        MessageViewContainer(String text, Part rootPart, List<AttachmentViewInfo> attachments,
-                CryptoResultAnnotation cryptoAnnotation) {
-            this.text = text;
-            this.rootPart = rootPart;
-            this.attachments = attachments;
-            this.cryptoAnnotation = cryptoAnnotation;
-        }
+    public static MessageViewInfo createWithExtractedContent(Message message, Part rootPart,
+            String text, List<AttachmentViewInfo> attachments, CryptoResultAnnotation cryptoResultAnnotation,
+            String extraText, List<AttachmentViewInfo> extraAttachments) {
+        return new MessageViewInfo(message, rootPart, text, attachments, cryptoResultAnnotation,
+                extraText, extraAttachments);
     }
+
+    public static MessageViewInfo createWithErrorState(Message message) {
+        return new MessageViewInfo(message, null, null, null, null, null, null);
+    }
+
 }

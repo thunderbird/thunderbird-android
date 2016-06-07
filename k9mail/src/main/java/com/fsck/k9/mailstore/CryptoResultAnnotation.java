@@ -21,6 +21,8 @@ public final class CryptoResultAnnotation {
     private final OpenPgpError openPgpError;
     private final PendingIntent openPgpPendingIntent;
 
+    private final CryptoResultAnnotation encapsulatedResult;
+
     private CryptoResultAnnotation(@NonNull CryptoError errorType, MimeBodyPart replacementData,
             OpenPgpDecryptionResult openPgpDecryptionResult,
             OpenPgpSignatureResult openPgpSignatureResult,
@@ -32,6 +34,24 @@ public final class CryptoResultAnnotation {
         this.openPgpSignatureResult = openPgpSignatureResult;
         this.openPgpPendingIntent = openPgpPendingIntent;
         this.openPgpError = openPgpError;
+
+        this.encapsulatedResult = null;
+    }
+
+    private CryptoResultAnnotation(CryptoResultAnnotation annotation, CryptoResultAnnotation encapsulatedResult) {
+        if (annotation.encapsulatedResult != null) {
+            throw new AssertionError("cannot replace an encapsulated result, this is a bug!");
+        }
+
+        this.errorType = annotation.errorType;
+        this.replacementData = annotation.replacementData;
+
+        this.openPgpDecryptionResult = annotation.openPgpDecryptionResult;
+        this.openPgpSignatureResult = annotation.openPgpSignatureResult;
+        this.openPgpPendingIntent = annotation.openPgpPendingIntent;
+        this.openPgpError = annotation.openPgpError;
+
+        this.encapsulatedResult = encapsulatedResult;
     }
 
 
@@ -48,8 +68,21 @@ public final class CryptoResultAnnotation {
         return new CryptoResultAnnotation(error, replacementData, null, null, null, null);
     }
 
+    public static CryptoResultAnnotation createOpenPgpCanceledAnnotation() {
+        return new CryptoResultAnnotation(CryptoError.OPENPGP_UI_CANCELED, null, null, null, null, null);
+    }
+
     public static CryptoResultAnnotation createOpenPgpErrorAnnotation(OpenPgpError error) {
         return new CryptoResultAnnotation(CryptoError.OPENPGP_API_RETURNED_ERROR, null, null, null, null, error);
+    }
+
+    public boolean isOpenPgpResult() {
+        return openPgpDecryptionResult != null && openPgpSignatureResult != null;
+    }
+
+    public boolean hasSignatureResult() {
+        return openPgpSignatureResult != null &&
+                openPgpSignatureResult.getResult() != OpenPgpSignatureResult.RESULT_NO_SIGNATURE;
     }
 
     @Nullable
@@ -86,9 +119,23 @@ public final class CryptoResultAnnotation {
         return replacementData;
     }
 
+    @NonNull
+    public CryptoResultAnnotation withEncapsulatedResult(CryptoResultAnnotation resultAnnotation) {
+        return new CryptoResultAnnotation(this, resultAnnotation);
+    }
+
+    public boolean hasEncapsulatedResult() {
+        return encapsulatedResult != null;
+    }
+
+    public CryptoResultAnnotation getEncapsulatedResult() {
+        return encapsulatedResult;
+    }
+
 
     public enum CryptoError {
         NONE,
+        OPENPGP_UI_CANCELED,
         OPENPGP_API_RETURNED_ERROR,
         SIGNED_BUT_INCOMPLETE,
         ENCRYPTED_BUT_INCOMPLETE,

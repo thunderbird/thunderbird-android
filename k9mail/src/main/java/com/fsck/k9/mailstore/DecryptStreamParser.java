@@ -40,6 +40,13 @@ public class DecryptStreamParser {
     private static final String DECRYPTED_CACHE_DIRECTORY = "decrypted";
 
     public static MimeBodyPart parse(Context context, InputStream inputStream) throws MessagingException, IOException {
+        inputStream = new BufferedInputStream(inputStream, 4096);
+
+        boolean hasInputData = waitForInputData(inputStream);
+        if (!hasInputData) {
+            return null;
+        }
+
         File decryptedTempDirectory = getDecryptedTempDirectory(context);
 
         MimeBodyPart decryptedRootPart = new MimeBodyPart();
@@ -53,8 +60,6 @@ public class DecryptStreamParser {
         parser.setContentHandler(new PartBuilder(decryptedTempDirectory, decryptedRootPart));
         parser.setRecurse();
 
-        inputStream = new BufferedInputStream(inputStream, 4096);
-
         try {
             parser.parse(new EOLConvertingInputStream(inputStream));
         } catch (MimeException e) {
@@ -62,6 +67,18 @@ public class DecryptStreamParser {
         }
 
         return decryptedRootPart;
+    }
+
+    private static boolean waitForInputData(InputStream inputStream) {
+        try {
+            inputStream.mark(1);
+            int ret = inputStream.read();
+            inputStream.reset();
+            return ret != -1;
+        } catch (IOException e) {
+            Log.d(K9.LOG_TAG, "got no input from pipe", e);
+            return false;
+        }
     }
 
     private static Body createBody(InputStream inputStream, String transferEncoding, File decryptedTempDirectory)
