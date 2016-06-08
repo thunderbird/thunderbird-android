@@ -133,7 +133,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
-    private static final int MSG_SKIPPED_ATTACHMENTS = 3;
     public static final int MSG_SAVED_DRAFT = 4;
     private static final int MSG_DISCARDED_DRAFT = 5;
 
@@ -277,12 +276,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 case MSG_PROGRESS_OFF:
                     setProgressBarIndeterminateVisibility(false);
-                    break;
-                case MSG_SKIPPED_ATTACHMENTS:
-                    Toast.makeText(
-                        MessageCompose.this,
-                        getString(R.string.message_compose_attachments_skipped_toast),
-                        Toast.LENGTH_LONG).show();
                     break;
                 case MSG_SAVED_DRAFT:
                     mDraftId = (Long) msg.obj;
@@ -1260,12 +1253,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         // Quote the message and setup the UI.
         quotedMessagePresenter.processMessageToForward(messageViewInfo);
-
-        if (!mSourceMessageProcessed) {
-            if (message.isSet(Flag.X_DOWNLOADED_PARTIAL) || !attachmentPresenter.loadAttachments(message, 0)) {
-                mHandler.sendEmptyMessage(MSG_SKIPPED_ATTACHMENTS);
-            }
-        }
+        attachmentPresenter.processMessageToForward(messageViewInfo);
     }
 
     private void processDraftMessage(MessageViewInfo messageViewInfo) throws MessagingException {
@@ -1737,6 +1725,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         @Override
         public void performSaveAfterChecks() {
             MessageCompose.this.performSaveAfterChecks();
+        }
+
+        @Override
+        public void showMissingAttachmentsPartialMessageWarning() {
+            Toast.makeText(MessageCompose.this,
+                    getString(R.string.message_compose_attachments_skipped_toast), Toast.LENGTH_LONG).show();
         }
     };
 

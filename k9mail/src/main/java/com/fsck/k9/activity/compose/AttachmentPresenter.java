@@ -21,11 +21,14 @@ import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.Attachment.LoadingState;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalBodyPart;
+import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.provider.AttachmentProvider;
 
 
@@ -130,31 +133,74 @@ public class AttachmentPresenter {
         addAttachment(uri, null);
     }
 
-    public void addAttachment(Uri uri, String contentType) {
-        int loaderId = getNextFreeLoaderId();
-        Attachment attachment = Attachment.createAttachment(uri, loaderId, contentType);
+    public void addAttachment(AttachmentViewInfo attachmentViewInfo) {
+        if (attachments.containsKey(attachmentViewInfo.uri)) {
+            throw new IllegalStateException("Received the same attachmentViewInfo twice!");
+        }
 
+        int loaderId = getNextFreeLoaderId();
+        Attachment attachment = Attachment.createAttachment(
+                attachmentViewInfo.uri, loaderId, attachmentViewInfo.mimeType);
+        attachment = attachment.deriveWithMetadataLoaded(
+                attachmentViewInfo.mimeType, attachmentViewInfo.displayName, attachmentViewInfo.size);
+
+        addAttachmentAndStartLoader(attachment);
+    }
+
+    public void addAttachment(Uri uri, String contentType) {
         if (attachments.containsKey(uri)) {
             return;
         }
 
-        attachments.put(uri, attachment);
+        int loaderId = getNextFreeLoaderId();
+        Attachment attachment = Attachment.createAttachment(uri, loaderId, contentType);
+
+        addAttachmentAndStartLoader(attachment);
+    }
+
+    public void processMessageToForward(MessageViewInfo messageViewInfo) {
+        if (messageViewInfo.message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+            attachmentMvpView.showMissingAttachmentsPartialMessageWarning();
+            return;
+        }
+
+        for (AttachmentViewInfo attachmentViewInfo : messageViewInfo.attachments) {
+            if (attachmentViewInfo.firstClassAttachment) {
+                addAttachment(attachmentViewInfo);
+            }
+        }
+    }
+
+    private void addAttachmentAndStartLoader(Attachment attachment) {
+        attachments.put(attachment.uri, attachment);
         attachmentMvpView.addAttachmentView(attachment);
 
-        initAttachmentInfoLoader(attachment);
+        if (attachment.state == LoadingState.URI_ONLY) {
+            initAttachmentInfoLoader(attachment);
+        } else if (attachment.state == LoadingState.METADATA) {
+            initAttachmentContentLoader(attachment);
+        } else {
+            throw new IllegalStateException("Attachment can only be added in URI_ONLY or METADATA state!");
+        }
     }
 
     private void initAttachmentInfoLoader(Attachment attachment) {
+        if (attachment.state != LoadingState.URI_ONLY) {
+            throw new IllegalStateException("initAttachmentInfoLoader can only be called for URI_ONLY state!");
+        }
+
         Bundle bundle = new Bundle();
         bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.uri);
-
         loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentInfoLoaderCallback);
     }
 
     private void initAttachmentContentLoader(Attachment attachment) {
+        if (attachment.state != LoadingState.METADATA) {
+            throw new IllegalStateException("initAttachmentContentLoader can only be called for METADATA state!");
+        }
+
         Bundle bundle = new Bundle();
         bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.uri);
-
         loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentContentLoaderCallback);
     }
 
@@ -364,5 +410,6 @@ public class AttachmentPresenter {
         void performSendAfterChecks();
         void performSaveAfterChecks();
 
+        void showMissingAttachmentsPartialMessageWarning();
     }
 }

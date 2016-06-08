@@ -21,7 +21,6 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentResolver;
-import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.InsertableHtmlContent;
@@ -134,7 +133,7 @@ public class QuotedMessagePresenter {
 
             // Load the message with the reply header. TODO replace with MessageViewInfo data
             view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
-                    AttachmentResolver.createFromPart(sourceMessage));
+                    AttachmentResolver.createFromPart(messageViewInfo.rootPart));
 
             // TODO: Also strip the signature from the text/plain part
             view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, messageViewInfo.message,
@@ -299,7 +298,7 @@ public class QuotedMessagePresenter {
                     }
                     // TODO replace with MessageViewInfo data
                     view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
-                            AttachmentResolver.createFromPart(message));
+                            AttachmentResolver.createFromPart(messageViewInfo.rootPart));
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {
