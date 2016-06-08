@@ -22,6 +22,7 @@ import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
@@ -96,7 +97,7 @@ public class QuotedMessagePresenter {
      * @param showQuotedText
      *         {@code true} if the quoted text should be shown, {@code false} otherwise.
      */
-    public void populateUIWithQuotedMessage(Message sourceMessage, boolean showQuotedText, Action action)
+    public void populateUIWithQuotedMessage(MessageViewInfo messageViewInfo, boolean showQuotedText, Action action)
             throws MessagingException {
         MessageFormat origMessageFormat = account.getMessageFormat();
 
@@ -107,7 +108,7 @@ public class QuotedMessagePresenter {
             // Figure out which message format to use for the quoted text by looking if the source
             // message contains a text/html part. If it does, we use that.
             quotedTextFormat =
-                    (MimeUtility.findFirstPartByMimeType(sourceMessage, "text/html") == null) ?
+                    (MimeUtility.findFirstPartByMimeType(messageViewInfo.message, "text/html") == null) ?
                             SimpleMessageFormat.TEXT : SimpleMessageFormat.HTML;
         } else {
             quotedTextFormat = SimpleMessageFormat.HTML;
@@ -118,7 +119,7 @@ public class QuotedMessagePresenter {
         // Handle the original message in the reply
         // If we already have sourceMessageBody, use that.  It's pre-populated if we've got crypto going on.
         String content = sourceMessageBody != null ? sourceMessageBody :
-                QuotedMessageHelper.getBodyTextFromMessage(sourceMessage, quotedTextFormat);
+                QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.message, quotedTextFormat);
 
         if (quotedTextFormat == SimpleMessageFormat.HTML) {
             // Strip signature.
@@ -129,15 +130,15 @@ public class QuotedMessagePresenter {
 
             // Add the HTML reply header to the top of the content.
             quotedHtmlContent = QuotedMessageHelper.quoteOriginalHtmlMessage(
-                    resources, sourceMessage, content, quoteStyle);
+                    resources, messageViewInfo.message, content, quoteStyle);
 
             // Load the message with the reply header. TODO replace with MessageViewInfo data
             view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
                     AttachmentResolver.createFromPart(sourceMessage));
 
             // TODO: Also strip the signature from the text/plain part
-            view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, sourceMessage,
-                    QuotedMessageHelper.getBodyTextFromMessage(sourceMessage, SimpleMessageFormat.TEXT),
+            view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, messageViewInfo.message,
+                    QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.message, SimpleMessageFormat.TEXT),
                     quoteStyle, account.getQuotePrefix()));
 
         } else if (quotedTextFormat == SimpleMessageFormat.TEXT) {
@@ -146,7 +147,7 @@ public class QuotedMessagePresenter {
             }
 
             view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(
-                    resources, sourceMessage, content, quoteStyle, account.getQuotePrefix()));
+                    resources, messageViewInfo.message, content, quoteStyle, account.getQuotePrefix()));
         }
 
         if (showQuotedText) {
@@ -186,17 +187,17 @@ public class QuotedMessagePresenter {
                 (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
     }
 
-    public void processMessageToForward(Message message) throws MessagingException {
+    public void processMessageToForward(MessageViewInfo messageViewInfo) throws MessagingException {
         quoteStyle = QuoteStyle.HEADER;
-        populateUIWithQuotedMessage(message, true, Action.FORWARD);
+        populateUIWithQuotedMessage(messageViewInfo, true, Action.FORWARD);
     }
 
-    public void initFromReplyToMessage(Message message, Action action)
+    public void initFromReplyToMessage(MessageViewInfo messageViewInfo, Action action)
             throws MessagingException {
-        populateUIWithQuotedMessage(message, account.isDefaultQuotedTextShown(), action);
+        populateUIWithQuotedMessage(messageViewInfo, account.isDefaultQuotedTextShown(), action);
     }
 
-    public void processDraftMessage(LocalMessage message, Map<IdentityField, String> k9identity)
+    public void processDraftMessage(MessageViewInfo messageViewInfo, Map<IdentityField, String> k9identity)
             throws MessagingException {
         quoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
                 ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
@@ -255,7 +256,7 @@ public class QuotedMessagePresenter {
             // composition window. If that's the case, try and convert it to text to
             // match the behavior in text mode.
             view.setMessageContentCharacters(
-                    QuotedMessageHelper.getBodyTextFromMessage(message, SimpleMessageFormat.TEXT));
+                    QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.message, SimpleMessageFormat.TEXT));
             forcePlainText = true;
 
             showOrHideQuotedText(quotedMode);
@@ -263,7 +264,7 @@ public class QuotedMessagePresenter {
         }
 
         if (messageFormat == MessageFormat.HTML) {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+            Part part = MimeUtility.findFirstPartByMimeType(messageViewInfo.message, "text/html");
             if (part != null) { // Shouldn't happen if we were the one who saved it.
                 quotedTextFormat = SimpleMessageFormat.HTML;
                 String text = MessageExtractor.getTextFromPart(part);
@@ -302,11 +303,11 @@ public class QuotedMessagePresenter {
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {
-                processSourceMessageText(message, bodyPlainOffset, bodyPlainLength, false);
+                processSourceMessageText(messageViewInfo.message, bodyPlainOffset, bodyPlainLength, false);
             }
         } else if (messageFormat == MessageFormat.TEXT) {
             quotedTextFormat = SimpleMessageFormat.TEXT;
-            processSourceMessageText(message, bodyOffset, bodyLength, true);
+            processSourceMessageText(messageViewInfo.message, bodyOffset, bodyLength, true);
         } else {
             Log.e(K9.LOG_TAG, "Unhandled message format.");
         }
