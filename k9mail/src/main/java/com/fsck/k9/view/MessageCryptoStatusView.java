@@ -40,17 +40,17 @@ public class MessageCryptoStatusView extends FrameLayout {
     }
 
     public void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
-        @ColorInt int color = getResources().getColor(displayStatus.color);
+        @ColorInt int color = getResources().getColor(displayStatus.colorRes);
 
-        if (displayStatus.iconResSecond != null) {
+        if (displayStatus.statusDotsRes != null) {
             iconCombinedFirst.setVisibility(View.VISIBLE);
             iconCombinedSecond.setVisibility(View.VISIBLE);
             iconDotsBackground.setVisibility(View.VISIBLE);
             iconSingle.setVisibility(View.GONE);
 
-            iconCombinedFirst.setImageResource(displayStatus.iconResFirst);
+            iconCombinedFirst.setImageResource(displayStatus.statusIconRes);
             iconCombinedFirst.setColorFilter(color);
-            iconCombinedSecond.setImageResource(displayStatus.iconResSecond);
+            iconCombinedSecond.setImageResource(displayStatus.statusDotsRes);
             iconCombinedSecond.setColorFilter(color);
         } else {
             iconCombinedFirst.setVisibility(View.GONE);
@@ -58,7 +58,7 @@ public class MessageCryptoStatusView extends FrameLayout {
             iconDotsBackground.setVisibility(View.GONE);
             iconSingle.setVisibility(View.VISIBLE);
 
-            iconSingle.setImageResource(displayStatus.iconResFirst);
+            iconSingle.setImageResource(displayStatus.statusIconRes);
             iconSingle.setColorFilter(color);
         }
     }

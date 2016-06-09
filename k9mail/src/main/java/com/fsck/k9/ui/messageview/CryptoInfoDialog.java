@@ -27,18 +27,22 @@ import com.fsck.k9.view.MessageCryptoDisplayStatus;
 
 public class CryptoInfoDialog extends DialogFragment {
     public static final String ARG_DISPLAY_STATUS = "display_status";
+    public static final int ICON_ANIM_DELAY = 400;
+    public static final int ICON_ANIM_DURATION = 350;
 
 
     private View dialogView;
-    private View icon1frame;
-    private View icon2frame;
-    private TextView text1;
-    private TextView text2;
-    private ImageView icon_1_1;
-    private ImageView icon_1_2;
-    private ImageView icon_1_3;
-    private ImageView icon_2_1;
-    private ImageView icon_2_2;
+
+    private View topIconFrame;
+    private ImageView topIcon_1;
+    private ImageView topIcon_2;
+    private ImageView topIcon_3;
+    private TextView topText;
+
+    private View bottomIconFrame;
+    private ImageView bottomIcon_1;
+    private ImageView bottomIcon_2;
+    private TextView bottomText;
 
 
     public static CryptoInfoDialog newInstance(MessageCryptoDisplayStatus displayStatus) {
@@ -58,16 +62,16 @@ public class CryptoInfoDialog extends DialogFragment {
 
         dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.message_crypto_info_dialog, null);
 
-        icon1frame = dialogView.findViewById(R.id.crypto_info_frame_1);
-        icon_1_1 = (ImageView) icon1frame.findViewById(R.id.crypto_info_icon_1_1);
-        icon_1_2 = (ImageView) icon1frame.findViewById(R.id.crypto_info_icon_1_2);
-        icon_1_3 = (ImageView) icon1frame.findViewById(R.id.crypto_info_icon_1_3);
-        text1 = (TextView) dialogView.findViewById(R.id.crypto_info_text_1);
+        topIconFrame = dialogView.findViewById(R.id.crypto_info_top_frame);
+        topIcon_1 = (ImageView) topIconFrame.findViewById(R.id.crypto_info_top_icon_1);
+        topIcon_2 = (ImageView) topIconFrame.findViewById(R.id.crypto_info_top_icon_2);
+        topIcon_3 = (ImageView) topIconFrame.findViewById(R.id.crypto_info_top_icon_3);
+        topText = (TextView) dialogView.findViewById(R.id.crypto_info_top_text);
 
-        icon2frame = dialogView.findViewById(R.id.crypto_info_frame_2);
-        icon_2_1 = (ImageView) icon2frame.findViewById(R.id.crypto_info_icon_2_1);
-        icon_2_2 = (ImageView) icon2frame.findViewById(R.id.crypto_info_icon_2_2);
-        text2 = (TextView) dialogView.findViewById(R.id.crypto_info_text_2);
+        bottomIconFrame = dialogView.findViewById(R.id.crypto_info_bottom_frame);
+        bottomIcon_1 = (ImageView) bottomIconFrame.findViewById(R.id.crypto_info_bottom_icon_1);
+        bottomIcon_2 = (ImageView) bottomIconFrame.findViewById(R.id.crypto_info_bottom_icon_2);
+        bottomText = (TextView) dialogView.findViewById(R.id.crypto_info_bottom_text);
 
         MessageCryptoDisplayStatus displayStatus =
                 MessageCryptoDisplayStatus.valueOf(getArguments().getString(ARG_DISPLAY_STATUS));
@@ -97,83 +101,86 @@ public class CryptoInfoDialog extends DialogFragment {
     }
 
     private void setMessageForDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
-        if (displayStatus.textResFirst == null) {
+        if (displayStatus.textResTop == null) {
             throw new AssertionError("Crypto info dialog can only be displayed for items with text!");
         }
 
-        if (displayStatus.textResSecond == null) {
-            setMessageSingleLine(displayStatus.color, displayStatus.textResFirst, displayStatus.iconResFirst, displayStatus.iconResSecond);
+        if (displayStatus.textResBottom == null) {
+            setMessageSingleLine(displayStatus.colorRes,
+                    displayStatus.textResTop, displayStatus.statusIconRes,
+                    displayStatus.statusDotsRes);
         } else {
-            if (displayStatus.iconResSecond == null) {
+            if (displayStatus.statusDotsRes == null) {
                 throw new AssertionError("second icon must be non-null if second text is non-null!");
             }
-            setMessageWithAnimation(displayStatus.color,
-                    displayStatus.textResFirst, displayStatus.iconResFirst,
-                    displayStatus.textResSecond, displayStatus.iconResSecond);
+            setMessageWithAnimation(displayStatus.colorRes,
+                    displayStatus.textResTop, displayStatus.statusIconRes,
+                    displayStatus.textResBottom, displayStatus.statusDotsRes);
         }
     }
 
-    private void setMessageSingleLine(@ColorRes int colorres,
-            @StringRes int text1res, @DrawableRes int icon1res,
-            @DrawableRes Integer icon2res) {
-        @ColorInt int color = getResources().getColor(colorres);
+    private void setMessageSingleLine(@ColorRes int colorRes,
+            @StringRes int topTextRes, @DrawableRes int statusIconRes,
+            @DrawableRes Integer statusDotsRes) {
+        @ColorInt int color = getResources().getColor(colorRes);
 
-        icon_1_1.setImageResource(icon1res);
-        icon_1_1.setColorFilter(color);
-        text1.setText(text1res);
+        topIcon_1.setImageResource(statusIconRes);
+        topIcon_1.setColorFilter(color);
+        topText.setText(topTextRes);
 
-        if (icon2res != null) {
-            icon_1_3.setImageResource(icon2res);
-            icon_1_3.setColorFilter(color);
-            icon_1_3.setVisibility(View.VISIBLE);
+        if (statusDotsRes != null) {
+            topIcon_3.setImageResource(statusDotsRes);
+            topIcon_3.setColorFilter(color);
+            topIcon_3.setVisibility(View.VISIBLE);
         } else {
-            icon_1_3.setVisibility(View.GONE);
+            topIcon_3.setVisibility(View.GONE);
         }
 
-        text2.setVisibility(View.GONE);
-        icon2frame.setVisibility(View.GONE);
+        bottomText.setVisibility(View.GONE);
+        bottomIconFrame.setVisibility(View.GONE);
     }
 
-    private void setMessageWithAnimation(@ColorRes int colorres,
-            @StringRes int text1res, @DrawableRes int icon1res, @StringRes int text2res, @DrawableRes int icon2res) {
-        icon_1_1.setImageResource(icon1res);
-        icon_1_2.setImageResource(icon2res);
-        icon_1_3.setVisibility(View.GONE);
-        text1.setText(text1res);
+    private void setMessageWithAnimation(@ColorRes int colorRes,
+            @StringRes int topTextRes, @DrawableRes int statusIconRes,
+            @StringRes int bottomTextRes, @DrawableRes int statusDotsRes) {
+        topIcon_1.setImageResource(statusIconRes);
+        topIcon_2.setImageResource(statusDotsRes);
+        topIcon_3.setVisibility(View.GONE);
+        topText.setText(topTextRes);
 
-        icon_2_1.setImageResource(icon1res);
-        icon_2_2.setImageResource(icon2res);
-        text2.setText(text2res);
+        bottomIcon_1.setImageResource(statusIconRes);
+        bottomIcon_2.setImageResource(statusDotsRes);
+        bottomText.setText(bottomTextRes);
 
-        icon_1_1.setColorFilter(getResources().getColor(colorres));
-        icon_2_2.setColorFilter(getResources().getColor(colorres));
+        topIcon_1.setColorFilter(getResources().getColor(colorRes));
+        bottomIcon_2.setColorFilter(getResources().getColor(colorRes));
 
         prepareIconAnimation();
     }
 
     private void prepareIconAnimation() {
-        text1.setAlpha(0.0f);
-        text2.setAlpha(0.0f);
+        topText.setAlpha(0.0f);
+        bottomText.setAlpha(0.0f);
 
         dialogView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
-                float halfVerticalPixelDifference = (icon2frame.getY() - icon1frame.getY()) / 2.0f;
-                icon1frame.setTranslationY(halfVerticalPixelDifference);
-                icon2frame.setTranslationY(-halfVerticalPixelDifference);
+                float halfVerticalPixelDifference = (bottomIconFrame.getY() - topIconFrame.getY()) / 2.0f;
+                topIconFrame.setTranslationY(halfVerticalPixelDifference);
+                bottomIconFrame.setTranslationY(-halfVerticalPixelDifference);
 
-                icon1frame.animate().translationY(0)
-                        .setStartDelay(400)
-                        .setDuration(350)
+                topIconFrame.animate().translationY(0)
+                        .setStartDelay(ICON_ANIM_DELAY)
+                        .setDuration(ICON_ANIM_DURATION)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
                         .start();
-                icon2frame.animate().translationY(0)
-                        .setStartDelay(400)
-                        .setDuration(350)
+                bottomIconFrame.animate().translationY(0)
+                        .setStartDelay(ICON_ANIM_DELAY)
+                        .setDuration(ICON_ANIM_DURATION)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
                         .start();
-                text1.animate().alpha(1.0f).setStartDelay(750).start();
-                text2.animate().alpha(1.0f).setStartDelay(750).start();
+                topText.animate().alpha(1.0f).setStartDelay(ICON_ANIM_DELAY + ICON_ANIM_DURATION).start();
+                bottomText.animate().alpha(1.0f).setStartDelay(ICON_ANIM_DELAY + ICON_ANIM_DURATION).start();
 
                 view.removeOnLayoutChangeListener(this);
             }

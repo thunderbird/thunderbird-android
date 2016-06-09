@@ -148,39 +148,40 @@ public enum MessageCryptoDisplayStatus {
     ),
     ;
 
-    @ColorRes public final int color;
-    @DrawableRes public final int iconResFirst;
-    @DrawableRes public final Integer iconResSecond;
+    @ColorRes public final int colorRes;
 
-    @StringRes public final Integer textResFirst;
-    @StringRes public final Integer textResSecond;
+    @DrawableRes public final int statusIconRes;
+    @DrawableRes public final Integer statusDotsRes;
 
-    MessageCryptoDisplayStatus(@ColorRes int color, @DrawableRes int iconResFirst, @DrawableRes Integer iconResSecond,
-            @StringRes int textResFirst, @StringRes Integer textResSecond) {
-        this.color = color;
-        this.iconResFirst = iconResFirst;
-        this.iconResSecond = iconResSecond;
+    @StringRes public final Integer textResTop;
+    @StringRes public final Integer textResBottom;
 
-        this.textResFirst = textResFirst;
-        this.textResSecond = textResSecond;
+    MessageCryptoDisplayStatus(@ColorRes int colorRes, @DrawableRes int statusIconRes, @DrawableRes Integer statusDotsRes,
+            @StringRes int textResTop, @StringRes Integer textResBottom) {
+        this.colorRes = colorRes;
+        this.statusIconRes = statusIconRes;
+        this.statusDotsRes = statusDotsRes;
+
+        this.textResTop = textResTop;
+        this.textResBottom = textResBottom;
     }
 
-    MessageCryptoDisplayStatus(@ColorRes int color, @DrawableRes int iconResFirst, @StringRes int textResFirst) {
-        this.color = color;
-        this.iconResFirst = iconResFirst;
-        this.iconResSecond = null;
+    MessageCryptoDisplayStatus(@ColorRes int colorRes, @DrawableRes int statusIconRes, @StringRes int textResTop) {
+        this.colorRes = colorRes;
+        this.statusIconRes = statusIconRes;
+        this.statusDotsRes = null;
 
-        this.textResFirst = textResFirst;
-        this.textResSecond = null;
+        this.textResTop = textResTop;
+        this.textResBottom = null;
     }
 
-    MessageCryptoDisplayStatus(@ColorRes int color, @DrawableRes int iconResFirst) {
-        this.color = color;
-        this.iconResFirst = iconResFirst;
-        this.iconResSecond = null;
+    MessageCryptoDisplayStatus(@ColorRes int colorRes, @DrawableRes int statusIconRes) {
+        this.colorRes = colorRes;
+        this.statusIconRes = statusIconRes;
+        this.statusDotsRes = null;
 
-        this.textResFirst = null;
-        this.textResSecond = null;
+        this.textResTop = null;
+        this.textResBottom = null;
     }
 
     @NonNull
