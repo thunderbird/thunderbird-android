@@ -450,13 +450,7 @@ public class OpenPgpApi {
                     new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
             return new OpenPgpDataResult<>(result, null);
         } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
-                }
-            }
+            closeLoudly(output);
         }
     }
 
@@ -493,13 +487,7 @@ public class OpenPgpApi {
                     new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
             return result;
         } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
-                }
-            }
+            closeLoudly(output);
         }
     }
 
@@ -614,12 +602,16 @@ public class OpenPgpApi {
             return result;
         } finally {
             // close() is required to halt the TransferThread
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
-                }
+            closeLoudly(input);
+        }
+    }
+
+    private static void closeLoudly(ParcelFileDescriptor input) {
+        if (input != null) {
+            try {
+                input.close();
+            } catch (IOException e) {
+                Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
             }
         }
     }
