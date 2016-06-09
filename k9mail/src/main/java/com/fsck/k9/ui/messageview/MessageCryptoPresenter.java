@@ -9,6 +9,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.util.Log;
@@ -199,6 +200,13 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
     public void onClickShowMessageOverrideWarning() {
         overrideCryptoWarning = true;
         messageCryptoMvpView.redisplayMessage();
+    }
+
+    public Parcelable getDecryptionResultForReply() {
+        if (cryptoResultAnnotation != null && cryptoResultAnnotation.isOpenPgpResult()) {
+            return cryptoResultAnnotation.getOpenPgpDecryptionResult();
+        }
+        return null;
     }
 
     @Nullable

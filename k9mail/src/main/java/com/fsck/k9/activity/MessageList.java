@@ -18,6 +18,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -53,7 +54,6 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
-import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.view.MessageHeader;
@@ -1210,17 +1210,32 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void onForward(LocalMessage message) {
-        MessageActions.actionForward(this, message, null);
+        onForward(message, null);
+    }
+
+    @Override
+    public void onForward(LocalMessage message, Parcelable decryptionResultForReply) {
+        MessageActions.actionForward(this, message, decryptionResultForReply);
     }
 
     @Override
     public void onReply(LocalMessage message) {
-        MessageActions.actionReply(this, message, false, null);
+        onReply(message, null);
+    }
+
+    @Override
+    public void onReply(LocalMessage message, Parcelable decryptionResultForReply) {
+        MessageActions.actionReply(this, message, false, decryptionResultForReply);
     }
 
     @Override
     public void onReplyAll(LocalMessage message) {
-        MessageActions.actionReply(this, message, true, null);
+        onReplyAll(message, null);
+    }
+
+    @Override
+    public void onReplyAll(LocalMessage message, Parcelable decryptionResultForReply) {
+        MessageActions.actionReply(this, message, true, decryptionResultForReply);
     }
 
     @Override

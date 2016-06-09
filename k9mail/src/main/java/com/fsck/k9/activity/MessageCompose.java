@@ -113,8 +113,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
 
     public static final String EXTRA_ACCOUNT = "account";
-    public static final String EXTRA_MESSAGE_BODY  = "messageBody";
     public static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
+    public static final String EXTRA_MESSAGE_DECRYPTION_RESULT  = "message_decryption_result";
 
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
         "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
@@ -366,10 +366,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         EolConvertingEditText upperSignature = (EolConvertingEditText)findViewById(R.id.upper_signature);
         EolConvertingEditText lowerSignature = (EolConvertingEditText)findViewById(R.id.lower_signature);
 
-        String sourceMessageBody = intent.getStringExtra(EXTRA_MESSAGE_BODY);
-
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
-        quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, mAccount, sourceMessageBody);
+        quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, mAccount);
         attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView, getLoaderManager());
 
         mMessageContentView = (EolConvertingEditText)findViewById(R.id.message_content);
@@ -467,7 +465,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 messageLoaderHelper = new MessageLoaderHelper(this, getLoaderManager(), getFragmentManager(),
                         messageLoaderCallbacks);
                 mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
-                messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference);
+
+                Parcelable cachedDecryptionResult = intent.getParcelableExtra(EXTRA_MESSAGE_DECRYPTION_RESULT);
+                messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference, cachedDecryptionResult);
             }
 
             if (mAction != Action.EDIT_DRAFT) {
@@ -1132,7 +1132,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             throw new IllegalStateException("tried to edit quoted message with no referenced message");
         }
 
-        messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference);
+        messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference, null);
     }
 
     /**

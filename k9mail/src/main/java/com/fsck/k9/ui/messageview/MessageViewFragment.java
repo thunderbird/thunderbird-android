@@ -16,6 +16,7 @@ import android.content.IntentSender.SendIntentException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -203,7 +204,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         mAccount = Preferences.getPreferences(getApplicationContext()).getAccount(mMessageReference.getAccountUuid());
-        messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference);
+        messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference, null);
 
         mFragmentListener.updateMenu();
     }
@@ -319,19 +320,19 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public void onReply() {
         if (mMessage != null) {
-            mFragmentListener.onReply(mMessage);
+            mFragmentListener.onReply(mMessage, messageCryptoPresenter.getDecryptionResultForReply());
         }
     }
 
     public void onReplyAll() {
         if (mMessage != null) {
-            mFragmentListener.onReplyAll(mMessage);
+            mFragmentListener.onReplyAll(mMessage, messageCryptoPresenter.getDecryptionResultForReply());
         }
     }
 
     public void onForward() {
         if (mMessage != null) {
-            mFragmentListener.onForward(mMessage);
+            mFragmentListener.onForward(mMessage, messageCryptoPresenter.getDecryptionResultForReply());
         }
     }
 
@@ -690,15 +691,15 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public interface MessageViewFragmentListener {
-        public void onForward(LocalMessage mMessage);
-        public void disableDeleteAction();
-        public void onReplyAll(LocalMessage mMessage);
-        public void onReply(LocalMessage mMessage);
-        public void displayMessageSubject(String title);
-        public void setProgress(boolean b);
-        public void showNextMessageOrReturn();
-        public void messageHeaderViewAvailable(MessageHeader messageHeaderView);
-        public void updateMenu();
+        void onForward(LocalMessage mMessage, Parcelable decryptionResultForReply);
+        void disableDeleteAction();
+        void onReplyAll(LocalMessage mMessage, Parcelable decryptionResultForReply);
+        void onReply(LocalMessage mMessage, Parcelable decryptionResultForReply);
+        void displayMessageSubject(String title);
+        void setProgress(boolean b);
+        void showNextMessageOrReturn();
+        void messageHeaderViewAvailable(MessageHeader messageHeaderView);
+        void updateMenu();
     }
 
     public boolean isInitialized() {

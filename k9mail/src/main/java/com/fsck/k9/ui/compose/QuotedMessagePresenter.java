@@ -46,33 +46,17 @@ public class QuotedMessagePresenter {
     private QuoteStyle quoteStyle;
     private boolean forcePlainText;
 
-    /**
-     * "Original" message body
-     *
-     * <p>
-     * The contents of this string will be used instead of the body of a referenced message when
-     * replying to or forwarding a message.<br>
-     * Right now this is only used when replying to a signed or encrypted message. It then contains
-     * the stripped/decrypted body of that message.
-     * </p>
-     * <p><strong>Note:</strong>
-     * When this field is not {@code null} we assume that the message we are composing right now
-     * should be encrypted.
-     * </p>
-     */
-    private String sourceMessageBody;
 
     private SimpleMessageFormat quotedTextFormat;
     private InsertableHtmlContent quotedHtmlContent;
     private Account account;
 
 
-    public QuotedMessagePresenter(MessageCompose messageCompose, QuotedMessageMvpView quotedMessageMvpView,
-            Account account, String sourceMessageBody) {
+    public QuotedMessagePresenter(
+            MessageCompose messageCompose, QuotedMessageMvpView quotedMessageMvpView, Account account) {
         this.messageCompose = messageCompose;
         this.resources = messageCompose.getResources();
         this.view = quotedMessageMvpView;
-        this.sourceMessageBody = sourceMessageBody;
         onSwitchAccount(account);
 
         quotedTextMode = QuotedTextMode.NONE;
@@ -113,12 +97,9 @@ public class QuotedMessagePresenter {
             quotedTextFormat = SimpleMessageFormat.HTML;
         }
 
-        // TODO -- I am assuming that sourceMessageBody will always be a text part.  Is this a safe assumption?
-
         // Handle the original message in the reply
         // If we already have sourceMessageBody, use that.  It's pre-populated if we've got crypto going on.
-        String content = sourceMessageBody != null ? sourceMessageBody :
-                QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.message, quotedTextFormat);
+        String content = QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.message, quotedTextFormat);
 
         if (quotedTextFormat == SimpleMessageFormat.HTML) {
             // Strip signature.
