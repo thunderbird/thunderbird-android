@@ -91,7 +91,7 @@ public class QuotedMessagePresenter {
             // Figure out which message format to use for the quoted text by looking if the source
             // message contains a text/html part. If it does, we use that.
             quotedTextFormat =
-                    (MimeUtility.findFirstPartByMimeType(messageViewInfo.message, "text/html") == null) ?
+                    (MimeUtility.findFirstPartByMimeType(messageViewInfo.rootPart, "text/html") == null) ?
                             SimpleMessageFormat.TEXT : SimpleMessageFormat.HTML;
         } else {
             quotedTextFormat = SimpleMessageFormat.HTML;
@@ -99,7 +99,7 @@ public class QuotedMessagePresenter {
 
         // Handle the original message in the reply
         // If we already have sourceMessageBody, use that.  It's pre-populated if we've got crypto going on.
-        String content = QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.message, quotedTextFormat);
+        String content = QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.rootPart, quotedTextFormat);
 
         if (quotedTextFormat == SimpleMessageFormat.HTML) {
             // Strip signature.
@@ -118,7 +118,7 @@ public class QuotedMessagePresenter {
 
             // TODO: Also strip the signature from the text/plain part
             view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, messageViewInfo.message,
-                    QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.message, SimpleMessageFormat.TEXT),
+                    QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT),
                     quoteStyle, account.getQuotePrefix()));
 
         } else if (quotedTextFormat == SimpleMessageFormat.TEXT) {
@@ -283,11 +283,11 @@ public class QuotedMessagePresenter {
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {
-                processSourceMessageText(messageViewInfo.message, bodyPlainOffset, bodyPlainLength, false);
+                processSourceMessageText(messageViewInfo.rootPart, bodyPlainOffset, bodyPlainLength, false);
             }
         } else if (messageFormat == MessageFormat.TEXT) {
             quotedTextFormat = SimpleMessageFormat.TEXT;
-            processSourceMessageText(messageViewInfo.message, bodyOffset, bodyLength, true);
+            processSourceMessageText(messageViewInfo.rootPart, bodyOffset, bodyLength, true);
         } else {
             Log.e(K9.LOG_TAG, "Unhandled message format.");
         }
@@ -305,14 +305,13 @@ public class QuotedMessagePresenter {
     /**
      * Pull out the parts of the now loaded source message and apply them to the new message
      * depending on the type of message being composed.
-     * @param message Source message
      * @param bodyOffset Insertion point for reply.
      * @param bodyLength Length of reply.
      * @param viewMessageContent Update mMessageContentView or not.
      */
-    private void processSourceMessageText(Message message, int bodyOffset, int bodyLength, boolean viewMessageContent)
+    private void processSourceMessageText(Part rootMessagePart, int bodyOffset, int bodyLength, boolean viewMessageContent)
             throws MessagingException {
-        Part textPart = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+        Part textPart = MimeUtility.findFirstPartByMimeType(rootMessagePart, "text/plain");
         if (textPart == null) {
             return;
         }
