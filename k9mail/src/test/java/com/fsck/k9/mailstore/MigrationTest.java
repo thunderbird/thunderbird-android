@@ -252,7 +252,6 @@ public class MigrationTest {
         Assert.assertEquals("attachment", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), null));
         Assert.assertEquals("k9small.png", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), "filename"));
         Assert.assertEquals("2250", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), "size"));
-        Assert.assertTrue(attachmentPart.isFirstClassAttachment());
 
         FileBackedBody attachmentBody = (FileBackedBody) attachmentPart.getBody();
         Assert.assertEquals(2250, attachmentBody.getSize());

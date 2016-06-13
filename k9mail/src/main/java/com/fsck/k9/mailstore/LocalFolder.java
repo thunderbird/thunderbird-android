@@ -708,7 +708,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             throws MessagingException {
 
         long id = cursor.getLong(0);
-        int type = cursor.getInt(1);
         long parentId = cursor.getLong(2);
         String mimeType = cursor.getString(3);
         long size = cursor.getLong(4);
@@ -716,7 +715,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         byte[] header = cursor.getBlob(6);
         int dataLocation = cursor.getInt(9);
         String serverExtra = cursor.getString(15);
-        boolean firstClassAttachment = (type != MessagePartType.HIDDEN_ATTACHMENT);
+        // TODO we don't currently cache the part types. might want to do that at a later point?
+        // int type = cursor.getInt(1);
+        // boolean firstClassAttachment = (type != MessagePartType.HIDDEN_ATTACHMENT);
 
         final Part part;
         if (id == message.getMessagePartId()) {
@@ -729,8 +730,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
             String parentMimeType = parentPart.getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, displayName, size,
-                        firstClassAttachment);
+                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, displayName, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
@@ -2054,6 +2054,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     // Note: The contents of the 'message_parts' table depend on these values.
+    // TODO currently unused, might be for caching at a later point
     static class MessagePartType {
         static final int UNKNOWN = 0;
         static final int ALTERNATIVE_PLAIN = 1;
