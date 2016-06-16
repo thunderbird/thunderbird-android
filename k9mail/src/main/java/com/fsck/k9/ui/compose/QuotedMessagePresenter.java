@@ -15,7 +15,6 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.QuotedMessageHelper;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
