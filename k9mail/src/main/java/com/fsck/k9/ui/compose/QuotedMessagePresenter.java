@@ -20,6 +20,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.InsertableHtmlContent;
@@ -130,8 +131,9 @@ public class QuotedMessagePresenter {
             quotedHtmlContent = QuotedMessageHelper.quoteOriginalHtmlMessage(
                     resources, sourceMessage, content, quoteStyle);
 
-            // Load the message with the reply header.
-            view.setQuotedHtml(quotedHtmlContent.getQuotedContent());
+            // Load the message with the reply header. TODO replace with MessageViewInfo data
+            view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), AttachmentResolver
+                    .createFromPart(messageCompose, sourceMessage));
 
             // TODO: Also strip the signature from the text/plain part
             view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, sourceMessage,
@@ -173,7 +175,8 @@ public class QuotedMessagePresenter {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         quotedHtmlContent = (InsertableHtmlContent) savedInstanceState.getSerializable(STATE_KEY_HTML_QUOTE);
         if (quotedHtmlContent != null && quotedHtmlContent.getQuotedContent() != null) {
-            view.setQuotedHtml(quotedHtmlContent.getQuotedContent());
+            // we don't have the part here, but inline-displayed images are cached by the webview
+            view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), null);
         }
         quotedTextFormat = (SimpleMessageFormat) savedInstanceState.getSerializable(
                 STATE_KEY_QUOTED_TEXT_FORMAT);
@@ -293,7 +296,9 @@ public class QuotedMessagePresenter {
                     } else {
                         quotedHtmlContent.setFooterInsertionPoint(bodyOffset);
                     }
-                    view.setQuotedHtml(quotedHtmlContent.getQuotedContent());
+                    // TODO replace with MessageViewInfo data
+                    view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
+                            AttachmentResolver.createFromPart(messageCompose, message));
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {

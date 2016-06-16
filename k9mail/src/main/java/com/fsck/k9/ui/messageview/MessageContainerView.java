@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.messageview;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -35,12 +35,11 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
-
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
-import com.fsck.k9.view.K9WebViewClient;
+import com.fsck.k9.mailstore.MessageViewInfo.MessageViewContainer;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
 
@@ -380,7 +379,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     public void showPictures() {
         setLoadPictures(true);
-        loadBodyFromText(mText);
+        displayHtmlContentWithInlineAttachments(mText, null);
     }
 
     public void enableAttachmentButtons() {
@@ -403,9 +402,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         this.attachmentCallback = attachmentCallback;
 
         resetView();
-
-        WebViewClient webViewClient = K9WebViewClient.newInstance(messageViewContainer.rootPart);
-        mMessageContentView.setWebViewClient(webViewClient);
 
         boolean hasAttachments = !messageViewContainer.attachments.isEmpty();
         if (hasAttachments) {
@@ -458,7 +454,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             text = wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
 
-        loadBodyFromText(text);
+        displayHtmlContentWithInlineAttachments(text, messageViewContainer.attachmentResolver);
     }
 
     private String getTextToDisplay(MessageViewContainer messageViewContainer) {
@@ -489,8 +485,8 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         return "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
     }
 
-    private void loadBodyFromText(String emailText) {
-        mMessageContentView.setText(emailText);
+    private void displayHtmlContentWithInlineAttachments(String htmlText, AttachmentResolver attachmentResolver) {
+        mMessageContentView.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver);
     }
 
     public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {
@@ -529,7 +525,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
          * its size because the button to download the complete message was previously shown and
          * is now hidden.
          */
-        loadBodyFromText("");
+        displayHtmlContentWithInlineAttachments("", null);
     }
 
     @Override

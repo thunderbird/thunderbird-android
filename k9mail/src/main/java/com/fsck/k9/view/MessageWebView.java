@@ -1,5 +1,6 @@
 package com.fsck.k9.view;
 
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.AttributeSet;
@@ -12,6 +13,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.HtmlSanitizer;
+import com.fsck.k9.mailstore.AttachmentResolver;
 
 
 public class MessageWebView extends RigidWebView {
@@ -102,19 +104,18 @@ public class MessageWebView extends RigidWebView {
         getSettings().setDisplayZoomControls(!supportsMultiTouch);
     }
 
-    /**
-     * Load a message body into a {@code MessageWebView}
-     *
-     * <p>
-     * Before loading, the text is wrapped in an HTML header and footer
-     * so that it displays properly.
-     * </p>
-     *
-     * @param text
-     *      The message body to display.  Assumed to be MIME type text/html.
-     */
-    public void setText(String text) {
-     // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
+    public void displayHtmlContentWithInlineAttachments(String htmlText, AttachmentResolver attachmentResolver) {
+        setAttachmentResolverWebViewClient(attachmentResolver);
+        setHtmlContent(htmlText);
+    }
+
+    private void setAttachmentResolverWebViewClient(AttachmentResolver attachmentResolver) {
+        K9WebViewClient webViewClient = K9WebViewClient.newInstance(attachmentResolver);
+        setWebViewClient(webViewClient);
+    }
+
+    private void setHtmlContent(String htmlText) {
+        // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
         String content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
         if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
             content += "<style type=\"text/css\">" +
@@ -123,7 +124,7 @@ public class MessageWebView extends RigidWebView {
                    ":visited, :visited * { color: #551A8B !important }</style> ";
         }
         content += HtmlConverter.cssStylePre();
-        content += "</head><body>" + text + "</body></html>";
+        content += "</head><body>" + htmlText + "</body></html>";
         //TODO: Do this in the background
         String sanitizedContent = HtmlSanitizer.sanitize(content);
         loadDataWithBaseURL("about:blank", sanitizedContent, "text/html", "utf-8", null);
