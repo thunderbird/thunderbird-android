@@ -31,6 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -979,6 +980,7 @@ public class FolderList extends K9ListActivity {
 
             if (holder == null) {
                 holder = new FolderViewHolder();
+                holder.folderIcon = (ImageView) view.findViewById(R.id.special_folder_icon);
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
@@ -1027,6 +1029,7 @@ public class FolderList extends K9ListActivity {
                 folderStatus = null;
             }
 
+            holder.folderIcon.setImageResource(folder.icon);
             holder.folderName.setText(folder.displayName);
             if (folderStatus != null) {
                 holder.folderStatus.setText(folderStatus);
@@ -1222,6 +1225,7 @@ public class FolderList extends K9ListActivity {
     }
 
     static class FolderViewHolder {
+        public ImageView folderIcon;
         public TextView folderName;
 
         public TextView folderStatus;

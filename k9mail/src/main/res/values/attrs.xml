@@ -3,6 +3,7 @@
 
     <declare-styleable name="K9Styles">
         <attr name="iconFolder" format="reference" />
+        <attr name="iconSpecialFolder" format="reference" />
         <attr name="iconListItemMenu" format="reference" />
         <attr name="iconMenuInfoDetails" format="reference" />
         <attr name="iconActionAddAttachment" format="reference" />
