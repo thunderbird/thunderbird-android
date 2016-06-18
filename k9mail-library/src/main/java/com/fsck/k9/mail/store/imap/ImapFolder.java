@@ -1273,6 +1273,28 @@ class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
+    @Override
+    public void expungeMessages(List<? extends Message> messages) throws MessagingException {
+        if (messages.isEmpty()) {
+            return;
+        }
+
+        checkOpen(); //only need READ access
+
+        String[] uids = new String[messages.size()];
+        for (int i = 0, count = messages.size(); i < count; i++) {
+            uids[i] = messages.get(i).getUid();
+        }
+
+        try {
+            executeSimpleCommand(String.format("UID EXPUNGE %s", combine(uids, ',')));
+
+            return;
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
+    }
+
     private String combineFlags(Iterable<Flag> flags) {
         List<String> flagNames = new ArrayList<String>();
         for (Flag flag : flags) {

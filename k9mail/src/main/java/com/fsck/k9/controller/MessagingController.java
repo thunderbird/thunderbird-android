@@ -125,6 +125,7 @@ public class MessagingController implements Runnable {
     private static final String PENDING_COMMAND_APPEND = "com.fsck.k9.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
     private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
+    private static final String PENDING_COMMAND_EXPUNGE_MESSAGE = "com.fsck.k9.MessagingController.expungeMessage";
 
     /**
      * Maximum number of unsynced messages to store at once
@@ -1780,6 +1781,8 @@ public class MessagingController implements Runnable {
                         processPendingEmptyTrash(command, account);
                     } else if (PENDING_COMMAND_EXPUNGE.equals(command.command)) {
                         processPendingExpunge(command, account);
+                    } else if (PENDING_COMMAND_EXPUNGE_MESSAGE.equals(command.command)) {
+                        processPendingExpungeMessage(command, account);
                     }
                     localStore.removePendingCommand(command);
                     if (K9.DEBUG)
@@ -2291,6 +2294,46 @@ public class MessagingController implements Runnable {
         }
     }
 
+    private void processPendingExpungeMessage(PendingCommand command, Account account)
+            throws MessagingException {
+        String folder = command.arguments[0];
+
+        if (account.getErrorFolderName().equals(folder)) {
+            return;
+        }
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folder);
+
+        Store remoteStore = account.getRemoteStore();
+        Folder remoteFolder = remoteStore.getFolder(folder);
+        try {
+            if (!remoteFolder.exists()) {
+                return;
+            }
+            remoteFolder.open(Folder.OPEN_MODE_RW);
+            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
+                return;
+            }
+
+
+            List<Message> messages = new ArrayList<Message>();
+            for (int i = 1; i < command.arguments.length; i++) {
+                String uid = command.arguments[i];
+                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                    messages.add(remoteFolder.getMessage(uid));
+                }
+            }
+
+            if (messages.isEmpty()) {
+                return;
+            }
+            remoteFolder.expungeMessages(messages);
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "processPendingExpungeMessage: complete for folder = " + folder);
+        } finally {
+            closeFolder(remoteFolder);
+        }
+    }
 
     // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
     // Eventually, it should be removed
@@ -3711,9 +3754,9 @@ public class MessagingController implements Runnable {
             Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
             Map<String, String> uidMap = null;
-            if (folder.equals(account.getTrashFolderName()) || !account.hasTrashFolder()) {
+            if (folder.equals(account.getDraftsFolderName()) || folder.equals(account.getTrashFolderName()) || !account.hasTrashFolder()) {
                 if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Deleting messages in trash folder or trash set to -None-, not copying");
+                    Log.d(K9.LOG_TAG, "Deleting messages in drafts folder, trash folder or trash set to -None-, not copying");
 
                 localFolder.setFlags(messages, Collections.singleton(Flag.DELETED), true);
             } else {
@@ -3753,6 +3796,17 @@ public class MessagingController implements Runnable {
                     };
                     queuePendingCommand(account, command);
                 }
+                processPendingCommands(account);
+            } else if (folder.equals(account.getDraftsFolderName())) {
+                PendingCommand command = new PendingCommand();
+                command.command = PENDING_COMMAND_EXPUNGE_MESSAGE;
+
+                int length = 1 + uids.length;
+                command.arguments = new String[length];
+                command.arguments[0] = folder;
+                System.arraycopy(uids, 0, command.arguments, 1, uids.length);
+
+                queuePendingCommand(account, command);
                 processPendingCommands(account);
             } else if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
                 if (folder.equals(account.getTrashFolderName())) {
