@@ -156,6 +156,29 @@ public class MessagingController implements Runnable {
 
     private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
+    private static String[] getUidsFromMessages(List<? extends Message> messages) {
+        String[] uids = new String[messages.size()];
+        for (int i = 0, end = uids.length; i < end; i++) {
+            uids[i] = messages.get(i).getUid();
+        }
+        return uids;
+    }
+
+    private static List<Message> getRemoteMessagesFromUids(Folder folder, String[] uids, int start) throws MessagingException {
+        return getRemoteMessagesFromUids(folder, uids, start, uids.length);
+    }
+
+    private static List<Message> getRemoteMessagesFromUids(Folder folder, String[] uids, int start, int end) throws MessagingException {
+        List<Message> messages = new ArrayList<Message>();
+        for (int i = start; i < end; i++) {
+            String uid = uids[i];
+            if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                messages.add(folder.getMessage(uid));
+            }
+        }
+        return messages;
+    }
+
     private void suppressMessages(Account account, List<LocalMessage> messages) {
         EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
         cache.hideMessages(messages);
@@ -2052,31 +2075,21 @@ public class MessagingController implements Runnable {
 
             Store localStore = account.getLocalStore();
             localDestFolder = (LocalFolder) localStore.getFolder(destFolder);
-            List<Message> messages = new ArrayList<Message>();
 
             /*
              * We split up the localUidMap into two parts while sending the command, here we assemble it back.
              */
+            List<Message> messages;
             Map<String, String> localUidMap = new HashMap<String, String>();
             if (hasNewUids) {
                 int offset = (command.arguments.length - 4) / 2;
+                messages = getRemoteMessagesFromUids(remoteSrcFolder, command.arguments, 4, 4 + offset);
 
                 for (int i = 4; i < 4 + offset; i++) {
                     localUidMap.put(command.arguments[i], command.arguments[i + offset]);
-
-                    String uid = command.arguments[i];
-                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                        messages.add(remoteSrcFolder.getMessage(uid));
-                    }
                 }
-
             } else {
-                for (int i = 4; i < command.arguments.length; i++) {
-                    String uid = command.arguments[i];
-                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                        messages.add(remoteSrcFolder.getMessage(uid));
-                    }
-                }
+                messages = getRemoteMessagesFromUids(remoteSrcFolder, command.arguments, 4);
             }
 
             boolean isCopy = false;
@@ -2195,13 +2208,7 @@ public class MessagingController implements Runnable {
             if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
                 return;
             }
-            List<Message> messages = new ArrayList<Message>();
-            for (int i = 3; i < command.arguments.length; i++) {
-                String uid = command.arguments[i];
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                    messages.add(remoteFolder.getMessage(uid));
-                }
-            }
+            List<Message> messages = getRemoteMessagesFromUids(remoteFolder, command.arguments, 3);
 
             if (messages.isEmpty()) {
                 return;
@@ -2315,14 +2322,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-
-            List<Message> messages = new ArrayList<Message>();
-            for (int i = 1; i < command.arguments.length; i++) {
-                String uid = command.arguments[i];
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                    messages.add(remoteFolder.getMessage(uid));
-                }
-            }
+            List<Message> messages = getRemoteMessagesFromUids(remoteFolder, command.arguments, 1);
 
             if (messages.isEmpty()) {
                 return;
@@ -2679,10 +2679,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            String[] uids = new String[messages.size()];
-            for (int i = 0, end = uids.length; i < end; i++) {
-                uids[i] = messages.get(i).getUid();
-            }
+            String[] uids = getUidsFromMessages(messages);
 
             queueSetFlag(account, folderName, Boolean.toString(newState), flag.toString(), uids);
             processPendingCommands(account);
@@ -3835,14 +3832,6 @@ public class MessagingController implements Runnable {
             closeFolder(localFolder);
             closeFolder(localTrashFolder);
         }
-    }
-
-    private String[] getUidsFromMessages(List <? extends Message> messages) {
-        String[] uids = new String[messages.size()];
-        for (int i = 0; i < messages.size(); i++) {
-            uids[i] = messages.get(i).getUid();
-        }
-        return uids;
     }
 
     private void processPendingEmptyTrash(PendingCommand command, Account account) throws MessagingException {
