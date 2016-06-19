@@ -40,7 +40,6 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
@@ -66,6 +65,7 @@ import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessageUtils;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
@@ -156,37 +156,6 @@ public class MessagingController implements Runnable {
     private volatile boolean stopped = false;
 
     private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
-
-    private static String[] getUidsFromMessages(List<? extends Message> messages) {
-        String[] uids = new String[messages.size()];
-        for (int i = 0, end = uids.length; i < end; i++) {
-            uids[i] = messages.get(i).getUid();
-        }
-        return uids;
-    }
-
-    private static List<Message> getRemoteMessagesFromUids(Folder folder, String[] uids, int start) throws MessagingException {
-        return getRemoteMessagesFromUids(folder, uids, start, uids.length);
-    }
-
-    private static List<Message> getRemoteMessagesFromUids(Folder folder, String[] uids, int start, int end) throws MessagingException {
-        List<Message> messages = new ArrayList<Message>();
-        for (int i = start; i < end; i++) {
-            String uid = uids[i];
-            if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                messages.add(folder.getMessage(uid));
-            }
-        }
-        return messages;
-    }
-
-    @Nullable
-    private static Message getRemoteMessageFromUid(Folder folder, String uid) throws MessagingException {
-        if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-            return folder.getMessage(uid);
-        }
-        return null;
-    }
 
     private void suppressMessages(Account account, List<LocalMessage> messages) {
         EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
@@ -1892,7 +1861,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            Message remoteMessage = getRemoteMessageFromUid(remoteFolder, localMessage.getUid());
+            Message remoteMessage = MessageUtils.getRemoteMessageFromUid(K9.LOCAL_UID_PREFIX, remoteFolder, localMessage.getUid());
             if (remoteMessage == null) {
                 if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
                     Log.w(K9.LOG_TAG, "Local message with uid " + localMessage.getUid() +
@@ -2088,13 +2057,13 @@ public class MessagingController implements Runnable {
             Map<String, String> localUidMap = new HashMap<String, String>();
             if (hasNewUids) {
                 int offset = (command.arguments.length - 4) / 2;
-                messages = getRemoteMessagesFromUids(remoteSrcFolder, command.arguments, 4, 4 + offset);
+                messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteSrcFolder, command.arguments, 4, 4 + offset);
 
                 for (int i = 4; i < 4 + offset; i++) {
                     localUidMap.put(command.arguments[i], command.arguments[i + offset]);
                 }
             } else {
-                messages = getRemoteMessagesFromUids(remoteSrcFolder, command.arguments, 4);
+                messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteSrcFolder, command.arguments, 4);
             }
 
             boolean isCopy = false;
@@ -2213,7 +2182,7 @@ public class MessagingController implements Runnable {
             if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
                 return;
             }
-            List<Message> messages = getRemoteMessagesFromUids(remoteFolder, command.arguments, 3);
+            List<Message> messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteFolder, command.arguments, 3);
 
             if (messages.isEmpty()) {
                 return;
@@ -2251,7 +2220,7 @@ public class MessagingController implements Runnable {
             if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
                 return;
             }
-            Message remoteMessage = getRemoteMessageFromUid(remoteFolder, uid);
+            Message remoteMessage = MessageUtils.getRemoteMessageFromUid(K9.LOCAL_UID_PREFIX, remoteFolder, uid);
             if (remoteMessage == null) {
                 return;
             }
@@ -2324,7 +2293,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            List<Message> messages = getRemoteMessagesFromUids(remoteFolder, command.arguments, 1);
+            List<Message> messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteFolder, command.arguments, 1);
 
             if (messages.isEmpty()) {
                 return;
@@ -2367,7 +2336,7 @@ public class MessagingController implements Runnable {
             throw new MessagingException("processPendingMoveOrCopyOld: could not open remoteSrcFolder " + srcFolder + " read/write", true);
         }
 
-        Message remoteMessage = getRemoteMessageFromUid(remoteSrcFolder, uid);
+        Message remoteMessage = MessageUtils.getRemoteMessageFromUid(K9.LOCAL_UID_PREFIX, remoteSrcFolder, uid);
         if (remoteMessage == null) {
             throw new MessagingException("processPendingMoveOrCopyOld: remoteMessage " + uid + " does not exist", true);
         }
@@ -2678,7 +2647,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            String[] uids = getUidsFromMessages(messages);
+            String[] uids = MessageUtils.getUidsFromMessages(messages);
 
             queueSetFlag(account, folderName, Boolean.toString(newState), flag.toString(), uids);
             processPendingCommands(account);
@@ -3738,7 +3707,7 @@ public class MessagingController implements Runnable {
                                            MessagingListener listener) {
         Folder localFolder = null;
         Folder localTrashFolder = null;
-        String[] uids = getUidsFromMessages(messages);
+        String[] uids = MessageUtils.getUidsFromMessages(messages);
         try {
             //We need to make these callbacks before moving the messages to the trash
             //as messages get a new UID after being moved
