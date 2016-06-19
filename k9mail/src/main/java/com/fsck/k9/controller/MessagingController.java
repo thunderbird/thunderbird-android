@@ -40,6 +40,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
@@ -177,6 +178,14 @@ public class MessagingController implements Runnable {
             }
         }
         return messages;
+    }
+
+    @Nullable
+    private static Message getRemoteMessageFromUid(Folder folder, String uid) throws MessagingException {
+        if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+            return folder.getMessage(uid);
+        }
+        return null;
     }
 
     private void suppressMessages(Account account, List<LocalMessage> messages) {
@@ -1883,11 +1892,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            Message remoteMessage = null;
-            if (!localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
-                remoteMessage = remoteFolder.getMessage(localMessage.getUid());
-            }
-
+            Message remoteMessage = getRemoteMessageFromUid(remoteFolder, localMessage.getUid());
             if (remoteMessage == null) {
                 if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
                     Log.w(K9.LOG_TAG, "Local message with uid " + localMessage.getUid() +
@@ -2246,10 +2251,7 @@ public class MessagingController implements Runnable {
             if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
                 return;
             }
-            Message remoteMessage = null;
-            if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                remoteMessage = remoteFolder.getMessage(uid);
-            }
+            Message remoteMessage = getRemoteMessageFromUid(remoteFolder, uid);
             if (remoteMessage == null) {
                 return;
             }
@@ -2365,10 +2367,7 @@ public class MessagingController implements Runnable {
             throw new MessagingException("processPendingMoveOrCopyOld: could not open remoteSrcFolder " + srcFolder + " read/write", true);
         }
 
-        Message remoteMessage = null;
-        if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-            remoteMessage = remoteSrcFolder.getMessage(uid);
-        }
+        Message remoteMessage = getRemoteMessageFromUid(remoteSrcFolder, uid);
         if (remoteMessage == null) {
             throw new MessagingException("processPendingMoveOrCopyOld: remoteMessage " + uid + " does not exist", true);
         }
