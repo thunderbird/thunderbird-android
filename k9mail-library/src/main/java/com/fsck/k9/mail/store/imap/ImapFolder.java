@@ -1283,8 +1283,6 @@ class ImapFolder extends Folder<ImapMessage> {
 
         try {
             executeSimpleCommand(String.format("UID EXPUNGE %s", combine(uids, ',')));
-
-            return;
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }
