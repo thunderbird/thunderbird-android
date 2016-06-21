@@ -2136,6 +2136,39 @@ public class MessagingController implements Runnable {
         }
     }
 
+    interface ProcessMessage {
+        boolean preCheck(Folder remoteFolder);
+        void doExec(Folder remoteFolder) throws MessagingException;
+    }
+
+    private void processRemoteMessages(Account account, String folderName, ProcessMessage processMessage)
+            throws MessagingException {
+        if (account.getErrorFolderName().equals(folderName)) {
+            return;
+        }
+
+        Store remoteStore = account.getRemoteStore();
+        Folder remoteFolder = remoteStore.getFolder(folderName);
+        if (!remoteFolder.exists()) {
+            return;
+        }
+
+        if (!processMessage.preCheck(remoteFolder)) {
+            return;
+        }
+
+        try {
+            remoteFolder.open(Folder.OPEN_MODE_RW);
+            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
+                return;
+            }
+
+            processMessage.doExec(remoteFolder);
+        } finally {
+            closeFolder(remoteFolder);
+        }
+    }
+
     private void queueSetFlag(final Account account, final String folderName, final String newState, final String flag, final String[] uids) {
         putBackground("queueSetFlag " + account.getDescription() + ":" + folderName, null, new Runnable() {
             @Override
@@ -2153,82 +2186,65 @@ public class MessagingController implements Runnable {
             }
         });
     }
+
     /**
      * Processes a pending mark read or unread command.
      *
      * @param command arguments = (String folder, String uid, boolean read)
      * @param account
      */
-    private void processPendingSetFlag(PendingCommand command, Account account)
+    private void processPendingSetFlag(final PendingCommand command, Account account)
     throws MessagingException {
-        String folder = command.arguments[0];
+        final String folderName = command.arguments[0];
+        final boolean newState = Boolean.parseBoolean(command.arguments[1]);
+        final Flag flag = Flag.valueOf(command.arguments[2]);
 
-        if (account.getErrorFolderName().equals(folder)) {
-            return;
-        }
-
-        boolean newState = Boolean.parseBoolean(command.arguments[1]);
-
-        Flag flag = Flag.valueOf(command.arguments[2]);
-
-        Store remoteStore = account.getRemoteStore();
-        Folder remoteFolder = remoteStore.getFolder(folder);
-        if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(flag)) {
-            return;
-        }
-
-        try {
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
+        processRemoteMessages(account, folderName, new ProcessMessage() {
+            @Override
+            public boolean preCheck(Folder remoteFolder) {
+                return remoteFolder.isFlagSupported(flag);
             }
-            List<Message> messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteFolder, command.arguments, 3);
 
-            if (messages.isEmpty()) {
-                return;
+            @Override
+            public void doExec(Folder remoteFolder) throws MessagingException {
+                List<Message> messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteFolder, command.arguments, 3);
+                if (messages.isEmpty()) {
+                    return;
+                }
+                remoteFolder.setFlags(messages, Collections.singleton(flag), newState);
             }
-            remoteFolder.setFlags(messages, Collections.singleton(flag), newState);
-        } finally {
-            closeFolder(remoteFolder);
-        }
+        });
     }
 
     // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
     // Eventually, it should be removed
     private void processPendingSetFlagOld(PendingCommand command, Account account)
     throws MessagingException {
-        String folder = command.arguments[0];
-        String uid = command.arguments[1];
+        final String folderName = command.arguments[0];
+        final String uid = command.arguments[1];
+        final boolean newState = Boolean.parseBoolean(command.arguments[2]);
+        final Flag flag = Flag.valueOf(command.arguments[3]);
 
-        if (account.getErrorFolderName().equals(folder)) {
-            return;
-        }
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "processPendingSetFlagOld: folder = " + folder + ", uid = " + uid);
+        processRemoteMessages(account, folderName, new ProcessMessage() {
+            @Override
+            public boolean preCheck(Folder remoteFolder) {
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingSetFlagOld: folder = " + folderName + ", uid = " + uid);
 
-        boolean newState = Boolean.parseBoolean(command.arguments[2]);
+                return true;
+            }
 
-        Flag flag = Flag.valueOf(command.arguments[3]);
-        Folder remoteFolder = null;
-        try {
-            Store remoteStore = account.getRemoteStore();
-            remoteFolder = remoteStore.getFolder(folder);
-            if (!remoteFolder.exists()) {
-                return;
+            @Override
+            public void doExec(Folder remoteFolder) throws MessagingException {
+                Message remoteMessage = MessageUtils.getRemoteMessageFromUid(K9.LOCAL_UID_PREFIX, remoteFolder, uid);
+                if (remoteMessage == null) {
+                    return;
+                }
+                remoteMessage.setFlag(flag, newState);
             }
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
-            }
-            Message remoteMessage = MessageUtils.getRemoteMessageFromUid(K9.LOCAL_UID_PREFIX, remoteFolder, uid);
-            if (remoteMessage == null) {
-                return;
-            }
-            remoteMessage.setFlag(flag, newState);
-        } finally {
-            closeFolder(remoteFolder);
-        }
+        });
     }
+
     private void queueExpunge(final Account account, final String folderName) {
         putBackground("queueExpunge " + account.getDescription() + ":" + folderName, null, new Runnable() {
             @Override
@@ -2244,66 +2260,55 @@ public class MessagingController implements Runnable {
             }
         });
     }
+
     private void processPendingExpunge(PendingCommand command, Account account)
     throws MessagingException {
-        String folder = command.arguments[0];
+        final String folderName = command.arguments[0];
 
-        if (account.getErrorFolderName().equals(folder)) {
-            return;
-        }
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folder);
+        processRemoteMessages(account, folderName, new ProcessMessage() {
+            @Override
+            public boolean preCheck(Folder remoteFolder) {
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folderName);
 
-        Store remoteStore = account.getRemoteStore();
-        Folder remoteFolder = remoteStore.getFolder(folder);
-        try {
-            if (!remoteFolder.exists()) {
-                return;
+                return true;
             }
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
+
+            @Override
+            public void doExec(Folder remoteFolder) throws MessagingException {
+                remoteFolder.expunge();
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingExpunge: complete for folder = " + folderName);
             }
-            remoteFolder.expunge();
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "processPendingExpunge: complete for folder = " + folder);
-        } finally {
-            closeFolder(remoteFolder);
-        }
+        });
     }
 
-    private void processPendingExpungeMessage(PendingCommand command, Account account)
+    private void processPendingExpungeMessage(final PendingCommand command, Account account)
             throws MessagingException {
-        String folder = command.arguments[0];
+        final String folderName = command.arguments[0];
 
-        if (account.getErrorFolderName().equals(folder)) {
-            return;
-        }
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folder);
+        processRemoteMessages(account, folderName, new ProcessMessage() {
 
-        Store remoteStore = account.getRemoteStore();
-        Folder remoteFolder = remoteStore.getFolder(folder);
-        try {
-            if (!remoteFolder.exists()) {
-                return;
-            }
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
+            @Override
+            public boolean preCheck(Folder remoteFolder) {
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folderName);
+
+                return true;
             }
 
-            List<Message> messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteFolder, command.arguments, 1);
+            @Override
+            public void doExec(Folder remoteFolder) throws MessagingException {
+                List<Message> messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteFolder, command.arguments, 1);
 
-            if (messages.isEmpty()) {
-                return;
+                if (messages.isEmpty()) {
+                    return;
+                }
+                remoteFolder.expungeMessages(messages);
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingExpungeMessage: complete for folder = " + folderName);
             }
-            remoteFolder.expungeMessages(messages);
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "processPendingExpungeMessage: complete for folder = " + folder);
-        } finally {
-            closeFolder(remoteFolder);
-        }
+        });
     }
 
     // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
