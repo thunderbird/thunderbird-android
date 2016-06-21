@@ -200,11 +200,9 @@ public class MessageDecryptVerifier {
             if (body instanceof Multipart) {
                 Multipart multi = (Multipart) body;
                 BodyPart signatureBody = multi.getBodyPart(1);
-                if (isSameMimeType(signatureBody.getMimeType(), APPLICATION_PGP_SIGNATURE)) {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    signatureBody.getBody().writeTo(bos);
-                    return bos.toByteArray();
-                }
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                signatureBody.getBody().writeTo(bos);
+                return bos.toByteArray();
             }
         }
 
