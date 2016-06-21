@@ -13,6 +13,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
+
+import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -268,7 +270,7 @@ public class MessageLoaderHelper {
             messageCryptoHelper = retainCryptoHelperFragment.getData();
         }
         if (messageCryptoHelper == null || messageCryptoHelper.isConfiguredForOutdatedCryptoProvider()) {
-            messageCryptoHelper = new MessageCryptoHelper(context);
+            messageCryptoHelper = new MessageCryptoHelper(context, new OpenPgpApiFactory());
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(
