@@ -31,10 +31,11 @@ public class MimeUtility {
      * http://www.stdicon.com/mimetypes
      */
     private static final String[][] MIME_TYPE_BY_EXTENSION_MAP = new String[][] {
-        //* Do not delete the next two lines
+    //* Do not delete the next three lines
     { "", DEFAULT_ATTACHMENT_MIME_TYPE },
     { "k9s", K9_SETTINGS_MIME_TYPE},
-    //* Do not delete the previous two lines
+    { "txt", "text/plain"},
+    //* Do not delete the previous three lines
     { "123", "application/vnd.lotus-1-2-3"},
     { "323", "text/h323"},
     { "3dml", "text/vnd.in3d.3dml"},
