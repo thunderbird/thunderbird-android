@@ -38,6 +38,8 @@ import com.fsck.k9.mailstore.MimePartStreamParser;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageHelper;
 import org.apache.commons.io.IOUtils;
+import com.fsck.k9.provider.DecryptedFileProvider;
+import com.fsck.k9.service.FileProviderInterface;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
@@ -425,7 +427,9 @@ public class MessageCryptoHelper {
             @WorkerThread
             public MimeBodyPart processData(InputStream is) throws IOException {
                 try {
-                    return MimePartStreamParser.parse(context, is);
+                    FileProviderInterface fileProviderInterface =
+                            DecryptedFileProvider.getFileProviderInterface(context);
+                    return MimePartStreamParser.parse(fileProviderInterface, is);
                 } catch (MessagingException e) {
                     Log.e(K9.LOG_TAG, "Something went wrong while parsing the decrypted MIME part", e);
                     //TODO: pass error to main thread and display error message to user

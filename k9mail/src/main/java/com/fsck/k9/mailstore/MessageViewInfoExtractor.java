@@ -70,8 +70,7 @@ public class MessageViewInfoExtractor {
             extraViewableText = extraViewable.text;
         }
 
-        AttachmentResolver attachmentResolver =
-                AttachmentResolver.createFromPart(context, rootPart);
+        AttachmentResolver attachmentResolver = AttachmentResolver.createFromPart(rootPart);
 
         return MessageViewInfo.createWithExtractedContent(message, rootPart, viewable.html,
                 attachmentInfos, cryptoResultAnnotation, extraViewableText, extraAttachmentInfos, attachmentResolver);
@@ -86,7 +85,7 @@ public class MessageViewInfoExtractor {
             MessageExtractor.findViewablesAndAttachments(part, viewableParts, attachments);
         }
 
-        attachmentInfos.addAll(AttachmentInfoExtractor.extractAttachmentInfos(context, attachments));
+        attachmentInfos.addAll(AttachmentInfoExtractor.extractAttachmentInfos(attachments));
         return MessageViewInfoExtractor.extractTextFromViewables(context, viewableParts);
     }
 

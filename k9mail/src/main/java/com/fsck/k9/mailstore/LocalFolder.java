@@ -1401,7 +1401,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void missingPartToContentValues(ContentValues cv, Part part) throws MessagingException {
-        AttachmentViewInfo attachment = AttachmentInfoExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachment = AttachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
         cv.put("display_name", attachment.displayName);
         cv.put("data_location", DataLocation.MISSING);
         cv.put("decoded_body_size", attachment.size);
@@ -1417,7 +1417,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private File leafPartToContentValues(ContentValues cv, Part part, Body body)
             throws MessagingException, IOException {
-        AttachmentViewInfo attachment = AttachmentInfoExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachment = AttachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
         cv.put("display_name", attachment.displayName);
 
         String encoding = getTransferEncoding(part);

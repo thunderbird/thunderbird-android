@@ -6,34 +6,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.ProvidedTempFileBody;
 import com.fsck.k9.mailstore.LocalPart;
+import com.fsck.k9.mailstore.ProvidedTempFileBody;
 import com.fsck.k9.provider.AttachmentProvider;
-import com.fsck.k9.provider.K9FileProvider;
 
 
 public class AttachmentInfoExtractor {
-    public static List<AttachmentViewInfo> extractAttachmentInfos(Context context, List<Part> attachmentParts)
+    public static List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)
             throws MessagingException {
 
         List<AttachmentViewInfo> attachments = new ArrayList<>();
         for (Part part : attachmentParts) {
-            attachments.add(extractAttachmentInfo(context, part));
+            attachments.add(extractAttachmentInfo(part));
         }
 
         return attachments;
     }
 
-    public static AttachmentViewInfo extractAttachmentInfo(Context context, Part part) throws MessagingException {
+    public static AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
         Uri uri;
         long size;
         if (part instanceof LocalPart) {
@@ -45,15 +45,15 @@ public class AttachmentInfoExtractor {
         } else {
             Body body = part.getBody();
             if (body instanceof ProvidedTempFileBody) {
-                ProvidedTempFileBody providedTempFileBody = (ProvidedTempFileBody) body;
+                ProvidedTempFileBody decryptedTempFileBody = (ProvidedTempFileBody) body;
+                size = decryptedTempFileBody.getSize();
                 try {
-                    File file = providedTempFileBody.getFile();
-                    uri = K9FileProvider.getUriForFile(context, file, part.getMimeType());
-                    size = providedTempFileBody.getSize();
-                    return extractAttachmentInfo(part, uri, size);
+                    uri = decryptedTempFileBody.getProviderUri(part.getMimeType());
                 } catch (IOException e) {
-                    throw new MessagingException("Error preparing decrypted data as attachment", e);
+                    Log.e(K9.LOG_TAG, "Decrypted temp file (no longer?) exists!", e);
+                    uri = null;
                 }
+                return extractAttachmentInfo(part, uri, size);
             } else {
                 throw new UnsupportedOperationException();
             }
@@ -62,7 +62,7 @@ public class AttachmentInfoExtractor {
         return extractAttachmentInfo(part, uri, size);
     }
 
-    public static AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
+    public static AttachmentViewInfo extractAttachmentInfoForDatabase(Part part) throws MessagingException {
         return extractAttachmentInfo(part, Uri.EMPTY, AttachmentViewInfo.UNKNOWN_SIZE);
     }
 

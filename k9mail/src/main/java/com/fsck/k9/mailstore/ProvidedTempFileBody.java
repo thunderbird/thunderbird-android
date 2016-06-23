@@ -9,27 +9,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.SizeAware;
-import org.apache.commons.io.output.DeferredFileOutputStream;
+import com.fsck.k9.service.FileProviderDeferredFileOutputStream;
+import com.fsck.k9.service.FileProviderInterface;
 
+
+/** This is a body where the body can be accessed through a FileProvider.
+ * @see FileProviderInterface
+ */
 public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAware {
     public static final int MEMORY_BACKED_THRESHOLD = 1024 * 8;
 
 
-    private final File tempDirectory;
-    @Nullable
-    private File file;
+    private final FileProviderInterface fileProviderInterface;
+
     @Nullable
     private byte[] data;
+    private File file;
 
 
-    public ProvidedTempFileBody(File tempDirectory, String transferEncoding) {
-        this.tempDirectory = tempDirectory;
+    public ProvidedTempFileBody(FileProviderInterface fileProviderInterface, String transferEncoding) {
+        this.fileProviderInterface = fileProviderInterface;
         try {
             setEncoding(transferEncoding);
         } catch (MessagingException e) {
@@ -38,7 +44,7 @@ public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAw
     }
 
     public OutputStream getOutputStream() throws IOException {
-        return new DeferredFileOutputStream(MEMORY_BACKED_THRESHOLD, "decrypted", null, tempDirectory) {
+        return new FileProviderDeferredFileOutputStream(MEMORY_BACKED_THRESHOLD, fileProviderInterface) {
             @Override
             public void close() throws IOException {
                 super.close();
@@ -82,11 +88,11 @@ public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAw
         throw new IllegalStateException("Data must be fully written before it can be read!");
     }
 
-    public File getFile() throws IOException {
+    public Uri getProviderUri(String mimeType) throws IOException {
         if (file == null) {
             writeMemoryToFile();
         }
-        return file;
+        return fileProviderInterface.getUriForProvidedFile(file, mimeType);
     }
 
     private void writeMemoryToFile() throws IOException {
@@ -98,8 +104,6 @@ public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAw
         }
 
         Log.d(K9.LOG_TAG, "Writing body to file for attachment access");
-
-        file = File.createTempFile("decrypted", null, tempDirectory);
 
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(data);

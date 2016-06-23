@@ -132,8 +132,7 @@ public class QuotedMessagePresenter {
                     resources, sourceMessage, content, quoteStyle);
 
             // Load the message with the reply header. TODO replace with MessageViewInfo data
-            view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), AttachmentResolver
-                    .createFromPart(messageCompose, sourceMessage));
+            view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), AttachmentResolver.createFromPart(sourceMessage));
 
             // TODO: Also strip the signature from the text/plain part
             view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, sourceMessage,
@@ -298,7 +297,7 @@ public class QuotedMessagePresenter {
                     }
                     // TODO replace with MessageViewInfo data
                     view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
-                            AttachmentResolver.createFromPart(messageCompose, message));
+                            AttachmentResolver.createFromPart(message));
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {
