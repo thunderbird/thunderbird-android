@@ -25,7 +25,7 @@ public class DecryptedFileProvider extends FileProvider {
     private static final long FILE_DELETE_THRESHOLD_MILLISECONDS = 3 * 60 * 1000;
 
 
-    private static boolean receiverRegistered = false;
+    private static DecryptedFileProviderCleanupReceiver receiverRegistered = null;
 
 
     @Override
@@ -84,15 +84,32 @@ public class DecryptedFileProvider extends FileProvider {
         return directory;
     }
 
-    @MainThread // no need to synchronize for receiverRegistered
-    private static void registerFileCleanupReceiver(Context context) {
-        if (receiverRegistered) {
+    @Override
+    public void onTrimMemory(int level) {
+        if (level < TRIM_MEMORY_COMPLETE) {
             return;
         }
-        receiverRegistered = true;
+        Context context = getContext();
+        if (context == null) {
+            return;
+        }
+
+        deleteOldTemporaryFiles(context);
+        if (receiverRegistered != null) {
+            context.unregisterReceiver(receiverRegistered);
+            receiverRegistered = null;
+        }
+    }
+
+    @MainThread // no need to synchronize for receiverRegistered
+    private static void registerFileCleanupReceiver(Context context) {
+        if (receiverRegistered != null) {
+            return;
+        }
+        receiverRegistered = new DecryptedFileProviderCleanupReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        context.registerReceiver(new DecryptedFileProviderCleanupReceiver(), intentFilter);
+        context.registerReceiver(receiverRegistered, intentFilter);
     }
 
     private static class DecryptedFileProviderCleanupReceiver extends BroadcastReceiver {
@@ -106,7 +123,7 @@ public class DecryptedFileProvider extends FileProvider {
             boolean allFilesDeleted = deleteOldTemporaryFiles(context);
             if (allFilesDeleted) {
                 context.unregisterReceiver(this);
-                receiverRegistered = false;
+                receiverRegistered = null;
             }
         }
     }
