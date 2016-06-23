@@ -5,8 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.support.annotation.MainThread;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -18,9 +22,10 @@ import com.fsck.k9.service.FileProviderInterface;
 public class DecryptedFileProvider extends FileProvider {
     private static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".decryptedfileprovider";
     private static final String DECRYPTED_CACHE_DIRECTORY = "decrypted";
+    private static final long FILE_DELETE_THRESHOLD_MILLISECONDS = 3 * 60 * 1000;
 
 
-    public static final long FILE_DELETE_THRESHOLD_MILLISECONDS = 15 * 60 * 1000;
+    private static boolean receiverRegistered = false;
 
 
     @Override
@@ -28,17 +33,20 @@ public class DecryptedFileProvider extends FileProvider {
         return uri.getQueryParameter("mime_type");
     }
 
-    public static FileProviderInterface getFileProviderInterface(final Context context) {
+    public static FileProviderInterface getFileProviderInterface(Context context) {
+        final Context applicationContext = context.getApplicationContext();
+
         return new FileProviderInterface() {
             @Override
             public File createProvidedFile() throws IOException {
-                File decryptedTempDirectory = getDecryptedTempDirectory(context);
+                registerFileCleanupReceiver(applicationContext);
+                File decryptedTempDirectory = getDecryptedTempDirectory(applicationContext);
                 return File.createTempFile("decrypted-", null, decryptedTempDirectory);
             }
 
             @Override
             public Uri getUriForProvidedFile(File file, String mimeType) throws IOException {
-                Uri uri = FileProvider.getUriForFile(context, AUTHORITY, file);
+                Uri uri = FileProvider.getUriForFile(applicationContext, AUTHORITY, file);
                 return uri.buildUpon().appendQueryParameter("mime_type", mimeType).build();
             }
         };
@@ -47,8 +55,10 @@ public class DecryptedFileProvider extends FileProvider {
     public static boolean deleteOldTemporaryFiles(Context context) {
         File tempDirectory = getDecryptedTempDirectory(context);
         boolean allFilesDeleted = true;
+        long deletionThreshold = new Date().getTime() - FILE_DELETE_THRESHOLD_MILLISECONDS;
         for (File tempFile : tempDirectory.listFiles()) {
-            if (tempFile.lastModified() < new Date().getTime() - FILE_DELETE_THRESHOLD_MILLISECONDS) {
+            long lastModified = tempFile.lastModified();
+            if (lastModified < deletionThreshold) {
                 boolean fileDeleted = tempFile.delete();
                 if (!fileDeleted) {
                     Log.e(K9.LOG_TAG, "Failed to delete temporary file");
@@ -72,5 +82,32 @@ public class DecryptedFileProvider extends FileProvider {
         }
 
         return directory;
+    }
+
+    @MainThread // no need to synchronize for receiverRegistered
+    private static void registerFileCleanupReceiver(Context context) {
+        if (receiverRegistered) {
+            return;
+        }
+        receiverRegistered = true;
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        context.registerReceiver(new DecryptedFileProviderCleanupReceiver(), intentFilter);
+    }
+
+    private static class DecryptedFileProviderCleanupReceiver extends BroadcastReceiver {
+        @Override
+        @MainThread
+        public void onReceive(Context context, Intent intent) {
+            if (!Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
+                throw new IllegalArgumentException("onReceive called with action that isn't screen off!");
+            }
+
+            boolean allFilesDeleted = deleteOldTemporaryFiles(context);
+            if (allFilesDeleted) {
+                context.unregisterReceiver(this);
+                receiverRegistered = false;
+            }
+        }
     }
 }
