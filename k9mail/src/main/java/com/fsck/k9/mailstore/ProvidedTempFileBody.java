@@ -17,7 +17,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.SizeAware;
 import org.apache.commons.io.output.DeferredFileOutputStream;
 
-public class DecryptedTempFileBody extends BinaryAttachmentBody implements SizeAware {
+public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAware {
     public static final int MEMORY_BACKED_THRESHOLD = 1024 * 8;
 
 
@@ -28,7 +28,7 @@ public class DecryptedTempFileBody extends BinaryAttachmentBody implements SizeA
     private byte[] data;
 
 
-    public DecryptedTempFileBody(File tempDirectory, String transferEncoding) {
+    public ProvidedTempFileBody(File tempDirectory, String transferEncoding) {
         this.tempDirectory = tempDirectory;
         try {
             setEncoding(transferEncoding);

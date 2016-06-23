@@ -34,8 +34,7 @@ import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.util.MimeUtil;
 
-// TODO rename this class? this class doesn't really bear any 'decrypted' semantics anymore...
-public class DecryptStreamParser {
+public class MimePartStreamParser {
 
     private static final String DECRYPTED_CACHE_DIRECTORY = "decrypted";
 
@@ -83,7 +82,7 @@ public class DecryptStreamParser {
 
     private static Body createBody(InputStream inputStream, String transferEncoding, File decryptedTempDirectory)
             throws IOException {
-        DecryptedTempFileBody body = new DecryptedTempFileBody(decryptedTempDirectory, transferEncoding);
+        ProvidedTempFileBody body = new ProvidedTempFileBody(decryptedTempDirectory, transferEncoding);
         OutputStream outputStream = body.getOutputStream();
         try {
             InputStream decodingInputStream;

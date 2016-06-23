@@ -15,7 +15,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.DecryptedTempFileBody;
+import com.fsck.k9.mailstore.ProvidedTempFileBody;
 import com.fsck.k9.mailstore.LocalPart;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.provider.K9FileProvider;
@@ -44,18 +44,16 @@ public class AttachmentInfoExtractor {
             uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
         } else {
             Body body = part.getBody();
-            if (body instanceof DecryptedTempFileBody) {
-                DecryptedTempFileBody decryptedTempFileBody = (DecryptedTempFileBody) body;
+            if (body instanceof ProvidedTempFileBody) {
+                ProvidedTempFileBody providedTempFileBody = (ProvidedTempFileBody) body;
                 try {
-                    size = decryptedTempFileBody.getSize();
-
-                    File file = decryptedTempFileBody.getFile();
+                    File file = providedTempFileBody.getFile();
                     uri = K9FileProvider.getUriForFile(context, file, part.getMimeType());
+                    size = providedTempFileBody.getSize();
+                    return extractAttachmentInfo(part, uri, size);
                 } catch (IOException e) {
                     throw new MessagingException("Error preparing decrypted data as attachment", e);
                 }
-
-                return extractAttachmentInfo(part, uri, size);
             } else {
                 throw new UnsupportedOperationException();
             }
