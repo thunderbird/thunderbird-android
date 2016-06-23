@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
@@ -129,6 +130,7 @@ public abstract class Message implements Part, CompositeBody {
     @Override
     public abstract void setHeader(String name, String value) throws MessagingException;
 
+    @NonNull
     @Override
     public abstract String[] getHeader(String name) throws MessagingException;
 

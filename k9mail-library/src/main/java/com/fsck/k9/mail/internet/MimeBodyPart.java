@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import android.support.annotation.NonNull;
+
 import org.apache.james.mime4j.util.MimeUtil;
 
 /**
@@ -61,6 +63,7 @@ public class MimeBodyPart extends BodyPart {
         mHeader.setHeader(name, value);
     }
 
+    @NonNull
     @Override
     public String[] getHeader(String name) throws MessagingException {
         return mHeader.getHeader(name);

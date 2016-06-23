@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.support.annotation.NonNull;
+
+
 public interface Part {
     void addHeader(String name, String value) throws MessagingException;
 
@@ -25,6 +28,7 @@ public interface Part {
     /**
      * Returns an array of headers of the given name. The array may be empty.
      */
+    @NonNull
     String[] getHeader(String name) throws MessagingException;
 
     boolean isMimeType(String mimeType);

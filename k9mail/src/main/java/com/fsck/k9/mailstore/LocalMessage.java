@@ -9,6 +9,7 @@ import java.util.Set;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -517,10 +518,12 @@ public class LocalMessage extends MimeMessage {
         super.setHeader(name, value);
     }
 
+    @NonNull
     @Override
     public String[] getHeader(String name) throws MessagingException {
-        if (!mHeadersLoaded)
+        if (!mHeadersLoaded) {
             loadHeaders();
+        }
         return super.getHeader(name);
     }
 

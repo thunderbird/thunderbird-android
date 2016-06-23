@@ -10,7 +10,6 @@ import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.R;
-import com.fsck.k9.ui.crypto.MessageCryptoSplitter;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -20,6 +19,7 @@ import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
+import com.fsck.k9.ui.crypto.MessageCryptoSplitter;
 import com.fsck.k9.ui.crypto.MessageCryptoSplitter.CryptoMessageParts;
 
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
@@ -38,7 +38,11 @@ public class MessageViewInfoExtractor {
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
 
-    private MessageViewInfoExtractor() {}
+
+    private static final AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
+
+
+    private MessageViewInfoExtractor() { }
 
     public static MessageViewInfo extractMessageForView(Context context,
             Message message, MessageCryptoAnnotations annotations) throws MessagingException {
@@ -85,7 +89,7 @@ public class MessageViewInfoExtractor {
             MessageExtractor.findViewablesAndAttachments(part, viewableParts, attachments);
         }
 
-        attachmentInfos.addAll(AttachmentInfoExtractor.extractAttachmentInfos(attachments));
+        attachmentInfos.addAll(attachmentInfoExtractor.extractAttachmentInfos(attachments));
         return MessageViewInfoExtractor.extractTextFromViewables(context, viewableParts);
     }
 

@@ -8,6 +8,7 @@ import java.util.Stack;
 
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
@@ -41,11 +42,14 @@ public class AttachmentResolver {
 
     @WorkerThread
     public static AttachmentResolver createFromPart(Part part) {
-        Map<String, Uri> contentIdToAttachmentUriMap = buildCidToAttachmentUriMap(part);
+        AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
+        Map<String, Uri> contentIdToAttachmentUriMap = buildCidToAttachmentUriMap(attachmentInfoExtractor, part);
         return new AttachmentResolver(contentIdToAttachmentUriMap);
     }
 
-    private static Map<String,Uri> buildCidToAttachmentUriMap(Part rootPart) {
+    @VisibleForTesting
+    static Map<String,Uri> buildCidToAttachmentUriMap(AttachmentInfoExtractor attachmentInfoExtractor,
+            Part rootPart) {
         HashMap<String,Uri> result = new HashMap<>();
 
         Stack<Part> partsToCheck = new Stack<>();
@@ -64,7 +68,7 @@ public class AttachmentResolver {
                 try {
                     String contentId = part.getContentId();
                     if (contentId != null) {
-                        AttachmentViewInfo attachmentInfo = AttachmentInfoExtractor.extractAttachmentInfo(part);
+                        AttachmentViewInfo attachmentInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
                         result.put(contentId, attachmentInfo.uri);
                     }
                 } catch (MessagingException e) {

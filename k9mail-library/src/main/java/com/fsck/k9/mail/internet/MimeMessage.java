@@ -15,6 +15,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
+import android.support.annotation.NonNull;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
@@ -422,6 +424,7 @@ public class MimeMessage extends Message {
         mHeader.setHeader(name, value);
     }
 
+    @NonNull
     @Override
     public String[] getHeader(String name) throws MessagingException {
         return mHeader.getHeader(name);
