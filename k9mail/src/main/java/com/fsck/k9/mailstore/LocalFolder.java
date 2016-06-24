@@ -1407,7 +1407,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         cv.put("decoded_body_size", attachment.size);
 
         if (MimeUtility.isMultipart(part.getMimeType())) {
-            cv.put("boundary", MimeMultipart.generateBoundary());
+            cv.put("boundary", new MimeMultipart().generateBoundary());
         }
     }
 

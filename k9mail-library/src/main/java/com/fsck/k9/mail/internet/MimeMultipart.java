@@ -32,7 +32,7 @@ public class MimeMultipart extends Multipart {
         this.boundary = boundary;
     }
 
-    public static String generateBoundary() {
+    public String generateBoundary() {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
         sb.append("----");
