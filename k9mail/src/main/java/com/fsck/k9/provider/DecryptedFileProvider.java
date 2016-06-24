@@ -4,6 +4,7 @@ package com.fsck.k9.provider;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -66,6 +67,11 @@ public class DecryptedFileProvider extends FileProvider {
                     allFilesDeleted = false;
                 }
             } else {
+                if (K9.DEBUG) {
+                    String timeLeftStr = String.format(
+                            Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
+                    Log.e(K9.LOG_TAG, "Not deleting temp file (for another " + timeLeftStr + " minutes)");
+                }
                 allFilesDeleted = false;
             }
         }
@@ -106,6 +112,9 @@ public class DecryptedFileProvider extends FileProvider {
         if (receiverRegistered != null) {
             return;
         }
+        if (K9.DEBUG) {
+            Log.d(K9.LOG_TAG, "Registering temp file cleanup receiver");
+        }
         receiverRegistered = new DecryptedFileProviderCleanupReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
@@ -120,8 +129,15 @@ public class DecryptedFileProvider extends FileProvider {
                 throw new IllegalArgumentException("onReceive called with action that isn't screen off!");
             }
 
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "Cleaning up temp files");
+            }
+
             boolean allFilesDeleted = deleteOldTemporaryFiles(context);
             if (allFilesDeleted) {
+                if (K9.DEBUG) {
+                    Log.d(K9.LOG_TAG, "Unregistering temp file cleanup receiver");
+                }
                 context.unregisterReceiver(this);
                 receiverRegistered = null;
             }
