@@ -468,8 +468,7 @@ public class MessageTest {
         message.setHeader("Date", "Wed, 28 Aug 2013 08:51:09 -0400");
         message.setEncoding(MimeUtil.ENC_8BIT);
 
-        NonRandomMimeMultipartTest multipartBody = new NonRandomMimeMultipartTest();
-        multipartBody.setSubType("mixed");
+        MimeMultipart multipartBody = new MimeMultipart("multipart/mixed", generateBoundary());
         multipartBody.addBodyPart(textBodyPart(MimeUtil.ENC_8BIT));
         multipartBody.addBodyPart(textBodyPart(MimeUtil.ENC_QUOTED_PRINTABLE));
         multipartBody.addBodyPart(binaryBodyPart());
@@ -516,19 +515,8 @@ public class MessageTest {
         return bodyPart;
     }
 
-    private class NonRandomMimeMultipartTest extends MimeMultipart {
-
-        public NonRandomMimeMultipartTest() throws MessagingException {
-            super();
-        }
-
-        @Override
-        public String generateBoundary() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("----Boundary");
-            sb.append(Integer.toString(mMimeBoundary++));
-            return sb.toString();
-        }
+    private String generateBoundary() {
+        return "----Boundary" + Integer.toString(mMimeBoundary++);
     }
 
     @Test
