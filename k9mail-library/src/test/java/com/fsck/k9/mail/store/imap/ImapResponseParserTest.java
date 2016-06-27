@@ -358,6 +358,30 @@ public class ImapResponseParserTest {
         assertEquals("\\Seen", response.getList(2).getList(10).getString(0));
     }
 
+    @Test
+    public void readStatusResponse_withNoResponse_shouldThrow() throws Exception {
+        ImapResponseParser parser = createParser("1 NO\r\n");
+
+        try {
+            parser.readStatusResponse("1", "COMMAND", "[logId]", null);
+            fail("Expected exception");
+        } catch (NegativeImapResponseException e) {
+            assertEquals("Command: COMMAND; response: #1# [NO]", e.getMessage());
+        }
+    }
+
+    @Test
+    public void readStatusResponse_withNoResponseAndAlertText_shouldThrowWithAlertText() throws Exception {
+        ImapResponseParser parser = createParser("1 NO [ALERT] Access denied\r\n");
+
+        try {
+            parser.readStatusResponse("1", "COMMAND", "[logId]", null);
+            fail("Expected exception");
+        } catch (NegativeImapResponseException e) {
+            assertEquals("Access denied", e.getAlertText());
+        }
+    }
+
     private ImapResponseParser createParser(String response) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getBytes());
         PeekableInputStream peekableInputStream = new PeekableInputStream(byteArrayInputStream);

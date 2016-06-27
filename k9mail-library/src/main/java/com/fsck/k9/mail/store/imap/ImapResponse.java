@@ -55,19 +55,6 @@ class ImapResponse extends ImapList {
         this.callback = callback;
     }
 
-    public String getAlertText() {
-        if (size() > 1 && ImapResponseParser.equalsIgnoreCase(get(1), "[ALERT]")) {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 2, count = size(); i < count; i++) {
-                sb.append(get(i).toString());
-                sb.append(' ');
-            }
-            return sb.toString();
-        } else {
-            return null;
-        }
-    }
-
     @Override
     public String toString() {
         return "#" + (commandContinuationRequested ? "+" : tag) + "# " + super.toString();
