@@ -73,8 +73,10 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     private View mAttachmentsContainer;
     private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
-    private String mText;
     private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<AttachmentViewInfo, AttachmentView>();
+
+    private String currentHtmlText;
+    private AttachmentResolver currentAttachmentResolver;
 
 
     @Override
@@ -379,7 +381,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     public void showPictures() {
         setLoadPictures(true);
-        displayHtmlContentWithInlineAttachments(mText, null);
+        refreshDisplayedContent();
     }
 
     public void enableAttachmentButtons() {
@@ -424,9 +426,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             mSavedState = null;
         }
 
-        mText = getTextToDisplay(messageViewContainer);
-        if (mText != null && lookForImages) {
-            if (Utility.hasExternalImages(mText) && !isShowingPictures()) {
+        String textToDisplay = getTextToDisplay(messageViewContainer);
+        if (textToDisplay != null && lookForImages) {
+            if (Utility.hasExternalImages(textToDisplay) && !isShowingPictures()) {
                 if (automaticallyLoadPictures) {
                     setLoadPictures(true);
                 } else {
@@ -447,14 +449,11 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
             mSidebar.setVisibility(View.GONE);
         }
 
-        String text;
-        if (mText != null) {
-            text = mText;
-        } else {
-            text = wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
+        if (textToDisplay == null) {
+            textToDisplay = wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
 
-        displayHtmlContentWithInlineAttachments(text, messageViewContainer.attachmentResolver);
+        displayHtmlContentWithInlineAttachments(textToDisplay, messageViewContainer.attachmentResolver);
     }
 
     private String getTextToDisplay(MessageViewContainer messageViewContainer) {
@@ -486,7 +485,17 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     }
 
     private void displayHtmlContentWithInlineAttachments(String htmlText, AttachmentResolver attachmentResolver) {
+        currentHtmlText = htmlText;
+        currentAttachmentResolver = attachmentResolver;
         mMessageContentView.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver);
+    }
+
+    private void refreshDisplayedContent() {
+        mMessageContentView.displayHtmlContentWithInlineAttachments(currentHtmlText, currentAttachmentResolver);
+    }
+
+    private void clearDisplayedContent() {
+        mMessageContentView.displayHtmlContentWithInlineAttachments("", null);
     }
 
     public void renderAttachments(MessageViewContainer messageContainer) throws MessagingException {
@@ -518,6 +527,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         mAttachments.removeAllViews();
         mHiddenAttachments.removeAllViews();
 
+        currentHtmlText = null;
+        currentAttachmentResolver = null;
+
         /*
          * Clear the WebView content
          *
@@ -525,7 +537,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
          * its size because the button to download the complete message was previously shown and
          * is now hidden.
          */
-        displayHtmlContentWithInlineAttachments("", null);
+        clearDisplayedContent();
     }
 
     @Override

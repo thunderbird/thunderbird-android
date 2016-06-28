@@ -3,6 +3,8 @@ package com.fsck.k9.view;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -104,17 +106,18 @@ public class MessageWebView extends RigidWebView {
         getSettings().setDisplayZoomControls(!supportsMultiTouch);
     }
 
-    public void displayHtmlContentWithInlineAttachments(String htmlText, AttachmentResolver attachmentResolver) {
+    public void displayHtmlContentWithInlineAttachments(@NonNull String htmlText,
+            @Nullable AttachmentResolver attachmentResolver) {
         setAttachmentResolverWebViewClient(attachmentResolver);
         setHtmlContent(htmlText);
     }
 
-    private void setAttachmentResolverWebViewClient(AttachmentResolver attachmentResolver) {
+    private void setAttachmentResolverWebViewClient(@Nullable AttachmentResolver attachmentResolver) {
         K9WebViewClient webViewClient = K9WebViewClient.newInstance(attachmentResolver);
         setWebViewClient(webViewClient);
     }
 
-    private void setHtmlContent(String htmlText) {
+    private void setHtmlContent(@NonNull String htmlText) {
         // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
         String content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
         if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.provider.Browser;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebResourceRequest;
@@ -32,10 +33,11 @@ abstract class K9WebViewClient extends WebViewClient {
     private static final WebResourceResponse RESULT_DUMMY_RESPONSE = new WebResourceResponse(null, null, null);
 
 
+    @Nullable
     private final AttachmentResolver attachmentResolver;
 
 
-    public static K9WebViewClient newInstance(AttachmentResolver attachmentResolver) {
+    public static K9WebViewClient newInstance(@Nullable AttachmentResolver attachmentResolver) {
         if (Build.VERSION.SDK_INT < 21) {
             return new PreLollipopWebViewClient(attachmentResolver);
         }
@@ -44,7 +46,7 @@ abstract class K9WebViewClient extends WebViewClient {
     }
 
 
-    private K9WebViewClient(AttachmentResolver attachmentResolver) {
+    private K9WebViewClient(@Nullable AttachmentResolver attachmentResolver) {
         this.attachmentResolver = attachmentResolver;
     }
 
@@ -83,6 +85,10 @@ abstract class K9WebViewClient extends WebViewClient {
     protected WebResourceResponse shouldInterceptRequest(WebView webView, Uri uri) {
         if (!CID_SCHEME.equals(uri.getScheme())) {
             return RESULT_DO_NOT_INTERCEPT;
+        }
+
+        if (attachmentResolver == null) {
+            return RESULT_DUMMY_RESPONSE;
         }
 
         String cid = uri.getSchemeSpecificPart();
