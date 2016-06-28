@@ -33,29 +33,30 @@ public class AttachmentInfoExtractor {
     }
 
     public static AttachmentViewInfo extractAttachmentInfo(Context context, Part part) throws MessagingException {
+        Uri uri;
+        long size;
         if (part instanceof LocalPart) {
             LocalPart localPart = (LocalPart) part;
             String accountUuid = localPart.getAccountUuid();
             long messagePartId = localPart.getId();
-            String mimeType = part.getMimeType();
-            String displayName = localPart.getDisplayName();
-            long size = localPart.getSize();
-            boolean firstClassAttachment = localPart.isFirstClassAttachment();
-            Uri uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
-
-            return new AttachmentViewInfo(mimeType, displayName, size, uri, firstClassAttachment, part);
+            size = localPart.getSize();
+            uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
         } else {
             Body body = part.getBody();
             if (body instanceof DecryptedTempFileBody) {
                 DecryptedTempFileBody decryptedTempFileBody = (DecryptedTempFileBody) body;
+                size = decryptedTempFileBody.getSize();
+
                 File file = decryptedTempFileBody.getFile();
-                Uri uri = K9FileProvider.getUriForFile(context, file, part.getMimeType());
-                long size = file.length();
+                uri = K9FileProvider.getUriForFile(context, file, part.getMimeType());
+
                 return extractAttachmentInfo(part, uri, size);
             } else {
                 throw new RuntimeException("Not supported");
             }
         }
+
+        return extractAttachmentInfo(part, uri, size);
     }
 
     public static AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {

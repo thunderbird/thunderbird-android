@@ -6,6 +6,5 @@ public interface LocalPart {
     long getId();
     String getDisplayName();
     long getSize();
-    boolean isFirstClassAttachment();
     LocalMessage getMessage();
 }
