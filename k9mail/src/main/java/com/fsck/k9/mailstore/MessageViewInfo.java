@@ -20,17 +20,19 @@ public class MessageViewInfo {
 
     public static class MessageViewContainer {
         public final String text;
+        public final AttachmentResolver attachmentResolver;
         public final Part rootPart;
         public final List<AttachmentViewInfo> attachments;
         public final CryptoResultAnnotation cryptoAnnotation;
 
 
-        MessageViewContainer(String text, Part rootPart, List<AttachmentViewInfo> attachments,
-                CryptoResultAnnotation cryptoAnnotation) {
+        MessageViewContainer(String text, AttachmentResolver attachmentResolver, Part rootPart,
+                List<AttachmentViewInfo> attachments, CryptoResultAnnotation cryptoAnnotation) {
             this.text = text;
             this.rootPart = rootPart;
             this.attachments = attachments;
             this.cryptoAnnotation = cryptoAnnotation;
+            this.attachmentResolver = attachmentResolver;
         }
     }
 }

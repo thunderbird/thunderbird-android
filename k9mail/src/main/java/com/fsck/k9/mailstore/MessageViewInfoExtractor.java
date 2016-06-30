@@ -68,8 +68,12 @@ public class MessageViewInfoExtractor {
             ViewableExtractedText viewable = MessageViewInfoExtractor.extractTextFromViewables(context, viewableParts);
             List<AttachmentViewInfo> attachmentInfos = AttachmentInfoExtractor.extractAttachmentInfos(context, attachments);
 
+            AttachmentResolver attachmentResolver =
+                    AttachmentResolver.createFromPart(context, part);
+
             MessageViewContainer messageViewContainer =
-                    new MessageViewContainer(viewable.html, part, attachmentInfos, pgpAnnotation);
+                    new MessageViewContainer(viewable.html, attachmentResolver,
+                            part, attachmentInfos, pgpAnnotation);
 
             containers.add(messageViewContainer);
         }
