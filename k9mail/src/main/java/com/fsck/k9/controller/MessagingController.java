@@ -56,6 +56,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -4314,7 +4315,7 @@ public class MessagingController implements Runnable {
             return false;
         }
 
-        if (account.isNotifyContactsMailOnly() && !isContact(message.getFrom())) {
+        if (account.isNotifyContactsMailOnly() && !Contacts.getInstance(context).containsContact(message.getFrom())) {
             return false;
         }
 
@@ -4393,25 +4394,6 @@ public class MessagingController implements Runnable {
         } else {
             return false;
         }
-    }
-
-    private boolean isContact(Address[] addrs) {
-        if (addrs == null) {
-            return false;
-        }
-
-        for (Address addr : addrs) {
-            Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-                    new String[]{ContactsContract.Contacts.DISPLAY_NAME},
-                    ContactsContract.CommonDataKinds.Email.ADDRESS + " LIKE ? AND " +
-                            ContactsContract.Contacts.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE+"'",
-                    new String[]{addr.getAddress()}, "");
-            if (cursor.getCount() != 0) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     static AtomicInteger sequencing = new AtomicInteger(0);
