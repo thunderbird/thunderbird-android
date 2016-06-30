@@ -1179,7 +1179,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="crypto_msg_sign_unknown">Signature made by unknown key.</string>
     <string name="crypto_msg_sign_verified">Signature made by trusted key.</string>
-    <string name="crypto_msg_sign_unverified">Signature made by trusted key.</string>
+    <string name="crypto_msg_sign_unverified">Signature made by untrusted key!</string>
     <string name="crypto_msg_sign_error">Signature contained an error.</string>
     <string name="crypto_msg_sign_mismatch">Signature made by wrong key.</string>
     <string name="crypto_msg_sign_expired">Signature made by expired key.</string>
