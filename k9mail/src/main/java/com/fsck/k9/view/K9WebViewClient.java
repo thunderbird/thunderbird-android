@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.AttachmentResolver;
+import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
 
 
 /**
@@ -31,6 +32,7 @@ abstract class K9WebViewClient extends WebViewClient {
     private static final String CID_SCHEME = "cid";
     private static final WebResourceResponse RESULT_DO_NOT_INTERCEPT = null;
     private static final WebResourceResponse RESULT_DUMMY_RESPONSE = new WebResourceResponse(null, null, null);
+    private OnPageFinishedListener onPageFinishedListener;
 
 
     @Nullable
@@ -111,6 +113,18 @@ abstract class K9WebViewClient extends WebViewClient {
         } catch (Exception e) {
             Log.e(K9.LOG_TAG, "Error while intercepting URI: " + uri, e);
             return RESULT_DUMMY_RESPONSE;
+        }
+    }
+
+    public void setOnPageFinishedListener(OnPageFinishedListener onPageFinishedListener) {
+        this.onPageFinishedListener = onPageFinishedListener;
+    }
+
+    @Override
+    public void onPageFinished(WebView view, String url) {
+        super.onPageFinished(view, url);
+        if (onPageFinishedListener != null) {
+            onPageFinishedListener.onPageFinished();
         }
     }
 

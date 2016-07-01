@@ -119,7 +119,7 @@ public class QuotedMessageMvpView {
     }
 
     public void setQuotedHtml(String quotedContent, AttachmentResolver attachmentResolver) {
-        mQuotedHTML.displayHtmlContentWithInlineAttachments(quotedContent, attachmentResolver);
+        mQuotedHTML.displayHtmlContentWithInlineAttachments(quotedContent, attachmentResolver, null);
     }
 
     public void setQuotedText(String quotedText) {

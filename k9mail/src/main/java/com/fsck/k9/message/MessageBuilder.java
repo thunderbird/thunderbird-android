@@ -483,7 +483,7 @@ public abstract class MessageBuilder {
         }.execute();
     }
 
-    final public void onActivityResult(Callback callback, final int requestCode, int resultCode, final Intent data) {
+    final public void onActivityResult(final int requestCode, int resultCode, final Intent data, Callback callback) {
         synchronized (callbackLock) {
             asyncCallback = callback;
             queuedMimeMessage = null;

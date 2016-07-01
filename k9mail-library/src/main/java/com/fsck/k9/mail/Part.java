@@ -27,7 +27,7 @@ public interface Part {
      */
     String[] getHeader(String name) throws MessagingException;
 
-    boolean isMimeType(String mimeType) throws MessagingException;
+    boolean isMimeType(String mimeType);
 
     String getMimeType();
 

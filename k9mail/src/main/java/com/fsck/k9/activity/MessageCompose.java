@@ -19,6 +19,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.Loader;
 import android.content.pm.ActivityInfo;
@@ -55,6 +56,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
@@ -89,6 +91,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.IdentityHeaderParser;
@@ -157,6 +160,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private static final int REQUEST_MASK_RECIPIENT_PRESENTER = (1<<8);
     private static final int REQUEST_MASK_MESSAGE_BUILDER = (2<<8);
+    private static final int REQUEST_MASK_LOADER_HELPER = (3<<8);
+
+    private static final int INITIAL_MAX_LOADER_ID = 128;
 
     /**
      * Regular expression to remove the first localized "Re:" prefix in subjects.
@@ -166,6 +172,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private static final Pattern PREFIX = Pattern.compile("^AW[:\\s]\\s*", Pattern.CASE_INSENSITIVE);
     private QuotedMessagePresenter quotedMessagePresenter;
+    private MessageLoaderHelper messageLoaderHelper;
 
     /**
      * The account used for message composition.
@@ -196,7 +203,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * have already been added from the restore of the view state.
      */
     private boolean mSourceMessageProcessed = false;
-    private int mMaxLoaderId = 0;
+    private int mMaxLoaderId = INITIAL_MAX_LOADER_ID;
 
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
@@ -248,8 +255,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Contains the action we're currently performing (e.g. replying to a message)
      */
     private Action mAction;
-
-    private Listener mListener = new Listener();
 
     private boolean mReadReceipt = false;
 
@@ -345,7 +350,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
@@ -507,18 +511,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (!mSourceMessageProcessed) {
             if (mAction == Action.REPLY || mAction == Action.REPLY_ALL ||
                     mAction == Action.FORWARD || mAction == Action.EDIT_DRAFT) {
-                /*
-                 * If we need to load the message we add ourself as a message listener here
-                 * so we can kick it off. Normally we add in onResume but we don't
-                 * want to reload the message every time the activity is resumed.
-                 * There is no harm in adding twice.
-                 */
-                MessagingController.getInstance(getApplication()).addListener(mListener);
-
-                final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.getAccountUuid());
-                final String folderName = mMessageReference.getFolderName();
-                final String sourceMessageUid = mMessageReference.getUid();
-                MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
+                messageLoaderHelper = new MessageLoaderHelper(this, getLoaderManager(), getFragmentManager(),
+                        messageLoaderCallbacks);
+                mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
+                messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference);
             }
 
             if (mAction != Action.EDIT_DRAFT) {
@@ -668,15 +664,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
-        MessagingController.getInstance(getApplication()).addListener(mListener);
+        MessagingController.getInstance(this).addListener(messagingListener);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MessagingController.getInstance(getApplication()).removeListener(mListener);
+        MessagingController.getInstance(this).removeListener(messagingListener);
 
         boolean isPausingOnConfigurationChange = (getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION)
                 == ActivityInfo.CONFIG_ORIENTATION;
@@ -731,7 +727,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         super.onRestoreInstanceState(savedInstanceState);
 
         mAttachments.removeAllViews();
-        mMaxLoaderId = 0;
+        mMaxLoaderId = INITIAL_MAX_LOADER_ID;
 
         mNumAttachmentsLoading = savedInstanceState.getInt(STATE_KEY_NUM_ATTACHMENTS_LOADING);
         mWaitingForAttachments = WaitingAction.NONE;
@@ -1140,13 +1136,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         "this is an illegal state!");
                 return;
             }
-            currentMessageBuilder.onActivityResult(this, requestCode, resultCode, data);
+            currentMessageBuilder.onActivityResult(requestCode, resultCode, data, this);
             return;
         }
 
         if ((requestCode & REQUEST_MASK_RECIPIENT_PRESENTER) == REQUEST_MASK_RECIPIENT_PRESENTER) {
             requestCode ^= REQUEST_MASK_RECIPIENT_PRESENTER;
-            recipientPresenter.onActivityResult(resultCode, requestCode, data);
+            recipientPresenter.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+
+        if ((requestCode & REQUEST_MASK_LOADER_HELPER) == REQUEST_MASK_LOADER_HELPER) {
+            requestCode ^= REQUEST_MASK_LOADER_HELPER;
+            messageLoaderHelper.onActivityResult(requestCode, resultCode, data);
             return;
         }
 
@@ -1533,12 +1535,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             throw new IllegalStateException("tried to edit quoted message with no referenced message");
         }
 
-        // TODO - Should we check if mSourceMessageBody is already present and bypass the MessagingController call?
-        MessagingController.getInstance(getApplication()).addListener(mListener);
-        final Account account = Preferences.getPreferences(this).getAccount(mMessageReference.getAccountUuid());
-        final String folderName = mMessageReference.getFolderName();
-        final String sourceMessageUid = mMessageReference.getUid();
-        MessagingController.getInstance(getApplication()).loadMessageForView(account, folderName, sourceMessageUid, null);
+        messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference);
     }
 
     /**
@@ -1943,69 +1940,88 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    class Listener extends MessagingListener {
+    private MessageLoaderCallbacks messageLoaderCallbacks = new MessageLoaderCallbacks() {
         @Override
-        public void loadMessageForViewStarted(Account account, String folder, String uid) {
-            if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
-                return;
-            }
-
-            mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
+        public void onMessageDataLoadFinished(LocalMessage message) {
+            // nothing to do here, we don't care about message headers
         }
 
         @Override
-        public void loadMessageForViewFinished(Account account, String folder, String uid, LocalMessage message) {
-            if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
-                return;
-            }
-
+        public void onMessageDataLoadFailed() {
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
+            Toast.makeText(MessageCompose.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
         }
 
         @Override
-        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-                final LocalMessage message) {
-            if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
-                return;
-            }
+        public void onMessageViewInfoLoadFinished(LocalMessage localMessage, MessageViewInfo messageViewInfo) {
+            mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
+            loadLocalMessageForDisplay(localMessage, mAction);
+        }
 
+        @Override
+        public void onMessageViewInfoLoadFailed(LocalMessage localMessage) {
+            mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
+            Toast.makeText(MessageCompose.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void setLoadingProgress(int current, int max) {
+            // nvm - we don't have a progress bar
+        }
+
+        @Override
+        public void startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
+                int flagsMask, int flagValues, int extraFlags) {
+            try {
+                requestCode |= REQUEST_MASK_LOADER_HELPER;
+                startIntentSenderForResult(si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
+            } catch (SendIntentException e) {
+                Log.e(K9.LOG_TAG, "Irrecoverable error calling PendingIntent!", e);
+            }
+        }
+
+        @Override
+        public void onDownloadErrorMessageNotFound() {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    // We check to see if we've previously processed the source message since this
-                    // could be called when switching from HTML to text replies. If that happens, we
-                    // only want to update the UI with quoted text (which picks the appropriate
-                    // part).
-                    loadLocalMessageForDisplay(message, mAction);
+                    Toast.makeText(MessageCompose.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
                 }
             });
         }
 
         @Override
-        public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t) {
-            if (mMessageReference == null || !mMessageReference.getUid().equals(uid)) {
-                return;
-            }
-            mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
-            // TODO show network error
+        public void onDownloadErrorNetworkError() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MessageCompose.this, R.string.status_network_error, Toast.LENGTH_LONG).show();
+                }
+            });
         }
+    };
+
+    // TODO We miss callbacks for this listener if they happens while we are paused!
+    public MessagingListener messagingListener = new MessagingListener() {
 
         @Override
         public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
-            // Track UID changes of the source message
-            if (mMessageReference != null) {
-                final Account sourceAccount = Preferences.getPreferences(MessageCompose.this)
-                        .getAccount(mMessageReference.getAccountUuid());
-                final String sourceFolder = mMessageReference.getFolderName();
-                final String sourceMessageUid = mMessageReference.getUid();
+            if (mMessageReference == null) {
+                return;
+            }
 
-                if (account.equals(sourceAccount) && (folder.equals(sourceFolder))) {
-                    if (oldUid.equals(sourceMessageUid)) {
-                        mMessageReference = mMessageReference.withModifiedUid(newUid);
-                    }
-                }
+            Account sourceAccount = Preferences.getPreferences(MessageCompose.this)
+                    .getAccount(mMessageReference.getAccountUuid());
+            String sourceFolder = mMessageReference.getFolderName();
+            String sourceMessageUid = mMessageReference.getUid();
+
+            boolean changedMessageIsCurrent =
+                    account.equals(sourceAccount) && folder.equals(sourceFolder) && oldUid.equals(sourceMessageUid);
+            if (changedMessageIsCurrent) {
+                mMessageReference = mMessageReference.withModifiedUid(newUid);
             }
         }
-    }
+
+    };
 
 }

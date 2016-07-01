@@ -1,5 +1,6 @@
 package com.fsck.k9.view;
 
+
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +42,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.ui.messageview.OnCryptoClickListener;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
@@ -52,6 +54,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView mCcView;
     private TextView mCcLabel;
     private TextView mSubjectView;
+    private MessageCryptoStatusView mCryptoStatusIcon;
 
     private View mChip;
     private CheckBox mFlagged;
@@ -70,6 +73,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private QuickContactBadge mContactBadge;
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
+    private OnCryptoClickListener onCryptoClickListener;
 
     /**
      * Pair class is only available since API Level 5, so we need
@@ -130,6 +134,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mToView.setOnLongClickListener(this);
         mCcView.setOnLongClickListener(this);
 
+        mCryptoStatusIcon = (MessageCryptoStatusView) findViewById(R.id.crypto_status_icon);
+        mCryptoStatusIcon.setOnClickListener(this);
+
         mMessageHelper = MessageHelper.getInstance(mContext);
 
         hideAdditionalHeaders();
@@ -146,6 +153,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             case R.id.cc: {
                 expand((TextView)view, ((TextView)view).getEllipsize() != null);
                 layoutChanged();
+                break;
+            }
+            case R.id.crypto_status_icon: {
+                onCryptoClickListener.onCryptoClick();
+                break;
             }
         }
     }
@@ -244,7 +256,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     }
 
-    public void populate(final Message message, final Account account) throws MessagingException {
+    public void populate(final Message message, final Account account) {
         final Contacts contacts = K9.showContactName() ? mContacts : null;
         final CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
         final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
@@ -328,6 +340,21 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         } else {
             hideAdditionalHeaders();
         }
+    }
+
+    public void setCryptoStatusLoading() {
+        mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.LOADING);
+    }
+
+    public void setCryptoStatusDisabled() {
+        mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.DISABLED);
+    }
+
+    public void setCryptoStatus(MessageCryptoDisplayStatus displayStatus) {
+        mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setCryptoDisplayStatus(displayStatus);
     }
 
     public void onShowAdditionalHeaders() {
@@ -481,5 +508,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public void showSubjectLine() {
         mSubjectView.setVisibility(VISIBLE);
+    }
+
+    public void setOnCryptoClickListener(OnCryptoClickListener onCryptoClickListener) {
+        this.onCryptoClickListener = onCryptoClickListener;
     }
 }
