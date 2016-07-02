@@ -18,7 +18,7 @@ public interface Part {
 
     String getContentType();
 
-    String getDisposition() throws MessagingException;
+    String getDisposition();
 
     String getContentId();
 

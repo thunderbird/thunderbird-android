@@ -12,34 +12,41 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.Attachment;
+import com.fsck.k9.activity.misc.Attachment.LoadingState;
 import com.fsck.k9.mail.internet.MimeUtility;
 
 /**
  * Loader to fetch metadata of an attachment.
  */
 public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
-    private final Attachment mAttachment;
+    private final Attachment sourceAttachment;
+    private Attachment cachedResultAttachment;
+
 
     public AttachmentInfoLoader(Context context, Attachment attachment) {
         super(context);
-        mAttachment = attachment;
+        if (attachment.state != LoadingState.URI_ONLY) {
+            throw new IllegalArgumentException("Attachment provided to metadata loader must be in URI_ONLY state");
+        }
+
+        sourceAttachment = attachment;
     }
 
     @Override
     protected void onStartLoading() {
-        if (mAttachment.state == Attachment.LoadingState.METADATA) {
-            deliverResult(mAttachment);
+        if (cachedResultAttachment != null) {
+            deliverResult(cachedResultAttachment);
         }
 
-        if (takeContentChanged() || mAttachment.state == Attachment.LoadingState.URI_ONLY) {
+        if (takeContentChanged() || cachedResultAttachment == null) {
             forceLoad();
         }
     }
 
     @Override
     public Attachment loadInBackground() {
-        Uri uri = mAttachment.uri;
-        String contentType = mAttachment.contentType;
+        Uri uri = sourceAttachment.uri;
+        String contentType = sourceAttachment.contentType;
 
         long size = -1;
         String name = null;
@@ -91,11 +98,7 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
         }
         Log.v(K9.LOG_TAG, "new attachment.size: " + size);
 
-        mAttachment.contentType = usableContentType;
-        mAttachment.name = name;
-        mAttachment.size = size;
-        mAttachment.state = Attachment.LoadingState.METADATA;
-
-        return mAttachment;
+        cachedResultAttachment = sourceAttachment.deriveWithMetadataLoaded(usableContentType, name, size);
+        return cachedResultAttachment;
     }
 }

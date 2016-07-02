@@ -280,14 +280,11 @@ public class MessageViewInfoExtractor {
      * @return The (file)name of the part if available. An empty string, otherwise.
      */
     private static String getPartName(Part part) {
-        try {
-            String disposition = part.getDisposition();
-            if (disposition != null) {
-                String name = getHeaderParameter(disposition, "filename");
-                return (name == null) ? "" : name;
-            }
+        String disposition = part.getDisposition();
+        if (disposition != null) {
+            String name = getHeaderParameter(disposition, "filename");
+            return (name == null) ? "" : name;
         }
-        catch (MessagingException e) { /* ignore */ }
 
         return "";
     }

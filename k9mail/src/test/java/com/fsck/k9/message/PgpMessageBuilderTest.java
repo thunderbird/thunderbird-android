@@ -376,7 +376,7 @@ public class PgpMessageBuilderTest {
                 .setEnablePgpInline(true)
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
-        pgpMessageBuilder.setAttachments(Collections.singletonList(new Attachment()));
+        pgpMessageBuilder.setAttachments(Collections.singletonList(Attachment.createAttachment(null, 0, null)));
 
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
@@ -393,7 +393,7 @@ public class PgpMessageBuilderTest {
                 .setEnablePgpInline(true)
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
-        pgpMessageBuilder.setAttachments(Collections.singletonList(new Attachment()));
+        pgpMessageBuilder.setAttachments(Collections.singletonList(Attachment.createAttachment(null, 0, null)));
 
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
