@@ -40,7 +40,6 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
-import android.provider.ContactsContract;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
@@ -153,6 +152,7 @@ public class MessagingController implements Runnable {
 
     private final Context context;
     private final NotificationController notificationController;
+    private final Contacts contacts;
     private volatile boolean stopped = false;
 
     private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
@@ -211,9 +211,11 @@ public class MessagingController implements Runnable {
 
 
     @VisibleForTesting
-    MessagingController(Context context, NotificationController notificationController) {
+    MessagingController(Context context, NotificationController notificationController, Contacts contacts) {
         this.context = context;
         this.notificationController = notificationController;
+        this.contacts = contacts;
+
         mThread = new Thread(this);
         mThread.setName("MessagingController");
         mThread.start();
@@ -233,7 +235,8 @@ public class MessagingController implements Runnable {
         if (inst == null) {
             Context appContext = context.getApplicationContext();
             NotificationController notificationController = NotificationController.newInstance(appContext);
-            inst = new MessagingController(appContext, notificationController);
+            Contacts contacts = Contacts.getInstance(context);
+            inst = new MessagingController(appContext, notificationController, contacts);
         }
         return inst;
     }
@@ -4315,7 +4318,7 @@ public class MessagingController implements Runnable {
             return false;
         }
 
-        if (account.isNotifyContactsMailOnly() && !Contacts.getInstance(context).containsContact(message.getFrom())) {
+        if (account.isNotifyContactsMailOnly() && !contacts.containsContact(message.getFrom())) {
             return false;
         }
 

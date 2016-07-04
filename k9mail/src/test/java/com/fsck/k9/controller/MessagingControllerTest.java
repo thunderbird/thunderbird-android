@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +13,7 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -49,7 +49,6 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anySet;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
@@ -69,6 +68,8 @@ public class MessagingControllerTest {
 
 
     private MessagingController controller;
+    @Mock
+    private Contacts contacts;
     @Mock
     private Account account;
     @Mock
@@ -119,7 +120,7 @@ public class MessagingControllerTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
-        controller = new MessagingController(appContext, notificationController);
+        controller = new MessagingController(appContext, notificationController, contacts);
 
         configureAccount();
         configureLocalStore();
