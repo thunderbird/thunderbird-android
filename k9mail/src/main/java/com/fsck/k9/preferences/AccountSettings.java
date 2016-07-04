@@ -224,6 +224,9 @@ public class AccountSettings {
         s.put("remoteSearchFullText", Settings.versions(
                 new V(18, new BooleanSetting(false))
             ));
+        s.put("notifyContactsMailOnly", Settings.versions(
+                new V(42, new BooleanSetting(false))
+            ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
