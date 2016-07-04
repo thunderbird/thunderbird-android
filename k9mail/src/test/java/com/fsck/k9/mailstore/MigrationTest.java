@@ -248,7 +248,6 @@ public class MigrationTest {
         LocalBodyPart attachmentPart = (LocalBodyPart) body.getBodyPart(1);
         Assert.assertEquals("image/png", attachmentPart.getMimeType());
         Assert.assertEquals("2", attachmentPart.getServerExtra());
-        Assert.assertEquals("k9small.png", attachmentPart.getDisplayName());
         Assert.assertEquals("attachment", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), null));
         Assert.assertEquals("k9small.png", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), "filename"));
         Assert.assertEquals("2250", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), "size"));

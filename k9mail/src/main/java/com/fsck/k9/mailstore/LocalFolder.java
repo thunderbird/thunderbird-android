@@ -712,11 +712,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         long parentId = cursor.getLong(2);
         String mimeType = cursor.getString(3);
         long size = cursor.getLong(4);
-        String displayName = cursor.getString(5);
         byte[] header = cursor.getBlob(6);
         int dataLocation = cursor.getInt(9);
         String serverExtra = cursor.getString(15);
-        // TODO we don't currently cache the part types. might want to do that at a later point?
+        // TODO we don't currently cache much of the part data which is computed with AttachmentInfoExtractor,
+        // TODO might want to do that at a later point?
+        // String displayName = cursor.getString(5);
         // int type = cursor.getInt(1);
         // boolean firstClassAttachment = (type != MessagePartType.HIDDEN_ATTACHMENT);
 
@@ -731,7 +732,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
             String parentMimeType = parentPart.getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, displayName, size);
+                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {

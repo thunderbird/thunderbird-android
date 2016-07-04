@@ -31,7 +31,6 @@ public class AttachmentInfoExtractorTest {
     public static final long TEST_SIZE = 123L;
     public static final String TEST_ACCOUNT_UUID = "uuid";
     public static final long TEST_ID = 234L;
-    public static final String TEST_DISPLAY_NAME = "test-display-name";
     public static final String[] TEST_CONTENT_ID = new String[] { "test-content-id" };
 
 
@@ -57,14 +56,11 @@ public class AttachmentInfoExtractorTest {
         when(part.getMimeType()).thenReturn(TEST_MIME_TYPE);
         when(part.getSize()).thenReturn(TEST_SIZE);
         when(part.getAccountUuid()).thenReturn(TEST_ACCOUNT_UUID);
-        when(part.getDisplayName()).thenReturn(TEST_DISPLAY_NAME);
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
 
         assertEquals(AttachmentProvider.getAttachmentUri(TEST_ACCOUNT_UUID, TEST_ID), attachmentViewInfo.uri);
-        assertEquals(true, attachmentViewInfo.firstClassAttachment);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
-        assertEquals(TEST_DISPLAY_NAME, attachmentViewInfo.displayName);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
     }
 
