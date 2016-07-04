@@ -18,6 +18,7 @@
 package org.openintents.openpgp.util;
 
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -93,8 +94,9 @@ public class ParcelFileDescriptorUtil {
 
     public static <T> DataSinkTransferThread<T> asyncPipeToDataSink(
             OpenPgpDataSink<T> dataSink, ParcelFileDescriptor output) throws IOException {
+        InputStream inputStream = new BufferedInputStream(new AutoCloseInputStream(output));
         DataSinkTransferThread<T> dataSinkTransferThread =
-                new DataSinkTransferThread<T>(dataSink, new AutoCloseInputStream(output));
+                new DataSinkTransferThread<T>(dataSink, inputStream);
         dataSinkTransferThread.start();
         return dataSinkTransferThread;
     }

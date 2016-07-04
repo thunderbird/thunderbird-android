@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore;
 
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,7 +64,7 @@ public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAw
         try {
             if (file != null) {
                 Log.d(K9.LOG_TAG, "Decrypted data is file-backed.");
-                return new FileInputStream(file);
+                return new BufferedInputStream(new FileInputStream(file));
             }
             if (data != null) {
                 Log.d(K9.LOG_TAG, "Decrypted data is memory-backed.");
