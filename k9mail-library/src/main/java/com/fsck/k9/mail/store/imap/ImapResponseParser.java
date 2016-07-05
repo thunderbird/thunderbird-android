@@ -117,8 +117,9 @@ class ImapResponseParser {
         } while (response == null || response.getTag() == null);
 
         if (response.size() < 1 || !equalsIgnoreCase(response.get(0), Responses.OK)) {
-            throw new NegativeImapResponseException("Command: " + commandToLog + "; response: " + response.toString(),
-                    response.getAlertText());
+            String message = "Command: " + commandToLog + "; response: " + response.toString();
+            String alertText = AlertResponse.getAlertText(response);
+            throw new NegativeImapResponseException(message, alertText);
         }
 
         return responses;

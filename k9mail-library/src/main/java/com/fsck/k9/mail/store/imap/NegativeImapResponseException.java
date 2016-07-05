@@ -13,4 +13,8 @@ class NegativeImapResponseException extends MessagingException {
         super(message, true);
         this.alertText = alertText;
     }
+
+    public String getAlertText() {
+        return alertText;
+    }
 }
