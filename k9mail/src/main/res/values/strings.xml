@@ -1141,7 +1141,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="address_type_work">Work</string>
     <string name="address_type_other">Other</string>
     <string name="address_type_mobile">Mobile</string>
-    <string name="warn_search_disabled">Search in message bodies is disabled in this development version!</string>
     <string name="compose_error_no_draft_folder">No Drafts folder configured for this account!</string>
     <string name="compose_not_saving_unencrypted">Draft NOT saved without encryption!</string>
     <string name="compose_error_pgp_error">Error with OpenPGP provider. Check your settings!</string>
@@ -1167,11 +1166,11 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="crypto_msg_disabled">Message is not encrypted</string>
 
-    <string name="crypto_msg_encrypted_error">Message is encrypted, but there was an error decrypting.</string>
-    <string name="crypto_msg_signed_error">Message is signed, but the signature did not verify.</string>
+    <string name="crypto_msg_encrypted_error">Message is encrypted, but there was a decryption error.</string>
+    <string name="crypto_msg_signed_error">Message is signed, but the signature could not be verified.</string>
     <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>
     <string name="crypto_msg_unsupported_signed">Message is signed, but in an unsupported format.</string>
-    <string name="crypto_msg_incomplete_encrypted">Message is encrypted, but must be fully downloaded to decrypt.</string>
+    <string name="crypto_msg_incomplete_encrypted">Message is encrypted, but must be fully downloaded for decryption.</string>
     <string name="crypto_msg_cancelled">Message is encrypted, but decryption was cancelled.</string>
 
     <string name="crypto_msg_signed_unencrypted">Message is signed, but not encrypted.</string>
@@ -1185,7 +1184,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_sign_expired">Signature made by expired key.</string>
     <string name="crypto_msg_sign_revoked">Signature made by revoked key.</string>
     <string name="crypto_msg_sign_insecure">Signature made by insecure key.</string>
-    <string name="crypto_msg_sign_incomplete">Message must be fully downloaded to verify.</string>
+    <string name="crypto_msg_sign_incomplete">Message must be fully downloaded to verify its signature.</string>
 
     <string name="crypto_msg_signed_encrypted">Message is signed and encrypted.</string>
     <string name="crypto_msg_unsigned_encrypted">There is no signature, this message may have been intercepted.</string>
@@ -1194,11 +1193,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_info_ok">OK</string>
     <string name="crypto_info_view_key">View Signer</string>
     <string name="locked_attach_unlock">Unlock</string>
-    <string name="locked_attach_unsigned">This part was not encrypted, and may be insecure.</string>
+    <string name="locked_attach_unsigned">This part was not signed, and may be insecure.</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
     <string name="locked_attach_title">Unprotected Attachment</string>
     <string name="message_progress_text">Loading…</string>
-    <string name="messageview_decrypt_cancelled">Decrypt operation was cancelled.</string>
+    <string name="messageview_decrypt_cancelled">Decryption was cancelled.</string>
     <string name="messageview_decrypt_retry">Retry</string>
     <string name="messageview_decrypt_incomplete">Encrypted message must be downloaded for decryption.</string>
     <string name="messageview_crypto_error_title">Error decrypting email</string>
@@ -1207,6 +1206,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_crypto_warning_revoked">This message was signed by a <b>revoked key!</b></string>
     <string name="messageview_crypto_warning_expired">This message was signed by an <b>expired key!</b></string>
     <string name="messageview_crypto_warning_insecure">This message was signed by an <b>insecure key!</b></string>
-    <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature</b>!</string>
+    <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature!</b></string>
 
 </resources>
