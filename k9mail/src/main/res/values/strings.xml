@@ -533,6 +533,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_notify_sync_summary">Notify in status bar while mail is checked</string>
     <string name="account_settings_notify_self_label">Include outgoing mail</string>
     <string name="account_settings_notify_self_summary">Show a notification for messages I sent</string>
+    <string name="account_notify_contacts_mail_only_label">Contacts only</string>
+    <string name="account_notify_contacts_mail_only_summary">Show a notification only for messages of known contacts</string>
     <string name="account_settings_notification_opens_unread_label">Notification opens unread messages</string>
     <string name="account_settings_notification_opens_unread_summary">Searches for unread messages when Notification is opened</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>

@@ -78,6 +78,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_NEW_MAIL_MODE = "folder_notify_new_mail_mode";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
+    private static final String PREFERENCE_NOTIFY_CONTACTS_MAIL_ONLY = "account_notify_contacts_mail_only";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
     private static final String PREFERENCE_VIBRATE_PATTERN = "account_vibrate_pattern";
@@ -146,6 +147,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mAccountNotify;
     private ListPreference mAccountNotifyNewMailMode;
     private CheckBoxPreference mAccountNotifySelf;
+    private CheckBoxPreference mAccountNotifyContactsMailOnly;
     private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
@@ -590,6 +592,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountNotifySelf = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_SELF);
         mAccountNotifySelf.setChecked(mAccount.isNotifySelfNewMail());
 
+        mAccountNotifyContactsMailOnly = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_CONTACTS_MAIL_ONLY);
+        mAccountNotifyContactsMailOnly.setChecked(mAccount.isNotifyContactsMailOnly());
+
         mAccountNotifySync = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_SYNC);
         mAccountNotifySync.setChecked(mAccount.isShowOngoing());
 
@@ -753,6 +758,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setFolderNotifyNewMailMode(FolderMode.valueOf(mAccountNotifyNewMailMode.getValue()));
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
+        mAccount.setNotifyContactsMailOnly(mAccountNotifyContactsMailOnly.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));

@@ -40,6 +40,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
@@ -55,6 +56,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -4222,6 +4224,10 @@ public class MessagingController implements Runnable {
         // Don't notify if the sender address matches one of our identities and the user chose not
         // to be notified for such messages.
         if (account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail()) {
+            return false;
+        }
+
+        if (account.isNotifyContactsMailOnly() && !Contacts.getInstance(context).containsContact(message.getFrom())) {
             return false;
         }
 

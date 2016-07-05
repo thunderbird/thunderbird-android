@@ -438,6 +438,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_notify_sync_summary">Benachrichtigung in der Statuszeile anzeigen, während nach neuen Nachrichten gesucht wird</string>
   <string name="account_settings_notify_self_label">Bei eigenen Nachrichten</string>
   <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine Ihrer eigenen E-Mail-Adressen als Absender tragen</string>
+  <string name="account_notify_contacts_mail_only_label">Nur für Kontakte</string>
+  <string name="account_notify_contacts_mail_only_summary">Benachrichtigungen nur für Nachrichten, die von eigenen Kontakten stammen</string>
   <string name="account_settings_notification_opens_unread_label">Ungelesene Nachrichten öffnen</string>
   <string name="account_settings_notification_opens_unread_summary">Beim Öffnen einer Benachrichtigung Liste der ungelesenen Nachrichten anzeigen</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Beim Öffnen als gelesen markieren</string>
