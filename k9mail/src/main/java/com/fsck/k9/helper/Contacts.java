@@ -142,6 +142,26 @@ public class Contacts {
     }
 
     /**
+     * Check whether one of the provided addresses belongs to one of the contacts.
+     *
+     * @param addresses The addresses to search in contacts
+     * @return <tt>true</tt>, if one address belongs to a contact.
+     *         <tt>false</tt>, otherwise.
+     */
+    public boolean isAnyInContacts(final Address[] addresses) {
+        if (addresses == null) {
+            return false;
+        }
+
+        for (Address addr : addresses) {
+            if (isInContacts(addr.getAddress())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get the name of the contact an email address belongs to.
      *
      * @param address The email address to search for.

@@ -55,6 +55,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -151,6 +152,7 @@ public class MessagingController implements Runnable {
 
     private final Context context;
     private final NotificationController notificationController;
+    private final Contacts contacts;
     private volatile boolean stopped = false;
 
     private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
@@ -209,9 +211,11 @@ public class MessagingController implements Runnable {
 
 
     @VisibleForTesting
-    MessagingController(Context context, NotificationController notificationController) {
+    MessagingController(Context context, NotificationController notificationController, Contacts contacts) {
         this.context = context;
         this.notificationController = notificationController;
+        this.contacts = contacts;
+
         mThread = new Thread(this);
         mThread.setName("MessagingController");
         mThread.start();
@@ -231,7 +235,8 @@ public class MessagingController implements Runnable {
         if (inst == null) {
             Context appContext = context.getApplicationContext();
             NotificationController notificationController = NotificationController.newInstance(appContext);
-            inst = new MessagingController(appContext, notificationController);
+            Contacts contacts = Contacts.getInstance(context);
+            inst = new MessagingController(appContext, notificationController, contacts);
         }
         return inst;
     }
@@ -4222,6 +4227,10 @@ public class MessagingController implements Runnable {
         // Don't notify if the sender address matches one of our identities and the user chose not
         // to be notified for such messages.
         if (account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail()) {
+            return false;
+        }
+
+        if (account.isNotifyContactsMailOnly() && !contacts.isAnyInContacts(message.getFrom())) {
             return false;
         }
 
