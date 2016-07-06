@@ -8,6 +8,12 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.110" versioncode="23100" >
+        <change>New option: only notify for messages from contacts</change>
+        <change>Added auto-configuration support for more providers</change>
+        <change>Improved PGP/MIME experience</change>
+        <change>Lots of internal improvements</change>
+    </release>
     <release version="5.109" versioncode="23090" >
         <change>Added support for List-Post header</change>
         <change>Added support for sub-folders (WebDAV)</change>
