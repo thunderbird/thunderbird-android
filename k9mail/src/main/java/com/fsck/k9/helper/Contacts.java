@@ -148,7 +148,7 @@ public class Contacts {
      * @return <tt>true</tt>, if one address belongs to a contact.
      *         <tt>false</tt>, otherwise.
      */
-    public boolean containsContact(final Address[] addresses) {
+    public boolean isAnyInContacts(final Address[] addresses) {
         if (addresses == null) {
             return false;
         }

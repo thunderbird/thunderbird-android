@@ -4318,7 +4318,7 @@ public class MessagingController implements Runnable {
             return false;
         }
 
-        if (account.isNotifyContactsMailOnly() && !contacts.containsContact(message.getFrom())) {
+        if (account.isNotifyContactsMailOnly() && !contacts.isAnyInContacts(message.getFrom())) {
             return false;
         }
 
