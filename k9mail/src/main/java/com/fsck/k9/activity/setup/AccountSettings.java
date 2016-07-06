@@ -100,6 +100,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_CHIP_COLOR = "chip_color";
     private static final String PREFERENCE_LED_COLOR = "led_color";
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
+    private static final String PREFERENCE_NOTIFICATION_RULE_SET = "notification_rule_set";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_MESSAGE_FORMAT = "message_format";
@@ -165,6 +166,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private Preference mLedColor;
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
+    private Preference mNotificationRuleSet;
     private ListPreference mMessageFormat;
     private CheckBoxPreference mMessageReadReceipt;
     private ListPreference mQuoteStyle;
@@ -640,6 +642,15 @@ public class AccountSettings extends K9PreferenceActivity {
 
         new PopulateFolderPrefsTask().execute();
 
+        findPreference(PREFERENCE_NOTIFICATION_RULE_SET).setOnPreferenceClickListener(
+                new Preference.OnPreferenceClickListener() {
+                    public boolean onPreferenceClick(Preference preference) {
+                      onNotificationRuleSetSettings();
+                      return true;
+                    }
+                });
+
+
         mChipColor = findPreference(PREFERENCE_CHIP_COLOR);
         mChipColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
@@ -763,6 +774,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.getNotificationSetting().setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
         mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
+
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setFolderTargetMode(FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(DeletePolicy.fromInt(Integer.parseInt(mDeletePolicy.getValue())));
@@ -899,6 +911,7 @@ public class AccountSettings extends K9PreferenceActivity {
         showDialog(DIALOG_COLOR_PICKER_LED);
     }
 
+
     @Override
     public Dialog onCreateDialog(int id) {
         Dialog dialog = null;
@@ -994,6 +1007,12 @@ public class AccountSettings extends K9PreferenceActivity {
 
             mRemoteSearchNumResults.setSummary(String.format(getString(R.string.account_settings_remote_search_num_summary), maxResults));
         }
+    }
+
+    private void onNotificationRuleSetSettings() {
+        Intent i = new Intent(this, NotificationRuleSetList.class);
+        i.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
+        this.startActivity(i);
     }
 
     private class PopulateFolderPrefsTask extends AsyncTask<Void, Void, Void> {

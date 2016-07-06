@@ -1,5 +1,11 @@
 package com.fsck.k9;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fsck.k9.notification.NotificationRuleSet;
+
 /**
  * Describes how a notification should behave.
  */
@@ -28,6 +34,15 @@ public class NotificationSetting {
     private int mVibratePattern;
 
     private int mVibrateTimes;
+
+    private List<NotificationRuleSet> mRuleSets;
+
+    /**
+     * Notification rule set
+     */
+    public NotificationSetting() {
+        mRuleSets = new ArrayList<>();
+    }
 
     /**
      * Set the ringtone kill switch. Allow to disable ringtone without losing
@@ -149,6 +164,43 @@ public class NotificationSetting {
         return repeatedPattern;
     }
 
+    public synchronized List<NotificationRuleSet> getNotificationRuleSets() {
+        return mRuleSets;
+    }
 
+    public synchronized void setNotificationRuleSets(List<NotificationRuleSet> ruleSets) {
+        mRuleSets = new ArrayList<>(ruleSets);
+    }
 
+    public synchronized NotificationRuleSet getNotificationRuleSet(int i) {
+        return mRuleSets.get(i);
+    }
+
+    public synchronized  ArrayList<String> getNotificationRuleSetNames() {
+        ArrayList<String> ruleSetName = new ArrayList<>(mRuleSets.size());
+
+        for (NotificationRuleSet ruleSet: mRuleSets) {
+            ruleSetName.add(ruleSet.getName());
+        }
+
+        return ruleSetName;
+    }
+
+    public synchronized void addNotificationRuleSet(NotificationRuleSet ruleSet) {
+        if (ruleSet != null && ruleSet.getName() != null && !ruleSet.getName().isEmpty()) {
+            mRuleSets.add(ruleSet);
+        }
+    }
+
+    public synchronized void updateNotificationRuleSet(NotificationRuleSet ruleSet, int i) {
+        if (i < 0) {
+            addNotificationRuleSet(ruleSet);
+        } else {
+            if (ruleSet != null && ruleSet.getName() != null && !ruleSet.getName().isEmpty()) {
+                mRuleSets.set(i, ruleSet);
+            } else {
+                mRuleSets.remove(i);
+            }
+        }
+    }
 }

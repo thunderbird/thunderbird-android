@@ -535,6 +535,19 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_notify_self_summary">Show a notification for messages I sent</string>
     <string name="account_settings_notification_opens_unread_label">Notification opens unread messages</string>
     <string name="account_settings_notification_opens_unread_summary">Searches for unread messages when Notification is opened</string>
+    <string name="account_settings_notification_rule_set">Rule set</string>
+    <string name="account_settings_notification_rule_set_summary">Only notify for emails matching the rule set</string>
+    <string name="notification_rule_set_list_title">Notification rule sets</string>
+    <string name="notification_rule_set_settings_title">Notification rule set settings</string>
+    <string name="notification_rule_set_settings_sender_name_label">Sender name</string>
+    <string name="notification_rule_set_settings_sender_address_label">Sender address</string>
+    <string name="notification_rule_set_settings_subject_label">Subject</string>
+    <string name="notification_rule_set_settings_body_label">Body</string>
+    <string name="notification_rule_set_settings_name_label">Rule set name</string>
+    <string name="notification_rule_set_settings_should_notify_label">Should notify</string>
+    <string name="notification_rule_set_settings_should_notify_summary">Defines if you want to receive notifications for this rule</string>
+    <string name="notification_new_rule_set_action">New rule set</string>
+
     <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>
 
@@ -1208,4 +1221,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_crypto_warning_insecure">This message was signed by an <b>insecure key!</b></string>
     <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature!</b></string>
 
+    <string name="sender_name">Sender Name</string>
+    <string name="sender_address">Sender Address</string>
+    <string name="mail_subject">Subject</string>
+    <string name="mail_body">Body</string>
+
+    <string name="invalid_email_address">Email address is invalid</string>
+    <string name="ignoring_empty_notification_rule_set_name">Notification rule set name is empty. Ignoring</string>
+    <string name="ignoring_empty_notification_rule_set">Notification rule set is empty. Ignoring</string>
 </resources>

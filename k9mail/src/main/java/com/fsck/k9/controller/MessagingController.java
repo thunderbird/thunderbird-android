@@ -87,6 +87,7 @@ import com.fsck.k9.mailstore.LocalStore.PendingCommand;
 import com.fsck.k9.mailstore.MessageRemovalListener;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
+import com.fsck.k9.notification.NotificationRuleSet;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.StatsColumns;
 import com.fsck.k9.search.ConditionsTreeNode;
@@ -4225,7 +4226,17 @@ public class MessagingController implements Runnable {
             return false;
         }
 
-        return true;
+
+        // check if any ruleset should apply to notifications
+        boolean shouldNotify = true;
+        try {
+            LocalMessage localMessage = localFolder.getMessage(message.getUid());
+            shouldNotify = notificationController.checkNotificationRuleSets(account, message.getFrom()[0].getAddress(), localMessage);
+        } catch (MessagingException e)  {
+            /* any exception occurs, ruleset will not apply */
+        }
+
+       return shouldNotify;
     }
 
     public void deleteAccount(Context context, Account account) {
