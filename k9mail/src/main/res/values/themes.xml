@@ -11,7 +11,7 @@
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Base">
         <item name="iconFolder">@drawable/folder_light</item>
-        <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_light</item>
+        <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_light</item>
         <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
         <item name="iconActionAddAttachment">@drawable/ic_action_add_attachment_light</item>
         <item name="iconActionAddCcBcc">@drawable/ic_action_add_cc_bbc_light</item>
@@ -67,7 +67,7 @@
 
     <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Base">
         <item name="iconFolder">@drawable/folder_dark</item>
-        <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_dark</item>
+        <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_dark</item>
         <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
         <item name="iconActionAddAttachment">@drawable/ic_action_add_attachment_dark</item>
         <item name="iconActionAddCcBcc">@drawable/ic_action_add_cc_bcc_dark</item>
@@ -119,6 +119,15 @@
         <item name="composerBackgroundColor">@android:color/background_dark</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
+    </style>
+
+    <style name="Theme.K9Dialog" parent="@android:style/Theme.Holo.Light">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@drawable/popup_background</item>
+        <item name="android:windowTitleStyle">?android:attr/textAppearanceLargeInverse</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowContentOverlay">@drawable/panel_separator</item>
     </style>
 
     <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">

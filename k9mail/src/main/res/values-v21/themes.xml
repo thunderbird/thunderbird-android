@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.K9.Startup" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <!-- Empty base themes that can be easily replaced by RRO (Runtime Resource Overlay) themes -->
+    <style name="Theme.K9.Light.Base" parent="@android:style/Theme.Material.Light" />
+    <style name="Theme.K9.Dark.Base" parent="@android:style/Theme.Material" />
+
+    <style name="Theme.K9Dialog" parent="@android:style/Theme.Material.Light">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@drawable/popup_background</item>
+        <item name="android:windowTitleStyle">?android:attr/textAppearanceLargeInverse</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowContentOverlay">@drawable/panel_separator</item>
+    </style>
+
+    <style name="Theme.K9.Dialog.Translucent.Dark" parent="@android:style/Theme.Material.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
+
+    <style name="Theme.K9.Dialog.Translucent.Light" parent="@android:style/Theme.Material.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
+
+</resources>
