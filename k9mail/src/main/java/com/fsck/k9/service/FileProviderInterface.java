@@ -10,6 +10,6 @@ import android.net.Uri;
 public interface FileProviderInterface {
 
     File createProvidedFile() throws IOException;
-    Uri getUriForProvidedFile(File file, String mimeType) throws IOException;
+    Uri getUriForProvidedFile(File file, String encoding, String mimeType) throws IOException;
 
 }

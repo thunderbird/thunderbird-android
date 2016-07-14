@@ -19,15 +19,12 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.service.FileProviderInterface;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
-import org.apache.james.mime4j.codec.Base64InputStream;
-import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.io.EOLConvertingInputStream;
 import org.apache.james.mime4j.parser.ContentHandler;
 import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
-import org.apache.james.mime4j.util.MimeUtil;
 
 public class MimePartStreamParser {
 
@@ -58,26 +55,7 @@ public class MimePartStreamParser {
         ProvidedTempFileBody body = new ProvidedTempFileBody(fileProviderInterface, transferEncoding);
         OutputStream outputStream = body.getOutputStream();
         try {
-            InputStream decodingInputStream;
-            boolean closeStream;
-            if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(transferEncoding)) {
-                decodingInputStream = new QuotedPrintableInputStream(inputStream, false);
-                closeStream = true;
-            } else if (MimeUtil.ENC_BASE64.equals(transferEncoding)) {
-                decodingInputStream = new Base64InputStream(inputStream);
-                closeStream = true;
-            } else {
-                decodingInputStream = inputStream;
-                closeStream = false;
-            }
-
-            try {
-                IOUtils.copy(decodingInputStream, outputStream);
-            } finally {
-                if (closeStream) {
-                    decodingInputStream.close();
-                }
-            }
+            IOUtils.copy(inputStream, outputStream);
         } finally {
             outputStream.close();
         }

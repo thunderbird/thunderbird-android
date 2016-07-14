@@ -2,7 +2,9 @@ package com.fsck.k9.provider;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
 
@@ -11,13 +13,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.support.annotation.MainThread;
+import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.service.FileProviderInterface;
+import org.apache.james.mime4j.codec.Base64InputStream;
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+import org.apache.james.mime4j.util.MimeUtil;
+import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
 
 
 public class DecryptedFileProvider extends FileProvider {
@@ -28,11 +37,6 @@ public class DecryptedFileProvider extends FileProvider {
 
     private static DecryptedFileProviderCleanupReceiver receiverRegistered = null;
 
-
-    @Override
-    public String getType(Uri uri) {
-        return uri.getQueryParameter("mime_type");
-    }
 
     public static FileProviderInterface getFileProviderInterface(Context context) {
         final Context applicationContext = context.getApplicationContext();
@@ -46,9 +50,13 @@ public class DecryptedFileProvider extends FileProvider {
             }
 
             @Override
-            public Uri getUriForProvidedFile(File file, String mimeType) throws IOException {
-                Uri uri = FileProvider.getUriForFile(applicationContext, AUTHORITY, file);
-                return uri.buildUpon().appendQueryParameter("mime_type", mimeType).build();
+            public Uri getUriForProvidedFile(File file, @Nullable String encoding, String mimeType) throws IOException {
+                Uri.Builder uriBuilder = FileProvider.getUriForFile(applicationContext, AUTHORITY, file).buildUpon();
+                uriBuilder = uriBuilder.appendQueryParameter("mime_type", mimeType);
+                if (encoding != null) {
+                    uriBuilder = uriBuilder.appendQueryParameter("encoding", encoding);
+                }
+                return uriBuilder.build();
             }
         };
     }
@@ -88,6 +96,39 @@ public class DecryptedFileProvider extends FileProvider {
         }
 
         return directory;
+    }
+
+
+    @Override
+    public String getType(Uri uri) {
+        return uri.getQueryParameter("mime_type");
+    }
+
+    @Override
+    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+        ParcelFileDescriptor pfd = super.openFile(uri, "r");
+
+        InputStream decodedInputStream;
+        String encoding = uri.getQueryParameter("encoding");
+        if (MimeUtil.isBase64Encoding(encoding)) {
+            InputStream inputStream = new ParcelFileDescriptor.AutoCloseInputStream(pfd);
+            decodedInputStream = new Base64InputStream(inputStream);
+        } else if (MimeUtil.isQuotedPrintableEncoded(encoding)) {
+            InputStream inputStream = new ParcelFileDescriptor.AutoCloseInputStream(pfd);
+            decodedInputStream = new QuotedPrintableInputStream(inputStream);
+        } else { // no or unknown encoding
+            if (K9.DEBUG && !TextUtils.isEmpty(encoding)) {
+                Log.e(K9.LOG_TAG, "unsupported encoding, returning raw stream");
+            }
+            return pfd;
+        }
+
+        try {
+            return ParcelFileDescriptorUtil.pipeFrom(decodedInputStream);
+        } catch (IOException e) {
+            // not strictly a FileNotFoundException, but failure to create a pipe is basically "can't access right now"
+            throw new FileNotFoundException();
+        }
     }
 
     @Override
