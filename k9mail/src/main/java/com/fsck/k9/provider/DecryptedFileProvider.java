@@ -106,6 +106,11 @@ public class DecryptedFileProvider extends FileProvider {
     }
 
     @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
         ParcelFileDescriptor pfd = super.openFile(uri, "r");
 
