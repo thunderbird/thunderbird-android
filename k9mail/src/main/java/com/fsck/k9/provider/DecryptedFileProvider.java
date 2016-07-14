@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
@@ -136,12 +137,19 @@ public class DecryptedFileProvider extends FileProvider {
         if (level < TRIM_MEMORY_COMPLETE) {
             return;
         }
-        Context context = getContext();
+        final Context context = getContext();
         if (context == null) {
             return;
         }
 
-        deleteOldTemporaryFiles(context);
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                deleteOldTemporaryFiles(context);
+                return null;
+            }
+        }.execute();
+
         if (receiverRegistered != null) {
             context.unregisterReceiver(receiverRegistered);
             receiverRegistered = null;
