@@ -16,19 +16,22 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.RawDataBody;
 import com.fsck.k9.mail.internet.SizeAware;
 import com.fsck.k9.service.FileProviderDeferredFileOutputStream;
 import com.fsck.k9.service.FileProviderInterface;
+import org.apache.commons.io.IOUtils;
 
 
 /** This is a body where the body can be accessed through a FileProvider.
  * @see FileProviderInterface
  */
-public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAware {
+public class ProvidedTempFileBody implements RawDataBody, SizeAware {
     public static final int MEMORY_BACKED_THRESHOLD = 1024 * 8;
 
 
     private final FileProviderInterface fileProviderInterface;
+    private final String encoding;
 
     @Nullable
     private byte[] data;
@@ -37,11 +40,7 @@ public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAw
 
     public ProvidedTempFileBody(FileProviderInterface fileProviderInterface, String transferEncoding) {
         this.fileProviderInterface = fileProviderInterface;
-        try {
-            setEncoding(transferEncoding);
-        } catch (MessagingException e) {
-            throw new AssertionError("setEncoding() must succeed");
-        }
+        this.encoding = transferEncoding;
     }
 
     public OutputStream getOutputStream() throws IOException {
@@ -93,7 +92,7 @@ public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAw
         if (file == null) {
             writeMemoryToFile();
         }
-        return fileProviderInterface.getUriForProvidedFile(file, mimeType);
+        return fileProviderInterface.getUriForProvidedFile(file, encoding, mimeType);
     }
 
     private void writeMemoryToFile() throws IOException {
@@ -111,5 +110,21 @@ public class ProvidedTempFileBody extends BinaryAttachmentBody implements SizeAw
         fos.close();
 
         data = null;
+    }
+
+    @Override
+    public void setEncoding(String encoding) throws MessagingException {
+        throw new UnsupportedOperationException("Cannot re-encode a DecryptedTempFileBody!");
+    }
+
+    @Override
+    public void writeTo(OutputStream out) throws IOException, MessagingException {
+        InputStream inputStream = getInputStream();
+        IOUtils.copy(inputStream, out);
+    }
+
+    @Override
+    public String getEncoding() {
+        return encoding;
     }
 }
