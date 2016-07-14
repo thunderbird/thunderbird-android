@@ -13,18 +13,18 @@ import org.apache.commons.io.output.ThresholdingOutputStream;
 
 /**
  * This OutputStream is modelled after apache commons' {@link DeferredFileOutputStream},
- * but uses a {@link FileProviderInterface} instead of directly generating temporary files
+ * but uses a {@link FileFactory} instead of directly generating temporary files
  * itself.
  */
 public class FileProviderDeferredFileOutputStream extends ThresholdingOutputStream {
     private OutputStream currentOutputStream;
     private File outputFile;
-    private final FileProviderInterface fileProviderInterface;
+    private final FileFactory fileFactory;
 
 
-    public FileProviderDeferredFileOutputStream(int threshold, FileProviderInterface fileProviderInterface) {
+    public FileProviderDeferredFileOutputStream(int threshold, FileFactory fileFactory) {
         super(threshold);
-        this.fileProviderInterface = fileProviderInterface;
+        this.fileFactory = fileFactory;
 
         // scale it so we expand the ByteArrayOutputStream at most three times (assuming quadratic growth)
         int size = threshold < 1024 ? 256 : threshold / 4;
@@ -50,7 +50,7 @@ public class FileProviderDeferredFileOutputStream extends ThresholdingOutputStre
         }
         ByteArrayOutputStream memoryOutputStream = (ByteArrayOutputStream) currentOutputStream;
 
-        outputFile = fileProviderInterface.createProvidedFile();
+        outputFile = fileFactory.createFile();
         currentOutputStream = new FileOutputStream(outputFile);
 
         memoryOutputStream.writeTo(currentOutputStream);

@@ -1,10 +1,12 @@
 package com.fsck.k9.message.extractors;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -16,8 +18,9 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalPart;
-import com.fsck.k9.mailstore.ProvidedTempFileBody;
+import com.fsck.k9.mailstore.DeferredFileBody;
 import com.fsck.k9.provider.AttachmentProvider;
+import com.fsck.k9.provider.DecryptedFileProvider;
 
 
 public class AttachmentInfoExtractor {
@@ -27,18 +30,18 @@ public class AttachmentInfoExtractor {
         return new AttachmentInfoExtractor();
     }
 
-    public List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)
+    public List<AttachmentViewInfo> extractAttachmentInfos(Context context, List<Part> attachmentParts)
             throws MessagingException {
 
         List<AttachmentViewInfo> attachments = new ArrayList<>();
         for (Part part : attachmentParts) {
-            attachments.add(extractAttachmentInfo(part));
+            attachments.add(extractAttachmentInfo(context, part));
         }
 
         return attachments;
     }
 
-    public AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
+    public AttachmentViewInfo extractAttachmentInfo(Context context, Part part) throws MessagingException {
         Uri uri;
         long size;
         if (part instanceof LocalPart) {
@@ -49,11 +52,13 @@ public class AttachmentInfoExtractor {
             uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
         } else {
             Body body = part.getBody();
-            if (body instanceof ProvidedTempFileBody) {
-                ProvidedTempFileBody decryptedTempFileBody = (ProvidedTempFileBody) body;
+            if (body instanceof DeferredFileBody) {
+                DeferredFileBody decryptedTempFileBody = (DeferredFileBody) body;
                 size = decryptedTempFileBody.getSize();
                 try {
-                    uri = decryptedTempFileBody.getProviderUri(part.getMimeType());
+                    File file = decryptedTempFileBody.getFile();
+                    uri = DecryptedFileProvider.getUriForProvidedFile(
+                            context, file, decryptedTempFileBody.getEncoding(), part.getMimeType());
                 } catch (IOException e) {
                     Log.e(K9.LOG_TAG, "Decrypted temp file (no longer?) exists!", e);
                     uri = null;

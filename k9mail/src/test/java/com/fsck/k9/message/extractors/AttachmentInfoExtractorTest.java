@@ -1,18 +1,21 @@
 package com.fsck.k9.message.extractors;
 
 
+import java.io.File;
+
 import android.net.Uri;
 
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalBodyPart;
-import com.fsck.k9.mailstore.ProvidedTempFileBody;
+import com.fsck.k9.mailstore.DeferredFileBody;
 import com.fsck.k9.provider.AttachmentProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
@@ -46,7 +49,7 @@ public class AttachmentInfoExtractorTest {
     public void extractInfo__withGenericPart_shouldThrow() throws Exception {
         Part part = mock(Part.class);
 
-        attachmentInfoExtractor.extractAttachmentInfo(part);
+        attachmentInfoExtractor.extractAttachmentInfo(RuntimeEnvironment.application, part);
     }
 
     @Test
@@ -57,7 +60,8 @@ public class AttachmentInfoExtractorTest {
         when(part.getSize()).thenReturn(TEST_SIZE);
         when(part.getAccountUuid()).thenReturn(TEST_ACCOUNT_UUID);
 
-        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(
+                RuntimeEnvironment.application, part);
 
         assertEquals(AttachmentProvider.getAttachmentUri(TEST_ACCOUNT_UUID, TEST_ID), attachmentViewInfo.uri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
@@ -114,7 +118,7 @@ public class AttachmentInfoExtractorTest {
     }
 
     @Test
-    public void extractInfoForDb__wWithDispositionAttach__shouldReturnNamedFirstClassAttachment() throws Exception {
+    public void extractInfoForDb__withDispositionAttach__shouldReturnNamedFirstClassAttachment() throws Exception {
         Part part = mock(Part.class);
         when(part.getDisposition()).thenReturn("attachment" + "; filename=\"filename.ext\"; meaningless=\"dummy\"");
 
@@ -159,15 +163,15 @@ public class AttachmentInfoExtractorTest {
 
     @Test
     public void extractInfo__withProvidedTempFileBody() throws Exception {
-        ProvidedTempFileBody body = mock(ProvidedTempFileBody.class);
+        DeferredFileBody body = mock(DeferredFileBody.class);
         Part part = mock(Part.class);
         when(part.getBody()).thenReturn(body);
         when(part.getMimeType()).thenReturn(TEST_MIME_TYPE);
 
         when(body.getSize()).thenReturn(TEST_SIZE);
-        when(body.getProviderUri(TEST_MIME_TYPE)).thenReturn(TEST_URI);
 
-        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(
+                RuntimeEnvironment.application, part);
 
         assertEquals(TEST_URI, attachmentViewInfo.uri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);

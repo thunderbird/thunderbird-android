@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -41,14 +42,14 @@ public class AttachmentResolver {
     }
 
     @WorkerThread
-    public static AttachmentResolver createFromPart(Part part) {
+    public static AttachmentResolver createFromPart(Context context, Part part) {
         AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
-        Map<String, Uri> contentIdToAttachmentUriMap = buildCidToAttachmentUriMap(attachmentInfoExtractor, part);
+        Map<String, Uri> contentIdToAttachmentUriMap = buildCidToAttachmentUriMap(context, attachmentInfoExtractor, part);
         return new AttachmentResolver(contentIdToAttachmentUriMap);
     }
 
     @VisibleForTesting
-    static Map<String,Uri> buildCidToAttachmentUriMap(AttachmentInfoExtractor attachmentInfoExtractor,
+    static Map<String,Uri> buildCidToAttachmentUriMap(Context context, AttachmentInfoExtractor attachmentInfoExtractor,
             Part rootPart) {
         HashMap<String,Uri> result = new HashMap<>();
 
@@ -68,7 +69,7 @@ public class AttachmentResolver {
                 try {
                     String contentId = part.getContentId();
                     if (contentId != null) {
-                        AttachmentViewInfo attachmentInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
+                        AttachmentViewInfo attachmentInfo = attachmentInfoExtractor.extractAttachmentInfo(context, part);
                         result.put(contentId, attachmentInfo.uri);
                     }
                 } catch (MessagingException e) {

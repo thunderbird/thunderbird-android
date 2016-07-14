@@ -16,7 +16,7 @@ import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.service.FileProviderInterface;
+import com.fsck.k9.service.FileFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.io.EOLConvertingInputStream;
@@ -28,7 +28,7 @@ import org.apache.james.mime4j.stream.MimeConfig;
 
 public class MimePartStreamParser {
 
-    public static MimeBodyPart parse(FileProviderInterface fileProviderInterface, InputStream inputStream)
+    public static MimeBodyPart parse(FileFactory fileFactory, InputStream inputStream)
             throws MessagingException, IOException {
         MimeBodyPart parsedRootPart = new MimeBodyPart();
 
@@ -38,7 +38,7 @@ public class MimePartStreamParser {
         parserConfig.setMaxHeaderCount(-1);
 
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
-        parser.setContentHandler(new PartBuilder(fileProviderInterface, parsedRootPart));
+        parser.setContentHandler(new PartBuilder(fileFactory, parsedRootPart));
         parser.setRecurse();
 
         try {
@@ -51,8 +51,8 @@ public class MimePartStreamParser {
     }
 
     private static Body createBody(InputStream inputStream, String transferEncoding,
-            FileProviderInterface fileProviderInterface) throws IOException {
-        ProvidedTempFileBody body = new ProvidedTempFileBody(fileProviderInterface, transferEncoding);
+            FileFactory fileFactory) throws IOException {
+        DeferredFileBody body = new DeferredFileBody(fileFactory, transferEncoding);
         OutputStream outputStream = body.getOutputStream();
         try {
             IOUtils.copy(inputStream, outputStream);
@@ -65,13 +65,13 @@ public class MimePartStreamParser {
 
 
     private static class PartBuilder implements ContentHandler {
-        private final FileProviderInterface fileProviderInterface;
+        private final FileFactory fileFactory;
         private final MimeBodyPart decryptedRootPart;
         private final Stack<Object> stack = new Stack<>();
 
-        public PartBuilder(FileProviderInterface fileProviderInterface, MimeBodyPart decryptedRootPart)
+        public PartBuilder(FileFactory fileFactory, MimeBodyPart decryptedRootPart)
                 throws MessagingException {
-            this.fileProviderInterface = fileProviderInterface;
+            this.fileFactory = fileFactory;
             this.decryptedRootPart = decryptedRootPart;
         }
 
@@ -173,7 +173,7 @@ public class MimePartStreamParser {
             Part part = (Part) stack.peek();
 
             String transferEncoding = bd.getTransferEncoding();
-            Body body = createBody(inputStream, transferEncoding, fileProviderInterface);
+            Body body = createBody(inputStream, transferEncoding, fileFactory);
 
             part.setBody(body);
         }
