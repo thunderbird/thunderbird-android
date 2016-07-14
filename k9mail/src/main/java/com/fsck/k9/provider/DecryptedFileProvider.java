@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
@@ -23,7 +24,7 @@ import android.util.Log;
 
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
-import com.fsck.k9.service.FileProviderInterface;
+import com.fsck.k9.service.FileFactory;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -39,27 +40,34 @@ public class DecryptedFileProvider extends FileProvider {
     private static DecryptedFileProviderCleanupReceiver receiverRegistered = null;
 
 
-    public static FileProviderInterface getFileProviderInterface(Context context) {
+    public static FileFactory getFileFactory(Context context) {
         final Context applicationContext = context.getApplicationContext();
 
-        return new FileProviderInterface() {
+        return new FileFactory() {
             @Override
-            public File createProvidedFile() throws IOException {
+            public File createFile() throws IOException {
                 registerFileCleanupReceiver(applicationContext);
                 File decryptedTempDirectory = getDecryptedTempDirectory(applicationContext);
                 return File.createTempFile("decrypted-", null, decryptedTempDirectory);
             }
-
-            @Override
-            public Uri getUriForProvidedFile(File file, @Nullable String encoding, String mimeType) throws IOException {
-                Uri.Builder uriBuilder = FileProvider.getUriForFile(applicationContext, AUTHORITY, file).buildUpon();
-                uriBuilder = uriBuilder.appendQueryParameter("mime_type", mimeType);
-                if (encoding != null) {
-                    uriBuilder = uriBuilder.appendQueryParameter("encoding", encoding);
-                }
-                return uriBuilder.build();
-            }
         };
+    }
+
+    @Nullable
+    public static Uri getUriForProvidedFile(@NonNull Context context, File file,
+            @Nullable String encoding, @Nullable String mimeType) throws IOException {
+        try {
+            Uri.Builder uriBuilder = FileProvider.getUriForFile(context, AUTHORITY, file).buildUpon();
+            if (mimeType != null) {
+                uriBuilder = uriBuilder.appendQueryParameter("mime_type", mimeType);
+            }
+            if (encoding != null) {
+                uriBuilder = uriBuilder.appendQueryParameter("encoding", encoding);
+            }
+            return uriBuilder.build();
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     public static boolean deleteOldTemporaryFiles(Context context) {

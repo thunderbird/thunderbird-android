@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -18,19 +17,19 @@ import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.RawDataBody;
 import com.fsck.k9.mail.internet.SizeAware;
+import com.fsck.k9.service.FileFactory;
 import com.fsck.k9.service.FileProviderDeferredFileOutputStream;
-import com.fsck.k9.service.FileProviderInterface;
 import org.apache.commons.io.IOUtils;
 
 
-/** This is a body where the body can be accessed through a FileProvider.
- * @see FileProviderInterface
+/** This is a body where the data is memory-backed at first and switches to file-backed if it gets larger.
+ * @see FileFactory
  */
-public class ProvidedTempFileBody implements RawDataBody, SizeAware {
+public class DeferredFileBody implements RawDataBody, SizeAware {
     public static final int MEMORY_BACKED_THRESHOLD = 1024 * 8;
 
 
-    private final FileProviderInterface fileProviderInterface;
+    private final FileFactory fileFactory;
     private final String encoding;
 
     @Nullable
@@ -38,13 +37,13 @@ public class ProvidedTempFileBody implements RawDataBody, SizeAware {
     private File file;
 
 
-    public ProvidedTempFileBody(FileProviderInterface fileProviderInterface, String transferEncoding) {
-        this.fileProviderInterface = fileProviderInterface;
+    public DeferredFileBody(FileFactory fileFactory, String transferEncoding) {
+        this.fileFactory = fileFactory;
         this.encoding = transferEncoding;
     }
 
     public OutputStream getOutputStream() throws IOException {
-        return new FileProviderDeferredFileOutputStream(MEMORY_BACKED_THRESHOLD, fileProviderInterface) {
+        return new FileProviderDeferredFileOutputStream(MEMORY_BACKED_THRESHOLD, fileFactory) {
             @Override
             public void close() throws IOException {
                 super.close();
@@ -88,11 +87,11 @@ public class ProvidedTempFileBody implements RawDataBody, SizeAware {
         throw new IllegalStateException("Data must be fully written before it can be read!");
     }
 
-    public Uri getProviderUri(String mimeType) throws IOException {
+    public File getFile() throws IOException {
         if (file == null) {
             writeMemoryToFile();
         }
-        return fileProviderInterface.getUriForProvidedFile(file, encoding, mimeType);
+        return file;
     }
 
     private void writeMemoryToFile() throws IOException {
