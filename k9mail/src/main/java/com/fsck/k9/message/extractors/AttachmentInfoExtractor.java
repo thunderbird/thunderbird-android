@@ -8,6 +8,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -24,7 +26,8 @@ import com.fsck.k9.provider.DecryptedFileProvider;
 
 
 public class AttachmentInfoExtractor {
-    private AttachmentInfoExtractor() { }
+    @VisibleForTesting
+    AttachmentInfoExtractor() { }
 
     public static AttachmentInfoExtractor getInstance() {
         return new AttachmentInfoExtractor();
@@ -55,14 +58,7 @@ public class AttachmentInfoExtractor {
             if (body instanceof DeferredFileBody) {
                 DeferredFileBody decryptedTempFileBody = (DeferredFileBody) body;
                 size = decryptedTempFileBody.getSize();
-                try {
-                    File file = decryptedTempFileBody.getFile();
-                    uri = DecryptedFileProvider.getUriForProvidedFile(
-                            context, file, decryptedTempFileBody.getEncoding(), part.getMimeType());
-                } catch (IOException e) {
-                    Log.e(K9.LOG_TAG, "Decrypted temp file (no longer?) exists!", e);
-                    uri = null;
-                }
+                uri = getDecryptedFileProviderUri(context, decryptedTempFileBody, part.getMimeType());
                 return extractAttachmentInfo(part, uri, size);
             } else {
                 throw new IllegalArgumentException("Unsupported part type provided");
@@ -70,6 +66,21 @@ public class AttachmentInfoExtractor {
         }
 
         return extractAttachmentInfo(part, uri, size);
+    }
+
+    @Nullable
+    @VisibleForTesting
+    protected Uri getDecryptedFileProviderUri(Context context, DeferredFileBody decryptedTempFileBody, String mimeType) {
+        Uri uri;
+        try {
+            File file = decryptedTempFileBody.getFile();
+            uri = DecryptedFileProvider.getUriForProvidedFile(
+                    context, file, decryptedTempFileBody.getEncoding(), mimeType);
+        } catch (IOException e) {
+            Log.e(K9.LOG_TAG, "Decrypted temp file (no longer?) exists!", e);
+            uri = null;
+        }
+        return uri;
     }
 
     public AttachmentViewInfo extractAttachmentInfoForDatabase(Part part) throws MessagingException {
