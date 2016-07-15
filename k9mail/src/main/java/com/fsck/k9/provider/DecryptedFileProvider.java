@@ -35,9 +35,10 @@ public class DecryptedFileProvider extends FileProvider {
     private static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".decryptedfileprovider";
     private static final String DECRYPTED_CACHE_DIRECTORY = "decrypted";
     private static final long FILE_DELETE_THRESHOLD_MILLISECONDS = 3 * 60 * 1000;
+    private static final Object cleanupReceiverMonitor = new Object();
 
 
-    private static DecryptedFileProviderCleanupReceiver receiverRegistered = null;
+    private static DecryptedFileProviderCleanupReceiver cleanupReceiver = null;
 
 
     public static FileFactory getFileFactory(Context context) {
@@ -163,24 +164,37 @@ public class DecryptedFileProvider extends FileProvider {
             }
         }.execute();
 
-        if (receiverRegistered != null) {
-            context.unregisterReceiver(receiverRegistered);
-            receiverRegistered = null;
+        unregisterFileCleanupReceiver(context);
+    }
+
+    private static void unregisterFileCleanupReceiver(Context context) {
+        synchronized (cleanupReceiverMonitor) {
+            if (cleanupReceiver == null) {
+                return;
+            }
+
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "Unregistering temp file cleanup receiver");
+            }
+            context.unregisterReceiver(cleanupReceiver);
+            cleanupReceiver = null;
         }
     }
 
-    @MainThread // no need to synchronize for receiverRegistered
     private static void registerFileCleanupReceiver(Context context) {
-        if (receiverRegistered != null) {
-            return;
+        synchronized (cleanupReceiverMonitor) {
+            if (cleanupReceiver != null) {
+                return;
+            }
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "Registering temp file cleanup receiver");
+            }
+            cleanupReceiver = new DecryptedFileProviderCleanupReceiver();
+
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+            context.registerReceiver(cleanupReceiver, intentFilter);
         }
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Registering temp file cleanup receiver");
-        }
-        receiverRegistered = new DecryptedFileProviderCleanupReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        context.registerReceiver(receiverRegistered, intentFilter);
     }
 
     private static class DecryptedFileProviderCleanupReceiver extends BroadcastReceiver {
@@ -197,11 +211,7 @@ public class DecryptedFileProvider extends FileProvider {
 
             boolean allFilesDeleted = deleteOldTemporaryFiles(context);
             if (allFilesDeleted) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Unregistering temp file cleanup receiver");
-                }
-                context.unregisterReceiver(this);
-                receiverRegistered = null;
+                unregisterFileCleanupReceiver(context);
             }
         }
     }
