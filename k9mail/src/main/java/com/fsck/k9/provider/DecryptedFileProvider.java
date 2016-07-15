@@ -24,7 +24,7 @@ import android.util.Log;
 
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
-import com.fsck.k9.service.FileFactory;
+import com.fsck.k9.mailstore.util.FileFactory;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;

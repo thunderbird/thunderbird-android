@@ -181,8 +181,10 @@ public class AttachmentInfoExtractorTest {
 
         when(body.getSize()).thenReturn(TEST_SIZE);
 
+
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(
                 RuntimeEnvironment.application, part);
+
 
         assertEquals(TEST_URI, attachmentViewInfo.uri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
