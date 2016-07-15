@@ -10,6 +10,8 @@ import android.net.Uri;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,8 +44,7 @@ public class AttachmentResolverTest {
 
     @Test
     public void buildCidMap__onPartWithNoBody__shouldReturnEmptyMap() throws Exception {
-        Part part = mock(Part.class);
-        when(part.getContentId()).thenReturn(null);
+        Part part = new MimeBodyPart();
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(
                 RuntimeEnvironment.application, attachmentInfoExtractor, part);
@@ -53,10 +54,8 @@ public class AttachmentResolverTest {
 
     @Test
     public void buildCidMap__onMultipartWithNoParts__shouldReturnEmptyMap() throws Exception {
-        Part multipartPart = mock(Part.class);
-        Multipart multipartBody = mock(Multipart.class);
-        when(multipartPart.getBody()).thenReturn(multipartBody);
-        when(multipartBody.getBodyParts()).thenReturn(Collections.EMPTY_LIST);
+        Multipart multipartBody = new MimeMultipart();
+        Part multipartPart = new MimeBodyPart(multipartBody);
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(
                 RuntimeEnvironment.application, attachmentInfoExtractor, multipartPart);
@@ -66,13 +65,10 @@ public class AttachmentResolverTest {
 
     @Test
     public void buildCidMap__onMultipartWithEmptyBodyPart__shouldReturnEmptyMap() throws Exception {
-        Part multipartPart = mock(Part.class);
-        Multipart multipartBody = mock(Multipart.class);
+        Multipart multipartBody = new MimeMultipart();
         BodyPart bodyPart = mock(BodyPart.class);
-
-        when(multipartPart.getBody()).thenReturn(multipartBody);
-        when(multipartBody.getBodyParts()).thenReturn(Collections.singletonList(bodyPart));
-        when(bodyPart.getContentId()).thenReturn(null);
+        Part multipartPart = new MimeBodyPart(multipartBody);
+        multipartBody.addBodyPart(bodyPart);
 
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(
@@ -85,15 +81,14 @@ public class AttachmentResolverTest {
 
     @Test
     public void buildCidMap__onTwoPart__shouldReturnBothUris() throws Exception {
-        Part multipartPart = mock(Part.class);
-        Multipart multipartBody = mock(Multipart.class);
-        BodyPart bodyPart = mock(BodyPart.class);
-
-        when(multipartPart.getBody()).thenReturn(multipartBody);
-        when(multipartBody.getBodyParts()).thenReturn(Collections.singletonList(bodyPart));
+        Multipart multipartBody = new MimeMultipart();
+        Part multipartPart = new MimeBodyPart(multipartBody);
 
         BodyPart subPart1 = mock(BodyPart.class);
         BodyPart subPart2 = mock(BodyPart.class);
+        multipartBody.addBodyPart(subPart1);
+        multipartBody.addBodyPart(subPart2);
+
         when(subPart1.getContentId()).thenReturn("cid-1");
         when(subPart2.getContentId()).thenReturn("cid-2");
 
@@ -102,10 +97,10 @@ public class AttachmentResolverTest {
         when(attachmentInfoExtractor.extractAttachmentInfo(RuntimeEnvironment.application, subPart2)).thenReturn(
                 new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_2, true, subPart2));
 
-        when(multipartBody.getBodyParts()).thenReturn(Arrays.asList(subPart1, subPart2));
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(RuntimeEnvironment.application,
                 attachmentInfoExtractor, multipartPart);
+
 
         assertEquals(2, result.size());
         assertEquals(ATTACHMENT_TEST_URI_1, result.get("cid-1"));
