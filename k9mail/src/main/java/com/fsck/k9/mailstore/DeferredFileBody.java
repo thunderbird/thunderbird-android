@@ -17,8 +17,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.RawDataBody;
 import com.fsck.k9.mail.internet.SizeAware;
-import com.fsck.k9.service.FileFactory;
-import com.fsck.k9.service.FileProviderDeferredFileOutputStream;
+import com.fsck.k9.mailstore.util.DeferredFileOutputStream;
+import com.fsck.k9.mailstore.util.FileFactory;
 import org.apache.commons.io.IOUtils;
 
 
@@ -43,7 +43,7 @@ public class DeferredFileBody implements RawDataBody, SizeAware {
     }
 
     public OutputStream getOutputStream() throws IOException {
-        return new FileProviderDeferredFileOutputStream(MEMORY_BACKED_THRESHOLD, fileFactory) {
+        return new DeferredFileOutputStream(MEMORY_BACKED_THRESHOLD, fileFactory) {
             @Override
             public void close() throws IOException {
                 super.close();

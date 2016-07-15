@@ -16,7 +16,7 @@ import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.service.FileFactory;
+import com.fsck.k9.mailstore.util.FileFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.io.EOLConvertingInputStream;

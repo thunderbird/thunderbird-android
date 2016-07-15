@@ -1,4 +1,4 @@
-package com.fsck.k9.service;
+package com.fsck.k9.mailstore.util;
 
 
 import java.io.ByteArrayOutputStream;
@@ -7,22 +7,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.commons.io.output.DeferredFileOutputStream;
 import org.apache.commons.io.output.ThresholdingOutputStream;
 
 
 /**
- * This OutputStream is modelled after apache commons' {@link DeferredFileOutputStream},
- * but uses a {@link FileFactory} instead of directly generating temporary files
- * itself.
+ * This OutputStream is modelled after apache commons' {@link org.apache.commons.io.output.DeferredFileOutputStream},
+ * but uses a {@link FileFactory} instead of directly generating temporary files itself.
  */
-public class FileProviderDeferredFileOutputStream extends ThresholdingOutputStream {
-    private OutputStream currentOutputStream;
-    private File outputFile;
+public class DeferredFileOutputStream extends ThresholdingOutputStream {
     private final FileFactory fileFactory;
 
+    private OutputStream currentOutputStream;
+    private File outputFile;
 
-    public FileProviderDeferredFileOutputStream(int threshold, FileFactory fileFactory) {
+
+    public DeferredFileOutputStream(int threshold, FileFactory fileFactory) {
         super(threshold);
         this.fileFactory = fileFactory;
 
