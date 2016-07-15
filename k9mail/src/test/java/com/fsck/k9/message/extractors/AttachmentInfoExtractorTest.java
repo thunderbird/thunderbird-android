@@ -3,7 +3,9 @@ package com.fsck.k9.message.extractors;
 
 import java.io.File;
 
+import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -162,7 +164,16 @@ public class AttachmentInfoExtractorTest {
     }
 
     @Test
-    public void extractInfo__withProvidedTempFileBody() throws Exception {
+    public void extractInfo__withDeferredFileBody() throws Exception {
+        attachmentInfoExtractor = new AttachmentInfoExtractor() {
+            @Nullable
+            @Override
+            protected Uri getDecryptedFileProviderUri(Context context, DeferredFileBody decryptedTempFileBody,
+                    String mimeType) {
+                return TEST_URI;
+            }
+        };
+
         DeferredFileBody body = mock(DeferredFileBody.class);
         Part part = mock(Part.class);
         when(part.getBody()).thenReturn(body);
