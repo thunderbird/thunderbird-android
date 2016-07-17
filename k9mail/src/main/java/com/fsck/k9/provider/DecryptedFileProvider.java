@@ -60,10 +60,10 @@ public class DecryptedFileProvider extends FileProvider {
         try {
             Uri.Builder uriBuilder = FileProvider.getUriForFile(context, AUTHORITY, file).buildUpon();
             if (mimeType != null) {
-                uriBuilder = uriBuilder.appendQueryParameter("mime_type", mimeType);
+                uriBuilder.appendQueryParameter("mime_type", mimeType);
             }
             if (encoding != null) {
-                uriBuilder = uriBuilder.appendQueryParameter("encoding", encoding);
+                uriBuilder.appendQueryParameter("encoding", encoding);
             }
             return uriBuilder.build();
         } catch (IllegalArgumentException e) {
