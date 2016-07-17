@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore;
 
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,31 +15,35 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.RawDataBody;
 import com.fsck.k9.mail.internet.SizeAware;
-import org.apache.commons.io.output.DeferredFileOutputStream;
+import com.fsck.k9.mailstore.util.DeferredFileOutputStream;
+import com.fsck.k9.mailstore.util.FileFactory;
+import org.apache.commons.io.IOUtils;
 
-public class DecryptedTempFileBody extends BinaryAttachmentBody implements SizeAware {
+
+/** This is a body where the data is memory-backed at first and switches to file-backed if it gets larger.
+ * @see FileFactory
+ */
+public class DeferredFileBody implements RawDataBody, SizeAware {
     public static final int MEMORY_BACKED_THRESHOLD = 1024 * 8;
 
 
-    private final File tempDirectory;
-    @Nullable
-    private File file;
+    private final FileFactory fileFactory;
+    private final String encoding;
+
     @Nullable
     private byte[] data;
+    private File file;
 
 
-    public DecryptedTempFileBody(File tempDirectory, String transferEncoding) {
-        this.tempDirectory = tempDirectory;
-        try {
-            setEncoding(transferEncoding);
-        } catch (MessagingException e) {
-            throw new AssertionError("setEncoding() must succeed");
-        }
+    public DeferredFileBody(FileFactory fileFactory, String transferEncoding) {
+        this.fileFactory = fileFactory;
+        this.encoding = transferEncoding;
     }
 
     public OutputStream getOutputStream() throws IOException {
-        return new DeferredFileOutputStream(MEMORY_BACKED_THRESHOLD, "decrypted", null, tempDirectory) {
+        return new DeferredFileOutputStream(MEMORY_BACKED_THRESHOLD, fileFactory) {
             @Override
             public void close() throws IOException {
                 super.close();
@@ -57,7 +62,7 @@ public class DecryptedTempFileBody extends BinaryAttachmentBody implements SizeA
         try {
             if (file != null) {
                 Log.d(K9.LOG_TAG, "Decrypted data is file-backed.");
-                return new FileInputStream(file);
+                return new BufferedInputStream(new FileInputStream(file));
             }
             if (data != null) {
                 Log.d(K9.LOG_TAG, "Decrypted data is memory-backed.");
@@ -99,12 +104,26 @@ public class DecryptedTempFileBody extends BinaryAttachmentBody implements SizeA
 
         Log.d(K9.LOG_TAG, "Writing body to file for attachment access");
 
-        file = File.createTempFile("decrypted", null, tempDirectory);
-
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(data);
         fos.close();
 
         data = null;
+    }
+
+    @Override
+    public void setEncoding(String encoding) throws MessagingException {
+        throw new UnsupportedOperationException("Cannot re-encode a DecryptedTempFileBody!");
+    }
+
+    @Override
+    public void writeTo(OutputStream out) throws IOException, MessagingException {
+        InputStream inputStream = getInputStream();
+        IOUtils.copy(inputStream, out);
+    }
+
+    @Override
+    public String getEncoding() {
+        return encoding;
     }
 }

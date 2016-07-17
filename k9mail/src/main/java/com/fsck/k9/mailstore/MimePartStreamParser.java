@@ -1,17 +1,11 @@
 package com.fsck.k9.mailstore;
 
 
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Stack;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -22,34 +16,21 @@ import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mailstore.util.FileFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
-import org.apache.james.mime4j.codec.Base64InputStream;
-import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.io.EOLConvertingInputStream;
 import org.apache.james.mime4j.parser.ContentHandler;
 import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
-import org.apache.james.mime4j.util.MimeUtil;
 
-// TODO rename this class? this class doesn't really bear any 'decrypted' semantics anymore...
-public class DecryptStreamParser {
+public class MimePartStreamParser {
 
-    private static final String DECRYPTED_CACHE_DIRECTORY = "decrypted";
-
-    public static MimeBodyPart parse(Context context, InputStream inputStream) throws MessagingException, IOException {
-        inputStream = new BufferedInputStream(inputStream, 4096);
-
-        boolean hasInputData = waitForInputData(inputStream);
-        if (!hasInputData) {
-            return null;
-        }
-
-        File decryptedTempDirectory = getDecryptedTempDirectory(context);
-
-        MimeBodyPart decryptedRootPart = new MimeBodyPart();
+    public static MimeBodyPart parse(FileFactory fileFactory, InputStream inputStream)
+            throws MessagingException, IOException {
+        MimeBodyPart parsedRootPart = new MimeBodyPart();
 
         MimeConfig parserConfig  = new MimeConfig();
         parserConfig.setMaxHeaderLen(-1);
@@ -57,7 +38,7 @@ public class DecryptStreamParser {
         parserConfig.setMaxHeaderCount(-1);
 
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
-        parser.setContentHandler(new PartBuilder(decryptedTempDirectory, decryptedRootPart));
+        parser.setContentHandler(new PartBuilder(fileFactory, parsedRootPart));
         parser.setRecurse();
 
         try {
@@ -66,46 +47,15 @@ public class DecryptStreamParser {
             throw new MessagingException("Failed to parse decrypted content", e);
         }
 
-        return decryptedRootPart;
+        return parsedRootPart;
     }
 
-    private static boolean waitForInputData(InputStream inputStream) {
-        try {
-            inputStream.mark(1);
-            int ret = inputStream.read();
-            inputStream.reset();
-            return ret != -1;
-        } catch (IOException e) {
-            Log.d(K9.LOG_TAG, "got no input from pipe", e);
-            return false;
-        }
-    }
-
-    private static Body createBody(InputStream inputStream, String transferEncoding, File decryptedTempDirectory)
-            throws IOException {
-        DecryptedTempFileBody body = new DecryptedTempFileBody(decryptedTempDirectory, transferEncoding);
+    private static Body createBody(InputStream inputStream, String transferEncoding,
+            FileFactory fileFactory) throws IOException {
+        DeferredFileBody body = new DeferredFileBody(fileFactory, transferEncoding);
         OutputStream outputStream = body.getOutputStream();
         try {
-            InputStream decodingInputStream;
-            boolean closeStream;
-            if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(transferEncoding)) {
-                decodingInputStream = new QuotedPrintableInputStream(inputStream, false);
-                closeStream = true;
-            } else if (MimeUtil.ENC_BASE64.equals(transferEncoding)) {
-                decodingInputStream = new Base64InputStream(inputStream);
-                closeStream = true;
-            } else {
-                decodingInputStream = inputStream;
-                closeStream = false;
-            }
-
-            try {
-                IOUtils.copy(decodingInputStream, outputStream);
-            } finally {
-                if (closeStream) {
-                    decodingInputStream.close();
-                }
-            }
+            IOUtils.copy(inputStream, outputStream);
         } finally {
             outputStream.close();
         }
@@ -113,26 +63,15 @@ public class DecryptStreamParser {
         return body;
     }
 
-    private static File getDecryptedTempDirectory(Context context) {
-        File directory = new File(context.getCacheDir(), DECRYPTED_CACHE_DIRECTORY);
-        if (!directory.exists()) {
-            if (!directory.mkdir()) {
-                Log.e(K9.LOG_TAG, "Error creating directory: " + directory.getAbsolutePath());
-            }
-        }
-
-        return directory;
-    }
-
 
     private static class PartBuilder implements ContentHandler {
-        private final File decryptedTempDirectory;
+        private final FileFactory fileFactory;
         private final MimeBodyPart decryptedRootPart;
-        private final Stack<Object> stack = new Stack<Object>();
+        private final Stack<Object> stack = new Stack<>();
 
-        public PartBuilder(File decryptedTempDirectory, MimeBodyPart decryptedRootPart)
+        public PartBuilder(FileFactory fileFactory, MimeBodyPart decryptedRootPart)
                 throws MessagingException {
-            this.decryptedTempDirectory = decryptedTempDirectory;
+            this.fileFactory = fileFactory;
             this.decryptedRootPart = decryptedRootPart;
         }
 
@@ -234,7 +173,7 @@ public class DecryptStreamParser {
             Part part = (Part) stack.peek();
 
             String transferEncoding = bd.getTransferEncoding();
-            Body body = createBody(inputStream, transferEncoding, decryptedTempDirectory);
+            Body body = createBody(inputStream, transferEncoding, fileFactory);
 
             part.setBody(body);
         }

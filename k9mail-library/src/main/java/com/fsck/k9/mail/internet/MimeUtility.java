@@ -20,6 +20,8 @@ import java.io.OutputStream;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import android.support.annotation.NonNull;
+
 
 public class MimeUtility {
     public static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";
@@ -1082,7 +1084,7 @@ public class MimeUtility {
         return DEFAULT_ATTACHMENT_MIME_TYPE;
     }
 
-    public static String getExtensionByMimeType(String mimeType) {
+    public static String getExtensionByMimeType(@NonNull String mimeType) {
         String lowerCaseMimeType = mimeType.toLowerCase(Locale.US);
         for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP) {
             if (contentTypeMapEntry[1].equals(lowerCaseMimeType)) {

@@ -68,6 +68,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
+    private static final AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
     static final long INVALID_MESSAGE_PART_ID = -1;
 
     private final LocalStore localStore;
@@ -711,11 +712,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         long parentId = cursor.getLong(2);
         String mimeType = cursor.getString(3);
         long size = cursor.getLong(4);
-        String displayName = cursor.getString(5);
         byte[] header = cursor.getBlob(6);
         int dataLocation = cursor.getInt(9);
         String serverExtra = cursor.getString(15);
-        // TODO we don't currently cache the part types. might want to do that at a later point?
+        // TODO we don't currently cache much of the part data which is computed with AttachmentInfoExtractor,
+        // TODO might want to do that at a later point?
+        // String displayName = cursor.getString(5);
         // int type = cursor.getInt(1);
         // boolean firstClassAttachment = (type != MessagePartType.HIDDEN_ATTACHMENT);
 
@@ -730,7 +732,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
             String parentMimeType = parentPart.getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, displayName, size);
+                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
@@ -1401,7 +1403,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void missingPartToContentValues(ContentValues cv, Part part) throws MessagingException {
-        AttachmentViewInfo attachment = AttachmentInfoExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachment = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
         cv.put("display_name", attachment.displayName);
         cv.put("data_location", DataLocation.MISSING);
         cv.put("decoded_body_size", attachment.size);
@@ -1417,7 +1419,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private File leafPartToContentValues(ContentValues cv, Part part, Body body)
             throws MessagingException, IOException {
-        AttachmentViewInfo attachment = AttachmentInfoExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachment = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
         cv.put("display_name", attachment.displayName);
 
         String encoding = getTransferEncoding(part);

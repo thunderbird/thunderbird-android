@@ -9,16 +9,14 @@ public class LocalBodyPart extends MimeBodyPart implements LocalPart {
     private final String accountUuid;
     private final LocalMessage message;
     private final long messagePartId;
-    private final String displayName;
     private final long size;
 
-    public LocalBodyPart(String accountUuid, LocalMessage message, long messagePartId, String displayName, long size)
+    public LocalBodyPart(String accountUuid, LocalMessage message, long messagePartId, long size)
             throws MessagingException {
         super();
         this.accountUuid = accountUuid;
         this.message = message;
         this.messagePartId = messagePartId;
-        this.displayName = displayName;
         this.size = size;
     }
 
@@ -30,11 +28,6 @@ public class LocalBodyPart extends MimeBodyPart implements LocalPart {
     @Override
     public long getId() {
         return messagePartId;
-    }
-
-    @Override
-    public String getDisplayName() {
-        return displayName;
     }
 
     @Override
