@@ -1,8 +1,6 @@
 package com.fsck.k9.mailstore;
 
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 
 import android.net.Uri;
@@ -17,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.*;
@@ -46,8 +43,7 @@ public class AttachmentResolverTest {
     public void buildCidMap__onPartWithNoBody__shouldReturnEmptyMap() throws Exception {
         Part part = new MimeBodyPart();
 
-        Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(
-                RuntimeEnvironment.application, attachmentInfoExtractor, part);
+        Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, part);
 
         assertTrue(result.isEmpty());
     }
@@ -57,8 +53,7 @@ public class AttachmentResolverTest {
         Multipart multipartBody = new MimeMultipart();
         Part multipartPart = new MimeBodyPart(multipartBody);
 
-        Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(
-                RuntimeEnvironment.application, attachmentInfoExtractor, multipartPart);
+        Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, multipartPart);
 
         assertTrue(result.isEmpty());
     }
@@ -70,10 +65,7 @@ public class AttachmentResolverTest {
         Part multipartPart = new MimeBodyPart(multipartBody);
         multipartBody.addBodyPart(bodyPart);
 
-
-        Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(
-                RuntimeEnvironment.application, attachmentInfoExtractor, multipartPart);
-
+        Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, multipartPart);
 
         verify(bodyPart).getContentId();
         assertTrue(result.isEmpty());
@@ -92,19 +84,16 @@ public class AttachmentResolverTest {
         when(subPart1.getContentId()).thenReturn("cid-1");
         when(subPart2.getContentId()).thenReturn("cid-2");
 
-        when(attachmentInfoExtractor.extractAttachmentInfo(RuntimeEnvironment.application, subPart1)).thenReturn(
+        when(attachmentInfoExtractor.extractAttachmentInfo(subPart1)).thenReturn(
                 new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_1, true, subPart1));
-        when(attachmentInfoExtractor.extractAttachmentInfo(RuntimeEnvironment.application, subPart2)).thenReturn(
+        when(attachmentInfoExtractor.extractAttachmentInfo(subPart2)).thenReturn(
                 new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_2, true, subPart2));
 
 
-        Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(RuntimeEnvironment.application,
-                attachmentInfoExtractor, multipartPart);
-
+        Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, multipartPart);
 
         assertEquals(2, result.size());
         assertEquals(ATTACHMENT_TEST_URI_1, result.get("cid-1"));
         assertEquals(ATTACHMENT_TEST_URI_2, result.get("cid-2"));
     }
-
 }
