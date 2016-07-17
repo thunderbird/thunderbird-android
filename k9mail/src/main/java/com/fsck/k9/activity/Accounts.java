@@ -79,7 +79,6 @@ import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.SettingsExporter;
@@ -369,23 +368,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         search.and(SearchField.READ, "1", Attribute.NOT_EQUALS);
 
         return search;
-    }
-
-
-    @Override
-    public void onNewIntent(Intent intent) {
-        Uri uri = intent.getData();
-        Log.i(K9.LOG_TAG, "Accounts Activity got uri " + uri);
-        if (uri != null) {
-            ContentResolver contentResolver = getContentResolver();
-
-            Log.i(K9.LOG_TAG, "Accounts Activity got content of type " + contentResolver.getType(uri));
-
-            String contentType = contentResolver.getType(uri);
-            if (MimeUtility.K9_SETTINGS_MIME_TYPE.equals(contentType)) {
-                onImport(uri);
-            }
-        }
     }
 
     @Override
