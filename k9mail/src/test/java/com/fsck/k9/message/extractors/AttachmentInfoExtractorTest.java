@@ -1,8 +1,6 @@
 package com.fsck.k9.message.extractors;
 
 
-import java.io.File;
-
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -40,18 +38,20 @@ public class AttachmentInfoExtractorTest {
 
 
     private AttachmentInfoExtractor attachmentInfoExtractor;
+    private Context context;
 
 
     @Before
     public void setUp() throws Exception {
-        attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
+        context = RuntimeEnvironment.application;
+        attachmentInfoExtractor = new AttachmentInfoExtractor(context);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void extractInfo__withGenericPart_shouldThrow() throws Exception {
         Part part = mock(Part.class);
 
-        attachmentInfoExtractor.extractAttachmentInfo(RuntimeEnvironment.application, part);
+        attachmentInfoExtractor.extractAttachmentInfo(part);
     }
 
     @Test
@@ -62,8 +62,7 @@ public class AttachmentInfoExtractorTest {
         when(part.getSize()).thenReturn(TEST_SIZE);
         when(part.getAccountUuid()).thenReturn(TEST_ACCOUNT_UUID);
 
-        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(
-                RuntimeEnvironment.application, part);
+        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
 
         assertEquals(AttachmentProvider.getAttachmentUri(TEST_ACCOUNT_UUID, TEST_ID), attachmentViewInfo.uri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
@@ -165,11 +164,10 @@ public class AttachmentInfoExtractorTest {
 
     @Test
     public void extractInfo__withDeferredFileBody() throws Exception {
-        attachmentInfoExtractor = new AttachmentInfoExtractor() {
+        attachmentInfoExtractor = new AttachmentInfoExtractor(context) {
             @Nullable
             @Override
-            protected Uri getDecryptedFileProviderUri(Context context, DeferredFileBody decryptedTempFileBody,
-                    String mimeType) {
+            protected Uri getDecryptedFileProviderUri(DeferredFileBody decryptedTempFileBody, String mimeType) {
                 return TEST_URI;
             }
         };
@@ -182,8 +180,7 @@ public class AttachmentInfoExtractorTest {
         when(body.getSize()).thenReturn(TEST_SIZE);
 
 
-        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(
-                RuntimeEnvironment.application, part);
+        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
 
 
         assertEquals(TEST_URI, attachmentViewInfo.uri);

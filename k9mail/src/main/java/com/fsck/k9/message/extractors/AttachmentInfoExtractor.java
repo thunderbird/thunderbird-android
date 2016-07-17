@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
+import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
@@ -26,25 +27,30 @@ import com.fsck.k9.provider.DecryptedFileProvider;
 
 
 public class AttachmentInfoExtractor {
-    @VisibleForTesting
-    AttachmentInfoExtractor() { }
+    private final Context context;
+
 
     public static AttachmentInfoExtractor getInstance() {
-        return new AttachmentInfoExtractor();
+        Context context = Globals.getContext();
+        return new AttachmentInfoExtractor(context);
     }
 
-    public List<AttachmentViewInfo> extractAttachmentInfos(Context context, List<Part> attachmentParts)
-            throws MessagingException {
+    @VisibleForTesting
+    AttachmentInfoExtractor(Context context) {
+        this.context = context;
+    }
+
+    public List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts) throws MessagingException {
 
         List<AttachmentViewInfo> attachments = new ArrayList<>();
         for (Part part : attachmentParts) {
-            attachments.add(extractAttachmentInfo(context, part));
+            attachments.add(extractAttachmentInfo(part));
         }
 
         return attachments;
     }
 
-    public AttachmentViewInfo extractAttachmentInfo(Context context, Part part) throws MessagingException {
+    public AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
         Uri uri;
         long size;
         if (part instanceof LocalPart) {
@@ -58,7 +64,7 @@ public class AttachmentInfoExtractor {
             if (body instanceof DeferredFileBody) {
                 DeferredFileBody decryptedTempFileBody = (DeferredFileBody) body;
                 size = decryptedTempFileBody.getSize();
-                uri = getDecryptedFileProviderUri(context, decryptedTempFileBody, part.getMimeType());
+                uri = getDecryptedFileProviderUri(decryptedTempFileBody, part.getMimeType());
                 return extractAttachmentInfo(part, uri, size);
             } else {
                 throw new IllegalArgumentException("Unsupported part type provided");
@@ -70,7 +76,7 @@ public class AttachmentInfoExtractor {
 
     @Nullable
     @VisibleForTesting
-    protected Uri getDecryptedFileProviderUri(Context context, DeferredFileBody decryptedTempFileBody, String mimeType) {
+    protected Uri getDecryptedFileProviderUri(DeferredFileBody decryptedTempFileBody, String mimeType) {
         Uri uri;
         try {
             File file = decryptedTempFileBody.getFile();
