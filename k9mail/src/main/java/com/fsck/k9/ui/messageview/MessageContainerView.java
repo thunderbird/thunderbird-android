@@ -412,8 +412,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
         renderAttachments(messageViewInfo);
 
-        mHiddenAttachments.setVisibility(View.GONE);
-
         if (mSavedState != null) {
             if (mSavedState.showingPictures) {
                 setLoadPictures(true);
@@ -477,9 +475,17 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     }
 
     public void renderAttachments(MessageViewInfo messageViewInfo) {
+        boolean hasHiddenAttachments = false;
+
         if (messageViewInfo.attachments != null) {
             for (AttachmentViewInfo attachment : messageViewInfo.attachments) {
-                ViewGroup parent = attachment.firstClassAttachment ? mAttachments : mHiddenAttachments;
+                ViewGroup parent;
+                if (attachment.firstClassAttachment) {
+                    parent = mAttachments;
+                } else {
+                    parent = mHiddenAttachments;
+                    hasHiddenAttachments = true;
+                }
                 AttachmentView view =
                         (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, parent, false);
                 view.setCallback(attachmentCallback);
@@ -492,7 +498,13 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
         if (messageViewInfo.extraAttachments != null) {
             for (AttachmentViewInfo attachment : messageViewInfo.extraAttachments) {
-                ViewGroup parent = attachment.firstClassAttachment ? mAttachments : mHiddenAttachments;
+                ViewGroup parent;
+                if (attachment.firstClassAttachment) {
+                    parent = mAttachments;
+                } else {
+                    parent = mHiddenAttachments;
+                    hasHiddenAttachments = true;
+                }
                 LockedAttachmentView view = (LockedAttachmentView) mInflater
                         .inflate(R.layout.message_view_attachment_locked, parent, false);
                 view.setCallback(attachmentCallback);
@@ -501,6 +513,10 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
                 // attachments.put(attachment, view);
                 parent.addView(view);
             }
+        }
+
+        if (hasHiddenAttachments) {
+            mShowHiddenAttachments.setVisibility(View.VISIBLE);
         }
     }
 
@@ -520,6 +536,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         setLoadPictures(false);
         mAttachments.removeAllViews();
         mHiddenAttachments.removeAllViews();
+        mHiddenAttachments.setVisibility(View.GONE);
 
         currentHtmlText = null;
         currentAttachmentResolver = null;
