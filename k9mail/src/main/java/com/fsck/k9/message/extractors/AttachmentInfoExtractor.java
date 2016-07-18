@@ -21,8 +21,9 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.LocalPart;
 import com.fsck.k9.mailstore.DeferredFileBody;
+import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.LocalPart;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.provider.DecryptedFileProvider;
 
@@ -65,6 +66,12 @@ public class AttachmentInfoExtractor {
             String accountUuid = localPart.getAccountUuid();
             long messagePartId = localPart.getId();
             size = localPart.getSize();
+            uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
+        } else if (part instanceof LocalMessage) {
+            LocalMessage localMessage = (LocalMessage) part;
+            String accountUuid = localMessage.getAccount().getUuid();
+            long messagePartId = localMessage.getMessagePartId();
+            size = localMessage.getSize();
             uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
         } else {
             Body body = part.getBody();
