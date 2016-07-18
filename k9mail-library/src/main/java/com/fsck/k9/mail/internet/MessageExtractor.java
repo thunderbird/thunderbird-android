@@ -50,8 +50,8 @@ public class MessageExtractor {
                     return ((TextBody)body).getText();
                 }
                 final String mimeType = part.getMimeType();
-                if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*") ||
-                        part.isMimeType("application/pgp")) {
+                if (mimeType != null && isSameMimeType(mimeType, "text") ||
+                        MimeUtility.mimeTypeMatches(mimeType, "text/*") || part.isMimeType("application/pgp")) {
                     return getTextFromTextPart(part, body, mimeType, textSizeLimit);
                 } else {
                     throw new MessagingException("Provided non-text part: " + part);
@@ -171,7 +171,8 @@ public class MessageExtractor {
                 return;
             }
             String mimeType = part.getMimeType();
-            if (isSameMimeType(mimeType, "text/plain")) {
+            // TODO we default to html handling here, does that make sense?
+            if (isSameMimeType(mimeType, "text/plain") || isSameMimeType(mimeType, "text")) {
                 Text text = new Text(part);
                 outputViewableParts.add(text);
             } else {
@@ -281,7 +282,8 @@ public class MessageExtractor {
                         break;
                     }
                 }
-            } else if (isPartTextualBody(part) && isSameMimeType(part.getMimeType(), "text/plain")) {
+            } else if (isPartTextualBody(part) && (isSameMimeType(part.getMimeType(), "text/plain") ||
+                    isSameMimeType(part.getMimeType(), "text"))) {
                 Text text = new Text(part);
                 viewables.add(text);
                 if (directChild) {
@@ -429,6 +431,11 @@ public class MessageExtractor {
         }
 
         if (part.isMimeType("text/plain")) {
+            return true;
+        }
+
+        if (part.isMimeType("text")) {
+            // Thunderbird does this, so we do too
             return true;
         }
 
