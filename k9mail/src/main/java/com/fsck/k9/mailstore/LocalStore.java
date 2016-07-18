@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import com.fsck.k9.Account;
@@ -678,6 +679,7 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
+    @Nullable
     public InputStream getAttachmentInputStream(final String attachmentId) throws MessagingException {
         return database.execute(false, new DbCallback<InputStream>() {
             @Override
@@ -704,6 +706,7 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
+    @Nullable
     private InputStream getRawAttachmentInputStream(Cursor cursor, int location, String attachmentId) {
         switch (location) {
             case DataLocation.IN_DATABASE: {
@@ -715,7 +718,7 @@ public class LocalStore extends Store implements Serializable {
                 try {
                     return new FileInputStream(file);
                 } catch (FileNotFoundException e) {
-                    throw new WrappedException(e);
+                    return null;
                 }
             }
             default: {
@@ -724,7 +727,12 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    InputStream getDecodingInputStream(final InputStream rawInputStream, String encoding) {
+    @Nullable
+    InputStream getDecodingInputStream(@Nullable final InputStream rawInputStream, @Nullable String encoding) {
+        if (rawInputStream == null) {
+            return null;
+        }
+
         if (MimeUtil.ENC_BASE64.equals(encoding)) {
             return new Base64InputStream(rawInputStream) {
                 @Override
