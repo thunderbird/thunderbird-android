@@ -10,8 +10,10 @@ import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 
+import com.fsck.k9.Globals;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.helper.HtmlSanitizer;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -40,15 +42,29 @@ public class MessageViewInfoExtractor {
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
 
 
-    private static final AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
+    private final Context context;
+    private final AttachmentInfoExtractor attachmentInfoExtractor;
+    private final HtmlSanitizer htmlSanitizer;
 
 
-    private MessageViewInfoExtractor() { }
+    public static MessageViewInfoExtractor getInstance() {
+        Context context = Globals.getContext();
+        AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
+        HtmlSanitizer htmlSanitizer = HtmlSanitizer.getInstance();
+        return new MessageViewInfoExtractor(context, attachmentInfoExtractor, htmlSanitizer);
+    }
+
+    @VisibleForTesting
+    MessageViewInfoExtractor(Context context, AttachmentInfoExtractor attachmentInfoExtractor,
+            HtmlSanitizer htmlSanitizer) {
+        this.context = context;
+        this.attachmentInfoExtractor = attachmentInfoExtractor;
+        this.htmlSanitizer = htmlSanitizer;
+    }
 
     @WorkerThread
-    public static MessageViewInfo extractMessageForView(Context context,
-            Message message, MessageCryptoAnnotations annotations) throws MessagingException {
-
+    public MessageViewInfo extractMessageForView(Message message, MessageCryptoAnnotations annotations)
+            throws MessagingException {
         Part rootPart;
         CryptoResultAnnotation cryptoResultAnnotation;
         List<Part> extraParts;
@@ -66,13 +82,13 @@ public class MessageViewInfoExtractor {
 
         List<AttachmentViewInfo> attachmentInfos = new ArrayList<>();
         ViewableExtractedText viewable = extractViewableAndAttachments(
-                context, Collections.singletonList(rootPart), attachmentInfos);
+                Collections.singletonList(rootPart), attachmentInfos);
 
         List<AttachmentViewInfo> extraAttachmentInfos = new ArrayList<>();
         String extraViewableText = null;
         if (extraParts != null) {
             ViewableExtractedText extraViewable =
-                    extractViewableAndAttachments(context, extraParts, extraAttachmentInfos);
+                    extractViewableAndAttachments(extraParts, extraAttachmentInfos);
             extraViewableText = extraViewable.text;
         }
 
@@ -82,7 +98,7 @@ public class MessageViewInfoExtractor {
                 attachmentInfos, cryptoResultAnnotation, extraViewableText, extraAttachmentInfos, attachmentResolver);
     }
 
-    private static ViewableExtractedText extractViewableAndAttachments(Context context, List<Part> parts,
+    private ViewableExtractedText extractViewableAndAttachments(List<Part> parts,
             List<AttachmentViewInfo> attachmentInfos) throws MessagingException {
         ArrayList<Viewable> viewableParts = new ArrayList<>();
         ArrayList<Part> attachments = new ArrayList<>();
@@ -92,13 +108,12 @@ public class MessageViewInfoExtractor {
         }
 
         attachmentInfos.addAll(attachmentInfoExtractor.extractAttachmentInfos(attachments));
-        return MessageViewInfoExtractor.extractTextFromViewables(context, viewableParts);
+        return extractTextFromViewables(viewableParts);
     }
 
     /**
      * Extract the viewable textual parts of a message and return the rest as attachments.
      *
-     * @param context A {@link android.content.Context} instance that will be used to get localized strings.
      * @return A {@link ViewableExtractedText} instance containing the textual parts of the message as
      *         plain text and HTML, and a list of message parts considered attachments.
      *
@@ -106,7 +121,7 @@ public class MessageViewInfoExtractor {
      *          In case of an error.
      */
     @VisibleForTesting
-    static ViewableExtractedText extractTextFromViewables(Context context, List<Viewable> viewables)
+    ViewableExtractedText extractTextFromViewables(List<Viewable> viewables)
             throws MessagingException {
         try {
             // Collect all viewable parts
@@ -134,10 +149,10 @@ public class MessageViewInfoExtractor {
                     Message innerMessage =  header.getMessage();
 
                     addTextDivider(text, containerPart, !hideDivider);
-                    addMessageHeaderText(context, text, innerMessage);
+                    addMessageHeaderText(text, innerMessage);
 
                     addHtmlDivider(html, containerPart, !hideDivider);
-                    addMessageHeaderHtml(context, html, innerMessage);
+                    addMessageHeaderHtml(html, innerMessage);
 
                     hideDivider = true;
                 } else if (viewable instanceof Alternative) {
@@ -171,7 +186,10 @@ public class MessageViewInfoExtractor {
                 }
             }
 
-            return new ViewableExtractedText(text.toString(), html.toString());
+            String content = HtmlConverter.wrapMessageContent(html);
+            String sanitizedHtml = htmlSanitizer.sanitize(content);
+
+            return new ViewableExtractedText(text.toString(), sanitizedHtml);
         } catch (Exception e) {
             throw new MessagingException("Couldn't extract viewable parts", e);
         }
@@ -193,7 +211,7 @@ public class MessageViewInfoExtractor {
      *
      * @return The contents of the supplied viewable instance as HTML.
      */
-    private static StringBuilder buildHtml(Viewable viewable, boolean prependDivider) {
+    private StringBuilder buildHtml(Viewable viewable, boolean prependDivider) {
         StringBuilder html = new StringBuilder();
         if (viewable instanceof Textual) {
             Part part = ((Textual)viewable).getPart();
@@ -224,7 +242,7 @@ public class MessageViewInfoExtractor {
         return html;
     }
 
-    private static StringBuilder buildText(Viewable viewable, boolean prependDivider) {
+    private StringBuilder buildText(Viewable viewable, boolean prependDivider) {
         StringBuilder text = new StringBuilder();
         if (viewable instanceof Textual) {
             Part part = ((Textual)viewable).getPart();
@@ -266,7 +284,7 @@ public class MessageViewInfoExtractor {
      * @param prependDivider
      *         {@code true}, if the divider should be appended. {@code false}, otherwise.
      */
-    private static void addHtmlDivider(StringBuilder html, Part part, boolean prependDivider) {
+    private void addHtmlDivider(StringBuilder html, Part part, boolean prependDivider) {
         if (prependDivider) {
             String filename = getPartName(part);
 
@@ -305,7 +323,7 @@ public class MessageViewInfoExtractor {
      * @param prependDivider
      *         {@code true}, if the divider should be appended. {@code false}, otherwise.
      */
-    private static void addTextDivider(StringBuilder text, Part part, boolean prependDivider) {
+    private void addTextDivider(StringBuilder text, Part part, boolean prependDivider) {
         if (prependDivider) {
             String filename = getPartName(part);
 
@@ -331,8 +349,6 @@ public class MessageViewInfoExtractor {
     /**
      * Extract important header values from a message to display inline (plain text version).
      *
-     * @param context
-     *         A {@link android.content.Context} instance that will be used to get localized strings.
      * @param text
      *         The {@link StringBuilder} that will receive the (plain text) output.
      * @param message
@@ -341,7 +357,7 @@ public class MessageViewInfoExtractor {
      * @throws com.fsck.k9.mail.MessagingException
      *          In case of an error.
      */
-    private static void addMessageHeaderText(Context context, StringBuilder text, Message message)
+    private void addMessageHeaderText(StringBuilder text, Message message)
             throws MessagingException {
         // From: <sender>
         Address[] from = message.getFrom();
@@ -394,8 +410,6 @@ public class MessageViewInfoExtractor {
     /**
      * Extract important header values from a message to display inline (HTML version).
      *
-     * @param context
-     *         A {@link android.content.Context} instance that will be used to get localized strings.
      * @param html
      *         The {@link StringBuilder} that will receive the (HTML) output.
      * @param message
@@ -404,7 +418,7 @@ public class MessageViewInfoExtractor {
      * @throws com.fsck.k9.mail.MessagingException
      *          In case of an error.
      */
-    private static void addMessageHeaderHtml(Context context, StringBuilder html, Message message)
+    private void addMessageHeaderHtml(StringBuilder html, Message message)
             throws MessagingException {
 
         html.append("<table style=\"border: 0\">");

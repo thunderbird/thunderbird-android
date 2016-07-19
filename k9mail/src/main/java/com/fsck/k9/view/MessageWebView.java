@@ -17,8 +17,6 @@ import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
-import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.helper.HtmlSanitizer;
 import com.fsck.k9.mailstore.AttachmentResolver;
 
 
@@ -132,19 +130,7 @@ public class MessageWebView extends RigidWebView {
     }
 
     private void setHtmlContent(@NonNull String htmlText) {
-        // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
-        String content = "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>";
-        if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
-            content += "<style type=\"text/css\">" +
-                   "* { background: black ! important; color: #F3F3F3 !important }" +
-                   ":link, :link * { color: #CCFF33 !important }" +
-                   ":visited, :visited * { color: #551A8B !important }</style> ";
-        }
-        content += HtmlConverter.cssStylePre();
-        content += "</head><body>" + htmlText + "</body></html>";
-        //TODO: Do this in the background
-        String sanitizedContent = HtmlSanitizer.sanitize(content);
-        loadDataWithBaseURL("about:blank", sanitizedContent, "text/html", "utf-8", null);
+        loadDataWithBaseURL("about:blank", htmlText, "text/html", "utf-8", null);
         resumeTimers();
     }
 
