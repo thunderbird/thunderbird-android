@@ -399,6 +399,9 @@ public class MessageLoaderHelper {
     MessagingListener downloadMessageListener = new MessagingListener() {
         @Override
         public void loadMessageRemoteFinished(Account account, String folder, String uid) {
+            if (messageReference.equals(account.getUuid(), folder, uid, null)) {
+                return;
+            }
             onMessageDownloadFinished();
         }
 
