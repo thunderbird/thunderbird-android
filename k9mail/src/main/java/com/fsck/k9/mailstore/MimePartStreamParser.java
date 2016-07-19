@@ -15,7 +15,6 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.util.FileFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
@@ -150,9 +149,8 @@ public class MimePartStreamParser {
         public void startMultipart(BodyDescriptor bd) throws MimeException {
             Part part = (Part) stack.peek();
             try {
-                String contentType = part.getContentType();
-                String mimeType = MimeUtility.getHeaderParameter(contentType, null);
-                String boundary = MimeUtility.getHeaderParameter(contentType, "boundary");
+                String mimeType = bd.getMimeType();
+                String boundary = bd.getBoundary();
 
                 MimeMultipart multipart = new MimeMultipart(mimeType, boundary);
                 part.setBody(multipart);

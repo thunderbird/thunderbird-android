@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail.internet;
 
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,14 +10,22 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import android.support.annotation.NonNull;
 
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.CompositeBody;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
@@ -28,15 +37,6 @@ import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.util.MimeUtil;
-
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.CompositeBody;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
-import com.fsck.k9.mail.Part;
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and
@@ -530,9 +530,8 @@ public class MimeMessage extends Message {
 
             Part e = (Part)stack.peek();
             try {
-                String contentType = e.getContentType();
-                String mimeType = MimeUtility.getHeaderParameter(contentType, null);
-                String boundary = MimeUtility.getHeaderParameter(contentType, "boundary");
+                String mimeType = bd.getMimeType();
+                String boundary = bd.getBoundary();
                 MimeMultipart multiPart = new MimeMultipart(mimeType, boundary);
                 e.setBody(multiPart);
                 stack.addFirst(multiPart);
