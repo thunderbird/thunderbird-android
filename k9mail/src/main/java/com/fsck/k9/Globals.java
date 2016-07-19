@@ -2,12 +2,14 @@ package com.fsck.k9;
 
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 
 
 public class Globals {
     private static Context context;
 
-    static void setContext(Context context) {
+    @VisibleForTesting
+    public static void setContext(Context context) {
         Globals.context = context;
     }
 

@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
-
+import com.fsck.k9.Globals;
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -23,15 +21,26 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor.ViewableExtractedText;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import static com.fsck.k9.mailstore.MessageViewInfoExtractor.extractTextFromViewables;
 import static junit.framework.Assert.assertEquals;
 
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 public class MessageViewInfoExtractorTest {
+
+    @Before
+    public void setUp() throws Exception {
+        Globals.setContext(RuntimeEnvironment.application);
+    }
 
     @Test
     public void testSimplePlainTextMessage() throws MessagingException {
@@ -48,8 +57,7 @@ public class MessageViewInfoExtractorTest {
         List<Part> outputNonViewableParts = new ArrayList<Part>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
-        ViewableExtractedText container = extractTextFromViewables(InstrumentationRegistry.getTargetContext(),
-                outputViewableParts);
+        ViewableExtractedText container = extractTextFromViewables(RuntimeEnvironment.application, outputViewableParts);
 
         String expectedText = bodyText;
         String expectedHtml =
@@ -77,8 +85,7 @@ public class MessageViewInfoExtractorTest {
         List<Part> attachments = new ArrayList<Part>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, attachments);
-        ViewableExtractedText container = extractTextFromViewables(InstrumentationRegistry.getTargetContext(),
-                outputViewableParts);
+        ViewableExtractedText container = extractTextFromViewables(RuntimeEnvironment.application, outputViewableParts);
 
         String expectedText = "K-9 Mail rocks :>";
         String expectedHtml =
@@ -112,8 +119,7 @@ public class MessageViewInfoExtractorTest {
         List<Part> outputNonViewableParts = new ArrayList<Part>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
-        ViewableExtractedText container = extractTextFromViewables(InstrumentationRegistry.getTargetContext(),
-                outputViewableParts);
+        ViewableExtractedText container = extractTextFromViewables(RuntimeEnvironment.application, outputViewableParts);
 
         String expectedText =
                 bodyText1 + "\r\n\r\n" +
@@ -136,7 +142,7 @@ public class MessageViewInfoExtractorTest {
 
     @Test
     public void testTextPlusRfc822Message() throws MessagingException {
-        K9ActivityCommon.setLanguage(InstrumentationRegistry.getTargetContext(), "en");
+        K9ActivityCommon.setLanguage(RuntimeEnvironment.application, "en");
         Locale.setDefault(Locale.US);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"));
 
@@ -173,7 +179,7 @@ public class MessageViewInfoExtractorTest {
         List<Part> outputNonViewableParts = new ArrayList<Part>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
-        ViewableExtractedText container = extractTextFromViewables(InstrumentationRegistry.getTargetContext(),
+        ViewableExtractedText container = extractTextFromViewables(RuntimeEnvironment.application,
                 outputViewableParts);
 
         String expectedText =
