@@ -77,20 +77,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
-
-        <Button
-            android:id="@+id/show_hidden_attachments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/message_view_show_more_attachments_action" />
-
-        <LinearLayout
-            android:id="@+id/hidden_attachments"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            />
-
     </LinearLayout>
 
 </com.fsck.k9.ui.messageview.MessageContainerView>
