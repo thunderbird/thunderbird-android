@@ -79,7 +79,7 @@ public class AttachmentInfoExtractorTest {
         assertEquals(AttachmentViewInfo.UNKNOWN_SIZE, attachmentViewInfo.size);
         assertEquals("noname", attachmentViewInfo.displayName);
         assertNull(attachmentViewInfo.mimeType);
-        assertFalse(attachmentViewInfo.firstClassAttachment);
+        assertTrue(attachmentViewInfo.firstClassAttachment);
     }
 
     @Test
@@ -186,6 +186,6 @@ public class AttachmentInfoExtractorTest {
         assertEquals(TEST_URI, attachmentViewInfo.uri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
-        assertFalse(attachmentViewInfo.firstClassAttachment);
+        assertTrue(attachmentViewInfo.firstClassAttachment);
     }
 }

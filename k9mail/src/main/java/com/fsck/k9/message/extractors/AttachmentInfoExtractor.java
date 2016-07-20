@@ -111,7 +111,6 @@ public class AttachmentInfoExtractor {
         }
 
         if (name == null) {
-            firstClassAttachment = false;
             String extension = null;
             if (mimeType != null) {
                 extension = MimeUtility.getExtensionByMimeType(mimeType);
