@@ -114,6 +114,23 @@ public class MessageExtractor {
         }
     }
 
+    public static boolean hasMissingParts(Part part) {
+        Body body = part.getBody();
+        if (body == null) {
+            return true;
+        }
+        if (body instanceof Multipart) {
+            Multipart multipart = (Multipart) body;
+            for (Part subPart : multipart.getBodyParts()) {
+                if (hasMissingParts(subPart)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     /** Traverse the MIME tree of a message an extract viewable parts. */
     public static void findViewablesAndAttachments(Part part,
                 @Nullable List<Viewable> outputViewableParts, @Nullable List<Part> outputNonViewableParts)

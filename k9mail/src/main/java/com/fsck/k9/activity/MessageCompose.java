@@ -1558,7 +1558,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         @Override
-        public void onMessageViewInfoLoadFailed(LocalMessage localMessage) {
+        public void onMessageViewInfoLoadFailed(LocalMessage localMessage, MessageViewInfo messageViewInfo) {
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
             Toast.makeText(MessageCompose.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
         }

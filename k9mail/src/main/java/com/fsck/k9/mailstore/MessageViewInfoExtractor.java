@@ -15,6 +15,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.HtmlSanitizer;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -94,8 +95,11 @@ public class MessageViewInfoExtractor {
 
         AttachmentResolver attachmentResolver = AttachmentResolver.createFromPart(rootPart);
 
-        return MessageViewInfo.createWithExtractedContent(message, rootPart, viewable.html,
-                attachmentInfos, cryptoResultAnnotation, extraViewableText, extraAttachmentInfos, attachmentResolver);
+        boolean isMessageIncomplete = !message.isSet(Flag.X_DOWNLOADED_FULL) ||
+                MessageExtractor.hasMissingParts(message);
+
+        return MessageViewInfo.createWithExtractedContent(message, isMessageIncomplete, rootPart, viewable.html,
+                attachmentInfos, cryptoResultAnnotation, attachmentResolver, extraViewableText, extraAttachmentInfos);
     }
 
     private ViewableExtractedText extractViewableAndAttachments(List<Part> parts,

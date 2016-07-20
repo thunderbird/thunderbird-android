@@ -768,8 +768,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             String encoding = cursor.getString(7);
 
             File file = localStore.getAttachmentFile(Long.toString(id));
-            Body body = new FileBackedBody(file, encoding);
-            part.setBody(body);
+            if (file.exists()) {
+                Body body = new FileBackedBody(file, encoding);
+                part.setBody(body);
+            }
         }
     }
 
