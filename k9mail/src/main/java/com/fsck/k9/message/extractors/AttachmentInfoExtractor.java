@@ -42,12 +42,15 @@ public class AttachmentInfoExtractor {
     }
 
     @WorkerThread
-    public List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)
+    public List<AttachmentViewInfo> extractAttachmentInfoForView(List<Part> attachmentParts)
             throws MessagingException {
 
         List<AttachmentViewInfo> attachments = new ArrayList<>();
         for (Part part : attachmentParts) {
-            attachments.add(extractAttachmentInfo(part));
+            AttachmentViewInfo attachmentViewInfo = extractAttachmentInfo(part);
+            if (attachmentViewInfo.firstClassAttachment) {
+                attachments.add(attachmentViewInfo);
+            }
         }
 
         return attachments;
