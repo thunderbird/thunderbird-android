@@ -53,6 +53,7 @@ import com.fsck.k9.mail.internet.SizeAware;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import com.fsck.k9.message.extractors.AttachmentCounter;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
