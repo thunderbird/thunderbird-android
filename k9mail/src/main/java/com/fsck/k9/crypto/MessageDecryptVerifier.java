@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.mail.Body;
@@ -128,7 +129,7 @@ public class MessageDecryptVerifier {
             Part part = partsToCheck.pop();
             Body body = part.getBody();
 
-            if (isPartPgpInline(part)) {
+            if (isPartPgpInlineEncryptedOrSigned(part)) {
                 inlineParts.add(part);
                 continue;
             }
@@ -162,17 +163,8 @@ public class MessageDecryptVerifier {
         return null;
     }
 
-    private static boolean isPartPgpInline(Part part) {
-        if (!part.isMimeType(TEXT_PLAIN) && !part.isMimeType(APPLICATION_PGP)) {
-            return false;
-        }
-        String text = MessageExtractor.getTextFromPart(part, TEXT_LENGTH_FOR_INLINE_CHECK);
-        return !TextUtils.isEmpty(text) &&
-                (text.startsWith(PGP_INLINE_START_MARKER) || text.startsWith(PGP_INLINE_SIGNED_START_MARKER));
-    }
-
     private static boolean isPartEncryptedOrSigned(Part part) {
-        return isPartMultipartEncrypted(part) || isPartMultipartSigned(part) || isPartPgpInline(part);
+        return isPartMultipartEncrypted(part) || isPartMultipartSigned(part) || isPartPgpInlineEncryptedOrSigned(part);
     }
 
     private static boolean isPartMultipartSigned(Part part) {
@@ -196,7 +188,19 @@ public class MessageDecryptVerifier {
         return isPgpEncrypted || isPgpSigned;
     }
 
-    public static boolean isPartPgpInlineEncrypted(Part part) {
+    private static boolean isPartPgpInlineEncryptedOrSigned(Part part) {
+        if (!part.isMimeType(TEXT_PLAIN) && !part.isMimeType(APPLICATION_PGP)) {
+            return false;
+        }
+        String text = MessageExtractor.getTextFromPart(part, TEXT_LENGTH_FOR_INLINE_CHECK);
+        return !TextUtils.isEmpty(text) &&
+                (text.startsWith(PGP_INLINE_START_MARKER) || text.startsWith(PGP_INLINE_SIGNED_START_MARKER));
+    }
+
+    public static boolean isPartPgpInlineEncrypted(@Nullable Part part) {
+        if (part == null) {
+            return false;
+        }
         if (!part.isMimeType(TEXT_PLAIN) && !part.isMimeType(APPLICATION_PGP)) {
             return false;
         }
