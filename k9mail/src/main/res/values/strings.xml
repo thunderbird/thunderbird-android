@@ -939,6 +939,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="dialog_confirm_delete_confirm_button">Yes</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
 
+    <string name="dialog_confirm_mark_all_as_read_title">Confirm mark all as read</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Do you want to mark all messages as read?</string>
+
+    <string name="dialog_confirm_mark_all_as_read_confirm_button">Yes</string>
+    <string name="dialog_confirm_mark_all_as_read_cancel_button">No</string>
+
     <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Do you really want to move this message to the spam folder?</item>
