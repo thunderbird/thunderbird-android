@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
@@ -56,13 +55,14 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
 
     private RecipientAdapter adapter;
+    @Nullable
     private String cryptoProvider;
+    @Nullable
     private LoaderManager loaderManager;
 
     private ListPopupWindow alternatesPopup;
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
-    private boolean attachedToWindow = true;
     private TokenListener<Recipient> listener;
 
 
@@ -178,22 +178,18 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         return getObjects().isEmpty();
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        attachedToWindow = true;
-
-        if (getContext() instanceof Activity) {
-            Activity activity = (Activity) getContext();
-            loaderManager = activity.getLoaderManager();
-        }
+    public void setLoaderManager(@Nullable LoaderManager loaderManager) {
+        this.loaderManager = loaderManager;
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        attachedToWindow = false;
+        if (loaderManager != null) {
+            loaderManager.destroyLoader(LOADER_ID_ALTERNATES);
+            loaderManager.destroyLoader(LOADER_ID_FILTERING);
+            loaderManager = null;
+        }
     }
 
     @Override
@@ -241,8 +237,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     protected void performFiltering(@NonNull CharSequence text, int start, int end, int keyCode) {
-        String query = text.subSequence(start, end).toString();
+        if (loaderManager == null) {
+            return;
+        }
 
+        String query = text.subSequence(start, end).toString();
         if (TextUtils.isEmpty(query) || query.length() < MINIMUM_LENGTH_FOR_FILTERING) {
             loaderManager.destroyLoader(LOADER_ID_FILTERING);
             return;
@@ -253,7 +252,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         loaderManager.restartLoader(LOADER_ID_FILTERING, args, this);
     }
 
-    public void setCryptoProvider(String cryptoProvider) {
+    public void setCryptoProvider(@Nullable String cryptoProvider) {
         this.cryptoProvider = cryptoProvider;
     }
 
@@ -274,7 +273,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     private void showAlternates(Recipient recipient) {
-        if (!attachedToWindow) {
+        if (loaderManager == null) {
             return;
         }
 
@@ -296,7 +295,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     public void showAlternatesPopup(List<Recipient> data) {
-        if (!attachedToWindow) {
+        if (loaderManager == null) {
             return;
         }
 
@@ -338,6 +337,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     public void onLoadFinished(Loader<List<Recipient>> loader, List<Recipient> data) {
+        if (loaderManager == null) {
+            return;
+        }
+
         switch (loader.getId()) {
             case LOADER_ID_FILTERING: {
                 adapter.setRecipients(data);

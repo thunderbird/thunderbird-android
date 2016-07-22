@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
@@ -78,14 +80,15 @@ public class RecipientPresenter implements PermissionPingCallback {
     private boolean cryptoEnablePgpInline = false;
 
 
-    public RecipientPresenter(Context context, RecipientMvpView recipientMvpView, Account account,
-            ComposePgpInlineDecider composePgpInlineDecider, ReplyToParser replyToParser) {
+    public RecipientPresenter(Context context, LoaderManager loaderManager, RecipientMvpView recipientMvpView,
+            Account account, ComposePgpInlineDecider composePgpInlineDecider, ReplyToParser replyToParser) {
         this.recipientMvpView = recipientMvpView;
         this.context = context;
         this.composePgpInlineDecider = composePgpInlineDecider;
         this.replyToParser = replyToParser;
 
         recipientMvpView.setPresenter(this);
+        recipientMvpView.setLoaderManager(loaderManager);
         onSwitchAccount(account);
         updateCryptoStatus();
     }
