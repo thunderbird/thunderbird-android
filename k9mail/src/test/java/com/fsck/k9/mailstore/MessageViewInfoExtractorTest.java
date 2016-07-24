@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import com.fsck.k9.Globals;
+import android.app.Application;
+
+import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.helper.HtmlSanitizer;
 import com.fsck.k9.helper.HtmlSanitizerHelper;
@@ -45,15 +47,18 @@ public class MessageViewInfoExtractorTest {
 
 
     private MessageViewInfoExtractor messageViewInfoExtractor;
+    private Application context;
 
 
     @Before
     public void setUp() throws Exception {
-        Globals.setContext(RuntimeEnvironment.application);
+        context = RuntimeEnvironment.application;
+
+        GlobalsHelper.setContext(context);
 
         HtmlSanitizer dummyHtmlSanitizer = HtmlSanitizerHelper.getDummyHtmlSanitizer();
 
-        messageViewInfoExtractor = new MessageViewInfoExtractor(RuntimeEnvironment.application,
+        messageViewInfoExtractor = new MessageViewInfoExtractor(context,
                 null, dummyHtmlSanitizer);
     }
 
@@ -69,7 +74,7 @@ public class MessageViewInfoExtractorTest {
         // Prepare fixture
         HtmlSanitizer htmlSanitizer = mock(HtmlSanitizer.class);
         MessageViewInfoExtractor messageViewInfoExtractor =
-                new MessageViewInfoExtractor(RuntimeEnvironment.application, null, htmlSanitizer);
+                new MessageViewInfoExtractor(context, null, htmlSanitizer);
         String value = "--sanitized html--";
         when(htmlSanitizer.sanitize(any(String.class))).thenReturn(value);
 
@@ -181,7 +186,7 @@ public class MessageViewInfoExtractorTest {
 
     @Test
     public void testTextPlusRfc822Message() throws MessagingException {
-        K9ActivityCommon.setLanguage(RuntimeEnvironment.application, "en");
+        K9ActivityCommon.setLanguage(context, "en");
         Locale.setDefault(Locale.US);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"));
 

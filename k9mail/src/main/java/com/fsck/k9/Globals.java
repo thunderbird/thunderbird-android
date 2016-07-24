@@ -8,8 +8,7 @@ import android.support.annotation.VisibleForTesting;
 public class Globals {
     private static Context context;
 
-    @VisibleForTesting
-    public static void setContext(Context context) {
+    static void setContext(Context context) {
         Globals.context = context;
     }
 
