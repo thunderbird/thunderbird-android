@@ -333,11 +333,11 @@ public class MessageLoaderHelper {
 
         if (messageViewInfo == null) {
             messageViewInfo = createErrorStateMessageViewInfo();
-            callback.onMessageViewInfoLoadFailed(localMessage, messageViewInfo);
+            callback.onMessageViewInfoLoadFailed(messageViewInfo);
             return;
         }
 
-        callback.onMessageViewInfoLoadFinished(localMessage, messageViewInfo);
+        callback.onMessageViewInfoLoadFinished(messageViewInfo);
     }
 
     @NonNull
@@ -432,8 +432,8 @@ public class MessageLoaderHelper {
         void onMessageDataLoadFinished(LocalMessage message);
         void onMessageDataLoadFailed();
 
-        void onMessageViewInfoLoadFinished(LocalMessage localMessage, MessageViewInfo messageViewInfo);
-        void onMessageViewInfoLoadFailed(LocalMessage localMessage, MessageViewInfo messageViewInfo);
+        void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo);
+        void onMessageViewInfoLoadFailed(MessageViewInfo messageViewInfo);
 
         void setLoadingProgress(int current, int max);
 
