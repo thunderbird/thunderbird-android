@@ -1,6 +1,8 @@
 package com.fsck.k9.helper;
 
 
+import android.support.annotation.VisibleForTesting;
+
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.HtmlSerializer;
@@ -19,9 +21,15 @@ public class HtmlSanitizer {
     }
 
 
-    private HtmlSanitizer() {}
+    public static HtmlSanitizer getInstance() {
+        return new HtmlSanitizer();
+    }
 
-    public static String sanitize(String html) {
+    @VisibleForTesting
+    HtmlSanitizer() {}
+
+
+    public String sanitize(String html) {
         TagNode rootNode = HTML_CLEANER.clean(html);
 
         removeMetaRefresh(rootNode);
@@ -43,7 +51,7 @@ public class HtmlSanitizer {
         return properties;
     }
 
-    private static void removeMetaRefresh(TagNode rootNode) {
+    private void removeMetaRefresh(TagNode rootNode) {
         for (TagNode element : rootNode.getElementListByName("meta", true)) {
             String httpEquiv = element.getAttributeByName("http-equiv");
             if (httpEquiv != null && httpEquiv.trim().equalsIgnoreCase("refresh")) {

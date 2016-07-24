@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mailstore.AttachmentResolver;
@@ -437,7 +438,7 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
 
         if (textToDisplay == null) {
-            textToDisplay = wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
+            textToDisplay = HtmlConverter.wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
         }
 
         OnPageFinishedListener onPageFinishedListener = new OnPageFinishedListener() {
@@ -458,10 +459,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     public boolean hasHiddenExternalImages() {
         return hasHiddenExternalImages;
-    }
-
-    public String wrapStatusMessage(String status) {
-        return "<div style=\"text-align:center; color: grey;\">" + status + "</div>";
     }
 
     private void displayHtmlContentWithInlineAttachments(String htmlText, AttachmentResolver attachmentResolver,

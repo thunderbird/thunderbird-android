@@ -1323,6 +1323,31 @@ public class HtmlConverter {
         return "</pre>";
     }
 
+    public static String wrapStatusMessage(CharSequence status) {
+        return wrapMessageContent("<div style=\"text-align:center; color: grey;\">" + status + "</div>");
+    }
+
+    public static String wrapMessageContent(CharSequence messageContent) {
+        // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
+        return "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>" +
+                HtmlConverter.cssStyleTheme() +
+                HtmlConverter.cssStylePre() +
+                "</head><body>" +
+                messageContent +
+                "</body></html>";
+    }
+
+    private static String cssStyleTheme() {
+        if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
+            return "<style type=\"text/css\">" +
+                    "* { background: black ! important; color: #F3F3F3 !important }" +
+                    ":link, :link * { color: #CCFF33 !important }" +
+                    ":visited, :visited * { color: #551A8B !important }</style> ";
+        } else {
+            return "";
+        }
+    }
+
     /**
      * Dynamically generate a CSS style for {@code <pre>} elements.
      *
@@ -1335,7 +1360,7 @@ public class HtmlConverter {
      *      A {@code <style>} element that can be dynamically included in the HTML
      *      {@code <head>} element when messages are displayed.
      */
-    public static String cssStylePre() {
+    private static String cssStylePre() {
         final String font = K9.messageViewFixedWidthFont()
                 ? "monospace"
                 : "sans-serif";
