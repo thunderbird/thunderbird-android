@@ -124,7 +124,7 @@ public class LocalMessage extends MimeMessage {
         mimeType = cursor.getString(23);
     }
 
-    long getMessagePartId() {
+    public long getMessagePartId() {
         return messagePartId;
     }
 
