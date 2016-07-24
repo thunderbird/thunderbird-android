@@ -4,6 +4,9 @@ package com.fsck.k9.message.extractors;
 import com.fsck.k9.mail.Message;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static com.fsck.k9.message.MessageCreationHelper.createMessage;
 import static com.fsck.k9.message.MessageCreationHelper.createMultipartMessage;
@@ -14,7 +17,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 public class EncryptionDetectorTest {
     private static final String CRLF = "\r\n";
 
@@ -82,7 +86,7 @@ public class EncryptionDetectorTest {
     }
 
     @Test
-    public void isEncrypted_withPlainTextAndInlinePgp_shouldReturnTrue() throws Exception {
+    public void isEncrypted_withPlainTextAndPreambleWithInlinePgp_shouldReturnFalse() throws Exception {
         Message message = createTextMessage("text/plain", "" +
                 "preamble" + CRLF +
                 "-----BEGIN PGP MESSAGE-----" + CRLF +
@@ -93,7 +97,7 @@ public class EncryptionDetectorTest {
 
         boolean encrypted = encryptionDetector.isEncrypted(message);
 
-        assertTrue(encrypted);
+        assertFalse(encrypted);
     }
 
     @Test

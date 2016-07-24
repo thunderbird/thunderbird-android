@@ -1,41 +1,6 @@
 
 package com.fsck.k9.mailstore;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.mailstore.LocalFolder.DataLocation;
-import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
-import com.fsck.k9.mailstore.StorageManager.StorageProvider;
-import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
-import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
-import com.fsck.k9.message.extractors.MessagePreviewCreator;
-import com.fsck.k9.message.extractors.MessageFulltextCreator;
-import com.fsck.k9.preferences.Storage;
-import com.fsck.k9.provider.EmailProvider;
-import com.fsck.k9.provider.EmailProvider.MessageColumns;
-import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.SearchField;
-import com.fsck.k9.search.SqlQueryBuilder;
-import org.apache.james.mime4j.codec.Base64InputStream;
-import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
-import org.apache.james.mime4j.util.MimeUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -53,6 +18,44 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.helper.UrlEncodingHelper;
+import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mailstore.LocalFolder.DataLocation;
+import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
+import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
+import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import com.fsck.k9.mailstore.StorageManager.StorageProvider;
+import com.fsck.k9.message.extractors.AttachmentCounter;
+import com.fsck.k9.message.extractors.MessageFulltextCreator;
+import com.fsck.k9.message.extractors.MessagePreviewCreator;
+import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.provider.EmailProvider;
+import com.fsck.k9.provider.EmailProvider.MessageColumns;
+import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchSpecification.Attribute;
+import com.fsck.k9.search.SearchSpecification.SearchField;
+import com.fsck.k9.search.SqlQueryBuilder;
+import org.apache.james.mime4j.codec.Base64InputStream;
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+import org.apache.james.mime4j.util.MimeUtil;
 
 /**
  * <pre>
@@ -182,7 +185,7 @@ public class LocalStore extends Store implements Serializable {
 
         messagePreviewCreator = MessagePreviewCreator.newInstance();
         messageFulltextCreator = MessageFulltextCreator.newInstance();
-        attachmentCounter = new AttachmentCounter();
+        attachmentCounter = AttachmentCounter.newInstance();
 
         database.open();
     }
