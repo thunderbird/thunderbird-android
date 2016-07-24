@@ -48,7 +48,7 @@ public class AttachmentInfoExtractor {
         List<AttachmentViewInfo> attachments = new ArrayList<>();
         for (Part part : attachmentParts) {
             AttachmentViewInfo attachmentViewInfo = extractAttachmentInfo(part);
-            if (attachmentViewInfo.firstClassAttachment) {
+            if (!attachmentViewInfo.inlineAttachment) {
                 attachments.add(attachmentViewInfo);
             }
         }
@@ -102,7 +102,7 @@ public class AttachmentInfoExtractor {
 
     @WorkerThread
     private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size) throws MessagingException {
-        boolean firstClassAttachment = true;
+        boolean inlineAttachment = false;
 
         String mimeType = part.getMimeType();
         String contentTypeHeader = MimeUtility.unfoldAndDecode(part.getContentType());
@@ -127,12 +127,12 @@ public class AttachmentInfoExtractor {
         if (contentDisposition != null &&
                 MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)") &&
                 part.getHeader(MimeHeader.HEADER_CONTENT_ID).length > 0) {
-            firstClassAttachment = false;
+            inlineAttachment = true;
         }
 
         long attachmentSize = extractAttachmentSize(contentDisposition, size);
 
-        return new AttachmentViewInfo(mimeType, name, attachmentSize, uri, firstClassAttachment, part);
+        return new AttachmentViewInfo(mimeType, name, attachmentSize, uri, inlineAttachment, part);
     }
 
     @WorkerThread

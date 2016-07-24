@@ -79,7 +79,7 @@ public class AttachmentInfoExtractorTest {
         assertEquals(AttachmentViewInfo.UNKNOWN_SIZE, attachmentViewInfo.size);
         assertEquals("noname", attachmentViewInfo.displayName);
         assertNull(attachmentViewInfo.mimeType);
-        assertTrue(attachmentViewInfo.firstClassAttachment);
+        assertFalse(attachmentViewInfo.inlineAttachment);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class AttachmentInfoExtractorTest {
     }
 
     @Test
-    public void extractInfoForDb__withContentTypeAndName__shouldReturnNamedFirstClassAttachment() throws Exception {
+    public void extractInfoForDb__withContentTypeAndName__shouldReturnNamedAttachment() throws Exception {
         Part part = mock(Part.class);
         when(part.getMimeType()).thenReturn(TEST_MIME_TYPE);
         when(part.getContentType()).thenReturn(TEST_MIME_TYPE + "; name=\"filename.ext\"");
@@ -105,7 +105,7 @@ public class AttachmentInfoExtractorTest {
         assertEquals(Uri.EMPTY, attachmentViewInfo.uri);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
         assertEquals("filename.ext", attachmentViewInfo.displayName);
-        assertTrue(attachmentViewInfo.firstClassAttachment);
+        assertFalse(attachmentViewInfo.inlineAttachment);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class AttachmentInfoExtractorTest {
     }
 
     @Test
-    public void extractInfoForDb__withDispositionAttach__shouldReturnNamedFirstClassAttachment() throws Exception {
+    public void extractInfoForDb__withDispositionAttach__shouldReturnNamedAttachment() throws Exception {
         Part part = mock(Part.class);
         when(part.getDisposition()).thenReturn("attachment" + "; filename=\"filename.ext\"; meaningless=\"dummy\"");
 
@@ -127,11 +127,11 @@ public class AttachmentInfoExtractorTest {
 
         assertEquals(Uri.EMPTY, attachmentViewInfo.uri);
         assertEquals("filename.ext", attachmentViewInfo.displayName);
-        assertTrue(attachmentViewInfo.firstClassAttachment);
+        assertFalse(attachmentViewInfo.inlineAttachment);
     }
 
     @Test
-    public void extractInfoForDb__withDispositionInlineAndContentId__shouldReturnNotFirstClassAttachment()
+    public void extractInfoForDb__withDispositionInlineAndContentId__shouldReturnInlineAttachment()
             throws Exception {
         Part part = mock(Part.class);
         when(part.getHeader(MimeHeader.HEADER_CONTENT_ID)).thenReturn(TEST_CONTENT_ID);
@@ -139,7 +139,7 @@ public class AttachmentInfoExtractorTest {
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
 
-        assertFalse(attachmentViewInfo.firstClassAttachment);
+        assertTrue(attachmentViewInfo.inlineAttachment);
     }
 
     @Test
@@ -186,6 +186,6 @@ public class AttachmentInfoExtractorTest {
         assertEquals(TEST_URI, attachmentViewInfo.uri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
-        assertTrue(attachmentViewInfo.firstClassAttachment);
+        assertFalse(attachmentViewInfo.inlineAttachment);
     }
 }

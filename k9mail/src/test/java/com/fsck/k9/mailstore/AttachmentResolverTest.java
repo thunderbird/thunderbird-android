@@ -85,9 +85,9 @@ public class AttachmentResolverTest {
         when(subPart2.getContentId()).thenReturn("cid-2");
 
         when(attachmentInfoExtractor.extractAttachmentInfo(subPart1)).thenReturn(
-                new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_1, true, subPart1));
+                new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_1, false, subPart1));
         when(attachmentInfoExtractor.extractAttachmentInfo(subPart2)).thenReturn(
-                new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_2, true, subPart2));
+                new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_2, false, subPart2));
 
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, multipartPart);

@@ -21,16 +21,16 @@ public class AttachmentViewInfo {
      * @see com.fsck.k9.ui.messageview.AttachmentController#getAttachmentUriForMimeType(AttachmentViewInfo, String)
      */
     public final Uri uri;
-    public final boolean firstClassAttachment;
+    public final boolean inlineAttachment;
     public final Part part;
 
-    public AttachmentViewInfo(String mimeType, String displayName, long size, Uri uri, boolean firstClassAttachment,
+    public AttachmentViewInfo(String mimeType, String displayName, long size, Uri uri, boolean inlineAttachment,
             Part part) {
         this.mimeType = mimeType;
         this.displayName = displayName;
         this.size = size;
         this.uri = uri;
-        this.firstClassAttachment = firstClassAttachment;
+        this.inlineAttachment = inlineAttachment;
         this.part = part;
     }
 }

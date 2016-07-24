@@ -165,7 +165,7 @@ public class AttachmentPresenter {
         }
 
         for (AttachmentViewInfo attachmentViewInfo : messageViewInfo.attachments) {
-            if (attachmentViewInfo.firstClassAttachment) {
+            if (!attachmentViewInfo.inlineAttachment) {
                 addAttachment(attachmentViewInfo);
             }
         }
