@@ -837,7 +837,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 return true;
             }
             case R.id.mark_all_as_read: {
-                mMessageListFragment.markAllAsRead();
+                mMessageListFragment.confirmMarkAllAsRead();
                 return true;
             }
             case R.id.show_folder_list: {

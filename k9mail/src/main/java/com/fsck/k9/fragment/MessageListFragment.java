@@ -1261,6 +1261,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                         confirmText, cancelText);
                 break;
             }
+            case R.id.dialog_confirm_mark_all_as_read: {
+                String title = getString(R.string.dialog_confirm_mark_all_as_read_title);
+                String message = getString(R.string.dialog_confirm_mark_all_as_read_message);
+
+                String confirmText = getString(R.string.dialog_confirm_mark_all_as_read_confirm_button);
+                String cancelText = getString(R.string.dialog_confirm_mark_all_as_read_cancel_button);
+
+                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText);
+                break;
+            }
             default: {
                 throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
             }
@@ -2797,6 +2807,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 mActiveMessage = null;
                 break;
             }
+            case R.id.dialog_confirm_mark_all_as_read: {
+                markAllAsRead();
+                break;
+            }
         }
     }
 
@@ -3507,6 +3521,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public boolean isMarkAllAsReadSupported() {
         return (isSingleAccountMode() && isSingleFolderMode());
+    }
+
+    public void confirmMarkAllAsRead() {
+        showDialog(R.id.dialog_confirm_mark_all_as_read);
     }
 
     public void markAllAsRead() {
