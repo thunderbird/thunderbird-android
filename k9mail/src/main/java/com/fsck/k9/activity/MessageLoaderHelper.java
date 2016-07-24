@@ -71,11 +71,11 @@ public class MessageLoaderHelper {
     private static final int DECODE_MESSAGE_LOADER_ID = 2;
 
 
-    // injected state
-    private final Context context;
-    private final FragmentManager fragmentManager;
-    private final LoaderManager loaderManager;
-    @Nullable // may be cleared
+    // injected state - all of this may be cleared to avoid data leakage!
+    private Context context;
+    private FragmentManager fragmentManager;
+    private LoaderManager loaderManager;
+    @Nullable // make this explicitly nullable, make sure to cancel/ignore any operation if this is null
     private MessageLoaderCallbacks callback;
 
 
@@ -137,6 +137,9 @@ public class MessageLoaderHelper {
         }
 
         callback = null;
+        context = null;
+        fragmentManager = null;
+        loaderManager = null;
     }
 
     /** Prevents future callbacks, but retains loading state to pick up from in a call to
@@ -148,6 +151,9 @@ public class MessageLoaderHelper {
         }
 
         callback = null;
+        context = null;
+        fragmentManager = null;
+        loaderManager = null;
     }
 
     @UiThread
@@ -416,6 +422,9 @@ public class MessageLoaderHelper {
     MessagingListener downloadMessageListener = new MessagingListener() {
         @Override
         public void loadMessageRemoteFinished(Account account, String folder, String uid) {
+            if (messageReference.equals(account.getUuid(), folder, uid)) {
+                return;
+            }
             onMessageDownloadFinished();
         }
 
