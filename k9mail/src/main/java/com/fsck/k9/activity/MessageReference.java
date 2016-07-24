@@ -113,11 +113,10 @@ public class MessageReference implements Parcelable {
             return false;
         }
         MessageReference other = (MessageReference) o;
-        return equals(other.accountUuid, other.folderName, other.uid, other.flag);
+        return equals(other.accountUuid, other.folderName, other.uid);
     }
 
-    @SuppressWarnings("UnusedParameters") // consistency with constructor
-    public boolean equals(String accountUuid, String folderName, String uid, Flag flag) {
+    public boolean equals(String accountUuid, String folderName, String uid) {
         // noinspection StringEquality, we check for null values here
         return ((accountUuid == this.accountUuid || (accountUuid != null && accountUuid.equals(this.accountUuid)))
                 && (folderName == this.folderName || (folderName != null && folderName.equals(this.folderName)))
