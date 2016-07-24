@@ -2755,7 +2755,7 @@ public class MessagingController implements Runnable {
                 message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
             }*/
 
-            if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
+            /*if (!message.isSet(Flag.X_DOWNLOADED_FULL)) */ {
                 /*
                  * At this point the message is not available, so we need to download it
                  * fully if possible.

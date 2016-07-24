@@ -152,10 +152,6 @@ public class MessageLoaderHelper {
 
     @UiThread
     public void downloadCompleteMessage() {
-        if (localMessage.isSet(Flag.X_DOWNLOADED_FULL)) {
-            return;
-        }
-
         startDownloadingMessageBody(true);
     }
 
@@ -191,7 +187,9 @@ public class MessageLoaderHelper {
 
         callback.onMessageDataLoadFinished(localMessage);
 
-        if (localMessage.isBodyMissing()) {
+        boolean messageIncomplete =
+                !localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL);
+        if (messageIncomplete) {
             startDownloadingMessageBody(false);
             return;
         }
@@ -334,11 +332,18 @@ public class MessageLoaderHelper {
         }
 
         if (messageViewInfo == null) {
-            callback.onMessageViewInfoLoadFailed(localMessage);
+            messageViewInfo = createErrorStateMessageViewInfo();
+            callback.onMessageViewInfoLoadFailed(messageViewInfo);
             return;
         }
 
-        callback.onMessageViewInfoLoadFinished(localMessage, messageViewInfo);
+        callback.onMessageViewInfoLoadFinished(messageViewInfo);
+    }
+
+    @NonNull
+    private MessageViewInfo createErrorStateMessageViewInfo() {
+        boolean isMessageIncomplete = !localMessage.isSet(Flag.X_DOWNLOADED_FULL);
+        return MessageViewInfo.createWithErrorState(localMessage, isMessageIncomplete);
     }
 
     private void cancelAndClearDecodeLoader() {
@@ -427,8 +432,8 @@ public class MessageLoaderHelper {
         void onMessageDataLoadFinished(LocalMessage message);
         void onMessageDataLoadFailed();
 
-        void onMessageViewInfoLoadFinished(LocalMessage localMessage, MessageViewInfo messageViewInfo);
-        void onMessageViewInfoLoadFailed(LocalMessage localMessage);
+        void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo);
+        void onMessageViewInfoLoadFailed(MessageViewInfo messageViewInfo);
 
         void setLoadingProgress(int current, int max);
 

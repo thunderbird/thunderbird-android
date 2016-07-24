@@ -22,7 +22,6 @@ import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener;
@@ -97,14 +96,14 @@ public class MessageTopView extends LinearLayout {
         hideShowPicturesButton();
     }
 
-    private void resetAndPrepareMessageView(Message message) {
+    private void resetAndPrepareMessageView(MessageViewInfo messageViewInfo) {
         mDownloadRemainder.setVisibility(View.GONE);
         containerView.removeAllViews();
-        setShowDownloadButton(message);
+        setShowDownloadButton(messageViewInfo);
     }
 
     public void showMessage(Account account, MessageViewInfo messageViewInfo) {
-        resetAndPrepareMessageView(messageViewInfo.message);
+        resetAndPrepareMessageView(messageViewInfo);
 
         ShowPictures showPicturesSetting = account.getShowPictures();
         boolean automaticallyLoadPictures =
@@ -128,7 +127,7 @@ public class MessageTopView extends LinearLayout {
 
     public void showMessageCryptoWarning(final MessageViewInfo messageViewInfo, Drawable providerIcon,
             @StringRes int warningTextRes) {
-        resetAndPrepareMessageView(messageViewInfo.message);
+        resetAndPrepareMessageView(messageViewInfo);
         View view = mInflater.inflate(R.layout.message_content_crypto_warning, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
 
@@ -147,7 +146,7 @@ public class MessageTopView extends LinearLayout {
     }
 
     public void showMessageEncryptedButIncomplete(MessageViewInfo messageViewInfo, Drawable providerIcon) {
-        resetAndPrepareMessageView(messageViewInfo.message);
+        resetAndPrepareMessageView(messageViewInfo);
         View view = mInflater.inflate(R.layout.message_content_crypto_incomplete, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
 
@@ -156,7 +155,7 @@ public class MessageTopView extends LinearLayout {
     }
 
     public void showMessageCryptoErrorView(MessageViewInfo messageViewInfo, Drawable providerIcon) {
-        resetAndPrepareMessageView(messageViewInfo.message);
+        resetAndPrepareMessageView(messageViewInfo);
         View view = mInflater.inflate(R.layout.message_content_crypto_error, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
 
@@ -172,7 +171,7 @@ public class MessageTopView extends LinearLayout {
     }
 
     public void showMessageCryptoCancelledView(MessageViewInfo messageViewInfo, Drawable providerIcon) {
-        resetAndPrepareMessageView(messageViewInfo.message);
+        resetAndPrepareMessageView(messageViewInfo);
         View view = mInflater.inflate(R.layout.message_content_crypto_cancelled, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
 
@@ -248,12 +247,12 @@ public class MessageTopView extends LinearLayout {
         mDownloadRemainder.setEnabled(false);
     }
 
-    private void setShowDownloadButton(Message message) {
-        if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
-            mDownloadRemainder.setVisibility(View.GONE);
-        } else {
+    private void setShowDownloadButton(MessageViewInfo messageViewInfo) {
+        if (messageViewInfo.isMessageIncomplete) {
             mDownloadRemainder.setEnabled(true);
             mDownloadRemainder.setVisibility(View.VISIBLE);
+        } else {
+            mDownloadRemainder.setVisibility(View.GONE);
         }
     }
 

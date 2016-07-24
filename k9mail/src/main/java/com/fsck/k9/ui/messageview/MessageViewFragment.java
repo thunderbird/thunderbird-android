@@ -722,13 +722,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         @Override
-        public void onMessageViewInfoLoadFinished(LocalMessage localMessage, MessageViewInfo messageViewInfo) {
+        public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
             showMessage(messageViewInfo);
         }
 
         @Override
-        public void onMessageViewInfoLoadFailed(LocalMessage localMessage) {
-            MessageViewInfo messageViewInfo = MessageViewInfo.createWithErrorState(localMessage);
+        public void onMessageViewInfoLoadFailed(MessageViewInfo messageViewInfo) {
             showMessage(messageViewInfo);
         }
 
