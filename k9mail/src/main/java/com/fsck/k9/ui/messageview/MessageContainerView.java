@@ -20,12 +20,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,8 +41,7 @@ import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
 
 
-public class MessageContainerView extends LinearLayout implements OnClickListener,
-        OnLayoutChangedListener, OnCreateContextMenuListener {
+public class MessageContainerView extends LinearLayout implements OnLayoutChangedListener, OnCreateContextMenuListener {
     private static final int MENU_ITEM_LINK_VIEW = Menu.FIRST;
     private static final int MENU_ITEM_LINK_SHARE = Menu.FIRST + 1;
     private static final int MENU_ITEM_LINK_COPY = Menu.FIRST + 2;
@@ -64,8 +60,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
-    private Button mShowHiddenAttachments;
-    private LinearLayout mHiddenAttachments;
     private View unsignedTextContainer;
     private TextView unsignedText;
     private View mAttachmentsContainer;
@@ -95,11 +89,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
         mAttachmentsContainer = findViewById(R.id.attachments_container);
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
-        mHiddenAttachments = (LinearLayout) findViewById(R.id.hidden_attachments);
-        mHiddenAttachments.setVisibility(View.GONE);
-        mShowHiddenAttachments = (Button) findViewById(R.id.show_hidden_attachments);
-        mShowHiddenAttachments.setVisibility(View.GONE);
-        mShowHiddenAttachments.setOnClickListener(this);
 
         unsignedTextContainer = findViewById(R.id.message_unsigned_container);
         unsignedText = (TextView) findViewById(R.id.message_unsigned_text);
@@ -356,21 +345,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.show_hidden_attachments: {
-                onShowHiddenAttachments();
-                break;
-            }
-        }
-    }
-
-    private void onShowHiddenAttachments() {
-        mShowHiddenAttachments.setVisibility(View.GONE);
-        mHiddenAttachments.setVisibility(View.VISIBLE);
-    }
-
     public MessageContainerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -412,15 +386,9 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
         renderAttachments(messageViewInfo);
 
-        mHiddenAttachments.setVisibility(View.GONE);
-
         if (mSavedState != null) {
             if (mSavedState.showingPictures) {
                 setLoadPictures(true);
-            }
-
-            if (mSavedState.hiddenAttachmentsVisible) {
-                onShowHiddenAttachments();
             }
 
             mSavedState = null;
@@ -477,29 +445,29 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     }
 
     public void renderAttachments(MessageViewInfo messageViewInfo) {
+        boolean hasHiddenAttachments = false;
+
         if (messageViewInfo.attachments != null) {
             for (AttachmentViewInfo attachment : messageViewInfo.attachments) {
-                ViewGroup parent = attachment.firstClassAttachment ? mAttachments : mHiddenAttachments;
                 AttachmentView view =
-                        (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, parent, false);
+                        (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, mAttachments, false);
                 view.setCallback(attachmentCallback);
                 view.setAttachment(attachment);
 
                 attachments.put(attachment, view);
-                parent.addView(view);
+                mAttachments.addView(view);
             }
         }
 
         if (messageViewInfo.extraAttachments != null) {
             for (AttachmentViewInfo attachment : messageViewInfo.extraAttachments) {
-                ViewGroup parent = attachment.firstClassAttachment ? mAttachments : mHiddenAttachments;
                 LockedAttachmentView view = (LockedAttachmentView) mInflater
-                        .inflate(R.layout.message_view_attachment_locked, parent, false);
+                        .inflate(R.layout.message_view_attachment_locked, mAttachments, false);
                 view.setCallback(attachmentCallback);
                 view.setAttachment(attachment);
 
                 // attachments.put(attachment, view);
-                parent.addView(view);
+                mAttachments.addView(view);
             }
         }
     }
@@ -519,7 +487,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
     public void resetView() {
         setLoadPictures(false);
         mAttachments.removeAllViews();
-        mHiddenAttachments.removeAllViews();
 
         currentHtmlText = null;
         currentAttachmentResolver = null;
@@ -542,8 +509,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
         savedState.attachmentViewVisible = (mAttachmentsContainer != null &&
                 mAttachmentsContainer.getVisibility() == View.VISIBLE);
-        savedState.hiddenAttachmentsVisible = (mHiddenAttachments != null &&
-                mHiddenAttachments.getVisibility() == View.VISIBLE);
         savedState.showingPictures = showingPictures;
 
         return savedState;
@@ -587,7 +552,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
 
     static class SavedState extends BaseSavedState {
         boolean attachmentViewVisible;
-        boolean hiddenAttachmentsVisible;
         boolean showingPictures;
 
         public static final Parcelable.Creator<SavedState> CREATOR =
@@ -611,7 +575,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         private SavedState(Parcel in) {
             super(in);
             this.attachmentViewVisible = (in.readInt() != 0);
-            this.hiddenAttachmentsVisible = (in.readInt() != 0);
             this.showingPictures = (in.readInt() != 0);
         }
 
@@ -619,7 +582,6 @@ public class MessageContainerView extends LinearLayout implements OnClickListene
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt((this.attachmentViewVisible) ? 1 : 0);
-            out.writeInt((this.hiddenAttachmentsVisible) ? 1 : 0);
             out.writeInt((this.showingPictures) ? 1 : 0);
         }
     }

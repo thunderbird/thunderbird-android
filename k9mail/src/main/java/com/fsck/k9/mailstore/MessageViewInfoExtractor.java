@@ -107,7 +107,7 @@ public class MessageViewInfoExtractor {
             MessageExtractor.findViewablesAndAttachments(part, viewableParts, attachments);
         }
 
-        attachmentInfos.addAll(attachmentInfoExtractor.extractAttachmentInfos(attachments));
+        attachmentInfos.addAll(attachmentInfoExtractor.extractAttachmentInfoForView(attachments));
         return extractTextFromViewables(viewableParts);
     }
 

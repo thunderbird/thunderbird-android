@@ -720,7 +720,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         // TODO might want to do that at a later point?
         // String displayName = cursor.getString(5);
         // int type = cursor.getInt(1);
-        // boolean firstClassAttachment = (type != MessagePartType.HIDDEN_ATTACHMENT);
+        // boolean inlineAttachment = (type == MessagePartType.HIDDEN_ATTACHMENT);
 
         final Part part;
         if (id == message.getMessagePartId()) {
