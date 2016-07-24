@@ -4,6 +4,7 @@ package com.fsck.k9.activity.compose;
 import java.util.Arrays;
 import java.util.List;
 
+import android.app.LoaderManager;
 import android.content.Context;
 
 import com.fsck.k9.Account;
@@ -41,6 +42,7 @@ public class RecipientPresenterTest {
     private ComposePgpInlineDecider composePgpInlineDecider;
     private Account account;
     private RecipientMvpView recipientMvpView;
+    private LoaderManager loaderManager;
 
 
     @Before
@@ -51,9 +53,10 @@ public class RecipientPresenterTest {
         account = mock(Account.class);
         composePgpInlineDecider = mock(ComposePgpInlineDecider.class);
         replyToParser = mock(ReplyToParser.class);
+        loaderManager = mock(LoaderManager.class);
 
         recipientPresenter = new RecipientPresenter(
-                context, recipientMvpView, account, composePgpInlineDecider, replyToParser);
+                context, loaderManager, recipientMvpView, account, composePgpInlineDecider, replyToParser);
     }
 
     @Test

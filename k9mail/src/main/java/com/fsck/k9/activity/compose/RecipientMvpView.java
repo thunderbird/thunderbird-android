@@ -4,6 +4,7 @@ package com.fsck.k9.activity.compose;
 import java.util.Arrays;
 import java.util.List;
 
+import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.text.TextWatcher;
 import android.view.View;
@@ -377,6 +378,12 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
         activity.launchUserInteractionPendingIntent(pendingIntent, requestCode);
+    }
+
+    public void setLoaderManager(LoaderManager loaderManager) {
+        toView.setLoaderManager(loaderManager);
+        ccView.setLoaderManager(loaderManager);
+        bccView.setLoaderManager(loaderManager);
     }
 
     public enum CryptoStatusDisplayType {
