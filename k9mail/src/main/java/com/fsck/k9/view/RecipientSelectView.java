@@ -97,6 +97,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         adapter = new RecipientAdapter(context);
         setAdapter(adapter);
+
+        setLongClickable(true);
     }
 
     @Override
