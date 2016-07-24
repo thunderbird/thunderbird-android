@@ -258,6 +258,7 @@ public class OpenPgpApi {
     public static final String RESULT_INTENT = "intent";
 
     // DECRYPT_VERIFY
+    public static final String EXTRA_DECRYPTION_RESULT = "decryption_result";
     public static final String EXTRA_DETACHED_SIGNATURE = "detached_signature";
     public static final String EXTRA_PROGRESS_MESSENGER = "progress_messenger";
     public static final String EXTRA_DATA_LENGTH = "data_length";

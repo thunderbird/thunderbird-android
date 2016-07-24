@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.Loader;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
@@ -28,6 +29,7 @@ import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
+import org.openintents.openpgp.OpenPgpDecryptionResult;
 
 
 /** This class is responsible for loading a message start to finish, and
@@ -83,6 +85,7 @@ public class MessageLoaderHelper {
 
     private LocalMessage localMessage;
     private MessageCryptoAnnotations messageCryptoAnnotations;
+    private OpenPgpDecryptionResult cachedDecryptionResult;
 
     private MessageCryptoHelper messageCryptoHelper;
 
@@ -99,9 +102,17 @@ public class MessageLoaderHelper {
     // public interface
 
     @UiThread
-    public void asyncStartOrResumeLoadingMessage(MessageReference messageReference) {
+    public void asyncStartOrResumeLoadingMessage(MessageReference messageReference, Parcelable cachedDecryptionResult) {
         this.messageReference = messageReference;
         this.account = Preferences.getPreferences(context).getAccount(messageReference.getAccountUuid());
+
+        if (cachedDecryptionResult != null) {
+            if (cachedDecryptionResult instanceof OpenPgpDecryptionResult) {
+                this.cachedDecryptionResult = (OpenPgpDecryptionResult) cachedDecryptionResult;
+            } else {
+                Log.e(K9.LOG_TAG, "Got decryption result of unknown type - ignoring");
+            }
+        }
 
         startOrResumeLocalMessageLoader();
     }
@@ -248,7 +259,8 @@ public class MessageLoaderHelper {
             messageCryptoHelper = new MessageCryptoHelper(context, account.getOpenPgpProvider());
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
-        messageCryptoHelper.asyncStartOrResumeProcessingMessage(localMessage, messageCryptoCallback);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(
+                localMessage, messageCryptoCallback, cachedDecryptionResult);
     }
 
     private void cancelAndClearCryptoOperation() {

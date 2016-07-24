@@ -75,19 +75,17 @@ public class QuotedMessageHelper {
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
         String sentDate = getSentDateText(resources, originalMessage);
+        String fromAddress = Address.toString(originalMessage.getFrom());
         if (quoteStyle == QuoteStyle.PREFIX) {
             StringBuilder header = new StringBuilder(QUOTE_BUFFER_LENGTH);
             header.append("<div class=\"gmail_quote\">");
             if (sentDate.length() != 0) {
                 header.append(HtmlConverter.textToHtmlFragment(String.format(
-                        resources.getString(R.string.message_compose_reply_header_fmt_with_date),
-                        sentDate,
-                        Address.toString(originalMessage.getFrom()))
+                        resources.getString(R.string.message_compose_reply_header_fmt_with_date), sentDate, fromAddress)
                 ));
             } else {
                 header.append(HtmlConverter.textToHtmlFragment(String.format(
-                        resources.getString(R.string.message_compose_reply_header_fmt),
-                        Address.toString(originalMessage.getFrom()))
+                        resources.getString(R.string.message_compose_reply_header_fmt), fromAddress)
                 ));
             }
             header.append("<blockquote class=\"gmail_quote\" " +
@@ -102,9 +100,9 @@ public class QuotedMessageHelper {
             StringBuilder header = new StringBuilder();
             header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\r\n");
             header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\r\n"); // This gets converted into a horizontal line during html to text conversion.
-            if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
+            if (originalMessage.getFrom() != null && fromAddress.length() != 0) {
                 header.append("<b>").append(resources.getString(R.string.message_compose_quote_header_from)).append("</b> ")
-                        .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getFrom())))
+                        .append(HtmlConverter.textToHtmlFragment(fromAddress))
                         .append("<br>\r\n");
             }
             if (sentDate.length() != 0) {

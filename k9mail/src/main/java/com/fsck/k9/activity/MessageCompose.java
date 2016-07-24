@@ -113,8 +113,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
 
     public static final String EXTRA_ACCOUNT = "account";
-    public static final String EXTRA_MESSAGE_BODY  = "messageBody";
     public static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
+    public static final String EXTRA_MESSAGE_DECRYPTION_RESULT  = "message_decryption_result";
 
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
         "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
@@ -133,7 +133,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
-    private static final int MSG_SKIPPED_ATTACHMENTS = 3;
     public static final int MSG_SAVED_DRAFT = 4;
     private static final int MSG_DISCARDED_DRAFT = 5;
 
@@ -278,12 +277,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 case MSG_PROGRESS_OFF:
                     setProgressBarIndeterminateVisibility(false);
                     break;
-                case MSG_SKIPPED_ATTACHMENTS:
-                    Toast.makeText(
-                        MessageCompose.this,
-                        getString(R.string.message_compose_attachments_skipped_toast),
-                        Toast.LENGTH_LONG).show();
-                    break;
                 case MSG_SAVED_DRAFT:
                     mDraftId = (Long) msg.obj;
                     Toast.makeText(
@@ -373,10 +366,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         EolConvertingEditText upperSignature = (EolConvertingEditText)findViewById(R.id.upper_signature);
         EolConvertingEditText lowerSignature = (EolConvertingEditText)findViewById(R.id.lower_signature);
 
-        String sourceMessageBody = intent.getStringExtra(EXTRA_MESSAGE_BODY);
-
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
-        quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, mAccount, sourceMessageBody);
+        quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, mAccount);
         attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView, getLoaderManager());
 
         mMessageContentView = (EolConvertingEditText)findViewById(R.id.message_content);
@@ -474,7 +465,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 messageLoaderHelper = new MessageLoaderHelper(this, getLoaderManager(), getFragmentManager(),
                         messageLoaderCallbacks);
                 mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
-                messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference);
+
+                Parcelable cachedDecryptionResult = intent.getParcelableExtra(EXTRA_MESSAGE_DECRYPTION_RESULT);
+                messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference, cachedDecryptionResult);
             }
 
             if (mAction != Action.EDIT_DRAFT) {
@@ -1139,30 +1132,30 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             throw new IllegalStateException("tried to edit quoted message with no referenced message");
         }
 
-        messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference);
+        messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference, null);
     }
 
     /**
      * Pull out the parts of the now loaded source message and apply them to the new message
      * depending on the type of message being composed.
      *
-     * @param message
+     * @param messageViewInfo
      *         The source message used to populate the various text fields.
      */
-    private void processSourceMessage(LocalMessage message) {
+    private void processSourceMessage(MessageViewInfo messageViewInfo) {
         try {
             switch (mAction) {
                 case REPLY:
                 case REPLY_ALL: {
-                    processMessageToReplyTo(message);
+                    processMessageToReplyTo(messageViewInfo);
                     break;
                 }
                 case FORWARD: {
-                    processMessageToForward(message);
+                    processMessageToForward(messageViewInfo);
                     break;
                 }
                 case EDIT_DRAFT: {
-                    processDraftMessage(message);
+                    processDraftMessage(messageViewInfo);
                     break;
                 }
                 default: {
@@ -1184,7 +1177,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateMessageFormat();
     }
 
-    private void processMessageToReplyTo(Message message) throws MessagingException {
+    private void processMessageToReplyTo(MessageViewInfo messageViewInfo) throws MessagingException {
+        Message message = messageViewInfo.message;
+
         if (message.getSubject() != null) {
             final String subject = PREFIX.matcher(message.getSubject()).replaceFirst("");
 
@@ -1221,7 +1216,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         // Quote the message and setup the UI.
-        quotedMessagePresenter.initFromReplyToMessage(message, mAction);
+        quotedMessagePresenter.initFromReplyToMessage(messageViewInfo, mAction);
 
         if (mAction == Action.REPLY || mAction == Action.REPLY_ALL) {
             Identity useIdentity = IdentityHelper.getRecipientIdentityFromMessage(mAccount, message);
@@ -1233,7 +1228,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     }
 
-    private void processMessageToForward(Message message) throws MessagingException {
+    private void processMessageToForward(MessageViewInfo messageViewInfo) throws MessagingException {
+        Message message = messageViewInfo.message;
+
         String subject = message.getSubject();
         if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
             mSubjectView.setText("Fwd: " + subject);
@@ -1255,16 +1252,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         // Quote the message and setup the UI.
-        quotedMessagePresenter.processMessageToForward(message);
-
-        if (!mSourceMessageProcessed) {
-            if (message.isSet(Flag.X_DOWNLOADED_PARTIAL) || !attachmentPresenter.loadAttachments(message, 0)) {
-                mHandler.sendEmptyMessage(MSG_SKIPPED_ATTACHMENTS);
-            }
-        }
+        quotedMessagePresenter.processMessageToForward(messageViewInfo);
+        attachmentPresenter.processMessageToForward(messageViewInfo);
     }
 
-    private void processDraftMessage(LocalMessage message) throws MessagingException {
+    private void processDraftMessage(MessageViewInfo messageViewInfo) throws MessagingException {
+        Message message = messageViewInfo.message;
         mDraftId = MessagingController.getInstance(getApplication()).getId(message);
         mSubjectView.setText(message.getSubject());
 
@@ -1301,7 +1294,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             newIdentity.setSignature(k9identity.get(IdentityField.SIGNATURE));
             mSignatureChanged = true;
         } else {
-            newIdentity.setSignatureUse(message.getFolder().getSignatureUse());
+            if (message instanceof LocalMessage) {
+                newIdentity.setSignatureUse(((LocalMessage) message).getFolder().getSignatureUse());
+            }
             newIdentity.setSignature(mIdentity.getSignature());
         }
 
@@ -1341,7 +1336,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateSignature();
         updateFrom();
 
-        quotedMessagePresenter.processDraftMessage(message, k9identity);
+        quotedMessagePresenter.processDraftMessage(messageViewInfo, k9identity);
     }
 
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
@@ -1524,14 +1519,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    public void loadLocalMessageForDisplay(LocalMessage message, Action action) {
+    public void loadLocalMessageForDisplay(MessageViewInfo messageViewInfo, Action action) {
         // We check to see if we've previously processed the source message since this
         // could be called when switching from HTML to text replies. If that happens, we
         // only want to update the UI with quoted text (which picks the appropriate
         // part).
         if (mSourceMessageProcessed) {
             try {
-                quotedMessagePresenter.populateUIWithQuotedMessage(message, true, action);
+                quotedMessagePresenter.populateUIWithQuotedMessage(messageViewInfo, true, action);
             } catch (MessagingException e) {
                 // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
                 quotedMessagePresenter.showOrHideQuotedText(QuotedTextMode.HIDE);
@@ -1539,7 +1534,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
             updateMessageFormat();
         } else {
-            processSourceMessage(message);
+            processSourceMessage(messageViewInfo);
             mSourceMessageProcessed = true;
         }
     }
@@ -1559,7 +1554,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         @Override
         public void onMessageViewInfoLoadFinished(LocalMessage localMessage, MessageViewInfo messageViewInfo) {
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
-            loadLocalMessageForDisplay(localMessage, mAction);
+            loadLocalMessageForDisplay(messageViewInfo, mAction);
         }
 
         @Override
@@ -1730,6 +1725,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         @Override
         public void performSaveAfterChecks() {
             MessageCompose.this.performSaveAfterChecks();
+        }
+
+        @Override
+        public void showMissingAttachmentsPartialMessageWarning() {
+            Toast.makeText(MessageCompose.this,
+                    getString(R.string.message_compose_attachments_skipped_toast), Toast.LENGTH_LONG).show();
         }
     };
 

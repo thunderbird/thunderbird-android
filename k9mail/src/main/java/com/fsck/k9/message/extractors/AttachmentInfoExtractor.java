@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
+import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
@@ -40,7 +41,9 @@ public class AttachmentInfoExtractor {
         this.context = context;
     }
 
-    public List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts) throws MessagingException {
+    @WorkerThread
+    public List<AttachmentViewInfo> extractAttachmentInfos(List<Part> attachmentParts)
+            throws MessagingException {
 
         List<AttachmentViewInfo> attachments = new ArrayList<>();
         for (Part part : attachmentParts) {
@@ -50,6 +53,7 @@ public class AttachmentInfoExtractor {
         return attachments;
     }
 
+    @WorkerThread
     public AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
         Uri uri;
         long size;
@@ -93,6 +97,7 @@ public class AttachmentInfoExtractor {
         return extractAttachmentInfo(part, Uri.EMPTY, AttachmentViewInfo.UNKNOWN_SIZE);
     }
 
+    @WorkerThread
     private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size) throws MessagingException {
         boolean firstClassAttachment = true;
 
@@ -128,6 +133,7 @@ public class AttachmentInfoExtractor {
         return new AttachmentViewInfo(mimeType, name, attachmentSize, uri, firstClassAttachment, part);
     }
 
+    @WorkerThread
     private long extractAttachmentSize(String contentDisposition, long size) {
         if (size != AttachmentViewInfo.UNKNOWN_SIZE) {
             return size;

@@ -4,6 +4,7 @@ package com.fsck.k9.ui.message;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -45,6 +46,7 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
     }
 
     @Override
+    @WorkerThread
     public MessageViewInfo loadInBackground() {
         try {
             return MessageViewInfoExtractor.extractMessageForView(getContext(), message, annotations);

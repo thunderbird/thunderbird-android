@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
+import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
@@ -44,6 +45,7 @@ public class MessageViewInfoExtractor {
 
     private MessageViewInfoExtractor() { }
 
+    @WorkerThread
     public static MessageViewInfo extractMessageForView(Context context,
             Message message, MessageCryptoAnnotations annotations) throws MessagingException {
 

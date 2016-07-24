@@ -191,12 +191,12 @@ public class RecipientPresenter implements PermissionPingCallback {
         outState.putBoolean(STATE_KEY_CRYPTO_ENABLE_PGP_INLINE, cryptoEnablePgpInline);
     }
 
-    public void initFromDraftMessage(LocalMessage message) {
+    public void initFromDraftMessage(Message message) {
         initRecipientsFromDraftMessage(message);
         initPgpInlineFromDraftMessage(message);
     }
 
-    private void initRecipientsFromDraftMessage(LocalMessage message) {
+    private void initRecipientsFromDraftMessage(Message message) {
         addToAddresses(message.getRecipients(RecipientType.TO));
 
         Address[] ccRecipients = message.getRecipients(RecipientType.CC);
@@ -206,7 +206,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         addBccAddresses(bccRecipients);
     }
 
-    private void initPgpInlineFromDraftMessage(LocalMessage message) {
+    private void initPgpInlineFromDraftMessage(Message message) {
         cryptoEnablePgpInline = message.isSet(Flag.X_DRAFT_OPENPGP_INLINE);
     }
 
