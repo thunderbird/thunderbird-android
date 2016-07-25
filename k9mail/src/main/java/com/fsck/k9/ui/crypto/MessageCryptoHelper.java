@@ -24,6 +24,7 @@ import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -375,7 +376,7 @@ public class MessageCryptoHelper {
                 try {
                     Multipart multipartSignedMultipart = (Multipart) currentCryptoPart.part.getBody();
                     BodyPart signatureBodyPart = multipartSignedMultipart.getBodyPart(0);
-                    Log.d(K9.LOG_TAG, "signed data type: " + signatureBodyPart.getMimeType());
+                    Log.d(K9.LOG_TAG, "signed data type: " + FancyPart.from(signatureBodyPart).getMimeType());
                     signatureBodyPart.writeTo(os);
                 } catch (MessagingException e) {
                     Log.e(K9.LOG_TAG, "Exception while writing message to crypto provider", e);

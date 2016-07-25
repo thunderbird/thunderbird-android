@@ -9,12 +9,14 @@ import java.util.List;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
+import android.text.TextUtils;
 
 import com.fsck.k9.Globals;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.HtmlSanitizer;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -26,7 +28,6 @@ import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import com.fsck.k9.ui.crypto.MessageCryptoSplitter;
 import com.fsck.k9.ui.crypto.MessageCryptoSplitter.CryptoMessageParts;
 
-import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Html;
 import static com.fsck.k9.mail.internet.Viewable.MessageHeader;
@@ -218,7 +219,7 @@ public class MessageViewInfoExtractor {
     private StringBuilder buildHtml(Viewable viewable, boolean prependDivider) {
         StringBuilder html = new StringBuilder();
         if (viewable instanceof Textual) {
-            Part part = ((Textual)viewable).getPart();
+            Part part = ((Textual) viewable).getPart();
             addHtmlDivider(html, part, prependDivider);
 
             String t = MessageExtractor.getTextFromPart(part);
@@ -249,7 +250,7 @@ public class MessageViewInfoExtractor {
     private StringBuilder buildText(Viewable viewable, boolean prependDivider) {
         StringBuilder text = new StringBuilder();
         if (viewable instanceof Textual) {
-            Part part = ((Textual)viewable).getPart();
+            Part part = ((Textual) viewable).getPart();
             addTextDivider(text, part, prependDivider);
 
             String t = MessageExtractor.getTextFromPart(part);
@@ -289,31 +290,17 @@ public class MessageViewInfoExtractor {
      *         {@code true}, if the divider should be appended. {@code false}, otherwise.
      */
     private void addHtmlDivider(StringBuilder html, Part part, boolean prependDivider) {
+        FancyPart fancyPart = FancyPart.from(part);
         if (prependDivider) {
-            String filename = getPartName(part);
+            String filename = fancyPart.getPartName();
+            if (TextUtils.isEmpty(filename)) {
+                filename = "";
+            }
 
             html.append("<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: 1px solid #000\">");
             html.append(filename);
             html.append("</p>");
         }
-    }
-
-    /**
-     * Get the name of the message part.
-     *
-     * @param part
-     *         The part to get the name for.
-     *
-     * @return The (file)name of the part if available. An empty string, otherwise.
-     */
-    private static String getPartName(Part part) {
-        String disposition = part.getDisposition();
-        if (disposition != null) {
-            String name = getHeaderParameter(disposition, "filename");
-            return (name == null) ? "" : name;
-        }
-
-        return "";
     }
 
     /**
@@ -328,13 +315,14 @@ public class MessageViewInfoExtractor {
      *         {@code true}, if the divider should be appended. {@code false}, otherwise.
      */
     private void addTextDivider(StringBuilder text, Part part, boolean prependDivider) {
+        FancyPart fancyPart = FancyPart.from(part);
         if (prependDivider) {
-            String filename = getPartName(part);
+            String filename = fancyPart.getPartName();
 
             text.append("\r\n\r\n");
-            int len = filename.length();
-            if (len > 0) {
-                if (len > TEXT_DIVIDER_LENGTH - FILENAME_PREFIX_LENGTH - FILENAME_SUFFIX_LENGTH) {
+            if (filename != null && filename.length() > 0) {
+                int filenameLength = filename.length();
+                if (filenameLength > TEXT_DIVIDER_LENGTH - FILENAME_PREFIX_LENGTH - FILENAME_SUFFIX_LENGTH) {
                     filename = filename.substring(0, TEXT_DIVIDER_LENGTH - FILENAME_PREFIX_LENGTH -
                             FILENAME_SUFFIX_LENGTH - 3) + "...";
                 }
@@ -342,7 +330,7 @@ public class MessageViewInfoExtractor {
                 text.append(filename);
                 text.append(FILENAME_SUFFIX);
                 text.append(TEXT_DIVIDER.substring(0, TEXT_DIVIDER_LENGTH -
-                        FILENAME_PREFIX_LENGTH - filename.length() - FILENAME_SUFFIX_LENGTH));
+                        FILENAME_PREFIX_LENGTH - filenameLength - FILENAME_SUFFIX_LENGTH));
             } else {
                 text.append(TEXT_DIVIDER);
             }

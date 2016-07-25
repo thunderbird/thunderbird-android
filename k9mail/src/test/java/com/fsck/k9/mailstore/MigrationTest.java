@@ -16,6 +16,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.internet.MessageExtractor;
@@ -164,7 +165,7 @@ public class MigrationTest {
         fp.add(FetchProfile.Item.BODY);
         localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
 
-        Assert.assertEquals("text/plain", msg.getMimeType());
+        Assert.assertEquals("text/plain", FancyPart.from(msg).getMimeType());
         Assert.assertEquals(2, msg.getId());
         Assert.assertEquals(13, msg.getHeaderNames().size());
         Assert.assertEquals(0, msg.getAttachmentCount());
@@ -231,7 +232,7 @@ public class MigrationTest {
 
         Assert.assertEquals(3, msg.getId());
         Assert.assertEquals(8, msg.getHeaderNames().size());
-        Assert.assertEquals("multipart/mixed", msg.getMimeType());
+        Assert.assertEquals("multipart/mixed", FancyPart.from(msg).getMimeType());
         Assert.assertEquals(1, msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE).length);
         Assert.assertEquals("multipart/mixed",
                 MimeUtility.getHeaderParameter(msg.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), null));
@@ -242,19 +243,20 @@ public class MigrationTest {
         Multipart body = (Multipart) msg.getBody();
         Assert.assertEquals(3, body.getCount());
 
-        Assert.assertEquals("multipart/alternative", body.getBodyPart(0).getMimeType());
+        Assert.assertEquals("multipart/alternative", FancyPart.from(body.getBodyPart(0)).getMimeType());
         LocalBodyPart attachmentPart = (LocalBodyPart) body.getBodyPart(1);
-        Assert.assertEquals("image/png", attachmentPart.getMimeType());
         Assert.assertEquals("2", attachmentPart.getServerExtra());
-        Assert.assertEquals("attachment", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), null));
-        Assert.assertEquals("k9small.png", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), "filename"));
-        Assert.assertEquals("2250", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), "size"));
+        FancyPart fancyPart = FancyPart.from(attachmentPart);
+        Assert.assertEquals("image/png", fancyPart.getMimeType());
+        Assert.assertTrue(fancyPart.isDispositionAttachment());
+        Assert.assertEquals("k9small.png", fancyPart.getDispositionFilename());
+        Assert.assertEquals(Long.valueOf(2250L), fancyPart.getDispositionSize());
 
         FileBackedBody attachmentBody = (FileBackedBody) attachmentPart.getBody();
         Assert.assertEquals(2250, attachmentBody.getSize());
         Assert.assertEquals(MimeUtil.ENC_BINARY, attachmentBody.getEncoding());
 
-        Assert.assertEquals("application/whatevs", body.getBodyPart(2).getMimeType());
+        Assert.assertEquals("application/whatevs", FancyPart.from(body.getBodyPart(2)).getMimeType());
         Assert.assertNull(body.getBodyPart(2).getBody());
     }
 
@@ -303,15 +305,15 @@ public class MigrationTest {
 
         Assert.assertEquals(4, msg.getId());
         Assert.assertEquals(8, msg.getHeaderNames().size());
-        Assert.assertEquals("multipart/mixed", msg.getMimeType());
+        Assert.assertEquals("multipart/mixed", FancyPart.from(msg).getMimeType());
         Assert.assertEquals(2, msg.getAttachmentCount());
 
         Multipart body = (Multipart) msg.getBody();
         Assert.assertEquals(3, body.getCount());
 
-        Assert.assertEquals("multipart/alternative", body.getBodyPart(0).getMimeType());
-        Assert.assertEquals("image/png", body.getBodyPart(1).getMimeType());
-        Assert.assertEquals("application/pgp-signature", body.getBodyPart(2).getMimeType());
+        Assert.assertEquals("multipart/alternative", FancyPart.from(body.getBodyPart(0)).getMimeType());
+        Assert.assertEquals("image/png", FancyPart.from(body.getBodyPart(1)).getMimeType());
+        Assert.assertEquals("application/pgp-signature", FancyPart.from(body.getBodyPart(2)).getMimeType());
     }
 
 
@@ -362,7 +364,7 @@ public class MigrationTest {
 
         Assert.assertEquals(5, msg.getId());
         Assert.assertEquals(13, msg.getHeaderNames().size());
-        Assert.assertEquals("multipart/encrypted", msg.getMimeType());
+        Assert.assertEquals("multipart/encrypted", FancyPart.from(msg).getMimeType());
         Assert.assertEquals(2, msg.getAttachmentCount());
 
         Multipart body = (Multipart) msg.getBody();
@@ -374,8 +376,8 @@ public class MigrationTest {
         Assert.assertEquals("UoPmpPX/dBe4BELn", body.getBoundary());
         Assert.assertEquals(2, body.getCount());
 
-        Assert.assertEquals("application/pgp-encrypted", body.getBodyPart(0).getMimeType());
-        Assert.assertEquals("application/octet-stream", body.getBodyPart(1).getMimeType());
+        Assert.assertEquals("application/pgp-encrypted", FancyPart.from(body.getBodyPart(0)).getMimeType());
+        Assert.assertEquals("application/octet-stream", FancyPart.from(body.getBodyPart(1)).getMimeType());
     }
 
     private void insertPgpInlineEncryptedMessage(SQLiteDatabase db) {
@@ -480,7 +482,7 @@ public class MigrationTest {
 
         Assert.assertEquals(6, msg.getId());
         Assert.assertEquals(12, msg.getHeaderNames().size());
-        Assert.assertEquals("text/plain", msg.getMimeType());
+        Assert.assertEquals("text/plain", FancyPart.from(msg).getMimeType());
         Assert.assertEquals(0, msg.getAttachmentCount());
         Assert.assertTrue(msg.getBody() instanceof BinaryMemoryBody);
 
@@ -567,7 +569,7 @@ public class MigrationTest {
 
         Assert.assertEquals(7, msg.getId());
         Assert.assertEquals(12, msg.getHeaderNames().size());
-        Assert.assertEquals("text/plain", msg.getMimeType());
+        Assert.assertEquals("text/plain", FancyPart.from(msg).getMimeType());
         Assert.assertEquals(0, msg.getAttachmentCount());
         Assert.assertTrue(msg.getBody() instanceof BinaryMemoryBody);
 
@@ -625,7 +627,7 @@ public class MigrationTest {
 
         Assert.assertEquals(8, msg.getId());
         Assert.assertEquals(9, msg.getHeaderNames().size());
-        Assert.assertEquals("multipart/alternative", msg.getMimeType());
+        Assert.assertEquals("multipart/alternative", FancyPart.from(msg).getMimeType());
         Assert.assertEquals(0, msg.getAttachmentCount());
 
         Multipart msgBody = (Multipart) msg.getBody();
@@ -690,7 +692,7 @@ public class MigrationTest {
 
         Assert.assertEquals(9, msg.getId());
         Assert.assertEquals(11, msg.getHeaderNames().size());
-        Assert.assertEquals("multipart/mixed", msg.getMimeType());
+        Assert.assertEquals("multipart/mixed", FancyPart.from(msg).getMimeType());
         Assert.assertEquals(1, msg.getAttachmentCount());
 
         Multipart msgBody = (Multipart) msg.getBody();
@@ -702,7 +704,7 @@ public class MigrationTest {
         Assert.assertNotNull(msgTextContent);
         Assert.assertTrue(msgTextContent.contains("cid:part1.07090108.09020601@example.org"));
 
-        Assert.assertEquals("image/jpeg", msgBody.getBodyPart(1).getMimeType());
+        Assert.assertEquals("image/jpeg", FancyPart.from(msgBody.getBodyPart(1)).getMimeType());
     }
 
     private void copyAttachmentFromFile(String resourceName, int attachmentId, int expectedFilesize) throws IOException {

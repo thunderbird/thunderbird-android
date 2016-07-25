@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store.imap;
 
 import java.io.IOException;
 
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -22,10 +23,11 @@ class FetchPartCallback implements ImapResponseCallback {
                 ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
             //TODO: check for correct UID
 
-            String contentTransferEncoding = mPart.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
-            String contentType = mPart.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
+            FancyPart fancyPart = FancyPart.from(mPart);
+            String contentTransferEncoding = fancyPart.getContentTransferEncoding();
+            String mimeType = fancyPart.getMimeType();
 
-            return MimeUtility.createBody(literal, contentTransferEncoding, contentType);
+            return MimeUtility.createBody(literal, contentTransferEncoding, mimeType);
         }
         return null;
     }

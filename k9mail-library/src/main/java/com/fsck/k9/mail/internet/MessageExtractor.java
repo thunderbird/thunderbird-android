@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -24,7 +25,6 @@ import org.apache.commons.io.input.BoundedInputStream;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
-import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Html;
@@ -49,10 +49,9 @@ public class MessageExtractor {
                 if (body instanceof TextBody) {
                     return ((TextBody)body).getText();
                 }
-                final String mimeType = part.getMimeType();
-                if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*") ||
-                        part.isMimeType("application/pgp")) {
-                    return getTextFromTextPart(part, body, mimeType, textSizeLimit);
+                FancyPart fancyPart = FancyPart.from(part);
+                if (fancyPart.isMatchingMimeType("text/*") || fancyPart.isMimeType("application/pgp")) {
+                    return getTextFromTextPart(part, body, fancyPart.getMimeType(), textSizeLimit);
                 } else {
                     throw new MessagingException("Provided non-text part: " + part);
                 }
@@ -69,10 +68,7 @@ public class MessageExtractor {
 
     private static String getTextFromTextPart(Part part, Body body, String mimeType, long textSizeLimit)
             throws IOException, MessagingException {
-        /*
-         * We've got a text part, so let's see if it needs to be processed further.
-         */
-        String charset = getHeaderParameter(part.getContentType(), "charset");
+        String charset = FancyPart.from(part).getCharset();
         /*
          * determine the charset from HTML message.
          */
@@ -141,10 +137,11 @@ public class MessageExtractor {
             throw new IllegalArgumentException("method was called but no output is to be collected - this a bug!");
         }
 
+        FancyPart fancyPart = FancyPart.from(part);
         Body body = part.getBody();
         if (body instanceof Multipart) {
             Multipart multipart = (Multipart) body;
-            if (isSameMimeType(part.getMimeType(), "multipart/alternative")) {
+            if (fancyPart.isMimeType("multipart/alternative")) {
                 /*
                  * For multipart/alternative parts we try to find a text/plain and a text/html
                  * child. Everything else we find is put into 'attachments'.
@@ -167,8 +164,7 @@ public class MessageExtractor {
                     findViewablesAndAttachments(bodyPart, outputViewableParts, outputNonViewableParts);
                 }
             }
-        } else if (body instanceof Message &&
-                !("attachment".equalsIgnoreCase(getContentDisposition(part)))) {
+        } else if (body instanceof Message && fancyPart.isDispositionInline()) {
             if (skipSavingViewableParts) {
                 return;
             }
@@ -187,15 +183,14 @@ public class MessageExtractor {
             if (skipSavingViewableParts) {
                 return;
             }
-            String mimeType = part.getMimeType();
-            if (isSameMimeType(mimeType, "text/plain")) {
+            if (fancyPart.isMimeType("text/plain")) {
                 Text text = new Text(part);
                 outputViewableParts.add(text);
             } else {
                 Html html = new Html(part);
                 outputViewableParts.add(html);
             }
-        } else if (isSameMimeType(part.getMimeType(), "application/pgp-signature")) {
+        } else if (fancyPart.isMimeType("application/pgp-signature")) {
             // ignore this type explicitly
         } else {
             if (skipSavingNonViewableParts) {
@@ -218,10 +213,10 @@ public class MessageExtractor {
      * @return A list of parts regarded as attachments.
      * @throws MessagingException In case of an error.
      */
-    public static List<Part> collectAttachments(Message message) throws MessagingException {
+    public static List<Part> collectAttachments(Part part) throws MessagingException {
         try {
             List<Part> attachments = new ArrayList<>();
-            findViewablesAndAttachments(message, new ArrayList<Viewable>(), attachments);
+            findViewablesAndAttachments(part, new ArrayList<Viewable>(), attachments);
             return attachments;
         } catch (Exception e) {
             throw new MessagingException("Couldn't collect attachment parts", e);
@@ -233,9 +228,9 @@ public class MessageExtractor {
      * @return A set of viewable parts of the message.
      * @throws MessagingException In case of an error.
      */
-    public static Set<Part> collectTextParts(Message message) throws MessagingException {
+    public static Set<Part> collectTextParts(Part part) throws MessagingException {
         try {
-            return getTextParts(message);
+            return getTextParts(part);
         } catch (Exception e) {
             throw new MessagingException("Couldn't extract viewable parts", e);
         }
@@ -272,10 +267,10 @@ public class MessageExtractor {
      */
     private static List<Viewable> findTextPart(Multipart multipart, boolean directChild)
             throws MessagingException {
-        List<Viewable> viewables = new ArrayList<Viewable>();
+        List<Viewable> viewables = new ArrayList<>();
 
-        for (Part part : multipart.getBodyParts()) {
-            Body body = part.getBody();
+        for (Part bodyPart : multipart.getBodyParts()) {
+            Body body = bodyPart.getBody();
             if (body instanceof Multipart) {
                 Multipart innerMultipart = (Multipart) body;
 
@@ -298,11 +293,13 @@ public class MessageExtractor {
                         break;
                     }
                 }
-            } else if (isPartTextualBody(part) && isSameMimeType(part.getMimeType(), "text/plain")) {
-                Text text = new Text(part);
-                viewables.add(text);
-                if (directChild) {
-                    break;
+            } else {
+                if (isPartTextualBody(bodyPart) && FancyPart.from(bodyPart).isMimeType("text/plain")) {
+                    Text text = new Text(bodyPart);
+                    viewables.add(text);
+                    if (directChild) {
+                        break;
+                    }
                 }
             }
         }
@@ -361,7 +358,7 @@ public class MessageExtractor {
                     }
                 }
             } else if (!(directChild && partFound) && isPartTextualBody(part) &&
-                    isSameMimeType(part.getMimeType(), "text/html")) {
+                    FancyPart.from(part).isMimeType("text/html")) {
                 Html html = new Html(part);
                 viewables.add(html);
                 partFound = true;
@@ -428,39 +425,24 @@ public class MessageExtractor {
     }
 
     private static Boolean isPartTextualBody(Part part) throws MessagingException {
-        String disposition = part.getDisposition();
-        String dispositionType = null;
-        String dispositionFilename = null;
-        if (disposition != null) {
-            dispositionType = MimeUtility.getHeaderParameter(disposition, null);
-            dispositionFilename = MimeUtility.getHeaderParameter(disposition, "filename");
-        }
+        FancyPart fancyPart = FancyPart.from(part);
 
-        boolean isAttachmentDisposition = "attachment".equalsIgnoreCase(dispositionType) || dispositionFilename != null;
-        if (isAttachmentDisposition) {
+        if (fancyPart.isDispositionAttachment()) {
             return false;
         }
 
-        if (part.isMimeType("text/html")) {
+        if (fancyPart.isMimeType("text/html")) {
             return true;
         }
 
-        if (part.isMimeType("text/plain")) {
+        if (fancyPart.isMimeType("text/plain")) {
             return true;
         }
 
-        if (part.isMimeType("application/pgp")) {
+        if (fancyPart.isMimeType("application/pgp")) {
             return true;
         }
 
         return false;
-    }
-
-    private static String getContentDisposition(Part part) {
-        String disposition = part.getDisposition();
-        if (disposition != null) {
-            return MimeUtility.getHeaderParameter(disposition, null);
-        }
-        return null;
     }
 }

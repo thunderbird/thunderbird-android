@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -836,11 +837,11 @@ class ImapFolder extends Folder<ImapMessage> {
                             String bodyString = (String) literal;
                             InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
 
-                            String contentTransferEncoding =
-                                    part.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
-                            String contentType = part.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
+                            FancyPart fancyPart = FancyPart.from(part);
+                            String contentTransferEncoding = fancyPart.getContentTransferEncoding();
+                            String mimeType = fancyPart.getMimeType();
                             MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
-                                    contentType));
+                                    mimeType));
                         } else {
                             // This shouldn't happen
                             throw new MessagingException("Got FETCH response with bogus parameters");

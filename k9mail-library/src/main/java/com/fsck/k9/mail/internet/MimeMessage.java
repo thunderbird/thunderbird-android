@@ -165,32 +165,6 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public String getContentType() {
-        String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : MimeUtility.unfoldAndDecode(contentType);
-    }
-
-    @Override
-    public String getDisposition() {
-        return MimeUtility.unfoldAndDecode(getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION));
-    }
-
-    @Override
-    public String getContentId() {
-        return null;
-    }
-
-    @Override
-    public String getMimeType() {
-        return MimeUtility.getHeaderParameter(getContentType(), null);
-    }
-
-    @Override
-    public boolean isMimeType(String mimeType) {
-        return getMimeType().equalsIgnoreCase(mimeType);
-    }
-
-    @Override
     public int getSize() {
         return mSize;
     }

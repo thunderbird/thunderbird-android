@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
@@ -35,8 +36,7 @@ class EncryptionDetector {
     }
 
     private boolean containsPartWithMimeType(Part part, String... wantedMimeTypes) {
-        String mimeType = part.getMimeType();
-        if (isMimeTypeAnyOf(mimeType, wantedMimeTypes)) {
+        if (FancyPart.from(part).isMimeTypeAnyOf(wantedMimeTypes)) {
             return true;
         }
 
@@ -47,16 +47,6 @@ class EncryptionDetector {
                 if (containsPartWithMimeType(bodyPart, wantedMimeTypes)) {
                     return true;
                 }
-            }
-        }
-
-        return false;
-    }
-
-    private boolean isMimeTypeAnyOf(String mimeType, String... wantedMimeTypes) {
-        for (String wantedMimeType : wantedMimeTypes) {
-            if (isSameMimeType(mimeType, wantedMimeType)) {
-                return true;
             }
         }
 

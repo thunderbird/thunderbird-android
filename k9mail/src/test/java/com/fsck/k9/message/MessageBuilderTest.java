@@ -11,6 +11,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -62,7 +63,8 @@ public class MessageBuilderTest {
 
         MimeMessage mimeMessage = mimeMessageCaptor.getValue();
         assertContentOfBodyEquals("message content must match", mimeMessage.getBody(), TEST_MESSAGE_TEXT);
-        assertEquals("text/plain", mimeMessage.getMimeType());
+        assertEquals("text/plain", FancyPart.from(mimeMessage).getMimeType());
+//        assertEquals("utf-8", FancyPart.from(mimeMessage).getCharset());
         assertEquals(TEST_SUBJECT, mimeMessage.getSubject());
         assertEquals(TEST_IDENTITY_ADDRESS, mimeMessage.getFrom()[0]);
         assertArrayEquals(TEST_TO, mimeMessage.getRecipients(RecipientType.TO));

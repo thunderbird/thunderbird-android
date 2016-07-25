@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 
 public class MimeHeader implements Cloneable {

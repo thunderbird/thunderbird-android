@@ -16,9 +16,9 @@ import android.support.annotation.WorkerThread;
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.DeferredFileBody;
@@ -82,7 +82,7 @@ public class AttachmentInfoExtractor {
             if (body instanceof DeferredFileBody) {
                 DeferredFileBody decryptedTempFileBody = (DeferredFileBody) body;
                 size = decryptedTempFileBody.getSize();
-                uri = getDecryptedFileProviderUri(decryptedTempFileBody, part.getMimeType());
+                uri = getDecryptedFileProviderUri(decryptedTempFileBody, FancyPart.from(part).getMimeType());
                 isContentAvailable = true;
             } else {
                 throw new IllegalArgumentException("Unsupported part type provided");
@@ -115,53 +115,48 @@ public class AttachmentInfoExtractor {
     @WorkerThread
     private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size, boolean isContentAvailable)
             throws MessagingException {
-        boolean inlineAttachment = false;
+        FancyPart fancyPart = FancyPart.from(part);
 
-        String mimeType = part.getMimeType();
-        String contentTypeHeader = MimeUtility.unfoldAndDecode(part.getContentType());
-        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
+        String mimeType = fancyPart.getMimeType();
+        String attachmentName = fancyPart.getDispositionFilename();
 
-        String name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
-        if (name == null) {
-            name = MimeUtility.getHeaderParameter(contentTypeHeader, "name");
+        if (attachmentName == null) {
+            attachmentName = fancyPart.getContentTypeName();
         }
 
-        if (name == null) {
+        if (attachmentName == null) {
             String extension = null;
             if (mimeType != null) {
                 extension = MimeUtility.getExtensionByMimeType(mimeType);
             }
-            name = "noname" + ((extension != null) ? "." + extension : "");
+            attachmentName = "noname" + ((extension != null) ? "." + extension : "");
         }
 
         // Inline parts with a content-id are almost certainly components of an HTML message
         // not attachments. Only show them if the user pressed the button to show more
         // attachments.
-        if (contentDisposition != null &&
-                MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)") &&
-                part.getRawHeader(MimeHeader.HEADER_CONTENT_ID).length > 0) {
+        boolean inlineAttachment = false;
+        if (fancyPart.isDispositionInline() && fancyPart.getContentId() != null) {
             inlineAttachment = true;
         }
 
-        long attachmentSize = extractAttachmentSize(contentDisposition, size);
+        long attachmentSize = extractAttachmentSize(fancyPart, size);
 
-        return new AttachmentViewInfo(mimeType, name, attachmentSize, uri, inlineAttachment, part, isContentAvailable);
+        return new AttachmentViewInfo(mimeType, attachmentName, attachmentSize, uri,
+                inlineAttachment, part, isContentAvailable);
     }
 
     @WorkerThread
-    private long extractAttachmentSize(String contentDisposition, long size) {
-        if (size != AttachmentViewInfo.UNKNOWN_SIZE) {
-            return size;
+    private long extractAttachmentSize(FancyPart fancyPart, long explicitSize) {
+        if (explicitSize != AttachmentViewInfo.UNKNOWN_SIZE) {
+            return explicitSize;
         }
 
-        long result = AttachmentViewInfo.UNKNOWN_SIZE;
-        String sizeParam = MimeUtility.getHeaderParameter(contentDisposition, "size");
-        if (sizeParam != null) {
-            try {
-                result = Integer.parseInt(sizeParam);
-            } catch (NumberFormatException e) { /* ignore */ }
+        Long sizeFromHeader = fancyPart.getDispositionSize();
+        if (sizeFromHeader == null) {
+            return AttachmentViewInfo.UNKNOWN_SIZE;
         }
 
-        return result;
+        return sizeFromHeader;
     }
 }

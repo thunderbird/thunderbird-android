@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
@@ -66,7 +67,7 @@ public class AttachmentResolver {
                 }
             } else {
                 try {
-                    String contentId = part.getContentId();
+                    String contentId = FancyPart.from(part).getContentId();
                     if (contentId != null) {
                         AttachmentViewInfo attachmentInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
                         result.put(contentId, attachmentInfo.uri);

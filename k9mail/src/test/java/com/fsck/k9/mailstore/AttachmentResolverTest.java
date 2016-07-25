@@ -69,7 +69,7 @@ public class AttachmentResolverTest {
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, multipartPart);
 
-        verify(bodyPart).getContentId();
+        verify(bodyPart).getRawFirstHeader(MimeHeader.HEADER_CONTENT_ID);
         assertTrue(result.isEmpty());
     }
 

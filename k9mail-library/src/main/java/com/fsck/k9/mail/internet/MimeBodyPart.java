@@ -99,42 +99,6 @@ public class MimeBodyPart extends BodyPart {
         setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
     }
 
-    @Override
-    public String getContentType() {
-        String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : MimeUtility.unfoldAndDecode(contentType);
-    }
-
-    @Override
-    public String getDisposition() {
-        return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
-    }
-
-    @Override
-    public String getContentId() {
-        String contentId = getFirstHeader(MimeHeader.HEADER_CONTENT_ID);
-        if (contentId == null) {
-            return null;
-        }
-
-        int first = contentId.indexOf('<');
-        int last = contentId.lastIndexOf('>');
-
-        return (first != -1 && last != -1) ?
-               contentId.substring(first + 1, last) :
-               contentId;
-    }
-
-    @Override
-    public String getMimeType() {
-        return MimeUtility.getHeaderParameter(getContentType(), null);
-    }
-
-    @Override
-    public boolean isMimeType(String mimeType) {
-        return getMimeType().equalsIgnoreCase(mimeType);
-    }
-
     /**
      * Write the MimeMessage out in MIME format.
      */
