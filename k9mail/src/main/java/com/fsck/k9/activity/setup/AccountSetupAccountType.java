@@ -1,5 +1,5 @@
-
 package com.fsck.k9.activity.setup;
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,18 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.helper.EmailHelper;
+import com.fsck.k9.mail.ServerSettings.Type;
+import com.fsck.k9.setup.ServerNameSuggester;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import static com.fsck.k9.mail.ServerSettings.Type.IMAP;
+import static com.fsck.k9.mail.ServerSettings.Type.POP3;
+import static com.fsck.k9.mail.ServerSettings.Type.SMTP;
+import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
+
 
 /**
  * Prompts the user to select an account type. The account type, along with the
@@ -25,6 +35,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
+    private final ServerNameSuggester serverNameSuggester = new ServerNameSuggester();
     private Account mAccount;
     private boolean mMakeDefault;
 
@@ -48,14 +59,18 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         mMakeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
     }
 
-    private void setupStoreAndSmtpTransport(String schemePrefix) throws URISyntaxException {
+    private void setupStoreAndSmtpTransport(Type serverType, String schemePrefix) throws URISyntaxException {
+        String domainPart = EmailHelper.getDomainFromEmailAddress(mAccount.getEmail());
+
+        String suggestedStoreServerName = serverNameSuggester.suggestServerName(serverType, domainPart);
         URI storeUriForDecode = new URI(mAccount.getStoreUri());
-        URI storeUri = new URI(schemePrefix, storeUriForDecode.getUserInfo(), storeUriForDecode.getHost(),
+        URI storeUri = new URI(schemePrefix, storeUriForDecode.getUserInfo(), suggestedStoreServerName,
                 storeUriForDecode.getPort(), null, null, null);
         mAccount.setStoreUri(storeUri.toString());
 
+        String suggestedTransportServerName = serverNameSuggester.suggestServerName(SMTP, domainPart);
         URI transportUriForDecode = new URI(mAccount.getTransportUri());
-        URI transportUri = new URI("smtp+tls+", transportUriForDecode.getUserInfo(), transportUriForDecode.getHost(),
+        URI transportUri = new URI("smtp+tls+", transportUriForDecode.getUserInfo(), suggestedTransportServerName,
                 transportUriForDecode.getPort(), null, null, null);
         mAccount.setTransportUri(transportUri.toString());
     }
@@ -78,7 +93,10 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         if (userInfo.length > 2) {
             userPass = userPass + ":" + userInfo[2];
         }
-        URI uri = new URI("webdav+ssl+", userPass, uriForDecode.getHost(), uriForDecode.getPort(), null, null, null);
+
+        String domainPart = EmailHelper.getDomainFromEmailAddress(mAccount.getEmail());
+        String suggestedServerName = serverNameSuggester.suggestServerName(WebDAV, domainPart);
+        URI uri = new URI("webdav+ssl+", userPass, suggestedServerName, uriForDecode.getPort(), null, null, null);
         mAccount.setStoreUri(uri.toString());
     }
 
@@ -86,11 +104,11 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         try {
             switch (v.getId()) {
                 case R.id.pop: {
-                    setupStoreAndSmtpTransport("pop3+ssl+");
+                    setupStoreAndSmtpTransport(POP3, "pop3+ssl+");
                     break;
                 }
                 case R.id.imap: {
-                    setupStoreAndSmtpTransport("imap+ssl+");
+                    setupStoreAndSmtpTransport(IMAP, "imap+ssl+");
                     break;
                 }
                 case R.id.webdav: {
