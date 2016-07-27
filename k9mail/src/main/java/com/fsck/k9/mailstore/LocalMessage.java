@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
@@ -21,6 +22,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
@@ -35,8 +37,6 @@ public class LocalMessage extends MimeMessage {
     private String mSubject;
 
     private String mPreview = "";
-
-    private boolean mHeadersLoaded = false;
 
     private long mThreadId;
     private long mRootId;
@@ -122,6 +122,9 @@ public class LocalMessage extends MimeMessage {
 
         messagePartId = cursor.getLong(22);
         mimeType = cursor.getString(23);
+
+        byte[] header = cursor.getBlob(25);
+        MessageHeaderParser.parse(this, new ByteArrayInputStream(header));
     }
 
     public long getMessagePartId() {
@@ -136,15 +139,6 @@ public class LocalMessage extends MimeMessage {
     /* Custom version of writeTo that updates the MIME message based on localMessage
      * changes.
      */
-
-    @Override
-    public void writeTo(OutputStream out) throws IOException, MessagingException {
-        if (!mHeadersLoaded) {
-            loadHeaders();
-        }
-
-        super.writeTo(out);
-    }
 
     public PreviewType getPreviewType() {
         return previewType;
@@ -500,47 +494,6 @@ public class LocalMessage extends MimeMessage {
         db.delete("threads", "message_id = ?", idArg);
     }
 
-    private void loadHeaders() throws MessagingException {
-        mHeadersLoaded = true;
-        getFolder().populateHeaders(this);
-    }
-
-    void loadHeadersIfNecessary() throws MessagingException {
-        if (!mHeadersLoaded) {
-            loadHeaders();
-        }
-    }
-
-    @Override
-    public void setHeader(String name, String value) throws MessagingException {
-        if (!mHeadersLoaded)
-            loadHeaders();
-        super.setHeader(name, value);
-    }
-
-    @NonNull
-    @Override
-    public String[] getHeader(String name) throws MessagingException {
-        if (!mHeadersLoaded) {
-            loadHeaders();
-        }
-        return super.getHeader(name);
-    }
-
-    @Override
-    public void removeHeader(String name) throws MessagingException {
-        if (!mHeadersLoaded)
-            loadHeaders();
-        super.removeHeader(name);
-    }
-
-    @Override
-    public Set<String> getHeaderNames() throws MessagingException {
-        if (!mHeadersLoaded)
-            loadHeaders();
-        return super.getHeaderNames();
-    }
-
     @Override
     public LocalMessage clone() {
         LocalMessage message = new LocalMessage(this.localStore);
@@ -550,7 +503,6 @@ public class LocalMessage extends MimeMessage {
         message.mAttachmentCount = mAttachmentCount;
         message.mSubject = mSubject;
         message.mPreview = mPreview;
-        message.mHeadersLoaded = mHeadersLoaded;
 
         return message;
     }
