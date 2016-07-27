@@ -17,6 +17,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -1044,7 +1045,7 @@ public class MimeUtility {
                     }
                 };
             } else {
-                throw new RuntimeException("Encoding for RawDataBody not supported: " + encoding);
+                throw new UnsupportedOperationException("Encoding for RawDataBody not supported: " + encoding);
             }
         } else {
             inputStream = body.getInputStream();

@@ -29,7 +29,9 @@ import static org.mockito.Mockito.mock;
 @Config(manifest = Config.NONE, sdk = 21)
 public class MessageDecryptVerifierTest {
 
+    public static final String MIME_TYPE_MULTIPART_ENCRYPTED = "multipart/encrypted";
     private MessageCryptoAnnotations messageCryptoAnnotations = mock(MessageCryptoAnnotations.class);
+    public static final String PROTCOL_PGP_ENCRYPTED = "application/pgp-encrypted";
 
     @Test
     public void findEncryptedPartsShouldReturnEmptyListForEmptyMessage() throws Exception {
@@ -56,7 +58,7 @@ public class MessageDecryptVerifierTest {
         MimeMultipart multipartEncrypted = new MimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         MimeMessageHelper.setBody(message, multipartEncrypted);
-        addProtocolParameter(message);
+        setContentTypeWithProtocol(message, MIME_TYPE_MULTIPART_ENCRYPTED, PROTCOL_PGP_ENCRYPTED);
 
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
 
@@ -74,7 +76,7 @@ public class MessageDecryptVerifierTest {
         MimeMultipart multipartEncryptedOne = new MimeMultipart();
         multipartEncryptedOne.setSubType("encrypted");
         MimeBodyPart bodyPartOne = new MimeBodyPart(multipartEncryptedOne);
-        addProtocolParameter(bodyPartOne);
+        setContentTypeWithProtocol(bodyPartOne, MIME_TYPE_MULTIPART_ENCRYPTED, PROTCOL_PGP_ENCRYPTED);
         multipartMixed.addBodyPart(bodyPartOne);
 
         MimeBodyPart bodyPartTwo = new MimeBodyPart(null, "text/plain");
@@ -83,7 +85,7 @@ public class MessageDecryptVerifierTest {
         MimeMultipart multipartEncryptedThree = new MimeMultipart();
         multipartEncryptedThree.setSubType("encrypted");
         MimeBodyPart bodyPartThree = new MimeBodyPart(multipartEncryptedThree);
-        addProtocolParameter(bodyPartThree);
+        setContentTypeWithProtocol(bodyPartThree, MIME_TYPE_MULTIPART_ENCRYPTED, PROTCOL_PGP_ENCRYPTED);
         multipartMixed.addBodyPart(bodyPartThree);
 
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
@@ -298,8 +300,8 @@ public class MessageDecryptVerifierTest {
     }
 
     //TODO: Find a cleaner way to do this
-    private static void addProtocolParameter(Part part) throws MessagingException {
-        String contentType = part.getContentType();
-        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType + "; protocol=\"application/pgp-encrypted\"");
+    private static void setContentTypeWithProtocol(Part part, String mimeType, String protocol)
+            throws MessagingException {
+        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType + "; protocol=\"" + protocol + "\"");
     }
 }

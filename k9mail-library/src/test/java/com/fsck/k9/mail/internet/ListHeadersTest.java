@@ -11,8 +11,6 @@ import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -81,16 +79,6 @@ public class ListHeadersTest {
     @Test
     public void getListPostAddresses_withMessageWithNo_shouldReturnEmptyList() throws Exception {
         MimeMessage message = buildMimeMessageWithListPostValue("NO (posting not allowed on this list)");
-
-        Address[] result = ListHeaders.getListPostAddresses(message);
-
-        assertEquals(0, result.length);
-    }
-
-    @Test
-    public void getListPostAddresses_withExceptionThrownGettingHeader_shouldReturnEmptyList() throws Exception {
-        MimeMessage message = mock(MimeMessage.class);
-        when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenThrow(new MessagingException("Test"));
 
         Address[] result = ListHeaders.getListPostAddresses(message);
 

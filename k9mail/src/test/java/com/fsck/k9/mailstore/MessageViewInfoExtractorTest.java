@@ -19,6 +19,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
@@ -95,10 +96,11 @@ public class MessageViewInfoExtractorTest {
 
         // Create message
         MimeMessage message = new MimeMessage();
+        message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
         MimeMessageHelper.setBody(message, body);
 
         // Extract text
-        List<Part> outputNonViewableParts = new ArrayList<Part>();
+        List<Part> outputNonViewableParts = new ArrayList<>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
@@ -122,13 +124,13 @@ public class MessageViewInfoExtractorTest {
 
         // Create message
         MimeMessage message = new MimeMessage();
-        message.setHeader("Content-Type", "text/html");
+        message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/html");
         MimeMessageHelper.setBody(message, body);
 
         // Extract text
-        List<Part> attachments = new ArrayList<Part>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
-        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, attachments);
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, null);
+        assertEquals(outputViewableParts.size(), 1);
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
         String expectedText = BODY_TEXT;
@@ -160,7 +162,7 @@ public class MessageViewInfoExtractorTest {
         MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
-        List<Part> outputNonViewableParts = new ArrayList<Part>();
+        List<Part> outputNonViewableParts = new ArrayList<>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
