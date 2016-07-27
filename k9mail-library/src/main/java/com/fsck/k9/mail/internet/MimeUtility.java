@@ -954,7 +954,7 @@ public class MimeUtility {
         return null;
     }
 
-    public static Part findFirstPartByMimeType(Part part, String mimeType) throws MessagingException {
+    public static Part findFirstPartByMimeType(Part part, String mimeType) {
         if (part.getBody() instanceof Multipart) {
             Multipart multipart = (Multipart)part.getBody();
             for (BodyPart bodyPart : multipart.getBodyParts()) {
@@ -986,7 +986,7 @@ public class MimeUtility {
     }
 
     public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
-            throws IOException, MessagingException {
+            throws IOException {
 
         if (contentTransferEncoding != null) {
             contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);

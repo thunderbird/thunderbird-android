@@ -140,7 +140,7 @@ public class MimeMessage extends Message {
      * @param sentDate
      * @throws com.fsck.k9.mail.MessagingException
      */
-    public void addSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException {
+    public void addSentDate(Date sentDate, boolean hideTimeZone) {
         if (mDateFormat == null) {
             mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         }
@@ -154,7 +154,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException {
+    public void setSentDate(Date sentDate, boolean hideTimeZone) {
         removeHeader("Date");
         addSentDate(sentDate, hideTimeZone);
     }
@@ -225,7 +225,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException {
+    public void setRecipients(RecipientType type, Address[] addresses) {
         if (type == RecipientType.TO) {
             if (addresses == null || addresses.length == 0) {
                 removeHeader("To");
@@ -251,7 +251,7 @@ public class MimeMessage extends Message {
                 this.mBcc = addresses;
             }
         } else {
-            throw new MessagingException("Unrecognized recipient type.");
+            throw new IllegalStateException("Unrecognized recipient type.");
         }
     }
 
@@ -264,7 +264,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setSubject(String subject) throws MessagingException {
+    public void setSubject(String subject) {
         setHeader("Subject", subject);
     }
 
@@ -281,7 +281,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setFrom(Address from) throws MessagingException {
+    public void setFrom(Address from) {
         if (from != null) {
             setHeader("From", from.toEncodedString());
             this.mFrom = new Address[] {
@@ -301,7 +301,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setReplyTo(Address[] replyTo) throws MessagingException {
+    public void setReplyTo(Address[] replyTo) {
         if (replyTo == null || replyTo.length == 0) {
             removeHeader("Reply-to");
             mReplyTo = null;
@@ -312,7 +312,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public String getMessageId() throws MessagingException {
+    public String getMessageId() {
         if (mMessageId == null) {
             mMessageId = getFirstHeader("Message-ID");
         }
@@ -340,18 +340,18 @@ public class MimeMessage extends Message {
         setMessageId(messageId);
     }
 
-    public void setMessageId(String messageId) throws MessagingException {
+    public void setMessageId(String messageId) {
         setHeader("Message-ID", messageId);
         mMessageId = messageId;
     }
 
     @Override
-    public void setInReplyTo(String inReplyTo) throws MessagingException {
+    public void setInReplyTo(String inReplyTo) {
         setHeader("In-Reply-To", inReplyTo);
     }
 
     @Override
-    public String[] getReferences() throws MessagingException {
+    public String[] getReferences() {
         if (mReferences == null) {
             mReferences = getHeader("References");
         }
@@ -359,7 +359,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setReferences(String references) throws MessagingException {
+    public void setReferences(String references) {
         /*
          * Make sure the References header doesn't exceed the maximum header
          * line length and won't get (Q-)encoded later. Otherwise some clients
@@ -410,7 +410,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void addHeader(String name, String value) throws MessagingException {
+    public void addHeader(String name, String value) {
         mHeader.addHeader(name, value);
     }
 
@@ -420,23 +420,23 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setHeader(String name, String value) throws MessagingException {
+    public void setHeader(String name, String value) {
         mHeader.setHeader(name, value);
     }
 
     @NonNull
     @Override
-    public String[] getHeader(String name) throws MessagingException {
+    public String[] getHeader(String name) {
         return mHeader.getHeader(name);
     }
 
     @Override
-    public void removeHeader(String name) throws MessagingException {
+    public void removeHeader(String name) {
         mHeader.removeHeader(name);
     }
 
     @Override
-    public Set<String> getHeaderNames() throws MessagingException {
+    public Set<String> getHeaderNames() {
         return mHeader.getHeaderNames();
     }
 
@@ -482,7 +482,7 @@ public class MimeMessage extends Message {
     }
 
     private class MimeMessageBuilder implements ContentHandler {
-        private final LinkedList<Object> stack = new LinkedList<Object>();
+        private final LinkedList<Object> stack = new LinkedList<>();
 
         public MimeMessageBuilder() {
         }
@@ -543,12 +543,8 @@ public class MimeMessage extends Message {
         @Override
         public void body(BodyDescriptor bd, InputStream in) throws IOException, MimeException {
             expect(Part.class);
-            try {
-                Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType());
-                ((Part)stack.peek()).setBody(body);
-            } catch (MessagingException me) {
-                throw new MimeException(me.getMessage(), me);
-            }
+            Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType());
+            ((Part)stack.peek()).setBody(body);
         }
 
         @Override
@@ -613,13 +609,9 @@ public class MimeMessage extends Message {
         @Override
         public void field(Field parsedField) throws MimeException {
             expect(Part.class);
-            try {
-                String name = parsedField.getName();
-                String raw = parsedField.getRaw().toString();
-                ((Part) stack.peek()).addRawHeader(name, raw);
-            } catch (MessagingException me) {
-                throw new MimeException(me);
-            }
+            String name = parsedField.getName();
+            String raw = parsedField.getRaw().toString();
+            ((Part) stack.peek()).addRawHeader(name, raw);
         }
     }
 

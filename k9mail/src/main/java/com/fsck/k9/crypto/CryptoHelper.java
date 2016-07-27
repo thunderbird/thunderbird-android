@@ -33,17 +33,12 @@ public class CryptoHelper {
      */
     public boolean isEncrypted(Message message) {
         String data = null;
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null) {
-                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            }
-            if (part != null) {
-                data = MessageExtractor.getTextFromPart(part);
-            }
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
+        Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+        if (part == null) {
+            part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+        }
+        if (part != null) {
+            data = MessageExtractor.getTextFromPart(part);
         }
 
         if (data == null) {
@@ -56,17 +51,12 @@ public class CryptoHelper {
 
     public boolean isSigned(Message message) {
         String data = null;
-        try {
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null) {
-                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            }
-            if (part != null) {
-                data = MessageExtractor.getTextFromPart(part);
-            }
-        } catch (MessagingException e) {
-            // guess not...
-            // TODO: maybe log this?
+        Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+        if (part == null) {
+            part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+        }
+        if (part != null) {
+            data = MessageExtractor.getTextFromPart(part);
         }
 
         if (data == null) {

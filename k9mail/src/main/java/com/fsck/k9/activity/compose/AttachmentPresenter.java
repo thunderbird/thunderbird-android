@@ -310,11 +310,8 @@ public class AttachmentPresenter {
      *         The recursion depth. Currently unused.
      *
      * @return {@code true} if all attachments were able to be attached, {@code false} otherwise.
-     *
-     * @throws MessagingException
-     *          In case of an error
      */
-    public boolean loadAttachments(Part part, int depth) throws MessagingException {
+    public boolean loadAttachments(Part part, int depth) {
         if (part.getBody() instanceof Multipart) {
             Multipart mp = (Multipart) part.getBody();
             boolean ret = true;

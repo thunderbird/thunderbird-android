@@ -49,7 +49,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public void addHeader(String name, String value) throws MessagingException {
+    public void addHeader(String name, String value) {
         mHeader.addHeader(name, value);
     }
 
@@ -65,12 +65,12 @@ public class MimeBodyPart extends BodyPart {
 
     @NonNull
     @Override
-    public String[] getHeader(String name) throws MessagingException {
+    public String[] getHeader(String name) {
         return mHeader.getHeader(name);
     }
 
     @Override
-    public void removeHeader(String name) throws MessagingException {
+    public void removeHeader(String name) {
         mHeader.removeHeader(name);
     }
 

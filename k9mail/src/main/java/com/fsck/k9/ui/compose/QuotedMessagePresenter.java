@@ -176,8 +176,7 @@ public class QuotedMessagePresenter {
         populateUIWithQuotedMessage(messageViewInfo, account.isDefaultQuotedTextShown(), action);
     }
 
-    public void processDraftMessage(MessageViewInfo messageViewInfo, Map<IdentityField, String> k9identity)
-            throws MessagingException {
+    public void processDraftMessage(MessageViewInfo messageViewInfo, Map<IdentityField, String> k9identity) {
         quoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
                 ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
                 : account.getQuoteStyle();
@@ -308,8 +307,8 @@ public class QuotedMessagePresenter {
      * @param bodyLength Length of reply.
      * @param viewMessageContent Update mMessageContentView or not.
      */
-    private void processSourceMessageText(Part rootMessagePart, int bodyOffset, int bodyLength, boolean viewMessageContent)
-            throws MessagingException {
+    private void processSourceMessageText(
+            Part rootMessagePart, int bodyOffset, int bodyLength, boolean viewMessageContent) {
         Part textPart = MimeUtility.findFirstPartByMimeType(rootMessagePart, "text/plain");
         if (textPart == null) {
             return;

@@ -1507,7 +1507,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         return output.toByteArray();
     }
 
-    private String getTransferEncoding(Part part) throws MessagingException {
+    private String getTransferEncoding(Part part) {
         String[] contentTransferEncoding = part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
         if (contentTransferEncoding.length > 0) {
             return contentTransferEncoding[0].toLowerCase(Locale.US);

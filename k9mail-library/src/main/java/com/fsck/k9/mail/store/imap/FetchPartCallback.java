@@ -18,8 +18,7 @@ class FetchPartCallback implements ImapResponseCallback {
     }
 
     @Override
-    public Object foundLiteral(ImapResponse response,
-                               FixedLengthInputStream literal) throws MessagingException, IOException {
+    public Object foundLiteral(ImapResponse response, FixedLengthInputStream literal) throws IOException {
         if (response.getTag() == null &&
                 ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
             //TODO: check for correct UID
@@ -29,8 +28,7 @@ class FetchPartCallback implements ImapResponseCallback {
             String contentType = mPart
                     .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
 
-            return MimeUtility.createBody(literal, contentTransferEncoding,
-                    contentType);
+            return MimeUtility.createBody(literal, contentTransferEncoding, contentType);
         }
         return null;
     }

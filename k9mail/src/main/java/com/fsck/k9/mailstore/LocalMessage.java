@@ -2,15 +2,11 @@ package com.fsck.k9.mailstore;
 
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Date;
-import java.util.Set;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -155,7 +151,7 @@ public class LocalMessage extends MimeMessage {
 
 
     @Override
-    public void setSubject(String subject) throws MessagingException {
+    public void setSubject(String subject) {
         mSubject = subject;
     }
 
@@ -181,13 +177,13 @@ public class LocalMessage extends MimeMessage {
     }
 
     @Override
-    public void setFrom(Address from) throws MessagingException {
+    public void setFrom(Address from) {
         this.mFrom = new Address[] { from };
     }
 
 
     @Override
-    public void setReplyTo(Address[] replyTo) throws MessagingException {
+    public void setReplyTo(Address[] replyTo) {
         if (replyTo == null || replyTo.length == 0) {
             mReplyTo = null;
         } else {
@@ -201,7 +197,7 @@ public class LocalMessage extends MimeMessage {
      * which removes (expensive) them before adding them
      */
     @Override
-    public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException {
+    public void setRecipients(RecipientType type, Address[] addresses) {
         if (type == RecipientType.TO) {
             if (addresses == null || addresses.length == 0) {
                 this.mTo = null;
@@ -221,7 +217,7 @@ public class LocalMessage extends MimeMessage {
                 this.mBcc = addresses;
             }
         } else {
-            throw new MessagingException("Unrecognized recipient type.");
+            throw new IllegalArgumentException("Unrecognized recipient type.");
         }
     }
 

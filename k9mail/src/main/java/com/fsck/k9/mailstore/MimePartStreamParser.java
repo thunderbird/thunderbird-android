@@ -119,15 +119,11 @@ public class MimePartStreamParser {
 
         @Override
         public void field(Field parsedField) throws MimeException {
-            try {
-                String name = parsedField.getName();
-                String raw = parsedField.getRaw().toString();
+            String name = parsedField.getName();
+            String raw = parsedField.getRaw().toString();
 
-                Part part = (Part) stack.peek();
-                part.addRawHeader(name, raw);
-            } catch (MessagingException e) {
-                throw new MimeException(e);
-            }
+            Part part = (Part) stack.peek();
+            part.addRawHeader(name, raw);
         }
 
         @Override
