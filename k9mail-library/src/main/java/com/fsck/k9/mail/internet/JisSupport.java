@@ -49,7 +49,7 @@ class JisSupport {
 
 
     private static String getJisVariantFromMailerHeaders(Message message) {
-        String[] mailerHeaders = message.getHeader("X-Mailer");
+        String[] mailerHeaders = message.getRawHeader("X-Mailer");
         if (mailerHeaders.length == 0)
             return null;
 
@@ -61,7 +61,7 @@ class JisSupport {
 
 
     private static String getJisVariantFromReceivedHeaders(Part message) throws MessagingException {
-        String[] receivedHeaders = message.getHeader("Received");
+        String[] receivedHeaders = message.getRawHeader("Received");
         if (receivedHeaders.length == 0)
             return null;
 

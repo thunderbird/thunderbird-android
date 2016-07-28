@@ -29,7 +29,7 @@ public interface Part {
      * Returns an array of headers of the given name. The array may be empty.
      */
     @NonNull
-    String[] getHeader(String name);
+    String[] getRawHeader(String name);
 
     boolean isMimeType(String mimeType);
 

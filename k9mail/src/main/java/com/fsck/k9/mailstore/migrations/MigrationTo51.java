@@ -300,7 +300,7 @@ class MigrationTo51 {
             }
 
             String boundary = MimeUtility.getHeaderParameter(
-                    mimeHeader.getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
+                    mimeHeader.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
             if (TextUtils.isEmpty(boundary)) {
                 boundary = MimeUtil.createUniqueBoundary();
             }
@@ -341,7 +341,7 @@ class MigrationTo51 {
         Log.d(K9.LOG_TAG, "Processing mail with complex data structure as multipart/mixed");
 
         String boundary = MimeUtility.getHeaderParameter(
-                mimeHeader.getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
+                mimeHeader.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
         if (TextUtils.isEmpty(boundary)) {
             boundary = MimeUtil.createUniqueBoundary();
         }
@@ -554,7 +554,7 @@ class MigrationTo51 {
             mimeHeader = new MimeHeader();
         }
         String boundary = MimeUtility.getHeaderParameter(
-                mimeHeader.getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
+                mimeHeader.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
         if (TextUtils.isEmpty(boundary)) {
             boundary = MimeUtil.createUniqueBoundary();
         }

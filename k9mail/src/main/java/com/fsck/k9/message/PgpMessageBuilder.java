@@ -165,7 +165,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     private PendingIntent launchOpenPgpApiIntent(@NonNull Intent openPgpIntent,
             boolean captureOutputPart, boolean capturedOutputPartIs7Bit, boolean writeBodyContentOnly) throws MessagingException {
         final MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
-        String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
+        String[] contentType = currentProcessedMimeMessage.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE);
         if (contentType.length > 0) {
             bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
         }

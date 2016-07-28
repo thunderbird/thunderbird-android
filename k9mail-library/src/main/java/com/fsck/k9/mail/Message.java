@@ -131,7 +131,7 @@ public abstract class Message implements Part, CompositeBody {
 
     @NonNull
     @Override
-    public abstract String[] getHeader(String name);
+    public abstract String[] getRawHeader(String name);
 
     public abstract Set<String> getHeaderNames();
 

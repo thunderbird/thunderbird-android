@@ -37,7 +37,7 @@ public class ListHeaders {
 
 
     public static Address[] getListPostAddresses(Message message) {
-        String[] headerValues = message.getHeader(LIST_POST_HEADER);
+        String[] headerValues = message.getRawHeader(LIST_POST_HEADER);
         if (headerValues.length < 1) {
             return new Address[0];
         }

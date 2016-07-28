@@ -353,7 +353,7 @@ public class MimeMessage extends Message {
     @Override
     public String[] getReferences() {
         if (mReferences == null) {
-            mReferences = getHeader("References");
+            mReferences = getRawHeader("References");
         }
         return mReferences;
     }
@@ -406,7 +406,7 @@ public class MimeMessage extends Message {
     }
 
     private String getFirstHeader(String name) {
-        return mHeader.getFirstHeader(name);
+        return mHeader.getRawFirstHeader(name);
     }
 
     @Override
@@ -426,8 +426,8 @@ public class MimeMessage extends Message {
 
     @NonNull
     @Override
-    public String[] getHeader(String name) {
-        return mHeader.getHeader(name);
+    public String[] getRawHeader(String name) {
+        return mHeader.getRawHeader(name);
     }
 
     @Override
@@ -721,7 +721,7 @@ public class MimeMessage extends Message {
         MimeHeader contentHeaders = new MimeHeader();
         for (String header : mHeader.getHeaderNames()) {
             if (header.toLowerCase().startsWith("content-")) {
-                for (String value : mHeader.getHeader(header)) {
+                for (String value : mHeader.getRawHeader(header)) {
                     contentHeaders.addHeader(header, value);
                 }
             }

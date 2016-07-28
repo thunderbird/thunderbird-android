@@ -44,8 +44,8 @@ public class MimeBodyPart extends BodyPart {
         MimeMessageHelper.setBody(this, body);
     }
 
-    private String getFirstHeader(String name) {
-        return mHeader.getFirstHeader(name);
+    public String getFirstHeader(String name) {
+        return MimeUtility.unfoldAndDecode(mHeader.getRawFirstHeader(name));
     }
 
     @Override
@@ -65,8 +65,8 @@ public class MimeBodyPart extends BodyPart {
 
     @NonNull
     @Override
-    public String[] getHeader(String name) {
-        return mHeader.getHeader(name);
+    public String[] getRawHeader(String name) {
+        return mHeader.getRawHeader(name);
     }
 
     @Override

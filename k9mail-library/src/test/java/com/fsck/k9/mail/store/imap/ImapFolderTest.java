@@ -908,7 +908,7 @@ public class ImapFolderTest {
     public void getUidFromMessageId_withoutMessageIdHeader_shouldReturnNull() throws Exception {
         ImapFolder folder = createFolder("Folder");
         ImapMessage message = createImapMessage("2");
-        when(message.getHeader("Message-ID")).thenReturn(new String[0]);
+        when(message.getRawHeader("Message-ID")).thenReturn(new String[0]);
 
         String result = folder.getUidFromMessageId(message);
 
@@ -921,7 +921,7 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("2");
-        when(message.getHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
+        when(message.getRawHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
 
         folder.getUidFromMessageId(message);
 
@@ -934,7 +934,7 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("2");
-        when(message.getHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
+        when(message.getRawHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
         when(imapConnection.executeSimpleCommand("UID SEARCH HEADER MESSAGE-ID \"<00000000.0000000@example.org>\""))
                 .thenReturn(singletonList(createImapResponse("* SEARCH 23")));
 

@@ -17,15 +17,15 @@ public class MimeHeader implements Cloneable {
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_ID = "Content-ID";
 
-    private List<Field> mFields = new ArrayList<Field>();
+    private List<Field> mFields = new ArrayList<>();
     private String mCharset = null;
 
     public void clear() {
         mFields.clear();
     }
 
-    public String getFirstHeader(String name) {
-        String[] header = getHeader(name);
+    public String getRawFirstHeader(String name) {
+        String[] header = getRawHeader(name);
         if (header.length == 0) {
             return null;
         }
@@ -60,7 +60,7 @@ public class MimeHeader implements Cloneable {
     }
 
     @NonNull
-    public String[] getHeader(String name) {
+    public String[] getRawHeader(String name) {
         List<String> values = new ArrayList<String>();
         for (Field field : mFields) {
             if (field.getName().equalsIgnoreCase(name)) {

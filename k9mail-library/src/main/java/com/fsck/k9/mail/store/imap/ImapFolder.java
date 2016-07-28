@@ -837,8 +837,8 @@ class ImapFolder extends Folder<ImapMessage> {
                             InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
 
                             String contentTransferEncoding =
-                                    part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                            String contentType = part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
+                                    part.getRawHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                            String contentType = part.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
                             MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
                                     contentType));
                         } else {
@@ -1231,7 +1231,7 @@ class ImapFolder extends Folder<ImapMessage> {
             * Try to find the UID of the message we just appended using the
             * Message-ID header.
             */
-            String[] messageIdHeader = message.getHeader("Message-ID");
+            String[] messageIdHeader = message.getRawHeader("Message-ID");
 
             if (messageIdHeader.length == 0) {
                 if (K9MailLib.isDebug()) {
