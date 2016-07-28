@@ -90,7 +90,7 @@ public class LocalStore extends Store implements Serializable {
         "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, " +
         "bcc_list, reply_to_list, attachment_count, internal_date, messages.message_id, " +
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +
-        "forwarded, message_part_id, mime_type, preview_type ";
+        "forwarded, message_part_id, messages.mime_type, preview_type, header ";
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
@@ -574,6 +574,7 @@ public class LocalStore extends Store implements Serializable {
 
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
                 "LEFT JOIN folders ON (folders.id = messages.folder_id) WHERE " +
                 "(empty = 0 AND deleted = 0)" +
                 ((!TextUtils.isEmpty(where)) ? " AND (" + where + ")" : "") +

@@ -17,6 +17,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -953,7 +954,7 @@ public class MimeUtility {
         return null;
     }
 
-    public static Part findFirstPartByMimeType(Part part, String mimeType) throws MessagingException {
+    public static Part findFirstPartByMimeType(Part part, String mimeType) {
         if (part.getBody() instanceof Multipart) {
             Multipart multipart = (Multipart)part.getBody();
             for (BodyPart bodyPart : multipart.getBodyParts()) {
@@ -985,7 +986,7 @@ public class MimeUtility {
     }
 
     public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
-            throws IOException, MessagingException {
+            throws IOException {
 
         if (contentTransferEncoding != null) {
             contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);
@@ -1044,7 +1045,7 @@ public class MimeUtility {
                     }
                 };
             } else {
-                throw new RuntimeException("Encoding for RawDataBody not supported: " + encoding);
+                throw new UnsupportedOperationException("Encoding for RawDataBody not supported: " + encoding);
             }
         } else {
             inputStream = body.getInputStream();

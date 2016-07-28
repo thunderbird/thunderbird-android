@@ -9,6 +9,7 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import org.junit.Before;
@@ -19,6 +20,7 @@ import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -61,7 +63,7 @@ public class AttachmentResolverTest {
     @Test
     public void buildCidMap__onMultipartWithEmptyBodyPart__shouldReturnEmptyMap() throws Exception {
         Multipart multipartBody = new MimeMultipart();
-        BodyPart bodyPart = mock(BodyPart.class);
+        BodyPart bodyPart = spy(new MimeBodyPart());
         Part multipartPart = new MimeBodyPart(multipartBody);
         multipartBody.addBodyPart(bodyPart);
 
@@ -76,13 +78,13 @@ public class AttachmentResolverTest {
         Multipart multipartBody = new MimeMultipart();
         Part multipartPart = new MimeBodyPart(multipartBody);
 
-        BodyPart subPart1 = mock(BodyPart.class);
-        BodyPart subPart2 = mock(BodyPart.class);
+        BodyPart subPart1 = new MimeBodyPart();
+        BodyPart subPart2 = new MimeBodyPart();
         multipartBody.addBodyPart(subPart1);
         multipartBody.addBodyPart(subPart2);
 
-        when(subPart1.getContentId()).thenReturn("cid-1");
-        when(subPart2.getContentId()).thenReturn("cid-2");
+        subPart1.setHeader(MimeHeader.HEADER_CONTENT_ID, "cid-1");
+        subPart2.setHeader(MimeHeader.HEADER_CONTENT_ID, "cid-2");
 
         when(attachmentInfoExtractor.extractAttachmentInfo(subPart1)).thenReturn(
                 new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_1, false, subPart1));

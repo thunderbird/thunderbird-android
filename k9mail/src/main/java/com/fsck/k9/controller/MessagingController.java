@@ -3806,47 +3806,43 @@ public class MessagingController implements Runnable {
             Log.d(K9.LOG_TAG, "Got message " + account.getDescription() + ":" + message.getFolder()
                   + ":" + message.getUid() + " for sendAlternate");
 
-        try {
-            Intent msg = new Intent(Intent.ACTION_SEND);
-            String quotedText = null;
-            Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-            if (part == null) {
-                part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-            }
-            if (part != null) {
-                quotedText = MessageExtractor.getTextFromPart(part);
-            }
-            if (quotedText != null) {
-                msg.putExtra(Intent.EXTRA_TEXT, quotedText);
-            }
-            msg.putExtra(Intent.EXTRA_SUBJECT, message.getSubject());
-
-            Address[] from = message.getFrom();
-            String[] senders = new String[from.length];
-            for (int i = 0; i < from.length; i++) {
-                senders[i] = from[i].toString();
-            }
-            msg.putExtra(Intents.Share.EXTRA_FROM, senders);
-
-            Address[] to = message.getRecipients(RecipientType.TO);
-            String[] recipientsTo = new String[to.length];
-            for (int i = 0; i < to.length; i++) {
-                recipientsTo[i] = to[i].toString();
-            }
-            msg.putExtra(Intent.EXTRA_EMAIL, recipientsTo);
-
-            Address[] cc = message.getRecipients(RecipientType.CC);
-            String[] recipientsCc = new String[cc.length];
-            for (int i = 0; i < cc.length; i++) {
-                recipientsCc[i] = cc[i].toString();
-            }
-            msg.putExtra(Intent.EXTRA_CC, recipientsCc);
-
-            msg.setType("text/plain");
-            context.startActivity(Intent.createChooser(msg, context.getString(R.string.send_alternate_chooser_title)));
-        } catch (MessagingException me) {
-            Log.e(K9.LOG_TAG, "Unable to send email through alternate program", me);
+        Intent msg = new Intent(Intent.ACTION_SEND);
+        String quotedText = null;
+        Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+        if (part == null) {
+            part = MimeUtility.findFirstPartByMimeType(message, "text/html");
         }
+        if (part != null) {
+            quotedText = MessageExtractor.getTextFromPart(part);
+        }
+        if (quotedText != null) {
+            msg.putExtra(Intent.EXTRA_TEXT, quotedText);
+        }
+        msg.putExtra(Intent.EXTRA_SUBJECT, message.getSubject());
+
+        Address[] from = message.getFrom();
+        String[] senders = new String[from.length];
+        for (int i = 0; i < from.length; i++) {
+            senders[i] = from[i].toString();
+        }
+        msg.putExtra(Intents.Share.EXTRA_FROM, senders);
+
+        Address[] to = message.getRecipients(RecipientType.TO);
+        String[] recipientsTo = new String[to.length];
+        for (int i = 0; i < to.length; i++) {
+            recipientsTo[i] = to[i].toString();
+        }
+        msg.putExtra(Intent.EXTRA_EMAIL, recipientsTo);
+
+        Address[] cc = message.getRecipients(RecipientType.CC);
+        String[] recipientsCc = new String[cc.length];
+        for (int i = 0; i < cc.length; i++) {
+            recipientsCc[i] = cc[i].toString();
+        }
+        msg.putExtra(Intent.EXTRA_CC, recipientsCc);
+
+        msg.setType("text/plain");
+        context.startActivity(Intent.createChooser(msg, context.getString(R.string.send_alternate_chooser_title)));
     }
 
     /**

@@ -333,7 +333,7 @@ public class QuotedMessageHelper {
     /** Fetch the body text from a messagePart in the desired messagePart format. This method handles
      * conversions between formats (html to text and vice versa) if necessary.
      */
-    public static String getBodyTextFromMessage(Part messagePart, SimpleMessageFormat format) throws MessagingException {
+    public static String getBodyTextFromMessage(Part messagePart, SimpleMessageFormat format) {
         Part part;
         if (format == SimpleMessageFormat.HTML) {
             // HTML takes precedence, then text.
