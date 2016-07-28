@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -67,6 +68,12 @@ public class MimeBodyPart extends BodyPart {
     @Override
     public String[] getRawHeader(String name) {
         return mHeader.getRawHeader(name);
+    }
+
+    @Nullable
+    @Override
+    public String getRawFirstHeader(String name) {
+        return mHeader.getRawFirstHeader(name);
     }
 
     @Override

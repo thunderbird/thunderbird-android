@@ -169,13 +169,11 @@ public class MigrationTest {
         Assert.assertEquals(13, msg.getHeaderNames().size());
         Assert.assertEquals(0, msg.getAttachmentCount());
 
-        Assert.assertEquals(1, msg.getRawHeader("User-Agent").length);
-        Assert.assertEquals("Mutt/1.5.24 (2015-08-30)", msg.getRawHeader("User-Agent")[0]);
-        Assert.assertEquals(1, msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE).length);
+        Assert.assertEquals("Mutt/1.5.24 (2015-08-30)", msg.getRawFirstHeader("User-Agent"));
         Assert.assertEquals("text/plain",
-                MimeUtility.getHeaderParameter(msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], null));
+                MimeUtility.getHeaderParameter(msg.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), null));
         Assert.assertEquals("utf-8",
-                MimeUtility.getHeaderParameter(msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], "charset"));
+                MimeUtility.getHeaderParameter(msg.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "charset"));
 
         Assert.assertTrue(msg.getBody() instanceof BinaryMemoryBody);
 
@@ -236,9 +234,9 @@ public class MigrationTest {
         Assert.assertEquals("multipart/mixed", msg.getMimeType());
         Assert.assertEquals(1, msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE).length);
         Assert.assertEquals("multipart/mixed",
-                MimeUtility.getHeaderParameter(msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], null));
+                MimeUtility.getHeaderParameter(msg.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), null));
         Assert.assertEquals("----5D6OUTIYLNN2X63O0R2M0V53TOUAQP",
-                MimeUtility.getHeaderParameter(msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], "boundary"));
+                MimeUtility.getHeaderParameter(msg.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary"));
         Assert.assertEquals(2, msg.getAttachmentCount());
 
         Multipart body = (Multipart) msg.getBody();
@@ -370,9 +368,9 @@ public class MigrationTest {
         Multipart body = (Multipart) msg.getBody();
         Assert.assertEquals(1, msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE).length);
         Assert.assertEquals("application/pgp-encrypted",
-                MimeUtility.getHeaderParameter(msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], "protocol"));
+                MimeUtility.getHeaderParameter(msg.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "protocol"));
         Assert.assertEquals("UoPmpPX/dBe4BELn",
-                MimeUtility.getHeaderParameter(msg.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE)[0], "boundary"));
+                MimeUtility.getHeaderParameter(msg.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary"));
         Assert.assertEquals("UoPmpPX/dBe4BELn", body.getBoundary());
         Assert.assertEquals(2, body.getCount());
 

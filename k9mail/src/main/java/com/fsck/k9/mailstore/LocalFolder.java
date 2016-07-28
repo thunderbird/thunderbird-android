@@ -1530,9 +1530,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private String getTransferEncoding(Part part) {
-        String[] contentTransferEncoding = part.getRawHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
-        if (contentTransferEncoding.length > 0) {
-            return contentTransferEncoding[0].toLowerCase(Locale.US);
+        String contentTransferEncoding = part.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
+        if (contentTransferEncoding != null) {
+            return contentTransferEncoding.toLowerCase(Locale.US);
         }
 
         return MimeUtil.ENC_7BIT;
@@ -1895,17 +1895,17 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         ThreadInfo msgThreadInfo = getThreadInfo(db, messageId, true);
 
         // Get the message IDs from the "References" header line
-        String[] referencesArray = message.getRawHeader("References");
+        String referencesHeader = message.getRawFirstHeader("References");
         List<String> messageIds = null;
-        if (referencesArray.length > 0) {
-            messageIds = Utility.extractMessageIds(referencesArray[0]);
+        if (referencesHeader != null) {
+            messageIds = Utility.extractMessageIds(referencesHeader);
         }
 
         // Append the first message ID from the "In-Reply-To" header line
-        String[] inReplyToArray = message.getRawHeader("In-Reply-To");
+        String inReplyToArrayHeader = message.getRawFirstHeader("In-Reply-To");
         String inReplyTo;
-        if (inReplyToArray.length > 0) {
-            inReplyTo = Utility.extractMessageId(inReplyToArray[0]);
+        if (inReplyToArrayHeader != null) {
+            inReplyTo = Utility.extractMessageId(inReplyToArrayHeader);
             if (inReplyTo != null) {
                 if (messageIds == null) {
                     messageIds = new ArrayList<>(1);

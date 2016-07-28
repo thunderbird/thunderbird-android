@@ -105,8 +105,8 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
 
         LocalMessage localMessage = readMessageFromDatabase(folder, message);
 
-        assertEquals("to@example.com", localMessage.getRawHeader("To")[0]);
-        assertEquals("text/plain", localMessage.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE)[0]);
+        assertEquals("to@example.com", localMessage.getRawFirstHeader("To"));
+        assertEquals("text/plain", localMessage.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE));
         assertEquals("text", localMessage.getServerExtra());
         assertNull(localMessage.getBody());
 

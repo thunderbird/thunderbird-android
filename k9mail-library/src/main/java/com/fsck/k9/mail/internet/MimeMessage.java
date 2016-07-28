@@ -17,6 +17,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -428,6 +429,12 @@ public class MimeMessage extends Message {
     @Override
     public String[] getRawHeader(String name) {
         return mHeader.getRawHeader(name);
+    }
+
+    @Nullable
+    @Override
+    public String getRawFirstHeader(String name) {
+        return mHeader.getRawFirstHeader(name);
     }
 
     @Override

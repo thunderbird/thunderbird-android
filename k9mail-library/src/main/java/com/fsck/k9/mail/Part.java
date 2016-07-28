@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 
 public interface Part {
@@ -30,6 +31,9 @@ public interface Part {
      */
     @NonNull
     String[] getRawHeader(String name);
+
+    @Nullable
+    String getRawFirstHeader(String name);
 
     boolean isMimeType(String mimeType);
 

@@ -837,8 +837,8 @@ class ImapFolder extends Folder<ImapMessage> {
                             InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
 
                             String contentTransferEncoding =
-                                    part.getRawHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                            String contentType = part.getRawHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
+                                    part.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
+                            String contentType = part.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
                             MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
                                     contentType));
                         } else {
@@ -1231,21 +1231,20 @@ class ImapFolder extends Folder<ImapMessage> {
             * Try to find the UID of the message we just appended using the
             * Message-ID header.
             */
-            String[] messageIdHeader = message.getRawHeader("Message-ID");
+            String messageIdHeader = message.getRawFirstHeader("Message-ID");
 
-            if (messageIdHeader.length == 0) {
+            if (messageIdHeader == null) {
                 if (K9MailLib.isDebug()) {
                     Log.d(LOG_TAG, "Did not get a message-id in order to search for UID  for " + getLogId());
                 }
                 return null;
             }
 
-            String messageId = messageIdHeader[0];
             if (K9MailLib.isDebug()) {
-                Log.d(LOG_TAG, "Looking for UID for message with message-id " + messageId + " for " + getLogId());
+                Log.d(LOG_TAG, "Looking for UID for message with message-id " + messageIdHeader + " for " + getLogId());
             }
 
-            String command = String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapUtility.encodeString(messageId));
+            String command = String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapUtility.encodeString(messageIdHeader));
             List<ImapResponse> responses = executeSimpleCommand(command);
 
             for (ImapResponse response : responses) {

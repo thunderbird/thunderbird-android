@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
@@ -132,6 +133,10 @@ public abstract class Message implements Part, CompositeBody {
     @NonNull
     @Override
     public abstract String[] getRawHeader(String name);
+
+    @Nullable
+    @Override
+    public abstract String getRawFirstHeader(String name);
 
     public abstract Set<String> getHeaderNames();
 
