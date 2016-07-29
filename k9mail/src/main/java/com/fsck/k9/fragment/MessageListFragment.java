@@ -1211,7 +1211,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void onExpunge(final Account account, String folderName) {
-        mController.expunge(account, folderName, null);
+        mController.expunge(account, folderName);
     }
 
     private void showDialog(int dialogId) {

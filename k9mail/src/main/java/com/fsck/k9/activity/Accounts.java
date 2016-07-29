@@ -1053,7 +1053,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                             // are currently not inserted to be left
                         }
                         MessagingController.getInstance(getApplication())
-                        .deleteAccount(Accounts.this, realAccount);
+                        .deleteAccount(realAccount);
                         Preferences.getPreferences(Accounts.this)
                         .deleteAccount(realAccount);
                         K9.setServicesEnabled(Accounts.this);
