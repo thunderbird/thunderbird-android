@@ -40,6 +40,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
@@ -3299,10 +3300,10 @@ public class MessagingController implements Runnable {
 
 
 
-    public boolean isMoveCapable(Message message) {
-        return !message.getUid().startsWith(K9.LOCAL_UID_PREFIX);
+    public boolean isMoveCapable(MessageReference messageReference) {
+        return !messageReference.getUid().startsWith(K9.LOCAL_UID_PREFIX);
     }
-    public boolean isCopyCapable(Message message) {
+    public boolean isCopyCapable(MessageReference message) {
         return isMoveCapable(message);
     }
 
@@ -3327,85 +3328,94 @@ public class MessagingController implements Runnable {
             return false;
         }
     }
-    public void moveMessages(final Account account, final String srcFolder,
-            final List<LocalMessage> messages, final String destFolder,
-            final MessagingListener listener) {
-
-        suppressMessages(account, messages);
-
-        putBackground("moveMessages", null, new Runnable() {
+    public void moveMessages(final Account srcAccount, final String srcFolder,
+            List<MessageReference> messageReferences, final String destFolder) {
+        actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {
             @Override
-            public void run() {
-                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false,
-                        listener);
+            public void act(final Account account, LocalFolder messageFolder, final List<LocalMessage> messages) {
+                suppressMessages(account, messages);
+
+                putBackground("moveMessages", null, new Runnable() {
+                    @Override
+                    public void run() {
+                        moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false);
+                    }
+                });
             }
         });
     }
 
-    public void moveMessagesInThread(final Account account, final String srcFolder,
-            final List<LocalMessage> messages, final String destFolder) {
-
-        suppressMessages(account, messages);
-
-        putBackground("moveMessagesInThread", null, new Runnable() {
+    public void moveMessagesInThread(Account srcAccount, final String srcFolder,
+            final List<MessageReference> messageReferences, final String destFolder) {
+        actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {
             @Override
-            public void run() {
-                try {
-                    List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
-                    moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
-                            false, null);
-                } catch (MessagingException e) {
-                    addErrorMessage(account, "Exception while moving messages", e);
-                }
+            public void act(final Account account, LocalFolder messageFolder, final List<LocalMessage> messages) {
+                suppressMessages(account, messages);
+
+                putBackground("moveMessagesInThread", null, new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
+                            moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder, false);
+                        } catch (MessagingException e) {
+                            addErrorMessage(account, "Exception while moving messages", e);
+                        }
+                    }
+                });
             }
         });
     }
 
-    public void moveMessage(final Account account, final String srcFolder, final LocalMessage message,
-            final String destFolder, final MessagingListener listener) {
-
-        moveMessages(account, srcFolder, Collections.singletonList(message), destFolder, listener);
+    public void moveMessage(final Account account, final String srcFolder, final MessageReference message,
+            final String destFolder) {
+        moveMessages(account, srcFolder, Collections.singletonList(message), destFolder);
     }
 
-    public void copyMessages(final Account account, final String srcFolder,
-            final List<? extends Message> messages, final String destFolder,
-            final MessagingListener listener) {
-
-        putBackground("copyMessages", null, new Runnable() {
+    public void copyMessages(final Account srcAccount, final String srcFolder,
+            final List<MessageReference> messageReferences, final String destFolder) {
+        actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {
             @Override
-            public void run() {
-                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, true,
-                        listener);
+            public void act(final Account account, LocalFolder messageFolder, final List<LocalMessage> messages) {
+                putBackground("copyMessages", null, new Runnable() {
+                    @Override
+                    public void run() {
+                        moveOrCopyMessageSynchronous(srcAccount, srcFolder, messages, destFolder, true);
+                    }
+                });
             }
         });
     }
 
-    public void copyMessagesInThread(final Account account, final String srcFolder,
-            final List<? extends Message> messages, final String destFolder) {
-
-        putBackground("copyMessagesInThread", null, new Runnable() {
+    public void copyMessagesInThread(Account srcAccount, final String srcFolder,
+            final List<MessageReference> messageReferences, final String destFolder) {
+        actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {
             @Override
-            public void run() {
-                try {
-                    List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
-                    moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
-                            true, null);
-                } catch (MessagingException e) {
-                    addErrorMessage(account, "Exception while copying messages", e);
-                }
+            public void act(final Account account, LocalFolder messageFolder, final List<LocalMessage> messages) {
+                putBackground("copyMessagesInThread", null, new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
+                            moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
+                                    true);
+                        } catch (MessagingException e) {
+                            addErrorMessage(account, "Exception while copying messages", e);
+                        }
+                    }
+                });
             }
         });
     }
 
-    public void copyMessage(final Account account, final String srcFolder, final Message message,
-            final String destFolder, final MessagingListener listener) {
+    public void copyMessage(final Account account, final String srcFolder, final MessageReference message,
+            final String destFolder) {
 
-        copyMessages(account, srcFolder, Collections.singletonList(message), destFolder, listener);
+        copyMessages(account, srcFolder, Collections.singletonList(message), destFolder);
     }
 
     private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder,
-            final List<? extends Message> inMessages, final String destFolder, final boolean isCopy,
-            MessagingListener listener) {
+            final List<? extends Message> inMessages, final String destFolder, final boolean isCopy) {
 
         try {
             Map<String, String> uidMap = new HashMap<String, String>();
@@ -3434,7 +3444,7 @@ public class MessagingController implements Runnable {
                 }
             }
 
-            List<LocalMessage> messages = localSrcFolder.getMessages(uids.toArray(EMPTY_STRING_ARRAY), null);
+            List<LocalMessage> messages = localSrcFolder.getMessagesByUids(uids);
             if (messages.size() > 0) {
                 Map<String, Message> origUidMap = new HashMap<String, Message>();
 
@@ -3515,10 +3525,9 @@ public class MessagingController implements Runnable {
             localFolder.open(Folder.OPEN_MODE_RW);
             String uid = localFolder.getMessageUidById(id);
             if (uid != null) {
-                LocalMessage message = localFolder.getMessage(uid);
-                if (message != null) {
-                    deleteMessages(Collections.singletonList(message), null);
-                }
+                MessageReference messageReference = new MessageReference(
+                        account.getUuid(), account.getDraftsFolderName(), uid, null);
+                deleteMessage(messageReference, null);
             }
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
@@ -3527,28 +3536,23 @@ public class MessagingController implements Runnable {
         }
     }
 
-    public void deleteThreads(final List<LocalMessage> messages) {
-        actOnMessages(messages, new MessageActor() {
-
+    public void deleteThreads(final List<MessageReference> messages) {
+        actOnMessagesGroupedByAccountAndFolder(messages, new MessageActor() {
             @Override
-            public void act(final Account account, final Folder folder,
-                    final List<Message> accountMessages) {
-
-                suppressMessages(account, messages);
+            public void act(final Account account, final LocalFolder messageFolder, final List<LocalMessage> accountMessages) {
+                suppressMessages(account, accountMessages);
 
                 putBackground("deleteThreads", null, new Runnable() {
                     @Override
                     public void run() {
-                        deleteThreadsSynchronous(account, folder.getName(), accountMessages);
+                        deleteThreadsSynchronous(account, messageFolder.getName(), accountMessages);
                     }
                 });
             }
         });
     }
 
-    public void deleteThreadsSynchronous(Account account, String folderName,
-            List<Message> messages) {
-
+    public void deleteThreadsSynchronous(Account account, String folderName, List<? extends Message> messages) {
         try {
             List<Message> messagesToDelete = collectMessagesInThreads(account, messages);
 
@@ -3578,43 +3582,52 @@ public class MessagingController implements Runnable {
         return messagesInThreads;
     }
 
-    public void deleteMessages(final List<LocalMessage> messages, final MessagingListener listener) {
-        actOnMessages(messages, new MessageActor() {
+    public void deleteMessage(MessageReference message, final MessagingListener listener) {
+        deleteMessages(Collections.singletonList(message), listener);
+    }
+
+    public void deleteMessages(List<MessageReference> messages, final MessagingListener listener) {
+        actOnMessagesGroupedByAccountAndFolder(messages, new MessageActor() {
 
             @Override
-            public void act(final Account account, final Folder folder,
-                    final List<Message> accountMessages) {
-                suppressMessages(account, messages);
+            public void act(final Account account, final LocalFolder messageFolder, final List<LocalMessage> accountMessages) {
+                suppressMessages(account, accountMessages);
 
                 putBackground("deleteMessages", null, new Runnable() {
                     @Override
                     public void run() {
-                        deleteMessagesSynchronous(account, folder.getName(),
-                                accountMessages, listener);
+                        deleteMessagesSynchronous(account, messageFolder.getName(), accountMessages, listener);
                     }
                 });
             }
 
         });
-
     }
 
     @SuppressLint("NewApi") // used for debugging only
-    public void debugClearMessagesLocally(final List<LocalMessage> messages) {
+    public void debugClearMessagesLocally(final List<MessageReference> messages) {
         if (!BuildConfig.DEBUG) {
             throw new AssertionError("method must only be used in debug build!");
         }
 
-        putBackground("debugClearLocalMessages", null, new Runnable() {
+        actOnMessagesGroupedByAccountAndFolder(messages, new MessageActor() {
+
             @Override
-            public void run() {
-                for (LocalMessage message : messages) {
-                    try {
-                        message.debugClearLocalData();
-                    } catch (MessagingException e) {
-                        throw new AssertionError("clearing local message content failed!", e);
+            public void act(final Account account, final LocalFolder messageFolder,
+                    final List<LocalMessage> accountMessages) {
+
+                putBackground("debugClearLocalMessages", null, new Runnable() {
+                    @Override
+                    public void run() {
+                        for (LocalMessage message : accountMessages) {
+                            try {
+                                message.debugClearLocalData();
+                            } catch (MessagingException e) {
+                                throw new AssertionError("clearing local message content failed!", e);
+                            }
+                        }
                     }
-                }
+                });
             }
         });
 
@@ -4791,43 +4804,63 @@ public class MessagingController implements Runnable {
 
     }
 
-    private void actOnMessages(List<LocalMessage> messages, MessageActor actor) {
-        Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
+    private void actOnMessagesGroupedByAccountAndFolder(List<MessageReference> messages, MessageActor actor) {
+        Map<String, Map<String, List<MessageReference>>> accountMap = groupMessagesByAccountAndFolder(messages);
 
-        for (LocalMessage message : messages) {
-            if ( message == null) {
-               continue;
-            }
-            Folder folder = message.getFolder();
-            Account account = message.getAccount();
+        for (Map.Entry<String, Map<String, List<MessageReference>>> entry : accountMap.entrySet()) {
+            String accountUuid = entry.getKey();
+            Account account = Preferences.getPreferences(context).getAccount(accountUuid);
 
-            Map<Folder, List<Message>> folderMap = accountMap.get(account);
-            if (folderMap == null) {
-                folderMap = new HashMap<Folder, List<Message>>();
-                accountMap.put(account, folderMap);
-            }
-            List<Message> messageList = folderMap.get(folder);
-            if (messageList == null) {
-                messageList = new LinkedList<Message>();
-                folderMap.put(folder, messageList);
-            }
-
-            messageList.add(message);
-        }
-        for (Map.Entry<Account, Map<Folder, List<Message>>> entry : accountMap.entrySet()) {
-            Account account = entry.getKey();
-
-            //account.refresh(Preferences.getPreferences(K9.app));
-            Map<Folder, List<Message>> folderMap = entry.getValue();
-            for (Map.Entry<Folder, List<Message>> folderEntry : folderMap.entrySet()) {
-                Folder folder = folderEntry.getKey();
-                List<Message> messageList = folderEntry.getValue();
-                actor.act(account, folder, messageList);
+            Map<String, List<MessageReference>> folderMap = entry.getValue();
+            for (Map.Entry<String, List<MessageReference>> folderEntry : folderMap.entrySet()) {
+                String folderName = folderEntry.getKey();
+                List<MessageReference> messageList = folderEntry.getValue();
+                actOnMessageGroup(account, folderName, messageList, actor);
             }
         }
     }
 
+    @NonNull
+    private Map<String, Map<String, List<MessageReference>>> groupMessagesByAccountAndFolder(
+            List<MessageReference> messages) {
+        Map<String, Map<String, List<MessageReference>>> accountMap = new HashMap<>();
+
+        for (MessageReference message : messages) {
+            if (message == null) {
+               continue;
+            }
+            String accountUuid = message.getAccountUuid();
+            String folderName = message.getFolderName();
+
+            Map<String, List<MessageReference>> folderMap = accountMap.get(accountUuid);
+            if (folderMap == null) {
+                folderMap = new HashMap<>();
+                accountMap.put(accountUuid, folderMap);
+            }
+            List<MessageReference> messageList = folderMap.get(folderName);
+            if (messageList == null) {
+                messageList = new LinkedList<>();
+                folderMap.put(folderName, messageList);
+            }
+
+            messageList.add(message);
+        }
+        return accountMap;
+    }
+
+    private void actOnMessageGroup(
+            Account account, String folderName, List<MessageReference> messageReferences, MessageActor actor) {
+        try {
+            LocalFolder messageFolder = account.getLocalStore().getFolder(folderName);
+            List<LocalMessage> localMessages = messageFolder.getMessagesByReference(messageReferences);
+            actor.act(account, messageFolder, localMessages);
+        } catch (MessagingException e) {
+            Log.e(K9.LOG_TAG, "Error loading account?!", e);
+        }
+
+    }
+
     interface MessageActor {
-        public void act(final Account account, final Folder folder, final List<Message> messages);
+        void act(Account account, LocalFolder messageFolder, List<LocalMessage> messages);
     }
 }
