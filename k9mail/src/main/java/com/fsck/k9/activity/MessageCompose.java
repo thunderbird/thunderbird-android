@@ -1276,7 +1276,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         if (!mSourceMessageProcessed) {
-            attachmentPresenter.loadAttachments(message, 0);
+            attachmentPresenter.loadNonInlineAttachments(messageViewInfo);
         }
 
         // Decode the identity header when loading a draft.
