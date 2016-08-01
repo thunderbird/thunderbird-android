@@ -61,17 +61,21 @@ public class AttachmentInfoExtractor {
     public AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
         Uri uri;
         long size;
+        boolean isContentAvailable;
+
         if (part instanceof LocalPart) {
             LocalPart localPart = (LocalPart) part;
             String accountUuid = localPart.getAccountUuid();
             long messagePartId = localPart.getId();
             size = localPart.getSize();
+            isContentAvailable = part.getBody() != null;
             uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
         } else if (part instanceof LocalMessage) {
             LocalMessage localMessage = (LocalMessage) part;
             String accountUuid = localMessage.getAccount().getUuid();
             long messagePartId = localMessage.getMessagePartId();
             size = localMessage.getSize();
+            isContentAvailable = part.getBody() != null;
             uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
         } else {
             Body body = part.getBody();
@@ -79,13 +83,13 @@ public class AttachmentInfoExtractor {
                 DeferredFileBody decryptedTempFileBody = (DeferredFileBody) body;
                 size = decryptedTempFileBody.getSize();
                 uri = getDecryptedFileProviderUri(decryptedTempFileBody, part.getMimeType());
-                return extractAttachmentInfo(part, uri, size);
+                isContentAvailable = true;
             } else {
                 throw new IllegalArgumentException("Unsupported part type provided");
             }
         }
 
-        return extractAttachmentInfo(part, uri, size);
+        return extractAttachmentInfo(part, uri, size, isContentAvailable);
     }
 
     @Nullable
@@ -104,11 +108,13 @@ public class AttachmentInfoExtractor {
     }
 
     public AttachmentViewInfo extractAttachmentInfoForDatabase(Part part) throws MessagingException {
-        return extractAttachmentInfo(part, Uri.EMPTY, AttachmentViewInfo.UNKNOWN_SIZE);
+        boolean isContentAvailable = part.getBody() != null;
+        return extractAttachmentInfo(part, Uri.EMPTY, AttachmentViewInfo.UNKNOWN_SIZE, isContentAvailable);
     }
 
     @WorkerThread
-    private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size) throws MessagingException {
+    private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size, boolean isContentAvailable)
+            throws MessagingException {
         boolean inlineAttachment = false;
 
         String mimeType = part.getMimeType();
@@ -139,7 +145,7 @@ public class AttachmentInfoExtractor {
 
         long attachmentSize = extractAttachmentSize(contentDisposition, size);
 
-        return new AttachmentViewInfo(mimeType, name, attachmentSize, uri, inlineAttachment, part);
+        return new AttachmentViewInfo(mimeType, name, attachmentSize, uri, inlineAttachment, part, isContentAvailable);
     }
 
     @WorkerThread

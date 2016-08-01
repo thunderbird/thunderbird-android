@@ -55,7 +55,7 @@ public class AttachmentController {
     }
 
     public void viewAttachment() {
-        if (needsDownloading()) {
+        if (!attachment.isContentAvailable) {
             downloadAndViewAttachment((LocalPart) attachment.part);
         } else {
             viewLocalAttachment();
@@ -68,18 +68,6 @@ public class AttachmentController {
 
     public void saveAttachmentTo(String directory) {
         saveAttachmentTo(new File(directory));
-    }
-
-    private boolean needsDownloading() {
-        return isPartMissing() && isLocalPart();
-    }
-
-    private boolean isPartMissing() {
-        return attachment.part.getBody() == null;
-    }
-
-    private boolean isLocalPart() {
-        return attachment.part instanceof LocalPart;
     }
 
     private void downloadAndViewAttachment(LocalPart localPart) {
@@ -133,7 +121,7 @@ public class AttachmentController {
             return;
         }
 
-        if (needsDownloading()) {
+        if (!attachment.isContentAvailable) {
             downloadAndSaveAttachmentTo((LocalPart) attachment.part, directory);
         } else {
             saveLocalAttachmentTo(directory);
