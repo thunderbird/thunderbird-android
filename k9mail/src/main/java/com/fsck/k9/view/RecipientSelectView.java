@@ -370,6 +370,21 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
     }
 
+    public boolean tryPerformCompletion() {
+        if (!hasUncompletedText()) {
+            return false;
+        }
+        int previousNumRecipients = getTokenCount();
+        performCompletion();
+        int numRecipients = getTokenCount();
+
+        return previousNumRecipients != numRecipients;
+    }
+
+    private int getTokenCount() {
+        return getObjects().size();
+    }
+
     public boolean hasUncompletedText() {
         String currentCompletionText = currentCompletionText();
         return !TextUtils.isEmpty(currentCompletionText) && !isPlaceholderText(currentCompletionText);

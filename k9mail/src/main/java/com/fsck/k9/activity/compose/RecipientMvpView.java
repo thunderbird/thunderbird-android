@@ -258,6 +258,18 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         return bccView.hasUncompletedText();
     }
 
+    public boolean recipientToTryPerformCompletion() {
+        return toView.tryPerformCompletion();
+    }
+
+    public boolean recipientCcTryPerformCompletion() {
+        return ccView.tryPerformCompletion();
+    }
+
+    public boolean recipientBccTryPerformCompletion() {
+        return bccView.tryPerformCompletion();
+    }
+
     public void showToUncompletedError() {
         toView.setError(toView.getContext().getString(R.string.compose_error_incomplete_recipient));
     }
