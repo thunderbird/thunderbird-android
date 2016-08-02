@@ -120,7 +120,11 @@ public class LocalMessage extends MimeMessage {
         mimeType = cursor.getString(23);
 
         byte[] header = cursor.getBlob(25);
-        MessageHeaderParser.parse(this, new ByteArrayInputStream(header));
+        if (header != null) {
+            MessageHeaderParser.parse(this, new ByteArrayInputStream(header));
+        } else {
+            Log.d(K9.LOG_TAG, "No headers available for this message!");
+        }
     }
 
     public long getMessagePartId() {
