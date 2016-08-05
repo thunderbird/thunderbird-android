@@ -26,6 +26,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessageUtils;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -341,10 +342,7 @@ class ImapFolder extends Folder<ImapMessage> {
         ImapFolder imapFolder = (ImapFolder) folder;
         checkOpen(); //only need READ access
 
-        String[] uids = new String[messages.size()];
-        for (int i = 0, count = messages.size(); i < count; i++) {
-            uids[i] = messages.get(i).getUid();
-        }
+        String[] uids = MessageUtils.getUidsFromMessages(messages);
 
         try {
             String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
@@ -1273,6 +1271,23 @@ class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
+    @Override
+    public void expungeMessages(List<? extends Message> messages) throws MessagingException {
+        if (messages.isEmpty()) {
+            return;
+        }
+
+        checkOpen(); //only need READ access
+
+        String[] uids = MessageUtils.getUidsFromMessages(messages);
+
+        try {
+            executeSimpleCommand(String.format("UID EXPUNGE %s", combine(uids, ',')));
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
+    }
+
     private String combineFlags(Iterable<Flag> flags) {
         List<String> flagNames = new ArrayList<String>();
         for (Flag flag : flags) {
@@ -1334,10 +1349,7 @@ class ImapFolder extends Folder<ImapMessage> {
         open(OPEN_MODE_RW);
         checkOpen();
 
-        String[] uids = new String[messages.size()];
-        for (int i = 0, count = messages.size(); i < count; i++) {
-            uids[i] = messages.get(i).getUid();
-        }
+        String[] uids = MessageUtils.getUidsFromMessages(messages);
 
         try {
             String command = String.format("UID STORE %s %sFLAGS.SILENT (%s)", combine(uids, ','), value ? "+" : "-",

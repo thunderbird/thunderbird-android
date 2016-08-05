@@ -66,6 +66,7 @@ import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessageUtils;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
@@ -126,6 +127,7 @@ public class MessagingController implements Runnable {
     private static final String PENDING_COMMAND_APPEND = "com.fsck.k9.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
     private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
+    private static final String PENDING_COMMAND_EXPUNGE_MESSAGE = "com.fsck.k9.MessagingController.expungeMessage";
 
     /**
      * Maximum number of unsynced messages to store at once
@@ -1785,6 +1787,8 @@ public class MessagingController implements Runnable {
                         processPendingEmptyTrash(command, account);
                     } else if (PENDING_COMMAND_EXPUNGE.equals(command.command)) {
                         processPendingExpunge(command, account);
+                    } else if (PENDING_COMMAND_EXPUNGE_MESSAGE.equals(command.command)) {
+                        processPendingExpungeMessage(command, account);
                     }
                     localStore.removePendingCommand(command);
                     if (K9.DEBUG)
@@ -1862,11 +1866,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            Message remoteMessage = null;
-            if (!localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
-                remoteMessage = remoteFolder.getMessage(localMessage.getUid());
-            }
-
+            Message remoteMessage = MessageUtils.getRemoteMessageFromUid(K9.LOCAL_UID_PREFIX, remoteFolder, localMessage.getUid());
             if (remoteMessage == null) {
                 if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
                     Log.w(K9.LOG_TAG, "Local message with uid " + localMessage.getUid() +
@@ -2054,31 +2054,21 @@ public class MessagingController implements Runnable {
 
             Store localStore = account.getLocalStore();
             localDestFolder = (LocalFolder) localStore.getFolder(destFolder);
-            List<Message> messages = new ArrayList<Message>();
 
             /*
              * We split up the localUidMap into two parts while sending the command, here we assemble it back.
              */
+            List<Message> messages;
             Map<String, String> localUidMap = new HashMap<String, String>();
             if (hasNewUids) {
                 int offset = (command.arguments.length - 4) / 2;
+                messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteSrcFolder, command.arguments, 4, 4 + offset);
 
                 for (int i = 4; i < 4 + offset; i++) {
                     localUidMap.put(command.arguments[i], command.arguments[i + offset]);
-
-                    String uid = command.arguments[i];
-                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                        messages.add(remoteSrcFolder.getMessage(uid));
-                    }
                 }
-
             } else {
-                for (int i = 4; i < command.arguments.length; i++) {
-                    String uid = command.arguments[i];
-                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                        messages.add(remoteSrcFolder.getMessage(uid));
-                    }
-                }
+                messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteSrcFolder, command.arguments, 4);
             }
 
             boolean isCopy = false;
@@ -2151,6 +2141,39 @@ public class MessagingController implements Runnable {
         }
     }
 
+    interface ProcessMessage {
+        boolean preCheck(Folder remoteFolder);
+        void doExec(Folder remoteFolder) throws MessagingException;
+    }
+
+    private void processRemoteMessages(Account account, String folderName, ProcessMessage processMessage)
+            throws MessagingException {
+        if (account.getErrorFolderName().equals(folderName)) {
+            return;
+        }
+
+        Store remoteStore = account.getRemoteStore();
+        Folder remoteFolder = remoteStore.getFolder(folderName);
+        if (!remoteFolder.exists()) {
+            return;
+        }
+
+        if (!processMessage.preCheck(remoteFolder)) {
+            return;
+        }
+
+        try {
+            remoteFolder.open(Folder.OPEN_MODE_RW);
+            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
+                return;
+            }
+
+            processMessage.doExec(remoteFolder);
+        } finally {
+            closeFolder(remoteFolder);
+        }
+    }
+
     private void queueSetFlag(final Account account, final String folderName, final String newState, final String flag, final String[] uids) {
         putBackground("queueSetFlag " + account.getDescription() + ":" + folderName, null, new Runnable() {
             @Override
@@ -2168,91 +2191,65 @@ public class MessagingController implements Runnable {
             }
         });
     }
+
     /**
      * Processes a pending mark read or unread command.
      *
      * @param command arguments = (String folder, String uid, boolean read)
      * @param account
      */
-    private void processPendingSetFlag(PendingCommand command, Account account)
+    private void processPendingSetFlag(final PendingCommand command, Account account)
     throws MessagingException {
-        String folder = command.arguments[0];
+        final String folderName = command.arguments[0];
+        final boolean newState = Boolean.parseBoolean(command.arguments[1]);
+        final Flag flag = Flag.valueOf(command.arguments[2]);
 
-        if (account.getErrorFolderName().equals(folder)) {
-            return;
-        }
-
-        boolean newState = Boolean.parseBoolean(command.arguments[1]);
-
-        Flag flag = Flag.valueOf(command.arguments[2]);
-
-        Store remoteStore = account.getRemoteStore();
-        Folder remoteFolder = remoteStore.getFolder(folder);
-        if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(flag)) {
-            return;
-        }
-
-        try {
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
+        processRemoteMessages(account, folderName, new ProcessMessage() {
+            @Override
+            public boolean preCheck(Folder remoteFolder) {
+                return remoteFolder.isFlagSupported(flag);
             }
-            List<Message> messages = new ArrayList<Message>();
-            for (int i = 3; i < command.arguments.length; i++) {
-                String uid = command.arguments[i];
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                    messages.add(remoteFolder.getMessage(uid));
+
+            @Override
+            public void doExec(Folder remoteFolder) throws MessagingException {
+                List<Message> messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteFolder, command.arguments, 3);
+                if (messages.isEmpty()) {
+                    return;
                 }
+                remoteFolder.setFlags(messages, Collections.singleton(flag), newState);
             }
-
-            if (messages.isEmpty()) {
-                return;
-            }
-            remoteFolder.setFlags(messages, Collections.singleton(flag), newState);
-        } finally {
-            closeFolder(remoteFolder);
-        }
+        });
     }
 
     // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
     // Eventually, it should be removed
     private void processPendingSetFlagOld(PendingCommand command, Account account)
     throws MessagingException {
-        String folder = command.arguments[0];
-        String uid = command.arguments[1];
+        final String folderName = command.arguments[0];
+        final String uid = command.arguments[1];
+        final boolean newState = Boolean.parseBoolean(command.arguments[2]);
+        final Flag flag = Flag.valueOf(command.arguments[3]);
 
-        if (account.getErrorFolderName().equals(folder)) {
-            return;
-        }
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "processPendingSetFlagOld: folder = " + folder + ", uid = " + uid);
+        processRemoteMessages(account, folderName, new ProcessMessage() {
+            @Override
+            public boolean preCheck(Folder remoteFolder) {
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingSetFlagOld: folder = " + folderName + ", uid = " + uid);
 
-        boolean newState = Boolean.parseBoolean(command.arguments[2]);
+                return true;
+            }
 
-        Flag flag = Flag.valueOf(command.arguments[3]);
-        Folder remoteFolder = null;
-        try {
-            Store remoteStore = account.getRemoteStore();
-            remoteFolder = remoteStore.getFolder(folder);
-            if (!remoteFolder.exists()) {
-                return;
+            @Override
+            public void doExec(Folder remoteFolder) throws MessagingException {
+                Message remoteMessage = MessageUtils.getRemoteMessageFromUid(K9.LOCAL_UID_PREFIX, remoteFolder, uid);
+                if (remoteMessage == null) {
+                    return;
+                }
+                remoteMessage.setFlag(flag, newState);
             }
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
-            }
-            Message remoteMessage = null;
-            if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                remoteMessage = remoteFolder.getMessage(uid);
-            }
-            if (remoteMessage == null) {
-                return;
-            }
-            remoteMessage.setFlag(flag, newState);
-        } finally {
-            closeFolder(remoteFolder);
-        }
+        });
     }
+
     private void queueExpunge(final Account account, final String folderName) {
         putBackground("queueExpunge " + account.getDescription() + ":" + folderName, null, new Runnable() {
             @Override
@@ -2268,34 +2265,56 @@ public class MessagingController implements Runnable {
             }
         });
     }
+
     private void processPendingExpunge(PendingCommand command, Account account)
     throws MessagingException {
-        String folder = command.arguments[0];
+        final String folderName = command.arguments[0];
 
-        if (account.getErrorFolderName().equals(folder)) {
-            return;
-        }
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folder);
+        processRemoteMessages(account, folderName, new ProcessMessage() {
+            @Override
+            public boolean preCheck(Folder remoteFolder) {
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folderName);
 
-        Store remoteStore = account.getRemoteStore();
-        Folder remoteFolder = remoteStore.getFolder(folder);
-        try {
-            if (!remoteFolder.exists()) {
-                return;
+                return true;
             }
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
+
+            @Override
+            public void doExec(Folder remoteFolder) throws MessagingException {
+                remoteFolder.expunge();
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingExpunge: complete for folder = " + folderName);
             }
-            remoteFolder.expunge();
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "processPendingExpunge: complete for folder = " + folder);
-        } finally {
-            closeFolder(remoteFolder);
-        }
+        });
     }
 
+    private void processPendingExpungeMessage(final PendingCommand command, Account account)
+            throws MessagingException {
+        final String folderName = command.arguments[0];
+
+        processRemoteMessages(account, folderName, new ProcessMessage() {
+
+            @Override
+            public boolean preCheck(Folder remoteFolder) {
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folderName);
+
+                return true;
+            }
+
+            @Override
+            public void doExec(Folder remoteFolder) throws MessagingException {
+                List<Message> messages = MessageUtils.getRemoteMessagesFromUids(K9.LOCAL_UID_PREFIX, remoteFolder, command.arguments, 1);
+
+                if (messages.isEmpty()) {
+                    return;
+                }
+                remoteFolder.expungeMessages(messages);
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "processPendingExpungeMessage: complete for folder = " + folderName);
+            }
+        });
+    }
 
     // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
     // Eventually, it should be removed
@@ -2327,10 +2346,7 @@ public class MessagingController implements Runnable {
             throw new MessagingException("processPendingMoveOrCopyOld: could not open remoteSrcFolder " + srcFolder + " read/write", true);
         }
 
-        Message remoteMessage = null;
-        if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-            remoteMessage = remoteSrcFolder.getMessage(uid);
-        }
+        Message remoteMessage = MessageUtils.getRemoteMessageFromUid(K9.LOCAL_UID_PREFIX, remoteSrcFolder, uid);
         if (remoteMessage == null) {
             throw new MessagingException("processPendingMoveOrCopyOld: remoteMessage " + uid + " does not exist", true);
         }
@@ -2641,10 +2657,7 @@ public class MessagingController implements Runnable {
                 return;
             }
 
-            String[] uids = new String[messages.size()];
-            for (int i = 0, end = uids.length; i < end; i++) {
-                uids[i] = messages.get(i).getUid();
-            }
+            String[] uids = MessageUtils.getUidsFromMessages(messages);
 
             queueSetFlag(account, folderName, Boolean.toString(newState), flag.toString(), uids);
             processPendingCommands(account);
@@ -3624,7 +3637,7 @@ public class MessagingController implements Runnable {
                                            MessagingListener listener) {
         Folder localFolder = null;
         Folder localTrashFolder = null;
-        String[] uids = getUidsFromMessages(messages);
+        String[] uids = MessageUtils.getUidsFromMessages(messages);
         try {
             //We need to make these callbacks before moving the messages to the trash
             //as messages get a new UID after being moved
@@ -3636,9 +3649,9 @@ public class MessagingController implements Runnable {
             Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
             Map<String, String> uidMap = null;
-            if (folder.equals(account.getTrashFolderName()) || !account.hasTrashFolder()) {
+            if (folder.equals(account.getDraftsFolderName()) || folder.equals(account.getTrashFolderName()) || !account.hasTrashFolder()) {
                 if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Deleting messages in trash folder or trash set to -None-, not copying");
+                    Log.d(K9.LOG_TAG, "Deleting messages in drafts folder, trash folder or trash set to -None-, not copying");
 
                 localFolder.setFlags(messages, Collections.singleton(Flag.DELETED), true);
             } else {
@@ -3679,6 +3692,17 @@ public class MessagingController implements Runnable {
                     queuePendingCommand(account, command);
                 }
                 processPendingCommands(account);
+            } else if (folder.equals(account.getDraftsFolderName())) {
+                PendingCommand command = new PendingCommand();
+                command.command = PENDING_COMMAND_EXPUNGE_MESSAGE;
+
+                int length = 1 + uids.length;
+                command.arguments = new String[length];
+                command.arguments[0] = folder;
+                System.arraycopy(uids, 0, command.arguments, 1, uids.length);
+
+                queuePendingCommand(account, command);
+                processPendingCommands(account);
             } else if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
                 if (folder.equals(account.getTrashFolderName())) {
                     queueSetFlag(account, folder, Boolean.toString(true), Flag.DELETED.toString(), uids);
@@ -3706,14 +3730,6 @@ public class MessagingController implements Runnable {
             closeFolder(localFolder);
             closeFolder(localTrashFolder);
         }
-    }
-
-    private String[] getUidsFromMessages(List <? extends Message> messages) {
-        String[] uids = new String[messages.size()];
-        for (int i = 0; i < messages.size(); i++) {
-            uids[i] = messages.get(i).getUid();
-        }
-        return uids;
     }
 
     private void processPendingEmptyTrash(PendingCommand command, Account account) throws MessagingException {
