@@ -86,13 +86,14 @@ public class AttachmentResolverTest {
         subPart1.setHeader(MimeHeader.HEADER_CONTENT_ID, "cid-1");
         subPart2.setHeader(MimeHeader.HEADER_CONTENT_ID, "cid-2");
 
-        when(attachmentInfoExtractor.extractAttachmentInfo(subPart1)).thenReturn(
-                new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_1, false, subPart1));
-        when(attachmentInfoExtractor.extractAttachmentInfo(subPart2)).thenReturn(
-                new AttachmentViewInfo(null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_2, false, subPart2));
+        when(attachmentInfoExtractor.extractAttachmentInfo(subPart1)).thenReturn(new AttachmentViewInfo(
+                        null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_1, false, subPart1, true));
+        when(attachmentInfoExtractor.extractAttachmentInfo(subPart2)).thenReturn(new AttachmentViewInfo(
+                        null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_2, false, subPart2, true));
 
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, multipartPart);
+
 
         assertEquals(2, result.size());
         assertEquals(ATTACHMENT_TEST_URI_1, result.get("cid-1"));

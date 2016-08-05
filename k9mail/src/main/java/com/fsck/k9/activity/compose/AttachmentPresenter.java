@@ -21,15 +21,8 @@ import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.Attachment.LoadingState;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.mailstore.MessageViewInfo;
-import com.fsck.k9.provider.AttachmentProvider;
 
 
 public class AttachmentPresenter {
@@ -158,16 +151,27 @@ public class AttachmentPresenter {
         addAttachmentAndStartLoader(attachment);
     }
 
-    public void processMessageToForward(MessageViewInfo messageViewInfo) {
-        if (messageViewInfo.message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-            attachmentMvpView.showMissingAttachmentsPartialMessageWarning();
-            return;
-        }
+    public boolean loadNonInlineAttachments(MessageViewInfo messageViewInfo) {
+        boolean allPartsAvailable = true;
 
         for (AttachmentViewInfo attachmentViewInfo : messageViewInfo.attachments) {
-            if (!attachmentViewInfo.inlineAttachment) {
-                addAttachment(attachmentViewInfo);
+            if (attachmentViewInfo.inlineAttachment) {
+                continue;
             }
+            if (!attachmentViewInfo.isContentAvailable) {
+                allPartsAvailable = false;
+                continue;
+            }
+            addAttachment(attachmentViewInfo);
+        }
+
+        return allPartsAvailable;
+    }
+
+    public void processMessageToForward(MessageViewInfo messageViewInfo) {
+        boolean isMissingParts = !loadNonInlineAttachments(messageViewInfo);
+        if (isMissingParts) {
+            attachmentMvpView.showMissingAttachmentsPartialMessageWarning();
         }
     }
 
@@ -298,45 +302,6 @@ public class AttachmentPresenter {
                 break;
             }
         }
-    }
-
-    /**
-     * Add all attachments of an existing message as if they were added by hand.
-     *
-     * @param part
-     *         The message part to check for being an attachment. This method will recurse if it's
-     *         a multipart part.
-     * @param depth
-     *         The recursion depth. Currently unused.
-     *
-     * @return {@code true} if all attachments were able to be attached, {@code false} otherwise.
-     */
-    public boolean loadAttachments(Part part, int depth) {
-        if (part.getBody() instanceof Multipart) {
-            Multipart mp = (Multipart) part.getBody();
-            boolean ret = true;
-            for (int i = 0, count = mp.getCount(); i < count; i++) {
-                if (!loadAttachments(mp.getBodyPart(i), depth + 1)) {
-                    ret = false;
-                }
-            }
-            return ret;
-        }
-
-        String contentType = part.getContentType();
-        String name = MimeUtility.getHeaderParameter(contentType, "name");
-        if (name != null) {
-            if (part instanceof LocalBodyPart) {
-                LocalBodyPart localBodyPart = (LocalBodyPart) part;
-                String accountUuid = localBodyPart.getAccountUuid();
-                long attachmentId = localBodyPart.getId();
-                Uri uri = AttachmentProvider.getAttachmentUri(accountUuid, attachmentId);
-                addAttachment(uri);
-                return true;
-            }
-            return false;
-        }
-        return true;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

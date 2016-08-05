@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.mailstore.DeferredFileBody;
@@ -163,6 +164,25 @@ public class AttachmentInfoExtractorTest {
     }
 
     @Test
+    public void extractInfoForDb__withNoBody__shouldReturnContentNotAvailable() throws Exception {
+        MimeBodyPart part = new MimeBodyPart();
+
+        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
+
+        assertFalse(attachmentViewInfo.isContentAvailable);
+    }
+
+    @Test
+    public void extractInfoForDb__withNoBody__shouldReturnContentAvailable() throws Exception {
+        MimeBodyPart part = new MimeBodyPart();
+        part.setBody(new TextBody("data"));
+
+        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
+
+        assertTrue(attachmentViewInfo.isContentAvailable);
+    }
+
+    @Test
     public void extractInfo__withDeferredFileBody() throws Exception {
         attachmentInfoExtractor = new AttachmentInfoExtractor(context) {
             @Nullable
@@ -187,5 +207,6 @@ public class AttachmentInfoExtractorTest {
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
         assertFalse(attachmentViewInfo.inlineAttachment);
+        assertTrue(attachmentViewInfo.isContentAvailable);
     }
 }
