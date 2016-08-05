@@ -115,10 +115,8 @@ import com.fsck.k9.search.SqlQueryBuilder;
 public class MessagingController implements Runnable {
     public static final long INVALID_MESSAGE_ID = -1;
 
-    /**
-     * Immutable empty {@link String} array
-     */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
     private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.fsck.k9.MessagingController.moveOrCopy";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.fsck.k9.MessagingController.moveOrCopyBulk";
@@ -130,28 +128,164 @@ public class MessagingController implements Runnable {
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
     private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
 
+
     private static MessagingController inst = null;
-    private BlockingQueue<Command> mCommands = new PriorityBlockingQueue<>();
 
-    private Thread mThread;
-    private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<>();
-
-    private final ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<>();
-
-    ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<>();
-
-    private final ExecutorService threadPool = Executors.newCachedThreadPool();
-
-    private MessagingListener checkMailListener = null;
-
-    private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
 
     private final Context context;
-    private final NotificationController notificationController;
     private final Contacts contacts;
+    private final NotificationController notificationController;
+
+    private final Thread controllerThread;
+
+    private final BlockingQueue<Command> queuedCommands = new PriorityBlockingQueue<>();
+    private final Set<MessagingListener> listeners = new CopyOnWriteArraySet<>();
+    private final ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<>();
+    private final ExecutorService threadPool = Executors.newCachedThreadPool();
+    private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
+
+
+    private MessagingListener checkMailListener = null;
     private volatile boolean stopped = false;
 
-    private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
+
+    public synchronized static MessagingController getInstance(Context context) {
+        if (inst == null) {
+            Context appContext = context.getApplicationContext();
+            NotificationController notificationController = NotificationController.newInstance(appContext);
+            Contacts contacts = Contacts.getInstance(context);
+            inst = new MessagingController(appContext, notificationController, contacts);
+        }
+        return inst;
+    }
+
+
+    @VisibleForTesting
+    MessagingController(Context context, NotificationController notificationController, Contacts contacts) {
+        this.context = context;
+        this.notificationController = notificationController;
+        this.contacts = contacts;
+
+        controllerThread = new Thread(this);
+        controllerThread.setName("MessagingController");
+        controllerThread.start();
+        addListener(memorizingMessagingListener);
+    }
+
+    @VisibleForTesting
+    void stop() throws InterruptedException {
+        stopped = true;
+        controllerThread.interrupt();
+        controllerThread.join(1000L);
+    }
+
+    @Override
+    public void run() {
+        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+        while (!stopped) {
+            String commandDescription = null;
+            try {
+                final Command command = queuedCommands.take();
+
+                if (command != null) {
+                    commandDescription = command.description;
+
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Running " + (command.isForeground ? "Foreground" : "Background") + " command '" + command.description + "', seq = " + command.sequence);
+
+                    try {
+                        command.runnable.run();
+                    } catch (UnavailableAccountException e) {
+                        // retry later
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                try {
+                                    sleep(30 * 1000);
+                                    queuedCommands.put(command);
+                                } catch (InterruptedException e) {
+                                    Log.e(K9.LOG_TAG, "interrupted while putting a pending command for"
+                                          + " an unavailable account back into the queue."
+                                          + " THIS SHOULD NEVER HAPPEN.");
+                                }
+                            }
+                        } .start();
+                    }
+
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, (command.isForeground ? "Foreground" : "Background") +
+                              " Command '" + command.description + "' completed");
+
+                    for (MessagingListener l : getListeners(command.listener)) {
+                        l.controllerCommandCompleted(!queuedCommands.isEmpty());
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(K9.LOG_TAG, "Error running command '" + commandDescription + "'", e);
+            }
+        }
+    }
+
+    private void put(String description, MessagingListener listener, Runnable runnable) {
+        putCommand(queuedCommands, description, listener, runnable, true);
+    }
+
+    private void putBackground(String description, MessagingListener listener, Runnable runnable) {
+        putCommand(queuedCommands, description, listener, runnable, false);
+    }
+
+    private void putCommand(BlockingQueue<Command> queue, String description, MessagingListener listener, Runnable runnable, boolean isForeground) {
+        int retries = 10;
+        Exception e = null;
+        while (retries-- > 0) {
+            try {
+                Command command = new Command();
+                command.listener = listener;
+                command.runnable = runnable;
+                command.description = description;
+                command.isForeground = isForeground;
+                queue.put(command);
+                return;
+            } catch (InterruptedException ie) {
+                SystemClock.sleep(200);
+                e = ie;
+            }
+        }
+        throw new Error(e);
+    }
+
+    public void addListener(MessagingListener listener) {
+        listeners.add(listener);
+        refreshListener(listener);
+    }
+
+    public void refreshListener(MessagingListener listener) {
+        if (listener != null) {
+            memorizingMessagingListener.refreshOther(listener);
+        }
+    }
+
+    public void removeListener(MessagingListener listener) {
+        listeners.remove(listener);
+    }
+
+    public Set<MessagingListener> getListeners() {
+        return listeners;
+    }
+
+
+    public Set<MessagingListener> getListeners(MessagingListener listener) {
+        if (listener == null) {
+            return listeners;
+        }
+
+        Set<MessagingListener> listeners = new HashSet<>(this.listeners);
+        listeners.add(listener);
+        return listeners;
+
+    }
+
 
     private void suppressMessages(Account account, List<LocalMessage> messages) {
         EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
@@ -203,142 +337,6 @@ public class MessagingController implements Runnable {
         EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
         String columnName = LocalStore.getColumnNameForFlag(flag);
         cache.removeValueForThreads(messageIds, columnName);
-    }
-
-
-    @VisibleForTesting
-    MessagingController(Context context, NotificationController notificationController, Contacts contacts) {
-        this.context = context;
-        this.notificationController = notificationController;
-        this.contacts = contacts;
-
-        mThread = new Thread(this);
-        mThread.setName("MessagingController");
-        mThread.start();
-        addListener(memorizingMessagingListener);
-    }
-
-    @VisibleForTesting
-    void stop() throws InterruptedException {
-        stopped = true;
-        mThread.interrupt();
-        mThread.join(1000L);
-    }
-
-    public synchronized static MessagingController getInstance(Context context) {
-        if (inst == null) {
-            Context appContext = context.getApplicationContext();
-            NotificationController notificationController = NotificationController.newInstance(appContext);
-            Contacts contacts = Contacts.getInstance(context);
-            inst = new MessagingController(appContext, notificationController, contacts);
-        }
-        return inst;
-    }
-
-    @Override
-    public void run() {
-        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-        while (!stopped) {
-            String commandDescription = null;
-            try {
-                final Command command = mCommands.take();
-
-                if (command != null) {
-                    commandDescription = command.description;
-
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "Running " + (command.isForeground ? "Foreground" : "Background") + " command '" + command.description + "', seq = " + command.sequence);
-
-                    try {
-                        command.runnable.run();
-                    } catch (UnavailableAccountException e) {
-                        // retry later
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                try {
-                                    sleep(30 * 1000);
-                                    mCommands.put(command);
-                                } catch (InterruptedException e) {
-                                    Log.e(K9.LOG_TAG, "interrupted while putting a pending command for"
-                                          + " an unavailable account back into the queue."
-                                          + " THIS SHOULD NEVER HAPPEN.");
-                                }
-                            }
-                        } .start();
-                    }
-
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, (command.isForeground ? "Foreground" : "Background") +
-                              " Command '" + command.description + "' completed");
-
-                    for (MessagingListener l : getListeners(command.listener)) {
-                        l.controllerCommandCompleted(!mCommands.isEmpty());
-                    }
-                }
-            } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Error running command '" + commandDescription + "'", e);
-            }
-        }
-    }
-
-    private void put(String description, MessagingListener listener, Runnable runnable) {
-        putCommand(mCommands, description, listener, runnable, true);
-    }
-
-    private void putBackground(String description, MessagingListener listener, Runnable runnable) {
-        putCommand(mCommands, description, listener, runnable, false);
-    }
-
-    private void putCommand(BlockingQueue<Command> queue, String description, MessagingListener listener, Runnable runnable, boolean isForeground) {
-        int retries = 10;
-        Exception e = null;
-        while (retries-- > 0) {
-            try {
-                Command command = new Command();
-                command.listener = listener;
-                command.runnable = runnable;
-                command.description = description;
-                command.isForeground = isForeground;
-                queue.put(command);
-                return;
-            } catch (InterruptedException ie) {
-                SystemClock.sleep(200);
-                e = ie;
-            }
-        }
-        throw new Error(e);
-    }
-
-    public void addListener(MessagingListener listener) {
-        mListeners.add(listener);
-        refreshListener(listener);
-    }
-
-    public void refreshListener(MessagingListener listener) {
-        if (listener != null) {
-            memorizingMessagingListener.refreshOther(listener);
-        }
-    }
-
-    public void removeListener(MessagingListener listener) {
-        mListeners.remove(listener);
-    }
-
-    public Set<MessagingListener> getListeners() {
-        return mListeners;
-    }
-
-
-    public Set<MessagingListener> getListeners(MessagingListener listener) {
-        if (listener == null) {
-            return mListeners;
-        }
-
-        Set<MessagingListener> listeners = new HashSet<>(mListeners);
-        listeners.add(listener);
-        return listeners;
-
     }
 
 
