@@ -195,8 +195,10 @@ public class MessagingController {
                 if (command != null) {
                     commandDescription = command.description;
 
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "Running " + (command.isForeground ? "Foreground" : "Background") + " command '" + command.description + "', seq = " + command.sequence);
+                    if (K9.DEBUG) {
+                        Log.i(K9.LOG_TAG, "Running command '" + command.description + "', seq = " + command.sequence +
+                                "(" + (command.isForegroundPriority ? "foreground" : "background") + "priority)");
+                    }
 
                     try {
                         command.runnable.run();
@@ -217,9 +219,9 @@ public class MessagingController {
                         } .start();
                     }
 
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, (command.isForeground ? "Foreground" : "Background") +
-                              " Command '" + command.description + "' completed");
+                    if (K9.DEBUG) {
+                        Log.i(K9.LOG_TAG, " Command '" + command.description + "' completed");
+                    }
 
                     for (MessagingListener l : getListeners(command.listener)) {
                         l.controllerCommandCompleted(!queuedCommands.isEmpty());
@@ -248,7 +250,7 @@ public class MessagingController {
                 command.listener = listener;
                 command.runnable = runnable;
                 command.description = description;
-                command.isForeground = isForeground;
+                command.isForegroundPriority = isForeground;
                 queue.put(command);
                 return;
             } catch (InterruptedException ie) {
@@ -4273,20 +4275,17 @@ public class MessagingController {
     static AtomicInteger sequencing = new AtomicInteger(0);
     static class Command implements Comparable<Command> {
         public Runnable runnable;
-
         public MessagingListener listener;
-
         public String description;
-
-        boolean isForeground;
+        boolean isForegroundPriority;
 
         int sequence = sequencing.getAndIncrement();
 
         @Override
         public int compareTo(@NonNull Command other) {
-            if (other.isForeground && !isForeground) {
+            if (other.isForegroundPriority && !isForegroundPriority) {
                 return 1;
-            } else if (!other.isForeground && isForeground) {
+            } else if (!other.isForegroundPriority && isForegroundPriority) {
                 return -1;
             } else {
                 return (sequence - other.sequence);
