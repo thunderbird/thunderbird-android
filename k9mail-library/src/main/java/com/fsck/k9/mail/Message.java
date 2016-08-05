@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import com.fsck.k9.mail.filter.NewlineAtEOBOutputStream;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
@@ -199,9 +200,10 @@ public abstract class Message implements Part, CompositeBody {
         try {
 
             CountingOutputStream out = new CountingOutputStream();
-            EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(out);
+            NewlineAtEOBOutputStream eolOut = new NewlineAtEOBOutputStream(
+                    new EOLConvertingOutputStream(out));
             writeTo(eolOut);
-            eolOut.flush();
+            eolOut.writeEOB();
             return out.getCount();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Failed to calculate a message size", e);

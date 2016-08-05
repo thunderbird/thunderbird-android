@@ -8,6 +8,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
+import com.fsck.k9.mail.filter.NewlineAtEOBOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.CharsetSupport;
@@ -523,16 +524,17 @@ public class SmtpTransport extends Transport {
             }
             executeSimpleCommand("DATA");
 
-            EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
+            NewlineAtEOBOutputStream msgOut = new NewlineAtEOBOutputStream(
+                    new EOLConvertingOutputStream(
+                            new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000)));
 
             message.writeTo(msgOut);
 
             // We use BufferedOutputStream. So make sure to call flush() !
-            msgOut.flush();
+            msgOut.writeEOB();
 
             entireMessageSent = true; // After the "\r\n." is attempted, we may have sent the message
-            executeSimpleCommand("\r\n.");
+            executeSimpleCommand(".");
         } catch (NegativeSmtpReplyException e) {
             throw e;
         } catch (Exception e) {

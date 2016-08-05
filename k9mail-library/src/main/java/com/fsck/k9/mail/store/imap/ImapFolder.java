@@ -29,6 +29,7 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import com.fsck.k9.mail.filter.NewlineAtEOBOutputStream;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
@@ -1165,8 +1166,10 @@ class ImapFolder extends Folder<ImapMessage> {
                     handleUntaggedResponse(response);
 
                     if (response.isContinuationRequested()) {
-                        EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(connection.getOutputStream());
+                        NewlineAtEOBOutputStream eolOut = new NewlineAtEOBOutputStream(
+                                new EOLConvertingOutputStream(connection.getOutputStream()));
                         message.writeTo(eolOut);
+                        eolOut.writeEOB();
                         eolOut.write('\r');
                         eolOut.write('\n');
                         eolOut.flush();
