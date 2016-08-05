@@ -8,7 +8,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.mailstore.LocalMessage;
 
 public class MessageActions {
     /**
@@ -31,10 +30,10 @@ public class MessageActions {
      * the function is reply all instead of simply reply.
      */
     public static Intent getActionReplyIntent(
-            Context context, LocalMessage message, boolean replyAll, Parcelable decryptionResult) {
+            Context context, MessageReference messageReference, boolean replyAll, Parcelable decryptionResult) {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(MessageCompose.EXTRA_MESSAGE_DECRYPTION_RESULT, decryptionResult);
-        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference);
         if (replyAll) {
             i.setAction(MessageCompose.ACTION_REPLY_ALL);
         } else {
@@ -57,16 +56,16 @@ public class MessageActions {
      * is reply all instead of simply reply.
      */
     public static void actionReply(
-            Context context, LocalMessage message, boolean replyAll, Parcelable decryptionResult) {
-        context.startActivity(getActionReplyIntent(context, message, replyAll, decryptionResult));
+            Context context, MessageReference messageReference, boolean replyAll, Parcelable decryptionResult) {
+        context.startActivity(getActionReplyIntent(context, messageReference, replyAll, decryptionResult));
     }
 
     /**
      * Compose a new message as a forward of the given message.
      */
-    public static void actionForward(Context context, LocalMessage message, Parcelable decryptionResult) {
+    public static void actionForward(Context context, MessageReference messageReference, Parcelable decryptionResult) {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference);
         i.putExtra(MessageCompose.EXTRA_MESSAGE_DECRYPTION_RESULT, decryptionResult);
         i.setAction(MessageCompose.ACTION_FORWARD);
         context.startActivity(i);

@@ -25,10 +25,12 @@ import java.util.UUID;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.Search;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -892,15 +894,35 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    public List<LocalMessage> getMessages(String[] uids, MessageRetrievalListener<LocalMessage> listener)
-            throws MessagingException {
+    public List<LocalMessage> getMessagesByUids(@NonNull List<String> uids) throws MessagingException {
         open(OPEN_MODE_RW);
-        if (uids == null) {
-            return getMessages(listener);
-        }
         List<LocalMessage> messages = new ArrayList<>();
         for (String uid : uids) {
             LocalMessage message = getMessage(uid);
+            if (message != null) {
+                messages.add(message);
+            }
+        }
+        return messages;
+    }
+
+    public List<LocalMessage> getMessagesByReference(@NonNull List<MessageReference> messageReferences)
+            throws MessagingException {
+        open(OPEN_MODE_RW);
+
+        String accountUuid = getAccountUuid();
+        String folderName = getName();
+
+        List<LocalMessage> messages = new ArrayList<>();
+        for (MessageReference messageReference : messageReferences) {
+            if (!accountUuid.equals(messageReference.getAccountUuid())) {
+                throw new IllegalArgumentException("all message references must belong to this Account!");
+            }
+            if (!folderName.equals(messageReference.getFolderName())) {
+                throw new IllegalArgumentException("all message references must belong to this LocalFolder!");
+            }
+
+            LocalMessage message = getMessage(messageReference.getUid());
             if (message != null) {
                 messages.add(message);
             }

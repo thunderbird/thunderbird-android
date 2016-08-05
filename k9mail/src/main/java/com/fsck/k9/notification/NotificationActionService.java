@@ -173,9 +173,7 @@ public class NotificationActionService extends CoreService {
         }
 
         List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
-        List<LocalMessage> messages = getLocalMessages(messageReferences);
-
-        controller.deleteMessages(messages, null);
+        controller.deleteMessages(messageReferences, null);
     }
 
     private void archiveMessages(Intent intent, Account account, MessagingController controller) {
@@ -193,10 +191,9 @@ public class NotificationActionService extends CoreService {
 
         List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         for (MessageReference messageReference : messageReferences) {
-            LocalMessage message = messageReference.restoreToLocalMessage(this);
-            if (controller.isMoveCapable(message)) {
-                String sourceFolderName = message.getFolder().getName();
-                controller.moveMessage(account, sourceFolderName, message, archiveFolderName, null);
+            if (controller.isMoveCapable(messageReference)) {
+                String sourceFolderName = messageReference.getFolderName();
+                controller.moveMessage(account, sourceFolderName, messageReference, archiveFolderName);
             }
         }
     }
@@ -207,13 +204,12 @@ public class NotificationActionService extends CoreService {
         }
 
         MessageReference messageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
-        LocalMessage message = messageReference.restoreToLocalMessage(this);
 
         String spamFolderName = account.getSpamFolderName();
         if (spamFolderName != null && !K9.confirmSpam() &&
                 isMovePossible(controller, account, spamFolderName)) {
-            String sourceFolderName = message.getFolder().getName();
-            controller.moveMessage(account, sourceFolderName, message, spamFolderName, null);
+            String sourceFolderName = messageReference.getFolderName();
+            controller.moveMessage(account, sourceFolderName, messageReference, spamFolderName);
         }
     }
 
@@ -229,18 +225,6 @@ public class NotificationActionService extends CoreService {
         } else {
             controller.cancelNotificationsForAccount(account);
         }
-    }
-
-    private List<LocalMessage> getLocalMessages(List<MessageReference> messageReferences) {
-        List<LocalMessage> messages = new ArrayList<LocalMessage>(messageReferences.size());
-
-        for (MessageReference messageReference : messageReferences) {
-            LocalMessage message = messageReference.restoreToLocalMessage(this);
-            if (message != null) {
-                messages.add(message);
-            }
-        }
-        return messages;
     }
 
     private boolean isMovePossible(MessagingController controller, Account account,

@@ -1,5 +1,20 @@
 package com.fsck.k9.provider;
 
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.ContentProvider;
@@ -28,6 +43,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.MessageHelper;
@@ -36,22 +52,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.search.SearchAccount;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MessageProvider extends ContentProvider {
 
@@ -1050,23 +1051,11 @@ public class MessageProvider extends ContentProvider {
             Log.e(K9.LOG_TAG, "Could not find account with id " + accountId);
         }
 
-        // get localstore parameter
-        LocalMessage msg = null;
-        try {
-            LocalFolder lf = LocalStore.getInstance(myAccount, getContext()).getFolder(folderName);
-            int msgCount = lf.getMessageCount();
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "folder msg count = " + msgCount);
-            }
-            msg = lf.getMessage(msgUid);
-        } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Unable to retrieve message", e);
-        }
-
         // launch command to delete the message
-        if ((myAccount != null) && (msg != null)) {
+        if (myAccount != null) {
+            MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderName, msgUid, null);
             MessagingController controller = MessagingController.getInstance(getContext());
-            controller.deleteMessages(Collections.singletonList(msg), null);
+            controller.deleteMessage(messageReference, null);
         }
 
         // FIXME return the actual number of deleted messages
