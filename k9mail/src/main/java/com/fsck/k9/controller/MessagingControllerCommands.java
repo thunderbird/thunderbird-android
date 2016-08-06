@@ -1,6 +1,7 @@
 package com.fsck.k9.controller;
 
 
+import java.util.List;
 import java.util.Map;
 
 import com.fsck.k9.mail.Flag;
@@ -15,7 +16,7 @@ public class MessagingControllerCommands {
     static final String COMMAND_EMPTY_TRASH = "empty_trash";
 
 
-    public static PendingSetFlag createSetFlag(String folder, boolean newState, Flag flag, String[] uids) {
+    public static PendingSetFlag createSetFlag(String folder, boolean newState, Flag flag, List<String> uids) {
         return new PendingSetFlag(folder, newState, flag, uids);
     }
 
@@ -39,7 +40,7 @@ public class MessagingControllerCommands {
         return new PendingMoveOrCopy(srcFolder, destFolder, isCopy, null, uidMap);
     }
 
-    public static PendingMoveOrCopy createMoveOrCopyBulk(String srcFolder, String destFolder, boolean isCopy, String[] uids) {
+    public static PendingMoveOrCopy createMoveOrCopyBulk(String srcFolder, String destFolder, boolean isCopy, List<String> uids) {
         return new PendingMoveOrCopy(srcFolder, destFolder, isCopy, uids, null);
     }
 
@@ -56,11 +57,11 @@ public class MessagingControllerCommands {
         public final String srcFolder;
         public final String destFolder;
         public final boolean isCopy;
-        public final String[] uids;
+        public final List<String> uids;
         public final Map<String, String> newUidMap;
 
         public PendingMoveOrCopy(
-                String srcFolder, String destFolder, boolean isCopy, String[] uids, Map<String, String> newUidMap) {
+                String srcFolder, String destFolder, boolean isCopy, List<String> uids, Map<String, String> newUidMap) {
             this.srcFolder = srcFolder;
             this.destFolder = destFolder;
             this.isCopy = isCopy;
@@ -83,9 +84,9 @@ public class MessagingControllerCommands {
         public final String folder;
         public final boolean newState;
         public final Flag flag;
-        public final String[] uids;
+        public final List<String> uids;
 
-        public PendingSetFlag(String folder, boolean newState, Flag flag, String[] uids) {
+        public PendingSetFlag(String folder, boolean newState, Flag flag, List<String> uids) {
             this.folder = folder;
             this.newState = newState;
             this.flag = flag;
