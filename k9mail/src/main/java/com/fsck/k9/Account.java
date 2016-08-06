@@ -105,6 +105,7 @@ public class Account implements BaseAccount, StoreConfig {
     public static final boolean DEFAULT_QUOTED_TEXT_SHOWN = true;
     public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
     public static final boolean DEFAULT_STRIP_SIGNATURE = true;
+    public static final boolean DEFAULT_BUNDLE_MESSAGE_FOLLOWINGS = false;
     public static final int DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25;
 
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
@@ -220,6 +221,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mDefaultQuotedTextShown;
     private boolean mReplyAfterQuote;
     private boolean mStripSignature;
+    private boolean bundleMessageFollowings;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
     private long mCryptoKey;
@@ -316,6 +318,7 @@ public class Account implements BaseAccount, StoreConfig {
         mDefaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN;
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
+        bundleMessageFollowings = DEFAULT_BUNDLE_MESSAGE_FOLLOWINGS;
         mSyncRemoteDeletions = true;
         mCryptoApp = NO_OPENPGP_PROVIDER;
         mCryptoKey = NO_OPENPGP_KEY;
@@ -427,6 +430,7 @@ public class Account implements BaseAccount, StoreConfig {
         mDefaultQuotedTextShown = storage.getBoolean(mUuid + ".defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN);
         mReplyAfterQuote = storage.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
         mStripSignature = storage.getBoolean(mUuid + ".stripSignature", DEFAULT_STRIP_SIGNATURE);
+        bundleMessageFollowings = storage.getBoolean(mUuid + ".bundleMessageFollowings", DEFAULT_BUNDLE_MESSAGE_FOLLOWINGS);
         for (NetworkType type : NetworkType.values()) {
             Boolean useCompression = storage.getBoolean(mUuid + ".useCompression." + type,
                                      true);
@@ -556,6 +560,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".showPicturesEnum");
         editor.remove(mUuid + ".replyAfterQuote");
         editor.remove(mUuid + ".stripSignature");
+        editor.remove(mUuid + ".bundleMessageFollowings");
         editor.remove(mUuid + ".cryptoApp");
         editor.remove(mUuid + ".cryptoAutoSignature");
         editor.remove(mUuid + ".cryptoAutoEncrypt");
@@ -731,6 +736,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".defaultQuotedTextShown", mDefaultQuotedTextShown);
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
+        editor.putBoolean(mUuid + ".bundleMessageFollowings", bundleMessageFollowings);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putLong(mUuid + ".cryptoKey", mCryptoKey);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
@@ -1608,6 +1614,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setStripSignature(boolean stripSignature) {
         mStripSignature = stripSignature;
+    }
+
+    public synchronized boolean isBundleMessageFollowings() {
+        return bundleMessageFollowings;
+    }
+
+    public synchronized void setBundleMessageFollowings(boolean bundleMessageFollowings) {
+        this.bundleMessageFollowings = bundleMessageFollowings;
     }
 
     public String getCryptoApp() {

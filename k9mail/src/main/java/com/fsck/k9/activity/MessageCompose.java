@@ -1368,7 +1368,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 Log.e(K9.LOG_TAG, "Failed to mark contact as contacted.", e);
             }
 
-            MessagingController.getInstance(context).sendMessage(account, message, null);
+            MessagingController.getInstance(context).sendMessage(account, message, messageReference, null);
             if (draftId != null) {
                 // TODO set draft id to invalid in MessageCompose!
                 MessagingController.getInstance(context).deleteDraft(account, draftId);
