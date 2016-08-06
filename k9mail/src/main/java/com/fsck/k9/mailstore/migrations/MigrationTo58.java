@@ -187,6 +187,7 @@ class MigrationTo58 {
         }
     }
 
+    @VisibleForTesting
     static class OldPendingCommand {
         public String command;
         public String[] arguments;
