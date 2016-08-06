@@ -1908,7 +1908,7 @@ public class MessagingController {
             closeFolder(localFolder);
         }
     }
-    private void queueMoveOrCopy(Account account, String srcFolder, String destFolder, boolean isCopy, String uids[]) {
+    private void queueMoveOrCopy(Account account, String srcFolder, String destFolder, boolean isCopy, List<String> uids) {
         if (account.getErrorFolderName().equals(srcFolder)) {
             return;
         }
@@ -1917,7 +1917,7 @@ public class MessagingController {
     }
 
     private void queueMoveOrCopy(Account account, String srcFolder, String destFolder,
-            boolean isCopy, String uids[], Map<String, String> uidMap) {
+            boolean isCopy, List<String> uids, Map<String, String> uidMap) {
         if (uidMap == null || uidMap.isEmpty()) {
             queueMoveOrCopy(account, srcFolder, destFolder, isCopy, uids);
         } else {
@@ -1948,7 +1948,7 @@ public class MessagingController {
             localDestFolder = (LocalFolder) localStore.getFolder(destFolder);
             List<Message> messages = new ArrayList<>();
 
-            Collection<String> uids = command.newUidMap != null ? command.newUidMap.keySet() : Arrays.asList(command.uids);
+            Collection<String> uids = command.newUidMap != null ? command.newUidMap.keySet() : command.uids;
             for (String uid : uids) {
                 if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
                     messages.add(remoteSrcFolder.getMessage(uid));
@@ -2024,7 +2024,7 @@ public class MessagingController {
     }
 
     private void queueSetFlag(final Account account, final String folderName,
-            final boolean newState, final Flag flag, final String[] uids) {
+            final boolean newState, final Flag flag, final List<String> uids) {
         putBackground("queueSetFlag " + account.getDescription() + ":" + folderName, null, new Runnable() {
             @Override
             public void run() {
@@ -2322,9 +2322,7 @@ public class MessagingController {
             }
 
             // Send flag change to server
-            List<String> value = entry.getValue();
-            String[] uids = value.toArray(new String[value.size()]);
-            queueSetFlag(account, folderName, newState, flag, uids);
+            queueSetFlag(account, folderName, newState, flag, entry.getValue());
             processPendingCommands(account);
         }
     }
@@ -2387,11 +2385,7 @@ public class MessagingController {
                 return;
             }
 
-            String[] uids = new String[messages.size()];
-            for (int i = 0, end = uids.length; i < end; i++) {
-                uids[i] = messages.get(i).getUid();
-            }
-
+            List<String> uids = getUidsFromMessages(messages);
             queueSetFlag(account, folderName, newState, flag, uids);
             processPendingCommands(account);
         } catch (MessagingException me) {
@@ -3234,8 +3228,8 @@ public class MessagingController {
                     }
                 }
 
-                Set<String> origUidKeys = origUidMap.keySet();
-                queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidKeys.toArray(new String[origUidKeys.size()]), uidMap);
+                List<String> origUidKeys = new ArrayList<>(origUidMap.keySet());
+                queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidKeys, uidMap);
             }
 
             processPendingCommands(account);
@@ -3378,7 +3372,7 @@ public class MessagingController {
                                            MessagingListener listener) {
         Folder localFolder = null;
         Folder localTrashFolder = null;
-        String[] uids = getUidsFromMessages(messages);
+        List<String> uids = getUidsFromMessages(messages);
         try {
             //We need to make these callbacks before moving the messages to the trash
             //as messages get a new UID after being moved
@@ -3456,10 +3450,10 @@ public class MessagingController {
         }
     }
 
-    private static String[] getUidsFromMessages(List <? extends Message> messages) {
-        String[] uids = new String[messages.size()];
+    private static List<String> getUidsFromMessages(List <? extends Message> messages) {
+        List<String> uids = new ArrayList<>(messages.size());
         for (int i = 0; i < messages.size(); i++) {
-            uids[i] = messages.get(i).getUid();
+            uids.add(messages.get(i).getUid());
         }
         return uids;
     }
