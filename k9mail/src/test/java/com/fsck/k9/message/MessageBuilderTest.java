@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
+
+import android.app.Application;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -13,9 +16,11 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.UUIDGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -32,6 +37,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -46,9 +52,23 @@ public class MessageBuilderTest {
     public static final Address[] TEST_CC = new Address[] { new Address("cc@example.org", "cc recip") };
     public static final Address[] TEST_BCC = new Address[] { new Address("bcc@example.org", "bcc recip") };
 
+    public static final UUID TEST_UUID = new UUID(123L, 234L);
+
+
+    private Application context;
+    private UUIDGenerator uuidGenerator;
+
+
+    @Before
+    public void setUp() throws Exception {
+        uuidGenerator = mock(UUIDGenerator.class);
+        when(uuidGenerator.generateUUID()).thenReturn(TEST_UUID);
+
+        context =  RuntimeEnvironment.application;
+    }
 
     @Test
-    public void build__shouldSucceed() throws MessagingException {
+    public void build__shouldSucceed() throws Exception {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
 
 
@@ -93,7 +113,7 @@ public class MessageBuilderTest {
 
     @Test
     public void buildWithException__shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(RuntimeEnvironment.application) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, uuidGenerator) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -109,7 +129,7 @@ public class MessageBuilderTest {
 
     @Test
     public void buildWithException__detachAndReattach__shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(RuntimeEnvironment.application) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, uuidGenerator) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -133,8 +153,8 @@ public class MessageBuilderTest {
         verifyNoMoreInteractions(mockCallback);
     }
 
-    private static MessageBuilder createSimpleMessageBuilder() {
-        MessageBuilder b = new SimpleMessageBuilder(RuntimeEnvironment.application);
+    private MessageBuilder createSimpleMessageBuilder() {
+        MessageBuilder b = new SimpleMessageBuilder(context, uuidGenerator);
 
         Identity identity = new Identity();
         identity.setName(TEST_IDENTITY_ADDRESS.getPersonal());

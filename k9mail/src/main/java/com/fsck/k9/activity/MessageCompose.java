@@ -78,6 +78,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.UUIDGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
@@ -716,11 +717,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 return null;
             }
 
-            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext());
+            PgpMessageBuilder pgpBuilder = new PgpMessageBuilder(getApplicationContext(), UUIDGenerator.getInstance());
             recipientPresenter.builderSetProperties(pgpBuilder);
             builder = pgpBuilder;
         } else {
-            builder = new SimpleMessageBuilder(getApplicationContext());
+            builder = new SimpleMessageBuilder(getApplicationContext(), UUIDGenerator.getInstance());
         }
 
         builder.setSubject(mSubjectView.getText().toString())

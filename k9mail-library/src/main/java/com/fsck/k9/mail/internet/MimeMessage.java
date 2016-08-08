@@ -26,6 +26,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.UUIDGenerator;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
@@ -319,7 +320,7 @@ public class MimeMessage extends Message {
         return mMessageId;
     }
 
-    public void generateMessageId() throws MessagingException {
+    public void generateMessageId(UUIDGenerator uuidGenerator) throws MessagingException {
         String hostname = null;
 
         if (mFrom != null && mFrom.length >= 1) {
@@ -335,7 +336,7 @@ public class MimeMessage extends Message {
         }
 
         /* We use upper case here to match Apple Mail Message-ID format (for privacy) */
-        String messageId = "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
+        String messageId = "<" + uuidGenerator.generateUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
 
         setMessageId(messageId);
     }
