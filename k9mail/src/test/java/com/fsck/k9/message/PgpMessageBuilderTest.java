@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -426,6 +427,8 @@ public class PgpMessageBuilderTest {
         identity.setSignatureUse(false);
 
         b.setSubject("subject")
+                .setSentDate(new Date())
+                .setHideTimeZone(false)
                 .setTo(new ArrayList<Address>())
                 .setCc(new ArrayList<Address>())
                 .setBcc(new ArrayList<Address>())

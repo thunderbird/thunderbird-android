@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import android.app.Application;
@@ -58,6 +60,26 @@ public class MessageBuilderTest {
     public static final String BOUNDARY_2 = "----boundary2";
     public static final String BOUNDARY_3 = "----boundary3";
 
+    public static final Date SENT_DATE = new Date(10000000000L);
+    public static final String MESSAGE_HEADERS =
+            "Date: Sun, 26 Apr 1970 18:46:40 +0100\r\n" +
+            "From: tester <test@example.org>\r\n" +
+            "To: recip 1 <to1@example.org>,recip 2 <to2@example.org>\r\n" +
+            "CC: cc recip <cc@example.org>\r\n" +
+            "BCC: bcc recip <bcc@example.org>\r\n" +
+            "Subject: test_subject\r\n" +
+            "User-Agent: K-9 Mail for Android\r\n" +
+            "In-Reply-To: inreplyto\r\n" +
+            "References: references\r\n" +
+            "Message-ID: <" + TEST_UUID.toString().toUpperCase(Locale.ENGLISH) + "@example.org>\r\n" +
+            "MIME-Version: 1.0\r\n";
+    public static final String MESSAGE_CONTENT =
+            "Content-Type: text/plain;\r\n" +
+            " charset=utf-8\r\n" +
+            "Content-Transfer-Encoding: 8bit\r\n" +
+            "\r\n" + TEST_MESSAGE_TEXT;
+
+
     private Application context;
     private UUIDGenerator uuidGenerator;
     private BoundaryGenerator boundaryGenerator;
@@ -94,6 +116,10 @@ public class MessageBuilderTest {
         assertArrayEquals(TEST_TO, mimeMessage.getRecipients(RecipientType.TO));
         assertArrayEquals(TEST_CC, mimeMessage.getRecipients(RecipientType.CC));
         assertArrayEquals(TEST_BCC, mimeMessage.getRecipients(RecipientType.BCC));
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        mimeMessage.writeTo(bos);
+        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT, bos.toString());
     }
 
     @Test
@@ -169,6 +195,8 @@ public class MessageBuilderTest {
         identity.setSignatureUse(false);
 
         b.setSubject(TEST_SUBJECT)
+                .setSentDate(SENT_DATE)
+                .setHideTimeZone(false)
                 .setTo(Arrays.asList(TEST_TO))
                 .setCc(Arrays.asList(TEST_CC))
                 .setBcc(Arrays.asList(TEST_BCC))

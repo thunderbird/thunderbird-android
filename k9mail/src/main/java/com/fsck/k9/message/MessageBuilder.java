@@ -45,6 +45,8 @@ public abstract class MessageBuilder {
 
 
     private String subject;
+    private Date sentDate;
+    private boolean hideTimeZone;
     private Address[] to;
     private Address[] cc;
     private Address[] bcc;
@@ -91,7 +93,7 @@ public abstract class MessageBuilder {
     }
 
     private void buildHeader(MimeMessage message) throws MessagingException {
-        message.addSentDate(new Date(), K9.hideTimeZone());
+        message.addSentDate(sentDate, hideTimeZone);
         Address from = new Address(identity.getEmail(), identity.getName());
         message.setFrom(from);
         message.setRecipients(RecipientType.TO, to);
@@ -335,6 +337,16 @@ public abstract class MessageBuilder {
 
     public MessageBuilder setSubject(String subject) {
         this.subject = subject;
+        return this;
+    }
+
+    public MessageBuilder setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
+        return this;
+    }
+
+    public MessageBuilder setHideTimeZone(boolean hideTimeZone) {
+        this.hideTimeZone = hideTimeZone;
         return this;
     }
 

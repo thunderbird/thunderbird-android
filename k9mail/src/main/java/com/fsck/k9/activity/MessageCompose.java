@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -728,6 +729,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         builder.setSubject(mSubjectView.getText().toString())
+                .setSentDate(new Date())
+                .setHideTimeZone(K9.hideTimeZone())
                 .setTo(recipientPresenter.getToAddresses())
                 .setCc(recipientPresenter.getCcAddresses())
                 .setBcc(recipientPresenter.getBccAddresses())
