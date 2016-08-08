@@ -4,7 +4,6 @@ package com.fsck.k9.message;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +15,6 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -24,7 +22,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.message.MessageBuilder.Callback;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +33,6 @@ import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -79,21 +75,21 @@ public class MessageBuilderTest {
     public static final String MESSAGE_CONTENT =
             "Content-Type: text/plain;\r\n" +
             " charset=utf-8\r\n" +
-            "Content-Transfer-Encoding: 8bit\r\n" +
+            "Content-Transfer-Encoding: quoted-printable\r\n" +
             "\r\n" +
             "soviet message\r\n" +
-            "text ☭";
+            "text =E2=98=AD";
     public static final String MESSAGE_CONTENT_WITH_ATTACH =
             "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
-            "Content-Transfer-Encoding: 8bit\r\n" +
+            "Content-Transfer-Encoding: 7bit\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: text/plain;\r\n" +
             " charset=utf-8\r\n" +
-            "Content-Transfer-Encoding: 8bit\r\n" +
+            "Content-Transfer-Encoding: quoted-printable\r\n" +
             "\r\n" +
             "soviet message\r\n" +
-            "text ☭\r\n" +
+            "text =E2=98=AD\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: text/plain;\r\n" +
             " name=\"attach.txt\"\r\n" +
@@ -136,7 +132,6 @@ public class MessageBuilderTest {
         verifyNoMoreInteractions(mockCallback);
 
         MimeMessage mimeMessage = mimeMessageCaptor.getValue();
-        assertContentOfBodyEquals("message content must match", mimeMessage.getBody(), TEST_MESSAGE_TEXT);
         assertEquals("text/plain", mimeMessage.getMimeType());
         assertEquals(TEST_SUBJECT, mimeMessage.getSubject());
         assertEquals(TEST_IDENTITY_ADDRESS, mimeMessage.getFrom()[0]);
@@ -282,15 +277,4 @@ public class MessageBuilderTest {
 
         return b;
     }
-
-    private static void assertContentOfBodyEquals(String reason, Body bodyPart, String expected) {
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bodyPart.writeTo(bos) ;
-            Assert.assertEquals(reason, expected, new String(bos.toByteArray()));
-        } catch (IOException | MessagingException e) {
-            fail();
-        }
-    }
-
 }
