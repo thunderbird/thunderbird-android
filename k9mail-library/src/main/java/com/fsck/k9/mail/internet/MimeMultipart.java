@@ -1,13 +1,17 @@
 
 package com.fsck.k9.mail.internet;
 
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
-
-import java.io.*;
-import java.util.Locale;
-import java.util.Random;
 
 public class MimeMultipart extends Multipart {
     private String mimeType;
@@ -15,8 +19,12 @@ public class MimeMultipart extends Multipart {
     private byte[] epilogue;
     private final String boundary;
 
-    public MimeMultipart() throws MessagingException {
-        boundary = generateBoundary();
+    public static MimeMultipart createMimeMultipart() throws MessagingException {
+        return new MimeMultipart(BoundaryGenerator.getInstance());
+    }
+
+    public MimeMultipart(BoundaryGenerator boundaryGenerator) throws MessagingException {
+        boundary = boundaryGenerator.generateBoundary();
         setSubType("mixed");
     }
 
@@ -30,16 +38,6 @@ public class MimeMultipart extends Multipart {
 
         this.mimeType = mimeType;
         this.boundary = boundary;
-    }
-
-    public static String generateBoundary() {
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-        sb.append("----");
-        for (int i = 0; i < 30; i++) {
-            sb.append(Integer.toString(random.nextInt(36), 36));
-        }
-        return sb.toString().toUpperCase(Locale.US);
     }
 
     @Override

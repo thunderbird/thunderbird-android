@@ -151,7 +151,7 @@ public class MessageViewInfoExtractorTest {
         TextBody body2 = new TextBody(bodyText2);
 
         // Create multipart/mixed part
-        MimeMultipart multipart = new MimeMultipart();
+        MimeMultipart multipart = MimeMultipart.createMimeMultipart();
         MimeBodyPart bodyPart1 = new MimeBodyPart(body1, "text/plain");
         MimeBodyPart bodyPart2 = new MimeBodyPart(body2, "text/plain");
         multipart.addBodyPart(bodyPart1);
@@ -209,7 +209,7 @@ public class MessageViewInfoExtractorTest {
         MimeMessageHelper.setBody(innerMessage, innerBody);
 
         // Create multipart/mixed part
-        MimeMultipart multipart = new MimeMultipart();
+        MimeMultipart multipart = MimeMultipart.createMimeMultipart();
         MimeBodyPart bodyPart1 = new MimeBodyPart(textBody, "text/plain");
         MimeBodyPart bodyPart2 = new MimeBodyPart(innerMessage, "message/rfc822");
         bodyPart2.setHeader("Content-Disposition", "inline; filename=\"message.eml\"");

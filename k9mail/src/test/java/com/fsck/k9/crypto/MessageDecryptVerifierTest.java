@@ -55,7 +55,7 @@ public class MessageDecryptVerifierTest {
     @Test
     public void findEncryptedPartsShouldReturnEmptyEncryptedPart() throws Exception {
         MimeMessage message = new MimeMessage();
-        MimeMultipart multipartEncrypted = new MimeMultipart();
+        MimeMultipart multipartEncrypted = MimeMultipart.createMimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         MimeMessageHelper.setBody(message, multipartEncrypted);
         setContentTypeWithProtocol(message, MIME_TYPE_MULTIPART_ENCRYPTED, PROTCOL_PGP_ENCRYPTED);
@@ -69,11 +69,11 @@ public class MessageDecryptVerifierTest {
     @Test
     public void findEncryptedPartsShouldReturnMultipleEncryptedParts() throws Exception {
         MimeMessage message = new MimeMessage();
-        MimeMultipart multipartMixed = new MimeMultipart();
+        MimeMultipart multipartMixed = MimeMultipart.createMimeMultipart();
         multipartMixed.setSubType("mixed");
         MimeMessageHelper.setBody(message, multipartMixed);
 
-        MimeMultipart multipartEncryptedOne = new MimeMultipart();
+        MimeMultipart multipartEncryptedOne = MimeMultipart.createMimeMultipart();
         multipartEncryptedOne.setSubType("encrypted");
         MimeBodyPart bodyPartOne = new MimeBodyPart(multipartEncryptedOne);
         setContentTypeWithProtocol(bodyPartOne, MIME_TYPE_MULTIPART_ENCRYPTED, PROTCOL_PGP_ENCRYPTED);
@@ -82,7 +82,7 @@ public class MessageDecryptVerifierTest {
         MimeBodyPart bodyPartTwo = new MimeBodyPart(null, "text/plain");
         multipartMixed.addBodyPart(bodyPartTwo);
 
-        MimeMultipart multipartEncryptedThree = new MimeMultipart();
+        MimeMultipart multipartEncryptedThree = MimeMultipart.createMimeMultipart();
         multipartEncryptedThree.setSubType("encrypted");
         MimeBodyPart bodyPartThree = new MimeBodyPart(multipartEncryptedThree);
         setContentTypeWithProtocol(bodyPartThree, MIME_TYPE_MULTIPART_ENCRYPTED, PROTCOL_PGP_ENCRYPTED);
@@ -279,7 +279,7 @@ public class MessageDecryptVerifierTest {
     }
 
     MimeBodyPart multipart(String type, BodyPart... subParts) throws MessagingException {
-        MimeMultipart multiPart = new MimeMultipart();
+        MimeMultipart multiPart = MimeMultipart.createMimeMultipart();
         multiPart.setSubType(type);
         for (BodyPart subPart : subParts) {
             multiPart.addBodyPart(subPart);

@@ -16,6 +16,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.UUIDGenerator;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
@@ -45,8 +46,8 @@ public class PgpMessageBuilder extends MessageBuilder {
     private boolean opportunisticSkipEncryption;
     private boolean opportunisticSecondPass;
 
-    public PgpMessageBuilder(Context context, UUIDGenerator uuidGenerator) {
-        super(context, uuidGenerator);
+    public PgpMessageBuilder(Context context, UUIDGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
+        super(context, uuidGenerator, boundaryGenerator);
     }
 
     public void setOpenPgpApi(OpenPgpApi openPgpApi) {
@@ -270,7 +271,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             throw new MessagingException("didn't find expected RESULT_DETACHED_SIGNATURE in api call result");
         }
 
-        MimeMultipart multipartSigned = new MimeMultipart();
+        MimeMultipart multipartSigned = MimeMultipart.createMimeMultipart();
         multipartSigned.setSubType("signed");
         multipartSigned.addBodyPart(signedBodyPart);
         multipartSigned.addBodyPart(
@@ -294,7 +295,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             throw new IllegalStateException("call to mimeBuildEncryptedMessage while encryption isn't enabled!");
         }
 
-        MimeMultipart multipartEncrypted = new MimeMultipart();
+        MimeMultipart multipartEncrypted = MimeMultipart.createMimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         multipartEncrypted.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));
         multipartEncrypted.addBodyPart(new MimeBodyPart(encryptedBodyPart, "application/octet-stream"));

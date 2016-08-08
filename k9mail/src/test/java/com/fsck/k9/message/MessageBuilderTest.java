@@ -14,6 +14,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.UUIDGenerator;
@@ -53,16 +54,21 @@ public class MessageBuilderTest {
     public static final Address[] TEST_BCC = new Address[] { new Address("bcc@example.org", "bcc recip") };
 
     public static final UUID TEST_UUID = new UUID(123L, 234L);
-
+    public static final String BOUNDARY_1 = "----boundary1";
+    public static final String BOUNDARY_2 = "----boundary2";
+    public static final String BOUNDARY_3 = "----boundary3";
 
     private Application context;
     private UUIDGenerator uuidGenerator;
-
+    private BoundaryGenerator boundaryGenerator;
 
     @Before
     public void setUp() throws Exception {
         uuidGenerator = mock(UUIDGenerator.class);
         when(uuidGenerator.generateUUID()).thenReturn(TEST_UUID);
+
+        boundaryGenerator = mock(BoundaryGenerator.class);
+        when(boundaryGenerator.generateBoundary()).thenReturn(BOUNDARY_1, BOUNDARY_2, BOUNDARY_3);
 
         context =  RuntimeEnvironment.application;
     }
@@ -113,7 +119,7 @@ public class MessageBuilderTest {
 
     @Test
     public void buildWithException__shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, uuidGenerator) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, uuidGenerator, boundaryGenerator) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -129,7 +135,7 @@ public class MessageBuilderTest {
 
     @Test
     public void buildWithException__detachAndReattach__shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, uuidGenerator) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, uuidGenerator, boundaryGenerator) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -154,7 +160,7 @@ public class MessageBuilderTest {
     }
 
     private MessageBuilder createSimpleMessageBuilder() {
-        MessageBuilder b = new SimpleMessageBuilder(context, uuidGenerator);
+        MessageBuilder b = new SimpleMessageBuilder(context, uuidGenerator, boundaryGenerator);
 
         Identity identity = new Identity();
         identity.setName(TEST_IDENTITY_ADDRESS.getPersonal());

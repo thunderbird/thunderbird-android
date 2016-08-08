@@ -23,6 +23,7 @@ import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.UUIDGenerator;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
@@ -414,7 +415,8 @@ public class PgpMessageBuilderTest {
     }
 
     private static PgpMessageBuilder createDefaultPgpMessageBuilder(OpenPgpApi openPgpApi) {
-        PgpMessageBuilder b = new PgpMessageBuilder(RuntimeEnvironment.application, UUIDGenerator.getInstance());
+        PgpMessageBuilder b = new PgpMessageBuilder(
+                RuntimeEnvironment.application, UUIDGenerator.getInstance(), BoundaryGenerator.getInstance());
         b.setOpenPgpApi(openPgpApi);
 
         Identity identity = new Identity();

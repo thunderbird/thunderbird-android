@@ -20,6 +20,7 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
@@ -40,6 +41,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 public abstract class MessageBuilder {
     private final Context context;
     private final UUIDGenerator uuidGenerator;
+    private final BoundaryGenerator boundaryGenerator;
 
 
     private String subject;
@@ -67,9 +69,10 @@ public abstract class MessageBuilder {
     private boolean isDraft;
     private boolean isPgpInlineEnabled;
 
-    public MessageBuilder(Context context, UUIDGenerator uuidGenerator) {
+    public MessageBuilder(Context context, UUIDGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
         this.context = context;
         this.uuidGenerator = uuidGenerator;
+        this.boundaryGenerator = boundaryGenerator;
     }
 
     /**
@@ -141,7 +144,7 @@ public abstract class MessageBuilder {
             // HTML message (with alternative text part)
 
             // This is the compiled MIME part for an HTML message.
-            MimeMultipart composedMimeMessage = new MimeMultipart();
+            MimeMultipart composedMimeMessage = new MimeMultipart(boundaryGenerator);
             composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
             composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
             bodyPlain = buildText(isDraft, SimpleMessageFormat.TEXT);
@@ -152,7 +155,7 @@ public abstract class MessageBuilder {
                 // whole message (mp here), of which one part is a MimeMultipart container
                 // (composedMimeMessage) with the user's composed messages, and subsequent parts for
                 // the attachments.
-                MimeMultipart mp = new MimeMultipart();
+                MimeMultipart mp = new MimeMultipart(boundaryGenerator);
                 mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
@@ -163,7 +166,7 @@ public abstract class MessageBuilder {
         } else if (messageFormat == SimpleMessageFormat.TEXT) {
             // Text-only message.
             if (hasAttachments) {
-                MimeMultipart mp = new MimeMultipart();
+                MimeMultipart mp = new MimeMultipart(boundaryGenerator);
                 mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
