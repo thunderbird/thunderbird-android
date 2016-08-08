@@ -108,11 +108,4 @@ public class MimeMultipart extends Multipart {
     public InputStream getInputStream() throws MessagingException {
         return null;
     }
-
-    @Override
-    public void setUsing7bitTransport() throws MessagingException {
-        for (BodyPart part : getBodyParts()) {
-            part.setUsing7bitTransport();
-        }
-    }
 }

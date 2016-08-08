@@ -20,7 +20,6 @@ import android.support.annotation.NonNull;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -35,7 +34,7 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
-import org.apache.james.mime4j.util.MimeUtil;
+
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and
@@ -624,47 +623,6 @@ public class MimeMessage extends Message {
     @Override
     public boolean hasAttachments() {
         return false;
-    }
-
-
-    @Override
-    public void setUsing7bitTransport() throws MessagingException {
-        String type = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        /*
-         * We don't trust that a multipart/* will properly have an 8bit encoding
-         * header if any of its subparts are 8bit, so we automatically recurse
-         * (as long as its not multipart/signed).
-         */
-        if (mBody instanceof CompositeBody && !MimeUtility.isSameMimeType(type, "multipart/signed")) {
-            setEncoding(MimeUtil.ENC_7BIT);
-            // recurse
-            ((CompositeBody) mBody).setUsing7bitTransport();
-        } else if (!MimeUtil.ENC_8BIT
-                .equalsIgnoreCase(getFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING))) {
-            return;
-        } else if (type != null &&
-                (MimeUtility.isSameMimeType(type, "multipart/signed") || MimeUtility.isMessage(type))) {
-            /*
-             * This shouldn't happen. In any case, it would be wrong to convert
-             * them to some other encoding for 7bit transport.
-             *
-             * RFC 1847 says multipart/signed must be 7bit. It also says their
-             * bodies must be treated as opaque, so we must not change the
-             * encoding.
-             *
-             * We've dealt with (CompositeBody) type message/rfc822 above. Here
-             * we must deal with all other message/* types. RFC 2045 says
-             * message/* can only be 7bit or 8bit. RFC 2046 says unknown
-             * message/* types must be treated as application/octet-stream,
-             * which means we can't recurse into them. It also says that
-             * existing subtypes message/partial and message/external must only
-             * be 7bit, and that future subtypes "should be" 7bit.
-             */
-            throw new MessagingException(
-                    "Unable to convert 8bit body part to 7bit");
-        } else {
-            setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
-        }
     }
 
     @Override

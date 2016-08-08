@@ -10,7 +10,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.internet.TextBody;
 
-public abstract class Multipart implements CompositeBody {
+public abstract class Multipart implements Body {
     private Part mParent;
 
     private final List<BodyPart> mParts = new ArrayList<BodyPart>();
@@ -48,8 +48,7 @@ public abstract class Multipart implements CompositeBody {
     public void setEncoding(String encoding) throws MessagingException {
         if (!MimeUtil.ENC_7BIT.equalsIgnoreCase(encoding)
                 && !MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
-            throw new MessagingException(
-                    "Incompatible content-transfer-encoding applied to a CompositeBody");
+            throw new MessagingException("Incompatible content-transfer-encoding for a multipart/* body");
         }
 
         /* Nothing else to do.  Each subpart has its own separate encoding */
