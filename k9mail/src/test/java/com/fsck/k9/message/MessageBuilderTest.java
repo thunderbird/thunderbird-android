@@ -2,9 +2,12 @@ package com.fsck.k9.message;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -46,7 +49,8 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 public class MessageBuilderTest {
-    public static final String TEST_MESSAGE_TEXT = "message text";
+    public static final String TEST_MESSAGE_TEXT = "soviet message\r\ntext ☭";
+    public static final String TEST_ATTACHMENT_TEXT = "text data in attachment";
     public static final String TEST_SUBJECT = "test_subject";
     public static final Address TEST_IDENTITY_ADDRESS = new Address("test@example.org", "tester");
     public static final Address[] TEST_TO = new Address[] {
@@ -77,7 +81,31 @@ public class MessageBuilderTest {
             "Content-Type: text/plain;\r\n" +
             " charset=utf-8\r\n" +
             "Content-Transfer-Encoding: 8bit\r\n" +
-            "\r\n" + TEST_MESSAGE_TEXT;
+            "\r\n" +
+            "soviet message\r\n" +
+            "text ☭";
+    public static final String MESSAGE_CONTENT_WITH_ATTACH =
+            "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
+            "Content-Transfer-Encoding: 8bit\r\n" +
+            "\r\n" +
+            "--" + BOUNDARY_1 + "\r\n" +
+            "Content-Type: text/plain;\r\n" +
+            " charset=utf-8\r\n" +
+            "Content-Transfer-Encoding: 8bit\r\n" +
+            "\r\n" +
+            "soviet message\r\n" +
+            "text ☭\r\n" +
+            "--" + BOUNDARY_1 + "\r\n" +
+            "Content-Type: text/plain;\r\n" +
+            " name=\"attach.txt\"\r\n" +
+            "Content-Transfer-Encoding: base64\r\n" +
+            "Content-Disposition: attachment;\r\n" +
+            " filename=\"attach.txt\";\r\n" +
+            " size=23\r\n" +
+            "\r\n" +
+            "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
+            "\r\n" +
+            "--" + BOUNDARY_1 + "--\r\n";
 
 
     private Application context;
@@ -120,6 +148,39 @@ public class MessageBuilderTest {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         mimeMessage.writeTo(bos);
         assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT, bos.toString());
+    }
+
+    @Test
+    public void build__withAttachment__shouldSucceed() throws Exception {
+        MessageBuilder messageBuilder = createSimpleMessageBuilder();
+        Attachment attachment = createAttachmentWithContent("text/plain", "attach.txt", TEST_ATTACHMENT_TEXT.getBytes());
+        messageBuilder.setAttachments(Collections.singletonList(attachment));
+
+        Callback mockCallback = mock(Callback.class);
+        messageBuilder.buildAsync(mockCallback);
+
+
+        ArgumentCaptor<MimeMessage> mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
+        verify(mockCallback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(false));
+        verifyNoMoreInteractions(mockCallback);
+
+        MimeMessage mimeMessage = mimeMessageCaptor.getValue();
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        mimeMessage.writeTo(bos);
+        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_ATTACH, bos.toString());
+    }
+
+    private Attachment createAttachmentWithContent(String mimeType, String filename, byte[] content) throws Exception {
+        File tempFile = File.createTempFile("pre", ".tmp");
+        tempFile.deleteOnExit();
+        FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+        fileOutputStream.write(content);
+        fileOutputStream.close();
+
+        return Attachment.createAttachment(null, 0, mimeType)
+                .deriveWithMetadataLoaded(mimeType, filename, content.length)
+                .deriveWithLoadComplete(tempFile.getAbsolutePath());
     }
 
     @Test
