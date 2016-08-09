@@ -10,12 +10,8 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.FancyPart;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
@@ -66,14 +62,9 @@ public class AttachmentResolver {
                     partsToCheck.push(bodyPart);
                 }
             } else {
-                try {
-                    String contentId = FancyPart.from(part).getContentId();
-                    if (contentId != null) {
-                        AttachmentViewInfo attachmentInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
-                        result.put(contentId, attachmentInfo.uri);
-                    }
-                } catch (MessagingException e) {
-                    Log.e(K9.LOG_TAG, "Error extracting attachment info", e);
+                AttachmentViewInfo attachmentInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
+                if (attachmentInfo != null && attachmentInfo.inlineAttachment && attachmentInfo.contentId != null) {
+                    result.put(attachmentInfo.contentId, attachmentInfo.uri);
                 }
             }
         }

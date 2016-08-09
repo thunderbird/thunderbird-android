@@ -33,7 +33,6 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.FancyPart;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
@@ -330,8 +329,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     private AttachmentViewInfo getAttachmentByContentId(String cid) {
         for (AttachmentViewInfo attachment : attachments.keySet()) {
-            // TODO move content id into AttachmentViewInfo!
-            if (cid.equals(FancyPart.from(attachment.part).getContentId())) {
+            if (cid.equals(attachment.contentId)) {
                 return attachment;
             }
         }

@@ -1459,7 +1459,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
         cv.put("data_location", dataLocation);
         cv.put("encoding", encoding);
-        cv.put("content_id", FancyPart.from(part).getContentId());
+        cv.put("content_id", attachment.contentId);
 
         return file;
     }

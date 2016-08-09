@@ -43,9 +43,7 @@ public class AttachmentInfoExtractor {
     }
 
     @WorkerThread
-    public List<AttachmentViewInfo> extractAttachmentInfoForView(List<Part> attachmentParts)
-            throws MessagingException {
-
+    public List<AttachmentViewInfo> extractAttachmentInfoForView(List<Part> attachmentParts) {
         List<AttachmentViewInfo> attachments = new ArrayList<>();
         for (Part part : attachmentParts) {
             AttachmentViewInfo attachmentViewInfo = extractAttachmentInfo(part);
@@ -58,7 +56,7 @@ public class AttachmentInfoExtractor {
     }
 
     @WorkerThread
-    public AttachmentViewInfo extractAttachmentInfo(Part part) throws MessagingException {
+    public AttachmentViewInfo extractAttachmentInfo(Part part) {
         Uri uri;
         long size;
         boolean isContentAvailable;
@@ -113,8 +111,7 @@ public class AttachmentInfoExtractor {
     }
 
     @WorkerThread
-    private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size, boolean isContentAvailable)
-            throws MessagingException {
+    private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size, boolean isContentAvailable) {
         FancyPart fancyPart = FancyPart.from(part);
 
         String mimeType = fancyPart.getMimeType();
@@ -136,14 +133,15 @@ public class AttachmentInfoExtractor {
         // not attachments. Only show them if the user pressed the button to show more
         // attachments.
         boolean inlineAttachment = false;
-        if (fancyPart.isDispositionInline() && fancyPart.getContentId() != null) {
+        String contentId = fancyPart.getContentId();
+        if (fancyPart.isDispositionInline() && contentId != null) {
             inlineAttachment = true;
         }
 
         long attachmentSize = extractAttachmentSize(fancyPart, size);
 
         return new AttachmentViewInfo(mimeType, attachmentName, attachmentSize, uri,
-                inlineAttachment, part, isContentAvailable);
+                inlineAttachment, part, isContentAvailable, contentId);
     }
 
     @WorkerThread
