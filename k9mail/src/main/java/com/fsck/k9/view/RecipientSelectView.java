@@ -334,8 +334,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 if (contactLookupUri != null) {
                     return new RecipientLoader(getContext(), cryptoProvider, contactLookupUri, true);
                 } else {
-                    String address = alternatesPopupRecipient.address.getAddress();
-                    return new RecipientLoader(getContext(), cryptoProvider, address);
+                    return new RecipientLoader(getContext(), cryptoProvider, alternatesPopupRecipient.address);
                 }
             }
         }
@@ -451,7 +450,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         RecipientTokenSpan[] recipientSpans = text.getSpans(0, text.length(), RecipientTokenSpan.class);
         for (RecipientTokenSpan recipientSpan : recipientSpans) {
-            if (recipientSpan.getToken() == currentRecipient) {
+            if (recipientSpan.getToken().equals(currentRecipient)) {
                 return recipientSpan.view;
             }
         }

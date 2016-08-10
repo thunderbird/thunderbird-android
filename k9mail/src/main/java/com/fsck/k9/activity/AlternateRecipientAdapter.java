@@ -49,6 +49,10 @@ public class AlternateRecipientAdapter extends BaseAdapter {
 
     public void setAlternateRecipientInfo(List<Recipient> recipients) {
         this.recipients = recipients;
+        int indexOfCurrentRecipient = recipients.indexOf(currentRecipient);
+        if (indexOfCurrentRecipient >= 0) {
+            currentRecipient = recipients.get(indexOfCurrentRecipient);
+        }
         recipients.remove(currentRecipient);
         notifyDataSetChanged();
     }
