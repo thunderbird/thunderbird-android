@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore.migrations;
 
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -177,7 +178,7 @@ class MigrationTo58 {
                 String arguments = cursor.getString(2);
                 command.arguments = arguments.split(",");
                 for (int i = 0; i < command.arguments.length; i++) {
-                    command.arguments[i] = Utility.fastUrlDecode(command.arguments[i]);
+                    command.arguments[i] = fastUrlDecode(command.arguments[i]);
                 }
                 commands.add(command);
             }
@@ -191,5 +192,32 @@ class MigrationTo58 {
     static class OldPendingCommand {
         public String command;
         public String[] arguments;
+    }
+
+    private static String fastUrlDecode(String s) {
+        byte[] bytes = s.getBytes(Charset.forName("UTF-8"));
+        byte ch;
+        int length = 0;
+        for (int i = 0, count = bytes.length; i < count; i++) {
+            ch = bytes[i];
+            if (ch == '%') {
+                int h = (bytes[i + 1] - '0');
+                int l = (bytes[i + 2] - '0');
+                if (h > 9) {
+                    h -= 7;
+                }
+                if (l > 9) {
+                    l -= 7;
+                }
+                bytes[length] = (byte)((h << 4) | l);
+                i += 2;
+            } else if (ch == '+') {
+                bytes[length] = ' ';
+            } else {
+                bytes[length] = bytes[i];
+            }
+            length++;
+        }
+        return new String(bytes, 0, length, Charset.forName("UTF-8"));
     }
 }
