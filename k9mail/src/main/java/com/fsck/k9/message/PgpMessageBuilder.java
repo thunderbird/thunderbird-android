@@ -18,7 +18,7 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.UUIDGenerator;
+import com.fsck.k9.mail.UuidGenerator;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -46,7 +46,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     private boolean opportunisticSkipEncryption;
     private boolean opportunisticSecondPass;
 
-    public PgpMessageBuilder(Context context, UUIDGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
+    public PgpMessageBuilder(Context context, UuidGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
         super(context, uuidGenerator, boundaryGenerator);
     }
 

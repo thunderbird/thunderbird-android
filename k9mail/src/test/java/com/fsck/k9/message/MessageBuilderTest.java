@@ -22,7 +22,7 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.UUIDGenerator;
+import com.fsck.k9.mail.UuidGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import org.junit.Assert;
@@ -109,12 +109,12 @@ public class MessageBuilderTest {
 
 
     private Application context;
-    private UUIDGenerator uuidGenerator;
+    private UuidGenerator uuidGenerator;
     private BoundaryGenerator boundaryGenerator;
 
     @Before
     public void setUp() throws Exception {
-        uuidGenerator = mock(UUIDGenerator.class);
+        uuidGenerator = mock(UuidGenerator.class);
         when(uuidGenerator.generateUUID()).thenReturn(TEST_UUID);
 
         boundaryGenerator = mock(BoundaryGenerator.class);

@@ -6,13 +6,13 @@ import android.content.Intent;
 
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.UUIDGenerator;
+import com.fsck.k9.mail.UuidGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 
 public class SimpleMessageBuilder extends MessageBuilder {
 
-    public SimpleMessageBuilder(Context context, UUIDGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
+    public SimpleMessageBuilder(Context context, UuidGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
         super(context, uuidGenerator, boundaryGenerator);
     }
 

@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.UUID;
 
 import android.support.annotation.NonNull;
 
@@ -26,7 +25,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.UUIDGenerator;
+import com.fsck.k9.mail.UuidGenerator;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
@@ -320,7 +319,7 @@ public class MimeMessage extends Message {
         return mMessageId;
     }
 
-    public void generateMessageId(UUIDGenerator uuidGenerator) throws MessagingException {
+    public void generateMessageId(UuidGenerator uuidGenerator) throws MessagingException {
         String hostname = null;
 
         if (mFrom != null && mFrom.length >= 1) {
