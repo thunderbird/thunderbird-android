@@ -101,6 +101,28 @@ public class MessageBuilderTest {
             "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "--\r\n";
+    public static final String MESSAGE_CONTENT_WITH_MESSAGE_ATTACH =
+            "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
+                    "Content-Transfer-Encoding: 7bit\r\n" +
+                    "\r\n" +
+                    "--" + BOUNDARY_1 + "\r\n" +
+                    "Content-Type: text/plain;\r\n" +
+                    " charset=utf-8\r\n" +
+                    "Content-Transfer-Encoding: quoted-printable\r\n" +
+                    "\r\n" +
+                    "soviet message\r\n" +
+                    "text =E2=98=AD\r\n" +
+                    "--" + BOUNDARY_1 + "\r\n" +
+                    "Content-Type: application/octet-stream;\r\n" +
+                    " name=\"attach.txt\"\r\n" +
+                    "Content-Transfer-Encoding: base64\r\n" +
+                    "Content-Disposition: attachment;\r\n" +
+                    " filename=\"attach.txt\";\r\n" +
+                    " size=23\r\n" +
+                    "\r\n" +
+                    "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
+                    "\r\n" +
+                    "--" + BOUNDARY_1 + "--\r\n";
 
 
     private Application context;
@@ -163,6 +185,27 @@ public class MessageBuilderTest {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         mimeMessage.writeTo(bos);
         assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_ATTACH, bos.toString());
+    }
+
+    @Test
+    public void build__withMessageAttachment__shouldAttachAsApplicationOctetStream() throws Exception {
+        MessageBuilder messageBuilder = createSimpleMessageBuilder();
+        Attachment attachment = createAttachmentWithContent("message/rfc822", "attach.txt", TEST_ATTACHMENT_TEXT.getBytes());
+        messageBuilder.setAttachments(Collections.singletonList(attachment));
+
+        Callback mockCallback = mock(Callback.class);
+        messageBuilder.buildAsync(mockCallback);
+
+
+        ArgumentCaptor<MimeMessage> mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
+        verify(mockCallback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(false));
+        verifyNoMoreInteractions(mockCallback);
+
+        MimeMessage mimeMessage = mimeMessageCaptor.getValue();
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        mimeMessage.writeTo(bos);
+        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_MESSAGE_ATTACH, bos.toString());
     }
 
     private Attachment createAttachmentWithContent(String mimeType, String filename, byte[] content) throws Exception {
