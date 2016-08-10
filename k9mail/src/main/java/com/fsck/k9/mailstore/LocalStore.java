@@ -362,10 +362,6 @@ public class LocalStore extends Store implements Serializable {
         return new LocalFolder(this, name);
     }
 
-    public LocalFolder getFolderById(long folderId) {
-        return new LocalFolder(this, folderId);
-    }
-
     // TODO this takes about 260-300ms, seems slow.
     @Override
     public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
@@ -570,7 +566,7 @@ public class LocalStore extends Store implements Serializable {
         String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
                 "messages.", query.toString());
 
-        String[] selectionArgs = queryArgs.toArray(EMPTY_STRING_ARRAY);
+        String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
 
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +
@@ -911,7 +907,7 @@ public class LocalStore extends Store implements Serializable {
                             UnavailableStorageException {
 
                         selectionCallback.doDbWork(db, selection.toString(),
-                                selectionArgs.toArray(EMPTY_STRING_ARRAY));
+                                selectionArgs.toArray(new String[selectionArgs.size()]));
 
                         return null;
                     }
