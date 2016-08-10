@@ -64,6 +64,9 @@ public class Migrations {
                 MigrationTo54.addPreviewTypeColumn(db);
             case 54:
                 MigrationTo55.createFtsSearchTable(db, migrationsHelper);
+            case 55:
+                MigrationTo56.migratePendingCommands(db);
+
         }
     }
 }

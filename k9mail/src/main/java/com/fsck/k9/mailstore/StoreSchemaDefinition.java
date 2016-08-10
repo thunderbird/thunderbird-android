@@ -195,7 +195,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
         db.execSQL("DROP TABLE IF EXISTS pending_commands");
         db.execSQL("CREATE TABLE pending_commands " +
-                "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
+                "(id INTEGER PRIMARY KEY, command TEXT, data TEXT)");
 
         db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
         db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");

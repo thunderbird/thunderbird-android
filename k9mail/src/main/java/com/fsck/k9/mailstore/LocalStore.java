@@ -32,7 +32,8 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.helper.UrlEncodingHelper;
+import com.fsck.k9.controller.PendingCommandSerializer;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -134,7 +135,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 55;
+    public static final int DB_VERSION = 56;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -169,6 +170,7 @@ public class LocalStore extends Store implements Serializable {
     private final MessagePreviewCreator messagePreviewCreator;
     private final MessageFulltextCreator messageFulltextCreator;
     private final AttachmentCounter attachmentCounter;
+    private final PendingCommandSerializer pendingCommandSerializer;
 
     /**
      * local://localhost/path/to/database/uuid.db
@@ -187,6 +189,7 @@ public class LocalStore extends Store implements Serializable {
         messagePreviewCreator = MessagePreviewCreator.newInstance();
         messageFulltextCreator = MessageFulltextCreator.newInstance();
         attachmentCounter = AttachmentCounter.newInstance();
+        pendingCommandSerializer = PendingCommandSerializer.getInstance();
 
         database.open();
     }
@@ -464,7 +467,7 @@ public class LocalStore extends Store implements Serializable {
                 Cursor cursor = null;
                 try {
                     cursor = db.query("pending_commands",
-                                      new String[] { "id", "command", "arguments" },
+                                      new String[] { "id", "command", "data" },
                                       null,
                                       null,
                                       null,
@@ -472,14 +475,11 @@ public class LocalStore extends Store implements Serializable {
                                       "id ASC");
                     List<PendingCommand> commands = new ArrayList<>();
                     while (cursor.moveToNext()) {
-                        PendingCommand command = new PendingCommand();
-                        command.mId = cursor.getLong(0);
-                        command.command = cursor.getString(1);
-                        String arguments = cursor.getString(2);
-                        command.arguments = arguments.split(",");
-                        for (int i = 0; i < command.arguments.length; i++) {
-                            command.arguments[i] = Utility.fastUrlDecode(command.arguments[i]);
-                        }
+                        long databaseId = cursor.getLong(0);
+                        String commandName = cursor.getString(1);
+                        String data = cursor.getString(2);
+                        PendingCommand command = pendingCommandSerializer.unserialize(
+                                databaseId, commandName, data);
                         commands.add(command);
                     }
                     return commands;
@@ -491,12 +491,9 @@ public class LocalStore extends Store implements Serializable {
     }
 
     public void addPendingCommand(PendingCommand command) throws MessagingException {
-        for (int i = 0; i < command.arguments.length; i++) {
-            command.arguments[i] = UrlEncodingHelper.encodeUtf8(command.arguments[i]);
-        }
         final ContentValues cv = new ContentValues();
-        cv.put("command", command.command);
-        cv.put("arguments", Utility.combine(command.arguments, ','));
+        cv.put("command", command.getCommandName());
+        cv.put("data", pendingCommandSerializer.serialize(command));
         database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
@@ -510,7 +507,7 @@ public class LocalStore extends Store implements Serializable {
         database.execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                db.delete("pending_commands", "id = ?", new String[] { Long.toString(command.mId) });
+                db.delete("pending_commands", "id = ?", new String[] { Long.toString(command.databaseId) });
                 return null;
             }
         });
@@ -524,25 +521,6 @@ public class LocalStore extends Store implements Serializable {
                 return null;
             }
         });
-    }
-
-    public static class PendingCommand {
-        private long mId;
-        public String command;
-        public String[] arguments;
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(command);
-            sb.append(": ");
-            for (String argument : arguments) {
-                sb.append(", ");
-                sb.append(argument);
-                //sb.append("\n");
-            }
-            return sb.toString();
-        }
     }
 
     @Override
