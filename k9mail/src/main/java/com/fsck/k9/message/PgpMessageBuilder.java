@@ -10,8 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
+import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.mail.Body;
@@ -46,9 +48,19 @@ public class PgpMessageBuilder extends MessageBuilder {
     private boolean opportunisticSkipEncryption;
     private boolean opportunisticSecondPass;
 
-    public PgpMessageBuilder(Context context, UuidGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
+
+    public static PgpMessageBuilder createPgpMessageBuilder() {
+        Context context = Globals.getContext();
+        UuidGenerator uuidGenerator = UuidGenerator.getInstance();
+        BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
+        return new PgpMessageBuilder(context, uuidGenerator, boundaryGenerator);
+    }
+
+    @VisibleForTesting
+    PgpMessageBuilder(Context context, UuidGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
         super(context, uuidGenerator, boundaryGenerator);
     }
+
 
     public void setOpenPgpApi(OpenPgpApi openPgpApi) {
         this.openPgpApi = openPgpApi;

@@ -64,6 +64,10 @@ public class MimeMessage extends Message {
     private String serverExtra;
 
 
+    public static MimeMessage createMimeMessage(UuidGenerator uuidGenerator) {
+        return new MimeMessage(uuidGenerator);
+    }
+
     public static MimeMessage createMimeMessage() {
         UuidGenerator uuidGenerator = UuidGenerator.getInstance();
         return new MimeMessage(uuidGenerator);

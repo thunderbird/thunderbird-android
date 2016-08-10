@@ -71,7 +71,7 @@ public abstract class MessageBuilder {
     private boolean isDraft;
     private boolean isPgpInlineEnabled;
 
-    public MessageBuilder(Context context, UuidGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
+    protected MessageBuilder(Context context, UuidGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
         this.context = context;
         this.uuidGenerator = uuidGenerator;
         this.boundaryGenerator = boundaryGenerator;
@@ -84,7 +84,7 @@ public abstract class MessageBuilder {
     protected MimeMessage build() throws MessagingException {
         //FIXME: check arguments
 
-        MimeMessage message = MimeMessage.createMimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage(uuidGenerator);
 
         buildHeader(message);
         buildBody(message);
