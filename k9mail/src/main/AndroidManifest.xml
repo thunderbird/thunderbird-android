@@ -391,7 +391,13 @@
             android:exported="true"
             android:grantUriPermissions="true"
             android:multiprocess="true"
-            android:readPermission="${applicationId}.permission.READ_ATTACHMENT"/>
+            android:readPermission="${applicationId}.permission.READ_ATTACHMENT">
+            
+            <meta-data
+                android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
+                android:value="true" />
+        
+        </provider>
 
         <provider
             android:name=".provider.MessageProvider"
