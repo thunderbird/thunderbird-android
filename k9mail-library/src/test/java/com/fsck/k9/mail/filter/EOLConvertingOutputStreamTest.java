@@ -78,4 +78,48 @@ public class EOLConvertingOutputStreamTest {
         subject.write("\n".getBytes());
         assertEquals("Flush\r\n\r\n", out.toString());
     }
+
+    @Test
+    public void testFlushWithCrFollowedByLf() throws Exception {
+        subject.write("Flush\r".getBytes());
+        subject.flush();
+        subject.write("\n".getBytes());
+        assertEquals("Flush\r\n", out.toString());
+    }
+
+    @Test
+    public void endWithCrLfAndFlush_withoutNewline_shouldAddNewline() throws Exception {
+        subject.write("The end".getBytes());
+        
+        subject.endWithCrLfAndFlush();
+        
+        assertEquals("The end\r\n", out.toString());
+    }
+
+    @Test
+    public void endWithCrLfAndFlush_endingWithNewline_shouldNotAddAdditionalNewline() throws Exception {
+        subject.write("The end\r\n".getBytes());
+        
+        subject.endWithCrLfAndFlush();
+        
+        assertEquals("The end\r\n", out.toString());
+    }
+
+    @Test
+    public void endWithCrLfAndFlush_endingWithCr_shouldCompleteNewline() throws Exception {
+        subject.write("The end\r".getBytes());
+        
+        subject.endWithCrLfAndFlush();
+        
+        assertEquals("The end\r\n", out.toString());
+    }
+
+    @Test
+    public void endWithCrLfAndFlush_endingWithLf_shouldCompleteNewline() throws Exception {
+        subject.write("The end\n".getBytes());
+        
+        subject.endWithCrLfAndFlush();
+        
+        assertEquals("The end\r\n", out.toString());
+    }
 }
