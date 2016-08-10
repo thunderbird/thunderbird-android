@@ -6,14 +6,22 @@ import java.util.Collections;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.UuidGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 
 class ImapMessage extends MimeMessage {
-    ImapMessage(String uid, Folder folder) {
+    static ImapMessage createImapMessage(String uid, Folder folder) {
+        UuidGenerator uuidGenerator = UuidGenerator.getInstance();
+        return new ImapMessage(uuidGenerator, uid, folder);
+    }
+
+    private ImapMessage(UuidGenerator uuidGenerator, String uid, Folder folder) {
+        super(uuidGenerator);
         this.mUid = uid;
         this.mFolder = folder;
     }
+
 
     public void setSize(int size) {
         this.mSize = size;

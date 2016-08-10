@@ -210,11 +210,11 @@ public class MimeMessageParseTest {
     }
 
     private static MimeMessage parseWithoutRecurse(InputStream data) throws Exception {
-        return new MimeMessage(data, false);
+        return MimeMessage.parseMimeMessage(data, false);
     }
 
     private static MimeMessage parseWithRecurse(InputStream data) throws Exception {
-        return new MimeMessage(data, true);
+        return MimeMessage.parseMimeMessage(data, true);
     }
 
     private static void checkAddresses(Address[] actual, String... expected) {

@@ -84,7 +84,7 @@ public abstract class MessageBuilder {
     protected MimeMessage build() throws MessagingException {
         //FIXME: check arguments
 
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
 
         buildHeader(message);
         buildBody(message);
@@ -124,7 +124,7 @@ public abstract class MessageBuilder {
             message.setReferences(references);
         }
 
-        message.generateMessageId(uuidGenerator);
+        message.generateMessageId();
 
         if (isDraft && isPgpInlineEnabled) {
             message.setFlag(Flag.X_DRAFT_OPENPGP_INLINE, true);

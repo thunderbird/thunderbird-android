@@ -43,6 +43,8 @@ import org.apache.james.mime4j.util.MimeUtil;
  * RFC 2045 style headers.
  */
 public class MimeMessage extends Message {
+    protected final UuidGenerator uuidGenerator;
+
     private MimeHeader mHeader = new MimeHeader();
     protected Address[] mFrom;
     protected Address[] mTo;
@@ -61,21 +63,22 @@ public class MimeMessage extends Message {
     protected int mSize;
     private String serverExtra;
 
-    public MimeMessage() {
+
+    public static MimeMessage createMimeMessage() {
+        UuidGenerator uuidGenerator = UuidGenerator.getInstance();
+        return new MimeMessage(uuidGenerator);
     }
 
-
-    /**
-     * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
-     *
-     * @param in
-     * @param recurse A boolean indicating to recurse through all nested MimeMessage subparts.
-     * @throws IOException
-     * @throws MessagingException
-     */
-    public MimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
-        parse(in, recurse);
+    public static MimeMessage parseMimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
+        MimeMessage mimeMessage = createMimeMessage();
+        mimeMessage.parse(in, recurse);
+        return mimeMessage;
     }
+
+    protected MimeMessage(UuidGenerator uuidGenerator) {
+        this.uuidGenerator = uuidGenerator;
+    }
+
 
     /**
      * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
@@ -319,7 +322,7 @@ public class MimeMessage extends Message {
         return mMessageId;
     }
 
-    public void generateMessageId(UuidGenerator uuidGenerator) throws MessagingException {
+    public void generateMessageId() {
         String hostname = null;
 
         if (mFrom != null && mFrom.length >= 1) {
@@ -502,7 +505,7 @@ public class MimeMessage extends Message {
                 expect(Part.class);
                 Part part = (Part) stack.peek();
 
-                MimeMessage m = new MimeMessage();
+                MimeMessage m = createMimeMessage();
                 part.setBody(m);
                 stack.addFirst(m);
             }
@@ -643,7 +646,7 @@ public class MimeMessage extends Message {
 
     @Override
     public MimeMessage clone() {
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = createMimeMessage();
         copy(message);
         return message;
     }

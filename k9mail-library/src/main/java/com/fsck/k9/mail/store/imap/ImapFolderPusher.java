@@ -587,7 +587,7 @@ class ImapFolderPusher extends ImapFolder {
 
                     List<Message> messages = new ArrayList<Message>();
                     for (long uid = startUid; uid <= newUid; uid++) {
-                        ImapMessage message = new ImapMessage(Long.toString(uid), ImapFolderPusher.this);
+                        ImapMessage message = ImapMessage.createImapMessage(Long.toString(uid), ImapFolderPusher.this);
                         messages.add(message);
                     }
 
@@ -626,7 +626,7 @@ class ImapFolderPusher extends ImapFolder {
                 }
 
                 for (String uid : removeUids) {
-                    ImapMessage message = new ImapMessage(uid, ImapFolderPusher.this);
+                    ImapMessage message = ImapMessage.createImapMessage(uid, ImapFolderPusher.this);
 
                     try {
                         message.setFlagInternal(Flag.DELETED, true);
@@ -662,7 +662,7 @@ class ImapFolderPusher extends ImapFolder {
             List<Message> messages = new ArrayList<Message>(count);
 
             for (long uid = startUid; uid < uidNext; uid++) {
-                ImapMessage message = new ImapMessage(Long.toString(uid), ImapFolderPusher.this);
+                ImapMessage message = ImapMessage.createImapMessage(Long.toString(uid), ImapFolderPusher.this);
                 messages.add(message);
             }
 

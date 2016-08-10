@@ -117,7 +117,7 @@ public class ListHeadersTest {
     }
 
     private MimeMessage buildMimeMessageWithListPostValue(String... values) throws MessagingException {
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         for (String value : values) {
             message.addHeader("List-Post", value);
         }

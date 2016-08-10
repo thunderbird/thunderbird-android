@@ -739,7 +739,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
-                Message innerMessage = new MimeMessage();
+                Message innerMessage = MimeMessage.createMimeMessage();
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
             } else {
@@ -833,7 +833,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
                         open(OPEN_MODE_RW);
-                        LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this);
+                        LocalMessage message =
+                                LocalMessage.createLocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this);
                         Cursor cursor = null;
 
                         try {

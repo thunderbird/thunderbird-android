@@ -2413,7 +2413,7 @@ public class MessagingController {
 
             Store localStore = account.getLocalStore();
             LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
-            MimeMessage message = new MimeMessage();
+            MimeMessage message = MimeMessage.createMimeMessage();
 
             MimeMessageHelper.setBody(message, new TextBody(body));
             message.setFlag(Flag.X_DOWNLOADED_FULL, true);

@@ -35,7 +35,7 @@ public class MessageDecryptVerifierTest {
 
     @Test
     public void findEncryptedPartsShouldReturnEmptyListForEmptyMessage() throws Exception {
-        MimeMessage emptyMessage = new MimeMessage();
+        MimeMessage emptyMessage = MimeMessage.createMimeMessage();
 
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(emptyMessage);
 
@@ -44,7 +44,7 @@ public class MessageDecryptVerifierTest {
 
     @Test
     public void findEncryptedPartsShouldReturnEmptyListForSimpleMessage() throws Exception {
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         message.setBody(new TextBody("message text"));
 
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
@@ -54,7 +54,7 @@ public class MessageDecryptVerifierTest {
 
     @Test
     public void findEncryptedPartsShouldReturnEmptyEncryptedPart() throws Exception {
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         MimeMultipart multipartEncrypted = MimeMultipart.createMimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         MimeMessageHelper.setBody(message, multipartEncrypted);
@@ -68,7 +68,7 @@ public class MessageDecryptVerifierTest {
 
     @Test
     public void findEncryptedPartsShouldReturnMultipleEncryptedParts() throws Exception {
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         MimeMultipart multipartMixed = MimeMultipart.createMimeMultipart();
         multipartMixed.setSubType("mixed");
         MimeMessageHelper.setBody(message, multipartMixed);
@@ -273,7 +273,7 @@ public class MessageDecryptVerifierTest {
     }
 
     MimeMessage messageFromBody(BodyPart bodyPart) throws MessagingException {
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         MimeMessageHelper.setBody(message, bodyPart.getBody());
         return message;
     }

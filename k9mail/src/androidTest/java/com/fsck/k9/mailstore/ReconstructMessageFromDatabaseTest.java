@@ -95,7 +95,7 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
     public void testAddMissingPart() throws MessagingException, IOException {
         LocalFolder folder = createFolderInDatabase();
 
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         message.addHeader("To", "to@example.com");
         message.addHeader("MIME-Version", "1.0");
         message.addHeader("Content-Type", "text/plain");
@@ -128,7 +128,7 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
     protected MimeMessage parseMessage() throws IOException, MessagingException {
         InputStream messageInputStream = new ByteArrayInputStream(MESSAGE_SOURCE.getBytes());
         try {
-            return new MimeMessage(messageInputStream, true);
+            return MimeMessage.parseMimeMessage(messageInputStream, true);
         } finally {
             messageInputStream.close();
         }

@@ -279,7 +279,7 @@ public class WebDavFolderTest {
 
         List<WebDavMessage> messages = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
-            WebDavMessage message = new WebDavMessage("message" + i, folder);
+            WebDavMessage message = WebDavMessage.createWebDavMessage("message" + i, folder);
             message.setUrl("http://example.org/Exchange/user/Inbox/message" + i + ".EML");
             messages.add(message);
         }

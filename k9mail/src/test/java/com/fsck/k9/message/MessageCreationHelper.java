@@ -52,7 +52,7 @@ public class MessageCreationHelper {
     }
 
     private static Message createMessage(String mimeType, Body body) throws MessagingException {
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         message.setBody(body);
         message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType);
 

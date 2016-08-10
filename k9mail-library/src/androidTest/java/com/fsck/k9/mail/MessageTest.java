@@ -461,7 +461,7 @@ public class MessageTest {
     }
 
     private MimeMessage sampleMessage() throws MessagingException, IOException {
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         message.setFrom(new Address("from@example.com"));
         message.setRecipient(RecipientType.TO, new Address("to@example.com"));
         message.setSubject("Test Message");

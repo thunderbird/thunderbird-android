@@ -69,7 +69,7 @@ public class MessageViewInfoExtractorTest {
         TextBody body = new TextBody(BODY_TEXT);
 
         // Create message
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         MimeMessageHelper.setBody(message, body);
 
         // Prepare fixture
@@ -95,7 +95,7 @@ public class MessageViewInfoExtractorTest {
         TextBody body = new TextBody(BODY_TEXT);
 
         // Create message
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
         MimeMessageHelper.setBody(message, body);
 
@@ -123,7 +123,7 @@ public class MessageViewInfoExtractorTest {
         TextBody body = new TextBody(bodyText);
 
         // Create message
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/html");
         MimeMessageHelper.setBody(message, body);
 
@@ -158,7 +158,7 @@ public class MessageViewInfoExtractorTest {
         multipart.addBodyPart(bodyPart2);
 
         // Create message
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
@@ -201,7 +201,7 @@ public class MessageViewInfoExtractorTest {
         TextBody innerBody = new TextBody(innerBodyText);
 
         // Create message/rfc822 body
-        MimeMessage innerMessage = new MimeMessage();
+        MimeMessage innerMessage = MimeMessage.createMimeMessage();
         innerMessage.addSentDate(new Date(112, 02, 17), false);
         innerMessage.setRecipients(RecipientType.TO, new Address[] { new Address("to@example.com") });
         innerMessage.setSubject("Subject");
@@ -217,7 +217,7 @@ public class MessageViewInfoExtractorTest {
         multipart.addBodyPart(bodyPart2);
 
         // Create message
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.createMimeMessage();
         MimeMessageHelper.setBody(message, multipart);
 
         // Extract text
