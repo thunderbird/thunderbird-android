@@ -104,6 +104,7 @@ public class DeferredFileBody implements RawDataBody, SizeAware {
 
         Log.d(K9.LOG_TAG, "Writing body to file for attachment access");
 
+        file = fileFactory.createFile();
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(data);
         fos.close();
