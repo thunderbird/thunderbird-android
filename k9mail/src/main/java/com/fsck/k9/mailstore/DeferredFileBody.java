@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -26,11 +27,12 @@ import org.apache.commons.io.IOUtils;
  * @see FileFactory
  */
 public class DeferredFileBody implements RawDataBody, SizeAware {
-    public static final int MEMORY_BACKED_THRESHOLD = 1024 * 8;
+    public static final int DEFAULT_MEMORY_BACKED_THRESHOLD = 1024 * 8;
 
 
     private final FileFactory fileFactory;
     private final String encoding;
+    private final int memoryBackedThreshold;
 
     @Nullable
     private byte[] data;
@@ -38,12 +40,19 @@ public class DeferredFileBody implements RawDataBody, SizeAware {
 
 
     public DeferredFileBody(FileFactory fileFactory, String transferEncoding) {
+        this(DEFAULT_MEMORY_BACKED_THRESHOLD, fileFactory, transferEncoding);
+    }
+
+    @VisibleForTesting
+    DeferredFileBody(int memoryBackedThreshold, FileFactory fileFactory,
+            String transferEncoding) {
         this.fileFactory = fileFactory;
+        this.memoryBackedThreshold = memoryBackedThreshold;
         this.encoding = transferEncoding;
     }
 
     public OutputStream getOutputStream() throws IOException {
-        return new DeferredFileOutputStream(MEMORY_BACKED_THRESHOLD, fileFactory) {
+        return new DeferredFileOutputStream(memoryBackedThreshold, fileFactory) {
             @Override
             public void close() throws IOException {
                 super.close();
