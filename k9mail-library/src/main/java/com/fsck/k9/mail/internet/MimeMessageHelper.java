@@ -2,7 +2,7 @@ package com.fsck.k9.mail.internet;
 
 
 import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -33,16 +33,16 @@ public class MimeMessageHelper {
                 setEncoding(part, MimeUtil.ENC_8BIT);
             }
         } else if (body instanceof TextBody) {
-            FancyPart fancyPart = FancyPart.from(part);
+            PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(part);
             String contentType;
-            if (fancyPart.isMatchingMimeType("text/*")) {
-                contentType = String.format("%s;\r\n charset=utf-8", fancyPart.getMimeType());
-                String name = fancyPart.getContentTypeName();
+            if (partHeaderMetadata.isMatchingMimeType("text/*")) {
+                contentType = String.format("%s;\r\n charset=utf-8", partHeaderMetadata.getMimeType());
+                String name = partHeaderMetadata.getContentTypeName();
                 if (name != null) {
                     contentType += String.format(";\r\n name=\"%s\"", name);
                 }
             } else {
-                contentType = fancyPart.getMimeType();
+                contentType = partHeaderMetadata.getMimeType();
                 if (contentType == null) {
                     contentType = "text/plain";
                 }

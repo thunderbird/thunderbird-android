@@ -20,7 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -837,9 +837,9 @@ class ImapFolder extends Folder<ImapMessage> {
                             String bodyString = (String) literal;
                             InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
 
-                            FancyPart fancyPart = FancyPart.from(part);
-                            String contentTransferEncoding = fancyPart.getContentTransferEncoding();
-                            String mimeType = fancyPart.getMimeType();
+                            PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(part);
+                            String contentTransferEncoding = partHeaderMetadata.getContentTransferEncoding();
+                            String mimeType = partHeaderMetadata.getMimeType();
                             MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
                                     mimeType));
                         } else {

@@ -16,7 +16,7 @@ import android.support.annotation.WorkerThread;
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -80,7 +80,7 @@ public class AttachmentInfoExtractor {
             if (body instanceof DeferredFileBody) {
                 DeferredFileBody decryptedTempFileBody = (DeferredFileBody) body;
                 size = decryptedTempFileBody.getSize();
-                uri = getDecryptedFileProviderUri(decryptedTempFileBody, FancyPart.from(part).getMimeType());
+                uri = getDecryptedFileProviderUri(decryptedTempFileBody, PartHeaderMetadata.from(part).getMimeType());
                 isContentAvailable = true;
             } else {
                 throw new IllegalArgumentException("Unsupported part type provided");
@@ -112,13 +112,13 @@ public class AttachmentInfoExtractor {
 
     @WorkerThread
     private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size, boolean isContentAvailable) {
-        FancyPart fancyPart = FancyPart.from(part);
+        PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(part);
 
-        String mimeType = fancyPart.getMimeType();
-        String attachmentName = fancyPart.getDispositionFilename();
+        String mimeType = partHeaderMetadata.getMimeType();
+        String attachmentName = partHeaderMetadata.getDispositionFilename();
 
         if (attachmentName == null) {
-            attachmentName = fancyPart.getContentTypeName();
+            attachmentName = partHeaderMetadata.getContentTypeName();
         }
 
         if (attachmentName == null) {
@@ -133,24 +133,24 @@ public class AttachmentInfoExtractor {
         // not attachments. Only show them if the user pressed the button to show more
         // attachments.
         boolean inlineAttachment = false;
-        String contentId = fancyPart.getContentId();
-        if (fancyPart.isDispositionInline() && contentId != null) {
+        String contentId = partHeaderMetadata.getContentId();
+        if (partHeaderMetadata.isDispositionInline() && contentId != null) {
             inlineAttachment = true;
         }
 
-        long attachmentSize = extractAttachmentSize(fancyPart, size);
+        long attachmentSize = extractAttachmentSize(partHeaderMetadata, size);
 
         return new AttachmentViewInfo(mimeType, attachmentName, attachmentSize, uri,
                 inlineAttachment, part, isContentAvailable, contentId);
     }
 
     @WorkerThread
-    private long extractAttachmentSize(FancyPart fancyPart, long explicitSize) {
+    private long extractAttachmentSize(PartHeaderMetadata partHeaderMetadata, long explicitSize) {
         if (explicitSize != AttachmentViewInfo.UNKNOWN_SIZE) {
             return explicitSize;
         }
 
-        Long sizeFromHeader = fancyPart.getDispositionSize();
+        Long sizeFromHeader = partHeaderMetadata.getDispositionSize();
         if (sizeFromHeader == null) {
             return AttachmentViewInfo.UNKNOWN_SIZE;
         }

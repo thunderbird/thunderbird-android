@@ -21,7 +21,7 @@ import org.apache.james.mime4j.field.ContentTypeFieldImpl;
 import org.apache.james.mime4j.stream.RawField;
 
 
-public class FancyPart {
+public class PartHeaderMetadata {
     private static final String PROTOCOL_PARAMETER = "protocol";
 
 
@@ -32,7 +32,7 @@ public class FancyPart {
     private final ContentIdField contentIdField;
 
 
-    private FancyPart(Part wrappedPart, ContentTypeField contentTypeField,
+    private PartHeaderMetadata(Part wrappedPart, ContentTypeField contentTypeField,
             ContentTransferEncodingField contentTransferEncodingField, ContentDispositionField contentDispositionField,
             ContentIdField contentIdField) {
         this.wrappedPart = wrappedPart;
@@ -42,7 +42,7 @@ public class FancyPart {
         this.contentIdField = contentIdField;
     }
 
-    public static FancyPart from(Part part) {
+    public static PartHeaderMetadata from(Part part) {
         ContentTypeField contentTypeField = parseHeaderToField(
                 part, FieldName.CONTENT_TYPE, ContentTypeFieldImpl.PARSER);
 
@@ -55,7 +55,7 @@ public class FancyPart {
         ContentIdField contentIdField = parseHeaderToField(
                 part, FieldName.CONTENT_ID, ContentIdFieldImpl.PARSER);
 
-        return new FancyPart(part, contentTypeField, contentTransferEncodingField, contentDispositionField, contentIdField);
+        return new PartHeaderMetadata(part, contentTypeField, contentTransferEncodingField, contentDispositionField, contentIdField);
     }
 
 

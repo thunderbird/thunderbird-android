@@ -36,7 +36,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -733,7 +733,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 throw new IllegalStateException("Parent part not found");
             }
 
-            String parentMimeType = FancyPart.from(parentPart).getMimeType();
+            String parentMimeType = PartHeaderMetadata.from(parentPart).getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
                 BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
@@ -1280,7 +1280,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             cv.put("attachment_count", attachmentCount);
             cv.put("internal_date", message.getInternalDate() == null
                     ? System.currentTimeMillis() : message.getInternalDate().getTime());
-            cv.put("mime_type", FancyPart.from(message).getMimeType());
+            cv.put("mime_type", PartHeaderMetadata.from(message).getMimeType());
             cv.put("empty", 0);
 
             cv.put("preview_type", databasePreviewType.getDatabaseValue());
@@ -1372,7 +1372,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             throws IOException, MessagingException {
         byte[] headerBytes = getHeaderBytes(part);
 
-        cv.put("mime_type", FancyPart.from(part).getMimeType());
+        cv.put("mime_type", PartHeaderMetadata.from(part).getMimeType());
         cv.put("header", headerBytes);
         cv.put("type", MessagePartType.UNKNOWN);
 
@@ -1416,7 +1416,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         cv.put("data_location", DataLocation.MISSING);
         cv.put("decoded_body_size", attachment.size);
 
-        if (MimeUtility.isMultipart(FancyPart.from(part).getMimeType())) {
+        if (MimeUtility.isMultipart(PartHeaderMetadata.from(part).getMimeType())) {
             cv.put("boundary", MimeMultipart.generateBoundary());
         }
     }

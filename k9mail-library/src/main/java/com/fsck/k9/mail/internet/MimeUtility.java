@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -957,13 +957,13 @@ public class MimeUtility {
         if (part.getBody() instanceof Multipart) {
             Multipart multipart = (Multipart)part.getBody();
             for (BodyPart bodyPart : multipart.getBodyParts()) {
-                FancyPart fancyPart = FancyPart.from(bodyPart);
+                PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(bodyPart);
                 Part ret = MimeUtility.findFirstPartByMimeType(part, mimeType);
                 if (ret != null) {
                     return ret;
                 }
             }
-        } else if (FancyPart.from(part).isMimeType(mimeType)) {
+        } else if (PartHeaderMetadata.from(part).isMimeType(mimeType)) {
             return part;
         }
         return null;

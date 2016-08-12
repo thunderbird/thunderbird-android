@@ -16,7 +16,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeBodyPart;
@@ -96,7 +96,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                 return;
             }
 
-            boolean isSimpleTextMessage = FancyPart.from(currentProcessedMimeMessage).isMimeType("text/plain");
+            boolean isSimpleTextMessage = PartHeaderMetadata.from(currentProcessedMimeMessage).isMimeType("text/plain");
             if (isPgpInlineMode && !isSimpleTextMessage) {
                 throw new MessagingException("Attachments are not supported in PGP/INLINE format!");
             }

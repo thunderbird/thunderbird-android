@@ -4,7 +4,7 @@ package com.fsck.k9.message.extractors;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -45,7 +45,7 @@ public class MessageFulltextCreator {
         }
 
         String text = MessageExtractor.getTextFromPart(textPart, MAX_CHARACTERS_CHECKED_FOR_FTS);
-        if (!FancyPart.from(textPart).isMimeType("text/html")) {
+        if (!PartHeaderMetadata.from(textPart).isMimeType("text/html")) {
             return text;
         }
 

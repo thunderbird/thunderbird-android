@@ -16,7 +16,7 @@ import android.util.Log;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -49,9 +49,9 @@ public class MessageExtractor {
                 if (body instanceof TextBody) {
                     return ((TextBody)body).getText();
                 }
-                FancyPart fancyPart = FancyPart.from(part);
-                if (fancyPart.isMatchingMimeType("text/*") || fancyPart.isMimeType("application/pgp")) {
-                    return getTextFromTextPart(part, body, fancyPart.getMimeType(), textSizeLimit);
+                PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(part);
+                if (partHeaderMetadata.isMatchingMimeType("text/*") || partHeaderMetadata.isMimeType("application/pgp")) {
+                    return getTextFromTextPart(part, body, partHeaderMetadata.getMimeType(), textSizeLimit);
                 } else {
                     throw new MessagingException("Provided non-text part: " + part);
                 }
@@ -68,7 +68,7 @@ public class MessageExtractor {
 
     private static String getTextFromTextPart(Part part, Body body, String mimeType, long textSizeLimit)
             throws IOException, MessagingException {
-        String charset = FancyPart.from(part).getCharset();
+        String charset = PartHeaderMetadata.from(part).getCharset();
         /*
          * determine the charset from HTML message.
          */
@@ -137,11 +137,11 @@ public class MessageExtractor {
             throw new IllegalArgumentException("method was called but no output is to be collected - this a bug!");
         }
 
-        FancyPart fancyPart = FancyPart.from(part);
+        PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(part);
         Body body = part.getBody();
         if (body instanceof Multipart) {
             Multipart multipart = (Multipart) body;
-            if (fancyPart.isMimeType("multipart/alternative")) {
+            if (partHeaderMetadata.isMimeType("multipart/alternative")) {
                 /*
                  * For multipart/alternative parts we try to find a text/plain and a text/html
                  * child. Everything else we find is put into 'attachments'.
@@ -164,7 +164,7 @@ public class MessageExtractor {
                     findViewablesAndAttachments(bodyPart, outputViewableParts, outputNonViewableParts);
                 }
             }
-        } else if (body instanceof Message && fancyPart.isDispositionInline()) {
+        } else if (body instanceof Message && partHeaderMetadata.isDispositionInline()) {
             if (skipSavingViewableParts) {
                 return;
             }
@@ -183,14 +183,14 @@ public class MessageExtractor {
             if (skipSavingViewableParts) {
                 return;
             }
-            if (fancyPart.isMimeType("text/plain")) {
+            if (partHeaderMetadata.isMimeType("text/plain")) {
                 Text text = new Text(part);
                 outputViewableParts.add(text);
             } else {
                 Html html = new Html(part);
                 outputViewableParts.add(html);
             }
-        } else if (fancyPart.isMimeType("application/pgp-signature")) {
+        } else if (partHeaderMetadata.isMimeType("application/pgp-signature")) {
             // ignore this type explicitly
         } else {
             if (skipSavingNonViewableParts) {
@@ -294,7 +294,7 @@ public class MessageExtractor {
                     }
                 }
             } else {
-                if (isPartTextualBody(bodyPart) && FancyPart.from(bodyPart).isMimeType("text/plain")) {
+                if (isPartTextualBody(bodyPart) && PartHeaderMetadata.from(bodyPart).isMimeType("text/plain")) {
                     Text text = new Text(bodyPart);
                     viewables.add(text);
                     if (directChild) {
@@ -358,7 +358,7 @@ public class MessageExtractor {
                     }
                 }
             } else if (!(directChild && partFound) && isPartTextualBody(part) &&
-                    FancyPart.from(part).isMimeType("text/html")) {
+                    PartHeaderMetadata.from(part).isMimeType("text/html")) {
                 Html html = new Html(part);
                 viewables.add(html);
                 partFound = true;
@@ -425,21 +425,21 @@ public class MessageExtractor {
     }
 
     private static Boolean isPartTextualBody(Part part) throws MessagingException {
-        FancyPart fancyPart = FancyPart.from(part);
+        PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(part);
 
-        if (fancyPart.isDispositionAttachment()) {
+        if (partHeaderMetadata.isDispositionAttachment()) {
             return false;
         }
 
-        if (fancyPart.isMimeType("text/html")) {
+        if (partHeaderMetadata.isMimeType("text/html")) {
             return true;
         }
 
-        if (fancyPart.isMimeType("text/plain")) {
+        if (partHeaderMetadata.isMimeType("text/plain")) {
             return true;
         }
 
-        if (fancyPart.isMimeType("application/pgp")) {
+        if (partHeaderMetadata.isMimeType("application/pgp")) {
             return true;
         }
 

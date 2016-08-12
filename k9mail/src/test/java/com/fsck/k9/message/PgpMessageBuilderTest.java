@@ -23,7 +23,7 @@ import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -139,21 +139,21 @@ public class PgpMessageBuilderTest {
 
         MimeMessage message = captor.getValue();
         Assert.assertEquals("message must be multipart/signed",
-                "multipart/signed", FancyPart.from(message).getMimeType());
+                "multipart/signed", PartHeaderMetadata.from(message).getMimeType());
 
         MimeMultipart multipart = (MimeMultipart) message.getBody();
         Assert.assertEquals("multipart/signed must consist of two parts", 2, multipart.getCount());
 
         BodyPart contentBodyPart = multipart.getBodyPart(0);
         Assert.assertEquals("first part must have content type text/plain",
-                "text/plain", FancyPart.from(contentBodyPart).getMimeType());
+                "text/plain", PartHeaderMetadata.from(contentBodyPart).getMimeType());
         Assert.assertTrue("signed message body must be TextBody", contentBodyPart.getBody() instanceof TextBody);
         Assert.assertEquals(MimeUtil.ENC_QUOTED_PRINTABLE, ((TextBody) contentBodyPart.getBody()).getEncoding());
         assertContentOfBodyPartEquals("content must match the message text", contentBodyPart, TEST_MESSAGE_TEXT);
 
         BodyPart signatureBodyPart = multipart.getBodyPart(1);
         Assert.assertEquals("second part must be pgp signature",
-                "application/pgp-signature", FancyPart.from(signatureBodyPart).getMimeType());
+                "application/pgp-signature", PartHeaderMetadata.from(signatureBodyPart).getMimeType());
         assertContentOfBodyPartEquals("content must match the supplied detached signature",
                 signatureBodyPart, new byte[] { 1, 2, 3 });
     }
@@ -282,20 +282,20 @@ public class PgpMessageBuilderTest {
         MimeMessage message = captor.getValue();
 
         Assert.assertEquals("message must be multipart/encrypted",
-                "multipart/encrypted", FancyPart.from(message).getMimeType());
+                "multipart/encrypted", PartHeaderMetadata.from(message).getMimeType());
 
         MimeMultipart multipart = (MimeMultipart) message.getBody();
         Assert.assertEquals("multipart/encrypted must consist of two parts", 2, multipart.getCount());
 
         BodyPart dummyBodyPart = multipart.getBodyPart(0);
         Assert.assertEquals("first part must be pgp encrypted dummy part",
-                "application/pgp-encrypted", FancyPart.from(dummyBodyPart).getMimeType());
+                "application/pgp-encrypted", PartHeaderMetadata.from(dummyBodyPart).getMimeType());
         assertContentOfBodyPartEquals("content must match the supplied detached signature",
                 dummyBodyPart, "Version: 1");
 
         BodyPart encryptedBodyPart = multipart.getBodyPart(1);
         Assert.assertEquals("second part must be octet-stream of encrypted data",
-                "application/octet-stream", FancyPart.from(encryptedBodyPart).getMimeType());
+                "application/octet-stream", PartHeaderMetadata.from(encryptedBodyPart).getMimeType());
         Assert.assertTrue("message body must be BinaryTempFileBody",
                 encryptedBodyPart.getBody() instanceof BinaryTempFileBody);
         Assert.assertEquals(MimeUtil.ENC_7BIT, ((BinaryTempFileBody) encryptedBodyPart.getBody()).getEncoding());
@@ -334,7 +334,7 @@ public class PgpMessageBuilderTest {
         verifyNoMoreInteractions(mockCallback);
 
         MimeMessage message = captor.getValue();
-        Assert.assertEquals("text/plain", FancyPart.from(message).getMimeType());
+        Assert.assertEquals("text/plain", PartHeaderMetadata.from(message).getMimeType());
         Assert.assertTrue("message body must be BinaryTempFileBody", message.getBody() instanceof BinaryTempFileBody);
         Assert.assertEquals(MimeUtil.ENC_7BIT, ((BinaryTempFileBody) message.getBody()).getEncoding());
     }
@@ -369,7 +369,7 @@ public class PgpMessageBuilderTest {
         verifyNoMoreInteractions(mockCallback);
 
         MimeMessage message = captor.getValue();
-        Assert.assertEquals("message must be text/plain", "text/plain", FancyPart.from(message).getMimeType());
+        Assert.assertEquals("message must be text/plain", "text/plain", PartHeaderMetadata.from(message).getMimeType());
     }
 
     @Test

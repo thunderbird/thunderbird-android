@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 
@@ -18,12 +18,12 @@ class TextPartFinder {
 
         if (body instanceof Multipart) {
             Multipart multipart = (Multipart) body;
-            if (FancyPart.from(part).isMimeType("multipart/alternative")) {
+            if (PartHeaderMetadata.from(part).isMimeType("multipart/alternative")) {
                 return findTextPartInMultipartAlternative(multipart);
             } else {
                 return findTextPartInMultipart(multipart);
             }
-        } else if (FancyPart.from(part).isMimeTypeAnyOf("text/plain", "text/html")) {
+        } else if (PartHeaderMetadata.from(part).isMimeTypeAnyOf("text/plain", "text/html")) {
             return part;
         }
 
@@ -34,13 +34,13 @@ class TextPartFinder {
         Part htmlPart = null;
 
         for (BodyPart bodyPart : multipart.getBodyParts()) {
-            FancyPart fancyBodyPart = FancyPart.from(bodyPart);
+            PartHeaderMetadata fancyBodyPart = PartHeaderMetadata.from(bodyPart);
             Body body = bodyPart.getBody();
 
             if (body instanceof Multipart) {
                 Part candidatePart = findFirstTextPart(bodyPart);
                 if (candidatePart != null) {
-                    if (FancyPart.from(candidatePart).isMimeType("text/html")) {
+                    if (PartHeaderMetadata.from(candidatePart).isMimeType("text/html")) {
                         htmlPart = candidatePart;
                     } else {
                         return candidatePart;
@@ -69,7 +69,7 @@ class TextPartFinder {
                 if (candidatePart != null) {
                     return candidatePart;
                 }
-            } else if (FancyPart.from(bodyPart).isMimeTypeAnyOf("text/plain", "text/html")) {
+            } else if (PartHeaderMetadata.from(bodyPart).isMimeTypeAnyOf("text/plain", "text/html")) {
                 return bodyPart;
             }
         }

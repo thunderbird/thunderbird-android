@@ -16,7 +16,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.HtmlSanitizer;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -290,9 +290,9 @@ public class MessageViewInfoExtractor {
      *         {@code true}, if the divider should be appended. {@code false}, otherwise.
      */
     private void addHtmlDivider(StringBuilder html, Part part, boolean prependDivider) {
-        FancyPart fancyPart = FancyPart.from(part);
+        PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(part);
         if (prependDivider) {
-            String filename = fancyPart.getPartName();
+            String filename = partHeaderMetadata.getPartName();
             if (TextUtils.isEmpty(filename)) {
                 filename = "";
             }
@@ -315,9 +315,9 @@ public class MessageViewInfoExtractor {
      *         {@code true}, if the divider should be appended. {@code false}, otherwise.
      */
     private void addTextDivider(StringBuilder text, Part part, boolean prependDivider) {
-        FancyPart fancyPart = FancyPart.from(part);
+        PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(part);
         if (prependDivider) {
-            String filename = fancyPart.getPartName();
+            String filename = partHeaderMetadata.getPartName();
 
             text.append("\r\n\r\n");
             if (filename != null && filename.length() > 0) {

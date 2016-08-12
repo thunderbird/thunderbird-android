@@ -2,7 +2,7 @@ package com.fsck.k9.mail.internet;
 
 import android.util.Log;
 
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -35,7 +35,7 @@ public class CharsetSupport {
 
     public static void setCharset(String charset, Part part) throws MessagingException {
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                FancyPart.from(part).getMimeType() + ";\r\n charset=" + getExternalCharset(charset));
+                PartHeaderMetadata.from(part).getMimeType() + ";\r\n charset=" + getExternalCharset(charset));
     }
 
 

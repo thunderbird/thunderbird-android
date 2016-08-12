@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.fsck.k9.mail.FancyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "adam@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
         assertEquals("Testmail", msg.getSubject());
-        assertEquals("text/plain", FancyPart.from(msg).getMimeType());
+        assertEquals("text/plain", PartHeaderMetadata.from(msg).getMimeType());
         assertEquals("this is some test text.", streamToString(MimeUtility.decodeBody(msg.getBody())));
     }
 
@@ -68,8 +68,8 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "adam@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
         assertEquals("Testmail", msg.getSubject());
-        assertEquals("text/plain", FancyPart.from(msg).getMimeType());
-        assertEquals("ISO-8859-1", FancyPart.from(msg).getCharset());
+        assertEquals("text/plain", PartHeaderMetadata.from(msg).getMimeType());
+        assertEquals("ISO-8859-1", PartHeaderMetadata.from(msg).getCharset());
         assertEquals("gefährliche Umlaute", streamToString(MimeUtility.decodeBody(msg.getBody())));
     }
 
@@ -88,7 +88,7 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "adam@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
         assertEquals("Testmail", msg.getSubject());
-        assertEquals("text/plain", FancyPart.from(msg).getMimeType());
+        assertEquals("text/plain", PartHeaderMetadata.from(msg).getMimeType());
         assertEquals("this is some more test text.", streamToString(MimeUtility.decodeBody(msg.getBody())));
     }
 
@@ -117,8 +117,8 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "x@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "y@example.org");
         assertEquals("Testmail 2", msg.getSubject());
-        assertEquals("multipart/mixed", FancyPart.from(msg).getMimeType());
-        assertEquals("frontier", FancyPart.from(msg).getBoundary());
+        assertEquals("multipart/mixed", PartHeaderMetadata.from(msg).getMimeType());
+        assertEquals("frontier", PartHeaderMetadata.from(msg).getBoundary());
         checkLeafParts(msg,
                 "This is the body of the message.",
                 "<html>\n" +
@@ -156,8 +156,8 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "x@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "y@example.org");
         assertEquals("Testmail 2", msg.getSubject());
-        assertEquals("multipart/mixed", FancyPart.from(msg).getMimeType());
-        assertEquals("frontier", FancyPart.from(msg).getBoundary());
+        assertEquals("multipart/mixed", PartHeaderMetadata.from(msg).getMimeType());
+        assertEquals("frontier", PartHeaderMetadata.from(msg).getBoundary());
         checkLeafParts(msg,
                 "This is the body of the message.",
                 "<html>\n" +
@@ -201,8 +201,8 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "x@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "y@example.org");
         assertEquals("Testmail 2", msg.getSubject());
-        assertEquals("multipart/mixed", FancyPart.from(msg).getMimeType());
-        assertEquals("1", FancyPart.from(msg).getBoundary());
+        assertEquals("multipart/mixed", PartHeaderMetadata.from(msg).getMimeType());
+        assertEquals("1", PartHeaderMetadata.from(msg).getBoundary());
         checkLeafParts(msg,
                 "some text in the first part",
                 "alternative 1",
