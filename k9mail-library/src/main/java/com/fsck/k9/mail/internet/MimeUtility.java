@@ -221,6 +221,7 @@ public class MimeUtility {
     { "epub", "application/epub+zip"},
     { "es3", "application/vnd.eszigno3+xml"},
     { "esf", "application/vnd.epson.esf"},
+    { "espass", "application/vnd.espass-espass+zip"},
     { "et3", "application/vnd.eszigno3+xml"},
     { "etx", "text/x-setext"},
     { "evy", "application/envoy"},
