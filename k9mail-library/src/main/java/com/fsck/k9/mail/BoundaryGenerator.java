@@ -4,20 +4,23 @@ package com.fsck.k9.mail;
 import java.util.Locale;
 import java.util.Random;
 
+import android.support.annotation.VisibleForTesting;
+
 
 public class BoundaryGenerator {
-    private static final BoundaryGenerator INSTANCE = new BoundaryGenerator();
+    private static final BoundaryGenerator INSTANCE = new BoundaryGenerator(new Random());
 
 
-    private Random random;
+    private final Random random;
 
 
     public static BoundaryGenerator getInstance() {
         return INSTANCE;
     }
 
-    private BoundaryGenerator() {
-        this.random = new Random();
+    @VisibleForTesting
+    BoundaryGenerator(Random random) {
+        this.random = random;
     }
 
     public String generateBoundary() {
