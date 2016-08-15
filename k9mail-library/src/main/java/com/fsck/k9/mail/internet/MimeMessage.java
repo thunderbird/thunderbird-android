@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.UUID;
 
 import android.support.annotation.NonNull;
 
@@ -61,20 +60,14 @@ public class MimeMessage extends Message {
     protected int mSize;
     private String serverExtra;
 
-    public MimeMessage() {
+
+    public static MimeMessage parseMimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
+        MimeMessage mimeMessage = new MimeMessage();
+        mimeMessage.parse(in, recurse);
+        return mimeMessage;
     }
 
-
-    /**
-     * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
-     *
-     * @param in
-     * @param recurse A boolean indicating to recurse through all nested MimeMessage subparts.
-     * @throws IOException
-     * @throws MessagingException
-     */
-    public MimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
-        parse(in, recurse);
+    public MimeMessage() {
     }
 
     /**
@@ -319,27 +312,6 @@ public class MimeMessage extends Message {
         return mMessageId;
     }
 
-    public void generateMessageId() throws MessagingException {
-        String hostname = null;
-
-        if (mFrom != null && mFrom.length >= 1) {
-            hostname = mFrom[0].getHostname();
-        }
-
-        if (hostname == null && mReplyTo != null && mReplyTo.length >= 1) {
-            hostname = mReplyTo[0].getHostname();
-        }
-
-        if (hostname == null) {
-            hostname = "email.android.com";
-        }
-
-        /* We use upper case here to match Apple Mail Message-ID format (for privacy) */
-        String messageId = "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
-
-        setMessageId(messageId);
-    }
-
     public void setMessageId(String messageId) {
         setHeader("Message-ID", messageId);
         mMessageId = messageId;
@@ -529,15 +501,11 @@ public class MimeMessage extends Message {
             expect(Part.class);
 
             Part e = (Part)stack.peek();
-            try {
-                String mimeType = bd.getMimeType();
-                String boundary = bd.getBoundary();
-                MimeMultipart multiPart = new MimeMultipart(mimeType, boundary);
-                e.setBody(multiPart);
-                stack.addFirst(multiPart);
-            } catch (MessagingException me) {
-                throw new MimeException(me.getMessage(), me);
-            }
+            String mimeType = bd.getMimeType();
+            String boundary = bd.getBoundary();
+            MimeMultipart multiPart = new MimeMultipart(mimeType, boundary);
+            e.setBody(multiPart);
+            stack.addFirst(multiPart);
         }
 
         @Override

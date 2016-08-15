@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -23,8 +24,10 @@ import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -413,8 +416,9 @@ public class PgpMessageBuilderTest {
     }
 
     private static PgpMessageBuilder createDefaultPgpMessageBuilder(OpenPgpApi openPgpApi) {
-        PgpMessageBuilder b = new PgpMessageBuilder(RuntimeEnvironment.application);
-        b.setOpenPgpApi(openPgpApi);
+        PgpMessageBuilder builder = new PgpMessageBuilder(
+                RuntimeEnvironment.application, MessageIdGenerator.getInstance(), BoundaryGenerator.getInstance());
+        builder.setOpenPgpApi(openPgpApi);
 
         Identity identity = new Identity();
         identity.setName("tester");
@@ -422,7 +426,9 @@ public class PgpMessageBuilderTest {
         identity.setDescription("test identity");
         identity.setSignatureUse(false);
 
-        b.setSubject("subject")
+        builder.setSubject("subject")
+                .setSentDate(new Date())
+                .setHideTimeZone(false)
                 .setTo(new ArrayList<Address>())
                 .setCc(new ArrayList<Address>())
                 .setBcc(new ArrayList<Address>())
@@ -446,7 +452,7 @@ public class PgpMessageBuilderTest {
                 .setMessageReference(null)
                 .setDraft(false);
 
-        return b;
+        return builder;
     }
 
     private static void assertContentOfBodyPartEquals(String reason, BodyPart signatureBodyPart, byte[] expected) {
@@ -500,5 +506,4 @@ public class PgpMessageBuilderTest {
             }
         }
     }
-
 }

@@ -40,6 +40,7 @@ public class LocalMessage extends MimeMessage {
     private String mimeType;
     private PreviewType previewType;
 
+
     private LocalMessage(LocalStore localStore) {
         this.localStore = localStore;
     }
@@ -49,6 +50,7 @@ public class LocalMessage extends MimeMessage {
         this.mUid = uid;
         this.mFolder = folder;
     }
+
 
     void populateFromGetMessageCursor(Cursor cursor) throws MessagingException {
         final String subject = cursor.getString(0);
@@ -496,7 +498,7 @@ public class LocalMessage extends MimeMessage {
 
     @Override
     public LocalMessage clone() {
-        LocalMessage message = new LocalMessage(this.localStore);
+        LocalMessage message = new LocalMessage(localStore);
         super.copy(message);
 
         message.mId = mId;

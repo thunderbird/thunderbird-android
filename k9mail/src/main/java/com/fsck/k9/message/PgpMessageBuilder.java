@@ -10,14 +10,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
+import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -44,9 +48,19 @@ public class PgpMessageBuilder extends MessageBuilder {
     private boolean opportunisticSkipEncryption;
     private boolean opportunisticSecondPass;
 
-    public PgpMessageBuilder(Context context) {
-        super(context);
+
+    public static PgpMessageBuilder newInstance() {
+        Context context = Globals.getContext();
+        MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
+        BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
+        return new PgpMessageBuilder(context, messageIdGenerator, boundaryGenerator);
     }
+
+    @VisibleForTesting
+    PgpMessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
+        super(context, messageIdGenerator, boundaryGenerator);
+    }
+
 
     public void setOpenPgpApi(OpenPgpApi openPgpApi) {
         this.openPgpApi = openPgpApi;
@@ -269,7 +283,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             throw new MessagingException("didn't find expected RESULT_DETACHED_SIGNATURE in api call result");
         }
 
-        MimeMultipart multipartSigned = new MimeMultipart();
+        MimeMultipart multipartSigned = createMimeMultipart();
         multipartSigned.setSubType("signed");
         multipartSigned.addBodyPart(signedBodyPart);
         multipartSigned.addBodyPart(
@@ -293,7 +307,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             throw new IllegalStateException("call to mimeBuildEncryptedMessage while encryption isn't enabled!");
         }
 
-        MimeMultipart multipartEncrypted = new MimeMultipart();
+        MimeMultipart multipartEncrypted = createMimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         multipartEncrypted.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));
         multipartEncrypted.addBodyPart(new MimeBodyPart(encryptedBodyPart, "application/octet-stream"));
@@ -327,5 +341,4 @@ public class PgpMessageBuilder extends MessageBuilder {
     public void setCryptoStatus(ComposeCryptoStatus cryptoStatus) {
         this.cryptoStatus = cryptoStatus;
     }
-
 }

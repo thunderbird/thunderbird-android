@@ -20,9 +20,11 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -38,8 +40,13 @@ import org.apache.james.mime4j.util.MimeUtil;
 
 public abstract class MessageBuilder {
     private final Context context;
+    private final MessageIdGenerator messageIdGenerator;
+    private final BoundaryGenerator boundaryGenerator;
+
 
     private String subject;
+    private Date sentDate;
+    private boolean hideTimeZone;
     private Address[] to;
     private Address[] cc;
     private Address[] bcc;
@@ -64,8 +71,10 @@ public abstract class MessageBuilder {
     private boolean isDraft;
     private boolean isPgpInlineEnabled;
 
-    public MessageBuilder(Context context) {
+    protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
         this.context = context;
+        this.messageIdGenerator = messageIdGenerator;
+        this.boundaryGenerator = boundaryGenerator;
     }
 
     /**
@@ -84,7 +93,7 @@ public abstract class MessageBuilder {
     }
 
     private void buildHeader(MimeMessage message) throws MessagingException {
-        message.addSentDate(new Date(), K9.hideTimeZone());
+        message.addSentDate(sentDate, hideTimeZone);
         Address from = new Address(identity.getEmail(), identity.getName());
         message.setFrom(from);
         message.setRecipients(RecipientType.TO, to);
@@ -115,11 +124,17 @@ public abstract class MessageBuilder {
             message.setReferences(references);
         }
 
-        message.generateMessageId();
+        String messageId = messageIdGenerator.generateMessageId(message);
+        message.setMessageId(messageId);
 
         if (isDraft && isPgpInlineEnabled) {
             message.setFlag(Flag.X_DRAFT_OPENPGP_INLINE, true);
         }
+    }
+    
+    protected MimeMultipart createMimeMultipart() {
+        String boundary = boundaryGenerator.generateBoundary();
+        return new MimeMultipart(boundary);
     }
 
     private void buildBody(MimeMessage message) throws MessagingException {
@@ -137,7 +152,7 @@ public abstract class MessageBuilder {
             // HTML message (with alternative text part)
 
             // This is the compiled MIME part for an HTML message.
-            MimeMultipart composedMimeMessage = new MimeMultipart();
+            MimeMultipart composedMimeMessage = createMimeMultipart();
             composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
             composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
             bodyPlain = buildText(isDraft, SimpleMessageFormat.TEXT);
@@ -148,7 +163,7 @@ public abstract class MessageBuilder {
                 // whole message (mp here), of which one part is a MimeMultipart container
                 // (composedMimeMessage) with the user's composed messages, and subsequent parts for
                 // the attachments.
-                MimeMultipart mp = new MimeMultipart();
+                MimeMultipart mp = createMimeMultipart();
                 mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
@@ -159,7 +174,7 @@ public abstract class MessageBuilder {
         } else if (messageFormat == SimpleMessageFormat.TEXT) {
             // Text-only message.
             if (hasAttachments) {
-                MimeMultipart mp = new MimeMultipart();
+                MimeMultipart mp = createMimeMultipart();
                 mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
@@ -328,6 +343,16 @@ public abstract class MessageBuilder {
 
     public MessageBuilder setSubject(String subject) {
         this.subject = subject;
+        return this;
+    }
+
+    public MessageBuilder setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
+        return this;
+    }
+
+    public MessageBuilder setHideTimeZone(boolean hideTimeZone) {
+        this.hideTimeZone = hideTimeZone;
         return this;
     }
 

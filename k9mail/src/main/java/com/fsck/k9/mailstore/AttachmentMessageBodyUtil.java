@@ -21,7 +21,7 @@ class AttachmentMessageBodyUtil {
                  * could be sent along without processing. But since we
                  * don't know, we recursively parse it.
                  */
-                MimeMessage message = new MimeMessage(in, true);
+                MimeMessage message = MimeMessage.parseMimeMessage(in, true);
                 message.setUsing7bitTransport();
                 message.writeTo(out);
             } else {

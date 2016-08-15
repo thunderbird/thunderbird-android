@@ -128,7 +128,7 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
     protected MimeMessage parseMessage() throws IOException, MessagingException {
         InputStream messageInputStream = new ByteArrayInputStream(MESSAGE_SOURCE.getBytes());
         try {
-            return new MimeMessage(messageInputStream, true);
+            return MimeMessage.parseMimeMessage(messageInputStream, true);
         } finally {
             messageInputStream.close();
         }
