@@ -10,11 +10,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 
 
 class ImapMessage extends MimeMessage {
-    static ImapMessage createImapMessage(String uid, Folder folder) {
-        return new ImapMessage(uid, folder);
-    }
-
-    private ImapMessage(String uid, Folder folder) {
+    ImapMessage(String uid, Folder folder) {
         this.mUid = uid;
         this.mFolder = folder;
     }

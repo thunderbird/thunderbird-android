@@ -586,7 +586,7 @@ public class Pop3Store extends RemoteStore {
         public Pop3Message getMessage(String uid) throws MessagingException {
             Pop3Message message = mUidToMsgMap.get(uid);
             if (message == null) {
-                message = Pop3Message.createPop3Message(uid, this);
+                message = new Pop3Message(uid, this);
             }
             return message;
         }
@@ -668,7 +668,7 @@ public class Pop3Store extends RemoteStore {
                             return;
                         }
                         String msgUid = uidParts[2];
-                        message = Pop3Message.createPop3Message(msgUid, this);
+                        message = new Pop3Message(msgUid, this);
                         indexMessage(msgNum, message);
                     }
                 }
@@ -708,7 +708,7 @@ public class Pop3Store extends RemoteStore {
                         if (msgNum >= start && msgNum <= end) {
                             Pop3Message message = mMsgNumToMsgMap.get(msgNum);
                             if (message == null) {
-                                message = Pop3Message.createPop3Message(msgUid, this);
+                                message = new Pop3Message(msgUid, this);
                                 indexMessage(msgNum, message);
                             }
                         }
@@ -754,7 +754,7 @@ public class Pop3Store extends RemoteStore {
 
                         Pop3Message message = mUidToMsgMap.get(msgUid);
                         if (message == null) {
-                            message = Pop3Message.createPop3Message(msgUid, this);
+                            message = new Pop3Message(msgUid, this);
                         }
                         indexMessage(msgNum, message);
                     }
@@ -1184,11 +1184,7 @@ public class Pop3Store extends RemoteStore {
     }//Pop3Folder
 
     static class Pop3Message extends MimeMessage {
-        public static Pop3Message createPop3Message(String uid, Pop3Folder folder) {
-            return new Pop3Message(uid, folder);
-        }
-
-        private Pop3Message(String uid, Pop3Folder folder) {
+        Pop3Message(String uid, Pop3Folder folder) {
             mUid = uid;
             mFolder = folder;
             mSize = -1;

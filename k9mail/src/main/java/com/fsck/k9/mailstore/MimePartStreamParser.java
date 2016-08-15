@@ -81,7 +81,7 @@ public class MimePartStreamParser {
             } else {
                 Part part = (Part) stack.peek();
 
-                Message innerMessage = MimeMessage.createMimeMessage();
+                Message innerMessage = new MimeMessage();
                 part.setBody(innerMessage);
 
                 stack.push(innerMessage);

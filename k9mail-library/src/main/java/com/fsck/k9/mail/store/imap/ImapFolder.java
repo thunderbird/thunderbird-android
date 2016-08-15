@@ -501,7 +501,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public ImapMessage getMessage(String uid) throws MessagingException {
-        return ImapMessage.createImapMessage(uid, this);
+        return new ImapMessage(uid, this);
     }
 
     @Override
@@ -635,7 +635,7 @@ class ImapFolder extends Folder<ImapMessage> {
                     listener.messageStarted(uid, i, count);
                 }
 
-                ImapMessage message = ImapMessage.createImapMessage(uid, this);
+                ImapMessage message = new ImapMessage(uid, this);
                 messages.add(message);
 
                 if (listener != null) {

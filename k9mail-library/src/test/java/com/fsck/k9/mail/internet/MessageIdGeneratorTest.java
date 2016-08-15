@@ -30,7 +30,7 @@ public class MessageIdGeneratorTest {
 
     @Test
     public void generateMessageId_withFromAndReplyToAddress() throws Exception {
-        Message message = MimeMessage.createMimeMessage();
+        Message message = new MimeMessage();
         message.setFrom(new Address("alice@example.org"));
         message.setReplyTo(Address.parse("bob@example.com"));
         
@@ -41,7 +41,7 @@ public class MessageIdGeneratorTest {
 
     @Test
     public void generateMessageId_withReplyToAddress() throws Exception {
-        Message message = MimeMessage.createMimeMessage();
+        Message message = new MimeMessage();
         message.setReplyTo(Address.parse("bob@example.com"));
         
         String result = messageIdGenerator.generateMessageId(message);
@@ -51,7 +51,7 @@ public class MessageIdGeneratorTest {
 
     @Test
     public void generateMessageId_withoutRelevantHeaders() throws Exception {
-        Message message = MimeMessage.createMimeMessage();
+        Message message = new MimeMessage();
         
         String result = messageIdGenerator.generateMessageId(message);
         

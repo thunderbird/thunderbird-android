@@ -21,11 +21,8 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 class WebDavMessage extends MimeMessage {
     private String mUrl = "";
 
-    static WebDavMessage createWebDavMessage(String uid, Folder folder) {
-        return new WebDavMessage(uid, folder);
-    }
 
-    private WebDavMessage(String uid, Folder folder) {
+    WebDavMessage(String uid, Folder folder) {
         this.mUid = uid;
         this.mFolder = folder;
     }

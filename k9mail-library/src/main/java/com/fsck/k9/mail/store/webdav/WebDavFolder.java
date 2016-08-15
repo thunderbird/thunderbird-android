@@ -225,7 +225,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
     @Override
     public WebDavMessage getMessage(String uid) throws MessagingException {
-        return WebDavMessage.createWebDavMessage(uid, this);
+        return new WebDavMessage(uid, this);
     }
 
     @Override
@@ -265,7 +265,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
             if (listener != null) {
                 listener.messageStarted(uids[i], i, uidsLength);
             }
-            WebDavMessage message = WebDavMessage.createWebDavMessage(uids[i], this);
+            WebDavMessage message = new WebDavMessage(uids[i], this);
             message.setUrl(uidToUrl.get(uids[i]));
             messages.add(message);
 
@@ -696,7 +696,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                             + " while sending/appending message.  Response = "
                             + response.getStatusLine().toString() + " for message " + messageURL);
                 }
-                WebDavMessage retMessage = WebDavMessage.createWebDavMessage(message.getUid(), this);
+                WebDavMessage retMessage = new WebDavMessage(message.getUid(), this);
 
                 retMessage.setUrl(messageURL);
                 retMessages.add(retMessage);

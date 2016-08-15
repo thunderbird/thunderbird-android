@@ -41,15 +41,11 @@ public class LocalMessage extends MimeMessage {
     private PreviewType previewType;
 
 
-    static LocalMessage createLocalMessage(LocalStore localStore, String uid, Folder folder) {
-        return new LocalMessage(localStore, uid, folder);
-    }
-
     private LocalMessage(LocalStore localStore) {
         this.localStore = localStore;
     }
 
-    private LocalMessage(LocalStore localStore, String uid, Folder folder) {
+    LocalMessage(LocalStore localStore, String uid, Folder folder) {
         this.localStore = localStore;
         this.mUid = uid;
         this.mFolder = folder;

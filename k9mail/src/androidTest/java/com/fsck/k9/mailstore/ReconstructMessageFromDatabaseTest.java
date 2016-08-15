@@ -95,7 +95,7 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
     public void testAddMissingPart() throws MessagingException, IOException {
         LocalFolder folder = createFolderInDatabase();
 
-        MimeMessage message = MimeMessage.createMimeMessage();
+        MimeMessage message = new MimeMessage();
         message.addHeader("To", "to@example.com");
         message.addHeader("MIME-Version", "1.0");
         message.addHeader("Content-Type", "text/plain");

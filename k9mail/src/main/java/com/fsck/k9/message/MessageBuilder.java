@@ -84,7 +84,7 @@ public abstract class MessageBuilder {
     protected MimeMessage build() throws MessagingException {
         //FIXME: check arguments
 
-        MimeMessage message = MimeMessage.createMimeMessage();
+        MimeMessage message = new MimeMessage();
 
         buildHeader(message);
         buildBody(message);

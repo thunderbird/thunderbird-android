@@ -33,22 +33,22 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
     }
 
     private void buildMessages() throws MessagingException {
-        message = MimeMessage.createMimeMessage();
+        message = new MimeMessage();
         message.setSubject("Test Subject");
         message.setSentDate(new GregorianCalendar(2016, 1, 2).getTime(), false);
         message.setMessageId("<uid001@email.com>");
 
-        laterMessage = MimeMessage.createMimeMessage();
+        laterMessage = new MimeMessage();
         laterMessage.setSubject("Test Subject2");
         laterMessage.setSentDate(new GregorianCalendar(2016, 1, 3).getTime(), false);
 
-        reply = MimeMessage.createMimeMessage();
+        reply = new MimeMessage();
         reply.setSubject("Re: Test Subject");
         reply.setSentDate(new GregorianCalendar(2016, 1, 3).getTime(), false);
         reply.setMessageId("<uid002@email.com>");
         reply.setInReplyTo("<uid001@email.com>");
 
-        replyAtSameTime = MimeMessage.createMimeMessage();
+        replyAtSameTime = new MimeMessage();
         replyAtSameTime.setSubject("Re: Test Subject");
         replyAtSameTime.setSentDate(new GregorianCalendar(2016, 1, 2).getTime(), false);
         replyAtSameTime.setMessageId("<uid002@email.com>");
@@ -301,7 +301,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
         Account account = Preferences.getPreferences(getContext()).newAccount();
         account.getUuid();
 
-        Message message = MimeMessage.createMimeMessage();
+        Message message = new MimeMessage();
         message.setSubject("Test Subject");
         message.setSentDate(new GregorianCalendar(2016, 1, 2).getTime(), false);
 

@@ -103,6 +103,6 @@ public class MessagePreviewCreatorTest {
     }
 
     private Message createDummyMessage() {
-        return MimeMessage.createMimeMessage();
+        return new MimeMessage();
     }
 }

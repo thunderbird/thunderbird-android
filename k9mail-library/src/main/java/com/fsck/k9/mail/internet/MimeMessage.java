@@ -61,17 +61,13 @@ public class MimeMessage extends Message {
     private String serverExtra;
 
 
-    public static MimeMessage createMimeMessage() {
-        return new MimeMessage();
-    }
-
     public static MimeMessage parseMimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
-        MimeMessage mimeMessage = createMimeMessage();
+        MimeMessage mimeMessage = new MimeMessage();
         mimeMessage.parse(in, recurse);
         return mimeMessage;
     }
 
-    protected MimeMessage() {
+    public MimeMessage() {
     }
 
     /**
@@ -478,7 +474,7 @@ public class MimeMessage extends Message {
                 expect(Part.class);
                 Part part = (Part) stack.peek();
 
-                MimeMessage m = createMimeMessage();
+                MimeMessage m = new MimeMessage();
                 part.setBody(m);
                 stack.addFirst(m);
             }
@@ -615,7 +611,7 @@ public class MimeMessage extends Message {
 
     @Override
     public MimeMessage clone() {
-        MimeMessage message = createMimeMessage();
+        MimeMessage message = new MimeMessage();
         copy(message);
         return message;
     }
