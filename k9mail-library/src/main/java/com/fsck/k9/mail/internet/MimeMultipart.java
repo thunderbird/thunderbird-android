@@ -19,16 +19,17 @@ public class MimeMultipart extends Multipart {
     private byte[] epilogue;
     private final String boundary;
 
-    public static MimeMultipart createMimeMultipart() throws MessagingException {
-        return new MimeMultipart(BoundaryGenerator.getInstance());
+
+    public static MimeMultipart createMimeMultipart() {
+        String boundary = BoundaryGenerator.getInstance().generateBoundary();
+        return new MimeMultipart(boundary);
     }
 
-    public MimeMultipart(BoundaryGenerator boundaryGenerator) throws MessagingException {
-        boundary = boundaryGenerator.generateBoundary();
-        setSubType("mixed");
+    public MimeMultipart(String boundary) {
+        this("multipart/mixed", boundary);
     }
 
-    public MimeMultipart(String mimeType, String boundary) throws MessagingException {
+    public MimeMultipart(String mimeType, String boundary) {
         if (mimeType == null) {
             throw new IllegalArgumentException("mimeType can't be null");
         }

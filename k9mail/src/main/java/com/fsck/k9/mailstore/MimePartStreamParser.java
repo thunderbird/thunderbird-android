@@ -144,17 +144,14 @@ public class MimePartStreamParser {
         @Override
         public void startMultipart(BodyDescriptor bd) throws MimeException {
             Part part = (Part) stack.peek();
-            try {
-                String mimeType = bd.getMimeType();
-                String boundary = bd.getBoundary();
 
-                MimeMultipart multipart = new MimeMultipart(mimeType, boundary);
-                part.setBody(multipart);
+            String mimeType = bd.getMimeType();
+            String boundary = bd.getBoundary();
 
-                stack.push(multipart);
-            } catch (MessagingException e) {
-                throw new MimeException(e);
-            }
+            MimeMultipart multipart = new MimeMultipart(mimeType, boundary);
+            part.setBody(multipart);
+
+            stack.push(multipart);
         }
 
         @Override

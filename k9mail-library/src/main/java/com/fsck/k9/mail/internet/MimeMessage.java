@@ -505,15 +505,11 @@ public class MimeMessage extends Message {
             expect(Part.class);
 
             Part e = (Part)stack.peek();
-            try {
-                String mimeType = bd.getMimeType();
-                String boundary = bd.getBoundary();
-                MimeMultipart multiPart = new MimeMultipart(mimeType, boundary);
-                e.setBody(multiPart);
-                stack.addFirst(multiPart);
-            } catch (MessagingException me) {
-                throw new MimeException(me.getMessage(), me);
-            }
+            String mimeType = bd.getMimeType();
+            String boundary = bd.getBoundary();
+            MimeMultipart multiPart = new MimeMultipart(mimeType, boundary);
+            e.setBody(multiPart);
+            stack.addFirst(multiPart);
         }
 
         @Override
