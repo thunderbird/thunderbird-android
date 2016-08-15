@@ -717,11 +717,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 return null;
             }
 
-            PgpMessageBuilder pgpBuilder = PgpMessageBuilder.createPgpMessageBuilder();
+            PgpMessageBuilder pgpBuilder = PgpMessageBuilder.newInstance();
             recipientPresenter.builderSetProperties(pgpBuilder);
             builder = pgpBuilder;
         } else {
-            builder = SimpleMessageBuilder.createSimpleMessageBuilder();
+            builder = SimpleMessageBuilder.newInstance();
         }
 
         builder.setSubject(mSubjectView.getText().toString())

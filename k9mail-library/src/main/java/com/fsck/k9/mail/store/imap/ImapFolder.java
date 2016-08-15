@@ -986,7 +986,7 @@ class ImapFolder extends Folder<ImapMessage> {
             /*
              * This is a multipart/*
              */
-            MimeMultipart mp = MimeMultipart.createMimeMultipart();
+            MimeMultipart mp = MimeMultipart.newInstance();
             for (int i = 0, count = bs.size(); i < count; i++) {
                 if (bs.get(i) instanceof ImapList) {
                     /*

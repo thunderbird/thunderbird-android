@@ -20,7 +20,7 @@ public class MimeMultipart extends Multipart {
     private final String boundary;
 
 
-    public static MimeMultipart createMimeMultipart() {
+    public static MimeMultipart newInstance() {
         String boundary = BoundaryGenerator.getInstance().generateBoundary();
         return new MimeMultipart(boundary);
     }

@@ -49,7 +49,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     private boolean opportunisticSecondPass;
 
 
-    public static PgpMessageBuilder createPgpMessageBuilder() {
+    public static PgpMessageBuilder newInstance() {
         Context context = Globals.getContext();
         MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
         BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();

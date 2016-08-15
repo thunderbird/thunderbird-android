@@ -14,7 +14,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 
 public class SimpleMessageBuilder extends MessageBuilder {
 
-    public static SimpleMessageBuilder createSimpleMessageBuilder() {
+    public static SimpleMessageBuilder newInstance() {
         Context context = Globals.getContext();
         MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
         BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();

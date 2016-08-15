@@ -52,7 +52,7 @@ public class AttachmentResolverTest {
 
     @Test
     public void buildCidMap__onMultipartWithNoParts__shouldReturnEmptyMap() throws Exception {
-        Multipart multipartBody = MimeMultipart.createMimeMultipart();
+        Multipart multipartBody = MimeMultipart.newInstance();
         Part multipartPart = new MimeBodyPart(multipartBody);
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, multipartPart);
@@ -62,7 +62,7 @@ public class AttachmentResolverTest {
 
     @Test
     public void buildCidMap__onMultipartWithEmptyBodyPart__shouldReturnEmptyMap() throws Exception {
-        Multipart multipartBody = MimeMultipart.createMimeMultipart();
+        Multipart multipartBody = MimeMultipart.newInstance();
         BodyPart bodyPart = spy(new MimeBodyPart());
         Part multipartPart = new MimeBodyPart(multipartBody);
         multipartBody.addBodyPart(bodyPart);
@@ -75,7 +75,7 @@ public class AttachmentResolverTest {
 
     @Test
     public void buildCidMap__onTwoPart__shouldReturnBothUris() throws Exception {
-        Multipart multipartBody = MimeMultipart.createMimeMultipart();
+        Multipart multipartBody = MimeMultipart.newInstance();
         Part multipartPart = new MimeBodyPart(multipartBody);
 
         BodyPart subPart1 = new MimeBodyPart();
