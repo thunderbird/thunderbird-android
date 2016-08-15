@@ -49,19 +49,21 @@ class JisSupport {
 
 
     private static String getJisVariantFromMailerHeaders(Message message) {
-        String[] mailerHeaders = message.getHeader("X-Mailer");
-        if (mailerHeaders.length == 0)
+        String mailerHeader = message.getRawFirstHeader("X-Mailer");
+        if (mailerHeader == null) {
             return null;
+        }
 
-        if (mailerHeaders[0].startsWith("iPhone Mail ") || mailerHeaders[0].startsWith("iPad Mail "))
+        if (mailerHeader.startsWith("iPhone Mail ") || mailerHeader.startsWith("iPad Mail ")) {
             return "iphone";
+        }
 
         return null;
     }
 
 
     private static String getJisVariantFromReceivedHeaders(Part message) throws MessagingException {
-        String[] receivedHeaders = message.getHeader("Received");
+        String[] receivedHeaders = message.getRawHeader("Received");
         if (receivedHeaders.length == 0)
             return null;
 

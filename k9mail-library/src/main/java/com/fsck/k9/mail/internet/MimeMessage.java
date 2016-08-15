@@ -17,6 +17,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -161,32 +162,6 @@ public class MimeMessage extends Message {
 
     public void setInternalSentDate(Date sentDate) {
         this.mSentDate = sentDate;
-    }
-
-    @Override
-    public String getContentType() {
-        String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : MimeUtility.unfoldAndDecode(contentType);
-    }
-
-    @Override
-    public String getDisposition() {
-        return MimeUtility.unfoldAndDecode(getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION));
-    }
-
-    @Override
-    public String getContentId() {
-        return null;
-    }
-
-    @Override
-    public String getMimeType() {
-        return MimeUtility.getHeaderParameter(getContentType(), null);
-    }
-
-    @Override
-    public boolean isMimeType(String mimeType) {
-        return getMimeType().equalsIgnoreCase(mimeType);
     }
 
     @Override
@@ -353,7 +328,7 @@ public class MimeMessage extends Message {
     @Override
     public String[] getReferences() {
         if (mReferences == null) {
-            mReferences = getHeader("References");
+            mReferences = getRawHeader("References");
         }
         return mReferences;
     }
@@ -406,7 +381,7 @@ public class MimeMessage extends Message {
     }
 
     private String getFirstHeader(String name) {
-        return mHeader.getFirstHeader(name);
+        return mHeader.getRawFirstHeader(name);
     }
 
     @Override
@@ -426,8 +401,14 @@ public class MimeMessage extends Message {
 
     @NonNull
     @Override
-    public String[] getHeader(String name) {
-        return mHeader.getHeader(name);
+    public String[] getRawHeader(String name) {
+        return mHeader.getRawHeader(name);
+    }
+
+    @Nullable
+    @Override
+    public String getRawFirstHeader(String name) {
+        return mHeader.getRawFirstHeader(name);
     }
 
     @Override
@@ -721,7 +702,7 @@ public class MimeMessage extends Message {
         MimeHeader contentHeaders = new MimeHeader();
         for (String header : mHeader.getHeaderNames()) {
             if (header.toLowerCase().startsWith("content-")) {
-                for (String value : mHeader.getHeader(header)) {
+                for (String value : mHeader.getRawHeader(header)) {
                     contentHeaders.addHeader(header, value);
                 }
             }

@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -44,8 +45,8 @@ public class MimeBodyPart extends BodyPart {
         MimeMessageHelper.setBody(this, body);
     }
 
-    private String getFirstHeader(String name) {
-        return mHeader.getFirstHeader(name);
+    public String getFirstHeader(String name) {
+        return MimeUtility.unfoldAndDecode(mHeader.getRawFirstHeader(name));
     }
 
     @Override
@@ -65,8 +66,14 @@ public class MimeBodyPart extends BodyPart {
 
     @NonNull
     @Override
-    public String[] getHeader(String name) {
-        return mHeader.getHeader(name);
+    public String[] getRawHeader(String name) {
+        return mHeader.getRawHeader(name);
+    }
+
+    @Nullable
+    @Override
+    public String getRawFirstHeader(String name) {
+        return mHeader.getRawFirstHeader(name);
     }
 
     @Override
@@ -90,42 +97,6 @@ public class MimeBodyPart extends BodyPart {
             mBody.setEncoding(encoding);
         }
         setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
-    }
-
-    @Override
-    public String getContentType() {
-        String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : MimeUtility.unfoldAndDecode(contentType);
-    }
-
-    @Override
-    public String getDisposition() {
-        return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
-    }
-
-    @Override
-    public String getContentId() {
-        String contentId = getFirstHeader(MimeHeader.HEADER_CONTENT_ID);
-        if (contentId == null) {
-            return null;
-        }
-
-        int first = contentId.indexOf('<');
-        int last = contentId.lastIndexOf('>');
-
-        return (first != -1 && last != -1) ?
-               contentId.substring(first + 1, last) :
-               contentId;
-    }
-
-    @Override
-    public String getMimeType() {
-        return MimeUtility.getHeaderParameter(getContentType(), null);
-    }
-
-    @Override
-    public boolean isMimeType(String mimeType) {
-        return getMimeType().equalsIgnoreCase(mimeType);
     }
 
     /**

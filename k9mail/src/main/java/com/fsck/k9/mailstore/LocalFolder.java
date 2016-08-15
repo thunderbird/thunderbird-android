@@ -36,6 +36,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -732,7 +733,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 throw new IllegalStateException("Parent part not found");
             }
 
-            String parentMimeType = parentPart.getMimeType();
+            String parentMimeType = PartHeaderMetadata.from(parentPart).getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
                 BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
@@ -1279,7 +1280,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             cv.put("attachment_count", attachmentCount);
             cv.put("internal_date", message.getInternalDate() == null
                     ? System.currentTimeMillis() : message.getInternalDate().getTime());
-            cv.put("mime_type", message.getMimeType());
+            cv.put("mime_type", PartHeaderMetadata.from(message).getMimeType());
             cv.put("empty", 0);
 
             cv.put("preview_type", databasePreviewType.getDatabaseValue());
@@ -1371,7 +1372,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             throws IOException, MessagingException {
         byte[] headerBytes = getHeaderBytes(part);
 
-        cv.put("mime_type", part.getMimeType());
+        cv.put("mime_type", PartHeaderMetadata.from(part).getMimeType());
         cv.put("header", headerBytes);
         cv.put("type", MessagePartType.UNKNOWN);
 
@@ -1415,7 +1416,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         cv.put("data_location", DataLocation.MISSING);
         cv.put("decoded_body_size", attachment.size);
 
-        if (MimeUtility.isMultipart(part.getMimeType())) {
+        if (MimeUtility.isMultipart(PartHeaderMetadata.from(part).getMimeType())) {
             cv.put("boundary", MimeMultipart.generateBoundary());
         }
     }
@@ -1458,7 +1459,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
         cv.put("data_location", dataLocation);
         cv.put("encoding", encoding);
-        cv.put("content_id", part.getContentId());
+        cv.put("content_id", attachment.contentId);
 
         return file;
     }
@@ -1530,9 +1531,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private String getTransferEncoding(Part part) {
-        String[] contentTransferEncoding = part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
-        if (contentTransferEncoding.length > 0) {
-            return contentTransferEncoding[0].toLowerCase(Locale.US);
+        String contentTransferEncoding = part.getRawFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
+        if (contentTransferEncoding != null) {
+            return contentTransferEncoding.toLowerCase(Locale.US);
         }
 
         return MimeUtil.ENC_7BIT;
@@ -1895,17 +1896,17 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         ThreadInfo msgThreadInfo = getThreadInfo(db, messageId, true);
 
         // Get the message IDs from the "References" header line
-        String[] referencesArray = message.getHeader("References");
+        String referencesHeader = message.getRawFirstHeader("References");
         List<String> messageIds = null;
-        if (referencesArray.length > 0) {
-            messageIds = Utility.extractMessageIds(referencesArray[0]);
+        if (referencesHeader != null) {
+            messageIds = Utility.extractMessageIds(referencesHeader);
         }
 
         // Append the first message ID from the "In-Reply-To" header line
-        String[] inReplyToArray = message.getHeader("In-Reply-To");
+        String inReplyToArrayHeader = message.getRawFirstHeader("In-Reply-To");
         String inReplyTo;
-        if (inReplyToArray.length > 0) {
-            inReplyTo = Utility.extractMessageId(inReplyToArray[0]);
+        if (inReplyToArrayHeader != null) {
+            inReplyTo = Utility.extractMessageId(inReplyToArrayHeader);
             if (inReplyTo != null) {
                 if (messageIds == null) {
                     messageIds = new ArrayList<>(1);

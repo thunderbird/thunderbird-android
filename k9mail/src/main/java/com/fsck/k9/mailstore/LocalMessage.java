@@ -131,11 +131,6 @@ public class LocalMessage extends MimeMessage {
         return messagePartId;
     }
 
-    @Override
-    public String getMimeType() {
-        return mimeType;
-    }
-
     /* Custom version of writeTo that updates the MIME message based on localMessage
      * changes.
      */

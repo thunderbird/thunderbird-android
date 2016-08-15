@@ -5,6 +5,8 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+
 
 public class IdentityHelper {
 
@@ -21,7 +23,7 @@ public class IdentityHelper {
      *
      * @see Account#findIdentity(com.fsck.k9.mail.Address)
      */
-    public static Identity getRecipientIdentityFromMessage(Account account, Message message) {
+    public static Identity getRecipientIdentityFromMessage(Account account, Message message) throws MessagingException {
         Identity recipient = null;
 
         for (Address address : message.getRecipients(Message.RecipientType.TO)) {

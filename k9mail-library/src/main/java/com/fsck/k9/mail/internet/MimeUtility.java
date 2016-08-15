@@ -1,27 +1,26 @@
 
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
-import com.fsck.k9.mail.Part;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.input.BoundedInputStream;
-import org.apache.james.mime4j.codec.Base64InputStream;
-import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
-import org.apache.james.mime4j.util.MimeUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
 import android.support.annotation.NonNull;
+
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
+import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.codec.Base64InputStream;
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
+import org.apache.james.mime4j.util.MimeUtil;
 
 
 public class MimeUtility {
@@ -959,12 +958,13 @@ public class MimeUtility {
         if (part.getBody() instanceof Multipart) {
             Multipart multipart = (Multipart)part.getBody();
             for (BodyPart bodyPart : multipart.getBodyParts()) {
-                Part ret = MimeUtility.findFirstPartByMimeType(bodyPart, mimeType);
+                PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(bodyPart);
+                Part ret = MimeUtility.findFirstPartByMimeType(part, mimeType);
                 if (ret != null) {
                     return ret;
                 }
             }
-        } else if (isSameMimeType(part.getMimeType(), mimeType)) {
+        } else if (PartHeaderMetadata.from(part).isMimeType(mimeType)) {
             return part;
         }
         return null;
@@ -974,8 +974,6 @@ public class MimeUtility {
      * Returns true if the given mimeType matches the matchAgainst specification.
      * @param mimeType A MIME type to check.
      * @param matchAgainst A MIME type to check against. May include wildcards such as image/* or
-     * * /*.
-     * @return
      */
     public static boolean mimeTypeMatches(String mimeType, String matchAgainst) {
         Pattern p = Pattern.compile(matchAgainst.replaceAll("\\*", "\\.\\*"), Pattern.CASE_INSENSITIVE);
@@ -986,7 +984,7 @@ public class MimeUtility {
         return isSameMimeType(mimeType, DEFAULT_ATTACHMENT_MIME_TYPE);
     }
 
-    public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
+    public static Body createBody(InputStream in, String contentTransferEncoding, String mimeType)
             throws IOException {
 
         if (contentTransferEncoding != null) {
@@ -994,7 +992,7 @@ public class MimeUtility {
         }
 
         BinaryTempFileBody tempBody;
-        if (MimeUtil.isMessage(contentType)) {
+        if (MimeUtil.isMessage(mimeType)) {
             tempBody = new BinaryTempFileMessageBody(contentTransferEncoding);
         } else {
             tempBody = new BinaryTempFileBody(contentTransferEncoding);

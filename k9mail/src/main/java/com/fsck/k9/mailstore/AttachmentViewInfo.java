@@ -24,9 +24,10 @@ public class AttachmentViewInfo {
     public final boolean inlineAttachment;
     public final Part part;
     public final boolean isContentAvailable;
+    public final String contentId;
 
     public AttachmentViewInfo(String mimeType, String displayName, long size, Uri uri, boolean inlineAttachment,
-            Part part, boolean isContentAvailable) {
+            Part part, boolean isContentAvailable, String contentId) {
         this.mimeType = mimeType;
         this.displayName = displayName;
         this.size = size;
@@ -34,5 +35,6 @@ public class AttachmentViewInfo {
         this.inlineAttachment = inlineAttachment;
         this.part = part;
         this.isContentAvailable = isContentAvailable;
+        this.contentId = contentId;
     }
 }

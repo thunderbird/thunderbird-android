@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.fsck.k9.mail.PartHeaderMetadata;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "adam@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
         assertEquals("Testmail", msg.getSubject());
-        assertEquals("text/plain", msg.getContentType());
+        assertEquals("text/plain", PartHeaderMetadata.from(msg).getMimeType());
         assertEquals("this is some test text.", streamToString(MimeUtility.decodeBody(msg.getBody())));
     }
 
@@ -59,7 +60,7 @@ public class MimeMessageParseTest {
                         "To: <eva@example.org>\r\n" +
                         "Subject: Testmail\r\n" +
                         "MIME-Version: 1.0\r\n" +
-                        "Content-type: text/plain; encoding=ISO-8859-1\r\n" +
+                        "Content-type: text/plain; charset=ISO-8859-1\r\n" +
                         "Content-Transfer-Encoding: 8bit\r\n" +
                         "\r\n" +
                         "gefährliche Umlaute"));
@@ -67,7 +68,8 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "adam@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
         assertEquals("Testmail", msg.getSubject());
-        assertEquals("text/plain; encoding=ISO-8859-1", msg.getContentType());
+        assertEquals("text/plain", PartHeaderMetadata.from(msg).getMimeType());
+        assertEquals("ISO-8859-1", PartHeaderMetadata.from(msg).getCharset());
         assertEquals("gefährliche Umlaute", streamToString(MimeUtility.decodeBody(msg.getBody())));
     }
 
@@ -86,7 +88,7 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "adam@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
         assertEquals("Testmail", msg.getSubject());
-        assertEquals("text/plain", msg.getContentType());
+        assertEquals("text/plain", PartHeaderMetadata.from(msg).getMimeType());
         assertEquals("this is some more test text.", streamToString(MimeUtility.decodeBody(msg.getBody())));
     }
 
@@ -115,7 +117,8 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "x@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "y@example.org");
         assertEquals("Testmail 2", msg.getSubject());
-        assertEquals("multipart/mixed; boundary=frontier", msg.getContentType());
+        assertEquals("multipart/mixed", PartHeaderMetadata.from(msg).getMimeType());
+        assertEquals("frontier", PartHeaderMetadata.from(msg).getBoundary());
         checkLeafParts(msg,
                 "This is the body of the message.",
                 "<html>\n" +
@@ -153,7 +156,8 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "x@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "y@example.org");
         assertEquals("Testmail 2", msg.getSubject());
-        assertEquals("multipart/mixed; boundary=frontier", msg.getContentType());
+        assertEquals("multipart/mixed", PartHeaderMetadata.from(msg).getMimeType());
+        assertEquals("frontier", PartHeaderMetadata.from(msg).getBoundary());
         checkLeafParts(msg,
                 "This is the body of the message.",
                 "<html>\n" +
@@ -197,7 +201,8 @@ public class MimeMessageParseTest {
         checkAddresses(msg.getFrom(), "x@example.org");
         checkAddresses(msg.getRecipients(RecipientType.TO), "y@example.org");
         assertEquals("Testmail 2", msg.getSubject());
-        assertEquals("multipart/mixed; boundary=1", msg.getContentType());
+        assertEquals("multipart/mixed", PartHeaderMetadata.from(msg).getMimeType());
+        assertEquals("1", PartHeaderMetadata.from(msg).getBoundary());
         checkLeafParts(msg,
                 "some text in the first part",
                 "alternative 1",

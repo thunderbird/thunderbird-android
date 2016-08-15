@@ -4,6 +4,7 @@ package com.fsck.k9.message.extractors;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 
@@ -28,7 +29,7 @@ class PreviewTextExtractor {
     }
 
     private String convertFromHtmlIfNecessary(Part textPart, String text) {
-        String mimeType = textPart.getMimeType();
+        String mimeType = PartHeaderMetadata.from(textPart).getMimeType();
         if (!isSameMimeType(mimeType, "text/html")) {
             return text;
         }

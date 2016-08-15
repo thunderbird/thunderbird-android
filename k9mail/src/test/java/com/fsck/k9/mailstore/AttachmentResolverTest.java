@@ -9,7 +9,6 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
-import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import org.junit.Before;
@@ -18,10 +17,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -69,7 +68,6 @@ public class AttachmentResolverTest {
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, multipartPart);
 
-        verify(bodyPart).getContentId();
         assertTrue(result.isEmpty());
     }
 
@@ -83,13 +81,10 @@ public class AttachmentResolverTest {
         multipartBody.addBodyPart(subPart1);
         multipartBody.addBodyPart(subPart2);
 
-        subPart1.setHeader(MimeHeader.HEADER_CONTENT_ID, "cid-1");
-        subPart2.setHeader(MimeHeader.HEADER_CONTENT_ID, "cid-2");
-
         when(attachmentInfoExtractor.extractAttachmentInfo(subPart1)).thenReturn(new AttachmentViewInfo(
-                        null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_1, false, subPart1, true));
+                        null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_1, true, subPart1, true, "cid-1"));
         when(attachmentInfoExtractor.extractAttachmentInfo(subPart2)).thenReturn(new AttachmentViewInfo(
-                        null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_2, false, subPart2, true));
+                        null, null, AttachmentViewInfo.UNKNOWN_SIZE, ATTACHMENT_TEST_URI_2, true, subPart2, true, "cid-2"));
 
 
         Map<String,Uri> result = AttachmentResolver.buildCidToAttachmentUriMap(attachmentInfoExtractor, multipartPart);

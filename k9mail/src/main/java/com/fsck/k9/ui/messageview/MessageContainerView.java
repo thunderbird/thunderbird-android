@@ -329,7 +329,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     private AttachmentViewInfo getAttachmentByContentId(String cid) {
         for (AttachmentViewInfo attachment : attachments.keySet()) {
-            if (cid.equals(attachment.part.getContentId())) {
+            if (cid.equals(attachment.contentId)) {
                 return attachment;
             }
         }

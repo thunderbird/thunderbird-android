@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -836,11 +837,11 @@ class ImapFolder extends Folder<ImapMessage> {
                             String bodyString = (String) literal;
                             InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
 
-                            String contentTransferEncoding =
-                                    part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                            String contentType = part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
+                            PartHeaderMetadata partHeaderMetadata = PartHeaderMetadata.from(part);
+                            String contentTransferEncoding = partHeaderMetadata.getContentTransferEncoding();
+                            String mimeType = partHeaderMetadata.getMimeType();
                             MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
-                                    contentType));
+                                    mimeType));
                         } else {
                             // This shouldn't happen
                             throw new MessagingException("Got FETCH response with bogus parameters");
@@ -1231,21 +1232,20 @@ class ImapFolder extends Folder<ImapMessage> {
             * Try to find the UID of the message we just appended using the
             * Message-ID header.
             */
-            String[] messageIdHeader = message.getHeader("Message-ID");
+            String messageIdHeader = message.getRawFirstHeader("Message-ID");
 
-            if (messageIdHeader.length == 0) {
+            if (messageIdHeader == null) {
                 if (K9MailLib.isDebug()) {
                     Log.d(LOG_TAG, "Did not get a message-id in order to search for UID  for " + getLogId());
                 }
                 return null;
             }
 
-            String messageId = messageIdHeader[0];
             if (K9MailLib.isDebug()) {
-                Log.d(LOG_TAG, "Looking for UID for message with message-id " + messageId + " for " + getLogId());
+                Log.d(LOG_TAG, "Looking for UID for message with message-id " + messageIdHeader + " for " + getLogId());
             }
 
-            String command = String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapUtility.encodeString(messageId));
+            String command = String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapUtility.encodeString(messageIdHeader));
             List<ImapResponse> responses = executeSimpleCommand(command);
 
             for (ImapResponse response : responses) {

@@ -6,26 +6,24 @@ import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.PartHeaderMetadata;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-
-import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
 
 class TextPartFinder {
     @Nullable
     public Part findFirstTextPart(@NonNull Part part) {
-        String mimeType = part.getMimeType();
         Body body = part.getBody();
 
         if (body instanceof Multipart) {
             Multipart multipart = (Multipart) body;
-            if (isSameMimeType(mimeType, "multipart/alternative")) {
+            if (PartHeaderMetadata.from(part).isMimeType("multipart/alternative")) {
                 return findTextPartInMultipartAlternative(multipart);
             } else {
                 return findTextPartInMultipart(multipart);
             }
-        } else if (isSameMimeType(mimeType, "text/plain") || isSameMimeType(mimeType, "text/html")) {
+        } else if (PartHeaderMetadata.from(part).isMimeTypeAnyOf("text/plain", "text/html")) {
             return part;
         }
 
@@ -36,21 +34,21 @@ class TextPartFinder {
         Part htmlPart = null;
 
         for (BodyPart bodyPart : multipart.getBodyParts()) {
-            String mimeType = bodyPart.getMimeType();
+            PartHeaderMetadata fancyBodyPart = PartHeaderMetadata.from(bodyPart);
             Body body = bodyPart.getBody();
 
             if (body instanceof Multipart) {
                 Part candidatePart = findFirstTextPart(bodyPart);
                 if (candidatePart != null) {
-                    if (isSameMimeType(candidatePart.getMimeType(), "text/html")) {
+                    if (PartHeaderMetadata.from(candidatePart).isMimeType("text/html")) {
                         htmlPart = candidatePart;
                     } else {
                         return candidatePart;
                     }
                 }
-            } else if (isSameMimeType(mimeType, "text/plain")) {
+            } else if (fancyBodyPart.isMimeType("text/plain")) {
                 return bodyPart;
-            } else if (isSameMimeType(mimeType, "text/html") && htmlPart == null) {
+            } else if (fancyBodyPart.isMimeType("text/html") && htmlPart == null) {
                 htmlPart = bodyPart;
             }
         }
@@ -64,7 +62,6 @@ class TextPartFinder {
 
     private Part findTextPartInMultipart(Multipart multipart) {
         for (BodyPart bodyPart : multipart.getBodyParts()) {
-            String mimeType = bodyPart.getMimeType();
             Body body = bodyPart.getBody();
 
             if (body instanceof Multipart) {
@@ -72,7 +69,7 @@ class TextPartFinder {
                 if (candidatePart != null) {
                     return candidatePart;
                 }
-            } else if (isSameMimeType(mimeType, "text/plain") || isSameMimeType(mimeType, "text/html")) {
+            } else if (PartHeaderMetadata.from(bodyPart).isMimeTypeAnyOf("text/plain", "text/html")) {
                 return bodyPart;
             }
         }

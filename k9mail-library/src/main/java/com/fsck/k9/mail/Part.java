@@ -1,11 +1,11 @@
-
 package com.fsck.k9.mail;
 
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 
 public interface Part {
@@ -17,23 +17,14 @@ public interface Part {
 
     void setHeader(String name, String value);
 
-    Body getBody();
-
-    String getContentType();
-
-    String getDisposition();
-
-    String getContentId();
-
-    /**
-     * Returns an array of headers of the given name. The array may be empty.
-     */
     @NonNull
-    String[] getHeader(String name);
+    String[] getRawHeader(String name);
 
-    boolean isMimeType(String mimeType);
+    @Nullable
+    String getRawFirstHeader(String name);
 
-    String getMimeType();
+
+    Body getBody();
 
     void setBody(Body body);
 
