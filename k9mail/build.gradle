@@ -1,7 +1,13 @@
 apply plugin: 'com.android.application'
-apply from: '../gradle/plugins/checkstyle-android.gradle'
-apply from: '../gradle/plugins/findbugs-android.gradle'
-apply plugin: 'jacoco'
+
+if (!rootProject.optimizeForDevelopment) {
+    apply from: '../gradle/plugins/checkstyle-android.gradle'
+    apply from: '../gradle/plugins/findbugs-android.gradle'
+}
+
+if (rootProject.testCoverage) {
+    apply plugin: 'jacoco'
+}
 
 repositories {
     jcenter()

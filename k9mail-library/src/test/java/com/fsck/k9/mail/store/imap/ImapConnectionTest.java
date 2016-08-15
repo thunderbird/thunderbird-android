@@ -51,8 +51,8 @@ public class ImapConnectionTest {
 
     private static final String USERNAME = "user";
     private static final String PASSWORD = "123456";
-    private static final int SOCKET_CONNECT_TIMEOUT = 2000;
-    private static final int SOCKET_READ_TIMEOUT = 1000;
+    private static final int SOCKET_CONNECT_TIMEOUT = 10000;
+    private static final int SOCKET_READ_TIMEOUT = 10000;
 
 
     private TrustedSocketFactory socketFactory;

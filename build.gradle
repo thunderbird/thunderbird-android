@@ -4,13 +4,14 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath 'com.android.tools.build:gradle:2.1.0'
     }
 }
 
 project.ext {
     preDexLibs = !project.hasProperty('disablePreDex')
     testCoverage = project.hasProperty('testCoverage')
+    optimizeForDevelopment = project.hasProperty('optimizeForDevelopment') && optimizeForDevelopment == 'true'
 
     compileSdkVersion = 23
     buildToolsVersion = '23.0.3'
