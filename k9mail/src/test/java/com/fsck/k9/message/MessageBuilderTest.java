@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Locale;
-import java.util.UUID;
 
 import android.app.Application;
 
@@ -20,9 +18,10 @@ import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BoundaryGenerator;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.UuidGenerator;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import org.junit.Assert;
@@ -59,7 +58,7 @@ public class MessageBuilderTest {
     public static final Address[] TEST_CC = new Address[] { new Address("cc@example.org", "cc recip") };
     public static final Address[] TEST_BCC = new Address[] { new Address("bcc@example.org", "bcc recip") };
 
-    public static final UUID TEST_UUID = new UUID(123L, 234L);
+    public static final String TEST_MESSAGE_ID = "<00000000-0000-007B-0000-0000000000EA@example.org>";
     public static final String BOUNDARY_1 = "----boundary1";
     public static final String BOUNDARY_2 = "----boundary2";
     public static final String BOUNDARY_3 = "----boundary3";
@@ -75,7 +74,7 @@ public class MessageBuilderTest {
             "User-Agent: K-9 Mail for Android\r\n" +
             "In-Reply-To: inreplyto\r\n" +
             "References: references\r\n" +
-            "Message-ID: <" + TEST_UUID.toString().toUpperCase(Locale.ENGLISH) + "@example.org>\r\n" +
+            "Message-ID: " + TEST_MESSAGE_ID + "\r\n" +
             "MIME-Version: 1.0\r\n";
     public static final String MESSAGE_CONTENT =
             "Content-Type: text/plain;\r\n" +
@@ -109,13 +108,13 @@ public class MessageBuilderTest {
 
 
     private Application context;
-    private UuidGenerator uuidGenerator;
+    private MessageIdGenerator messageIdGenerator;
     private BoundaryGenerator boundaryGenerator;
 
     @Before
     public void setUp() throws Exception {
-        uuidGenerator = mock(UuidGenerator.class);
-        when(uuidGenerator.generateUUID()).thenReturn(TEST_UUID);
+        messageIdGenerator = mock(MessageIdGenerator.class);
+        when(messageIdGenerator.generateMessageId(any(Message.class))).thenReturn(TEST_MESSAGE_ID);
 
         boundaryGenerator = mock(BoundaryGenerator.class);
         when(boundaryGenerator.generateBoundary()).thenReturn(BOUNDARY_1, BOUNDARY_2, BOUNDARY_3);
@@ -206,7 +205,7 @@ public class MessageBuilderTest {
 
     @Test
     public void buildWithException__shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, uuidGenerator, boundaryGenerator) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -222,7 +221,7 @@ public class MessageBuilderTest {
 
     @Test
     public void buildWithException__detachAndReattach__shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, uuidGenerator, boundaryGenerator) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -247,7 +246,7 @@ public class MessageBuilderTest {
     }
 
     private MessageBuilder createSimpleMessageBuilder() {
-        MessageBuilder b = new SimpleMessageBuilder(context, uuidGenerator, boundaryGenerator);
+        MessageBuilder b = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator);
 
         Identity identity = new Identity();
         identity.setName(TEST_IDENTITY_ADDRESS.getPersonal());

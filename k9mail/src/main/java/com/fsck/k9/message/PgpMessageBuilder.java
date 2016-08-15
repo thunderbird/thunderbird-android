@@ -20,8 +20,8 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.UuidGenerator;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -51,14 +51,14 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     public static PgpMessageBuilder createPgpMessageBuilder() {
         Context context = Globals.getContext();
-        UuidGenerator uuidGenerator = UuidGenerator.getInstance();
+        MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
         BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
-        return new PgpMessageBuilder(context, uuidGenerator, boundaryGenerator);
+        return new PgpMessageBuilder(context, messageIdGenerator, boundaryGenerator);
     }
 
     @VisibleForTesting
-    PgpMessageBuilder(Context context, UuidGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
-        super(context, uuidGenerator, boundaryGenerator);
+    PgpMessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
+        super(context, messageIdGenerator, boundaryGenerator);
     }
 
 

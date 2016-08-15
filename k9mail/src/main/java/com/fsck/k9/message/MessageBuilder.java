@@ -24,7 +24,7 @@ import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.UuidGenerator;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -40,7 +40,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 
 public abstract class MessageBuilder {
     private final Context context;
-    private final UuidGenerator uuidGenerator;
+    private final MessageIdGenerator messageIdGenerator;
     private final BoundaryGenerator boundaryGenerator;
 
 
@@ -71,9 +71,9 @@ public abstract class MessageBuilder {
     private boolean isDraft;
     private boolean isPgpInlineEnabled;
 
-    protected MessageBuilder(Context context, UuidGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
+    protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
         this.context = context;
-        this.uuidGenerator = uuidGenerator;
+        this.messageIdGenerator = messageIdGenerator;
         this.boundaryGenerator = boundaryGenerator;
     }
 
@@ -84,7 +84,7 @@ public abstract class MessageBuilder {
     protected MimeMessage build() throws MessagingException {
         //FIXME: check arguments
 
-        MimeMessage message = MimeMessage.createMimeMessage(uuidGenerator);
+        MimeMessage message = MimeMessage.createMimeMessage();
 
         buildHeader(message);
         buildBody(message);
@@ -124,7 +124,8 @@ public abstract class MessageBuilder {
             message.setReferences(references);
         }
 
-        message.generateMessageId();
+        String messageId = messageIdGenerator.generateMessageId(message);
+        message.setMessageId(messageId);
 
         if (isDraft && isPgpInlineEnabled) {
             message.setFlag(Flag.X_DRAFT_OPENPGP_INLINE, true);

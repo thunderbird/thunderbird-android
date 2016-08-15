@@ -8,7 +8,7 @@ import android.support.annotation.VisibleForTesting;
 import com.fsck.k9.Globals;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.UuidGenerator;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 
@@ -16,14 +16,14 @@ public class SimpleMessageBuilder extends MessageBuilder {
 
     public static SimpleMessageBuilder createSimpleMessageBuilder() {
         Context context = Globals.getContext();
-        UuidGenerator uuidGenerator = UuidGenerator.getInstance();
+        MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
         BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
-        return new SimpleMessageBuilder(context, uuidGenerator, boundaryGenerator);
+        return new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator);
     }
 
     @VisibleForTesting
-    SimpleMessageBuilder(Context context, UuidGenerator uuidGenerator, BoundaryGenerator boundaryGenerator) {
-        super(context, uuidGenerator, boundaryGenerator);
+    SimpleMessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
+        super(context, messageIdGenerator, boundaryGenerator);
     }
 
     @Override

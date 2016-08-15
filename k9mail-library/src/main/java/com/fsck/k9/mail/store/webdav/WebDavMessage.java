@@ -5,7 +5,6 @@ import android.util.Log;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.UuidGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 import java.util.Collections;
@@ -23,12 +22,10 @@ class WebDavMessage extends MimeMessage {
     private String mUrl = "";
 
     static WebDavMessage createWebDavMessage(String uid, Folder folder) {
-        UuidGenerator uuidGenerator = UuidGenerator.getInstance();
-        return new WebDavMessage(uuidGenerator, uid, folder);
+        return new WebDavMessage(uid, folder);
     }
 
-    private WebDavMessage(UuidGenerator uuidGenerator, String uid, Folder folder) {
-        super(uuidGenerator);
+    private WebDavMessage(String uid, Folder folder) {
         this.mUid = uid;
         this.mFolder = folder;
     }

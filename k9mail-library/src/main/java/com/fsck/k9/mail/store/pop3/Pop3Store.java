@@ -1185,12 +1185,10 @@ public class Pop3Store extends RemoteStore {
 
     static class Pop3Message extends MimeMessage {
         public static Pop3Message createPop3Message(String uid, Pop3Folder folder) {
-            UuidGenerator uuidGenerator = UuidGenerator.getInstance();
-            return new Pop3Message(uuidGenerator, uid, folder);
+            return new Pop3Message(uid, folder);
         }
 
-        private Pop3Message(UuidGenerator uuidGenerator, String uid, Pop3Folder folder) {
-            super(uuidGenerator);
+        private Pop3Message(String uid, Pop3Folder folder) {
             mUid = uid;
             mFolder = folder;
             mSize = -1;

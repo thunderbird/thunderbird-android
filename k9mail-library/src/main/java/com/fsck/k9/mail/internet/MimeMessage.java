@@ -25,7 +25,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.UuidGenerator;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
@@ -43,8 +42,6 @@ import org.apache.james.mime4j.util.MimeUtil;
  * RFC 2045 style headers.
  */
 public class MimeMessage extends Message {
-    protected final UuidGenerator uuidGenerator;
-
     private MimeHeader mHeader = new MimeHeader();
     protected Address[] mFrom;
     protected Address[] mTo;
@@ -64,13 +61,8 @@ public class MimeMessage extends Message {
     private String serverExtra;
 
 
-    public static MimeMessage createMimeMessage(UuidGenerator uuidGenerator) {
-        return new MimeMessage(uuidGenerator);
-    }
-
     public static MimeMessage createMimeMessage() {
-        UuidGenerator uuidGenerator = UuidGenerator.getInstance();
-        return new MimeMessage(uuidGenerator);
+        return new MimeMessage();
     }
 
     public static MimeMessage parseMimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
@@ -79,10 +71,8 @@ public class MimeMessage extends Message {
         return mimeMessage;
     }
 
-    protected MimeMessage(UuidGenerator uuidGenerator) {
-        this.uuidGenerator = uuidGenerator;
+    protected MimeMessage() {
     }
-
 
     /**
      * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
@@ -324,27 +314,6 @@ public class MimeMessage extends Message {
             mMessageId = getFirstHeader("Message-ID");
         }
         return mMessageId;
-    }
-
-    public void generateMessageId() {
-        String hostname = null;
-
-        if (mFrom != null && mFrom.length >= 1) {
-            hostname = mFrom[0].getHostname();
-        }
-
-        if (hostname == null && mReplyTo != null && mReplyTo.length >= 1) {
-            hostname = mReplyTo[0].getHostname();
-        }
-
-        if (hostname == null) {
-            hostname = "email.android.com";
-        }
-
-        /* We use upper case here to match Apple Mail Message-ID format (for privacy) */
-        String messageId = "<" + uuidGenerator.generateUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
-
-        setMessageId(messageId);
     }
 
     public void setMessageId(String messageId) {
