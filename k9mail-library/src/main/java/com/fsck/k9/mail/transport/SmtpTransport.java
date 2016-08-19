@@ -503,7 +503,7 @@ public class SmtpTransport extends Transport {
         open();
 
         if (!m8bitEncodingAllowed) {
-            message.setUsing7bitTransport();
+            Log.d(LOG_TAG, "Server does not support 8bit transfer encoding");
         }
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it

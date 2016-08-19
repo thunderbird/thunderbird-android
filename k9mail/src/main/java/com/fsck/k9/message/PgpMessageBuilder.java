@@ -183,7 +183,6 @@ public class PgpMessageBuilder extends MessageBuilder {
         if (contentType.length > 0) {
             bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
         }
-        bodyPart.setUsing7bitTransport();
 
         OpenPgpDataSource dataSource = createOpenPgpDataSourceFromBodyPart(bodyPart, writeBodyContentOnly);
 

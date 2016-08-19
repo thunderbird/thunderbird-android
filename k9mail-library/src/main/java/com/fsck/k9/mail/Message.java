@@ -15,7 +15,7 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
-public abstract class Message implements Part, CompositeBody {
+public abstract class Message implements Part, Body {
 
     public enum RecipientType {
         TO, CC, BCC,

@@ -33,7 +33,6 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
-import com.fsck.k9.mailstore.TempFileMessageBody;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -214,7 +213,6 @@ public abstract class MessageBuilder {
      * @throws MessagingException
      */
     private void addAttachmentsToMessage(final MimeMultipart mp) throws MessagingException {
-        Body body;
         for (Attachment attachment : attachments) {
             if (attachment.state != Attachment.LoadingState.COMPLETE) {
                 continue;
@@ -222,10 +220,12 @@ public abstract class MessageBuilder {
 
             String contentType = attachment.contentType;
             if (MimeUtil.isMessage(contentType)) {
-                body = new TempFileMessageBody(attachment.filename);
-            } else {
-                body = new TempFileBody(attachment.filename);
+                contentType = "application/octet-stream";
+                // TODO reencode message body to 7 bit
+                // body = new TempFileMessageBody(attachment.filename);
             }
+
+            Body body = new TempFileBody(attachment.filename);
             MimeBodyPart bp = new MimeBodyPart(body);
 
             /*

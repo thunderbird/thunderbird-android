@@ -49,7 +49,7 @@ public class IdentityHeaderBuilder {
             appendValue(IdentityField.OFFSET, body.getComposedMessageOffset());
         } else {
             // If not, calculate it now.
-            appendValue(IdentityField.LENGTH, body.getText().length());
+            appendValue(IdentityField.LENGTH, body.getRawText().length());
             appendValue(IdentityField.OFFSET, 0);
         }
 
@@ -66,7 +66,7 @@ public class IdentityHeaderBuilder {
                 appendValue(IdentityField.PLAIN_OFFSET, composedMessageOffset);
             } else {
                 // If not, calculate it now.
-                appendValue(IdentityField.PLAIN_LENGTH, body.getText().length());
+                appendValue(IdentityField.PLAIN_LENGTH, body.getRawText().length());
                 appendValue(IdentityField.PLAIN_OFFSET, 0);
             }
         }

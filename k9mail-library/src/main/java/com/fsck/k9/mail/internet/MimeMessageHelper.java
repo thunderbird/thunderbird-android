@@ -26,11 +26,8 @@ public class MimeMessageHelper {
             String mimeType = multipart.getMimeType();
             String contentType = String.format("%s; boundary=\"%s\"", mimeType, multipart.getBoundary());
             part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
-            if (MimeUtility.isSameMimeType(mimeType, "multipart/signed")) {
-                setEncoding(part, MimeUtil.ENC_7BIT);
-            } else {
-                setEncoding(part, MimeUtil.ENC_8BIT);
-            }
+            // note: if this is ever changed to 8bit, multipart/signed parts must always be 7bit!
+            setEncoding(part, MimeUtil.ENC_7BIT);
         } else if (body instanceof TextBody) {
             String contentType;
             if (MimeUtility.mimeTypeMatches(part.getMimeType(), "text/*")) {
@@ -44,7 +41,7 @@ public class MimeMessageHelper {
             }
             part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
 
-            setEncoding(part, MimeUtil.ENC_8BIT);
+            setEncoding(part, MimeUtil.ENC_QUOTED_PRINTABLE);
         }
     }
 
