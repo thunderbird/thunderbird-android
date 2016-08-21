@@ -1,9 +1,6 @@
 
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.K9MailLib;
-import com.fsck.k9.mail.MessagingException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,9 +11,11 @@ import java.io.UnsupportedEncodingException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.SignSafeOutputStream;
-
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -44,12 +43,7 @@ public class TextBody implements Body, SizeAware {
         if (text != null) {
             byte[] bytes = text.getBytes(charset);
             if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(encoding)) {
-                SignSafeOutputStream signSafeOutputStream = new SignSafeOutputStream(out);
-                QuotedPrintableOutputStream signSafeQuotedPrintableOutputStream =
-                        new QuotedPrintableOutputStream(signSafeOutputStream, false);
-                signSafeQuotedPrintableOutputStream.write(bytes);
-                signSafeQuotedPrintableOutputStream.flush();
-                signSafeOutputStream.flush();
+                writeSignSafeQuotedPrintable(out, bytes);
             } else if (MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
                 out.write(bytes);
             } else {
@@ -130,16 +124,23 @@ public class TextBody implements Body, SizeAware {
 
     private long getLengthWhenQuotedPrintableEncoded(byte[] bytes) throws IOException {
         CountingOutputStream countingOutputStream = new CountingOutputStream();
-        OutputStream quotedPrintableOutputStream = new QuotedPrintableOutputStream(countingOutputStream, false);
-        try {
-            quotedPrintableOutputStream.write(bytes);
-        } finally {
-            try {
-                quotedPrintableOutputStream.close();
-            } catch (IOException e) { /* ignore */ }
-        }
-
+        writeSignSafeQuotedPrintable(countingOutputStream, bytes);
         return countingOutputStream.getCount();
+    }
+
+    private void writeSignSafeQuotedPrintable(OutputStream out, byte[] bytes) throws IOException {
+        SignSafeOutputStream signSafeOutputStream = new SignSafeOutputStream(out);
+        try {
+            QuotedPrintableOutputStream signSafeQuotedPrintableOutputStream =
+                    new QuotedPrintableOutputStream(signSafeOutputStream, false);
+            try {
+                signSafeQuotedPrintableOutputStream.write(bytes);
+            } finally {
+                signSafeQuotedPrintableOutputStream.close();
+            }
+        } finally {
+            signSafeOutputStream.close();
+        }
     }
 
     public String getEncoding() {
