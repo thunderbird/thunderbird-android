@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:id="@+id/crypto_info_top_icon_2"
-            android:alpha="0.05"
+            android:tint="?attr/openpgp_grey"
             tools:src="@drawable/status_none_dots_3"
             />
 
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:id="@+id/crypto_info_bottom_icon_1"
-            android:alpha="0.05"
+            android:tint="?attr/openpgp_grey"
             tools:src="@drawable/status_signature_verified_cutout"
             />
 
