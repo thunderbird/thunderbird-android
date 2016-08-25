@@ -1,7 +1,7 @@
 package com.fsck.k9.view;
 
 
-import android.support.annotation.ColorRes;
+import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -14,141 +14,141 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 
 public enum MessageCryptoDisplayStatus {
     LOADING (
-            R.color.openpgp_grey,
+            R.attr.openpgp_grey,
             R.drawable.status_lock
     ),
 
     CANCELLED (
-            R.color.openpgp_black,
+            R.attr.openpgp_black,
             R.drawable.status_lock,
             R.string.crypto_msg_cancelled
     ),
 
     DISABLED (
-            R.color.openpgp_grey,
+            R.attr.openpgp_grey,
             R.drawable.status_lock_disabled,
             R.string.crypto_msg_disabled
     ),
 
     UNENCRYPTED_SIGN_UNKNOWN (
-            R.color.openpgp_black,
+            R.attr.openpgp_black,
             R.drawable.status_signature_unverified_cutout, R.drawable.status_dots,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_unknown
     ),
 
     UNENCRYPTED_SIGN_VERIFIED (
-            R.color.openpgp_blue,
+            R.attr.openpgp_blue,
             R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_3,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_verified
     ),
     UNENCRYPTED_SIGN_UNVERIFIED (
-            R.color.openpgp_orange, 
+            R.attr.openpgp_orange, 
             R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_2,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_unverified
     ),
     UNENCRYPTED_SIGN_MISMATCH (
-            R.color.openpgp_red, 
+            R.attr.openpgp_red, 
             R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_mismatch
     ),
     UNENCRYPTED_SIGN_EXPIRED (
-            R.color.openpgp_red, 
+            R.attr.openpgp_red, 
             R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_expired
     ),
     UNENCRYPTED_SIGN_REVOKED (
-            R.color.openpgp_red, 
+            R.attr.openpgp_red, 
             R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_revoked
     ),
     UNENCRYPTED_SIGN_INSECURE (
-            R.color.openpgp_red, 
+            R.attr.openpgp_red, 
             R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_insecure
     ),
     UNENCRYPTED_SIGN_ERROR (
-            R.color.openpgp_red,
+            R.attr.openpgp_red,
             R.drawable.status_signature_verified_cutout, R.drawable.status_dots,
             R.string.crypto_msg_signed_error, null
     ),
 
     ENCRYPTED_SIGN_UNKNOWN (
-            R.color.openpgp_black,
+            R.attr.openpgp_black,
             R.drawable.status_lock_opportunistic, R.drawable.status_dots,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_unknown
     ),
 
     ENCRYPTED_SIGN_VERIFIED (
-            R.color.openpgp_green, 
+            R.attr.openpgp_green, 
             R.drawable.status_lock, R.drawable.status_none_dots_3,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_verified
     ),
     ENCRYPTED_SIGN_UNVERIFIED (
-            R.color.openpgp_orange, 
+            R.attr.openpgp_orange, 
             R.drawable.status_lock, R.drawable.status_none_dots_2,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_unverified
     ),
     ENCRYPTED_SIGN_MISMATCH (
-            R.color.openpgp_red,
+            R.attr.openpgp_red,
             R.drawable.status_lock, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_mismatch
     ),
     ENCRYPTED_SIGN_EXPIRED (
-            R.color.openpgp_red, 
+            R.attr.openpgp_red, 
             R.drawable.status_lock, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_expired
     ),
     ENCRYPTED_SIGN_REVOKED (
-            R.color.openpgp_red, 
+            R.attr.openpgp_red, 
             R.drawable.status_lock, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_revoked
     ),
     ENCRYPTED_SIGN_INSECURE (
-            R.color.openpgp_red,
+            R.attr.openpgp_red,
             R.drawable.status_lock, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_insecure
     ),
     ENCRYPTED_UNSIGNED (
-            R.color.openpgp_red, 
+            R.attr.openpgp_red, 
             R.drawable.status_lock, R.drawable.status_dots,
             R.string.crypto_msg_encrypted_unsigned, R.string.crypto_msg_unsigned_encrypted
     ),
     ENCRYPTED_SIGN_ERROR (
-            R.color.openpgp_red,
+            R.attr.openpgp_red,
             R.drawable.status_lock, R.drawable.status_dots,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_error
     ),
 
     ENCRYPTED_ERROR (
-            R.color.openpgp_red, 
+            R.attr.openpgp_red, 
             R.drawable.status_lock_error,
             R.string.crypto_msg_encrypted_error
     ),
 
     INCOMPLETE_ENCRYPTED (
-            R.color.openpgp_black,
+            R.attr.openpgp_black,
             R.drawable.status_lock_opportunistic,
             R.string.crypto_msg_incomplete_encrypted
     ),
     INCOMPLETE_SIGNED (
-            R.color.openpgp_black,
+            R.attr.openpgp_black,
             R.drawable.status_signature_unverified_cutout, R.drawable.status_dots,
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_incomplete
     ),
 
     UNSUPPORTED_ENCRYPTED (
-            R.color.openpgp_red,
+            R.attr.openpgp_red,
             R.drawable.status_lock_error,
             R.string.crypto_msg_unsupported_encrypted
     ),
     UNSUPPORTED_SIGNED (
-            R.color.openpgp_grey,
+            R.attr.openpgp_grey,
             R.drawable.status_lock_disabled,
             R.string.crypto_msg_unsupported_signed
     ),
     ;
 
-    @ColorRes public final int colorRes;
+    @AttrRes public final int colorAttr;
 
     @DrawableRes public final int statusIconRes;
     @DrawableRes public final Integer statusDotsRes;
@@ -156,9 +156,9 @@ public enum MessageCryptoDisplayStatus {
     @StringRes public final Integer textResTop;
     @StringRes public final Integer textResBottom;
 
-    MessageCryptoDisplayStatus(@ColorRes int colorRes, @DrawableRes int statusIconRes, @DrawableRes Integer statusDotsRes,
+    MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes, @DrawableRes Integer statusDotsRes,
             @StringRes int textResTop, @StringRes Integer textResBottom) {
-        this.colorRes = colorRes;
+        this.colorAttr = colorAttr;
         this.statusIconRes = statusIconRes;
         this.statusDotsRes = statusDotsRes;
 
@@ -166,8 +166,8 @@ public enum MessageCryptoDisplayStatus {
         this.textResBottom = textResBottom;
     }
 
-    MessageCryptoDisplayStatus(@ColorRes int colorRes, @DrawableRes int statusIconRes, @StringRes int textResTop) {
-        this.colorRes = colorRes;
+    MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes, @StringRes int textResTop) {
+        this.colorAttr = colorAttr;
         this.statusIconRes = statusIconRes;
         this.statusDotsRes = null;
 
@@ -175,8 +175,8 @@ public enum MessageCryptoDisplayStatus {
         this.textResBottom = null;
     }
 
-    MessageCryptoDisplayStatus(@ColorRes int colorRes, @DrawableRes int statusIconRes) {
-        this.colorRes = colorRes;
+    MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes) {
+        this.colorAttr = colorAttr;
         this.statusIconRes = statusIconRes;
         this.statusDotsRes = null;
 

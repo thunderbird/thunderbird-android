@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 android:src="@drawable/status_dots"
-                android:tint="@color/openpgp_grey"
+                android:tint="?attr/openpgp_grey"
                 />
 
             <ImageView
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 tools:src="@drawable/status_lock_dots_2"
-                tools:tint="@color/openpgp_grey"
+                tools:tint="?attr/openpgp_grey"
                 />
 
         </FrameLayout>

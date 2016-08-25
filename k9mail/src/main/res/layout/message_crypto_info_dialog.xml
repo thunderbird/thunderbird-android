@@ -21,7 +21,7 @@
             android:layout_gravity="left|center_vertical"
             android:id="@+id/crypto_info_top_icon_1"
             tools:src="@drawable/status_signature_verified_cutout"
-            tools:tint="@color/openpgp_blue"
+            tools:tint="?attr/openpgp_blue"
             />
 
         <ImageView
@@ -77,7 +77,7 @@
             android:layout_gravity="left|center_vertical"
             android:id="@+id/crypto_info_bottom_icon_2"
             tools:src="@drawable/status_none_dots_3"
-            tools:tint="@color/openpgp_blue"
+            tools:tint="?attr/openpgp_blue"
             />
 
     </FrameLayout>

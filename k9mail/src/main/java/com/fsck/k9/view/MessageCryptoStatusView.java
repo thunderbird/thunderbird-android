@@ -40,7 +40,7 @@ public class MessageCryptoStatusView extends FrameLayout {
     }
 
     public void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
-        @ColorInt int color = getResources().getColor(displayStatus.colorRes);
+        @ColorInt int color = ThemeUtils.getStyledColor(getContext(), displayStatus.colorAttr);
 
         if (displayStatus.statusDotsRes != null) {
             iconCombinedFirst.setVisibility(View.VISIBLE);

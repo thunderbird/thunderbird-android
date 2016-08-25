@@ -63,6 +63,13 @@
         <item name="composerBackgroundColor">@android:color/background_light</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
+
+        <item name="openpgp_black">#000</item>
+        <item name="openpgp_orange">#FF8800</item>
+        <item name="openpgp_red">#CC0000</item>
+        <item name="openpgp_green">#669900</item>
+        <item name="openpgp_blue">#336699</item>
+        <item name="openpgp_grey">#bbb</item>
     </style>
 
     <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Base">
@@ -119,6 +126,13 @@
         <item name="composerBackgroundColor">@android:color/background_dark</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
+
+        <item name="openpgp_black">#000</item>
+        <item name="openpgp_orange">#FF8800</item>
+        <item name="openpgp_red">#CC0000</item>
+        <item name="openpgp_green">#669900</item>
+        <item name="openpgp_blue">#336699</item>
+        <item name="openpgp_grey">#bbb</item>
     </style>
 
     <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">

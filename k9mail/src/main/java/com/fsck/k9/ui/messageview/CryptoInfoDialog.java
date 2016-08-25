@@ -10,8 +10,8 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.fsck.k9.R;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
+import com.fsck.k9.view.ThemeUtils;
 
 
 public class CryptoInfoDialog extends DialogFragment {
@@ -106,23 +107,23 @@ public class CryptoInfoDialog extends DialogFragment {
         }
 
         if (displayStatus.textResBottom == null) {
-            setMessageSingleLine(displayStatus.colorRes,
+            setMessageSingleLine(displayStatus.colorAttr,
                     displayStatus.textResTop, displayStatus.statusIconRes,
                     displayStatus.statusDotsRes);
         } else {
             if (displayStatus.statusDotsRes == null) {
                 throw new AssertionError("second icon must be non-null if second text is non-null!");
             }
-            setMessageWithAnimation(displayStatus.colorRes,
+            setMessageWithAnimation(displayStatus.colorAttr,
                     displayStatus.textResTop, displayStatus.statusIconRes,
                     displayStatus.textResBottom, displayStatus.statusDotsRes);
         }
     }
 
-    private void setMessageSingleLine(@ColorRes int colorRes,
+    private void setMessageSingleLine(@AttrRes int colorAttr,
             @StringRes int topTextRes, @DrawableRes int statusIconRes,
             @DrawableRes Integer statusDotsRes) {
-        @ColorInt int color = getResources().getColor(colorRes);
+        @ColorInt int color = ThemeUtils.getStyledColor(getActivity(), colorAttr);
 
         topIcon_1.setImageResource(statusIconRes);
         topIcon_1.setColorFilter(color);
@@ -140,7 +141,7 @@ public class CryptoInfoDialog extends DialogFragment {
         bottomIconFrame.setVisibility(View.GONE);
     }
 
-    private void setMessageWithAnimation(@ColorRes int colorRes,
+    private void setMessageWithAnimation(@AttrRes int colorAttr,
             @StringRes int topTextRes, @DrawableRes int statusIconRes,
             @StringRes int bottomTextRes, @DrawableRes int statusDotsRes) {
         topIcon_1.setImageResource(statusIconRes);
@@ -152,8 +153,8 @@ public class CryptoInfoDialog extends DialogFragment {
         bottomIcon_2.setImageResource(statusDotsRes);
         bottomText.setText(bottomTextRes);
 
-        topIcon_1.setColorFilter(getResources().getColor(colorRes));
-        bottomIcon_2.setColorFilter(getResources().getColor(colorRes));
+        topIcon_1.setColorFilter(ThemeUtils.getStyledColor(getActivity(), colorAttr));
+        bottomIcon_2.setColorFilter(ThemeUtils.getStyledColor(getActivity(), colorAttr));
 
         prepareIconAnimation();
     }

@@ -56,6 +56,13 @@
         <attr name="contactTokenBackgroundColor" format="reference|color"/>
         <attr name="tintColorBulletPointPositive" format="reference|color"/>
         <attr name="tintColorBulletPointNegative" format="reference|color"/>
+
+        <attr name="openpgp_black" format="reference|color" />
+        <attr name="openpgp_orange" format="reference|color" />
+        <attr name="openpgp_red" format="reference|color" />
+        <attr name="openpgp_green" format="reference|color" />
+        <attr name="openpgp_blue" format="reference|color" />
+        <attr name="openpgp_grey" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="SliderPreference">
