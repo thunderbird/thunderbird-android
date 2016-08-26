@@ -114,7 +114,7 @@ public class ContactPictureLoader {
      * Load a contact picture and display it using the supplied {@link ImageView} instance.
      *
      * <p>
-     * If a picture is found in the cache, it is displayed in the {@code QuickContactBadge}
+     * If a picture is found in the cache, it is displayed in the {@code ContactBadge}
      * immediately. Otherwise a {@link ContactPictureRetrievalTask} is started to try to load the
      * contact picture in a background thread. Depending on the result the contact picture or a
      * fallback picture is then stored in the bitmap cache.
@@ -124,7 +124,7 @@ public class ContactPictureLoader {
      *         The {@link Address} instance holding the email address that is used to search the
      *         contacts database.
      * @param imageView
-     *         The {@code QuickContactBadge} instance to receive the picture.
+     *         The {@code ContactBadge} instance to receive the picture.
      *
      * @see #mBitmapCache
      * @see #calculateFallbackBitmap(Address)
@@ -240,7 +240,7 @@ public class ContactPictureLoader {
             }
         }
 
-        // No task associated with the QuickContactBadge, or an existing task was cancelled
+        // No task associated with the ContactBadge, or an existing task was cancelled
         return true;
     }
 
