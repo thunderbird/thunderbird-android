@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/status_signature_unverified_cutout"
-            android:tint="@color/openpgp_red"
+            android:tint="?attr/openpgp_red"
             android:layout_marginTop="8dip"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"

@@ -19,7 +19,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/status_lock_disabled"
                 android:id="@+id/icon_1"
-                android:tint="@color/openpgp_grey"
+                android:tint="?attr/openpgp_grey"
                 />
 
             <ImageView
@@ -28,7 +28,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/status_signature_verified_cutout"
                 android:id="@+id/icon_2"
-                tools:tint="@color/openpgp_blue"
+                tools:tint="?attr/openpgp_blue"
                 />
 
             <ImageView
@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/status_lock_opportunistic"
                 android:id="@+id/icon_3"
-                tools:tint="@color/openpgp_orange"
+                tools:tint="?attr/openpgp_orange"
                 />
 
             <ImageView
@@ -46,7 +46,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/status_lock_closed"
                 android:id="@+id/icon_4"
-                tools:tint="@color/openpgp_green"
+                tools:tint="?attr/openpgp_green"
                 />
 
         </LinearLayout>

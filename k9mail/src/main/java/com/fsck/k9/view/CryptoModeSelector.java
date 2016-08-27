@@ -61,7 +61,7 @@ public class CryptoModeSelector extends FrameLayout implements OnSeekBarChangeLi
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        int grey = getResources().getColor(R.color.openpgp_grey);
+        int grey = ThemeUtils.getStyledColor(getContext(), R.attr.openpgp_grey);
 
         float crossfadeValue2, crossfadeValue3, crossfadeValue4;
         if (progress > CROSSFADE_THRESH_2_LOW && progress < CROSSFADE_THRESH_2_HIGH) {
@@ -90,13 +90,13 @@ public class CryptoModeSelector extends FrameLayout implements OnSeekBarChangeLi
 
         int crossfadedColor;
 
-        crossfadedColor = crossfadeColor(grey, getResources().getColor(R.color.openpgp_blue), crossfadeValue2);
+        crossfadedColor = crossfadeColor(grey, ThemeUtils.getStyledColor(getContext(), R.attr.openpgp_blue), crossfadeValue2);
         modeIcon2.setColorFilter(crossfadedColor, PorterDuff.Mode.SRC_ATOP);
 
-        crossfadedColor = crossfadeColor(grey, getResources().getColor(R.color.openpgp_orange), crossfadeValue3);
+        crossfadedColor = crossfadeColor(grey, ThemeUtils.getStyledColor(getContext(), R.attr.openpgp_orange), crossfadeValue3);
         modeIcon3.setColorFilter(crossfadedColor, PorterDuff.Mode.SRC_ATOP);
 
-        crossfadedColor = crossfadeColor(grey, getResources().getColor(R.color.openpgp_green), crossfadeValue4);
+        crossfadedColor = crossfadeColor(grey, ThemeUtils.getStyledColor(getContext(), R.attr.openpgp_green), crossfadeValue4);
         modeIcon4.setColorFilter(crossfadedColor, PorterDuff.Mode.SRC_ATOP);
     }
 

@@ -26,6 +26,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener;
 import com.fsck.k9.view.MessageHeader;
+import com.fsck.k9.view.ThemeUtils;
 import com.fsck.k9.view.ToolableViewAnimator;
 import org.openintents.openpgp.OpenPgpError;
 
@@ -192,7 +193,7 @@ public class MessageTopView extends LinearLayout {
             cryptoProviderIcon.setImageDrawable(openPgpApiProviderIcon);
         } else {
             cryptoProviderIcon.setImageResource(R.drawable.status_lock_error);
-            cryptoProviderIcon.setColorFilter(getResources().getColor(R.color.openpgp_red));
+            cryptoProviderIcon.setColorFilter(ThemeUtils.getStyledColor(getContext(), R.attr.openpgp_red));
         }
     }
 

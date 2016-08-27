@@ -24,6 +24,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
+import com.fsck.k9.view.ThemeUtils;
 
 
 public class RecipientAdapter extends BaseAdapter implements Filterable {
@@ -97,17 +98,17 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         switch (cryptoStatus) {
             case AVAILABLE_TRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_dots_3;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_green);
+                cryptoStatusColor = ThemeUtils.getStyledColor(context, R.attr.openpgp_green);
                 break;
             }
             case AVAILABLE_UNTRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_dots_2;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
+                cryptoStatusColor = ThemeUtils.getStyledColor(context, R.attr.openpgp_orange);
                 break;
             }
             case UNAVAILABLE: {
                 cryptoStatusRes = R.drawable.status_lock_disabled_dots_1;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
+                cryptoStatusColor = ThemeUtils.getStyledColor(context, R.attr.openpgp_red);
                 break;
             }
         }
