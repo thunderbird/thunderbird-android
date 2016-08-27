@@ -62,7 +62,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -117,6 +116,7 @@ import com.fsck.k9.search.SqlQueryBuilder;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.fsck.k9.ui.ContactBadge;
 
 
 public class MessageListFragment extends Fragment implements OnItemClickListener,
@@ -1712,8 +1712,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
             }
 
-            QuickContactBadge contactBadge =
-                    (QuickContactBadge) view.findViewById(R.id.contact_badge);
+            ContactBadge contactBadge =
+                    (ContactBadge) view.findViewById(R.id.contact_badge);
             if (mContactsPictureLoader != null) {
                 holder.contactBadge = contactBadge;
             } else {
@@ -1823,7 +1823,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     Utility.setContactForBadge(holder.contactBadge, counterpartyAddress);
                     /*
                      * At least in Android 2.2 a different background + padding is used when no
-                     * email address is available. ListView reuses the views but QuickContactBadge
+                     * email address is available. ListView reuses the views but ContactBadge
                      * doesn't reset the padding, so we do it ourselves.
                      */
                     holder.contactBadge.setPadding(0, 0, 0, 0);
@@ -1980,7 +1980,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         public CheckBox flagged;
         public CheckBox selected;
         public int position = -1;
-        public QuickContactBadge contactBadge;
+        public ContactBadge contactBadge;
         @Override
         public void onClick(View view) {
             if (position != -1) {

@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
-                    <QuickContactBadge
+                    <com.fsck.k9.ui.ContactBadge
                         android:id="@+id/contact_badge"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
