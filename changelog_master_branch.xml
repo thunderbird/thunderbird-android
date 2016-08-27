@@ -8,6 +8,16 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.111" versioncode="23110" >
+        <change>Fixed replying to and forwarding of encrypted messages</change>
+        <change>Ask for confirmation on "mark all as read"</change>
+        <change>Suggest server name based on server type</change>
+        <change>Added support for esPass MIME type (application/vnd.espass-espass+zip)</change>
+        <change>Removed attachment indicator for encrypted messages</change>
+        <change>Don't add additional line break to the end of a message when sending</change>
+        <change>Removed broken support for sending messages as 8-bit via SMTP</change>
+        <change>Lots of internal changes and minor bug fixes</change>
+    </release>
     <release version="5.110" versioncode="23100" >
         <change>New option: only notify for messages from contacts</change>
         <change>Added auto-configuration support for more providers</change>
