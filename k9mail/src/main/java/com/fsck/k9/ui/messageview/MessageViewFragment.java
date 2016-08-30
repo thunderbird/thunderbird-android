@@ -209,19 +209,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         mFragmentListener.updateMenu();
     }
 
-    public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode & REQUEST_MASK_LOADER_HELPER) == REQUEST_MASK_LOADER_HELPER) {
-            requestCode ^= REQUEST_MASK_LOADER_HELPER;
-            messageLoaderHelper.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
-
-        if ((requestCode & REQUEST_MASK_CRYPTO_PRESENTER) == REQUEST_MASK_CRYPTO_PRESENTER) {
-            requestCode ^= REQUEST_MASK_CRYPTO_PRESENTER;
-            messageCryptoPresenter.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
     private void hideKeyboard() {
         Activity activity = getActivity();
         if (activity == null) {
@@ -396,13 +383,27 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         startActivityForResult(intent, activity);
     }
 
+    public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode & REQUEST_MASK_LOADER_HELPER) == REQUEST_MASK_LOADER_HELPER) {
+            requestCode ^= REQUEST_MASK_LOADER_HELPER;
+            messageLoaderHelper.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+
+        if ((requestCode & REQUEST_MASK_CRYPTO_PRESENTER) == REQUEST_MASK_CRYPTO_PRESENTER) {
+            requestCode ^= REQUEST_MASK_CRYPTO_PRESENTER;
+            messageCryptoPresenter.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
 
-        messageCryptoPresenter.onActivityResult(requestCode, resultCode, data);
+        // Note: because fragments do not have a startIntentSenderForResult method, pending intent activities are
+        // launched through the MessageList activity, and delivered back via onPendingIntentResult()
 
         switch (requestCode) {
             case ACTIVITY_CHOOSE_DIRECTORY: {
