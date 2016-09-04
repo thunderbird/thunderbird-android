@@ -9,7 +9,7 @@
     <style name="Theme.K9.Light.Base" parent="@android:style/Theme.Holo.Light" />
     <style name="Theme.K9.Dark.Base" parent="@android:style/Theme.Holo" />
 
-    <style name="Theme.K9.Light" parent="Theme.K9.Light.Base">
+    <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
         <item name="iconFolder">@drawable/folder_light</item>
         <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_light</item>
         <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
@@ -72,7 +72,7 @@
         <item name="openpgp_grey">#bbb</item>
     </style>
 
-    <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Base">
+    <style name="Theme.K9.Dark.Common" parent="Theme.K9.Dark.Base">
         <item name="iconFolder">@drawable/folder_dark</item>
         <item name="iconListItemMenu">@drawable/dropdown_ic_arrow_normal_holo_dark</item>
         <item name="iconMenuInfoDetails">@android:drawable/ic_menu_info_details</item>
@@ -134,6 +134,9 @@
         <item name="openpgp_blue">#6699cc</item>
         <item name="openpgp_grey">#888</item>
     </style>
+
+    <style name="Theme.K9.Light" parent="Theme.K9.Light.Common" />
+    <style name="Theme.K9.Dark" parent="Theme.K9.Light.Common" />
 
     <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">
         <item name="backgroundColorChooseAccountHeader">#cccccc</item>
