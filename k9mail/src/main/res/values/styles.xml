@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-    <style name="Theme.K9Dialog" parent="@android:Theme.Light">
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowBackground">@drawable/popup_background</item>
-        <item name="android:windowTitleStyle">?android:attr/textAppearanceLargeInverse</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:windowContentOverlay">@drawable/panel_separator</item>
-    </style>
+<resources>
 
     <!--
       Fix a bug with AutoCompleteTextView
@@ -43,10 +34,12 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">#aaa</item>
     </style>
+
     <style name="ComposeEditText" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">15sp</item>
         <item name="android:textColorHint">#aaa</item>
     </style>
+
     <style name="ComposeEditTextLarge" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColorHint">#aaa</item>
     </style>
@@ -64,6 +57,9 @@
         <item name="android:src">@drawable/bullet_point_negative</item>
         <item name="android:tint">?attr/tintColorBulletPointNegative</item>
     </style>
+
+
+    <style name="ProgressBar" parent="@android:style/Widget.Holo.ProgressBar.Horizontal" />
 
 </resources>
 
