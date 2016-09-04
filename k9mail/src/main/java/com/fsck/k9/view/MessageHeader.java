@@ -342,18 +342,25 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
     }
 
+    public void hideCryptoStatus() {
+        mCryptoStatusIcon.setVisibility(View.GONE);
+    }
+
     public void setCryptoStatusLoading() {
         mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setEnabled(false);
         mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.LOADING);
     }
 
     public void setCryptoStatusDisabled() {
         mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setEnabled(false);
         mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.DISABLED);
     }
 
     public void setCryptoStatus(MessageCryptoDisplayStatus displayStatus) {
         mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setEnabled(true);
         mCryptoStatusIcon.setCryptoDisplayStatus(displayStatus);
     }
 
