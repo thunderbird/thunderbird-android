@@ -13,7 +13,7 @@ project.ext {
     testCoverage = project.hasProperty('testCoverage')
     optimizeForDevelopment = project.hasProperty('optimizeForDevelopment') && optimizeForDevelopment == 'true'
 
-    compileSdkVersion = 23
+    compileSdkVersion = 24
     buildToolsVersion = '23.0.3'
 }
 
