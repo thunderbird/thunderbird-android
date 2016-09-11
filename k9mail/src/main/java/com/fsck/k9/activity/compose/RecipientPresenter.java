@@ -370,6 +370,10 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public boolean isForceTextMessageFormat() {
+        if (!cryptoEnablePgpInline) {
+            return false;
+        }
+        
         ComposeCryptoStatus cryptoStatus = getCurrentCryptoStatus();
         return cryptoStatus.isEncryptionEnabled() || cryptoStatus.isSigningEnabled();
     }
