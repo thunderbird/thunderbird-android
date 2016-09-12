@@ -985,9 +985,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 break;
             case R.id.openpgp_inline_enable:
                 recipientPresenter.onMenuSetPgpInline(true);
+                updateMessageFormat();
                 break;
             case R.id.openpgp_inline_disable:
                 recipientPresenter.onMenuSetPgpInline(false);
+                updateMessageFormat();
                 break;
             case R.id.add_attachment:
                 attachmentPresenter.onClickAddAttachment(recipientPresenter);
