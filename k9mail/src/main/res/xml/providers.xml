@@ -98,8 +98,8 @@
 
     <!-- USA -->
     <provider id="comcast" label="Comcast" domain="comcast.net">
-        <incoming uri="pop3+ssl+://mail.comcast.net" username="$user" />
-        <outgoing uri="smtp+ssl+://smtp.comcast.net" username="$user" />
+        <incoming uri="imap+ssl+://imap.comcast.net" username="$email" />
+        <outgoing uri="smtp+tls+://smtp.comcast.net" username="$email" />
     </provider>
     <provider id="cox" label="Cox" domain="cox.net">
         <incoming uri="pop3+ssl+://pop.east.cox.net" username="$user" />
