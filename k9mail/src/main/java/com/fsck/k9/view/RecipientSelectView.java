@@ -550,6 +550,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             return address.getAddress();
         }
 
+        public boolean isValidEmailAddress() {
+            return (address.getAddress() != null);
+        }
+
         public String getDisplayNameOrUnknown(Context context) {
             String displayName = getDisplayName();
             if (displayName != null) {
