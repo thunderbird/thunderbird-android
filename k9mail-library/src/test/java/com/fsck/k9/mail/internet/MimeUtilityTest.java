@@ -42,6 +42,21 @@ public class MimeUtilityTest {
         result = MimeUtility.getHeaderParameter("name=\"\"", "name");
         assertEquals("", result);
 
+        result = MimeUtility.getHeaderParameter("name=\"ABC; DEF.pdf\"", "name");
+        assertEquals("ABC; DEF.pdf", result);
+
+        result = MimeUtility.getHeaderParameter("name=\"ABC; DEF.pdf\"; charset=\"windows-1251\"", "name");
+        assertEquals("ABC; DEF.pdf", result);
+
+        result = MimeUtility.getHeaderParameter("name=\"ABC; DEF.pdf\"; charset=\"windows-1251\"", "charset");
+        assertEquals("windows-1251", result);
+
+        result = MimeUtility.getHeaderParameter("name=\"ABC; DEF.pdf\"; name2=\"GHI; JKL.pdf\"", "name");
+        assertEquals("ABC; DEF.pdf", result);
+
+        result = MimeUtility.getHeaderParameter("name=\"ABC; DEF.pdf\"; name2=\"GHI; JKL.pdf\"", "name2");
+        assertEquals("GHI; JKL.pdf", result);
+
         result = MimeUtility.getHeaderParameter("text/html ; charset=\"windows-1251\"", null);
         assertEquals("text/html", result);
 
