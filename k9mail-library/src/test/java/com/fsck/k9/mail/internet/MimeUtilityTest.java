@@ -57,6 +57,9 @@ public class MimeUtilityTest {
         result = MimeUtility.getHeaderParameter("name=\"ABC; DEF.pdf\"; name2=\"GHI; JKL.pdf\"", "name2");
         assertEquals("GHI; JKL.pdf", result);
 
+        result = MimeUtility.getHeaderParameter("attachment;\n filename=\"k9small.png\";\n size=2250", "size");
+        assertEquals("2250", result);
+
         result = MimeUtility.getHeaderParameter("text/html ; charset=\"windows-1251\"", null);
         assertEquals("text/html", result);
 

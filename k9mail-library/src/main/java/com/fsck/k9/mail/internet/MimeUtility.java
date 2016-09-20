@@ -989,7 +989,7 @@ public class MimeUtility {
                     }
                 }
             }
-            if(hasFirstQuote) {
+            if(remainingHeader.trim().length() > 0) {
                 parts.add(remainingHeader);
             }
             return parts.toArray(new String[parts.size()]);
