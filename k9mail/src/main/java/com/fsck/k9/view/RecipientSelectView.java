@@ -156,7 +156,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             int offset = getOffsetForPosition(event.getX(), event.getY());
 
             if (offset != -1) {
-                TokenImageSpan[] links = text.getSpans(offset, offset, RecipientTokenSpan.class);
+                RecipientTokenSpan[] links = text.getSpans(offset, offset, RecipientTokenSpan.class);
                 if (links.length > 0) {
                     showAlternates(links[0].getToken());
                     return true;
