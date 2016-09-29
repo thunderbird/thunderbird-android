@@ -2012,7 +2012,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private void updateFooterView() {
         if (!mSearch.isManualSearch() && mCurrentFolder != null && mAccount != null) {
-            if (mCurrentFolder.loading) {
+            int msg=100;
+            try {
+                msg=mCurrentFolder.folder.getMessageCount();
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            if (msg==0){
+                updateFooter(mContext.getString(R.string.no_email));
+            }
+            else if (mCurrentFolder.loading) {
                 updateFooter(mContext.getString(R.string.status_loading_more));
             } else if (!mCurrentFolder.moreMessages) {
                 updateFooter(null);
