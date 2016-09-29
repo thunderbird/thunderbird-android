@@ -1218,5 +1218,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature!</b></string>
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="recipient_error_parse_failed">Error parsing address!</string>
+    <string name="no_email">This folder is empty!</string>
 
 </resources>
