@@ -1,6 +1,9 @@
 package com.fsck.k9.mail.store.imap;
 
 
+import android.content.Context;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
@@ -20,11 +24,19 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.store.StoreConfig;
+
+import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
@@ -57,10 +69,12 @@ public class ImapFolderTest {
     private ImapStore imapStore;
     private ImapConnection imapConnection;
     private StoreConfig storeConfig;
-
+    private Context context;
 
     @Before
     public void setUp() throws Exception {
+        context = RuntimeEnvironment.application;
+        BinaryTempFileBody.setTempDirectory(context.getCacheDir());
         imapStore = mock(ImapStore.class);
         storeConfig = mock(StoreConfig.class);
         when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
@@ -950,6 +964,56 @@ public class ImapFolderTest {
         folder.fetchPart(message, part, null);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[1.1])", false);
+    }
+
+    @Test
+    public void fetchPart_withTextSection_shouldProcessImapResponses() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RO);
+        folder.open(OPEN_MODE_RO);
+        ImapMessage message = createImapMessage("1");
+        Part part = createPart("1.1");
+        when(part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)).thenReturn(
+                new String[]{MimeUtil.ENC_7BIT}
+        );
+        when(part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)).thenReturn(
+                new String[]{"text/plain"}
+        );
+
+        when(imapConnection.readResponse(any(ImapResponseCallback.class)))
+            .thenAnswer(new Answer<ImapResponse>() {
+                @Override
+                public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
+                    ImapResponse response = ImapResponse.newContinuationRequest(
+                            (ImapResponseCallback) invocation.getArguments()[0]);
+                    response.add("1");
+                    response.add("FETCH");
+                    ImapList fetchList = new ImapList();
+                    fetchList.add("UID");
+                    fetchList.add("1");
+                    fetchList.add("BODY");
+                    fetchList.add("1.1");
+                    fetchList.add("text");
+                    response.add(fetchList);
+                    return response;
+                }
+            })
+            .thenAnswer(new Answer<ImapResponse>() {
+                @Override
+                public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
+                    ImapResponse response = ImapResponse.newTaggedResponse(
+                            (ImapResponseCallback) invocation.getArguments()[0], "TAG");
+                    return response;
+                }
+            });
+
+        folder.fetchPart(message, part, null);
+        ArgumentCaptor<Body> bodyArgumentCaptor = ArgumentCaptor.forClass(Body.class);
+        verify(part).setBody(bodyArgumentCaptor.capture());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bodyArgumentCaptor.getValue().writeTo(byteArrayOutputStream);
+
+        assertEquals("text", new String(byteArrayOutputStream.toByteArray()));
     }
 
     @Test
