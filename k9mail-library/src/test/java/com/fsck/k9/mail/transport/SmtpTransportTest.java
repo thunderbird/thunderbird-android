@@ -2,6 +2,8 @@ package com.fsck.k9.mail.transport;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -12,6 +14,7 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer;
 import com.fsck.k9.mail.transport.mockServer.TestMessage;
+import com.fsck.k9.mailstore.BinaryMemoryBody;
 import com.fsck.k9.testHelpers.TestTrustedSocketFactory;
 
 import org.junit.Before;
@@ -24,6 +27,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -86,7 +95,6 @@ public class SmtpTransportTest {
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
-        server.output("250-SIZE 1000000");
         for (String extension: extensions) {
             server.output("250-"+extension);
         }
@@ -116,6 +124,26 @@ public class SmtpTransportTest {
     }
 
     @Test
+    public void open_withNoSecurityOrPasswordPlainAuth_connectsToServer_withoutLogin()
+            throws MessagingException, IOException, InterruptedException {
+        username = "user";
+        authenticationType = AuthType.PLAIN;
+        connectionSecurity = ConnectionSecurity.NONE;
+
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 OK");
+
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
     public void open_withNoSecurityPlainAuth_connectsToServer()
             throws MessagingException, IOException, InterruptedException {
         username = "user";
@@ -127,13 +155,66 @@ public class SmtpTransportTest {
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
-        server.output("250-SIZE 1000000");
-        server.output("250 AUTH LOGIN PLAIN CRAM-MD5");
+        server.output("250 AUTH PLAIN LOGIN");
         server.expect("AUTH PLAIN AHVzZXIAcGFzc3dvcmQ=");
         server.output("235 2.7.0 Authentication successful");
-        
+
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withNoSecurityPlainAuth_usesLoginIfPlainUnavailable()
+            throws MessagingException, IOException, InterruptedException {
+        username = "user";
+        password = "password";
+        authenticationType = AuthType.PLAIN;
+        connectionSecurity = ConnectionSecurity.NONE;
+
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH LOGIN");
+        server.expect("AUTH LOGIN");
+        server.output("250 OK");
+        server.expect("dXNlcg==");
+        server.output("250 OK");
+        server.expect("cGFzc3dvcmQ=");
+        server.output("235 2.7.0 Authentication successful");
+
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withNoSecurityPlainAuth_withNeither_throwsException()
+            throws MessagingException, IOException, InterruptedException {
+        username = "user";
+        password = "password";
+        authenticationType = AuthType.PLAIN;
+        connectionSecurity = ConnectionSecurity.NONE;
+
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH");
+
+        try {
+            SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+            transport.open();
+            fail("Exception expected");
+        } catch (MessagingException e) {
+            assertEquals("Authentication methods SASL PLAIN and LOGIN are unavailable.",
+                    e.getMessage());
+        }
 
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
@@ -151,8 +232,7 @@ public class SmtpTransportTest {
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
-        server.output("250-SIZE 1000000");
-        server.output("250 AUTH LOGIN PLAIN CRAM-MD5");
+        server.output("250 AUTH CRAM-MD5");
         server.expect("AUTH CRAM-MD5");
         server.output(Base64.encode("<24609.1047914046@localhost>"));
         server.expect("dXNlciA3NmYxNWEzZmYwYTNiOGI1NzcxZmNhODZlNTcyMDk2Zg==");
@@ -160,6 +240,33 @@ public class SmtpTransportTest {
 
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withNoSecurityCramMd5Auth_withNoSupport_throwsException()
+            throws MessagingException, IOException, InterruptedException {
+        username = "user";
+        password = "password";
+        authenticationType = AuthType.CRAM_MD5;
+        connectionSecurity = ConnectionSecurity.NONE;
+
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH PLAIN LOGIN");
+
+        try {
+            SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+            transport.open();
+            fail("Exception expected");
+        } catch (MessagingException e) {
+            assertEquals("Authentication method CRAM-MD5 is unavailable.",
+                    e.getMessage());
+        }
 
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
@@ -177,10 +284,107 @@ public class SmtpTransportTest {
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
-        server.output("250-SIZE 1000000");
         server.output("250 AUTH EXTERNAL");
         server.expect("AUTH EXTERNAL dXNlcg==");
         server.output("235 2.7.0 Authentication successful");
+
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withNoSecurityExternal_withNoSupport_throwsException()
+            throws MessagingException, IOException, InterruptedException {
+        username = "user";
+        password = "password";
+        authenticationType = AuthType.EXTERNAL;
+        connectionSecurity = ConnectionSecurity.NONE;
+
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH");
+
+        try {
+            SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+            transport.open();
+            fail("Exception expected");
+        } catch (CertificateValidationException e) {
+            assertEquals(CertificateValidationException.Reason.MissingCapability, e.getReason());
+        }
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+    @Test
+    public void open_withNoSecurityAutomatic_connectsToServerWithCramMD5IfSupported()
+            throws MessagingException, IOException, InterruptedException {
+        username = "user";
+        password = "password";
+        authenticationType = AuthType.AUTOMATIC;
+        connectionSecurity = ConnectionSecurity.NONE;
+
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH CRAM-MD5");
+        server.expect("AUTH CRAM-MD5");
+        server.output(Base64.encode("<24609.1047914046@localhost>"));
+        server.expect("dXNlciA3NmYxNWEzZmYwYTNiOGI1NzcxZmNhODZlNTcyMDk2Zg==");
+        server.output("235 2.7.0 Authentication successful");
+
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withNoSecurityAutomatic_withCramMD5Unsupported_throwsException()
+            throws MessagingException, IOException, InterruptedException {
+        username = "user";
+        password = "password";
+        authenticationType = AuthType.AUTOMATIC;
+        connectionSecurity = ConnectionSecurity.NONE;
+
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH PLAIN LOGIN");
+
+        try {
+            SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+            transport.open();
+            fail("Exception expected");
+        } catch (MessagingException e) {
+            assertEquals("Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable.",
+                    e.getMessage());
+        }
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_triesHELO_whenServerDoesntSupportEHLO()
+            throws MessagingException, IOException, InterruptedException {
+        username = "user";
+        authenticationType = AuthType.PLAIN;
+        connectionSecurity = ConnectionSecurity.NONE;
+
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("502 5.5.1, Unrecognized command.");
+        server.expect("HELO localhost");
+        server.output("250 localhost");
 
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
@@ -256,5 +460,62 @@ public class SmtpTransportTest {
 
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.sendMessage(message);
+    }
+
+    @Test
+    public void sendMessage_withMessageTooLarge_throwsException()
+            throws MessagingException, IOException, InterruptedException {
+        extensions.add("SIZE 1000");
+        TestMessage message = new TestMessage();
+        message.setFrom(new Address("user@localhost"));
+        message.setRecipients(Message.RecipientType.TO, new Address[]{new Address("user2@localhost")});
+        message.setAttachmentCount(1);
+        message.setBody(new BinaryMemoryBody(new byte[1001], "US-ASCII"));
+
+        MockSmtpServer server = new MockSmtpServer();
+        setupConnectAndPlainAuthentication(server);
+
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        try {
+            transport.sendMessage(message);
+            fail("Expected message too large error");
+        } catch (MessagingException e) {
+            assertTrue(e.isPermanentFailure());
+            assertEquals("Message too large for server", e.getMessage());
+        }
+    }
+
+    @Test
+    public void sendMessage_withNegativeReply_throwsException()
+            throws MessagingException, IOException, InterruptedException {
+        TestMessage message = new TestMessage();
+        message.setFrom(new Address("user@localhost"));
+        message.setRecipients(Message.RecipientType.TO, new Address[]{new Address("user2@localhost")});
+
+        MockSmtpServer server = new MockSmtpServer();
+        setupConnectAndPlainAuthentication(server);
+        server.expect("MAIL FROM:<user@localhost>");
+        server.output("250 OK");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.output("250 OK");
+        server.expect("DATA");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect("");
+        server.expect(".");
+        server.output("421 4.7.0 Temporary system problem");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        try {
+            transport.sendMessage(message);
+            fail("Expected exception");
+        } catch (SmtpTransport.NegativeSmtpReplyException e) {
+            assertEquals(421, e.getReplyCode());
+            assertEquals("4.7.0 Temporary system problem", e.getReplyText());
+        }
     }
 }

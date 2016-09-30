@@ -59,6 +59,10 @@ public class TestMessage extends MimeMessage {
         return (mAttachmentCount > 0);
     }
 
+    public void setAttachmentCount(int i) {
+        mAttachmentCount = i;
+    }
+
     public int getAttachmentCount() {
         return mAttachmentCount;
     }

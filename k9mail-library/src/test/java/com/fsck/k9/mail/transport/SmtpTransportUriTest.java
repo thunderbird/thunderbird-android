@@ -1,5 +1,7 @@
 package com.fsck.k9.mail.transport;
 
+import android.annotation.SuppressLint;
+
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
@@ -8,6 +10,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+@SuppressLint("AuthLeak")
 public class SmtpTransportUriTest {
 
     @Test
@@ -35,6 +38,33 @@ public class SmtpTransportUriTest {
         ServerSettings result = SmtpTransport.decodeUri(storeUri);
 
         assertEquals("password", result.password);
+    }
+
+    @Test
+    public void decodeUri_canDecodeUsername_withNoAuthType() {
+        String storeUri = "smtp://user:password@server:123456";
+
+        ServerSettings result = SmtpTransport.decodeUri(storeUri);
+
+        assertEquals("user", result.username);
+    }
+
+    @Test
+    public void decodeUri_canDecodeUsername_withNoPasswordOrAuthType() {
+        String storeUri = "smtp://user@server:123456";
+
+        ServerSettings result = SmtpTransport.decodeUri(storeUri);
+
+        assertEquals("user", result.username);
+    }
+
+    @Test
+    public void decodeUri_canDecodeAuthType_withEmptyPassword() {
+        String storeUri = "smtp://user::PLAIN@server:123456";
+
+        ServerSettings result = SmtpTransport.decodeUri(storeUri);
+
+        assertEquals(AuthType.PLAIN, result.authenticationType);
     }
 
     @Test
@@ -80,6 +110,13 @@ public class SmtpTransportUriTest {
         ServerSettings result = SmtpTransport.decodeUri(storeUri);
 
         assertEquals("clientCert", result.clientCertificateAlias);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void decodeUri_forUnknownSchema_throwsIllegalArgumentException() {
+        String storeUri = "unknown://user:clientCert:EXTERNAL@server:123456";
+
+        ServerSettings result = SmtpTransport.decodeUri(storeUri);
     }
 
     @Test
