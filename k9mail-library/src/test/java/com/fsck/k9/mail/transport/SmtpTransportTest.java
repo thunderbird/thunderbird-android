@@ -1,13 +1,17 @@
 package com.fsck.k9.mail.transport;
 
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer;
+import com.fsck.k9.mail.transport.mockServer.TestMessage;
 import com.fsck.k9.testHelpers.TestTrustedSocketFactory;
 
 import org.junit.Before;
@@ -51,6 +55,39 @@ public class SmtpTransportTest {
         connectionSecurity = null;
     }
 
+    private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server)
+            throws IOException, MessagingException {
+        server.start();
+        host = server.getHost();
+        port = server.getPort();
+        String uri = SmtpTransport.createUri(new ServerSettings(
+                ServerSettings.Type.SMTP, host, port, connectionSecurity, authenticationType,
+                username, password, clientCertificateAlias));
+        when(storeConfig.getTransportUri()).thenReturn(uri);
+        return createSmtpTransport(storeConfig, socketFactory);
+    }
+
+    private SmtpTransport createSmtpTransport(
+            StoreConfig storeConfig, TrustedSocketFactory socketFactory)
+            throws MessagingException {
+        return new SmtpTransport(storeConfig, socketFactory);
+    }
+
+    private void setupConnectAndPlainAuthentication(MockSmtpServer server) {
+        username = "user";
+        password = "password";
+        authenticationType = AuthType.PLAIN;
+        connectionSecurity = ConnectionSecurity.NONE;
+
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250-SIZE 1000000");
+        server.output("250 AUTH LOGIN PLAIN CRAM-MD5");
+        server.expect("AUTH PLAIN AHVzZXIAcGFzc3dvcmQ=");
+        server.output("235 2.7.0 Authentication successful");
+    }
+
     @Test
     public void SmtpTransport_withValidUri_canBeCreated() throws MessagingException {
         StoreConfig storeConfig = mock(StoreConfig.class);
@@ -72,7 +109,8 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityPlainAuth_connectsToServer() throws MessagingException, IOException, InterruptedException {
+    public void open_withNoSecurityPlainAuth_connectsToServer()
+            throws MessagingException, IOException, InterruptedException {
         username = "user";
         password = "password";
         authenticationType = AuthType.PLAIN;
@@ -95,7 +133,8 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityCramMd5Auth_connectsToServer() throws MessagingException, IOException, InterruptedException {
+    public void open_withNoSecurityCramMd5Auth_connectsToServer()
+            throws MessagingException, IOException, InterruptedException {
         username = "user";
         password = "password";
         authenticationType = AuthType.CRAM_MD5;
@@ -120,7 +159,8 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityExternalAuth_connectsToServer() throws MessagingException, IOException, InterruptedException {
+    public void open_withNoSecurityExternalAuth_connectsToServer()
+            throws MessagingException, IOException, InterruptedException {
         username = "user";
         password = "password";
         authenticationType = AuthType.EXTERNAL;
@@ -142,21 +182,45 @@ public class SmtpTransportTest {
         server.verifyInteractionCompleted();
     }
 
-    private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server)
-            throws IOException, MessagingException {
-        server.start();
-        host = server.getHost();
-        port = server.getPort();
-        String uri = SmtpTransport.createUri(new ServerSettings(
-                ServerSettings.Type.SMTP, host, port, connectionSecurity, authenticationType,
-                username, password, clientCertificateAlias));
-        when(storeConfig.getTransportUri()).thenReturn(uri);
-        return createSmtpTransport(storeConfig, socketFactory);
+    @Test
+    public void sendMessage_withNoAddressToSendTo_doesntOpenConnection()
+            throws MessagingException, IOException, InterruptedException {
+
+        MimeMessage message = new MimeMessage();
+
+        MockSmtpServer server = new MockSmtpServer();
+        setupConnectAndPlainAuthentication(server);
+
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+        transport.sendMessage(message);
+
+        server.verifyConnectionNeverCreated();
     }
 
-    private SmtpTransport createSmtpTransport(
-            StoreConfig storeConfig, TrustedSocketFactory socketFactory)
-            throws MessagingException {
-        return new SmtpTransport(storeConfig, socketFactory);
+    @Test
+    public void sendMessage_withToAddressToSendTo_opensConnection()
+            throws MessagingException, IOException, InterruptedException {
+
+        TestMessage message = new TestMessage();
+        message.setFrom(new Address("user@localhost"));
+        message.setRecipients(Message.RecipientType.TO, new Address[]{new Address("user2@localhost")});
+
+        MockSmtpServer server = new MockSmtpServer();
+        setupConnectAndPlainAuthentication(server);
+        server.expect("MAIL FROM:<user@localhost>");
+        server.output("250 OK");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.output("250 OK");
+        server.expect("DATA");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect("");
+        server.expect(".");
+        server.output("250 OK: queued as 12345");
+        server.expect("QUIT");
+        server.output("221 BYE");
+
+
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+        transport.sendMessage(message);
     }
 }

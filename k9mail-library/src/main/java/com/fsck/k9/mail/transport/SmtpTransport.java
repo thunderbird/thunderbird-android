@@ -532,8 +532,10 @@ public class SmtpTransport extends Transport {
             entireMessageSent = true; // After the "\r\n." is attempted, we may have sent the message
             executeSimpleCommand(".");
         } catch (NegativeSmtpReplyException e) {
+            e.printStackTrace();
             throw e;
         } catch (Exception e) {
+            e.printStackTrace();
             MessagingException me = new MessagingException("Unable to send message", e);
             me.setPermanentFailure(entireMessageSent);
 

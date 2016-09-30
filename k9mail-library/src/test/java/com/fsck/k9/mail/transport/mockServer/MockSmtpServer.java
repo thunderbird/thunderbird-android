@@ -141,6 +141,14 @@ public class MockSmtpServer {
         }
     }
 
+    public void verifyConnectionNeverCreated() {
+        checkServerRunning();
+        if (mockServerThread.clientConnectionCreated()) {
+            throw new AssertionError("Connection created when it shouldn't have been");
+        }
+
+    }
+
     public void verifyConnectionStillOpen() {
         checkServerRunning();
 
@@ -393,6 +401,10 @@ public class MockSmtpServer {
             shouldStop = true;
 
             IOUtils.closeQuietly(clientSocket);
+        }
+
+        public boolean clientConnectionCreated() {
+            return clientSocket != null;
         }
 
         public boolean isClientConnectionClosed() {
