@@ -21,6 +21,8 @@ import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.imap.mockserver.MockImapServer;
+import com.fsck.k9.testHelpers.TestTrustedSocketFactory;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
@@ -687,42 +689,5 @@ public class ImapConnectionTest {
 
         server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
         server.output("2 OK LOGIN completed");
-    }
-
-    private static class TestTrustedSocketFactory implements TrustedSocketFactory {
-        @Override
-        public Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
-                throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
-
-            TrustManager[] trustManagers = new TrustManager[] { new VeryTrustingTrustManager() };
-
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustManagers, null);
-
-            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-            return sslSocketFactory.createSocket(
-                    socket,
-                    socket.getInetAddress().getHostAddress(),
-                    socket.getPort(),
-                    true);
-        }
-    }
-
-    @SuppressLint("TrustAllX509TrustManager")
-    private static class VeryTrustingTrustManager implements X509TrustManager {
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-            // Accept all certificates
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-            // Accept all certificates
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[0];
-        }
     }
 }
