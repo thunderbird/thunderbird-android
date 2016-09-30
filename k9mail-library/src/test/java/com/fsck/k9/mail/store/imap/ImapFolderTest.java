@@ -42,6 +42,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -452,6 +453,24 @@ public class ImapFolderTest {
     }
 
     @Test
+    public void getUnreadMessageCount_connectionThrowsIOException_shouldThrowMessagingException()
+            throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 1 2 3"));
+        when(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED"))
+                .thenThrow(new IOException());
+        folder.open(OPEN_MODE_RW);
+
+        try {
+            folder.getUnreadMessageCount();
+            fail("Expected exception");
+        } catch (MessagingException e) {
+            assertEquals("IO Error", e.getMessage());
+        }
+    }
+
+    @Test
     public void getUnreadMessageCount() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
@@ -504,6 +523,36 @@ public class ImapFolderTest {
         long result = folder.getHighestUid();
 
         assertEquals(42L, result);
+    }
+
+    @Test
+    public void getHighestUid_imapConnectionThrowsNegativesResponse_shouldReturnMinus1() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 42"));
+        when(imapConnection.executeSimpleCommand("UID SEARCH *:*"))
+                .thenThrow(NegativeImapResponseException.class);
+        folder.open(OPEN_MODE_RW);
+
+        long result = folder.getHighestUid();
+
+        assertEquals(-1L, result);
+    }
+
+    @Test
+    public void getHighestUid_imapConnectionThrowsIOException_shouldThrowMessagingException() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 42"));
+        when(imapConnection.executeSimpleCommand("UID SEARCH *:*"))
+                .thenThrow(IOException.class);
+        folder.open(OPEN_MODE_RW);
+
+        try {
+            folder.getHighestUid();
+        } catch (MessagingException e) {
+            assertEquals("IO Error", e.getMessage());
+        }
     }
 
     @Test
@@ -720,6 +769,18 @@ public class ImapFolderTest {
         folder.open(OPEN_MODE_RW);
 
         boolean result = folder.areMoreMessagesAvailable(600, null);
+
+        assertFalse(result);
+    }
+
+    public void areMoreMessagesAvailable_withIndexOf1_shouldReturnFalseWithoutPerformingSearch() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        folder.open(OPEN_MODE_RW);
+
+        boolean result = folder.areMoreMessagesAvailable(1, null);
+
+        verify(imapConnection, never()).executeSimpleCommand(anyString());
 
         assertFalse(result);
     }
@@ -1020,6 +1081,25 @@ public class ImapFolderTest {
         } catch (MessagingException e) {
             assertEquals("Your settings do not allow remote searching of this account", e.getMessage());
         }
+    }
+
+    @Test
+    public void delete_notImplemented() throws MessagingException {
+        ImapFolder folder = createFolder("Folder");
+        try {
+            folder.delete(false);
+            fail("Error expected");
+        } catch (Error e) {
+        }
+    }
+
+    @Test
+    public void getMessageByUid_returnsNewImapMessage() throws MessagingException {
+        ImapFolder folder = createFolder("Folder");
+        ImapMessage message = folder.getMessage("uid");
+        assertNotNull(message);
+        assertEquals("uid", message.getUid());
+        assertEquals(folder, message.getFolder());
     }
 
     private Set<String> extractMessageUids(List<ImapMessage> messages) {
