@@ -496,7 +496,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public void delete(boolean recurse) throws MessagingException {
-        throw new Error("ImapStore.delete() not yet implemented");
+        throw new Error("ImapFolder.delete() not yet implemented");
     }
 
     @Override
