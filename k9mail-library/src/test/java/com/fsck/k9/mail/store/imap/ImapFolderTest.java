@@ -787,6 +787,7 @@ public class ImapFolderTest {
         assertFalse(result);
     }
 
+    @Test
     public void areMoreMessagesAvailable_withIndexOf1_shouldReturnFalseWithoutPerformingSearch() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
@@ -794,7 +795,8 @@ public class ImapFolderTest {
 
         boolean result = folder.areMoreMessagesAvailable(1, null);
 
-        verify(imapConnection, never()).executeSimpleCommand(anyString());
+        //SELECT during OPEN
+        verify(imapConnection, times(1)).executeSimpleCommand(anyString());
 
         assertFalse(result);
     }
