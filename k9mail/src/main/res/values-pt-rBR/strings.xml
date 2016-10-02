@@ -413,8 +413,6 @@
   <string name="account_settings_reply_after_quote_summary">Quando respondendo mensagens, o texto original deverá aparecer acima da minha resposta.</string>
   <string name="account_settings_strip_signature_label">Tirar assinaturas em respostas</string>
   <string name="account_settings_strip_signature_summary">Assinaturas serão removidas em mensagens com citação</string>
-  <string name="account_settings_bundle_message_followings_label">Agrupar sequências a mensagens</string>
-  <string name="account_settings_bundle_message_followings_summary">Respostas e encaminhamentos serão guardados na mesma pasta que a mensagem original</string>
   <string name="account_settings_message_format_label">Formato da Mensagem</string>
   <string name="account_settings_message_format_text">Texto (imagens e formatação serão removidas)</string>
   <string name="account_settings_message_format_html">HTML (imagens e formatação serão preservadas)</string>
