@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.3'
+        classpath 'com.android.tools.build:gradle:2.2.0'
     }
 }
 
@@ -14,7 +14,7 @@ project.ext {
     optimizeForDevelopment = project.hasProperty('optimizeForDevelopment') && optimizeForDevelopment == 'true'
 
     compileSdkVersion = 24
-    buildToolsVersion = '23.0.3'
+    buildToolsVersion = '24.0.3'
 }
 
 subprojects {
