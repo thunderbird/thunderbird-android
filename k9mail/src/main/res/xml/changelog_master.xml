@@ -8,6 +8,16 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.112" versioncode="23111" >
+        <change>Fixed crash when selecting folder to move message</change>
+        <change>Fixed bug where wrong message format was used when replying</change>
+        <change>Fixed position of context menus on Android 7.0</change>
+        <change>Fixed icon for encryption status of a message</change>
+        <change>Hide crypto status when no crypto provider is configured</change>
+        <change>Hide invalid email addresses of a system contact</change>
+        <change>Added support for linkifying URLs with new TLDs</change>
+        <change>Added server settings for more providers</change>
+    </release>
     <release version="5.111" versioncode="23110" >
         <change>Fixed replying to and forwarding of encrypted messages</change>
         <change>Ask for confirmation on "mark all as read"</change>
