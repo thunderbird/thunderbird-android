@@ -1,63 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Translation of RU version (06.07.2013): Igor Nedoboy (k9russian<AT>gmail<DOT>com) -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- === App-specific strings ============================================================= -->
 
     <!-- This should make it easier for forks to change the branding -->
-    
-    <!-- Translation of RU version (06.07.2013): Igor Nedoboy (k9russian<AT>gmail<DOT>com) -->
 
     <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
 
-    <string name="shortcuts_title">K-9 Mail Учётные записи</string>
-    <string name="unread_widget_label">K-9 Непрочитанное</string>
+    <string name="shortcuts_title">Почтовый ящик</string>
+    <string name="unread_widget_label">Не прочитано</string>
 
-    <string name="remote_control_label">Дистанционное управление K-9 Mail</string>
-    <string name="remote_control_desc">Позволяет этому приложению управлеть деятельностью и настройками K-9 Mail.</string>
+    <string name="remote_control_label">Удалённое управление</string>
+    <string name="remote_control_desc">Разрешить удалённое управление настройками и действиями K-9 Mail</string>
 
 
     <!-- Used in the about dialog -->
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-    <string name="app_license">Лицензия Apache License, Version 2.0.</string>
+    <string name="app_license">Под лицензией Apache 2.0.</string>
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Добро пожаловавть в K-9 Mail</string>
+    <string name="welcome_message_title">Добро пожаловать!</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail это программа электронной почты для Android операционных систем с открытым исходным кодом, первоначально основанная на стандартной программе Android Mail.
+K-9 Mail — почтовый клиент для Android.
 </p><p>
-Улучшенные возможности программы K-9 Mail включают:
+Возможности:
 </p>
 <ul>
-  <li>push mail при использовании IMAP IDLE;</li>
-  <li>более высокая скорость;</li>
-  <li>систематизация сообщений;</li>
-  <li>электронные подписи в почте;</li>
-  <li>СК Себе;</li>
-  <li>подписки к папкам;</li>
-  <li>синхронизация всех папок;</li>
-  <li>конфигурация возвратного адреса;</li>
-  <li>сочетания клавиш на аппаратной клавиатуре;</li>
-  <li>лучшая поддержка для IMAP;</li>
-  <li>сохранение вложений на SD карту;</li>
-  <li>очистка Корзины;</li>
-  <li>сортировка сообщений;</li>
-  <li>… и более.</li>
+  <li>push-уведомления</li>
+  <li>высокая производительность</li>
+  <li>перемещение сообщений</li>
+  <li>несколько подписей</li>
+  <li>постоянная скрытая копия</li>
+  <li>подписка на папки</li>
+  <li>синхронизация папок</li>
+  <li>адрес для ответа</li>
+  <li>горячие клавиши</li>
+  <li>улучшенная поддержка IMAP</li>
+  <li>сохранение вложений</li>
+  <li>очистка корзины</li>
+  <li>сортировка сообщений</li>
+  <li>…и многое другое!</li>
 </ul>
 <p>
-Обратите внимание, что К-9 не поддерживает большинство бесплатных адресов Hotmail и, как большинство других почтовых программ, имеет некоторые причуды при общении с Microsoft Exchange.
+Отметим, что K-9 Mail не полностью совместим с MS Exchange и не поддерживает бесплатные ящики Hotmail
 </p><p>
-Просьба представлять отчёты об ошибках, запросы про разработке новых функций, и задавать вопросы на
+Вопросы, сообщения об ошибках и участие в разработке на
 <a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
 </p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nОтправлено через К-9 Mail. Извините за краткость, пожалуйста.</string>
+    <string name="default_signature">--\nПростите за краткость,\nсоздано в K-9 Mail</string>
 
 
     <!-- General strings that include the app name -->
@@ -89,7 +88,7 @@ K-9 Mail это программа электронной почты для Andr
     <string name="delete_messages_label">Удаление почты</string>
     <string name="delete_messages_desc">Разрешить программе удаление почты</string>
 
-    <string name="about_title_fmt">K-9 Mail <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_title_fmt">О <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Ящики</string>
     <string name="folders_title">Папки</string>
     <string name="advanced">Дополнительно</string>
