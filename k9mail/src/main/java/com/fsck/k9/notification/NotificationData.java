@@ -165,6 +165,8 @@ class NotificationData {
         activeNotifications.remove(holder);
 
         int notificationId = holder.notificationId;
+        notificationIdsInUse.delete(notificationId);
+
         if (!additionalNotifications.isEmpty()) {
             NotificationContent newContent = additionalNotifications.removeFirst();
             NotificationHolder replacement = createNotificationHolder(notificationId, newContent);

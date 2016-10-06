@@ -52,8 +52,7 @@ public class NotificationDataTest {
 
     @Test
     public void testAddNotificationContentWithReplacingNotification() throws Exception {
-        NotificationContent content = createNotificationContent("1");
-        notificationData.addNotificationContent(content);
+        notificationData.addNotificationContent(createNotificationContent("1"));
         notificationData.addNotificationContent(createNotificationContent("2"));
         notificationData.addNotificationContent(createNotificationContent("3"));
         notificationData.addNotificationContent(createNotificationContent("4"));
@@ -105,6 +104,15 @@ public class NotificationDataTest {
         assertNotNull(holder);
         assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), holder.notificationId);
         assertEquals(content, holder.content);
+    }
+
+    @Test
+    public void testRemoveDoesntLeakNotificationIds() {
+        for (int i = 1; i <= NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS+1; i++) {
+            NotificationContent content = createNotificationContent(""+i);
+            notificationData.addNotificationContent(content);
+            notificationData.removeNotificationForMessage(content.messageReference);
+        }
     }
 
     @Test
