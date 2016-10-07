@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Application;
 
@@ -15,12 +16,14 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import org.junit.Before;
 import org.junit.Test;
@@ -188,6 +191,25 @@ public class MessageBuilderTest {
     }
 
     @Test
+    public void build__usingHtmlFormat__shouldUseMultipartAlternativeInCorrectOrder() {
+        MessageBuilder messageBuilder = createHtmlMessageBuilder();
+        Callback mockCallback = mock(Callback.class);
+        messageBuilder.buildAsync(mockCallback);
+        ArgumentCaptor<MimeMessage> mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
+        verify(mockCallback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(false));
+        verifyNoMoreInteractions(mockCallback);
+
+        MimeMessage mimeMessage = mimeMessageCaptor.getValue();
+
+        assertEquals(MimeMultipart.class, mimeMessage.getBody().getClass());
+        assertEquals("multipart/alternative", ((MimeMultipart) mimeMessage.getBody()).getMimeType());
+        List<BodyPart> parts =  ((MimeMultipart) mimeMessage.getBody()).getBodyParts();
+        //RFC 1341 - 7.2.3 - Best type is last displayable
+        assertEquals("text/plain", parts.get(0).getMimeType());
+        assertEquals("text/html", parts.get(1).getMimeType());
+    }
+
+    @Test
     public void build__withMessageAttachment__shouldAttachAsApplicationOctetStream() throws Exception {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
         Attachment attachment = createAttachmentWithContent("message/rfc822", "attach.txt", TEST_ATTACHMENT_TEXT.getBytes());
@@ -303,6 +325,44 @@ public class MessageBuilderTest {
                 .setRequestReadReceipt(false)
                 .setIdentity(identity)
                 .setMessageFormat(SimpleMessageFormat.TEXT)
+                .setText(TEST_MESSAGE_TEXT)
+                .setAttachments(new ArrayList<Attachment>())
+                .setSignature("signature")
+                .setQuoteStyle(QuoteStyle.PREFIX)
+                .setQuotedTextMode(QuotedTextMode.NONE)
+                .setQuotedText("quoted text")
+                .setQuotedHtmlContent(new InsertableHtmlContent())
+                .setReplyAfterQuote(false)
+                .setSignatureBeforeQuotedText(false)
+                .setIdentityChanged(false)
+                .setSignatureChanged(false)
+                .setCursorPosition(0)
+                .setMessageReference(null)
+                .setDraft(false);
+
+        return b;
+    }
+
+    private MessageBuilder createHtmlMessageBuilder() {
+        MessageBuilder b = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator);
+
+        Identity identity = new Identity();
+        identity.setName(TEST_IDENTITY_ADDRESS.getPersonal());
+        identity.setEmail(TEST_IDENTITY_ADDRESS.getAddress());
+        identity.setDescription("test identity");
+        identity.setSignatureUse(false);
+
+        b.setSubject(TEST_SUBJECT)
+                .setSentDate(SENT_DATE)
+                .setHideTimeZone(true)
+                .setTo(Arrays.asList(TEST_TO))
+                .setCc(Arrays.asList(TEST_CC))
+                .setBcc(Arrays.asList(TEST_BCC))
+                .setInReplyTo("inreplyto")
+                .setReferences("references")
+                .setRequestReadReceipt(false)
+                .setIdentity(identity)
+                .setMessageFormat(SimpleMessageFormat.HTML)
                 .setText(TEST_MESSAGE_TEXT)
                 .setAttachments(new ArrayList<Attachment>())
                 .setSignature("signature")
