@@ -32,6 +32,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.Search;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -1360,12 +1361,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         return updateOrInsertMessagePart(db, cv, part, INVALID_MESSAGE_PART_ID);
     }
 
-    private void renameTemporaryFile(File file, String messagePartId) {
-        File destination = localStore.getAttachmentFile(messagePartId);
-        if (!file.renameTo(destination)) {
-            Log.w(K9.LOG_TAG, "Couldn't rename temporary file " + file.getAbsolutePath() +
-                    " to " + destination.getAbsolutePath());
-        }
+    private void moveTemporaryFile(File tempFile, String messagePartId) throws IOException {
+        File destinationFile = localStore.getAttachmentFile(messagePartId);
+        FileHelper.renameOrMoveByCopying(tempFile, destinationFile);
     }
 
     private long updateOrInsertMessagePart(SQLiteDatabase db, ContentValues cv, Part part, long existingMessagePartId)
@@ -1397,7 +1395,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         if (file != null) {
-            renameTemporaryFile(file, Long.toString(messagePartId));
+            moveTemporaryFile(file, Long.toString(messagePartId));
         }
 
         return messagePartId;
