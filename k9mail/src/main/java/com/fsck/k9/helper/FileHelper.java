@@ -121,7 +121,7 @@ public class FileHelper {
     }
 
     private static void deleteFileIfExists(File to) throws IOException {
-        boolean fileDoesNotExist = to.exists();
+        boolean fileDoesNotExist = !to.exists();
         if (fileDoesNotExist) {
             return;
         }
