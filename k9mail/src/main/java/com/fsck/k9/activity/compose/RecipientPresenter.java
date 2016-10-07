@@ -55,6 +55,8 @@ public class RecipientPresenter implements PermissionPingCallback {
     private static final int CONTACT_PICKER_BCC = 3;
     private static final int OPENPGP_USER_INTERACTION = 4;
 
+    private static final int PGP_INLINE_DIALOG_DISPLAY_THRESHOLD = 2;
+
 
     // transient state, which is either obtained during construction and initialization, or cached
     private final Context context;
@@ -714,8 +716,20 @@ public class RecipientPresenter implements PermissionPingCallback {
         cryptoEnablePgpInline = enablePgpInline;
         updateCryptoStatus();
         if (enablePgpInline) {
-            recipientMvpView.showOpenPgpInlineDialog(true);
+            boolean shouldShowPgpInlineDialog = checkAndIncrementPgpInlineDialogCounter();
+            if (shouldShowPgpInlineDialog) {
+                recipientMvpView.showOpenPgpInlineDialog(true);
+            }
         }
+    }
+
+    private boolean checkAndIncrementPgpInlineDialogCounter() {
+        int pgpInlineDialogCounter = K9.getPgpInlineDialogCounter();
+        if (pgpInlineDialogCounter < PGP_INLINE_DIALOG_DISPLAY_THRESHOLD) {
+            K9.setPgpInlineDialogCounter(pgpInlineDialogCounter + 1);
+            return true;
+        }
+        return false;
     }
 
     public void onClickPgpInlineIndicator() {

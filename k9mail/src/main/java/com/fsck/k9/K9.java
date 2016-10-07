@@ -255,6 +255,8 @@ public class K9 extends Application {
     private static boolean sMessageViewCopyActionVisible = false;
     private static boolean sMessageViewSpamActionVisible = false;
 
+    private static int sPgpInlineDialogCounter;
+
 
     /**
      * @see #areDatabasesUpToDate()
@@ -491,6 +493,8 @@ public class K9 extends Application {
         editor.putBoolean("messageViewMoveActionVisible", sMessageViewMoveActionVisible);
         editor.putBoolean("messageViewCopyActionVisible", sMessageViewCopyActionVisible);
         editor.putBoolean("messageViewSpamActionVisible", sMessageViewSpamActionVisible);
+
+        editor.putInt("pgpInlineDialogCounter", sPgpInlineDialogCounter);
 
         fontSizes.save(editor);
     }
@@ -738,6 +742,7 @@ public class K9 extends Application {
         sMessageViewCopyActionVisible = storage.getBoolean("messageViewCopyActionVisible", false);
         sMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false);
 
+        sPgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0);
 
         K9.setK9Language(storage.getString("language", ""));
 
@@ -1314,6 +1319,14 @@ public class K9 extends Application {
 
     public static void setMessageViewSpamActionVisible(boolean visible) {
         sMessageViewSpamActionVisible = visible;
+    }
+
+    public static int getPgpInlineDialogCounter() {
+        return sPgpInlineDialogCounter;
+    }
+
+    public static void setPgpInlineDialogCounter(int pgpInlineDialogCounter) {
+        K9.sPgpInlineDialogCounter = pgpInlineDialogCounter;
     }
 
     /**
