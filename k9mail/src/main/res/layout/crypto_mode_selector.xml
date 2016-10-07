@@ -19,7 +19,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/status_lock_disabled"
                 android:id="@+id/icon_1"
-                android:tint="?attr/openpgp_grey"
+                android:tint="?attr/openpgp_dark_grey"
                 />
 
             <ImageView
