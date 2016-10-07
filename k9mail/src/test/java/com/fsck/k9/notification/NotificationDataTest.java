@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.activity.MessageReference;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,8 +53,7 @@ public class NotificationDataTest {
 
     @Test
     public void testAddNotificationContentWithReplacingNotification() throws Exception {
-        NotificationContent content = createNotificationContent("1");
-        notificationData.addNotificationContent(content);
+        notificationData.addNotificationContent(createNotificationContent("1"));
         notificationData.addNotificationContent(createNotificationContent("2"));
         notificationData.addNotificationContent(createNotificationContent("3"));
         notificationData.addNotificationContent(createNotificationContent("4"));
@@ -105,6 +105,15 @@ public class NotificationDataTest {
         assertNotNull(holder);
         assertEquals(NotificationIds.getNewMailStackedNotificationId(account, 1), holder.notificationId);
         assertEquals(content, holder.content);
+    }
+
+    @Test
+    public void testRemoveDoesNotLeakNotificationIds() {
+        for (int i = 1; i <= NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS + 1; i++) {
+            NotificationContent content = createNotificationContent("" + i);
+            notificationData.addNotificationContent(content);
+            notificationData.removeNotificationForMessage(content.messageReference);
+        }
     }
 
     @Test
@@ -267,7 +276,7 @@ public class NotificationDataTest {
     private MessageReference createMessageReference(String uid) {
         return new MessageReference(ACCOUNT_UUID, FOLDER_NAME, uid, null);
     }
-    
+
     private NotificationContent createNotificationContent(String uid) {
         MessageReference messageReference = createMessageReference(uid);
         return createNotificationContent(messageReference);

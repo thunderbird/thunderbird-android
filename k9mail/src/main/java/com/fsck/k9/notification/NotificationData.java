@@ -85,6 +85,10 @@ class NotificationData {
         notificationIdsInUse.put(notificationId, true);
     }
 
+    private void markNotificationIdAsFree(int notificationId) {
+        notificationIdsInUse.delete(notificationId);
+    }
+
     NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {
         return new NotificationHolder(notificationId, content);
     }
@@ -165,6 +169,8 @@ class NotificationData {
         activeNotifications.remove(holder);
 
         int notificationId = holder.notificationId;
+        markNotificationIdAsFree(notificationId);
+
         if (!additionalNotifications.isEmpty()) {
             NotificationContent newContent = additionalNotifications.removeFirst();
             NotificationHolder replacement = createNotificationHolder(notificationId, newContent);
