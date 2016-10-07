@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.activity.MessageReference;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,9 +108,9 @@ public class NotificationDataTest {
     }
 
     @Test
-    public void testRemoveDoesntLeakNotificationIds() {
-        for (int i = 1; i <= NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS+1; i++) {
-            NotificationContent content = createNotificationContent(""+i);
+    public void testRemoveDoesNotLeakNotificationIds() {
+        for (int i = 1; i <= NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS + 1; i++) {
+            NotificationContent content = createNotificationContent("" + i);
             notificationData.addNotificationContent(content);
             notificationData.removeNotificationForMessage(content.messageReference);
         }
@@ -275,7 +276,7 @@ public class NotificationDataTest {
     private MessageReference createMessageReference(String uid) {
         return new MessageReference(ACCOUNT_UUID, FOLDER_NAME, uid, null);
     }
-    
+
     private NotificationContent createNotificationContent(String uid) {
         MessageReference messageReference = createMessageReference(uid);
         return createNotificationContent(messageReference);
