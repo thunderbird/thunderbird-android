@@ -10,6 +10,7 @@ import java.util.Locale;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import org.apache.commons.io.IOUtils;
 
 
 public class FileHelper {
@@ -86,35 +87,29 @@ public class FileHelper {
 
     private static void copyFile(File from, File to) throws IOException {
         FileInputStream in = new FileInputStream(from);
+        FileOutputStream out = new FileOutputStream(to);
         try {
-            FileOutputStream out = new FileOutputStream(to);
-            try {
-                byte[] buffer = new byte[1024];
-                int count = -1;
-                while ((count = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, count);
-                }
-            } finally {
-                out.close();
+            byte[] buffer = new byte[1024];
+            int count;
+            while ((count = in.read(buffer)) > 0) {
+                out.write(buffer, 0, count);
             }
+            out.close();
         } finally {
-            try { in.close(); } catch (Throwable ignore) {}
-        }
-
-        if (!from.delete()) {
-            Log.d(K9.LOG_TAG, "Unable to delete file: " + from.getAbsolutePath());
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
         }
     }
 
     public static void renameOrMoveByCopying(File from, File to) throws IOException {
         deleteFileIfExists(to);
 
-        boolean renameOk = from.renameTo(to);
-        if (!renameOk) {
+        boolean renameFailed = !from.renameTo(to);
+        if (renameFailed) {
             copyFile(from, to);
 
-            boolean deleteFromOk = from.delete();
-            if (!deleteFromOk) {
+            boolean deleteFromFailed = !from.delete();
+            if (deleteFromFailed) {
                 Log.e(K9.LOG_TAG, "Unable to delete source file after copying to destination!");
             }
         }
@@ -147,6 +142,11 @@ public class FileHelper {
 
         try {
             copyFile(from, to);
+
+            boolean deleteFromFailed = !from.delete();
+            if (deleteFromFailed) {
+                Log.e(K9.LOG_TAG, "Unable to delete source file after copying to destination!");
+            }
             return true;
         } catch (Exception e) {
             Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
