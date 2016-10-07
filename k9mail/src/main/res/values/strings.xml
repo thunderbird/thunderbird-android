@@ -1139,6 +1139,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
     <string name="preview_encrypted">*Encrypted*</string>
     <string name="add_from_contacts">Add from Contacts</string>
+    <string name="crypto_settings_cancel">Cancel</string>
     <string name="crypto_settings_ok">Proceed</string>
     <string name="recipient_cc">Cc</string>
     <string name="recipient_bcc">Bcc</string>
