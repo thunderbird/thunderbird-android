@@ -152,10 +152,11 @@ public abstract class MessageBuilder {
 
             // This is the compiled MIME part for an HTML message.
             MimeMultipart composedMimeMessage = createMimeMultipart();
-            composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
-            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
+            composedMimeMessage.setSubType("alternative");
+            // Let the receiver select either the text or the HTML part.
             bodyPlain = buildText(isDraft, SimpleMessageFormat.TEXT);
             composedMimeMessage.addBodyPart(new MimeBodyPart(bodyPlain, "text/plain"));
+            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
 
             if (hasAttachments) {
                 // If we're HTML and have attachments, we have a MimeMultipart container to hold the

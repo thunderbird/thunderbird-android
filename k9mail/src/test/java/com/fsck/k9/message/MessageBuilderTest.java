@@ -4,10 +4,12 @@ package com.fsck.k9.message;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Application;
 
@@ -15,12 +17,14 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,14 +57,14 @@ public class MessageBuilderTest {
     };
     public static final Address[] TEST_CC = new Address[] { new Address("cc@example.org", "cc recip") };
     public static final Address[] TEST_BCC = new Address[] { new Address("bcc@example.org", "bcc recip") };
-
     public static final String TEST_MESSAGE_ID = "<00000000-0000-007B-0000-0000000000EA@example.org>";
+    public static final Date SENT_DATE = new Date(10000000000L);
+
     public static final String BOUNDARY_1 = "----boundary1";
     public static final String BOUNDARY_2 = "----boundary2";
     public static final String BOUNDARY_3 = "----boundary3";
 
-    public static final Date SENT_DATE = new Date(10000000000L);
-    public static final String MESSAGE_HEADERS =
+    public static final String MESSAGE_HEADERS = "" +
             "Date: Sun, 26 Apr 1970 17:46:40 +0000\r\n" +
             "From: tester <test@example.org>\r\n" +
             "To: recip 1 <to1@example.org>,recip 2 <to2@example.org>\r\n" +
@@ -72,14 +76,16 @@ public class MessageBuilderTest {
             "References: references\r\n" +
             "Message-ID: " + TEST_MESSAGE_ID + "\r\n" +
             "MIME-Version: 1.0\r\n";
-    public static final String MESSAGE_CONTENT =
+    
+    public static final String MESSAGE_CONTENT = "" +
             "Content-Type: text/plain;\r\n" +
             " charset=utf-8\r\n" +
             "Content-Transfer-Encoding: quoted-printable\r\n" +
             "\r\n" +
             "soviet message\r\n" +
             "text =E2=98=AD";
-    public static final String MESSAGE_CONTENT_WITH_ATTACH =
+    
+    public static final String MESSAGE_CONTENT_WITH_ATTACH = "" +
             "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
             "Content-Transfer-Encoding: 7bit\r\n" +
             "\r\n" +
@@ -101,33 +107,36 @@ public class MessageBuilderTest {
             "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "--\r\n";
-    public static final String MESSAGE_CONTENT_WITH_MESSAGE_ATTACH =
+    
+    public static final String MESSAGE_CONTENT_WITH_MESSAGE_ATTACH = "" +
             "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
-                    "Content-Transfer-Encoding: 7bit\r\n" +
-                    "\r\n" +
-                    "--" + BOUNDARY_1 + "\r\n" +
-                    "Content-Type: text/plain;\r\n" +
-                    " charset=utf-8\r\n" +
-                    "Content-Transfer-Encoding: quoted-printable\r\n" +
-                    "\r\n" +
-                    "soviet message\r\n" +
-                    "text =E2=98=AD\r\n" +
-                    "--" + BOUNDARY_1 + "\r\n" +
-                    "Content-Type: application/octet-stream;\r\n" +
-                    " name=\"attach.txt\"\r\n" +
-                    "Content-Transfer-Encoding: base64\r\n" +
-                    "Content-Disposition: attachment;\r\n" +
-                    " filename=\"attach.txt\";\r\n" +
-                    " size=23\r\n" +
-                    "\r\n" +
-                    "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
-                    "\r\n" +
-                    "--" + BOUNDARY_1 + "--\r\n";
+            "Content-Transfer-Encoding: 7bit\r\n" +
+            "\r\n" +
+            "--" + BOUNDARY_1 + "\r\n" +
+            "Content-Type: text/plain;\r\n" +
+            " charset=utf-8\r\n" +
+            "Content-Transfer-Encoding: quoted-printable\r\n" +
+            "\r\n" +
+            "soviet message\r\n" +
+            "text =E2=98=AD\r\n" +
+            "--" + BOUNDARY_1 + "\r\n" +
+            "Content-Type: application/octet-stream;\r\n" +
+            " name=\"attach.txt\"\r\n" +
+            "Content-Transfer-Encoding: base64\r\n" +
+            "Content-Disposition: attachment;\r\n" +
+            " filename=\"attach.txt\";\r\n" +
+            " size=23\r\n" +
+            "\r\n" +
+            "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
+            "\r\n" +
+            "--" + BOUNDARY_1 + "--\r\n";
 
 
     private Application context;
     private MessageIdGenerator messageIdGenerator;
     private BoundaryGenerator boundaryGenerator;
+    private Callback callback;
+
 
     @Before
     public void setUp() throws Exception {
@@ -137,162 +146,148 @@ public class MessageBuilderTest {
         boundaryGenerator = mock(BoundaryGenerator.class);
         when(boundaryGenerator.generateBoundary()).thenReturn(BOUNDARY_1, BOUNDARY_2, BOUNDARY_3);
 
+        callback = mock(Callback.class);
         context =  RuntimeEnvironment.application;
     }
 
     @Test
-    public void build__shouldSucceed() throws Exception {
+    public void build_shouldSucceed() throws Exception {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
 
+        messageBuilder.buildAsync(callback);
 
-        Callback mockCallback = mock(Callback.class);
-        messageBuilder.buildAsync(mockCallback);
-
-
-        ArgumentCaptor<MimeMessage> mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
-        verify(mockCallback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(false));
-        verifyNoMoreInteractions(mockCallback);
-
-        MimeMessage mimeMessage = mimeMessageCaptor.getValue();
-        assertEquals("text/plain", mimeMessage.getMimeType());
-        assertEquals(TEST_SUBJECT, mimeMessage.getSubject());
-        assertEquals(TEST_IDENTITY_ADDRESS, mimeMessage.getFrom()[0]);
-        assertArrayEquals(TEST_TO, mimeMessage.getRecipients(RecipientType.TO));
-        assertArrayEquals(TEST_CC, mimeMessage.getRecipients(RecipientType.CC));
-        assertArrayEquals(TEST_BCC, mimeMessage.getRecipients(RecipientType.BCC));
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        mimeMessage.writeTo(bos);
-        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT, bos.toString());
+        MimeMessage message = getMessageFromCallback();
+        assertEquals("text/plain", message.getMimeType());
+        assertEquals(TEST_SUBJECT, message.getSubject());
+        assertEquals(TEST_IDENTITY_ADDRESS, message.getFrom()[0]);
+        assertArrayEquals(TEST_TO, message.getRecipients(RecipientType.TO));
+        assertArrayEquals(TEST_CC, message.getRecipients(RecipientType.CC));
+        assertArrayEquals(TEST_BCC, message.getRecipients(RecipientType.BCC));
+        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT, getMessageContents(message));
     }
 
     @Test
-    public void build__withAttachment__shouldSucceed() throws Exception {
+    public void build_withAttachment_shouldSucceed() throws Exception {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
-        Attachment attachment = createAttachmentWithContent("text/plain", "attach.txt", TEST_ATTACHMENT_TEXT.getBytes());
+        Attachment attachment = createAttachmentWithContent("text/plain", "attach.txt", TEST_ATTACHMENT_TEXT);
         messageBuilder.setAttachments(Collections.singletonList(attachment));
 
-        Callback mockCallback = mock(Callback.class);
-        messageBuilder.buildAsync(mockCallback);
+        messageBuilder.buildAsync(callback);
 
-
-        ArgumentCaptor<MimeMessage> mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
-        verify(mockCallback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(false));
-        verifyNoMoreInteractions(mockCallback);
-
-        MimeMessage mimeMessage = mimeMessageCaptor.getValue();
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        mimeMessage.writeTo(bos);
-        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_ATTACH, bos.toString());
+        MimeMessage message = getMessageFromCallback();
+        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_ATTACH, getMessageContents(message));
     }
 
     @Test
-    public void build__withMessageAttachment__shouldAttachAsApplicationOctetStream() throws Exception {
-        MessageBuilder messageBuilder = createSimpleMessageBuilder();
-        Attachment attachment = createAttachmentWithContent("message/rfc822", "attach.txt", TEST_ATTACHMENT_TEXT.getBytes());
-        messageBuilder.setAttachments(Collections.singletonList(attachment));
+    public void build_usingHtmlFormat_shouldUseMultipartAlternativeInCorrectOrder() {
+        MessageBuilder messageBuilder = createHtmlMessageBuilder();
 
-        Callback mockCallback = mock(Callback.class);
-        messageBuilder.buildAsync(mockCallback);
+        messageBuilder.buildAsync(callback);
 
-
-        ArgumentCaptor<MimeMessage> mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
-        verify(mockCallback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(false));
-        verifyNoMoreInteractions(mockCallback);
-
-        MimeMessage mimeMessage = mimeMessageCaptor.getValue();
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        mimeMessage.writeTo(bos);
-        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_MESSAGE_ATTACH, bos.toString());
+        MimeMessage message = getMessageFromCallback();
+        assertEquals(MimeMultipart.class, message.getBody().getClass());
+        assertEquals("multipart/alternative", ((MimeMultipart) message.getBody()).getMimeType());
+        List<BodyPart> parts =  ((MimeMultipart) message.getBody()).getBodyParts();
+        //RFC 2046 - 5.1.4. - Best type is last displayable
+        assertEquals("text/plain", parts.get(0).getMimeType());
+        assertEquals("text/html", parts.get(1).getMimeType());
     }
 
-    private Attachment createAttachmentWithContent(String mimeType, String filename, byte[] content) throws Exception {
+    @Test
+    public void build_withMessageAttachment_shouldAttachAsApplicationOctetStream() throws Exception {
+        MessageBuilder messageBuilder = createSimpleMessageBuilder();
+        Attachment attachment = createAttachmentWithContent("message/rfc822", "attach.txt", TEST_ATTACHMENT_TEXT);
+        messageBuilder.setAttachments(Collections.singletonList(attachment));
+
+        messageBuilder.buildAsync(callback);
+
+        MimeMessage message = getMessageFromCallback();
+        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_MESSAGE_ATTACH, getMessageContents(message));
+    }
+
+    @Test
+    public void build_detachAndReattach_shouldSucceed() throws MessagingException {
+        MessageBuilder messageBuilder = createSimpleMessageBuilder();
+        Callback anotherCallback = mock(Callback.class);
+
+        Robolectric.getBackgroundThreadScheduler().pause();
+        messageBuilder.buildAsync(callback);
+        messageBuilder.detachCallback();
+        Robolectric.getBackgroundThreadScheduler().unPause();
+        messageBuilder.reattachCallback(anotherCallback);
+
+        verifyNoMoreInteractions(callback);
+        verify(anotherCallback).onMessageBuildSuccess(any(MimeMessage.class), eq(false));
+        verifyNoMoreInteractions(anotherCallback);
+    }
+
+    @Test
+    public void buildWithException_shouldThrow() throws MessagingException {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator) {
+            @Override
+            protected void buildMessageInternal() {
+                queueMessageBuildException(new MessagingException("expected error"));
+            }
+        };
+
+        messageBuilder.buildAsync(callback);
+
+        verify(callback).onMessageBuildException(any(MessagingException.class));
+        verifyNoMoreInteractions(callback);
+    }
+
+    @Test
+    public void buildWithException_detachAndReattach_shouldThrow() throws MessagingException {
+        Callback anotherCallback = mock(Callback.class);
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator) {
+            @Override
+            protected void buildMessageInternal() {
+                queueMessageBuildException(new MessagingException("expected error"));
+            }
+        };
+
+        Robolectric.getBackgroundThreadScheduler().pause();
+        messageBuilder.buildAsync(callback);
+        messageBuilder.detachCallback();
+        Robolectric.getBackgroundThreadScheduler().unPause();
+        messageBuilder.reattachCallback(anotherCallback);
+
+        verifyNoMoreInteractions(callback);
+        verify(anotherCallback).onMessageBuildException(any(MessagingException.class));
+        verifyNoMoreInteractions(anotherCallback);
+    }
+
+    private MimeMessage getMessageFromCallback() {
+        ArgumentCaptor<MimeMessage> mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
+        verify(callback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(false));
+        verifyNoMoreInteractions(callback);
+
+        return mimeMessageCaptor.getValue();
+    }
+
+    private String getMessageContents(MimeMessage message) throws IOException, MessagingException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        message.writeTo(outputStream);
+        return outputStream.toString();
+    }
+
+    private Attachment createAttachmentWithContent(String mimeType, String filename, String content) throws Exception {
+        byte[] bytes = content.getBytes();
         File tempFile = File.createTempFile("pre", ".tmp");
         tempFile.deleteOnExit();
         FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-        fileOutputStream.write(content);
+        fileOutputStream.write(bytes);
         fileOutputStream.close();
 
         return Attachment.createAttachment(null, 0, mimeType)
-                .deriveWithMetadataLoaded(mimeType, filename, content.length)
+                .deriveWithMetadataLoaded(mimeType, filename, bytes.length)
                 .deriveWithLoadComplete(tempFile.getAbsolutePath());
     }
 
-    @Test
-    public void build__detachAndReattach__shouldSucceed() throws MessagingException {
-        MessageBuilder messageBuilder = createSimpleMessageBuilder();
-
-
-        Callback mockCallback = mock(Callback.class);
-        Robolectric.getBackgroundThreadScheduler().pause();
-        messageBuilder.buildAsync(mockCallback);
-        messageBuilder.detachCallback();
-        Robolectric.getBackgroundThreadScheduler().unPause();
-
-        verifyNoMoreInteractions(mockCallback);
-
-
-        mockCallback = mock(Callback.class);
-        messageBuilder.reattachCallback(mockCallback);
-
-        verify(mockCallback).onMessageBuildSuccess(any(MimeMessage.class), eq(false));
-        verifyNoMoreInteractions(mockCallback);
-    }
-
-    @Test
-    public void buildWithException__shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator) {
-            @Override
-            protected void buildMessageInternal() {
-                queueMessageBuildException(new MessagingException("expected error"));
-            }
-        };
-
-        Callback mockCallback = mock(Callback.class);
-        messageBuilder.buildAsync(mockCallback);
-
-        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
-        verifyNoMoreInteractions(mockCallback);
-    }
-
-    @Test
-    public void buildWithException__detachAndReattach__shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator) {
-            @Override
-            protected void buildMessageInternal() {
-                queueMessageBuildException(new MessagingException("expected error"));
-            }
-        };
-
-
-        Callback mockCallback = mock(Callback.class);
-        Robolectric.getBackgroundThreadScheduler().pause();
-        messageBuilder.buildAsync(mockCallback);
-        messageBuilder.detachCallback();
-        Robolectric.getBackgroundThreadScheduler().unPause();
-
-        verifyNoMoreInteractions(mockCallback);
-
-
-        mockCallback = mock(Callback.class);
-        messageBuilder.reattachCallback(mockCallback);
-
-        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
-        verifyNoMoreInteractions(mockCallback);
-    }
-
     private MessageBuilder createSimpleMessageBuilder() {
-        MessageBuilder b = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator);
-
-        Identity identity = new Identity();
-        identity.setName(TEST_IDENTITY_ADDRESS.getPersonal());
-        identity.setEmail(TEST_IDENTITY_ADDRESS.getAddress());
-        identity.setDescription("test identity");
-        identity.setSignatureUse(false);
-
-        b.setSubject(TEST_SUBJECT)
+        Identity identity = createIdentity();
+        return new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator)
+                .setSubject(TEST_SUBJECT)
                 .setSentDate(SENT_DATE)
                 .setHideTimeZone(true)
                 .setTo(Arrays.asList(TEST_TO))
@@ -317,7 +312,18 @@ public class MessageBuilderTest {
                 .setCursorPosition(0)
                 .setMessageReference(null)
                 .setDraft(false);
+    }
 
-        return b;
+    private MessageBuilder createHtmlMessageBuilder() {
+        return createSimpleMessageBuilder().setMessageFormat(SimpleMessageFormat.HTML);
+    }
+
+    private Identity createIdentity() {
+        Identity identity = new Identity();
+        identity.setName(TEST_IDENTITY_ADDRESS.getPersonal());
+        identity.setEmail(TEST_IDENTITY_ADDRESS.getAddress());
+        identity.setDescription("test identity");
+        identity.setSignatureUse(false);
+        return identity;
     }
 }
