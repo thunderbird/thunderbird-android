@@ -15,17 +15,21 @@ import com.fsck.k9.R;
 
 
 public class CryptoModeSelector extends FrameLayout implements OnSeekBarChangeListener {
+    public static final int CROSSFADE_THRESH_1_LOW = -50;
+    public static final int CROSSFADE_THRESH_1_HIGH = 50;
     public static final int CROSSFADE_THRESH_2_LOW = 50;
     public static final int CROSSFADE_THRESH_2_HIGH = 150;
     public static final int CROSSFADE_THRESH_3_LOW = 150;
     public static final int CROSSFADE_THRESH_3_HIGH = 250;
     public static final int CROSSFADE_THRESH_4_LOW = 250;
+    public static final float CROSSFADE_DIVISOR_1 = 50.0f;
     public static final float CROSSFADE_DIVISOR_2 = 50.0f;
     public static final float CROSSFADE_DIVISOR_3 = 50.0f;
     public static final float CROSSFADE_DIVISOR_4 = 50.0f;
 
 
     private SeekBar seekbar;
+    private ImageView modeIcon1;
     private ImageView modeIcon2;
     private ImageView modeIcon3;
     private ImageView modeIcon4;
@@ -51,6 +55,7 @@ public class CryptoModeSelector extends FrameLayout implements OnSeekBarChangeLi
     public void init() {
         inflate(getContext(), R.layout.crypto_mode_selector, this);
         seekbar = (SeekBar) findViewById(R.id.seek_bar);
+        modeIcon1 = (ImageView) findViewById(R.id.icon_1);
         modeIcon2 = (ImageView) findViewById(R.id.icon_2);
         modeIcon3 = (ImageView) findViewById(R.id.icon_3);
         modeIcon4 = (ImageView) findViewById(R.id.icon_4);
@@ -63,7 +68,18 @@ public class CryptoModeSelector extends FrameLayout implements OnSeekBarChangeLi
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         int grey = ThemeUtils.getStyledColor(getContext(), R.attr.openpgp_grey);
 
-        float crossfadeValue2, crossfadeValue3, crossfadeValue4;
+        float crossfadeValue1, crossfadeValue2, crossfadeValue3, crossfadeValue4;
+
+        if (progress < CROSSFADE_THRESH_1_HIGH) {
+            crossfadeValue1 = (progress -CROSSFADE_THRESH_1_LOW) / CROSSFADE_DIVISOR_1;
+            if (crossfadeValue1 > 1.0f) {
+                crossfadeValue1 = 2.0f -crossfadeValue1;
+            }
+        } else {
+            crossfadeValue1 = 0.0f;
+        }
+
+
         if (progress > CROSSFADE_THRESH_2_LOW && progress < CROSSFADE_THRESH_2_HIGH) {
             crossfadeValue2 = (progress -CROSSFADE_THRESH_2_LOW) / CROSSFADE_DIVISOR_2;
             if (crossfadeValue2 > 1.0f) {
@@ -89,6 +105,9 @@ public class CryptoModeSelector extends FrameLayout implements OnSeekBarChangeLi
         }
 
         int crossfadedColor;
+
+        crossfadedColor = crossfadeColor(grey, ThemeUtils.getStyledColor(getContext(), R.attr.openpgp_dark_grey), crossfadeValue1);
+        modeIcon1.setColorFilter(crossfadedColor, PorterDuff.Mode.SRC_ATOP);
 
         crossfadedColor = crossfadeColor(grey, ThemeUtils.getStyledColor(getContext(), R.attr.openpgp_blue), crossfadeValue2);
         modeIcon2.setColorFilter(crossfadedColor, PorterDuff.Mode.SRC_ATOP);
