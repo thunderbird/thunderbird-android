@@ -146,6 +146,8 @@ public class MessageLoaderHelper {
      * asyncStartOrResumeLoadingMessage in a new instance of this class. */
     @UiThread
     public void onDestroyChangingConfigurations() {
+        cancelAndClearDecodeLoader();
+
         if (messageCryptoHelper != null) {
             messageCryptoHelper.detachCallback();
         }
