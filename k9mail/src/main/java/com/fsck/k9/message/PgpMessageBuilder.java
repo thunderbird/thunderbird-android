@@ -20,6 +20,7 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
@@ -193,6 +194,9 @@ public class PgpMessageBuilder extends MessageBuilder {
                 pgpResultTempBody = new BinaryTempFileBody(
                         capturedOutputPartIs7Bit ? MimeUtil.ENC_7BIT : MimeUtil.ENC_8BIT);
                 outputStream = pgpResultTempBody.getOutputStream();
+                // OpenKeychain/BouncyCastle at this point use the system newline for formatting, which is LF on android.
+                // we need this to be CRLF, so we convert the data after receiving.
+                outputStream = new EOLConvertingOutputStream(outputStream);
             } catch (IOException e) {
                 throw new MessagingException("could not allocate temp file for storage!", e);
             }
