@@ -53,14 +53,35 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
+        builder.setNegativeButton(R.string.crypto_settings_cancel, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
         builder.setPositiveButton(R.string.crypto_settings_ok, new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                changeCryptoSettings();
                 dialog.dismiss();
             }
         });
 
         return builder.create();
+    }
+
+    private void changeCryptoSettings() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            // is this supposed to happen?
+            return;
+        }
+        boolean activityIsCryptoModeChangedListener = activity instanceof OnCryptoModeChangedListener;
+        if (!activityIsCryptoModeChangedListener) {
+            throw new AssertionError("This dialog must be called by an OnCryptoModeChangedListener!");
+        }
+
+        ((OnCryptoModeChangedListener) activity).onCryptoModeChanged(currentMode);
     }
 
     void updateView(boolean animate) {
@@ -103,18 +124,6 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
             currentMode = CryptoMode.PRIVATE;
         }
         updateView(true);
-
-        Activity activity = getActivity();
-        if (activity == null) {
-            // is this supposed to happen?
-            return;
-        }
-        boolean activityIsCryptoModeChangedListener = activity instanceof OnCryptoModeChangedListener;
-        if (!activityIsCryptoModeChangedListener) {
-            throw new AssertionError("This dialog must be called by an OnCryptoModeChangedListener!");
-        }
-
-        ((OnCryptoModeChangedListener) activity).onCryptoModeChanged(currentMode);
     }
 
     public interface OnCryptoModeChangedListener {
