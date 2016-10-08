@@ -273,6 +273,9 @@ public class GlobalSettings {
         s.put("confirmDiscardMessage", Settings.versions(
                 new V(40, new BooleanSetting(true))
             ));
+        s.put("pgpInlineDialogCounter", Settings.versions(
+                new V(43, new IntegerRangeSetting(0, Integer.MAX_VALUE, 0))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
