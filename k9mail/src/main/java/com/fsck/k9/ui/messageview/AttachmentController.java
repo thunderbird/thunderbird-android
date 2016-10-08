@@ -84,7 +84,7 @@ public class AttachmentController {
             @Override
             public void run() {
                 messageViewFragment.refreshAttachmentThumbnail(attachment);
-                saveAttachmentTo(directory);
+                saveLocalAttachmentTo(directory);
             }
         });
     }
