@@ -58,9 +58,9 @@ public class ActivityListener extends MessagingListener {
 
         if (mLoadingFolderName != null || mLoadingHeaderFolderName != null) {
             String displayName = null;
-            if(mLoadingHeaderFolderName != null) {
+            if (mLoadingHeaderFolderName != null) {
                 displayName = mLoadingHeaderFolderName;
-            } else if(mLoadingFolderName != null) {
+            } else if (mLoadingFolderName != null) {
                 displayName = mLoadingFolderName;
             }
             if ((mAccount != null) && (mAccount.getInboxFolderName() != null)
