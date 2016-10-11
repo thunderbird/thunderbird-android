@@ -86,6 +86,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private static final String STATE_DISPLAY_MODE = "displayMode";
     private static final String STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed";
+    private static final String STATE_FIRST_BACK_STACK_ID = "firstBackstackId";
 
     // Used for navigating to next/previous message
     private static final int PREVIOUS = 1;
@@ -516,11 +517,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         outState.putSerializable(STATE_DISPLAY_MODE, mDisplayMode);
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, mMessageListWasDisplayed);
+        outState.putInt(STATE_FIRST_BACK_STACK_ID, mFirstBackStackId);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         mMessageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED);
+        mFirstBackStackId = savedInstanceState.getInt(STATE_FIRST_BACK_STACK_ID);
     }
 
     private void initializeActionBar() {
