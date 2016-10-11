@@ -935,8 +935,8 @@ public class MessageProvider extends ContentProvider {
             for (final LocalMessage message : messages) {
                 final MessageInfoHolder messageInfoHolder = new MessageInfoHolder();
                 final LocalFolder messageFolder = message.getFolder();
+                final Account messageAccount = message.getAccount();
 
-                final Account messageAccount = messageInfoHolder.message.getAccount();
                 helper.populate(messageInfoHolder, message, new FolderInfoHolder(context,
                                 messageFolder, messageAccount), messageAccount);
 
