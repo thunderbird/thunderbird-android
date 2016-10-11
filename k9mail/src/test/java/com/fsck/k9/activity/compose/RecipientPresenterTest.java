@@ -57,6 +57,7 @@ public class RecipientPresenterTest {
 
         recipientPresenter = new RecipientPresenter(
                 context, loaderManager, recipientMvpView, account, composePgpInlineDecider, replyToParser);
+        recipientPresenter.updateCryptoStatus();
     }
 
     @Test

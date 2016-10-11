@@ -89,7 +89,6 @@ public class RecipientPresenter implements PermissionPingCallback {
         recipientMvpView.setPresenter(this);
         recipientMvpView.setLoaderManager(loaderManager);
         onSwitchAccount(account);
-        updateCryptoStatus();
     }
 
     public List<Address> getToAddresses() {
