@@ -119,7 +119,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
             // noinspection ConstantConditions, we know the resource exists!
             drawable.mutate();
             drawable.setColorFilter(cryptoStatusColor, Mode.SRC_ATOP);
-            holder.cryptoStatus.setImageDrawable(drawable);
+            holder.cryptoStatusIcon.setImageDrawable(drawable);
             holder.cryptoStatus.setVisibility(View.VISIBLE);
         } else {
             holder.cryptoStatus.setVisibility(View.GONE);
@@ -167,14 +167,16 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         public final TextView name;
         public final TextView email;
         public final ImageView photo;
-        public final ImageView cryptoStatus;
+        public final View cryptoStatus;
+        public final ImageView cryptoStatusIcon;
 
 
         public RecipientTokenHolder(View view) {
             name = (TextView) view.findViewById(R.id.text1);
             email = (TextView) view.findViewById(R.id.text2);
             photo = (ImageView) view.findViewById(R.id.contact_photo);
-            cryptoStatus = (ImageView) view.findViewById(R.id.contact_crypto_status);
+            cryptoStatus = view.findViewById(R.id.contact_crypto_status);
+            cryptoStatusIcon = (ImageView) view.findViewById(R.id.contact_crypto_status_icon);
         }
     }
 
