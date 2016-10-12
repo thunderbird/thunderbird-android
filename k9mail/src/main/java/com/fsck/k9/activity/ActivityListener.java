@@ -31,54 +31,64 @@ public class ActivityListener extends MessagingListener {
     };
 
     public String getOperation(Context context) {
-        String operation;
-        String progress = null;
         if (mLoadingAccountDescription  != null
                 || mSendingAccountDescription != null
                 || mLoadingHeaderFolderName != null
                 || mProcessingAccountDescription != null) {
-            progress = (mFolderTotal > 0 ?
-                        context.getString(R.string.folder_progress, mFolderCompleted, mFolderTotal) : "");
 
-            if (mLoadingFolderName != null || mLoadingHeaderFolderName != null) {
-                String displayName = mLoadingFolderName;
-                if ((mAccount != null) && (mAccount.getInboxFolderName() != null) && mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
-                    displayName = context.getString(R.string.special_mailbox_name_inbox);
-                } else if ((mAccount != null) && mAccount.getOutboxFolderName().equals(displayName)) {
-                    displayName = context.getString(R.string.special_mailbox_name_outbox);
-                }
+            return getActionInProgressOperation(context);
 
-                if (mLoadingHeaderFolderName != null) {
-
-                    operation = context.getString(R.string.status_loading_account_folder_headers, mLoadingAccountDescription, displayName, progress);
-                } else {
-                    operation = context.getString(R.string.status_loading_account_folder, mLoadingAccountDescription, displayName, progress);
-                }
-            }
-
-            else if (mSendingAccountDescription != null) {
-                operation = context.getString(R.string.status_sending_account, mSendingAccountDescription, progress);
-            } else if (mProcessingAccountDescription != null) {
-                operation = context.getString(R.string.status_processing_account, mProcessingAccountDescription,
-                                              mProcessingCommandTitle != null ? mProcessingCommandTitle : "",
-                                              progress);
-            } else {
-                operation = "";
-            }
         } else {
             long nextPollTime = MailService.getNextPollTime();
             if (nextPollTime != -1) {
-                operation = context.getString(R.string.status_next_poll,
+                return context.getString(R.string.status_next_poll,
                         DateUtils.getRelativeTimeSpanString(nextPollTime, System.currentTimeMillis(),
                                 DateUtils.MINUTE_IN_MILLIS, 0));
             } else if (MailService.isSyncDisabled()) {
-                operation = context.getString(R.string.status_syncing_off);
+                return context.getString(R.string.status_syncing_off);
             } else {
-                operation = "";
+                return "";
+            }
+        }
+    }
+
+    private String getActionInProgressOperation(Context context) {
+        String progress = (mFolderTotal > 0 ?
+                context.getString(R.string.folder_progress, mFolderCompleted, mFolderTotal) : "");
+
+        if (mLoadingFolderName != null || mLoadingHeaderFolderName != null) {
+            String displayName = null;
+            if (mLoadingHeaderFolderName != null) {
+                displayName = mLoadingHeaderFolderName;
+            } else if (mLoadingFolderName != null) {
+                displayName = mLoadingFolderName;
+            }
+            if ((mAccount != null) && (mAccount.getInboxFolderName() != null)
+                    && mAccount.getInboxFolderName().equalsIgnoreCase(displayName)) {
+                displayName = context.getString(R.string.special_mailbox_name_inbox);
+            } else if ((mAccount != null) && (mAccount.getOutboxFolderName() != null)
+                    && mAccount.getOutboxFolderName().equals(displayName)) {
+                displayName = context.getString(R.string.special_mailbox_name_outbox);
+            }
+
+            if (mLoadingHeaderFolderName != null) {
+                return context.getString(R.string.status_loading_account_folder_headers,
+                        mLoadingAccountDescription, displayName, progress);
+            } else {
+                return context.getString(R.string.status_loading_account_folder,
+                        mLoadingAccountDescription, displayName, progress);
             }
         }
 
-        return operation;
+        else if (mSendingAccountDescription != null) {
+            return context.getString(R.string.status_sending_account, mSendingAccountDescription, progress);
+        } else if (mProcessingAccountDescription != null) {
+            return context.getString(R.string.status_processing_account, mProcessingAccountDescription,
+                    mProcessingCommandTitle != null ? mProcessingCommandTitle : "",
+                    progress);
+        } else {
+            return "";
+        }
     }
 
     public void onResume(Context context) {
@@ -117,6 +127,7 @@ public class ActivityListener extends MessagingListener {
 
     @Override
     public void synchronizeMailboxHeadersStarted(Account account, String folder) {
+        mLoadingAccountDescription = account.getDescription();
         mLoadingHeaderFolderName = folder;
         informUserOfStatus();
     }
@@ -209,6 +220,7 @@ public class ActivityListener extends MessagingListener {
     public void systemStatusChanged() {
         informUserOfStatus();
     }
+
     @Override
     public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
         informUserOfStatus();

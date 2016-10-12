@@ -34,7 +34,7 @@
   <string name="compose_title_compose">חבר</string>
   <string name="choose_folder_title">בחר תיקייה</string>
   <string name="status_sending_account">שולח… <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_syncing_off">הסנכרון מושבת</string>
   <string name="next_action">הבא</string>
   <string name="previous_action">הקודם</string>

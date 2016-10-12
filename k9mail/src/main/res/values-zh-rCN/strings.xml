@@ -48,7 +48,7 @@
   <string name="status_loading_account_folder_headers">正在接收邮件头: <xliff:g id="folder">%s</xliff:g>: <xliff:g id="progress">%s</xliff:g>, <xliff:g id="account">%s</xliff:g></string>
   <string name="status_sending_account">正在发送 <xliff:g id="progress">%s</xliff:g>: <xliff:g id="account">%s</xliff:g></string>
   <string name="status_processing_account">正在处理 <xliff:g id="command">%s</xliff:g>: <xliff:g id="progress">%s</xliff:g>: <xliff:g id="account">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">下次接收 <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">同步已禁用</string>
   <string name="actionbar_selected">已选择 <xliff:g id="selection_count">%d</xliff:g> 个</string>

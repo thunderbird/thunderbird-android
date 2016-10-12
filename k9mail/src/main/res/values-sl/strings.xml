@@ -78,7 +78,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="status_loading_account_folder_headers">Prenašanje glav <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Pošiljanje <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Obdelava <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Naslednje izpraševanje <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">SInhronizacija onemogočena</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> izbranih</string>
