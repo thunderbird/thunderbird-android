@@ -48,7 +48,8 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="13dp">
+        android:padding="13dp"
+        android:id="@+id/contact_crypto_status">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -59,7 +60,7 @@
             />
 
         <ImageView
-            android:id="@+id/contact_crypto_status"
+            android:id="@+id/contact_crypto_status_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
