@@ -66,6 +66,18 @@ public class MessageReferenceTest {
     }
 
     @Test
+    public void checkMessageReferenceWithChangedFlag() {
+        MessageReference messageReferenceOne = createMessageReferenceWithFlag("account", "folder", "uid", Flag.ANSWERED);
+        MessageReference messageReferenceTwo = messageReferenceOne.withModifiedFlag(Flag.DELETED);
+
+        assertTrue(messageReferenceOne.equals(messageReferenceTwo));
+        assertEquals(messageReferenceOne.getAccountUuid(), messageReferenceTwo.getAccountUuid());
+        assertEquals(messageReferenceOne.getFolderName(), messageReferenceTwo.getFolderName());
+        assertFalse(messageReferenceOne.getFlag() == messageReferenceTwo.getFlag());
+        assertEquals(messageReferenceOne.getUid(), messageReferenceTwo.getUid());
+    }
+
+    @Test
     public void parseIdentityStringContainingBadVersionNumber() throws MessagingException {
         MessageReference messageReference = new MessageReference("@:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
 
