@@ -4,11 +4,13 @@ package com.fsck.k9.helper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import org.apache.commons.io.IOUtils;
 
 
 public class FileHelper {
@@ -83,6 +85,50 @@ public class FileHelper {
         }
     }
 
+    private static void copyFile(File from, File to) throws IOException {
+        FileInputStream in = new FileInputStream(from);
+        FileOutputStream out = new FileOutputStream(to);
+        try {
+            byte[] buffer = new byte[1024];
+            int count;
+            while ((count = in.read(buffer)) > 0) {
+                out.write(buffer, 0, count);
+            }
+            out.close();
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+    }
+
+    public static void renameOrMoveByCopying(File from, File to) throws IOException {
+        deleteFileIfExists(to);
+
+        boolean renameFailed = !from.renameTo(to);
+        if (renameFailed) {
+            copyFile(from, to);
+
+            boolean deleteFromFailed = !from.delete();
+            if (deleteFromFailed) {
+                Log.e(K9.LOG_TAG, "Unable to delete source file after copying to destination!");
+            }
+        }
+    }
+
+    private static void deleteFileIfExists(File to) throws IOException {
+        boolean fileDoesNotExist = !to.exists();
+        if (fileDoesNotExist) {
+            return;
+        }
+
+        boolean deleteOk = to.delete();
+        if (deleteOk) {
+            return;
+        }
+
+        throw new IOException("Unable to delete file: " + to.getAbsolutePath());
+    }
+
     public static boolean move(final File from, final File to) {
         if (to.exists()) {
             if (!to.delete()) {
@@ -95,31 +141,17 @@ public class FileHelper {
         }
 
         try {
-            FileInputStream in = new FileInputStream(from);
-            try {
-                FileOutputStream out = new FileOutputStream(to);
-                try {
-                    byte[] buffer = new byte[1024];
-                    int count = -1;
-                    while ((count = in.read(buffer)) > 0) {
-                        out.write(buffer, 0, count);
-                    }
-                } finally {
-                    out.close();
-                }
-            } finally {
-                try { in.close(); } catch (Throwable ignore) {}
-            }
+            copyFile(from, to);
 
-            if (!from.delete()) {
-                Log.d(K9.LOG_TAG, "Unable to delete file: " + from.getAbsolutePath());
+            boolean deleteFromFailed = !from.delete();
+            if (deleteFromFailed) {
+                Log.e(K9.LOG_TAG, "Unable to delete source file after copying to destination!");
             }
             return true;
         } catch (Exception e) {
             Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
             return false;
         }
-
     }
 
     public static void moveRecursive(final File fromDir, final File toDir) {
