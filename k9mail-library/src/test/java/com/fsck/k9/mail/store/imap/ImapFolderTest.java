@@ -61,8 +61,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.util.collections.Sets.newSet;
 
-
-//TODO: Increase test coverage e.g. for fetch() and fetchPart()
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class ImapFolderTest {
@@ -974,40 +972,10 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         ImapMessage message = createImapMessage("1");
-        Part part = createPart("1.1");
-        when(part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)).thenReturn(
-                new String[]{MimeUtil.ENC_7BIT}
-        );
-        when(part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)).thenReturn(
-                new String[]{"text/plain"}
-        );
 
-        when(imapConnection.readResponse(any(ImapResponseCallback.class)))
-            .thenAnswer(new Answer<ImapResponse>() {
-                @Override
-                public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
-                    ImapResponse response = ImapResponse.newContinuationRequest(
-                            (ImapResponseCallback) invocation.getArguments()[0]);
-                    response.add("1");
-                    response.add("FETCH");
-                    ImapList fetchList = new ImapList();
-                    fetchList.add("UID");
-                    fetchList.add("1");
-                    fetchList.add("BODY");
-                    fetchList.add("1.1");
-                    fetchList.add("text");
-                    response.add(fetchList);
-                    return response;
-                }
-            })
-            .thenAnswer(new Answer<ImapResponse>() {
-                @Override
-                public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
-                    ImapResponse response = ImapResponse.newTaggedResponse(
-                            (ImapResponseCallback) invocation.getArguments()[0], "TAG");
-                    return response;
-                }
-            });
+        Part part = createPlainTextPart("1.1");
+
+        setupSingleFetchResponseToCallback();
 
         folder.fetchPart(message, part, null);
         ArgumentCaptor<Body> bodyArgumentCaptor = ArgumentCaptor.forClass(Body.class);
@@ -1152,20 +1120,67 @@ public class ImapFolderTest {
     @Test
     public void delete_notImplemented() throws MessagingException {
         ImapFolder folder = createFolder("Folder");
+
         try {
             folder.delete(false);
+
             fail("Error expected");
         } catch (Error e) {
         }
     }
 
     @Test
-    public void getMessageByUid_returnsNewImapMessage() throws MessagingException {
+    public void getMessageByUid_returnsNewImapMessageWithUidInFolder() throws MessagingException {
         ImapFolder folder = createFolder("Folder");
+        
         ImapMessage message = folder.getMessage("uid");
-        assertNotNull(message);
+
         assertEquals("uid", message.getUid());
         assertEquals(folder, message.getFolder());
+    }
+
+    private Part createPlainTextPart(String serverExtra) {
+        Part part = createPart(serverExtra);
+        when(part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)).thenReturn(
+                new String[]{MimeUtil.ENC_7BIT}
+        );
+        when(part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)).thenReturn(
+                new String[]{"text/plain"}
+        );
+        return part;
+    }
+
+    private void setupSingleFetchResponseToCallback() throws IOException {
+        when(imapConnection.readResponse(any(ImapResponseCallback.class)))
+                .thenAnswer(new Answer<ImapResponse>() {
+                    @Override
+                    public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
+                        return buildImapFetchResponse(
+                                (ImapResponseCallback) invocation.getArguments()[0]);
+                    }
+                })
+                .thenAnswer(new Answer<ImapResponse>() {
+                    @Override
+                    public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
+                        ImapResponse response = ImapResponse.newTaggedResponse(
+                                (ImapResponseCallback) invocation.getArguments()[0], "TAG");
+                        return response;
+                    }
+                });
+    }
+
+    private ImapResponse buildImapFetchResponse(ImapResponseCallback callback) {
+        ImapResponse response = ImapResponse.newContinuationRequest(callback);
+        response.add("1");
+        response.add("FETCH");
+        ImapList fetchList = new ImapList();
+        fetchList.add("UID");
+        fetchList.add("1");
+        fetchList.add("BODY");
+        fetchList.add("1.1");
+        fetchList.add("text");
+        response.add(fetchList);
+        return response;
     }
 
     private Set<String> extractMessageUids(List<ImapMessage> messages) {
