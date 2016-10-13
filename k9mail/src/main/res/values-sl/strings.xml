@@ -89,6 +89,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="cancel_action">Prekliči</string>
   <string name="send_action">Pošlji</string>
   <string name="send_again_action">Ponovno pošlji</string>
+  <string name="empty_subject">Zadeva je prazna: kliknite znova za poslati vseeno</string>
   <string name="select_action">Izberi</string>
   <string name="deselect_action">Odzberi</string>
   <string name="reply_action">Odgovori</string>
@@ -126,6 +127,12 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="select_text_action">Izberi besedilo</string>
   <string name="show_headers_action">Prikaži glave</string>
   <string name="hide_headers_action">Skrij glave</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Naslov kopiran v odložišče</item>
+    <item quantity="two">Naslova kopirana v odložišče</item>
+    <item quantity="few">Naslovi kopirani v odložišče</item>
+    <item quantity="other">Naslovi kopirani v odložišče</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Preklop na temno temo</string>
   <string name="message_view_theme_action_light">Preklop na svetlo temo</string>
   <string name="mark_as_unread_action">Označi kot neprebrano</string>
@@ -146,6 +153,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="status_loading_more">Nalaganje sporočil\u2026</string>
   <string name="status_network_error">Napaka pri povezavi</string>
   <string name="status_invalid_id_error">Sporočilo ni bilo najdeno</string>
+  <string name="status_loading_error">Napaka pri nalaganju sporočila</string>
   <string name="status_loading_more_failed">Poskusite znova naložiti več sporočil</string>
   <string name="load_more_messages_fmt">Nalaganje
 še <xliff:g id="messages_to_load">%d</xliff:g></string>
@@ -176,6 +184,8 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="notification_action_spam">Neželeno</string>
   <string name="notification_certificate_error_title">Napaka potrdila za <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Preverite nastavitve strežnika</string>
+  <string name="notification_authentication_error_title">Overjanje ni uspelo</string>
+  <string name="notification_authentication_error_text">Overjanje ni uspelo za <xliff:g id="account">%s</xliff:g>. Posodobite nastavitve vašega strežnika.</string>
   <string name="notification_bg_sync_ticker">Preverjanje pošte: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Preverjanje pošte</string>
   <string name="notification_bg_send_ticker">Pošiljanje pošte: <xliff:g id="account">%s</xliff:g></string>
@@ -229,6 +239,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="message_view_show_more_attachments_action">Več …</string>
   <string name="message_view_no_viewer">Ni bilo mogoče najti pregledovalnika za <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Prenos celotnega sporočila</string>
+  <string name="message_view_toast_unable_to_display_message">Nemogoče prikazati sporočila</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Vse glave so bile prenesene, vendar ni nobene dodatne glave za prikaz.</string>
   <string name="message_additional_headers_retrieval_failed">Pridobivanje dodatnih glav iz baze podatkov ali poštnega strežnika ni uspelo.</string>
@@ -322,7 +333,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="account_setup_incoming_webdav_server_label">Exchange strežnik</string>
   <string name="account_setup_incoming_port_label">Vrata</string>
   <string name="account_setup_incoming_security_label">Varnost</string>
-  <string name="account_setup_incoming_auth_type_label">Avtentikacija</string>
+  <string name="account_setup_incoming_auth_type_label">Overjanje</string>
   <string name="account_setup_incoming_security_none_label">Brez</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
@@ -354,7 +365,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="account_setup_auto_expand_folder">Samodejno razširi mape</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Pot OWA</string>
   <string name="account_setup_incoming_webdav_path_prefix_hint">Neobvezno</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Pot za avtentikacijo</string>
+  <string name="account_setup_incoming_webdav_auth_path_label">Pot za overjanje</string>
   <string name="account_setup_incoming_webdav_auth_path_hint">Neobvezno</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Vzdevek za nabiralnik</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">Neobvezno</string>
@@ -365,7 +376,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="account_setup_outgoing_require_login_label">Zahteva vpis.</string>
   <string name="account_setup_outgoing_username_label">Uporabniško ime</string>
   <string name="account_setup_outgoing_password_label">Geslo</string>
-  <string name="account_setup_outgoing_authentication_label">Avtentikacija</string>
+  <string name="account_setup_outgoing_authentication_label">Overjanje</string>
   <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ni veljavno z \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Neveljavna nastavitev: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Možnosti računa</string>
@@ -436,6 +447,8 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="account_settings_notify_sync_summary">Obvestilo v statusni vrstici ob pregledu pošte</string>
   <string name="account_settings_notify_self_label">Vključi odhodno pošto</string>
   <string name="account_settings_notify_self_summary">Prikaži obvestilo za sporočila, poslana od mene</string>
+  <string name="account_notify_contacts_mail_only_label">Samo stiki</string>
+  <string name="account_notify_contacts_mail_only_summary">Pokaži obvestila samo za sporočila od znanih stikov</string>
   <string name="account_settings_notification_opens_unread_label">Obvestilo odpre neprebrana sporočila</string>
   <string name="account_settings_notification_opens_unread_summary">Išče neprebrana sporočila, ko se odpre obvestilo</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Ob odpiranju označi kot prebrano</string>
@@ -699,6 +712,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="search_all_messages_detail">Vsa sporočila v iskalnih mapah</string>
   <string name="integrated_inbox_title">Skupno Prejeto</string>
   <string name="integrated_inbox_detail">Vsa sporočila v skupnih mapah</string>
+  <string name="tap_hint">Tapnite krog ali zvezdo za neprebrana ali sporočila z zvezdico</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Združi</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Vsa sporočila so prikazana v Skupno Prejeto</string>
   <string name="account_settings_searchable_label">Mape za iskanje</string>
@@ -740,6 +754,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="font_size_larger">največje</string>
   <string name="miscellaneous_preferences">Razno</string>
   <string name="error_activity_not_found">Za to dejanje ni bila ugotovljena nobena primerna aplikacija.</string>
+  <string name="send_failed_reason">Pošiljanje ni uspelo: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Shraniti osnutek sporočila?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Shraniti ali zavreči sporočilo?</string>
   <string name="confirm_discard_draft_message_title">Zavreči sporočilo?</string>
@@ -755,6 +770,10 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Da</string>
   <string name="dialog_confirm_delete_cancel_button">Ne</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Potrdi označi vse kot prebrano</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Ali želite označiti vsa sporočila kot prebrana?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Da</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Ne</string>
   <string name="dialog_confirm_spam_title">Potrdi premik v mapo Neželena</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Ali zares želite premakniti to sporočilo v mapo neželene pošte?</item>
@@ -933,11 +952,64 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="address_type_work">Služba</string>
   <string name="address_type_other">Drugi</string>
   <string name="address_type_mobile">Mobitel</string>
-  <string name="warn_search_disabled">V tej razvojni različici je iskanje po telesu sporočil onemogočeno!</string>
   <string name="compose_error_no_draft_folder">Za ta račun ni nastavljene nobene mape Osnutki!</string>
   <string name="compose_not_saving_unencrypted">Osnutek NI shranjen brez šifriranja!</string>
+  <string name="compose_error_pgp_error">Napaka pri ponudniku OpenPGP. Preverite nastavitve!</string>
+  <string name="compose_error_no_signing_key">Ni ključa nastavljenega za podpis! Preverite nastavitve.</string>
+  <string name="compose_error_private_missing_keys">Omogočen je zasebni način, vendar nekateri prejemniki nimajo ključev!</string>
   <string name="crypto_mode_disabled">Nikoli podpisati ali šifrirati.</string>
   <string name="crypto_mode_sign_only">Vedno podpisati, nikoli šifrirati.</string>
   <string name="crypto_mode_opportunistic">Vedno podpisati, šifrirati če mogoče.</string>
   <string name="crypto_mode_private">Vedno podpisati, vedno šifrirati.</string>
+  <string name="error_crypto_provider_connect">Ni mogoče vzpostaviti povezave s ponudnikom šifracije; preverite nastavitve ali kliknite kripto ikono, za ponovni poskus!</string>
+  <string name="error_crypto_provider_ui_required">Dostop do šifrirnega ponudnik zavrnjen, kliknite kripto ikono, da poskusite znova!</string>
+  <string name="error_crypto_inline_attach">Način PGP/INLINE ne podpira priponk!</string>
+  <string name="enable_inline_pgp">Omogoči PGP/INLINE</string>
+  <string name="disable_inline_pgp">Onemogoči PGP/INLINE</string>
+  <string name="openpgp_inline_title">Način PGP/INLINE</string>
+  <string name="openpgp_inline_text">Sporočilo se pošilja v obliki PGP/INLINE\Uporabite to obliko le zaradi združljivosti:</string>
+  <string name="openpgp_inline_plus_compat">Nekateri odjemalci podpirajo samo ta format</string>
+  <string name="openpgp_inline_minus_transit">Med prenosom se podpisi lahko pokvarijo</string>
+  <string name="openpgp_inline_minus_attach">Priponke niso podprte</string>
+  <string name="openpgp_inline_ok">Razumem!</string>
+  <string name="openpgp_inline_disable">Onemogoči</string>
+  <string name="openpgp_inline_keep_enabled">Obdrži omogočeno</string>
+  <string name="crypto_msg_disabled">Sporočilo ni šifrirano</string>
+  <string name="crypto_msg_encrypted_error">Sporočilo je šifrirano, vendar je prišlo do napake pri dešifriranju.</string>
+  <string name="crypto_msg_signed_error">Sporočilo je podpisano, vendar podpisa ni mogoče preveriti.</string>
+  <string name="crypto_msg_unsupported_encrypted">Sporočilo je šifrirano, vendar z nepodprto obliko šifriranja.</string>
+  <string name="crypto_msg_unsupported_signed">Sporočilo je podpisano, vendar z nepodprto obliko podpisa.</string>
+  <string name="crypto_msg_incomplete_encrypted">Sporočilo je šifrirano, vendar ga je treba za dešifriranje prenesti v celoti.</string>
+  <string name="crypto_msg_cancelled">Sporočilo je šifrirano, vendar dešifriranje je bilo prekinjeno.</string>
+  <string name="crypto_msg_signed_unencrypted">Sporočilo je šifrirano, vendar ni podpisano.</string>
+  <string name="crypto_msg_encrypted_unsigned">Sporočilo je bilo šifrirano, vendar ne podpisano.</string>
+  <string name="crypto_msg_sign_unknown">Podpisano z neznanim ključem.</string>
+  <string name="crypto_msg_sign_verified">Podpisano z zaupanja vrednim ključem.</string>
+  <string name="crypto_msg_sign_unverified">Podpisano z zaupanja nevrednim ključem.</string>
+  <string name="crypto_msg_sign_error">Podpis vsebuje napako.</string>
+  <string name="crypto_msg_sign_mismatch">Podpisano z napačnim ključem.</string>
+  <string name="crypto_msg_sign_expired">Podpisano s ključem, ki je pretekel.</string>
+  <string name="crypto_msg_sign_revoked">Podpisano s ključem, ki je bil preklican.</string>
+  <string name="crypto_msg_sign_insecure">Podpisano z negotovim ključem.</string>
+  <string name="crypto_msg_sign_incomplete">Za preverjanje podpisa je treba sporočilo prenesti v celoti.</string>
+  <string name="crypto_msg_signed_encrypted">Sporočilo je podpisano in šifrirano.</string>
+  <string name="crypto_msg_unsigned_encrypted">Ni podpisa, to sporočilo je morda bilo prestreženo.</string>
+  <string name="crypto_info_ok">V redu</string>
+  <string name="crypto_info_view_key">Ogled podpisnika</string>
+  <string name="locked_attach_unlock">Odkleni</string>
+  <string name="locked_attach_unsigned">Ta del ni bil podpisan, zato je lahko nezanesljiv.</string>
+  <string name="locked_attach_unencrypted">Ta del ni bil šifriran, zato je lahko nezanesljiv.</string>
+  <string name="locked_attach_title">Nezaščitena priponka</string>
+  <string name="message_progress_text">Nalagam …</string>
+  <string name="messageview_decrypt_cancelled">Dešifriranje je bilo prekinjeno.</string>
+  <string name="messageview_decrypt_retry">Znova poskusi</string>
+  <string name="messageview_decrypt_incomplete">Za dešifriranje šifriranega sporočila je treba sporočilo prenesti.</string>
+  <string name="messageview_crypto_error_title">Napaka dešifriranja e-sporočila</string>
+  <string name="messageview_crypto_warning_title">Varnostno opozorilo</string>
+  <string name="messageview_crypto_warning_revoked">To sporočilo je bilo podpisano s <b>ključem, ki je bil preklican</b>!</string>
+  <string name="messageview_crypto_warning_expired">To sporočilo je bilo podpisano s <b>ključem, ki je pretekel</b>!</string>
+  <string name="messageview_crypto_warning_insecure">To sporočilo je bilo podpisano z <b>negotovim ključem</b>!</string>
+  <string name="messageview_crypto_warning_error">Prišlo je do &lt;b&gt;napake v podpisu tega sporočila&lt;/ b&gt;!</string>
+  <string name="recipient_error_non_ascii">Posebni znaki trenutno niso podprti!</string>
+  <string name="recipient_error_parse_failed">Napaka pri razčlenjevanju naslova!</string>
 </resources>

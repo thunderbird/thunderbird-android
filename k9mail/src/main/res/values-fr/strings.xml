@@ -89,6 +89,7 @@ Veuillez rapporter les bogues, recommander de nouvelles fonctions et poser vos q
   <string name="cancel_action">Annuler</string>
   <string name="send_action">Envoyer</string>
   <string name="send_again_action">Envoyer à nouveau</string>
+  <string name="empty_subject">L\'objet est vide. Cliquer de nouveau pour envoyer quand même</string>
   <string name="select_action">Sélectionner</string>
   <string name="deselect_action">Dessélectionner</string>
   <string name="reply_action">Répondre</string>
@@ -126,6 +127,10 @@ Veuillez rapporter les bogues, recommander de nouvelles fonctions et poser vos q
   <string name="select_text_action">Sélection de texte</string>
   <string name="show_headers_action">Afficher les entêtes</string>
   <string name="hide_headers_action">Masquer les entêtes</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Adresse copiée dans le presse-papiers</item>
+    <item quantity="other">Adresses copiées dans le presse-papiers</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Basculer vers le thème foncé</string>
   <string name="message_view_theme_action_light">Basculer vers le thème clair</string>
   <string name="mark_as_unread_action">Marquer comme non lu</string>
@@ -146,6 +151,7 @@ Veuillez rapporter les bogues, recommander de nouvelles fonctions et poser vos q
   <string name="status_loading_more">Chargement des messages\u2026</string>
   <string name="status_network_error">Erreur de connexion</string>
   <string name="status_invalid_id_error">Message introuvable</string>
+  <string name="status_loading_error">Erreur de chargement de message</string>
   <string name="status_loading_more_failed">Réessayer de charger plus de messages</string>
   <string name="load_more_messages_fmt">Charger
 jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
@@ -174,6 +180,8 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="notification_action_spam">Pourriel</string>
   <string name="notification_certificate_error_title">Erreur de certificat pour (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_certificate_error_text">Vérifier vos paramètres de serveur</string>
+  <string name="notification_authentication_error_title">Échec d\'authentification</string>
+  <string name="notification_authentication_error_text">Échec d\'authentification pour <xliff:g id="account">%s</xliff:g>. Mettre à jour les paramètres du serveur.</string>
   <string name="notification_bg_sync_ticker">Vérification des courriels\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Vérification des courriels</string>
   <string name="notification_bg_send_ticker">Envoi du courriel\u00A0: <xliff:g id="account">%s</xliff:g></string>
@@ -227,6 +235,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="message_view_show_more_attachments_action">Plus…</string>
   <string name="message_view_no_viewer">Impossible de trouver un visualiseur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Télécharger le message complet</string>
+  <string name="message_view_toast_unable_to_display_message">Impossible d\'afficher le message</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Toutes les entêtes ont été téléchargées, mais il n\'y en a pas d\'autres à montrer.</string>
   <string name="message_additional_headers_retrieval_failed">La récupération d\'entêtes supplémentaires de la base de données ou du serveur de courriel a échouée.</string>
@@ -434,6 +443,8 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_settings_notify_sync_summary">Notification dans la barre d\'état lors de la vérification des courriels</string>
   <string name="account_settings_notify_self_label">Inclure les courriels sortants</string>
   <string name="account_settings_notify_self_summary">Afficher une notification pour les messages que j\'ai envoyés</string>
+  <string name="account_notify_contacts_mail_only_label">Contacts seulement</string>
+  <string name="account_notify_contacts_mail_only_summary">N\'afficher des notifications que pour les messages de contacts connus</string>
   <string name="account_settings_notification_opens_unread_label">La notification ouvre les messages non lus</string>
   <string name="account_settings_notification_opens_unread_summary">Recherche des messages non lus lors de l\'accès aux notifications</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marquer comme lu à l\'ouverture</string>
@@ -692,11 +703,12 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="hide_special_accounts_summary">Masquer la boîte de réception unifiée et tous les comptes de messages</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="flagged_modifier"> - Étoilés</string>
-  <string name="unread_modifier"> - Non lus</string>
+  <string name="unread_modifier"> - Non lu</string>
   <string name="search_all_messages_title">Tous les messages</string>
   <string name="search_all_messages_detail">Tous les messages dans les dossiers pouvant être recherchés</string>
   <string name="integrated_inbox_title">Boîte de réception unifiée</string>
   <string name="integrated_inbox_detail">Tous les messages dans les dossiers unifiés</string>
+  <string name="tap_hint">Toucher le cercle ou l\'étoile affiche les messages non lus ou étoilés</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unifier</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Tous les messages sont affichés dans la boîte de réception unifiée</string>
   <string name="account_settings_searchable_label">Dossiers dans lesquels chercher</string>
@@ -738,6 +750,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="font_size_larger">Plus grand</string>
   <string name="miscellaneous_preferences">Divers</string>
   <string name="error_activity_not_found">Aucune application adéquate n\'a été trouvée pour cette action.</string>
+  <string name="send_failed_reason">Envoi en échec : %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou éliminer ce message\u00A0?</string>
   <string name="confirm_discard_draft_message_title">Éliminer le message\u00A0?</string>
@@ -751,6 +764,10 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Oui</string>
   <string name="dialog_confirm_delete_cancel_button">Non</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Confirmer tout marquer comme lu</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Voulez-vous marquer tous les messages comme lus ?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Oui</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Non</string>
   <string name="dialog_confirm_spam_title">Confirmer le déplacement vers le dossier des pourriels</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Voulez-vous déplacer ce message vers le dossiers des pourriels\u00A0?</item>
@@ -823,11 +840,11 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="webview_contextmenu_image_clipboard_label">URL de l\'image</string>
   <string name="webview_contextmenu_phone_call_action">Appeler le numéro</string>
   <string name="webview_contextmenu_phone_save_action">Enregistrer dans mes contacts</string>
-  <string name="webview_contextmenu_phone_copy_action">Copier dans le presse-papier</string>
+  <string name="webview_contextmenu_phone_copy_action">Copier dans le presse-papiers</string>
   <string name="webview_contextmenu_phone_clipboard_label">Numéro de téléphone</string>
   <string name="webview_contextmenu_email_send_action">Envoyer un courriel</string>
   <string name="webview_contextmenu_email_save_action">Enregistrer dans mes contacts</string>
-  <string name="webview_contextmenu_email_copy_action">Copier dans le presse-papier</string>
+  <string name="webview_contextmenu_email_copy_action">Copier dans le presse-papiers</string>
   <string name="webview_contextmenu_email_clipboard_label">Adresse courriel</string>
   <string name="image_saved_as">Enregistrer l\'image en tant que «\u00A0<xliff:g id="filename">%s</xliff:g>\u00A0»</string>
   <string name="image_saving_failed">Échec lors de la sauvegarde de l\'image.</string>
@@ -870,7 +887,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="last_refresh_time_format">Rafraîchi <xliff:g id="formatted_time">%s</xliff:g></string>
   <string name="last_refresh_time_format_with_push">Rafraîchi <xliff:g id="time_with_preposition">%s</xliff:g> (pousser activé)</string>
   <string name="preposition_for_date">le <xliff:g id="date">%s</xliff:g></string>
-  <string name="mark_all_as_read">Marquer tous comme lus</string>
+  <string name="mark_all_as_read">Tout marquer comme lu</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Colorier les images des contacts</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Colorier les images manquantes des contacts</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Actions visibles dans les messages</string>
@@ -921,7 +938,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="address_type_work">Travail</string>
   <string name="address_type_other">Autre</string>
   <string name="address_type_mobile">Mobile</string>
-  <string name="warn_search_disabled">La recherche dans les corps des messages est désactivée dans cette version de développement !</string>
   <string name="compose_error_no_draft_folder">Aucun dossier Brouillons n\'est configuré pour ce compte !</string>
   <string name="compose_not_saving_unencrypted">Brouillon non enregistré sans chiffrement !</string>
   <string name="compose_error_pgp_error">Erreur du fournisseur OpenPGP. Vérifiez vos paramètres !</string>
@@ -933,4 +949,53 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="crypto_mode_private">Toujours signer, toujours chiffrer.</string>
   <string name="error_crypto_provider_connect">Impossible de se connecter au fournisseur cryptographique, vérifier vos paramètres ou cliquer sur l\'icône Cryptographie pour ressayer !</string>
   <string name="error_crypto_provider_ui_required">L\'accès au fournisseur cryptographique est refusé, cliquer sur l\'icône Cryptographie pour ressayer !</string>
+  <string name="error_crypto_inline_attach">Le mode PGP/INTÉGRÉ ne prend pas en charge les fichiers joints !</string>
+  <string name="enable_inline_pgp">Activer PGP/INTÉGRÉ</string>
+  <string name="disable_inline_pgp">Désactiver PGP/INTÉGRÉ</string>
+  <string name="openpgp_inline_title">Mode PGP/INTÉGRÉ</string>
+  <string name="openpgp_inline_text">Ce courriel est envoyé au format PGP/INTÉGRÉ.\nCe format ne devrait être utilisé que pour des raisons de compatibilité :</string>
+  <string name="openpgp_inline_plus_compat">Certains clients ne prennent que ce format en charge</string>
+  <string name="openpgp_inline_minus_transit">Les signatures pourraient se briser pendant le transit</string>
+  <string name="openpgp_inline_minus_attach">Les pièces jointes ne sont pas prises en charge</string>
+  <string name="openpgp_inline_ok">D\'accord !</string>
+  <string name="openpgp_inline_disable">Désactiver</string>
+  <string name="openpgp_inline_keep_enabled">Garder activé</string>
+  <string name="crypto_msg_disabled">Le message n\'est pas chiffré</string>
+  <string name="crypto_msg_encrypted_error">Le message est chiffré, mais il y a eu une erreur de déchiffrement.</string>
+  <string name="crypto_msg_signed_error">Le message est signé, mais la signature n\'a pas pu être vérifiée.</string>
+  <string name="crypto_msg_unsupported_encrypted">Le message est chiffré dans un format non pris en charge.</string>
+  <string name="crypto_msg_unsupported_signed">Le message est signé dans un format non pris en charge.</string>
+  <string name="crypto_msg_incomplete_encrypted">Le message est chiffré, mais doit être téléchargé en entier pour être déchiffré.</string>
+  <string name="crypto_msg_cancelled">Le message est chiffré, mais le déchiffrement a été annulé.</string>
+  <string name="crypto_msg_signed_unencrypted">Le message est signé, mais n\'est pas chiffré.</string>
+  <string name="crypto_msg_encrypted_unsigned">Le message a été chiffré, mais n\'a pas été signé.</string>
+  <string name="crypto_msg_sign_unknown">Signé par une clef inconnue.</string>
+  <string name="crypto_msg_sign_verified">Signé par une clef fiable.</string>
+  <string name="crypto_msg_sign_unverified">Signé par une clef non fiable !</string>
+  <string name="crypto_msg_sign_error">La signature contient une erreur.</string>
+  <string name="crypto_msg_sign_mismatch">Signé avec la mauvaise clef.</string>
+  <string name="crypto_msg_sign_expired">Signé avec une clef arrivée à expiration.</string>
+  <string name="crypto_msg_sign_revoked">Signé avec une clef révoquée.</string>
+  <string name="crypto_msg_sign_insecure">Signé avec une clef peu sûre.</string>
+  <string name="crypto_msg_sign_incomplete">Le message doit être complètement téléchargé pour en vérifier la signature.</string>
+  <string name="crypto_msg_signed_encrypted">Le message est signé et chiffré.</string>
+  <string name="crypto_msg_unsigned_encrypted">Il n\'y a pas de signature. Ce message pourrait avoir été intercepté.</string>
+  <string name="crypto_info_ok">Ok</string>
+  <string name="crypto_info_view_key">Voir le signataire</string>
+  <string name="locked_attach_unlock">Déverrrouiller</string>
+  <string name="locked_attach_unsigned">Cette partie n\'a pas été signée et pourrait ne pas être fiable.</string>
+  <string name="locked_attach_unencrypted">Cette partie n\'a pas été chiffrée et pourrait ne pas être fiable.</string>
+  <string name="locked_attach_title">Pièce jointe non protégée</string>
+  <string name="message_progress_text">Chargement...</string>
+  <string name="messageview_decrypt_cancelled">Le déchiffrement a été annulé.</string>
+  <string name="messageview_decrypt_retry">Ressayer</string>
+  <string name="messageview_decrypt_incomplete">Le message chiffré doit être téléchargé pour être déchiffré.</string>
+  <string name="messageview_crypto_error_title">Erreur de déchiffrement du courriel</string>
+  <string name="messageview_crypto_warning_title">Avertissement de sécurité</string>
+  <string name="messageview_crypto_warning_revoked">Ce message a été signé par une <b>clef révoquée !</b></string>
+  <string name="messageview_crypto_warning_expired">Ce message a été signé par une <b>clef arrivée à expiration !</b></string>
+  <string name="messageview_crypto_warning_insecure">Ce message a été signé par une <b>clef non fiable !</b></string>
+  <string name="messageview_crypto_warning_error">Il y a une <b>erreur dans la signature de ce message !</b></string>
+  <string name="recipient_error_non_ascii">Les caractères spéciaux ne sont actuellement pas pris en charge</string>
+  <string name="recipient_error_parse_failed">Erreur d\'analyse de l\'adresse !</string>
 </resources>
