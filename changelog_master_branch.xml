@@ -8,6 +8,14 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.114" versioncode="23113" >
+        <change>User interface tweaks for encryption-related functionality</change>
+        <change>Fixed crash caused by new message notifications</change>
+        <change>Fixed bug with downloading attachments</change>
+        <change>Fixed structure of emails created with K-9 Mail</change>
+        <change>Fixed bug where message list was displayed twice</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.113" versioncode="23112" >
         <change>Fixed dark theme</change>
     </release>
