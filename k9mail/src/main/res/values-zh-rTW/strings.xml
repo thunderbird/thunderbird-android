@@ -130,7 +130,6 @@
   <string name="notification_action_reply">回覆</string>
   <string name="notification_action_mark_as_read">開啟</string>
   <string name="notification_action_delete">刪除</string>
-  <string name="notification_certificate_error_title">驗證失敗</string>
   <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
   <string name="notification_bg_sync_ticker">正在檢查郵件：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在檢查郵件</string>

@@ -5,6 +5,7 @@
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">K-9 Konti</string>
+  <string name="unread_widget_label">K-9 Ulæst</string>
   <string name="remote_control_label">K-9 Mail fjernkontrol</string>
   <string name="remote_control_desc">Tillad dette program at kontrollere K-9 Mail aktiviteter og indstillinger.</string>
   <!--Used in the about dialog-->
@@ -12,7 +13,38 @@
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Visse dele Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="app_license">Licenseret under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
+  <string name="welcome_message_title">Velkommen til K-9 Mail</string>
+  <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail er en kraftfuld gratis ebrev klient til Android.
+</p><p>
+Dens forbedrede funktioner omfatter:
+</p>
+<ul>
+  <li>\"Push mail\" ved hjælp af IMAP IDLE</li>
+  <li>Bedre ydeevne</li>
+  <li>Besked genarkivering</li>
+  <li>Ebrev signaturer</li>
+  <li>Bcc-til-dig-selv</li>
+  <li>Mappeabonnementer</li>
+  <li>Synkronisering af alle mapper</li>
+  <li>Retur-adresse konfiguration</li>
+  <li>Tastaturgenveje</li>
+  <li>Bedre IMAP understøttelse</li>
+  <li>Gemme vedhæftede filer på SD</li>
+  <li>Tøm papirkurv</li>
+  <li>Besked sortering</li>
+  <li>…og mere</li>
+</ul>
+<p>
+Bemærk, at K-9 ikke understøtter de fleste gratis Hotmail konti, og ligesom mange mail klienter, har nogle påhit, når du taler til Microsoft Exchange.
+</p><p>
+Send venligst fejlrapporter, forslag til nye funktioner samt spørgsmål på:
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
+</p>
+    ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \nDette er sendt fra min mobiltelefon. Undskyld at jeg fatter mig i korthed.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Kontoen  \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alle mails, vedhæftede filer, mapper og mappe-indstillinger for \"<xliff:g id="account">%s</xliff:g>\" vil blive fjernet fra K-9 Mail, men kontoindstillinger vil blive husket.</string>
@@ -56,6 +88,7 @@
   <string name="cancel_action">Fortryd</string>
   <string name="send_action">Send</string>
   <string name="send_again_action">Send igen</string>
+  <string name="empty_subject">Emnefeltet er tomt; klik igen for at sende alligevel</string>
   <string name="select_action">Vælg</string>
   <string name="deselect_action">Fravælg</string>
   <string name="reply_action">Svar</string>
@@ -66,6 +99,7 @@
   <string name="forward_action">Videresend</string>
   <string name="move_action">Flyt</string>
   <string name="single_message_options_action">Send…</string>
+  <string name="refile_action">Genarkivering…</string>
   <string name="done_action">Afslut</string>
   <string name="discard_action">Slet</string>
   <string name="save_draft_action">Gem som kladde</string>
@@ -92,6 +126,10 @@
   <string name="select_text_action">Vælg tekst</string>
   <string name="show_headers_action">Vis headers</string>
   <string name="hide_headers_action">Skjul headers</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Adresse kopieret til udklipsholder</item>
+    <item quantity="other">Adresser kopieret til udklipsholder</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Skift til mørkt theme</string>
   <string name="message_view_theme_action_light">Skift til lyst theme</string>
   <string name="mark_as_unread_action">Marker som ulæst</string>
@@ -112,6 +150,7 @@
   <string name="status_loading_more">Henter mails\u2026</string>
   <string name="status_network_error">Tilslutningsfejl</string>
   <string name="status_invalid_id_error">Mail ikke fundet</string>
+  <string name="status_loading_error">Fejl ved hentning af breve</string>
   <string name="status_loading_more_failed">Forsøg at hente flere mails igen</string>
   <string name="load_more_messages_fmt">Hent yderligere op
     til <xliff:g id="messages_to_load">%d</xliff:g> mails</string>
@@ -124,12 +163,24 @@
   <string name="clearing_account">Renser konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Genskaber konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny mail</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g>nyt brev</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g>nye breve</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> ulæst(e) (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> mere på <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Svar</string>
   <string name="notification_action_mark_as_read">Marker som læst</string>
+  <string name="notification_action_mark_all_as_read">Markér alle som læst</string>
   <string name="notification_action_delete">Slet</string>
+  <string name="notification_action_delete_all">Slet alle</string>
+  <string name="notification_action_archive">Arkivér</string>
+  <string name="notification_action_archive_all">Arkivér alle</string>
+  <string name="notification_action_spam">Massebrev</string>
   <string name="notification_certificate_error_title">Certifikat fejl for <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Check indstillinger for server</string>
+  <string name="notification_authentication_error_title">Godkendelse mislykkedes</string>
+  <string name="notification_authentication_error_text">Godkendelse mislykkedes for <xliff:g id="account">%s</xliff:g>. Opdater dine serverindstillinger.</string>
   <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Synkroniserer mail</string>
   <string name="notification_bg_send_ticker">Sender mail: <xliff:g id="account">%s</xliff:g></string>
@@ -165,7 +216,9 @@
   <string name="message_compose_quote_header_to">Til:</string>
   <string name="message_compose_quote_header_cc">Cc:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:</string>
+  <string name="message_compose_reply_header_fmt_with_date">Den <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> skrev:</string>
   <string name="message_compose_error_no_recipients">Du skal angive mindst én modtager.</string>
+  <string name="compose_error_incomplete_recipient">Modtager felt indeholder ufuldstændig indtastning!</string>
   <string name="error_contact_address_not_found">Mail addresse ikke fundet.</string>
   <string name="message_compose_attachments_skipped_toast">Nogle vedhæftninger kunne ikke videresendes fordi de ikke er blevet hentet fra server.</string>
   <string name="message_compose_show_quoted_text_action">Citer meddelelse</string>
@@ -181,6 +234,7 @@
   <string name="message_view_show_more_attachments_action">Mere…</string>
   <string name="message_view_no_viewer">Kan ikke finde program som kan vise <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hent hele meddelelsen</string>
+  <string name="message_view_toast_unable_to_display_message">Ude af stand til at vise brev</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Alle mail headers er blevet hentet, og der kan ikke vises yderligere headers.</string>
   <string name="message_additional_headers_retrieval_failed">Hentning af yderligere headers fra database eller mail server mislykkedes.</string>
@@ -194,6 +248,8 @@
   <string name="global_settings_preview_lines_label">Linier i forhåndsvisning</string>
   <string name="global_settings_show_correspondent_names_label">Vis afsenders navne</string>
   <string name="global_settings_show_correspondent_names_summary">Vis afsendernavn fremfor deres mailaddresse</string>
+  <string name="global_settings_sender_above_subject_label">Afsender over emne</string>
+  <string name="global_settings_sender_above_subject_summary">Vis afsenders navne over emnelinjen, snarere end under den</string>
   <string name="global_settings_show_contact_name_label">Vis kontaktnavne</string>
   <string name="global_settings_show_contact_name_summary">Benyt afsendernavne fra eksisterende kontakter</string>
   <string name="global_settings_registered_name_color_label">Farvelæg kontakter</string>
@@ -211,9 +267,13 @@
   <string name="global_settings_messageview_show_next_summary">Vis som standard næste mail efter sletning af mail</string>
   <string name="global_settings_confirm_actions_title">Bekræft handlinger</string>
   <string name="global_settings_confirm_actions_summary">Vis dialogvindue når du udfører valgte handlinger</string>
+  <string name="global_settings_confirm_action_delete">Slet</string>
   <string name="global_settings_confirm_action_delete_starred">Slet stjernemarkeringer (kun i forb. med visning af mails)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Kassér brev</string>
   <string name="global_settings_confirm_action_delete_notif">Slet (fra notifikation)</string>
+  <string name="global_settings_privacy_hide_useragent">Fjern K-9 Bruger-Agent fra mail headers</string>
+  <string name="global_settings_privacy_hide_timezone">Brug UTC som tidszone i mail headers</string>
   <string name="global_settings_notification_hide_subject_title">Skjul emne i notifikations bjælke</string>
   <string name="global_settings_notification_hide_subject_never">Aldrig</string>
   <string name="global_settings_notification_hide_subject_when_locked">Når enhed er låst</string>
@@ -223,13 +283,22 @@
   <string name="global_settings_notification_quick_delete_when_single_msg">For single meddelelse notifikation</string>
   <string name="global_settings_notification_quick_delete_always">Altid</string>
   <string name="global_settings_notification_quick_delete_description">Vis knap i notifikation bjælke som tillader sletning af meddelese</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Meddelelser på låseskærmen </string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen meddelelser på låseskærmen </string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Programnavn</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Tæller for ulæste breve</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Brev tæller og afsendere</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Samme som når skærmen er ulåst</string>
   <string name="quiet_time">Tidsrum med stilhed</string>
   <string name="quiet_time_description">Undlad at ringe, vibrere og blinke i tidsrummet</string>
+  <string name="quiet_time_notification">Deaktiver meddelelser</string>
+  <string name="quiet_time_notification_description">Deaktivér meddelelser helt  under Forstyr-Ikke-tilstand</string>
   <string name="quiet_time_starts">Start tid</string>
   <string name="quiet_time_ends">Slut tid</string>
   <string name="account_setup_basics_title">Opsætning af ny konto</string>
   <string name="account_setup_basics_email_hint">Mail addresse</string>
   <string name="account_setup_basics_password_hint">Password</string>
+  <string name="account_setup_basics_show_password">Vis kodeord</string>
   <string name="account_setup_basics_manual_setup_action">Manuel opsætning</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Henter konto-information\u2026</string>
@@ -246,9 +315,14 @@
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+  <string name="account_setup_auth_type_normal_password">Normal kodeord</string>
+  <string name="account_setup_auth_type_insecure_password">Kodeord; sendt usikret</string>
+  <string name="account_setup_auth_type_encrypted_password">Krypteret kodeord</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Klient certifikat</string>
   <string name="account_setup_incoming_title">Indgående server opsætning</string>
   <string name="account_setup_incoming_username_label">Brugernavn</string>
   <string name="account_setup_incoming_password_label">Password</string>
+  <string name="account_setup_incoming_client_certificate_label">Klient certifikat</string>
   <string name="account_setup_incoming_pop_server_label">POP3 server</string>
   <string name="account_setup_incoming_imap_server_label">IMAP server</string>
   <string name="account_setup_incoming_webdav_server_label">Exchange server</string>
@@ -256,6 +330,9 @@
   <string name="account_setup_incoming_security_label">Sikkerhed</string>
   <string name="account_setup_incoming_auth_type_label">Autentifikations type</string>
   <string name="account_setup_incoming_security_none_label">Ingen</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" er ikke gyldig med \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_incoming_delete_policy_label">Når jeg sletter en mail</string>
   <string name="account_setup_incoming_delete_policy_never_label">Undlad at slette på server</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Slet på server</string>
@@ -295,6 +372,7 @@
   <string name="account_setup_outgoing_username_label">Brugernavn</string>
   <string name="account_setup_outgoing_password_label">Password</string>
   <string name="account_setup_outgoing_authentication_label">Autentifikationstype</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" er ikke gyldig med \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Ugyldig opsætning: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Kontoindstillinger</string>
   <string name="compact_action">Komprimer</string>
@@ -336,9 +414,15 @@
   <string name="account_setup_options_mail_display_count_250">250 mails</string>
   <string name="account_setup_options_mail_display_count_500">500 mails</string>
   <string name="account_setup_options_mail_display_count_1000">1000 mails</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 breve</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 breve</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 breve</string>
   <string name="account_setup_options_mail_display_count_all">alle mails</string>
   <string name="move_copy_cannot_copy_unsynced_message">Kan ikke kopiere eller flytte mail som ikke er synkroniseret med server</string>
   <string name="account_setup_failed_dlg_title">Kunne ikke fuldføre opsætning</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Brugernavn / kodeord er ugyldig.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Serveren præsenterede et ugyldigt SSL-certifikat. Nogle gange, er det på grund af en server fejlkonfiguration. Andre gange er det fordi nogen forsøger at angribe dig, eller din mailserver. Hvis du ikke er sikker på hvad der sker, skal du klikke på Afvis og kontakte de folk, der administrerer din mailserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Kan ikke forbinde til server.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Rediger detaljer</string>
   <string name="account_setup_failed_dlg_continue_action">Fortsæt</string>
   <string name="account_settings_push_advanced_title">Avanceret</string>

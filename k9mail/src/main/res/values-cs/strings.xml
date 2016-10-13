@@ -88,6 +88,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="cancel_action">Zrušit</string>
   <string name="send_action">Odeslat</string>
   <string name="send_again_action">Odeslat znovu</string>
+  <string name="empty_subject">Předmět je prázdný, dotykem přesto odeslat</string>
   <string name="select_action">Vybrat</string>
   <string name="deselect_action">Zrušit výběr</string>
   <string name="reply_action">Odpovědět</string>
@@ -125,6 +126,11 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="select_text_action">Vybrat text</string>
   <string name="show_headers_action">Zobraz hlavičku</string>
   <string name="hide_headers_action">Skryj hlavičku</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Adresa zkopírovaná do schránky</item>
+    <item quantity="few">Adresy zkopírované do schránky</item>
+    <item quantity="other">Adres zkopírováno do schránky</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Přepnout na tmavý motiv</string>
   <string name="message_view_theme_action_light">Přepnout na světlý motiv</string>
   <string name="mark_as_unread_action">Označit jako nepřečtené</string>
@@ -145,6 +151,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="status_loading_more">Načítání zpráv\u2026</string>
   <string name="status_network_error">Chyba spojení</string>
   <string name="status_invalid_id_error">Zpráva nenalezena</string>
+  <string name="status_loading_error">Chyba načtení zprávy</string>
   <string name="status_loading_more_failed">Opakujte načtení více zpráv</string>
   <string name="load_more_messages_fmt">Načti až
     o <xliff:g id="messages_to_load">%d</xliff:g> více</string>
@@ -174,6 +181,8 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="notification_action_spam">Nevyžádaná</string>
   <string name="notification_certificate_error_title">Chyba certifikátu pro <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
+  <string name="notification_authentication_error_title">Ověření selhalo</string>
+  <string name="notification_authentication_error_text">Ověření selhalo pro <xliff:g id="account">%s</xliff:g>. Aktualizujte svá nastavení serveru.</string>
   <string name="notification_bg_sync_ticker">Zjišťování pošty: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Zjišťování pošty</string>
   <string name="notification_bg_send_ticker">Odesílání pošty: <xliff:g id="account">%s</xliff:g></string>
@@ -227,6 +236,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="message_view_show_more_attachments_action">Více…</string>
   <string name="message_view_no_viewer">Nelze nalézt prohlížeč pro <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Stáhnout úplnou zprávu</string>
+  <string name="message_view_toast_unable_to_display_message">Nelze zobrazit zprávu</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Všechna záhlaví byla stažena, ale nejsou dostupná žádná další k zobrazení.</string>
   <string name="message_additional_headers_retrieval_failed">Načtení dalších záhlaví z databáze nebo poštovního serveru selhalo.</string>
@@ -697,6 +707,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="search_all_messages_detail">Všechny zprávy v prohledávaných složkách</string>
   <string name="integrated_inbox_title">Integrovaná doručená pošta</string>
   <string name="integrated_inbox_detail">Všechny zprávy v integrovaných složkách</string>
+  <string name="tap_hint">Dotykem na kroužek nebo hvězdičku pro nepřečtené nebo označené zprávy</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Integrovat</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Všechny zprávy jsou zobrazeny v Integrované doručené poště</string>
   <string name="account_settings_searchable_label">Prohledávané složky</string>
@@ -738,6 +749,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="font_size_larger">Největší</string>
   <string name="miscellaneous_preferences">Různé</string>
   <string name="error_activity_not_found">Pro tuto akci nebyla nalezena žádná vhodná aplikace.</string>
+  <string name="send_failed_reason">Odeslání selhalo: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Uložit koncept zprávy?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Uložit nebo zahodit tuto zprávu?</string>
   <string name="confirm_discard_draft_message_title">Zahodit zprávu?</string>
@@ -752,6 +764,8 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Ano</string>
   <string name="dialog_confirm_delete_cancel_button">Ne</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Ano</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Ne</string>
   <string name="dialog_confirm_spam_title">Potvrzení přesunu do nevyžádané pošty</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Opravdu chcete přesunout tuto zprávy do nevyžádané pošty?</item>
@@ -926,7 +940,6 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="address_type_work">Práce</string>
   <string name="address_type_other">Ostatní</string>
   <string name="address_type_mobile">Mobilní</string>
-  <string name="warn_search_disabled">Hledání v těle zpráv je v této vývojové verzi vypnuto!</string>
   <string name="compose_error_no_draft_folder">Tento účet nemá nastaven žádný adresář pro koncepty!</string>
   <string name="compose_not_saving_unencrypted">Koncept NEULOŽEN bez zašifrování!</string>
   <string name="compose_error_pgp_error">Chyba poskytovatele OpenPGP. Zkontrolujte svá nastavení!</string>
@@ -938,4 +951,17 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="crypto_mode_private">Vždy podepisovat, vždy šifrovat.</string>
   <string name="error_crypto_provider_connect">Nelze se spojit se službou šifrování, zkontrolujte své nastavení nebo ťukněte na ikonu šifrování pro nový pokus.</string>
   <string name="error_crypto_provider_ui_required">Přístup ke službě šifrování zamítnut, ťuknout na ikonu šifrování pro nový pokus!</string>
+  <string name="error_crypto_inline_attach">PGP/INLINE mód nepodporuje přílohy!</string>
+  <string name="enable_inline_pgp">Povolit PGP/INLINE</string>
+  <string name="disable_inline_pgp">Zakázat PGP/INLINE</string>
+  <string name="openpgp_inline_title">PGP/INLINE mód</string>
+  <string name="openpgp_inline_text">Email je odeslán v PGP/INLINE formátu.\nToto má být použito pouze pro kompatibilitu:</string>
+  <string name="openpgp_inline_plus_compat">Některé klientské aplikace podporují pouze tento formát</string>
+  <string name="openpgp_inline_minus_transit">Může dojít k poškození podpisu v průběhu přenosu</string>
+  <string name="openpgp_inline_minus_attach">Přílohy nejsou podporovány</string>
+  <string name="openpgp_inline_ok">Rozumím!</string>
+  <string name="openpgp_inline_disable">Zakázat</string>
+  <string name="openpgp_inline_keep_enabled">Nechat povolené</string>
+  <string name="crypto_msg_disabled">Zpráva není zašifrována</string>
+  <string name="crypto_info_ok">OK</string>
 </resources>
