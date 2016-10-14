@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Empty marker class interface the class hierarchy used by
- * {@link MessageExtractor#findViewablesAndAttachments(com.fsck.k9.mail.Part, java.util.List)}
+ * {@link MessageExtractor#findViewablesAndAttachments(com.fsck.k9.mail.Part, java.util.List, java.util.List)}
  *
  * @see Viewable.Text
  * @see Viewable.Html

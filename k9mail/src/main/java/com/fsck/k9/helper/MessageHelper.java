@@ -2,6 +2,7 @@ package com.fsck.k9.helper;
 
 
 import android.content.Context;
+import android.support.annotation.VisibleForTesting;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -152,6 +153,7 @@ public class MessageHelper {
         return sb;
     }
 
+    @VisibleForTesting
     /* package, for testing */ static CharSequence toFriendly(Address address, Contacts contacts,
                                                  boolean showCorrespondentNames,
                                                  boolean changeContactNameColor,

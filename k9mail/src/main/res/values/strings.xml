@@ -1219,4 +1219,27 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="recipient_error_parse_failed">Error parsing address!</string>
 
+    <!-- iCalendar Support -->
+    <string name="ical_summary_label">Summary:</string>
+    <string name="ical_organizer_label">Organizer:</string>
+    <string name="ical_required_label">Required:</string>
+    <string name="ical_optional_label">Optional:</string>
+    <string name="ical_fyi_label">FYI:</string>
+    <string name="ical_accepted_label">Accepted:</string>
+    <string name="ical_declined_label">Declined:</string>
+    <string name="ical_tentative_label">Tentative:</string>
+    <string name="ical_location_label">Where:</string>
+    <string name="ical_time_label">When:</string>
+
+    <string name="ical_recurrence_yearly">Repeats every year</string>
+    <string name="ical_recurrence_monthly">Repeats every month</string>
+    <string name="ical_recurrence_weekly">Repeats every week</string>
+    <string name="ical_recurrence_daily">Repeats every day</string>
+    <string name="ical_recurrence_hourly">Repeats every hour</string>
+    <string name="ical_recurrence_minutely">Repeats every minute</string>
+    <string name="ical_recurrence_secondly">Repeats every second</string>
+
+    <string name="message_view_status_calendar_not_saved">Unable to save attachment to SD card.</string>
+    <string name="dialog_calendar_progress_title">Downloading calendar</string>
+
 </resources>

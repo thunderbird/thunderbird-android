@@ -13,6 +13,7 @@ import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.helper.HtmlSanitizer;
 import com.fsck.k9.helper.HtmlSanitizerHelper;
+import com.fsck.k9.ical.ICalPart;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
@@ -59,7 +60,7 @@ public class MessageViewInfoExtractorTest {
 
         HtmlSanitizer dummyHtmlSanitizer = HtmlSanitizerHelper.getDummyHtmlSanitizer();
 
-        messageViewInfoExtractor = new MessageViewInfoExtractor(context,
+        messageViewInfoExtractor = new MessageViewInfoExtractor(context, null,
                 null, dummyHtmlSanitizer);
     }
 
@@ -75,14 +76,14 @@ public class MessageViewInfoExtractorTest {
         // Prepare fixture
         HtmlSanitizer htmlSanitizer = mock(HtmlSanitizer.class);
         MessageViewInfoExtractor messageViewInfoExtractor =
-                new MessageViewInfoExtractor(context, null, htmlSanitizer);
+                new MessageViewInfoExtractor(context, null, null, htmlSanitizer);
         String value = "--sanitized html--";
         when(htmlSanitizer.sanitize(any(String.class))).thenReturn(value);
 
         // Extract text
         List<Part> outputNonViewableParts = new ArrayList<>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
-        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts, null);
         ViewableExtractedText viewableExtractedText =
                 messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
@@ -102,7 +103,7 @@ public class MessageViewInfoExtractorTest {
         // Extract text
         List<Part> outputNonViewableParts = new ArrayList<>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
-        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts, null);
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
         String expectedText = BODY_TEXT;
@@ -129,7 +130,7 @@ public class MessageViewInfoExtractorTest {
 
         // Extract text
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
-        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, null);
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, null, null);
         assertEquals(outputViewableParts.size(), 1);
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
@@ -164,7 +165,7 @@ public class MessageViewInfoExtractorTest {
         // Extract text
         List<Part> outputNonViewableParts = new ArrayList<>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
-        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts, null);
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
         String expectedText =
@@ -223,7 +224,7 @@ public class MessageViewInfoExtractorTest {
         // Extract text
         List<Part> outputNonViewableParts = new ArrayList<Part>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
-        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts, null);
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
         String expectedText =

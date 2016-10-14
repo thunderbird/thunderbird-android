@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fsck.k9.ui.messageview.ICalendarReplyView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header_container"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <!-- Color chip -->
+        <View
+            android:id="@+id/chip"
+            android:layout_width="8dip"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <ImageView
+                        android:id="@+id/meeting_icon"
+                        android:src="@drawable/ic_date_range_black_24dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp" />
+
+                    <Button
+                        android:id="@+id/download"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:attr/buttonStyleSmall"
+                        android:paddingLeft="20dip"
+                        android:paddingRight="20dip"
+                        android:text="@string/message_view_attachment_download_action"
+                        android:singleLine="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@id/meeting_icon"
+                        android:layout_marginTop="6dip" />
+                    <Button
+                        android:id="@+id/view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:attr/buttonStyleSmall"
+                        android:paddingLeft="20dip"
+                        android:paddingRight="20dip"
+                        android:text="@string/message_view_attachment_view_action"
+                        android:singleLine="true"
+                        android:layout_alignWithParentIfMissing="true"
+                        android:layout_below="@id/download"
+                        android:layout_marginTop="6dip" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="6dip"
+                    android:layout_marginLeft="2dp" >
+
+
+                    <!-- Summary -->
+                    <TextView
+                        android:id="@+id/summary_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignBaseline="@+id/summary"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/ical_summary_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/summary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/summary_label"
+                        android:layout_alignParentTop="true"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <!-- Accepted -->
+                    <TextView
+                        android:id="@+id/accepted_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/summary_label"
+                        android:layout_alignLeft="@+id/summary_label"
+                        android:layout_alignBaseline="@+id/accepted"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/ical_accepted_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <TextView
+                        android:id="@+id/accepted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/accepted_label"
+                        android:layout_below="@+id/summary"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <!-- Declined -->
+                    <TextView
+                        android:id="@+id/declined_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/accepted_label"
+                        android:layout_alignLeft="@+id/accepted_label"
+                        android:layout_alignBaseline="@+id/declined"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/ical_declined_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <TextView
+                        android:id="@+id/declined"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/declined_label"
+                        android:layout_below="@+id/accepted"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <!-- Tentative -->
+                    <TextView
+                        android:id="@+id/tentative_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/declined_label"
+                        android:layout_alignLeft="@+id/declined_label"
+                        android:layout_alignBaseline="@+id/tentative"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/ical_tentative_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <TextView
+                        android:id="@+id/tentative"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tentative_label"
+                        android:layout_below="@+id/declined"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <!-- Where -->
+                    <TextView
+                        android:id="@+id/location_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tentative_label"
+                        android:layout_alignLeft="@+id/tentative_label"
+                        android:layout_alignBaseline="@+id/location"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/ical_location_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <TextView
+                        android:id="@+id/location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/location_label"
+                        android:layout_below="@+id/tentative"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <!-- Where -->
+                    <TextView
+                        android:id="@+id/date_time_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/location_label"
+                        android:layout_alignLeft="@+id/location_label"
+                        android:layout_alignBaseline="@+id/date_time"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/ical_time_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <TextView
+                        android:id="@+id/date_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/date_time_label"
+                        android:layout_below="@+id/location"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <TextView
+                        android:id="@+id/recurrence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/date_time_label"
+                        android:layout_below="@+id/date_time"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_height="1dip"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="4dip"
+        android:background="@drawable/divider_horizontal_email" />
+
+</com.fsck.k9.ui.messageview.ICalendarReplyView>

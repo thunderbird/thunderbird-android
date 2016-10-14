@@ -21,7 +21,6 @@ import com.fsck.k9.mailstore.AttachmentViewInfo;
 public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
     private AttachmentViewInfo attachment;
     private AttachmentViewCallback callback;
-
     private Button viewButton;
     private Button downloadButton;
 
