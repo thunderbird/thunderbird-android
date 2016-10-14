@@ -6,5 +6,6 @@
     <item type="id" name="dialog_confirm_spam"/>
     <item type="id" name="dialog_attachment_progress"/>
     <item type="id" name="dialog_account_setup_error"/>
+    <item type="id" name="dialog_calendar_progress"/>
 
 </resources>

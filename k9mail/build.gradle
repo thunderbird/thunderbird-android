@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.0.3'
     implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
     implementation "org.koin:koin-android-architecture:${koinVersion}"
+    implementation 'net.sf.biweekly:biweekly:0.6.0'
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 

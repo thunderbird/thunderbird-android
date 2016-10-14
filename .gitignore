@@ -11,6 +11,7 @@ coverage
 coverage.ec
 coverage.em
 gen
+captures
 javadoc
 junit-report.xml
 lint-results.*ml

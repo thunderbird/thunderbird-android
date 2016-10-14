@@ -5,11 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <!-- ICalendar area -->
+    <LinearLayout
+        android:id="@+id/icalendars_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/icalendars"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+
     <!-- Content area -->
+
     <com.fsck.k9.view.MessageWebView
         android:id="@+id/message_content"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+        android:layout_width="wrap_content" />
 
     <!-- Unsigned content area -->
     <LinearLayout

@@ -61,6 +61,31 @@ public class FontSizes {
     private int messageViewContentPercent;
     private int messageComposeInput;
 
+    /**
+     * Font size of the organizer in iCalendar event info.
+     */
+    private int iCalendarViewOrganizer;
+
+    /**
+     * Font size of the required participants in iCalendar event info.
+     */
+    private int iCalendarViewRequired;
+
+    /**
+     * Font size of the optional participants in iCalendar event info.
+     */
+    private int iCalendarViewOptional;
+
+    /**
+     * Font size of the location in iCalendar event info.
+     */
+    private int iCalendarViewLocation;
+
+    /**
+     * Font size of the date/time in iCalendar event info.
+     */
+    private int iCalendarViewDateTime;
+
 
     public FontSizes() {
         accountName = FONT_DEFAULT;
@@ -82,6 +107,12 @@ public class FontSizes {
         messageViewSubject = FONT_DEFAULT;
         messageViewDate = FONT_DEFAULT;
         messageViewContentPercent = 100;
+
+        iCalendarViewOrganizer = FONT_DEFAULT;
+        iCalendarViewRequired = FONT_DEFAULT;
+        iCalendarViewOptional = FONT_DEFAULT;
+        iCalendarViewDateTime = FONT_DEFAULT;
+        iCalendarViewLocation = FONT_DEFAULT;
 
         messageComposeInput = MEDIUM;
     }
@@ -287,5 +318,25 @@ public class FontSizes {
         if (fontSize != FONT_DEFAULT) {
             v.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
         }
+    }
+
+    //TODO: ICalendar Sizes
+    public int getICalendarViewOrganizer() {
+        return iCalendarViewOrganizer;
+    }
+    public int getICalendarViewRequired() {
+        return iCalendarViewRequired;
+    }
+
+    public int getICalendarViewOptional() {
+        return iCalendarViewOptional;
+    }
+
+    public int getICalendarViewLocation() {
+        return iCalendarViewLocation;
+    }
+
+    public int getICalendarViewDateTime() {
+        return iCalendarViewDateTime;
     }
 }

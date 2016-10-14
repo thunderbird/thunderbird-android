@@ -19,6 +19,7 @@ dependencies {
     implementation 'com.beetstra.jutf7:jutf7:1.0.0'
     implementation "com.android.support:support-annotations:${androidSupportLibraryVersion}"
     implementation "com.jakewharton.timber:timber:${timberVersion}"
+    implementation 'net.sf.biweekly:biweekly:0.6.0'
 
     androidTestImplementation 'com.android.support.test:runner:0.4.1'
     androidTestImplementation 'com.madgag.spongycastle:pg:1.51.0.0'

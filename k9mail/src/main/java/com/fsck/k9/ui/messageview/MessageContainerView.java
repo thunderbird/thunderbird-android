@@ -8,6 +8,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
@@ -28,15 +31,29 @@ import android.widget.Toast;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.ical.ICalData.ICalendarData;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
+import com.fsck.k9.mailstore.ICalendarViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.message.html.HtmlConverter;
+import com.fsck.k9.ui.messageview.ical.ICalendarCounterView;
+import com.fsck.k9.ui.messageview.ical.ICalendarPublishView;
+import com.fsck.k9.ui.messageview.ical.ICalendarReplyView;
+import com.fsck.k9.ui.messageview.ical.ICalendarRequestView;
+import com.fsck.k9.ui.messageview.ical.ICalendarView;
+import com.fsck.k9.ui.messageview.ical.ICalendarViewCallback;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
+import timber.log.Timber;
+
+import static com.fsck.k9.ical.ICalData.METHOD_COUNTER;
+import static com.fsck.k9.ical.ICalData.METHOD_PUBLISH;
+import static com.fsck.k9.ical.ICalData.METHOD_REPLY;
+import static com.fsck.k9.ical.ICalData.METHOD_REQUEST;
 
 
 public class MessageContainerView extends LinearLayout implements OnLayoutChangedListener, OnCreateContextMenuListener {
@@ -57,15 +74,19 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
 
     private MessageWebView mMessageContentView;
+    private LinearLayout mCalendars;
     private LinearLayout mAttachments;
     private View unsignedTextContainer;
     private View unsignedTextDivider;
     private TextView unsignedText;
     private View mAttachmentsContainer;
+    private View mCalendarsContainer;
 
     private boolean showingPictures;
     private LayoutInflater mInflater;
+    private ICalendarViewCallback iCalendarCallback;
     private AttachmentViewCallback attachmentCallback;
+    private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
     private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
     private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
@@ -73,11 +94,15 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     private String currentHtmlText;
     private AttachmentResolver currentAttachmentResolver;
+    private String subject;
 
 
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
+
+        mCalendarsContainer = findViewById(R.id.icalendars_container);
+        mCalendars = (LinearLayout) findViewById(R.id.icalendars);
 
         mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
         if (!isInEditMode()) {
@@ -368,19 +393,25 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
-            final OnRenderingFinishedListener onRenderingFinishedListener, boolean loadPictures,
-            boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback) {
+            final OnRenderingFinishedListener onRenderingFinishedListener,
+            boolean automaticallyLoadPictures,
+            boolean hideUnsignedTextDivider,
+            ICalendarViewCallback iCalendarCallback,
+            AttachmentViewCallback attachmentCallback) {
 
+        this.iCalendarCallback = iCalendarCallback;
         this.attachmentCallback = attachmentCallback;
 
         resetView();
+
+        renderCalendarEvents(messageViewInfo);
 
         renderAttachments(messageViewInfo);
 
         String textToDisplay = messageViewInfo.text;
         if (textToDisplay != null && !isShowingPictures()) {
             if (Utility.hasExternalImages(textToDisplay)) {
-                if (loadPictures) {
+                if (automaticallyLoadPictures) {
                     setLoadPictures(true);
                 } else {
                     hasHiddenExternalImages = true;
@@ -428,6 +459,44 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         mMessageContentView.displayHtmlContentWithInlineAttachments("", null, null);
         unsignedTextContainer.setVisibility(View.GONE);
         unsignedText.setText("");
+    }
+
+    public void renderCalendarEvents(MessageViewInfo messageViewInfo) {
+        if (messageViewInfo.iCalendarEvents != null) {
+            for (ICalendarViewInfo iCalendarViewInfo : messageViewInfo.iCalendarEvents) {
+                for (ICalendarData iCalendarData : iCalendarViewInfo.iCalData.getCalendarData()) {
+                    ICalendarView view = buildICalendarView(iCalendarData);
+                    if (view == null) {
+                        continue;
+                    }
+                    view.setCallback(iCalendarCallback);
+                    view.setICalendar(iCalendarViewInfo, iCalendarData);
+                    view.setShowSummary(subject == null || !subject.equals(iCalendarData.getSummary()));
+                    mCalendars.addView(view);
+                }
+            }
+        }
+    }
+
+    private @Nullable ICalendarView buildICalendarView(ICalendarData iCalendarData) {
+        switch (iCalendarData.getMethod().getValue()) {
+            case METHOD_PUBLISH:
+                return (ICalendarPublishView) mInflater
+                        .inflate(R.layout.message_view_ical_publish, mCalendars, false);
+            case METHOD_REPLY:
+                return (ICalendarReplyView) mInflater
+                        .inflate(R.layout.message_view_ical_reply, mCalendars, false);
+            case METHOD_REQUEST:
+                return (ICalendarRequestView) mInflater
+                        .inflate(R.layout.message_view_ical_request, mCalendars, false);
+            case METHOD_COUNTER:
+                return (ICalendarCounterView) mInflater
+                        .inflate(R.layout.message_view_ical_counter, mCalendars, false);
+            default:
+                Timber.i("Unhandled iCalendar method type:"
+                        + iCalendarData.getMethod().getValue());
+                return null;
+        }
     }
 
     public void renderAttachments(MessageViewInfo messageViewInfo) {
@@ -496,6 +565,35 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+
+        SavedState savedState = new SavedState(superState);
+
+        savedState.attachmentViewVisible = (mAttachmentsContainer != null &&
+                mAttachmentsContainer.getVisibility() == View.VISIBLE);
+        savedState.calendarViewVisible = (mCalendarsContainer != null &&
+                mCalendarsContainer.getVisibility() == View.VISIBLE);
+        savedState.showingPictures = showingPictures;
+
+        return savedState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        if(!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState savedState = (SavedState)state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+
+        mSavedState = savedState;
+    }
+
+    @Override
+
     public void onLayoutChanged() {
         if (mMessageContentView != null) {
             mMessageContentView.invalidate();
@@ -516,6 +614,49 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     private AttachmentView getAttachmentView(AttachmentViewInfo attachment) {
         return attachmentViewMap.get(attachment);
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    static class SavedState extends BaseSavedState {
+        boolean attachmentViewVisible;
+        boolean showingPictures;
+        boolean calendarViewVisible;
+
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.attachmentViewVisible = (in.readInt() != 0);
+            this.showingPictures = (in.readInt() != 0);
+            this.calendarViewVisible = (in.readInt() != 0);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt((this.attachmentViewVisible) ? 1 : 0);
+            out.writeInt((this.showingPictures) ? 1 : 0);
+            out.writeInt((this.calendarViewVisible) ? 1 : 0);
+        }
     }
 
     interface OnRenderingFinishedListener {

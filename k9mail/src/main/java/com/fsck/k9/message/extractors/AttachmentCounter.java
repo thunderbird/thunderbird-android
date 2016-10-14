@@ -30,7 +30,7 @@ public class AttachmentCounter {
         }
 
         List<Part> attachmentParts = new ArrayList<>();
-        MessageExtractor.findViewablesAndAttachments(message, null, attachmentParts);
+        MessageExtractor.findViewablesAndAttachments(message, null, attachmentParts, null);
 
         return attachmentParts.size();
     }
