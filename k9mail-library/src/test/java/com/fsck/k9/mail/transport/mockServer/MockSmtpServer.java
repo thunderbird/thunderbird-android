@@ -1,13 +1,6 @@
 package com.fsck.k9.mail.transport.mockServer;
 
 
-import android.annotation.SuppressLint;
-
-import com.jcraft.jzlib.JZlib;
-import com.jcraft.jzlib.ZOutputStream;
-
-import org.apache.commons.io.IOUtils;
-
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,14 +21,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
+import android.annotation.SuppressLint;
+
+import com.jcraft.jzlib.JZlib;
+import com.jcraft.jzlib.ZOutputStream;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
+import org.apache.commons.io.IOUtils;
 
 
 @SuppressLint("NewApi")
@@ -185,10 +182,12 @@ public class MockSmtpServer {
 
     public interface Logger {
         void log(String message);
+
         void log(String format, Object... args);
     }
 
-    private interface SmtpInteraction {}
+    private interface SmtpInteraction {
+    }
 
     private static class ExpectedCommand implements SmtpInteraction {
         private final String command;

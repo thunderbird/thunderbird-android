@@ -1,17 +1,17 @@
 package com.fsck.k9.testHelpers;
 
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.imap.ImapConnectionTest;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
+
 
 public class TestTrustedSocketFactory implements TrustedSocketFactory {
     @Override

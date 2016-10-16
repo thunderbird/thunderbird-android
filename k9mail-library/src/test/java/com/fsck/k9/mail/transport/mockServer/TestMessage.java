@@ -1,27 +1,22 @@
 package com.fsck.k9.mail.transport.mockServer;
 
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 
-public class TestMessage extends MimeMessage {
 
+public class TestMessage extends MimeMessage {
     private long mId;
     private int mAttachmentCount;
     private String mSubject;
-
     private String mPreview = "";
-
     private long mThreadId;
     private long mRootId;
     private long messagePartId;
     private String mimeType;
+
 
     public long getMessagePartId() {
         return messagePartId;
@@ -72,7 +67,6 @@ public class TestMessage extends MimeMessage {
         this.mFrom = new Address[] { from };
     }
 
-
     @Override
     public void setReplyTo(Address[] replyTo) {
         if (replyTo == null || replyTo.length == 0) {
@@ -81,7 +75,6 @@ public class TestMessage extends MimeMessage {
             mReplyTo = replyTo;
         }
     }
-
 
     /*
      * For performance reasons, we add headers instead of setting them (see super implementation)
