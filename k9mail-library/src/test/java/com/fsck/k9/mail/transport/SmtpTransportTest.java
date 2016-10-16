@@ -2,8 +2,6 @@ package com.fsck.k9.mail.transport;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -35,55 +33,42 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class SmtpTransportTest {
-    private String host;
-    private int port;
-    private ConnectionSecurity connectionSecurity;
-    private AuthType authenticationType;
-    private String username;
-    private String password;
-    private String clientCertificateAlias;
-    private List<String> extensions;
-    private StoreConfig storeConfig = mock(StoreConfig.class);
+    private static final String USERNAME = "user";
+    private static final String PASSWORD = "password";
+    private static final String CLIENT_CERTIFICATE_ALIAS = null;
+
+    
     private TrustedSocketFactory socketFactory;
 
     
     @Before
     public void before() {
         socketFactory = new TestTrustedSocketFactory();
-        resetConnectionParameters();
     }
 
     @Test
     public void SmtpTransport_withValidUri_canBeCreated() throws Exception {
-        StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getTransportUri()).thenReturn("smtp://user:password:CRAM_MD5@server:123456");
-        TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
+        StoreConfig storeConfig = createStoreConfigWithTransportUri("smtp://user:password:CRAM_MD5@server:123456");
 
-        new SmtpTransport(storeConfig, trustedSocketFactory);
+        new SmtpTransport(storeConfig, socketFactory);
     }
 
     @Test(expected = MessagingException.class)
     public void SmtpTransport_withInvalidUri_throwsMessagingException() throws Exception {
-        StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getTransportUri()).thenReturn("smpt://");
-        TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
+        StoreConfig storeConfig = createStoreConfigWithTransportUri("smpt://");
 
-        new SmtpTransport(storeConfig, trustedSocketFactory);
+        new SmtpTransport(storeConfig, socketFactory);
     }
 
     @Test
     public void open_withNoSecurityOrPasswordPlainAuth_connectsToServer_withoutLogin() throws Exception {
-        username = "user";
-        authenticationType = AuthType.PLAIN;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 OK");
+        SmtpTransport transport = startServerAndCreateSmtpTransportWithoutPassword(server);
 
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
 
         server.verifyConnectionStillOpen();
@@ -92,11 +77,6 @@ public class SmtpTransportTest {
 
     @Test
     public void open_withNoSecurityPlainAuth_connectsToServer() throws Exception {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.PLAIN;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -104,8 +84,8 @@ public class SmtpTransportTest {
         server.output("250 AUTH PLAIN LOGIN");
         server.expect("AUTH PLAIN AHVzZXIAcGFzc3dvcmQ=");
         server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
 
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
 
         server.verifyConnectionStillOpen();
@@ -114,11 +94,6 @@ public class SmtpTransportTest {
 
     @Test
     public void open_withNoSecurityPlainAuth_usesLoginIfPlainUnavailable() throws Exception {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.PLAIN;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -130,8 +105,8 @@ public class SmtpTransportTest {
         server.output("250 OK");
         server.expect("cGFzc3dvcmQ=");
         server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
 
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
 
         server.verifyConnectionStillOpen();
@@ -140,19 +115,14 @@ public class SmtpTransportTest {
 
     @Test
     public void open_withNoSecurityPlainAuth_withNeither_throwsException() throws Exception {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.PLAIN;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
 
         try {
-            SmtpTransport transport = startServerAndCreateSmtpTransport(server);
             transport.open();
             fail("Exception expected");
         } catch (MessagingException e) {
@@ -165,11 +135,6 @@ public class SmtpTransportTest {
 
     @Test
     public void open_withNoSecurityCramMd5Auth_connectsToServer() throws Exception {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.CRAM_MD5;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -179,8 +144,8 @@ public class SmtpTransportTest {
         server.output(Base64.encode("<24609.1047914046@localhost>"));
         server.expect("dXNlciA3NmYxNWEzZmYwYTNiOGI1NzcxZmNhODZlNTcyMDk2Zg==");
         server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.CRAM_MD5, ConnectionSecurity.NONE);
 
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
 
         server.verifyConnectionStillOpen();
@@ -189,19 +154,14 @@ public class SmtpTransportTest {
 
     @Test
     public void open_withNoSecurityCramMd5Auth_withNoSupport_throwsException() throws Exception {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.CRAM_MD5;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH PLAIN LOGIN");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.CRAM_MD5, ConnectionSecurity.NONE);
 
         try {
-            SmtpTransport transport = startServerAndCreateSmtpTransport(server);
             transport.open();
             fail("Exception expected");
         } catch (MessagingException e) {
@@ -214,11 +174,6 @@ public class SmtpTransportTest {
 
     @Test
     public void open_withNoSecurityExternalAuth_connectsToServer() throws Exception {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.EXTERNAL;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -226,8 +181,8 @@ public class SmtpTransportTest {
         server.output("250 AUTH EXTERNAL");
         server.expect("AUTH EXTERNAL dXNlcg==");
         server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.EXTERNAL, ConnectionSecurity.NONE);
 
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
 
         server.verifyConnectionStillOpen();
@@ -236,19 +191,14 @@ public class SmtpTransportTest {
 
     @Test
     public void open_withNoSecurityExternal_withNoSupport_throwsException() throws Exception {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.EXTERNAL;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.EXTERNAL, ConnectionSecurity.NONE);
 
         try {
-            SmtpTransport transport = startServerAndCreateSmtpTransport(server);
             transport.open();
             fail("Exception expected");
         } catch (CertificateValidationException e) {
@@ -261,11 +211,6 @@ public class SmtpTransportTest {
 
     @Test
     public void open_withNoSecurityAutomatic_connectsToServerWithCramMD5IfSupported() throws Exception {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.AUTOMATIC;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -275,8 +220,9 @@ public class SmtpTransportTest {
         server.output(Base64.encode("<24609.1047914046@localhost>"));
         server.expect("dXNlciA3NmYxNWEzZmYwYTNiOGI1NzcxZmNhODZlNTcyMDk2Zg==");
         server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.AUTOMATIC,
+                ConnectionSecurity.NONE);
 
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
 
         server.verifyConnectionStillOpen();
@@ -285,19 +231,15 @@ public class SmtpTransportTest {
 
     @Test
     public void open_withNoSecurityAutomatic_withCramMD5Unsupported_throwsException() throws Exception {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.AUTOMATIC;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH PLAIN LOGIN");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.AUTOMATIC,
+                ConnectionSecurity.NONE);
 
         try {
-            SmtpTransport transport = startServerAndCreateSmtpTransport(server);
             transport.open();
             fail("Exception expected");
         } catch (MessagingException e) {
@@ -311,18 +253,14 @@ public class SmtpTransportTest {
 
     @Test
     public void open_triesHELO_whenServerDoesntSupportEHLO() throws Exception {
-        username = "user";
-        authenticationType = AuthType.PLAIN;
-        connectionSecurity = ConnectionSecurity.NONE;
-
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("502 5.5.1, Unrecognized command.");
         server.expect("HELO localhost");
         server.output("250 localhost");
+        SmtpTransport transport = startServerAndCreateSmtpTransportWithoutPassword(server);
 
-        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
         transport.open();
 
         server.verifyConnectionStillOpen();
@@ -332,11 +270,9 @@ public class SmtpTransportTest {
     @Test
     public void sendMessage_withNoAddressToSendTo_doesntOpenConnection() throws Exception {
         MimeMessage message = new MimeMessage();
-
-        MockSmtpServer server = new MockSmtpServer();
-        setupConnectAndPlainAuthentication(server);
-
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication();
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
         transport.sendMessage(message);
 
         server.verifyConnectionNeverCreated();
@@ -345,9 +281,7 @@ public class SmtpTransportTest {
     @Test
     public void sendMessage_withToAddressToSendTo_opensConnection() throws Exception {
         Message message = getDefaultMessage();
-
-        MockSmtpServer server = new MockSmtpServer();
-        setupConnectAndPlainAuthentication(server);
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication();
         server.expect("MAIL FROM:<user@localhost>");
         server.output("250 OK");
         server.expect("RCPT TO:<user2@localhost>");
@@ -359,18 +293,15 @@ public class SmtpTransportTest {
         server.output("250 OK: queued as 12345");
         server.expect("QUIT");
         server.output("221 BYE");
-        
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
         transport.sendMessage(message);
     }
 
     @Test
     public void sendMessage_with8BitEncoding_usesEncoding() throws Exception {
-        extensions.add("8BITMIME");
         Message message = getDefaultMessage();
-
-        MockSmtpServer server = new MockSmtpServer();
-        setupConnectAndPlainAuthentication(server);
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("8BITMIME");
         server.expect("MAIL FROM:<user@localhost> BODY=8BITMIME");
         server.output("250 OK");
         server.expect("RCPT TO:<user2@localhost>");
@@ -382,22 +313,18 @@ public class SmtpTransportTest {
         server.output("250 OK: queued as 12345");
         server.expect("QUIT");
         server.output("221 BYE");
-        
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
         transport.sendMessage(message);
     }
 
     @Test
     public void sendMessage_withMessageTooLarge_throwsException() throws Exception {
-        extensions.add("SIZE 1000");
         Message message = getDefaultMessageBuilder()
                 .setHasAttachments(true)
                 .messageSize(1234L)
                 .build();
-
-        MockSmtpServer server = new MockSmtpServer();
-        setupConnectAndPlainAuthentication(server);
-
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("SIZE 1000");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
 
         try {
@@ -412,9 +339,7 @@ public class SmtpTransportTest {
     @Test
     public void sendMessage_withNegativeReply_throwsException() throws Exception {
         Message message = getDefaultMessage();
-
-        MockSmtpServer server = new MockSmtpServer();
-        setupConnectAndPlainAuthentication(server);
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication();
         server.expect("MAIL FROM:<user@localhost>");
         server.output("250 OK");
         server.expect("RCPT TO:<user2@localhost>");
@@ -427,7 +352,6 @@ public class SmtpTransportTest {
         server.expect("QUIT");
         server.output("221 BYE");
         server.closeConnection();
-
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
 
         try {
@@ -439,32 +363,46 @@ public class SmtpTransportTest {
         }
     }
 
-    private void resetConnectionParameters() {
-        host = null;
-        port = -1;
-        username = null;
-        password = null;
-        authenticationType = null;
-        clientCertificateAlias = null;
-        connectionSecurity = null;
-        extensions = new ArrayList<>();
-    }
-
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server) throws IOException,
             MessagingException {
-        server.start();
-        host = server.getHost();
-        port = server.getPort();
-        ServerSettings serverSettings = new ServerSettings(Type.SMTP, host, port, connectionSecurity,
-                authenticationType, username, password, clientCertificateAlias);
-        String uri = SmtpTransport.createUri(serverSettings);
-        when(storeConfig.getTransportUri()).thenReturn(uri);
-        return createSmtpTransport(storeConfig, socketFactory);
+        return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
     }
 
-    private SmtpTransport createSmtpTransport(StoreConfig storeConfig, TrustedSocketFactory socketFactory)
-            throws MessagingException {
+    private SmtpTransport startServerAndCreateSmtpTransportWithoutPassword(MockSmtpServer server) throws IOException,
+            MessagingException {
+        return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null);
+    }
+
+    private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
+            ConnectionSecurity connectionSecurity) throws IOException, MessagingException {
+        return startServerAndCreateSmtpTransport(server, authenticationType, connectionSecurity, PASSWORD);
+    }
+
+    private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
+            ConnectionSecurity connectionSecurity, String password) throws IOException, MessagingException {
+        server.start();
+
+        String host = server.getHost();
+        int port = server.getPort();
+        ServerSettings serverSettings = new ServerSettings(
+                Type.SMTP,
+                host,
+                port,
+                connectionSecurity,
+                authenticationType,
+                USERNAME,
+                password,
+                CLIENT_CERTIFICATE_ALIAS);
+        String uri = SmtpTransport.createUri(serverSettings);
+        StoreConfig storeConfig = createStoreConfigWithTransportUri(uri);
+
         return new SmtpTransport(storeConfig, socketFactory);
+    }
+
+    private StoreConfig createStoreConfigWithTransportUri(String value) {
+        StoreConfig storeConfig = mock(StoreConfig.class);
+        when(storeConfig.getTransportUri()).thenReturn(value);
+        return storeConfig;
     }
 
     private TestMessageBuilder getDefaultMessageBuilder() {
@@ -477,20 +415,21 @@ public class SmtpTransportTest {
         return getDefaultMessageBuilder().build();
     }
 
-    private void setupConnectAndPlainAuthentication(MockSmtpServer server) {
-        username = "user";
-        password = "password";
-        authenticationType = AuthType.PLAIN;
-        connectionSecurity = ConnectionSecurity.NONE;
-
+    private MockSmtpServer createServerAndSetupForPlainAuthentication(String... extensions) {
+        MockSmtpServer server = new MockSmtpServer();
+        
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
+        
         for (String extension : extensions) {
             server.output("250-" + extension);
         }
+        
         server.output("250 AUTH LOGIN PLAIN CRAM-MD5");
         server.expect("AUTH PLAIN AHVzZXIAcGFzc3dvcmQ=");
         server.output("235 2.7.0 Authentication successful");
+        
+        return server;
     }
 }
