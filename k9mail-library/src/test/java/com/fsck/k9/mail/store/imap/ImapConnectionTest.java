@@ -2,14 +2,8 @@ package com.fsck.k9.mail.store.imap;
 
 
 import java.io.IOException;
-import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
-import android.annotation.SuppressLint;
 import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.AuthType;
@@ -21,12 +15,8 @@ import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.imap.mockserver.MockImapServer;
-import com.fsck.k9.testHelpers.TestTrustedSocketFactory;
+import com.fsck.k9.mail.helpers.TestTrustedSocketFactory;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import okio.ByteString;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +28,6 @@ import org.robolectric.shadows.ShadowLog;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;

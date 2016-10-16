@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.transport.mockServer;
+package com.fsck.k9.mail.helpers;
 
 
 import com.fsck.k9.mail.Address;

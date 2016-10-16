@@ -1,4 +1,4 @@
-package com.fsck.k9.testHelpers;
+package com.fsck.k9.mail.helpers;
 
 
 import java.io.IOException;
