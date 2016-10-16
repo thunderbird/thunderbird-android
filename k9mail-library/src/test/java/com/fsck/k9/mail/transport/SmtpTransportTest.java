@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -14,13 +13,12 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.helpers.TestMessageBuilder;
+import com.fsck.k9.mail.helpers.TestTrustedSocketFactory;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer;
-import com.fsck.k9.mail.helpers.TestMessage;
-import com.fsck.k9.mailstore.BinaryMemoryBody;
-import com.fsck.k9.mail.helpers.TestTrustedSocketFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -346,9 +344,7 @@ public class SmtpTransportTest {
 
     @Test
     public void sendMessage_withToAddressToSendTo_opensConnection() throws Exception {
-        TestMessage message = new TestMessage();
-        message.setFrom(new Address("user@localhost"));
-        message.setRecipients(Message.RecipientType.TO, new Address[] { new Address("user2@localhost") });
+        Message message = getDefaultMessage();
 
         MockSmtpServer server = new MockSmtpServer();
         setupConnectAndPlainAuthentication(server);
@@ -358,7 +354,7 @@ public class SmtpTransportTest {
         server.output("250 OK");
         server.expect("DATA");
         server.output("354 End data with <CR><LF>.<CR><LF>");
-        server.expect("");
+        server.expect("[message data]");
         server.expect(".");
         server.output("250 OK: queued as 12345");
         server.expect("QUIT");
@@ -371,9 +367,7 @@ public class SmtpTransportTest {
     @Test
     public void sendMessage_with8BitEncoding_usesEncoding() throws Exception {
         extensions.add("8BITMIME");
-        TestMessage message = new TestMessage();
-        message.setFrom(new Address("user@localhost"));
-        message.setRecipients(Message.RecipientType.TO, new Address[] { new Address("user2@localhost") });
+        Message message = getDefaultMessage();
 
         MockSmtpServer server = new MockSmtpServer();
         setupConnectAndPlainAuthentication(server);
@@ -383,7 +377,7 @@ public class SmtpTransportTest {
         server.output("250 OK");
         server.expect("DATA");
         server.output("354 End data with <CR><LF>.<CR><LF>");
-        server.expect("");
+        server.expect("[message data]");
         server.expect(".");
         server.output("250 OK: queued as 12345");
         server.expect("QUIT");
@@ -396,11 +390,10 @@ public class SmtpTransportTest {
     @Test
     public void sendMessage_withMessageTooLarge_throwsException() throws Exception {
         extensions.add("SIZE 1000");
-        TestMessage message = new TestMessage();
-        message.setFrom(new Address("user@localhost"));
-        message.setRecipients(Message.RecipientType.TO, new Address[] { new Address("user2@localhost") });
-        message.setAttachmentCount(1);
-        message.setBody(new BinaryMemoryBody(new byte[1001], "US-ASCII"));
+        Message message = getDefaultMessageBuilder()
+                .setHasAttachments(true)
+                .messageSize(1234L)
+                .build();
 
         MockSmtpServer server = new MockSmtpServer();
         setupConnectAndPlainAuthentication(server);
@@ -418,9 +411,7 @@ public class SmtpTransportTest {
 
     @Test
     public void sendMessage_withNegativeReply_throwsException() throws Exception {
-        TestMessage message = new TestMessage();
-        message.setFrom(new Address("user@localhost"));
-        message.setRecipients(Message.RecipientType.TO, new Address[] { new Address("user2@localhost") });
+        Message message = getDefaultMessage();
 
         MockSmtpServer server = new MockSmtpServer();
         setupConnectAndPlainAuthentication(server);
@@ -430,7 +421,7 @@ public class SmtpTransportTest {
         server.output("250 OK");
         server.expect("DATA");
         server.output("354 End data with <CR><LF>.<CR><LF>");
-        server.expect("");
+        server.expect("[message data]");
         server.expect(".");
         server.output("421 4.7.0 Temporary system problem");
         server.expect("QUIT");
@@ -474,6 +465,16 @@ public class SmtpTransportTest {
     private SmtpTransport createSmtpTransport(StoreConfig storeConfig, TrustedSocketFactory socketFactory)
             throws MessagingException {
         return new SmtpTransport(storeConfig, socketFactory);
+    }
+
+    private TestMessageBuilder getDefaultMessageBuilder() {
+        return new TestMessageBuilder()
+                .from("user@localhost")
+                .to("user2@localhost");
+    }
+
+    private Message getDefaultMessage() {
+        return getDefaultMessageBuilder().build();
     }
 
     private void setupConnectAndPlainAuthentication(MockSmtpServer server) {
