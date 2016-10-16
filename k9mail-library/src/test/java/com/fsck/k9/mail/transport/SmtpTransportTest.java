@@ -293,9 +293,13 @@ public class SmtpTransportTest {
         server.output("250 OK: queued as 12345");
         server.expect("QUIT");
         server.output("221 BYE");
+        server.closeConnection();
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
 
         transport.sendMessage(message);
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
     }
 
     @Test
@@ -313,9 +317,13 @@ public class SmtpTransportTest {
         server.output("250 OK: queued as 12345");
         server.expect("QUIT");
         server.output("221 BYE");
+        server.closeConnection();
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
 
         transport.sendMessage(message);
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
     }
 
     @Test
@@ -334,6 +342,9 @@ public class SmtpTransportTest {
             assertTrue(e.isPermanentFailure());
             assertEquals("Message too large for server", e.getMessage());
         }
+        
+        //FIXME: Make sure connection was closed 
+        //server.verifyConnectionClosed();
     }
 
     @Test
@@ -361,6 +372,9 @@ public class SmtpTransportTest {
             assertEquals(421, e.getReplyCode());
             assertEquals("4.7.0 Temporary system problem", e.getReplyText());
         }
+        
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
     }
 
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server) throws IOException,
