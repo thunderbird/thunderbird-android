@@ -47,21 +47,21 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void SmtpTransport_withValidUri_canBeCreated() throws Exception {
+    public void SmtpTransport_withValidTransportUri() throws Exception {
         StoreConfig storeConfig = createStoreConfigWithTransportUri("smtp://user:password:CRAM_MD5@server:123456");
 
         new SmtpTransport(storeConfig, socketFactory);
     }
 
     @Test(expected = MessagingException.class)
-    public void SmtpTransport_withInvalidUri_throwsMessagingException() throws Exception {
+    public void SmtpTransport_withInvalidTransportUri_shouldThrow() throws Exception {
         StoreConfig storeConfig = createStoreConfigWithTransportUri("smpt://");
 
         new SmtpTransport(storeConfig, socketFactory);
     }
 
     @Test
-    public void open_withNoSecurityOrPasswordPlainAuth_connectsToServer_withoutLogin() throws Exception {
+    public void open_withoutAuthLoginExtension_shouldConnectWithoutAuthentication() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -76,7 +76,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityPlainAuth_connectsToServer() throws Exception {
+    public void open_withAuthPlainExtension() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -93,7 +93,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityPlainAuth_usesLoginIfPlainUnavailable() throws Exception {
+    public void open_withAuthLoginExtension() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -114,7 +114,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityPlainAuth_withNeither_throwsException() throws Exception {
+    public void open_withoutLoginAndPlainAuthExtensions_shouldThrow() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -134,7 +134,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityCramMd5Auth_connectsToServer() throws Exception {
+    public void open_withCramMd5AuthExtension() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -153,7 +153,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityCramMd5Auth_withNoSupport_throwsException() throws Exception {
+    public void open_withoutCramMd5AuthExtension_shouldThrow() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -173,7 +173,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityExternalAuth_connectsToServer() throws Exception {
+    public void open_withAuthExternalExtension() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -190,7 +190,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityExternal_withNoSupport_throwsException() throws Exception {
+    public void open_withoutAuthExternalExtension_shouldThrow() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -210,7 +210,8 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityAutomatic_connectsToServerWithCramMD5IfSupported() throws Exception {
+    public void open_withAutomaticAuthAndNoTransportSecurityAndAuthCramMd5Extension_shouldUseAuthCramMd5()
+            throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -230,7 +231,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_withNoSecurityAutomatic_withCramMD5Unsupported_throwsException() throws Exception {
+    public void open_withAutomaticAuthAndNoTransportSecurityAndAuthPlainExtension_shouldThrow() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -252,7 +253,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void open_triesHELO_whenServerDoesntSupportEHLO() throws Exception {
+    public void open_withEhloFailing_shouldTryHelo() throws Exception {
         MockSmtpServer server = new MockSmtpServer();
         server.output("220 localhost Simple Mail Transfer Service Ready");
         server.expect("EHLO localhost");
@@ -268,7 +269,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void sendMessage_withNoAddressToSendTo_doesntOpenConnection() throws Exception {
+    public void sendMessage_withoutAddressToSendTo_shouldNotOpenConnection() throws Exception {
         MimeMessage message = new MimeMessage();
         MockSmtpServer server = createServerAndSetupForPlainAuthentication();
         SmtpTransport transport = startServerAndCreateSmtpTransport(server);
@@ -279,7 +280,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void sendMessage_withToAddressToSendTo_opensConnection() throws Exception {
+    public void sendMessage_withSingleRecipient() throws Exception {
         Message message = getDefaultMessage();
         MockSmtpServer server = createServerAndSetupForPlainAuthentication();
         server.expect("MAIL FROM:<user@localhost>");
@@ -303,7 +304,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void sendMessage_with8BitEncoding_usesEncoding() throws Exception {
+    public void sendMessage_with8BitEncoding() throws Exception {
         Message message = getDefaultMessage();
         MockSmtpServer server = createServerAndSetupForPlainAuthentication("8BITMIME");
         server.expect("MAIL FROM:<user@localhost> BODY=8BITMIME");
@@ -327,7 +328,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void sendMessage_withMessageTooLarge_throwsException() throws Exception {
+    public void sendMessage_withMessageTooLarge_shouldThrow() throws Exception {
         Message message = getDefaultMessageBuilder()
                 .setHasAttachments(true)
                 .messageSize(1234L)
@@ -348,7 +349,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void sendMessage_withNegativeReply_throwsException() throws Exception {
+    public void sendMessage_withNegativeReply_shouldThrow() throws Exception {
         Message message = getDefaultMessage();
         MockSmtpServer server = createServerAndSetupForPlainAuthentication();
         server.expect("MAIL FROM:<user@localhost>");
