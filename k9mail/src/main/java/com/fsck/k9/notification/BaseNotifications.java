@@ -14,9 +14,6 @@ import com.fsck.k9.R;
 
 
 abstract class BaseNotifications {
-    protected static final String NOTIFICATION_GROUP_KEY = "newMailNotifications";
-
-
     protected final Context context;
     protected final NotificationController controller;
     protected final NotificationActionCreator actionCreator;
@@ -32,10 +29,11 @@ abstract class BaseNotifications {
             int notificationId) {
         String accountName = controller.getAccountName(account);
         NotificationContent content = holder.content;
+        String groupKey = NotificationGroupKeys.getGroupKey(account);
 
         NotificationCompat.Builder builder = createAndInitializeNotificationBuilder(account)
                 .setTicker(content.summary)
-                .setGroup(NOTIFICATION_GROUP_KEY)
+                .setGroup(groupKey)
                 .setContentTitle(content.sender)
                 .setContentText(content.subject)
                 .setSubText(accountName);
