@@ -120,12 +120,8 @@ public class MessageBuilderTest {
             "soviet message\r\n" +
             "text =E2=98=AD\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
-            "Content-Type: application/octet-stream;\r\n" +
+            "Content-Type: message/rfc822;\r\n" +
             " name=\"attach.txt\"\r\n" +
-            "Content-Transfer-Encoding: base64\r\n" +
-            "Content-Disposition: attachment;\r\n" +
-            " filename=\"attach.txt\";\r\n" +
-            " size=23\r\n" +
             "\r\n" +
             "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
             "\r\n" +
