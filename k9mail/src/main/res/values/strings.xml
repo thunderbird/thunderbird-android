@@ -718,6 +718,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="edit_identity_title">Edit identity</string>
     <string name="new_identity_action">New identity</string>
 
+    <string name="account_settings_reportspam_title">Remote spam filter</string>
+    <string name="account_settings_reportspam_label">Report spam</string>
+    <string name="account_settings_reportspam_summary">Train your remote spam filter</string>
+
+    <string name="account_settings_reportspam_recipient_label">Recipient</string>
+    <string name="account_settings_reportspam_subject_label">Subject</string>
+    <string name="account_settings_reportspam_delete_label">Delete original after reporting</string>
+
     <string name="account_settings_always_bcc_label">Bcc all messages to</string>
 
     <string name="manage_identities_edit_action">Edit</string>

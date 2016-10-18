@@ -71,6 +71,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MARK_MESSAGE_AS_READ_ON_VIEW = "mark_message_as_read_on_view";
     private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_MANAGE_IDENTITIES = "manage_identities";
+    private static final String PREFERENCE_REPORTSPAM = "reportspam";
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
@@ -677,6 +678,14 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+        findPreference(PREFERENCE_REPORTSPAM).setOnPreferenceClickListener(
+        new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                onReportSpamSettings();
+                return true;
+            }
+        });
+
         findPreference(PREFERENCE_INCOMING).setOnPreferenceClickListener(
         new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
@@ -886,6 +895,10 @@ public class AccountSettings extends K9PreferenceActivity {
         Intent intent = new Intent(this, ManageIdentities.class);
         intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
         startActivityForResult(intent, ACTIVITY_MANAGE_IDENTITIES);
+    }
+
+    private void onReportSpamSettings() {
+        AccountSetupReportSpam.actionEditReportSpamSettings(this, mAccount);
     }
 
     private void onIncomingSettings() {

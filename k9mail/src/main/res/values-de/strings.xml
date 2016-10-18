@@ -592,6 +592,12 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="manage_identities_context_menu_title">Identität bearbeiten</string>
   <string name="edit_identity_title">Identität bearbeiten</string>
   <string name="new_identity_action">Neue Identität erstellen</string>
+  <string name="account_settings_reportspam_title">Spam-Filter am Server</string>
+  <string name="account_settings_reportspam_label">Spam melden</string>
+  <string name="account_settings_reportspam_summary">Trainieren eines entfernten Spam-Filters</string>
+  <string name="account_settings_reportspam_recipient_label">Empfänger</string>
+  <string name="account_settings_reportspam_subject_label">Betreff</string>
+  <string name="account_settings_reportspam_delete_label">Original nach dem Senden löschen</string>
   <string name="account_settings_always_bcc_label">Alle Nachrichten mit BCC an</string>
   <string name="manage_identities_edit_action">Bearbeiten</string>
   <string name="manage_identities_move_up_action">Nach oben verschieben</string>
