@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -471,7 +472,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         if (!mSourceMessageProcessed) {
             if (mAction == Action.REPLY || mAction == Action.REPLY_ALL ||
-                    mAction == Action.FORWARD || mAction == Action.FORWARD_AS_ATTACHMENT || mAction == Action.EDIT_DRAFT) {
+                    mAction == Action.FORWARD || mAction == Action.FORWARD_AS_ATTACHMENT ||
+                    mAction == Action.EDIT_DRAFT) {
                 messageLoaderHelper = new MessageLoaderHelper(this, getLoaderManager(), getFragmentManager(),
                         messageLoaderCallbacks);
                 mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
@@ -1181,6 +1183,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 }
             }
+        } catch (IOException ioe) {
+            /**
+             * Let the user continue composing their message even if we have a problem processing
+             * the source message. Log it as an error, though.
+             */
+            Log.e(K9.LOG_TAG, "Error while processing source message: ", ioe);
         } catch (MessagingException me) {
             /**
              * Let the user continue composing their message even if we have a problem processing
@@ -1274,7 +1282,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         attachmentPresenter.processMessageToForward(messageViewInfo);
     }
 
-    private void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws MessagingException {
+    private void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws IOException, MessagingException {
         Message message = messageViewInfo.message;
 
         String subject = message.getSubject();
