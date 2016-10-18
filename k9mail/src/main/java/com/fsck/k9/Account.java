@@ -228,6 +228,9 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mAllowRemoteSearch;
     private boolean mRemoteSearchFullText;
     private int mRemoteSearchNumResults;
+    private String mReportSpamRecipient;
+    private String mReportSpamSubject;
+    private boolean mReportSpamDelete;
 
     private ColorChip mUnreadColorChip;
     private ColorChip mReadColorChip;
@@ -326,6 +329,9 @@ public class Account implements BaseAccount, StoreConfig {
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
         mAlwaysShowCcBcc = false;
+        mReportSpamRecipient = "";
+        mReportSpamSubject = "";
+        mReportSpamDelete = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -479,6 +485,10 @@ public class Account implements BaseAccount, StoreConfig {
         mMarkMessageAsReadOnView = storage.getBoolean(mUuid + ".markMessageAsReadOnView", true);
         mAlwaysShowCcBcc = storage.getBoolean(mUuid + ".alwaysShowCcBcc", false);
 
+        mReportSpamRecipient = storage.getString(mUuid + ".reportSpamRecipient", mReportSpamRecipient);
+        mReportSpamSubject = storage.getString(mUuid + ".reportSpamSubject", mReportSpamSubject);
+        mReportSpamDelete = storage.getBoolean(mUuid  + ".reportSpamDelete", true);
+
         cacheChips();
 
         // Use email address as account description if necessary
@@ -578,6 +588,9 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".messageFormat");
         editor.remove(mUuid + ".messageReadReceipt");
         editor.remove(mUuid + ".notifyMailCheck");
+        editor.remove(mUuid + ".reportSpamRecipient");
+        editor.remove(mUuid + ".reportSpamSubject");
+        editor.remove(mUuid + ".reportSpamDelete");
         for (NetworkType type : NetworkType.values()) {
             editor.remove(mUuid + ".useCompression." + type.name());
         }
@@ -745,6 +758,9 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".enabled", mEnabled);
         editor.putBoolean(mUuid + ".markMessageAsReadOnView", mMarkMessageAsReadOnView);
         editor.putBoolean(mUuid + ".alwaysShowCcBcc", mAlwaysShowCcBcc);
+        editor.putString(mUuid + ".reportSpamRecipient", mReportSpamRecipient);
+        editor.putString(mUuid + ".reportSpamSubject", mReportSpamSubject);
+        editor.putBoolean(mUuid + ".reportSpamDelete", mReportSpamDelete);
 
         editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
@@ -1718,6 +1734,31 @@ public class Account implements BaseAccount, StoreConfig {
     public synchronized void setAlwaysShowCcBcc(boolean show) {
         mAlwaysShowCcBcc = show;
     }
+
+    public String getReportSpamRecipient() {
+        return mReportSpamRecipient;
+    }
+
+    public void setReportSpamRecipient(String recipient) {
+        this.mReportSpamRecipient = recipient;
+    }
+
+    public String getReportSpamSubject() {
+        return mReportSpamSubject;
+    }
+
+    public void setReportSpamSubject(String subject) {
+        this.mReportSpamSubject = subject;
+    }
+
+    public synchronized boolean isReportSpamDelete() {
+        return mReportSpamDelete;
+    }
+
+    public synchronized void setReportSpamDelete(boolean delete) {
+        mReportSpamDelete = delete;
+    }
+
     public boolean isRemoteSearchFullText() {
         return false;   // Temporarily disabled
         //return mRemoteSearchFullText;
