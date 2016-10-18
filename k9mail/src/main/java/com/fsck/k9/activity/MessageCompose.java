@@ -1235,10 +1235,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 mReferences = mInReplyTo;
             }
 
-        } else {
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "could not get Message-ID.");
-            }
+        } else if (K9.DEBUG) {
+            Log.d(K9.LOG_TAG, "could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
@@ -1271,10 +1269,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (!TextUtils.isEmpty(message.getMessageId())) {
             mInReplyTo = message.getMessageId();
             mReferences = mInReplyTo;
-        } else {
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "could not get Message-ID.");
-            }
+        } else if (K9.DEBUG) {
+            Log.d(K9.LOG_TAG, "could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
