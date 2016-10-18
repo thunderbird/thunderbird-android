@@ -123,7 +123,7 @@ public class MessageBuilderTest {
             "Content-Type: message/rfc822;\r\n" +
             " name=\"attach.txt\"\r\n" +
             "\r\n" +
-            "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
+            "text data in attachment" +
             "\r\n" +
             "--" + BOUNDARY_1 + "--\r\n";
 
@@ -190,7 +190,7 @@ public class MessageBuilderTest {
     }
 
     @Test
-    public void build_withMessageAttachment_shouldAttachAsApplicationOctetStream() throws Exception {
+    public void build_withMessageAttachment_shouldAttachAsMessageRfc822() throws Exception {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
         Attachment attachment = createAttachmentWithContent("message/rfc822", "attach.txt", TEST_ATTACHMENT_TEXT);
         messageBuilder.setAttachments(Collections.singletonList(attachment));
