@@ -10,4 +10,6 @@ import java.security.NoSuchAlgorithmException;
 public interface TrustedSocketFactory {
     Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
             throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException;
+
+    boolean isSecure(Socket socket);
 }

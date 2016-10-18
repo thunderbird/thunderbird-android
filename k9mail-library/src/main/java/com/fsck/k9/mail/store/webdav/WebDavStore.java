@@ -15,6 +15,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.message.BasicNameValuePair;
@@ -72,6 +73,7 @@ public class WebDavStore extends RemoteStore {
         String path = null;
         String authPath = null;
         String mailboxPath = null;
+        String clientCertificateAlias = null;
 
 
         URI webDavUri;
@@ -148,8 +150,10 @@ public class WebDavStore extends RemoteStore {
             }
         }
 
+        //TODO: Support client-side certificates
+
         return new WebDavStoreSettings(host, port, connectionSecurity, null, username, password,
-                null, alias, path, authPath, mailboxPath);
+                clientCertificateAlias, alias, path, authPath, mailboxPath);
     }
 
 
@@ -208,6 +212,7 @@ public class WebDavStore extends RemoteStore {
     private String mUrl; /* Stores the base URL for the server */
     private String mHost; /* Stores the host name for the server */
     private int mPort;
+    private String mCertificateAlias;
     private String mPath; /* Stores the path for the server */
     private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
     private String mMailboxPath; /* Stores the user specified path to the mailbox */
@@ -237,6 +242,7 @@ public class WebDavStore extends RemoteStore {
 
         mHost = settings.host;
         mPort = settings.port;
+        mCertificateAlias = settings.clientCertificateAlias;
 
         mConnectionSecurity = settings.connectionSecurity;
 
@@ -959,17 +965,14 @@ public class WebDavStore extends RemoteStore {
             mAuthCookies = new BasicCookieStore();
             mContext.setAttribute(ClientContext.COOKIE_STORE, mAuthCookies);
 
+            // For HTTPS based WebDAV we want to replace the default
+            // SSLSocketFactory with one that allows us to inject our own certificates.
             SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
-            try {
-                Scheme s = new Scheme("https", new WebDavSocketFactory(mHost, 443), 443);
-                reg.register(s);
-            } catch (NoSuchAlgorithmException nsa) {
-                Log.e(LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
-                throw new MessagingException("NoSuchAlgorithmException in getHttpClient: " + nsa);
-            } catch (KeyManagementException kme) {
-                Log.e(LOG_TAG, "KeyManagementException in getHttpClient: " + kme);
-                throw new MessagingException("KeyManagementException in getHttpClient: " + kme);
-            }
+            WebDavSocketFactory webDavSocketFactory =
+                    new WebDavSocketFactory(mTrustedSocketFactory,
+                            SSLSocketFactory.getSocketFactory(), mHost, 443, mCertificateAlias);
+            Scheme s = new Scheme("https", webDavSocketFactory, 443);
+            reg.register(s);
         }
         return mHttpClient;
     }

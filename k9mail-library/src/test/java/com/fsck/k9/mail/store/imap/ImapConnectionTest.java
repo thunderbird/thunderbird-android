@@ -708,6 +708,11 @@ public class ImapConnectionTest {
                     socket.getPort(),
                     true);
         }
+
+        @Override
+        public boolean isSecure(Socket socket) {
+            return true;
+        }
     }
 
     @SuppressLint("TrustAllX509TrustManager")
