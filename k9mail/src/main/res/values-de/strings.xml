@@ -73,6 +73,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="compose_title_reply">Antworten</string>
   <string name="compose_title_reply_all">Allen antworten</string>
   <string name="compose_title_forward">Weiterleiten</string>
+  <string name="compose_title_forward_as_attachment">Weiterleiten als Anhang</string>
   <string name="choose_folder_title">Ordner auswählen</string>
   <string name="status_loading_account_folder">Lade <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Lade Kopfzeilen in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -98,6 +99,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="archive_action">Archivieren</string>
   <string name="spam_action">Spam</string>
   <string name="forward_action">Weiterleiten</string>
+  <string name="forward_as_attachment_action">Weiterleiten als Anhang</string>
   <string name="move_action">Verschieben</string>
   <string name="single_message_options_action">Senden…</string>
   <string name="refile_action">Umsortieren…</string>
@@ -221,6 +223,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="compose_error_incomplete_recipient">Empfänger-Feld enthält unvollständigen Inhalt!</string>
   <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
   <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
+  <string name="message_compose_attachments_forward_toast">Die Nachricht kann nicht weitergeleitet werden, da einige Anhänge nicht heruntergeladen wurden.</string>
   <string name="message_compose_show_quoted_text_action">Ursprüngliche Nachricht zitieren</string>
   <string name="message_compose_description_delete_quoted_text">Zitierten Text entfernen</string>
   <string name="message_compose_description_edit_quoted_text">Zitierten Text bearbeiten</string>
@@ -811,7 +814,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_import_incoming_server">Posteingangsserver (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Postausgangsserver (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Passwort setzen...</item>
+    <item quantity="one">Passwort setzen…</item>
     <item quantity="other">Passwörter setzen…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Passwort des Posteingangsservers verwenden</string>
