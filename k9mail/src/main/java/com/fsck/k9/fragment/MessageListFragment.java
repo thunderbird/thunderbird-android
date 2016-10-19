@@ -1510,7 +1510,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             menu.findItem(R.id.spam).setVisible(false);
         }
 
-        if (account.getReportSpamRecipient().isEmpty()) {
+        if (TextUtils.isEmpty(account.getReportSpamRecipient())) {
             menu.findItem(R.id.reportspam).setVisible(false);
         }
     }
