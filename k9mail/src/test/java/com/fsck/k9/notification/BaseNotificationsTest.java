@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
 public class BaseNotificationsTest {
     private static final int ACCOUNT_COLOR = 0xAABBCC;
     private static final String ACCOUNT_NAME = "AccountName";
+    private static final int ACCOUNT_NUMBER = 2;
     private static final String NOTIFICATION_SUMMARY = "Summary";
     private static final String SENDER = "MessageSender";
     private static final String SUBJECT = "Subject";
@@ -89,7 +90,7 @@ public class BaseNotificationsTest {
         Builder builder = notifications.createBigTextStyleNotification(account, holder, notificationId);
 
         verify(builder).setTicker(NOTIFICATION_SUMMARY);
-        verify(builder).setGroup(BaseNotifications.NOTIFICATION_GROUP_KEY);
+        verify(builder).setGroup("newMailNotifications-" + ACCOUNT_NUMBER);
         verify(builder).setContentTitle(SENDER);
         verify(builder).setContentText(SUBJECT);
         verify(builder).setSubText(ACCOUNT_NAME);
@@ -123,6 +124,7 @@ public class BaseNotificationsTest {
 
     private Account createFakeAccount() {
         Account account = mock(Account.class);
+        when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
         when(account.getChipColor()).thenReturn(ACCOUNT_COLOR);
         return account;
     }

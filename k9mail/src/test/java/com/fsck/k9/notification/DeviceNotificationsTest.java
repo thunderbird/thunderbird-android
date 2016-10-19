@@ -128,7 +128,7 @@ public class DeviceNotificationsTest {
         verify(builder).setTicker(SUMMARY);
         verify(builder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(builder).setSubText(ACCOUNT_NAME);
-        verify(builder).setGroup("newMailNotifications");
+        verify(builder).setGroup("newMailNotifications-" + ACCOUNT_NUMBER);
         verify(builder).setGroupSummary(true);
         verify(builder).setPriority(NotificationCompat.PRIORITY_HIGH);
         verify(builder).setStyle(notifications.inboxStyle);
