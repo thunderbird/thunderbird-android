@@ -98,6 +98,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="compose_title_reply_all">Reply all</string>
     <string name="compose_title_forward">Forward</string>
     <string name="compose_title_forward_as_attachment">Forward as attachment</string>
+    <string name="compose_title_reportspam">Report as spam</string>
 
     <string name="choose_folder_title">Choose Folder</string>
 
@@ -932,6 +933,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="error_activity_not_found">No suitable application for this action found.</string>
     <string name="send_failed_reason">Send failed: %s</string>
+    <string name="delete_failed_reason">Delete failed: %s</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>

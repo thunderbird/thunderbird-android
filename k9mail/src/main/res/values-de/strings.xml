@@ -74,6 +74,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="compose_title_reply_all">Allen antworten</string>
   <string name="compose_title_forward">Weiterleiten</string>
   <string name="compose_title_forward_as_attachment">Weiterleiten als Anhang</string>
+  <string name="compose_title_reportspam">Als Spam melden</string>
   <string name="choose_folder_title">Ordner auswählen</string>
   <string name="status_loading_account_folder">Lade <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Lade Kopfzeilen in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -760,6 +761,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="miscellaneous_preferences">Verschiedenes</string>
   <string name="error_activity_not_found">Keine geeignete Anwendung für diese Aktion gefunden.</string>
   <string name="send_failed_reason">Senden fehlgeschlagen: %s</string>
+  <string name="delete_failed_reason">Löschen fehlgeschlagen: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Entwurf speichern?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Entwurf speichern oder verwerfen?</string>
   <string name="confirm_discard_draft_message_title">Nachricht verwerfen?</string>
