@@ -100,6 +100,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="spam_action">Spam</string>
   <string name="forward_action">Weiterleiten</string>
   <string name="forward_as_attachment_action">Weiterleiten als Anhang</string>
+  <string name="reportspam_action">Spam melden</string>
   <string name="move_action">Verschieben</string>
   <string name="single_message_options_action">Senden…</string>
   <string name="refile_action">Umsortieren…</string>

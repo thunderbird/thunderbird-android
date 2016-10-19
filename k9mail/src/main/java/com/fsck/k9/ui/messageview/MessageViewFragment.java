@@ -269,6 +269,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         return mMessageView.getMessageHeaderView().additionalHeadersVisible();
     }
 
+    public boolean isAccountReportSpamEnabled() {
+        try {
+            return (mAccount != null && !mAccount.getReportSpamRecipient().isEmpty());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private void delete() {
         if (mMessage != null) {
             // Disable the delete button after it's tapped (to try to prevent

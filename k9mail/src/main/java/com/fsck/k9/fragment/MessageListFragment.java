@@ -1502,6 +1502,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             menu.findItem(R.id.spam).setVisible(false);
         }
 
+        if (account.getReportSpamRecipient().isEmpty()) {
+            menu.findItem(R.id.reportspam).setVisible(false);
+        }
     }
 
     public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
