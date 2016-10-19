@@ -1,6 +1,9 @@
 package com.fsck.k9.mail.store.imap;
 
 
+import android.content.Context;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
@@ -20,11 +24,19 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.store.StoreConfig;
+
+import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
@@ -42,14 +54,13 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.util.collections.Sets.newSet;
 
-
-//TODO: Increase test coverage e.g. for fetch() and fetchPart()
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class ImapFolderTest {
@@ -57,9 +68,9 @@ public class ImapFolderTest {
     private ImapConnection imapConnection;
     private StoreConfig storeConfig;
 
-
     @Before
     public void setUp() throws Exception {
+        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.getCacheDir());
         imapStore = mock(ImapStore.class);
         storeConfig = mock(StoreConfig.class);
         when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
@@ -452,6 +463,24 @@ public class ImapFolderTest {
     }
 
     @Test
+    public void getUnreadMessageCount_connectionThrowsIOException_shouldThrowMessagingException()
+            throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 1 2 3"));
+        when(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED"))
+                .thenThrow(new IOException());
+        folder.open(OPEN_MODE_RW);
+
+        try {
+            folder.getUnreadMessageCount();
+            fail("Expected exception");
+        } catch (MessagingException e) {
+            assertEquals("IO Error", e.getMessage());
+        }
+    }
+
+    @Test
     public void getUnreadMessageCount() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
@@ -504,6 +533,33 @@ public class ImapFolderTest {
         long result = folder.getHighestUid();
 
         assertEquals(42L, result);
+    }
+
+    @Test
+    public void getHighestUid_imapConnectionThrowsNegativesResponse_shouldReturnMinus1() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.executeSimpleCommand("UID SEARCH *:*"))
+                .thenThrow(NegativeImapResponseException.class);
+        folder.open(OPEN_MODE_RW);
+
+        assertEquals(-1L, folder.getHighestUid());
+    }
+
+    @Test
+    public void getHighestUid_imapConnectionThrowsIOException_shouldThrowMessagingException() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.executeSimpleCommand("UID SEARCH *:*"))
+                .thenThrow(IOException.class);
+        folder.open(OPEN_MODE_RW);
+
+        try {
+            folder.getHighestUid();
+            fail("Expected MessagingException");
+        } catch (MessagingException e) {
+            assertEquals("IO Error", e.getMessage());
+        }
     }
 
     @Test
@@ -725,6 +781,18 @@ public class ImapFolderTest {
     }
 
     @Test
+    public void areMoreMessagesAvailable_withIndexOf1_shouldReturnFalseWithoutPerformingSearch() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        folder.open(OPEN_MODE_RW);
+
+        assertFalse(folder.areMoreMessagesAvailable(1, null));
+
+        //SELECT during OPEN and no more
+        verify(imapConnection, times(1)).executeSimpleCommand(anyString());
+    }
+
+    @Test
     public void areMoreMessagesAvailable_withoutAdditionalMessages_shouldIssueSearchCommandsUntilAllMessagesSearched()
             throws Exception {
         ImapFolder folder = createFolder("Folder");
@@ -892,6 +960,26 @@ public class ImapFolderTest {
     }
 
     @Test
+    public void fetchPart_withTextSection_shouldProcessImapResponses() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RO);
+        folder.open(OPEN_MODE_RO);
+        ImapMessage message = createImapMessage("1");
+
+        Part part = createPlainTextPart("1.1");
+
+        setupSingleFetchResponseToCallback();
+
+        folder.fetchPart(message, part, null);
+        ArgumentCaptor<Body> bodyArgumentCaptor = ArgumentCaptor.forClass(Body.class);
+        verify(part).setBody(bodyArgumentCaptor.capture());
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bodyArgumentCaptor.getValue().writeTo(byteArrayOutputStream);
+
+        assertEquals("text", new String(byteArrayOutputStream.toByteArray()));
+    }
+
+    @Test
     public void appendMessages_shouldIssueRespectiveCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
@@ -1020,6 +1108,66 @@ public class ImapFolderTest {
         } catch (MessagingException e) {
             assertEquals("Your settings do not allow remote searching of this account", e.getMessage());
         }
+    }
+
+    @Test(expected = Error.class)
+    public void delete_notImplemented() throws MessagingException {
+        ImapFolder folder = createFolder("Folder");
+
+        folder.delete(false);
+    }
+
+    @Test
+    public void getMessageByUid_returnsNewImapMessageWithUidInFolder() throws MessagingException {
+        ImapFolder folder = createFolder("Folder");
+        
+        ImapMessage message = folder.getMessage("uid");
+
+        assertEquals("uid", message.getUid());
+        assertEquals(folder, message.getFolder());
+    }
+
+    private Part createPlainTextPart(String serverExtra) {
+        Part part = createPart(serverExtra);
+        when(part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)).thenReturn(
+                new String[]{MimeUtil.ENC_7BIT}
+        );
+        when(part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)).thenReturn(
+                new String[]{"text/plain"}
+        );
+        return part;
+    }
+
+    private void setupSingleFetchResponseToCallback() throws IOException {
+        when(imapConnection.readResponse(any(ImapResponseCallback.class)))
+                .thenAnswer(new Answer<ImapResponse>() {
+                    @Override
+                    public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
+                        return buildImapFetchResponse(
+                                (ImapResponseCallback) invocation.getArguments()[0]);
+                    }
+                })
+                .thenAnswer(new Answer<ImapResponse>() {
+                    @Override
+                    public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
+                        return ImapResponse.newTaggedResponse(
+                                (ImapResponseCallback) invocation.getArguments()[0], "TAG");
+                    }
+                });
+    }
+
+    private ImapResponse buildImapFetchResponse(ImapResponseCallback callback) {
+        ImapResponse response = ImapResponse.newContinuationRequest(callback);
+        response.add("1");
+        response.add("FETCH");
+        ImapList fetchList = new ImapList();
+        fetchList.add("UID");
+        fetchList.add("1");
+        fetchList.add("BODY");
+        fetchList.add("1.1");
+        fetchList.add("text");
+        response.add(fetchList);
+        return response;
     }
 
     private Set<String> extractMessageUids(List<ImapMessage> messages) {
