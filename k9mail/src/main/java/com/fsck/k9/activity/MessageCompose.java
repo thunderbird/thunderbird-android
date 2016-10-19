@@ -1178,11 +1178,27 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 }
                 case FORWARD_AS_ATTACHMENT: {
-                    processMessageToForwardAsAttachment(messageViewInfo);
+                    try {
+                        processMessageToForwardAsAttachment(messageViewInfo);
+                    } catch (IOException ioe) {
+                        /**
+                         * Let the user continue composing their message even if we have a problem processing
+                         * the source message. Log it as an error, though.
+                         */
+                        Log.e(K9.LOG_TAG, "Error while processing source message: ", ioe);
+                    }
                     break;
                 }
                 case REPORT_SPAM: {
-                    processMessageToReportSpam(messageViewInfo);
+                    try {
+                        processMessageToReportSpam(messageViewInfo);
+                    } catch (IOException ioe) {
+                        /**
+                         * Let the user continue composing their message even if we have a problem processing
+                         * the source message. Log it as an error, though.
+                         */
+                        Log.e(K9.LOG_TAG, "Error while processing source message: ", ioe);
+                    }
                     break;
                 }
                 case EDIT_DRAFT: {
@@ -1194,12 +1210,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 }
             }
-        } catch (IOException ioe) {
-            /**
-             * Let the user continue composing their message even if we have a problem processing
-             * the source message. Log it as an error, though.
-             */
-            Log.e(K9.LOG_TAG, "Error while processing source message: ", ioe);
         } catch (MessagingException me) {
             /**
              * Let the user continue composing their message even if we have a problem processing
