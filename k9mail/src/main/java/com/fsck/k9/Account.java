@@ -484,8 +484,8 @@ public class Account implements BaseAccount, StoreConfig {
         mMarkMessageAsReadOnView = storage.getBoolean(mUuid + ".markMessageAsReadOnView", true);
         mAlwaysShowCcBcc = storage.getBoolean(mUuid + ".alwaysShowCcBcc", false);
 
-        mReportSpamRecipient = storage.getString(mUuid + ".reportSpamRecipient", mReportSpamRecipient);
-        mReportSpamSubject = storage.getString(mUuid + ".reportSpamSubject", mReportSpamSubject);
+        mReportSpamRecipient = storage.getString(mUuid + ".reportSpamRecipient", "");
+        mReportSpamSubject = storage.getString(mUuid + ".reportSpamSubject", "");
         mReportSpamDelete = storage.getBoolean(mUuid  + ".reportSpamDelete", true);
 
         cacheChips();

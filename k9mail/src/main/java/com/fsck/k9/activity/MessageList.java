@@ -1006,6 +1006,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.toggle_message_view_theme).setVisible(false);
             menu.findItem(R.id.show_headers).setVisible(false);
             menu.findItem(R.id.hide_headers).setVisible(false);
+            menu.findItem(R.id.reportspam).setVisible(false);
         } else {
             // hide prev/next buttons in split mode
             if (mDisplayMode != DisplayMode.MESSAGE_VIEW) {
@@ -1089,6 +1090,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             } else {
                 menu.findItem(R.id.hide_headers).setVisible(false);
             }
+
+            menu.findItem(R.id.reportspam).setVisible(
+                    mMessageViewFragment.isAccountReportSpamEnabled());
         }
 
 
