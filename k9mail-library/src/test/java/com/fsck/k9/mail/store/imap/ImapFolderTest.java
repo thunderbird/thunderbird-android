@@ -233,9 +233,9 @@ public class ImapFolderTest {
         ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
-        boolean result = imapFolder.exists();
+        boolean folderExists = imapFolder.exists();
 
-        assertTrue(result);
+        assertTrue(folderExists);
     }
 
     @Test
@@ -245,9 +245,9 @@ public class ImapFolderTest {
         doThrow(NegativeImapResponseException.class).when(imapConnection)
                 .executeSimpleCommand("STATUS \"Folder\" (UIDVALIDITY)");
 
-        boolean result = imapFolder.exists();
+        boolean folderExists = imapFolder.exists();
 
-        assertFalse(result);
+        assertFalse(folderExists);
     }
 
     @Test
@@ -265,9 +265,9 @@ public class ImapFolderTest {
         ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
-        boolean result = imapFolder.create(FolderType.HOLDS_MESSAGES);
+        boolean success = imapFolder.create(FolderType.HOLDS_MESSAGES);
 
-        assertTrue(result);
+        assertTrue(success);
     }
 
     @Test
@@ -276,9 +276,9 @@ public class ImapFolderTest {
         when(imapStore.getConnection()).thenReturn(imapConnection);
         doThrow(NegativeImapResponseException.class).when(imapConnection).executeSimpleCommand("CREATE \"Folder\"");
 
-        boolean result = imapFolder.create(FolderType.HOLDS_MESSAGES);
+        boolean success = imapFolder.create(FolderType.HOLDS_MESSAGES);
 
-        assertFalse(result);
+        assertFalse(success);
     }
 
     @Test
@@ -301,9 +301,9 @@ public class ImapFolderTest {
         ImapFolder destinationFolder = createFolder("Destination");
         List<ImapMessage> messages = Collections.emptyList();
 
-        Map<String, String> result = sourceFolder.copyMessages(messages, destinationFolder);
+        Map<String, String> uidMapping = sourceFolder.copyMessages(messages, destinationFolder);
 
-        assertNull(result);
+        assertNull(uidMapping);
     }
 
     @Test
@@ -334,10 +334,10 @@ public class ImapFolderTest {
         when(imapConnection.executeSimpleCommand("UID COPY 1 \"Destination\"")).thenReturn(copyResponses);
         sourceFolder.open(OPEN_MODE_RW);
 
-        Map<String, String> result = sourceFolder.copyMessages(messages, destinationFolder);
+        Map<String, String> uidMapping = sourceFolder.copyMessages(messages, destinationFolder);
 
-        assertNotNull(result);
-        assertEquals("101", result.get("1"));
+        assertNotNull(uidMapping);
+        assertEquals("101", uidMapping.get("1"));
     }
 
     @Test
@@ -352,10 +352,10 @@ public class ImapFolderTest {
         when(imapConnection.executeSimpleCommand("UID COPY 1 \"Destination\"")).thenReturn(copyResponses);
         sourceFolder.open(OPEN_MODE_RW);
 
-        Map<String, String> result = sourceFolder.moveMessages(messages, destinationFolder);
+        Map<String, String> uidMapping = sourceFolder.moveMessages(messages, destinationFolder);
 
-        assertNotNull(result);
-        assertEquals("101", result.get("1"));
+        assertNotNull(uidMapping);
+        assertEquals("101", uidMapping.get("1"));
     }
 
     @Test
@@ -381,9 +381,9 @@ public class ImapFolderTest {
         ImapFolder destinationFolder = createFolder("Destination");
         List<ImapMessage> messages = Collections.emptyList();
 
-        Map<String, String> result = sourceFolder.moveMessages(messages, destinationFolder);
+        Map<String, String> uidMapping = sourceFolder.moveMessages(messages, destinationFolder);
 
-        assertNull(result);
+        assertNull(uidMapping);
     }
 
     @Test
@@ -482,9 +482,9 @@ public class ImapFolderTest {
         when(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
-        int result = folder.getUnreadMessageCount();
+        int unreadMessageCount = folder.getUnreadMessageCount();
 
-        assertEquals(3, result);
+        assertEquals(3, unreadMessageCount);
     }
 
     @Test
@@ -511,9 +511,9 @@ public class ImapFolderTest {
         when(imapConnection.executeSimpleCommand("SEARCH 1:* FLAGGED NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
-        int result = folder.getFlaggedMessageCount();
+        int flaggedMessageCount = folder.getFlaggedMessageCount();
 
-        assertEquals(4, result);
+        assertEquals(4, flaggedMessageCount);
     }
 
     @Test
@@ -524,9 +524,9 @@ public class ImapFolderTest {
         when(imapConnection.executeSimpleCommand("UID SEARCH *:*")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
-        long result = folder.getHighestUid();
+        long highestUid = folder.getHighestUid();
 
-        assertEquals(42L, result);
+        assertEquals(42L, highestUid);
     }
 
     @Test
@@ -602,9 +602,9 @@ public class ImapFolderTest {
         folder.open(OPEN_MODE_RW);
         MessageRetrievalListener<ImapMessage> listener = createMessageRetrievalListener();
 
-        List<ImapMessage> result = folder.getMessages(1, 10, null, listener);
+        List<ImapMessage> messages = folder.getMessages(1, 10, null, listener);
 
-        ImapMessage message = result.get(0);
+        ImapMessage message = messages.get(0);
         verify(listener).messageStarted("99", 0, 1);
         verify(listener).messageFinished(message, 0, 1);
         verifyNoMoreInteractions(listener);
@@ -699,9 +699,9 @@ public class ImapFolderTest {
         folder.open(OPEN_MODE_RW);
         MessageRetrievalListener<ImapMessage> listener = createMessageRetrievalListener();
 
-        List<ImapMessage> result = folder.getMessages(singletonList(1L), true, listener);
+        List<ImapMessage> messages = folder.getMessages(singletonList(1L), true, listener);
 
-        ImapMessage message = result.get(0);
+        ImapMessage message = messages.get(0);
         verify(listener).messageStarted("99", 0, 1);
         verify(listener).messageFinished(message, 0, 1);
         verifyNoMoreInteractions(listener);
@@ -759,9 +759,9 @@ public class ImapFolderTest {
         when(imapConnection.executeSimpleCommand("SEARCH 1:9 NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
-        boolean result = folder.areMoreMessagesAvailable(10, null);
+        boolean areMoreMessagesAvailable = folder.areMoreMessagesAvailable(10, null);
 
-        assertTrue(result);
+        assertTrue(areMoreMessagesAvailable);
     }
 
     @Test
@@ -770,9 +770,9 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
 
-        boolean result = folder.areMoreMessagesAvailable(600, null);
+        boolean areMoreMessagesAvailable = folder.areMoreMessagesAvailable(600, null);
 
-        assertFalse(result);
+        assertFalse(areMoreMessagesAvailable);
     }
 
     @Test
@@ -993,9 +993,9 @@ public class ImapFolderTest {
         ImapMessage message = createImapMessage("2");
         when(message.getHeader("Message-ID")).thenReturn(new String[0]);
 
-        String result = folder.getUidFromMessageId(message);
+        String uid = folder.getUidFromMessageId(message);
 
-        assertNull(result);
+        assertNull(uid);
     }
 
     @Test
@@ -1021,9 +1021,9 @@ public class ImapFolderTest {
         when(imapConnection.executeSimpleCommand("UID SEARCH HEADER MESSAGE-ID \"<00000000.0000000@example.org>\""))
                 .thenReturn(singletonList(createImapResponse("* SEARCH 23")));
 
-        String result = folder.getUidFromMessageId(message);
+        String uid = folder.getUidFromMessageId(message);
 
-        assertEquals("23", result);
+        assertEquals("23", uid);
     }
 
     @Test
@@ -1052,9 +1052,9 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("2");
 
-        String result = folder.getNewPushState("uidNext=2", message);
+        String newPushState = folder.getNewPushState("uidNext=2", message);
 
-        assertEquals("uidNext=3", result);
+        assertEquals("uidNext=3", newPushState);
     }
 
     @Test
@@ -1063,9 +1063,9 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("1");
 
-        String result = folder.getNewPushState("uidNext=2", message);
+        String newPushState = folder.getNewPushState("uidNext=2", message);
 
-        assertNull(result);
+        assertNull(newPushState);
     }
 
     @Test
