@@ -113,6 +113,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
     public static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
     public static final String ACTION_FORWARD_AS_ATTACHMENT = "com.fsck.k9.intent.action.FORWARD_AS_ATTACHMENT";
+    public static final String ACTION_REPORT_SPAM = "com.fsck.k9.intent.action.REPORT_SPAM";
     public static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
 
     public static final String EXTRA_ACCOUNT = "account";
@@ -219,6 +220,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         REPLY_ALL(R.string.compose_title_reply_all),
         FORWARD(R.string.compose_title_forward),
         FORWARD_AS_ATTACHMENT(R.string.compose_title_forward_as_attachment),
+        REPORT_SPAM(R.string.compose_title_reportspam),
         EDIT_DRAFT(R.string.compose_title_compose);
 
         private final int titleResource;
@@ -439,6 +441,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 mAction = Action.FORWARD;
             } else if (ACTION_FORWARD_AS_ATTACHMENT.equals(action)) {
                 mAction = Action.FORWARD_AS_ATTACHMENT;
+            } else if (ACTION_REPORT_SPAM.equals(action)) {
+                mAction = Action.REPORT_SPAM;
             } else if (ACTION_EDIT_DRAFT.equals(action)) {
                 mAction = Action.EDIT_DRAFT;
             } else {
@@ -473,7 +477,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (!mSourceMessageProcessed) {
             if (mAction == Action.REPLY || mAction == Action.REPLY_ALL ||
                     mAction == Action.FORWARD || mAction == Action.FORWARD_AS_ATTACHMENT ||
-                    mAction == Action.EDIT_DRAFT) {
+                    mAction == Action.REPORT_SPAM || mAction == Action.EDIT_DRAFT) {
                 messageLoaderHelper = new MessageLoaderHelper(this, getLoaderManager(), getFragmentManager(),
                         messageLoaderCallbacks);
                 mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
@@ -482,7 +486,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference, cachedDecryptionResult);
             }
 
-            if (mAction != Action.EDIT_DRAFT) {
+            if (mAction == Action.REPORT_SPAM) {
+                recipientPresenter.addToAddresses(Address.parse(mAccount.getReportSpamRecipient()));
+            } else if (mAction != Action.EDIT_DRAFT) {
                 String alwaysBccString = mAccount.getAlwaysBcc();
                 if (!TextUtils.isEmpty(alwaysBccString)) {
                     recipientPresenter.addBccAddresses(Address.parse(alwaysBccString));
@@ -503,7 +509,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             recipientMvpView.requestFocusOnToField();
         }
 
-        if (mAction == Action.FORWARD || mAction == Action.FORWARD_AS_ATTACHMENT) {
+        if (mAction == Action.FORWARD || mAction == Action.FORWARD_AS_ATTACHMENT
+                || mAction == Action.REPORT_SPAM) {
             mMessageReference = mMessageReference.withModifiedFlag(Flag.FORWARDED);
         }
 
@@ -1174,6 +1181,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     processMessageToForwardAsAttachment(messageViewInfo);
                     break;
                 }
+                case REPORT_SPAM: {
+                    processMessageToReportSpam(messageViewInfo);
+                    break;
+                }
                 case EDIT_DRAFT: {
                     processDraftMessage(messageViewInfo);
                     break;
@@ -1286,6 +1297,36 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             mSubjectView.setText("Fwd: " + subject);
         } else {
             mSubjectView.setText(subject);
+        }
+
+        // "Be Like Thunderbird" - on forwarded messages, set the message ID
+        // of the forwarded message in the references and the reply to.  TB
+        // only includes ID of the message being forwarded in the reference,
+        // even if there are multiple references.
+        if (!TextUtils.isEmpty(message.getMessageId())) {
+            mInReplyTo = message.getMessageId();
+            mReferences = mInReplyTo;
+        } else {
+            if (K9.DEBUG) {
+                Log.d(K9.LOG_TAG, "could not get Message-ID.");
+            }
+        }
+
+        attachmentPresenter.processMessageToForwardAsAttachment(messageViewInfo);
+    }
+
+    private void processMessageToReportSpam(MessageViewInfo messageViewInfo) throws IOException, MessagingException {
+        Message message = messageViewInfo.message;
+
+        if (mAccount.getReportSpamSubject().isEmpty()) {
+            String subject = message.getSubject();
+            if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
+                mSubjectView.setText("Fwd: " + subject);
+            } else {
+                mSubjectView.setText(subject);
+            }
+        } else {
+            mSubjectView.setText(mAccount.getReportSpamSubject());
         }
 
         // "Be Like Thunderbird" - on forwarded messages, set the message ID
@@ -1530,6 +1571,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             new SendMessageTask(getApplicationContext(), mAccount, mContacts, message,
                     mDraftId != INVALID_DRAFT_ID ? mDraftId : null, mMessageReference).execute();
             finish();
+            if (mAction == Action.REPORT_SPAM && mAccount.isReportSpamDelete()) {
+                MessagingController.getInstance(getApplication()).deleteMessage(mMessageReference, messagingListener);
+            }
         }
     }
 
@@ -1603,6 +1647,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
             loadLocalMessageForDisplay(messageViewInfo, mAction);
+            if (mAction == Action.REPORT_SPAM) {
+                checkToSendMessage();
+            }
         }
 
         @Override

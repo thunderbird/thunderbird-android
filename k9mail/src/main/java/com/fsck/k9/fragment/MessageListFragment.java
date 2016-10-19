@@ -1032,6 +1032,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         mFragmentListener.onForwardAsAttachment(messageReference);
     }
 
+    public void onReportSpam(MessageReference messageReference) {
+        mFragmentListener.onReportSpam(messageReference);
+    }
+
     public void onResendMessage(MessageReference messageReference) {
         mFragmentListener.onResendMessage(messageReference);
     }
@@ -1370,6 +1374,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
             case R.id.forward_as_attachment: {
                 onForwardAsAttachment(getMessageAtPosition(adapterPosition));
+                break;
+            }
+            case R.id.reportspam: {
+                onReportSpam(getMessageAtPosition(adapterPosition));
                 break;
             }
             case R.id.send_again: {
@@ -2970,6 +2978,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void onResendMessage(MessageReference message);
         void onForward(MessageReference message);
         void onForwardAsAttachment(MessageReference message);
+        void onReportSpam(MessageReference message);
         void onReply(MessageReference message);
         void onReplyAll(MessageReference message);
         void openMessage(MessageReference messageReference);

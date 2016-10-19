@@ -887,6 +887,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 mMessageViewFragment.onForwardAsAttachment();
                 return true;
             }
+            case R.id.reportspam: {
+                mMessageViewFragment.onReportSpam();
+                return true;
+            }
             case R.id.share: {
                 mMessageViewFragment.onSendAlternate();
                 return true;
@@ -1248,6 +1252,16 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onForwardAsAttachment(MessageReference messageReference, Parcelable decryptionResultForReply) {
         MessageActions.actionForwardAsAttachment(this, messageReference, decryptionResultForReply);
+    }
+
+    @Override
+    public void onReportSpam(MessageReference messageReference) {
+        onReportSpam(messageReference, null);
+    }
+
+    @Override
+    public void onReportSpam(MessageReference messageReference, Parcelable decryptionResultForReply) {
+        MessageActions.actionReportSpam(this, messageReference, decryptionResultForReply);
     }
 
     @Override

@@ -72,13 +72,24 @@ public class MessageActions {
     }
 
     /**
-     * Compose a new message as a forward of the given message.
+     * Compose a new message with the given message attached.
      */
     public static void actionForwardAsAttachment(Context context, MessageReference messageReference, Parcelable decryptionResult) {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference);
         i.putExtra(MessageCompose.EXTRA_MESSAGE_DECRYPTION_RESULT, decryptionResult);
         i.setAction(MessageCompose.ACTION_FORWARD_AS_ATTACHMENT);
+        context.startActivity(i);
+    }
+
+    /**
+     * Send a message with the given message attached to the predefined recipient address.
+     */
+    public static void actionReportSpam(Context context, MessageReference messageReference, Parcelable decryptionResult) {
+        Intent i = new Intent(context, MessageCompose.class);
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference);
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_DECRYPTION_RESULT, decryptionResult);
+        i.setAction(MessageCompose.ACTION_REPORT_SPAM);
         context.startActivity(i);
     }
 
