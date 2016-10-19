@@ -9,19 +9,15 @@ buildscript {
 }
 
 project.ext {
-    preDexLibs = !project.hasProperty('disablePreDex')
     testCoverage = project.hasProperty('testCoverage')
     optimizeForDevelopment = project.hasProperty('optimizeForDevelopment') && optimizeForDevelopment == 'true'
-
-    compileSdkVersion = 24
-    buildToolsVersion = '24.0.3'
 }
 
 subprojects {
     project.plugins.whenPluginAdded { plugin ->
         if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name) ||
                 "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
-            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+            project.android.dexOptions.preDexLibraries = !rootProject.hasProperty('disablePreDex')
         }
     }
 }
