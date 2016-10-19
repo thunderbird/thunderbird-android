@@ -727,6 +727,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 toast.show();
                 return true;
             }
+            case KeyEvent.KEYCODE_DPAD_LEFT: {
+                if (mMessageViewFragment != null && mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+                    return showPreviousMessage();
+                }
+                return false;
+            }
+            case KeyEvent.KEYCODE_DPAD_RIGHT: {
+                if (mMessageViewFragment != null && mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+                    return showNextMessage();
+                }
+                return false;
+            }
 
         }
 
