@@ -1,8 +1,6 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import android.content.Context;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +25,6 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.store.StoreConfig;
-
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,12 +51,12 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.util.collections.Sets.newSet;
+
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
@@ -463,13 +460,10 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void getUnreadMessageCount_connectionThrowsIOException_shouldThrowMessagingException()
-            throws Exception {
+    public void getUnreadMessageCount_connectionThrowsIOException_shouldThrowMessagingException() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 1 2 3"));
-        when(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED"))
-                .thenThrow(new IOException());
+        when(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED")).thenThrow(new IOException());
         folder.open(OPEN_MODE_RW);
 
         try {
@@ -543,7 +537,9 @@ public class ImapFolderTest {
                 .thenThrow(NegativeImapResponseException.class);
         folder.open(OPEN_MODE_RW);
 
-        assertEquals(-1L, folder.getHighestUid());
+        long highestUid = folder.getHighestUid();
+
+        assertEquals(-1L, highestUid);
     }
 
     @Test
@@ -589,7 +585,8 @@ public class ImapFolderTest {
                 createImapResponse("* SEARCH 47"),
                 createImapResponse("* SEARCH 18")
         );
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:10 SINCE 06-Feb-2016 NOT DELETED")).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:10 SINCE 06-Feb-2016 NOT DELETED"))
+                .thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         List<ImapMessage> messages = folder.getMessages(1, 10, new Date(1454719826000L), null);
@@ -786,8 +783,9 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
 
-        assertFalse(folder.areMoreMessagesAvailable(1, null));
+        boolean areMoreMessagesAvailable = folder.areMoreMessagesAvailable(1, null);
 
+        assertFalse(areMoreMessagesAvailable);
         //SELECT during OPEN and no more
         verify(imapConnection, times(1)).executeSimpleCommand(anyString());
     }
@@ -965,17 +963,16 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RO);
         folder.open(OPEN_MODE_RO);
         ImapMessage message = createImapMessage("1");
-
         Part part = createPlainTextPart("1.1");
-
         setupSingleFetchResponseToCallback();
 
         folder.fetchPart(message, part, null);
+
         ArgumentCaptor<Body> bodyArgumentCaptor = ArgumentCaptor.forClass(Body.class);
         verify(part).setBody(bodyArgumentCaptor.capture());
+        Body body = bodyArgumentCaptor.getValue();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bodyArgumentCaptor.getValue().writeTo(byteArrayOutputStream);
-
+        body.writeTo(byteArrayOutputStream);
         assertEquals("text", new String(byteArrayOutputStream.toByteArray()));
     }
 
@@ -1111,16 +1108,16 @@ public class ImapFolderTest {
     }
 
     @Test(expected = Error.class)
-    public void delete_notImplemented() throws MessagingException {
+    public void delete_notImplemented() throws Exception {
         ImapFolder folder = createFolder("Folder");
 
         folder.delete(false);
     }
 
     @Test
-    public void getMessageByUid_returnsNewImapMessageWithUidInFolder() throws MessagingException {
+    public void getMessageByUid_returnsNewImapMessageWithUidInFolder() throws Exception {
         ImapFolder folder = createFolder("Folder");
-        
+
         ImapMessage message = folder.getMessage("uid");
 
         assertEquals("uid", message.getUid());
@@ -1130,10 +1127,10 @@ public class ImapFolderTest {
     private Part createPlainTextPart(String serverExtra) {
         Part part = createPart(serverExtra);
         when(part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)).thenReturn(
-                new String[]{MimeUtil.ENC_7BIT}
+                new String[] { MimeUtil.ENC_7BIT }
         );
         when(part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)).thenReturn(
-                new String[]{"text/plain"}
+                new String[] { "text/plain" }
         );
         return part;
     }
@@ -1143,15 +1140,15 @@ public class ImapFolderTest {
                 .thenAnswer(new Answer<ImapResponse>() {
                     @Override
                     public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
-                        return buildImapFetchResponse(
-                                (ImapResponseCallback) invocation.getArguments()[0]);
+                        ImapResponseCallback callback = (ImapResponseCallback) invocation.getArguments()[0];
+                        return buildImapFetchResponse(callback);
                     }
                 })
                 .thenAnswer(new Answer<ImapResponse>() {
                     @Override
                     public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
-                        return ImapResponse.newTaggedResponse(
-                                (ImapResponseCallback) invocation.getArguments()[0], "TAG");
+                        ImapResponseCallback callback = (ImapResponseCallback) invocation.getArguments()[0];
+                        return ImapResponse.newTaggedResponse(callback, "TAG");
                     }
                 });
     }
