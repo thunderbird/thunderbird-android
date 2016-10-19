@@ -2,14 +2,8 @@ package com.fsck.k9.mail.store.imap;
 
 
 import java.io.IOException;
-import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
-import android.annotation.SuppressLint;
 import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.AuthType;
@@ -21,10 +15,8 @@ import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.imap.mockserver.MockImapServer;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import com.fsck.k9.mail.helpers.TestTrustedSocketFactory;
+
 import okio.ByteString;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +28,6 @@ import org.robolectric.shadows.ShadowLog;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -687,42 +678,5 @@ public class ImapConnectionTest {
 
         server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
         server.output("2 OK LOGIN completed");
-    }
-
-    private static class TestTrustedSocketFactory implements TrustedSocketFactory {
-        @Override
-        public Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
-                throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
-
-            TrustManager[] trustManagers = new TrustManager[] { new VeryTrustingTrustManager() };
-
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustManagers, null);
-
-            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-            return sslSocketFactory.createSocket(
-                    socket,
-                    socket.getInetAddress().getHostAddress(),
-                    socket.getPort(),
-                    true);
-        }
-    }
-
-    @SuppressLint("TrustAllX509TrustManager")
-    private static class VeryTrustingTrustManager implements X509TrustManager {
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-            // Accept all certificates
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-            // Accept all certificates
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[0];
-        }
     }
 }
