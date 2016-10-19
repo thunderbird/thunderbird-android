@@ -1,7 +1,6 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +24,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.store.StoreConfig;
+import okio.Buffer;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -969,9 +969,9 @@ public class ImapFolderTest {
         ArgumentCaptor<Body> bodyArgumentCaptor = ArgumentCaptor.forClass(Body.class);
         verify(part).setBody(bodyArgumentCaptor.capture());
         Body body = bodyArgumentCaptor.getValue();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        body.writeTo(byteArrayOutputStream);
-        assertEquals("text", new String(byteArrayOutputStream.toByteArray()));
+        Buffer buffer = new Buffer();
+        body.writeTo(buffer.outputStream());
+        assertEquals("text", buffer.readUtf8());
     }
 
     @Test
