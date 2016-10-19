@@ -1318,7 +1318,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void processMessageToReportSpam(MessageViewInfo messageViewInfo) throws IOException, MessagingException {
         Message message = messageViewInfo.message;
 
-        if (mAccount.getReportSpamSubject().isEmpty()) {
+        if (TextUtils.isEmpty(mAccount.getReportSpamSubject())) {
             String subject = message.getSubject();
             if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
                 mSubjectView.setText("Fwd: " + subject);

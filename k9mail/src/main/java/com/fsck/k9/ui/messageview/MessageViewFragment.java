@@ -270,11 +270,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public boolean isAccountReportSpamEnabled() {
-        try {
-            return (mAccount != null && !mAccount.getReportSpamRecipient().isEmpty());
-        } catch (Exception e) {
-            return false;
-        }
+        return (mAccount != null && !TextUtils.isEmpty(mAccount.getReportSpamRecipient()));
     }
 
     private void delete() {
