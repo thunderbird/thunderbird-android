@@ -533,8 +533,7 @@ public class ImapFolderTest {
     public void getHighestUid_imapConnectionThrowsNegativesResponse_shouldReturnMinus1() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        when(imapConnection.executeSimpleCommand("UID SEARCH *:*"))
-                .thenThrow(NegativeImapResponseException.class);
+        doThrow(NegativeImapResponseException.class).when(imapConnection).executeSimpleCommand("UID SEARCH *:*");
         folder.open(OPEN_MODE_RW);
 
         long highestUid = folder.getHighestUid();
@@ -546,8 +545,7 @@ public class ImapFolderTest {
     public void getHighestUid_imapConnectionThrowsIOException_shouldThrowMessagingException() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        when(imapConnection.executeSimpleCommand("UID SEARCH *:*"))
-                .thenThrow(IOException.class);
+        doThrow(IOException.class).when(imapConnection).executeSimpleCommand("UID SEARCH *:*");
         folder.open(OPEN_MODE_RW);
 
         try {
