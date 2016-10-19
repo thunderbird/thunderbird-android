@@ -67,12 +67,10 @@ public class ImapFolderTest {
     private ImapStore imapStore;
     private ImapConnection imapConnection;
     private StoreConfig storeConfig;
-    private Context context;
 
     @Before
     public void setUp() throws Exception {
-        context = RuntimeEnvironment.application;
-        BinaryTempFileBody.setTempDirectory(context.getCacheDir());
+        BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.getCacheDir());
         imapStore = mock(ImapStore.class);
         storeConfig = mock(StoreConfig.class);
         when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
@@ -541,27 +539,24 @@ public class ImapFolderTest {
     public void getHighestUid_imapConnectionThrowsNegativesResponse_shouldReturnMinus1() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 42"));
         when(imapConnection.executeSimpleCommand("UID SEARCH *:*"))
                 .thenThrow(NegativeImapResponseException.class);
         folder.open(OPEN_MODE_RW);
 
-        long result = folder.getHighestUid();
-
-        assertEquals(-1L, result);
+        assertEquals(-1L, folder.getHighestUid());
     }
 
     @Test
     public void getHighestUid_imapConnectionThrowsIOException_shouldThrowMessagingException() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 42"));
         when(imapConnection.executeSimpleCommand("UID SEARCH *:*"))
                 .thenThrow(IOException.class);
         folder.open(OPEN_MODE_RW);
 
         try {
             folder.getHighestUid();
+            fail("Expected MessagingException");
         } catch (MessagingException e) {
             assertEquals("IO Error", e.getMessage());
         }
@@ -791,12 +786,10 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
 
-        boolean result = folder.areMoreMessagesAvailable(1, null);
+        assertFalse(folder.areMoreMessagesAvailable(1, null));
 
-        //SELECT during OPEN
+        //SELECT during OPEN and no more
         verify(imapConnection, times(1)).executeSimpleCommand(anyString());
-
-        assertFalse(result);
     }
 
     @Test
@@ -1117,16 +1110,11 @@ public class ImapFolderTest {
         }
     }
 
-    @Test
+    @Test(expected = Error.class)
     public void delete_notImplemented() throws MessagingException {
         ImapFolder folder = createFolder("Folder");
 
-        try {
-            folder.delete(false);
-
-            fail("Error expected");
-        } catch (Error e) {
-        }
+        folder.delete(false);
     }
 
     @Test
@@ -1162,9 +1150,8 @@ public class ImapFolderTest {
                 .thenAnswer(new Answer<ImapResponse>() {
                     @Override
                     public ImapResponse answer(InvocationOnMock invocation) throws Throwable {
-                        ImapResponse response = ImapResponse.newTaggedResponse(
+                        return ImapResponse.newTaggedResponse(
                                 (ImapResponseCallback) invocation.getArguments()[0], "TAG");
-                        return response;
                     }
                 });
     }
