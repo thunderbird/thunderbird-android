@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail.transport;
 
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.fsck.k9.mail.*;
@@ -241,7 +242,7 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand(null);
 
             InetAddress localAddress = mSocket.getLocalAddress();
-            String localHost = localAddress.getCanonicalHostName();
+            String localHost = getCanonicalHostName(localAddress);
             String ipAddr = localAddress.getHostAddress();
 
             if (localHost.equals("") || localHost.equals(ipAddr) || localHost.contains("_")) {
@@ -759,6 +760,11 @@ public class SmtpTransport extends Transport {
         executeSimpleCommand(
                 String.format("AUTH EXTERNAL %s",
                         Base64.encode(username)), false);
+    }
+
+    @VisibleForTesting
+    protected String getCanonicalHostName(InetAddress localAddress) {
+        return localAddress.getCanonicalHostName();
     }
 
     /**

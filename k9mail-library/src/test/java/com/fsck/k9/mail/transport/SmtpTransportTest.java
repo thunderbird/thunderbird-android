@@ -2,6 +2,7 @@ package com.fsck.k9.mail.transport;
 
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class SmtpTransportTest {
+    private static final String LOCALHOST_NAME = "localhost";
     private static final String USERNAME = "user";
     private static final String PASSWORD = "password";
     private static final String CLIENT_CERTIFICATE_ALIAS = null;
@@ -411,7 +413,7 @@ public class SmtpTransportTest {
         String uri = SmtpTransport.createUri(serverSettings);
         StoreConfig storeConfig = createStoreConfigWithTransportUri(uri);
 
-        return new SmtpTransport(storeConfig, socketFactory);
+        return new TestSmtpTransport(storeConfig, socketFactory);
     }
 
     private StoreConfig createStoreConfigWithTransportUri(String value) {
@@ -446,5 +448,18 @@ public class SmtpTransportTest {
         server.output("235 2.7.0 Authentication successful");
         
         return server;
+    }
+    
+    
+    static class TestSmtpTransport extends SmtpTransport {
+        TestSmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory)
+                throws MessagingException {
+            super(storeConfig, trustedSocketFactory);
+        }
+
+        @Override
+        protected String getCanonicalHostName(InetAddress localAddress) {
+            return LOCALHOST_NAME;
+        }
     }
 }
