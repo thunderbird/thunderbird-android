@@ -530,7 +530,7 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void getHighestUid_imapConnectionThrowsNegativesResponse_shouldReturnMinus1() throws Exception {
+    public void getHighestUid_imapConnectionThrowsNegativesResponse_shouldReturnMinusOne() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         doThrow(NegativeImapResponseException.class).when(imapConnection).executeSimpleCommand("UID SEARCH *:*");
@@ -776,7 +776,7 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void areMoreMessagesAvailable_withIndexOf1_shouldReturnFalseWithoutPerformingSearch() throws Exception {
+    public void areMoreMessagesAvailable_withIndexOfOne_shouldReturnFalseWithoutPerformingSearch() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
