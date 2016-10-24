@@ -14,6 +14,7 @@ import android.os.Parcelable;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -313,7 +314,7 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
 
     @Override
     public Store getRemoteStore() throws MessagingException {
-        return RemoteStore.getInstance(K9.app, this);
+        return RemoteStore.getInstance(K9.app, this, Globals.getOAuth2TokenProvider());
     }
 
     @Override

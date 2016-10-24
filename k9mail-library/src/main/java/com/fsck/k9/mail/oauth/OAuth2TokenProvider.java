@@ -21,6 +21,17 @@ public interface OAuth2TokenProvider {
     List<String> getAccounts();
 
     /**
+     * Provides an asynchronous response to an
+     * {@link OAuth2TokenProvider#authorizeAPI(String, Activity, OAuth2TokenProviderAuthCallback)} request
+     */
+    interface OAuth2TokenProviderAuthCallback {
+
+        void success();
+
+        void failure(AuthorizationException e);
+    }
+
+    /**
      * Request API authorization. This is a foreground action that may produce a dialog to interact with.
      *
      * @param username
@@ -30,10 +41,14 @@ public interface OAuth2TokenProvider {
      * @param callback
      *         A callback to process the asynchronous response
      */
-    void authorizeApi(String username, Activity activity, OAuth2TokenProviderAuthCallback callback);
+    void authorizeAPI(String username, Activity activity,
+                        OAuth2TokenProviderAuthCallback callback);
 
     /**
      * Fetch a token. No guarantees are provided for validity.
+     * @param username Username
+     * @return Token string
+     * @throws AuthenticationFailedException
      */
     String getToken(String username, long timeoutMillis) throws AuthenticationFailedException;
 
@@ -48,13 +63,4 @@ public interface OAuth2TokenProvider {
      */
     void invalidateToken(String username);
 
-
-    /**
-     * Provides an asynchronous response to an
-     * {@link OAuth2TokenProvider#authorizeApi(String, Activity, OAuth2TokenProviderAuthCallback)} request.
-     */
-    interface OAuth2TokenProviderAuthCallback {
-        void success();
-        void failure(AuthorizationException e);
-    }
 }

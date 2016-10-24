@@ -41,7 +41,9 @@ public abstract class RemoteStore extends Store {
     /**
      * Get an instance of a remote mail store.
      */
-    public static synchronized Store getInstance(Context context, StoreConfig storeConfig) throws MessagingException {
+    public synchronized static Store getInstance(Context context, StoreConfig storeConfig,
+                                                 OAuth2TokenProvider oAuth2TokenProvider)
+            throws MessagingException {
         String uri = storeConfig.getStoreUri();
 
         if (uri.startsWith("local")) {
@@ -51,12 +53,13 @@ public abstract class RemoteStore extends Store {
         Store store = sStores.get(uri);
         if (store == null) {
             if (uri.startsWith("imap")) {
-                OAuth2TokenProvider oAuth2TokenProvider = null;
                 store = new ImapStore(
-                        storeConfig,
-                        new DefaultTrustedSocketFactory(context),
-                        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE),
-                        oAuth2TokenProvider);
+                            storeConfig,
+                            new DefaultTrustedSocketFactory(context),
+                            (ConnectivityManager) context
+                                    .getSystemService(Context.CONNECTIVITY_SERVICE),
+                            oAuth2TokenProvider
+                        );
             } else if (uri.startsWith("pop3")) {
                 store = new Pop3Store(storeConfig, new DefaultTrustedSocketFactory(context));
             } else if (uri.startsWith("webdav")) {

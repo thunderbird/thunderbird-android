@@ -396,6 +396,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_auth_type_normal_password">Normal password</string>
     <string name="account_setup_auth_type_insecure_password">Password, transmitted insecurely</string>
     <string name="account_setup_auth_type_encrypted_password">Encrypted password</string>
+    <string name="account_setup_auth_type_xoauth2">OAuth 2.0 Token</string>
     <string name="account_setup_auth_type_tls_client_certificate">Client certificate</string>
 
     <string name="account_setup_incoming_title">Incoming server settings</string>
@@ -1124,6 +1125,7 @@ Please submit bug reports, contribute new features and ask questions at
     
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
+    <string name="account_setup_basics_oauth2_token">Use OAuth 2.0 token</string>
     <string name="client_certificate_spinner_empty">No client certificate</string>
     <string name="client_certificate_spinner_delete">Remove client certificate selection</string>
     <string name="client_certificate_retrieval_failure">"Failed to retrieve client certificate for alias \"<xliff:g id="alias">%s</xliff:g>\""</string>
@@ -1250,4 +1252,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_description_helper_text">Optional</string>
     <string name="add_email">Add email</string>
     <string name="manual_setup">Manual Setup</string>
+
+    <string name="xoauth2_auth_cancelled_by_user">Authentication cancelled</string>
+    <string name="xoauth2_unable_to_contact_auth_server">Unable to contact authentication server</string>
+    <string name="xoauth2_error_contacting_auth_server">Error contacting authentication server</string>
+    <string name="xoauth2_account_doesnt_exist">Account doesn\'t exist</string>
+    <string name="xoauth2_incorrect_auth_info_provided">Incorrect auth info provided</string>
+    <string name="xoauth2_no_account">No account provided</string>
 </resources>

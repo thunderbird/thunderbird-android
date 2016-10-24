@@ -350,9 +350,11 @@ public class SettingsImporter {
         String storeUri = RemoteStore.createStoreUri(incoming);
         putString(editor, accountKeyPrefix + Account.STORE_URI_KEY, Base64.encode(storeUri));
 
-        // Mark account as disabled if the AuthType isn't EXTERNAL and the
+        // Mark account as disabled if the AuthType isn't EXTERNAL or XOAUTH2 and the
         // settings file didn't contain a password
-        boolean createAccountDisabled = AuthType.EXTERNAL != incoming.authenticationType &&
+        boolean createAccountDisabled =
+                AuthType.EXTERNAL != incoming.authenticationType &&
+                AuthType.XOAUTH2 != incoming.authenticationType &&
                 (incoming.password == null || incoming.password.isEmpty());
 
         if (account.outgoing == null && !ServerSettings.Type.WebDAV.name().equals(account.incoming.type)) {
@@ -371,7 +373,9 @@ public class SettingsImporter {
              * is required for the outgoing server for WebDAV accounts, because incoming and outgoing servers are 
              * identical for this account type. Nor is a password required if the AuthType is EXTERNAL.
              */
-            boolean outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
+            boolean outgoingPasswordNeeded =
+                    AuthType.EXTERNAL != outgoing.authenticationType &&
+                    AuthType.XOAUTH2 != outgoing.authenticationType &&
                     !(ServerSettings.Type.WebDAV == outgoing.type) &&
                     outgoing.username != null &&
                     !outgoing.username.isEmpty() &&

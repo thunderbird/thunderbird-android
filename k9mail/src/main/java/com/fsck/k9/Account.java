@@ -29,6 +29,7 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import timber.log.Timber;
 
+import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
@@ -1341,7 +1342,7 @@ public class Account implements BaseAccount, AccountConfig {
     }
 
     public Store getRemoteStore() throws MessagingException {
-        return RemoteStore.getInstance(K9.app, this);
+        return RemoteStore.getInstance(K9.app, this, Globals.getOAuth2TokenProvider());
     }
 
     // It'd be great if this actually went into the store implementation

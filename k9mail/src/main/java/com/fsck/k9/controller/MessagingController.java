@@ -48,11 +48,13 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BuildConfig;
+import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ActivityListener;
+import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -2723,7 +2725,7 @@ public class MessagingController {
             Timber.i("Scanning folder '%s' (%d) for messages to send",
                     account.getOutboxFolderName(), localFolder.getDatabaseId());
 
-            Transport transport = transportProvider.getTransport(K9.app, account);
+            Transport transport = transportProvider.getTransport(K9.app, account, Globals.getOAuth2TokenProvider());
 
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
