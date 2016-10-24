@@ -20,17 +20,20 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.EmailAddressValidator;
+import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.UrlEncodingHelper;
@@ -39,6 +42,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.view.ClientCertificateSpinner;
@@ -52,7 +56,7 @@ import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListe
  * AccountSetupAccountType activity.
  */
 public class AccountSetupBasics extends K9Activity
-    implements OnClickListener, TextWatcher, OnCheckedChangeListener, OnClientCertificateChangedListener {
+    implements OnClickListener, TextWatcher, OnClientCertificateChangedListener {
     private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
@@ -64,6 +68,8 @@ public class AccountSetupBasics extends K9Activity
     private EditText mPasswordView;
     private CheckBox mClientCertificateCheckBox;
     private ClientCertificateSpinner mClientCertificateSpinner;
+    private CheckBox mOAuth2CheckBox;
+    private Spinner mAccountSpinner;
     private Button mNextButton;
     private Button mManualSetupButton;
     private Account mAccount;
@@ -86,6 +92,12 @@ public class AccountSetupBasics extends K9Activity
         mPasswordView = (EditText)findViewById(R.id.account_password);
         mClientCertificateCheckBox = (CheckBox)findViewById(R.id.account_client_certificate);
         mClientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
+        mOAuth2CheckBox = (CheckBox)findViewById(R.id.account_oauth2);
+        mAccountSpinner = (Spinner)findViewById(R.id.account_spinner);
+        OAuth2TokenProvider oAuth2TokenProvider = Globals.getOAuth2TokenProvider();
+        ArrayAdapter<String>  adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, oAuth2TokenProvider.getAccounts());
+        mAccountSpinner.setAdapter(adapter);
         mNextButton = (Button)findViewById(R.id.next);
         mManualSetupButton = (Button)findViewById(R.id.manual_setup);
         mShowPasswordCheckBox = (CheckBox) findViewById(R.id.show_password);
@@ -96,9 +108,29 @@ public class AccountSetupBasics extends K9Activity
     private void initializeViewListeners() {
         mEmailView.addTextChangedListener(this);
         mPasswordView.addTextChangedListener(this);
-        mClientCertificateCheckBox.setOnCheckedChangeListener(this);
+        mClientCertificateCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                updateViewVisibility(mClientCertificateCheckBox.isChecked(), mOAuth2CheckBox.isChecked());
+                validateFields();
+
+                if (isChecked) {
+                    // Have the user select (or confirm) the client certificate
+                    mClientCertificateSpinner.chooseCertificate();
+                }
+            }
+        });
         mClientCertificateSpinner.setOnClientCertificateChangedListener(this);
-        mShowPasswordCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+        mOAuth2CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                updateViewVisibility(mClientCertificateCheckBox.isChecked(), mOAuth2CheckBox.isChecked());
+                validateFields();
+            }
+        });
+
+        mShowPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 showPassword(isChecked);
@@ -134,7 +166,7 @@ public class AccountSetupBasics extends K9Activity
 
         mCheckedIncoming = savedInstanceState.getBoolean(STATE_KEY_CHECKED_INCOMING);
 
-        updateViewVisibility(mClientCertificateCheckBox.isChecked());
+        updateViewVisibility(mClientCertificateCheckBox.isChecked(), mOAuth2CheckBox.isChecked());
 
         showPassword(mShowPasswordCheckBox.isChecked());
     }
@@ -169,31 +201,29 @@ public class AccountSetupBasics extends K9Activity
         validateFields();
     }
 
-    /**
-     * Called when checking the client certificate CheckBox
-     */
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        updateViewVisibility(isChecked);
-        validateFields();
-
-        // Have the user select (or confirm) the client certificate
-        if (isChecked) {
-            mClientCertificateSpinner.chooseCertificate();
-        }
-    }
-
-    private void updateViewVisibility(boolean usingCertificates) {
+    private void updateViewVisibility(boolean usingCertificates, boolean usingXoauth) {
         if (usingCertificates) {
             // hide password fields, show client certificate spinner
             mPasswordView.setVisibility(View.GONE);
             mShowPasswordCheckBox.setVisibility(View.GONE);
             mClientCertificateSpinner.setVisibility(View.VISIBLE);
+            mOAuth2CheckBox.setEnabled(false);
+        } else if (usingXoauth) {
+            // hide username and password fields, show account spinner
+            mEmailView.setVisibility(View.GONE);
+            mAccountSpinner.setVisibility(View.VISIBLE);
+            mClientCertificateCheckBox.setEnabled(false);
+            mShowPasswordCheckBox.setVisibility(View.GONE);
+            mPasswordView.setVisibility(View.GONE);
         } else {
-            // show password fields, hide client certificate spinner
+            // show username & password fields, hide client certificate spinner
+            mEmailView.setVisibility(View.VISIBLE);
+            mAccountSpinner.setVisibility(View.GONE);
             mPasswordView.setVisibility(View.VISIBLE);
             mShowPasswordCheckBox.setVisibility(View.VISIBLE);
             mClientCertificateSpinner.setVisibility(View.GONE);
+            mClientCertificateCheckBox.setEnabled(true);
+            mOAuth2CheckBox.setEnabled(true);
         }
     }
 
@@ -209,13 +239,18 @@ public class AccountSetupBasics extends K9Activity
 
     private void validateFields() {
         boolean clientCertificateChecked = mClientCertificateCheckBox.isChecked();
+        boolean oauth2Checked = mOAuth2CheckBox.isChecked();
         String clientCertificateAlias = mClientCertificateSpinner.getAlias();
         String email = mEmailView.getText().toString();
 
-        boolean valid = Utility.requiredFieldValid(mEmailView)
+        boolean valid =
+                (oauth2Checked
+                        && mAccountSpinner.getSelectedItem() != null
+                        && mAccountSpinner.getSelectedItem().toString() != null
+                        && !mAccountSpinner.getSelectedItem().toString().isEmpty()) ||
+                ( Utility.requiredFieldValid(mEmailView)
                 && ((!clientCertificateChecked && Utility.requiredFieldValid(mPasswordView))
-                        || (clientCertificateChecked && clientCertificateAlias != null))
-                && mEmailValidator.isValidAddressOnly(email);
+                        || (clientCertificateChecked && clientCertificateAlias != null)));
 
         mNextButton.setEnabled(valid);
         mManualSetupButton.setEnabled(valid);
@@ -273,7 +308,14 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void finishAutoSetup() {
-        String email = mEmailView.getText().toString();
+        boolean usingXOAuth2 = mOAuth2CheckBox.isChecked();
+
+        String email;
+        if (usingXOAuth2) {
+            email = mAccountSpinner.getSelectedItem().toString();
+        } else {
+            email = mEmailView.getText().toString();
+        }
         String password = mPasswordView.getText().toString();
         String[] emailParts = splitEmail(email);
         String user = emailParts[0];
@@ -288,8 +330,12 @@ public class AccountSetupBasics extends K9Activity
             incomingUsername = incomingUsername.replaceAll("\\$domain", domain);
 
             URI incomingUriTemplate = mProvider.incomingUriTemplate;
-            URI incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUsername + ":" + passwordEnc,
-                    incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null, null, null);
+            String incomingUserInfo = incomingUsername + ":" + passwordEnc;
+            if (usingXOAuth2)
+                incomingUserInfo = AuthType.XOAUTH2 + ":"+incomingUserInfo;
+            URI incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUserInfo,
+                    incomingUriTemplate.getHost(), incomingUriTemplate.getPort(),
+                    null, null, null);
 
             String outgoingUsername = mProvider.outgoingUsernameTemplate;
 
@@ -301,9 +347,14 @@ public class AccountSetupBasics extends K9Activity
                 outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
                 outgoingUsername = outgoingUsername.replaceAll("\\$user", userEnc);
                 outgoingUsername = outgoingUsername.replaceAll("\\$domain", domain);
-                outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUsername + ":"
-                                      + passwordEnc, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
-                                      null, null);
+
+                String outgoingUserInfo = outgoingUsername + ":" + passwordEnc;
+                if (usingXOAuth2) {
+                    outgoingUserInfo = outgoingUserInfo + ":" + AuthType.XOAUTH2;
+                }
+                outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUserInfo,
+                        outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
+                        null, null);
 
             } else {
                 outgoingUri = new URI(outgoingUriTemplate.getScheme(),
@@ -338,13 +389,18 @@ public class AccountSetupBasics extends K9Activity
 
     private void onNext() {
         if (mClientCertificateCheckBox.isChecked()) {
-
             // Auto-setup doesn't support client certificates.
             onManualSetup();
             return;
         }
 
-        String email = mEmailView.getText().toString();
+        String email;
+
+        if (mEmailView.getVisibility() == View.VISIBLE) {
+            email = mEmailView.getText().toString();
+        } else {
+            email = mAccountSpinner.getSelectedItem().toString();
+        }
         String[] emailParts = splitEmail(email);
         String domain = emailParts[1];
         mProvider = findProviderForDomain(domain);
@@ -356,6 +412,7 @@ public class AccountSetupBasics extends K9Activity
             onManualSetup();
             return;
         }
+        Log.i(K9.LOG_TAG, "Provider found, using automatic set-up");
 
         if (mProvider.note != null) {
             showDialog(DIALOG_NOTE);
@@ -383,7 +440,12 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void onManualSetup() {
-        String email = mEmailView.getText().toString();
+        String email;
+        if (mOAuth2CheckBox.isChecked()) {
+            email = mAccountSpinner.getSelectedItem().toString();
+        } else {
+            email = mEmailView.getText().toString();
+        }
         String[] emailParts = splitEmail(email);
         String user = email;
         String domain = emailParts[1];
@@ -394,6 +456,8 @@ public class AccountSetupBasics extends K9Activity
         if (mClientCertificateCheckBox.isChecked()) {
             authenticationType = AuthType.EXTERNAL;
             clientCertificateAlias = mClientCertificateSpinner.getAlias();
+        } else if (mOAuth2CheckBox.isChecked()) {
+            authenticationType = AuthType.XOAUTH2;
         } else {
             authenticationType = AuthType.PLAIN;
             password = mPasswordView.getText().toString();
@@ -450,11 +514,10 @@ public class AccountSetupBasics extends K9Activity
     }
 
     /**
-     * Attempts to get the given attribute as a String resource first, and if it fails
-     * returns the attribute as a simple String value.
-     * @param xml
-     * @param name
-     * @return
+     * @param xml XML Parser
+     * @param name Attribute name
+     * @return the given attribute as a String resource first, or if it fails,
+     * the attribute as a simple String value.
      */
     private String getXmlAttribute(XmlResourceParser xml, String name) {
         int resId = xml.getAttributeResourceValue(null, name, 0);

@@ -27,6 +27,14 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent" />
 
+            <Spinner
+                android:id="@+id/account_spinner"
+                android:hint="@string/account_setup_basics_email_hint"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+            </Spinner>
+
             <EditText
                 android:id="@+id/account_password"
                 android:inputType="textPassword"
@@ -61,6 +69,12 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/account_setup_basics_client_certificate" />
+
+                <CheckBox
+                    android:id="@+id/account_oauth2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_setup_basics_oauth2_token" />
             </com.fsck.k9.view.FoldableLinearLayout>
 
             <View

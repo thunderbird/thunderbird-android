@@ -1,6 +1,9 @@
 
 package com.fsck.k9.activity.setup;
 
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +30,8 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.oauth.AuthorizationException;
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
@@ -45,6 +50,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
+    private static final String GMAIL_AUTH_TOKEN_TYPE = "oauth2:https://mail.google.com/";
 
     private Type mStoreType;
     private EditText mUsernameView;
@@ -156,6 +162,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
 
         try {
+            Log.i(K9.LOG_TAG, "Setting up based on settings: " + mAccount.getStoreUri());
             ServerSettings settings = RemoteStore.decodeStoreUri(mAccount.getStoreUri());
 
             if (savedInstanceState == null) {
@@ -384,16 +391,20 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private void updateViewFromAuthType() {
         AuthType authType = getSelectedAuthType();
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
+        boolean isAuthTypeXOAuth2 = (AuthType.XOAUTH2 == authType);
 
         if (isAuthTypeExternal) {
-
             // hide password fields, show client certificate fields
             mPasswordView.setVisibility(View.GONE);
             mPasswordLabelView.setVisibility(View.GONE);
             mClientCertificateLabelView.setVisibility(View.VISIBLE);
             mClientCertificateSpinner.setVisibility(View.VISIBLE);
+        } else if (isAuthTypeXOAuth2) {
+            mPasswordView.setVisibility(View.GONE);
+            mPasswordLabelView.setVisibility(View.GONE);
+            mClientCertificateLabelView.setVisibility(View.GONE);
+            mClientCertificateSpinner.setVisibility(View.GONE);
         } else {
-
             // show password fields, hide client certificate fields
             mPasswordView.setVisibility(View.VISIBLE);
             mPasswordLabelView.setVisibility(View.VISIBLE);
@@ -410,6 +421,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private void validateFields() {
         AuthType authType = getSelectedAuthType();
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
+        boolean isAuthTypeXOAuth2 = (AuthType.XOAUTH2 == authType);
 
         ConnectionSecurity connectionSecurity = getSelectedSecurity();
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
@@ -456,7 +468,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         boolean hasValidUserName = Utility.requiredFieldValid(mUsernameView);
 
         boolean hasValidPasswordSettings = hasValidUserName
-                && !isAuthTypeExternal
+                && !isAuthTypeExternal && !isAuthTypeXOAuth2
                 && Utility.requiredFieldValid(mPasswordView);
 
         boolean hasValidExternalAuthSettings = hasValidUserName
@@ -464,9 +476,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 && hasConnectionSecurity
                 && hasValidCertificateAlias;
 
+        boolean hasValidXOAuth2Settings = hasValidUserName
+                && isAuthTypeXOAuth2;
+
         mNextButton.setEnabled(Utility.domainFieldValid(mServerView)
                 && Utility.requiredFieldValid(mPortView)
-                && (hasValidPasswordSettings || hasValidExternalAuthSettings));
+                && (hasValidPasswordSettings || hasValidExternalAuthSettings || hasValidXOAuth2Settings));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -538,55 +553,69 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     protected void onNext() {
-        try {
-            ConnectionSecurity connectionSecurity = getSelectedSecurity();
+        AuthType authType = getSelectedAuthType();
+        if (authType == AuthType.XOAUTH2) {
+            Globals.getOAuth2TokenProvider().authorizeAPI(mAccount.getEmail(), this,
+                    new OAuth2TokenProvider.OAuth2TokenProviderAuthCallback() {
+                @Override
+                public void success() {
+                    updateAccountSettings("");
+                    AccountSetupCheckSettings.actionCheckSettings(
+                            AccountSetupIncoming.this, mAccount, CheckDirection.INCOMING);
+                }
 
-            String username = mUsernameView.getText().toString();
-            String password = null;
-            String clientCertificateAlias = null;
+                @Override
+                public void failure(AuthorizationException e) {
+                    AccountSetupIncoming.this.failure(e);
+                }
+            });
+            return;
+        }
+        updateAccountSettings(mPasswordView.getText().toString());
+        AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
+    }
 
-            AuthType authType = getSelectedAuthType();
-            if (authType == AuthType.EXTERNAL) {
-                clientCertificateAlias = mClientCertificateSpinner.getAlias();
-            } else {
-                password = mPasswordView.getText().toString();
-            }
-            String host = mServerView.getText().toString();
-            int port = Integer.parseInt(mPortView.getText().toString());
+    private void updateAccountSettings(String password) {
+        ConnectionSecurity connectionSecurity = getSelectedSecurity();
 
-            Map<String, String> extra = null;
-            if (Type.IMAP == mStoreType) {
-                extra = new HashMap<String, String>();
-                extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
-                        Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
-                extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
-                        mImapPathPrefixView.getText().toString());
-            } else if (Type.WebDAV == mStoreType) {
-                extra = new HashMap<String, String>();
-                extra.put(WebDavStoreSettings.PATH_KEY,
-                        mWebdavPathPrefixView.getText().toString());
-                extra.put(WebDavStoreSettings.AUTH_PATH_KEY,
-                        mWebdavAuthPathView.getText().toString());
-                extra.put(WebDavStoreSettings.MAILBOX_PATH_KEY,
-                        mWebdavMailboxPathView.getText().toString());
-            }
+        String username = mUsernameView.getText().toString();
+        String clientCertificateAlias = null;
 
-            mAccount.deleteCertificate(host, port, CheckDirection.INCOMING);
-            ServerSettings settings = new ServerSettings(mStoreType, host, port,
-                    connectionSecurity, authType, username, password, clientCertificateAlias, extra);
-
-            mAccount.setStoreUri(RemoteStore.createStoreUri(settings));
-
-            mAccount.setCompression(NetworkType.MOBILE, mCompressionMobile.isChecked());
-            mAccount.setCompression(NetworkType.WIFI, mCompressionWifi.isChecked());
-            mAccount.setCompression(NetworkType.OTHER, mCompressionOther.isChecked());
-            mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
-
-            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
-        } catch (Exception e) {
-            failure(e);
+        AuthType authType = getSelectedAuthType();
+        if (authType == AuthType.EXTERNAL) {
+            clientCertificateAlias = mClientCertificateSpinner.getAlias();
         }
 
+        String host = mServerView.getText().toString();
+        int port = Integer.parseInt(mPortView.getText().toString());
+
+        Map<String, String> extra = null;
+        if (Type.IMAP == mStoreType) {
+            extra = new HashMap<String, String>();
+            extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
+                    Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
+            extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
+                    mImapPathPrefixView.getText().toString());
+        } else if (Type.WebDAV == mStoreType) {
+            extra = new HashMap<String, String>();
+            extra.put(WebDavStoreSettings.PATH_KEY,
+                    mWebdavPathPrefixView.getText().toString());
+            extra.put(WebDavStoreSettings.AUTH_PATH_KEY,
+                    mWebdavAuthPathView.getText().toString());
+            extra.put(WebDavStoreSettings.MAILBOX_PATH_KEY,
+                    mWebdavMailboxPathView.getText().toString());
+        }
+
+        mAccount.deleteCertificate(host, port, CheckDirection.INCOMING);
+        ServerSettings settings = new ServerSettings(mStoreType, host, port,
+                connectionSecurity, authType, username, password, clientCertificateAlias, extra);
+
+        mAccount.setStoreUri(RemoteStore.createStoreUri(settings));
+
+        mAccount.setCompression(NetworkType.MOBILE, mCompressionMobile.isChecked());
+        mAccount.setCompression(NetworkType.WIFI, mCompressionWifi.isChecked());
+        mAccount.setCompression(NetworkType.OTHER, mCompressionOther.isChecked());
+        mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
     }
 
     public void onClick(View v) {

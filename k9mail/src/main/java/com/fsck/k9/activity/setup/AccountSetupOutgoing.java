@@ -330,17 +330,19 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private void updateViewFromAuthType() {
         AuthType authType = getSelectedAuthType();
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
+        boolean isAuthTypeXOAuth2 = (AuthType.XOAUTH2 == authType);
 
         if (isAuthTypeExternal) {
-
-            // hide password fields, show client certificate fields
             mPasswordView.setVisibility(View.GONE);
             mPasswordLabelView.setVisibility(View.GONE);
             mClientCertificateLabelView.setVisibility(View.VISIBLE);
             mClientCertificateSpinner.setVisibility(View.VISIBLE);
+        } else if (isAuthTypeXOAuth2) {
+            mPasswordView.setVisibility(View.GONE);
+            mPasswordLabelView.setVisibility(View.GONE);
+            mClientCertificateLabelView.setVisibility(View.GONE);
+            mClientCertificateSpinner.setVisibility(View.GONE);
         } else {
-
-            // show password fields, hide client certificate fields
             mPasswordView.setVisibility(View.VISIBLE);
             mPasswordLabelView.setVisibility(View.VISIBLE);
             mClientCertificateLabelView.setVisibility(View.GONE);
@@ -356,6 +358,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private void validateFields() {
         AuthType authType = getSelectedAuthType();
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
+        boolean isAuthTypeXOAuth2 = (AuthType.XOAUTH2 == authType);
 
         ConnectionSecurity connectionSecurity = getSelectedSecurity();
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
@@ -410,11 +413,16 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 && hasConnectionSecurity
                 && hasValidCertificateAlias;
 
+        boolean hasValidXOAuth2Settings = hasValidUserName
+                && isAuthTypeXOAuth2;
+
         mNextButton
                 .setEnabled(Utility.domainFieldValid(mServerView)
                         && Utility.requiredFieldValid(mPortView)
                         && (!mRequireLoginView.isChecked()
-                                || hasValidPasswordSettings || hasValidExternalAuthSettings));
+                                || hasValidPasswordSettings
+                                || hasValidExternalAuthSettings
+                                || hasValidXOAuth2Settings));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
