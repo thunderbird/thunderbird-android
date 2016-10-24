@@ -17,6 +17,88 @@ import static org.junit.Assert.assertNull;
 
 public class ImapStoreUriTest {
     @Test
+    public void testDecodeStoreUriImapNoAuth() {
+        String uri = "imap://user:pass@server/";
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
+
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
+        assertEquals("user", settings.username);
+        assertEquals("pass", settings.password);
+        assertEquals("server", settings.host);
+    }
+
+    @Test
+    public void testDecodeStoreUriImapNoPassword() {
+        String uri = "imap://user:@server/";
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
+
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
+        assertEquals("user", settings.username);
+        assertEquals(null, settings.password);
+        assertEquals("server", settings.host);
+    }
+
+    @Test
+    public void testDecodeStoreUriImapPlainNoPassword() {
+        String uri = "imap://PLAIN:user:@server/";
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
+
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
+        assertEquals("user", settings.username);
+        assertEquals(null, settings.password);
+        assertEquals("server", settings.host);
+    }
+
+    @Test
+    public void testDecodeStoreUriImapExternalAuth() {
+        String uri = "imap://EXTERNAL:user:clientCertAlias@server/";
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
+
+        assertEquals(AuthType.EXTERNAL, settings.authenticationType);
+        assertEquals("user", settings.username);
+        assertEquals(null, settings.password);
+        assertEquals("clientCertAlias", settings.clientCertificateAlias);
+        assertEquals("server", settings.host);
+    }
+
+    @Test
+    public void testDecodeStoreUriImapXOAuth2() {
+        String uri = "imap://XOAUTH2:user:@server/";
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
+
+        assertEquals(AuthType.XOAUTH2, settings.authenticationType);
+        assertEquals("user", settings.username);
+        assertEquals(null, settings.password);
+        assertEquals(null, settings.clientCertificateAlias);
+        assertEquals("server", settings.host);
+    }
+
+    @Test
+    public void testDecodeStoreUriImapSSL() {
+        String uri = "imap+tls+://PLAIN:user:pass@server/";
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
+
+        assertEquals(ConnectionSecurity.STARTTLS_REQUIRED, settings.connectionSecurity);
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
+        assertEquals("user", settings.username);
+        assertEquals("pass", settings.password);
+        assertEquals("server", settings.host);
+    }
+
+    @Test
+    public void testDecodeStoreUriImapTLS() {
+        String uri = "imap+ssl+://PLAIN:user:pass@server/";
+        ServerSettings settings = RemoteStore.decodeStoreUri(uri);
+
+        assertEquals(ConnectionSecurity.SSL_TLS_REQUIRED, settings.connectionSecurity);
+        assertEquals(AuthType.PLAIN, settings.authenticationType);
+        assertEquals("user", settings.username);
+        assertEquals("pass", settings.password);
+        assertEquals("server", settings.host);
+    }
+
+
+    @Test
     public void testDecodeStoreUriImapAllExtras() {
         String uri = "imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix";
         ServerSettings settings = RemoteStore.decodeStoreUri(uri);

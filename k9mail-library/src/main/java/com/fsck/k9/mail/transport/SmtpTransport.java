@@ -2,6 +2,7 @@
 package com.fsck.k9.mail.transport;
 
 import android.support.annotation.VisibleForTesting;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.mail.*;
@@ -13,6 +14,8 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
+import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 
@@ -31,7 +34,11 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 
 public class SmtpTransport extends Transport {
+    public static final int SMTP_CONTINUE_REQUEST = 334;
+    public static final int SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535;
+
     private TrustedSocketFactory mTrustedSocketFactory;
+    private OAuth2TokenProvider oauthTokenProvider;
 
     /**
      * Decodes a SmtpTransport URI.
@@ -103,7 +110,7 @@ public class SmtpTransport extends Transport {
                 username = decodeUtf8(userInfoParts[0]);
                 password = decodeUtf8(userInfoParts[1]);
             } else if (userInfoParts.length == 3) {
-                // NOTE: In SmptTransport URIs, the authType comes last!
+                // NOTE: In SmtpTransport URIs, the authType comes last!
                 authType = AuthType.valueOf(userInfoParts[2]);
                 username = decodeUtf8(userInfoParts[0]);
                 if (authType == AuthType.EXTERNAL) {
@@ -184,8 +191,10 @@ public class SmtpTransport extends Transport {
     private OutputStream mOut;
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
+    private boolean retryXoauthWithNewToken;
 
-    public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory)
+    public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
+                         OAuth2TokenProvider oauth2TokenProvider)
             throws MessagingException {
         ServerSettings settings;
         try {
@@ -204,6 +213,7 @@ public class SmtpTransport extends Transport {
         mPassword = settings.password;
         mClientCertificateAlias = settings.clientCertificateAlias;
         mTrustedSocketFactory = trustedSocketFactory;
+        oauthTokenProvider = oauth2TokenProvider;
     }
 
     @Override
@@ -301,18 +311,21 @@ public class SmtpTransport extends Transport {
             boolean authPlainSupported = false;
             boolean authCramMD5Supported = false;
             boolean authExternalSupported = false;
+            boolean authXoauth2Supported = false;
             if (extensions.containsKey("AUTH")) {
                 List<String> saslMech = Arrays.asList(extensions.get("AUTH").split(" "));
                 authLoginSupported = saslMech.contains("LOGIN");
                 authPlainSupported = saslMech.contains("PLAIN");
                 authCramMD5Supported = saslMech.contains("CRAM-MD5");
                 authExternalSupported = saslMech.contains("EXTERNAL");
+                authXoauth2Supported = saslMech.contains("XOAUTH2");
             }
             parseOptionalSizeValue(extensions);
 
-            if (mUsername != null
-                    && mUsername.length() > 0
-                    && (mPassword != null && mPassword.length() > 0 || AuthType.EXTERNAL == mAuthType)) {
+            if (!TextUtils.isEmpty(mUsername)
+                    && (!TextUtils.isEmpty(mPassword) ||
+                        AuthType.EXTERNAL == mAuthType ||
+                        AuthType.XOAUTH2 == mAuthType)) {
 
                 switch (mAuthType) {
 
@@ -340,7 +353,13 @@ public class SmtpTransport extends Transport {
                         throw new MessagingException("Authentication method CRAM-MD5 is unavailable.");
                     }
                     break;
-
+                case XOAUTH2:
+                    if (authXoauth2Supported) {
+                        saslXoauth2(mUsername);
+                    } else {
+                        throw new MessagingException("Authentication method XOAUTH2 is unavailable.");
+                    }
+                    break;
                 case EXTERNAL:
                     if (authExternalSupported) {
                         saslAuthExternal(mUsername);
@@ -499,7 +518,6 @@ public class SmtpTransport extends Transport {
 
     private void sendMessageTo(List<String> addresses, Message message)
     throws MessagingException {
-
         close();
         open();
 
@@ -638,12 +656,23 @@ public class SmtpTransport extends Transport {
 
             throw new NegativeSmtpReplyException(replyCode, message);
         }
-    }
 
+    }
+    @Deprecated
     private List<String> executeSimpleCommand(String command) throws IOException, MessagingException {
         return executeSimpleCommand(command, false);
     }
 
+    /**
+     * TODO:  All responses should be checked to confirm that they start with a valid
+     * reply code, and that the reply code is appropriate for the command being executed.
+     * That means it should either be a 2xx code (generally) or a 3xx code in special cases
+     * (e.g., DATA & AUTH LOGIN commands).  Reply codes should be made available as part of
+     * the returned object.
+     *
+     * This should be doing using the non-deprecated API below.
+     */
+    @Deprecated
     private List<String> executeSimpleCommand(String command, boolean sensitive)
     throws IOException, MessagingException {
         List<String> results = new ArrayList<String>();
@@ -651,17 +680,66 @@ public class SmtpTransport extends Transport {
             writeLine(command, sensitive);
         }
 
-        /*
-         * Read lines as long as the length is 4 or larger, e.g. "220-banner text here".
-         * Shorter lines are either errors of contain only a reply code. Those cases will
-         * be handled by checkLine() below.
-         *
-         * TODO:  All responses should be checked to confirm that they start with a valid
-         * reply code, and that the reply code is appropriate for the command being executed.
-         * That means it should either be a 2xx code (generally) or a 3xx code in special cases
-         * (e.g., DATA & AUTH LOGIN commands).  Reply codes should be made available as part of
-         * the returned object.
-         */
+        String line = readCommandResponseLine(results);
+
+        // Check if the reply code indicates an error.
+        checkLine(line);
+
+        return results;
+    }
+
+    private static class CommandResponse {
+
+        private final int replyCode;
+        private final String message;
+
+        public CommandResponse(int replyCode, String message) {
+            this.replyCode = replyCode;
+            this.message = message;
+        }
+    }
+
+    private CommandResponse executeSimpleCommandWithResponse(String command, boolean sensitive) throws IOException, MessagingException {
+        List<String> results = new ArrayList<String>();
+        if (command != null) {
+            writeLine(command, sensitive);
+        }
+
+        String line = readCommandResponseLine(results);
+
+        int length = line.length();
+        if (length < 1) {
+            throw new MessagingException("SMTP response is 0 length");
+        }
+
+        int replyCode = -1;
+        String message = line;
+        if (length >= 3) {
+            try {
+                replyCode = Integer.parseInt(line.substring(0, 3));
+            } catch (NumberFormatException e) { /* ignore */ }
+
+            if (length > 4) {
+                message = line.substring(4);
+            } else {
+                message = "";
+            }
+        }
+
+        char c = line.charAt(0);
+        if ((c == '4') || (c == '5')) {
+            throw new NegativeSmtpReplyException(replyCode, message);
+        }
+
+        return new CommandResponse(replyCode, message);
+    }
+
+
+    /*
+     * Read lines as long as the length is 4 or larger, e.g. "220-banner text here".
+     * Shorter lines are either errors of contain only a reply code.
+     */
+    private String readCommandResponseLine(List<String> results) throws IOException {
         String line = readLine();
         while (line.length() >= 4) {
             if (line.length() > 4) {
@@ -675,11 +753,7 @@ public class SmtpTransport extends Transport {
             }
             line = readLine();
         }
-
-        // Check if the reply code indicates an error.
-        checkLine(line);
-
-        return results;
+        return line;
     }
 
 
@@ -707,7 +781,7 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand(Base64.encode(username), true);
             executeSimpleCommand(Base64.encode(password), true);
         } catch (NegativeSmtpReplyException exception) {
-            if (exception.getReplyCode() == 535) {
+            if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 // Authentication credentials invalid
                 throw new AuthenticationFailedException("AUTH LOGIN failed ("
                         + exception.getMessage() + ")");
@@ -723,7 +797,7 @@ public class SmtpTransport extends Transport {
         try {
             executeSimpleCommand("AUTH PLAIN " + data, true);
         } catch (NegativeSmtpReplyException exception) {
-            if (exception.getReplyCode() == 535) {
+            if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 // Authentication credentials invalid
                 throw new AuthenticationFailedException("AUTH PLAIN failed ("
                         + exception.getMessage() + ")");
@@ -747,12 +821,76 @@ public class SmtpTransport extends Transport {
         try {
             executeSimpleCommand(b64CRAMString, true);
         } catch (NegativeSmtpReplyException exception) {
-            if (exception.getReplyCode() == 535) {
+            if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 // Authentication credentials invalid
                 throw new AuthenticationFailedException(exception.getMessage(), exception);
             } else {
                 throw exception;
             }
+        }
+    }
+
+    private void saslXoauth2(String username) throws MessagingException, IOException {
+        retryXoauthWithNewToken = true;
+        try {
+            attemptXoauth2(username);
+        } catch (NegativeSmtpReplyException negativeResponse) {
+            if (negativeResponse.getReplyCode() != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
+                throw negativeResponse;
+            }
+
+            oauthTokenProvider.invalidateToken(username);
+
+            if (!retryXoauthWithNewToken) {
+                handlePermanentFailure(negativeResponse);
+            } else {
+                handleTemporaryFailure(username, negativeResponse);
+            }
+        }
+    }
+
+    private void handlePermanentFailure(NegativeSmtpReplyException negativeResponse) throws AuthenticationFailedException {
+        throw new AuthenticationFailedException(negativeResponse.getMessage(), negativeResponse);
+    }
+
+    private void handleTemporaryFailure(String username, NegativeSmtpReplyException negativeResponseFromOldToken)
+        throws IOException, MessagingException {
+        // Token was invalid
+
+        //We could avoid this double check if we had a reasonable chance of knowing
+        //if a token was invalid before use (e.g. due to expiry). But we don't
+        //This is the intended behaviour per AccountManager
+
+        Log.v(LOG_TAG, "Authentication exception, re-trying with new token", negativeResponseFromOldToken);
+        try {
+            attemptXoauth2(username);
+        } catch (NegativeSmtpReplyException negativeResponseFromNewToken) {
+            if (negativeResponseFromNewToken.getReplyCode() != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
+                throw negativeResponseFromNewToken;
+            }
+
+            //Okay, we failed on a new token.
+            //Invalidate the token anyway but assume it's permanent.
+            Log.v(LOG_TAG, "Authentication exception for new token, permanent error assumed",
+                    negativeResponseFromNewToken);
+
+            oauthTokenProvider.invalidateToken(username);
+
+            handlePermanentFailure(negativeResponseFromNewToken);
+        }
+    }
+
+    private void attemptXoauth2(String username) throws MessagingException, IOException {
+        CommandResponse response = executeSimpleCommandWithResponse("AUTH XOAUTH2 " +
+                Authentication.computeXoauth(username,
+                        oauthTokenProvider.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT)),
+                true);
+        if(response.replyCode == SMTP_CONTINUE_REQUEST) {
+            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(
+                    response.message, mHost);
+
+            //Per Google spec, respond to challenge with empty response
+            executeSimpleCommandWithResponse("", false);
         }
     }
 
