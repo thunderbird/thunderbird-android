@@ -354,7 +354,7 @@ public class SmtpTransport extends Transport {
                     }
                     break;
                 case XOAUTH2:
-                    if (authXoauth2Supported) {
+                    if (authXoauth2Supported && oauthTokenProvider != null) {
                         saslXoauth2(mUsername);
                     } else {
                         throw new MessagingException("Authentication method XOAUTH2 is unavailable.");

@@ -330,7 +330,8 @@ class ImapConnection {
     private void authenticate() throws MessagingException, IOException {
         switch (settings.getAuthType()) {
             case XOAUTH2:
-                if (hasCapability(Capabilities.AUTH_XOAUTH2) && hasCapability(Capabilities.SASL_IR)) {
+                if (hasCapability(Capabilities.AUTH_XOAUTH2) && hasCapability(Capabilities.SASL_IR)
+                        && oauthTokenProvider != null) {
                     authXoauth2withSASLIR();
                 } else {
                     throw new MessagingException("Server doesn't support SASL XOAUTH2.");
