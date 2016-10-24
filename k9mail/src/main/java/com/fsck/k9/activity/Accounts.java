@@ -779,9 +779,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
              * Don't ask for the password to the outgoing server for WebDAV
              * accounts, because incoming and outgoing servers are identical for
              * this account type. Also don't ask when the username is missing.
-             * Also don't ask when the AuthType is EXTERNAL.
+             * Also don't ask when the AuthType is EXTERNAL or XOAUTH2
              */
             boolean configureOutgoingServer = AuthType.EXTERNAL != outgoing.authenticationType
+                    && AuthType.XOAUTH2 != outgoing.authenticationType
                     && !(ServerSettings.Type.WebDAV == outgoing.type)
                     && outgoing.username != null
                     && !outgoing.username.isEmpty()
@@ -789,6 +790,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                             .isEmpty());
 
             boolean configureIncomingServer = AuthType.EXTERNAL != incoming.authenticationType
+                    && AuthType.XOAUTH2 != incoming.authenticationType
                     && (incoming.password == null || incoming.password
                             .isEmpty());
 

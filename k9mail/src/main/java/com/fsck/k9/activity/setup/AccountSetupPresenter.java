@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.EmailAddressValidator;
+import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -361,7 +362,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
 
-            transport = TransportProvider.getInstance().getTransport(context, accountConfig);
+            transport = TransportProvider.getInstance().getTransport(context, accountConfig,
+                    Globals.getOAuth2TokenProvider());
 
             transport.close();
             try {

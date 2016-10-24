@@ -39,6 +39,8 @@ public class AuthTypeHolder {
                 }
             case CRAM_MD5:
                 return R.string.account_setup_auth_type_encrypted_password;
+            case XOAUTH2:
+                return R.string.account_setup_auth_type_xoauth2;
             case EXTERNAL:
                 return R.string.account_setup_auth_type_tls_client_certificate;
 
