@@ -560,8 +560,14 @@ public class MessageCryptoHelper {
     }
 
     private void onCryptoOperationFailed(OpenPgpError error) {
-        CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpErrorAnnotation(error);
-        addCryptoResultAnnotationToMessage(errorPart);
+        CryptoResultAnnotation annotation;
+        if (currentCryptoPart.type == CryptoPartType.PGP_SIGNED) {
+            MimeBodyPart replacementPart = getMultipartSignedContentPartIfAvailable(currentCryptoPart.part);
+            annotation = CryptoResultAnnotation.createOpenPgpSignatureErrorAnnotation(error, replacementPart);
+        } else {
+            annotation = CryptoResultAnnotation.createOpenPgpEncryptionErrorAnnotation(error);
+        }
+        addCryptoResultAnnotationToMessage(annotation);
         onCryptoFinished();
     }
 
