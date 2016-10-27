@@ -170,7 +170,7 @@ public class AttachmentPresenter {
                 allPartsAvailable = false;
                 continue;
             }
-            if(loadNonInlineAttachments) {
+            if (loadNonInlineAttachments) {
                 addAttachment(attachmentViewInfo);
             }
         }
