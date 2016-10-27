@@ -330,8 +330,11 @@ class ImapConnection {
     private void authenticate() throws MessagingException, IOException {
         switch (settings.getAuthType()) {
             case XOAUTH2:
-                if (hasCapability(Capabilities.AUTH_XOAUTH2) && hasCapability(Capabilities.SASL_IR)
-                        && oauthTokenProvider != null) {
+                if (oauthTokenProvider == null) {
+                    throw new MessagingException("No OAuthToken Provider available.");
+                }
+                if (hasCapability(Capabilities.AUTH_XOAUTH2)
+                        && hasCapability(Capabilities.SASL_IR)) {
                     authXoauth2withSASLIR();
                 } else {
                     throw new MessagingException("Server doesn't support SASL XOAUTH2.");
@@ -376,7 +379,6 @@ class ImapConnection {
         try {
             attemptXOAuth2();
         } catch (NegativeImapResponseException e) {
-            //We couldn't login with the token so invalidate it
             oauthTokenProvider.invalidateToken(settings.getUsername());
 
             if (!retryXoauth2WithNewToken) {
@@ -434,7 +436,7 @@ class ImapConnection {
                     response.getString(0), settings.getHost());
         }
 
-        if(response.isContinuationRequested()) {
+        if (response.isContinuationRequested()) {
             outputStream.write("\r\n".getBytes());
             outputStream.flush();
         }
@@ -720,7 +722,7 @@ class ImapConnection {
     }
 
     public String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
-    throws IOException, MessagingException {
+            throws IOException, MessagingException {
         try {
             open();
 

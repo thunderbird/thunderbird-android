@@ -670,12 +670,12 @@ public class SmtpTransport extends Transport {
      * (e.g., DATA & AUTH LOGIN commands).  Reply codes should be made available as part of
      * the returned object.
      *
-     * This should be doing using the non-deprecated API below.
+     * This should be done using the non-deprecated API below.
      */
     @Deprecated
     private List<String> executeSimpleCommand(String command, boolean sensitive)
     throws IOException, MessagingException {
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         if (command != null) {
             writeLine(command, sensitive);
         }
@@ -700,7 +700,7 @@ public class SmtpTransport extends Transport {
     }
 
     private CommandResponse executeSimpleCommandWithResponse(String command, boolean sensitive) throws IOException, MessagingException {
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         if (command != null) {
             writeLine(command, sensitive);
         }

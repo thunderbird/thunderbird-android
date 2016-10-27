@@ -86,8 +86,10 @@ public class Authentication {
     }
 
     public static String computeXoauth(String username, String authToken) throws UnsupportedEncodingException {
-        return new String(
-                Base64.encodeBase64(String.format(XOAUTH_FORMAT, username, authToken).getBytes()),
-                US_ASCII);
+        String formattedAuthenticationString = String.format(XOAUTH_FORMAT, username, authToken);
+        byte[] base64encodedAuthenticationString =
+                Base64.encodeBase64(formattedAuthenticationString.getBytes());
+
+        return new String(base64encodedAuthenticationString, US_ASCII);
     }
 }

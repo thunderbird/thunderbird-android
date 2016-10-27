@@ -2,6 +2,7 @@ package com.fsck.k9.mail.oauth;
 
 import android.util.Log;
 
+import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.Base64;
 
 import org.json.JSONException;
@@ -19,15 +20,16 @@ public class XOAuth2ChallengeParser {
     public static boolean shouldRetry(String response, String host) {
         String decodedResponse = Base64.decode(response);
 
-        Log.v(LOG_TAG, "Challenge response: "+ decodedResponse);
+        if (K9MailLib.isDebug())
+            Log.v(LOG_TAG, "Challenge response: "+ decodedResponse);
 
         try {
             JSONObject json = new JSONObject(decodedResponse);
-            if(!json.getString("status").equals(BAD_RESPONSE)) {
+            if (!BAD_RESPONSE.equals(json.getString("status"))) {
                 return false;
             }
         } catch (JSONException jsonException) {
-            Log.i(LOG_TAG, "Error decoding JSON response from:"
+            Log.e(LOG_TAG, "Error decoding JSON response from:"
                     + host + ". Response was:" + decodedResponse);
         }
         return true;
