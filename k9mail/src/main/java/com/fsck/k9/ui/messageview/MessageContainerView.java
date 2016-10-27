@@ -324,7 +324,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
             return null;
         }
 
-        return attachment.uri.toString();
+        return attachment.internalUri.toString();
     }
 
     private AttachmentViewInfo getAttachmentByContentId(String cid) {
