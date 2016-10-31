@@ -54,11 +54,12 @@ import static com.fsck.k9.Preferences.getEnumStringPref;
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
+@SuppressWarnings("unused") // unused methods are public API
 public class Account implements BaseAccount, StoreConfig {
     /**
      * Default value for the inbox folder (never changes for POP3 and IMAP)
      */
-    public static final String INBOX = "INBOX";
+    private static final String INBOX = "INBOX";
 
     /**
      * This local folder is used to store messages to be sent.
@@ -119,7 +120,7 @@ public class Account implements BaseAccount, StoreConfig {
      * http://developer.android.com/design/style/color.html
      * Note: Order does matter, it's the order in which they will be picked.
      */
-    public static final Integer[] PREDEFINED_COLORS = new Integer[] {
+    private static final Integer[] PREDEFINED_COLORS = new Integer[] {
             Color.parseColor("#0099CC"),    // blue
             Color.parseColor("#669900"),    // green
             Color.parseColor("#FF8800"),    // orange
@@ -197,14 +198,14 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mPushPollOnConnect;
     private boolean mNotifySync;
     private SortType mSortType;
-    private Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
+    private Map<SortType, Boolean> mSortAscending = new HashMap<>();
     private ShowPictures mShowPictures;
     private boolean mIsSignatureBeforeQuotedText;
     private Expunge mExpungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
     private int mIdleRefreshMinutes;
     private boolean goToUnreadMessageSearch;
-    private final Map<NetworkType, Boolean> compressionMap = new ConcurrentHashMap<NetworkType, Boolean>();
+    private final Map<NetworkType, Boolean> compressionMap = new ConcurrentHashMap<>();
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
     private int maximumPolledMessageAge;
@@ -328,7 +329,7 @@ public class Account implements BaseAccount, StoreConfig {
 
         searchableFolders = Searchable.ALL;
 
-        identities = new ArrayList<Identity>();
+        identities = new ArrayList<>();
 
         Identity identity = new Identity();
         identity.setSignatureUse(true);
@@ -353,7 +354,7 @@ public class Account implements BaseAccount, StoreConfig {
     private int pickColor(Context context) {
         List<Account> accounts = Preferences.getPreferences(context).getAccounts();
 
-        List<Integer> availableColors = new ArrayList<Integer>(PREDEFINED_COLORS.length);
+        List<Integer> availableColors = new ArrayList<>(PREDEFINED_COLORS.length);
         Collections.addAll(availableColors, PREDEFINED_COLORS);
 
         for (Account account : accounts) {
@@ -487,11 +488,13 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     protected synchronized void delete(Preferences preferences) {
+        deleteCertificates();
+
         // Get the list of account UUIDs
         String[] uuids = preferences.getStorage().getString("accountUuids", "").split(",");
 
         // Create a list of all account UUIDs excluding this account
-        List<String> newUuids = new ArrayList<String>(uuids.length);
+        List<String> newUuids = new ArrayList<>(uuids.length);
         for (String uuid : uuids) {
             if (!uuid.equals(mUuid)) {
                 newUuids.add(uuid);
@@ -581,7 +584,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.commit();
     }
 
-    public static int findNewAccountNumber(List<Integer> accountNumbers) {
+    private static int findNewAccountNumber(List<Integer> accountNumbers) {
         int newAccountNumber = -1;
         Collections.sort(accountNumbers);
         for (int accountNumber : accountNumbers) {
@@ -594,9 +597,9 @@ public class Account implements BaseAccount, StoreConfig {
         return newAccountNumber;
     }
 
-    public static List<Integer> getExistingAccountNumbers(Preferences preferences) {
+    private static List<Integer> getExistingAccountNumbers(Preferences preferences) {
         List<Account> accounts = preferences.getAccounts();
-        List<Integer> accountNumbers = new ArrayList<Integer>(accounts.size());
+        List<Integer> accountNumbers = new ArrayList<>(accounts.size());
         for (Account a : accounts) {
             accountNumbers.add(a.getAccountNumber());
         }
@@ -760,6 +763,7 @@ public class Account implements BaseAccount, StoreConfig {
 
     }
 
+    @SuppressWarnings("WeakerAccess") // public interface
     public void resetVisibleLimits() {
         try {
             getLocalStore().resetVisibleLimits(getDisplayCount());
@@ -770,7 +774,6 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     /**
-     * @param context
      * @return <code>null</code> if not available
      * @throws MessagingException
      * @see {@link #isAvailable(Context)}
@@ -800,7 +803,7 @@ public class Account implements BaseAccount, StoreConfig {
 
         // Use the LocalSearch instance to create a WHERE clause to query the content provider
         StringBuilder query = new StringBuilder();
-        List<String> queryArgs = new ArrayList<String>();
+        List<String> queryArgs = new ArrayList<>();
         ConditionsTreeNode conditions = search.getConditions();
         SqlQueryBuilder.buildWhereClause(this, conditions, query, queryArgs);
 
@@ -809,12 +812,12 @@ public class Account implements BaseAccount, StoreConfig {
 
         Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
         try {
-            if (cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst()) {
                 stats.unreadMessageCount = cursor.getInt(0);
                 stats.flaggedMessageCount = cursor.getInt(1);
             }
         } finally {
-            cursor.close();
+            Utility.closeQuietly(cursor);
         }
 
         LocalStore localStore = getLocalStore();
@@ -831,7 +834,7 @@ public class Account implements BaseAccount, StoreConfig {
         cacheChips();
     }
 
-    public synchronized void cacheChips() {
+    private synchronized void cacheChips() {
         mReadColorChip = new ColorChip(mChipColor, true, ColorChip.CIRCULAR);
         mUnreadColorChip = new ColorChip(mChipColor, false, ColorChip.CIRCULAR);
         mFlaggedReadColorChip = new ColorChip(mChipColor, true, ColorChip.STAR);
@@ -843,8 +846,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
 
-    public ColorChip generateColorChip(boolean messageRead, boolean toMe, boolean ccMe,
-            boolean fromMe, boolean messageFlagged) {
+    public ColorChip generateColorChip(boolean messageRead, boolean messageFlagged) {
         ColorChip chip;
 
         if (messageRead) {
@@ -965,11 +967,11 @@ public class Account implements BaseAccount, StoreConfig {
             } catch (MessagingException e) {
                 Log.e(K9.LOG_TAG, "Switching local storage provider from " +
                       mLocalStorageProviderId + " to " + id + " failed.", e);
-            } finally {
-                // if migration to/from SD-card failed once, it will fail again.
-                if (!successful) {
-                    return;
-                }
+            }
+
+            // if migration to/from SD-card failed once, it will fail again.
+            if (!successful) {
+                return;
             }
 
             mLocalStorageProviderId = id;
@@ -1177,13 +1179,8 @@ public class Account implements BaseAccount, StoreConfig {
         FolderMode oldSyncMode = mFolderSyncMode;
         mFolderSyncMode = syncMode;
 
-        if (syncMode == FolderMode.NONE && oldSyncMode != FolderMode.NONE) {
-            return true;
-        }
-        if (syncMode != FolderMode.NONE && oldSyncMode == FolderMode.NONE) {
-            return true;
-        }
-        return false;
+        // return true iff sync mode was changed to or from FolderMode.NONE (and hence needs a refresh)
+        return (syncMode == FolderMode.NONE) != (oldSyncMode == FolderMode.NONE);
     }
 
     public synchronized FolderMode getFolderPushMode() {
@@ -1330,9 +1327,9 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     private synchronized List<Identity> loadIdentities(Storage storage) {
-        List<Identity> newIdentities = new ArrayList<Identity>();
+        List<Identity> newIdentities = new ArrayList<>();
         int ident = 0;
-        boolean gotOne = false;
+        boolean gotOne;
         do {
             gotOne = false;
             String name = storage.getString(mUuid + "." + IDENTITY_NAME_KEY + "." + ident, null);
@@ -1374,7 +1371,7 @@ public class Account implements BaseAccount, StoreConfig {
 
     private synchronized void deleteIdentities(Storage storage, StorageEditor editor) {
         int ident = 0;
-        boolean gotOne = false;
+        boolean gotOne;
         do {
             gotOne = false;
             String email = storage.getString(mUuid + "." + IDENTITY_EMAIL_KEY + "." + ident, null);
@@ -1411,7 +1408,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void setIdentities(List<Identity> newIdentities) {
-        identities = new ArrayList<Identity>(newIdentities);
+        identities = new ArrayList<>(newIdentities);
     }
 
     public synchronized Identity getIdentity(int i) {
@@ -1482,6 +1479,7 @@ public class Account implements BaseAccount, StoreConfig {
      *            Never <code>null</code>.
      * @throws MessagingException
      */
+    @SuppressWarnings("WeakerAccess") // public api
     public void switchLocalStorage(final String newStorageProviderId) throws MessagingException {
         if (!mLocalStorageProviderId.equals(newStorageProviderId)) {
             getLocalStore().switchLocalStorage(newStorageProviderId);
@@ -1691,10 +1689,8 @@ public class Account implements BaseAccount, StoreConfig {
      */
     public boolean isAvailable(Context context) {
         String localStorageProviderId = getLocalStorageProviderId();
-        if (localStorageProviderId == null) {
-            return true; // defaults to internal memory
-        }
-        return StorageManager.getInstance(context).isReady(localStorageProviderId);
+        boolean storageProviderIsInternalMemory = localStorageProviderId == null;
+        return storageProviderIsInternalMemory || StorageManager.getInstance(context).isReady(localStorageProviderId);
     }
 
     public synchronized boolean isEnabled() {
@@ -1843,8 +1839,7 @@ public class Account implements BaseAccount, StoreConfig {
     /**
      * Add a new certificate for the incoming or outgoing server to the local key store.
      */
-    public void addCertificate(CheckDirection direction,
-            X509Certificate certificate) throws CertificateException {
+    public void addCertificate(CheckDirection direction, X509Certificate certificate) throws CertificateException {
         Uri uri;
         if (direction == CheckDirection.INCOMING) {
             uri = Uri.parse(getStoreUri());
@@ -1860,8 +1855,7 @@ public class Account implements BaseAccount, StoreConfig {
      * new host/port, then try and delete any (possibly non-existent) certificate stored for the
      * old host/port.
      */
-    public void deleteCertificate(String newHost, int newPort,
-            CheckDirection direction) {
+    public void deleteCertificate(String newHost, int newPort, CheckDirection direction) {
         Uri uri;
         if (direction == CheckDirection.INCOMING) {
             uri = Uri.parse(getStoreUri());
@@ -1884,7 +1878,7 @@ public class Account implements BaseAccount, StoreConfig {
      * Examine the settings for the account and attempt to delete (possibly non-existent)
      * certificates for the incoming and outgoing servers.
      */
-    public void deleteCertificates() {
+    private void deleteCertificates() {
         LocalKeyStore localKeyStore = LocalKeyStore.getInstance();
 
         String storeUri = getStoreUri();
