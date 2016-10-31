@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/status_lock_disabled"
-                android:tint="?attr/openpgp_grey"
+                android:tint="?attr/openpgp_dark_grey"
                 />
 
             <ImageView
