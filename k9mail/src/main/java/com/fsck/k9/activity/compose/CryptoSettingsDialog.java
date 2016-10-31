@@ -15,24 +15,28 @@ import android.view.View;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.view.CryptoModeSelector;
+import com.fsck.k9.view.CryptoModeSelector.CryptoModeSelectorState;
 import com.fsck.k9.view.CryptoModeSelector.CryptoStatusSelectedListener;
 import com.fsck.k9.view.LinearViewAnimator;
 
 
 public class CryptoSettingsDialog extends DialogFragment implements CryptoStatusSelectedListener {
+    private static final String ARG_CURRENT_MODE = "current_mode";
+    private static final String ARG_SUPPORT_SIGN_ONLY = "support_sing_only";
 
-    private static final String ARG_CURRENT_MODE = "current_override";
 
     private CryptoModeSelector cryptoModeSelector;
     private LinearViewAnimator cryptoStatusText;
 
     private CryptoMode currentMode;
 
-    public static CryptoSettingsDialog newInstance(CryptoMode initialOverride) {
+
+    public static CryptoSettingsDialog newInstance(CryptoMode initialMode, boolean supportSignOnly) {
         CryptoSettingsDialog dialog = new CryptoSettingsDialog();
 
         Bundle args = new Bundle();
-        args.putString(ARG_CURRENT_MODE, initialOverride.toString());
+        args.putString(ARG_CURRENT_MODE, initialMode.toString());
+        args.putBoolean(ARG_SUPPORT_SIGN_ONLY, supportSignOnly);
         dialog.setArguments(args);
 
         return dialog;
@@ -40,15 +44,18 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
+        boolean supportSignOnly = arguments.getBoolean(ARG_SUPPORT_SIGN_ONLY);
+        currentMode = CryptoMode.valueOf(arguments.getString(ARG_CURRENT_MODE));
+
         @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.crypto_settings_dialog, null);
+        View view = LayoutInflater.from(getActivity()).inflate(supportSignOnly ?
+                R.layout.crypto_settings_dialog_sign_only : R.layout.crypto_settings_dialog, null);
         cryptoModeSelector = (CryptoModeSelector) view.findViewById(R.id.crypto_status_selector);
         cryptoStatusText = (LinearViewAnimator) view.findViewById(R.id.crypto_status_text);
 
         cryptoModeSelector.setCryptoStatusListener(this);
 
-        Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
-        currentMode = CryptoMode.valueOf(arguments.getString(ARG_CURRENT_MODE));
         updateView(false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -87,19 +94,19 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
     void updateView(boolean animate) {
         switch (currentMode) {
             case DISABLE:
-                cryptoModeSelector.setCryptoStatus(0);
+                cryptoModeSelector.setCryptoStatus(CryptoModeSelectorState.DISABLED);
                 cryptoStatusText.setDisplayedChild(0, animate);
                 break;
             case SIGN_ONLY:
-                cryptoModeSelector.setCryptoStatus(1);
+                cryptoModeSelector.setCryptoStatus(CryptoModeSelectorState.SIGN_ONLY);
                 cryptoStatusText.setDisplayedChild(1, animate);
                 break;
             case OPPORTUNISTIC:
-                cryptoModeSelector.setCryptoStatus(2);
+                cryptoModeSelector.setCryptoStatus(CryptoModeSelectorState.OPPORTUNISTIC);
                 cryptoStatusText.setDisplayedChild(2, animate);
                 break;
             case PRIVATE:
-                cryptoModeSelector.setCryptoStatus(3);
+                cryptoModeSelector.setCryptoStatus(CryptoModeSelectorState.PRIVATE);
                 cryptoStatusText.setDisplayedChild(3, animate);
                 break;
         }
@@ -113,15 +120,20 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
     }
 
     @Override
-    public void onCryptoStatusSelected(int status) {
-        if (status == 0) {
-            currentMode = CryptoMode.DISABLE;
-        } else if (status == 1) {
-            currentMode = CryptoMode.SIGN_ONLY;
-        } else if (status == 2) {
-            currentMode = CryptoMode.OPPORTUNISTIC;
-        } else {
-            currentMode = CryptoMode.PRIVATE;
+    public void onCryptoStatusSelected(CryptoModeSelectorState status) {
+        switch (status) {
+            case DISABLED:
+                currentMode = CryptoMode.DISABLE;
+                break;
+            case SIGN_ONLY:
+                currentMode = CryptoMode.SIGN_ONLY;
+                break;
+            case OPPORTUNISTIC:
+                currentMode = CryptoMode.OPPORTUNISTIC;
+                break;
+            case PRIVATE:
+                currentMode = CryptoMode.PRIVATE;
+                break;
         }
         updateView(true);
     }

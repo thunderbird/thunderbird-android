@@ -351,4 +351,19 @@ public enum MessageCryptoDisplayStatus {
         return false;
     }
 
+    public boolean isUnencryptedSigned() {
+        switch (this) {
+            case UNENCRYPTED_SIGN_ERROR:
+            case UNENCRYPTED_SIGN_UNKNOWN:
+            case UNENCRYPTED_SIGN_VERIFIED:
+            case UNENCRYPTED_SIGN_UNVERIFIED:
+            case UNENCRYPTED_SIGN_MISMATCH:
+            case UNENCRYPTED_SIGN_EXPIRED:
+            case UNENCRYPTED_SIGN_REVOKED:
+            case UNENCRYPTED_SIGN_INSECURE:
+                return true;
+        }
+        return false;
+    }
+
 }
