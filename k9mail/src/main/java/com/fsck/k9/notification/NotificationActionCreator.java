@@ -95,14 +95,14 @@ class NotificationActionCreator {
         Intent intent = MessageActions.getActionReplyIntent(context, messageReference);
 
         return PendingIntent.getActivity(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 
     public PendingIntent createMarkMessageAsReadPendingIntent(MessageReference messageReference, int notificationId) {
         Intent intent = NotificationActionService.createMarkMessageAsReadIntent(context, messageReference);
 
         return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 
     public PendingIntent createMarkAllAsReadPendingIntent(Account account,
@@ -137,13 +137,13 @@ class NotificationActionCreator {
         Intent intent = NotificationActionService.createDeleteMessageIntent(context, messageReference);
 
         return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 
     private PendingIntent createDeleteConfirmationPendingIntent(MessageReference messageReference, int notificationId) {
         Intent intent = NotificationDeleteConfirmation.getIntent(context, messageReference);
 
-        return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public PendingIntent createDeleteAllPendingIntent(Account account, ArrayList<MessageReference> messageReferences,
