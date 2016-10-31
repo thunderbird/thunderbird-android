@@ -412,7 +412,8 @@ public class PgpMessageBuilderTest {
                 .setSigningKeyId(TEST_SIGN_KEY_ID)
                 .setSelfEncryptId(TEST_SELF_ENCRYPT_KEY_ID)
                 .setRecipients(new ArrayList<Recipient>())
-                .setCryptoProviderState(CryptoProviderState.OK);
+                .setCryptoProviderState(CryptoProviderState.OK)
+                .setCryptoSupportSignOnly(true);
     }
 
     private static PgpMessageBuilder createDefaultPgpMessageBuilder(OpenPgpApi openPgpApi) {

@@ -128,7 +128,8 @@ public class PgpMessageBuilder extends MessageBuilder {
                 return;
             }
 
-            if (opportunisticSkipEncryption && !opportunisticSecondPass) {
+            boolean shouldSignOnly = cryptoStatus.isOpportunisticSignOnly();
+            if (opportunisticSkipEncryption && shouldSignOnly && !opportunisticSecondPass) {
                 opportunisticSecondPass = true;
                 startOrContinueBuildMessage(null);
                 return;
