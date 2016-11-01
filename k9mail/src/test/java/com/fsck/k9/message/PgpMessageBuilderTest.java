@@ -40,6 +40,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.robolectric.RobolectricTestRunner;
@@ -60,9 +61,9 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
 public class PgpMessageBuilderTest {
-    public static final long TEST_SIGN_KEY_ID = 123L;
-    public static final long TEST_SELF_ENCRYPT_KEY_ID = 234L;
-    public static final String TEST_MESSAGE_TEXT = "message text with a ☭ CCCP symbol";
+    private static final long TEST_SIGN_KEY_ID = 123L;
+    private static final long TEST_SELF_ENCRYPT_KEY_ID = 234L;
+    private static final String TEST_MESSAGE_TEXT = "message text with a ☭ CCCP symbol";
 
 
     private ComposeCryptoStatusBuilder cryptoStatusBuilder = createDefaultComposeCryptoStatusBuilder();
@@ -404,6 +405,93 @@ public class PgpMessageBuilderTest {
         verify(mockCallback).onMessageBuildException(any(MessagingException.class));
         verifyNoMoreInteractions(mockCallback);
         verifyNoMoreInteractions(openPgpApi);
+    }
+
+    @Test
+    public void buildOpportunisticEncrypt__withNoKeysAndNoSignOnly__shouldNotBeSigned() throws MessagingException {
+        ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
+                .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
+                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
+                .setCryptoSupportSignOnly(false)
+                .build();
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus);
+
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
+        returnIntent.putExtra(OpenPgpApi.RESULT_ERROR,
+                new OpenPgpError(OpenPgpError.OPPORTUNISTIC_MISSING_KEYS, "Missing keys"));
+
+
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
+                .thenReturn(returnIntent);
+
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+
+
+        ArgumentCaptor<MimeMessage> captor = ArgumentCaptor.forClass(MimeMessage.class);
+        verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false));
+        verifyNoMoreInteractions(mockCallback);
+
+        MimeMessage message = captor.getValue();
+        Assert.assertEquals("text/plain", message.getMimeType());
+    }
+
+    @Test
+    public void buildOpportunisticEncrypt__withNoKeysAndSignOnly__shouldBeSigned() throws MessagingException {
+        ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
+                .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
+                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
+                .setCryptoSupportSignOnly(true)
+                .build();
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus);
+
+        Intent returnIntentOpportunisticError = new Intent();
+        returnIntentOpportunisticError.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
+        returnIntentOpportunisticError.putExtra(OpenPgpApi.RESULT_ERROR,
+                new OpenPgpError(OpenPgpError.OPPORTUNISTIC_MISSING_KEYS, "Missing keys"));
+
+        Intent returnIntentSigned = new Intent();
+        returnIntentSigned.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
+        returnIntentSigned.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, new byte[] { (byte) 159 });
+
+
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
+                .thenReturn(returnIntentOpportunisticError, returnIntentSigned);
+
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+
+
+        ArgumentCaptor<MimeMessage> captor = ArgumentCaptor.forClass(MimeMessage.class);
+        verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false));
+        verifyNoMoreInteractions(mockCallback);
+
+        MimeMessage message = captor.getValue();
+        Assert.assertEquals("multipart/signed", message.getMimeType());
+    }
+
+    @Test
+    public void buildSign__withNoDetachedSignatureExtra__shouldFail() throws MessagingException {
+        ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
+                .setCryptoMode(CryptoMode.SIGN_ONLY)
+                .build();
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus);
+
+        Intent returnIntentSigned = new Intent();
+        returnIntentSigned.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
+        // no OpenPgpApi.EXTRA_DETACHED_SIGNATURE!
+
+
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
+                .thenReturn(returnIntentSigned);
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+
+
+        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
+        verifyNoMoreInteractions(mockCallback);
     }
 
     private ComposeCryptoStatusBuilder createDefaultComposeCryptoStatusBuilder() {
