@@ -176,7 +176,6 @@ public class Account implements BaseAccount, StoreConfig {
     private int mAutomaticCheckIntervalMinutes;
     private int mDisplayCount;
     private int mChipColor;
-    private long mLastAutomaticCheckTime;
     private long mLatestOldMessageSeenTime;
     private boolean mNotifyNewMail;
     private FolderMode mFolderNotifyNewMailMode;
@@ -395,7 +394,6 @@ public class Account implements BaseAccount, StoreConfig {
         if (mDisplayCount < 0) {
             mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         }
-        mLastAutomaticCheckTime = storage.getLong(mUuid + ".lastAutomaticCheckTime", 0);
         mLatestOldMessageSeenTime = storage.getLong(mUuid + ".latestOldMessageSeenTime", 0);
         mNotifyNewMail = storage.getBoolean(mUuid + ".notifyNewMail", false);
 
@@ -690,7 +688,6 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
-        editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putLong(mUuid + ".latestOldMessageSeenTime", mLatestOldMessageSeenTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
         editor.putString(mUuid + ".folderNotifyNewMailMode", mFolderNotifyNewMailMode.name());
@@ -1008,14 +1005,6 @@ public class Account implements BaseAccount, StoreConfig {
             this.mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         }
         resetVisibleLimits();
-    }
-
-    public synchronized long getLastAutomaticCheckTime() {
-        return mLastAutomaticCheckTime;
-    }
-
-    public synchronized void setLastAutomaticCheckTime(long lastAutomaticCheckTime) {
-        this.mLastAutomaticCheckTime = lastAutomaticCheckTime;
     }
 
     public synchronized long getLatestOldMessageSeenTime() {
