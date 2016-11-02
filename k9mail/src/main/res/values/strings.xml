@@ -1221,6 +1221,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature!</b></string>
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="recipient_error_parse_failed">Error parsing address!</string>
-    <string name="account_settings_crypto_support_sign_only">Support unencrypted authentication</string>
+    <string name="account_settings_crypto_support_sign_only">Support signing of unencrypted messages</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -13,7 +14,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.fsck.k9.R;
 
 
-public class CryptoModeWithoutSignOnlySelector extends CryptoModeSelector implements OnSeekBarChangeListener {
+public class CryptoModeWithoutSignOnlySelector extends FrameLayout
+        implements CryptoModeSelector, OnSeekBarChangeListener {
     public static final int CROSSFADE_THRESH_1_LOW = -50;
     public static final int CROSSFADE_THRESH_1_HIGH = 50;
     public static final int CROSSFADE_THRESH_2_LOW = 50;

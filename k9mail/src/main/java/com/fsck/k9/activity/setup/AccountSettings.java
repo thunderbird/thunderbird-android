@@ -726,13 +726,6 @@ public class AccountSettings extends K9PreferenceActivity {
             });
 
             mCryptoSupportSignOnly.setChecked(mAccount.getCryptoSupportSignOnly());
-            mCryptoSupportSignOnly.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    boolean value = (Boolean) newValue;
-                    mCryptoSupportSignOnly.setChecked(value);
-                    return false;
-                }
-            });
         } else {
             final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
             mCryptoMenu.setEnabled(false);

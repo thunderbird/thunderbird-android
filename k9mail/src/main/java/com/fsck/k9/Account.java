@@ -54,7 +54,6 @@ import static com.fsck.k9.Preferences.getEnumStringPref;
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
-@SuppressWarnings("unused") // unused methods are public API
 public class Account implements BaseAccount, StoreConfig {
     /**
      * Default value for the inbox folder (never changes for POP3 and IMAP)
@@ -565,6 +564,9 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".cryptoApp");
         editor.remove(mUuid + ".cryptoAutoSignature");
         editor.remove(mUuid + ".cryptoAutoEncrypt");
+        editor.remove(mUuid + ".cryptoApp");
+        editor.remove(mUuid + ".cryptoKey");
+        editor.remove(mUuid + ".cryptoSupportSignOnly");
         editor.remove(mUuid + ".enabled");
         editor.remove(mUuid + ".markMessageAsReadOnView");
         editor.remove(mUuid + ".alwaysShowCcBcc");
@@ -767,8 +769,7 @@ public class Account implements BaseAccount, StoreConfig {
 
     }
 
-    @SuppressWarnings("WeakerAccess") // public interface
-    public void resetVisibleLimits() {
+    private void resetVisibleLimits() {
         try {
             getLocalStore().resetVisibleLimits(getDisplayCount());
         } catch (MessagingException e) {
@@ -873,10 +874,6 @@ public class Account implements BaseAccount, StoreConfig {
     @Override
     public String getUuid() {
         return mUuid;
-    }
-
-    public Uri getContentUri() {
-        return Uri.parse("content://accounts/" + getUuid());
     }
 
     public synchronized String getStoreUri() {
@@ -1183,8 +1180,13 @@ public class Account implements BaseAccount, StoreConfig {
         FolderMode oldSyncMode = mFolderSyncMode;
         mFolderSyncMode = syncMode;
 
-        // return true iff sync mode was changed to or from FolderMode.NONE (and hence needs a refresh)
-        return (syncMode == FolderMode.NONE) != (oldSyncMode == FolderMode.NONE);
+        if (syncMode == FolderMode.NONE && oldSyncMode != FolderMode.NONE) {
+            return true;
+        }
+        if (syncMode != FolderMode.NONE && oldSyncMode == FolderMode.NONE) {
+            return true;
+        }
+        return false;
     }
 
     public synchronized FolderMode getFolderPushMode() {
@@ -1483,8 +1485,7 @@ public class Account implements BaseAccount, StoreConfig {
      *            Never <code>null</code>.
      * @throws MessagingException
      */
-    @SuppressWarnings("WeakerAccess") // public api
-    public void switchLocalStorage(final String newStorageProviderId) throws MessagingException {
+    private void switchLocalStorage(final String newStorageProviderId) throws MessagingException {
         if (!mLocalStorageProviderId.equals(newStorageProviderId)) {
             getLocalStore().switchLocalStorage(newStorageProviderId);
         }
