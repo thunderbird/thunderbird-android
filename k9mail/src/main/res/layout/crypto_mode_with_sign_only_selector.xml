@@ -26,6 +26,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:src="@drawable/status_signature_verified_cutout"
+                android:id="@+id/icon_sign_only"
+                tools:tint="?attr/openpgp_blue"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/status_lock_opportunistic"
                 android:id="@+id/icon_opportunistic"
                 tools:tint="?attr/openpgp_orange"
@@ -47,12 +56,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="21dp"
-            android:layout_marginRight="21dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:progressDrawable="@drawable/seekbar_background"
             android:id="@+id/seek_bar"
             android:progress="100"
-            android:max="200" />
+            android:max="300" />
 
     </LinearLayout>
 

@@ -354,6 +354,7 @@ public class RecipientPresenter implements PermissionPingCallback {
             ComposeCryptoStatusBuilder builder = new ComposeCryptoStatusBuilder()
                     .setCryptoProviderState(cryptoProviderState)
                     .setCryptoMode(currentCryptoMode)
+                    .setCryptoSupportSignOnly(account.getCryptoSupportSignOnly())
                     .setEnablePgpInline(cryptoEnablePgpInline)
                     .setRecipients(getAllRecipients());
 
@@ -545,7 +546,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 Log.e(K9.LOG_TAG, "click on crypto status while unconfigured - this should not really happen?!");
                 return;
             case OK:
-                recipientMvpView.showCryptoDialog(currentCryptoMode);
+                recipientMvpView.showCryptoDialog(currentCryptoMode, account.getCryptoSupportSignOnly());
                 return;
 
             case LOST_CONNECTION:

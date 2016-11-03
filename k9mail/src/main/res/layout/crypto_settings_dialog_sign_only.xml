@@ -21,13 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textAppearance="?android:textAppearanceMedium"
-            android:text="@string/crypto_mode_disabled"
-            />
-
-        <Space
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:text="@string/crypto_mode_supsig_disabled"
             />
 
         <TextView
@@ -35,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textAppearance="?android:textAppearanceMedium"
-            android:text="@string/crypto_mode_opportunistic"
+            android:text="@string/crypto_mode_supsig_sign_only"
             />
 
         <TextView
@@ -43,12 +37,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textAppearance="?android:textAppearanceMedium"
-            android:text="@string/crypto_mode_private"
+            android:text="@string/crypto_mode_supsig_opportunistic"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="@string/crypto_mode_supsig_private"
             />
 
     </com.fsck.k9.view.LinearViewAnimator>
 
-    <com.fsck.k9.view.CryptoModeWithoutSignOnlySelector
+    <com.fsck.k9.view.CryptoModeWithSignOnlySelector
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/crypto_status_selector"
