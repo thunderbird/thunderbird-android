@@ -1174,12 +1174,20 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 }
                 case FORWARD: {
-                    processMessageToForward(messageViewInfo);
+                    try {
+                        processMessageToForward(messageViewInfo, false);
+                    } catch (IOException ioe) {
+                        /**
+                         * Let the user continue composing their message even if we have a problem processing
+                         * the source message. Log it as an error, though.
+                         */
+                        Log.e(K9.LOG_TAG, "Error while processing source message: ", ioe);
+                    }
                     break;
                 }
                 case FORWARD_AS_ATTACHMENT: {
                     try {
-                        processMessageToForwardAsAttachment(messageViewInfo);
+                        processMessageToForward(messageViewInfo, true);
                     } catch (IOException ioe) {
                         /**
                          * Let the user continue composing their message even if we have a problem processing
@@ -1273,7 +1281,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     }
 
-    private void processMessageToForward(MessageViewInfo messageViewInfo) throws MessagingException {
+    private void processMessageToForward(MessageViewInfo messageViewInfo, boolean asAttachment) throws IOException, MessagingException {
         Message message = messageViewInfo.message;
 
         String subject = message.getSubject();
@@ -1295,34 +1303,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         // Quote the message and setup the UI.
-        quotedMessagePresenter.processMessageToForward(messageViewInfo);
-        attachmentPresenter.processMessageToForward(messageViewInfo);
-    }
-
-    private void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws IOException, MessagingException {
-        Message message = messageViewInfo.message;
-
-        String subject = message.getSubject();
-        if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
-            mSubjectView.setText("Fwd: " + subject);
+        if (asAttachment) {
+            attachmentPresenter.processMessageToForwardAsAttachment(messageViewInfo);
         } else {
-            mSubjectView.setText(subject);
+            quotedMessagePresenter.processMessageToForward(messageViewInfo);
+            attachmentPresenter.processMessageToForward(messageViewInfo);
         }
-
-        // "Be Like Thunderbird" - on forwarded messages, set the message ID
-        // of the forwarded message in the references and the reply to.  TB
-        // only includes ID of the message being forwarded in the reference,
-        // even if there are multiple references.
-        if (!TextUtils.isEmpty(message.getMessageId())) {
-            mInReplyTo = message.getMessageId();
-            mReferences = mInReplyTo;
-        } else {
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "could not get Message-ID.");
-            }
-        }
-
-        attachmentPresenter.processMessageToForwardAsAttachment(messageViewInfo);
     }
 
     private void processMessageToReportSpam(MessageViewInfo messageViewInfo) throws IOException, MessagingException {
