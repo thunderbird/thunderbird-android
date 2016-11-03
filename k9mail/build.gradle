@@ -25,6 +25,7 @@ dependencies {
     compile project(':plugins:Android-PullToRefresh:library')
     compile project(':plugins:HoloColorPicker')
     compile project(':plugins:openpgp-api-lib:openpgp-api')
+    compile "com.squareup.okio:okio:${okioVersion}"
     compile 'commons-io:commons-io:2.4'
     compile "com.android.support:support-v4:${androidSupportLibraryVersion}"
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.16'

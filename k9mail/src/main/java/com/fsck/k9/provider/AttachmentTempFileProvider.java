@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Locale;
 
@@ -24,7 +22,7 @@ import android.util.Log;
 
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
-import com.fsck.k9.mail.filter.Hex;
+import okio.ByteString;
 import org.apache.commons.io.IOUtils;
 
 
@@ -62,12 +60,7 @@ public class AttachmentTempFileProvider extends FileProvider {
     }
 
     private static String getTempFilenameForUri(Uri uri) {
-        try {
-            byte[] digest = MessageDigest.getInstance("SHA-1").digest(uri.toString().getBytes());
-            return new String(Hex.encodeHex(digest));
-        } catch (NoSuchAlgorithmException e) {
-            throw new AssertionError(e);
-        }
+        return ByteString.encodeUtf8(uri.toString()).sha1().hex();
     }
 
     private static void writeUriContentToTempFileIfNotExists(Context context, Uri uri, File tempFile)
