@@ -209,7 +209,10 @@ public enum MessageCryptoDisplayStatus {
             case OPENPGP_UI_CANCELED:
                 return CANCELLED;
 
-            case OPENPGP_API_RETURNED_ERROR:
+            case OPENPGP_SIGNED_API_ERROR:
+                return UNENCRYPTED_SIGN_ERROR;
+
+            case OPENPGP_ENCRYPTED_API_ERROR:
                 return ENCRYPTED_ERROR;
         }
         throw new IllegalStateException("Unhandled case!");

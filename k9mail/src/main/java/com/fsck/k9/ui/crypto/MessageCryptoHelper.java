@@ -347,7 +347,7 @@ public class MessageCryptoHelper {
     }
 
     private void callAsyncDetachedVerify(Intent intent) throws IOException, MessagingException {
-        OpenPgpDataSource dataSource = getDataSourceForSignedData();
+        OpenPgpDataSource dataSource = getDataSourceForSignedData(currentCryptoPart.part);
 
         byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentCryptoPart.part);
         intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
@@ -368,12 +368,12 @@ public class MessageCryptoHelper {
         });
     }
 
-    private OpenPgpDataSource getDataSourceForSignedData() throws IOException {
+    private OpenPgpDataSource getDataSourceForSignedData(final Part signedPart) throws IOException {
         return new OpenPgpDataSource() {
             @Override
             public void writeTo(OutputStream os) throws IOException {
                 try {
-                    Multipart multipartSignedMultipart = (Multipart) currentCryptoPart.part.getBody();
+                    Multipart multipartSignedMultipart = (Multipart) signedPart.getBody();
                     BodyPart signatureBodyPart = multipartSignedMultipart.getBodyPart(0);
                     Log.d(K9.LOG_TAG, "signed data type: " + signatureBodyPart.getMimeType());
                     signatureBodyPart.writeTo(os);
@@ -560,8 +560,14 @@ public class MessageCryptoHelper {
     }
 
     private void onCryptoOperationFailed(OpenPgpError error) {
-        CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpErrorAnnotation(error);
-        addCryptoResultAnnotationToMessage(errorPart);
+        CryptoResultAnnotation annotation;
+        if (currentCryptoPart.type == CryptoPartType.PGP_SIGNED) {
+            MimeBodyPart replacementPart = getMultipartSignedContentPartIfAvailable(currentCryptoPart.part);
+            annotation = CryptoResultAnnotation.createOpenPgpSignatureErrorAnnotation(error, replacementPart);
+        } else {
+            annotation = CryptoResultAnnotation.createOpenPgpEncryptionErrorAnnotation(error);
+        }
+        addCryptoResultAnnotationToMessage(annotation);
         onCryptoFinished();
     }
 

@@ -72,8 +72,14 @@ public final class CryptoResultAnnotation {
         return new CryptoResultAnnotation(CryptoError.OPENPGP_UI_CANCELED, null, null, null, null, null);
     }
 
-    public static CryptoResultAnnotation createOpenPgpErrorAnnotation(OpenPgpError error) {
-        return new CryptoResultAnnotation(CryptoError.OPENPGP_API_RETURNED_ERROR, null, null, null, null, error);
+    public static CryptoResultAnnotation createOpenPgpSignatureErrorAnnotation(
+            OpenPgpError error, MimeBodyPart replacementData) {
+        return new CryptoResultAnnotation(
+                CryptoError.OPENPGP_SIGNED_API_ERROR, replacementData, null, null, null, error);
+    }
+
+    public static CryptoResultAnnotation createOpenPgpEncryptionErrorAnnotation(OpenPgpError error) {
+        return new CryptoResultAnnotation(CryptoError.OPENPGP_ENCRYPTED_API_ERROR, null, null, null, null, error);
     }
 
     public boolean isOpenPgpResult() {
@@ -136,7 +142,8 @@ public final class CryptoResultAnnotation {
     public enum CryptoError {
         OPENPGP_OK,
         OPENPGP_UI_CANCELED,
-        OPENPGP_API_RETURNED_ERROR,
+        OPENPGP_SIGNED_API_ERROR,
+        OPENPGP_ENCRYPTED_API_ERROR,
         OPENPGP_SIGNED_BUT_INCOMPLETE,
         OPENPGP_ENCRYPTED_BUT_INCOMPLETE,
         SIGNED_BUT_UNSUPPORTED,
