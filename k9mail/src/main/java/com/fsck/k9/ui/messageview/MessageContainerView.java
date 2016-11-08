@@ -167,14 +167,16 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                 if (uri == null) {
                     return;
                 }
+                
                 final AttachmentViewInfo attachmentViewInfo = getAttachmentViewInfoIfCidUri(uri);
+                final boolean inlineImage = attachmentViewInfo != null;
 
                 OnMenuItemClickListener listener = new OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case MENU_ITEM_IMAGE_VIEW: {
-                                if (attachmentViewInfo != null) {
+                                if (inlineImage) {
                                     attachmentCallback.onViewAttachment(attachmentViewInfo);
                                     break;
                                 }
@@ -183,7 +185,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                                 break;
                             }
                             case MENU_ITEM_IMAGE_SAVE: {
-                                if (attachmentViewInfo != null) {
+                                if (inlineImage) {
                                     attachmentCallback.onSaveAttachment(attachmentViewInfo);
                                     break;
                                 }
@@ -202,20 +204,20 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                     }
                 };
 
-                menu.setHeaderTitle(attachmentViewInfo == null ?
-                        uri.toString() : context.getString(R.string.webview_contextmenu_image_title));
+                menu.setHeaderTitle(inlineImage ?
+                        context.getString(R.string.webview_contextmenu_image_title) : uri.toString());
 
                 menu.add(Menu.NONE, MENU_ITEM_IMAGE_VIEW, 0,
                         context.getString(R.string.webview_contextmenu_image_view_action))
                         .setOnMenuItemClickListener(listener);
 
                 menu.add(Menu.NONE, MENU_ITEM_IMAGE_SAVE, 1,
-                        attachmentViewInfo == null ?
-                            context.getString(R.string.webview_contextmenu_image_download_action) :
-                            context.getString(R.string.webview_contextmenu_image_save_action))
+                        inlineImage ?
+                                context.getString(R.string.webview_contextmenu_image_save_action) :
+                                context.getString(R.string.webview_contextmenu_image_download_action))
                         .setOnMenuItemClickListener(listener);
 
-                if (attachmentViewInfo == null) {
+                if (!inlineImage) {
                     menu.add(Menu.NONE, MENU_ITEM_IMAGE_COPY, 2,
                             context.getString(R.string.webview_contextmenu_image_copy_action))
                             .setOnMenuItemClickListener(listener);
