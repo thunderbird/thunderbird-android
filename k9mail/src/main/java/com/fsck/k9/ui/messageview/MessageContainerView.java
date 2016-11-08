@@ -178,19 +178,19 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                             case MENU_ITEM_IMAGE_VIEW: {
                                 if (inlineImage) {
                                     attachmentCallback.onViewAttachment(attachmentViewInfo);
-                                    break;
+                                } else {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                    startActivityIfAvailable(getContext(), intent);
                                 }
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                startActivityIfAvailable(getContext(), intent);
                                 break;
                             }
                             case MENU_ITEM_IMAGE_SAVE: {
                                 if (inlineImage) {
                                     attachmentCallback.onSaveAttachment(attachmentViewInfo);
-                                    break;
+                                } else {
+                                    //TODO: Use download manager
+                                    new DownloadImageTask(getContext()).execute(uri.toString());
                                 }
-                                //TODO: Use download manager
-                                new DownloadImageTask(getContext()).execute(uri.toString());
                                 break;
                             }
                             case MENU_ITEM_IMAGE_COPY: {
