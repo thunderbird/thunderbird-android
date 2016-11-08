@@ -8,7 +8,6 @@ import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -34,10 +33,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.zip.GZIPInputStream;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_WEBDAV;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
@@ -1023,6 +1019,8 @@ public class WebDavStore extends RemoteStore {
                 } else {
                     throw new MessagingException("Authentication failure in sendRequest().");
                 }
+            } else if (statusCode == 302) {
+                handleUnexpectedRedirect(response, url);
             } else if (statusCode < 200 || statusCode >= 300) {
                 throw new IOException("Error with code " + statusCode + " during request processing: " +
                         response.getStatusLine().toString());
@@ -1040,6 +1038,18 @@ public class WebDavStore extends RemoteStore {
         }
 
         return null;
+    }
+
+    private void handleUnexpectedRedirect(HttpResponse response, String url) throws IOException {
+        if (response.getFirstHeader("Location") != null) {
+            // TODO: This may indicate lack of authentication or may alternatively be something we should follow
+            throw new IOException("Unexpected redirect during request processing. " +
+                    "Expected response from: "+url+" but told to redirect to:" +
+                    response.getFirstHeader("Location").getValue());
+        } else {
+            throw new IOException("Unexpected redirect during request processing. " +
+                    "Expected response from: " + url + " but not told where to redirect to");
+        }
     }
 
     public String getAuthString() {
