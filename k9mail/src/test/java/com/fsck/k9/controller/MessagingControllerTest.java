@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,6 +47,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anySet;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -75,13 +77,19 @@ public class MessagingControllerTest {
     @Mock
     private AccountStats accountStats;
     @Mock
+    private MessagingListener existingListener;
+    @Mock
     private MessagingListener listener;
     @Mock
     private LocalSearch search;
     @Mock
     private LocalFolder localFolder;
     @Mock
+    private LocalFolder localFolder2;
+    @Mock
     private Folder remoteFolder;
+    @Mock
+    private Folder remoteFolder2;
     @Mock
     private LocalStore localStore;
     @Mock
@@ -695,6 +703,149 @@ public class MessagingControllerTest {
         assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
     }
 
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingCommandsInStore_shouldNotifyExistingListenersPendingCommandsAreBeingProcessed()
+            throws MessagingException {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.append();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        controller.addListener(existingListener);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(existingListener).pendingCommandsProcessing(account);
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingCommandsInStore_shouldNotifyExistingOfProgress()
+            throws MessagingException {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.append();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        controller.addListener(existingListener);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(existingListener).synchronizeMailboxProgress(account, null, 0, 1);
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingCommandsInStore_shouldNotifyExistingListenersPendingCommandsIsStarted()
+            throws MessagingException {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.append();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        controller.addListener(existingListener);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(existingListener).pendingCommandStarted(account, "append");
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingCommandsInStore_shouldNotifyExistingListenerOfUpdatedProgress()
+            throws MessagingException {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.append();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        controller.addListener(existingListener);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(existingListener).synchronizeMailboxProgress(account, null, 1, 1);
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingCommandsInStore_shouldRemoveCompletedPendingCommandFromStore()
+            throws MessagingException {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.append();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        controller.addListener(existingListener);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(localStore).removePendingCommand(pendingCommand);
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingCommandsInStore_shouldNotifyExistingListenerOfPendingCommandCompletion()
+            throws MessagingException {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.append();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        controller.addListener(existingListener);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(existingListener).pendingCommandCompleted(account, "append");
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingCommandsInStore_shouldNotRemoveFailedPendingCommandFromStore()
+            throws MessagingException {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.append();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        when(localFolder.getMessage("1")).thenThrow(new MessagingException("Test"));
+        controller.addListener(existingListener);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(localStore, never()).removePendingCommand(pendingCommand);
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingCommandsInStore_shouldRemovePermanentlyFailedPendingCommandFromStore()
+            throws MessagingException {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.append();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        MessagingException permanentFailure = new MessagingException("Permanent Failure");
+        permanentFailure.setPermanentFailure(true);
+        when(localFolder.getMessage("1")).thenThrow(permanentFailure);
+        controller.addListener(existingListener);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(localStore).removePendingCommand(pendingCommand);
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingMoveOrCopyBulkNew_shouldNotifyExistingListenerOfMessageUidChange()
+            throws Exception {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.copyBulkNew();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        when(localStore.getFolder("Dest")).thenReturn(localFolder2);
+        when(localFolder2.getMessage("localDestUid")).thenReturn(localNewMessage1);
+        when(account.getRemoteStore()).thenReturn(remoteStore);
+        when(remoteStore.getFolder("Source")).thenReturn(remoteFolder);
+        when(remoteStore.getFolder("Dest")).thenReturn(remoteFolder2);
+        when(remoteFolder.exists()).thenReturn(true);
+        when(remoteFolder.getMode()).thenReturn(Folder.OPEN_MODE_RW);
+        Map<String, String> remoteUidMap = new HashMap<>();
+        remoteUidMap.put("srcUid","remoteDestUid");
+        when(remoteFolder.copyMessages(anyList(), eq(remoteFolder2))).thenReturn(remoteUidMap);
+        controller.addListener(existingListener);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(existingListener).messageUidChanged(account, "Dest", "localDestUid", "remoteDestUid");
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withPendingMoveOrCopyBulkNew_whenGivenWrongRemoteIds_shouldNotRequestMessageWithNullUid()
+            throws Exception {
+        LocalStore.PendingCommand pendingCommand = PendingCommandHelper.copyBulkNew();
+        when(localStore.getPendingCommands()).thenReturn(Collections.singletonList(pendingCommand));
+        when(localStore.getFolder("Dest")).thenReturn(localFolder2);
+        when(localFolder2.getMessage("localDestUid")).thenReturn(localNewMessage1);
+        when(account.getRemoteStore()).thenReturn(remoteStore);
+        when(remoteStore.getFolder("Source")).thenReturn(remoteFolder);
+        when(remoteStore.getFolder("Dest")).thenReturn(remoteFolder2);
+        when(remoteFolder.exists()).thenReturn(true);
+        when(remoteFolder.getMode()).thenReturn(Folder.OPEN_MODE_RW);
+        Map<String, String> remoteUidMap = new HashMap<>();
+        remoteUidMap.put("otherUid","remoteDestUid");
+        when(remoteFolder.copyMessages(anyList(), eq(remoteFolder2))).thenReturn(remoteUidMap);
+        controller.addListener(existingListener);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(localFolder2, never()).getMessage(null);
+    }
+
     private void respondToFetchEnvelopesWithMessage(final Message message) throws MessagingException {
         doAnswer(new Answer() {
             @Override
@@ -756,11 +907,13 @@ public class MessagingControllerTest {
         when(account.getLocalStore()).thenReturn(localStore);
         when(account.getStats(any(Context.class))).thenReturn(accountStats);
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
+        when(account.getErrorFolderName()).thenReturn("Errors");
     }
 
-    private void configureLocalStore() {
+    private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localFolder.getName()).thenReturn(FOLDER_NAME);
+        when(localStore.getPendingCommands()).thenReturn(Collections.<LocalStore.PendingCommand>emptyList());
     }
 
     private void configureRemoteStoreWithFolder() throws MessagingException {

@@ -1710,7 +1710,6 @@ public class MessagingController {
     private void processPendingCommandsSynchronous(Account account) throws MessagingException {
         LocalStore localStore = account.getLocalStore();
         List<PendingCommand> commands = localStore.getPendingCommands();
-
         int progress = 0;
         int todo = commands.size();
         if (todo == 0) {
@@ -2098,6 +2097,9 @@ public class MessagingController {
                     String localDestUid = localUidMap.get(remoteSrcUid);
                     String newUid = entry.getValue();
 
+                    if (localDestUid == null) {
+                        throw new MessagingException("Store returned mapping for message with UID not requested: " + remoteSrcUid);
+                    }
                     Message localDestMessage = localDestFolder.getMessage(localDestUid);
                     if (localDestMessage != null) {
                         localDestMessage.setUid(newUid);
