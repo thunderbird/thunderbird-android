@@ -55,26 +55,28 @@ public class MessageReferenceTest {
 
     @Test
     public void checkMessageReferenceWithChangedUid() {
-        MessageReference messageReferenceOne = createMessageReferenceWithFlag("account", "folder", "uid", Flag.ANSWERED);
+        MessageReference messageReferenceOne = createMessageReferenceWithFlag(
+                "account", "folder", "uid", Flag.ANSWERED);
+        
         MessageReference messageReferenceTwo = messageReferenceOne.withModifiedUid("---");
 
-        assertFalse(messageReferenceOne.equals(messageReferenceTwo));
-        assertEquals(messageReferenceOne.getAccountUuid(), messageReferenceTwo.getAccountUuid());
-        assertEquals(messageReferenceOne.getFolderName(), messageReferenceTwo.getFolderName());
-        assertEquals(messageReferenceOne.getFlag(), messageReferenceTwo.getFlag());
-        assertFalse(messageReferenceOne.getUid().equals(messageReferenceTwo.getUid()));
+        assertEquals("account", messageReferenceTwo.getAccountUuid());
+        assertEquals("folder", messageReferenceTwo.getFolderName());
+        assertEquals("---", messageReferenceTwo.getUid());
+        assertEquals(Flag.ANSWERED, messageReferenceTwo.getFlag());
     }
 
     @Test
     public void checkMessageReferenceWithChangedFlag() {
-        MessageReference messageReferenceOne = createMessageReferenceWithFlag("account", "folder", "uid", Flag.ANSWERED);
+        MessageReference messageReferenceOne = createMessageReferenceWithFlag(
+                "account", "folder", "uid", Flag.ANSWERED);
+        
         MessageReference messageReferenceTwo = messageReferenceOne.withModifiedFlag(Flag.DELETED);
 
-        assertTrue(messageReferenceOne.equals(messageReferenceTwo));
-        assertEquals(messageReferenceOne.getAccountUuid(), messageReferenceTwo.getAccountUuid());
-        assertEquals(messageReferenceOne.getFolderName(), messageReferenceTwo.getFolderName());
-        assertFalse(messageReferenceOne.getFlag() == messageReferenceTwo.getFlag());
-        assertEquals(messageReferenceOne.getUid(), messageReferenceTwo.getUid());
+        assertEquals("account", messageReferenceTwo.getAccountUuid());
+        assertEquals("folder", messageReferenceTwo.getFolderName());
+        assertEquals("uid", messageReferenceTwo.getUid());
+        assertEquals(Flag.DELETED, messageReferenceTwo.getFlag());
     }
 
     @Test
