@@ -69,7 +69,8 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private AttachmentViewCallback attachmentCallback;
     private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
-    private Map<AttachmentViewInfo, AttachmentView> attachments = new HashMap<>();
+    private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
+    private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
     private boolean hasHiddenExternalImages;
 
     private String currentHtmlText;
@@ -162,35 +163,40 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
             }
             case HitTestResult.IMAGE_TYPE:
             case HitTestResult.SRC_IMAGE_ANCHOR_TYPE: {
-                final String url = getUriForExternalAccess(result.getExtra());
-                if (url == null) {
+                final Uri uri = Uri.parse(result.getExtra());
+                if (uri == null) {
                     return;
                 }
+                
+                final AttachmentViewInfo attachmentViewInfo = getAttachmentViewInfoIfCidUri(uri);
+                final boolean inlineImage = attachmentViewInfo != null;
 
-                final boolean externalImage = url.startsWith("http");
                 OnMenuItemClickListener listener = new OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case MENU_ITEM_IMAGE_VIEW: {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                if (!externalImage) {
-                                    // Grant read permission if this points to our
-                                    // AttachmentProvider
-                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                if (inlineImage) {
+                                    attachmentCallback.onViewAttachment(attachmentViewInfo);
+                                } else {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                    startActivityIfAvailable(getContext(), intent);
                                 }
-                                startActivityIfAvailable(getContext(), intent);
                                 break;
                             }
                             case MENU_ITEM_IMAGE_SAVE: {
-                                //TODO: Use download manager
-                                new DownloadImageTask(getContext()).execute(url);
+                                if (inlineImage) {
+                                    attachmentCallback.onSaveAttachment(attachmentViewInfo);
+                                } else {
+                                    //TODO: Use download manager
+                                    new DownloadImageTask(getContext()).execute(uri.toString());
+                                }
                                 break;
                             }
                             case MENU_ITEM_IMAGE_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_image_clipboard_label);
-                                mClipboardManager.setText(label, url);
+                                mClipboardManager.setText(label, uri.toString());
                                 break;
                             }
                         }
@@ -198,20 +204,20 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                     }
                 };
 
-                menu.setHeaderTitle((externalImage) ?
-                        url : context.getString(R.string.webview_contextmenu_image_title));
+                menu.setHeaderTitle(inlineImage ?
+                        context.getString(R.string.webview_contextmenu_image_title) : uri.toString());
 
                 menu.add(Menu.NONE, MENU_ITEM_IMAGE_VIEW, 0,
                         context.getString(R.string.webview_contextmenu_image_view_action))
                         .setOnMenuItemClickListener(listener);
 
                 menu.add(Menu.NONE, MENU_ITEM_IMAGE_SAVE, 1,
-                        (externalImage) ?
-                            context.getString(R.string.webview_contextmenu_image_download_action) :
-                            context.getString(R.string.webview_contextmenu_image_save_action))
+                        inlineImage ?
+                                context.getString(R.string.webview_contextmenu_image_save_action) :
+                                context.getString(R.string.webview_contextmenu_image_download_action))
                         .setOnMenuItemClickListener(listener);
 
-                if (externalImage) {
+                if (!inlineImage) {
                     menu.add(Menu.NONE, MENU_ITEM_IMAGE_COPY, 2,
                             context.getString(R.string.webview_contextmenu_image_copy_action))
                             .setOnMenuItemClickListener(listener);
@@ -312,29 +318,15 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         }
     }
 
-    private String getUriForExternalAccess(String url) {
-        if (!url.startsWith("cid:")) {
-            return url;
-        }
-
-        String cid = Uri.parse(url).getSchemeSpecificPart();
-
-        AttachmentViewInfo attachment = getAttachmentByContentId(cid);
-        if (attachment == null) {
+    private AttachmentViewInfo getAttachmentViewInfoIfCidUri(Uri uri) {
+        if (!"cid".equals(uri.getScheme())) {
             return null;
         }
 
-        return attachment.uri.toString();
-    }
+        String cid = uri.getSchemeSpecificPart();
+        Uri internalUri = currentAttachmentResolver.getAttachmentUriForContentId(cid);
 
-    private AttachmentViewInfo getAttachmentByContentId(String cid) {
-        for (AttachmentViewInfo attachment : attachments.keySet()) {
-            if (cid.equals(attachment.part.getContentId())) {
-                return attachment;
-            }
-        }
-
-        return null;
+        return attachments.get(internalUri);
     }
 
     private void startActivityIfAvailable(Context context, Intent intent) {
@@ -365,13 +357,13 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     public void enableAttachmentButtons() {
-        for (AttachmentView attachmentView : attachments.values()) {
+        for (AttachmentView attachmentView : attachmentViewMap.values()) {
             attachmentView.enableButtons();
         }
     }
 
     public void disableAttachmentButtons() {
-        for (AttachmentView attachmentView : attachments.values()) {
+        for (AttachmentView attachmentView : attachmentViewMap.values()) {
             attachmentView.disableButtons();
         }
     }
@@ -445,22 +437,30 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     public void renderAttachments(MessageViewInfo messageViewInfo) {
-        boolean hasHiddenAttachments = false;
-
         if (messageViewInfo.attachments != null) {
             for (AttachmentViewInfo attachment : messageViewInfo.attachments) {
+                attachments.put(attachment.internalUri, attachment);
+                if (attachment.inlineAttachment) {
+                    continue;
+                }
+
                 AttachmentView view =
                         (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, mAttachments, false);
                 view.setCallback(attachmentCallback);
                 view.setAttachment(attachment);
 
-                attachments.put(attachment, view);
+                attachmentViewMap.put(attachment, view);
                 mAttachments.addView(view);
             }
         }
 
         if (messageViewInfo.extraAttachments != null) {
             for (AttachmentViewInfo attachment : messageViewInfo.extraAttachments) {
+                attachments.put(attachment.internalUri, attachment);
+                if (attachment.inlineAttachment) {
+                    continue;
+                }
+
                 LockedAttachmentView view = (LockedAttachmentView) mInflater
                         .inflate(R.layout.message_view_attachment_locked, mAttachments, false);
                 view.setCallback(attachmentCallback);
@@ -547,7 +547,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     private AttachmentView getAttachmentView(AttachmentViewInfo attachment) {
-        return attachments.get(attachment);
+        return attachmentViewMap.get(attachment);
     }
 
     static class SavedState extends BaseSavedState {

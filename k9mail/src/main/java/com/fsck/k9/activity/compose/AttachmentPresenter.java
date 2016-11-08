@@ -127,13 +127,13 @@ public class AttachmentPresenter {
     }
 
     public void addAttachment(AttachmentViewInfo attachmentViewInfo) {
-        if (attachments.containsKey(attachmentViewInfo.uri)) {
+        if (attachments.containsKey(attachmentViewInfo.internalUri)) {
             throw new IllegalStateException("Received the same attachmentViewInfo twice!");
         }
 
         int loaderId = getNextFreeLoaderId();
         Attachment attachment = Attachment.createAttachment(
-                attachmentViewInfo.uri, loaderId, attachmentViewInfo.mimeType);
+                attachmentViewInfo.internalUri, loaderId, attachmentViewInfo.mimeType);
         attachment = attachment.deriveWithMetadataLoaded(
                 attachmentViewInfo.mimeType, attachmentViewInfo.displayName, attachmentViewInfo.size);
 
