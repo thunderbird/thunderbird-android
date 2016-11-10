@@ -277,6 +277,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.MailListViewWidgetConfiguration">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+
         <activity
             android:name=".activity.UpgradeDatabases"
             android:label="@string/upgrade_databases_title"/>
@@ -355,6 +362,22 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/unread_widget_info"/>
         </receiver>
+
+        <receiver android:name=".provider.MailListViewWidgetProvider"
+                  android:icon="@drawable/mail_list_widget_icon"
+                  android:label="@string/appwidget_text">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/mail_list_view_widget_layout_info"/>
+        </receiver>
+
+
+        <service android:name=".service.MailListViewWidgetService"
+                 android:enabled="true"
+                 android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <service
             android:name=".service.MailService"

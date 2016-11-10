@@ -3,4 +3,5 @@
     <color name="message_list_item_footer_background">#eeeeee</color>
 
     <color name="light_black">#444</color>
+    <color name="black">#000</color>
 </resources>

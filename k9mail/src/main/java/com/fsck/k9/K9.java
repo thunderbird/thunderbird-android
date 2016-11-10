@@ -38,6 +38,7 @@ import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
+import com.fsck.k9.provider.MailListViewWidgetProvider;
 import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
@@ -577,22 +578,35 @@ public class K9 extends Application {
                 }
             }
 
+            private void updateMailListWidget() {
+                try {
+                    MailListViewWidgetProvider.updateMailViewList(K9.this);
+                } catch (Exception e) {
+                    if (K9.DEBUG) {
+                        Log.e(LOG_TAG, "Error whiile updating mail list widget", e);
+                    }
+                }
+            }
+
             @Override
             public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
                 updateUnreadWidget();
+                updateMailListWidget();
             }
 
             @Override
             public void messageDeleted(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
                 updateUnreadWidget();
+                updateMailListWidget();
             }
 
             @Override
             public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folder, message);
                 updateUnreadWidget();
+                updateMailListWidget();
             }
 
             @Override
@@ -600,6 +614,7 @@ public class K9 extends Application {
                     int unreadMessageCount) {
 
                 updateUnreadWidget();
+                updateMailListWidget();
 
                 // let observers know a change occurred
                 Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);

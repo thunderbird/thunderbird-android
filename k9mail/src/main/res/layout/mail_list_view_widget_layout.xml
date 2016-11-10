@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/widget_margin"
+                android:background="@color/light_black"
+                android:orientation="vertical">
+
+    <RelativeLayout
+            android:id="@+id/top_controls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView android:id="@+id/folder"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="20sp"
+                  android:layout_alignParentTop="true"
+                  android:layout_alignBaseline="@+id/new_message"/>
+
+        <Button android:id="@+id/new_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_action_add_dark"
+                android:drawableRight="@drawable/ic_action_add_dark"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView"/>
+    </LinearLayout>
+
+</LinearLayout>
