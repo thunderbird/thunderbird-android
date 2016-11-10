@@ -1218,4 +1218,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="apg">APG</string>
     <string name="no_crypto_provider_see_global">No OpenPGP app configured, see global settings!</string>
 
+    <string name="mail_list_widget_text">K-9 Message List</string>
+    <string name="mail_list_view_select_account">Select account to list e-mails for</string>
 </resources>
