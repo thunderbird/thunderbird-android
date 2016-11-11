@@ -378,14 +378,19 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         }
     }
 
-    public void showCryptoDialog(CryptoMode currentCryptoMode, boolean supportSignOnly) {
-        CryptoSettingsDialog dialog = CryptoSettingsDialog.newInstance(currentCryptoMode, supportSignOnly);
+    public void showCryptoDialog(CryptoMode currentCryptoMode) {
+        CryptoSettingsDialog dialog = CryptoSettingsDialog.newInstance(currentCryptoMode);
         dialog.show(activity.getFragmentManager(), "crypto_settings");
     }
 
     public void showOpenPgpInlineDialog(boolean firstTime) {
         PgpInlineDialog dialog = PgpInlineDialog.newInstance(firstTime, R.id.pgp_inline_indicator);
         dialog.show(activity.getFragmentManager(), "openpgp_inline");
+    }
+
+    public void showOpenPgpSignOnlyDialog(boolean firstTime) {
+        PgpSignOnlyDialog dialog = PgpSignOnlyDialog.newInstance(firstTime, R.id.crypto_status);
+        dialog.show(activity.getFragmentManager(), "openpgp_signonly");
     }
 
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {

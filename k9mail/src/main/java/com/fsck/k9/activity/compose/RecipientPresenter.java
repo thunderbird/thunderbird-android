@@ -55,7 +55,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private static final int CONTACT_PICKER_BCC = 3;
     private static final int OPENPGP_USER_INTERACTION = 4;
 
-    private static final int PGP_INLINE_DIALOG_DISPLAY_THRESHOLD = 2;
+    private static final int PGP_DIALOG_DISPLAY_THRESHOLD = 2;
 
 
     // transient state, which is either obtained during construction and initialization, or cached
@@ -249,6 +249,11 @@ public class RecipientPresenter implements PermissionPingCallback {
         menu.findItem(R.id.openpgp_inline_enable).setVisible(isCryptoConfigured && !cryptoEnablePgpInline);
         menu.findItem(R.id.openpgp_inline_disable).setVisible(isCryptoConfigured && cryptoEnablePgpInline);
 
+        boolean showSignOnly = isCryptoConfigured && account.getCryptoSupportSignOnly();
+        boolean isSignOnly = cachedCryptoStatus.isSignOnly();
+        menu.findItem(R.id.openpgp_sign_only).setVisible(showSignOnly && !isSignOnly);
+        menu.findItem(R.id.openpgp_sign_only_disable).setVisible(showSignOnly && isSignOnly);
+
         boolean noContactPickerAvailable = !hasContactPicker();
         if (noContactPickerAvailable) {
             menu.findItem(R.id.add_from_contacts).setVisible(false);
@@ -354,7 +359,7 @@ public class RecipientPresenter implements PermissionPingCallback {
             ComposeCryptoStatusBuilder builder = new ComposeCryptoStatusBuilder()
                     .setCryptoProviderState(cryptoProviderState)
                     .setCryptoMode(currentCryptoMode)
-                    .setCryptoSupportSignOnly(account.getCryptoSupportSignOnly())
+                    .setCryptoSupportSignOnly(false) // TODO get rid of this setting
                     .setEnablePgpInline(cryptoEnablePgpInline)
                     .setRecipients(getAllRecipients());
 
@@ -546,7 +551,11 @@ public class RecipientPresenter implements PermissionPingCallback {
                 Log.e(K9.LOG_TAG, "click on crypto status while unconfigured - this should not really happen?!");
                 return;
             case OK:
-                recipientMvpView.showCryptoDialog(currentCryptoMode, account.getCryptoSupportSignOnly());
+                if (cachedCryptoStatus.isSignOnly()) {
+                    recipientMvpView.showOpenPgpSignOnlyDialog(false);
+                } else {
+                    recipientMvpView.showCryptoDialog(currentCryptoMode);
+                }
                 return;
 
             case LOST_CONNECTION:
@@ -723,10 +732,35 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
+    public void onMenuSetSignOnly(boolean enableSignOnly) {
+        if (enableSignOnly) {
+            onCryptoModeChanged(CryptoMode.SIGN_ONLY);
+            boolean shouldShowPgpSignOnlyDialog = checkAndIncrementPgpSignOnlyDialogCounter();
+            if (shouldShowPgpSignOnlyDialog) {
+                recipientMvpView.showOpenPgpSignOnlyDialog(true);
+            }
+        } else {
+            onCryptoModeChanged(CryptoMode.OPPORTUNISTIC);
+        }
+    }
+
+    public void onCryptoPgpSignOnlyDisabled() {
+        onCryptoModeChanged(CryptoMode.OPPORTUNISTIC);
+    }
+
     private boolean checkAndIncrementPgpInlineDialogCounter() {
         int pgpInlineDialogCounter = K9.getPgpInlineDialogCounter();
-        if (pgpInlineDialogCounter < PGP_INLINE_DIALOG_DISPLAY_THRESHOLD) {
+        if (pgpInlineDialogCounter < PGP_DIALOG_DISPLAY_THRESHOLD) {
             K9.setPgpInlineDialogCounter(pgpInlineDialogCounter + 1);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkAndIncrementPgpSignOnlyDialogCounter() {
+        int pgpSignOnlyDialogCounter = K9.getPgpSignOnlyDialogCounter();
+        if (pgpSignOnlyDialogCounter < PGP_DIALOG_DISPLAY_THRESHOLD) {
+            K9.setPgpSignOnlyDialogCounter(pgpSignOnlyDialogCounter + 1);
             return true;
         }
         return false;

@@ -104,6 +104,10 @@ public class ComposeCryptoStatus {
         return cryptoSupportSignOnly;
     }
 
+    public boolean isSignOnly() {
+        return cryptoMode == CryptoMode.SIGN_ONLY;
+    }
+
     public boolean isSigningEnabled() {
         return cryptoMode != CryptoMode.DISABLE && signingKeyId != null;
     }

@@ -60,6 +60,7 @@ import com.fsck.k9.activity.compose.CryptoSettingsDialog.OnCryptoModeChangedList
 import com.fsck.k9.activity.compose.IdentityAdapter;
 import com.fsck.k9.activity.compose.IdentityAdapter.IdentityContainer;
 import com.fsck.k9.activity.compose.PgpInlineDialog.OnOpenPgpInlineChangeListener;
+import com.fsck.k9.activity.compose.PgpSignOnlyDialog.OnOpenPgpSignOnlyChangeListener;
 import com.fsck.k9.activity.compose.RecipientMvpView;
 import com.fsck.k9.activity.compose.RecipientPresenter;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
@@ -98,7 +99,7 @@ import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 @SuppressWarnings("deprecation")
 public class MessageCompose extends K9Activity implements OnClickListener,
         CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener,
-        OnOpenPgpInlineChangeListener, MessageBuilder.Callback {
+        OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
@@ -209,6 +210,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onOpenPgpInlineChange(boolean enabled) {
         recipientPresenter.onCryptoPgpInlineChanged(enabled);
+    }
+
+    @Override
+    public void onOpenPgpSignOnlyChange(boolean enabled) {
+        recipientPresenter.onCryptoPgpSignOnlyDisabled();
     }
 
     public enum Action {
@@ -995,6 +1001,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             case R.id.openpgp_inline_disable:
                 recipientPresenter.onMenuSetPgpInline(false);
                 updateMessageFormat();
+                break;
+            case R.id.openpgp_sign_only:
+                recipientPresenter.onMenuSetSignOnly(true);
+                break;
+            case R.id.openpgp_sign_only_disable:
+                recipientPresenter.onMenuSetSignOnly(false);
                 break;
             case R.id.add_attachment:
                 attachmentPresenter.onClickAddAttachment(recipientPresenter);

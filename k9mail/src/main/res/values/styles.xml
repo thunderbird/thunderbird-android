@@ -60,6 +60,11 @@
         <item name="android:tint">?attr/tintColorBulletPointPositive</item>
     </style>
 
+    <style name="NeutralBulletPoint">
+        <item name="android:src">@drawable/bullet_point_neutral</item>
+        <item name="android:tint">?attr/tintColorBulletPointNeutral</item>
+    </style>
+
     <style name="NegativeBulletPoint">
         <item name="android:src">@drawable/bullet_point_negative</item>
         <item name="android:tint">?attr/tintColorBulletPointNegative</item>

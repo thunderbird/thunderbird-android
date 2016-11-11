@@ -22,7 +22,6 @@ import com.fsck.k9.view.LinearViewAnimator;
 
 public class CryptoSettingsDialog extends DialogFragment implements CryptoStatusSelectedListener {
     private static final String ARG_CURRENT_MODE = "current_mode";
-    private static final String ARG_SUPPORT_SIGN_ONLY = "support_sing_only";
 
 
     private CryptoModeSelector cryptoModeSelector;
@@ -31,12 +30,11 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
     private CryptoMode currentMode;
 
 
-    public static CryptoSettingsDialog newInstance(CryptoMode initialMode, boolean supportSignOnly) {
+    public static CryptoSettingsDialog newInstance(CryptoMode initialMode) {
         CryptoSettingsDialog dialog = new CryptoSettingsDialog();
 
         Bundle args = new Bundle();
         args.putString(ARG_CURRENT_MODE, initialMode.toString());
-        args.putBoolean(ARG_SUPPORT_SIGN_ONLY, supportSignOnly);
         dialog.setArguments(args);
 
         return dialog;
@@ -45,12 +43,10 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
-        boolean supportSignOnly = arguments.getBoolean(ARG_SUPPORT_SIGN_ONLY);
         currentMode = CryptoMode.valueOf(arguments.getString(ARG_CURRENT_MODE));
 
         @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(getActivity()).inflate(supportSignOnly ?
-                R.layout.crypto_settings_dialog_sign_only : R.layout.crypto_settings_dialog, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.crypto_settings_dialog, null);
         cryptoModeSelector = (CryptoModeSelector) view.findViewById(R.id.crypto_status_selector);
         cryptoStatusText = (LinearViewAnimator) view.findViewById(R.id.crypto_status_text);
 
@@ -98,16 +94,14 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
                 cryptoStatusText.setDisplayedChild(0, animate);
                 break;
             case SIGN_ONLY:
-                cryptoModeSelector.setCryptoStatus(CryptoModeSelectorState.SIGN_ONLY);
-                cryptoStatusText.setDisplayedChild(1, animate);
-                break;
+                throw new IllegalStateException("This state can't be set here!");
             case OPPORTUNISTIC:
                 cryptoModeSelector.setCryptoStatus(CryptoModeSelectorState.OPPORTUNISTIC);
-                cryptoStatusText.setDisplayedChild(2, animate);
+                cryptoStatusText.setDisplayedChild(1, animate);
                 break;
             case PRIVATE:
                 cryptoModeSelector.setCryptoStatus(CryptoModeSelectorState.PRIVATE);
-                cryptoStatusText.setDisplayedChild(3, animate);
+                cryptoStatusText.setDisplayedChild(2, animate);
                 break;
         }
     }
@@ -126,8 +120,7 @@ public class CryptoSettingsDialog extends DialogFragment implements CryptoStatus
                 currentMode = CryptoMode.DISABLE;
                 break;
             case SIGN_ONLY:
-                currentMode = CryptoMode.SIGN_ONLY;
-                break;
+                throw new IllegalStateException("This widget doesn't support sign-only state!");
             case OPPORTUNISTIC:
                 currentMode = CryptoMode.OPPORTUNISTIC;
                 break;

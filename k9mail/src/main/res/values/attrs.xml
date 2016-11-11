@@ -55,6 +55,7 @@
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
         <attr name="contactTokenBackgroundColor" format="reference|color"/>
         <attr name="tintColorBulletPointPositive" format="reference|color"/>
+        <attr name="tintColorBulletPointNeutral" format="reference|color"/>
         <attr name="tintColorBulletPointNegative" format="reference|color"/>
 
         <attr name="openpgp_black" format="reference|color" />
