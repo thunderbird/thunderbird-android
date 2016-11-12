@@ -154,8 +154,11 @@ public class PgpMessageBuilderTest {
         assertContentOfBodyPartEquals("content must match the message text", contentBodyPart, TEST_MESSAGE_TEXT);
 
         BodyPart signatureBodyPart = multipart.getBodyPart(1);
-        Assert.assertEquals("second part must be pgp signature",
-                "application/pgp-signature", signatureBodyPart.getContentType());
+        String contentType = signatureBodyPart.getContentType();
+        Assert.assertEquals("second part must be pgp signature", "application/pgp-signature",
+                MimeUtility.getHeaderParameter(contentType, null));
+        Assert.assertEquals("second part must be called signature.asc", "signature.asc",
+                MimeUtility.getHeaderParameter(contentType, "name"));
         assertContentOfBodyPartEquals("content must match the supplied detached signature",
                 signatureBodyPart, new byte[] { 1, 2, 3 });
     }

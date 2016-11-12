@@ -285,7 +285,8 @@ public class PgpMessageBuilder extends MessageBuilder {
         multipartSigned.setSubType("signed");
         multipartSigned.addBodyPart(signedBodyPart);
         multipartSigned.addBodyPart(
-                new MimeBodyPart(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT), "application/pgp-signature"));
+                new MimeBodyPart(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT),
+                        "application/pgp-signature; name=\"signature.asc\""));
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartSigned);
 
         String contentType = String.format(
