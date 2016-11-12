@@ -19,7 +19,6 @@ public class ComposeCryptoStatus {
 
     private CryptoProviderState cryptoProviderState;
     private CryptoMode cryptoMode;
-    private boolean cryptoSupportSignOnly;
     private boolean allKeysAvailable;
     private boolean allKeysVerified;
     private boolean hasRecipients;
@@ -100,10 +99,6 @@ public class ComposeCryptoStatus {
         return cryptoMode == CryptoMode.OPPORTUNISTIC;
     }
 
-    public boolean isOpportunisticSignOnly() {
-        return cryptoSupportSignOnly;
-    }
-
     public boolean isSignOnly() {
         return cryptoMode == CryptoMode.SIGN_ONLY;
     }
@@ -132,7 +127,6 @@ public class ComposeCryptoStatus {
         private Long selfEncryptKeyId;
         private List<Recipient> recipients;
         private Boolean enablePgpInline;
-        private Boolean cryptoSupportSignOnly;
 
         public ComposeCryptoStatusBuilder setCryptoProviderState(CryptoProviderState cryptoProviderState) {
             this.cryptoProviderState = cryptoProviderState;
@@ -141,11 +135,6 @@ public class ComposeCryptoStatus {
 
         public ComposeCryptoStatusBuilder setCryptoMode(CryptoMode cryptoMode) {
             this.cryptoMode = cryptoMode;
-            return this;
-        }
-
-        public ComposeCryptoStatusBuilder setCryptoSupportSignOnly(boolean cryptoSupportSignOnly) {
-            this.cryptoSupportSignOnly = cryptoSupportSignOnly;
             return this;
         }
 
@@ -182,9 +171,6 @@ public class ComposeCryptoStatus {
             if (enablePgpInline == null) {
                 throw new AssertionError("enablePgpInline must be set!");
             }
-            if (cryptoSupportSignOnly == null) {
-                throw new AssertionError("supportSignOnly must be set!");
-            }
 
             ArrayList<String> recipientAddresses = new ArrayList<>();
             boolean allKeysAvailable = true;
@@ -205,7 +191,6 @@ public class ComposeCryptoStatus {
             ComposeCryptoStatus result = new ComposeCryptoStatus();
             result.cryptoProviderState = cryptoProviderState;
             result.cryptoMode = cryptoMode;
-            result.cryptoSupportSignOnly = cryptoSupportSignOnly;
             result.recipientAddresses = recipientAddresses.toArray(new String[0]);
             result.allKeysAvailable = allKeysAvailable;
             result.allKeysVerified = allKeysVerified;

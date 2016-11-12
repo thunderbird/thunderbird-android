@@ -359,7 +359,6 @@ public class RecipientPresenter implements PermissionPingCallback {
             ComposeCryptoStatusBuilder builder = new ComposeCryptoStatusBuilder()
                     .setCryptoProviderState(cryptoProviderState)
                     .setCryptoMode(currentCryptoMode)
-                    .setCryptoSupportSignOnly(false) // TODO get rid of this setting
                     .setEnablePgpInline(cryptoEnablePgpInline)
                     .setRecipients(getAllRecipients());
 

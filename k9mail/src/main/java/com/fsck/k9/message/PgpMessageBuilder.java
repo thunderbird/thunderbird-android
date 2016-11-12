@@ -46,8 +46,6 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     private MimeMessage currentProcessedMimeMessage;
     private ComposeCryptoStatus cryptoStatus;
-    private boolean opportunisticSkipEncryption;
-    private boolean opportunisticSecondPass;
 
 
     public static PgpMessageBuilder newInstance() {
@@ -104,7 +102,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     private void startOrContinueBuildMessage(@Nullable Intent pgpApiIntent) {
         try {
             boolean shouldSign = cryptoStatus.isSigningEnabled();
-            boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled() && !opportunisticSkipEncryption;
+            boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled();
             boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled();
 
             if (!shouldSign && !shouldEncrypt) {
@@ -125,13 +123,6 @@ public class PgpMessageBuilder extends MessageBuilder {
                     pgpApiIntent, shouldEncrypt || isPgpInlineMode, shouldEncrypt || !isPgpInlineMode, isPgpInlineMode);
             if (returnedPendingIntent != null) {
                 queueMessageBuildPendingIntent(returnedPendingIntent, REQUEST_USER_INTERACTION);
-                return;
-            }
-
-            boolean shouldSignOnly = cryptoStatus.isOpportunisticSignOnly();
-            if (opportunisticSkipEncryption && shouldSignOnly && !opportunisticSecondPass) {
-                opportunisticSecondPass = true;
-                startOrContinueBuildMessage(null);
                 return;
             }
 
@@ -224,7 +215,11 @@ public class PgpMessageBuilder extends MessageBuilder {
                 }
                 boolean isOpportunisticError = error.getErrorId() == OpenPgpError.OPPORTUNISTIC_MISSING_KEYS;
                 if (isOpportunisticError) {
-                    skipEncryptingMessage();
+                    if (!cryptoStatus.isEncryptionOpportunistic()) {
+                        throw new IllegalStateException(
+                                "Got opportunistic error, but encryption wasn't supposed to be opportunistic!");
+                    }
+                    Log.d(K9.LOG_TAG, "Skipping encryption due to opportunistic mode");
                     return null;
                 }
                 throw new MessagingException(error.getMessage());
@@ -259,8 +254,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             @NonNull Intent result, @NonNull MimeBodyPart bodyPart, @Nullable BinaryTempFileBody pgpResultTempBody)
             throws MessagingException {
         if (pgpResultTempBody == null) {
-            boolean shouldHaveResultPart = cryptoStatus.isPgpInlineModeEnabled() ||
-                    (cryptoStatus.isEncryptionEnabled() && !opportunisticSkipEncryption);
+            boolean shouldHaveResultPart = cryptoStatus.isPgpInlineModeEnabled() || cryptoStatus.isEncryptionEnabled();
             if (shouldHaveResultPart) {
                 throw new AssertionError("encryption or pgp/inline is enabled, but no output part!");
             }
@@ -333,13 +327,6 @@ public class PgpMessageBuilder extends MessageBuilder {
             inlineBodyPart.setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
         }
         MimeMessageHelper.setBody(currentProcessedMimeMessage, inlineBodyPart);
-    }
-
-    private void skipEncryptingMessage() throws MessagingException {
-        if (!cryptoStatus.isEncryptionOpportunistic()) {
-            throw new AssertionError("Got opportunistic error, but encryption wasn't supposed to be opportunistic!");
-        }
-        opportunisticSkipEncryption = true;
     }
 
     public void setCryptoStatus(ComposeCryptoStatus cryptoStatus) {

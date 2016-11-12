@@ -412,7 +412,6 @@ public class PgpMessageBuilderTest {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
                 .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
                 .setCryptoMode(CryptoMode.OPPORTUNISTIC)
-                .setCryptoSupportSignOnly(false)
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
 
@@ -436,40 +435,6 @@ public class PgpMessageBuilderTest {
 
         MimeMessage message = captor.getValue();
         Assert.assertEquals("text/plain", message.getMimeType());
-    }
-
-    @Test
-    public void buildOpportunisticEncrypt__withNoKeysAndSignOnly__shouldBeSigned() throws MessagingException {
-        ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
-                .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
-                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
-                .setCryptoSupportSignOnly(true)
-                .build();
-        pgpMessageBuilder.setCryptoStatus(cryptoStatus);
-
-        Intent returnIntentOpportunisticError = new Intent();
-        returnIntentOpportunisticError.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
-        returnIntentOpportunisticError.putExtra(OpenPgpApi.RESULT_ERROR,
-                new OpenPgpError(OpenPgpError.OPPORTUNISTIC_MISSING_KEYS, "Missing keys"));
-
-        Intent returnIntentSigned = new Intent();
-        returnIntentSigned.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        returnIntentSigned.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, new byte[] { (byte) 159 });
-
-
-        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
-                .thenReturn(returnIntentOpportunisticError, returnIntentSigned);
-
-        Callback mockCallback = mock(Callback.class);
-        pgpMessageBuilder.buildAsync(mockCallback);
-
-
-        ArgumentCaptor<MimeMessage> captor = ArgumentCaptor.forClass(MimeMessage.class);
-        verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false));
-        verifyNoMoreInteractions(mockCallback);
-
-        MimeMessage message = captor.getValue();
-        Assert.assertEquals("multipart/signed", message.getMimeType());
     }
 
     @Test
@@ -500,8 +465,7 @@ public class PgpMessageBuilderTest {
                 .setSigningKeyId(TEST_SIGN_KEY_ID)
                 .setSelfEncryptId(TEST_SELF_ENCRYPT_KEY_ID)
                 .setRecipients(new ArrayList<Recipient>())
-                .setCryptoProviderState(CryptoProviderState.OK)
-                .setCryptoSupportSignOnly(true);
+                .setCryptoProviderState(CryptoProviderState.OK);
     }
 
     private static PgpMessageBuilder createDefaultPgpMessageBuilder(OpenPgpApi openPgpApi) {
