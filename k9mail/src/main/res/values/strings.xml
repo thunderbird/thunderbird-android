@@ -1163,8 +1163,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="error_crypto_inline_attach">PGP/INLINE mode does not support attachments!</string>
     <string name="enable_inline_pgp">Enable PGP/INLINE</string>
     <string name="disable_inline_pgp">Disable PGP/INLINE</string>
-    <string name="enable_sign_only">Attach PGP Signature</string>
-    <string name="disable_sign_only">Disable PGP-Signing</string>
+    <string name="enable_sign_only">Enable PGP Sign-Only</string>
+    <string name="disable_sign_only">Disable PGP Sign-Only</string>
     <string name="openpgp_inline_title">PGP/INLINE Mode</string>
     <string name="openpgp_inline_text">The email is sent in PGP/INLINE format.\nThis should only be used for compatibility:</string>
     <string name="openpgp_inline_plus_compat">Some clients only support this format</string>
@@ -1176,8 +1176,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_sign_only_ok">Got it!</string>
     <string name="openpgp_sign_only_disable">Disable</string>
     <string name="openpgp_sign_only_keep_enabled">Keep Enabled</string>
-    <string name="openpgp_dialog_sign_only_title">Attach PGP Signature</string>
-    <string name="openpgp_dialog_sign_only_text">Your PGP key will be used to create a cryptographic signature of the email.</string>
+    <string name="openpgp_dialog_sign_only_title">PGP Sign-Only Mode</string>
+    <string name="openpgp_dialog_sign_only_text">In this mode, your PGP key will be used to create a cryptographic signature of an unencrypted email.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">This does not encrypt the email, but verifies that it was sent from your key.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Signatures may break when sent to mailing lists.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Signatures may be displayed as \'signature.asc\' attachments in some clients.</string>

@@ -4,13 +4,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="14dp"
+    android:paddingBottom="14dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
         tools:ignore="UseCompoundDrawables"
         >
 
@@ -39,7 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:textAppearanceSmall"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/openpgp_dialog_sign_only_text"
         />
 
