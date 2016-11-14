@@ -106,6 +106,6 @@ public class MimeMultipart extends Multipart {
 
     @Override
     public InputStream getInputStream() throws MessagingException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }
