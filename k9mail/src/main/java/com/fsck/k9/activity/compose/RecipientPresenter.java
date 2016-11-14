@@ -602,7 +602,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     public void showPgpAttachError(AttachErrorState attachErrorState) {
         switch (attachErrorState) {
             case IS_INLINE:
-                recipientMvpView.showErrorAttachInline();
+                recipientMvpView.showErrorInlineAttach();
                 break;
             default:
                 throw new AssertionError("not all error states handled, this is a bug!");
@@ -721,8 +721,17 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void onMenuSetPgpInline(boolean enablePgpInline) {
-        cryptoEnablePgpInline = enablePgpInline;
-        updateCryptoStatus();
+        if (getCurrentCryptoStatus().isSignOnly()) {
+            if (cryptoEnablePgpInline) {
+                Log.e(K9.LOG_TAG, "Inconsistent state: PGP/INLINE was enabled in sign-only mode!");
+                onCryptoPgpInlineChanged(false);
+            }
+
+            recipientMvpView.showErrorSignOnlyInline();
+            return;
+        }
+
+        onCryptoPgpInlineChanged(enablePgpInline);
         if (enablePgpInline) {
             boolean shouldShowPgpInlineDialog = checkAndIncrementPgpInlineDialogCounter();
             if (shouldShowPgpInlineDialog) {
@@ -733,6 +742,12 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     public void onMenuSetSignOnly(boolean enableSignOnly) {
         if (enableSignOnly) {
+            if (getCurrentCryptoStatus().isPgpInlineModeEnabled()) {
+                recipientMvpView.showErrorInlineSignOnly();
+                return;
+            }
+
+            onCryptoPgpInlineChanged(false);
             onCryptoModeChanged(CryptoMode.SIGN_ONLY);
             boolean shouldShowPgpSignOnlyDialog = checkAndIncrementPgpSignOnlyDialogCounter();
             if (shouldShowPgpSignOnlyDialog) {
