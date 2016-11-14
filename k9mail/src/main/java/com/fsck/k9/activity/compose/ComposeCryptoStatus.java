@@ -4,6 +4,7 @@ package com.fsck.k9.activity.compose;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
@@ -43,7 +44,7 @@ public class ComposeCryptoStatus {
         return signingKeyId;
     }
 
-    public CryptoStatusDisplayType getCryptoStatusDisplayType() {
+    CryptoStatusDisplayType getCryptoStatusDisplayType() {
         switch (cryptoProviderState) {
             case UNCONFIGURED:
                 return CryptoStatusDisplayType.UNCONFIGURED;
@@ -85,6 +86,22 @@ public class ComposeCryptoStatus {
             default:
                 throw new AssertionError("all CryptoModes must be handled!");
         }
+    }
+
+    CryptoSpecialModeDisplayType getCryptoSpecialModeDisplayType() {
+        if (cryptoProviderState != CryptoProviderState.OK) {
+            return CryptoSpecialModeDisplayType.NONE;
+        }
+
+        if (isPgpInlineModeEnabled()) {
+            return CryptoSpecialModeDisplayType.PGP_INLINE;
+        }
+
+        if (isSignOnly()) {
+            return CryptoSpecialModeDisplayType.SIGN_ONLY;
+        }
+
+        return CryptoSpecialModeDisplayType.NONE;
     }
 
     public boolean shouldUsePgpMessageBuilder() {
@@ -223,11 +240,11 @@ public class ComposeCryptoStatus {
         return null;
     }
 
-    public enum AttachErrorState {
+    enum AttachErrorState {
         IS_INLINE
     }
 
-    public AttachErrorState getAttachErrorStateOrNull() {
+    AttachErrorState getAttachErrorStateOrNull() {
         if (cryptoProviderState == CryptoProviderState.UNCONFIGURED) {
             return null;
         }

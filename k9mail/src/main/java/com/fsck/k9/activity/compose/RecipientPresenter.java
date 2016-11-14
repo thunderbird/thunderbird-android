@@ -351,7 +351,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
 
         recipientMvpView.showCryptoStatus(getCurrentCryptoStatus().getCryptoStatusDisplayType());
-        recipientMvpView.showPgpInlineModeIndicator(getCurrentCryptoStatus().isPgpInlineModeEnabled());
+        recipientMvpView.showCryptoSpecialMode(getCurrentCryptoStatus().getCryptoSpecialModeDisplayType());
     }
 
     public ComposeCryptoStatus getCurrentCryptoStatus() {
@@ -551,7 +551,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 return;
             case OK:
                 if (cachedCryptoStatus.isSignOnly()) {
-                    recipientMvpView.showOpenPgpSignOnlyDialog(false);
+                    recipientMvpView.showErrorIsSignOnly();
                 } else {
                     recipientMvpView.showCryptoDialog(currentCryptoMode);
                 }
@@ -765,8 +765,15 @@ public class RecipientPresenter implements PermissionPingCallback {
         return false;
     }
 
-    public void onClickPgpInlineIndicator() {
-        recipientMvpView.showOpenPgpInlineDialog(false);
+    void onClickCryptoSpecialModeIndicator() {
+        ComposeCryptoStatus currentCryptoStatus = getCurrentCryptoStatus();
+        if (currentCryptoStatus.isPgpInlineModeEnabled()) {
+            recipientMvpView.showOpenPgpInlineDialog(false);
+        } else if (currentCryptoStatus.isSignOnly()) {
+            recipientMvpView.showOpenPgpSignOnlyDialog(false);
+        } else {
+            throw new IllegalStateException("This icon should not be clickable while no special mode is active!");
+        }
     }
 
     public enum CryptoProviderState {
