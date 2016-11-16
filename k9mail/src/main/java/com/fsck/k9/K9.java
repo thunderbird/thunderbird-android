@@ -256,6 +256,7 @@ public class K9 extends Application {
     private static boolean sMessageViewSpamActionVisible = false;
 
     private static int sPgpInlineDialogCounter;
+    private static int sPgpSignOnlyDialogCounter;
 
 
     /**
@@ -495,6 +496,7 @@ public class K9 extends Application {
         editor.putBoolean("messageViewSpamActionVisible", sMessageViewSpamActionVisible);
 
         editor.putInt("pgpInlineDialogCounter", sPgpInlineDialogCounter);
+        editor.putInt("pgpSignOnlyDialogCounter", sPgpSignOnlyDialogCounter);
 
         fontSizes.save(editor);
     }
@@ -743,6 +745,7 @@ public class K9 extends Application {
         sMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false);
 
         sPgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0);
+        sPgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0);
 
         K9.setK9Language(storage.getString("language", ""));
 
@@ -1327,6 +1330,14 @@ public class K9 extends Application {
 
     public static void setPgpInlineDialogCounter(int pgpInlineDialogCounter) {
         K9.sPgpInlineDialogCounter = pgpInlineDialogCounter;
+    }
+
+    public static int getPgpSignOnlyDialogCounter() {
+        return sPgpSignOnlyDialogCounter;
+    }
+
+    public static void setPgpSignOnlyDialogCounter(int pgpSignOnlyDialogCounter) {
+        K9.sPgpSignOnlyDialogCounter = pgpSignOnlyDialogCounter;
     }
 
     /**

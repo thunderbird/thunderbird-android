@@ -4,6 +4,7 @@ package com.fsck.k9.activity.compose;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
@@ -19,7 +20,6 @@ public class ComposeCryptoStatus {
 
     private CryptoProviderState cryptoProviderState;
     private CryptoMode cryptoMode;
-    private boolean cryptoSupportSignOnly;
     private boolean allKeysAvailable;
     private boolean allKeysVerified;
     private boolean hasRecipients;
@@ -44,7 +44,7 @@ public class ComposeCryptoStatus {
         return signingKeyId;
     }
 
-    public CryptoStatusDisplayType getCryptoStatusDisplayType() {
+    CryptoStatusDisplayType getCryptoStatusDisplayType() {
         switch (cryptoProviderState) {
             case UNCONFIGURED:
                 return CryptoStatusDisplayType.UNCONFIGURED;
@@ -88,6 +88,22 @@ public class ComposeCryptoStatus {
         }
     }
 
+    CryptoSpecialModeDisplayType getCryptoSpecialModeDisplayType() {
+        if (cryptoProviderState != CryptoProviderState.OK) {
+            return CryptoSpecialModeDisplayType.NONE;
+        }
+
+        if (isPgpInlineModeEnabled()) {
+            return CryptoSpecialModeDisplayType.PGP_INLINE;
+        }
+
+        if (isSignOnly()) {
+            return CryptoSpecialModeDisplayType.SIGN_ONLY;
+        }
+
+        return CryptoSpecialModeDisplayType.NONE;
+    }
+
     public boolean shouldUsePgpMessageBuilder() {
         return cryptoProviderState != CryptoProviderState.UNCONFIGURED && cryptoMode != CryptoMode.DISABLE;
     }
@@ -100,8 +116,8 @@ public class ComposeCryptoStatus {
         return cryptoMode == CryptoMode.OPPORTUNISTIC;
     }
 
-    public boolean isOpportunisticSignOnly() {
-        return cryptoSupportSignOnly;
+    public boolean isSignOnly() {
+        return cryptoMode == CryptoMode.SIGN_ONLY;
     }
 
     public boolean isSigningEnabled() {
@@ -128,7 +144,6 @@ public class ComposeCryptoStatus {
         private Long selfEncryptKeyId;
         private List<Recipient> recipients;
         private Boolean enablePgpInline;
-        private Boolean cryptoSupportSignOnly;
 
         public ComposeCryptoStatusBuilder setCryptoProviderState(CryptoProviderState cryptoProviderState) {
             this.cryptoProviderState = cryptoProviderState;
@@ -137,11 +152,6 @@ public class ComposeCryptoStatus {
 
         public ComposeCryptoStatusBuilder setCryptoMode(CryptoMode cryptoMode) {
             this.cryptoMode = cryptoMode;
-            return this;
-        }
-
-        public ComposeCryptoStatusBuilder setCryptoSupportSignOnly(boolean cryptoSupportSignOnly) {
-            this.cryptoSupportSignOnly = cryptoSupportSignOnly;
             return this;
         }
 
@@ -178,9 +188,6 @@ public class ComposeCryptoStatus {
             if (enablePgpInline == null) {
                 throw new AssertionError("enablePgpInline must be set!");
             }
-            if (cryptoSupportSignOnly == null) {
-                throw new AssertionError("supportSignOnly must be set!");
-            }
 
             ArrayList<String> recipientAddresses = new ArrayList<>();
             boolean allKeysAvailable = true;
@@ -201,7 +208,6 @@ public class ComposeCryptoStatus {
             ComposeCryptoStatus result = new ComposeCryptoStatus();
             result.cryptoProviderState = cryptoProviderState;
             result.cryptoMode = cryptoMode;
-            result.cryptoSupportSignOnly = cryptoSupportSignOnly;
             result.recipientAddresses = recipientAddresses.toArray(new String[0]);
             result.allKeysAvailable = allKeysAvailable;
             result.allKeysVerified = allKeysVerified;
@@ -234,11 +240,11 @@ public class ComposeCryptoStatus {
         return null;
     }
 
-    public enum AttachErrorState {
+    enum AttachErrorState {
         IS_INLINE
     }
 
-    public AttachErrorState getAttachErrorStateOrNull() {
+    AttachErrorState getAttachErrorStateOrNull() {
         if (cryptoProviderState == CryptoProviderState.UNCONFIGURED) {
             return null;
         }

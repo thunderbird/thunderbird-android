@@ -63,6 +63,7 @@
         <item name="composerBackgroundColor">@android:color/background_light</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
+        <item name="tintColorBulletPointNeutral">#888</item>
 
         <item name="openpgp_black">#000</item>
         <item name="openpgp_orange">#FF8800</item>
@@ -127,6 +128,7 @@
         <item name="composerBackgroundColor">@android:color/background_dark</item>
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
+        <item name="tintColorBulletPointNeutral">#bbb</item>
 
         <item name="openpgp_black">#fff</item>
         <item name="openpgp_orange">#ee7700</item>
