@@ -33,7 +33,7 @@ public class OpenPgpSignatureResult implements Parcelable {
      * old versions of the protocol (and thus old versions of this class), we need a versioning
      * system for the parcels sent between the clients and the providers.
      */
-    public static final int PARCELABLE_VERSION = 3;
+    private static final int PARCELABLE_VERSION = 3;
 
     // content not signed
     public static final int RESULT_NO_SIGNATURE = -1;
@@ -58,26 +58,22 @@ public class OpenPgpSignatureResult implements Parcelable {
     public static final int RESULT_INVALID_INSECURE = 6;
     public static final int RESULT_INVALID_KEY_INSECURE = 6;
 
-    public static final int SENDER_RESULT_NO_SENDER = 0;
-    public static final int SENDER_RESULT_UID_CONFIRMED = 1;
-    public static final int SENDER_RESULT_UID_UNCONFIRMED = 2;
-    public static final int SENDER_RESULT_UID_MISSING = 3;
-
     private final int result;
     private final long keyId;
     private final String primaryUserId;
     private final ArrayList<String> userIds;
     private final ArrayList<String> confirmedUserIds;
-    private final int senderResult;
+    private final SenderStatusResult senderStatusResult;
 
     private OpenPgpSignatureResult(int signatureStatus, String signatureUserId, long keyId,
-            ArrayList<String> userIds, ArrayList<String> confirmedUserIds, int senderResult, Boolean signatureOnly) {
+            ArrayList<String> userIds, ArrayList<String> confirmedUserIds, SenderStatusResult senderStatusResult,
+            Boolean signatureOnly) {
         this.result = signatureStatus;
         this.primaryUserId = signatureUserId;
         this.keyId = keyId;
         this.userIds = userIds;
         this.confirmedUserIds = confirmedUserIds;
-        this.senderResult = senderResult;
+        this.senderStatusResult = senderStatusResult;
     }
 
     private OpenPgpSignatureResult(Parcel source, int version) {
@@ -93,10 +89,11 @@ public class OpenPgpSignatureResult implements Parcelable {
             this.userIds = null;
         }
         if (version > 2) {
-            this.senderResult = source.readInt();
+            this.senderStatusResult = readEnumWithNullAndFallback(
+                    source, SenderStatusResult.VALUES, SenderStatusResult.UNKNOWN);
             this.confirmedUserIds = source.createStringArrayList();
         } else {
-            this.senderResult = SENDER_RESULT_NO_SENDER;
+            this.senderStatusResult = SenderStatusResult.UNKNOWN;
             this.confirmedUserIds = null;
         }
     }
@@ -105,8 +102,8 @@ public class OpenPgpSignatureResult implements Parcelable {
         return result;
     }
 
-    public int getSenderResult() {
-        return senderResult;
+    public SenderStatusResult getSenderStatusResult() {
+        return senderStatusResult;
     }
 
     public String getPrimaryUserId() {
@@ -142,14 +139,14 @@ public class OpenPgpSignatureResult implements Parcelable {
         int startPosition = dest.dataPosition();
         // version 1
         dest.writeInt(result);
-        // this is deprecated since version 3. we pass a dummy value for compatibility
+        // signatureOnly is deprecated since version 3. we pass a dummy value for compatibility
         dest.writeByte((byte) 0);
         dest.writeString(primaryUserId);
         dest.writeLong(keyId);
         // version 2
         dest.writeStringList(userIds);
         // version 3
-        dest.writeInt(senderResult);
+        writeEnumWithNull(dest, senderStatusResult);
         dest.writeStringList(confirmedUserIds);
         // Go back and write the size
         int parcelableSize = dest.dataPosition() - startPosition;
@@ -187,30 +184,55 @@ public class OpenPgpSignatureResult implements Parcelable {
     }
 
     public static OpenPgpSignatureResult createWithValidSignature(int signatureStatus, String primaryUserId,
-            long keyId, ArrayList<String> userIds, ArrayList<String> confirmedUserIds, int senderStatus) {
+            long keyId, ArrayList<String> userIds, ArrayList<String> confirmedUserIds, SenderStatusResult senderStatusResult) {
         if (signatureStatus == RESULT_NO_SIGNATURE || signatureStatus == RESULT_KEY_MISSING ||
                 signatureStatus == RESULT_INVALID_SIGNATURE) {
             throw new IllegalArgumentException("can only use this method for valid types of signatures");
         }
         return new OpenPgpSignatureResult(
-                signatureStatus, primaryUserId, keyId, userIds, confirmedUserIds, senderStatus, null);
+                signatureStatus, primaryUserId, keyId, userIds, confirmedUserIds, senderStatusResult, null);
     }
 
     public static OpenPgpSignatureResult createWithNoSignature() {
-        return new OpenPgpSignatureResult(RESULT_NO_SIGNATURE, null, 0L, null, null, 0, null);
+        return new OpenPgpSignatureResult(RESULT_NO_SIGNATURE, null, 0L, null, null, null, null);
     }
 
     public static OpenPgpSignatureResult createWithKeyMissing(long keyId) {
-        return new OpenPgpSignatureResult(RESULT_KEY_MISSING, null, keyId, null, null, 0, null);
+        return new OpenPgpSignatureResult(RESULT_KEY_MISSING, null, keyId, null, null, null, null);
     }
 
     public static OpenPgpSignatureResult createWithInvalidSignature() {
-        return new OpenPgpSignatureResult(RESULT_INVALID_SIGNATURE, null, 0L, null, null, 0, null);
+        return new OpenPgpSignatureResult(RESULT_INVALID_SIGNATURE, null, 0L, null, null, null, null);
     }
 
     @Deprecated
     public OpenPgpSignatureResult withSignatureOnlyFlag(boolean signatureOnly) {
         return new OpenPgpSignatureResult(
-                result, primaryUserId, keyId, userIds, confirmedUserIds, senderResult, signatureOnly);
+                result, primaryUserId, keyId, userIds, confirmedUserIds, senderStatusResult, signatureOnly);
+    }
+
+    private static <T extends Enum<T>> T readEnumWithNullAndFallback(Parcel source, T[] enumValues, T fallback) {
+        int valueOrdinal = source.readInt();
+        if (valueOrdinal == -1) {
+            return null;
+        }
+        if (valueOrdinal >= enumValues.length) {
+            return fallback;
+        }
+        return enumValues[valueOrdinal];
+    }
+
+    private static void writeEnumWithNull(Parcel dest, Enum<?> enumValue) {
+        if (enumValue == null) {
+            dest.writeInt(-1);
+            return;
+        }
+        dest.writeInt(enumValue.ordinal());
+    }
+
+    public enum SenderStatusResult {
+        // Order is significant here - only add to the end for parcelable compatibility!
+        UNKNOWN, USER_ID_CONFIRMED, USER_ID_UNCONFIRMED, USER_ID_MISSING;
+        public static final SenderStatusResult[] VALUES = values();
     }
 }
