@@ -8,6 +8,14 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.115" versioncode="23114" >
+        <change>More user interface tweaks for encryption-related functionality</change>
+        <change>Message signing without encryption is now an expert feature that is disabled by default</change>
+        <change>Added support for directional pad to move to next/previous message</change>
+        <change>Worked around a bug when viewing attachments</change>
+        <change>Fixed notification grouping on Android Wear and Android 7.0</change>
+        <change>Fixed notification actions on Android 7.0</change>
+    </release>
     <release version="5.114" versioncode="23113" >
         <change>User interface tweaks for encryption-related functionality</change>
         <change>Fixed crash caused by new message notifications</change>
