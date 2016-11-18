@@ -260,14 +260,14 @@ public enum MessageCryptoDisplayStatus {
 
             case OpenPgpSignatureResult.RESULT_VALID_KEY_CONFIRMED:
             case OpenPgpSignatureResult.RESULT_VALID_KEY_UNCONFIRMED:
-                switch (signatureResult.getSenderResult()) {
-                    case OpenPgpSignatureResult.SENDER_RESULT_UID_CONFIRMED:
+                switch (signatureResult.getSenderStatusResult()) {
+                    case UNKNOWN:
                         return ENCRYPTED_SIGN_VERIFIED;
-                    case OpenPgpSignatureResult.SENDER_RESULT_UID_UNCONFIRMED:
+                    case USER_ID_UNCONFIRMED:
                         return ENCRYPTED_SIGN_UNVERIFIED;
-                    case OpenPgpSignatureResult.SENDER_RESULT_UID_MISSING:
+                    case USER_ID_MISSING:
                         return ENCRYPTED_SIGN_MISMATCH;
-                    case OpenPgpSignatureResult.SENDER_RESULT_NO_SENDER:
+                    case USER_ID_CONFIRMED:
                         return ENCRYPTED_SIGN_UNVERIFIED;
                 }
                 throw new IllegalStateException("unhandled encrypted result case!");
@@ -300,14 +300,14 @@ public enum MessageCryptoDisplayStatus {
 
             case OpenPgpSignatureResult.RESULT_VALID_KEY_CONFIRMED:
             case OpenPgpSignatureResult.RESULT_VALID_KEY_UNCONFIRMED:
-                switch (signatureResult.getSenderResult()) {
-                    case OpenPgpSignatureResult.SENDER_RESULT_UID_CONFIRMED:
+                switch (signatureResult.getSenderStatusResult()) {
+                    case USER_ID_CONFIRMED:
                         return UNENCRYPTED_SIGN_VERIFIED;
-                    case OpenPgpSignatureResult.SENDER_RESULT_UID_UNCONFIRMED:
+                    case USER_ID_UNCONFIRMED:
                         return UNENCRYPTED_SIGN_UNVERIFIED;
-                    case OpenPgpSignatureResult.SENDER_RESULT_UID_MISSING:
+                    case USER_ID_MISSING:
                         return UNENCRYPTED_SIGN_MISMATCH;
-                    case OpenPgpSignatureResult.SENDER_RESULT_NO_SENDER:
+                    case UNKNOWN:
                         return UNENCRYPTED_SIGN_UNVERIFIED;
                 }
                 throw new IllegalStateException("unhandled encrypted result case!");
