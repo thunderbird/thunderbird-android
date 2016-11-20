@@ -20,7 +20,6 @@ import com.fsck.k9.preferences.Storage;
 class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     private final LocalStore localStore;
 
-
     StoreSchemaDefinition(LocalStore localStore) {
         this.localStore = localStore;
     }
@@ -49,6 +48,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         Log.i(K9.LOG_TAG, String.format(Locale.US, "Upgrading database from version %d to version %d",
                 db.getVersion(), LocalStore.DB_VERSION));
 
+
         db.beginTransaction();
         try {
             // schema version 29 was when we moved to incremental updates
@@ -63,6 +63,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
             db.setVersion(LocalStore.DB_VERSION);
 
             db.setTransactionSuccessful();
+            Log.i(K9.LOG_TAG, String.format(Locale.US, "Upgraded database to version %d",
+                    db.getVersion()));
         } finally {
             db.endTransaction();
         }
