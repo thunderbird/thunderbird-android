@@ -35,22 +35,40 @@ public class MigrationTo56 {
 
     public static void migratePendingCommands(SQLiteDatabase db) {
         List<PendingCommand> pendingCommmands = new ArrayList<>();
-        for (OldPendingCommand oldPendingCommand : getPendingCommands(db)) {
-            PendingCommand newPendingCommand = migratePendingCommand(oldPendingCommand);
-            pendingCommmands.add(newPendingCommand);
-        }
 
-        db.execSQL("DROP TABLE IF EXISTS pending_commands");
-        db.execSQL("CREATE TABLE pending_commands " +
-                "(id INTEGER PRIMARY KEY, command TEXT, data TEXT)");
+        if (columnExists(db, "pending_commands", "arguments")) {
+            for (OldPendingCommand oldPendingCommand : getPendingCommands(db)) {
+                PendingCommand newPendingCommand = migratePendingCommand(oldPendingCommand);
+                pendingCommmands.add(newPendingCommand);
+            }
 
-        PendingCommandSerializer pendingCommandSerializer = PendingCommandSerializer.getInstance();
-        for (PendingCommand pendingCommand : pendingCommmands) {
-            final ContentValues cv = new ContentValues();
-            cv.put("command", pendingCommand.getCommandName());
-            cv.put("data", pendingCommandSerializer.serialize(pendingCommand));
-            db.insert("pending_commands", "command", cv);
+            db.execSQL("DROP TABLE IF EXISTS pending_commands");
+            db.execSQL("CREATE TABLE pending_commands " +
+                    "(id INTEGER PRIMARY KEY, command TEXT, data TEXT)");
+
+            PendingCommandSerializer pendingCommandSerializer = PendingCommandSerializer.getInstance();
+            for (PendingCommand pendingCommand : pendingCommmands) {
+                final ContentValues cv = new ContentValues();
+                cv.put("command", pendingCommand.getCommandName());
+                cv.put("data", pendingCommandSerializer.serialize(pendingCommand));
+                db.insert("pending_commands", "command", cv);
+            }
         }
+    }
+
+    private static boolean columnExists(SQLiteDatabase db, String table, String columnName) {
+        Cursor columnCursor  = db.rawQuery("PRAGMA table_info("+table+")", null);
+        columnCursor.moveToFirst();
+        boolean foundColumn = false;
+        while (!columnCursor.isAfterLast()) {
+            if(columnCursor.getString(1).equals(columnName)) {
+                foundColumn = true;
+                break;
+            }
+            columnCursor.moveToNext();
+        }
+        columnCursor.close();
+        return foundColumn;
     }
 
     @VisibleForTesting
