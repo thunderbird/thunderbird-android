@@ -22,7 +22,6 @@ configurations.all {
 
 dependencies {
     compile project(':k9mail-library')
-    compile project(':plugins:Android-PullToRefresh:library')
     compile project(':plugins:HoloColorPicker')
     compile project(':plugins:openpgp-api-lib:openpgp-api')
     compile "com.squareup.okio:okio:${okioVersion}"
