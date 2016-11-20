@@ -15,7 +15,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Future;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -673,7 +672,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         View view = inflater.inflate(R.layout.message_list_fragment, container, false);
 
-        initializePullToRefresh(inflater, view);
+        initializePullToRefresh(view);
 
         initializeLayout();
         mListView.setVerticalFadingEdgeEnabled(false);
@@ -943,7 +942,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
     }
 
-    private void initializePullToRefresh(LayoutInflater inflater, View layout) {
+    private void initializePullToRefresh(View layout) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
         mListView = (ListView) layout.findViewById(R.id.message_list);
 
@@ -1513,8 +1512,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private int listViewToAdapterPosition(int position) {
-        if (position > 0 && position <= mAdapter.getCount()) {
-            return position - 1;
+        if (position >= 0 && position < mAdapter.getCount()) {
+            return position;
         }
 
         return AdapterView.INVALID_POSITION;
@@ -1522,7 +1521,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private int adapterToListViewPosition(int position) {
         if (position >= 0 && position < mAdapter.getCount()) {
-            return position + 1;
+            return position;
         }
 
         return AdapterView.INVALID_POSITION;
