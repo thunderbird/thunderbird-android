@@ -47,7 +47,7 @@ public class MessageExtractor {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
                 if (body instanceof TextBody) {
-                    return ((TextBody)body).getRawText();
+                    return ((TextBody) body).getRawText();
                 }
                 final String mimeType = part.getMimeType();
                 if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*") ||
@@ -59,6 +59,8 @@ public class MessageExtractor {
             } else {
                 throw new MessagingException("Provided invalid part: " + part);
             }
+        } catch (UnsupportedEncodingException e) {
+            Log.e(LOG_TAG, "Unable to getTextFromPart", e);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Unable to getTextFromPart", e);
         } catch (MessagingException e) {
@@ -68,7 +70,7 @@ public class MessageExtractor {
     }
 
     private static String getTextFromTextPart(Part part, Body body, String mimeType, long textSizeLimit)
-            throws IOException, MessagingException {
+            throws IOException, MessagingException, UnsupportedEncodingException {
         /*
          * We've got a text part, so let's see if it needs to be processed further.
          */
