@@ -26,7 +26,7 @@ public class EditIdentity extends K9Activity {
     private EditText mSignatureView;
     private LinearLayout mSignatureLayout;
     private EditText mEmailView;
-//  private EditText mAlwaysBccView;
+    private EditText mAlwaysBccView;
     private EditText mNameView;
     private EditText mReplyTo;
 
@@ -65,8 +65,8 @@ public class EditIdentity extends K9Activity {
         mReplyTo = (EditText) findViewById(R.id.reply_to);
         mReplyTo.setText(mIdentity.getReplyTo());
 
-//      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
-//      mAccountAlwaysBcc.setText(mIdentity.getAlwaysBcc());
+        mAlwaysBccView = (EditText)findViewById(R.id.always_bcc);
+        mAlwaysBccView.setText(mIdentity.getAlwaysBcc());
 
         mSignatureLayout = (LinearLayout)findViewById(R.id.signature_layout);
         mSignatureUse = (CheckBox)findViewById(R.id.signature_use);
@@ -94,7 +94,7 @@ public class EditIdentity extends K9Activity {
 
         mIdentity.setDescription(mDescriptionView.getText().toString());
         mIdentity.setEmail(mEmailView.getText().toString());
-        //      mIdentity.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
+        mIdentity.setAlwaysBcc(mAlwaysBccView.getText().toString());
         mIdentity.setName(mNameView.getText().toString());
         mIdentity.setSignatureUse(mSignatureUse.isChecked());
         mIdentity.setSignature(mSignatureView.getText().toString());
