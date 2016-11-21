@@ -1018,7 +1018,7 @@ public class MimeUtility {
      * The ultimate goal is to get to a point where all classes retain the original data and {@code RawDataBody} can be
      * merged into {@link Body}.
      */
-    public static InputStream decodeBody(Body body) throws MessagingException, UnsupportedEncodingException {
+    public static InputStream decodeBody(Body body) throws MessagingException, UnsupportedContentTransferEncodingException {
         InputStream inputStream;
         if (body instanceof RawDataBody) {
             RawDataBody rawDataBody = (RawDataBody) body;
@@ -1044,7 +1044,7 @@ public class MimeUtility {
                     }
                 };
             } else {
-                throw new UnsupportedEncodingException(encoding);
+                throw new UnsupportedContentTransferEncodingException(encoding);
             }
         } else {
             inputStream = body.getInputStream();

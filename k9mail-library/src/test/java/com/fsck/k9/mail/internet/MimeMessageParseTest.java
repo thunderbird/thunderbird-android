@@ -128,7 +128,7 @@ public class MimeMessageParseTest {
                         "");
     }
 
-    @Test(expected = UnsupportedEncodingException.class)
+    @Test(expected = UnsupportedContentTransferEncodingException.class)
     public void testSinglePartUnknownEncoding_throwsUnsupportedEncodingException() throws Exception {
         MimeMessage msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
