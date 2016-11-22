@@ -122,11 +122,12 @@ class ImapFolder extends Folder<ImapMessage> {
         if (isOpen() && this.mode == mode) {
             // Make sure the connection is valid. If it's not we'll close it down and continue
             // on to get a new one.
-            try {
-                return executeSimpleCommand(Commands.NOOP);
-            } catch (IOException ioe) {
-                /* don't throw */ ioExceptionHandler(connection, ioe);
-            }
+            if (connection != null && !connection.hasBeenClosed())
+                try {
+                    return executeSimpleCommand(Commands.NOOP);
+                } catch (IOException ioe) {
+                    /* don't throw */ ioExceptionHandler(connection, ioe);
+                }
         }
 
         store.releaseConnection(connection);

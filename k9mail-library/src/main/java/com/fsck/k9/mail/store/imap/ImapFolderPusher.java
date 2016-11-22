@@ -327,8 +327,10 @@ class ImapFolderPusher extends ImapFolder {
 
         private boolean openConnectionIfNecessary() throws MessagingException {
             ImapConnection oldConnection = connection;
-            internalOpen(OPEN_MODE_RO);
-
+            if (connection == null
+                    || (connection.isConnected() && !connection.hasBeenClosed())) {
+                internalOpen(OPEN_MODE_RO);
+            }
             ImapConnection conn = connection;
 
             checkConnectionNotNull(conn);
