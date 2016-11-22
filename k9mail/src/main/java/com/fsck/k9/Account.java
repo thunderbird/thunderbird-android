@@ -113,6 +113,7 @@ public class Account implements BaseAccount, StoreConfig {
 
     public static final String IDENTITY_NAME_KEY = "name";
     public static final String IDENTITY_EMAIL_KEY = "email";
+    public static final String IDENTITY_ALWAYSBCC_KEY = "alwaysBcc";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
     /*
@@ -1329,6 +1330,7 @@ public class Account implements BaseAccount, StoreConfig {
             gotOne = false;
             String name = storage.getString(mUuid + "." + IDENTITY_NAME_KEY + "." + ident, null);
             String email = storage.getString(mUuid + "." + IDENTITY_EMAIL_KEY + "." + ident, null);
+            String alwaysBcc = storage.getString(mUuid + "." + IDENTITY_ALWAYSBCC_KEY + "." + ident, null);
             boolean signatureUse = storage.getBoolean(mUuid  + ".signatureUse." + ident, true);
             String signature = storage.getString(mUuid + ".signature." + ident, null);
             String description = storage.getString(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident, null);
@@ -1337,6 +1339,7 @@ public class Account implements BaseAccount, StoreConfig {
                 Identity identity = new Identity();
                 identity.setName(name);
                 identity.setEmail(email);
+                identity.setAlwaysBcc(alwaysBcc);
                 identity.setSignatureUse(signatureUse);
                 identity.setSignature(signature);
                 identity.setDescription(description);
@@ -1350,11 +1353,13 @@ public class Account implements BaseAccount, StoreConfig {
         if (newIdentities.isEmpty()) {
             String name = storage.getString(mUuid + ".name", null);
             String email = storage.getString(mUuid + ".email", null);
+            String alwaysBcc = storage.getString(mUuid + ".alwaysBcc", null);
             boolean signatureUse = storage.getBoolean(mUuid  + ".signatureUse", true);
             String signature = storage.getString(mUuid + ".signature", null);
             Identity identity = new Identity();
             identity.setName(name);
             identity.setEmail(email);
+            identity.setAlwaysBcc(alwaysBcc);
             identity.setSignatureUse(signatureUse);
             identity.setSignature(signature);
             identity.setDescription(email);
@@ -1373,6 +1378,7 @@ public class Account implements BaseAccount, StoreConfig {
             if (email != null) {
                 editor.remove(mUuid + "." + IDENTITY_NAME_KEY + "." + ident);
                 editor.remove(mUuid + "." + IDENTITY_EMAIL_KEY + "." + ident);
+                editor.remove(mUuid + "." + IDENTITY_ALWAYSBCC_KEY + ident);
                 editor.remove(mUuid + ".signatureUse." + ident);
                 editor.remove(mUuid + ".signature." + ident);
                 editor.remove(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident);
@@ -1390,6 +1396,7 @@ public class Account implements BaseAccount, StoreConfig {
         for (Identity identity : identities) {
             editor.putString(mUuid + "." + IDENTITY_NAME_KEY + "." + ident, identity.getName());
             editor.putString(mUuid + "." + IDENTITY_EMAIL_KEY + "." + ident, identity.getEmail());
+            editor.putString(mUuid + "." + IDENTITY_ALWAYSBCC_KEY + ident, identity.getAlwaysBcc());
             editor.putBoolean(mUuid + ".signatureUse." + ident, identity.getSignatureUse());
             editor.putString(mUuid + ".signature." + ident, identity.getSignature());
             editor.putString(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident, identity.getDescription());
