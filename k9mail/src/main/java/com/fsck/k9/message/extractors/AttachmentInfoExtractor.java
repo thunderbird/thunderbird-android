@@ -75,6 +75,12 @@ public class AttachmentInfoExtractor {
             size = localMessage.getSize();
             isContentAvailable = part.getBody() != null;
             uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
+        } else if (part instanceof LocalMessage) {
+            LocalMessage localMessage = (LocalMessage) part;
+            String accountUuid = localMessage.getAccount().getUuid();
+            long messagePartId = localMessage.getMessagePartId();
+            size = localMessage.getSize();
+            uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);
         } else {
             Body body = part.getBody();
             if (body instanceof DeferredFileBody) {
