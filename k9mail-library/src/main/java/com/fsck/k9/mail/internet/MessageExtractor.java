@@ -59,8 +59,6 @@ public class MessageExtractor {
             } else {
                 throw new MessagingException("Provided invalid part: " + part);
             }
-        } catch (UnsupportedContentTransferEncodingException e) {
-            Log.e(LOG_TAG, "Unable to getTextFromPart", e);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Unable to getTextFromPart", e);
         } catch (MessagingException e) {
@@ -70,7 +68,7 @@ public class MessageExtractor {
     }
 
     private static String getTextFromTextPart(Part part, Body body, String mimeType, long textSizeLimit)
-            throws IOException, MessagingException, UnsupportedContentTransferEncodingException {
+            throws IOException, MessagingException {
         /*
          * We've got a text part, so let's see if it needs to be processed further.
          */

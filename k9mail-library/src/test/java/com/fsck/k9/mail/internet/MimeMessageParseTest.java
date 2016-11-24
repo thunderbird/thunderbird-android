@@ -140,9 +140,7 @@ public class MimeMessageParseTest {
                         "\r\n" +
                         "dGhpcyBpcyBzb21lIG1vcmUgdGVzdCB0ZXh0Lg==\r\n"));
 
-        checkAddresses(msg.getFrom(), "adam@example.org");
-        checkAddresses(msg.getRecipients(RecipientType.TO), "eva@example.org");
-        streamToString(MimeUtility.decodeBody(msg.getBody()));
+        MimeUtility.decodeBody(msg.getBody());
     }
 
     @Test

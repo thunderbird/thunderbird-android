@@ -32,7 +32,6 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
-import com.fsck.k9.mail.internet.UnsupportedContentTransferEncodingException;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.apache.commons.io.IOUtils;
@@ -508,7 +507,7 @@ public class PgpMessageBuilderTest {
             InputStream inputStream = MimeUtility.decodeBody(signatureBodyPart.getBody());
             IOUtils.copy(inputStream, bos);
             Assert.assertEquals(reason, expected, new String(bos.toByteArray()));
-        } catch (IOException | MessagingException | UnsupportedContentTransferEncodingException e) {
+        } catch (IOException | MessagingException e) {
             Assert.fail();
         }
     }

@@ -78,7 +78,9 @@ public class MessageExtractorTest {
         BinaryMemoryBody body = new BinaryMemoryBody("Sample text body".getBytes(), "unknown encoding");
         part.setBody(body);
 
-        assertNull(MessageExtractor.getTextFromPart(part));
+        String result = MessageExtractor.getTextFromPart(part);
+        
+        assertNull(result);
     }
 
     @Test

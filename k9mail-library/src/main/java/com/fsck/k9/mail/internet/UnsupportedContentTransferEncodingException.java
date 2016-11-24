@@ -1,6 +1,8 @@
 package com.fsck.k9.mail.internet;
 
-public class UnsupportedContentTransferEncodingException extends Exception {
+import com.fsck.k9.mail.MessagingException;
+
+public class UnsupportedContentTransferEncodingException extends MessagingException {
     public UnsupportedContentTransferEncodingException(String encoding) {
         super("Unsupported encoding: "+encoding);
     }
