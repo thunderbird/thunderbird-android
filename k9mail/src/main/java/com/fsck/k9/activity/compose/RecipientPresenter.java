@@ -166,6 +166,11 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
+    public void initFromTrustIdAction(String trustId) {
+        addToAddresses(Address.parse(trustId));
+        currentCryptoMode = CryptoMode.CHOICE_ENABLED;
+    }
+
     public void initFromMailto(MailTo mailTo) {
         addToAddresses(mailTo.getTo());
         addCcAddresses(mailTo.getCc());

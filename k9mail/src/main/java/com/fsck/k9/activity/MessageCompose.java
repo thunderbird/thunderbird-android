@@ -29,7 +29,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import timber.log.Timber;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -100,6 +99,8 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
+import org.openintents.openpgp.util.OpenPgpApi;
+import timber.log.Timber;
 
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
@@ -120,6 +121,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
     public static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
     public static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
+    private static final String ACTION_AUTOCRYPT_PEER = "org.autocrypt.PEER_ACTION";
 
     public static final String EXTRA_ACCOUNT = "account";
     public static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
@@ -534,7 +536,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             recipientPresenter.initFromSendOrViewIntent(intent);
+        }
 
+        if (ACTION_AUTOCRYPT_PEER.equals(action)) {
+            String trustId = intent.getStringExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_ID);
+            if (trustId != null) {
+                recipientPresenter.initFromTrustIdAction(trustId);
+                startedByExternalIntent = true;
+            }
         }
 
         return startedByExternalIntent;
