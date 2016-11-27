@@ -44,6 +44,7 @@ public class SettingsImporterTest {
     public void importSettings_throwsExceptionOnBlankFile() throws SettingsImportExportException {
         InputStream inputStream = new StringInputStream("");
         List<String> accountUuids = new ArrayList<>();
+
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
@@ -51,6 +52,7 @@ public class SettingsImporterTest {
     public void importSettings_throwsExceptionOnMissingFormat() throws SettingsImportExportException {
         InputStream inputStream = new StringInputStream("<k9settings version=\"1\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
+
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
@@ -58,6 +60,7 @@ public class SettingsImporterTest {
     public void importSettings_throwsExceptionOnInvalidFormat() throws SettingsImportExportException {
         InputStream inputStream = new StringInputStream("<k9settings version=\"1\" format=\"A\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
+
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
@@ -65,6 +68,7 @@ public class SettingsImporterTest {
     public void importSettings_throwsExceptionOnNonPositiveFormat() throws SettingsImportExportException {
         InputStream inputStream = new StringInputStream("<k9settings version=\"1\" format=\"0\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
+
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
@@ -72,6 +76,7 @@ public class SettingsImporterTest {
     public void importSettings_throwsExceptionOnMissingVersion() throws SettingsImportExportException {
         InputStream inputStream = new StringInputStream("<k9settings format=\"1\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
+
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
@@ -79,6 +84,7 @@ public class SettingsImporterTest {
     public void importSettings_throwsExceptionOnInvalidVersion() throws SettingsImportExportException {
         InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"A\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
+
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
@@ -86,6 +92,7 @@ public class SettingsImporterTest {
     public void importSettings_throwsExceptionOnNonPositiveVersion() throws SettingsImportExportException {
         InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"0\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
+
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
@@ -96,7 +103,9 @@ public class SettingsImporterTest {
                 "<accounts><account uuid=\""+validUUID+"\"><name>Account</name></account></accounts></k9settings>");
         List<String> accountUuids = new ArrayList<>();
         accountUuids.add("1");
+
         SettingsImporter.Imported results = SettingsImporter.parseSettings(inputStream, true, accountUuids, true);
+
         assertEquals(1, results.accounts.size());
         assertEquals("Account", results.accounts.get(validUUID).name);
         assertEquals(validUUID, results.accounts.get(validUUID).uuid);
@@ -112,7 +121,9 @@ public class SettingsImporterTest {
                 "</account></accounts></k9settings>");
         List<String> accountUuids = new ArrayList<>();
         accountUuids.add(validUUID);
+
         SettingsImporter.Imported results = SettingsImporter.parseSettings(inputStream, true, accountUuids, false);
+
         assertEquals("Account", results.accounts.get(validUUID).name);
         assertEquals(validUUID, results.accounts.get(validUUID).uuid);
         assertEquals(AuthType.CRAM_MD5, results.accounts.get(validUUID).incoming.authenticationType);
