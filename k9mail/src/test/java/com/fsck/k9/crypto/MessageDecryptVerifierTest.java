@@ -21,7 +21,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertSame;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 
@@ -270,6 +272,86 @@ public class MessageDecryptVerifierTest {
 
         assertEquals(1, signedParts.size());
         assertSame(getPart(message, 1), signedParts.get(0));
+    }
+
+    @Test
+    public void isPgpInlineMethods__withPgpInlineData__shouldReturnTrue() throws Exception {
+        String pgpInlineData = "-----BEGIN PGP MESSAGE-----\n" +
+                "Header: Value\n" +
+                "\n" +
+                "base64base64base64base64\n" +
+                "-----END PGP MESSAGE-----\n";
+
+        MimeMessage message = new MimeMessage();
+        message.setBody(new TextBody(pgpInlineData));
+
+        assertTrue(MessageDecryptVerifier.isPartPgpInlineEncrypted(message));
+    }
+
+    @Test
+    public void isPgpInlineMethods__withEncryptedDataAndLeadingWhitespace__shouldReturnTrue() throws Exception {
+        String pgpInlineData = "\n   \n \n" +
+                "-----BEGIN PGP MESSAGE-----\n" +
+                "Header: Value\n" +
+                "\n" +
+                "base64base64base64base64\n" +
+                "-----END PGP MESSAGE-----\n";
+
+        MimeMessage message = new MimeMessage();
+        message.setBody(new TextBody(pgpInlineData));
+
+        assertTrue(MessageDecryptVerifier.isPartPgpInlineEncryptedOrSigned(message));
+        assertTrue(MessageDecryptVerifier.isPartPgpInlineEncrypted(message));
+    }
+
+    @Test
+    public void isPgpInlineMethods__withEncryptedDataAndLeadingGarbage__shouldReturnFalse() throws Exception {
+        String pgpInlineData = "garbage!" +
+                "-----BEGIN PGP MESSAGE-----\n" +
+                "Header: Value\n" +
+                "\n" +
+                "base64base64base64base64\n" +
+                "-----END PGP MESSAGE-----\n";
+
+        MimeMessage message = new MimeMessage();
+        message.setBody(new TextBody(pgpInlineData));
+
+        assertFalse(MessageDecryptVerifier.isPartPgpInlineEncryptedOrSigned(message));
+        assertFalse(MessageDecryptVerifier.isPartPgpInlineEncrypted(message));
+    }
+
+    @Test
+    public void isPartPgpInlineEncryptedOrSigned__withSignedData__shouldReturnTrue() throws Exception {
+        String pgpInlineData = "-----BEGIN PGP SIGNED MESSAGE-----\n" +
+                "Header: Value\n" +
+                "\n" +
+                "-----BEGIN PGP SIGNATURE-----\n" +
+                "Header: Value\n" +
+                "\n" +
+                "base64base64base64base64\n" +
+                "-----END PGP SIGNED MESSAGE-----\n";
+
+        MimeMessage message = new MimeMessage();
+        message.setBody(new TextBody(pgpInlineData));
+
+        assertTrue(MessageDecryptVerifier.isPartPgpInlineEncryptedOrSigned(message));
+    }
+
+    @Test
+    public void isPartPgpInlineEncrypted__withSignedData__shouldReturnFalse() throws Exception {
+        String pgpInlineData = "-----BEGIN PGP SIGNED MESSAGE-----\n" +
+                "Header: Value\n" +
+                "\n" +
+                "-----BEGIN PGP SIGNATURE-----\n" +
+                "Header: Value\n" +
+                "\n" +
+                "base64base64base64base64\n" +
+                "-----END PGP SIGNED MESSAGE-----\n";
+
+        MimeMessage message = new MimeMessage();
+        message.setBody(new TextBody(pgpInlineData));
+
+        assertFalse(MessageDecryptVerifier.isPartPgpInlineEncrypted(message));
     }
 
     MimeMessage messageFromBody(BodyPart bodyPart) throws MessagingException {
