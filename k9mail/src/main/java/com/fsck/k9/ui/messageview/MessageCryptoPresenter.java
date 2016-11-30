@@ -188,7 +188,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
     public void onClickShowCryptoKey() {
         try {
-            PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpPendingIntent();
+            PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpSigningKeyIntentIfAny();
             if (pendingIntent != null) {
                 messageCryptoMvpView.startPendingIntentForCryptoPresenter(
                         pendingIntent.getIntentSender(), null, null, 0, 0, 0);
