@@ -104,6 +104,8 @@ public class UpgradeDatabases extends K9Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        decodeExtras();
+
         // If the databases have already been upgraded there's no point in displaying this activity.
         if (K9.areDatabasesUpToDate()) {
             launchOriginalActivity();
@@ -113,8 +115,6 @@ public class UpgradeDatabases extends K9Activity {
         mPreferences = Preferences.getPreferences(getApplicationContext());
 
         initializeLayout();
-
-        decodeExtras();
 
         setupBroadcastReceiver();
     }
@@ -180,9 +180,7 @@ public class UpgradeDatabases extends K9Activity {
      */
     private void launchOriginalActivity() {
         finish();
-        if (mStartIntent != null) {
-            startActivity(mStartIntent);
-        }
+        startActivity(mStartIntent);
     }
 
     /**
