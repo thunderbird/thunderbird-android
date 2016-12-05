@@ -1,8 +1,10 @@
-K-9 Mail is an open-source e-mail client with search, IMAP push email, multi-folder sync, flagging, filing, signatures, bcc-self, PGP, mail on SD & more! 
+K-9 Mail is an open source email client with support for multiple accounts, search, IMAP push email, multi-folder sync, flagging, filing, signatures, BCC-self, PGP/MIME & more! 
 
 K-9 supports IMAP, POP3 and Exchange 2003/2007 (with WebDAV).
 
-K-9 is a community developed project.  If you're interested in helping to make the best email client on Android even better, please join us!  You can find our bugtracker, source code, mailing list and wiki at https://github.com/k9mail/k-9
+Install the app "OpenKeychain: Easy PGP" to encrypt/decrypt your emails using OpenPGP.
+
+K-9 is a community developed project.  If you're interested in helping to make the most popular open source email client on Android even better, please join us!  You can find our bug tracker, source code, mailing list and wiki at https://github.com/k9mail/k-9
 We're always happy to welcome new developers, designers, documenters, bug triagers and friends. 
 
 If you're having trouble with K-9, please report a bug at https://github.com/k9mail/k-9 rather than just leaving a one-star review. We don't mind you telling the world that you're frustrated, but if you use our bug tracker, we have a better chance of fixing whatever's giving you a hard time.
