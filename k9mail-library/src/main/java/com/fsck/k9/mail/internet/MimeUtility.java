@@ -1044,7 +1044,7 @@ public class MimeUtility {
                     }
                 };
             } else {
-                throw new UnsupportedOperationException("Encoding for RawDataBody not supported: " + encoding);
+                throw new UnsupportedContentTransferEncodingException(encoding);
             }
         } else {
             inputStream = body.getInputStream();

@@ -47,7 +47,7 @@ public class MessageExtractor {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
                 if (body instanceof TextBody) {
-                    return ((TextBody)body).getRawText();
+                    return ((TextBody) body).getRawText();
                 }
                 final String mimeType = part.getMimeType();
                 if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*") ||

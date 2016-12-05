@@ -128,6 +128,21 @@ public class MimeMessageParseTest {
                         "");
     }
 
+    @Test(expected = UnsupportedContentTransferEncodingException.class)
+    public void testSinglePartUnknownEncoding_throwsUnsupportedEncodingException() throws Exception {
+        MimeMessage msg = parseWithoutRecurse(toStream(
+                "From: <adam@example.org>\r\n" +
+                        "To: <eva@example.org>\r\n" +
+                        "Subject: Testmail\r\n" +
+                        "MIME-Version: 1.0\r\n" +
+                        "Content-type: text/plain\r\n" +
+                        "Content-Transfer-Encoding: utf-8\r\n" +
+                        "\r\n" +
+                        "dGhpcyBpcyBzb21lIG1vcmUgdGVzdCB0ZXh0Lg==\r\n"));
+
+        MimeUtility.decodeBody(msg.getBody());
+    }
+
     @Test
     public void testMultipartSingleLayerRecurse() throws Exception {
         MimeMessage msg = parseWithRecurse(toStream(
