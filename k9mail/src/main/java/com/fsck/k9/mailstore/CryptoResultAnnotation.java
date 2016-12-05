@@ -102,6 +102,17 @@ public final class CryptoResultAnnotation {
     }
 
     @Nullable
+    public PendingIntent getOpenPgpSigningKeyIntentIfAny() {
+        if (hasSignatureResult()) {
+            return getOpenPgpPendingIntent();
+        }
+        if (encapsulatedResult != null && encapsulatedResult.hasSignatureResult()) {
+            return encapsulatedResult.getOpenPgpPendingIntent();
+        }
+        return null;
+    }
+
+    @Nullable
     public PendingIntent getOpenPgpPendingIntent() {
         return openPgpPendingIntent;
     }
