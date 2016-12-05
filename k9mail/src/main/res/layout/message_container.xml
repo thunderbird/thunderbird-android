@@ -41,7 +41,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:text="Unsigned Text"
+                android:text="@string/unsigned_text_divider_label"
                 android:textColor="#d55"
                 />
 
