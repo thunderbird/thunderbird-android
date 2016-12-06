@@ -36,6 +36,10 @@ public class MimeMessageHelper {
                 if (name != null) {
                     contentType += String.format(";\r\n name=\"%s\"", name);
                 }
+                boolean isFlowed = MimeUtility.isFormatFlowed(part.getContentType());
+                if (isFlowed) {
+                    contentType += "; format=flowed";
+                }
             } else {
                 contentType = part.getMimeType();
             }

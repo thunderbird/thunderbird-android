@@ -25,6 +25,9 @@ import org.apache.james.mime4j.util.MimeUtil;
 public class MimeUtility {
     public static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";
     public static final String K9_SETTINGS_MIME_TYPE = "application/x-k9settings";
+    private static final String TEXT_PLAIN = "text/plain";
+    private static final String HEADER_PARAM_FORMAT = "format";
+    private static final String HEADER_FORMAT_FLOWED = "flowed";
 
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
@@ -1136,5 +1139,12 @@ public class MimeUtility {
 
     public static boolean isSameMimeType(String mimeType, String otherMimeType) {
         return mimeType != null && mimeType.equalsIgnoreCase(otherMimeType);
+    }
+
+    static boolean isFormatFlowed(String contentType) {
+        if (TEXT_PLAIN.equalsIgnoreCase(getHeaderParameter(contentType, null))) {
+            return HEADER_FORMAT_FLOWED.equalsIgnoreCase(getHeaderParameter(contentType, HEADER_PARAM_FORMAT));
+        }
+        return false;
     }
 }
