@@ -437,6 +437,8 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     private void clearDisplayedContent() {
         mMessageContentView.displayHtmlContentWithInlineAttachments("", null, null);
+        unsignedTextContainer.setVisibility(View.GONE);
+        unsignedText.setText("");
     }
 
     public void renderAttachments(MessageViewInfo messageViewInfo) {
