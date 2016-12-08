@@ -942,10 +942,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="compose_error_pgp_error">Error con el proveedor de OpenPGP. ¡Compruebe su configuración!</string>
   <string name="compose_error_no_signing_key">¡No hay clave configurada para firmar! Por favor compruebe su configuración.</string>
   <string name="compose_error_private_missing_keys">¡Está habilitado el modo privado, pero algunos destinatarios no tienen claves!</string>
-  <string name="crypto_mode_disabled">Nunca firmar ni cifrar.</string>
-  <string name="crypto_mode_sign_only">Siempre firmar, nunca cifrar.</string>
-  <string name="crypto_mode_opportunistic">Siempre firmar, cifrar si es posible.</string>
-  <string name="crypto_mode_private">Siempre firmar, siempre cifrar.</string>
   <string name="error_crypto_provider_connect">¡No se ha podido conectar con el proveedor de cifrado, compruebe su configuración o haga clic en el icono de cifrado para reintentar!</string>
   <string name="error_crypto_provider_ui_required">¡Acceso denegado al proveedor de cifrado, haga clic en el icono de cifrado para reintentar!</string>
   <string name="error_crypto_inline_attach">¡El modo PGP/INLINE no soporta adjuntos!</string>

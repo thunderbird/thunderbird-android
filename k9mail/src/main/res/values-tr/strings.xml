@@ -59,6 +59,7 @@
   <string name="cancel_action">İptal</string>
   <string name="send_action">Gönder</string>
   <string name="send_again_action">Tekrar Gönder</string>
+  <string name="empty_subject">Konu yok, bu şekilde göndermek için tıklayın</string>
   <string name="select_action">Seç</string>
   <string name="deselect_action">Kaldır</string>
   <string name="reply_action">Yanıtla</string>
@@ -149,6 +150,7 @@
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> için sertifika hatası</string>
   <string name="notification_certificate_error_text">Sunucu ayarlarınızı kontrol edin</string>
   <string name="notification_authentication_error_title">Kimlik Doğrulama Hatası</string>
+  <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> için oturum açılamadı. Sunucu ayarlarınızı güncelleyin.</string>
   <string name="notification_bg_sync_ticker">Posta kontrol ediliyor: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Posta kontrol ediliyor</string>
   <string name="notification_bg_send_ticker">Posta gönderiliyor: <xliff:g id="account">%s</xliff:g></string>
@@ -410,6 +412,8 @@
   <string name="account_settings_notify_sync_summary">Posta kontrol edildiğinde durum çubuğunda bildir</string>
   <string name="account_settings_notify_self_label">Giden postayı ekle</string>
   <string name="account_settings_notify_self_summary">Gönderdiğim mesajlar için bir bildirim göster</string>
+  <string name="account_notify_contacts_mail_only_label">Sadece kişiler</string>
+  <string name="account_notify_contacts_mail_only_summary">Sadece bilinen kişilerden gelen mesajlar için bildirim göster</string>
   <string name="account_settings_notification_opens_unread_label">Okunmamış mesaj bildirimi açık</string>
   <string name="account_settings_notification_opens_unread_summary">Bildirim açık olduğunda okunmamış mesajlar için arama yap</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Mesaj açılırken okundu işaretle</string>
@@ -728,6 +732,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Evet</string>
   <string name="dialog_confirm_delete_cancel_button">Hayır</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Evet</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Hayır</string>
   <string name="dialog_confirm_spam_title">Spam klasörüne taşımayı onayla</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Bu mesajı gerçekten Spam klasörüne taşımak istiyor musunuz?</item>
@@ -888,6 +894,7 @@
   <string name="crypto_download_complete_message_to_decrypt">Çözmek için \"Mesajın tamamını indir\"\'e tıklayın</string>
   <string name="preview_encrypted">*Şifreli*</string>
   <string name="add_from_contacts">Kişilerden Ekle</string>
+  <string name="crypto_settings_cancel">İptal</string>
   <string name="crypto_settings_ok">İlerle</string>
   <string name="recipient_cc">Kopya</string>
   <string name="recipient_bcc">Gizli Kopya</string>
@@ -903,10 +910,9 @@
   <string name="compose_error_pgp_error">OpenPGP sağlayıcıyla sorun yaşandı. Ayarlarınızı kontrol edin!</string>
   <string name="compose_error_no_signing_key">İmzalamak için hiçbir anahtar ayarlanmamış! Lütfen ayarlarınızı kontrol edin.</string>
   <string name="compose_error_private_missing_keys">Özel mod etkinleştirildi, fakat bazı alıcıların anahtarı yok!</string>
-  <string name="crypto_mode_disabled">Hiçbir zaman imzalama ve şifreleme.</string>
-  <string name="crypto_mode_sign_only">Her zaman imzala, hiçbir zaman şifreleme.</string>
-  <string name="crypto_mode_opportunistic">Her zaman imzala, Mümkünse Şifrele.</string>
-  <string name="crypto_mode_private">Her zaman imzala, Her zaman Şifrele.</string>
+  <string name="crypto_mode_disabled">Şifreleme</string>
+  <string name="crypto_mode_opportunistic">Mümkünse şifrele</string>
+  <string name="crypto_mode_private">Şifrele</string>
   <string name="error_crypto_provider_connect">Kripto sağlayıcısına bağlanılamadı, ayarlarınızı kontrol edin veya yeniden denemek için kripto simgesini tıklatın!</string>
   <string name="error_crypto_provider_ui_required">Kripto sağlayıcına erişim engellendi, yeniden denemek için tıklayın!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE modu eklenti desteklemez!</string>
@@ -918,6 +924,9 @@
   <string name="openpgp_inline_ok">Anladım!</string>
   <string name="openpgp_inline_disable">Kapat</string>
   <string name="openpgp_inline_keep_enabled">Koruma açık</string>
+  <string name="openpgp_sign_only_ok">Anladım!</string>
+  <string name="openpgp_sign_only_disable">Kapat</string>
+  <string name="openpgp_sign_only_keep_enabled">Koruma açık</string>
   <string name="crypto_msg_disabled">Posta şifreli değil</string>
   <string name="crypto_info_ok">Tamam</string>
   <string name="locked_attach_unlock">Aç</string>

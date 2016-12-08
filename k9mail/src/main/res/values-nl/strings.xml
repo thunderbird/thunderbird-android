@@ -938,10 +938,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="compose_error_pgp_error">Fout bij de OpenPGP provider. Kijk de instellingen na!</string>
   <string name="compose_error_no_signing_key">Geen sleutel ingesteld voor het ondertekenen! Controleer de instellingen.</string>
   <string name="compose_error_private_missing_keys">Privé instelling is ingeschakeld, maar sommige ontvangers hebben geen sleutels!</string>
-  <string name="crypto_mode_disabled">Nooit ondertekenen of versleutelen.</string>
-  <string name="crypto_mode_sign_only">Altijd ondertekenen, nooit versleutelen.</string>
-  <string name="crypto_mode_opportunistic">Altijd ondertekenen, versleutelen indien mogelijk.</string>
-  <string name="crypto_mode_private">Altijd ondertekenen, altijd versleutelen.</string>
   <string name="error_crypto_provider_connect">Kan geen verbinding maken met de crypto provider. Controleer de instellingen of klik op het crypto icoontje om nogmaals te proberen.</string>
   <string name="error_crypto_provider_ui_required">Toegang tot crypto provider geweigerd, klik het crypto icoontje om het nogmaals te proberen!</string>
   <string name="error_crypto_inline_attach">PGP/MIME instelling ondersteund geen bijlagen!</string>

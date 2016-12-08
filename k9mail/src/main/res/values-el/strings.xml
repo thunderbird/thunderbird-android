@@ -272,7 +272,7 @@
   <string name="global_settings_confirm_action_delete_starred">Διαγραφή με αστέρι (προβολή μηνύματος μόνον)</string>
   <string name="global_settings_confirm_action_spam">Σκουπίδια</string>
   <string name="global_settings_confirm_menu_discard">Απόρριψη μηνύματος</string>
-  <string name="global_settings_confirm_action_delete_notif">Διαγραφή (από ειδιοποίηση)</string>
+  <string name="global_settings_confirm_action_delete_notif">Διαγραφή (από ειδοποίηση)</string>
   <string name="global_settings_privacy_hide_useragent">Αφαίρεση του User-Agent K-9 από την κεφαλίδα του mail</string>
   <string name="global_settings_privacy_hide_timezone">Χρήση της UTC σαν ζώνη ώρας στην κεφαλίδα του mail</string>
   <string name="global_settings_notification_hide_subject_title">Απόκρυψη θέματος στις ειδοποιήσεις</string>
@@ -928,6 +928,7 @@
   <string name="crypto_download_complete_message_to_decrypt">Κάντε κλικ στο \"Λήψη πλήρους μηνύματος» για να επιτραπεί η κρυπτογράφηση.</string>
   <string name="preview_encrypted">*Κρυπτογραφημένο*</string>
   <string name="add_from_contacts">Προσθήκη από τις Επαφές</string>
+  <string name="crypto_settings_cancel">Άκυρο</string>
   <string name="crypto_settings_ok">Προχώρησε</string>
   <string name="recipient_cc">Κοιν:</string>
   <string name="recipient_bcc">Κρυφή Κοιν:</string>
@@ -943,10 +944,6 @@
   <string name="compose_error_pgp_error">Σφάλμα παρόχου OpenPGP. Ελέγξτε τις ρυθμίσεις!</string>
   <string name="compose_error_no_signing_key">Δεν έχει ρυθμιστεί κλειδί για την Υπογραφή! Παρακαλούμε ελένξτε τι ρυθμίσεις.</string>
   <string name="compose_error_private_missing_keys">Η ιδιωτική λειτουργία είναι ενεργοποιημένη, αλλά ορισμένοι αποδέκτες δεν έχουν τα κλειδιά!</string>
-  <string name="crypto_mode_disabled">Πότε Υπογραφή ή Κρυπτογράφηση.</string>
-  <string name="crypto_mode_sign_only">Πάντα Υπογραφή, Ποτέ Κρυπτογράφηση.</string>
-  <string name="crypto_mode_opportunistic">Πάντα Υπογραφή, Κρυπτογράφηση εάν είναι δυνατή.</string>
-  <string name="crypto_mode_private">Πάντα Υπογραφή, Πάντα Κρυπτογράφηση.</string>
   <string name="error_crypto_provider_connect">Δεν είναι δυνατή η σύνδεση με τον πάροχο κρυπτογράφησης, ελέγξτε τις ρυθμίσεις σας ή πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
   <string name="error_crypto_provider_ui_required">Δεν επιτρέπεται η πρόσβαση στον πάροχο κρυπτογράφησης, πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
   <string name="error_crypto_inline_attach">Η λειτουργία σε PGP/INLINE δεν υποστιρίχει συνημμένα αρχεία!</string>
@@ -996,4 +993,7 @@
   <string name="messageview_crypto_warning_expired">Αυτό το μήνυμα έχει υπογραφεί από <b>κλειδί που έχει λήξει!</b></string>
   <string name="messageview_crypto_warning_insecure">Αυτό το μήνυμα έχει υπογραφεί από <b>κλειδί που δεν είναι σφαλές!</b></string>
   <string name="messageview_crypto_warning_error">Υπήρχε ένα <b>σφάλμα στην υπογραφή του μηνύματος!</b></string>
+  <string name="recipient_error_non_ascii">Δεν υποστηρίζονται ειδικοί χαρακτήρες!</string>
+  <string name="recipient_error_parse_failed">Σφάλμα στη διεύθυνση!</string>
+  <string name="account_settings_crypto_support_sign_only">Υποστήριξη υπογραφής μη κρυπρογραφημένων μηνυμάτων</string>
 </resources>

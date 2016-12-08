@@ -783,8 +783,4 @@
   <string name="address_type_other">دیگر</string>
   <string name="address_type_mobile">متحرک</string>
   <string name="compose_error_no_draft_folder">هیچ پوشه پیش نویسِ برای این حساب کاربری پیکربندی نشده است </string>
-  <string name="crypto_mode_disabled">هرگز وارد یا رمزگذاری نشود</string>
-  <string name="crypto_mode_sign_only">همیشه وارد شو، هرگز رمزگذاری نکن</string>
-  <string name="crypto_mode_opportunistic">همیشه وارد شو، در صورت امکان رمزگذاری کن</string>
-  <string name="crypto_mode_private">همیشه وارد شو، همیشه رمزگذاری کن</string>
 </resources>

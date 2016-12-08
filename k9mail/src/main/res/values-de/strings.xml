@@ -421,7 +421,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
   <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Passwort ist falsch.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen das der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen das jemand versucht Sie oder ihren E-Mail Server anzugreifen. Falls Sie sich nicht sicher sind was der Grund ist klicken Sie abbrechen und kontaktieren Sie die Administratoren des E-Mail Servers. \n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen, dass der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen, dass jemand versucht Sie oder ihren E-Mail-Server anzugreifen. Falls Sie sich nicht sicher sind was der Grund ist, klicken Sie auf Abbrechen und kontaktieren Sie die Administratoren Ihres E-Mail-Servers. \n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Kann nicht mit dem Server verbinden.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
   <string name="account_setup_failed_dlg_continue_action">Weiter</string>
@@ -895,14 +895,14 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="fetching_attachment_dialog_title_send">Nachricht senden</string>
   <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
   <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
-  <string name="auth_external_error">Authentifizierung fehlgeschlagen. Der Server bietet nicht Simple Authentication and Security Layer, kurz SASL, an. Dies könnte durch ein Problem des Client Zertifikats (Zertifikat abgelaufen, unbekannte Zertifizierungsstelle) oder ein Konfigurationsproblem ausgelöst werden.</string>
+  <string name="auth_external_error">Authentifizierung fehlgeschlagen. Der Server bietet nicht Simple Authentication and Security Layer, kurz SASL, an. Dies könnte durch ein Problem des Client-Zertifikats (Zertifikat abgelaufen, unbekannte Zertifizierungsstelle) oder ein Konfigurationsproblem ausgelöst werden.</string>
   <!--=== OpenPGP specific ==================================================================-->
   <string name="openpgp_decryption_failed">Entschlüsselung fehlgeschlagen: %s</string>
   <string name="openpgp_unknown_error">Unbekannter OpenPGP Fehler</string>
   <string name="openpgp_canceled_by_user">Vom Benutzer abgebrochen</string>
   <string name="openpgp_result_no_signature">Nicht signiert</string>
   <string name="openpgp_result_invalid_signature">Ungültige Signatur</string>
-  <string name="openpgp_result_signature_uncertified">Unterschrieben von (nicht bestätigt!)</string>
+  <string name="openpgp_result_signature_uncertified">Signiert von (nicht bestätigt!)</string>
   <string name="openpgp_result_signature_certified">Signiert von</string>
   <string name="openpgp_result_signature_expired_key">Schlüssel ist abgelaufen!</string>
   <string name="openpgp_result_signature_revoked_key">Schlüssel wurde wiederrufen!</string>
@@ -943,23 +943,35 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="compose_error_pgp_error">Fehler mit der OpenPGP-Applikation. Überprüfen Sie die Einstellungen.</string>
   <string name="compose_error_no_signing_key">Kein Schlüssel konfiguriert zum Signieren! Überprüfen Sie die Einstellungen.</string>
   <string name="compose_error_private_missing_keys">Privater Modus ist aktiviert, aber einige Empfänger besitzen keine Schlüssel.</string>
-  <string name="crypto_mode_disabled">Niemals Unterschreiben oder Verschlüsseln.</string>
-  <string name="crypto_mode_sign_only">Immer Unterschreiben, Niemals Verschlüsseln.</string>
-  <string name="crypto_mode_opportunistic">Immer Unterschreiben, Verschlüsseln wenn möglich.</string>
-  <string name="crypto_mode_private">Immer Unterschreiben, Immer Verschlüsseln.</string>
+  <string name="crypto_mode_disabled">Nicht verschlüsseln</string>
+  <string name="crypto_mode_opportunistic">Verschlüsseln, wenn möglich</string>
+  <string name="crypto_mode_private">Verschlüsseln</string>
   <string name="error_crypto_provider_connect">Verbindung zu Verschlüsselungsdienst fehlgeschlagen. Überprüfen Sie die Einstellungen oder tippen Sie auf das Verschlüsselungs-Symbol um es erneut zu versuchen.</string>
   <string name="error_crypto_provider_ui_required">Zugang zu Verschlüsselungsdienst verweigert. Tippen Sie auf das Verschlüsselungs-Symbol um es erneut zu versuchen.</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-Modus unterstützt keine Anhänge!</string>
+  <string name="error_crypto_inline_sign_only">PGP/INLINE-Modus unterstützt keinen Nur-Signieren-Modus!</string>
+  <string name="error_crypto_sign_only_inline">Nur-Signieren-Modus unterstützt kein PGP/INLINE!</string>
   <string name="enable_inline_pgp">PGP/INLINE aktivieren</string>
   <string name="disable_inline_pgp">PGP/INLINE deaktivieren</string>
+  <string name="enable_sign_only">PGP Nur-Signieren aktivieren</string>
+  <string name="disable_sign_only">PGP Nur-Signieren deaktivieren</string>
   <string name="openpgp_inline_title">PGP/INLINE-Modus</string>
   <string name="openpgp_inline_text">Die E-Mail wurde im PGP/INLINE-Format gesendet.\nDies sollte nur für die Kompatibilität verwendet werden:</string>
   <string name="openpgp_inline_plus_compat">Manche Clients unterstützen nur dieses Format</string>
-  <string name="openpgp_inline_minus_transit">Signaturen könnten während dem Versand kaputtgehen</string>
+  <string name="openpgp_inline_minus_transit">Signaturen können während dem Versand kaputtgehen</string>
   <string name="openpgp_inline_minus_attach">Anhänge werden nicht unterstützt</string>
   <string name="openpgp_inline_ok">Verstanden!</string>
   <string name="openpgp_inline_disable">Deaktivieren</string>
   <string name="openpgp_inline_keep_enabled">Aktiviert lassen</string>
+  <string name="openpgp_sign_only_ok">Verstanden!</string>
+  <string name="openpgp_sign_only_disable">Deaktivieren</string>
+  <string name="openpgp_sign_only_keep_enabled">Aktiviert lassen</string>
+  <string name="openpgp_dialog_sign_only_title">PGP Nur-Signieren-Modus</string>
+  <string name="openpgp_dialog_sign_only_text">In diesem Modus wird Ihr PGP-Schlüssel verwendet, um eine kryptografische Signatur einer unverschlüsselten E-Mail zu erstellen.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Dadurch wird die E-Mail nicht verschlüsselt, sondern nachgewiesen, dass sie von Ihrem Schlüssel gesendet wurde.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Signaturen können kaputtgehen, wenn sie an Mailinglisten gesendet werden.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Signaturen können als \'signature.asc\'-Anhänge in einigen Clients angezeigt werden.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Verschlüsselte Nachrichten enthalten immer eine Signatur.</string>
   <string name="crypto_msg_disabled">Nachricht ist nicht verschlüsselt</string>
   <string name="crypto_msg_encrypted_error">Nachricht ist verschlüsselt, aber es gab einen Fehler bei der Entschlüsselung.</string>
   <string name="crypto_msg_signed_error">Nachricht ist signiert, aber die Signatur konnte nicht verifiziert werden.</string>
@@ -977,7 +989,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="crypto_msg_sign_expired">Signatur mit abgelaufenem Schlüssel gemacht.</string>
   <string name="crypto_msg_sign_revoked">Signatur mit zurückgezogenem Schlüssel gemacht.</string>
   <string name="crypto_msg_sign_insecure">Signatur mit unicherem Schlüssel gemacht.</string>
-  <string name="crypto_msg_sign_incomplete">Nachricht muss zum Verfizieren der Unterschrift vollständig heruntergeladen werden.</string>
+  <string name="crypto_msg_sign_incomplete">Nachricht muss zum Verfizieren der Signatur vollständig heruntergeladen werden.</string>
   <string name="crypto_msg_signed_encrypted">Nachricht ist signiert und verschlüsselt.</string>
   <string name="crypto_msg_unsigned_encrypted">Es gibt keine Signatur, diese Nachricht könnte abgefangen worden sein.</string>
   <string name="crypto_info_ok">OK</string>
@@ -998,4 +1010,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="messageview_crypto_warning_error">Es gab einen Fehler in der Signatur dieser Nachricht!</string>
   <string name="recipient_error_non_ascii">Sonderzeichen werden derzeit nicht unterstützt!</string>
   <string name="recipient_error_parse_failed">Fehler beim Einlesen der Adresse!</string>
+  <string name="account_settings_crypto_support_sign_only">Signatur von unverschlüsselten Nachrichten unterstützen</string>
+  <string name="error_sign_only_no_encryption">Verschlüsselung ist im Nur-Signieren-Modus nicht verfügbar!</string>
 </resources>

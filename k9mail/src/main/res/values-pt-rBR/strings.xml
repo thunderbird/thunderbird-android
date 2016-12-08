@@ -41,7 +41,7 @@ Saiba que o K-9 não suporta a maioria das contas gratuitas de Hotamil e, como m
 </p><p>
 Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dúvidas em <a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
-    ]]></string>
+]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nEnviado de meu dispositivo Android com K-9 mail. Desculpe-me pela brevidade.</string>
   <!--General strings that include the app name-->
@@ -758,6 +758,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Excluir</string>
   <string name="dialog_confirm_delete_cancel_button">Não excluir</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Sim</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Não</string>
   <string name="dialog_confirm_spam_title">Mover para a pasta de spam</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Deseja mesmo mover esta mensagem para a pasta de spam?</item>
@@ -918,6 +920,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="crypto_download_complete_message_to_decrypt">Clique em \"Baixar mensagem completa\" para permitir desencriptação.</string>
   <string name="preview_encrypted">*Criptografado\"</string>
   <string name="add_from_contacts">Adicionar dos Contatos</string>
+  <string name="crypto_settings_cancel">Cancelar</string>
   <string name="crypto_settings_ok">Seguinte</string>
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">Cco</string>
@@ -933,10 +936,16 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="compose_error_pgp_error">Erro com provedor OpenPGP. Verifique suas configurações!</string>
   <string name="compose_error_no_signing_key">Não foi configurada chave para assinatura! Por favor verifique suas configurações.</string>
   <string name="compose_error_private_missing_keys">Modo privado está habilitado, mas alguns destinatários não possuem chaves!</string>
-  <string name="crypto_mode_disabled">Nunca Assinar ou Criptografar.</string>
-  <string name="crypto_mode_sign_only">Sempre Assinar, Nunca Criptografar.</string>
-  <string name="crypto_mode_opportunistic">Sempre Assinar, Criptografar se possível.</string>
-  <string name="crypto_mode_private">Sempre Assinar, Sempre Criptografar.</string>
+  <string name="crypto_mode_disabled">Não criptografar</string>
+  <string name="crypto_mode_opportunistic">Criptografar se for possível</string>
+  <string name="crypto_mode_private">Criptografar</string>
   <string name="error_crypto_provider_connect">Não foi possível conectar com provedor de criptografia, verifique suas configurações ou clique no ícone de criptografia para tentar novamente!</string>
   <string name="error_crypto_provider_ui_required">Acesso negado ao provedor de criptografia, clique no ícone de criptografia para tentar novamente!</string>
+  <string name="enable_inline_pgp">Ativar PGP/INLINE</string>
+  <string name="disable_inline_pgp">Desativar PGP/INLINE</string>
+  <string name="openpgp_sign_only_disable">Desativar</string>
+  <string name="crypto_info_ok">OK</string>
+  <string name="locked_attach_unlock">Desbloquear</string>
+  <string name="message_progress_text">Carregando...</string>
+  <string name="messageview_crypto_warning_title">Aviso de segurança</string>
 </resources>

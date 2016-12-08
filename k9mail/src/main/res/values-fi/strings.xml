@@ -925,6 +925,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="crypto_download_complete_message_to_decrypt">Napauta \"Lataa koko viesti\" salliaksesi salauksen purkamisen</string>
   <string name="preview_encrypted">*Salattu*</string>
   <string name="add_from_contacts">Lisää yhteystiedoista</string>
+  <string name="crypto_settings_cancel">Peru</string>
   <string name="crypto_settings_ok">Jatka</string>
   <string name="recipient_to">Vastaanottaja</string>
   <string name="recipient_from">Lähettäjä</string>
@@ -937,10 +938,9 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="compose_error_pgp_error">Virhe OpenPGP-tarjoajan kanssa. Tarkista asetukset!</string>
   <string name="compose_error_no_signing_key">Allekirjoitusta varten ei ole määritelty avainta! Tarkista asetukset.</string>
   <string name="compose_error_private_missing_keys">Yksityinen tila on käytössä, mutta joillain vastaanottajilla ei ole avaimia!</string>
-  <string name="crypto_mode_disabled">Älä koskaan allekirjoita tai salaa.</string>
-  <string name="crypto_mode_sign_only">Allekirjoita aina, älä koskaan salaa.</string>
-  <string name="crypto_mode_opportunistic">Allekirjoita aina, salaa jos mahdollista.</string>
-  <string name="crypto_mode_private">Allekirjoita aina, salaa aina.</string>
+  <string name="crypto_mode_disabled">Älä salaa</string>
+  <string name="crypto_mode_opportunistic">Salaa jos mahdollista</string>
+  <string name="crypto_mode_private">Salaa</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-tila ei tue liitteitä!</string>
   <string name="enable_inline_pgp">Käytä PGP/INLINE-tilaa</string>
   <string name="disable_inline_pgp">Poista PGP/INLINE käytöstä</string>
@@ -949,7 +949,15 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="openpgp_inline_ok">Selvä!</string>
   <string name="openpgp_inline_disable">Poista käytöstä</string>
   <string name="openpgp_inline_keep_enabled">Pidä käytössä</string>
+  <string name="openpgp_sign_only_disable">Poista käytöstä</string>
+  <string name="openpgp_sign_only_keep_enabled">Pidä käytössä</string>
   <string name="crypto_msg_disabled">Viesti ei ole salattu</string>
+  <string name="crypto_msg_encrypted_error">Viesti on salattu, mutta salauksen purkamisen yhteydessä ilmeni virhe.</string>
+  <string name="crypto_msg_signed_error">Viesti on allekirjoitettu, mutta allekirjoitusta ei voitu vahvistaa.</string>
+  <string name="crypto_msg_unsupported_encrypted">Viesti on salattu, mutta sen muoto ei ole tuettu.</string>
+  <string name="crypto_msg_unsupported_signed">Viesti on allekirjoitettu, mutta sen muoto ei ole tuettu.</string>
+  <string name="crypto_msg_incomplete_encrypted">Viesti on salattu, mutta se tulee ladata kokonaan jotta sen salaus voidaan purkaa.</string>
+  <string name="crypto_msg_cancelled">Viesti on salattu, mutta viestin salauksen purkaminen peruttiin.</string>
   <string name="crypto_msg_signed_unencrypted">Viesti on allekirjoitettu, mutta ei salattu.</string>
   <string name="crypto_msg_encrypted_unsigned">Viesti on salattu, mutta ei allekirjoitettu.</string>
   <string name="crypto_msg_sign_unknown">Allekirjoitus on tehty tuntemattomalla avaimella.</string>
@@ -958,6 +966,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="crypto_msg_sign_expired">Allekirjoitus on tehty vanhentuneella avaimella.</string>
   <string name="crypto_msg_sign_revoked">Allekirjoitus on tehty kumotulla avaimella.</string>
   <string name="crypto_msg_sign_insecure">Allekirjoitus on tehty turvattomalla avaimella.</string>
+  <string name="crypto_msg_sign_incomplete">Viesti tulee ladata kokonaan, jotta sen allekirjoitus voidaan vahvistaa.</string>
   <string name="crypto_msg_signed_encrypted">Viesti on allekirjoitettu ja salattu.</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Näytä allekirjoittaja</string>
@@ -966,8 +975,14 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="message_progress_text">Ladataan…</string>
   <string name="messageview_decrypt_cancelled">Salauksen purkaminen peruttiin.</string>
   <string name="messageview_decrypt_retry">Yritä uudelleen</string>
+  <string name="messageview_decrypt_incomplete">Salattu viesti tulee ladata, jotta sen salaus voidaan avata.</string>
   <string name="messageview_crypto_error_title">Virhe sähköpostin salausta avatessa</string>
   <string name="messageview_crypto_warning_title">Turvallisuusvaroitus</string>
+  <string name="messageview_crypto_warning_revoked">Viesti allekirjoitettiin <b>kumotulla avaimella!</b></string>
+  <string name="messageview_crypto_warning_expired">Viesti allekirjoitettiin <b>vanhentuneella avaimella!</b></string>
+  <string name="messageview_crypto_warning_insecure">Viesti allekirjoitettiin <b>turvattomalla avaimella!</b></string>
+  <string name="messageview_crypto_warning_error">Tämän viestin <b>allekirjoituksessa on virhe!</b></string>
   <string name="recipient_error_non_ascii">Erikoismerkit eivät ole tällä hetkellä tuettuja!</string>
   <string name="recipient_error_parse_failed">Virhe osoitetta jäsennettäessä!</string>
+  <string name="account_settings_crypto_support_sign_only">Tue salaamattomien viestien allekirjoitusta</string>
 </resources>

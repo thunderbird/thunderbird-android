@@ -937,15 +937,18 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="compose_error_pgp_error">OpenPGP プロバイダでエラー。設定を確認してください!</string>
   <string name="compose_error_no_signing_key">署名の鍵が設定されていません。設定を確認してください。</string>
   <string name="compose_error_private_missing_keys">プライベートモードが有効になっていますが、一部の受信者の鍵がありません!</string>
-  <string name="crypto_mode_disabled">署名も暗号化もしない</string>
-  <string name="crypto_mode_sign_only">常に署名する。暗号化しない。</string>
-  <string name="crypto_mode_opportunistic">常に署名する。可能な場合、暗号化する。</string>
-  <string name="crypto_mode_private">常に署名する。常に暗号化する。</string>
+  <string name="crypto_mode_disabled">暗号化しない</string>
+  <string name="crypto_mode_opportunistic">可能な場合、暗号化する</string>
+  <string name="crypto_mode_private">暗号化</string>
   <string name="error_crypto_provider_connect">暗号化プロバイダに接続できません。設定を確認するか、暗号化アイコンをクリックして再実行してください!</string>
   <string name="error_crypto_provider_ui_required">暗号化プロバイダのアクセスが拒否されました。暗号化アイコンをクリックして再実行してください!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE モードは添付ファイルをサポートしていません!</string>
+  <string name="error_crypto_inline_sign_only">PGP/INLINE モードは署名専用モードをサポートしていません!</string>
+  <string name="error_crypto_sign_only_inline">署名専用モードは PGP/INLINE をサポートしていません!</string>
   <string name="enable_inline_pgp">PGP/INLINE を有効にする</string>
   <string name="disable_inline_pgp">PGP/INLINE を無効にする</string>
+  <string name="enable_sign_only">PGP 署名専用を有効にする</string>
+  <string name="disable_sign_only">PGP 署名専用を無効にする</string>
   <string name="openpgp_inline_title">PGP/INLINE モード</string>
   <string name="openpgp_inline_text">メールは PGP/INLINE 形式で送信されます。\nこれは互換性のためにのみ使用する必要があります:</string>
   <string name="openpgp_inline_plus_compat">一部のクライアントは、この形式のみサポートします</string>
@@ -954,6 +957,15 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="openpgp_inline_ok">入手!</string>
   <string name="openpgp_inline_disable">無効</string>
   <string name="openpgp_inline_keep_enabled">有効のままにする</string>
+  <string name="openpgp_sign_only_ok">了解!</string>
+  <string name="openpgp_sign_only_disable">無効</string>
+  <string name="openpgp_sign_only_keep_enabled">有効のままにする</string>
+  <string name="openpgp_dialog_sign_only_title">PGP 署名専用モード</string>
+  <string name="openpgp_dialog_sign_only_text">このモードでは、PGP 鍵を使用して、暗号化されていないメールの暗号署名を作成します。</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">これはメールを暗号化するのではなく、あなたの鍵から送信されたことを検証します。</string>
+  <string name="openpgp_dialog_sign_only_minus_break">署名はメーリングリストへの送信時に破損する可能性があります。</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">一部のクライアントで、署名は \'signature.asc\' 添付ファイルとして表示されることがあります。</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">暗号化されたメッセージには常に署名が含まれます。</string>
   <string name="crypto_msg_disabled">メッセージは暗号化されていません</string>
   <string name="crypto_msg_encrypted_error">メッセージは暗号化されていますが、復号化エラーが発生しました。</string>
   <string name="crypto_msg_signed_error">メッセージは署名されていますが、署名を検証できませんでした。</string>
@@ -992,4 +1004,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="messageview_crypto_warning_error"><b>このメッセージの署名にエラー</b> がありました!</string>
   <string name="recipient_error_non_ascii">特殊文字は現在サポートされていません!</string>
   <string name="recipient_error_parse_failed">アドレスの解析時にエラー!</string>
+  <string name="account_settings_crypto_support_sign_only">暗号化されていないメッセージの署名をサポートする</string>
+  <string name="error_sign_only_no_encryption">署名専用モードでは暗号化を使用できません!</string>
 </resources>
