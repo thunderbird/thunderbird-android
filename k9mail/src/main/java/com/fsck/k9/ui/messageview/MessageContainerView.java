@@ -61,6 +61,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
     private View unsignedTextContainer;
+    private View unsignedTextDivider;
     private TextView unsignedText;
     private View mAttachmentsContainer;
 
@@ -92,6 +93,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
 
         unsignedTextContainer = findViewById(R.id.message_unsigned_container);
+        unsignedTextDivider = findViewById(R.id.message_unsigned_divider);
         unsignedText = (TextView) findViewById(R.id.message_unsigned_text);
 
         showingPictures = false;
@@ -370,7 +372,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
             final OnRenderingFinishedListener onRenderingFinishedListener, boolean automaticallyLoadPictures,
-            AttachmentViewCallback attachmentCallback) {
+            boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback) {
 
         this.attachmentCallback = attachmentCallback;
 
@@ -413,6 +415,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
         if (!TextUtils.isEmpty(messageViewInfo.extraText)) {
             unsignedTextContainer.setVisibility(View.VISIBLE);
+            unsignedTextDivider.setVisibility(hideUnsignedTextDivider ? View.GONE : View.VISIBLE);
             unsignedText.setText(messageViewInfo.extraText);
         }
     }
@@ -434,6 +437,8 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     private void clearDisplayedContent() {
         mMessageContentView.displayHtmlContentWithInlineAttachments("", null, null);
+        unsignedTextContainer.setVisibility(View.GONE);
+        unsignedText.setText("");
     }
 
     public void renderAttachments(MessageViewInfo messageViewInfo) {
