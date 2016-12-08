@@ -1,3 +1,6 @@
 K-9 Mail
 Copyright 2008-2016, K-9 Mail Developers
 Copyright 2005-2016, The Android Open Source Project
+
+Libraries:
+* biweekly - support for iCalendar files - Copyright 2013-2016 Michael Angstadt - see BIWEEKLY_LICENSE

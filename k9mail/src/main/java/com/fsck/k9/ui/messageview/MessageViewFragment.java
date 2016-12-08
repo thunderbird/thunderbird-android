@@ -44,22 +44,25 @@ import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
+import com.fsck.k9.mailstore.ICalendarViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
+import com.fsck.k9.ui.messageview.ical.ICalendarViewCallback;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
 
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback, OnClickShowCryptoKeyListener {
+        AttachmentViewCallback, ICalendarViewCallback, OnClickShowCryptoKeyListener {
 
     private static final String ARG_REFERENCE = "reference";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-    private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
+    private static final int ACTIVITY_CHOOSE_DIRECTORY_ATTACHMENT = 3;
+    private static final int ACTIVITY_CHOOSE_DIRECTORY_CALENDAR = 4;
 
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
@@ -103,6 +106,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private Context mContext;
 
     private AttachmentViewInfo currentAttachmentViewInfo;
+
+    private ICalendarViewInfo currentICalendarViewInfo;
 
     @Override
     public void onAttach(Activity activity) {
@@ -164,6 +169,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         View view = layoutInflater.inflate(R.layout.message, container, false);
 
         mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
+        mMessageView.setICalendarCallback(this);
         mMessageView.setAttachmentCallback(this);
         mMessageView.setMessageCryptoPresenter(messageCryptoPresenter);
 
@@ -410,7 +416,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         // launched through the MessageList activity, and delivered back via onPendingIntentResult()
 
         switch (requestCode) {
-            case ACTIVITY_CHOOSE_DIRECTORY: {
+            case ACTIVITY_CHOOSE_DIRECTORY_ATTACHMENT: {
                 if (data != null) {
                     // obtain the filename
                     Uri fileUri = data.getData();
@@ -418,6 +424,19 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                         String filePath = fileUri.getPath();
                         if (filePath != null) {
                             getAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(filePath);
+                        }
+                    }
+                }
+                break;
+            }
+            case ACTIVITY_CHOOSE_DIRECTORY_CALENDAR: {
+                if (data != null) {
+                    // obtain the filename
+                    Uri fileUri = data.getData();
+                    if (fileUri != null) {
+                        String filePath = fileUri.getPath();
+                        if (filePath != null) {
+                            getICalendarController(currentICalendarViewInfo).saveICalendarTo(filePath);
                         }
                     }
                 }
@@ -524,6 +543,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 fragment = ProgressDialogFragment.newInstance(null, message);
                 break;
             }
+            case R.id.dialog_calendar_progress: {
+                String message = getString(R.string.dialog_calendar_progress_title);
+                fragment = ProgressDialogFragment.newInstance(null, message);
+                break;
+            }
             default: {
                 throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
             }
@@ -624,10 +648,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         return mContext;
     }
 
+    //FIXME: Commented out code
     public void disableAttachmentButtons(AttachmentViewInfo attachment) {
         // mMessageView.disableAttachmentButtons(attachment);
     }
 
+    //FIXME: Commented out code
     public void enableAttachmentButtons(AttachmentViewInfo attachment) {
         // mMessageView.enableAttachmentButtons(attachment);
     }
@@ -636,11 +662,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         handler.post(runnable);
     }
 
+    //FIXME: Commented out code
     public void showAttachmentLoadingDialog() {
         // mMessageView.disableAttachmentButtons();
         showDialog(R.id.dialog_attachment_progress);
     }
 
+    //FIXME: Commented out code
     public void hideAttachmentLoadingDialogOnMainThread() {
         handler.post(new Runnable() {
             @Override
@@ -650,6 +678,32 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             }
         });
     }
+
+    //FIXME: Commented out code
+    public void enableICalendarButtons(ICalendarViewInfo iCalendar) {
+        // mMessageView.disableICalendarButtons(attachment);
+    }
+
+    //FIXME: Commented out code
+    public void disableICalendarButtons(ICalendarViewInfo iCalendar) {
+        // mMessageView.disableICalendarButtons(attachment);
+    }
+
+    public void showICalendarLoadingDialog() {
+        showDialog(R.id.dialog_calendar_progress);
+    }
+
+    //FIXME: Commented out code
+    public void hideICalendarLoadingDialogOnMainThread() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                removeDialog(R.id.dialog_calendar_progress);
+                // mMessageView.enableICalendarButtons();
+            }
+        });
+    }
+
 
     public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
         // mMessageView.refreshAttachmentThumbnail(attachment);
@@ -795,7 +849,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         currentAttachmentViewInfo = attachment;
         FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
-                ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
+                ACTIVITY_CHOOSE_DIRECTORY_ATTACHMENT, new FileBrowserFailOverCallback() {
                     @Override
                     public void onPathEntered(String path) {
                         getAttachmentController(attachment).saveAttachmentTo(path);
@@ -810,5 +864,42 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
         return new AttachmentController(mController, downloadManager, this, attachment);
+    }
+
+    @Override
+    public void onViewICalendar(ICalendarViewInfo calendar) {
+        //TODO: check if we have to download the calendar attachment first
+
+        getICalendarController(calendar).viewICalendar();
+    }
+
+    @Override
+    public void onSaveICalendar(ICalendarViewInfo calendar) {
+        //TODO: check if we have to download the calendar attachment first
+
+        getICalendarController(calendar).saveICalendar();
+    }
+
+    @Override
+    public void onSaveICalendarToUserProvidedDirectory(final ICalendarViewInfo calendar) {
+        //TODO: check if we have to download the attachment first
+
+        currentICalendarViewInfo = calendar;
+        FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
+            ACTIVITY_CHOOSE_DIRECTORY_CALENDAR, new FileBrowserFailOverCallback() {
+                @Override
+                public void onPathEntered(String path) {
+                    getICalendarController(calendar).saveICalendarTo(path);
+                }
+
+                @Override
+                public void onCancel() {
+                    // Do nothing
+                }
+            });
+    }
+
+    private ICalendarController getICalendarController(ICalendarViewInfo calendar) {
+        return new ICalendarController(mController, downloadManager, this, calendar);
     }
 }

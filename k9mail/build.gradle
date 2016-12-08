@@ -34,6 +34,7 @@ dependencies {
     compile 'com.splitwise:tokenautocomplete:2.0.7'
     compile 'de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0'
     compile 'com.github.amlcurran.showcaseview:library:5.4.1'
+    compile 'net.sf.biweekly:biweekly:0.6.0'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
 

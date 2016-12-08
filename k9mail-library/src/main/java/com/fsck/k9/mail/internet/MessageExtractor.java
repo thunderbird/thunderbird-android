@@ -14,6 +14,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.fsck.k9.ical.ICalParser;
+import com.fsck.k9.ical.ICalPart;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -133,7 +135,9 @@ public class MessageExtractor {
 
     /** Traverse the MIME tree of a message an extract viewable parts. */
     public static void findViewablesAndAttachments(Part part,
-                @Nullable List<Viewable> outputViewableParts, @Nullable List<Part> outputNonViewableParts)
+                                                   @Nullable List<Viewable> outputViewableParts,
+                                                   @Nullable List<Part> outputNonViewableParts,
+                                                   @Nullable List<ICalPart> outputICalendarParts)
             throws MessagingException {
         boolean skipSavingNonViewableParts = outputNonViewableParts == null;
         boolean skipSavingViewableParts = outputViewableParts == null;
@@ -152,7 +156,7 @@ public class MessageExtractor {
                 List<Viewable> text = findTextPart(multipart, true);
 
                 Set<Part> knownTextParts = getParts(text);
-                List<Viewable> html = findHtmlPart(multipart, knownTextParts, outputNonViewableParts, true);
+                List<Viewable> html = findHtmlPart(multipart, knownTextParts, outputNonViewableParts, outputICalendarParts, true);
 
                 if (skipSavingViewableParts) {
                     return;
@@ -164,7 +168,8 @@ public class MessageExtractor {
             } else {
                 // For all other multipart parts we recurse to grab all viewable children.
                 for (Part bodyPart : multipart.getBodyParts()) {
-                    findViewablesAndAttachments(bodyPart, outputViewableParts, outputNonViewableParts);
+                    findViewablesAndAttachments(bodyPart,
+                            outputViewableParts, outputNonViewableParts, outputICalendarParts);
                 }
             }
         } else if (body instanceof Message &&
@@ -182,7 +187,8 @@ public class MessageExtractor {
             outputViewableParts.add(new MessageHeader(part, message));
 
             // Recurse to grab all viewable parts and attachments from that message.
-            findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+            findViewablesAndAttachments(message,
+                    outputViewableParts, outputNonViewableParts, outputICalendarParts);
         } else if (isPartTextualBody(part)) {
             if (skipSavingViewableParts) {
                 return;
@@ -195,6 +201,13 @@ public class MessageExtractor {
                 Html html = new Html(part);
                 outputViewableParts.add(html);
             }
+        } else if (isSameMimeType(part.getMimeType(), ICalParser.MIME_TYPE)) {
+            System.err.println("Adding ICAL PART");
+            if (skipSavingViewableParts) {
+                return;
+            }
+            ICalPart iCalPart = new ICalPart(part);
+            outputICalendarParts.add(iCalPart);
         } else if (isSameMimeType(part.getMimeType(), "application/pgp-signature")) {
             // ignore this type explicitly
         } else {
@@ -209,7 +222,8 @@ public class MessageExtractor {
     public static Set<Part> getTextParts(Part part) throws MessagingException {
         List<Viewable> viewableParts = new ArrayList<>();
         List<Part> nonViewableParts = new ArrayList<>();
-        findViewablesAndAttachments(part, viewableParts, nonViewableParts);
+        List<ICalPart> iCalendarParts = new ArrayList<>();
+        findViewablesAndAttachments(part, viewableParts, nonViewableParts, iCalendarParts);
         return getParts(viewableParts);
     }
 
@@ -221,7 +235,7 @@ public class MessageExtractor {
     public static List<Part> collectAttachments(Message message) throws MessagingException {
         try {
             List<Part> attachments = new ArrayList<>();
-            findViewablesAndAttachments(message, new ArrayList<Viewable>(), attachments);
+            findViewablesAndAttachments(message, new ArrayList<Viewable>(), attachments, new ArrayList<ICalPart>());
             return attachments;
         } catch (Exception e) {
             throw new MessagingException("Couldn't collect attachment parts", e);
@@ -324,8 +338,9 @@ public class MessageExtractor {
      * @throws MessagingException In case of an error.
      */
     private static List<Viewable> findHtmlPart(Multipart multipart, Set<Part> knownTextParts,
-            @Nullable List<Part> outputNonViewableParts, boolean directChild) throws MessagingException {
+            @Nullable List<Part> outputNonViewableParts, @Nullable List<ICalPart> outputCalendarParts, boolean directChild) throws MessagingException {
         boolean saveNonViewableParts = outputNonViewableParts != null;
+        boolean saveCalendarParts = outputCalendarParts != null;
         List<Viewable> viewables = new ArrayList<>();
 
         boolean partFound = false;
@@ -353,7 +368,7 @@ public class MessageExtractor {
                      * 1.3. image/jpeg
                      */
                     List<Viewable> htmlViewables = findHtmlPart(innerMultipart, knownTextParts,
-                            outputNonViewableParts, false);
+                            outputNonViewableParts, outputCalendarParts, false);
 
                     if (!htmlViewables.isEmpty()) {
                         partFound = true;
@@ -366,7 +381,10 @@ public class MessageExtractor {
                 viewables.add(html);
                 partFound = true;
             } else if (!knownTextParts.contains(part)) {
-                if (saveNonViewableParts) {
+                if (isSameMimeType(part.getMimeType(), ICalParser.MIME_TYPE) && saveCalendarParts) {
+                    ICalPart iCalPart = new ICalPart(part);
+                    outputCalendarParts.add(iCalPart);
+                } else if (saveNonViewableParts) {
                     // Only add this part as attachment if it's not a viewable text/plain part found earlier
                     outputNonViewableParts.add(part);
                 }
@@ -408,7 +426,7 @@ public class MessageExtractor {
      *
      * @return The set of viewable {@code Part}s.
      *
-     * @see MessageExtractor#findHtmlPart(Multipart, Set, List, boolean)
+     * @see MessageExtractor#findHtmlPart(Multipart, Set, List, List, boolean)
      * @see MessageExtractor#findAttachments(Multipart, Set, List)
      */
     private static Set<Part> getParts(List<Viewable> viewables) {
