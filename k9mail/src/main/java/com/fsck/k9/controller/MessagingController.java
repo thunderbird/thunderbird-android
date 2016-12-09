@@ -3616,6 +3616,10 @@ public class MessagingController {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Deleting messages in normal folder, moving");
 
+                    if (account.isMarkMessageAsReadOnView()) {
+                    	localFolder.setFlags(messages, Collections.singleton(Flag.SEEN), true);
+                    }
+                    
                     uidMap = localFolder.moveMessages(messages, localTrashFolder);
 
                 }
