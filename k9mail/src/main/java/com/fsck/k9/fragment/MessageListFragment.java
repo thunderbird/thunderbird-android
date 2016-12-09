@@ -1954,7 +1954,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             DatabasePreviewType previewType = DatabasePreviewType.fromDatabaseValue(previewTypeString);
 
             switch (previewType) {
-                case NONE: {
+                case NONE:
+                case ERROR: {
                     return "";
                 }
                 case ENCRYPTED: {
