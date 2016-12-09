@@ -624,7 +624,7 @@
 
     <!-- EU wide -->
     <provider id="fairnatics.net" label="Fairnatics" domain="fairnatics.net">
-        <incoming uri="imap+ssl+://mail.fairnatics.net:993" username="$email" />
+        <incoming uri="imap+ssl+://mail.fairnatics.net" username="$email" />
         <outgoing uri="smtp+tls+://mail.fairnatics.net:25" username="$email" />
     </provider>
     
