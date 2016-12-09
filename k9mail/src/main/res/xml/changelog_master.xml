@@ -3,11 +3,22 @@
 <!--
      The master change log is kept in res/xml/changelog_master.xml.
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
-
-     Don't edit the changelog_<name>_branch.xml files in the gh-pages branch.
-     They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.200-RC1" versioncode="23190" >
+        <change>Added support for PGP/MIME</change>
+        <change>Added support for bundled notifications on Android 7+ and Android Wear</change>
+        <change>New option: only notify for messages from contacts</change>
+        <change>Ask for confirmation on "mark all as read"</change>
+        <change>Added support for sub-folders (WebDAV)</change>
+        <change>Added support for List-Post header</change>
+        <change>Added support for Server Name Indication</change>
+        <change>Disabled support for SSLv3 protocol/ciphers and all RC4 ciphers</change>
+        <change>Removed support for APG (use OpenKeychain instead)</change>
+        <change>Added server settings for more providers</change>
+        <change>Added translations: Bulgarian, Persian (Farsi), Croatian, Portuguese, Romanian, Slovenian, Serbian</change>
+        <change>Lots of smaller bug fixes and features</change>
+    </release>
     <release version="5.010" versioncode="22010" >
         <change>Fixed packaging error; v5.009 was missing translations</change>
     </release>
