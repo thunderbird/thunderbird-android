@@ -16,6 +16,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -378,9 +379,11 @@ public class SettingsImporter {
         String storeUri = RemoteStore.createStoreUri(incoming);
         putString(editor, accountKeyPrefix + Account.STORE_URI_KEY, Base64.encode(storeUri));
 
-        // Mark account as disabled if the AuthType isn't EXTERNAL and the
+        // Mark account as disabled if the AuthType isn't EXTERNAL or XOAUTH2 and the
         // settings file didn't contain a password
-        boolean createAccountDisabled = AuthType.EXTERNAL != incoming.authenticationType &&
+        boolean createAccountDisabled =
+                AuthType.EXTERNAL != incoming.authenticationType &&
+                AuthType.XOAUTH2 != incoming.authenticationType &&
                 (incoming.password == null || incoming.password.isEmpty());
 
         if (account.outgoing == null && !ServerSettings.Type.WebDAV.name().equals(account.incoming.type)) {
@@ -401,7 +404,9 @@ public class SettingsImporter {
              * outgoing servers are identical for this account type. Nor is a
              * password required if the AuthType is EXTERNAL.
              */
-            boolean outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
+            boolean outgoingPasswordNeeded =
+                    AuthType.EXTERNAL != outgoing.authenticationType &&
+                    AuthType.XOAUTH2 != outgoing.authenticationType &&
                     !(ServerSettings.Type.WebDAV == outgoing.type) &&
                     outgoing.username != null &&
                     !outgoing.username.isEmpty() &&
@@ -661,7 +666,8 @@ public class SettingsImporter {
         editor.putString(key, value);
     }
 
-    private static Imported parseSettings(InputStream inputStream, boolean globalSettings,
+    @VisibleForTesting
+    protected static Imported parseSettings(InputStream inputStream, boolean globalSettings,
             List<String> accountUuids, boolean overview)
     throws SettingsImportExportException {
 
@@ -1138,7 +1144,8 @@ public class SettingsImporter {
         }
     }
 
-    private static class Imported {
+    @VisibleForTesting
+    protected static class Imported {
         public int contentVersion;
         public ImportedSettings globalSettings;
         public Map<String, ImportedAccount> accounts;
@@ -1148,7 +1155,8 @@ public class SettingsImporter {
         public Map<String, String> settings = new HashMap<String, String>();
     }
 
-    private static class ImportedAccount {
+    @VisibleForTesting
+    protected static class ImportedAccount {
         public String uuid;
         public String name;
         public ImportedServer incoming;
@@ -1158,7 +1166,8 @@ public class SettingsImporter {
         public List<ImportedFolder> folders;
     }
 
-    private static class ImportedServer {
+    @VisibleForTesting
+    protected static class ImportedServer {
         public String type;
         public String host;
         public String port;

@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fsck.k9.*;
+import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -100,7 +101,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     }
 
     private void handleCertificateValidationException(CertificateValidationException cve) {
-        Log.e(K9.LOG_TAG, "Error while testing settings", cve);
+        Log.e(K9.LOG_TAG, "Error while testing settings (cve)", cve);
 
         X509Certificate[] chain = cve.getCertChain();
         // Avoid NullPointerException in acceptKeyDialog()
@@ -428,7 +429,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 finish();
 
             } catch (AuthenticationFailedException afe) {
-                Log.e(K9.LOG_TAG, "Error while testing settings", afe);
+                Log.e(K9.LOG_TAG, "Error while testing settings (auth failed)", afe);
                 showErrorDialog(
                         R.string.account_setup_failed_dlg_auth_message_fmt,
                         afe.getMessage() == null ? "" : afe.getMessage());
@@ -475,7 +476,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             if (!(account.getRemoteStore() instanceof WebDavStore)) {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
-            Transport transport = Transport.getInstance(K9.app, account);
+            Transport transport = Transport.getInstance(K9.app, account,
+                    new AndroidAccountOAuth2TokenStore(AccountSetupCheckSettings.this));
             transport.close();
             try {
                 transport.open();

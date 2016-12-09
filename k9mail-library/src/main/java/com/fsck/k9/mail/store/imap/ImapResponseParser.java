@@ -109,7 +109,7 @@ class ImapResponseParser {
                 continue;
             }
 
-            if (untaggedHandler != null) {
+            if (response.getTag() == null && untaggedHandler != null) {
                 untaggedHandler.handleAsyncUntaggedResponse(response);
             }
 

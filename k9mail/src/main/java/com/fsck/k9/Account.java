@@ -21,6 +21,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 
+import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -1279,7 +1280,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public Store getRemoteStore() throws MessagingException {
-        return RemoteStore.getInstance(K9.app, this);
+        return RemoteStore.getInstance(K9.app, this, Globals.getOAuth2TokenProvider());
     }
 
     // It'd be great if this actually went into the store implementation

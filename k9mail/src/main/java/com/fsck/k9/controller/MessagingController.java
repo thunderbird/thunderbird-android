@@ -49,10 +49,12 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BuildConfig;
+import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -2973,7 +2975,8 @@ public class MessagingController {
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + localFolder.getId() + ") for messages to send");
 
-            Transport transport = Transport.getInstance(K9.app, account);
+            Transport transport = Transport.getInstance(K9.app, account,
+                    Globals.getOAuth2TokenProvider());
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
                     message.destroy();
