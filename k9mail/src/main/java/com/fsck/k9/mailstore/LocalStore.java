@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -34,11 +36,19 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
@@ -54,9 +64,11 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
+import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
+import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 
 /**
  * <pre>
@@ -64,7 +76,6 @@ import org.apache.james.mime4j.util.MimeUtil;
  * </pre>
  */
 public class LocalStore extends Store implements Serializable {
-
     private static final long serialVersionUID = -5142141896809423072L;
 
     static final String[] EMPTY_STRING_ARRAY = new String[0];
@@ -112,6 +123,14 @@ public class LocalStore extends Store implements Serializable {
     static final int MORE_MESSAGES_INDEX = 13;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
+
+    private static final String[] GET_ATTACHMENT_COLS = new String[] { "id", "root", "data_location", "encoding", "data" };
+
+    private static final int ATTACH_PART_ID_INDEX = 0;
+    private static final int ATTACH_ROOT_INDEX = 1;
+    private static final int ATTACH_LOCATION_INDEX = 2;
+    private static final int ATTACH_ENCODING_INDEX = 3;
+    private static final int ATTACH_DATA_INDEX = 4;
 
     /**
      * Maximum number of UIDs to check for existence at once.
@@ -680,59 +699,189 @@ public class LocalStore extends Store implements Serializable {
     }
 
     @Nullable
-    public InputStream getAttachmentInputStream(final String attachmentId) throws MessagingException {
-        return database.execute(false, new DbCallback<InputStream>() {
+    public OpenPgpDataSource getAttachmentDataSource(final String partId) throws MessagingException {
+        return new OpenPgpDataSource() {
             @Override
-            public InputStream doDbWork(final SQLiteDatabase db) throws WrappedException {
-                Cursor cursor = db.query("message_parts",
-                        new String[] { "data_location", "data", "encoding" },
-                        "id = ?",
-                        new String[] { attachmentId },
-                        null, null, null);
-                try {
-                    if (!cursor.moveToFirst()) {
-                        return null;
-                    }
-
-                    int location = cursor.getInt(0);
-                    String encoding = cursor.getString(2);
-
-                    InputStream rawInputStream = getRawAttachmentInputStream(cursor, location, attachmentId);
-                    return getDecodingInputStream(rawInputStream, encoding);
-                } finally {
-                    cursor.close();
-                }
+            public void writeTo(OutputStream os) throws IOException {
+                writeAttachmentDataToOutputStream(partId, os);
             }
-        });
+        };
     }
 
-    @Nullable
-    private InputStream getRawAttachmentInputStream(Cursor cursor, int location, String attachmentId) {
-        switch (location) {
-            case DataLocation.IN_DATABASE: {
-                byte[] data = cursor.getBlob(1);
-                return new ByteArrayInputStream(data);
-            }
-            case DataLocation.ON_DISK: {
-                File file = getAttachmentFile(attachmentId);
-                try {
-                    return new FileInputStream(file);
-                } catch (FileNotFoundException e) {
+    private void writeAttachmentDataToOutputStream(final String partId, final OutputStream outputStream)
+            throws IOException {
+        try {
+            database.execute(false, new DbCallback<Void>() {
+                @Override
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
+                    Cursor cursor = db.query("message_parts",
+                            GET_ATTACHMENT_COLS,
+                            "id = ?", new String[] { partId },
+                            null, null, null);
+                    try {
+                        writeCursorPartsToOutputStream(db, cursor, outputStream);
+                    } catch (IOException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
                     return null;
                 }
-            }
-            default: {
-                throw new IllegalStateException("No attachment data available");
+            });
+        } catch (MessagingException e) {
+            throw new IOException("Got a MessagingException while writing attachment data!", e);
+        } catch (WrappedException e) {
+            throw (IOException) e.getCause();
+        }
+    }
+
+    private void writeCursorPartsToOutputStream(SQLiteDatabase db, Cursor cursor, OutputStream outputStream)
+            throws IOException, MessagingException {
+        while (cursor.moveToNext()) {
+            String partId = cursor.getString(ATTACH_PART_ID_INDEX);
+            int location = cursor.getInt(ATTACH_LOCATION_INDEX);
+
+            if (location == DataLocation.IN_DATABASE || location == DataLocation.ON_DISK) {
+                writeSimplePartToOutputStream(partId, cursor, outputStream);
+            } else if (location == DataLocation.CHILD_PART_CONTAINS_DATA) {
+                writeRawBodyToStream(cursor, db, outputStream);
             }
         }
     }
 
+    private void writeRawBodyToStream(Cursor cursor, SQLiteDatabase db, OutputStream outputStream)
+            throws IOException, MessagingException {
+        long partId = cursor.getLong(ATTACH_PART_ID_INDEX);
+        String rootPart = cursor.getString(ATTACH_ROOT_INDEX);
+        LocalMessage message = loadLocalMessageByRootPartId(db, rootPart);
+
+        if (message == null) {
+            throw new MessagingException("Unable to find message for attachment!");
+        }
+
+        Part part = findPartById(message, partId);
+        if (part == null) {
+            throw new MessagingException("Unable to find attachment part in associated message (db integrity error?)");
+        }
+
+        Body body = part.getBody();
+        if (body == null) {
+            throw new MessagingException("Attachment part isn't available!");
+        }
+
+        body.writeTo(outputStream);
+    }
+
+    static Part findPartById(Part searchRoot, long partId) {
+        if (searchRoot instanceof LocalMessage) {
+            LocalMessage localMessage = (LocalMessage) searchRoot;
+            if (localMessage.getMessagePartId() == partId) {
+                return localMessage;
+            }
+        }
+
+        Stack<Part> partStack = new Stack<>();
+        partStack.add(searchRoot);
+
+        while (!partStack.empty()) {
+            Part part = partStack.pop();
+
+            if (part instanceof LocalPart) {
+                LocalPart localBodyPart = (LocalPart) part;
+                if (localBodyPart.getId() == partId) {
+                    return part;
+                }
+            }
+
+            Body body = part.getBody();
+            if (body instanceof Multipart) {
+                Multipart innerMultipart = (Multipart) body;
+                for (BodyPart innerPart : innerMultipart.getBodyParts()) {
+                    partStack.add(innerPart);
+                }
+            }
+
+            if (body instanceof Part) {
+                partStack.add((Part) body);
+            }
+        }
+
+        return null;
+    }
+
+    private LocalMessage loadLocalMessageByRootPartId(SQLiteDatabase db, String rootPart) throws MessagingException {
+        Cursor cursor = db.query("messages",
+                new String[] { "id" },
+                "message_part_id = ?", new String[] { rootPart },
+                null, null, null);
+        long messageId;
+        try {
+            if (!cursor.moveToFirst()) {
+                return null;
+            }
+
+            messageId = cursor.getLong(0);
+        } finally {
+            Utility.closeQuietly(cursor);
+        }
+
+        return loadLocalMessageByMessageId(messageId);
+    }
+
     @Nullable
-    InputStream getDecodingInputStream(@Nullable final InputStream rawInputStream, @Nullable String encoding) {
-        if (rawInputStream == null) {
+    private LocalMessage loadLocalMessageByMessageId(long messageId) throws MessagingException {
+        Map<String, List<String>> foldersAndUids =
+                getFoldersAndUids(Collections.singletonList(messageId), false);
+        if (foldersAndUids.isEmpty()) {
             return null;
         }
 
+        Map.Entry<String,List<String>> entry = foldersAndUids.entrySet().iterator().next();
+        String folderName = entry.getKey();
+        String uid = entry.getValue().get(0);
+
+        LocalFolder folder = getFolder(folderName);
+        LocalMessage localMessage = folder.getMessage(uid);
+
+        FetchProfile fp = new FetchProfile();
+        fp.add(Item.BODY);
+        folder.fetch(Collections.singletonList(localMessage), fp, null);
+
+        return localMessage;
+    }
+
+    private void writeSimplePartToOutputStream(String partId, Cursor cursor, OutputStream outputStream)
+            throws IOException {
+        int location = cursor.getInt(ATTACH_LOCATION_INDEX);
+        InputStream inputStream = getRawAttachmentInputStream(partId, location, cursor);
+
+        try {
+            String encoding = cursor.getString(ATTACH_ENCODING_INDEX);
+            inputStream = getDecodingInputStream(inputStream, encoding);
+            IOUtils.copy(inputStream, outputStream);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+        }
+    }
+
+    private InputStream getRawAttachmentInputStream(String partId, int location, Cursor cursor)
+            throws FileNotFoundException {
+        switch (location) {
+            case DataLocation.IN_DATABASE: {
+                byte[] data = cursor.getBlob(ATTACH_DATA_INDEX);
+                return new ByteArrayInputStream(data);
+            }
+            case DataLocation.ON_DISK: {
+                File file = getAttachmentFile(partId);
+                return new FileInputStream(file);
+            }
+            default:
+                throw new IllegalStateException("unhandled case");
+        }
+    }
+
+    InputStream getDecodingInputStream(final InputStream rawInputStream, @Nullable String encoding) {
         if (MimeUtil.ENC_BASE64.equals(encoding)) {
             return new Base64InputStream(rawInputStream) {
                 @Override

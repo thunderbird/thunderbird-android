@@ -507,7 +507,7 @@ public class OpenPgpApi {
             return isCancelled;
         }
 
-        private ParcelFileDescriptor startPumpThread() throws IOException {
+        public ParcelFileDescriptor startPumpThread() throws IOException {
             if (writeSidePfd != null) {
                 throw new IllegalStateException("startPumpThread() must only be called once!");
             }

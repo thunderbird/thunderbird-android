@@ -7,6 +7,7 @@ import java.util.Date;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -118,7 +119,7 @@ public class LocalMessage extends MimeMessage {
         setFlagInternal(Flag.ANSWERED, answered);
         setFlagInternal(Flag.FORWARDED, forwarded);
 
-        messagePartId = cursor.getLong(22);
+        setMessagePartId(cursor.getLong(22));
         mimeType = cursor.getString(23);
 
         byte[] header = cursor.getBlob(25);
@@ -127,6 +128,11 @@ public class LocalMessage extends MimeMessage {
         } else {
             Log.d(K9.LOG_TAG, "No headers available for this message!");
         }
+    }
+
+    @VisibleForTesting
+    public void setMessagePartId(long messagePartId) {
+        this.messagePartId = messagePartId;
     }
 
     public long getMessagePartId() {

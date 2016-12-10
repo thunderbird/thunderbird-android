@@ -655,7 +655,11 @@ class WebDavFolder extends Folder<WebDavMessage> {
             try {
                 ByteArrayOutputStream out;
 
-                out = new ByteArrayOutputStream(message.getSize());
+                long size = message.getSize();
+                if (size > Integer.MAX_VALUE) {
+                    throw new MessagingException("message size > Integer.MAX_VALUE!");
+                }
+                out = new ByteArrayOutputStream((int) size);
 
                 open(Folder.OPEN_MODE_RW);
                 EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(

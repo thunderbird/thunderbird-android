@@ -3,7 +3,6 @@ package com.fsck.k9.provider;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import android.content.ContentProvider;
@@ -24,6 +23,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
+import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
 
 
@@ -164,12 +164,12 @@ public class AttachmentProvider extends ContentProvider {
     @Nullable
     private ParcelFileDescriptor openAttachment(String accountUuid, String attachmentId) {
         try {
-            InputStream inputStream = getAttachmentInputStream(accountUuid, attachmentId);
-            if (inputStream == null) {
-                Log.e(K9.LOG_TAG, "Error getting InputStream for attachment (part doesn't exist?)");
+            OpenPgpDataSource openPgpDataSource = getAttachmentDataSource(accountUuid, attachmentId);
+            if (openPgpDataSource == null) {
+                Log.e(K9.LOG_TAG, "Error getting data source for attachment (part doesn't exist?)");
                 return null;
             }
-            return ParcelFileDescriptorUtil.pipeFrom(inputStream);
+            return openPgpDataSource.startPumpThread();
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "Error getting InputStream for attachment", e);
             return null;
@@ -180,9 +180,9 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Nullable
-    private InputStream getAttachmentInputStream(String accountUuid, String attachmentId) throws MessagingException {
+    private OpenPgpDataSource getAttachmentDataSource(String accountUuid, String attachmentId) throws MessagingException {
         final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
         LocalStore localStore = LocalStore.getInstance(account, getContext());
-        return localStore.getAttachmentInputStream(attachmentId);
+        return localStore.getAttachmentDataSource(attachmentId);
     }
 }
