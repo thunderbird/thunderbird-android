@@ -716,14 +716,14 @@ public class MessagingControllerTest {
     private Message buildSmallNewMessage() {
         Message message = mock(Message.class);
         when(message.olderThan(any(Date.class))).thenReturn(false);
-        when(message.getSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
+        when(message.getSize()).thenReturn((long) MAXIMUM_SMALL_MESSAGE_SIZE);
         return message;
     }
 
     private Message buildLargeNewMessage() {
         Message message = mock(Message.class);
         when(message.olderThan(any(Date.class))).thenReturn(false);
-        when(message.getSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE + 1);
+        when(message.getSize()).thenReturn((long) (MAXIMUM_SMALL_MESSAGE_SIZE + 1));
         return message;
     }
 
