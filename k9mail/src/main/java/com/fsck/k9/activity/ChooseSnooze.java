@@ -40,6 +40,8 @@ import java.util.concurrent.TimeUnit;
 public class ChooseSnooze extends K9ListActivity {
     public static final String EXTRA_SNOOZE_UNTIL = "com.fsck.k9.ChooseSnooze_EXTRA_SNOOZE_UNTIL";
 
+    private static final boolean DEBUG = true;
+
     String mFolder;
     String mSelectFolder;
     Account mAccount;
@@ -100,6 +102,9 @@ public class ChooseSnooze extends K9ListActivity {
         List<SnoozeTime> times = new LinkedList<>();
 
         long now = System.currentTimeMillis();
+        if (DEBUG) {
+            times.add(new SnoozeTime(now + TimeUnit.MINUTES.toMillis(1)));
+        }
         times.add(new SnoozeTime(now + TimeUnit.HOURS.toMillis(1)));
         times.add(new SnoozeTime(now + TimeUnit.DAYS.toMillis(1)));
         times.add(new SnoozeTime(now + TimeUnit.DAYS.toMillis(7)));

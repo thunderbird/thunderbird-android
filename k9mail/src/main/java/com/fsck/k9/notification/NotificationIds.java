@@ -15,10 +15,15 @@ class NotificationIds {
 
     private static final int OFFSET_NEW_MAIL_STACKED = 7;
 
+
     private static final int NUMBER_OF_DEVICE_NOTIFICATIONS = 7;
     private static final int NUMBER_OF_STACKED_NOTIFICATIONS = NotificationData.MAX_NUMBER_OF_STACKED_NOTIFICATIONS;
+
+    private static final int OFFSET_NEW_MAIL_SNOOZED = OFFSET_NEW_MAIL_STACKED + NUMBER_OF_STACKED_NOTIFICATIONS;
+    private static final int NUMBER_OF_SNOOZED_NOTIFICATIONS = 10;
+
     private static final int NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT = NUMBER_OF_DEVICE_NOTIFICATIONS +
-            NUMBER_OF_STACKED_NOTIFICATIONS;
+            NUMBER_OF_STACKED_NOTIFICATIONS + NUMBER_OF_SNOOZED_NOTIFICATIONS;
             
 
     public static int getNewMailSummaryNotificationId(Account account) {
@@ -53,5 +58,15 @@ class NotificationIds {
 
     private static int getBaseNotificationId(Account account) {
         return account.getAccountNumber() * NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT;
+    }
+
+    public static int getNewSnoozedMessageId(Account account, int index) {
+//        if (index < 0 || index >= NUMBER_OF_SNOOZED_NOTIFICATIONS) {
+//            throw new IndexOutOfBoundsException("Invalid value: " + index);
+//        }
+        // just recycle/overwrite if they have too many snoozes
+        index = index % NUMBER_OF_SNOOZED_NOTIFICATIONS;
+
+        return getBaseNotificationId(account) + OFFSET_NEW_MAIL_SNOOZED + index;
     }
 }

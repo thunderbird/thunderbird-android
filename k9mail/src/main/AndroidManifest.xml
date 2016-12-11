@@ -151,6 +151,8 @@
             android:noHistory="true"
             android:theme="@style/Theme.K9Dialog"/>
 
+        <receiver android:name=".notification.NotificationPublisher" />
+
         <activity
             android:name=".activity.ChooseIdentity"
             android:configChanges="locale"

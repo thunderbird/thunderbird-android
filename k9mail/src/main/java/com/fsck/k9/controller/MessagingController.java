@@ -4515,6 +4515,10 @@ public class MessagingController {
         notificationController.showCertificateErrorNotification(account, incoming);
     }
 
+    public void notifySnoozedMessage(MessageReference msg) {
+        notificationController.showSnoozeNotification(msg);
+    }
+
     private void actOnMessagesGroupedByAccountAndFolder(List<MessageReference> messages, MessageActor actor) {
         Map<String, Map<String, List<MessageReference>>> accountMap = groupMessagesByAccountAndFolder(messages);
 

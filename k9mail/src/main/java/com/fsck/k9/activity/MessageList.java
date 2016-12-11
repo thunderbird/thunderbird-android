@@ -1011,6 +1011,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.archive).setVisible(false);
             menu.findItem(R.id.move).setVisible(false);
             menu.findItem(R.id.copy).setVisible(false);
+            menu.findItem(R.id.snooze).setVisible(false);
             menu.findItem(R.id.spam).setVisible(false);
             menu.findItem(R.id.refile).setVisible(false);
             menu.findItem(R.id.toggle_unread).setVisible(false);
@@ -1058,6 +1059,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             } else {
                 menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action);
             }
+
+            menu.findItem(R.id.snooze).setVisible(true);
 
             // Jellybean has built-in long press selection support
             menu.findItem(R.id.select_text).setVisible(Build.VERSION.SDK_INT < 16);

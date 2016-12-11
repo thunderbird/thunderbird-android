@@ -24,7 +24,7 @@ import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_B
 import static com.fsck.k9.notification.NotificationController.platformSupportsExtendedNotifications;
 
 
-class DeviceNotifications extends BaseNotifications {
+class DeviceNotifications extends MailNotifications {
     private final WearNotifications wearNotifications;
     private final LockScreenNotification lockScreenNotification;
 
@@ -102,11 +102,10 @@ class DeviceNotifications extends BaseNotifications {
                 .setContentIntent(contentIntent);
     }
 
-    private NotificationCompat.Builder createBigTextStyleSummaryNotification(Account account,
-            NotificationHolder holder) {
-
+    protected NotificationCompat.Builder createBigTextStyleSummaryNotification(Account account,
+                                                                               NotificationHolder holder) {
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        Builder builder = createBigTextStyleNotification(account, holder, notificationId)
+        NotificationCompat.Builder builder = createBigTextStyleNotification(account, holder, notificationId)
                 .setGroupSummary(true);
 
         NotificationContent content = holder.content;
@@ -164,17 +163,6 @@ class DeviceNotifications extends BaseNotifications {
         return builder;
     }
 
-    private void addMarkAsReadAction(Builder builder, NotificationContent content, int notificationId) {
-        int icon = getMarkAsReadActionIcon();
-        String title = context.getString(R.string.notification_action_mark_as_read);
-
-
-        MessageReference messageReference = content.messageReference;
-        PendingIntent action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId);
-
-        builder.addAction(icon, title, action);
-    }
-
     private void addMarkAllAsReadAction(Builder builder, NotificationData notificationData) {
         int icon = getMarkAsReadActionIcon();
         String title = context.getString(R.string.notification_action_mark_as_read);
@@ -202,53 +190,6 @@ class DeviceNotifications extends BaseNotifications {
         PendingIntent action = actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId);
 
         builder.addAction(icon, title, action);
-    }
-
-    private void addDeleteAction(Builder builder, NotificationContent content, int notificationId) {
-        if (!isDeleteActionEnabled()) {
-            return;
-        }
-
-        int icon = getDeleteActionIcon();
-        String title = context.getString(R.string.notification_action_delete);
-
-        MessageReference messageReference = content.messageReference;
-        PendingIntent action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId);
-
-        builder.addAction(icon, title, action);
-    }
-
-    private void addReplyAction(Builder builder, NotificationContent content, int notificationId) {
-        int icon = getReplyActionIcon();
-        String title = context.getString(R.string.notification_action_reply);
-
-        MessageReference messageReference = content.messageReference;
-        PendingIntent replyToMessagePendingIntent =
-                actionCreator.createReplyPendingIntent(messageReference, notificationId);
-
-        builder.addAction(icon, title, replyToMessagePendingIntent);
-    }
-
-    private boolean isPrivacyModeActive() {
-        KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-
-        boolean privacyModeAlwaysEnabled = K9.getNotificationHideSubject() == NotificationHideSubject.ALWAYS;
-        boolean privacyModeEnabledWhenLocked = K9.getNotificationHideSubject() == NotificationHideSubject.WHEN_LOCKED;
-        boolean screenLocked = keyguardService.inKeyguardRestrictedInputMode();
-
-        return privacyModeAlwaysEnabled || (privacyModeEnabledWhenLocked && screenLocked);
-    }
-
-    private int getMarkAsReadActionIcon() {
-        return R.drawable.notification_action_mark_as_read;
-    }
-
-    private int getDeleteActionIcon() {
-        return R.drawable.notification_action_delete;
-    }
-
-    private int getReplyActionIcon() {
-        return R.drawable.notification_action_reply;
     }
 
     protected InboxStyle createInboxStyle(Builder builder) {

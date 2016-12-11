@@ -433,7 +433,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="archive_folder_label">Archive folder</string>
     <string name="spam_folder_label">Spam folder</string>
 
-    <string name="pick_a_time">Pick a time...</string>
+    <string name="pick_a_time">Pick a time&#8230;</string>
+    <string name="will_remind_you">Will remind you <xliff:g id="relative_time" example="in 1 hour">%1$s</xliff:g></string>
 
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
