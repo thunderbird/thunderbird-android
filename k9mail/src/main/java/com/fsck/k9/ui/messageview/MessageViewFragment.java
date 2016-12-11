@@ -33,10 +33,12 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
+import com.fsck.k9.activity.ChooseSnooze;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.SnoozeController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
@@ -60,6 +62,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
+    private static final int ACTIVITY_CHOOSE_SNOOZE = 4;
 
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
@@ -84,6 +87,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private Handler handler = new Handler();
     private MessageLoaderHelper messageLoaderHelper;
     private MessageCryptoPresenter messageCryptoPresenter;
+
+    private SnoozeController snoozeController;
 
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
@@ -116,6 +121,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             throw new ClassCastException(activity.getClass() +
                     " must implement MessageViewFragmentListener");
         }
+
+        snoozeController = new SnoozeController(activity);
     }
 
     @Override
@@ -365,6 +372,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY);
     }
 
+    /***
+     * Sets an alarm to notify the user of this message later.
+     */
+    public void onSnooze() {
+        snoozeController.launchSnoozeDialog(this, mAccount, mMessageReference, ACTIVITY_CHOOSE_SNOOZE);
+    }
+
     public void onArchive() {
         onRefile(mAccount.getArchiveFolderName());
     }
@@ -444,6 +458,15 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                             break;
                         }
                     }
+                }
+                break;
+            }
+            case ACTIVITY_CHOOSE_SNOOZE: {
+
+                MessageReference ref = snoozeController.handleActivityResult(resultCode, data);
+
+                if (mMessageReference.equals(ref)) {
+                    mFragmentListener.showNextMessageOrReturn();
                 }
                 break;
             }

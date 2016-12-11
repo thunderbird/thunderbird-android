@@ -145,6 +145,13 @@
             android:theme="@style/Theme.K9Dialog"/>
 
         <activity
+            android:name=".activity.ChooseSnooze"
+            android:configChanges="locale"
+            android:label="@string/snooze_action"
+            android:noHistory="true"
+            android:theme="@style/Theme.K9Dialog"/>
+
+        <activity
             android:name=".activity.ChooseIdentity"
             android:configChanges="locale"
             android:label="@string/choose_identity_title"

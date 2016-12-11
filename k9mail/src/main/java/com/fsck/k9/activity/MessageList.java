@@ -911,6 +911,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 mMessageViewFragment.onCopy();
                 return true;
             }
+            case R.id.snooze: {
+                mMessageViewFragment.onSnooze();
+                return true;
+            }
             case R.id.select_text: {
                 mMessageViewFragment.onSelectText();
                 return true;

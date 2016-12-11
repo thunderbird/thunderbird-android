@@ -16,6 +16,7 @@
         <item name="iconActionAddAttachment">@drawable/ic_action_add_attachment_light</item>
         <item name="iconActionAddCcBcc">@drawable/ic_action_add_cc_bbc_light</item>
         <item name="iconActionArchive">@drawable/ic_action_archive_light</item>
+        <item name="iconActionSnooze">@drawable/ic_action_snooze_light</item>
         <item name="iconActionCompose">@drawable/ic_action_compose_light</item>
         <item name="iconActionDelete">@drawable/ic_action_delete_light</item>
         <item name="iconActionMove">@drawable/ic_action_move_light</item>
@@ -81,6 +82,7 @@
         <item name="iconActionAddAttachment">@drawable/ic_action_add_attachment_dark</item>
         <item name="iconActionAddCcBcc">@drawable/ic_action_add_cc_bcc_dark</item>
         <item name="iconActionArchive">@drawable/ic_action_archive_dark</item>
+        <item name="iconActionSnooze">@drawable/ic_action_snooze_dark</item>
         <item name="iconActionCompose">@drawable/ic_action_compose_dark</item>
         <item name="iconActionDelete">@drawable/ic_action_delete_dark</item>
         <item name="iconActionMove">@drawable/ic_action_move_dark</item>
