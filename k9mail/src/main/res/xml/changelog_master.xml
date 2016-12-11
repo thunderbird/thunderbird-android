@@ -5,6 +5,10 @@
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.200-RC2" versioncode="23191">
+        <change>Fixed crash when opening attached messages</change>
+        <change>Don't crash when message list contains messages for which we couldn't extract a preview</change>
+    </release>
     <release version="5.200-RC1" versioncode="23190" >
         <change>Added support for PGP/MIME</change>
         <change>Added support for bundled notifications on Android 7+ and Android Wear</change>
