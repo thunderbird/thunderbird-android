@@ -740,7 +740,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
-                Message innerMessage = new MimeMessage();
+                Message innerMessage = new LocalMimeMessage(getAccountUuid(), message, id);
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
             } else {
