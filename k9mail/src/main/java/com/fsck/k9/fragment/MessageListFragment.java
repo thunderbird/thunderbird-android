@@ -172,6 +172,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             THREAD_COUNT_COLUMN);
 
 
+
     public static MessageListFragment newInstance(LocalSearch search, boolean isThreadDisplay, boolean threadedList) {
         MessageListFragment fragment = new MessageListFragment();
         Bundle args = new Bundle();

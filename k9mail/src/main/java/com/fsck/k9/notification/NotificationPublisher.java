@@ -21,17 +21,9 @@ public class NotificationPublisher extends BroadcastReceiver {
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
 
     public void onReceive(Context context, Intent intent) {
-//
-//        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-
         MessageReference msg = intent.getParcelableExtra(EXTRA_MESSAGE);
 
         MessagingController messagingController = MessagingController.getInstance(context);
         messagingController.notifySnoozedMessage(msg);
-
-//
-//        int id = 0;
-//
-//        notificationManager.notify(id, notification);
     }
 }

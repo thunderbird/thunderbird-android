@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +21,6 @@ import com.fsck.k9.controller.SnoozeController;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +32,7 @@ import java.text.DateFormat;
 public class ChooseSnooze extends K9ListActivity {
     public static final String EXTRA_SNOOZE_UNTIL = "com.fsck.k9.ChooseSnooze_EXTRA_SNOOZE_UNTIL";
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     Account mAccount;
     MessageReference mMessageReference;

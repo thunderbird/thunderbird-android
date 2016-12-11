@@ -15,7 +15,9 @@ import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_B
 import static com.fsck.k9.notification.NotificationController.platformSupportsExtendedNotifications;
 
 /**
- * Created by tyler on 12/10/16.
+ * Handles posting snoozed messages as notifications.
+ *
+ * Created by odbol on 12/10/16.
  */
 
 public class SnoozeNotifications extends MailNotifications {
@@ -95,8 +97,7 @@ public class SnoozeNotifications extends MailNotifications {
                                                                                boolean enableBigStyle,
                                                                                int notificationId) {
 
-        NotificationCompat.Builder builder = createBigTextStyleNotification(account, holder, notificationId, enableBigStyle)
-                ;//TODO(Tf): ??? .setGroupSummary(true);
+        NotificationCompat.Builder builder = createBigTextStyleNotification(account, holder, notificationId, enableBigStyle);
 
         NotificationContent content = holder.content;
         addReplyAction(builder, content, notificationId);
