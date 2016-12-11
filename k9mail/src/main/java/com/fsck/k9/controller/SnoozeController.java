@@ -95,7 +95,7 @@ public class SnoozeController {
                 timestamp + 61000, // add a minute, so it doesn't say "in 59 minutes" etc.
                 System.currentTimeMillis(),
                 0, //DateUtils.DAY_IN_MILLIS,
-                DateUtils.FORMAT_ABBREV_RELATIVE);
+                0);
     }
 
 
