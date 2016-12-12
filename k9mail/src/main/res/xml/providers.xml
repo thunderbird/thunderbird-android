@@ -622,6 +622,12 @@
         <outgoing uri="smtp+tls+://smtp.ziggo.nl" username="$email" />
     </provider>
 
+    <!-- EU wide -->
+    <provider id="fairnatics.net" label="Fairnatics" domain="fairnatics.net">
+        <incoming uri="imap+ssl+://mail.fairnatics.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.fairnatics.net:25" username="$email" />
+    </provider>
+    
     <!-- Developers' vanity providers -->
     <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
         <incoming uri="imap+ssl+://fsck.com"  username="$user" />
