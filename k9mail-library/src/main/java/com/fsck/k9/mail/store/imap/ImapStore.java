@@ -76,10 +76,8 @@ public class ImapStore extends RemoteStore {
         return ImapStoreUriCreator.create(server);
     }
 
-    public ImapStore(StoreConfig storeConfig,
-                     TrustedSocketFactory trustedSocketFactory,
-                     ConnectivityManager connectivityManager,
-                     OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
+    public ImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
+            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
         super(storeConfig, trustedSocketFactory);
 
         ImapStoreSettings settings;

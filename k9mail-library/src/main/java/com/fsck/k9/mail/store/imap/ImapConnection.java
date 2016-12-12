@@ -332,9 +332,7 @@ class ImapConnection {
             case XOAUTH2:
                 if (oauthTokenProvider == null) {
                     throw new MessagingException("No OAuthToken Provider available.");
-                }
-                if (hasCapability(Capabilities.AUTH_XOAUTH2)
-                        && hasCapability(Capabilities.SASL_IR)) {
+                } else if (hasCapability(Capabilities.AUTH_XOAUTH2) && hasCapability(Capabilities.SASL_IR)) {
                     authXoauth2withSASLIR();
                 } else {
                     throw new MessagingException("Server doesn't support SASL XOAUTH2.");
@@ -413,27 +411,24 @@ class ImapConnection {
     }
 
     private void attemptXOAuth2() throws MessagingException, IOException {
-        String token = oauthTokenProvider.getToken(settings.getUsername(),
-                OAuth2TokenProvider.OAUTH2_TIMEOUT);
-        String tag = sendSaslIrCommand(Commands.AUTHENTICATE_XOAUTH2,
-                Authentication.computeXoauth(settings.getUsername(), token), true);
+        String token = oauthTokenProvider.getToken(settings.getUsername(), OAuth2TokenProvider.OAUTH2_TIMEOUT);
+        String authString = Authentication.computeXoauth(settings.getUsername(), token);
+        String tag = sendSaslIrCommand(Commands.AUTHENTICATE_XOAUTH2, authString, true);
 
-        extractCapabilities(
-            responseParser.readStatusResponse(tag, Commands.AUTHENTICATE_XOAUTH2, getLogId(),
-                    new UntaggedHandler() {
-                @Override
-                public void handleAsyncUntaggedResponse(ImapResponse response) throws IOException {
-                    handleXOAuthUntaggedResponse(response);
-
-                }
-            })
-        );
+        List<ImapResponse> responses = responseParser.readStatusResponse(tag, Commands.AUTHENTICATE_XOAUTH2, getLogId(),
+                new UntaggedHandler() {
+                    @Override
+                    public void handleAsyncUntaggedResponse(ImapResponse response) throws IOException {
+                        handleXOAuthUntaggedResponse(response);
+                    }
+                });
+        
+        extractCapabilities(responses);
     }
 
     private void handleXOAuthUntaggedResponse(ImapResponse response) throws IOException {
         if (response.isString(0)) {
-            retryXoauth2WithNewToken = XOAuth2ChallengeParser.shouldRetry(
-                    response.getString(0), settings.getHost());
+            retryXoauth2WithNewToken = XOAuth2ChallengeParser.shouldRetry(response.getString(0), settings.getHost());
         }
 
         if (response.isContinuationRequested()) {
@@ -727,7 +722,7 @@ class ImapConnection {
             open();
 
             String tag = Integer.toString(nextCommandTag++);
-            String commandToSend = tag + " " + command + " " + initialClientResponse+ "\r\n";
+            String commandToSend = tag + " " + command + " " + initialClientResponse + "\r\n";
             outputStream.write(commandToSend.getBytes());
             outputStream.flush();
 
@@ -735,7 +730,7 @@ class ImapConnection {
                 if (sensitive && !K9MailLib.isDebugSensitive()) {
                     Log.v(LOG_TAG, getLogId() + ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
                 } else {
-                    Log.v(LOG_TAG,  getLogId() + ">>> " + tag + " " + command+ " " + initialClientResponse);
+                    Log.v(LOG_TAG, getLogId() + ">>> " + tag + " " + command + " " + initialClientResponse);
                 }
             }
 

@@ -1,37 +1,58 @@
 
 package com.fsck.k9.mail.transport;
 
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.Authentication;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.CharsetSupport;
-import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
-
 import javax.net.ssl.SSLException;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.*;
-import java.security.GeneralSecurityException;
-import java.util.*;
-
+import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_SMTP;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
-import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 
 public class SmtpTransport extends Transport {
     public static final int SMTP_CONTINUE_REQUEST = 334;
@@ -194,8 +215,7 @@ public class SmtpTransport extends Transport {
     private boolean retryXoauthWithNewToken;
 
     public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-                         OAuth2TokenProvider oauth2TokenProvider)
-            throws MessagingException {
+            OAuth2TokenProvider oauth2TokenProvider) throws MessagingException {
         ServerSettings settings;
         try {
             settings = decodeUri(storeConfig.getTransportUri());
@@ -881,13 +901,12 @@ public class SmtpTransport extends Transport {
     }
 
     private void attemptXoauth2(String username) throws MessagingException, IOException {
-        CommandResponse response = executeSimpleCommandWithResponse("AUTH XOAUTH2 " +
-                Authentication.computeXoauth(username,
-                        oauthTokenProvider.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT)),
-                true);
-        if(response.replyCode == SMTP_CONTINUE_REQUEST) {
-            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(
-                    response.message, mHost);
+        String token = oauthTokenProvider.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT);
+        String authString = Authentication.computeXoauth(username, token);
+        CommandResponse response = executeSimpleCommandWithResponse("AUTH XOAUTH2 " + authString, true);
+
+        if (response.replyCode == SMTP_CONTINUE_REQUEST) {
+            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(response.message, mHost);
 
             //Per Google spec, respond to challenge with empty response
             executeSimpleCommandWithResponse("", false);
