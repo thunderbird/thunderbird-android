@@ -74,6 +74,7 @@ public class MessageViewInfoExtractorTest {
         // Create message
         MimeMessage message = new MimeMessage();
         MimeMessageHelper.setBody(message, body);
+        message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain; format=flowed");
 
         // Prepare fixture
         HtmlSanitizer htmlSanitizer = mock(HtmlSanitizer.class);
@@ -125,8 +126,8 @@ public class MessageViewInfoExtractorTest {
 
         // Create message
         MimeMessage message = new MimeMessage();
-        message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain; format=flowed");
         MimeMessageHelper.setBody(message, body);
+        message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain; format=flowed");
 
         // Extract text
         List<Part> outputNonViewableParts = new ArrayList<>();

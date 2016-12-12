@@ -1142,8 +1142,10 @@ public class MimeUtility {
     }
 
     static boolean isFormatFlowed(String contentType) {
-        if (TEXT_PLAIN.equalsIgnoreCase(getHeaderParameter(contentType, null))) {
-            return HEADER_FORMAT_FLOWED.equalsIgnoreCase(getHeaderParameter(contentType, HEADER_PARAM_FORMAT));
+        String mimeType = getHeaderParameter(contentType, null);
+        if (isSameMimeType(TEXT_PLAIN, mimeType)) {
+            String formatParameter = getHeaderParameter(contentType, HEADER_PARAM_FORMAT);
+            return HEADER_FORMAT_FLOWED.equalsIgnoreCase(formatParameter);
         }
         return false;
     }
