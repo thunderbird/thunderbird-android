@@ -282,7 +282,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_attachment_download_action">Save</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
     <string name="message_view_show_pictures_action">Show pictures</string>
-    <string name="message_view_show_more_attachments_action">More…</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>
     <string name="message_view_toast_unable_to_display_message">Unable to display message</string>
@@ -1105,27 +1104,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="auth_external_error">Unable to authenticate.  The server does not advertise the SASL EXTERNAL capability.  This could be due to a problem with the client certificate (expired, unknown certificate authority) or some other configuration problem.</string>
     
-    <!-- === OpenPGP specific ================================================================== -->
-    <string name="openpgp_decryption_failed">Decryption failed: %s</string>
-    <string name="openpgp_unknown_error">Unknown OpenPGP Error</string>
-    <string name="openpgp_canceled_by_user">Canceled by user</string>
-    
-    <string name="openpgp_result_no_signature">"Not Signed"</string>
-    <string name="openpgp_result_invalid_signature">"Invalid signature!"</string>
-    <string name="openpgp_result_signature_uncertified">"Signed by (not certified!)"</string>
-    <string name="openpgp_result_signature_certified">"Signed by"</string>
-    <string name="openpgp_result_signature_expired_key">"Key is expired!"</string>
-    <string name="openpgp_result_signature_revoked_key">"Key has been revoked!"</string>
-    <string name="openpgp_result_signature_insecure">"Insecure!"</string>
-    <string name="openpgp_result_signature_missing_key">"Unknown public key"</string>
-    <string name="openpgp_result_encrypted">"Encrypted"</string>
-    <string name="openpgp_result_not_encrypted">"Not Encrypted"</string>
-    <string name="openpgp_result_decryption_insecure">"Insecure"</string>
-    <string name="openpgp_result_action_show">"Show"</string>
-    <string name="openpgp_result_action_lookup">"Lookup"</string>
-    <string name="openpgp_result_no_name">"No name"</string>
-    <string name="openpgp_result_no_email">"No email"</string>
-
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
     <string name="client_certificate_spinner_empty">No client certificate</string>
@@ -1134,9 +1112,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="client_certificate_advanced_options">Advanced options</string>
     <string name="client_certificate_expired">"Client certificate \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" has expired or is not yet valid (<xliff:g id="exception_message">%2$s</xliff:g>)"</string>
 
-    <string name="crypto_incomplete_message">Incomplete message</string>
     <!-- Note: This references message_view_download_remainder -->
-    <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
     <string name="preview_encrypted">*Encrypted*</string>
     <string name="add_from_contacts">Add from Contacts</string>
     <string name="crypto_settings_cancel">Cancel</string>
@@ -1151,8 +1127,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="address_type_other">Other</string>
     <string name="address_type_mobile">Mobile</string>
     <string name="compose_error_no_draft_folder">No Drafts folder configured for this account!</string>
-    <string name="compose_not_saving_unencrypted">Draft NOT saved without encryption!</string>
-    <string name="compose_error_pgp_error">Error with OpenPGP provider. Check your settings!</string>
     <string name="compose_error_no_signing_key">No key configured for signing! Please check your settings.</string>
     <string name="compose_error_private_missing_keys">Private mode is enabled, but some recipients do not have keys!</string>
     <string name="crypto_mode_disabled">Don\'t encrypt</string>
@@ -1214,7 +1188,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_info_ok">OK</string>
     <string name="crypto_info_view_key">View Signer</string>
     <string name="locked_attach_unlock">Unlock</string>
-    <string name="locked_attach_unsigned">This part was not signed, and may be insecure.</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
     <string name="locked_attach_title">Unprotected Attachment</string>
     <string name="message_progress_text">Loading…</string>
