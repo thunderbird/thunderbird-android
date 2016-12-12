@@ -14,7 +14,6 @@ import org.robolectric.annotation.Config;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,9 +32,7 @@ public class SettingsImporterTest {
 
     private void deletePreExistingAccounts() {
         Preferences preferences = Preferences.getPreferences(RuntimeEnvironment.application);
-        Collection<Account> availableAccounts =
-                preferences.getAvailableAccounts();
-        for(Account account: availableAccounts) {
+        for (Account account: preferences.getAccounts()) {
             preferences.deleteAccount(account);
         }
     }
