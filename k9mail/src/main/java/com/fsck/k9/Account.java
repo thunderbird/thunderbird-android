@@ -1287,7 +1287,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public Store getRemoteStore() throws MessagingException {
-        return RemoteStore.getInstance(K9.app, this, null);
+        return RemoteStore.getInstance(K9.app, this);
     }
 
     // It'd be great if this actually went into the store implementation

@@ -41,8 +41,7 @@ public abstract class RemoteStore extends Store {
     /**
      * Get an instance of a remote mail store.
      */
-    public synchronized static Store getInstance(Context context, StoreConfig storeConfig,
-            OAuth2TokenProvider oAuth2TokenProvider) throws MessagingException {
+    public static synchronized Store getInstance(Context context, StoreConfig storeConfig) throws MessagingException {
         String uri = storeConfig.getStoreUri();
 
         if (uri.startsWith("local")) {
@@ -52,6 +51,7 @@ public abstract class RemoteStore extends Store {
         Store store = sStores.get(uri);
         if (store == null) {
             if (uri.startsWith("imap")) {
+                OAuth2TokenProvider oAuth2TokenProvider = null;
                 store = new ImapStore(
                         storeConfig,
                         new DefaultTrustedSocketFactory(context),
