@@ -5,28 +5,38 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
+import com.fsck.k9.mail.XOAuth2ChallengeParserTest;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.helpers.TestMessageBuilder;
 import com.fsck.k9.mail.helpers.TestTrustedSocketFactory;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
+import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,25 +51,29 @@ public class SmtpTransportTest {
 
     
     private TrustedSocketFactory socketFactory;
+    private OAuth2TokenProvider oAuth2TokenProvider;
 
     
     @Before
-    public void before() {
+    public void before() throws AuthenticationFailedException {
         socketFactory = new TestTrustedSocketFactory();
+        oAuth2TokenProvider = mock(OAuth2TokenProvider.class);
+        when(oAuth2TokenProvider.getToken(eq(USERNAME), anyInt()))
+                .thenReturn("oldToken").thenReturn("newToken");
     }
 
     @Test
     public void SmtpTransport_withValidTransportUri() throws Exception {
         StoreConfig storeConfig = createStoreConfigWithTransportUri("smtp://user:password:CRAM_MD5@server:123456");
 
-        new SmtpTransport(storeConfig, socketFactory);
+        new SmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);
     }
 
     @Test(expected = MessagingException.class)
     public void SmtpTransport_withInvalidTransportUri_shouldThrow() throws Exception {
         StoreConfig storeConfig = createStoreConfigWithTransportUri("smpt://");
 
-        new SmtpTransport(storeConfig, socketFactory);
+        new SmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);
     }
 
     @Test
@@ -168,6 +182,205 @@ public class SmtpTransportTest {
             fail("Exception expected");
         } catch (MessagingException e) {
             assertEquals("Authentication method CRAM-MD5 is unavailable.", e.getMessage());
+        }
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withXoauth2Extension() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH XOAUTH2");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
+        server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withXoauth2Extension_shouldThrowOn401Response() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH XOAUTH2");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
+        server.output("334 "+ XOAuth2ChallengeParserTest.STATUS_401_RESPONSE);
+        server.expect("");
+        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
+        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        try {
+            transport.open();
+            fail("Exception expected");
+        } catch (AuthenticationFailedException e) {
+            assertEquals(
+                    "Negative SMTP reply: 535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
+                    e.getMessage());
+        }
+
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withXoauth2Extension_shouldInvalidateAndRetryOn400Response() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH XOAUTH2");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
+        server.output("334 "+ XOAuth2ChallengeParserTest.STATUS_400_RESPONSE);
+        server.expect("");
+        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
+        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=");
+        server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        transport.open();
+
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withXoauth2Extension_shouldInvalidateAndRetryOnInvalidJsonResponse() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH XOAUTH2");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
+        server.output("334 "+ XOAuth2ChallengeParserTest.INVALID_RESPONSE);
+        server.expect("");
+        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
+        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=");
+        server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        transport.open();
+
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withXoauth2Extension_shouldInvalidateAndRetryOnMissingStatusJsonResponse() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH XOAUTH2");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
+        server.output("334 "+ XOAuth2ChallengeParserTest.MISSING_STATUS_RESPONSE);
+        server.expect("");
+        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
+        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=");
+        server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        transport.open();
+
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withXoauth2Extension_shouldThrowOnMultipleFailure() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH XOAUTH2");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
+        server.output("334 " + XOAuth2ChallengeParserTest.STATUS_400_RESPONSE);
+        server.expect("");
+        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
+        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG5ld1Rva2VuAQE=");
+        server.output("334 " + XOAuth2ChallengeParserTest.STATUS_400_RESPONSE);
+        server.expect("");
+        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
+        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        try {
+            transport.open();
+            fail("Exception expected");
+        } catch (AuthenticationFailedException e) {
+            assertEquals(
+                "Negative SMTP reply: 535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
+                e.getMessage());
+        }
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withXoauth2Extension_shouldThrowOnFailure_fetchingToken() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH XOAUTH2");
+        when(oAuth2TokenProvider.getToken(anyString(), anyInt())).thenThrow(new AuthenticationFailedException("Failed to fetch token"));
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        try {
+            transport.open();
+            fail("Exception expected");
+        } catch (AuthenticationFailedException e) {
+            assertEquals("Failed to fetch token", e.getMessage());
+        }
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+
+    @Test
+    public void open_withoutXoauth2Extension_shouldThrow() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 AUTH PLAIN LOGIN");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        try {
+            transport.open();
+            fail("Exception expected");
+        } catch (MessagingException e) {
+            assertEquals("Authentication method XOAUTH2 is unavailable.", e.getMessage());
         }
 
         server.verifyConnectionStillOpen();
@@ -413,7 +626,7 @@ public class SmtpTransportTest {
         String uri = SmtpTransport.createUri(serverSettings);
         StoreConfig storeConfig = createStoreConfigWithTransportUri(uri);
 
-        return new TestSmtpTransport(storeConfig, socketFactory);
+        return new TestSmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);
     }
 
     private StoreConfig createStoreConfigWithTransportUri(String value) {
@@ -452,9 +665,9 @@ public class SmtpTransportTest {
     
     
     static class TestSmtpTransport extends SmtpTransport {
-        TestSmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory)
+        TestSmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oAuth2TokenProvider)
                 throws MessagingException {
-            super(storeConfig, trustedSocketFactory);
+            super(storeConfig, trustedSocketFactory, oAuth2TokenProvider);
         }
 
         @Override

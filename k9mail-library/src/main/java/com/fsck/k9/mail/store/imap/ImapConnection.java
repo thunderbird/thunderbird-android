@@ -39,6 +39,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
+import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
@@ -61,6 +63,7 @@ class ImapConnection {
 
 
     private final ConnectivityManager connectivityManager;
+    private final OAuth2TokenProvider oauthTokenProvider;
     private final TrustedSocketFactory socketFactory;
     private final int socketConnectTimeout;
     private final int socketReadTimeout;
@@ -74,22 +77,26 @@ class ImapConnection {
     private ImapSettings settings;
     private Exception stacktraceForClose;
     private boolean open = false;
+    private boolean retryXoauth2WithNewToken = true;
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager) {
+            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) {
         this.settings = settings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
+        this.oauthTokenProvider = oauthTokenProvider;
         this.socketConnectTimeout = SOCKET_CONNECT_TIMEOUT;
         this.socketReadTimeout = SOCKET_READ_TIMEOUT;
     }
 
-    ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory, ConnectivityManager connectivityManager,
+    ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
+            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
             int socketConnectTimeout, int socketReadTimeout) {
         this.settings = settings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
+        this.oauthTokenProvider = oauthTokenProvider;
         this.socketConnectTimeout = socketConnectTimeout;
         this.socketReadTimeout = socketReadTimeout;
     }
@@ -322,6 +329,15 @@ class ImapConnection {
     @SuppressWarnings("EnumSwitchStatementWhichMissesCases")
     private void authenticate() throws MessagingException, IOException {
         switch (settings.getAuthType()) {
+            case XOAUTH2:
+                if (oauthTokenProvider == null) {
+                    throw new MessagingException("No OAuthToken Provider available.");
+                } else if (hasCapability(Capabilities.AUTH_XOAUTH2) && hasCapability(Capabilities.SASL_IR)) {
+                    authXoauth2withSASLIR();
+                } else {
+                    throw new MessagingException("Server doesn't support SASL XOAUTH2.");
+                }
+                break;
             case CRAM_MD5: {
                 if (hasCapability(Capabilities.AUTH_CRAM_MD5)) {
                     authCramMD5();
@@ -353,6 +369,71 @@ class ImapConnection {
             default: {
                 throw new MessagingException("Unhandled authentication method found in the server settings (bug).");
             }
+        }
+    }
+
+    private void authXoauth2withSASLIR() throws IOException, MessagingException {
+        retryXoauth2WithNewToken = true;
+        try {
+            attemptXOAuth2();
+        } catch (NegativeImapResponseException e) {
+            oauthTokenProvider.invalidateToken(settings.getUsername());
+
+            if (!retryXoauth2WithNewToken) {
+                handlePermanentXoauth2Failure(e);
+            } else {
+                handleTemporaryXoauth2Failure(e);
+            }
+        }
+    }
+
+    private void handlePermanentXoauth2Failure(NegativeImapResponseException e) throws AuthenticationFailedException {
+        Log.v(LOG_TAG, "Permanent failure during XOAUTH2", e);
+        throw new AuthenticationFailedException(e.getMessage(), e);
+    }
+
+    private void handleTemporaryXoauth2Failure(NegativeImapResponseException e) throws IOException, MessagingException {
+        //We got a response indicating a retry might suceed after token refresh
+        //We could avoid this if we had a reasonable chance of knowing
+        //if a token was invalid before use (e.g. due to expiry). But we don't
+        //This is the intended behaviour per AccountManager
+
+        Log.v(LOG_TAG, "Temporary failure - retrying with new token", e);
+        try {
+            attemptXOAuth2();
+        } catch (NegativeImapResponseException e2) {
+            //Okay, we failed on a new token.
+            //Invalidate the token anyway but assume it's permanent.
+            Log.v(LOG_TAG, "Authentication exception for new token, permanent error assumed", e);
+            oauthTokenProvider.invalidateToken(settings.getUsername());
+            handlePermanentXoauth2Failure(e2);
+        }
+    }
+
+    private void attemptXOAuth2() throws MessagingException, IOException {
+        String token = oauthTokenProvider.getToken(settings.getUsername(), OAuth2TokenProvider.OAUTH2_TIMEOUT);
+        String authString = Authentication.computeXoauth(settings.getUsername(), token);
+        String tag = sendSaslIrCommand(Commands.AUTHENTICATE_XOAUTH2, authString, true);
+
+        List<ImapResponse> responses = responseParser.readStatusResponse(tag, Commands.AUTHENTICATE_XOAUTH2, getLogId(),
+                new UntaggedHandler() {
+                    @Override
+                    public void handleAsyncUntaggedResponse(ImapResponse response) throws IOException {
+                        handleXOAuthUntaggedResponse(response);
+                    }
+                });
+        
+        extractCapabilities(responses);
+    }
+
+    private void handleXOAuthUntaggedResponse(ImapResponse response) throws IOException {
+        if (response.isString(0)) {
+            retryXoauth2WithNewToken = XOAuth2ChallengeParser.shouldRetry(response.getString(0), settings.getHost());
+        }
+
+        if (response.isContinuationRequested()) {
+            outputStream.write("\r\n".getBytes());
+            outputStream.flush();
         }
     }
 
@@ -633,6 +714,31 @@ class ImapConnection {
     public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
             throws IOException, NegativeImapResponseException {
         return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
+    }
+
+    public String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
+            throws IOException, MessagingException {
+        try {
+            open();
+
+            String tag = Integer.toString(nextCommandTag++);
+            String commandToSend = tag + " " + command + " " + initialClientResponse + "\r\n";
+            outputStream.write(commandToSend.getBytes());
+            outputStream.flush();
+
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+                if (sensitive && !K9MailLib.isDebugSensitive()) {
+                    Log.v(LOG_TAG, getLogId() + ">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
+                } else {
+                    Log.v(LOG_TAG, getLogId() + ">>> " + tag + " " + command + " " + initialClientResponse);
+                }
+            }
+
+            return tag;
+        } catch (IOException | MessagingException e) {
+            close();
+            throw e;
+        }
     }
 
     public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
