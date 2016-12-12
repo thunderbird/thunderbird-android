@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.view.K9PullToRefreshListView
+
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/message_list"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_weight="5" />
+    android:id="@+id/swiperefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/message_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5" />
+
+</android.support.v4.widget.SwipeRefreshLayout>

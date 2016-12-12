@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="pull_to_refresh_pull_label">Potiahnite pre aktualizáciu…</string>
-    <string name="pull_to_refresh_release_label">Uvoľnite pre aktualizáciu…</string>
-    <string name="pull_to_refresh_refreshing_label">Prebieha načítavanie…</string>
-
-</resources>
