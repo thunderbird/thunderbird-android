@@ -17,6 +17,9 @@
      <item
          android:id="@+id/forward"
          android:title="@string/forward_action"/>
+     <item
+         android:id="@+id/forward_as_attachment"
+         android:title="@string/forward_as_attachment_action"/>
     <item
         android:id="@+id/delete"
         android:title="@string/delete_action"
