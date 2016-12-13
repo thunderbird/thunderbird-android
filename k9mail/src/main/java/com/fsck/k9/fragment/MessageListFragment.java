@@ -1032,6 +1032,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         mFragmentListener.onResendMessage(messageReference);
     }
 
+    public void onRedirect(MessageReference messageReference) {
+        mFragmentListener.onRedirect(messageReference);
+    }
+
     public void changeSort(SortType sortType) {
         Boolean sortAscending = (mSortType == sortType) ? !mSortAscending : null;
         changeSort(sortType, sortAscending);
@@ -1358,6 +1362,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
             case R.id.reply_all: {
                 onReplyAll(getMessageAtPosition(adapterPosition));
+                break;
+            }
+            case R.id.redirect: {
+                onRedirect(getMessageAtPosition(adapterPosition));
                 break;
             }
             case R.id.forward: {
@@ -2960,6 +2968,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void onForward(MessageReference message);
         void onReply(MessageReference message);
         void onReplyAll(MessageReference message);
+        void onRedirect(MessageReference message);
         void openMessage(MessageReference messageReference);
         void setMessageListTitle(String title);
         void setMessageListSubTitle(String subTitle);

@@ -204,27 +204,7 @@ public class LocalMessage extends MimeMessage {
      */
     @Override
     public void setRecipients(RecipientType type, Address[] addresses) {
-        if (type == RecipientType.TO) {
-            if (addresses == null || addresses.length == 0) {
-                this.mTo = null;
-            } else {
-                this.mTo = addresses;
-            }
-        } else if (type == RecipientType.CC) {
-            if (addresses == null || addresses.length == 0) {
-                this.mCc = null;
-            } else {
-                this.mCc = addresses;
-            }
-        } else if (type == RecipientType.BCC) {
-            if (addresses == null || addresses.length == 0) {
-                this.mBcc = null;
-            } else {
-                this.mBcc = addresses;
-            }
-        } else {
-            throw new IllegalArgumentException("Unrecognized recipient type.");
-        }
+        setRecipients(type, addresses, false);
     }
 
     public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
@@ -505,6 +485,17 @@ public class LocalMessage extends MimeMessage {
         message.mAttachmentCount = mAttachmentCount;
         message.mSubject = mSubject;
         message.mPreview = mPreview;
+
+        return message;
+    }
+
+    public MimeMessage cloneAsSuper(boolean clearUid) {
+        MimeMessage message = new MimeMessage();
+        super.copy(message);
+
+        if (clearUid) {
+            mUid = null;
+        }
 
         return message;
     }

@@ -18,7 +18,7 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 public abstract class Message implements Part, Body {
 
     public enum RecipientType {
-        TO, CC, BCC,
+        TO, CC, BCC, RESENT_TO, RESENT_CC, RESENT_BCC
     }
 
     protected String mUid;
@@ -91,6 +91,10 @@ public abstract class Message implements Part, Body {
 
     public abstract void setSentDate(Date sentDate, boolean hideTimeZone);
 
+    public abstract Date getResentDate();
+
+    public abstract void setResentDate(Date sentDate, boolean hideTimeZone);
+
     public abstract Address[] getRecipients(RecipientType type);
 
     public abstract void setRecipients(RecipientType type, Address[] addresses);
@@ -105,11 +109,17 @@ public abstract class Message implements Part, Body {
 
     public abstract void setFrom(Address from);
 
+    public abstract Address[] getResentFrom();
+
+    public abstract void setResentFrom(Address from);
+
     public abstract Address[] getReplyTo();
 
     public abstract void setReplyTo(Address[] from);
 
     public abstract String getMessageId();
+
+    public abstract String getResentMessageId();
 
     public abstract void setInReplyTo(String inReplyTo);
 

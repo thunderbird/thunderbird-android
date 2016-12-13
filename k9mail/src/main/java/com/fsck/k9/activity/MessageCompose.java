@@ -75,6 +75,7 @@ import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -88,6 +89,7 @@ import com.fsck.k9.message.IdentityHeaderParser;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
+import com.fsck.k9.message.ResentMessageBuilder;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.EolConvertingEditText;
@@ -112,6 +114,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
     public static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
     public static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
+    public static final String ACTION_REDIRECT = "com.fsck.k9.intent.action.REDIRECT";
 
     public static final String EXTRA_ACCOUNT = "account";
     public static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
@@ -159,6 +162,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private Account mAccount;
 
+    private Body mRedirectBody = null;
 
     private Contacts mContacts;
 
@@ -216,7 +220,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         REPLY(R.string.compose_title_reply),
         REPLY_ALL(R.string.compose_title_reply_all),
         FORWARD(R.string.compose_title_forward),
-        EDIT_DRAFT(R.string.compose_title_compose);
+        EDIT_DRAFT(R.string.compose_title_compose),
+        REDIRECT(R.string.compose_title_redirect);
 
         private final int titleResource;
 
@@ -436,6 +441,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 mAction = Action.FORWARD;
             } else if (ACTION_EDIT_DRAFT.equals(action)) {
                 mAction = Action.EDIT_DRAFT;
+            } else if (ACTION_REDIRECT.equals(action)) {
+                mAction = Action.REDIRECT;
             } else {
                 // This shouldn't happen
                 Log.w(K9.LOG_TAG, "MessageCompose was started with an unsupported action");
@@ -467,7 +474,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         if (!mSourceMessageProcessed) {
             if (mAction == Action.REPLY || mAction == Action.REPLY_ALL ||
-                    mAction == Action.FORWARD || mAction == Action.EDIT_DRAFT) {
+                    mAction == Action.FORWARD || mAction == Action.EDIT_DRAFT ||
+                    mAction == Action.REDIRECT ) {
                 messageLoaderHelper = new MessageLoaderHelper(this, getLoaderManager(), getFragmentManager(),
                         messageLoaderCallbacks);
                 mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
@@ -476,7 +484,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference, cachedDecryptionResult);
             }
 
-            if (mAction != Action.EDIT_DRAFT) {
+            if (mAction != Action.EDIT_DRAFT && mAction != Action.REDIRECT) {
                 String alwaysBccString = mAccount.getAlwaysBcc();
                 if (!TextUtils.isEmpty(alwaysBccString)) {
                     recipientPresenter.addBccAddresses(Address.parse(alwaysBccString));
@@ -497,7 +505,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             recipientMvpView.requestFocusOnToField();
         }
 
-        if (mAction == Action.FORWARD) {
+        if (mAction == Action.FORWARD || mAction == Action.REDIRECT) {
             mMessageReference = mMessageReference.withModifiedFlag(Flag.FORWARDED);
         }
 
@@ -589,6 +597,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // Only use EXTRA_TEXT if the body hasn't already been set by the mailto URI
             if (text != null && mMessageContentView.getText().length() == 0) {
                 mMessageContentView.setCharacters(text);
+
             }
 
             String type = intent.getType();
@@ -712,47 +721,60 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private MessageBuilder createMessageBuilder(boolean isDraft) {
         MessageBuilder builder;
 
-        recipientPresenter.updateCryptoStatus();
-        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
-        // TODO encrypt drafts for storage
-        if(!isDraft && cryptoStatus.shouldUsePgpMessageBuilder()) {
-            SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
-            if (maybeSendErrorState != null) {
-                recipientPresenter.showPgpSendError(maybeSendErrorState);
-                return null;
+        if (mAction == Action.REDIRECT) {
+            ResentMessageBuilder resentBuilder = ResentMessageBuilder.newInstance();
+            resentBuilder.setResentMessageReference(mMessageReference)
+                    .setResentTo(recipientPresenter.getToAddresses())
+                    .setResentCc(recipientPresenter.getCcAddresses())
+                    .setResentBcc(recipientPresenter.getBccAddresses())
+                    .setResentDate(new Date())
+                    .setResentHideTimeZone(K9.hideTimeZone())
+                    .setResentIdentity(mIdentity)
+                    .setResentBody(mRedirectBody);
+            builder = resentBuilder;
+        }
+        else {
+            recipientPresenter.updateCryptoStatus();
+            ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
+            // TODO encrypt drafts for storage
+            if (!isDraft && cryptoStatus.shouldUsePgpMessageBuilder()) {
+                SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
+                if (maybeSendErrorState != null) {
+                    recipientPresenter.showPgpSendError(maybeSendErrorState);
+                    return null;
+                }
+
+                PgpMessageBuilder pgpBuilder = PgpMessageBuilder.newInstance();
+                recipientPresenter.builderSetProperties(pgpBuilder);
+                builder = pgpBuilder;
+            } else {
+                builder = SimpleMessageBuilder.newInstance();
             }
 
-            PgpMessageBuilder pgpBuilder = PgpMessageBuilder.newInstance();
-            recipientPresenter.builderSetProperties(pgpBuilder);
-            builder = pgpBuilder;
-        } else {
-            builder = SimpleMessageBuilder.newInstance();
+            builder.setSubject(mSubjectView.getText().toString())
+                    .setSentDate(new Date())
+                    .setHideTimeZone(K9.hideTimeZone())
+                    .setTo(recipientPresenter.getToAddresses())
+                    .setCc(recipientPresenter.getCcAddresses())
+                    .setBcc(recipientPresenter.getBccAddresses())
+                    .setInReplyTo(mInReplyTo)
+                    .setReferences(mReferences)
+                    .setRequestReadReceipt(mReadReceipt)
+                    .setIdentity(mIdentity)
+                    .setMessageFormat(mMessageFormat)
+                    .setText(mMessageContentView.getCharacters())
+                    .setAttachments(attachmentPresenter.createAttachmentList())
+                    .setSignature(mSignatureView.getCharacters())
+                    .setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText())
+                    .setIdentityChanged(mIdentityChanged)
+                    .setSignatureChanged(mSignatureChanged)
+                    .setCursorPosition(mMessageContentView.getSelectionStart())
+                    .setMessageReference(mMessageReference)
+                    .setDraft(isDraft)
+                    .setIsPgpInlineEnabled(cryptoStatus.isPgpInlineModeEnabled());
+
+            quotedMessagePresenter.builderSetProperties(builder);
         }
-
-        builder.setSubject(mSubjectView.getText().toString())
-                .setSentDate(new Date())
-                .setHideTimeZone(K9.hideTimeZone())
-                .setTo(recipientPresenter.getToAddresses())
-                .setCc(recipientPresenter.getCcAddresses())
-                .setBcc(recipientPresenter.getBccAddresses())
-                .setInReplyTo(mInReplyTo)
-                .setReferences(mReferences)
-                .setRequestReadReceipt(mReadReceipt)
-                .setIdentity(mIdentity)
-                .setMessageFormat(mMessageFormat)
-                .setText(mMessageContentView.getCharacters())
-                .setAttachments(attachmentPresenter.createAttachmentList())
-                .setSignature(mSignatureView.getCharacters())
-                .setSignatureBeforeQuotedText(mAccount.isSignatureBeforeQuotedText())
-                .setIdentityChanged(mIdentityChanged)
-                .setSignatureChanged(mSignatureChanged)
-                .setCursorPosition(mMessageContentView.getSelectionStart())
-                .setMessageReference(mMessageReference)
-                .setDraft(isDraft)
-                .setIsPgpInlineEnabled(cryptoStatus.isPgpInlineModeEnabled());
-
-        quotedMessagePresenter.builderSetProperties(builder);
-
         return builder;
     }
 
@@ -1018,6 +1040,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             menu.findItem(R.id.save).setEnabled(false);
         }
 
+        if (mAction == Action.REDIRECT) {
+            menu.findItem(R.id.add_attachment).setEnabled(false);
+            menu.findItem(R.id.save).setEnabled(false);
+            menu.findItem(R.id.read_receipt).setEnabled(false);
+        }
+
         return true;
     }
 
@@ -1168,6 +1196,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     processDraftMessage(messageViewInfo);
                     break;
                 }
+                case REDIRECT: {
+                    processMessageToRedirect(messageViewInfo);
+                    break;
+                }
                 default: {
                     Log.w(K9.LOG_TAG, "processSourceMessage() called with unsupported action");
                     break;
@@ -1255,10 +1287,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (!TextUtils.isEmpty(message.getMessageId())) {
             mInReplyTo = message.getMessageId();
             mReferences = mInReplyTo;
-        } else {
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "could not get Message-ID.");
-            }
+        } else if (K9.DEBUG) {
+            Log.d(K9.LOG_TAG, "could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
@@ -1347,6 +1377,35 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateFrom();
 
         quotedMessagePresenter.processDraftMessage(messageViewInfo, k9identity);
+    }
+
+    private void processMessageToRedirect(MessageViewInfo messageViewInfo) throws MessagingException {
+        Message message = messageViewInfo.message;
+
+        mRedirectBody = messageViewInfo.rootPart.getBody();
+        mSubjectView.setText(messageViewInfo.message.getSubject());
+        mSubjectView.setEnabled(false);
+
+        // "Be Like Thunderbird" - on forwarded messages, set the message ID
+        // of the forwarded message in the references and the reply to.  TB
+        // only includes ID of the message being forwarded in the reference,
+        // even if there are multiple references.
+        if (!TextUtils.isEmpty(message.getMessageId())) {
+            mInReplyTo = message.getMessageId();
+            mReferences = mInReplyTo;
+        } else if (K9.DEBUG) {
+            Log.d(K9.LOG_TAG, "could not get Message-ID.");
+        }
+
+        Map<IdentityField, String> k9identity = new HashMap<>();
+        String[] identityHeaders = messageViewInfo.message.getHeader(K9.IDENTITY_HEADER);
+
+        if (identityHeaders.length > 0 && identityHeaders[0] != null) {
+            k9identity = IdentityHeaderParser.parse(identityHeaders[0]);
+        }
+
+        quotedMessagePresenter.processDraftMessage(messageViewInfo, k9identity);
+        mMessageContentView.setEnabled(false);
     }
 
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
@@ -1489,6 +1548,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         } else {
             currentMessageBuilder = null;
+
             new SendMessageTask(getApplicationContext(), mAccount, mContacts, message,
                     mDraftId != INVALID_DRAFT_ID ? mDraftId : null, mMessageReference).execute();
             finish();

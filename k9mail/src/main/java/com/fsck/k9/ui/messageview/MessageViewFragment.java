@@ -321,6 +321,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
+    public void onRedirect() {
+        if (mMessage != null) {
+            mFragmentListener.onRedirect(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
+        }
+    }
+
     public void onForward() {
         if (mMessage != null) {
             mFragmentListener.onForward(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
@@ -696,6 +702,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public interface MessageViewFragmentListener {
         void onForward(MessageReference messageReference, Parcelable decryptionResultForReply);
         void disableDeleteAction();
+        void onRedirect(MessageReference messageReference, Parcelable decryptionResultForReply);
         void onReplyAll(MessageReference messageReference, Parcelable decryptionResultForReply);
         void onReply(MessageReference messageReference, Parcelable decryptionResultForReply);
         void displayMessageSubject(String title);

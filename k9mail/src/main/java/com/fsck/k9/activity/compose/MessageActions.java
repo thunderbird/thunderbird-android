@@ -61,6 +61,17 @@ public class MessageActions {
     }
 
     /**
+     * Redirect the given message as defined by rfc5322.
+     */
+    public static void actionRedirect(Context context, MessageReference messageReference, Parcelable decryptionResult) {
+        Intent i = new Intent(context, MessageCompose.class);
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference);
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_DECRYPTION_RESULT, decryptionResult);
+        i.setAction(MessageCompose.ACTION_REDIRECT);
+        context.startActivity(i);
+    }
+
+    /**
      * Compose a new message as a forward of the given message.
      */
     public static void actionForward(Context context, MessageReference messageReference, Parcelable decryptionResult) {

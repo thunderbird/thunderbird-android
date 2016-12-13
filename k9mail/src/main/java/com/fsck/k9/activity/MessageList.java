@@ -879,6 +879,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 mMessageViewFragment.onReplyAll();
                 return true;
             }
+            case R.id.redirect: {
+                mMessageViewFragment.onRedirect();
+                return true;
+            }
             case R.id.forward: {
                 mMessageViewFragment.onForward();
                 return true;
@@ -1220,6 +1224,16 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onResendMessage(MessageReference messageReference) {
         MessageActions.actionEditDraft(this, messageReference);
+    }
+
+    @Override
+    public void onRedirect(MessageReference messageReference) {
+        onRedirect(messageReference, null);
+    }
+
+    @Override
+    public void onRedirect(MessageReference messageReference, Parcelable decryptionResultForReply) {
+        MessageActions.actionRedirect(this, messageReference, decryptionResultForReply);
     }
 
     @Override
