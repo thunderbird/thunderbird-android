@@ -220,13 +220,6 @@ public abstract class MessageBuilder {
                 continue;
             }
 
-            String contentType = attachment.contentType;
-            if (MimeUtil.isMessage(contentType)) {
-                contentType = "application/octet-stream";
-                // TODO reencode message body to 7 bit
-                // body = new TempFileMessageBody(attachment.filename);
-            }
-
             Body body = new TempFileBody(attachment.filename);
             MimeBodyPart bp = new MimeBodyPart(body);
 
@@ -236,30 +229,32 @@ public abstract class MessageBuilder {
              * MimeHeader.writeTo().
              */
             bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
-                    contentType,
+                    attachment.contentType,
                     EncoderUtil.encodeIfNecessary(attachment.name,
                             EncoderUtil.Usage.WORD_ENTITY, 7)));
 
-            bp.setEncoding(MimeUtility.getEncodingforType(contentType));
+            if (!MimeUtil.isMessage(attachment.contentType)) {
+                bp.setEncoding(MimeUtility.getEncodingforType(attachment.contentType));
 
-            /*
-             * TODO: Oh the joys of MIME...
-             *
-             * From RFC 2183 (The Content-Disposition Header Field):
-             * "Parameter values longer than 78 characters, or which
-             *  contain non-ASCII characters, MUST be encoded as specified
-             *  in [RFC 2184]."
-             *
-             * Example:
-             *
-             * Content-Type: application/x-stuff
-             *  title*1*=us-ascii'en'This%20is%20even%20more%20
-             *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
-             *  title*3="isn't it!"
-             */
-            bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
-                    "attachment;\r\n filename=\"%s\";\r\n size=%d",
-                    attachment.name, attachment.size));
+                /*
+                 * TODO: Oh the joys of MIME...
+                 *
+                 * From RFC 2183 (The Content-Disposition Header Field):
+                 * "Parameter values longer than 78 characters, or which
+                 *  contain non-ASCII characters, MUST be encoded as specified
+                 *  in [RFC 2184]."
+                 *
+                 * Example:
+                 *
+                 * Content-Type: application/x-stuff
+                 *  title*1*=us-ascii'en'This%20is%20even%20more%20
+                 *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
+                 *  title*3="isn't it!"
+                 */
+                bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
+                        "attachment;\r\n filename=\"%s\";\r\n size=%d",
+                        attachment.name, attachment.size));
+            }
 
             mp.addBodyPart(bp);
         }
