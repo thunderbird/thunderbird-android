@@ -20,7 +20,7 @@
             android:singleLine="true"
             android:inputType="textPersonName"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" 
+            android:layout_width="fill_parent"
             android:contentDescription="@string/account_settings_reportspam_recipient_label"
             />
         <TextView
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" 
+            android:textColor="?android:attr/textColorPrimary"
             />
         <EditText
             android:id="@+id/account_reportspam_subject"
