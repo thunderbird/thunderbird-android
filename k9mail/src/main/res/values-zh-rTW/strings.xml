@@ -179,7 +179,6 @@
   <string name="message_view_attachment_download_action">儲存</string>
   <string name="message_view_status_attachment_not_saved">無法將附件儲存到記憶卡。</string>
   <string name="message_view_show_pictures_action">顯示圖片</string>
-  <string name="message_view_show_more_attachments_action">更多…</string>
   <string name="message_view_no_viewer">無法開啟<xliff:g id="mimetype">%s</xliff:g>。找不到可以開啟該附件的程式。</string>
   <string name="message_view_download_remainder">下載完整郵件</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -775,7 +774,6 @@
   <string name="last_refresh_time_format_with_push">最後更新 <xliff:g id="time_with_preposition">%s</xliff:g> (啟用推送)</string>
   <string name="preposition_for_date">於 <xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">標記全部為已讀</string>
-  <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
 </resources>

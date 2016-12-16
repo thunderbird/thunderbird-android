@@ -234,7 +234,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="message_view_attachment_download_action">Сохранить</string>
   <string name="message_view_status_attachment_not_saved">Сбой сохранения вложений</string>
   <string name="message_view_show_pictures_action">Изображения</string>
-  <string name="message_view_show_more_attachments_action">Показать вложения</string>
   <string name="message_view_no_viewer">Отсутствует просмотрщик <xliff:g id="mimetype">%s</xliff:g></string>
   <string name="message_view_download_remainder">Загрузить полностью</string>
   <string name="message_view_toast_unable_to_display_message">Невозможно отобразить сообщение</string>
@@ -909,25 +908,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="fetching_attachment_dialog_title_save">Сохранение черновика</string>
   <string name="fetching_attachment_dialog_message">Получение вложений…</string>
   <string name="auth_external_error">Аутентификация не удалась. Сервер не сообщает о совместимости с SASL EXTERNAL. Причиной может служить неверный сертификат клиента (просрочен, неизвестен издатель) или какие-либо проблемы с настройками.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Сбой дешифрования: %s</string>
-  <string name="openpgp_unknown_error">Неизвестная ошибка OpenPGP</string>
-  <string name="openpgp_canceled_by_user">Отменено пользователем</string>
-  <string name="openpgp_result_no_signature">Не подписано</string>
-  <string name="openpgp_result_invalid_signature">Подпись недействительна!</string>
-  <string name="openpgp_result_signature_uncertified">Подписано (не проверено)</string>
-  <string name="openpgp_result_signature_certified">Подписано</string>
-  <string name="openpgp_result_signature_expired_key">Ключ просрочен!</string>
-  <string name="openpgp_result_signature_revoked_key">Ключ был отозван!</string>
-  <string name="openpgp_result_signature_insecure">Небезопасно!</string>
-  <string name="openpgp_result_signature_missing_key">Открытый ключ неиизвестен</string>
-  <string name="openpgp_result_encrypted">Зашифровано</string>
-  <string name="openpgp_result_not_encrypted">Не зашифровано</string>
-  <string name="openpgp_result_decryption_insecure">Небезопасно</string>
-  <string name="openpgp_result_action_show">Показать</string>
-  <string name="openpgp_result_action_lookup">Искать</string>
-  <string name="openpgp_result_no_name">Нет имени</string>
-  <string name="openpgp_result_no_email">Нет адреса</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Использовать сертификат клиента</string>
   <string name="client_certificate_spinner_empty">Не использовать сертификат клиента</string>
@@ -935,9 +915,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="client_certificate_retrieval_failure">Не найден сертификат клиента для алиаса \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Дополнительно</string>
   <string name="client_certificate_expired">Срок действия сертификата клиента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" истёк или ещё не наступил (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Неполное сообщение</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Нажмите \'Загрузить полностью\' для дешифрования.</string>
   <string name="preview_encrypted">*Зашифровано*</string>
   <string name="add_from_contacts">Добавить из Контактов</string>
   <string name="crypto_settings_ok">Продолжить</string>
@@ -951,8 +929,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="address_type_other">Прочее</string>
   <string name="address_type_mobile">Мобильный</string>
   <string name="compose_error_no_draft_folder">Для данного ящика не настроена папка Черновики!</string>
-  <string name="compose_not_saving_unencrypted">Черновик НЕ сохранён без шифрования!</string>
-  <string name="compose_error_pgp_error">Ошибка провайдера OpenPGP. Проверьте настройки!</string>
   <string name="compose_error_no_signing_key">Не найден ключ для подписания. Проверьте настройки.</string>
   <string name="compose_error_private_missing_keys">Защищенный режим включён, но некоторые адресаты не имеют ключей!</string>
   <string name="error_crypto_provider_connect">Нет доступа к криптопровайдеру. Проверьте настройки или нажмите значок шифрования для повтора!</string>
@@ -991,7 +967,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Кем подписано</string>
   <string name="locked_attach_unlock">Разблокировать</string>
-  <string name="locked_attach_unsigned">Эта часть не была подписана и небезопасна.</string>
   <string name="locked_attach_unencrypted">Эта часть не была зашифрована и небезопасна.</string>
   <string name="locked_attach_title">Незащищённое вложение</string>
   <string name="message_progress_text">Загрузка…</string>

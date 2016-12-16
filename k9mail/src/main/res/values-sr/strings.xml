@@ -233,7 +233,6 @@
   <string name="message_view_attachment_download_action">Сачувај</string>
   <string name="message_view_status_attachment_not_saved">Не могу да сачувам прилог на СД картицу.</string>
   <string name="message_view_show_pictures_action">Прикажи слике</string>
-  <string name="message_view_show_more_attachments_action">Још…</string>
   <string name="message_view_no_viewer">Не могу да нађем прегледач за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Преузми читаву поруку</string>
   <string name="message_view_toast_unable_to_display_message">Не могу да прикажем поруку</string>
@@ -903,25 +902,6 @@
   <string name="fetching_attachment_dialog_title_save">Уписујем нацрт</string>
   <string name="fetching_attachment_dialog_message">Добављам прилог…</string>
   <string name="auth_external_error">Не могу да се аутентификујем.  Сервер не оглашава САСЛ ЕКСТЕРНАЛ могућност.  Узрок може да буде проблем са сертификатом клијента (истекао, непознат ауторитет сертификата) или неки други проблем у подешавању.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Дешифровање није успело: %s</string>
-  <string name="openpgp_unknown_error">Непозната ОпенПГП грешка</string>
-  <string name="openpgp_canceled_by_user">Отказао корисник</string>
-  <string name="openpgp_result_no_signature">Није потписана</string>
-  <string name="openpgp_result_invalid_signature">Неисправан потпис!</string>
-  <string name="openpgp_result_signature_uncertified">Потписник (неоверен!)</string>
-  <string name="openpgp_result_signature_certified">Потписник</string>
-  <string name="openpgp_result_signature_expired_key">Кључ је истекао!</string>
-  <string name="openpgp_result_signature_revoked_key">Кључ је опозван!</string>
-  <string name="openpgp_result_signature_insecure">Небезбедан!</string>
-  <string name="openpgp_result_signature_missing_key">Непознат јавни кључ</string>
-  <string name="openpgp_result_encrypted">Шифрована</string>
-  <string name="openpgp_result_not_encrypted">Није шифрована</string>
-  <string name="openpgp_result_decryption_insecure">Небезбедно</string>
-  <string name="openpgp_result_action_show">Прикажи</string>
-  <string name="openpgp_result_action_lookup">Потражи</string>
-  <string name="openpgp_result_no_name">Нема имена</string>
-  <string name="openpgp_result_no_email">Нема е-адресе</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Користи сертификат клијента</string>
   <string name="client_certificate_spinner_empty">Нема сертификата клијента</string>
@@ -929,9 +909,7 @@
   <string name="client_certificate_retrieval_failure">Неуспех добављања сертификата клијента за псеудоним „<xliff:g id="alias">%s</xliff:g>“</string>
   <string name="client_certificate_advanced_options">Напредне поставке</string>
   <string name="client_certificate_expired">Сертификат клијента „<xliff:g id="certificate_alias">%1$s</xliff:g>“ је истекао или још није важећи (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Непотпуна порука</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Кликните на „Преузми читаву поруку“ да дозволите дешифровање.</string>
   <string name="preview_encrypted">*Шифровано*</string>
   <string name="add_from_contacts">Додај из контаката</string>
   <string name="crypto_settings_cancel">Одустани</string>
@@ -946,8 +924,6 @@
   <string name="address_type_other">Остало</string>
   <string name="address_type_mobile">Мобилни</string>
   <string name="compose_error_no_draft_folder">Фасцикла за нацрте није подешена за овај налог!</string>
-  <string name="compose_not_saving_unencrypted">Нацрт НИЈЕ сачуван без шифровања!</string>
-  <string name="compose_error_pgp_error">Грешка ОпенПГП снабдевача. Проверите ваше поставке!</string>
   <string name="compose_error_no_signing_key">Ниједан кључ није подешен за потписивање! Проверите ваше поставке.</string>
   <string name="compose_error_private_missing_keys">Приватни режим је укључен, али неки примаоци немају кључеве!</string>
   <string name="crypto_mode_disabled">Не шифруј.</string>
@@ -967,6 +943,7 @@
   <string name="openpgp_inline_disable">Искључи</string>
   <string name="openpgp_inline_keep_enabled">Остави укључено</string>
   <string name="openpgp_sign_only_ok">Важи!</string>
+  <string name="openpgp_sign_only_disable">Искључи</string>
   <string name="crypto_msg_disabled">Порука није шифрована</string>
   <string name="crypto_msg_encrypted_error">Порука је шифрована али је дошло до грешке приликом дешифровања.</string>
   <string name="crypto_msg_signed_error">Порука је потписана али потпис није прошао оверу.</string>
@@ -990,7 +967,6 @@
   <string name="crypto_info_ok">У реду</string>
   <string name="crypto_info_view_key">Прикажи потписника</string>
   <string name="locked_attach_unlock">Откључај</string>
-  <string name="locked_attach_unsigned">Овај део није шифрован и можда је небезбедан.</string>
   <string name="locked_attach_unencrypted">Овај део није шифрован и може бити небезбедан.</string>
   <string name="locked_attach_title">Незаштићен прилог</string>
   <string name="message_progress_text">Учитавам…</string>

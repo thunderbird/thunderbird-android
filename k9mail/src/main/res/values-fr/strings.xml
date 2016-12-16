@@ -232,7 +232,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="message_view_attachment_download_action">Enregistrer</string>
   <string name="message_view_status_attachment_not_saved">Impossible d\'enregistrer la pièce jointe sur la carte SD.</string>
   <string name="message_view_show_pictures_action">Afficher les images</string>
-  <string name="message_view_show_more_attachments_action">Plus…</string>
   <string name="message_view_no_viewer">Impossible de trouver un visualiseur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Télécharger le message complet</string>
   <string name="message_view_toast_unable_to_display_message">Impossible d\'afficher le message</string>
@@ -897,25 +896,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="fetching_attachment_dialog_title_save">Enregistrement du brouillon</string>
   <string name="fetching_attachment_dialog_message">Récupération de la pièce jointe…</string>
   <string name="auth_external_error">Authentification impossible. Le serveur n\'annonce pas la fonction SASL EXTERNE. Ceci pourrait être causé par un problème avec le certificat client (expiré, autorité de certification inconnue) ou quelque autre problème de configuration. </string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Échec de déchiffrement : %s</string>
-  <string name="openpgp_unknown_error">Erreur OpenPGP inconnue</string>
-  <string name="openpgp_canceled_by_user">Annulé par l\'utilisateur</string>
-  <string name="openpgp_result_no_signature">Non signé</string>
-  <string name="openpgp_result_invalid_signature">Signature invalide !</string>
-  <string name="openpgp_result_signature_uncertified">Signé par (non certifié !)</string>
-  <string name="openpgp_result_signature_certified">Signer par</string>
-  <string name="openpgp_result_signature_expired_key">La clef est expirée !</string>
-  <string name="openpgp_result_signature_revoked_key">La clef a été révoquée !</string>
-  <string name="openpgp_result_signature_insecure">Non sécurisée !</string>
-  <string name="openpgp_result_signature_missing_key">Clef publique inconnue</string>
-  <string name="openpgp_result_encrypted">Chiffré</string>
-  <string name="openpgp_result_not_encrypted">Non chiffré</string>
-  <string name="openpgp_result_decryption_insecure">Non sécurisé</string>
-  <string name="openpgp_result_action_show">Montrer</string>
-  <string name="openpgp_result_action_lookup">Rechercher</string>
-  <string name="openpgp_result_no_name">Aucun nom</string>
-  <string name="openpgp_result_no_email">Aucune adresse courriel</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Utiliser le certificat client</string>
   <string name="client_certificate_spinner_empty">Aucun certificat client</string>
@@ -923,9 +903,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="client_certificate_retrieval_failure">Impossible de d\'obtenir le certificat client pour l\'alias \« <xliff:g id="alias">%s</xliff:g>\ »</string>
   <string name="client_certificate_advanced_options">Options avancées</string>
   <string name="client_certificate_expired">Le certificat client \« <xliff:g id="certificate_alias">%1$s</xliff:g>\ » est expiré ou n\'est pas encore valide (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Message incomplet</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Cliquer sur « Télécharger le message complet » pour permettre le déchiffrement.</string>
   <string name="preview_encrypted">*Chiffré*</string>
   <string name="add_from_contacts">Ajouter à partir des contacts</string>
   <string name="crypto_settings_cancel">Annuler</string>
@@ -940,8 +918,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="address_type_other">Autre</string>
   <string name="address_type_mobile">Mobile</string>
   <string name="compose_error_no_draft_folder">Aucun dossier Brouillons n\'est configuré pour ce compte !</string>
-  <string name="compose_not_saving_unencrypted">Brouillon non enregistré sans chiffrement !</string>
-  <string name="compose_error_pgp_error">Erreur du fournisseur OpenPGP. Vérifiez vos paramètres !</string>
   <string name="compose_error_no_signing_key">Aucune touche de signature n\'est configurée ! Veuillez vérifier vos paramètres.</string>
   <string name="compose_error_private_missing_keys">Le mode confidentiel est activé, mais certains destinataires n\'ont pas de  clef !</string>
   <string name="crypto_mode_disabled">Ne pas chiffrer</string>
@@ -996,7 +972,6 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="crypto_info_ok">Ok</string>
   <string name="crypto_info_view_key">Voir le signataire</string>
   <string name="locked_attach_unlock">Déverrrouiller</string>
-  <string name="locked_attach_unsigned">Cette partie n\'a pas été signée et pourrait ne pas être fiable.</string>
   <string name="locked_attach_unencrypted">Cette partie n\'a pas été chiffrée et pourrait ne pas être fiable.</string>
   <string name="locked_attach_title">Pièce jointe non protégée</string>
   <string name="message_progress_text">Chargement...</string>
@@ -1013,4 +988,5 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="recipient_error_parse_failed">Erreur d\'analyse de l\'adresse !</string>
   <string name="account_settings_crypto_support_sign_only">Prendre en charge la signature de messages non chiffrés</string>
   <string name="error_sign_only_no_encryption">Le chiffrement n\'est pas proposé en mode signature-seulement !</string>
+  <string name="unsigned_text_divider_label">Texte non signé</string>
 </resources>

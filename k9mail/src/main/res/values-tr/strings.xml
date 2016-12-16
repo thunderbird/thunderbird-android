@@ -201,7 +201,6 @@
   <string name="message_view_attachment_download_action">Kaydet</string>
   <string name="message_view_status_attachment_not_saved">Ek SD karta kaydedilemedi.</string>
   <string name="message_view_show_pictures_action">Resimleri göster</string>
-  <string name="message_view_show_more_attachments_action">Daha fazla…</string>
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> için görüntüleyici bulunamadı.</string>
   <string name="message_view_download_remainder">Mesajın tamamını indir</string>
   <string name="message_view_toast_unable_to_display_message">Mesaj görüntülemedi</string>
@@ -863,25 +862,6 @@
   <string name="fetching_attachment_dialog_title_save">Taslak kaydediliyor</string>
   <string name="fetching_attachment_dialog_message">Ekler alınıyor…</string>
   <string name="auth_external_error">Yetkilendirme yapılamıyor. Sunucu SASL EXTERNAL kabiliyeti olduğunu bildirmedi. Bu istemci sertifikasıyla ilgili bir sorun (tarihi geçmiş, bilinmeyen sertifika otoritesi) veya yapılandırma sorunu olabilir.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Sifre çözme başarısız: %s</string>
-  <string name="openpgp_unknown_error">Bilinmeyen OpenPGP Hatası</string>
-  <string name="openpgp_canceled_by_user">Kullanıcı tarafından iptal edildi</string>
-  <string name="openpgp_result_no_signature">İmzalanmamış</string>
-  <string name="openpgp_result_invalid_signature">Geçersiz imza</string>
-  <string name="openpgp_result_signature_uncertified">Geçerli imza (sertifikalı değil!)</string>
-  <string name="openpgp_result_signature_certified">İmzalayan</string>
-  <string name="openpgp_result_signature_expired_key">Anahtarın süresi dolmuş!</string>
-  <string name="openpgp_result_signature_revoked_key">Anahtar iptal edilmiş!</string>
-  <string name="openpgp_result_signature_insecure">Güvensiz!</string>
-  <string name="openpgp_result_signature_missing_key">Bilinmeyen genel anahtar</string>
-  <string name="openpgp_result_encrypted">Şifreli</string>
-  <string name="openpgp_result_not_encrypted">Şifreli değil</string>
-  <string name="openpgp_result_decryption_insecure">Güvensiz</string>
-  <string name="openpgp_result_action_show">Göster</string>
-  <string name="openpgp_result_action_lookup">Bak</string>
-  <string name="openpgp_result_no_name">İsimsiz</string>
-  <string name="openpgp_result_no_email">Mesaj yok</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">İstemci sertifikası kullan</string>
   <string name="client_certificate_spinner_empty">İstemci sertifikası yok</string>
@@ -889,9 +869,7 @@
   <string name="client_certificate_retrieval_failure"> \"<xliff:g id="alias">%s</xliff:g>\" için istemci sertifikası alımı başarısız oldu</string>
   <string name="client_certificate_advanced_options">Gelişmiş seçenekler</string>
   <string name="client_certificate_expired">İstemci sertifikası \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" tarihi geçmiş veya artık geçerli değil (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Eksik mesaj</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Çözmek için \"Mesajın tamamını indir\"\'e tıklayın</string>
   <string name="preview_encrypted">*Şifreli*</string>
   <string name="add_from_contacts">Kişilerden Ekle</string>
   <string name="crypto_settings_cancel">İptal</string>
@@ -906,8 +884,6 @@
   <string name="address_type_other">Diğer</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Bu hesap için Taslak klasörü ayarlanmamış!</string>
-  <string name="compose_not_saving_unencrypted">Taslak şifrelenmeden kaydedilemez!</string>
-  <string name="compose_error_pgp_error">OpenPGP sağlayıcıyla sorun yaşandı. Ayarlarınızı kontrol edin!</string>
   <string name="compose_error_no_signing_key">İmzalamak için hiçbir anahtar ayarlanmamış! Lütfen ayarlarınızı kontrol edin.</string>
   <string name="compose_error_private_missing_keys">Özel mod etkinleştirildi, fakat bazı alıcıların anahtarı yok!</string>
   <string name="crypto_mode_disabled">Şifreleme</string>

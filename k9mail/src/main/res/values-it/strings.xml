@@ -232,7 +232,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_view_attachment_download_action">Salva</string>
   <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato sulla scheda SD.</string>
   <string name="message_view_show_pictures_action">Mostra immagini</string>
-  <string name="message_view_show_more_attachments_action">Altro…</string>
   <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Scarica messaggio completo</string>
   <string name="message_view_toast_unable_to_display_message">Impossibile visualizzare il messaggio</string>
@@ -894,28 +893,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="global_settings_messageview_visible_refile_actions_summary">Mostra le azioni selezionate nel menu di visualizzazione messaggio</string>
   <string name="loading_attachment">Caricamento allegati…</string>
   <string name="fetching_attachment_dialog_title_send">Invio messaggio</string>
-  <string name="fetching_attachment_dialog_title_save">Salvataggio in bozze</string>
+  <string name="fetching_attachment_dialog_title_save">Salvataggio bozza</string>
   <string name="fetching_attachment_dialog_message">Recupero allegati…</string>
   <string name="auth_external_error">Impossibile autenticare. Il server non offre la funzionalità SASL EXTERNAL. Ciò potrebbe essere causato da un problema con il certificato client (scaduto, autorità di certificazione sconosciuta) o da un altro problema di configurazione.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Decifratura non riuscita: %s</string>
-  <string name="openpgp_unknown_error">Errore OpenPGP sconosciuto</string>
-  <string name="openpgp_canceled_by_user">Annullato dall\'utente</string>
-  <string name="openpgp_result_no_signature">Non firmato</string>
-  <string name="openpgp_result_invalid_signature">Firma non valida!</string>
-  <string name="openpgp_result_signature_uncertified">Firmato da (non certificato)</string>
-  <string name="openpgp_result_signature_certified">Firmato da</string>
-  <string name="openpgp_result_signature_expired_key">La chiave è scaduta!</string>
-  <string name="openpgp_result_signature_revoked_key">La chiave è stata revocata!</string>
-  <string name="openpgp_result_signature_insecure">Non sicura!</string>
-  <string name="openpgp_result_signature_missing_key">Chiave pubblica sconosciuta</string>
-  <string name="openpgp_result_encrypted">Cifrato</string>
-  <string name="openpgp_result_not_encrypted">Non cifrato</string>
-  <string name="openpgp_result_decryption_insecure">Non sicura</string>
-  <string name="openpgp_result_action_show">Mostra</string>
-  <string name="openpgp_result_action_lookup">Cerca</string>
-  <string name="openpgp_result_no_name">Nessun nome</string>
-  <string name="openpgp_result_no_email">Nessun messaggio di posta</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Usa certificato client</string>
   <string name="client_certificate_spinner_empty">Nessun certificato client</string>
@@ -923,9 +903,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="client_certificate_retrieval_failure">Recupero del certificato client per l\'alias \"<xliff:g id="alias">%s</xliff:g>\" non riuscito</string>
   <string name="client_certificate_advanced_options">Opzioni avanzate</string>
   <string name="client_certificate_expired">Il certificato client \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" è scaduto o non è ancora valido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Messaggio incompleto</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Fai clic su \'Scarica messaggio completo\' per consentire la decifratura.</string>
   <string name="preview_encrypted">*Cifrato*</string>
   <string name="add_from_contacts">Aggiungi da Contatti</string>
   <string name="crypto_settings_cancel">Annulla</string>
@@ -940,8 +918,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="address_type_other">Altro</string>
   <string name="address_type_mobile">Cellulare</string>
   <string name="compose_error_no_draft_folder">Non è stata configurata una cartella Bozze per questo account!</string>
-  <string name="compose_not_saving_unencrypted">Bozza NON salvata senza cifratura!</string>
-  <string name="compose_error_pgp_error">Errore con il fornitore OpenPGP. Controlla le impostazioni!</string>
   <string name="compose_error_no_signing_key">Nessuna chiave configurata per la firma! Controlla le impostazioni.</string>
   <string name="compose_error_private_missing_keys">Modalità privata abilitata, ma alcuni destinatari non hanno chiavi!</string>
   <string name="crypto_mode_disabled">Non cifrare</string>
@@ -996,7 +972,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Visualizza firmatario</string>
   <string name="locked_attach_unlock">Sblocca</string>
-  <string name="locked_attach_unsigned">Questa parte non è stata firmata, e potrebbe non essere sicura.</string>
   <string name="locked_attach_unencrypted">Questa parte non è stata cifrata, e potrebbe non essere sicura.</string>
   <string name="locked_attach_title">Allegato non protetto</string>
   <string name="message_progress_text">Caricamento in corso…</string>
@@ -1013,4 +988,5 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="recipient_error_parse_failed">Errore durante l\'analisi dell\'indirizzo!</string>
   <string name="account_settings_crypto_support_sign_only">Supporta la firma dei messaggi non cifrati</string>
   <string name="error_sign_only_no_encryption">Cifratura non disponibile in modalità solo firma!</string>
+  <string name="unsigned_text_divider_label">Testo non firmato</string>
 </resources>

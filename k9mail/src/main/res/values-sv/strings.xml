@@ -231,7 +231,6 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="message_view_attachment_download_action">Spara</string>
   <string name="message_view_status_attachment_not_saved">Kan inte spara bilaga till SD-kortet.</string>
   <string name="message_view_show_pictures_action">Visa bilder</string>
-  <string name="message_view_show_more_attachments_action">Mer…</string>
   <string name="message_view_no_viewer">Kan inte hitta visare för <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Ladda ned hela brevet</string>
   <string name="message_view_toast_unable_to_display_message">Det går inte att visa meddelande</string>
@@ -896,25 +895,6 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="fetching_attachment_dialog_title_save">Sparar utkast</string>
   <string name="fetching_attachment_dialog_message">Hämtar bilaga…</string>
   <string name="auth_external_error">Misslyckades med att autentisera. Servern annonserar inte SASL EXTERNAL-förmågan. Det kan bero på ett problem med klientcertifikatet (utgånget, okänd certifikatutfärdare) eller något annat konfigurationsproblem.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Dekrypteringen misslyckades: %s</string>
-  <string name="openpgp_unknown_error">Okänt OpenPGP fel</string>
-  <string name="openpgp_canceled_by_user">Inställd av användaren</string>
-  <string name="openpgp_result_no_signature">Inte signerad</string>
-  <string name="openpgp_result_invalid_signature">Ogiltig signatur!</string>
-  <string name="openpgp_result_signature_uncertified">Signerad av (inte certifierad!)</string>
-  <string name="openpgp_result_signature_certified">Signerad av</string>
-  <string name="openpgp_result_signature_expired_key">Nyckel har löpt ut!</string>
-  <string name="openpgp_result_signature_revoked_key">Nyckel har återkallats!</string>
-  <string name="openpgp_result_signature_insecure">Osäker!</string>
-  <string name="openpgp_result_signature_missing_key">Okänd publik nyckel</string>
-  <string name="openpgp_result_encrypted">Krypterad</string>
-  <string name="openpgp_result_not_encrypted">Inte krypterad</string>
-  <string name="openpgp_result_decryption_insecure">Osäker</string>
-  <string name="openpgp_result_action_show">Visa</string>
-  <string name="openpgp_result_action_lookup">Slå upp</string>
-  <string name="openpgp_result_no_name">Inget namn</string>
-  <string name="openpgp_result_no_email">Ingen email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Använd klientcertifikat</string>
   <string name="client_certificate_spinner_empty">Inget klientcertifikat</string>
@@ -922,9 +902,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="client_certificate_retrieval_failure">Kunde inte hitta klientcertifikat för \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Avancerade inställningar</string>
   <string name="client_certificate_expired">Klientcertifikatet \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" har gått ut eller är inte giltigt ännu (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Ofullständigt meddelande</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Klicka på \'Ladda ner hela brevet\' för att tillåta kryptering.</string>
   <string name="preview_encrypted">*Krypterad*</string>
   <string name="add_from_contacts">Lägg till från kontakter</string>
   <string name="crypto_settings_cancel">Avbryt</string>
@@ -939,8 +917,6 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="address_type_other">Annat</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Ingen Utkast mapp konfigurerad för detta konto!</string>
-  <string name="compose_not_saving_unencrypted">Utkast INTE sparat utan kryptering!</string>
-  <string name="compose_error_pgp_error">Fel för OpenPGP leverantör. Granska dina inställningar!</string>
   <string name="compose_error_no_signing_key">Ingen nyckel är konfigurerad för signering! Var god granska dina inställningar.</string>
   <string name="compose_error_private_missing_keys">Privat läge är aktivt, men några mottagare har inte nycklar!</string>
   <string name="crypto_mode_disabled">Kryptera inte</string>
@@ -995,7 +971,6 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Visa signerare</string>
   <string name="locked_attach_unlock">Lås upp</string>
-  <string name="locked_attach_unsigned">Denna del signerades inte, och kan vara osäker.</string>
   <string name="locked_attach_unencrypted">Denna del var inte krypterad och kan vara osäker.</string>
   <string name="locked_attach_title">Oskyddad bilaga</string>
   <string name="message_progress_text">Laddar...</string>
@@ -1012,4 +987,5 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="recipient_error_parse_failed">Kan inte tolka adressen!</string>
   <string name="account_settings_crypto_support_sign_only">Stöd signering av okrypterade meddelanden</string>
   <string name="error_sign_only_no_encryption">Kryptering otillgänglig i signera-endast läge!</string>
+  <string name="unsigned_text_divider_label">Osignerad text</string>
 </resources>

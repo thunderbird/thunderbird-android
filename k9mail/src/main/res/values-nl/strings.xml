@@ -226,7 +226,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="message_view_attachment_download_action">Bewaar</string>
   <string name="message_view_status_attachment_not_saved">Opslaan bijlage op SD-kaart mislukt.</string>
   <string name="message_view_show_pictures_action">Laat afbeeldingen zien</string>
-  <string name="message_view_show_more_attachments_action">Meer…</string>
   <string name="message_view_no_viewer">Niet in staat viewer te vinden voor <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Download compleet bericht</string>
   <string name="message_view_toast_unable_to_display_message">Niet mogelijk om bericht te tonen</string>
@@ -891,25 +890,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="fetching_attachment_dialog_title_save">Concept wordt opgeslagen</string>
   <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
   <string name="auth_external_error">Kan niet authenticeren. De server ondersteunt geen SASL EXTERNAL. Dit kan komen door een probleem met het cliënt certificaat (verlopen of onbekende CA) of een ander configuratieprobleem.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Ontsleutelen mislukt: %s</string>
-  <string name="openpgp_unknown_error">Onbekend OpenPGP Fout</string>
-  <string name="openpgp_canceled_by_user">Geannuleerd door gebruiker</string>
-  <string name="openpgp_result_no_signature">Niet Ondertekend</string>
-  <string name="openpgp_result_invalid_signature">Ongeldige handtekening!</string>
-  <string name="openpgp_result_signature_uncertified">Ondertekend door (niet gecertificeerd!)</string>
-  <string name="openpgp_result_signature_certified">Ondertekend door</string>
-  <string name="openpgp_result_signature_expired_key">Sleutel is verlopen!</string>
-  <string name="openpgp_result_signature_revoked_key">Sleutel is ingetrokken!</string>
-  <string name="openpgp_result_signature_insecure">Onveilig!</string>
-  <string name="openpgp_result_signature_missing_key">Onbekende publieke sleutel</string>
-  <string name="openpgp_result_encrypted">Gecodeerd</string>
-  <string name="openpgp_result_not_encrypted">Niet gecodeerd</string>
-  <string name="openpgp_result_decryption_insecure">Onveilig</string>
-  <string name="openpgp_result_action_show">Weergeven</string>
-  <string name="openpgp_result_action_lookup">Zoeken</string>
-  <string name="openpgp_result_no_name">Geen naam</string>
-  <string name="openpgp_result_no_email">Geen email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Gebruik cliënt certificaat</string>
   <string name="client_certificate_spinner_empty">Geen cliënt certificaat</string>
@@ -917,9 +897,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="client_certificate_retrieval_failure">Alias cliënt certificaat niet ontvangen \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Geavanceerde opties</string>
   <string name="client_certificate_expired">Cliënt certificaat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" is verlopen of niet geldig (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Incompleet bericht</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Klik \'Download compleet bericht\' om ontsleuteling toe te staan</string>
   <string name="preview_encrypted">*Versleuteld*</string>
   <string name="add_from_contacts">Toevoegen vanaf contacten</string>
   <string name="crypto_settings_cancel">Annuleren</string>
@@ -934,8 +912,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="address_type_other">Anders</string>
   <string name="address_type_mobile">Mobiel</string>
   <string name="compose_error_no_draft_folder">Geen concepten map ingesteld voor dit account!</string>
-  <string name="compose_not_saving_unencrypted">Concept NIET opgeslagen zonder versleuteling!</string>
-  <string name="compose_error_pgp_error">Fout bij de OpenPGP provider. Kijk de instellingen na!</string>
   <string name="compose_error_no_signing_key">Geen sleutel ingesteld voor het ondertekenen! Controleer de instellingen.</string>
   <string name="compose_error_private_missing_keys">Privé instelling is ingeschakeld, maar sommige ontvangers hebben geen sleutels!</string>
   <string name="error_crypto_provider_connect">Kan geen verbinding maken met de crypto provider. Controleer de instellingen of klik op het crypto icoontje om nogmaals te proberen.</string>
@@ -974,7 +950,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Bekijk ondertekenaar</string>
   <string name="locked_attach_unlock">ontsluit</string>
-  <string name="locked_attach_unsigned">Dit onderdeel is niet ondertekend is mogelijk onveilig.</string>
   <string name="locked_attach_unencrypted">Dit onderdeel is niet versleuteld en is mogelijk niet veilig.</string>
   <string name="locked_attach_title">Onbeveiligde Bijlage</string>
   <string name="message_progress_text">Laden…</string>

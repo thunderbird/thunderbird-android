@@ -160,7 +160,6 @@
   <string name="message_view_attachment_download_action">ذخیره</string>
   <string name="message_view_status_attachment_not_saved">ناتوان برای ذخیره پیوست ها در کارت حافظه</string>
   <string name="message_view_show_pictures_action">نمایش تصاویر</string>
-  <string name="message_view_show_more_attachments_action">بیشتر …</string>
   <string name="message_view_no_viewer">نمایش‌دهنده‌ای برای <xliff:g id="mimetype">%s</xliff:g> پیدا نشد.</string>
   <string name="message_view_download_remainder">دانلود پیام کامل</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -744,32 +743,12 @@
   <string name="fetching_attachment_dialog_title_save">ذخیره پیش نویس</string>
   <string name="fetching_attachment_dialog_message">واکشی پیوست</string>
   <string name="auth_external_error">ناتوان برای احراز هویت. سرور توانایی اس ای اس ال خارجی را اعلام نکرد. این ممکن است ناشی از یک مشکل با گواهی مشتری (منقضی شده، اعتبار گواهی) یا دیگر مکشلات پیکربندی باشد.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_unknown_error">خطای پی جی پی باز ناشناخته</string>
-  <string name="openpgp_canceled_by_user">لغو توسط کاربر</string>
-  <string name="openpgp_result_no_signature">وارد نشد</string>
-  <string name="openpgp_result_invalid_signature">امضای نامعتبر</string>
-  <string name="openpgp_result_signature_uncertified">ورود توسط (گواهی نشده)</string>
-  <string name="openpgp_result_signature_certified">ورود توسط</string>
-  <string name="openpgp_result_signature_expired_key">کلید منقضی شده است</string>
-  <string name="openpgp_result_signature_revoked_key">کلید لغو شده است</string>
-  <string name="openpgp_result_signature_insecure">ناامن!</string>
-  <string name="openpgp_result_signature_missing_key">کلید عمومی ناشناس</string>
-  <string name="openpgp_result_encrypted">رمزگذاری شده</string>
-  <string name="openpgp_result_not_encrypted">رمزگذاری نشده</string>
-  <string name="openpgp_result_decryption_insecure">ناامن</string>
-  <string name="openpgp_result_action_show">نمایش</string>
-  <string name="openpgp_result_action_lookup">جستجو</string>
-  <string name="openpgp_result_no_name">هیچ نام</string>
-  <string name="openpgp_result_no_email">هیچ نامه الکترونیکی</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">از گواهی مشتری استفاده کن</string>
   <string name="client_certificate_spinner_empty">هیچ گواهی مشتری نیست</string>
   <string name="client_certificate_spinner_delete">انتخاب گواهی مشتری را حذف کن</string>
   <string name="client_certificate_advanced_options">تنظیمات پیشرفته</string>
-  <string name="crypto_incomplete_message">پیام ناقص</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">برای رمزگشایی روی \"دانلود کامل پیام\" کلیک کنید </string>
   <string name="preview_encrypted">رمزگذاری شد</string>
   <string name="add_from_contacts">اضافه کردن از مرتبطین</string>
   <string name="crypto_settings_ok">ادامه</string>

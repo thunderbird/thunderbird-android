@@ -233,7 +233,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="message_view_attachment_download_action">Зберегти</string>
   <string name="message_view_status_attachment_not_saved">Не вдалося зберегти вкладення на карту пам’яті.</string>
   <string name="message_view_show_pictures_action">Показати зображення</string>
-  <string name="message_view_show_more_attachments_action">Більше…</string>
   <string name="message_view_no_viewer">Не знайдено програму для перегляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Завантажити усе повідомлення</string>
   <string name="message_view_toast_unable_to_display_message">Не можу відобразити повідомлення</string>
@@ -903,25 +902,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="fetching_attachment_dialog_title_save">Збереження чернетки</string>
   <string name="fetching_attachment_dialog_message">Отримання вкладення…</string>
   <string name="auth_external_error">Автентифікація неможлива. Сервер не пропонує SASL EXTERNAL. Проблема з сертифікатом (сплив строк дії, невідомий центр сертифікації) або інша проблема налаштувань могла це спричинити.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Не вдалося розшифрувати: %s</string>
-  <string name="openpgp_unknown_error">Невідома помилка OpenPGP</string>
-  <string name="openpgp_canceled_by_user">відмовлено користувачем</string>
-  <string name="openpgp_result_no_signature">Не підписано</string>
-  <string name="openpgp_result_invalid_signature">Недійсний підпис!</string>
-  <string name="openpgp_result_signature_uncertified">Підписано (не засвідчено!)</string>
-  <string name="openpgp_result_signature_certified">Підписано</string>
-  <string name="openpgp_result_signature_expired_key">Строк чинності ключа закінчився!</string>
-  <string name="openpgp_result_signature_revoked_key">Ключ було відкликано!</string>
-  <string name="openpgp_result_signature_insecure">Небезпечно!</string>
-  <string name="openpgp_result_signature_missing_key">Невідомий публічний ключ</string>
-  <string name="openpgp_result_encrypted">зашифровано</string>
-  <string name="openpgp_result_not_encrypted">незашифровано</string>
-  <string name="openpgp_result_decryption_insecure">Небезпечно</string>
-  <string name="openpgp_result_action_show">Показати</string>
-  <string name="openpgp_result_action_lookup">Знайти</string>
-  <string name="openpgp_result_no_name">Без імені</string>
-  <string name="openpgp_result_no_email">Без адреси електронної пошти</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Використовувати сертифікат клієнта</string>
   <string name="client_certificate_spinner_empty">Немає сертифіката клієнта</string>
@@ -929,9 +909,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="client_certificate_retrieval_failure">Помилка отримання сертифіката клієнта для \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Розширені налаштування</string>
   <string name="client_certificate_expired">Сертифікат клієнта \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" втратив чинність або ще не набрав чинності (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Неповне повідомлення</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Натисність \'Завантажити повне повідомлення\', щоб його можна було розшифрувати.</string>
   <string name="preview_encrypted">*Зашифровано*</string>
   <string name="add_from_contacts">Додати з контактів</string>
   <string name="crypto_settings_cancel">Скасувати</string>
@@ -946,8 +924,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="address_type_other">Інший</string>
   <string name="address_type_mobile">Мобільний</string>
   <string name="compose_error_no_draft_folder">Не вибрано теку чернеток для цього облікового запису!</string>
-  <string name="compose_not_saving_unencrypted">Чернетка НЕ збережена без шифрування!</string>
-  <string name="compose_error_pgp_error">Помилка провайдера OpenPGP. Перевірте ваші налаштування!</string>
   <string name="compose_error_no_signing_key">Не налаштовано ключа для підписування! Перевірте ваші налаштування!</string>
   <string name="compose_error_private_missing_keys">Задіяно приватний режим, але деякі отримувачі не мають ключів!</string>
   <string name="error_crypto_provider_connect">Не можу зв\'язатися з провайдером шифрування; перевірте ваші налаштування або натисніть значок шифрування, щоб спробувати знову!</string>
@@ -986,7 +962,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="crypto_info_ok">Окей</string>
   <string name="crypto_info_view_key">Переглянути підпис</string>
   <string name="locked_attach_unlock">Розблокувати</string>
-  <string name="locked_attach_unsigned">Ця частина не підписана й може бути небезпечною.</string>
   <string name="locked_attach_unencrypted">Ця частина не зашифрована й може бути небезпечною.</string>
   <string name="locked_attach_title">незахищене вкладення</string>
   <string name="message_progress_text">Завантаження...</string>

@@ -231,7 +231,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_view_attachment_download_action">Guardar</string>
   <string name="message_view_status_attachment_not_saved">Não foi possível guardar o anexo para o cartão SD.</string>
   <string name="message_view_show_pictures_action">Mostrar imagens</string>
-  <string name="message_view_show_more_attachments_action">Mais...</string>
   <string name="message_view_no_viewer">Incapaz de encontrar visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Transferir mensagem completa</string>
   <string name="message_view_toast_unable_to_display_message">Incapaz de exibir a mensagem</string>
@@ -896,25 +895,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="fetching_attachment_dialog_title_save">A guardar rascunho</string>
   <string name="fetching_attachment_dialog_message">A obter anexo...</string>
   <string name="auth_external_error">Não foi possível autenticar. O servidor não anuncia a capacidade SASL EXTERNAL. Isto pode ser devido a um problema com o certificado de cliente (expirado, autoridade certificadora desconhecida) ou algum outro problema de configuração.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">A desencriptação falhou: %s</string>
-  <string name="openpgp_unknown_error">Erro desconhecido do OpenPGP</string>
-  <string name="openpgp_canceled_by_user">Cancelado pelo utilizador</string>
-  <string name="openpgp_result_no_signature">Não assinado</string>
-  <string name="openpgp_result_invalid_signature">Assinatura inválida!</string>
-  <string name="openpgp_result_signature_uncertified">Assinado por (não certificado!)</string>
-  <string name="openpgp_result_signature_certified">Assinado por</string>
-  <string name="openpgp_result_signature_expired_key">A chave expirou!</string>
-  <string name="openpgp_result_signature_revoked_key">A chave foi revogada!</string>
-  <string name="openpgp_result_signature_insecure">Inseguro!</string>
-  <string name="openpgp_result_signature_missing_key">Chave pública desconhecida</string>
-  <string name="openpgp_result_encrypted">Encriptado</string>
-  <string name="openpgp_result_not_encrypted">Não encriptado</string>
-  <string name="openpgp_result_decryption_insecure">Inseguro</string>
-  <string name="openpgp_result_action_show">Mostrar</string>
-  <string name="openpgp_result_action_lookup">Pesquisar</string>
-  <string name="openpgp_result_no_name">Sem nome</string>
-  <string name="openpgp_result_no_email">Sem email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Usar certificado de cliente</string>
   <string name="client_certificate_spinner_empty">Sem certificado de cliente</string>
@@ -922,9 +902,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="client_certificate_retrieval_failure">Falha ao obter certificado de cliente para o alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Opções avançadas</string>
   <string name="client_certificate_expired">O certificado de cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" expirou ou ainda não é válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Mensagem incompleta</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Clique em \'Transferir mensagem completa\' para permitir a desencriptação.</string>
   <string name="preview_encrypted">*Encriptado*</string>
   <string name="add_from_contacts">Adicionar a partir dos Contactos</string>
   <string name="crypto_settings_ok">Proceder</string>
@@ -938,8 +916,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="address_type_other">Outro</string>
   <string name="address_type_mobile">Telemóvel</string>
   <string name="compose_error_no_draft_folder">Não foi configurada uma pasta de rascunhos para esta conta!</string>
-  <string name="compose_not_saving_unencrypted">Rascunho NÃO guardado sem encriptação!</string>
-  <string name="compose_error_pgp_error">Erro com o provedor OpenPGP. Verifique as suas definições!</string>
   <string name="compose_error_no_signing_key">Não foi configurada uma chave para assinatura! Por favor verifique as suas definições.</string>
   <string name="compose_error_private_missing_keys">O modo privado está ativado, mas alguns destinatários não possuem chaves!</string>
   <string name="error_crypto_provider_connect">Não foi possível ligar ao provedor de encriptação, verifique as suas definições ou clique no ícone de encriptação para tentar novamente!</string>
@@ -978,7 +954,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Ver assinante</string>
   <string name="locked_attach_unlock">Desbloquear</string>
-  <string name="locked_attach_unsigned">Esta parte não foi assinada, e pode ser insegura.</string>
   <string name="locked_attach_unencrypted">Esta parte não foi encriptada, e pode ser insegura.</string>
   <string name="locked_attach_title">Anexo desprotegido</string>
   <string name="message_progress_text">A carregar...</string>

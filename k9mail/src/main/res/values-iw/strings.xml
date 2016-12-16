@@ -198,7 +198,6 @@
   <string name="message_view_attachment_download_action">שמור</string>
   <string name="message_view_status_attachment_not_saved">אין אפשרות לשמור את הקובץ המצורף לכרטיס ה SD.</string>
   <string name="message_view_show_pictures_action">הצג תמונות</string>
-  <string name="message_view_show_more_attachments_action">עוד...</string>
   <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
   <string name="message_view_toast_unable_to_display_message">לא ניתן להציג את ההודעה</string>
@@ -656,7 +655,6 @@
   <string name="manage_accounts_move_up_action">העבר למעלה</string>
   <string name="manage_accounts_move_down_action">העבר למטה</string>
   <string name="manage_accounts_moving_message">מעביר חשבון…</string>
-  <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
 </resources>

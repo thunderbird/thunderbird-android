@@ -188,7 +188,6 @@
   <string name="message_view_attachment_download_action">Gardar</string>
   <string name="message_view_status_attachment_not_saved">Non é posible gardar o anexo na tarxeta SD.</string>
   <string name="message_view_show_pictures_action">Mostrar imaxes</string>
-  <string name="message_view_show_more_attachments_action">Máis…</string>
   <string name="message_view_no_viewer">Non é posible atopar un visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -828,7 +827,6 @@
   <string name="fetching_attachment_dialog_title_send">A enviar mensaxe</string>
   <string name="fetching_attachment_dialog_title_save">A gardar borrador</string>
   <string name="fetching_attachment_dialog_message">Obtendo anexo…</string>
-  <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
 </resources>

@@ -230,7 +230,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="message_view_attachment_download_action">Запиши</string>
   <string name="message_view_status_attachment_not_saved">Не можа да запише прикаченият файл на SD картата.</string>
   <string name="message_view_show_pictures_action">Покажи картинките</string>
-  <string name="message_view_show_more_attachments_action">Още...</string>
   <string name="message_view_no_viewer">Не можа да намери програма за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Свали цялото съобщение</string>
   <string name="message_view_toast_unable_to_display_message">Съобщението неможе да бъде показано</string>
@@ -895,25 +894,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="fetching_attachment_dialog_title_save">Запазване в чернови</string>
   <string name="fetching_attachment_dialog_message">Изтегляне на прикачен файл...</string>
   <string name="auth_external_error">Неуспешна идентификация. Сървърът не предлага SASL EXTERNAL. Това може да е поради проблем с сертификатът на клиента (изтекъл,  непознат издател на сертификат) или някакъв друг конфигурационен проблем.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Неуспешно декриптиране: %s</string>
-  <string name="openpgp_unknown_error">Неизвестна OpenPGP грешка</string>
-  <string name="openpgp_canceled_by_user">Отказан от потребителя</string>
-  <string name="openpgp_result_no_signature">Липсва електронен подпис</string>
-  <string name="openpgp_result_invalid_signature">Невалиден електронен подпис!</string>
-  <string name="openpgp_result_signature_uncertified">Подписан от (не сертифициран!)</string>
-  <string name="openpgp_result_signature_certified">Подписан от</string>
-  <string name="openpgp_result_signature_expired_key">Изтекъл ключ!</string>
-  <string name="openpgp_result_signature_revoked_key">Анулиран ключ!</string>
-  <string name="openpgp_result_signature_insecure">Несигурен!</string>
-  <string name="openpgp_result_signature_missing_key">Неизвестен публичен ключ</string>
-  <string name="openpgp_result_encrypted">Криптирано</string>
-  <string name="openpgp_result_not_encrypted">Не криптирано</string>
-  <string name="openpgp_result_decryption_insecure">Несигурен</string>
-  <string name="openpgp_result_action_show">Показване</string>
-  <string name="openpgp_result_action_lookup">Търсене</string>
-  <string name="openpgp_result_no_name">Няма име</string>
-  <string name="openpgp_result_no_email">Няма имейл</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Използвай сертификата на клиента</string>
   <string name="client_certificate_spinner_empty">Няма сертификат на клиента</string>
@@ -921,9 +901,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="client_certificate_retrieval_failure">Неуспешно изтегляне на сертификат на клиента за \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Други настройки</string>
   <string name="client_certificate_expired">Сертификат на клиента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" е изтекъл или още не станал валиден (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Незавършено съобщение</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Натиснете \"Изтегляне на цялото съобщение\", за да разрешите декриптиране.</string>
   <string name="preview_encrypted">*Крипитиран*</string>
   <string name="add_from_contacts">Добавяне в контакти</string>
   <string name="crypto_settings_cancel">Отказване</string>
@@ -938,8 +916,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="address_type_other">Друг</string>
   <string name="address_type_mobile">Мобилен</string>
   <string name="compose_error_no_draft_folder">Липсва папка чернови за този профил!</string>
-  <string name="compose_not_saving_unencrypted">Черновата НЕ е запазена без криптиране!</string>
-  <string name="compose_error_pgp_error">Грешка при OpenPGP. Проверете настройките си!</string>
   <string name="compose_error_no_signing_key">Няма зададен ключ за електронен подпис! Моля, проверете настройките си.</string>
   <string name="compose_error_private_missing_keys">Личен режим е включен, но някои от получателите не разполагат с ключове!</string>
   <string name="crypto_mode_disabled">Да не се криптира</string>
@@ -994,7 +970,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="crypto_info_ok">ОК</string>
   <string name="crypto_info_view_key">Разглеждане на подписа</string>
   <string name="locked_attach_unlock">Отключване</string>
-  <string name="locked_attach_unsigned">Тази част не е подписана и може да е несигурна.</string>
   <string name="locked_attach_unencrypted">Тази част не криптирана и може да е несигурна.</string>
   <string name="locked_attach_title">Незащитен прикачен файл.</string>
   <string name="message_progress_text">Зареждане...</string>
@@ -1011,4 +986,5 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="recipient_error_parse_failed">Грешка при обработването на адреса!</string>
   <string name="account_settings_crypto_support_sign_only">Поддържане на електронен подпис на не криптирани съобщения</string>
   <string name="error_sign_only_no_encryption">Криптирането не е възможно, когато се използва режима само подпис! </string>
+  <string name="unsigned_text_divider_label">Неподписан текст</string>
 </resources>

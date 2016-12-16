@@ -198,7 +198,6 @@
   <string name="message_view_attachment_download_action">저장</string>
   <string name="message_view_status_attachment_not_saved">첨부 파일을 SD카드에 저장할 수 없습니다.</string>
   <string name="message_view_show_pictures_action">그림 보기</string>
-  <string name="message_view_show_more_attachments_action">더 보기…</string>
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>에 대한 뷰어를 찾을 수 없습니다.</string>
   <string name="message_view_download_remainder">메시지의 남은 부분 다운로드</string>
   <string name="message_view_toast_unable_to_display_message">메시지를 볼 수 없습니다.</string>
@@ -848,32 +847,13 @@
   <string name="fetching_attachment_dialog_title_save">임시 저장</string>
   <string name="fetching_attachment_dialog_message">첨부 파일 부치는 중…</string>
   <string name="auth_external_error">인증할 수 없습니다. 서버가 SASL EXTERNAL을 사용할 수 있는지를 공지하지 않았습니다. 이것은 클라이언트 인증서 문제(알 수 없는 기관이거나 인증서가 만료됨) 또는 다른 설정 문제로 인해 발생했을 가능성이 있습니다.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_unknown_error">알 수 없는 OpenPGP 오류</string>
-  <string name="openpgp_canceled_by_user">사용자가 취소함</string>
-  <string name="openpgp_result_no_signature">서명되지 않음</string>
-  <string name="openpgp_result_invalid_signature">서명이 올바르지 않습니다!</string>
-  <string name="openpgp_result_signature_uncertified">다음으로부터 서명됨 (인증되지 않음)</string>
-  <string name="openpgp_result_signature_certified">다음으로부터 서명됨</string>
-  <string name="openpgp_result_signature_expired_key">키가 만료되었습니다!</string>
-  <string name="openpgp_result_signature_revoked_key">키가 폐기되었습니다!</string>
-  <string name="openpgp_result_signature_insecure">안전하지 못함!</string>
-  <string name="openpgp_result_signature_missing_key">알 수 없는 공개 키</string>
-  <string name="openpgp_result_encrypted">암호화됨</string>
-  <string name="openpgp_result_not_encrypted">암호화되지 않음</string>
-  <string name="openpgp_result_action_show">표시</string>
-  <string name="openpgp_result_action_lookup">검색</string>
-  <string name="openpgp_result_no_name">이름 없음</string>
-  <string name="openpgp_result_no_email">이메일 없음</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">클라이언트 인증서 사용</string>
   <string name="client_certificate_spinner_empty">클라이언트 인증서 없음</string>
   <string name="client_certificate_spinner_delete">클라이언트 인증서 선택 제거</string>
   <string name="client_certificate_advanced_options">고급 옵션</string>
   <string name="client_certificate_expired">클라이언트 인증서 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 이(가) 만료되었거나 올바르지 않습니다 (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">완성되지 않은 메세지</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">복호화를 허용하려면 \'메세지의 남은 부분 다운로드\'를 선택하세요.</string>
   <string name="preview_encrypted">\"암호화됨\"</string>
   <string name="crypto_settings_cancel">취소</string>
   <string name="recipient_cc">참조</string>
