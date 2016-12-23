@@ -549,7 +549,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setFetchingMailNotificationEnabled(mEnableFetchingMailNotification.isChecked());
         K9.setNewMailNotificationEnabled(mEnableNewMailNotification.isChecked());
 
-		K9.setSplitViewMode(SplitViewMode.valueOf(mSplitViewMode.getValue()));
+	K9.setSplitViewMode(SplitViewMode.valueOf(mSplitViewMode.getValue()));
         K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
 

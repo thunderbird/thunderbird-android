@@ -969,6 +969,54 @@ public class K9 extends Application {
         mQuietTimeStarts = quietTimeStarts;
     }
 
+    public static boolean isCertificateErrorNotificationEnabled() {
+        return mCertificateErrorNotificationEnabled;
+    }
+
+    public static void setCertificateErrorNotificationEnabled(boolean mCertificateErrorNotificationEnabled) {
+        K9.mCertificateErrorNotificationEnabled = mCertificateErrorNotificationEnabled;
+    }
+
+    public static boolean isAuthenticationErrorNotificationEnabled() {
+        return mAuthenticationErrorNotificationEnabled;
+    }
+
+    public static void setAuthenticationErrorNotificationEnabled(boolean mAuthenticationErrorNotificationEnabled) {
+        K9.mAuthenticationErrorNotificationEnabled = mAuthenticationErrorNotificationEnabled;
+    }
+
+    public static boolean isSendingNotificationEnabled() {
+        return mSendingNotificationEnabled;
+    }
+
+    public static void setSendingNotificationEnabled(boolean mSendingNotificationEnabled) {
+        K9.mSendingNotificationEnabled = mSendingNotificationEnabled;
+    }
+
+    public static boolean isSendFailedNotificationEnabled() {
+        return mSendFailedNotificationEnabled;
+    }
+
+    public static void setSendFailedNotificationEnabled(boolean mSendFailedNotificationEnabled) {
+        K9.mSendFailedNotificationEnabled = mSendFailedNotificationEnabled;
+    }
+
+    public static boolean isFetchingMailNotificationEnabled() {
+        return mFetchingMailNotificationEnabled;
+    }
+
+    public static void setFetchingMailNotificationEnabled(boolean mFetchingMailNotificationEnabled) {
+        K9.mFetchingMailNotificationEnabled = mFetchingMailNotificationEnabled;
+    }
+
+    public static boolean isNewMailNotificationEnabled() {
+        return mNewMailNotificationEnabled;
+    }
+
+    public static void setNewMailNotificationEnabled(boolean mNewMailNotificationEnabled) {
+        K9.mNewMailNotificationEnabled = mNewMailNotificationEnabled;
+    }
+
     public static String getQuietTimeEnds() {
         return mQuietTimeEnds;
     }

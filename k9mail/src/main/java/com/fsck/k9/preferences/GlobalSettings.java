@@ -271,8 +271,8 @@ public class GlobalSettings {
                 new V(39, new BooleanSetting(true))
             ));
 		
-		// each notification type in com.fsck.k9.notification.NotificationController
-		// can be enabled/disabled with these settings
+	// each notification type in com.fsck.k9.notification.NotificationController
+	// can be enabled/disabled with these settings
         s.put("enableCertificateErrorNotification", Settings.versions(
                 new V(44, new BooleanSetting(true))
             ));

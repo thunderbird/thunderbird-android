@@ -385,7 +385,7 @@
 
         </PreferenceCategory>
 
-	</PreferenceScreen>
+    </PreferenceScreen>
 
     <PreferenceScreen
         android:title="@string/network_preferences"
