@@ -241,6 +241,13 @@ public class K9 extends Application {
     private static boolean mHideUserAgent = false;
     private static boolean mHideTimeZone = false;
 
+    private static boolean mCertificateErrorNotificationEnabled = true;
+    private static boolean mAuthenticationErrorNotificationEnabled = true;
+    private static boolean mSendingNotificationEnabled = true;
+    private static boolean mSendFailedNotificationEnabled = true;
+    private static boolean mFetchingMailNotificationEnabled = true;
+    private static boolean mNewMailNotificationEnabled = true;
+
     private static SortType mSortType;
     private static Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
 
@@ -475,6 +482,13 @@ public class K9 extends Application {
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmDeleteFromNotification", mConfirmDeleteFromNotification);
+
+        editor.putBoolean("certificateErrorNotificationEnabled", mCertificateErrorNotificationEnabled);
+        editor.putBoolean("authenticationErrorNotificationEnabled", mAuthenticationErrorNotificationEnabled);
+        editor.putBoolean("sendingNotificationEnabled", mSendingNotificationEnabled);
+        editor.putBoolean("sendFailedNotificationEnabled", mSendFailedNotificationEnabled);
+        editor.putBoolean("fetchingMailNotificationEnabled", mFetchingMailNotificationEnabled);
+        editor.putBoolean("newMailNotificationEnabled", mNewMailNotificationEnabled);
 
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
@@ -721,6 +735,13 @@ public class K9 extends Application {
         if (splitViewMode != null) {
             sSplitViewMode = SplitViewMode.valueOf(splitViewMode);
         }
+
+        mCertificateErrorNotificationEnabled = storage.getBoolean("certificateErrorNotificationEnabled", true);
+        mAuthenticationErrorNotificationEnabled = storage.getBoolean("authenticationErrorNotificationEnabled", true);
+        mSendingNotificationEnabled = storage.getBoolean("sendingNotificationEnabled", true);
+        mSendFailedNotificationEnabled = storage.getBoolean("sendFailedNotificationEnabled", true);
+        mFetchingMailNotificationEnabled = storage.getBoolean("fetchingMailNotificationEnabled", true);
+        mNewMailNotificationEnabled = storage.getBoolean("newMailNotificationEnabled", true);
 
         mAttachmentDefaultPath = storage.getString("attachmentdefaultpath",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());

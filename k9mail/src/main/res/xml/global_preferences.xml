@@ -343,7 +343,49 @@
             android:entryValues="@array/global_settings_lock_screen_notification_visibility_values"
             android:dialogTitle="@string/global_settings_lock_screen_notification_visibility_title" />
 
-    </PreferenceScreen>
+        <PreferenceCategory
+            android:title="@string/notification_types_preferences"
+            android:key="notification_types_preferences">
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="enable_certificate_error_notification"
+                android:title="@string/global_settings_enable_certificate_error_notification_label"
+                android:summary="@string/global_settings_enable_certificate_error_notification_summary"/>
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="enable_authentication_error_notification"
+                android:title="@string/global_settings_enable_authentication_error_notification_label"
+                android:summary="@string/global_settings_enable_authentication_error_notification_summary"/>
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="enable_sending_notification"
+                android:title="@string/global_settings_enable_sending_notification_label"
+                android:summary="@string/global_settings_enable_sending_notification_summary"/>
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="enable_send_failed_notification"
+                android:title="@string/global_settings_enable_send_failed_notification_label"
+                android:summary="@string/global_settings_enable_send_failed_notification_summary"/>
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="enable_fetching_mail_notification"
+                android:title="@string/global_settings_enable_fetching_mail_notification_label"
+                android:summary="@string/global_settings_enable_fetching_mail_notification_summary"/>
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="enable_new_mail_notification"
+                android:title="@string/global_settings_enable_new_mail_notification_label"
+                android:summary="@string/global_settings_enable_new_mail_notification_summary"/>
+
+        </PreferenceCategory>
+
+	</PreferenceScreen>
 
     <PreferenceScreen
         android:title="@string/network_preferences"

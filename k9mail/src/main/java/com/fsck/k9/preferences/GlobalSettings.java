@@ -270,6 +270,28 @@ public class GlobalSettings {
         s.put("notificationDuringQuietTimeEnabled", Settings.versions(
                 new V(39, new BooleanSetting(true))
             ));
+		
+		// each notification type in com.fsck.k9.notification.NotificationController
+		// can be enabled/disabled with these settings
+        s.put("enableCertificateErrorNotification", Settings.versions(
+                new V(44, new BooleanSetting(true))
+            ));
+        s.put("enableAuthenticationErrorNotification", Settings.versions(
+                new V(44, new BooleanSetting(true))
+            ));
+        s.put("enableSendingNotification", Settings.versions(
+                new V(44, new BooleanSetting(true))
+            ));
+        s.put("enableSendFailedNotification", Settings.versions(
+                new V(44, new BooleanSetting(true))
+            ));
+        s.put("enableFetchingMailNotification", Settings.versions(
+                new V(44, new BooleanSetting(true))
+            ));
+        s.put("enableNewMailNotification", Settings.versions(
+                new V(44, new BooleanSetting(true))
+            ));
+			
         s.put("confirmDiscardMessage", Settings.versions(
                 new V(40, new BooleanSetting(true))
             ));
