@@ -122,7 +122,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     " must implement MessageViewFragmentListener");
         }
 
-        snoozeController = new SnoozeController(activity);
+        snoozeController = SnoozeController.getInstance(activity);
     }
 
     @Override

@@ -644,7 +644,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     " must implement MessageListFragmentListener");
         }
 
-        snoozeController = new SnoozeController(activity);
+        snoozeController = SnoozeController.getInstance(activity);
     }
 
     @Override

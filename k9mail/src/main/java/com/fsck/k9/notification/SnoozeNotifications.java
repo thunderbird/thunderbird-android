@@ -2,17 +2,18 @@ package com.fsck.k9.notification;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mailstore.LocalMessage;
 
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_SLOW;
-import static com.fsck.k9.notification.NotificationController.platformSupportsExtendedNotifications;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Handles posting snoozed messages as notifications.
@@ -20,6 +21,7 @@ import static com.fsck.k9.notification.NotificationController.platformSupportsEx
 public class SnoozeNotifications extends MailNotifications {
 
     private static final String TAG = "SnoozeNotifications";
+    private static final boolean DEBUG = true;
 
     private static int curSnoozeIdx = 0;
 
@@ -59,6 +61,10 @@ public class SnoozeNotifications extends MailNotifications {
         int notificationId = NotificationIds.getNewSnoozedMessageId(account, curSnoozeIdx++);
         Notification notification = buildSnoozeNotification(account, notificationData, false, notificationId);
 
+        if (DEBUG) {
+            Log.d(TAG, "showSnoozeNotification id: " + notificationId);
+        }
+
         controller.getNotificationManager().notify(notificationId, notification);
     }
 
@@ -67,7 +73,7 @@ public class SnoozeNotifications extends MailNotifications {
 
         NotificationCompat.Builder builder;
 
-        boolean disableBigStyle = isPrivacyModeActive() || !platformSupportsExtendedNotifications();
+        boolean disableBigStyle = isPrivacyModeActive() || !NotificationController.platformSupportsExtendedNotifications();
         NotificationHolder holder = notificationData.getHolderForLatestNotification();
         builder = createBigTextStyleSummaryNotification(account, holder, !disableBigStyle, notificationId);
 
@@ -81,7 +87,7 @@ public class SnoozeNotifications extends MailNotifications {
                 (notificationSetting.shouldRing()) ? notificationSetting.getRingtone() : null,
                 (notificationSetting.shouldVibrate()) ? notificationSetting.getVibration() : null,
                 (notificationSetting.isLed()) ? notificationSetting.getLedColor() : null,
-                NOTIFICATION_LED_BLINK_SLOW,
+                NotificationController.NOTIFICATION_LED_BLINK_SLOW,
                 ringAndVibrate);
 
         builder.setSmallIcon(R.drawable.ic_action_snooze_light);
@@ -98,22 +104,32 @@ public class SnoozeNotifications extends MailNotifications {
 
         NotificationContent content = holder.content;
         addReplyAction(builder, content, notificationId);
-        //addSnoozeAction(builder, content, notificationId);
+        addSnoozeAction(builder, content, notificationId);
 
         return builder;
     }
 
     private void addSnoozeAction(NotificationCompat.Builder builder, NotificationContent content, int notificationId) {
         int icon = getSnoozeActionIcon();
-        String title = context.getString(R.string.snooze_action);
+        String title = context.getString(R.string.in_one_hour);
 
-        MessageReference messageReference = content.messageReference;
-
-        // TODO(tf): create way to launch ChooseSnooze
-        PendingIntent pendingIntent =
-                actionCreator.createReplyPendingIntent(messageReference, notificationId);
+        PendingIntent pendingIntent = createSnoozePendingIntent(
+                        content.messageReference,
+                        notificationId,
+                        DEBUG ? TimeUnit.MINUTES.toMillis(1) : TimeUnit.HOURS.toMillis(1)
+        );
 
         builder.addAction(icon, title, pendingIntent);
+    }
+
+    private PendingIntent createSnoozePendingIntent(MessageReference messageReference, int notificationId, long snoozeDurationInMs) {
+        Intent intent = new Intent(context, NotificationPublisher.class);
+        intent.setAction(NotificationPublisher.ACTION_SNOOZE_AGAIN);
+        NotificationPublisher.safelyAddMessageRefToIntent(intent, messageReference);
+        intent.putExtra(NotificationPublisher.EXTRA_SNOOZE_DURATION_IN_MS, snoozeDurationInMs);
+        intent.putExtra(NotificationPublisher.EXTRA_ORIGIN_NOTIFICATION_ID, notificationId);
+
+        return PendingIntent.getBroadcast(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private int getSnoozeActionIcon() {

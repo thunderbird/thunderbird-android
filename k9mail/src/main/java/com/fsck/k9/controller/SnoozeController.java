@@ -31,13 +31,22 @@ public class SnoozeController {
      */
     private final static long DELAY_TO_CORRECT_DISPLAYED_VALUE = TimeUnit.MINUTES.toMillis(1) + TimeUnit.SECONDS.toMillis(1);
 
+    private static SnoozeController inst;
+
     private final Context context;
     private int curIntentId = 0;
 
-    public SnoozeController(Context c) {
+    private SnoozeController(Context c) {
         context = c;
     }
 
+    public synchronized static SnoozeController getInstance(Context context) {
+        if (inst == null) {
+            Context appContext = context.getApplicationContext();
+            inst = new SnoozeController(appContext);
+        }
+        return inst;
+    }
 
     /***
      * Launches an activity to choose the snooze time. Must also call #handleActivityResult() from
@@ -106,6 +115,7 @@ public class SnoozeController {
 
     private void scheduleNotification(MessageReference msg, long timestamp) {
         Intent notificationIntent = new Intent(context, NotificationPublisher.class);
+        notificationIntent.setAction(NotificationPublisher.ACTION_OPEN_MESSAGE);
         notificationIntent.putExtra(NotificationPublisher.EXTRA_MESSAGE, msg);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context,

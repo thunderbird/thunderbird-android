@@ -149,6 +149,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="mark_as_read_action">Mark as read</string>
     <string name="snooze_action">Remind me&#8230;</string>
+    <string name="in_one_hour">In an hour</string>
     <string name="send_alternate_action">Share</string>
     <string name="send_alternate_chooser_title">Choose sender</string>
 
