@@ -18,6 +18,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.SnoozeController;
+import com.fsck.k9.ui.DateTimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,6 +32,8 @@ import java.text.DateFormat;
 
 public class ChooseSnooze extends K9ListActivity {
     public static final String EXTRA_SNOOZE_UNTIL = "com.fsck.k9.ChooseSnooze_EXTRA_SNOOZE_UNTIL";
+
+    private static final long SNOOZE_TIMESTAMP_CHOOSE_CUSTOM_TIME = 0;
 
     private static final boolean DEBUG = false;
 
@@ -48,14 +51,8 @@ public class ChooseSnooze extends K9ListActivity {
 
         setContentView(R.layout.list_content_simple);
 
-        String timeFormat;
-        if (android.text.format.DateFormat.is24HourFormat(this)) {
-            timeFormat = "EEEE HH:mm";
-        } else {
-            timeFormat = "EEEE hh:mm a";
-        }
-        mTimeAndDayFormatter = new SimpleDateFormat(timeFormat, Locale.getDefault());
-        mTimeFormatter = android.text.format.DateFormat.getTimeFormat(this);
+        initFormatters();
+
         mRes = getResources();
 
         getListView().setFastScrollEnabled(true);
@@ -76,20 +73,35 @@ public class ChooseSnooze extends K9ListActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SnoozeTime time = mAdapter.getItem(position);
 
-                if (time.timestamp <= 0) {
-                    // choose custom time from picker
-                    showDateTimePicker(new OnDateTimePickedListener() {
-                        @Override
-                        public void onDateTimePicked(long timestamp) {
-                            finishWithResult(timestamp);
-                        }
-                    });
+                if (time.timestamp == SNOOZE_TIMESTAMP_CHOOSE_CUSTOM_TIME) {
+                    chooseCustomTimeFromPicker();
                     return;
                 }
 
                 finishWithResult(time.timestamp);
             }
         });
+    }
+
+    private void chooseCustomTimeFromPicker() {
+        DateTimePicker picker = new DateTimePicker(this);
+        picker.showDateTimePicker(new DateTimePicker.OnDateTimePickedListener() {
+            @Override
+            public void onDateTimePicked(long timestamp) {
+                finishWithResult(timestamp);
+            }
+        });
+    }
+
+    private void initFormatters() {
+        String timeFormat;
+        if (android.text.format.DateFormat.is24HourFormat(this)) {
+            timeFormat = "EEEE HH:mm";
+        } else {
+            timeFormat = "EEEE hh:mm a";
+        }
+        mTimeAndDayFormatter = new SimpleDateFormat(timeFormat, Locale.getDefault());
+        mTimeFormatter = android.text.format.DateFormat.getTimeFormat(this);
     }
 
     private void finishWithResult(long timestamp) {
@@ -128,9 +140,8 @@ public class ChooseSnooze extends K9ListActivity {
 
         // next monday morning
         cal.setTimeInMillis(now);
-        int monday = Calendar.MONDAY;
         cal.add(Calendar.WEEK_OF_YEAR, 1);
-        cal.set(Calendar.DAY_OF_WEEK, monday);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         cal.set(Calendar.HOUR_OF_DAY, 9);
         cal.set(Calendar.MINUTE, 0);
 
@@ -138,7 +149,7 @@ public class ChooseSnooze extends K9ListActivity {
 
         // TODO(tf): add most recently chosen custom times
 
-        times.add(new SnoozeTime(mRes.getString(R.string.pick_a_time), 0));
+        times.add(new SnoozeTime(mRes.getString(R.string.pick_a_time), SNOOZE_TIMESTAMP_CHOOSE_CUSTOM_TIME));
 
         return times;
     }
@@ -148,9 +159,10 @@ public class ChooseSnooze extends K9ListActivity {
         String label = mRes.getString(strRes);
 
         GregorianCalendar tomorrowEOD = new GregorianCalendar();
-        tomorrowEOD.add(Calendar.DAY_OF_YEAR, 1);
-        tomorrowEOD.set(Calendar.HOUR_OF_DAY, 23);
-        tomorrowEOD.set(Calendar.MINUTE, 59);
+        tomorrowEOD.add(Calendar.DAY_OF_YEAR, 2);
+        tomorrowEOD.set(Calendar.HOUR_OF_DAY, 0);
+        tomorrowEOD.set(Calendar.MINUTE, 0);
+        tomorrowEOD.set(Calendar.SECOND, 0);
 
         String time;
         if (cal.before(tomorrowEOD)) {
@@ -179,50 +191,5 @@ public class ChooseSnooze extends K9ListActivity {
         public String toString() {
             return label.toString();
         }
-    }
-
-
-    interface OnDateTimePickedListener {
-        void onDateTimePicked(long timestamp);
-    }
-
-    // from http://stackoverflow.com/a/22217570/473201
-    private void showDateTimePicker(final OnDateTimePickedListener listener) {
-
-        final Calendar cal = Calendar.getInstance();
-        DatePickerDialog dateDialog = new DatePickerDialog(
-                this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int y, int m, int d) {
-                        cal.set(Calendar.YEAR, y);
-                        cal.set(Calendar.MONTH, m);
-                        cal.set(Calendar.DAY_OF_MONTH, d);
-
-                        // now show the time picker
-                        TimePickerDialog timeDialog = new TimePickerDialog(
-                                ChooseSnooze.this,
-                                new TimePickerDialog.OnTimeSetListener() {
-
-                                    @Override
-                                    public void onTimeSet(TimePicker view, int h, int min) {
-                                        cal.set(Calendar.HOUR_OF_DAY, h);
-                                        cal.set(Calendar.MINUTE, min);
-
-                                        listener.onDateTimePicked(cal.getTimeInMillis());
-                                    }
-                                },
-                                cal.get(Calendar.HOUR_OF_DAY),
-                                cal.get(Calendar.MINUTE),
-                                true);
-
-                        timeDialog.show();
-                    }
-                },
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH));
-
-        dateDialog.show();
     }
 }

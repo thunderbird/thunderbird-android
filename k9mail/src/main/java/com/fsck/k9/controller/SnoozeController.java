@@ -3,7 +3,6 @@ package com.fsck.k9.controller;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Fragment;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -18,13 +17,19 @@ import com.fsck.k9.activity.ChooseSnooze;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.notification.NotificationPublisher;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Manages snoozing messages until later.
  *
- * Created by odbol on 12/10/16.
  */
 public class SnoozeController {
 
+    /***
+     * This prevents #getSnoozeMessage() from saying e.g. "in 59 minutes"
+     * when you want it to round up to an hour, etc.
+     */
+    private final static long DELAY_TO_CORRECT_DISPLAYED_VALUE = TimeUnit.MINUTES.toMillis(1) + TimeUnit.SECONDS.toMillis(1);
 
     private final Context context;
     private int curIntentId = 0;
@@ -92,9 +97,9 @@ public class SnoozeController {
 
     public static CharSequence getSnoozeMessage(long timestamp) {
         return DateUtils.getRelativeTimeSpanString(
-                timestamp + 61000, // add a minute, so it doesn't say "in 59 minutes" etc.
+                timestamp + DELAY_TO_CORRECT_DISPLAYED_VALUE,
                 System.currentTimeMillis(),
-                0, //DateUtils.DAY_IN_MILLIS,
+                0,
                 0);
     }
 

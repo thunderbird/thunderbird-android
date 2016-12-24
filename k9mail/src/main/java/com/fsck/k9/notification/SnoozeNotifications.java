@@ -16,10 +16,7 @@ import static com.fsck.k9.notification.NotificationController.platformSupportsEx
 
 /**
  * Handles posting snoozed messages as notifications.
- *
- * Created by odbol on 12/10/16.
  */
-
 public class SnoozeNotifications extends MailNotifications {
 
     private static final String TAG = "SnoozeNotifications";

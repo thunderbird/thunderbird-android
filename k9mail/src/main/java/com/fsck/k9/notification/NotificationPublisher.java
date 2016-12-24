@@ -13,8 +13,6 @@ import com.fsck.k9.controller.MessagingController;
  * Posts notifications that are scheduled for the future by SnoozeController.
  *
  * From https://gist.github.com/BrandonSmith/6679223
- *
- * Created by odbol on 12/10/16.
  */
 public class NotificationPublisher extends BroadcastReceiver {
 

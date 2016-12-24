@@ -61,9 +61,6 @@ class NotificationIds {
     }
 
     public static int getNewSnoozedMessageId(Account account, int index) {
-//        if (index < 0 || index >= NUMBER_OF_SNOOZED_NOTIFICATIONS) {
-//            throw new IndexOutOfBoundsException("Invalid value: " + index);
-//        }
         // just recycle/overwrite if they have too many snoozes
         index = index % NUMBER_OF_SNOOZED_NOTIFICATIONS;
 
