@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class NotificationPublisher extends BroadcastReceiver {
 
     private static final String TAG = "NotificationPublisher";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public static final String ACTION_OPEN_MESSAGE = "com.fsck.k9.notification.ACTION_OPEN_MESSAGE";
     public static final String ACTION_SNOOZE_AGAIN = "com.fsck.k9.notification.ACTION_SNOOZE_AGAIN";

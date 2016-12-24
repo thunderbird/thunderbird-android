@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class SnoozeNotifications extends MailNotifications {
 
     private static final String TAG = "SnoozeNotifications";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static int curSnoozeIdx = 0;
 
