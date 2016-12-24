@@ -27,15 +27,17 @@ abstract class BaseNotifications {
 
     protected NotificationCompat.Builder createBigTextStyleNotification(Account account, NotificationHolder holder,
             int notificationId) {
-        return createBigTextStyleNotification(account, holder, notificationId, true);
+
+        String groupKey = NotificationGroupKeys.getGroupKey(account);
+        return createBigTextStyleNotification(account, holder, notificationId, groupKey, true);
     }
 
 
     protected NotificationCompat.Builder createBigTextStyleNotification(Account account, NotificationHolder holder,
-                                                                        int notificationId, boolean enableBigStyle) {
+                                                                        int notificationId, String groupKey,
+                                                                        boolean enableBigStyle) {
         String accountName = controller.getAccountName(account);
         NotificationContent content = holder.content;
-        String groupKey = NotificationGroupKeys.getGroupKey(account);
 
         NotificationCompat.Builder builder = createAndInitializeNotificationBuilder(account)
                 .setTicker(content.summary)

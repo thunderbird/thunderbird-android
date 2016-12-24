@@ -9,7 +9,6 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mailstore.LocalMessage;
 
@@ -100,7 +99,7 @@ public class SnoozeNotifications extends MailNotifications {
                                                                                boolean enableBigStyle,
                                                                                int notificationId) {
 
-        NotificationCompat.Builder builder = createBigTextStyleNotification(account, holder, notificationId, enableBigStyle);
+        NotificationCompat.Builder builder = createBigTextStyleNotification(account, holder, notificationId, null, enableBigStyle);
 
         NotificationContent content = holder.content;
         addReplyAction(builder, content, notificationId);
