@@ -68,7 +68,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
-        assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * 1 + NotificationIds.OFFSET_NEW_MAIL_STACKED, notificationId);
+        assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * 1 + NotificationIds.OFFSET_NEW_MAIL_STACKED + notificationIndex, notificationId);
     }
 
     @Test
