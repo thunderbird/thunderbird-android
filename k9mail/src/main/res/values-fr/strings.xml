@@ -104,7 +104,7 @@ Veuillez rapporter les bogues, recommander de nouvelles fonctions et poser vos q
   <string name="done_action">Terminé</string>
   <string name="discard_action">Jeter</string>
   <string name="save_draft_action">Enregistrer comme brouillon</string>
-  <string name="check_mail_action">Vérif. courriels</string>
+  <string name="check_mail_action">Relève des courriels</string>
   <string name="send_messages_action">Envoyer les messages</string>
   <string name="refresh_folders_action">Rafraîchir la liste des dossiers</string>
   <string name="filter_folders_action">Trouver un dossier</string>
@@ -182,8 +182,8 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="notification_certificate_error_text">Vérifier vos paramètres de serveur</string>
   <string name="notification_authentication_error_title">Échec d\'authentification</string>
   <string name="notification_authentication_error_text">Échec d\'authentification pour <xliff:g id="account">%s</xliff:g>. Mettre à jour les paramètres du serveur.</string>
-  <string name="notification_bg_sync_ticker">Vérification des courriels\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
-  <string name="notification_bg_sync_title">Vérification des courriels</string>
+  <string name="notification_bg_sync_ticker">Relève des courriels\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_title">Relève des courriels</string>
   <string name="notification_bg_send_ticker">Envoi du courriel\u00A0: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Envoi du courriel</string>
   <string name="notification_bg_title_separator">:</string>
@@ -405,7 +405,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="idle_refresh_period_48min">Toutes les 48 minutes</string>
   <string name="idle_refresh_period_60min">Toutes les 60 minutes</string>
   <string name="account_setup_options_notify_label">M\'avertir lors de l\'arrivée de courriels</string>
-  <string name="account_setup_options_notify_sync_label">M\'avertir lors de la vérification des courriels</string>
+  <string name="account_setup_options_notify_sync_label">M\'avertir lors de la relève des courriels</string>
   <string name="account_setup_options_mail_display_count_label">Nombre de messages à afficher</string>
   <string name="account_setup_options_mail_display_count_10">10 messages</string>
   <string name="account_setup_options_mail_display_count_25">25 messages</string>
@@ -439,7 +439,7 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_settings_notify_sync_label">Notifications de synchronisation</string>
   <string name="account_settings_email_label">Votre adresse courriel</string>
   <string name="account_settings_notify_summary">Notification dans la barre d\'état à la réception d\'un courriel</string>
-  <string name="account_settings_notify_sync_summary">Notification dans la barre d\'état lors de la vérification des courriels</string>
+  <string name="account_settings_notify_sync_summary">Notification dans la barre d\'état lors de la relève des courriels</string>
   <string name="account_settings_notify_self_label">Inclure les courriels sortants</string>
   <string name="account_settings_notify_self_summary">Afficher une notification pour les messages que j\'ai envoyés</string>
   <string name="account_notify_contacts_mail_only_label">Contacts seulement</string>
