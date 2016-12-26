@@ -5,6 +5,10 @@
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.200" versioncode="23200">
+        <change>Fixed bug with status display of signed messages</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.200-RC2" versioncode="23191">
         <change>Fixed crash when opening attached messages</change>
         <change>Don't crash when message list contains messages for which we couldn't extract a preview</change>
