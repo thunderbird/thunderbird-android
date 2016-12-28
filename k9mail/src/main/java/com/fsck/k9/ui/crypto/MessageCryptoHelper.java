@@ -58,13 +58,14 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 public class MessageCryptoHelper {
     private static final int INVALID_OPENPGP_RESULT_CODE = -1;
     private static final MimeBodyPart NO_REPLACEMENT_PART = null;
-    public static final int REQUEST_CODE_USER_INTERACTION = 124;
-    public static final int PROGRESS_SIZE_THRESHOLD = 4096;
+    private static final int REQUEST_CODE_USER_INTERACTION = 124;
+    private static final int PROGRESS_SIZE_THRESHOLD = 4096;
 
 
     private final Context context;
     private final String openPgpProviderPackage;
     private final Object callbackLock = new Object();
+    private final Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<>();
 
     @Nullable
     private MessageCryptoCallback callback;
@@ -76,7 +77,6 @@ public class MessageCryptoHelper {
 
 
     private MessageCryptoAnnotations messageAnnotations;
-    private Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<>();
     private CryptoPart currentCryptoPart;
     private Intent currentCryptoResult;
     private Intent userInteractionResultIntent;
@@ -594,7 +594,7 @@ public class MessageCryptoHelper {
     }
 
     private void cleanupAfterProcessingFinished() {
-        partsToDecryptOrVerify = null;
+        partsToDecryptOrVerify.clear();
         openPgpApi = null;
         if (openPgpServiceConnection != null) {
             openPgpServiceConnection.unbindFromService();
