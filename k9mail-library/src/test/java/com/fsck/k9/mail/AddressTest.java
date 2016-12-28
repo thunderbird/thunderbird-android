@@ -7,6 +7,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -88,5 +89,21 @@ public class AddressTest {
         assertEquals("\"sa\"mp\"le\"", Address.quoteString("sa\"mp\"le"));
         assertEquals("\"sa\"mp\"le\"", Address.quoteString("\"sa\"mp\"le\""));
         assertEquals("\"\"\"", Address.quoteString("\""));
+    }
+
+    @Test
+    public void hashCode_withoutAddress() throws Exception {
+        Address address = Address.parse("name only")[0];
+        assertNull(address.getAddress());
+        
+        address.hashCode();
+    }
+
+    @Test
+    public void hashCode_withoutPersonal() throws Exception {
+        Address address = Address.parse("alice@example.org")[0];
+        assertNull(address.getPersonal());
+        
+        address.hashCode();
     }
 }
