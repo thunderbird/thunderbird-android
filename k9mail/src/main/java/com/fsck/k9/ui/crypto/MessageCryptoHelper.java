@@ -554,8 +554,12 @@ public class MessageCryptoHelper {
     }
 
     private void onCryptoOperationCanceled() {
-        CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpCanceledAnnotation();
-        addCryptoResultAnnotationToMessage(errorPart);
+        // there are weird states that get us here when we're not actually processing any part. just skip in that case
+        // see https://github.com/k9mail/k-9/issues/1878
+        if (currentCryptoPart != null) {
+            CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpCanceledAnnotation();
+            addCryptoResultAnnotationToMessage(errorPart);
+        }
         onCryptoFinished();
     }
 
@@ -579,8 +583,12 @@ public class MessageCryptoHelper {
     }
 
     private void onCryptoFinished() {
-        currentCryptoPart = null;
-        partsToDecryptOrVerify.removeFirst();
+        if (currentCryptoPart != null) {
+            partsToDecryptOrVerify.removeFirst();
+            currentCryptoPart = null;
+        } else {
+            Log.e(K9.LOG_TAG, "Got to onCryptoFinished() with no part in processing!", new Throwable());
+        }
         decryptOrVerifyNextPart();
     }
 
