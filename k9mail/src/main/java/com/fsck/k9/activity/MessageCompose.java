@@ -533,7 +533,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void onDestroy() {
         super.onDestroy();
 
-        recipientPresenter.onActivityDestroy();
+        if (recipientPresenter != null)
+            recipientPresenter.onActivityDestroy();
     }
 
     /**
