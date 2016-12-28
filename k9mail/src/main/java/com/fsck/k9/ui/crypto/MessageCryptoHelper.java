@@ -583,6 +583,11 @@ public class MessageCryptoHelper {
     }
 
     private void onCryptoFinished() {
+        boolean currentPartIsFirstInQueue = partsToDecryptOrVerify.peekFirst() == currentCryptoPart;
+        if (!currentPartIsFirstInQueue) {
+            throw new IllegalStateException(
+                    "Trying to remove part from queue that is not the currently processed one!");
+        }
         if (currentCryptoPart != null) {
             partsToDecryptOrVerify.removeFirst();
             currentCryptoPart = null;
@@ -621,11 +626,13 @@ public class MessageCryptoHelper {
             throw new AssertionError("Callback may only be reattached for the same message!");
         }
         synchronized (callbackLock) {
-            if (queuedResult != null) {
-                Log.d(K9.LOG_TAG, "Returning cached result to reattached callback");
-            }
             this.callback = callback;
-            deliverResult();
+
+            boolean hasCachedResult = queuedResult != null || queuedPendingIntent != null;
+            if (hasCachedResult) {
+                Log.d(K9.LOG_TAG, "Returning cached result or pending intent to reattached callback");
+                deliverResult();
+            }
         }
     }
 
@@ -671,6 +678,8 @@ public class MessageCryptoHelper {
             callback.startPendingIntentForCryptoHelper(
                     queuedPendingIntent.getIntentSender(), REQUEST_CODE_USER_INTERACTION, null, 0, 0, 0);
             queuedPendingIntent = null;
+        } else {
+            throw new IllegalStateException("deliverResult() called with no result!");
         }
     }
 
