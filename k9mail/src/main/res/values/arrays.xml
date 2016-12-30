@@ -596,6 +596,7 @@
         <item>@string/idle_refresh_period_36min</item>
         <item>@string/idle_refresh_period_48min</item>
         <item>@string/idle_refresh_period_60min</item>
+        <item>@string/idle_refresh_period_custom</item>
     </string-array>
 
     <string-array name="idle_refresh_period_values" translatable="false">
@@ -608,6 +609,7 @@
         <item>36</item>
         <item>48</item>
         <item>60</item>
+        <item>0</item>
     </string-array>
 
     <string-array name="account_settings_vibrate_pattern_entries">

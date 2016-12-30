@@ -1,6 +1,7 @@
 
 package com.fsck.k9.activity.setup;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,6 +45,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
+import com.fsck.k9.preferences.TimePickerPreference;
 import com.fsck.k9.service.MailService;
 
 import org.openintents.openpgp.util.OpenPgpAppPreference;
@@ -93,6 +95,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_PUSH_POLL_ON_CONNECT = "push_poll_on_connect";
     private static final String PREFERENCE_MAX_PUSH_FOLDERS = "max_push_folders";
     private static final String PREFERENCE_IDLE_REFRESH_PERIOD = "idle_refresh_period";
+    private static final String PREFERENCE_IDLE_REFRESH_CUSTOM_PERIOD = "idle_refresh_custom_period";
     private static final String PREFERENCE_TARGET_MODE = "folder_target_mode";
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
     private static final String PREFERENCE_EXPUNGE_POLICY = "expunge_policy";
@@ -178,6 +181,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mPushPollOnConnect;
     private ListPreference mIdleRefreshPeriod;
+    private TimePickerPreference mIdleRefreshCustomPeriod;
     private ListPreference mMaxPushFolders;
     private boolean mHasCrypto = false;
     private OpenPgpAppPreference mCryptoApp;
@@ -523,6 +527,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
         mIdleRefreshPeriod = (ListPreference) findPreference(PREFERENCE_IDLE_REFRESH_PERIOD);
+        mIdleRefreshCustomPeriod = (TimePickerPreference) findPreference(PREFERENCE_IDLE_REFRESH_CUSTOM_PERIOD);
         mMaxPushFolders = (ListPreference) findPreference(PREFERENCE_MAX_PUSH_FOLDERS);
         if (mIsPushCapable) {
             mPushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
@@ -533,7 +538,11 @@ public class AccountSettings extends K9PreferenceActivity {
             updateRemoteSearchLimit(searchNumResults);
             //mRemoteSearchFullText.setChecked(mAccount.isRemoteSearchFullText());
 
-            mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
+            if(Arrays.asList(getResources().getStringArray(R.array.idle_refresh_period_values)).contains(Integer.toString(mAccount.getIdleRefreshMinutes())))
+                mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
+            else
+                mIdleRefreshPeriod.setValue("0");
+
             mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());
             mIdleRefreshPeriod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -541,6 +550,21 @@ public class AccountSettings extends K9PreferenceActivity {
                     int index = mIdleRefreshPeriod.findIndexOfValue(summary);
                     mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntries()[index]);
                     mIdleRefreshPeriod.setValue(summary);
+                    if (summary.equals("0"))
+                        mIdleRefreshCustomPeriod.setEnabled(true);
+                    else
+                        mIdleRefreshCustomPeriod.setEnabled(false);
+                    return false;
+                }
+            });
+
+            mIdleRefreshCustomPeriod.setSummary(mIdleRefreshCustomPeriod.getTime());
+            if (!mIdleRefreshPeriod.getValue().equals("0"))
+                mIdleRefreshCustomPeriod.setEnabled(false);
+            mIdleRefreshCustomPeriod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    final String summary = newValue.toString();
+                    mIdleRefreshCustomPeriod.setSummary(summary);
                     return false;
                 }
             });
@@ -819,7 +843,14 @@ public class AccountSettings extends K9PreferenceActivity {
         //IMAP stuff
         if (mIsPushCapable) {
             mAccount.setPushPollOnConnect(mPushPollOnConnect.isChecked());
-            mAccount.setIdleRefreshMinutes(Integer.parseInt(mIdleRefreshPeriod.getValue()));
+
+            if (mIdleRefreshPeriod.getValue().equals("0")) {
+                mAccount.setIdleRefreshMinutes(mIdleRefreshCustomPeriod.getTimeInMinutes());
+            }
+            else  {
+                mAccount.setIdleRefreshMinutes(Integer.parseInt(mIdleRefreshPeriod.getValue()));
+            }
+
             mAccount.setMaxPushFolders(Integer.parseInt(mMaxPushFolders.getValue()));
             mAccount.setAllowRemoteSearch(mCloudSearchEnabled.isChecked());
             mAccount.setRemoteSearchNumResults(Integer.parseInt(mRemoteSearchNumResults.getValue()));

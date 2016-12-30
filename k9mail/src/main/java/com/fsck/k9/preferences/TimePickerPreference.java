@@ -171,6 +171,9 @@ public class TimePickerPreference extends DialogPreference implements
     public String getTime() {
         return getPersistedString(this.defaultValue);
     }
+    public int getTimeInMinutes(){
+        return getHour()*60 + getMinute();
+    }
 
 }
 

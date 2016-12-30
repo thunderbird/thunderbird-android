@@ -177,6 +177,11 @@
                 android:entries="@array/idle_refresh_period_entries"
                 android:entryValues="@array/idle_refresh_period_values" />
 
+            <com.fsck.k9.preferences.TimePickerPreference
+                android:persistent="false"
+                android:key="idle_refresh_custom_period"
+                android:title="@string/idle_custom_refresh_label" />
+
         </PreferenceScreen>
 
     </PreferenceScreen>

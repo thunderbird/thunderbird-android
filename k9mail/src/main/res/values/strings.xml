@@ -487,6 +487,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="idle_refresh_period_36min">Every 36 minutes</string>
     <string name="idle_refresh_period_48min">Every 48 minutes</string>
     <string name="idle_refresh_period_60min">Every 60 minutes</string>
+    <string name="idle_refresh_period_custom">Custom</string>
+
+    <string name="idle_custom_refresh_label">Set custom interval to refresh</string>
 
     <string name="account_setup_options_notify_label">Notify me when mail arrives</string>
     <string name="account_setup_options_notify_sync_label">Notify me while mail is being checked</string>
