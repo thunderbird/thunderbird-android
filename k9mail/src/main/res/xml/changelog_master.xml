@@ -5,6 +5,10 @@
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.201" versioncode="23210">
+        <change>Fixed crash during database upgrade</change>
+        <change>Fixed various minor bugs</change>
+    </release>
     <release version="5.200" versioncode="23200">
         <change>Fixed bug with status display of signed messages</change>
         <change>Updated translations</change>
