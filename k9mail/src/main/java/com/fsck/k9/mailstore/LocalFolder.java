@@ -896,7 +896,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    public List<String> getAllMessageUids(final boolean includeDeleted) throws MessagingException {
+    public List<String> getAllMessageUids() throws MessagingException {
         try {
             return  localStore.database.execute(false, new DbCallback<List<String>>() {
                 @Override
@@ -910,8 +910,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         cursor = db.rawQuery(
                                 "SELECT uid " +
                                     "FROM messages " +
-                                        "WHERE empty = 0 AND " +
-                                        (includeDeleted ? "" : "deleted = 0 AND ") +
+                                        "WHERE empty = 0 AND deleted = 0 AND " +
                                         "folder_id = ? ORDER BY date DESC",
                                 new String[] { Long.toString(mFolderId) });
 

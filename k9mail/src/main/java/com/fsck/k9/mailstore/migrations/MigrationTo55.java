@@ -31,7 +31,7 @@ class MigrationTo55 {
             FetchProfile fp = new FetchProfile();
             fp.add(FetchProfile.Item.BODY);
             for (LocalFolder folder : folders) {
-                List<String> messageUids = folder.getAllMessageUids(false);
+                List<String> messageUids = folder.getAllMessageUids();
                 for (String messageUid : messageUids) {
                     LocalMessage localMessage = folder.getMessage(messageUid);
                     folder.fetch(Collections.singletonList(localMessage), fp, null);
