@@ -173,7 +173,10 @@ public class Address implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = mAddress.hashCode();
+        int hash = 0;
+        if (mAddress != null) {
+            hash += mAddress.hashCode();
+        }
         if (mPersonal != null) {
             hash += 3 * mPersonal.hashCode();
         }
