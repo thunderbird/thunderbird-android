@@ -896,6 +896,42 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
+    public List<String> getAllMessageUids() throws MessagingException {
+        try {
+            return  localStore.database.execute(false, new DbCallback<List<String>>() {
+                @Override
+                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    Cursor cursor = null;
+                    ArrayList<String> result = new ArrayList<>();
+
+                    try {
+                        open(OPEN_MODE_RO);
+
+                        cursor = db.rawQuery(
+                                "SELECT uid " +
+                                    "FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 0 AND " +
+                                        "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
+
+                        while (cursor.moveToNext()) {
+                            String uid = cursor.getString(0);
+                            result.add(uid);
+                        }
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return result;
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+    }
+
     public List<LocalMessage> getMessagesByUids(@NonNull List<String> uids) throws MessagingException {
         open(OPEN_MODE_RW);
         List<LocalMessage> messages = new ArrayList<>();
