@@ -291,7 +291,7 @@
                 android:layout_height="match_parent"
                 android:padding="6dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_action_expand_light"
+                android:src="?attr/iconActionExpand"
                 android:id="@+id/recipient_expander"
                 />
 
