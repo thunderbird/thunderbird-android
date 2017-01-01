@@ -1006,7 +1006,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="messageview_crypto_warning_title">Sicherheitswarnung</string>
   <string name="messageview_crypto_warning_revoked">Diese Nachricht wurde mit einem <b>zurückgezogenem Schlüssel</b> signiert!</string>
   <string name="messageview_crypto_warning_expired">Diese Nachricht wurde mit einem <b>abgelaufenem Schlüssel</b> signiert!</string>
-  <string name="messageview_crypto_warning_insecure">Diese Nachricht wurde mit einem <b>unsicherem Schlüssel</b> signiert!</string>
+  <string name="messageview_crypto_warning_insecure">Diese Nachricht wurde mit einem <b>unsicheren Schlüssel</b> signiert!</string>
   <string name="messageview_crypto_warning_error">Es gab einen Fehler in der Signatur dieser Nachricht!</string>
   <string name="recipient_error_non_ascii">Sonderzeichen werden derzeit nicht unterstützt!</string>
   <string name="recipient_error_parse_failed">Fehler beim Einlesen der Adresse!</string>
