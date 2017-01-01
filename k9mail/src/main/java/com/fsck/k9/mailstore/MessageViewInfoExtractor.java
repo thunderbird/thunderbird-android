@@ -21,6 +21,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.Viewable;
+import com.fsck.k9.mail.internet.Viewable.Flowed;
+import com.fsck.k9.mailstore.util.FlowedMessageUtils;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import com.fsck.k9.ui.crypto.MessageCryptoSplitter;
@@ -224,8 +226,13 @@ public class MessageViewInfoExtractor {
             String t = MessageExtractor.getTextFromPart(part);
             if (t == null) {
                 t = "";
+            } else if (viewable instanceof Flowed) {
+                t = FlowedMessageUtils.deflow(t, false);
+                t = HtmlConverter.textToHtml(t);
             } else if (viewable instanceof Text) {
                 t = HtmlConverter.textToHtml(t);
+            } else if (!(viewable instanceof Html)) {
+                throw new IllegalStateException("unhandled case!");
             }
             html.append(t);
         } else if (viewable instanceof Alternative) {
@@ -257,6 +264,10 @@ public class MessageViewInfoExtractor {
                 t = "";
             } else if (viewable instanceof Html) {
                 t = HtmlConverter.htmlToText(t);
+            } else if (viewable instanceof Flowed) {
+                t = FlowedMessageUtils.deflow(t, false);
+            } else if (!(viewable instanceof Text)) {
+                throw new IllegalStateException("unhandled case!");
             }
             text.append(t);
         } else if (viewable instanceof Alternative) {

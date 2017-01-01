@@ -47,6 +47,7 @@ import static org.mockito.Mockito.when;
 public class MessageViewInfoExtractorTest {
     public static final String BODY_TEXT = "K-9 Mail rocks :>";
     public static final String BODY_TEXT_HTML = "K-9 Mail rocks :&gt;";
+    public static final String BODY_TEXT_FLOWED = "K-9 Mail rocks :> \r\nflowed line\r\nnot flowed line";
 
 
     private MessageViewInfoExtractor messageViewInfoExtractor;
@@ -73,6 +74,7 @@ public class MessageViewInfoExtractorTest {
         // Create message
         MimeMessage message = new MimeMessage();
         MimeMessageHelper.setBody(message, body);
+        message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain; format=flowed");
 
         // Prepare fixture
         HtmlSanitizer htmlSanitizer = mock(HtmlSanitizer.class);
@@ -112,6 +114,33 @@ public class MessageViewInfoExtractorTest {
                 "<pre class=\"k9mail\">" +
                 "K-9 Mail rocks :&gt;" +
                 "</pre>";
+
+        assertEquals(expectedText, container.text);
+        assertEquals(expectedHtml, getHtmlBodyText(container.html));
+    }
+
+    @Test
+    public void testTextPlainFormatFlowed() throws MessagingException {
+        // Create text/plain body
+        TextBody body = new TextBody(BODY_TEXT_FLOWED);
+
+        // Create message
+        MimeMessage message = new MimeMessage();
+        MimeMessageHelper.setBody(message, body);
+        message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain; format=flowed");
+
+        // Extract text
+        List<Part> outputNonViewableParts = new ArrayList<>();
+        ArrayList<Viewable> outputViewableParts = new ArrayList<>();
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+
+        String expectedText = "K-9 Mail rocks :> flowed line\r\n" +
+                "not flowed line";
+        String expectedHtml =
+                "<pre class=\"k9mail\">" +
+                        "K-9 Mail rocks :&gt; flowed line<br />not flowed line" +
+                        "</pre>";
 
         assertEquals(expectedText, container.text);
         assertEquals(expectedHtml, getHtmlBodyText(container.html));
