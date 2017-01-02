@@ -258,6 +258,10 @@ public class K9 extends Application {
     private static int sPgpInlineDialogCounter;
     private static int sPgpSignOnlyDialogCounter;
 
+    private static boolean mUseMasterPassword;
+    private static int mMasterPasswordInterval;
+    private static String mMasterPassword;
+
 
     /**
      * @see #areDatabasesUpToDate()
@@ -498,6 +502,10 @@ public class K9 extends Application {
         editor.putInt("pgpInlineDialogCounter", sPgpInlineDialogCounter);
         editor.putInt("pgpSignOnlyDialogCounter", sPgpSignOnlyDialogCounter);
 
+        editor.putBoolean("useMasterPassword",mUseMasterPassword);
+        editor.putInt("masterPasswordInterval",mMasterPasswordInterval);
+        editor.putString("masterPassword",mMasterPassword);
+
         fontSizes.save(editor);
     }
 
@@ -610,6 +618,8 @@ public class K9 extends Application {
         });
 
         notifyObservers();
+
+        registerActivityLifecycleCallbacks(new MasterPassword());
     }
 
     /**
@@ -763,6 +773,10 @@ public class K9 extends Application {
         themeValue = storage.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
         K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
         K9.setUseFixedMessageViewTheme(storage.getBoolean("fixedMessageViewTheme", true));
+
+        K9.setUseMasterPassword(storage.getBoolean("useMasterPassword",false));
+        K9.setMasterPassword(storage.getString("masterPassword",""));
+        K9.setMasterPasswordInterval(storage.getInt("masterPasswordInterval",1));
     }
 
     /**
@@ -1372,5 +1386,25 @@ public class K9 extends Application {
             editor.putInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, LocalStore.DB_VERSION);
             editor.commit();
         }
+    }
+
+    public static synchronized boolean useMasterPassword() { return mUseMasterPassword; }
+
+    public static synchronized void setUseMasterPassword(boolean i) {
+        mUseMasterPassword = i;
+    }
+
+    public static synchronized int getMasterPasswordInterval() { return mMasterPasswordInterval; }
+
+    public static synchronized void setMasterPasswordInterval(int i) {
+        mMasterPasswordInterval = i;
+    }
+
+    public static synchronized String getMasterPassword() {
+        return mMasterPassword;
+    }
+
+    public static synchronized void setMasterPassword(String i) {
+         mMasterPassword = i;
     }
 }

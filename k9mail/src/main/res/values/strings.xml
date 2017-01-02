@@ -1207,4 +1207,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
     <string name="unsigned_text_divider_label">Unsigned Text</string>
 
+    <string name="master_password_dialog_title">Password</string>
+    <string name="master_password_prompt_intro">Enter password to access the application</string>
+    <string name="master_password_prompt">Password</string>
+    <string name="use_master_password_cb_label">Use master password</string>
+    <string name="use_master_password_summary">Require password before opening the application</string>
+    <string name="master_password_interval_label">Ask password after</string>
 </resources>

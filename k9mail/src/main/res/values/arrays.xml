@@ -754,4 +754,21 @@
         <item>NEVER</item>
         <item>WHEN_IN_LANDSCAPE</item>
     </string-array>
+
+    <string-array name="master_password_interval_values" translatable="false">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+
+    <string-array name="master_password_interval_entries">
+        <item>1 min</item>
+        <item>5 min</item>
+        <item>10 min</item>
+        <item>30 min</item>
+        <item>60 min</item>
+    </string-array>
+
 </resources>
