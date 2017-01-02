@@ -23,6 +23,8 @@ import static org.junit.Assert.fail;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class ImapResponseParserTest {
+    private PeekableInputStream peekableInputStream;
+
 
     @Test
     public void testSimpleOkResponse() throws IOException {
@@ -231,7 +233,7 @@ public class ImapResponseParserTest {
     @Test
     public void testParseLiteralWithConsumingCallbackReturningNull() throws Exception {
         ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
-        TestImapResponseCallback callback = new TestImapResponseCallback(4, "cheeseburger");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndReturn(4, "cheeseburger");
 
         ImapResponse response = parser.readResponse(callback);
 
@@ -242,37 +244,88 @@ public class ImapResponseParserTest {
     @Test
     public void testParseLiteralWithNonConsumingCallbackReturningNull() throws Exception {
         ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
-        TestImapResponseCallback callback = new TestImapResponseCallback(0, null);
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndReturn(0, null);
 
         ImapResponse response = parser.readResponse(callback);
 
         assertEquals(1, response.size());
         assertEquals("test", response.getString(0));
         assertTrue(callback.foundLiteralCalled);
+        assertAllInputConsumed();
+    }
+
+    @Test
+    public void readResponse_withPartlyConsumingCallbackReturningNull_shouldThrow() throws Exception {
+        ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndReturn(2, null);
+
+        try {
+            parser.readResponse(callback);
+            fail();
+        } catch (AssertionError e) {
+            assertEquals("Callback consumed some data but returned no result", e.getMessage());
+        }
+    }
+
+    @Test
+    public void readResponse_withPartlyConsumingCallbackThatThrows_shouldReadAllDataAndThrow() throws Exception {
+        ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndThrow(2);
+
+        try {
+            parser.readResponse(callback);
+            fail();
+        } catch (ImapResponseParserException e) {
+            assertEquals("readResponse(): Exception in callback method", e.getMessage());
+            assertEquals(ImapResponseParserTestException.class, e.getCause().getClass());
+        }
+
+        assertAllInputConsumed();
+    }
+
+    @Test
+    public void readResponse_withCallbackThatThrowsRepeatedly_shouldConsumeAllInputAndThrowFirstException()
+            throws Exception {
+        ImapResponseParser parser = createParser("* {3}\r\none {3}\r\ntwo\r\n");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndThrow(3);
+
+        try {
+            parser.readResponse(callback);
+            fail();
+        } catch (ImapResponseParserException e) {
+            assertEquals("readResponse(): Exception in callback method", e.getMessage());
+            assertEquals(ImapResponseParserTestException.class, e.getCause().getClass());
+            assertEquals(0, ((ImapResponseParserTestException) e.getCause()).instanceNumber);
+        }
+
+        assertAllInputConsumed();
     }
 
     @Test
     public void testParseLiteralWithIncompleteConsumingCallbackReturningString() throws Exception {
         ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
-        TestImapResponseCallback callback = new TestImapResponseCallback(2, "ninja");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndReturn(2, "ninja");
 
         ImapResponse response = parser.readResponse(callback);
 
         assertEquals(1, response.size());
         assertEquals("ninja", response.getString(0));
+        assertAllInputConsumed();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testParseLiteralWithThrowingCallback() throws Exception {
         ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
-        ImapResponseCallback callback = new ImapResponseCallback() {
-            @Override
-            public Object foundLiteral(ImapResponse response, FixedLengthInputStream literal) throws Exception {
-                throw new RuntimeException();
-            }
-        };
+        ImapResponseCallback callback = TestImapResponseCallback.readBytesAndThrow(0);
 
-        parser.readResponse(callback);
+        try {
+            parser.readResponse(callback);
+            fail();
+        } catch (ImapResponseParserException e) {
+            assertEquals("readResponse(): Exception in callback method", e.getMessage());
+        }
+        
+        assertAllInputConsumed();
     }
 
     @Test(expected = IOException.class)
@@ -415,19 +468,34 @@ public class ImapResponseParserTest {
 
     private ImapResponseParser createParser(String response) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getBytes());
-        PeekableInputStream peekableInputStream = new PeekableInputStream(byteArrayInputStream);
+        peekableInputStream = new PeekableInputStream(byteArrayInputStream);
         return new ImapResponseParser(peekableInputStream);
     }
 
+    private void assertAllInputConsumed() throws IOException {
+        assertEquals(0, peekableInputStream.available());
+    }
 
-    private class TestImapResponseCallback implements ImapResponseCallback {
+
+    static class TestImapResponseCallback implements ImapResponseCallback {
         private final int readNumberOfBytes;
         private final Object returnValue;
+        private final boolean throwException;
+        private int exceptionCount = 0;
         public boolean foundLiteralCalled = false;
 
-        TestImapResponseCallback(int readNumberOfBytes, Object returnValue) {
+        public static TestImapResponseCallback readBytesAndReturn(int readNumberOfBytes, Object returnValue) {
+            return new TestImapResponseCallback(readNumberOfBytes, returnValue, false);
+        }
+
+        public static TestImapResponseCallback readBytesAndThrow(int readNumberOfBytes) {
+            return new TestImapResponseCallback(readNumberOfBytes, null, true);
+        }
+
+        private TestImapResponseCallback(int readNumberOfBytes, Object returnValue, boolean throwException) {
             this.readNumberOfBytes = readNumberOfBytes;
             this.returnValue = returnValue;
+            this.throwException = throwException;
         }
 
         @Override
@@ -439,12 +507,24 @@ public class ImapResponseParserTest {
                 long skippedBytes = literal.skip(skipBytes);
                 skipBytes -= skippedBytes;
             }
+            
+            if (throwException) {
+                throw new ImapResponseParserTestException(exceptionCount++);
+            }
 
             return returnValue;
         }
     }
 
-    private class TestUntaggedHandler implements UntaggedHandler {
+    static class ImapResponseParserTestException extends RuntimeException {
+        public final int instanceNumber;
+
+        public ImapResponseParserTestException(int instanceNumber) {
+            this.instanceNumber = instanceNumber;
+        }
+    } 
+    
+    static class TestUntaggedHandler implements UntaggedHandler {
         public final List<ImapResponse> responses = new ArrayList<ImapResponse>();
 
         @Override
