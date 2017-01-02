@@ -435,11 +435,10 @@ public class ImapResponseParserTest {
             foundLiteralCalled = true;
 
             int skipBytes = readNumberOfBytes;
-            long skippedBytes;
-            do {
-                skippedBytes = literal.skip(skipBytes);
+            while (skipBytes > 0) {
+                long skippedBytes = literal.skip(skipBytes);
                 skipBytes -= skippedBytes;
-            } while (skippedBytes > 0);
+            }
 
             return returnValue;
         }
