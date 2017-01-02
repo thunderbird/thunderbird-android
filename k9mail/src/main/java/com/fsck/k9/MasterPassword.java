@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -35,7 +36,7 @@ public class MasterPassword implements ActivityLifecycleCallbacks {
 
     public static String hash(String clearText) {
             try {
-                MessageDigest md = MessageDigest.getInstance("MD5");
+                MessageDigest md = MessageDigest.getInstance("SHA-1");
                 md.reset();
                 md.update(clearText.getBytes("UTF-8"));
                 byte[] bytes = md.digest();
@@ -46,9 +47,9 @@ public class MasterPassword implements ActivityLifecycleCallbacks {
                 f.close();
                 return res;
             } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+                Log.e(K9.LOG_TAG, "", e);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                Log.e(K9.LOG_TAG, "", e);
             }
         return clearText;
     }
