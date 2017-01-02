@@ -12,7 +12,11 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.Formatter;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -29,6 +33,25 @@ public class MasterPassword implements ActivityLifecycleCallbacks {
         (new PasswordDialog()).show(activity);
     }
 
+    public static String hash(String clearText) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.reset();
+                md.update(clearText.getBytes("UTF-8"));
+                byte[] bytes = md.digest();
+                Formatter f = new Formatter();
+                for (byte b : bytes)
+                    f.format("%02x", b);
+                String res = f.toString();
+                f.close();
+                return res;
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        return clearText;
+    }
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
@@ -78,12 +101,13 @@ public class MasterPassword implements ActivityLifecycleCallbacks {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String password = mPasswordView.getText().toString();
-                        if (password == K9.getMasterPassword()) {
+                        if (hash(password).equals(K9.getMasterPassword())) {
                             dialog.dismiss();
                             mLastActive = currentTimeMillis();
                             return;
                         }
                         mPasswordView.setText("");
+                        show(activity);
                     }
                 }
             );

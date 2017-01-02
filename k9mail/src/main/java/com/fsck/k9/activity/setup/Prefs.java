@@ -24,6 +24,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
+import com.fsck.k9.MasterPassword;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ColorPickerDialog;
@@ -99,7 +100,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_THREADED_VIEW = "threaded_view";
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
     private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
-    
+
     private static final String PREFERENCE_USE_MASTER_PASSWORD = "use_master_password";
     private static final String PREFERENCE_MASTER_PASSWORD = "master_password";
     private static final String PREFERENCE_MASTER_PASSWORD_INTERVAL = "master_password_interval";
@@ -220,8 +221,8 @@ public class Prefs extends K9PreferenceActivity {
         mStartIntegratedInbox.setChecked(K9.startIntegratedInbox());
 
         mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
-        
-        
+
+
 
         boolean canDeleteFromNotification = NotificationController.platformSupportsExtendedNotifications();
         CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 5 : 4];
@@ -436,7 +437,15 @@ public class Prefs extends K9PreferenceActivity {
         mUseMasterPassword.setChecked(K9.useMasterPassword());
 
         mMasterPassword = (EditTextPreference) findPreference(PREFERENCE_MASTER_PASSWORD);
-        mMasterPassword.setText(K9.getMasterPassword());
+        mMasterPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                String s = (String)o;
+                K9.setMasterPassword(MasterPassword.hash(s));
+                return true;
+            }
+        });
+        mMasterPassword.setText("");
 
         mMasterPasswordInterval = setupListPreference(PREFERENCE_MASTER_PASSWORD_INTERVAL,
                 Integer.toString(K9.getMasterPasswordInterval()));
@@ -542,7 +551,6 @@ public class Prefs extends K9PreferenceActivity {
         K9.setHideTimeZone(mHideTimeZone.isChecked());
 
         K9.setUseMasterPassword(mUseMasterPassword.isChecked());
-        K9.setMasterPassword(mMasterPassword.getText());
         K9.setMasterPasswordInterval(Integer.parseInt(mMasterPasswordInterval.getValue()));
 
         StorageEditor editor = storage.edit();
