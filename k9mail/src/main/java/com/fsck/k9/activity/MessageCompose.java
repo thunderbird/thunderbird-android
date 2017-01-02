@@ -1024,6 +1024,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        
+        if (isFinishing()) {
+            return false;
+        }
+        
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
 
         // Disable the 'Save' menu option if Drafts folder is set to -NONE-
