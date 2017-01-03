@@ -512,6 +512,7 @@
   <string name="edit_identity_signature_hint">(Nebūtina)</string>
   <string name="account_settings_signature_use_label">Naudoti parašą</string>
   <string name="account_settings_signature_label">Parašas</string>
+  <string name="account_settings_signature_treat_as_html_source_label">Traktuoti parašą kaip HTML kodą</string>
   <string name="default_identity_description">Pradinė tapatybė</string>
   <string name="choose_identity_title">Pasirinkite tapatybę</string>
   <string name="send_as">Siųsti kaip</string>

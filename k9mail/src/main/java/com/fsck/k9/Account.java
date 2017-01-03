@@ -334,6 +334,7 @@ public class Account implements BaseAccount, StoreConfig {
         Identity identity = new Identity();
         identity.setSignatureUse(true);
         identity.setSignature(context.getString(R.string.default_signature));
+        identity.setSignatureTreatAsHtmlSource(false);
         identity.setDescription(context.getString(R.string.default_identity_description));
         identities.add(identity);
 
@@ -1331,6 +1332,7 @@ public class Account implements BaseAccount, StoreConfig {
             String email = storage.getString(mUuid + "." + IDENTITY_EMAIL_KEY + "." + ident, null);
             boolean signatureUse = storage.getBoolean(mUuid  + ".signatureUse." + ident, true);
             String signature = storage.getString(mUuid + ".signature." + ident, null);
+            boolean signatureTreatAsHtmlSource = storage.getBoolean(mUuid  + ".signatureTreatAsHtmlSource." + ident, false);
             String description = storage.getString(mUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident, null);
             final String replyTo = storage.getString(mUuid + ".replyTo." + ident, null);
             if (email != null) {
@@ -1339,6 +1341,7 @@ public class Account implements BaseAccount, StoreConfig {
                 identity.setEmail(email);
                 identity.setSignatureUse(signatureUse);
                 identity.setSignature(signature);
+                identity.setSignatureTreatAsHtmlSource(signatureTreatAsHtmlSource);
                 identity.setDescription(description);
                 identity.setReplyTo(replyTo);
                 newIdentities.add(identity);
