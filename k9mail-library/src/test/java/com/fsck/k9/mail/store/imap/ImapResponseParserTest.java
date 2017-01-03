@@ -345,6 +345,20 @@ public class ImapResponseParserTest {
     }
 
     @Test
+    public void readResponse_withListResponseContainingNil() throws Exception {
+        ImapResponseParser parser = createParser("* LIST (\\NoInferiors) NIL INBOX\r\n");
+
+        ImapResponse response = parser.readResponse();
+
+        assertEquals(4, response.size());
+        assertEquals("LIST", response.get(0));
+        assertEquals(1, response.getList(1).size());
+        assertEquals("\\NoInferiors", response.getList(1).getString(0));
+        assertEquals(null, response.get(2));
+        assertEquals("INBOX", response.get(3));
+    }
+
+    @Test
     public void readResponse_withListAsFirstToken_shouldThrow() throws Exception {
         ImapResponseParser parser = createParser("* [1 2] 3\r\n");
 

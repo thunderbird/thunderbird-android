@@ -194,8 +194,7 @@ class ImapResponseParser {
         expect(' ');
         parseList(response, '(', ')');
         expect(' ');
-        //TODO: Add support for NIL
-        String delimiter = parseQuoted();
+        String delimiter = parseQuotedOrNil();
         response.add(delimiter);
         expect(' ');
         String name = parseString();
@@ -410,6 +409,22 @@ class ImapResponseParser {
             }
         }
         throw new IOException("parseQuoted(): end of stream reached");
+    }
+
+    private String parseQuotedOrNil() throws IOException {
+        int peek = inputStream.peek();
+        if (peek == '"') {
+            return parseQuoted();
+        } else {
+            parseNil();
+            return null;
+        }
+    }
+    
+    private void parseNil() throws IOException {
+        expect('N');
+        expect('I');
+        expect('L');
     }
 
     private String readStringUntil(char end) throws IOException {
