@@ -20,15 +20,17 @@ public class ListResponseTest {
                 createImapResponse("* LIST () \"/\" blurdybloop"),
                 createImapResponse("* LIST (\\Noselect) \"/\" foo"),
                 createImapResponse("* LIST () \"/\" foo/bar"),
+                createImapResponse("* LIST (\\NoInferiors) NIL INBOX"),
                 createImapResponse("X OK LIST completed")
         );
 
         List<ListResponse> result = ListResponse.parseList(responses);
 
-        assertEquals(3, result.size());
+        assertEquals(4, result.size());
         assertListResponseEquals(noAttributes(), "/", "blurdybloop", result.get(0));
         assertListResponseEquals(singletonList("\\Noselect"), "/", "foo", result.get(1));
         assertListResponseEquals(noAttributes(), "/", "foo/bar", result.get(2));
+        assertListResponseEquals(singletonList("\\NoInferiors"), null, "INBOX", result.get(3));
     }
 
     @Test
