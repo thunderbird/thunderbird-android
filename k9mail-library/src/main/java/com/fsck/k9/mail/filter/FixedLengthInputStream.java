@@ -69,4 +69,10 @@ public class FixedLengthInputStream extends InputStream {
     public String toString() {
         return String.format(Locale.US, "FixedLengthInputStream(in=%s, length=%d)", mIn.toString(), mLength);
     }
+
+    public void skipRemaining() throws IOException {
+        while (available() > 0) {
+            skip(available());
+        }
+    }
 }
