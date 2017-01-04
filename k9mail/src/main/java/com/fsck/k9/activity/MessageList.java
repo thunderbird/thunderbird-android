@@ -241,6 +241,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
+        if (isFinishing()) {
+            return;
+        }
+
         setIntent(intent);
 
         if (mFirstBackStackId >= 0) {
