@@ -507,10 +507,16 @@ public class LocalMessage extends MimeMessage {
         LocalMessage message = new LocalMessage(localStore);
         super.copy(message);
 
+        message.mReference = mReference;
         message.mId = mId;
         message.mAttachmentCount = mAttachmentCount;
         message.mSubject = mSubject;
         message.mPreview = mPreview;
+        message.mThreadId = mThreadId;
+        message.mRootId = mRootId;
+        message.messagePartId = messagePartId;
+        message.mimeType = mimeType;
+        message.previewType = previewType;
 
         return message;
     }
@@ -532,14 +538,6 @@ public class LocalMessage extends MimeMessage {
             mReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getName(), mUid, null);
         }
         return mReference;
-    }
-
-    @Override
-    protected void copy(MimeMessage destination) {
-        super.copy(destination);
-        if (destination instanceof LocalMessage) {
-            ((LocalMessage)destination).mReference = mReference;
-        }
     }
 
     @Override
