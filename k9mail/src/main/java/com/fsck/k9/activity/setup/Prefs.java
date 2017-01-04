@@ -214,8 +214,8 @@ public class Prefs extends K9PreferenceActivity {
         mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
 
         boolean canDeleteFromNotification = NotificationController.platformSupportsExtendedNotifications();
-        CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 5 : 4];
-        boolean[] confirmActionValues = new boolean[canDeleteFromNotification ? 5 : 4];
+        CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 6 : 5];
+        boolean[] confirmActionValues = new boolean[confirmActionEntries.length];
         int index = 0;
 
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_action_delete);
@@ -230,6 +230,8 @@ public class Prefs extends K9PreferenceActivity {
         confirmActionValues[index++] = K9.confirmSpam();
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_menu_discard);
         confirmActionValues[index++] = K9.confirmDiscardMessage();
+        confirmActionEntries[index] = getString(R.string.global_settings_confirm_menu_mark_all_read);
+        confirmActionValues[index++] = K9.confirmMarkAllRead();
 
         mConfirmActions.setItems(confirmActionEntries);
         mConfirmActions.setCheckedItems(confirmActionValues);
@@ -466,6 +468,7 @@ public class Prefs extends K9PreferenceActivity {
         }
         K9.setConfirmSpam(mConfirmActions.getCheckedItems()[index++]);
         K9.setConfirmDiscardMessage(mConfirmActions.getCheckedItems()[index++]);
+        K9.setConfirmMarkAllRead(mConfirmActions.getCheckedItems()[index++]);
 
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());
