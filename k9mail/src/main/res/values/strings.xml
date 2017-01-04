@@ -94,6 +94,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Compose</string>
+    <string name="compose_title_redirect">Redirect</string>
     <string name="compose_title_reply">Reply</string>
     <string name="compose_title_reply_all">Reply all</string>
     <string name="compose_title_forward">Forward</string>
@@ -125,6 +126,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="delete_action">Delete</string>
     <string name="archive_action">Archive</string>
     <string name="spam_action">Spam</string>
+    <string name="redirect_action">Redirect</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
     <string name="single_message_options_action">Send…</string>

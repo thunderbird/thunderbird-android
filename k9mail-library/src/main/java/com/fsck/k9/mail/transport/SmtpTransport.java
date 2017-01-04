@@ -508,6 +508,13 @@ public class SmtpTransport extends Transport {
     public void sendMessage(Message message) throws MessagingException {
         List<Address> addresses = new ArrayList<Address>();
         {
+            addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.RESENT_TO)));
+            addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.RESENT_CC)));
+            addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.RESENT_BCC)));
+        }
+        message.setRecipients(RecipientType.RESENT_BCC, null);
+        if(addresses.isEmpty())
+        {
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.TO)));
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.CC)));
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.BCC)));
@@ -553,7 +560,10 @@ public class SmtpTransport extends Transport {
         }
 
         boolean entireMessageSent = false;
-        Address[] from = message.getFrom();
+        Address[] from = message.getResentFrom();
+        if (from.length == 0) {
+            from = message.getFrom();
+        }
         try {
             executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
                     + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""));

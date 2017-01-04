@@ -12,9 +12,11 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
@@ -23,9 +25,15 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mailstore.BinaryMemoryBody;
+import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.MessageBuilder.Callback;
+
+import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,6 +71,15 @@ public class MessageBuilderTest {
     public static final String BOUNDARY_1 = "----boundary1";
     public static final String BOUNDARY_2 = "----boundary2";
     public static final String BOUNDARY_3 = "----boundary3";
+
+    public static final String RESENT_HEADERS = "" +
+            "Resent-Message-ID: " + TEST_MESSAGE_ID + "\r\n" +
+            "Resent-From: tester <test@example.org>\r\n" +
+            "Resent-BCC: bcc recip <bcc@example.org>\r\n" +
+            "Resent-CC: cc recip <cc@example.org>\r\n" +
+            "Resent-To: recip 1 <to1@example.org>,recip 2 <to2@example.org>\r\n" +
+            "Resent-Date: Sun, 26 Apr 1970 17:46:40 +0000\r\n" +
+            "";
 
     public static final String MESSAGE_HEADERS = "" +
             "Date: Sun, 26 Apr 1970 17:46:40 +0000\r\n" +
@@ -131,6 +148,10 @@ public class MessageBuilderTest {
             "\r\n" +
             "--" + BOUNDARY_1 + "--\r\n";
 
+    public static final String RESENT_TEST_MESSAGE = "" +
+            RESENT_HEADERS +
+            MESSAGE_HEADERS + "\r\n" +
+            MESSAGE_CONTENT;
 
     private Application context;
     private MessageIdGenerator messageIdGenerator;
@@ -257,6 +278,15 @@ public class MessageBuilderTest {
         verifyNoMoreInteractions(anotherCallback);
     }
 
+    @Test
+    public void build_withResentMessage_shouldSucceed() throws Exception {
+        MessageBuilder messageBuilder = createResentMessageBuilder();
+        messageBuilder.buildAsync(callback);
+
+        MimeMessage message = getMessageFromCallback();
+        assertEquals(RESENT_TEST_MESSAGE, getMessageContents(message));
+    }
+
     private MimeMessage getMessageFromCallback() {
         ArgumentCaptor<MimeMessage> mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(callback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(false));
@@ -316,6 +346,40 @@ public class MessageBuilderTest {
 
     private MessageBuilder createHtmlMessageBuilder() {
         return createSimpleMessageBuilder().setMessageFormat(SimpleMessageFormat.HTML);
+    }
+
+    private MessageBuilder createResentMessageBuilder() {
+        MessageReference messageReference = mock(MessageReference.class);
+        LocalMessage localMessage = mock(LocalMessage.class);
+        MimeMessage referenceMessage = new MimeMessage();
+        when(messageReference.restoreToLocalMessage(any(Context.class))).thenReturn(localMessage);
+        when(localMessage.cloneAsSuper(true)).thenReturn(referenceMessage);
+
+        Identity identity = createIdentity();
+        referenceMessage.setSentDate(SENT_DATE, true);
+        referenceMessage.setFrom(new Address(identity.getEmail(), identity.getName()));
+        referenceMessage.setRecipients(RecipientType.TO, TEST_TO);
+        referenceMessage.setRecipients(RecipientType.CC, TEST_CC);
+        referenceMessage.setRecipients(RecipientType.BCC, TEST_BCC);
+        referenceMessage.setSubject(TEST_SUBJECT);
+        referenceMessage.setHeader("User-Agent", "K-9 Mail for Android");
+        referenceMessage.setInReplyTo("inreplyto");
+        referenceMessage.setReferences("references");
+        referenceMessage.setMessageId(TEST_MESSAGE_ID);
+        referenceMessage.setHeader("MIME-Version", "1.0");
+
+        String bodyText = MESSAGE_CONTENT;
+        BinaryMemoryBody resentMessageBody = new BinaryMemoryBody(bodyText.getBytes(), MimeUtil.ENC_8BIT);
+
+        return new ResentMessageBuilder(context, messageIdGenerator, boundaryGenerator)
+                .setResentMessageReference(messageReference)
+                .setResentTo(Arrays.asList(TEST_TO))
+                .setResentCc(Arrays.asList(TEST_CC))
+                .setResentBcc(Arrays.asList(TEST_BCC))
+                .setResentDate(SENT_DATE)
+                .setResentHideTimeZone(true)
+                .setResentIdentity(identity)
+                .setResentBody(resentMessageBody);
     }
 
     private Identity createIdentity() {

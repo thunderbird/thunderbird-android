@@ -39,6 +39,12 @@ class TestMessage extends MimeMessage {
                 return new Address[0];
             case BCC:
                 return new Address[0];
+            case RESENT_TO:
+                return new Address[0];
+            case RESENT_CC:
+                return new Address[0];
+            case RESENT_BCC:
+                return new Address[0];
         }
 
         throw new AssertionError("Missing switch case: " + type);
