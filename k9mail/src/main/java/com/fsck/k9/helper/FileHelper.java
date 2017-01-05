@@ -51,16 +51,17 @@ public class FileHelper {
         }
         // Get the extension of the file, if any.
         int index = filename.lastIndexOf('.');
-        String format;
+        String name;
+        String extension;
         if (index != -1) {
-            String name = filename.substring(0, index);
-            String extension = filename.substring(index);
-            format = name + "-%d" + extension;
+            name = filename.substring(0, index);
+            extension = filename.substring(index);
         } else {
-            format = filename + "-%d";
+            name = filename;
+            extension = "";
         }
         for (int i = 2; i < Integer.MAX_VALUE; i++) {
-            file = new File(directory, String.format(Locale.US, format, i));
+            file = new File(directory, String.format(Locale.US, "%s-%d%s", name, i, extension));
             if (!file.exists()) {
                 return file;
             }
