@@ -45,7 +45,7 @@ class ImapResponseParser {
             }
 
             if (exception != null) {
-                throw new RuntimeException("readResponse(): Exception in callback method", exception);
+                throw new ImapResponseParserException("readResponse(): Exception in callback method", exception);
             }
 
             return response;
@@ -354,26 +354,32 @@ class ImapResponseParser {
         if (response.getCallback() != null) {
             FixedLengthInputStream fixed = new FixedLengthInputStream(inputStream, size);
 
+            Exception callbackException = null;
             Object result = null;
             try {
                 result = response.getCallback().foundLiteral(response, fixed);
             } catch (IOException e) {
-                // Pass IOExceptions through
                 throw e;
             } catch (Exception e) {
-                // Catch everything else and save it for later.
-                exception = e;
+                callbackException = e;
             }
 
-            // Check if only some of the literal data was read
-            int available = fixed.available();
-            if (available > 0 && available != size) {
-                // If so, skip the rest
-                while (fixed.available() > 0) {
-                    fixed.skip(fixed.available());
+            boolean someDataWasRead = fixed.available() != size;
+            if (someDataWasRead) {
+                if (result == null && callbackException == null) {
+                    throw new AssertionError("Callback consumed some data but returned no result");
                 }
+
+                fixed.skipRemaining();
             }
 
+            if (callbackException != null) {
+                if (exception == null) {
+                    exception = callbackException;
+                }
+                return "EXCEPTION";
+            }
+            
             if (result != null) {
                 return result;
             }
