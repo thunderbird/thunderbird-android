@@ -241,6 +241,13 @@ public class K9 extends Application {
     private static boolean mHideUserAgent = false;
     private static boolean mHideTimeZone = false;
 
+    private static boolean mCertificateErrorNotificationEnabled = true;
+    private static boolean mAuthenticationErrorNotificationEnabled = true;
+    private static boolean mSendingNotificationEnabled = true;
+    private static boolean mSendFailedNotificationEnabled = true;
+    private static boolean mFetchingMailNotificationEnabled = true;
+    private static boolean mNewMailNotificationEnabled = true;
+
     private static SortType mSortType;
     private static Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
 
@@ -475,6 +482,13 @@ public class K9 extends Application {
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmDeleteFromNotification", mConfirmDeleteFromNotification);
+
+        editor.putBoolean("certificateErrorNotificationEnabled", mCertificateErrorNotificationEnabled);
+        editor.putBoolean("authenticationErrorNotificationEnabled", mAuthenticationErrorNotificationEnabled);
+        editor.putBoolean("sendingNotificationEnabled", mSendingNotificationEnabled);
+        editor.putBoolean("sendFailedNotificationEnabled", mSendFailedNotificationEnabled);
+        editor.putBoolean("fetchingMailNotificationEnabled", mFetchingMailNotificationEnabled);
+        editor.putBoolean("newMailNotificationEnabled", mNewMailNotificationEnabled);
 
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
@@ -722,6 +736,13 @@ public class K9 extends Application {
             sSplitViewMode = SplitViewMode.valueOf(splitViewMode);
         }
 
+        mCertificateErrorNotificationEnabled = storage.getBoolean("certificateErrorNotificationEnabled", true);
+        mAuthenticationErrorNotificationEnabled = storage.getBoolean("authenticationErrorNotificationEnabled", true);
+        mSendingNotificationEnabled = storage.getBoolean("sendingNotificationEnabled", true);
+        mSendFailedNotificationEnabled = storage.getBoolean("sendFailedNotificationEnabled", true);
+        mFetchingMailNotificationEnabled = storage.getBoolean("fetchingMailNotificationEnabled", true);
+        mNewMailNotificationEnabled = storage.getBoolean("newMailNotificationEnabled", true);
+
         mAttachmentDefaultPath = storage.getString("attachmentdefaultpath",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
         sUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true);
@@ -946,6 +967,54 @@ public class K9 extends Application {
 
     public static void setQuietTimeStarts(String quietTimeStarts) {
         mQuietTimeStarts = quietTimeStarts;
+    }
+
+    public static boolean isCertificateErrorNotificationEnabled() {
+        return mCertificateErrorNotificationEnabled;
+    }
+
+    public static void setCertificateErrorNotificationEnabled(boolean mCertificateErrorNotificationEnabled) {
+        K9.mCertificateErrorNotificationEnabled = mCertificateErrorNotificationEnabled;
+    }
+
+    public static boolean isAuthenticationErrorNotificationEnabled() {
+        return mAuthenticationErrorNotificationEnabled;
+    }
+
+    public static void setAuthenticationErrorNotificationEnabled(boolean mAuthenticationErrorNotificationEnabled) {
+        K9.mAuthenticationErrorNotificationEnabled = mAuthenticationErrorNotificationEnabled;
+    }
+
+    public static boolean isSendingNotificationEnabled() {
+        return mSendingNotificationEnabled;
+    }
+
+    public static void setSendingNotificationEnabled(boolean mSendingNotificationEnabled) {
+        K9.mSendingNotificationEnabled = mSendingNotificationEnabled;
+    }
+
+    public static boolean isSendFailedNotificationEnabled() {
+        return mSendFailedNotificationEnabled;
+    }
+
+    public static void setSendFailedNotificationEnabled(boolean mSendFailedNotificationEnabled) {
+        K9.mSendFailedNotificationEnabled = mSendFailedNotificationEnabled;
+    }
+
+    public static boolean isFetchingMailNotificationEnabled() {
+        return mFetchingMailNotificationEnabled;
+    }
+
+    public static void setFetchingMailNotificationEnabled(boolean mFetchingMailNotificationEnabled) {
+        K9.mFetchingMailNotificationEnabled = mFetchingMailNotificationEnabled;
+    }
+
+    public static boolean isNewMailNotificationEnabled() {
+        return mNewMailNotificationEnabled;
+    }
+
+    public static void setNewMailNotificationEnabled(boolean mNewMailNotificationEnabled) {
+        K9.mNewMailNotificationEnabled = mNewMailNotificationEnabled;
     }
 
     public static String getQuietTimeEnds() {

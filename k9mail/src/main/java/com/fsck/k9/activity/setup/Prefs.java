@@ -88,6 +88,13 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_HIDE_USERAGENT = "privacy_hide_useragent";
     private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
 
+    private static final String PREFERENCE_ENABLE_CERTIFICATE_ERROR_NOTIFICATION = "enable_certificate_error_notification";
+    private static final String PREFERENCE_ENABLE_AUTHENTICATION_ERROR_NOTIFICATION = "enable_authentication_error_notification";
+    private static final String PREFERENCE_ENABLE_SENDING_NOTIFICATION = "enable_sending_notification";
+    private static final String PREFERENCE_ENABLE_SEND_FAILED_NOTIFICATION = "enable_send_failed_notification";
+    private static final String PREFERENCE_ENABLE_FETCHING_MAIL_NOTIFICATION = "enable_fetching_mail_notification";
+    private static final String PREFERENCE_ENABLE_NEW_MAIL_NOTIFICATION = "enable_new_mail_notification";
+
     private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
@@ -150,6 +157,13 @@ public class Prefs extends K9PreferenceActivity {
     private ListPreference mNotificationQuickDelete;
     private ListPreference mLockScreenNotificationVisibility;
     private Preference mAttachmentPathPreference;
+
+    private CheckBoxPreference mEnableCertificateErrorNotification;
+    private CheckBoxPreference mEnableAuthenticationErrorNotification;
+    private CheckBoxPreference mEnableSendingNotification;
+    private CheckBoxPreference mEnableSendFailedNotification;
+    private CheckBoxPreference mEnableFetchingMailNotification;
+    private CheckBoxPreference mEnableNewMailNotification;
 
     private CheckBoxPreference mBackgroundAsUnreadIndicator;
     private CheckBoxPreference mThreadedView;
@@ -355,6 +369,25 @@ public class Prefs extends K9PreferenceActivity {
             mLockScreenNotificationVisibility = null;
         }
 
+        mEnableCertificateErrorNotification = (CheckBoxPreference) findPreference(
+                PREFERENCE_ENABLE_CERTIFICATE_ERROR_NOTIFICATION);
+        mEnableCertificateErrorNotification.setChecked(K9.isCertificateErrorNotificationEnabled());
+        mEnableAuthenticationErrorNotification = (CheckBoxPreference) findPreference(
+                PREFERENCE_ENABLE_AUTHENTICATION_ERROR_NOTIFICATION);
+        mEnableAuthenticationErrorNotification.setChecked(K9.isAuthenticationErrorNotificationEnabled());
+        mEnableSendingNotification = (CheckBoxPreference) findPreference(
+                PREFERENCE_ENABLE_SENDING_NOTIFICATION);
+        mEnableSendingNotification.setChecked(K9.isSendingNotificationEnabled());
+        mEnableSendFailedNotification = (CheckBoxPreference) findPreference(
+                PREFERENCE_ENABLE_SEND_FAILED_NOTIFICATION);
+        mEnableSendFailedNotification.setChecked(K9.isSendFailedNotificationEnabled());
+        mEnableFetchingMailNotification = (CheckBoxPreference) findPreference(
+                PREFERENCE_ENABLE_FETCHING_MAIL_NOTIFICATION);
+        mEnableFetchingMailNotification.setChecked(K9.isFetchingMailNotificationEnabled());
+        mEnableNewMailNotification = (CheckBoxPreference) findPreference(
+                PREFERENCE_ENABLE_NEW_MAIL_NOTIFICATION);
+        mEnableNewMailNotification.setChecked(K9.isNewMailNotificationEnabled());
+				
         mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().name());
 
         mDebugLogging = (CheckBoxPreference)findPreference(PREFERENCE_DEBUG_LOGGING);
@@ -509,7 +542,14 @@ public class Prefs extends K9PreferenceActivity {
                 K9.LockScreenNotificationVisibility.valueOf(mLockScreenNotificationVisibility.getValue()));
         }
 
-        K9.setSplitViewMode(SplitViewMode.valueOf(mSplitViewMode.getValue()));
+        K9.setCertificateErrorNotificationEnabled(mEnableCertificateErrorNotification.isChecked());
+        K9.setAuthenticationErrorNotificationEnabled(mEnableAuthenticationErrorNotification.isChecked());
+        K9.setSendingNotificationEnabled(mEnableSendingNotification.isChecked());
+        K9.setSendFailedNotificationEnabled(mEnableSendFailedNotification.isChecked());
+        K9.setFetchingMailNotificationEnabled(mEnableFetchingMailNotification.isChecked());
+        K9.setNewMailNotificationEnabled(mEnableNewMailNotification.isChecked());
+
+	K9.setSplitViewMode(SplitViewMode.valueOf(mSplitViewMode.getValue()));
         K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
 

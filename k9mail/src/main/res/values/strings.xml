@@ -350,6 +350,24 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_lock_screen_notification_visibility_message_count">Unread message count</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">Message count and senders</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">Same as when screen unlocked</string>
+	
+    <string name="global_settings_enable_certificate_error_notification_label">Certificate Errors</string>
+    <string name="global_settings_enable_certificate_error_notification_summary">Enable notifications for certificate errors.</string>
+
+    <string name="global_settings_enable_authentication_error_notification_label">Authentication Errors</string>
+    <string name="global_settings_enable_authentication_error_notification_summary">Enable notifications for authentication errors.</string>
+	
+    <string name="global_settings_enable_sending_notification_label">Sending Mail</string>
+    <string name="global_settings_enable_sending_notification_summary">Enable notifications for sending mails.</string>
+	
+    <string name="global_settings_enable_send_failed_notification_label">Send Failed</string>
+    <string name="global_settings_enable_send_failed_notification_summary">Enable notifications for messages that failed to send.</string>
+	
+    <string name="global_settings_enable_fetching_mail_notification_label">Fetching Mail</string>
+    <string name="global_settings_enable_fetching_mail_notification_summary">Enable notifications for fetching mails.</string>
+	
+    <string name="global_settings_enable_new_mail_notification_label">New Mail</string>
+    <string name="global_settings_enable_new_mail_notification_summary">Enable notifications for new mails.</string>
 
     <string name="quiet_time">Quiet Time</string>
     <string name="quiet_time_description">Disable ringing, buzzing and flashing at night</string>
@@ -806,6 +824,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="accountlist_preferences">Account list</string>
     <string name="messagelist_preferences">Message lists</string>
     <string name="messageview_preferences">Messages</string>
+    <string name="notification_types_preferences">Notification Types</string>
     <string name="folderlist_preferences">Folder lists</string>
     <string name="settings_theme_label">Theme</string>
     <string name="settings_message_theme_label">Message view theme</string>

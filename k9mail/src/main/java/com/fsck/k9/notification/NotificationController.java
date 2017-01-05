@@ -62,6 +62,9 @@ public class NotificationController {
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
+        if (!K9.isCertificateErrorNotificationEnabled()) {
+            return;
+        }
         certificateErrorNotifications.showCertificateErrorNotification(account, incoming);
     }
 
@@ -70,6 +73,9 @@ public class NotificationController {
     }
 
     public void showAuthenticationErrorNotification(Account account, boolean incoming) {
+        if (!K9.isAuthenticationErrorNotificationEnabled()) {
+            return;
+        }
         authenticationErrorNotifications.showAuthenticationErrorNotification(account, incoming);
     }
 
@@ -78,6 +84,9 @@ public class NotificationController {
     }
 
     public void showSendingNotification(Account account) {
+        if (!K9.isSendingNotificationEnabled()) {
+            return;
+        }
         syncNotifications.showSendingNotification(account);
     }
 
@@ -86,6 +95,9 @@ public class NotificationController {
     }
 
     public void showSendFailedNotification(Account account, Exception exception) {
+        if (!K9.isSendFailedNotificationEnabled()) {
+            return;
+        }
         sendFailedNotifications.showSendFailedNotification(account, exception);
     }
 
@@ -94,6 +106,9 @@ public class NotificationController {
     }
 
     public void showFetchingMailNotification(Account account, Folder folder) {
+        if (!K9.isFetchingMailNotificationEnabled()) {
+            return;
+        }
         syncNotifications.showFetchingMailNotification(account, folder);
     }
 
@@ -102,6 +117,9 @@ public class NotificationController {
     }
 
     public void addNewMailNotification(Account account, LocalMessage message, int previousUnreadMessageCount) {
+        if (!K9.isNewMailNotificationEnabled()) {
+            return;
+        }
         newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount);
     }
 
