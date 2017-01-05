@@ -1497,7 +1497,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 message.setUid(mMessageReference.getUid());
             }
 
-            boolean saveRemotely = recipientPresenter.isAllowSavingDraftRemotely();
+            // TODO more appropriate logic here? not sure
+            boolean saveRemotely = !recipientPresenter.getCurrentCryptoStatus().shouldUsePgpMessageBuilder();
             new SaveMessageTask(getApplicationContext(), mAccount, mContacts, mHandler,
                     message, mDraftId, saveRemotely).execute();
             if (mFinishAfterDraftSaved) {
