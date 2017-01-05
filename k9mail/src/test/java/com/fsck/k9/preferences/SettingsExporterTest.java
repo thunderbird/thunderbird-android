@@ -30,10 +30,10 @@ public class SettingsExporterTest {
     }
 
     @Test
-    public void exportPreferences_setsVersionTo43() throws Exception {
+    public void exportPreferences_setsVersionToLatest() throws Exception {
         Document document = exportPreferences(false, Collections.<String>emptySet());
 
-        assertEquals("43", document.getRootElement().getAttributeValue("version"));
+        assertEquals(Integer.toString(Settings.VERSION), document.getRootElement().getAttributeValue("version"));
     }
 
     @Test
