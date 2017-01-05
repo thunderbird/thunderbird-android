@@ -385,11 +385,6 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
-    public boolean isAllowSavingDraftRemotely() {
-        ComposeCryptoStatus cryptoStatus = getCurrentCryptoStatus();
-        return cryptoStatus.isEncryptionEnabled() || cryptoStatus.isSigningEnabled();
-    }
-
     @SuppressWarnings("UnusedParameters")
     public void onToTokenAdded(Recipient recipient) {
         updateCryptoStatus();
