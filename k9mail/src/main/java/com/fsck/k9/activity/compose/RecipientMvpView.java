@@ -37,6 +37,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
     private static final int VIEW_INDEX_CRYPTO_SPECIAL_PGP_INLINE = 0;
     private static final int VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY = 1;
+    private static final int VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY_PGP_INLINE = 2;
 
     private static final int VIEW_INDEX_BCC_EXPANDER_VISIBLE = 0;
     private static final int VIEW_INDEX_BCC_EXPANDER_HIDDEN = 1;
@@ -335,14 +336,6 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         Toast.makeText(activity, R.string.compose_error_private_missing_keys, Toast.LENGTH_LONG).show();
     }
 
-    public void showErrorSignOnlyInline() {
-        Toast.makeText(activity, R.string.error_crypto_sign_only_inline, Toast.LENGTH_LONG).show();
-    }
-
-    public void showErrorInlineSignOnly() {
-        Toast.makeText(activity, R.string.error_crypto_inline_sign_only, Toast.LENGTH_LONG).show();
-    }
-
     public void showErrorInlineAttach() {
         Toast.makeText(activity, R.string.error_crypto_inline_attach, Toast.LENGTH_LONG).show();
     }
@@ -449,7 +442,8 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     public enum CryptoSpecialModeDisplayType {
         NONE(VIEW_INDEX_HIDDEN),
         PGP_INLINE(VIEW_INDEX_CRYPTO_SPECIAL_PGP_INLINE),
-        SIGN_ONLY(VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY);
+        SIGN_ONLY(VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY),
+        SIGN_ONLY_PGP_INLINE(VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY_PGP_INLINE);
 
 
         final int childToDisplay;
