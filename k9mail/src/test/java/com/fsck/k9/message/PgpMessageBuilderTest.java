@@ -343,8 +343,8 @@ public class PgpMessageBuilderTest {
         Assert.assertEquals(MimeUtil.ENC_7BIT, ((BinaryTempFileBody) message.getBody()).getEncoding());
     }
 
-    @Test(expected = RuntimeException.class) // this is a wrapped UnsupportedOperationException from AsyncTask
-    public void buildSign__withInlineEnabled__shouldFail() throws MessagingException {
+    @Test
+    public void buildSign__withInlineEnabled__shouldSucceed() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
                 .setCryptoMode(CryptoMode.SIGN_ONLY)
                 .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
@@ -352,8 +352,28 @@ public class PgpMessageBuilderTest {
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
 
+        ArgumentCaptor<Intent> capturedApiIntent = ArgumentCaptor.forClass(Intent.class);
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
+
+        when(openPgpApi.executeApi(capturedApiIntent.capture(), any(OpenPgpDataSource.class), any(OutputStream.class)))
+                .thenReturn(returnIntent);
+
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
+
+        Intent expectedApiIntent = new Intent(OpenPgpApi.ACTION_SIGN);
+        expectedApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_SIGN_KEY_ID);
+        expectedApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+        assertIntentEqualsActionAndExtras(expectedApiIntent, capturedApiIntent.getValue());
+
+        ArgumentCaptor<MimeMessage> captor = ArgumentCaptor.forClass(MimeMessage.class);
+        verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false));
+        verifyNoMoreInteractions(mockCallback);
+
+        MimeMessage message = captor.getValue();
+        Assert.assertEquals("message must be text/plain", "text/plain", message.getMimeType());
     }
 
     @Test
