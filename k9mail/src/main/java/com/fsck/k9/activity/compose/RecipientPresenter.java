@@ -743,6 +743,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void onCryptoPgpSignOnlyDisabled() {
+        onCryptoPgpInlineChanged(false);
         onCryptoModeChanged(CryptoMode.OPPORTUNISTIC);
     }
 
@@ -766,10 +767,10 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     void onClickCryptoSpecialModeIndicator() {
         ComposeCryptoStatus currentCryptoStatus = getCurrentCryptoStatus();
-        if (currentCryptoStatus.isPgpInlineModeEnabled()) {
-            recipientMvpView.showOpenPgpInlineDialog(false);
-        } else if (currentCryptoStatus.isSignOnly()) {
+        if (currentCryptoStatus.isSignOnly()) {
             recipientMvpView.showOpenPgpSignOnlyDialog(false);
+        } else if (currentCryptoStatus.isPgpInlineModeEnabled()) {
+            recipientMvpView.showOpenPgpInlineDialog(false);
         } else {
             throw new IllegalStateException("This icon should not be clickable while no special mode is active!");
         }
