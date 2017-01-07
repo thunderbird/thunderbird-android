@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mailstore.AttachmentResolver;
 
 
@@ -117,7 +118,7 @@ public class MessageWebView extends RigidWebView {
     public void displayHtmlContentWithInlineAttachments(@NonNull String htmlText,
             @Nullable AttachmentResolver attachmentResolver, @Nullable OnPageFinishedListener onPageFinishedListener) {
         setWebViewClient(attachmentResolver, onPageFinishedListener);
-        setHtmlContent(htmlText);
+        setHtmlContent(HtmlConverter.wrapMessageContent(htmlText));
     }
 
     private void setWebViewClient(@Nullable AttachmentResolver attachmentResolver,
