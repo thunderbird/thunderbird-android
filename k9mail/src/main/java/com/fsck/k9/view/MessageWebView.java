@@ -118,7 +118,7 @@ public class MessageWebView extends RigidWebView {
     public void displayHtmlContentWithInlineAttachments(@NonNull String htmlText,
             @Nullable AttachmentResolver attachmentResolver, @Nullable OnPageFinishedListener onPageFinishedListener) {
         setWebViewClient(attachmentResolver, onPageFinishedListener);
-        setHtmlContent(HtmlConverter.wrapMessageContent(htmlText));
+        setHtmlContent(htmlText);
     }
 
     private void setWebViewClient(@Nullable AttachmentResolver attachmentResolver,
