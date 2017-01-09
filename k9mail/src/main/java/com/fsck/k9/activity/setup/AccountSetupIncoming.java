@@ -73,6 +73,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private CheckBox mSubscribedFoldersOnly;
     private AuthTypeAdapter mAuthTypeAdapter;
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
+    private boolean securityTypeAdapterPositionRestoredFromSavedState;
+    private int initialSecurityTypeAdapterPosition;
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
@@ -251,6 +253,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             // Select currently configured security type
             if (savedInstanceState == null) {
                 mCurrentSecurityTypeViewPosition = securityTypesAdapter.getConnectionSecurityPosition(settings.connectionSecurity);
+                securityTypeAdapterPositionRestoredFromSavedState = false;
             } else {
 
                 /*
@@ -262,7 +265,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                  * once again onItemSelected() will not be called.
                  */
                 mCurrentSecurityTypeViewPosition = savedInstanceState.getInt(STATE_SECURITY_TYPE_POSITION);
+                securityTypeAdapterPositionRestoredFromSavedState = true;
             }
+            initialSecurityTypeAdapterPosition = mCurrentSecurityTypeViewPosition;
             mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
@@ -642,6 +647,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
     private ConnectionSecurity getSelectedSecurity() {
         ConnectionSecurityHolder holder = (ConnectionSecurityHolder) mSecurityTypeView.getSelectedItem();
+        if (holder == null) {
+            throw new AssertionError("getSelectedItem() returned null. " +
+                    "Selected item position: " + mSecurityTypeView.getSelectedItemPosition() + ", " +
+                    "initial selected item position: " + initialSecurityTypeAdapterPosition + ", " +
+                    "mCurrentSecurityTypeViewPosition: " + mCurrentSecurityTypeViewPosition + ", " +
+                    "position restored from saved state: " + securityTypeAdapterPositionRestoredFromSavedState);
+        }
+        
         return holder.connectionSecurity;
     }
 }
