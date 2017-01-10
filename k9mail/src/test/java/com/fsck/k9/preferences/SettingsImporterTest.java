@@ -109,8 +109,26 @@ public class SettingsImporterTest {
     }
 
     @Test
-    public void parseSettings_account_cram_md5() throws SettingsImportExportException {
+    public void parseSettings_account_identities() throws SettingsImportExportException {
+        String validUUID = UUID.randomUUID().toString();
+        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
+                "<accounts><account uuid=\""+validUUID+"\"><name>Account</name>" +
+                "<identities><identity><email>user@gmail.com</email></identity></identities>" +
+                "</account></accounts></k9settings>");
+        List<String> accountUuids = new ArrayList<>();
+        accountUuids.add("1");
 
+        SettingsImporter.Imported results = SettingsImporter.parseSettings(inputStream, true, accountUuids, true);
+
+        assertEquals(1, results.accounts.size());
+        assertEquals(validUUID, results.accounts.get(validUUID).uuid);
+        assertEquals(1, results.accounts.get(validUUID).identities.size());
+        assertEquals("user@gmail.com", results.accounts.get(validUUID).identities.get(0).email);
+    }
+
+
+    @Test
+    public void parseSettings_account_cram_md5() throws SettingsImportExportException {
         String validUUID = UUID.randomUUID().toString();
         InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
                 "<accounts><account uuid=\""+validUUID+"\"><name>Account</name>" +
@@ -148,7 +166,7 @@ public class SettingsImporterTest {
                 "</account></accounts></k9settings>");
         List<String> accountUuids = new ArrayList<>();
         accountUuids.add(validUUID);
-        
+
         SettingsImporter.ImportResults results = SettingsImporter.importSettings(
                 RuntimeEnvironment.application, inputStream, true, accountUuids, false);
 
@@ -161,4 +179,35 @@ public class SettingsImporterTest {
                 .getAccount(validUUID).isEnabled());
     }
 
+    @Test
+    public void getImportStreamContents_account() throws SettingsImportExportException {
+        String validUUID = UUID.randomUUID().toString();
+        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
+                "<accounts><account uuid=\""+validUUID+"\"><name>Account</name>" +
+                "<identities><identity><email>user@gmail.com</email></identity></identities>" +
+                "</account></accounts></k9settings>");
+
+        SettingsImporter.ImportContents results = SettingsImporter.getImportStreamContents(inputStream);
+
+        assertEquals(false, results.globalSettings);
+        assertEquals(1, results.accounts.size());
+        assertEquals("Account", results.accounts.get(0).name);
+        assertEquals(validUUID, results.accounts.get(0).uuid);
+    }
+
+    @Test
+    public void getImportStreamContents_alternativeName() throws SettingsImportExportException {
+        String validUUID = UUID.randomUUID().toString();
+        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
+                "<accounts><account uuid=\""+validUUID+"\"><name></name>" +
+                "<identities><identity><email>user@gmail.com</email></identity></identities>" +
+                "</account></accounts></k9settings>");
+
+        SettingsImporter.ImportContents results = SettingsImporter.getImportStreamContents(inputStream);
+
+        assertEquals(false, results.globalSettings);
+        assertEquals(1, results.accounts.size());
+        assertEquals("user@gmail.com", results.accounts.get(0).name);
+        assertEquals(validUUID, results.accounts.get(0).uuid);
+    }
 }
