@@ -42,6 +42,9 @@ public class MimeMessageHelper {
             part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
 
             setEncoding(part, MimeUtil.ENC_QUOTED_PRINTABLE);
+        } else if (body instanceof RawDataBody) {
+            String encoding = ((RawDataBody) body).getEncoding();
+            part.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
         }
     }
 
