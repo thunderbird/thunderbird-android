@@ -9,8 +9,10 @@ import java.util.List;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
+import android.util.Log;
 
 import com.fsck.k9.Globals;
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.HtmlSanitizer;
@@ -78,6 +80,9 @@ public class MessageViewInfoExtractor {
             cryptoResultAnnotation = cryptoMessageParts.contentCryptoAnnotation;
             extraParts = cryptoMessageParts.extraParts;
         } else {
+            if (!annotations.isEmpty()) {
+                Log.e(K9.LOG_TAG, "Got message annotations but no crypto root part!");
+            }
             rootPart = message;
             cryptoResultAnnotation = null;
             extraParts = null;
