@@ -28,6 +28,10 @@ public class MessageCryptoAnnotations {
         return annotations.containsKey(part);
     }
 
+    public boolean isEmpty() {
+        return annotations.isEmpty();
+    }
+
     public Part findKeyForAnnotationWithReplacementPart(Part part) {
         for (HashMap.Entry<Part, CryptoResultAnnotation> entry : annotations.entrySet()) {
             if (part == entry.getValue().getReplacementData()) {
