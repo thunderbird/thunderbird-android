@@ -134,12 +134,8 @@ public class SettingsImporter {
             // will not be null.
             if (imported.accounts != null) {
                 for (ImportedAccount account : imported.accounts.values()) {
-                    String name = account.name;
-                    if (TextUtils.isEmpty(name) && account.identities != null && account.identities.size() > 0){
-                        name = account.identities.get(0).email;
-                    }
-
-                    accounts.add(new AccountDescription(name, account.uuid));
+                    String accountName = getAccountDisplayName(account);
+                    accounts.add(new AccountDescription(accountName, account.uuid));
                 }
             }
 
@@ -1096,6 +1092,14 @@ public class SettingsImporter {
         folder.settings = parseSettings(xpp, SettingsExporter.FOLDER_ELEMENT);
 
         return folder;
+    }
+
+    private static String getAccountDisplayName(ImportedAccount account) {
+        String name = account.name;
+        if (TextUtils.isEmpty(name) && account.identities != null && account.identities.size() > 0){
+            name = account.identities.get(0).email;
+        }
+        return name;
     }
 
     private static class ImportedServerSettings extends ServerSettings {
