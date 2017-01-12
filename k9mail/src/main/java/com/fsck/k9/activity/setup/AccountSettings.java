@@ -1,12 +1,14 @@
 
 package com.fsck.k9.activity.setup;
 
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,7 +47,7 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
-
+import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
 import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpUtils;
@@ -127,6 +129,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
+    public static final String APG_DEPRECATION_DIALOG_TAG = "apgDeprecationDialog";
 
 
     private Account mAccount;
@@ -731,6 +734,19 @@ public class AccountSettings extends K9PreferenceActivity {
             mCryptoMenu.setEnabled(false);
             mCryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_installed);
         }
+
+        if (mAccount.isCryptoAppDeprecatedApg()) {
+            showApgDeprecationDialog();
+            mAccount.setCryptoApp("");
+            saveSettings();
+        }
+    }
+
+    private void showApgDeprecationDialog() {
+        ApgDeprecationWarningDialog fragment = ApgDeprecationWarningDialog.newInstance();
+        FragmentTransaction ta = getFragmentManager().beginTransaction();
+        ta.add(fragment, APG_DEPRECATION_DIALOG_TAG);
+        ta.commitAllowingStateLoss();
     }
 
     private void removeListEntry(ListPreference listPreference, String remove) {
