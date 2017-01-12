@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -20,6 +21,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
+
+import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
 public class MimeUtility {
@@ -1044,7 +1047,8 @@ public class MimeUtility {
                     }
                 };
             } else {
-                throw new UnsupportedContentTransferEncodingException(encoding);
+                Log.w(LOG_TAG, "Unsupported encoding: " + encoding);
+                inputStream = rawInputStream;
             }
         } else {
             inputStream = body.getInputStream();
