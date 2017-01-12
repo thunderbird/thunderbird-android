@@ -70,6 +70,10 @@ public class MessageDecryptVerifier {
         }
 
         Multipart multipart = (Multipart) body;
+        if (multipart.getCount() == 0) {
+            return null;
+        }
+        
         BodyPart firstBodyPart = multipart.getBodyPart(0);
 
         Part foundPart;
@@ -92,6 +96,10 @@ public class MessageDecryptVerifier {
         Body body = part.getBody();
         if (part.isMimeType("multipart/alternative") && body instanceof Multipart) {
             Multipart multipart = (Multipart) body;
+            if (multipart.getCount() == 0) {
+                return null;
+            }
+            
             BodyPart firstBodyPart = multipart.getBodyPart(0);
             if (isPartPgpInlineEncryptedOrSigned(firstBodyPart)) {
                 return firstBodyPart;
