@@ -134,7 +134,6 @@ public class SettingsImporter {
             // will not be null.
             if (imported.accounts != null) {
                 for (ImportedAccount account : imported.accounts.values()) {
-                    //Show a alternative text in the case the description is empty
                     String name = account.name;
                     if (TextUtils.isEmpty(name) && account.identities != null && account.identities.size() > 0){
                         name = account.identities.get(0).email;
@@ -942,7 +941,6 @@ public class SettingsImporter {
                             account.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT);
                         }
                     } else if (SettingsExporter.IDENTITIES_ELEMENT.equals(element)) {
-                        //Read the full content to have an alternative identifier to display if the name is empty
                         account.identities = parseIdentities(xpp);
                     } else if (SettingsExporter.FOLDERS_ELEMENT.equals(element)) {
                         if (overview) {
