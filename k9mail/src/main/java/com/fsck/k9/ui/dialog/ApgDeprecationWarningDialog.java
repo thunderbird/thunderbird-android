@@ -33,7 +33,8 @@ public class ApgDeprecationWarningDialog extends DialogFragment {
         LayoutInflater inflater = LayoutInflater.from(context);
         View contentView = inflater.inflate(R.layout.dialog_apg_deprecated, null, false);
 
-        ((TextView) contentView.findViewById(R.id.apg_learn_more)).setMovementMethod(LinkMovementMethod.getInstance());
+        TextView textViewLearnMore = (TextView) contentView.findViewById(R.id.apg_learn_more);
+        makeTextViewLinksClickable(textViewLearnMore);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setIcon(R.drawable.ic_apg_small);
@@ -48,5 +49,9 @@ public class ApgDeprecationWarningDialog extends DialogFragment {
         builder.setCancelable(false);
 
         return builder.create();
+    }
+
+    private void makeTextViewLinksClickable(TextView textView) {
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
