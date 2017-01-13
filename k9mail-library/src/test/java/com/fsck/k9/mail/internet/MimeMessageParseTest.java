@@ -139,7 +139,7 @@ public class MimeMessageParseTest {
     }
 
     @Test
-    public void testSinglePartUnknownEncoding_throwsUnsupportedEncodingException() throws Exception {
+    public void decodeBody_withUnknownEncoding_shouldReturnUnmodifiedBodyContents() throws Exception {
         MimeMessage msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
                         "To: <eva@example.org>\r\n" +
