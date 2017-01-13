@@ -1210,7 +1210,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="apg_deprecated_2">Because of this, support for APG has been removed from K-9 Mail.</string>
     <string name="apg_deprecated_bullet_1">Development stopped in early 2014</string>
     <string name="apg_deprecated_bullet_2">Contains unfixed security issues</string>
-    <string name="apg_learn_more">You can <a href="https://k9mail.github.io/apg_note.html">click here</a> to learn more.</string>
+    <string name="apg_learn_more">You can <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">click here</a> to learn more.</string>
     <string name="apg_deprecated_ok">Got it!</string>
 
 </resources>
