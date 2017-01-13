@@ -73,7 +73,7 @@ public class MessageExtractorTest {
     }
 
     @Test
-    public void getTextFromPart_withUnknownEncoding_shouldReturnNull() throws Exception {
+    public void getTextFromPart_withUnknownEncoding_shouldReturnUnmodifiedBodyContents() throws Exception {
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
         String bodyText = "Sample text body";
         BinaryMemoryBody body = new BinaryMemoryBody(bodyText.getBytes(), "unknown encoding");
