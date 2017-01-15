@@ -541,7 +541,9 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void onNonRecipientFieldFocused() {
-        hideEmptyExtendedRecipientFields();
+        if (!account.isAlwaysShowCcBcc()) {
+            hideEmptyExtendedRecipientFields();
+        }
     }
 
     public void onClickCryptoStatus() {
