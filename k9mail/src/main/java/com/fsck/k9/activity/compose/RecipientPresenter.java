@@ -114,12 +114,9 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public boolean checkRecipientsOkForSending() {
-        boolean performedAnyCompletion = recipientMvpView.recipientToTryPerformCompletion() ||
-                recipientMvpView.recipientCcTryPerformCompletion() ||
-                recipientMvpView.recipientBccTryPerformCompletion();
-        if (performedAnyCompletion) {
-            return true;
-        }
+        recipientMvpView.recipientToTryPerformCompletion();
+        recipientMvpView.recipientCcTryPerformCompletion();
+        recipientMvpView.recipientBccTryPerformCompletion();
 
         if (recipientMvpView.recipientToHasUncompletedText()) {
             recipientMvpView.showToUncompletedError();
