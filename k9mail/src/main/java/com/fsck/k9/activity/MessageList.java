@@ -960,6 +960,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         configureMenu(menu);
         return true;
     }
