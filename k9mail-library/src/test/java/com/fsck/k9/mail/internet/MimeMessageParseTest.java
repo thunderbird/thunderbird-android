@@ -53,6 +53,16 @@ public class MimeMessageParseTest {
     }
 
     @Test
+    public void headerFieldNameWithSpace() throws Exception {
+        MimeMessage msg = parseWithoutRecurse(toStream("" +
+                "From : <adam@example.org>\r\n" +
+                "\r\n" +
+                "Body"));
+
+        assertEquals("<adam@example.org>", msg.getHeader("From")[0]);
+    }
+
+    @Test
     public void testSinglePart8BitRecurse() throws Exception {
         MimeMessage msg = parseWithRecurse(toStream(
                 "From: <adam@example.org>\r\n" +

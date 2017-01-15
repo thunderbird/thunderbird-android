@@ -170,10 +170,6 @@ public class MimeHeader implements Cloneable {
             if (raw == null) {
                 throw new NullPointerException("Argument 'raw' cannot be null");
             }
-            if (name != null && !raw.startsWith(name + ":")) {
-                throw new IllegalArgumentException("The value of 'raw' needs to start with the supplied field name " +
-                        "followed by a colon");
-            }
 
             return new Field(name, null, raw);
         }
