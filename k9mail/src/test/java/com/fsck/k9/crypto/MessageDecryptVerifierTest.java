@@ -1,6 +1,7 @@
 package com.fsck.k9.crypto;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fsck.k9.mail.BodyPart;
@@ -20,20 +21,129 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
 public class MessageDecryptVerifierTest {
-
-    public static final String MIME_TYPE_MULTIPART_ENCRYPTED = "multipart/encrypted";
+    private static final String MIME_TYPE_MULTIPART_ENCRYPTED = "multipart/encrypted";
     private MessageCryptoAnnotations messageCryptoAnnotations = mock(MessageCryptoAnnotations.class);
-    public static final String PROTCOL_PGP_ENCRYPTED = "application/pgp-encrypted";
+    private static final String PROTCOL_PGP_ENCRYPTED = "application/pgp-encrypted";
+    private static final String PGP_INLINE_DATA = "" +
+            "-----BEGIN PGP MESSAGE-----\n" +
+            "Header: Value\n" +
+            "\n" +
+            "base64base64base64base64\n" +
+            "-----END PGP MESSAGE-----\n";
+
+
+    @Test
+    public void findPrimaryCryptoPart_withSimplePgpInline() throws Exception {
+        List<Part> outputExtraParts = new ArrayList<>();
+        Message message = new MimeMessage();
+        MimeMessageHelper.setBody(message, new TextBody(PGP_INLINE_DATA));
+
+        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+
+        assertSame(message, cryptoPart);
+    }
+
+    @Test
+    public void findPrimaryCryptoPart_withMultipartAlternativeContainingPgpInline() throws Exception {
+        List<Part> outputExtraParts = new ArrayList<>();
+        BodyPart pgpInlinePart = bodypart("text/plain", PGP_INLINE_DATA);
+        Message message = messageFromBody(
+                multipart("alternative",
+                        pgpInlinePart,
+                        bodypart("text/html")
+                )
+        );
+
+        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+
+        assertSame(pgpInlinePart, cryptoPart);
+    }
+
+    @Test
+    public void findPrimaryCryptoPart_withMultipartMixedContainingPgpInline() throws Exception {
+        List<Part> outputExtraParts = new ArrayList<>();
+        BodyPart pgpInlinePart = bodypart("text/plain", PGP_INLINE_DATA);
+        Message message = messageFromBody(
+                multipart("mixed",
+                        pgpInlinePart,
+                        bodypart("application/octet-stream")
+                )
+        );
+
+        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+
+        assertSame(pgpInlinePart, cryptoPart);
+    }
+
+    @Test
+    public void findPrimaryCryptoPart_withMultipartMixedContainingMultipartAlternativeContainingPgpInline()
+            throws Exception {
+        List<Part> outputExtraParts = new ArrayList<>();
+        BodyPart pgpInlinePart = bodypart("text/plain", PGP_INLINE_DATA);
+        Message message = messageFromBody(
+                multipart("mixed",
+                        multipart("alternative",
+                            pgpInlinePart,
+                            bodypart("text/html")
+                        ),
+                        bodypart("application/octet-stream")
+                )
+        );
+
+        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+
+        assertSame(pgpInlinePart, cryptoPart);
+    }
+
+    @Test
+    public void findPrimaryCryptoPart_withEmptyMultipartAlternative_shouldReturnNull() throws Exception {
+        List<Part> outputExtraParts = new ArrayList<>();
+        Message message = messageFromBody(
+                multipart("alternative")
+        );
+
+        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+
+        assertNull(cryptoPart);
+    }
+
+    @Test
+    public void findPrimaryCryptoPart_withEmptyMultipartMixed_shouldReturnNull() throws Exception {
+        List<Part> outputExtraParts = new ArrayList<>();
+        Message message = messageFromBody(
+                multipart("mixed")
+        );
+
+        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+
+        assertNull(cryptoPart);
+    }
+
+    @Test
+    public void findPrimaryCryptoPart_withEmptyMultipartAlternativeInsideMultipartMixed_shouldReturnNull()
+            throws Exception {
+        List<Part> outputExtraParts = new ArrayList<>();
+        Message message = messageFromBody(
+                multipart("mixed",
+                        multipart("alternative")
+                )
+        );
+
+        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+
+        assertNull(cryptoPart);
+    }
 
     @Test
     public void findEncryptedPartsShouldReturnEmptyListForEmptyMessage() throws Exception {
@@ -371,6 +481,11 @@ public class MessageDecryptVerifierTest {
 
     BodyPart bodypart(String type) throws MessagingException {
         return new MimeBodyPart(null, type);
+    }
+
+    BodyPart bodypart(String type, String text) throws MessagingException {
+        TextBody textBody = new TextBody(text);
+        return new MimeBodyPart(textBody, type);
     }
 
     public static Part getPart(Part searchRootPart, int... indexes) {
