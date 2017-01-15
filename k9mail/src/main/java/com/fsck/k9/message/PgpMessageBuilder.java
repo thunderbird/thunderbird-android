@@ -41,7 +41,6 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 public class PgpMessageBuilder extends MessageBuilder {
     private static final int REQUEST_USER_INTERACTION = 1;
 
-
     private OpenPgpApi openPgpApi;
 
     private MimeMessage currentProcessedMimeMessage;
@@ -115,16 +114,12 @@ public class PgpMessageBuilder extends MessageBuilder {
                 throw new MessagingException("Attachments are not supported in PGP/INLINE format!");
             }
 
-            if (isPgpInlineMode && shouldSign && !shouldEncrypt) {
-                throw new UnsupportedOperationException("Clearsigning is not supported!");
-            }
-
             if (pgpApiIntent == null) {
                 pgpApiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, isPgpInlineMode);
             }
 
             PendingIntent returnedPendingIntent = launchOpenPgpApiIntent(
-                    pgpApiIntent, shouldEncrypt, isPgpInlineMode);
+                    pgpApiIntent, shouldEncrypt || isPgpInlineMode, shouldEncrypt || !isPgpInlineMode, isPgpInlineMode);
             if (returnedPendingIntent != null) {
                 queueMessageBuildPendingIntent(returnedPendingIntent, REQUEST_USER_INTERACTION);
                 return;
@@ -174,7 +169,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     private PendingIntent launchOpenPgpApiIntent(@NonNull Intent openPgpIntent,
-            boolean captureOutputPart, boolean writeBodyContentOnly) throws MessagingException {
+            boolean captureOutputPart, boolean capturedOutputPartIs7Bit, boolean writeBodyContentOnly) throws MessagingException {
         final MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
         String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
         if (contentType.length > 0) {
@@ -187,7 +182,8 @@ public class PgpMessageBuilder extends MessageBuilder {
         OutputStream outputStream = null;
         if (captureOutputPart) {
             try {
-                pgpResultTempBody = new BinaryTempFileBody(MimeUtil.ENC_7BIT);
+                pgpResultTempBody = new BinaryTempFileBody(
+                        capturedOutputPartIs7Bit ? MimeUtil.ENC_7BIT : MimeUtil.ENC_8BIT);
                 outputStream = pgpResultTempBody.getOutputStream();
                 // OpenKeychain/BouncyCastle at this point use the system newline for formatting, which is LF on android.
                 // we need this to be CRLF, so we convert the data after receiving.
