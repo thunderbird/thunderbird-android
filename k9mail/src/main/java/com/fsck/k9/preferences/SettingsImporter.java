@@ -17,6 +17,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.VisibleForTesting;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -133,7 +134,8 @@ public class SettingsImporter {
             // will not be null.
             if (imported.accounts != null) {
                 for (ImportedAccount account : imported.accounts.values()) {
-                    accounts.add(new AccountDescription(account.name, account.uuid));
+                    String accountName = getAccountDisplayName(account);
+                    accounts.add(new AccountDescription(accountName, account.uuid));
                 }
             }
 
@@ -935,11 +937,7 @@ public class SettingsImporter {
                             account.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT);
                         }
                     } else if (SettingsExporter.IDENTITIES_ELEMENT.equals(element)) {
-                        if (overview) {
-                            skipToEndTag(xpp, SettingsExporter.IDENTITIES_ELEMENT);
-                        } else {
-                            account.identities = parseIdentities(xpp);
-                        }
+                        account.identities = parseIdentities(xpp);
                     } else if (SettingsExporter.FOLDERS_ELEMENT.equals(element)) {
                         if (overview) {
                             skipToEndTag(xpp, SettingsExporter.FOLDERS_ELEMENT);
@@ -1094,6 +1092,14 @@ public class SettingsImporter {
         folder.settings = parseSettings(xpp, SettingsExporter.FOLDER_ELEMENT);
 
         return folder;
+    }
+
+    private static String getAccountDisplayName(ImportedAccount account) {
+        String name = account.name;
+        if (TextUtils.isEmpty(name) && account.identities != null && account.identities.size() > 0){
+            name = account.identities.get(0).email;
+        }
+        return name;
     }
 
     private static class ImportedServerSettings extends ServerSettings {
