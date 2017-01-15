@@ -3481,7 +3481,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public void confirmMarkAllAsRead() {
-        showDialog(R.id.dialog_confirm_mark_all_as_read);
+        if (K9.confirmMarkAllRead()) {
+            showDialog(R.id.dialog_confirm_mark_all_as_read);
+        } else {
+            markAllAsRead();
+        }
     }
 
     public void markAllAsRead() {

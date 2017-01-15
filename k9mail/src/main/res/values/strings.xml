@@ -330,6 +330,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_menu_discard">Discard message</string>
+    <string name="global_settings_confirm_menu_mark_all_read">Mark all messages as read</string>
     <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>
 
     <string name="global_settings_privacy_hide_useragent">Remove K-9 User-Agent from mail headers</string>

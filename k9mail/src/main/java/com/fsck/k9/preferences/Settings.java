@@ -35,7 +35,7 @@ public class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 43;
+    public static final int VERSION = 44;
 
     public static Map<String, Object> validate(int version, Map<String,
             TreeMap<Integer, SettingsDescription>> settings,
