@@ -229,14 +229,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     public void performCompletion() {
         if (getListSelection() == ListView.INVALID_POSITION && enoughToFilter()) {
-            Object bestGuess;
-            if (getAdapter().getCount() > 0) {
-                bestGuess = getAdapter().getItem(0);
-            } else {
-                bestGuess = defaultObject(currentCompletionText());
-            }
-            if (bestGuess != null) {
-                replaceText(convertSelectionToString(bestGuess));
+            Object recipientText = defaultObject(currentCompletionText());
+            if (recipientText != null) {
+                replaceText(convertSelectionToString(recipientText));
             }
         } else {
             super.performCompletion();
