@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import android.view.Menu;
 
@@ -382,11 +383,6 @@ public class RecipientPresenter implements PermissionPingCallback {
         } else {
             return false;
         }
-    }
-
-    public boolean isAllowSavingDraftRemotely() {
-        ComposeCryptoStatus cryptoStatus = getCurrentCryptoStatus();
-        return cryptoStatus.isEncryptionEnabled() || cryptoStatus.isSigningEnabled();
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -776,6 +772,12 @@ public class RecipientPresenter implements PermissionPingCallback {
         } else {
             throw new IllegalStateException("This icon should not be clickable while no special mode is active!");
         }
+    }
+
+    @VisibleForTesting
+    void setOpenPgpServiceConnection(OpenPgpServiceConnection openPgpServiceConnection, String cryptoProvider) {
+        this.openPgpServiceConnection = openPgpServiceConnection;
+        this.cryptoProvider = cryptoProvider;
     }
 
     public enum CryptoProviderState {

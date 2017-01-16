@@ -328,7 +328,7 @@ public class OpenPgpApi {
         }
     }
 
-    private class OpenPgpAsyncTask extends AsyncTask<Void, Integer, Intent> {
+    class OpenPgpAsyncTask extends AsyncTask<Void, Integer, Intent> {
         Intent data;
         InputStream is;
         OutputStream os;
