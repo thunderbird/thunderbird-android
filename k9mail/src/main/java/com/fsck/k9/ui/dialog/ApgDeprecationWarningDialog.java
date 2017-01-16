@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import com.fsck.k9.R;
 
 
 public class ApgDeprecationWarningDialog extends DialogFragment {
+
+    private OnDismissListener onDismissListener;
 
     public static ApgDeprecationWarningDialog newInstance() {
         return new ApgDeprecationWarningDialog();
@@ -53,5 +56,17 @@ public class ApgDeprecationWarningDialog extends DialogFragment {
 
     private void makeTextViewLinksClickable(TextView textView) {
         textView.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public void setOnDismissListener(OnDismissListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (onDismissListener != null) {
+            onDismissListener.onDismiss(dialog);
+        }
     }
 }

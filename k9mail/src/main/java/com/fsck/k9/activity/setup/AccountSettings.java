@@ -10,6 +10,8 @@ import java.util.Map;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -706,12 +708,21 @@ public class AccountSettings extends K9PreferenceActivity {
             mCryptoSupportSignOnly = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_SUPPORT_SIGN_ONLY);
 
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
+            if (OpenPgpAppPreference.isApgInstalled(getApplicationContext())) {
+                mCryptoApp.addLegacyProvider("apg-placeholder", "APG", R.drawable.ic_apg_small);
+            }
             mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String value = newValue.toString();
-                    mCryptoApp.setValue(value);
+                    if ("apg-placeholder".equals(value)) {
+                        mCryptoApp.setValue("");
+                        mCryptoKey.setOpenPgpProvider("");
+                        showApgDeprecationDialog();
+                    } else {
+                        mCryptoApp.setValue(value);
+                        mCryptoKey.setOpenPgpProvider(value);
+                    }
 
-                    mCryptoKey.setOpenPgpProvider(value);
                     return false;
                 }
             });
@@ -734,16 +745,17 @@ public class AccountSettings extends K9PreferenceActivity {
             mCryptoMenu.setEnabled(false);
             mCryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_installed);
         }
-
-        if (mAccount.isCryptoAppDeprecatedApg()) {
-            showApgDeprecationDialog();
-            mAccount.setCryptoApp("");
-            saveSettings();
-        }
     }
 
     private void showApgDeprecationDialog() {
         ApgDeprecationWarningDialog fragment = ApgDeprecationWarningDialog.newInstance();
+        fragment.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                mCryptoApp.show();
+            }
+        });
+
         FragmentTransaction ta = getFragmentManager().beginTransaction();
         ta.add(fragment, APG_DEPRECATION_DIALOG_TAG);
         ta.commitAllowingStateLoss();
