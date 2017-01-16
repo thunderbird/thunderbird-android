@@ -796,11 +796,7 @@ public class MessagingController {
             final LocalFolder localFolder = tLocalFolder;
             localFolder.open(Folder.OPEN_MODE_RW);
             localFolder.updateLastUid();
-            List<? extends Message> localMessages = localFolder.getMessages(null);
-            Map<String, Message> localUidMap = new HashMap<>();
-            for (Message message : localMessages) {
-                localUidMap.put(message.getUid(), message);
-            }
+            Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
 
             if (providedRemoteFolder != null) {
                 if (K9.DEBUG)
@@ -899,8 +895,9 @@ public class MessagingController {
                     for (MessagingListener l : getListeners(listener)) {
                         l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
                     }
-                    Message localMessage = localUidMap.get(thisMess.getUid());
-                    if (localMessage == null || !localMessage.olderThan(earliestDate)) {
+                    Long localMessageDateRaw = localUidMap.get(thisMess.getUid());
+                    Date localMessageDate = localMessageDateRaw != null ? new Date(localMessageDateRaw) : null;
+                    if (localMessageDate == null || !localMessageDate.before(earliestDate)) {
                         remoteMessages.add(thisMess);
                         remoteUidMap.put(thisMess.getUid(), thisMess);
                     }
@@ -921,14 +918,15 @@ public class MessagingController {
              */
             MoreMessages moreMessages = localFolder.getMoreMessages();
             if (account.syncRemoteDeletions()) {
-                List<Message> destroyMessages = new ArrayList<>();
-                for (Message localMessage : localMessages) {
-                    if (remoteUidMap.get(localMessage.getUid()) == null) {
-                        destroyMessages.add(localMessage);
+                List<String> destroyMessageUids = new ArrayList<>();
+                for (String localMessageUid : localUidMap.keySet()) {
+                    if (remoteUidMap.get(localMessageUid) == null) {
+                        destroyMessageUids.add(localMessageUid);
                     }
                 }
 
-                if (!destroyMessages.isEmpty()) {
+                List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(destroyMessageUids);
+                if (!destroyMessageUids.isEmpty()) {
                     moreMessages = MoreMessages.UNKNOWN;
 
                     localFolder.destroyMessages(destroyMessages);
@@ -941,7 +939,7 @@ public class MessagingController {
                 }
             }
             // noinspection UnusedAssignment, free memory early? (better break up the method!)
-            localMessages = null;
+            localUidMap = null;
 
             if (moreMessages == MoreMessages.UNKNOWN) {
                 updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);

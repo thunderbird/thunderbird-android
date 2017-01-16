@@ -1,5 +1,6 @@
 package com.fsck.k9.controller;
 
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +27,6 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,6 +65,7 @@ import static org.mockito.Mockito.when;
 public class MessagingControllerTest {
     private static final String FOLDER_NAME = "Folder";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
+    private static final String MESSAGE_UID1 = "message-uid1";
 
 
     private MessagingController controller;
@@ -573,7 +574,9 @@ public class MessagingControllerTest {
         messageCountInRemoteFolder(0);
         LocalMessage localCopyOfRemoteDeletedMessage = mock(LocalMessage.class);
         when(account.syncRemoteDeletions()).thenReturn(true);
-        when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localCopyOfRemoteDeletedMessage));
+        when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
+        when(localFolder.getMessagesByUids(any(List.class)))
+                .thenReturn(Collections.singletonList(localCopyOfRemoteDeletedMessage));
 
         controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
 
@@ -606,7 +609,8 @@ public class MessagingControllerTest {
         when(account.syncRemoteDeletions()).thenReturn(true);
         when(account.getEarliestPollDate()).thenReturn(dateOfEarliestPoll);
         when(localMessage.olderThan(dateOfEarliestPoll)).thenReturn(true);
-        when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessage));
+        when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
+        when(localFolder.getMessagesByUids(any(List.class))).thenReturn(Collections.singletonList(localMessage));
 
         controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
 
@@ -638,9 +642,9 @@ public class MessagingControllerTest {
 
         verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
                 any(MessageRetrievalListener.class));
-        assertEquals(2, fetchProfileCaptor.getAllValues().get(0).size());
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.FLAGS));
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.ENVELOPE));
+        assertEquals(2, fetchProfileCaptor.getAllValues().get(0).size());
     }
 
     @Test
