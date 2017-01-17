@@ -1,3 +1,5 @@
+*Please search to check for an existing issue (including closed issues, for which the fix may not have yet been released) before opening a new issue*
+
 ### Expected behavior
 Tell us what should happen
 
