@@ -1212,5 +1212,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="apg_deprecated_bullet_2">Contains unfixed security issues</string>
     <string name="apg_learn_more">You can <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">click here</a> to learn more.</string>
     <string name="apg_deprecated_ok">Got it!</string>
+    <string name="apg">APG</string>
 
 </resources>
