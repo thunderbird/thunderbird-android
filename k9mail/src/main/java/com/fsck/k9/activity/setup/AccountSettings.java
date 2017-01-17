@@ -133,6 +133,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
     public static final String APG_DEPRECATION_DIALOG_TAG = "apgDeprecationDialog";
+    public static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
 
 
     private Account mAccount;
@@ -710,12 +711,12 @@ public class AccountSettings extends K9PreferenceActivity {
 
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
             if (OpenPgpAppPreference.isApgInstalled(getApplicationContext())) {
-                mCryptoApp.addLegacyProvider("apg-placeholder", "APG", R.drawable.ic_apg_small);
+                mCryptoApp.addLegacyProvider(APG_PROVIDER_PLACEHOLDER, getString(R.string.apg), R.drawable.ic_apg_small);
             }
             mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String value = newValue.toString();
-                    if ("apg-placeholder".equals(value)) {
+                    if (APG_PROVIDER_PLACEHOLDER.equals(value)) {
                         mCryptoApp.setValue("");
                         mCryptoKey.setOpenPgpProvider("");
                         showApgDeprecationDialog();
