@@ -5,6 +5,16 @@
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.203" versioncode="23230">
+        <change>Fixed bug with pinch to zoom gesture</change>
+        <change>Added setting for disabling 'mark all as read' confirmation dialog</change>
+        <change>Update full text search index when removing messages</change>
+        <change>Fixed display bug when replying to messages using dark theme</change>
+        <change>Don't hide Cc and Bcc if 'Always show Cc/Bcc' is enabled</change>
+        <change>Allow sending signed-only PGP/INLINE messages</change>
+        <change>Don't save drafts when message could be sent encrypted</change>
+        <change>More bug fixes</change>
+    </release>
     <release version="5.202" versioncode="23220">
         <change>Fixed bug where BCC header line was accidentally included in sent messages</change>
         <change>Fixed problem with getting the list of IMAP folders</change>
