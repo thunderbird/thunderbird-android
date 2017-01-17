@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -752,6 +753,7 @@ public class AccountSettings extends K9PreferenceActivity {
         fragment.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
+                // this leaks the activity into the fragment, so make sure to dismiss in onPause!
                 mCryptoApp.show();
             }
         });
@@ -759,6 +761,13 @@ public class AccountSettings extends K9PreferenceActivity {
         FragmentTransaction ta = getFragmentManager().beginTransaction();
         ta.add(fragment, APG_DEPRECATION_DIALOG_TAG);
         ta.commitAllowingStateLoss();
+    }
+
+    private void dismissApgDeprecationDialogIfDisplayed() {
+        DialogFragment dialog = (DialogFragment) getFragmentManager().findFragmentByTag(APG_DEPRECATION_DIALOG_TAG);
+        if (dialog != null) {
+            dialog.dismiss();
+        }
     }
 
     private void removeListEntry(ListPreference listPreference, String remove) {
@@ -909,6 +918,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     @Override
     protected void onPause() {
+        dismissApgDeprecationDialogIfDisplayed();
         saveSettings();
         super.onPause();
     }
