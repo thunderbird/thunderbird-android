@@ -34,6 +34,8 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
+
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Assert;
@@ -526,7 +528,7 @@ public class PgpMessageBuilderTest {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             InputStream inputStream = MimeUtility.decodeBody(signatureBodyPart.getBody());
             IOUtils.copy(inputStream, bos);
-            Assert.assertEquals(reason, expected, new String(bos.toByteArray()));
+            Assert.assertEquals(reason, expected, new String(bos.toByteArray(), Charsets.UTF_8));
         } catch (IOException | MessagingException e) {
             Assert.fail();
         }
