@@ -64,6 +64,8 @@ public class MessageTitleView extends TextView {
     }
     
     public void showSubjectInMessageHeader() {
-        mHeader.showSubjectLine();
+        if (mHeader != null) {
+            mHeader.showSubjectLine();
+        }
     }
 }
