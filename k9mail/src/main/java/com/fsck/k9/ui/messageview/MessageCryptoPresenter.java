@@ -21,6 +21,8 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 
+import java.util.Date;
+
 
 public class MessageCryptoPresenter implements OnCryptoClickListener {
     public static final int REQUEST_CODE_UNKNOWN_KEY = 123;
@@ -36,6 +38,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
     // transient state
     private CryptoResultAnnotation cryptoResultAnnotation;
+    private Date messageSentDate;
 
 
     public MessageCryptoPresenter(Bundle savedInstanceState, MessageCryptoMvpView messageCryptoMvpView) {
@@ -52,9 +55,10 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
     public boolean maybeHandleShowMessage(MessageTopView messageView, Account account, MessageViewInfo messageViewInfo) {
         this.cryptoResultAnnotation = messageViewInfo.cryptoResultAnnotation;
+        this.messageSentDate = messageViewInfo.message.getSentDate();
 
         MessageCryptoDisplayStatus displayStatus =
-                MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation);
+                MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation, messageSentDate);
         if (displayStatus == MessageCryptoDisplayStatus.DISABLED) {
             return false;
         }
@@ -89,6 +93,12 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             case ENCRYPTED_SIGN_ERROR: {
                 showMessageCryptoWarning(messageView, account, messageViewInfo,
                         R.string.messageview_crypto_warning_error);
+                break;
+            }
+            case UNENCRYPTED_SIGN_OLD:
+            case ENCRYPTED_SIGN_OLD: {
+                showMessageCryptoWarning(messageView, account, messageViewInfo,
+                        R.string.messageview_crypto_warning_old);
                 break;
             }
 
@@ -143,7 +153,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             return;
         }
         MessageCryptoDisplayStatus displayStatus =
-                MessageCryptoDisplayStatus.fromResultAnnotation(cryptoResultAnnotation);
+                MessageCryptoDisplayStatus.fromResultAnnotation(cryptoResultAnnotation, messageSentDate);
         switch (displayStatus) {
             case LOADING:
                 // no need to do anything, there is a progress bar...
