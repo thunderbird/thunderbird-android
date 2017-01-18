@@ -220,6 +220,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
     private long mCryptoKey;
+    private boolean mCryptoDefaultDisabled;
     private boolean mMarkMessageAsReadOnView;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
@@ -315,6 +316,7 @@ public class Account implements BaseAccount, StoreConfig {
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
         mCryptoKey = NO_OPENPGP_KEY;
+        mCryptoDefaultDisabled = false;
         mAllowRemoteSearch = false;
         mRemoteSearchFullText = false;
         mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
@@ -463,6 +465,7 @@ public class Account implements BaseAccount, StoreConfig {
         identities = loadIdentities(storage);
 
         mCryptoKey = storage.getLong(mUuid + ".cryptoKey", NO_OPENPGP_KEY);
+        mCryptoDefaultDisabled = storage.getBoolean(mUuid + ".cryptoDefaultDisabled", false);
         mAllowRemoteSearch = storage.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = storage.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = storage.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -729,6 +732,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
         editor.putLong(mUuid + ".cryptoKey", mCryptoKey);
+        editor.putBoolean(mUuid + ".cryptoDefaultDisabled", mCryptoDefaultDisabled);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1598,6 +1602,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setCryptoKey(long keyId) {
         mCryptoKey = keyId;
+    }
+
+    public boolean getCryptoDefaultDisabled() {
+        return mCryptoDefaultDisabled;
+    }
+
+    public void setCryptoDefaultDisabled(boolean cryptoDefaultDisabled) {
+        mCryptoDefaultDisabled = cryptoDefaultDisabled;
     }
 
     public boolean allowRemoteSearch() {

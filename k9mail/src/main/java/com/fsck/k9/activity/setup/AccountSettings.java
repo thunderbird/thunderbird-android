@@ -113,6 +113,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
+    private static final String PREFERENCE_CRYPTO_DEFAULT_DISABLED = "crypto_default_disabled";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -180,6 +181,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private boolean mHasCrypto = false;
     private OpenPgpKeyPreference mCryptoKey;
     private CheckBoxPreference mCryptoSupportSignOnly;
+    private CheckBoxPreference mCryptoDefaultDisabled;
 
     private PreferenceScreen mSearchScreen;
     private CheckBoxPreference mCloudSearchEnabled;
@@ -697,6 +699,7 @@ public class AccountSettings extends K9PreferenceActivity {
         PreferenceScreen cryptoMenu = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
         if (mHasCrypto) {
             mCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
+            mCryptoDefaultDisabled = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_DEFAULT_DISABLED);
 
             mCryptoKey.setValue(mAccount.getCryptoKey());
             mCryptoKey.setOpenPgpProvider(K9.getOpenPgpProvider());
@@ -711,6 +714,8 @@ public class AccountSettings extends K9PreferenceActivity {
             });
 
             cryptoMenu.setOnPreferenceClickListener(null);
+
+            mCryptoDefaultDisabled.setChecked(mAccount.getCryptoDefaultDisabled());
         } else {
             cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
             cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -788,8 +793,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
         if (mHasCrypto) {
             mAccount.setCryptoKey(mCryptoKey.getValue());
+            mAccount.setCryptoDefaultDisabled(mCryptoDefaultDisabled.isChecked());
         } else {
             mAccount.setCryptoKey(Account.NO_OPENPGP_KEY);
+            mAccount.setCryptoDefaultDisabled(false);
         }
 
         // In webdav account we use the exact folder name also for inbox,
