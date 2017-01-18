@@ -223,6 +223,7 @@ public class Account implements BaseAccount, StoreConfig {
     private String mCryptoApp;
     private long mCryptoKey;
     private boolean mCryptoSupportSignOnly;
+    private boolean mCryptoDefaultDisabled;
     private boolean mMarkMessageAsReadOnView;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
@@ -320,6 +321,7 @@ public class Account implements BaseAccount, StoreConfig {
         mCryptoApp = NO_OPENPGP_PROVIDER;
         mCryptoKey = NO_OPENPGP_KEY;
         mCryptoSupportSignOnly = false;
+        mCryptoDefaultDisabled = false;
         mAllowRemoteSearch = false;
         mRemoteSearchFullText = false;
         mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
@@ -471,6 +473,7 @@ public class Account implements BaseAccount, StoreConfig {
         setCryptoApp(cryptoApp);
         mCryptoKey = storage.getLong(mUuid + ".cryptoKey", NO_OPENPGP_KEY);
         mCryptoSupportSignOnly = storage.getBoolean(mUuid + ".cryptoSupportSignOnly", false);
+        mCryptoDefaultDisabled = storage.getBoolean(mUuid + ".cryptoDefaultDisabled", false);
         mAllowRemoteSearch = storage.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = storage.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = storage.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -739,6 +742,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putLong(mUuid + ".cryptoKey", mCryptoKey);
         editor.putBoolean(mUuid + ".cryptoSupportSignOnly", mCryptoSupportSignOnly);
+        editor.putBoolean(mUuid + ".cryptoDefaultDisabled", mCryptoDefaultDisabled);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1628,6 +1632,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setCryptoSupportSignOnly(boolean cryptoSupportSignOnly) {
         mCryptoSupportSignOnly = cryptoSupportSignOnly;
+    }
+
+    public boolean getCryptoDefaultDisabled() {
+        return mCryptoDefaultDisabled;
+    }
+
+    public void setCryptoDefaultDisabled(boolean cryptoDefaultDisabled) {
+        mCryptoDefaultDisabled = cryptoDefaultDisabled;
     }
 
     public boolean allowRemoteSearch() {

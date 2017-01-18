@@ -490,6 +490,12 @@
             android:title="@string/account_settings_crypto_support_sign_only"
             />
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="crypto_default_disabled"
+            android:title="@string/account_settings_crypto_default_disabled"
+            />
+
 
     </PreferenceScreen>
 
