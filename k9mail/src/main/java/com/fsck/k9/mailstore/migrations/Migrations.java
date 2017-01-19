@@ -66,6 +66,8 @@ public class Migrations {
                 MigrationTo55.createFtsSearchTable(db, migrationsHelper);
             case 55:
                 MigrationTo56.cleanUpFtsTable(db);
+            case 56:
+                MigrationTo57.fixDataLocationForMultipartParts(db);
         }
     }
 }
