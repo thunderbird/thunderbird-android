@@ -1438,7 +1438,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void multipartToContentValues(ContentValues cv, Multipart multipart) {
-        cv.put("data_location", DataLocation.IN_DATABASE);
+        cv.put("data_location", DataLocation.CHILD_PART_CONTAINS_DATA);
         cv.put("preamble", multipart.getPreamble());
         cv.put("epilogue", multipart.getEpilogue());
         cv.put("boundary", multipart.getBoundary());
