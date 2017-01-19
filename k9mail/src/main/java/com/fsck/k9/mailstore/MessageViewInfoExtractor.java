@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
@@ -68,7 +69,7 @@ public class MessageViewInfoExtractor {
     }
 
     @WorkerThread
-    public MessageViewInfo extractMessageForView(Message message, MessageCryptoAnnotations annotations)
+    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations annotations)
             throws MessagingException {
         Part rootPart;
         CryptoResultAnnotation cryptoResultAnnotation;
@@ -80,7 +81,7 @@ public class MessageViewInfoExtractor {
             cryptoResultAnnotation = cryptoMessageParts.contentCryptoAnnotation;
             extraParts = cryptoMessageParts.extraParts;
         } else {
-            if (!annotations.isEmpty()) {
+            if (annotations != null && !annotations.isEmpty()) {
                 Log.e(K9.LOG_TAG, "Got message annotations but no crypto root part!");
             }
             rootPart = message;
