@@ -166,19 +166,6 @@ class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory
             this.uri = uri;
             this.hasAttachment = hasAttachment;
         }
-        private static Calendar cl = Calendar.getInstance();
-
-        public MailItem(String id, String sender, String date, String subject,
-                        String preview, String unread, String hasAttachment, String uri) {
-            this.id = id;
-            this.sender = sender;
-            this.date = date;
-            this.preview = preview;
-            this.subject = subject;
-            this.unread = unread;
-            this.uri = uri;
-            this.hasAttachment = hasAttachment;
-        }
 
         public int getColor() {
             if (Boolean.valueOf(unread)) {
@@ -202,10 +189,6 @@ class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory
         public boolean hasAttachment() {
             return Boolean.valueOf(hasAttachment);
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> 7dc9dcc5d... Display an attachement icon if the mail has attachment.
     }
 }
 
