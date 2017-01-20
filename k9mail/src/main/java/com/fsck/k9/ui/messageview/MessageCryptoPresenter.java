@@ -59,7 +59,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             return false;
         }
 
-        boolean suppressSignOnlyMessages = !account.getCryptoSupportSignOnly();
+        boolean suppressSignOnlyMessages = !K9.getCryptoSupportSignOnly();
         if (suppressSignOnlyMessages && displayStatus.isUnencryptedSigned()) {
             return false;
         }

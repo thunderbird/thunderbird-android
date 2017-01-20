@@ -293,6 +293,9 @@ public class GlobalSettings {
         s.put("cryptoProvider", Settings.versions(
                 new V(46, new StringSetting(K9.NO_CRYPTO_PROVIDER))
         ));
+        s.put("cryptoSupportSignOnly", Settings.versions(
+                new V(47, new BooleanSetting(false))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

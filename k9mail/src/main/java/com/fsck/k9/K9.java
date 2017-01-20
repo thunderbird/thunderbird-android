@@ -243,6 +243,7 @@ public class K9 extends Application {
     private static boolean mHideTimeZone = false;
 
     private static String sCryptoProvider = "";
+    private static boolean sCryptoSupportSignOnly = false;
 
     private static SortType mSortType;
     private static Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
@@ -469,6 +470,7 @@ public class K9 extends Application {
         editor.putBoolean("hideTimeZone", mHideTimeZone);
 
         editor.putString("cryptoProvider", sCryptoProvider);
+        editor.putBoolean("cryptoSupportSignOnly", sCryptoSupportSignOnly);
 
         editor.putString("language", language);
         editor.putInt("theme", theme.ordinal());
@@ -689,6 +691,7 @@ public class K9 extends Application {
         mHideTimeZone = storage.getBoolean("hideTimeZone", false);
 
         sCryptoProvider = storage.getString("cryptoProvider", NO_CRYPTO_PROVIDER);
+        sCryptoSupportSignOnly = storage.getBoolean("cryptoSupportSignOnly", false);
 
         mConfirmDelete = storage.getBoolean("confirmDelete", false);
         mConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true);
@@ -1245,6 +1248,14 @@ public class K9 extends Application {
 
     public static void setCryptoProvider(String cryptoProvider) {
         sCryptoProvider = cryptoProvider;
+    }
+
+    public static boolean getCryptoSupportSignOnly() {
+        return sCryptoSupportSignOnly;
+    }
+
+    public static void setCryptoSupportSignOnly(boolean supportSignOnly) {
+        sCryptoSupportSignOnly = supportSignOnly;
     }
 
     public static String getAttachmentDefaultPath() {

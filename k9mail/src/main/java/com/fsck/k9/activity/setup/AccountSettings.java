@@ -113,7 +113,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
-    private static final String PREFERENCE_CRYPTO_SUPPORT_SIGN_ONLY = "crypto_support_sign_only";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -698,7 +697,6 @@ public class AccountSettings extends K9PreferenceActivity {
         PreferenceScreen cryptoMenu = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
         if (mHasCrypto) {
             mCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
-            mCryptoSupportSignOnly = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_SUPPORT_SIGN_ONLY);
 
             mCryptoKey.setValue(mAccount.getCryptoKey());
             mCryptoKey.setOpenPgpProvider(K9.getCryptoProvider());
@@ -712,7 +710,6 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
 
-            mCryptoSupportSignOnly.setChecked(mAccount.getCryptoSupportSignOnly());
             cryptoMenu.setOnPreferenceClickListener(null);
         } else {
             cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
@@ -791,10 +788,8 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
         if (mHasCrypto) {
             mAccount.setCryptoKey(mCryptoKey.getValue());
-            mAccount.setCryptoSupportSignOnly(mCryptoSupportSignOnly.isChecked());
         } else {
             mAccount.setCryptoKey(Account.NO_OPENPGP_KEY);
-            mAccount.setCryptoSupportSignOnly(false);
         }
 
         // In webdav account we use the exact folder name also for inbox,

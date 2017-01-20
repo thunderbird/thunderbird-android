@@ -94,6 +94,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
 
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
+    private static final String PREFERENCE_CRYPTO_SUPPORT_SIGN_ONLY = "crypto_support_sign_only";
 
     private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
@@ -155,6 +156,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxListPreference mVisibleRefileActions;
 
     private OpenPgpAppPreference mCryptoProvider;
+    private CheckBoxPreference mCryptoSupportSignOnly;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private CheckBoxPreference mDisableNotificationDuringQuietTime;
@@ -401,6 +403,9 @@ public class Prefs extends K9PreferenceActivity {
             }
         });
 
+        mCryptoSupportSignOnly = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_SUPPORT_SIGN_ONLY);
+        mCryptoSupportSignOnly.setChecked(K9.getCryptoSupportSignOnly());
+
         mAttachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
         mAttachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
         mAttachmentPathPreference
@@ -557,6 +562,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setHideTimeZone(mHideTimeZone.isChecked());
 
         K9.setCryptoProvider(mCryptoProvider.getValue());
+        K9.setCryptoSupportSignOnly(mCryptoSupportSignOnly.isChecked());
 
         StorageEditor editor = storage.edit();
         K9.save(editor);

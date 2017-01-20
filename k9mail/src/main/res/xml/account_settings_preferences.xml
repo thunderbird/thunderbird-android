@@ -479,13 +479,6 @@
             android:key="crypto_key"
             android:title="@string/account_settings_crypto_key" />
 
-        <CheckBoxPreference
-            android:persistent="false"
-            android:key="crypto_support_sign_only"
-            android:title="@string/account_settings_crypto_support_sign_only"
-            />
-
-
     </PreferenceScreen>
 
 </PreferenceScreen>
