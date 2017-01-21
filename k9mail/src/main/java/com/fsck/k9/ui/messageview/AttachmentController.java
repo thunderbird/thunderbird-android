@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.WorkerThread;
 import timber.log.Timber;
@@ -119,7 +121,7 @@ public class AttachmentController {
     private void saveAttachmentTo(File directory) {
         boolean isExternalStorageMounted = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
         if (!isExternalStorageMounted) {
-            String message = context.getString(R.string.message_view_status_attachment_not_saved);
+            String message = context.getString(R.string.message_view_status_external_storage_not_mounted);
             displayMessageToUser(message);
             return;
         }
@@ -142,6 +144,11 @@ public class AttachmentController {
     }
 
     private File saveAttachmentWithUniqueFileName(File directory) throws IOException {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                messageViewFragment.getActivity().checkSelfPermission(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
         String filename = FileHelper.sanitizeFilename(attachment.displayName);
         File file = FileHelper.createUniqueFile(directory, filename);
 
@@ -154,6 +161,7 @@ public class AttachmentController {
 
     private void writeAttachmentToStorage(File file) throws IOException {
         InputStream in = context.getContentResolver().openInputStream(attachment.internalUri);
+
         try {
             OutputStream out = new FileOutputStream(file);
             try {

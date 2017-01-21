@@ -4,6 +4,7 @@ package com.fsck.k9.ui.messageview;
 import java.util.Collections;
 import java.util.Locale;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.DownloadManager;
@@ -13,7 +14,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -65,6 +68,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
+    private static final int ATTACHMENT_SAVE_PERMISSION_DEFAULT = 400;
+    private static final int ATTACHMENT_SAVE_PERMISSION_CHOOSE = 401;
 
     public static final int PROGRESS_THRESHOLD_MILLIS = 500 * 1000;
 
@@ -827,26 +832,54 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] result){
+        super.onRequestPermissionsResult(requestCode, permissions, result);
+        if(requestCode == ATTACHMENT_SAVE_PERMISSION_DEFAULT && result[0] == PackageManager.PERMISSION_GRANTED){
+            saveAttachment(currentAttachmentViewInfo);
+        } else if (requestCode == ATTACHMENT_SAVE_PERMISSION_CHOOSE && result[0] == PackageManager.PERMISSION_GRANTED){
+            saveAttachmentChoose(currentAttachmentViewInfo);
+        }
+    }
+
+    @Override
     public void onSaveAttachment(AttachmentViewInfo attachment) {
         currentAttachmentViewInfo = attachment;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ATTACHMENT_SAVE_PERMISSION_DEFAULT);
+        } else {
+            saveAttachment(attachment);
+        }
+    }
+
+    private void saveAttachment(AttachmentViewInfo attachment) {
         getAttachmentController(attachment).saveAttachment();
     }
 
     @Override
     public void onSaveAttachmentToUserProvidedDirectory(final AttachmentViewInfo attachment) {
         currentAttachmentViewInfo = attachment;
-        FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
-                ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
-                    @Override
-                    public void onPathEntered(String path) {
-                        getAttachmentController(attachment).saveAttachmentTo(path);
-                    }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, ATTACHMENT_SAVE_PERMISSION_CHOOSE);
+        } else {
+            saveAttachmentChoose(attachment);
+        }
+    }
 
-                    @Override
-                    public void onCancel() {
-                        // Do nothing
-                    }
-                });
+    private void saveAttachmentChoose(final AttachmentViewInfo attachment) {
+        FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
+            ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
+                @Override
+                public void onPathEntered(String path) {
+                    getAttachmentController(attachment).saveAttachmentTo(path);
+                }
+
+                @Override
+                public void onCancel() {
+                    // Do nothing
+                }
+            });
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
