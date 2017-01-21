@@ -53,7 +53,7 @@ android {
         versionName '5.115'
 
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 25
 
         generatedDensities = ['mdpi', 'hdpi', 'xhdpi']
 
