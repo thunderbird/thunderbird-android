@@ -161,6 +161,7 @@ public class ActivityListener extends MessagingListener {
     public void synchronizeMailboxFailed(Account account, String folder,
                                          String message) {
         mLoadingAccountDescription = null;
+        mLoadingHeaderFolderName = null;
         mLoadingFolderName = null;
         mAccount = null;
         informUserOfStatus();

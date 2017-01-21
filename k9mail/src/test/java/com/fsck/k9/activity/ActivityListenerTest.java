@@ -80,6 +80,17 @@ public class ActivityListenerTest {
     }
 
     @Test
+    public void getOperation__whenSynchronizeMailboxFailedAfterHeadersStarted_shouldResultInValidStatus() {
+        activityListener.synchronizeMailboxStarted(account, FOLDER);
+        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER);
+        activityListener.synchronizeMailboxFailed(account, FOLDER, ERROR_MESSAGE);
+
+        String operation = activityListener.getOperation(context);
+
+        assertEquals("Syncing disabled", operation);
+    }
+
+    @Test
     public void getOperation__whenSynchronizeMailboxFinished() {
         activityListener.synchronizeMailboxStarted(account, FOLDER);
         activityListener.synchronizeMailboxFinished(account, FOLDER, COUNT, COUNT);
