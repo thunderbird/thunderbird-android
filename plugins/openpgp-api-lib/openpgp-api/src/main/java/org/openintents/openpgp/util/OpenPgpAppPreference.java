@@ -335,6 +335,6 @@ public class OpenPgpAppPreference extends DialogPreference {
         Intent intent = new Intent("org.openintents.openpgp.IOpenPgpService");
         intent.setPackage(PACKAGE_NAME_APG);
         List<ResolveInfo> resInfo = context.getPackageManager().queryIntentServices(intent, 0);
-        return !resInfo.isEmpty();
+        return resInfo != null && !resInfo.isEmpty();
     }
 }
