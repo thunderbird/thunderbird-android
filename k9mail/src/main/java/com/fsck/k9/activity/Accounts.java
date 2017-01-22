@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -115,6 +117,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
     private static final int DIALOG_NO_FILE_MANAGER = 4;
 
+    private static final int ACTIVITY_REQUEST_PICK_SETTINGS_FILE = 1;
+    private static final int ACTIVITY_REQUEST_SAVE_SETTINGS_FILE = 2;
+    private static final int EXPORT_SAVE_PERMISSION = 100;
+
+    private static String ACCOUNT_STATS = "accountStats";
+    private static String STATE_UNREAD_COUNT = "unreadCount";
+    private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
+    private static final String STATE_EXPORT_GLOBAL_SETTINGS = "exportGlobalSettings";
+    private static final String STATE_EXPORT_ACCOUNTS = "exportAccountUuids";
+
+    public static final String EXTRA_STARTUP = "startup";
+    public static final String ACTION_IMPORT_SETTINGS = "importSettings";
+
     /*
      * Must be serializable hence implementation class used for declaration.
      */
@@ -147,10 +162,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * @see #onRetainNonConfigurationInstance()
      */
     private NonConfigurationInstance mNonConfigurationInstance;
+    private boolean exportIncludeGlobals;
+    private Account exportAccount;
 
 
-    private static final int ACTIVITY_REQUEST_PICK_SETTINGS_FILE = 1;
-    private static final int ACTIVITY_REQUEST_SAVE_SETTINGS_FILE = 2;
 
     class AccountsHandler extends Handler {
         private void setViewTitle() {
@@ -209,7 +224,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                         stats.size = newSize;
                     }
                     String toastText = getString(R.string.account_size_changed, account.getDescription(),
-                                                 SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));
+                            SizeFormatter.formatSize(getApplication(), oldSize),
+                            SizeFormatter.formatSize(getApplication(), newSize));
 
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
@@ -329,17 +345,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
     };
-
-    private static String ACCOUNT_STATS = "accountStats";
-    private static String STATE_UNREAD_COUNT = "unreadCount";
-    private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
-    private static final String STATE_EXPORT_GLOBAL_SETTINGS = "exportGlobalSettings";
-    private static final String STATE_EXPORT_ACCOUNTS = "exportAccountUuids";
-
-
-    public static final String EXTRA_STARTUP = "startup";
-
-    public static final String ACTION_IMPORT_SETTINGS = "importSettings";
 
 
     public static void listAccounts(Context context) {
@@ -1918,7 +1923,27 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] result){
+        super.onRequestPermissionsResult(requestCode, permissions, result);
+
+        if(requestCode == EXPORT_SAVE_PERMISSION && result[0] == PackageManager.PERMISSION_GRANTED){
+            performExport(exportIncludeGlobals, exportAccount);
+        }
+    }
+
     public void onExport(final boolean includeGlobals, final Account account) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && this.checkSelfPermission(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            exportIncludeGlobals = includeGlobals;
+            exportAccount = account;
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXPORT_SAVE_PERMISSION);
+        } else {
+            performExport(includeGlobals, account);
+        }
+    }
+
+    private void performExport(final boolean includeGlobals, final Account account) {
         // TODO, prompt to allow a user to choose which accounts to export
         ArrayList<String> accountUuids = null;
         if (account != null) {
