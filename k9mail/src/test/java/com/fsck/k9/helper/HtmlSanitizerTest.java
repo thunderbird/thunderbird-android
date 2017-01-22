@@ -115,6 +115,40 @@ public class HtmlSanitizerTest {
         assertEquals("Text", extractText(sanitizedHtml));
     }
 
+    @Test
+    public void shouldProduceValidHtmlFromHtmlWithXmlDeclaration() {
+        String html = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<html><head></head><body></body></html>";
+
+        String result = htmlSanitizer.sanitize(html);
+
+        assertEquals("<html><head></head><body></body></html>", result);
+    }
+
+    @Test
+    public void shouldNormalizeTables() {
+        String html = "<html><head></head><body><table><tr><td></td><td></td></tr></table></body></html>";
+
+        String result = htmlSanitizer.sanitize(html);
+
+        assertEquals("<html><head></head><body><table><tbody>" +
+                "<tr><td></td><td></td></tr>" +
+                "</tbody></table></body></html>", result);
+    }
+
+    @Test
+    public void shouldHtmlEncodeXmlDirectives() {
+        String html = "<html><head></head><body><table>" +
+                "<tr><td><!==><!==>Hmailserver service shutdown:</td><td><!==><!==>Ok</td></tr>" +
+                "</table></body></html>";
+
+        String result = htmlSanitizer.sanitize(html);
+
+        assertEquals("<html><head></head><body><table><tbody>" +
+                "<tr><td>&lt;!==&gt;&lt;!==&gt;Hmailserver service shutdown:</td><td>&lt;!==&gt;&lt;!==&gt;Ok</td></tr>" +
+                "</tbody></table></body></html>", result);
+    }
+
     private String extractText(String html) {
         return Jsoup.clean(html, Whitelist.none());
     }
