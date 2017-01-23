@@ -7,7 +7,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import com.fsck.k9.R;
 
 public class ApgDeprecationWarningDialog extends DialogFragment {
 
-    private OnDismissListener onDismissListener;
+    private ApgDeprecationDialogDismissListener onDismissListener;
 
     public static ApgDeprecationWarningDialog newInstance() {
         return new ApgDeprecationWarningDialog();
@@ -58,15 +57,31 @@ public class ApgDeprecationWarningDialog extends DialogFragment {
         textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    public void setOnDismissListener(OnDismissListener onDismissListener) {
-        this.onDismissListener = onDismissListener;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ApgDeprecationDialogDismissListener) {
+            onDismissListener = (ApgDeprecationDialogDismissListener) context;
+        } else {
+            throw new ClassCastException("An activity displaying this dialog must implement OnDismissListener!");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onDismissListener = null;
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         if (onDismissListener != null) {
-            onDismissListener.onDismiss(dialog);
+            onDismissListener.onDismissApgDeprecationDialog();
         }
+    }
+
+    public interface ApgDeprecationDialogDismissListener {
+        void onDismissApgDeprecationDialog();
     }
 }
