@@ -40,6 +40,7 @@ public class AttachmentPresenter {
     private final Context context;
     private final AttachmentMvpView attachmentMvpView;
     private final LoaderManager loaderManager;
+    private final AttachmentsChangedListener listener;
 
     // persistent state
     private LinkedHashMap<Uri, Attachment> attachments;
@@ -47,10 +48,12 @@ public class AttachmentPresenter {
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
 
 
-    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager) {
+    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager,
+                               AttachmentsChangedListener listener) {
         this.context = context;
         this.attachmentMvpView = attachmentMvpView;
         this.loaderManager = loaderManager;
+        this.listener = listener;
 
         attachments = new LinkedHashMap<>();
     }
@@ -178,6 +181,7 @@ public class AttachmentPresenter {
 
     private void addAttachmentAndStartLoader(Attachment attachment) {
         attachments.put(attachment.uri, attachment);
+        listener.onAttachmentAdded();
         attachmentMvpView.addAttachmentView(attachment);
 
         if (attachment.state == LoadingState.URI_ONLY) {
@@ -338,6 +342,7 @@ public class AttachmentPresenter {
 
         attachmentMvpView.removeAttachmentView(attachment);
         attachments.remove(uri);
+        listener.onAttachmentRemoved();
     }
 
     public void onActivityResult(int resultCode, int requestCode, Intent data) {
@@ -374,5 +379,10 @@ public class AttachmentPresenter {
         void performSaveAfterChecks();
 
         void showMissingAttachmentsPartialMessageWarning();
+    }
+
+    public interface AttachmentsChangedListener {
+        void onAttachmentAdded();
+        void onAttachmentRemoved();
     }
 }
