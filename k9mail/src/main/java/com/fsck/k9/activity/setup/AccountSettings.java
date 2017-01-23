@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -51,12 +47,13 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
+import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog.ApgDeprecationDialogDismissListener;
 import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 
-public class AccountSettings extends K9PreferenceActivity {
+public class AccountSettings extends K9PreferenceActivity implements ApgDeprecationDialogDismissListener {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
@@ -751,23 +748,13 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private void showApgDeprecationDialog() {
         ApgDeprecationWarningDialog fragment = ApgDeprecationWarningDialog.newInstance();
-        fragment.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                // this leaks the activity into the fragment, so make sure to dismiss in onPause!
-                mCryptoApp.show();
-            }
-        });
-
-        FragmentTransaction ta = getFragmentManager().beginTransaction();
-        ta.add(fragment, APG_DEPRECATION_DIALOG_TAG);
-        ta.commitAllowingStateLoss();
+        fragment.show(getFragmentManager(), APG_DEPRECATION_DIALOG_TAG);
     }
 
-    private void dismissApgDeprecationDialogIfDisplayed() {
-        DialogFragment dialog = (DialogFragment) getFragmentManager().findFragmentByTag(APG_DEPRECATION_DIALOG_TAG);
-        if (dialog != null) {
-            dialog.dismiss();
+    @Override
+    public void onDismissApgDeprecationDialog() {
+        if (mCryptoApp != null) {
+            mCryptoApp.show();
         }
     }
 
@@ -919,7 +906,6 @@ public class AccountSettings extends K9PreferenceActivity {
 
     @Override
     protected void onPause() {
-        dismissApgDeprecationDialogIfDisplayed();
         saveSettings();
         super.onPause();
     }
