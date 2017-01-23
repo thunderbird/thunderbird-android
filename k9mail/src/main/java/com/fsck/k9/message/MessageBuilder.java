@@ -325,12 +325,11 @@ public abstract class MessageBuilder {
         textBodyBuilder.setInsertSeparator(!isDraft);
 
         boolean useSignature = (!isDraft && identity.getSignatureUse());
+        textBodyBuilder.setAppendSignature(useSignature);
         if (useSignature) {
-            textBodyBuilder.setAppendSignature(true);
             textBodyBuilder.setSignature(signature);
             textBodyBuilder.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
-        } else {
-            textBodyBuilder.setAppendSignature(false);
+            textBodyBuilder.setSignatureTreatAsHtmlSource(identity.getSignatureTreatAsHtmlSource());
         }
 
         TextBody body;

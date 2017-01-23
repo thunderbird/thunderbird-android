@@ -99,6 +99,11 @@
 	            android:layout_height="wrap_content"
 	            android:layout_width="fill_parent" 
 	            android:hint="@string/edit_identity_signature_hint"/>
+			<CheckBox
+				android:id="@+id/signature_treat_as_html_source"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/account_settings_signature_treat_as_html_source_label" />
     	</LinearLayout>
     </LinearLayout>
 </ScrollView>

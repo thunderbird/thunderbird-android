@@ -30,7 +30,10 @@ public class IdentitySettings {
             ));
         s.put("signatureUse", Settings.versions(
                 new V(1, new BooleanSetting(true))
-            ));
+        ));
+        s.put("signatureTreatAsHtmlSource", Settings.versions(
+                new V(1, new BooleanSetting(false))
+        ));
         s.put("replyTo", Settings.versions(
                 new V(1, new OptionalEmailAddressSetting())
             ));

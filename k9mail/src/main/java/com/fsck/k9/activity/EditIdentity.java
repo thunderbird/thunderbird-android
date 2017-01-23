@@ -25,6 +25,7 @@ public class EditIdentity extends K9Activity {
     private CheckBox mSignatureUse;
     private EditText mSignatureView;
     private LinearLayout mSignatureLayout;
+    private CheckBox mSignatureTreatAsHtmlSource;
     private EditText mEmailView;
 //  private EditText mAlwaysBccView;
     private EditText mNameView;
@@ -71,12 +72,14 @@ public class EditIdentity extends K9Activity {
         mSignatureLayout = (LinearLayout)findViewById(R.id.signature_layout);
         mSignatureUse = (CheckBox)findViewById(R.id.signature_use);
         mSignatureView = (EditText)findViewById(R.id.signature);
+        mSignatureTreatAsHtmlSource = (CheckBox)findViewById(R.id.signature_treat_as_html_source);
         mSignatureUse.setChecked(mIdentity.getSignatureUse());
         mSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     mSignatureLayout.setVisibility(View.VISIBLE);
                     mSignatureView.setText(mIdentity.getSignature());
+                    mSignatureTreatAsHtmlSource.setChecked(mIdentity.getSignatureTreatAsHtmlSource());
                 } else {
                     mSignatureLayout.setVisibility(View.GONE);
                 }
@@ -85,6 +88,7 @@ public class EditIdentity extends K9Activity {
 
         if (mSignatureUse.isChecked()) {
             mSignatureView.setText(mIdentity.getSignature());
+            mSignatureTreatAsHtmlSource.setChecked(mIdentity.getSignatureTreatAsHtmlSource());
         } else {
             mSignatureLayout.setVisibility(View.GONE);
         }
@@ -98,6 +102,7 @@ public class EditIdentity extends K9Activity {
         mIdentity.setName(mNameView.getText().toString());
         mIdentity.setSignatureUse(mSignatureUse.isChecked());
         mIdentity.setSignature(mSignatureView.getText().toString());
+        mIdentity.setSignatureTreatAsHtmlSource(mSignatureUse.isChecked());
 
         if (mReplyTo.getText().length() == 0) {
             mIdentity.setReplyTo(null);

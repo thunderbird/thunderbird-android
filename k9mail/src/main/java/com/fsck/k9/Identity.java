@@ -9,6 +9,7 @@ public class Identity implements Serializable {
     private String mEmail;
     private String mSignature;
     private boolean mSignatureUse;
+    private boolean mSignatureTreatAsHtmlSource;
     private String replyTo;
 
     public synchronized String getName() {
@@ -33,6 +34,12 @@ public class Identity implements Serializable {
 
     public synchronized void setSignatureUse(boolean signatureUse) {
         mSignatureUse = signatureUse;
+    }
+
+    public synchronized boolean getSignatureTreatAsHtmlSource() { return mSignatureTreatAsHtmlSource; }
+
+    public synchronized void setSignatureTreatAsHtmlSource(boolean signatureTreatAsHtmlSource) {
+        this.mSignatureTreatAsHtmlSource = signatureTreatAsHtmlSource;
     }
 
     public synchronized String getSignature() {

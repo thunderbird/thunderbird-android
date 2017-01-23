@@ -16,6 +16,7 @@ class TextBodyBuilder {
     private boolean mSignatureBeforeQuotedText = false;
     private boolean mInsertSeparator = false;
     private boolean mAppendSignature = true;
+    private boolean mSignatureTreatAsHtmlSource;
 
     private String mMessageContent;
     private String mSignature;
@@ -50,15 +51,15 @@ class TextBodyBuilder {
                 Log.d(K9.LOG_TAG, "insertable: " + quotedHtmlContent.toDebugString());
             }
 
+            // Convert the text to HTML
+            text = textToHtmlFragment(text);
+
             if (mAppendSignature) {
                 // Append signature to the reply
                 if (mReplyAfterQuote || mSignatureBeforeQuotedText) {
-                    text += getSignature();
+                    text += getSignatureHtml();
                 }
             }
-
-            // Convert the text to HTML
-            text = textToHtmlFragment(text);
 
             /*
              * Set the insertion location based upon our reply after quote
@@ -97,13 +98,13 @@ class TextBodyBuilder {
             text = quotedHtmlContent.toString();
 
         } else {
-            // There is no text to quote so simply append the signature if available
-            if (mAppendSignature) {
-                text += getSignature();
-            }
-
             // Convert the text to HTML
             text = textToHtmlFragment(text);
+
+            // There is no text to quote so simply append the signature if available
+            if (mAppendSignature) {
+                text += getSignatureHtml();
+            }
 
             //TODO: Wrap this in proper HTML tags
 
@@ -189,7 +190,8 @@ class TextBodyBuilder {
     private String getSignatureHtml() {
         String signature = "";
         if (!TextUtils.isEmpty(mSignature)) {
-            signature = textToHtmlFragment("\r\n" + mSignature);
+            signature = textToHtmlFragment("\r\n");
+            signature += mSignatureTreatAsHtmlSource ? mSignature : textToHtmlFragment(mSignature);
         }
         return signature;
     }
@@ -243,5 +245,9 @@ class TextBodyBuilder {
 
     public void setAppendSignature(boolean appendSignature) {
         mAppendSignature = appendSignature;
+    }
+
+    public void setSignatureTreatAsHtmlSource(boolean signatureTreatAsHtmlSource) {
+        this.mSignatureTreatAsHtmlSource = signatureTreatAsHtmlSource;
     }
 }
