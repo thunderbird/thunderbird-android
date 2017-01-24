@@ -9,6 +9,8 @@ import java.util.Map;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -47,17 +49,17 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
-import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog.ApgDeprecationDialogDismissListener;
 import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 
-public class AccountSettings extends K9PreferenceActivity implements ApgDeprecationDialogDismissListener {
+public class AccountSettings extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
     private static final int DIALOG_COLOR_PICKER_LED = 2;
+    private static final int DIALOG_APG_DEPRECATION_WARNING = 3;
 
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
@@ -129,7 +131,6 @@ public class AccountSettings extends K9PreferenceActivity implements ApgDeprecat
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
-    public static final String APG_DEPRECATION_DIALOG_TAG = "apgDeprecationDialog";
     public static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
 
 
@@ -716,7 +717,7 @@ public class AccountSettings extends K9PreferenceActivity implements ApgDeprecat
                     if (APG_PROVIDER_PLACEHOLDER.equals(value)) {
                         mCryptoApp.setValue("");
                         mCryptoKey.setOpenPgpProvider("");
-                        showApgDeprecationDialog();
+                        showDialog(DIALOG_APG_DEPRECATION_WARNING);
                     } else {
                         mCryptoApp.setValue(value);
                         mCryptoKey.setOpenPgpProvider(value);
@@ -743,18 +744,6 @@ public class AccountSettings extends K9PreferenceActivity implements ApgDeprecat
             final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
             mCryptoMenu.setEnabled(false);
             mCryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_installed);
-        }
-    }
-
-    private void showApgDeprecationDialog() {
-        ApgDeprecationWarningDialog fragment = ApgDeprecationWarningDialog.newInstance();
-        fragment.show(getFragmentManager(), APG_DEPRECATION_DIALOG_TAG);
-    }
-
-    @Override
-    public void onDismissApgDeprecationDialog() {
-        if (mCryptoApp != null) {
-            mCryptoApp.show();
         }
     }
 
@@ -962,6 +951,16 @@ public class AccountSettings extends K9PreferenceActivity implements ApgDeprecat
                         },
                         mAccount.getNotificationSetting().getLedColor());
 
+                break;
+            }
+            case DIALOG_APG_DEPRECATION_WARNING: {
+                dialog = new ApgDeprecationWarningDialog(this);
+                dialog.setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        mCryptoApp.show();
+                    }
+                });
                 break;
             }
         }
