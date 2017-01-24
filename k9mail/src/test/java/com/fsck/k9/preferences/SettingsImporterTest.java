@@ -171,7 +171,7 @@ public class SettingsImporterTest {
         SettingsImporter.ImportResults results = SettingsImporter.importSettings(
                 RuntimeEnvironment.application, inputStream, true, accountUuids, false);
 
-        assertEquals(0, results.errorneousAccounts.size());
+        assertEquals(0, results.erroneousAccounts.size());
         assertEquals(1, results.importedAccounts.size());
         assertEquals("Account", results.importedAccounts.get(0).imported.name);
         assertEquals(validUUID, results.importedAccounts.get(0).imported.uuid);
