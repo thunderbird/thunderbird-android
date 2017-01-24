@@ -10,13 +10,12 @@ import java.util.TreeMap;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.preferences.Settings.*;
 
-public class FolderSettings {
-    public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
-    public static final Map<Integer, SettingsUpgrader> UPGRADERS;
+class FolderSettings {
+    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s =
-            new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
+        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
 
         /**
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
@@ -24,16 +23,16 @@ public class FolderSettings {
          */
 
         s.put("displayMode", Settings.versions(
-                new V(1, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.NO_CLASS))
+                new V(1, new EnumSetting<>(FolderClass.class, FolderClass.NO_CLASS))
             ));
         s.put("notifyMode", Settings.versions(
-                new V(34, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.INHERITED))
+                new V(34, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED))
             ));
         s.put("syncMode", Settings.versions(
-                new V(1, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.INHERITED))
+                new V(1, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED))
             ));
         s.put("pushMode", Settings.versions(
-                new V(1, new EnumSetting<FolderClass>(FolderClass.class, FolderClass.INHERITED))
+                new V(1, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED))
             ));
         s.put("inTopGroup", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -44,11 +43,12 @@ public class FolderSettings {
 
         SETTINGS = Collections.unmodifiableMap(s);
 
-        Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        // noinspection MismatchedQueryAndUpdateOfCollection, this map intentionally left blank
+        Map<Integer, SettingsUpgrader> u = new HashMap<>();
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    public static Map<String, Object> validate(int version, Map<String, String> importedSettings,
+    static Map<String, Object> validate(int version, Map<String, String> importedSettings,
             boolean useDefaultValues) {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
@@ -61,9 +61,9 @@ public class FolderSettings {
         return Settings.convert(settings, SETTINGS);
     }
 
-    public static Map<String, String> getFolderSettings(Storage storage, String uuid,
+    static Map<String, String> getFolderSettings(Storage storage, String uuid,
             String folderName) {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         String prefix = uuid + "." + folderName + ".";
         for (String key : SETTINGS.keySet()) {
             String value = storage.getString(prefix + key, null);

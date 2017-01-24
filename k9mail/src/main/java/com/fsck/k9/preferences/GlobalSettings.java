@@ -2,7 +2,6 @@ package com.fsck.k9.preferences;
 
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,12 +36,11 @@ import com.fsck.k9.preferences.Settings.WebFontSizeSetting;
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
 public class GlobalSettings {
-    public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
-    public static final Map<Integer, SettingsUpgrader> UPGRADERS;
+    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s =
-            new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
+        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
 
         /**
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
@@ -58,7 +56,7 @@ public class GlobalSettings {
                         Environment.DIRECTORY_DOWNLOADS)))
             ));
         s.put("backgroundOperations", Settings.versions(
-                new V(1, new EnumSetting<K9.BACKGROUND_OPS>(
+                new V(1, new EnumSetting<>(
                         K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC))
             ));
         s.put("changeRegisteredNameColor", Settings.versions(
@@ -191,7 +189,7 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(true))
             ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(10, new EnumSetting<SortType>(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(10, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
             ));
         s.put("sortAscending", Settings.versions(
                 new V(10, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
@@ -216,7 +214,7 @@ public class GlobalSettings {
                 new V(22, new BooleanSetting(false))
             ));
         s.put("notificationHideSubject", Settings.versions(
-                new V(12, new EnumSetting<NotificationHideSubject>(
+                new V(12, new EnumSetting<>(
                         NotificationHideSubject.class, NotificationHideSubject.NEVER))
             ));
         s.put("useBackgroundAsUnreadIndicator", Settings.versions(
@@ -226,7 +224,7 @@ public class GlobalSettings {
                 new V(20, new BooleanSetting(true))
             ));
         s.put("splitViewMode", Settings.versions(
-                new V(23, new EnumSetting<SplitViewMode>(SplitViewMode.class, SplitViewMode.NEVER))
+                new V(23, new EnumSetting<>(SplitViewMode.class, SplitViewMode.NEVER))
             ));
         s.put("messageComposeTheme", Settings.versions(
                 new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
@@ -268,7 +266,7 @@ public class GlobalSettings {
                 new V(32, new BooleanSetting(false))
             ));
         s.put("lockScreenNotificationVisibility", Settings.versions(
-                new V(37, new EnumSetting<LockScreenNotificationVisibility>(LockScreenNotificationVisibility.class,
+                new V(37, new EnumSetting<>(LockScreenNotificationVisibility.class,
                         LockScreenNotificationVisibility.MESSAGE_COUNT))
             ));
         s.put("confirmDeleteFromNotification", Settings.versions(
@@ -278,7 +276,7 @@ public class GlobalSettings {
                 new V(38, new BooleanSetting(false))
             ));
         s.put("notificationQuickDelete", Settings.versions(
-                new V(38, new EnumSetting<NotificationQuickDelete>(NotificationQuickDelete.class,
+                new V(38, new EnumSetting<>(NotificationQuickDelete.class,
                         NotificationQuickDelete.NEVER))
             ));
         s.put("notificationDuringQuietTimeEnabled", Settings.versions(
@@ -293,7 +291,7 @@ public class GlobalSettings {
 
         SETTINGS = Collections.unmodifiableMap(s);
 
-        Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        Map<Integer, SettingsUpgrader> u = new HashMap<>();
         u.put(12, new SettingsUpgraderV12());
         u.put(24, new SettingsUpgraderV24());
         u.put(31, new SettingsUpgraderV31());
@@ -301,7 +299,7 @@ public class GlobalSettings {
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    public static Map<String, Object> validate(int version, Map<String, String> importedSettings) {
+    static Map<String, Object> validate(int version, Map<String, String> importedSettings) {
         return Settings.validate(version, SETTINGS, importedSettings, false);
     }
 
@@ -313,8 +311,8 @@ public class GlobalSettings {
         return Settings.convert(settings, SETTINGS);
     }
 
-    public static Map<String, String> getGlobalSettings(Storage storage) {
-        Map<String, String> result = new HashMap<String, String>();
+    static Map<String, String> getGlobalSettings(Storage storage) {
+        Map<String, String> result = new HashMap<>();
         for (String key : SETTINGS.keySet()) {
             String value = storage.getString(key, null);
             if (value != null) {
@@ -329,19 +327,19 @@ public class GlobalSettings {
      *
      * Map the 'keyguardPrivacy' value to the new NotificationHideSubject enum.
      */
-    public static class SettingsUpgraderV12 implements SettingsUpgrader {
+    private static class SettingsUpgraderV12 implements SettingsUpgrader {
 
         @Override
         public Set<String> upgrade(Map<String, Object> settings) {
             Boolean keyguardPrivacy = (Boolean) settings.get("keyguardPrivacy");
-            if (keyguardPrivacy != null && keyguardPrivacy.booleanValue()) {
+            if (keyguardPrivacy != null && keyguardPrivacy) {
                 // current setting: only show subject when unlocked
                 settings.put("notificationHideSubject", NotificationHideSubject.WHEN_LOCKED);
             } else {
                 // always show subject [old default]
                 settings.put("notificationHideSubject", NotificationHideSubject.NEVER);
             }
-            return new HashSet<String>(Arrays.asList("keyguardPrivacy"));
+            return new HashSet<>(Collections.singletonList("keyguardPrivacy"));
         }
     }
 
@@ -353,7 +351,7 @@ public class GlobalSettings {
      * the same value as <em>theme</em>.
      * </p>
      */
-    public static class SettingsUpgraderV24 implements SettingsUpgrader {
+    private static class SettingsUpgraderV24 implements SettingsUpgrader {
 
         @Override
         public Set<String> upgrade(Map<String, Object> settings) {
@@ -379,13 +377,13 @@ public class GlobalSettings {
 
         @Override
         public Set<String> upgrade(Map<String, Object> settings) {
-            int oldSize = ((Integer) settings.get("fontSizeMessageViewContent")).intValue();
+            int oldSize = (Integer) settings.get("fontSizeMessageViewContent");
 
             int newSize = convertFromOldSize(oldSize);
 
             settings.put("fontSizeMessageViewContentPercent", newSize);
 
-            return new HashSet<String>(Arrays.asList("fontSizeMessageViewContent"));
+            return new HashSet<>(Collections.singletonList("fontSizeMessageViewContent"));
         }
 
         public static int convertFromOldSize(int oldSize) {
@@ -418,13 +416,13 @@ public class GlobalSettings {
      * {@code res/values/arrays.xml}.
      * </p>
      */
-    public static class LanguageSetting extends PseudoEnumSetting<String> {
+    private static class LanguageSetting extends PseudoEnumSetting<String> {
         private final Map<String, String> mMapping;
 
-        public LanguageSetting() {
+        LanguageSetting() {
             super("");
 
-            Map<String, String> mapping = new HashMap<String, String>();
+            Map<String, String> mapping = new HashMap<>();
             String[] values = K9.app.getResources().getStringArray(R.array.settings_language_values);
             for (String value : values) {
                 if (value.length() == 0) {
@@ -454,11 +452,11 @@ public class GlobalSettings {
     /**
      * The theme setting.
      */
-    public static class ThemeSetting extends SettingsDescription<K9.Theme> {
+    static class ThemeSetting extends SettingsDescription<K9.Theme> {
         private static final String THEME_LIGHT = "light";
         private static final String THEME_DARK = "dark";
 
-        public ThemeSetting(K9.Theme defaultValue) {
+        ThemeSetting(K9.Theme defaultValue) {
             super(defaultValue);
         }
 
@@ -512,10 +510,10 @@ public class GlobalSettings {
     /**
      * The message view theme setting.
      */
-    public static class SubThemeSetting extends ThemeSetting {
+    private static class SubThemeSetting extends ThemeSetting {
         private static final String THEME_USE_GLOBAL = "use_global";
 
-        public SubThemeSetting(Theme defaultValue) {
+        SubThemeSetting(Theme defaultValue) {
             super(defaultValue);
         }
 
@@ -555,8 +553,8 @@ public class GlobalSettings {
     /**
      * A time setting.
      */
-    public static class TimeSetting extends SettingsDescription<String> {
-        public TimeSetting(String defaultValue) {
+    private static class TimeSetting extends SettingsDescription<String> {
+        TimeSetting(String defaultValue) {
             super(defaultValue);
         }
 
@@ -572,8 +570,8 @@ public class GlobalSettings {
     /**
      * A directory on the file system.
      */
-    public static class DirectorySetting extends SettingsDescription<String> {
-        public DirectorySetting(File defaultPath) {
+    private static class DirectorySetting extends SettingsDescription<String> {
+        DirectorySetting(File defaultPath) {
             super(defaultPath.toString());
         }
 

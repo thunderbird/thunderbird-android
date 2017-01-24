@@ -1,13 +1,14 @@
 package com.fsck.k9.preferences;
 
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import android.util.Log;
 
@@ -225,8 +226,7 @@ public class Settings {
      * @return A {@code TreeMap} using the version number as key, the {@code SettingsDescription}
      *         as value.
      */
-    static TreeMap<Integer, SettingsDescription> versions(
-            V... versionDescriptions) {
+    static TreeMap<Integer, SettingsDescription> versions(V... versionDescriptions) {
         TreeMap<Integer, SettingsDescription> map = new TreeMap<>();
         for (V v : versionDescriptions) {
             map.put(v.version, v.description);

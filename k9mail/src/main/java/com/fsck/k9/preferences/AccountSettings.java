@@ -32,12 +32,11 @@ import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
 
 public class AccountSettings {
-    public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
-    public static final Map<Integer, SettingsUpgrader> UPGRADERS;
+    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s =
-            new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
+        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
 
         /**
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
@@ -85,16 +84,16 @@ public class AccountSettings {
                         R.array.account_setup_expunge_policy_values))
             ));
         s.put("folderDisplayMode", Settings.versions(
-                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
+                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
             ));
         s.put("folderPushMode", Settings.versions(
-                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.FIRST_CLASS))
+                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.FIRST_CLASS))
             ));
         s.put("folderSyncMode", Settings.versions(
-                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.FIRST_CLASS))
+                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.FIRST_CLASS))
             ));
         s.put("folderTargetMode", Settings.versions(
-                new V(1, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
+                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
             ));
         s.put("goToUnreadMessageSearch", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -129,7 +128,7 @@ public class AccountSettings {
                         R.array.account_settings_message_age_values))
             ));
         s.put("messageFormat", Settings.versions(
-                new V(1, new EnumSetting<MessageFormat>(
+                new V(1, new EnumSetting<>(
                         MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
             ));
         s.put("messageFormatAuto", Settings.versions(
@@ -145,7 +144,7 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("folderNotifyNewMailMode", Settings.versions(
-                new V(34, new EnumSetting<FolderMode>(FolderMode.class, FolderMode.ALL))
+                new V(34, new EnumSetting<>(FolderMode.class, FolderMode.ALL))
             ));
         s.put("notifySelfNewMail", Settings.versions(
                 new V(1, new BooleanSetting(true))
@@ -157,8 +156,7 @@ public class AccountSettings {
                 new V(1, new StringSetting(Account.DEFAULT_QUOTE_PREFIX))
             ));
         s.put("quoteStyle", Settings.versions(
-                new V(1, new EnumSetting<QuoteStyle>(
-                        QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE))
+                new V(1, new EnumSetting<>(QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE))
             ));
         s.put("replyAfterQuote", Settings.versions(
                 new V(1, new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE))
@@ -170,21 +168,19 @@ public class AccountSettings {
                 new V(1, new RingtoneSetting("content://settings/system/notification_sound"))
             ));
         s.put("searchableFolders", Settings.versions(
-                new V(1, new EnumSetting<Searchable>(
-                        Searchable.class, Searchable.ALL))
+                new V(1, new EnumSetting<>(Searchable.class, Searchable.ALL))
             ));
         s.put("sentFolderName", Settings.versions(
                 new V(1, new StringSetting("Sent"))
             ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(9, new EnumSetting<SortType>(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(9, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
             ));
         s.put("sortAscending", Settings.versions(
                 new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
             ));
         s.put("showPicturesEnum", Settings.versions(
-                new V(1, new EnumSetting<ShowPictures>(
-                        ShowPictures.class, ShowPictures.NEVER))
+                new V(1, new EnumSetting<>(ShowPictures.class, ShowPictures.NEVER))
             ));
         s.put("signatureBeforeQuotedText", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -240,11 +236,12 @@ public class AccountSettings {
 
         SETTINGS = Collections.unmodifiableMap(s);
 
-        Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        // noinspection MismatchedQueryAndUpdateOfCollection, this map intentionally left blank
+        Map<Integer, SettingsUpgrader> u = new HashMap<>();
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    public static Map<String, Object> validate(int version, Map<String, String> importedSettings,
+    static Map<String, Object> validate(int version, Map<String, String> importedSettings,
             boolean useDefaultValues) {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
@@ -257,8 +254,8 @@ public class AccountSettings {
         return Settings.convert(settings, SETTINGS);
     }
 
-    public static Map<String, String> getAccountSettings(Storage storage, String uuid) {
-        Map<String, String> result = new HashMap<String, String>();
+    static Map<String, String> getAccountSettings(Storage storage, String uuid) {
+        Map<String, String> result = new HashMap<>();
         String prefix = uuid + ".";
         for (String key : SETTINGS.keySet()) {
             String value = storage.getString(prefix + key, null);
@@ -277,10 +274,10 @@ public class AccountSettings {
      * integer strings.
      * </p>
      */
-    public static class IntegerResourceSetting extends PseudoEnumSetting<Integer> {
+    private static class IntegerResourceSetting extends PseudoEnumSetting<Integer> {
         private final Map<Integer, String> mMapping;
 
-        public IntegerResourceSetting(int defaultValue, int resId) {
+        IntegerResourceSetting(int defaultValue, int resId) {
             super(defaultValue);
 
             Map<Integer, String> mapping = new HashMap<>();
@@ -314,13 +311,13 @@ public class AccountSettings {
      * Basically a {@link PseudoEnumSetting} that is initialized from a resource array.
      * </p>
      */
-    public static class StringResourceSetting extends PseudoEnumSetting<String> {
+    private static class StringResourceSetting extends PseudoEnumSetting<String> {
         private final Map<String, String> mMapping;
 
-        public StringResourceSetting(String defaultValue, int resId) {
+        StringResourceSetting(String defaultValue, int resId) {
             super(defaultValue);
 
-            Map<String, String> mapping = new HashMap<String, String>();
+            Map<String, String> mapping = new HashMap<>();
             String[] values = K9.app.getResources().getStringArray(resId);
             for (String value : values) {
                 mapping.put(value, value);
@@ -345,8 +342,8 @@ public class AccountSettings {
     /**
      * The notification ringtone setting.
      */
-    public static class RingtoneSetting extends SettingsDescription<String> {
-        public RingtoneSetting(String defaultValue) {
+    private static class RingtoneSetting extends SettingsDescription<String> {
+        RingtoneSetting(String defaultValue) {
             super(defaultValue);
         }
 
@@ -360,8 +357,8 @@ public class AccountSettings {
     /**
      * The storage provider setting.
      */
-    public static class StorageProviderSetting extends SettingsDescription<String> {
-        public StorageProviderSetting() {
+    private static class StorageProviderSetting extends SettingsDescription<String> {
+        StorageProviderSetting() {
             super(null);
         }
 
@@ -381,10 +378,10 @@ public class AccountSettings {
         }
     }
 
-    public static class DeletePolicySetting extends PseudoEnumSetting<Integer> {
+    private static class DeletePolicySetting extends PseudoEnumSetting<Integer> {
         private Map<Integer, String> mMapping;
 
-        public DeletePolicySetting(DeletePolicy defaultValue) {
+        DeletePolicySetting(DeletePolicy defaultValue) {
             super(defaultValue.setting);
             Map<Integer, String> mapping = new HashMap<>();
             mapping.put(DeletePolicy.NEVER.setting, "NEVER");

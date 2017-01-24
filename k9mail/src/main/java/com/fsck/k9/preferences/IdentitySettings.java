@@ -12,13 +12,13 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.preferences.Settings.*;
 
-public class IdentitySettings {
-    public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
-    public static final Map<Integer, SettingsUpgrader> UPGRADERS;
+class IdentitySettings {
+    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
         Map<String, TreeMap<Integer, SettingsDescription>> s =
-            new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
+                new LinkedHashMap<>();
 
         /**
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
@@ -37,11 +37,12 @@ public class IdentitySettings {
 
         SETTINGS = Collections.unmodifiableMap(s);
 
-        Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        // noinspection MismatchedQueryAndUpdateOfCollection, this map intentionally left blank
+        Map<Integer, SettingsUpgrader> u = new HashMap<>();
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    public static Map<String, Object> validate(int version, Map<String, String> importedSettings,
+    static Map<String, Object> validate(int version, Map<String, String> importedSettings,
             boolean useDefaultValues) {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
@@ -54,9 +55,9 @@ public class IdentitySettings {
         return Settings.convert(settings, SETTINGS);
     }
 
-    public static Map<String, String> getIdentitySettings(Storage storage, String uuid,
+    static Map<String, String> getIdentitySettings(Storage storage, String uuid,
             int identityIndex) {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         String prefix = uuid + ".";
         String suffix = "." + Integer.toString(identityIndex);
         for (String key : SETTINGS.keySet()) {
@@ -69,15 +70,15 @@ public class IdentitySettings {
     }
 
 
-    public static boolean isEmailAddressValid(String email) {
+    static boolean isEmailAddressValid(String email) {
         return new EmailAddressValidator().isValidAddressOnly(email);
     }
 
     /**
      * The message signature setting.
      */
-    public static class SignatureSetting extends SettingsDescription<String> {
-        public SignatureSetting() {
+    private static class SignatureSetting extends SettingsDescription<String> {
+        SignatureSetting() {
             super(null);
         }
 
@@ -95,10 +96,10 @@ public class IdentitySettings {
     /**
      * An optional email address setting.
      */
-    public static class OptionalEmailAddressSetting extends SettingsDescription<String> {
+    private static class OptionalEmailAddressSetting extends SettingsDescription<String> {
         private EmailAddressValidator mValidator;
 
-        public OptionalEmailAddressSetting() {
+        OptionalEmailAddressSetting() {
             super(null);
             mValidator = new EmailAddressValidator();
         }
