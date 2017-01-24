@@ -415,12 +415,12 @@
 
         <org.openintents.openpgp.util.OpenPgpAppPreference
             android:persistent="false"
-            android:key="crypto_app"
+            android:key="openpgp_provider"
             android:title="@string/account_settings_crypto_app" />
 
         <CheckBoxPreference
             android:persistent="false"
-            android:key="crypto_support_sign_only"
+            android:key="openpgp_support_sign_only"
             android:title="@string/account_settings_crypto_support_sign_only"
             />
 

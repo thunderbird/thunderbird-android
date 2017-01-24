@@ -693,13 +693,13 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        mHasCrypto = K9.isCryptoProviderConfigured();
+        mHasCrypto = K9.isOpenPgpProviderConfigured();
         PreferenceScreen cryptoMenu = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
         if (mHasCrypto) {
             mCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
 
             mCryptoKey.setValue(mAccount.getCryptoKey());
-            mCryptoKey.setOpenPgpProvider(K9.getCryptoProvider());
+            mCryptoKey.setOpenPgpProvider(K9.getOpenPgpProvider());
             // TODO: other identities?
             mCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(mAccount.getIdentity(0)));
             mCryptoKey.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

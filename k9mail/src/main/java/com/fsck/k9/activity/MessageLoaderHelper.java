@@ -202,7 +202,7 @@ public class MessageLoaderHelper {
             return;
         }
 
-        if (K9.isCryptoProviderConfigured()) {
+        if (K9.isOpenPgpProviderConfigured()) {
             startOrResumeCryptoOperation();
             return;
         }

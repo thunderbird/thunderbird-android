@@ -242,8 +242,8 @@ public class K9 extends Application {
     private static boolean mHideUserAgent = false;
     private static boolean mHideTimeZone = false;
 
-    private static String sCryptoProvider = "";
-    private static boolean sCryptoSupportSignOnly = false;
+    private static String sOpenPgpProvider = "";
+    private static boolean sOpenPgpSupportSignOnly = false;
 
     private static SortType mSortType;
     private static Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
@@ -314,7 +314,7 @@ public class K9 extends Application {
 
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 
-    public static final String NO_CRYPTO_PROVIDER = "";
+    public static final String NO_OPENPGP_PROVIDER = "";
 
     public static class Intents {
 
@@ -469,8 +469,8 @@ public class K9 extends Application {
         editor.putBoolean("hideUserAgent", mHideUserAgent);
         editor.putBoolean("hideTimeZone", mHideTimeZone);
 
-        editor.putString("cryptoProvider", sCryptoProvider);
-        editor.putBoolean("cryptoSupportSignOnly", sCryptoSupportSignOnly);
+        editor.putString("openPgpProvider", sOpenPgpProvider);
+        editor.putBoolean("openPgpSupportSignOnly", sOpenPgpSupportSignOnly);
 
         editor.putString("language", language);
         editor.putInt("theme", theme.ordinal());
@@ -690,8 +690,8 @@ public class K9 extends Application {
         mHideUserAgent = storage.getBoolean("hideUserAgent", false);
         mHideTimeZone = storage.getBoolean("hideTimeZone", false);
 
-        sCryptoProvider = storage.getString("cryptoProvider", NO_CRYPTO_PROVIDER);
-        sCryptoSupportSignOnly = storage.getBoolean("cryptoSupportSignOnly", false);
+        sOpenPgpProvider = storage.getString("openPgpProvider", NO_OPENPGP_PROVIDER);
+        sOpenPgpSupportSignOnly = storage.getBoolean("openPgpSupportSignOnly", false);
 
         mConfirmDelete = storage.getBoolean("confirmDelete", false);
         mConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true);
@@ -1238,24 +1238,24 @@ public class K9 extends Application {
         mHideTimeZone = state;
     }
 
-    public static boolean isCryptoProviderConfigured() {
-        return !NO_CRYPTO_PROVIDER.equals(sCryptoProvider);
+    public static boolean isOpenPgpProviderConfigured() {
+        return !NO_OPENPGP_PROVIDER.equals(sOpenPgpProvider);
     }
 
-    public static String getCryptoProvider() {
-        return sCryptoProvider;
+    public static String getOpenPgpProvider() {
+        return sOpenPgpProvider;
     }
 
-    public static void setCryptoProvider(String cryptoProvider) {
-        sCryptoProvider = cryptoProvider;
+    public static void setOpenPgpProvider(String openPgpProvider) {
+        sOpenPgpProvider = openPgpProvider;
     }
 
-    public static boolean getCryptoSupportSignOnly() {
-        return sCryptoSupportSignOnly;
+    public static boolean getOpenPgpSupportSignOnly() {
+        return sOpenPgpSupportSignOnly;
     }
 
-    public static void setCryptoSupportSignOnly(boolean supportSignOnly) {
-        sCryptoSupportSignOnly = supportSignOnly;
+    public static void setOpenPgpSupportSignOnly(boolean supportSignOnly) {
+        sOpenPgpSupportSignOnly = supportSignOnly;
     }
 
     public static String getAttachmentDefaultPath() {

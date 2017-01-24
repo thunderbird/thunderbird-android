@@ -59,7 +59,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             return false;
         }
 
-        boolean suppressSignOnlyMessages = !K9.getCryptoSupportSignOnly();
+        boolean suppressSignOnlyMessages = !K9.getOpenPgpSupportSignOnly();
         if (suppressSignOnlyMessages && displayStatus.isUnencryptedSigned()) {
             return false;
         }
@@ -222,8 +222,8 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
     @Nullable
     private static Drawable getOpenPgpApiProviderIcon(Context context) {
         try {
-            String openPgpProvider = K9.getCryptoProvider();
-            if (K9.NO_CRYPTO_PROVIDER.equals(openPgpProvider)) {
+            String openPgpProvider = K9.getOpenPgpProvider();
+            if (K9.NO_OPENPGP_PROVIDER.equals(openPgpProvider)) {
                 return null;
             }
             return context.getPackageManager().getApplicationIcon(openPgpProvider);

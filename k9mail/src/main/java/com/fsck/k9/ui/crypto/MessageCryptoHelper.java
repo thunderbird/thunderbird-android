@@ -89,7 +89,7 @@ public class MessageCryptoHelper {
     public MessageCryptoHelper(Context context) {
         this.context = context.getApplicationContext();
 
-        if (!K9.isCryptoProviderConfigured()) {
+        if (!K9.isOpenPgpProviderConfigured()) {
             throw new IllegalStateException("MessageCryptoHelper must only be called with a openpgp provider!");
         }
     }
@@ -207,7 +207,7 @@ public class MessageCryptoHelper {
     }
 
     private void connectToCryptoProviderService() {
-        String openPgpProviderPackage = K9.getCryptoProvider();
+        String openPgpProviderPackage = K9.getOpenPgpProvider();
         openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProviderPackage,
                 new OnBound() {
                     @Override

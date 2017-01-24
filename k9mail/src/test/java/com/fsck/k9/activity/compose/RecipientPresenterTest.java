@@ -254,7 +254,7 @@ public class RecipientPresenterTest {
         IOpenPgpService2 openPgpService2 = mock(IOpenPgpService2.class);
         Intent permissionPingIntent = new Intent();
 
-        K9.setCryptoProvider(CRYPTO_PROVIDER);
+        K9.setOpenPgpProvider(CRYPTO_PROVIDER);
         permissionPingIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
         when(account.getCryptoKey()).thenReturn(CRYPTO_KEY_ID);
         when(openPgpServiceConnection.isBound()).thenReturn(true);
