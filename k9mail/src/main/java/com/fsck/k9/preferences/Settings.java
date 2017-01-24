@@ -279,7 +279,7 @@ public class Settings {
      * negligible.
      * </p>
      */
-    static abstract class SettingsDescription<T> {
+    abstract static class SettingsDescription<T> {
         /**
          * The setting's default value (internal representation).
          */

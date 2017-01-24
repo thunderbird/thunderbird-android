@@ -1,5 +1,6 @@
 package com.fsck.k9.preferences;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,12 +10,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Map.Entry;
-
-import com.fsck.k9.helper.FileHelper;
-import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
 import android.os.Environment;
@@ -24,11 +22,13 @@ import android.util.Xml;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
+import org.xmlpull.v1.XmlSerializer;
 
 
 public class SettingsExporter {
@@ -81,8 +81,7 @@ public class SettingsExporter {
 
         OutputStream os = null;
         String filename = null;
-        try
-        {
+        try {
             File dir = new File(Environment.getExternalStorageDirectory() + File.separator + context.getPackageName());
             if (!dir.mkdirs()) {
                 Log.d(K9.LOG_TAG, "Unable to create directory: " + dir.getAbsolutePath());
@@ -110,7 +109,7 @@ public class SettingsExporter {
     }
 
     static void exportPreferences(Context context, OutputStream os, boolean includeGlobals, Set<String> accountUuids)
-            throws SettingsImportExportException  {
+            throws SettingsImportExportException {
 
         try {
             XmlSerializer serializer = Xml.newSerializer();
@@ -167,7 +166,7 @@ public class SettingsExporter {
 
     private static void writeSettings(XmlSerializer serializer, Map<String, Object> prefs) throws IOException {
 
-        for (Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting : 
+        for (Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
                 GlobalSettings.SETTINGS.entrySet()) {
 
             String key = versionedSetting.getKey();
@@ -184,7 +183,7 @@ public class SettingsExporter {
                 try {
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, valueString);
                 } catch (InvalidSettingValueException e) {
-                    Log.w(K9.LOG_TAG, "Global setting \"" + key  + "\" has invalid value \"" +
+                    Log.w(K9.LOG_TAG, "Global setting \"" + key + "\" has invalid value \"" +
                             valueString + "\" in preference storage. This shouldn't happen!");
                 }
             } else {
@@ -365,7 +364,7 @@ public class SettingsExporter {
         serializer.endTag(null, ACCOUNT_ELEMENT);
     }
 
-    private static void writeIdentity(XmlSerializer serializer, String accountUuid, String identity, 
+    private static void writeIdentity(XmlSerializer serializer, String accountUuid, String identity,
             Map<String, Object> prefs) throws IOException {
 
         serializer.startTag(null, IDENTITY_ELEMENT);

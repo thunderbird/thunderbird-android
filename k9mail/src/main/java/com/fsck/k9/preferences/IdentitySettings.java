@@ -1,5 +1,6 @@
 package com.fsck.k9.preferences;
 
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -10,7 +11,12 @@ import java.util.TreeMap;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.preferences.Settings.*;
+import com.fsck.k9.preferences.Settings.BooleanSetting;
+import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
+import com.fsck.k9.preferences.Settings.SettingsDescription;
+import com.fsck.k9.preferences.Settings.SettingsUpgrader;
+import com.fsck.k9.preferences.Settings.V;
+
 
 class IdentitySettings {
     static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
@@ -19,20 +25,20 @@ class IdentitySettings {
     static {
         Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
 
-        /**
+        /*
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
          * and use that for whatever you add here.
          */
 
         s.put("signature", Settings.versions(
                 new V(1, new SignatureSetting())
-            ));
+        ));
         s.put("signatureUse", Settings.versions(
                 new V(1, new BooleanSetting(true))
-            ));
+        ));
         s.put("replyTo", Settings.versions(
                 new V(1, new OptionalEmailAddressSetting())
-            ));
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
