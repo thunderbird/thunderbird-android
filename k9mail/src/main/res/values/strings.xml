@@ -1205,5 +1205,13 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_support_sign_only">Support signing of unencrypted messages</string>
     <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
     <string name="unsigned_text_divider_label">Unsigned Text</string>
+    <string name="apg_deprecated_title">APG Deprecation Warning</string>
+    <string name="apg_deprecated_1">APG is no longer maintained!</string>
+    <string name="apg_deprecated_2">Because of this, support for APG has been removed from K-9 Mail.</string>
+    <string name="apg_deprecated_bullet_1">Development stopped in early 2014</string>
+    <string name="apg_deprecated_bullet_2">Contains unfixed security issues</string>
+    <string name="apg_learn_more">You can <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">click here</a> to learn more.</string>
+    <string name="apg_deprecated_ok">Got it!</string>
+    <string name="apg">APG</string>
 
 </resources>
