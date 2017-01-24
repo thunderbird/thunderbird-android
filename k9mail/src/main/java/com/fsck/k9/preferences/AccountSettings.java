@@ -260,14 +260,6 @@ public class AccountSettings {
         return result;
     }
 
-    /**
-     * An integer resource setting.
-     *
-     * <p>
-     * Basically a {@link PseudoEnumSetting} that is initialized from a resource array containing
-     * integer strings.
-     * </p>
-     */
     private static class IntegerResourceSetting extends PseudoEnumSetting<Integer> {
         private final Map<Integer, String> mapping;
 
@@ -298,13 +290,6 @@ public class AccountSettings {
         }
     }
 
-    /**
-     * A string resource setting.
-     *
-     * <p>
-     * Basically a {@link PseudoEnumSetting} that is initialized from a resource array.
-     * </p>
-     */
     private static class StringResourceSetting extends PseudoEnumSetting<String> {
         private final Map<String, String> mapping;
 
@@ -333,9 +318,6 @@ public class AccountSettings {
         }
     }
 
-    /**
-     * The notification ringtone setting.
-     */
     private static class RingtoneSetting extends SettingsDescription<String> {
         RingtoneSetting(String defaultValue) {
             super(defaultValue);
@@ -348,9 +330,6 @@ public class AccountSettings {
         }
     }
 
-    /**
-     * The storage provider setting.
-     */
     private static class StorageProviderSetting extends SettingsDescription<String> {
         StorageProviderSetting() {
             super(null);

@@ -77,9 +77,6 @@ class IdentitySettings {
         return new EmailAddressValidator().isValidAddressOnly(email);
     }
 
-    /**
-     * The message signature setting.
-     */
     private static class SignatureSetting extends SettingsDescription<String> {
         SignatureSetting() {
             super(null);
@@ -96,9 +93,6 @@ class IdentitySettings {
         }
     }
 
-    /**
-     * An optional email address setting.
-     */
     private static class OptionalEmailAddressSetting extends SettingsDescription<String> {
         private EmailAddressValidator validator;
 

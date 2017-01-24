@@ -57,20 +57,8 @@ public class SettingsImporter {
         }
     }
 
-    /**
-     * Class to describe an account (name, UUID).
-     *
-     * @see ImportContents
-     */
     public static class AccountDescription {
-        /**
-         * The name of the account.
-         */
         public final String name;
-
-        /**
-         * The UUID of the account.
-         */
         public final String uuid;
 
         private AccountDescription(String name, String uuid) {

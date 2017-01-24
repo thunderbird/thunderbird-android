@@ -242,12 +242,6 @@ public class Settings {
     }
 
 
-    /**
-     * Indicates an invalid setting value.
-     *
-     * @see SettingsDescription#fromString(String)
-     * @see SettingsDescription#fromPrettyString(String)
-     */
     static class InvalidSettingValueException extends Exception {
         private static final long serialVersionUID = 1L;
     }
@@ -352,11 +346,6 @@ public class Settings {
         }
     }
 
-    /**
-     * Container to hold a {@link SettingsDescription} instance and a version number.
-     *
-     * @see Settings#versions(V...)
-     */
     public static class V {
         public final Integer version;
         public final SettingsDescription description;
@@ -387,9 +376,6 @@ public class Settings {
     }
 
 
-    /**
-     * A string setting.
-     */
     static class StringSetting extends SettingsDescription<String> {
         StringSetting(String defaultValue) {
             super(defaultValue);
@@ -401,9 +387,6 @@ public class Settings {
         }
     }
 
-    /**
-     * A boolean setting.
-     */
     static class BooleanSetting extends SettingsDescription<Boolean> {
         BooleanSetting(boolean defaultValue) {
             super(defaultValue);
@@ -420,9 +403,6 @@ public class Settings {
         }
     }
 
-    /**
-     * A color setting.
-     */
     static class ColorSetting extends SettingsDescription<Integer> {
         ColorSetting(int defaultValue) {
             super(defaultValue);
@@ -455,13 +435,6 @@ public class Settings {
         }
     }
 
-    /**
-     * An {@code Enum} setting.
-     *
-     * <p>
-     * {@link Enum#toString()} is used to obtain the "pretty" string representation.
-     * </p>
-     */
     static class EnumSetting<T extends Enum<T>> extends SettingsDescription<T> {
         private Class<T> enumClass;
 
@@ -510,9 +483,6 @@ public class Settings {
         }
     }
 
-    /**
-     * A font size setting.
-     */
     static class FontSizeSetting extends PseudoEnumSetting<Integer> {
         private final Map<Integer, String> mapping;
 
@@ -548,9 +518,6 @@ public class Settings {
         }
     }
 
-    /**
-     * A {@link android.webkit.WebView} font size setting.
-     */
     static class WebFontSizeSetting extends PseudoEnumSetting<Integer> {
         private final Map<Integer, String> mapping;
 
@@ -584,9 +551,6 @@ public class Settings {
         }
     }
 
-    /**
-     * An integer settings whose values a limited to a certain range.
-     */
     static class IntegerRangeSetting extends SettingsDescription<Integer> {
         private int start;
         private int end;
