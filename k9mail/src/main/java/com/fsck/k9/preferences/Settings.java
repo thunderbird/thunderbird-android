@@ -37,11 +37,11 @@ public class Settings {
      */
     public static final int VERSION = 44;
 
-    public static Map<String, Object> validate(int version, Map<String,
+    static Map<String, Object> validate(int version, Map<String,
             TreeMap<Integer, SettingsDescription>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
 
-        Map<String, Object> validatedSettings = new HashMap<String, Object>();
+        Map<String, Object> validatedSettings = new HashMap<>();
         for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
                 settings.entrySet()) {
 
@@ -97,13 +97,13 @@ public class Settings {
      * Upgrade settings using the settings structure and/or special upgrade code.
      *
      * @param version
-     *         The content version of the settings in {@code validatedSettings}.
+     *         The content version of the settings in {@code validatedSettingsMutable}.
      * @param upgraders
      *         A map of {@link SettingsUpgrader}s for nontrivial settings upgrades.
      * @param settings
      *         The structure describing the different settings, possibly containing multiple
      *         versions.
-     * @param validatedSettings
+     * @param validatedSettingsMutable
      *         The settings as returned by {@link Settings#validate(int, Map, Map, boolean)}.
      *         This map is modified and contains the upgraded settings when this method returns.
      *
@@ -112,9 +112,7 @@ public class Settings {
      */
     public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
             Map<String, TreeMap<Integer, SettingsDescription>> settings,
-            Map<String, Object> validatedSettings) {
-
-        Map<String, Object> upgradedSettings = validatedSettings;
+            Map<String, Object> validatedSettingsMutable) {
         Set<String> deletedSettings = null;
 
         for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
@@ -122,25 +120,25 @@ public class Settings {
             // Check if there's an SettingsUpgrader for that version
             SettingsUpgrader upgrader = upgraders.get(toVersion);
             if (upgrader != null) {
-                deletedSettings = upgrader.upgrade(upgradedSettings);
+                deletedSettings = upgrader.upgrade(validatedSettingsMutable);
             }
 
             // Deal with settings that don't need special upgrade code
             for (Entry<String, TreeMap<Integer, SettingsDescription>> versions :
-                settings.entrySet()) {
+                    settings.entrySet()) {
 
                 String settingName = versions.getKey();
                 TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
 
                 // Handle newly added settings
-                if (versionedSettings.firstKey().intValue() == toVersion) {
+                if (versionedSettings.firstKey() == toVersion) {
 
                     // Check if it was already added to upgradedSettings by the SettingsUpgrader
-                    if (!upgradedSettings.containsKey(settingName)) {
+                    if (!validatedSettingsMutable.containsKey(settingName)) {
                         // Insert default value to upgradedSettings
                         SettingsDescription setting = versionedSettings.get(toVersion);
                         Object defaultValue = setting.getDefaultValue();
-                        upgradedSettings.put(settingName, defaultValue);
+                        validatedSettingsMutable.put(settingName, defaultValue);
 
                         if (K9.DEBUG) {
                             String prettyValue = setting.toPrettyString(defaultValue);
@@ -152,11 +150,11 @@ public class Settings {
 
                 // Handle removed settings
                 Integer highestVersion = versionedSettings.lastKey();
-                if (highestVersion.intValue() == toVersion &&
+                if (highestVersion == toVersion &&
                         versionedSettings.get(highestVersion) == null) {
-                    upgradedSettings.remove(settingName);
+                    validatedSettingsMutable.remove(settingName);
                     if (deletedSettings == null) {
-                        deletedSettings = new HashSet<String>();
+                        deletedSettings = new HashSet<>();
                     }
                     deletedSettings.add(settingName);
 
@@ -185,14 +183,14 @@ public class Settings {
     public static Map<String, String> convert(Map<String, Object> settings,
             Map<String, TreeMap<Integer, SettingsDescription>> settingDescriptions) {
 
-        Map<String, String> serializedSettings = new HashMap<String, String>();
+        Map<String, String> serializedSettings = new HashMap<>();
 
         for (Entry<String, Object> setting : settings.entrySet()) {
             String settingName = setting.getKey();
             Object internalValue = setting.getValue();
 
             TreeMap<Integer, SettingsDescription> versionedSetting =
-                settingDescriptions.get(settingName);
+                    settingDescriptions.get(settingName);
             Integer highestVersion = versionedSetting.lastKey();
             SettingsDescription settingDesc = versionedSetting.get(highestVersion);
 
@@ -227,9 +225,9 @@ public class Settings {
      * @return A {@code TreeMap} using the version number as key, the {@code SettingsDescription}
      *         as value.
      */
-    public static TreeMap<Integer, SettingsDescription> versions(
+    static TreeMap<Integer, SettingsDescription> versions(
             V... versionDescriptions) {
-        TreeMap<Integer, SettingsDescription> map = new TreeMap<Integer, SettingsDescription>();
+        TreeMap<Integer, SettingsDescription> map = new TreeMap<>();
         for (V v : versionDescriptions) {
             map.put(v.version, v.description);
         }
@@ -243,7 +241,7 @@ public class Settings {
      * @see SettingsDescription#fromString(String)
      * @see SettingsDescription#fromPrettyString(String)
      */
-    public static class InvalidSettingValueException extends Exception {
+    static class InvalidSettingValueException extends Exception {
         private static final long serialVersionUID = 1L;
     }
 
@@ -260,7 +258,7 @@ public class Settings {
      *   <li>
      *   The one that is used by the internal preference {@link Storage}. It is usually obtained by
      *   calling {@code toString()} on the internal representation of the setting value (see e.g.
-     *   {@link K9#save(android.content.SharedPreferences.Editor)}).
+     *   {@link K9#save(StorageEditor)}).
      *   </li>
      *   <li>
      *   The "pretty" version that is used by the import/export settings file (e.g. colors are
@@ -274,13 +272,13 @@ public class Settings {
      * negligible.
      * </p>
      */
-    public static abstract class SettingsDescription {
+    static abstract class SettingsDescription {
         /**
          * The setting's default value (internal representation).
          */
-        protected Object mDefaultValue;
+        Object mDefaultValue;
 
-        public SettingsDescription(Object defaultValue) {
+        SettingsDescription(Object defaultValue) {
             mDefaultValue = defaultValue;
         }
 
@@ -356,7 +354,7 @@ public class Settings {
         public final Integer version;
         public final SettingsDescription description;
 
-        public V(Integer version, SettingsDescription description) {
+        V(Integer version, SettingsDescription description) {
             this.version = version;
             this.description = description;
         }
@@ -367,7 +365,7 @@ public class Settings {
      *
      * @see Settings#upgrade(int, Map, Map, Map)
      */
-    public interface SettingsUpgrader {
+    interface SettingsUpgrader {
         /**
          * Upgrade the provided settings.
          *
@@ -378,15 +376,15 @@ public class Settings {
          * @return A set of setting names that were removed during the upgrade process or
          *         {@code null} if none were removed.
          */
-        public Set<String> upgrade(Map<String, Object> settings);
+        Set<String> upgrade(Map<String, Object> settings);
     }
 
 
     /**
      * A string setting.
      */
-    public static class StringSetting extends SettingsDescription {
-        public StringSetting(String defaultValue) {
+    static class StringSetting extends SettingsDescription {
+        StringSetting(String defaultValue) {
             super(defaultValue);
         }
 
@@ -399,8 +397,8 @@ public class Settings {
     /**
      * A boolean setting.
      */
-    public static class BooleanSetting extends SettingsDescription {
-        public BooleanSetting(boolean defaultValue) {
+    static class BooleanSetting extends SettingsDescription {
+        BooleanSetting(boolean defaultValue) {
             super(defaultValue);
         }
 
@@ -418,8 +416,8 @@ public class Settings {
     /**
      * A color setting.
      */
-    public static class ColorSetting extends SettingsDescription {
-        public ColorSetting(int defaultValue) {
+    static class ColorSetting extends SettingsDescription {
+        ColorSetting(int defaultValue) {
             super(defaultValue);
         }
 
@@ -457,10 +455,10 @@ public class Settings {
      * {@link Enum#toString()} is used to obtain the "pretty" string representation.
      * </p>
      */
-    public static class EnumSetting<T extends Enum<T>> extends SettingsDescription {
+    static class EnumSetting<T extends Enum<T>> extends SettingsDescription {
         private Class<T> mEnumClass;
 
-        public EnumSetting(Class<T> enumClass, Object defaultValue) {
+        EnumSetting(Class<T> enumClass, Object defaultValue) {
             super(defaultValue);
             mEnumClass = enumClass;
         }
@@ -481,8 +479,8 @@ public class Settings {
      * @param <A>
      *         The type of the internal representation (e.g. {@code Integer}).
      */
-    public abstract static class PseudoEnumSetting<A> extends SettingsDescription {
-        public PseudoEnumSetting(Object defaultValue) {
+    abstract static class PseudoEnumSetting<A> extends SettingsDescription {
+        PseudoEnumSetting(Object defaultValue) {
             super(defaultValue);
         }
 
@@ -508,13 +506,13 @@ public class Settings {
     /**
      * A font size setting.
      */
-    public static class FontSizeSetting extends PseudoEnumSetting<Integer> {
+    static class FontSizeSetting extends PseudoEnumSetting<Integer> {
         private final Map<Integer, String> mMapping;
 
-        public FontSizeSetting(int defaultValue) {
+        FontSizeSetting(int defaultValue) {
             super(defaultValue);
 
-            Map<Integer, String> mapping = new HashMap<Integer, String>();
+            Map<Integer, String> mapping = new HashMap<>();
             mapping.put(FontSizes.FONT_10SP, "tiniest");
             mapping.put(FontSizes.FONT_12SP, "tiny");
             mapping.put(FontSizes.SMALL, "smaller");
@@ -546,13 +544,13 @@ public class Settings {
     /**
      * A {@link android.webkit.WebView} font size setting.
      */
-    public static class WebFontSizeSetting extends PseudoEnumSetting<Integer> {
+    static class WebFontSizeSetting extends PseudoEnumSetting<Integer> {
         private final Map<Integer, String> mMapping;
 
-        public WebFontSizeSetting(int defaultValue) {
+        WebFontSizeSetting(int defaultValue) {
             super(defaultValue);
 
-            Map<Integer, String> mapping = new HashMap<Integer, String>();
+            Map<Integer, String> mapping = new HashMap<>();
             mapping.put(1, "smallest");
             mapping.put(2, "smaller");
             mapping.put(3, "normal");
@@ -582,11 +580,11 @@ public class Settings {
     /**
      * An integer settings whose values a limited to a certain range.
      */
-    public static class IntegerRangeSetting extends SettingsDescription {
+    static class IntegerRangeSetting extends SettingsDescription {
         private int mStart;
         private int mEnd;
 
-        public IntegerRangeSetting(int start, int end, int defaultValue) {
+        IntegerRangeSetting(int start, int end, int defaultValue) {
             super(defaultValue);
             mStart = start;
             mEnd = end;
