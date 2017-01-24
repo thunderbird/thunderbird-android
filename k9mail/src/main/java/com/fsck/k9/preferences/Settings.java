@@ -99,7 +99,7 @@ public class Settings {
      *
      * @param version
      *         The content version of the settings in {@code validatedSettingsMutable}.
-     * @param upgraders
+     * @param customUpgraders
      *         A map of {@link SettingsUpgrader}s for nontrivial settings upgrades.
      * @param settings
      *         The structure describing the different settings, possibly containing multiple
@@ -111,62 +111,71 @@ public class Settings {
      * @return A set of setting names that were removed during the upgrade process or {@code null}
      *         if none were removed.
      */
-    public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
+    public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> customUpgraders,
             Map<String, TreeMap<Integer, SettingsDescription>> settings,
             Map<String, Object> validatedSettingsMutable) {
         Set<String> deletedSettings = null;
 
         for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
-
-            // Check if there's an SettingsUpgrader for that version
-            SettingsUpgrader upgrader = upgraders.get(toVersion);
-            if (upgrader != null) {
+            if (customUpgraders.containsKey(toVersion)) {
+                SettingsUpgrader upgrader = customUpgraders.get(toVersion);
                 deletedSettings = upgrader.upgrade(validatedSettingsMutable);
             }
 
-            // Deal with settings that don't need special upgrade code
-            for (Entry<String, TreeMap<Integer, SettingsDescription>> versions :
-                    settings.entrySet()) {
-
-                String settingName = versions.getKey();
-                TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
-
-                // Handle newly added settings
-                if (versionedSettings.firstKey() == toVersion) {
-
-                    // Check if it was already added to upgradedSettings by the SettingsUpgrader
-                    if (!validatedSettingsMutable.containsKey(settingName)) {
-                        // Insert default value to upgradedSettings
-                        SettingsDescription setting = versionedSettings.get(toVersion);
-                        Object defaultValue = setting.getDefaultValue();
-                        validatedSettingsMutable.put(settingName, defaultValue);
-
-                        if (K9.DEBUG) {
-                            String prettyValue = setting.toPrettyString(defaultValue);
-                            Log.v(K9.LOG_TAG, "Added new setting \"" + settingName +
-                                    "\" with default value \"" + prettyValue + "\"");
-                        }
-                    }
-                }
-
-                // Handle removed settings
-                Integer highestVersion = versionedSettings.lastKey();
-                if (highestVersion == toVersion &&
-                        versionedSettings.get(highestVersion) == null) {
-                    validatedSettingsMutable.remove(settingName);
-                    if (deletedSettings == null) {
-                        deletedSettings = new HashSet<>();
-                    }
-                    deletedSettings.add(settingName);
-
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Removed setting \"" + settingName + "\"");
-                    }
-                }
-            }
+            deletedSettings = upgradeSettingsGeneric(settings, validatedSettingsMutable, deletedSettings, toVersion);
         }
 
         return deletedSettings;
+    }
+
+    private static Set<String> upgradeSettingsGeneric(Map<String, TreeMap<Integer, SettingsDescription>> settings,
+            Map<String, Object> validatedSettingsMutable, Set<String> deletedSettingsMutable, int toVersion) {
+        for (Entry<String, TreeMap<Integer, SettingsDescription>> versions : settings.entrySet()) {
+            String settingName = versions.getKey();
+            TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
+
+            boolean isNewlyAddedSetting = versionedSettings.firstKey() == toVersion;
+            if (isNewlyAddedSetting) {
+                boolean wasHandledByCustomUpgrader = validatedSettingsMutable.containsKey(settingName);
+                if (wasHandledByCustomUpgrader) {
+                    continue;
+                }
+
+                SettingsDescription setting = versionedSettings.get(toVersion);
+                upgradeSettingInsertDefault(validatedSettingsMutable, settingName, setting);
+            }
+
+            Integer highestVersion = versionedSettings.lastKey();
+            boolean isRemovedSetting = highestVersion == toVersion && versionedSettings.get(highestVersion) == null;
+            if (isRemovedSetting) {
+                if (deletedSettingsMutable == null) {
+                    deletedSettingsMutable = new HashSet<>();
+                }
+                upgradeSettingRemove(validatedSettingsMutable, deletedSettingsMutable, settingName);
+            }
+        }
+        return deletedSettingsMutable;
+    }
+
+    private static <A> void upgradeSettingInsertDefault(Map<String, Object> validatedSettingsMutable,
+            String settingName, SettingsDescription<A> setting) {
+        A defaultValue = setting.getDefaultValue();
+        validatedSettingsMutable.put(settingName, defaultValue);
+
+        if (K9.DEBUG) {
+            String prettyValue = setting.toPrettyString(defaultValue);
+            Log.v(K9.LOG_TAG, "Added new setting \"" + settingName + "\" with default value \"" + prettyValue + "\"");
+        }
+    }
+
+    private static void upgradeSettingRemove(Map<String, Object> validatedSettingsMutable,
+            Set<String> deletedSettingsMutable, String settingName) {
+        validatedSettingsMutable.remove(settingName);
+        deletedSettingsMutable.add(settingName);
+
+        if (K9.DEBUG) {
+            Log.v(K9.LOG_TAG, "Removed setting \"" + settingName + "\"");
+        }
     }
 
     /**
@@ -183,7 +192,6 @@ public class Settings {
      */
     public static Map<String, String> convert(Map<String, Object> settings,
             Map<String, TreeMap<Integer, SettingsDescription>> settingDescriptions) {
-
         Map<String, String> serializedSettings = new HashMap<>();
 
         for (Entry<String, Object> setting : settings.entrySet()) {
