@@ -99,7 +99,8 @@ class LockScreenNotification {
                 .setSmallIcon(R.drawable.notification_icon_new_mail)
                 .setColor(account.getChipColor())
                 .setNumber(unreadCount)
-                .setContentTitle(title);
+                .setContentTitle(title)
+                .setCategory(NotificationCompat.CATEGORY_EMAIL);
     }
 
 
