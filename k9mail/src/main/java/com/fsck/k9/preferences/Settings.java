@@ -142,11 +142,14 @@ public class Settings {
                 }
 
                 SettingsDescription setting = versionedSettings.get(toVersion);
+                if (setting == null) {
+                    throw new AssertionError("First version of a setting must be non-null!");
+                }
                 upgradeSettingInsertDefault(validatedSettingsMutable, settingName, setting);
             }
 
             Integer highestVersion = versionedSettings.lastKey();
-            boolean isRemovedSetting = highestVersion == toVersion && versionedSettings.get(highestVersion) == null;
+            boolean isRemovedSetting = (highestVersion == toVersion && versionedSettings.get(highestVersion) == null);
             if (isRemovedSetting) {
                 if (deletedSettingsMutable == null) {
                     deletedSettingsMutable = new HashSet<>();
