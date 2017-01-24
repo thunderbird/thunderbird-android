@@ -76,8 +76,7 @@ public class SettingsExporter {
     static final String DESCRIPTION_ELEMENT = "description";
 
 
-    public static String exportToFile(Context context, boolean includeGlobals,
-            Set<String> accountUuids)
+    public static String exportToFile(Context context, boolean includeGlobals, Set<String> accountUuids)
             throws SettingsImportExportException {
 
         OutputStream os = null;
@@ -110,8 +109,8 @@ public class SettingsExporter {
         }
     }
 
-    static void exportPreferences(Context context, OutputStream os, boolean includeGlobals,
-            Set<String> accountUuids) throws SettingsImportExportException  {
+    static void exportPreferences(Context context, OutputStream os, boolean includeGlobals, Set<String> accountUuids)
+            throws SettingsImportExportException  {
 
         try {
             XmlSerializer serializer = Xml.newSerializer();
@@ -124,8 +123,7 @@ public class SettingsExporter {
 
             serializer.startTag(null, ROOT_ELEMENT);
             serializer.attribute(null, VERSION_ATTRIBUTE, Integer.toString(Settings.VERSION));
-            serializer.attribute(null, FILE_FORMAT_ATTRIBUTE,
-                    Integer.toString(FILE_FORMAT_VERSION));
+            serializer.attribute(null, FILE_FORMAT_ATTRIBUTE, Integer.toString(FILE_FORMAT_VERSION));
 
             Log.i(K9.LOG_TAG, "Exporting preferences");
 
@@ -167,10 +165,9 @@ public class SettingsExporter {
         }
     }
 
-    private static void writeSettings(XmlSerializer serializer,
-            Map<String, Object> prefs) throws IOException {
+    private static void writeSettings(XmlSerializer serializer, Map<String, Object> prefs) throws IOException {
 
-        for (Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
+        for (Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting : 
                 GlobalSettings.SETTINGS.entrySet()) {
 
             String key = versionedSetting.getKey();
@@ -192,8 +189,7 @@ public class SettingsExporter {
                 }
             } else {
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Couldn't find key \"" + key + "\" in preference storage." +
-                            "Using default value.");
+                    Log.d(K9.LOG_TAG, "Couldn't find key \"" + key + "\" in preference storage. Using default value.");
                 }
 
                 writeKeyAndDefaultValueFromSetting(serializer, key, setting);
@@ -201,8 +197,8 @@ public class SettingsExporter {
         }
     }
 
-    private static void writeAccount(XmlSerializer serializer, Account account,
-            Map<String, Object> prefs) throws IOException {
+    private static void writeAccount(XmlSerializer serializer, Account account, Map<String, Object> prefs)
+            throws IOException {
 
         Set<Integer> identities = new HashSet<>();
         Set<String> folders = new HashSet<>();
@@ -217,7 +213,6 @@ public class SettingsExporter {
             serializer.text(name);
             serializer.endTag(null, NAME_ELEMENT);
         }
-
 
         // Write incoming server settings
         ServerSettings incoming = RemoteStore.decodeStoreUri(account.getStoreUri());
@@ -326,8 +321,7 @@ public class SettingsExporter {
                 }
             }
 
-            TreeMap<Integer, SettingsDescription> versionedSetting =
-                AccountSettings.SETTINGS.get(keyPart);
+            TreeMap<Integer, SettingsDescription> versionedSetting = AccountSettings.SETTINGS.get(keyPart);
 
             if (versionedSetting != null) {
                 Integer highestVersion = versionedSetting.lastKey();
@@ -371,8 +365,8 @@ public class SettingsExporter {
         serializer.endTag(null, ACCOUNT_ELEMENT);
     }
 
-    private static void writeIdentity(XmlSerializer serializer, String accountUuid,
-            String identity, Map<String, Object> prefs) throws IOException {
+    private static void writeIdentity(XmlSerializer serializer, String accountUuid, String identity, 
+            Map<String, Object> prefs) throws IOException {
 
         serializer.startTag(null, IDENTITY_ELEMENT);
 
@@ -419,8 +413,7 @@ public class SettingsExporter {
                 continue;
             }
 
-            TreeMap<Integer, SettingsDescription> versionedSetting =
-                IdentitySettings.SETTINGS.get(identityKey);
+            TreeMap<Integer, SettingsDescription> versionedSetting = IdentitySettings.SETTINGS.get(identityKey);
 
             if (versionedSetting != null) {
                 Integer highestVersion = versionedSetting.lastKey();
@@ -431,9 +424,8 @@ public class SettingsExporter {
                     try {
                         writeKeyAndPrettyValueFromSetting(serializer, identityKey, setting, valueString);
                     } catch (InvalidSettingValueException e) {
-                        Log.w(K9.LOG_TAG, "Identity setting \"" + identityKey +
-                                "\" has invalid value \"" + valueString +
-                                "\" in preference storage. This shouldn't happen!");
+                        Log.w(K9.LOG_TAG, "Identity setting \"" + identityKey + "\" has invalid value \"" +
+                                valueString + "\" in preference storage. This shouldn't happen!");
                     }
                 }
             }
@@ -443,8 +435,8 @@ public class SettingsExporter {
         serializer.endTag(null, IDENTITY_ELEMENT);
     }
 
-    private static void writeFolder(XmlSerializer serializer, String accountUuid,
-            String folder, Map<String, Object> prefs) throws IOException {
+    private static void writeFolder(XmlSerializer serializer, String accountUuid, String folder,
+            Map<String, Object> prefs) throws IOException {
 
         serializer.startTag(null, FOLDER_ELEMENT);
         serializer.attribute(null, NAME_ATTRIBUTE, folder);
@@ -470,8 +462,7 @@ public class SettingsExporter {
                 continue;
             }
 
-            TreeMap<Integer, SettingsDescription> versionedSetting =
-                FolderSettings.SETTINGS.get(folderKey);
+            TreeMap<Integer, SettingsDescription> versionedSetting = FolderSettings.SETTINGS.get(folderKey);
 
             if (versionedSetting != null) {
                 Integer highestVersion = versionedSetting.lastKey();
@@ -482,8 +473,7 @@ public class SettingsExporter {
                     try {
                         writeKeyAndPrettyValueFromSetting(serializer, folderKey, setting, valueString);
                     } catch (InvalidSettingValueException e) {
-                        Log.w(K9.LOG_TAG, "Folder setting \"" + folderKey +
-                                "\" has invalid value \"" + valueString +
+                        Log.w(K9.LOG_TAG, "Folder setting \"" + folderKey + "\" has invalid value \"" + valueString +
                                 "\" in preference storage. This shouldn't happen!");
                     }
                 }
@@ -502,8 +492,8 @@ public class SettingsExporter {
         }
     }
 
-    private static <A> void writeKeyAndPrettyValueFromSetting(XmlSerializer serializer,
-            String key, SettingsDescription<A> setting, String valueString)
+    private static <A> void writeKeyAndPrettyValueFromSetting(XmlSerializer serializer, String key,
+            SettingsDescription<A> setting, String valueString)
             throws IllegalArgumentException, IllegalStateException, IOException, InvalidSettingValueException {
         A value = setting.fromString(valueString);
         String outputValue = setting.toPrettyString(value);
@@ -511,9 +501,8 @@ public class SettingsExporter {
         writeKeyAndPrettyValueFromSetting(serializer, key, outputValue);
     }
 
-    private static <A> void writeKeyAndDefaultValueFromSetting(XmlSerializer serializer,
-            String key, SettingsDescription<A> setting)
-            throws IllegalArgumentException, IllegalStateException, IOException {
+    private static <A> void writeKeyAndDefaultValueFromSetting(XmlSerializer serializer, String key,
+            SettingsDescription<A> setting) throws IllegalArgumentException, IllegalStateException, IOException {
         A value = setting.getDefaultValue();
         String outputValue = setting.toPrettyString(value);
 

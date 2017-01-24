@@ -56,8 +56,7 @@ public class AccountSettings {
                 new V(1, new StringSetting("INBOX"))
             ));
         s.put("automaticCheckIntervalMinutes", Settings.versions(
-                new V(1, new IntegerResourceSetting(-1,
-                        R.array.account_settings_check_frequency_values))
+                new V(1, new IntegerResourceSetting(-1, R.array.account_settings_check_frequency_values))
             ));
         s.put("chipColor", Settings.versions(
                 new V(1, new ColorSetting(0xFF0000FF))
@@ -120,16 +119,13 @@ public class AccountSettings {
                 new V(1, new IntegerRangeSetting(0, 100, 10))
             ));
         s.put("maximumAutoDownloadMessageSize", Settings.versions(
-                new V(1, new IntegerResourceSetting(32768,
-                        R.array.account_settings_autodownload_message_size_values))
+                new V(1, new IntegerResourceSetting(32768, R.array.account_settings_autodownload_message_size_values))
             ));
         s.put("maximumPolledMessageAge", Settings.versions(
-                new V(1, new IntegerResourceSetting(-1,
-                        R.array.account_settings_message_age_values))
+                new V(1, new IntegerResourceSetting(-1, R.array.account_settings_message_age_values))
             ));
         s.put("messageFormat", Settings.versions(
-                new V(1, new EnumSetting<>(
-                        MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
+                new V(1, new EnumSetting<>(MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
             ));
         s.put("messageFormatAuto", Settings.versions(
                 new V(2, new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO))
@@ -213,12 +209,10 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(false))
             ));
         s.put("vibratePattern", Settings.versions(
-                new V(1, new IntegerResourceSetting(0,
-                R.array.account_settings_vibrate_pattern_values))
+                new V(1, new IntegerResourceSetting(0, R.array.account_settings_vibrate_pattern_values))
             ));
         s.put("vibrateTimes", Settings.versions(
-                new V(1, new IntegerResourceSetting(5,
-                R.array.account_settings_vibrate_times_label))
+                new V(1, new IntegerResourceSetting(5, R.array.account_settings_vibrate_times_label))
             ));
         s.put("allowRemoteSearch", Settings.versions(
                 new V(18, new BooleanSetting(true))
@@ -241,8 +235,7 @@ public class AccountSettings {
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    static Map<String, Object> validate(int version, Map<String, String> importedSettings,
-            boolean useDefaultValues) {
+    static Map<String, Object> validate(int version, Map<String, String> importedSettings, boolean useDefaultValues) {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
 

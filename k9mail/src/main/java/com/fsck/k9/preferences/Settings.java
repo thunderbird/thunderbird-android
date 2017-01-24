@@ -38,13 +38,11 @@ public class Settings {
      */
     public static final int VERSION = 44;
 
-    static Map<String, Object> validate(int version, Map<String,
-            TreeMap<Integer, SettingsDescription>> settings,
+    static Map<String, Object> validate(int version, Map<String, TreeMap<Integer, SettingsDescription>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
 
         Map<String, Object> validatedSettings = new HashMap<>();
-        for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
-                settings.entrySet()) {
+        for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting : settings.entrySet()) {
 
             // Get the setting description with the highest version lower than or equal to the
             // supplied content version.
@@ -112,8 +110,7 @@ public class Settings {
      *         if none were removed.
      */
     public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> customUpgraders,
-            Map<String, TreeMap<Integer, SettingsDescription>> settings,
-            Map<String, Object> validatedSettingsMutable) {
+            Map<String, TreeMap<Integer, SettingsDescription>> settings, Map<String, Object> validatedSettingsMutable) {
         Set<String> deletedSettings = null;
 
         for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
@@ -201,8 +198,7 @@ public class Settings {
             String settingName = setting.getKey();
             Object internalValue = setting.getValue();
 
-            TreeMap<Integer, SettingsDescription> versionedSetting =
-                    settingDescriptions.get(settingName);
+            TreeMap<Integer, SettingsDescription> versionedSetting = settingDescriptions.get(settingName);
             Integer highestVersion = versionedSetting.lastKey();
             SettingsDescription settingDesc = versionedSetting.get(highestVersion);
 

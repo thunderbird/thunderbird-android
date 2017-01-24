@@ -48,8 +48,7 @@ class FolderSettings {
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    static Map<String, Object> validate(int version, Map<String, String> importedSettings,
-            boolean useDefaultValues) {
+    static Map<String, Object> validate(int version, Map<String, String> importedSettings, boolean useDefaultValues) {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
 
@@ -61,8 +60,7 @@ class FolderSettings {
         return Settings.convert(settings, SETTINGS);
     }
 
-    static Map<String, String> getFolderSettings(Storage storage, String uuid,
-            String folderName) {
+    static Map<String, String> getFolderSettings(Storage storage, String uuid, String folderName) {
         Map<String, String> result = new HashMap<>();
         String prefix = uuid + "." + folderName + ".";
         for (String key : SETTINGS.keySet()) {

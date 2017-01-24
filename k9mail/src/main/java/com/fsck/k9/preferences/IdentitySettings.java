@@ -17,8 +17,7 @@ class IdentitySettings {
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s =
-                new LinkedHashMap<>();
+        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
 
         /**
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
@@ -42,8 +41,7 @@ class IdentitySettings {
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    static Map<String, Object> validate(int version, Map<String, String> importedSettings,
-            boolean useDefaultValues) {
+    static Map<String, Object> validate(int version, Map<String, String> importedSettings, boolean useDefaultValues) {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
 
@@ -55,8 +53,7 @@ class IdentitySettings {
         return Settings.convert(settings, SETTINGS);
     }
 
-    static Map<String, String> getIdentitySettings(Storage storage, String uuid,
-            int identityIndex) {
+    static Map<String, String> getIdentitySettings(Storage storage, String uuid, int identityIndex) {
         Map<String, String> result = new HashMap<>();
         String prefix = uuid + ".";
         String suffix = "." + Integer.toString(identityIndex);
