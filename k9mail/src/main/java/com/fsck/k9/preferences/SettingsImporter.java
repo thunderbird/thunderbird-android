@@ -129,7 +129,7 @@ public class SettingsImporter {
             // If the stream contains global settings the "globalSettings" member will not be null
             boolean globalSettings = (imported.globalSettings != null);
 
-            final List<AccountDescription> accounts = new ArrayList<AccountDescription>();
+            final List<AccountDescription> accounts = new ArrayList<>();
             // If the stream contains at least one account configuration the "accounts" member
             // will not be null.
             if (imported.accounts != null) {
@@ -181,8 +181,8 @@ public class SettingsImporter {
         try
         {
             boolean globalSettingsImported = false;
-            List<AccountDescriptionPair> importedAccounts = new ArrayList<AccountDescriptionPair>();
-            List<AccountDescription> errorneousAccounts = new ArrayList<AccountDescription>();
+            List<AccountDescriptionPair> importedAccounts = new ArrayList<>();
+            List<AccountDescription> errorneousAccounts = new ArrayList<>();
 
             Imported imported = parseSettings(inputStream, globalSettings, accountUuids, false);
 
@@ -325,7 +325,7 @@ public class SettingsImporter {
         // Use current global settings as base and overwrite with validated settings read from the
         // import file.
         Map<String, String> mergedSettings =
-            new HashMap<String, String>(GlobalSettings.getGlobalSettings(storage));
+                new HashMap<>(GlobalSettings.getGlobalSettings(storage));
         mergedSettings.putAll(stringSettings);
 
         for (Map.Entry<String, String> setting : mergedSettings.entrySet()) {
@@ -433,7 +433,7 @@ public class SettingsImporter {
         // Merge account settings if necessary
         Map<String, String> writeSettings;
         if (mergeImportedAccount) {
-            writeSettings = new HashMap<String, String>(
+            writeSettings = new HashMap<>(
                     AccountSettings.getAccountSettings(prefs.getStorage(), uuid));
             writeSettings.putAll(stringSettings);
         } else {
@@ -522,7 +522,7 @@ public class SettingsImporter {
             existingIdentities = existingAccount.getIdentities();
             nextIdentityIndex = existingIdentities.size();
         } else {
-            existingIdentities = new ArrayList<Identity>();
+            existingIdentities = new ArrayList<>();
         }
 
         // Write identities
@@ -590,7 +590,7 @@ public class SettingsImporter {
                 // Merge identity settings if necessary
                 Map<String, String> writeSettings;
                 if (mergeSettings) {
-                    writeSettings = new HashMap<String, String>(IdentitySettings.getIdentitySettings(
+                    writeSettings = new HashMap<>(IdentitySettings.getIdentitySettings(
                             prefs.getStorage(), uuid, writeIdentityIndex));
                     writeSettings.putAll(stringSettings);
                 } else {
@@ -869,7 +869,7 @@ public class SettingsImporter {
                 String element = xpp.getName();
                 if (SettingsExporter.ACCOUNT_ELEMENT.equals(element)) {
                     if (accounts == null) {
-                        accounts = new HashMap<String, ImportedAccount>();
+                        accounts = new HashMap<>();
                     }
 
                     ImportedAccount account = parseAccount(xpp, accountUuids, overview);
@@ -1012,7 +1012,7 @@ public class SettingsImporter {
                 String element = xpp.getName();
                 if (SettingsExporter.IDENTITY_ELEMENT.equals(element)) {
                     if (identities == null) {
-                        identities = new ArrayList<ImportedIdentity>();
+                        identities = new ArrayList<>();
                     }
 
                     ImportedIdentity identity = parseIdentity(xpp);
@@ -1067,7 +1067,7 @@ public class SettingsImporter {
                 String element = xpp.getName();
                 if (SettingsExporter.FOLDER_ELEMENT.equals(element)) {
                     if (folders == null) {
-                        folders = new ArrayList<ImportedFolder>();
+                        folders = new ArrayList<>();
                     }
 
                     ImportedFolder folder = parseFolder(xpp);
@@ -1154,7 +1154,7 @@ public class SettingsImporter {
     }
 
     private static class ImportedSettings {
-        public Map<String, String> settings = new HashMap<String, String>();
+        public Map<String, String> settings = new HashMap<>();
     }
 
     @VisibleForTesting
