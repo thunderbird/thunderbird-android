@@ -414,7 +414,7 @@ public class GlobalSettings {
      * </p>
      */
     private static class LanguageSetting extends PseudoEnumSetting<String> {
-        private final Map<String, String> mMapping;
+        private final Map<String, String> mapping;
 
         LanguageSetting() {
             super("");
@@ -428,17 +428,17 @@ public class GlobalSettings {
                     mapping.put(value, value);
                 }
             }
-            mMapping = Collections.unmodifiableMap(mapping);
+            this.mapping = Collections.unmodifiableMap(mapping);
         }
 
         @Override
         protected Map<String, String> getMapping() {
-            return mMapping;
+            return mapping;
         }
 
         @Override
         public String fromString(String value) throws InvalidSettingValueException {
-            if (mMapping.containsKey(value)) {
+            if (mapping.containsKey(value)) {
                 return value;
             }
 

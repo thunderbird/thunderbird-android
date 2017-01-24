@@ -1045,20 +1045,20 @@ public class SettingsImporter {
     }
 
     private static class ImportedServerSettings extends ServerSettings {
-        private final ImportedServer mImportedServer;
+        private final ImportedServer importedServer;
 
         public ImportedServerSettings(ImportedServer server) {
             super(ServerSettings.Type.valueOf(server.type), server.host, convertPort(server.port),
                     convertConnectionSecurity(server.connectionSecurity),
                     server.authenticationType, server.username, server.password,
                     server.clientCertificateAlias);
-            mImportedServer = server;
+            importedServer = server;
         }
 
         @Override
         public Map<String, String> getExtra() {
-            return (mImportedServer.extras != null) ?
-                    Collections.unmodifiableMap(mImportedServer.extras.settings) : null;
+            return (importedServer.extras != null) ?
+                    Collections.unmodifiableMap(importedServer.extras.settings) : null;
         }
 
         private static int convertPort(String port) {

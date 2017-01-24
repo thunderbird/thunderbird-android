@@ -283,10 +283,10 @@ public class Settings {
         /**
          * The setting's default value (internal representation).
          */
-        T mDefaultValue;
+        T defaultValue;
 
         SettingsDescription(T defaultValue) {
-            mDefaultValue = defaultValue;
+            this.defaultValue = defaultValue;
         }
 
         /**
@@ -295,7 +295,7 @@ public class Settings {
          * @return The internal representation of the default value.
          */
         public T getDefaultValue() {
-            return mDefaultValue;
+            return defaultValue;
         }
 
         /**
@@ -463,17 +463,17 @@ public class Settings {
      * </p>
      */
     static class EnumSetting<T extends Enum<T>> extends SettingsDescription<T> {
-        private Class<T> mEnumClass;
+        private Class<T> enumClass;
 
         EnumSetting(Class<T> enumClass, T defaultValue) {
             super(defaultValue);
-            mEnumClass = enumClass;
+            this.enumClass = enumClass;
         }
 
         @Override
         public T fromString(String value) throws InvalidSettingValueException {
             try {
-                return Enum.valueOf(mEnumClass, value);
+                return Enum.valueOf(enumClass, value);
             } catch (Exception e) {
                 throw new InvalidSettingValueException();
             }
@@ -514,7 +514,7 @@ public class Settings {
      * A font size setting.
      */
     static class FontSizeSetting extends PseudoEnumSetting<Integer> {
-        private final Map<Integer, String> mMapping;
+        private final Map<Integer, String> mapping;
 
         FontSizeSetting(int defaultValue) {
             super(defaultValue);
@@ -527,19 +527,19 @@ public class Settings {
             mapping.put(FontSizes.MEDIUM, "medium");
             mapping.put(FontSizes.FONT_20SP, "large");
             mapping.put(FontSizes.LARGE, "larger");
-            mMapping = Collections.unmodifiableMap(mapping);
+            this.mapping = Collections.unmodifiableMap(mapping);
         }
 
         @Override
         protected Map<Integer, String> getMapping() {
-            return mMapping;
+            return mapping;
         }
 
         @Override
         public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer fontSize = Integer.parseInt(value);
-                if (mMapping.containsKey(fontSize)) {
+                if (mapping.containsKey(fontSize)) {
                     return fontSize;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }
@@ -552,7 +552,7 @@ public class Settings {
      * A {@link android.webkit.WebView} font size setting.
      */
     static class WebFontSizeSetting extends PseudoEnumSetting<Integer> {
-        private final Map<Integer, String> mMapping;
+        private final Map<Integer, String> mapping;
 
         WebFontSizeSetting(int defaultValue) {
             super(defaultValue);
@@ -563,19 +563,19 @@ public class Settings {
             mapping.put(3, "normal");
             mapping.put(4, "larger");
             mapping.put(5, "largest");
-            mMapping = Collections.unmodifiableMap(mapping);
+            this.mapping = Collections.unmodifiableMap(mapping);
         }
 
         @Override
         protected Map<Integer, String> getMapping() {
-            return mMapping;
+            return mapping;
         }
 
         @Override
         public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer fontSize = Integer.parseInt(value);
-                if (mMapping.containsKey(fontSize)) {
+                if (mapping.containsKey(fontSize)) {
                     return fontSize;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }
@@ -588,20 +588,20 @@ public class Settings {
      * An integer settings whose values a limited to a certain range.
      */
     static class IntegerRangeSetting extends SettingsDescription<Integer> {
-        private int mStart;
-        private int mEnd;
+        private int start;
+        private int end;
 
         IntegerRangeSetting(int start, int end, int defaultValue) {
             super(defaultValue);
-            mStart = start;
-            mEnd = end;
+            this.start = start;
+            this.end = end;
         }
 
         @Override
         public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 int intValue = Integer.parseInt(value);
-                if (mStart <= intValue && intValue <= mEnd) {
+                if (start <= intValue && intValue <= end) {
                     return intValue;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }

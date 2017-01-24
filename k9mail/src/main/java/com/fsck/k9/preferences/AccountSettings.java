@@ -268,7 +268,7 @@ public class AccountSettings {
      * </p>
      */
     private static class IntegerResourceSetting extends PseudoEnumSetting<Integer> {
-        private final Map<Integer, String> mMapping;
+        private final Map<Integer, String> mapping;
 
         IntegerResourceSetting(int defaultValue, int resId) {
             super(defaultValue);
@@ -279,12 +279,12 @@ public class AccountSettings {
                 int intValue = Integer.parseInt(value);
                 mapping.put(intValue, value);
             }
-            mMapping = Collections.unmodifiableMap(mapping);
+            this.mapping = Collections.unmodifiableMap(mapping);
         }
 
         @Override
         protected Map<Integer, String> getMapping() {
-            return mMapping;
+            return mapping;
         }
 
         @Override
@@ -305,7 +305,7 @@ public class AccountSettings {
      * </p>
      */
     private static class StringResourceSetting extends PseudoEnumSetting<String> {
-        private final Map<String, String> mMapping;
+        private final Map<String, String> mapping;
 
         StringResourceSetting(String defaultValue, int resId) {
             super(defaultValue);
@@ -315,17 +315,17 @@ public class AccountSettings {
             for (String value : values) {
                 mapping.put(value, value);
             }
-            mMapping = Collections.unmodifiableMap(mapping);
+            this.mapping = Collections.unmodifiableMap(mapping);
         }
 
         @Override
         protected Map<String, String> getMapping() {
-            return mMapping;
+            return mapping;
         }
 
         @Override
         public String fromString(String value) throws InvalidSettingValueException {
-            if (!mMapping.containsKey(value)) {
+            if (!mapping.containsKey(value)) {
                 throw new InvalidSettingValueException();
             }
             return value;
@@ -372,7 +372,7 @@ public class AccountSettings {
     }
 
     private static class DeletePolicySetting extends PseudoEnumSetting<Integer> {
-        private Map<Integer, String> mMapping;
+        private Map<Integer, String> mapping;
 
         DeletePolicySetting(DeletePolicy defaultValue) {
             super(defaultValue.setting);
@@ -380,19 +380,19 @@ public class AccountSettings {
             mapping.put(DeletePolicy.NEVER.setting, "NEVER");
             mapping.put(DeletePolicy.ON_DELETE.setting, "DELETE");
             mapping.put(DeletePolicy.MARK_AS_READ.setting, "MARK_AS_READ");
-            mMapping = Collections.unmodifiableMap(mapping);
+            this.mapping = Collections.unmodifiableMap(mapping);
         }
 
         @Override
         protected Map<Integer, String> getMapping() {
-            return mMapping;
+            return mapping;
         }
 
         @Override
         public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer deletePolicy = Integer.parseInt(value);
-                if (mMapping.containsKey(deletePolicy)) {
+                if (mapping.containsKey(deletePolicy)) {
                     return deletePolicy;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }

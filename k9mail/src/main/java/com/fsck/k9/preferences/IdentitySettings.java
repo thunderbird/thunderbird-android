@@ -94,16 +94,16 @@ class IdentitySettings {
      * An optional email address setting.
      */
     private static class OptionalEmailAddressSetting extends SettingsDescription<String> {
-        private EmailAddressValidator mValidator;
+        private EmailAddressValidator validator;
 
         OptionalEmailAddressSetting() {
             super(null);
-            mValidator = new EmailAddressValidator();
+            validator = new EmailAddressValidator();
         }
 
         @Override
         public String fromString(String value) throws InvalidSettingValueException {
-            if (value != null && !mValidator.isValidAddressOnly(value)) {
+            if (value != null && !validator.isValidAddressOnly(value)) {
                 throw new InvalidSettingValueException();
             }
             return value;
