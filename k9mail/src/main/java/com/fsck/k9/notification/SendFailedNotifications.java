@@ -41,7 +41,8 @@ class SendFailedNotifications {
                 .setContentTitle(title)
                 .setContentText(text)
                 .setContentIntent(folderListPendingIntent)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setCategory(NotificationCompat.CATEGORY_ERROR);
 
         controller.configureNotification(builder, null, null, NOTIFICATION_LED_FAILURE_COLOR,
                 NOTIFICATION_LED_BLINK_FAST, true);

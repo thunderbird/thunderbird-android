@@ -55,7 +55,8 @@ abstract class BaseNotifications {
                 .setSmallIcon(getNewMailNotificationIcon())
                 .setColor(account.getChipColor())
                 .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setCategory(NotificationCompat.CATEGORY_EMAIL);
     }
 
     protected boolean isDeleteActionEnabled() {
