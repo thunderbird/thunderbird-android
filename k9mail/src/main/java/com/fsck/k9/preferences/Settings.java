@@ -157,9 +157,9 @@ public class Settings {
         return deletedSettingsMutable;
     }
 
-    private static <A> void upgradeSettingInsertDefault(Map<String, Object> validatedSettingsMutable,
-            String settingName, SettingsDescription<A> setting) {
-        A defaultValue = setting.getDefaultValue();
+    private static <T> void upgradeSettingInsertDefault(Map<String, Object> validatedSettingsMutable,
+            String settingName, SettingsDescription<T> setting) {
+        T defaultValue = setting.getDefaultValue();
         validatedSettingsMutable.put(settingName, defaultValue);
 
         if (K9.DEBUG) {
@@ -279,13 +279,13 @@ public class Settings {
      * negligible.
      * </p>
      */
-    static abstract class SettingsDescription<A> {
+    static abstract class SettingsDescription<T> {
         /**
          * The setting's default value (internal representation).
          */
-        A mDefaultValue;
+        T mDefaultValue;
 
-        SettingsDescription(A defaultValue) {
+        SettingsDescription(T defaultValue) {
             mDefaultValue = defaultValue;
         }
 
@@ -294,7 +294,7 @@ public class Settings {
          *
          * @return The internal representation of the default value.
          */
-        public A getDefaultValue() {
+        public T getDefaultValue() {
             return mDefaultValue;
         }
 
@@ -306,7 +306,7 @@ public class Settings {
          *
          * @return The string representation of {@code value}.
          */
-        public String toString(A value) {
+        public String toString(T value) {
             return value.toString();
         }
 
@@ -321,7 +321,7 @@ public class Settings {
          * @throws InvalidSettingValueException
          *         If {@code value} contains an invalid value.
          */
-        public abstract A fromString(String value) throws InvalidSettingValueException;
+        public abstract T fromString(String value) throws InvalidSettingValueException;
 
         /**
          * Convert a setting value to the "pretty" string representation.
@@ -331,7 +331,7 @@ public class Settings {
          *
          * @return A pretty-printed version of the setting's value.
          */
-        public String toPrettyString(A value) {
+        public String toPrettyString(T value) {
             return toString(value);
         }
 
@@ -347,7 +347,7 @@ public class Settings {
          * @throws InvalidSettingValueException
          *         If {@code value} contains an invalid value.
          */
-        public A fromPrettyString(String value) throws InvalidSettingValueException {
+        public T fromPrettyString(String value) throws InvalidSettingValueException {
             return fromString(value);
         }
     }
@@ -483,24 +483,24 @@ public class Settings {
     /**
      * A setting that has multiple valid values but doesn't use an {@link Enum} internally.
      *
-     * @param <A>
+     * @param <T>
      *         The type of the internal representation (e.g. {@code Integer}).
      */
-    abstract static class PseudoEnumSetting<A> extends SettingsDescription<A> {
-        PseudoEnumSetting(A defaultValue) {
+    abstract static class PseudoEnumSetting<T> extends SettingsDescription<T> {
+        PseudoEnumSetting(T defaultValue) {
             super(defaultValue);
         }
 
-        protected abstract Map<A, String> getMapping();
+        protected abstract Map<T, String> getMapping();
 
         @Override
-        public String toPrettyString(A value) {
+        public String toPrettyString(T value) {
             return getMapping().get(value);
         }
 
         @Override
-        public A fromPrettyString(String value) throws InvalidSettingValueException {
-            for (Entry<A, String> entry : getMapping().entrySet()) {
+        public T fromPrettyString(String value) throws InvalidSettingValueException {
+            for (Entry<T, String> entry : getMapping().entrySet()) {
                 if (entry.getValue().equals(value)) {
                     return entry.getKey();
                 }

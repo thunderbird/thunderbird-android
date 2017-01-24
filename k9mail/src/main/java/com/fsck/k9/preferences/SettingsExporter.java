@@ -492,18 +492,18 @@ public class SettingsExporter {
         }
     }
 
-    private static <A> void writeKeyAndPrettyValueFromSetting(XmlSerializer serializer, String key,
-            SettingsDescription<A> setting, String valueString)
+    private static <T> void writeKeyAndPrettyValueFromSetting(XmlSerializer serializer, String key,
+            SettingsDescription<T> setting, String valueString)
             throws IllegalArgumentException, IllegalStateException, IOException, InvalidSettingValueException {
-        A value = setting.fromString(valueString);
+        T value = setting.fromString(valueString);
         String outputValue = setting.toPrettyString(value);
 
         writeKeyAndPrettyValueFromSetting(serializer, key, outputValue);
     }
 
-    private static <A> void writeKeyAndDefaultValueFromSetting(XmlSerializer serializer, String key,
-            SettingsDescription<A> setting) throws IllegalArgumentException, IllegalStateException, IOException {
-        A value = setting.getDefaultValue();
+    private static <T> void writeKeyAndDefaultValueFromSetting(XmlSerializer serializer, String key,
+            SettingsDescription<T> setting) throws IllegalArgumentException, IllegalStateException, IOException {
+        T value = setting.getDefaultValue();
         String outputValue = setting.toPrettyString(value);
 
         writeKeyAndPrettyValueFromSetting(serializer, key, outputValue);
