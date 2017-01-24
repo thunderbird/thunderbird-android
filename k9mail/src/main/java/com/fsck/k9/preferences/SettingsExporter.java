@@ -43,37 +43,37 @@ public class SettingsExporter {
      * for that to {@link SettingsImporter} :)
      * </p>
      */
-    public static final int FILE_FORMAT_VERSION = 1;
+    static final int FILE_FORMAT_VERSION = 1;
 
-    public static final String ROOT_ELEMENT = "k9settings";
-    public static final String VERSION_ATTRIBUTE = "version";
-    public static final String FILE_FORMAT_ATTRIBUTE = "format";
-    public static final String GLOBAL_ELEMENT = "global";
-    public static final String SETTINGS_ELEMENT = "settings";
-    public static final String ACCOUNTS_ELEMENT = "accounts";
-    public static final String ACCOUNT_ELEMENT = "account";
-    public static final String UUID_ATTRIBUTE = "uuid";
-    public static final String INCOMING_SERVER_ELEMENT = "incoming-server";
-    public static final String OUTGOING_SERVER_ELEMENT = "outgoing-server";
-    public static final String TYPE_ATTRIBUTE = "type";
-    public static final String HOST_ELEMENT = "host";
-    public static final String PORT_ELEMENT = "port";
-    public static final String CONNECTION_SECURITY_ELEMENT = "connection-security";
-    public static final String AUTHENTICATION_TYPE_ELEMENT = "authentication-type";
-    public static final String USERNAME_ELEMENT = "username";
-    public static final String CLIENT_CERTIFICATE_ALIAS_ELEMENT = "client-cert-alias";
-    public static final String PASSWORD_ELEMENT = "password";
-    public static final String EXTRA_ELEMENT = "extra";
-    public static final String IDENTITIES_ELEMENT = "identities";
-    public static final String IDENTITY_ELEMENT = "identity";
-    public static final String FOLDERS_ELEMENT = "folders";
-    public static final String FOLDER_ELEMENT = "folder";
-    public static final String NAME_ATTRIBUTE = "name";
-    public static final String VALUE_ELEMENT = "value";
-    public static final String KEY_ATTRIBUTE = "key";
-    public static final String NAME_ELEMENT = "name";
-    public static final String EMAIL_ELEMENT = "email";
-    public static final String DESCRIPTION_ELEMENT = "description";
+    static final String ROOT_ELEMENT = "k9settings";
+    static final String VERSION_ATTRIBUTE = "version";
+    static final String FILE_FORMAT_ATTRIBUTE = "format";
+    static final String GLOBAL_ELEMENT = "global";
+    static final String SETTINGS_ELEMENT = "settings";
+    static final String ACCOUNTS_ELEMENT = "accounts";
+    static final String ACCOUNT_ELEMENT = "account";
+    static final String UUID_ATTRIBUTE = "uuid";
+    static final String INCOMING_SERVER_ELEMENT = "incoming-server";
+    static final String OUTGOING_SERVER_ELEMENT = "outgoing-server";
+    static final String TYPE_ATTRIBUTE = "type";
+    static final String HOST_ELEMENT = "host";
+    static final String PORT_ELEMENT = "port";
+    static final String CONNECTION_SECURITY_ELEMENT = "connection-security";
+    static final String AUTHENTICATION_TYPE_ELEMENT = "authentication-type";
+    static final String USERNAME_ELEMENT = "username";
+    static final String CLIENT_CERTIFICATE_ALIAS_ELEMENT = "client-cert-alias";
+    static final String PASSWORD_ELEMENT = "password";
+    static final String EXTRA_ELEMENT = "extra";
+    static final String IDENTITIES_ELEMENT = "identities";
+    static final String IDENTITY_ELEMENT = "identity";
+    static final String FOLDERS_ELEMENT = "folders";
+    static final String FOLDER_ELEMENT = "folder";
+    static final String NAME_ATTRIBUTE = "name";
+    static final String VALUE_ELEMENT = "value";
+    static final String KEY_ATTRIBUTE = "key";
+    static final String NAME_ELEMENT = "name";
+    static final String EMAIL_ELEMENT = "email";
+    static final String DESCRIPTION_ELEMENT = "description";
 
 
     public static String exportToFile(Context context, boolean includeGlobals,
@@ -110,7 +110,7 @@ public class SettingsExporter {
         }
     }
 
-    public static void exportPreferences(Context context, OutputStream os, boolean includeGlobals,
+    static void exportPreferences(Context context, OutputStream os, boolean includeGlobals,
             Set<String> accountUuids) throws SettingsImportExportException  {
 
         try {
@@ -135,7 +135,7 @@ public class SettingsExporter {
             Set<String> exportAccounts;
             if (accountUuids == null) {
                 List<Account> accounts = preferences.getAccounts();
-                exportAccounts = new HashSet<String>();
+                exportAccounts = new HashSet<>();
                 for (Account account : accounts) {
                     exportAccounts.add(account.getUuid());
                 }
@@ -185,9 +185,7 @@ public class SettingsExporter {
 
             if (valueString != null) {
                 try {
-                    Object value = setting.fromString(valueString);
-                    String outputValue = setting.toPrettyString(value);
-                    writeKeyValue(serializer, key, outputValue);
+                    writeKeyAndPrettyValueFromSetting(serializer, key, setting, valueString);
                 } catch (InvalidSettingValueException e) {
                     Log.w(K9.LOG_TAG, "Global setting \"" + key  + "\" has invalid value \"" +
                             valueString + "\" in preference storage. This shouldn't happen!");
@@ -198,9 +196,7 @@ public class SettingsExporter {
                             "Using default value.");
                 }
 
-                Object value = setting.getDefaultValue();
-                String outputValue = setting.toPrettyString(value);
-                writeKeyValue(serializer, key, outputValue);
+                writeKeyAndDefaultValueFromSetting(serializer, key, setting);
             }
         }
     }
@@ -208,8 +204,8 @@ public class SettingsExporter {
     private static void writeAccount(XmlSerializer serializer, Account account,
             Map<String, Object> prefs) throws IOException {
 
-        Set<Integer> identities = new HashSet<Integer>();
-        Set<String> folders = new HashSet<String>();
+        Set<Integer> identities = new HashSet<>();
+        Set<String> folders = new HashSet<>();
         String accountUuid = account.getUuid();
 
         serializer.startTag(null, ACCOUNT_ELEMENT);
@@ -247,7 +243,7 @@ public class SettingsExporter {
         if (extras != null && extras.size() > 0) {
             serializer.startTag(null, EXTRA_ELEMENT);
             for (Entry<String, String> extra : extras.entrySet()) {
-                writeKeyValue(serializer, extra.getKey(), extra.getValue());
+                writeKeyAndPrettyValueFromSetting(serializer, extra.getKey(), extra.getValue());
             }
             serializer.endTag(null, EXTRA_ELEMENT);
         }
@@ -279,7 +275,7 @@ public class SettingsExporter {
         if (extras != null && extras.size() > 0) {
             serializer.startTag(null, EXTRA_ELEMENT);
             for (Entry<String, String> extra : extras.entrySet()) {
-                writeKeyValue(serializer, extra.getKey(), extra.getValue());
+                writeKeyAndPrettyValueFromSetting(serializer, extra.getKey(), extra.getValue());
             }
             serializer.endTag(null, EXTRA_ELEMENT);
         }
@@ -340,9 +336,7 @@ public class SettingsExporter {
                 if (setting != null) {
                     // Only export account settings that can be found in AccountSettings.SETTINGS
                     try {
-                        Object value = setting.fromString(valueString);
-                        String pretty = setting.toPrettyString(value);
-                        writeKeyValue(serializer, keyPart, pretty);
+                        writeKeyAndPrettyValueFromSetting(serializer, keyPart, setting, valueString);
                     } catch (InvalidSettingValueException e) {
                         Log.w(K9.LOG_TAG, "Account setting \"" + keyPart + "\" (" +
                                 account.getDescription() + ") has invalid value \"" + valueString +
@@ -357,7 +351,7 @@ public class SettingsExporter {
             serializer.startTag(null, IDENTITIES_ELEMENT);
 
             // Sort identity indices (that's why we store them as Integers)
-            List<Integer> sortedIdentities = new ArrayList<Integer>(identities);
+            List<Integer> sortedIdentities = new ArrayList<>(identities);
             Collections.sort(sortedIdentities);
 
             for (Integer identityIndex : sortedIdentities) {
@@ -435,9 +429,7 @@ public class SettingsExporter {
                 if (setting != null) {
                     // Only write settings that have an entry in IdentitySettings.SETTINGS
                     try {
-                        Object value = setting.fromString(valueString);
-                        String outputValue = setting.toPrettyString(value);
-                        writeKeyValue(serializer, identityKey, outputValue);
+                        writeKeyAndPrettyValueFromSetting(serializer, identityKey, setting, valueString);
                     } catch (InvalidSettingValueException e) {
                         Log.w(K9.LOG_TAG, "Identity setting \"" + identityKey +
                                 "\" has invalid value \"" + valueString +
@@ -488,9 +480,7 @@ public class SettingsExporter {
                 if (setting != null) {
                     // Only write settings that have an entry in FolderSettings.SETTINGS
                     try {
-                        Object value = setting.fromString(valueString);
-                        String outputValue = setting.toPrettyString(value);
-                        writeKeyValue(serializer, folderKey, outputValue);
+                        writeKeyAndPrettyValueFromSetting(serializer, folderKey, setting, valueString);
                     } catch (InvalidSettingValueException e) {
                         Log.w(K9.LOG_TAG, "Folder setting \"" + folderKey +
                                 "\" has invalid value \"" + valueString +
@@ -512,12 +502,30 @@ public class SettingsExporter {
         }
     }
 
-    private static void writeKeyValue(XmlSerializer serializer, String key, String value)
+    private static <A> void writeKeyAndPrettyValueFromSetting(XmlSerializer serializer,
+            String key, SettingsDescription<A> setting, String valueString)
+            throws IllegalArgumentException, IllegalStateException, IOException, InvalidSettingValueException {
+        A value = setting.fromString(valueString);
+        String outputValue = setting.toPrettyString(value);
+
+        writeKeyAndPrettyValueFromSetting(serializer, key, outputValue);
+    }
+
+    private static <A> void writeKeyAndDefaultValueFromSetting(XmlSerializer serializer,
+            String key, SettingsDescription<A> setting)
+            throws IllegalArgumentException, IllegalStateException, IOException {
+        A value = setting.getDefaultValue();
+        String outputValue = setting.toPrettyString(value);
+
+        writeKeyAndPrettyValueFromSetting(serializer, key, outputValue);
+    }
+
+    private static void writeKeyAndPrettyValueFromSetting(XmlSerializer serializer, String key, String literalValue)
             throws IllegalArgumentException, IllegalStateException, IOException {
         serializer.startTag(null, VALUE_ELEMENT);
         serializer.attribute(null, KEY_ATTRIBUTE, key);
-        if (value != null) {
-            serializer.text(value);
+        if (literalValue != null) {
+            serializer.text(literalValue);
         }
         serializer.endTag(null, VALUE_ELEMENT);
     }
