@@ -76,18 +76,18 @@ public class IdentitySettings {
     /**
      * The message signature setting.
      */
-    public static class SignatureSetting extends SettingsDescription {
+    public static class SignatureSetting extends SettingsDescription<String> {
         public SignatureSetting() {
             super(null);
         }
 
         @Override
-        public Object getDefaultValue() {
+        public String getDefaultValue() {
             return K9.app.getResources().getString(R.string.default_signature);
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public String fromString(String value) throws InvalidSettingValueException {
             return value;
         }
     }
@@ -95,7 +95,7 @@ public class IdentitySettings {
     /**
      * An optional email address setting.
      */
-    public static class OptionalEmailAddressSetting extends SettingsDescription {
+    public static class OptionalEmailAddressSetting extends SettingsDescription<String> {
         private EmailAddressValidator mValidator;
 
         public OptionalEmailAddressSetting() {
@@ -104,7 +104,7 @@ public class IdentitySettings {
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public String fromString(String value) throws InvalidSettingValueException {
             if (value != null && !mValidator.isValidAddressOnly(value)) {
                 throw new InvalidSettingValueException();
             }
@@ -112,18 +112,18 @@ public class IdentitySettings {
         }
 
         @Override
-        public String toString(Object value) {
-            return (value != null) ? value.toString() : null;
+        public String toString(String value) {
+            return (value != null) ? value : null;
         }
 
         @Override
-        public String toPrettyString(Object value) {
-            return (value == null) ? "" : value.toString();
+        public String toPrettyString(String value) {
+            return (value == null) ? "" : value;
         }
 
         @Override
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
-            return ("".equals(value)) ? null : fromString(value);
+        public String fromPrettyString(String value) throws InvalidSettingValueException {
+            return "".equals(value) ? null : fromString(value);
         }
     }
 }

@@ -272,13 +272,13 @@ public class Settings {
      * negligible.
      * </p>
      */
-    static abstract class SettingsDescription {
+    static abstract class SettingsDescription<A> {
         /**
          * The setting's default value (internal representation).
          */
-        Object mDefaultValue;
+        A mDefaultValue;
 
-        SettingsDescription(Object defaultValue) {
+        SettingsDescription(A defaultValue) {
             mDefaultValue = defaultValue;
         }
 
@@ -287,7 +287,7 @@ public class Settings {
          *
          * @return The internal representation of the default value.
          */
-        public Object getDefaultValue() {
+        public A getDefaultValue() {
             return mDefaultValue;
         }
 
@@ -299,7 +299,7 @@ public class Settings {
          *
          * @return The string representation of {@code value}.
          */
-        public String toString(Object value) {
+        public String toString(A value) {
             return value.toString();
         }
 
@@ -314,7 +314,7 @@ public class Settings {
          * @throws InvalidSettingValueException
          *         If {@code value} contains an invalid value.
          */
-        public abstract Object fromString(String value) throws InvalidSettingValueException;
+        public abstract A fromString(String value) throws InvalidSettingValueException;
 
         /**
          * Convert a setting value to the "pretty" string representation.
@@ -324,7 +324,7 @@ public class Settings {
          *
          * @return A pretty-printed version of the setting's value.
          */
-        public String toPrettyString(Object value) {
+        public String toPrettyString(A value) {
             return toString(value);
         }
 
@@ -340,7 +340,7 @@ public class Settings {
          * @throws InvalidSettingValueException
          *         If {@code value} contains an invalid value.
          */
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+        public A fromPrettyString(String value) throws InvalidSettingValueException {
             return fromString(value);
         }
     }
@@ -383,13 +383,13 @@ public class Settings {
     /**
      * A string setting.
      */
-    static class StringSetting extends SettingsDescription {
+    static class StringSetting extends SettingsDescription<String> {
         StringSetting(String defaultValue) {
             super(defaultValue);
         }
 
         @Override
-        public Object fromString(String value) {
+        public String fromString(String value) {
             return value;
         }
     }
@@ -397,13 +397,13 @@ public class Settings {
     /**
      * A boolean setting.
      */
-    static class BooleanSetting extends SettingsDescription {
+    static class BooleanSetting extends SettingsDescription<Boolean> {
         BooleanSetting(boolean defaultValue) {
             super(defaultValue);
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Boolean fromString(String value) throws InvalidSettingValueException {
             if (Boolean.TRUE.toString().equals(value)) {
                 return true;
             } else if (Boolean.FALSE.toString().equals(value)) {
@@ -416,13 +416,13 @@ public class Settings {
     /**
      * A color setting.
      */
-    static class ColorSetting extends SettingsDescription {
+    static class ColorSetting extends SettingsDescription<Integer> {
         ColorSetting(int defaultValue) {
             super(defaultValue);
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 return Integer.parseInt(value);
             } catch (NumberFormatException e) {
@@ -431,13 +431,13 @@ public class Settings {
         }
 
         @Override
-        public String toPrettyString(Object value) {
-            int color = ((Integer) value) & 0x00FFFFFF;
+        public String toPrettyString(Integer value) {
+            int color = value & 0x00FFFFFF;
             return String.format("#%06x", color);
         }
 
         @Override
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+        public Integer fromPrettyString(String value) throws InvalidSettingValueException {
             try {
                 if (value.length() == 7) {
                     return Integer.parseInt(value.substring(1), 16) | 0xFF000000;
@@ -455,16 +455,16 @@ public class Settings {
      * {@link Enum#toString()} is used to obtain the "pretty" string representation.
      * </p>
      */
-    static class EnumSetting<T extends Enum<T>> extends SettingsDescription {
+    static class EnumSetting<T extends Enum<T>> extends SettingsDescription<T> {
         private Class<T> mEnumClass;
 
-        EnumSetting(Class<T> enumClass, Object defaultValue) {
+        EnumSetting(Class<T> enumClass, T defaultValue) {
             super(defaultValue);
             mEnumClass = enumClass;
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public T fromString(String value) throws InvalidSettingValueException {
             try {
                 return Enum.valueOf(mEnumClass, value);
             } catch (Exception e) {
@@ -479,20 +479,20 @@ public class Settings {
      * @param <A>
      *         The type of the internal representation (e.g. {@code Integer}).
      */
-    abstract static class PseudoEnumSetting<A> extends SettingsDescription {
-        PseudoEnumSetting(Object defaultValue) {
+    abstract static class PseudoEnumSetting<A> extends SettingsDescription<A> {
+        PseudoEnumSetting(A defaultValue) {
             super(defaultValue);
         }
 
         protected abstract Map<A, String> getMapping();
 
         @Override
-        public String toPrettyString(Object value) {
+        public String toPrettyString(A value) {
             return getMapping().get(value);
         }
 
         @Override
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+        public A fromPrettyString(String value) throws InvalidSettingValueException {
             for (Entry<A, String> entry : getMapping().entrySet()) {
                 if (entry.getValue().equals(value)) {
                     return entry.getKey();
@@ -529,7 +529,7 @@ public class Settings {
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer fontSize = Integer.parseInt(value);
                 if (mMapping.containsKey(fontSize)) {
@@ -565,7 +565,7 @@ public class Settings {
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer fontSize = Integer.parseInt(value);
                 if (mMapping.containsKey(fontSize)) {
@@ -580,7 +580,7 @@ public class Settings {
     /**
      * An integer settings whose values a limited to a certain range.
      */
-    static class IntegerRangeSetting extends SettingsDescription {
+    static class IntegerRangeSetting extends SettingsDescription<Integer> {
         private int mStart;
         private int mEnd;
 
@@ -591,7 +591,7 @@ public class Settings {
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 int intValue = Integer.parseInt(value);
                 if (mStart <= intValue && intValue <= mEnd) {

@@ -1,5 +1,6 @@
 package com.fsck.k9.preferences;
 
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.TreeMap;
 import android.os.Environment;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.SortType;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
@@ -20,8 +22,17 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
-import com.fsck.k9.Account.SortType;
-import com.fsck.k9.preferences.Settings.*;
+import com.fsck.k9.preferences.Settings.BooleanSetting;
+import com.fsck.k9.preferences.Settings.ColorSetting;
+import com.fsck.k9.preferences.Settings.EnumSetting;
+import com.fsck.k9.preferences.Settings.FontSizeSetting;
+import com.fsck.k9.preferences.Settings.IntegerRangeSetting;
+import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
+import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
+import com.fsck.k9.preferences.Settings.SettingsDescription;
+import com.fsck.k9.preferences.Settings.SettingsUpgrader;
+import com.fsck.k9.preferences.Settings.V;
+import com.fsck.k9.preferences.Settings.WebFontSizeSetting;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
@@ -431,7 +442,7 @@ public class GlobalSettings {
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public String fromString(String value) throws InvalidSettingValueException {
             if (mMapping.containsKey(value)) {
                 return value;
             }
@@ -443,7 +454,7 @@ public class GlobalSettings {
     /**
      * The theme setting.
      */
-    public static class ThemeSetting extends SettingsDescription {
+    public static class ThemeSetting extends SettingsDescription<K9.Theme> {
         private static final String THEME_LIGHT = "light";
         private static final String THEME_DARK = "dark";
 
@@ -452,7 +463,7 @@ public class GlobalSettings {
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public K9.Theme fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer theme = Integer.parseInt(value);
                 if (theme == K9.Theme.LIGHT.ordinal() ||
@@ -470,7 +481,7 @@ public class GlobalSettings {
         }
 
         @Override
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+        public K9.Theme fromPrettyString(String value) throws InvalidSettingValueException {
             if (THEME_LIGHT.equals(value)) {
                 return K9.Theme.LIGHT;
             } else if (THEME_DARK.equals(value)) {
@@ -481,8 +492,8 @@ public class GlobalSettings {
         }
 
         @Override
-        public String toPrettyString(Object value) {
-            switch ((K9.Theme) value) {
+        public String toPrettyString(K9.Theme value) {
+            switch (value) {
                 case DARK: {
                     return THEME_DARK;
                 }
@@ -493,8 +504,8 @@ public class GlobalSettings {
         }
 
         @Override
-        public String toString(Object value) {
-            return Integer.toString(((K9.Theme) value).ordinal());
+        public String toString(K9.Theme value) {
+            return Integer.toString(value.ordinal());
         }
     }
 
@@ -509,7 +520,7 @@ public class GlobalSettings {
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public K9.Theme fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer theme = Integer.parseInt(value);
                 if (theme == K9.Theme.USE_GLOBAL.ordinal()) {
@@ -523,7 +534,7 @@ public class GlobalSettings {
         }
 
         @Override
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+        public K9.Theme fromPrettyString(String value) throws InvalidSettingValueException {
             if (THEME_USE_GLOBAL.equals(value)) {
                 return K9.Theme.USE_GLOBAL;
             }
@@ -532,8 +543,8 @@ public class GlobalSettings {
         }
 
         @Override
-        public String toPrettyString(Object value) {
-            if (((K9.Theme) value) == K9.Theme.USE_GLOBAL) {
+        public String toPrettyString(K9.Theme value) {
+            if (value == K9.Theme.USE_GLOBAL) {
                 return THEME_USE_GLOBAL;
             }
 
@@ -544,13 +555,13 @@ public class GlobalSettings {
     /**
      * A time setting.
      */
-    public static class TimeSetting extends SettingsDescription {
+    public static class TimeSetting extends SettingsDescription<String> {
         public TimeSetting(String defaultValue) {
             super(defaultValue);
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public String fromString(String value) throws InvalidSettingValueException {
             if (!value.matches(TimePickerPreference.VALIDATION_EXPRESSION)) {
                 throw new InvalidSettingValueException();
             }
@@ -561,13 +572,13 @@ public class GlobalSettings {
     /**
      * A directory on the file system.
      */
-    public static class DirectorySetting extends SettingsDescription {
+    public static class DirectorySetting extends SettingsDescription<String> {
         public DirectorySetting(File defaultPath) {
             super(defaultPath.toString());
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public String fromString(String value) throws InvalidSettingValueException {
             try {
                 if (new File(value).isDirectory()) {
                     return value;
