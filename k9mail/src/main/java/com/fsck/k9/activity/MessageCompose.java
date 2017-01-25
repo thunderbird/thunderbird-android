@@ -487,6 +487,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (!TextUtils.isEmpty(alwaysBccString)) {
                     recipientPresenter.addBccAddresses(Address.parse(alwaysBccString));
                 }
+                String idAlwaysBccString = mIdentity.getAlwaysBcc();
+                if (!TextUtils.isEmpty(idAlwaysBccString)) {
+                    recipientPresenter.addBccAddresses(Address.parse(idAlwaysBccString));
+                }
             }
         }
 

@@ -7,6 +7,7 @@ public class Identity implements Serializable {
     private String mDescription;
     private String mName;
     private String mEmail;
+    private String mAlwaysBcc;
     private String mSignature;
     private boolean mSignatureUse;
     private String replyTo;
@@ -25,6 +26,14 @@ public class Identity implements Serializable {
 
     public synchronized void setEmail(String email) {
         mEmail = email;
+    }
+
+    public synchronized String getAlwaysBcc() {
+        return mAlwaysBcc;
+    }
+
+    public synchronized void setAlwaysBcc(String alwaysBcc) {
+        this.mAlwaysBcc = alwaysBcc;
     }
 
     public synchronized boolean getSignatureUse() {
@@ -61,6 +70,6 @@ public class Identity implements Serializable {
 
     @Override
     public synchronized String toString() {
-        return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", replyTo=" + replyTo + ", signature=" + mSignature;
+        return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", alwaysBcc=" + mAlwaysBcc + ", replyTo=" + replyTo + ", signature=" + mSignature;
     }
 }

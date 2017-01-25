@@ -570,6 +570,10 @@ public class SettingsImporter {
             putString(editor, accountKeyPrefix + Account.IDENTITY_EMAIL_KEY + identitySuffix,
                     identity.email);
 
+            // Write alwaysBcc address
+            putString(editor, accountKeyPrefix + Account.IDENTITY_ALWAYSBCC_KEY + identitySuffix,
+                    identity.alwaysBcc);
+
             // Write identity description
             putString(editor, accountKeyPrefix + Account.IDENTITY_DESCRIPTION_KEY + identitySuffix,
                     identityDescription);
@@ -1185,6 +1189,7 @@ public class SettingsImporter {
     static class ImportedIdentity {
         public String name;
         public String email;
+        public String alwaysBcc;
         public String description;
         public ImportedSettings settings;
     }

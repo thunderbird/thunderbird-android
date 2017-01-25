@@ -73,6 +73,7 @@ public class SettingsExporter {
     public static final String KEY_ATTRIBUTE = "key";
     public static final String NAME_ELEMENT = "name";
     public static final String EMAIL_ELEMENT = "email";
+    public static final String ALWAYSBCC_ELEMENT = "alwaysBcc";
     public static final String DESCRIPTION_ELEMENT = "description";
 
 
@@ -396,6 +397,12 @@ public class SettingsExporter {
         serializer.startTag(null, EMAIL_ELEMENT);
         serializer.text(email);
         serializer.endTag(null, EMAIL_ELEMENT);
+
+        // Write alwaysBcc address belonging to the identity
+        String alwaysBcc = (String) prefs.get(prefix + Account.IDENTITY_ALWAYSBCC_KEY + suffix);
+        serializer.startTag(null, ALWAYSBCC_ELEMENT);
+        serializer.text(alwaysBcc);
+        serializer.endTag(null, ALWAYSBCC_ELEMENT);
 
         // Write identity description
         String description = (String) prefs.get(prefix + Account.IDENTITY_DESCRIPTION_KEY + suffix);

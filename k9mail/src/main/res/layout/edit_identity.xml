@@ -64,19 +64,17 @@
             android:hint="@string/edit_identity_reply_to_hint"
             android:inputType="textEmailAddress"
             />
-            <!-- 
         <TextView
-            android:text="@string/edit_identity_always_bcc_label"
+            android:text="@string/account_settings_always_bcc_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorPrimary" />
         <EditText
-            android:id="@+id/account_always_bcc"
+            android:id="@+id/always_bcc"
             android:singleLine="true"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
-            -->
         <CheckBox
             android:id="@+id/signature_use"
             android:layout_width="fill_parent"
