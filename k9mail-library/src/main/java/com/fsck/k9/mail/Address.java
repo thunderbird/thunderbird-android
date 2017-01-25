@@ -161,24 +161,21 @@ public class Address implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null)
-            return false;
-        if (o == this)
+        if (this == o) {
             return true;
-        if (o instanceof Address) {
-            Address other = (Address) o;
-            if (mPersonal == null && other.mPersonal != null) {
-                return false;
-            } else if (!mPersonal.equals(other.mPersonal)) {
-                return false;
-            }
-
-            if (mAddress == null) {
-                return other.mAddress == null;
-            }
-            return mAddress.equals(other.mAddress);
         }
-        return false;
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Address address = (Address) o;
+
+        if (mAddress != null ? !mAddress.equals(address.mAddress) : address.mAddress != null) {
+            return false;
+        }
+
+        return mPersonal != null ? mPersonal.equals(address.mPersonal) : address.mPersonal == null;
     }
 
     @Override
