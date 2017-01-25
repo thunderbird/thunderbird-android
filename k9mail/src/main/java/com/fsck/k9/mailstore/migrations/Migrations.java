@@ -68,6 +68,9 @@ public class Migrations {
                 MigrationTo56.cleanUpFtsTable(db);
             case 56:
                 MigrationTo57.fixDataLocationForMultipartParts(db);
+            case 57:
+                MigrationTo58.cleanUpOrphanedData(db);
+                MigrationTo58.createDeleteMessageTrigger(db);
         }
     }
 }
