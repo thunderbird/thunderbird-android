@@ -506,7 +506,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 return CONTACT_PICKER_BCC;
             }
         }
-        
+
         throw new AssertionError("Unhandled case: " + type);
     }
 
@@ -522,7 +522,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 return RecipientType.BCC;
             }
         }
-        
+
         throw new AssertionError("Unhandled case: " + type);
     }
 
