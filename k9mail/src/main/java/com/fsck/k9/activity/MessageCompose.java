@@ -889,7 +889,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void onAccountChosen(Account account, Identity identity) {
-        if (!mAccount.equals(account)) {
+        if (account == null) {
+            Log.e(K9.LOG_TAG, "No account provided to switch to");
+        } else  if (!mAccount.equals(account)) {
             if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "Switching account from " + mAccount + " to " + account);
             }
