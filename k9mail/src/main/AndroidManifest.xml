@@ -123,6 +123,11 @@
             android:label="@string/account_settings_composition_title"/>
 
         <activity
+            android:name=".activity.setup.AccountSetupReportSpam"
+            android:configChanges="locale"
+            android:label="@string/account_settings_reportspam_title"/>
+
+        <activity
             android:name=".activity.setup.AccountSetupOutgoing"
             android:configChanges="locale"
             android:label="@string/account_setup_outgoing_title"/>

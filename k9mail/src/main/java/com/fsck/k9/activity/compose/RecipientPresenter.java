@@ -216,11 +216,11 @@ public class RecipientPresenter implements PermissionPingCallback {
         cryptoEnablePgpInline = message.isSet(Flag.X_DRAFT_OPENPGP_INLINE);
     }
 
-    void addToAddresses(Address... toAddresses) {
+    public void addToAddresses(Address... toAddresses) {
         addRecipientsFromAddresses(RecipientType.TO, toAddresses);
     }
 
-    void addCcAddresses(Address... ccAddresses) {
+    public void addCcAddresses(Address... ccAddresses) {
         if (ccAddresses.length > 0) {
             addRecipientsFromAddresses(RecipientType.CC, ccAddresses);
             recipientMvpView.setCcVisibility(true);

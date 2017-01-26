@@ -97,6 +97,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="compose_title_reply">Reply</string>
     <string name="compose_title_reply_all">Reply all</string>
     <string name="compose_title_forward">Forward</string>
+    <string name="compose_title_forward_as_attachment">Forward as attachment</string>
+    <string name="compose_title_reportspam">Report as spam</string>
 
     <string name="choose_folder_title">Choose Folder</string>
 
@@ -126,6 +128,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="archive_action">Archive</string>
     <string name="spam_action">Spam</string>
     <string name="forward_action">Forward</string>
+    <string name="forward_as_attachment_action">Forward as attachment</string>
+    <string name="reportspam_action">Report spam</string>
     <string name="move_action">Move</string>
     <string name="single_message_options_action">Send…</string>
     <string name="refile_action">Refile…</string>
@@ -271,6 +275,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="compose_error_incomplete_recipient">Recipient field contains incomplete input!</string>
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
+    <string name="message_compose_attachments_forward_toast">The message cannot be forwarded because some attachments have not been downloaded.</string>
     <string name="message_compose_show_quoted_text_action">Quote message</string>
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
@@ -715,6 +720,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="edit_identity_title">Edit identity</string>
     <string name="new_identity_action">New identity</string>
 
+    <string name="account_settings_reportspam_title">Remote spam filter</string>
+    <string name="account_settings_reportspam_label">Report spam</string>
+    <string name="account_settings_reportspam_summary">Train your remote spam filter</string>
+
+    <string name="account_settings_reportspam_recipient_label">Recipient</string>
+    <string name="account_settings_reportspam_subject_label">Subject</string>
+    <string name="account_settings_reportspam_delete_label">Delete original after reporting</string>
+
     <string name="account_settings_always_bcc_label">Bcc all messages to</string>
 
     <string name="manage_identities_edit_action">Edit</string>
@@ -920,6 +933,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="error_activity_not_found">No suitable application for this action found.</string>
     <string name="send_failed_reason">Send failed: %s</string>
+    <string name="delete_failed_reason">Delete failed: %s</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>

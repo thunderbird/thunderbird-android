@@ -1004,6 +1004,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         mFragmentListener.onForward(messageReference);
     }
 
+    public void onForwardAsAttachment(MessageReference messageReference) {
+        mFragmentListener.onForwardAsAttachment(messageReference);
+    }
+
+    public void onReportSpam(MessageReference messageReference) {
+        mFragmentListener.onReportSpam(messageReference);
+    }
+
     public void onResendMessage(MessageReference messageReference) {
         mFragmentListener.onResendMessage(messageReference);
     }
@@ -1340,6 +1348,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 onForward(getMessageAtPosition(adapterPosition));
                 break;
             }
+            case R.id.forward_as_attachment: {
+                onForwardAsAttachment(getMessageAtPosition(adapterPosition));
+                break;
+            }
+            case R.id.reportspam: {
+                onReportSpam(getMessageAtPosition(adapterPosition));
+                break;
+            }
             case R.id.send_again: {
                 onResendMessage(getMessageAtPosition(adapterPosition));
                 mSelectedCount = 0;
@@ -1470,6 +1486,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             menu.findItem(R.id.spam).setVisible(false);
         }
 
+        if (TextUtils.isEmpty(account.getReportSpamRecipient())) {
+            menu.findItem(R.id.reportspam).setVisible(false);
+        }
     }
 
     public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
@@ -2935,6 +2954,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void showMoreFromSameSender(String senderAddress);
         void onResendMessage(MessageReference message);
         void onForward(MessageReference message);
+        void onForwardAsAttachment(MessageReference message);
+        void onReportSpam(MessageReference message);
         void onReply(MessageReference message);
         void onReplyAll(MessageReference message);
         void openMessage(MessageReference messageReference);

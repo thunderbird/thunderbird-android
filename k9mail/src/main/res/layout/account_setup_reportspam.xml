@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+	android:fadingEdge="none"
+    android:scrollbarStyle="outsideInset">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        <TextView
+            android:text="@string/account_settings_reportspam_recipient_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <EditText
+            android:id="@+id/account_reportspam_recipient"
+            android:singleLine="true"
+            android:inputType="textPersonName"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_settings_reportspam_recipient_label"
+            />
+        <TextView
+            android:text="@string/account_settings_reportspam_subject_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary"
+            />
+        <EditText
+            android:id="@+id/account_reportspam_subject"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_settings_reportspam_subject_label"
+            />
+        <CheckBox
+            android:id="@+id/account_reportspam_delete"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account_settings_reportspam_delete_label" />
+
+    </LinearLayout>
+</ScrollView>
