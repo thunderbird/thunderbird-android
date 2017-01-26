@@ -104,7 +104,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         return recipientMvpView.getBccAddresses();
     }
 
-    public List<Recipient> getAllRecipients() {
+    private List<Recipient> getAllRecipients() {
         ArrayList<Recipient> result = new ArrayList<>();
 
         result.addAll(recipientMvpView.getToRecipients());
@@ -216,11 +216,11 @@ public class RecipientPresenter implements PermissionPingCallback {
         cryptoEnablePgpInline = message.isSet(Flag.X_DRAFT_OPENPGP_INLINE);
     }
 
-    void addToAddresses(Address... toAddresses) {
+    private void addToAddresses(Address... toAddresses) {
         addRecipientsFromAddresses(RecipientType.TO, toAddresses);
     }
 
-    void addCcAddresses(Address... ccAddresses) {
+    private void addCcAddresses(Address... ccAddresses) {
         if (ccAddresses.length > 0) {
             addRecipientsFromAddresses(RecipientType.CC, ccAddresses);
             recipientMvpView.setCcVisibility(true);
@@ -299,19 +299,19 @@ public class RecipientPresenter implements PermissionPingCallback {
         return result.toArray(new Address[result.size()]);
     }
 
-    public void onClickToLabel() {
+    void onClickToLabel() {
         recipientMvpView.requestFocusOnToField();
     }
 
-    public void onClickCcLabel() {
+    void onClickCcLabel() {
         recipientMvpView.requestFocusOnCcField();
     }
 
-    public void onClickBccLabel() {
+    void onClickBccLabel() {
         recipientMvpView.requestFocusOnBccField();
     }
 
-    public void onClickRecipientExpander() {
+    void onClickRecipientExpander() {
         recipientMvpView.setCcVisibility(true);
         recipientMvpView.setBccVisibility(true);
         updateRecipientExpanderVisibility();
@@ -383,47 +383,47 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void onToTokenAdded(Recipient recipient) {
+    void onToTokenAdded(Recipient recipient) {
         updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void onToTokenRemoved(Recipient recipient) {
+    void onToTokenRemoved(Recipient recipient) {
         updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void onToTokenChanged(Recipient recipient) {
+    void onToTokenChanged(Recipient recipient) {
         updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void onCcTokenAdded(Recipient recipient) {
+    void onCcTokenAdded(Recipient recipient) {
         updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void onCcTokenRemoved(Recipient recipient) {
+    void onCcTokenRemoved(Recipient recipient) {
         updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void onCcTokenChanged(Recipient recipient) {
+    void onCcTokenChanged(Recipient recipient) {
         updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void onBccTokenAdded(Recipient recipient) {
+    void onBccTokenAdded(Recipient recipient) {
         updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void onBccTokenRemoved(Recipient recipient) {
+    void onBccTokenRemoved(Recipient recipient) {
         updateCryptoStatus();
     }
 
     @SuppressWarnings("UnusedParameters")
-    public void onBccTokenChanged(Recipient recipient) {
+    void onBccTokenChanged(Recipient recipient) {
         updateCryptoStatus();
     }
 
@@ -469,15 +469,15 @@ public class RecipientPresenter implements PermissionPingCallback {
         }.startLoading();
     }
 
-    public void onToFocused() {
+    void onToFocused() {
         lastFocusedType = RecipientType.TO;
     }
 
-    public void onCcFocused() {
+    void onCcFocused() {
         lastFocusedType = RecipientType.CC;
     }
 
-    public void onBccFocused() {
+    void onBccFocused() {
         lastFocusedType = RecipientType.BCC;
     }
 
@@ -539,7 +539,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
-    public void onClickCryptoStatus() {
+    void onClickCryptoStatus() {
         switch (cryptoProviderState) {
             case UNCONFIGURED:
                 Log.e(K9.LOG_TAG, "click on crypto status while unconfigured - this should not really happen?!");
@@ -566,7 +566,7 @@ public class RecipientPresenter implements PermissionPingCallback {
      *
      * @return True, if the device supports picking contacts. False, otherwise.
      */
-    public boolean hasContactPicker() {
+    private boolean hasContactPicker() {
         if (hasContactPicker == null) {
             Contacts contacts = Contacts.getInstance(context);
 
@@ -594,7 +594,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
-    public void showPgpAttachError(AttachErrorState attachErrorState) {
+    void showPgpAttachError(AttachErrorState attachErrorState) {
         switch (attachErrorState) {
             case IS_INLINE:
                 recipientMvpView.showErrorInlineAttach();
@@ -702,7 +702,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         openPgpServiceConnection = null;
     }
 
-    public OpenPgpApi getOpenPgpApi() {
+    private OpenPgpApi getOpenPgpApi() {
         if (openPgpServiceConnection == null || !openPgpServiceConnection.isBound()) {
             Log.e(K9.LOG_TAG, "obtained openpgpapi object, but service is not bound! inconsistent state?");
         }
