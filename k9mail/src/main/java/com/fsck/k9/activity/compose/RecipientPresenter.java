@@ -382,48 +382,39 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
-    @SuppressWarnings("UnusedParameters")
-    void onToTokenAdded(Recipient recipient) {
+    void onToTokenAdded() {
         updateCryptoStatus();
     }
 
-    @SuppressWarnings("UnusedParameters")
-    void onToTokenRemoved(Recipient recipient) {
+    void onToTokenRemoved() {
         updateCryptoStatus();
     }
 
-    @SuppressWarnings("UnusedParameters")
-    void onToTokenChanged(Recipient recipient) {
+    void onToTokenChanged() {
         updateCryptoStatus();
     }
 
-    @SuppressWarnings("UnusedParameters")
-    void onCcTokenAdded(Recipient recipient) {
+    void onCcTokenAdded() {
         updateCryptoStatus();
     }
 
-    @SuppressWarnings("UnusedParameters")
-    void onCcTokenRemoved(Recipient recipient) {
+    void onCcTokenRemoved() {
         updateCryptoStatus();
     }
 
-    @SuppressWarnings("UnusedParameters")
-    void onCcTokenChanged(Recipient recipient) {
+    void onCcTokenChanged() {
         updateCryptoStatus();
     }
 
-    @SuppressWarnings("UnusedParameters")
-    void onBccTokenAdded(Recipient recipient) {
+    void onBccTokenAdded() {
         updateCryptoStatus();
     }
 
-    @SuppressWarnings("UnusedParameters")
-    void onBccTokenRemoved(Recipient recipient) {
+    void onBccTokenRemoved() {
         updateCryptoStatus();
     }
 
-    @SuppressWarnings("UnusedParameters")
-    void onBccTokenChanged(Recipient recipient) {
+    void onBccTokenChanged() {
         updateCryptoStatus();
     }
 
