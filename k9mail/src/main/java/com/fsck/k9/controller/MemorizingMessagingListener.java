@@ -12,15 +12,6 @@ import com.fsck.k9.Account;
 class MemorizingMessagingListener extends MessagingListener {
     Map<String, Memory> memories = new HashMap<>(31);
 
-    private Memory getMemory(Account account, String folderName) {
-        Memory memory = memories.get(getMemoryKey(account, folderName));
-        if (memory == null) {
-            memory = new Memory(account, folderName);
-            memories.put(getMemoryKey(memory.account, memory.folderName), memory);
-        }
-        return memory;
-    }
-
     synchronized void removeAccount(Account account) {
         Iterator<Entry<String, Memory>> memIt = memories.entrySet().iterator();
 
@@ -33,32 +24,6 @@ class MemorizingMessagingListener extends MessagingListener {
                 memIt.remove();
             }
         }
-    }
-
-    @Override
-    public synchronized void synchronizeMailboxStarted(Account account, String folder) {
-        Memory memory = getMemory(account, folder);
-        memory.syncingState = MemorizingState.STARTED;
-        memory.folderCompleted = 0;
-        memory.folderTotal = 0;
-    }
-
-    @Override
-    public synchronized void synchronizeMailboxFinished(Account account, String folder,
-            int totalMessagesInMailbox, int numNewMessages) {
-        Memory memory = getMemory(account, folder);
-        memory.syncingState = MemorizingState.FINISHED;
-        memory.syncingTotalMessagesInMailbox = totalMessagesInMailbox;
-        memory.syncingNumNewMessages = numNewMessages;
-    }
-
-    @Override
-    public synchronized void synchronizeMailboxFailed(Account account, String folder,
-            String message) {
-
-        Memory memory = getMemory(account, folder);
-        memory.syncingState = MemorizingState.FAILED;
-        memory.failureMessage = message;
     }
 
     synchronized void refreshOther(MessagingListener other) {
@@ -152,6 +117,32 @@ class MemorizingMessagingListener extends MessagingListener {
     }
 
     @Override
+    public synchronized void synchronizeMailboxStarted(Account account, String folder) {
+        Memory memory = getMemory(account, folder);
+        memory.syncingState = MemorizingState.STARTED;
+        memory.folderCompleted = 0;
+        memory.folderTotal = 0;
+    }
+
+    @Override
+    public synchronized void synchronizeMailboxFinished(Account account, String folder,
+            int totalMessagesInMailbox, int numNewMessages) {
+        Memory memory = getMemory(account, folder);
+        memory.syncingState = MemorizingState.FINISHED;
+        memory.syncingTotalMessagesInMailbox = totalMessagesInMailbox;
+        memory.syncingNumNewMessages = numNewMessages;
+    }
+
+    @Override
+    public synchronized void synchronizeMailboxFailed(Account account, String folder,
+            String message) {
+
+        Memory memory = getMemory(account, folder);
+        memory.syncingState = MemorizingState.FAILED;
+        memory.failureMessage = message;
+    }
+
+    @Override
     public synchronized void setPushActive(Account account, String folderName, boolean active) {
         Memory memory = getMemory(account, folderName);
         memory.pushingState = (active ? MemorizingState.STARTED : MemorizingState.FINISHED);
@@ -211,6 +202,15 @@ class MemorizingMessagingListener extends MessagingListener {
     public synchronized void pendingCommandCompleted(Account account, String commandTitle) {
         Memory memory = getMemory(account, null);
         memory.processingCommandTitle = null;
+    }
+
+    private Memory getMemory(Account account, String folderName) {
+        Memory memory = memories.get(getMemoryKey(account, folderName));
+        if (memory == null) {
+            memory = new Memory(account, folderName);
+            memories.put(getMemoryKey(memory.account, memory.folderName), memory);
+        }
+        return memory;
     }
 
     private static String getMemoryKey(Account taccount, String tfolderName) {
