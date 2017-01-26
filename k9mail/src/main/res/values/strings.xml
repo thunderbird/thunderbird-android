@@ -1179,6 +1179,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_sign_revoked">Signature made by revoked key.</string>
     <string name="crypto_msg_sign_insecure">Signature made by insecure key.</string>
     <string name="crypto_msg_sign_incomplete">Message must be fully downloaded to verify its signature.</string>
+    <string name="crypto_msg_sign_old">Signature timestamp differs too much from email timestamp.</string>
 
     <string name="crypto_msg_signed_encrypted">Message is signed and encrypted.</string>
     <string name="crypto_msg_unsigned_encrypted">There is no signature, this message may have been intercepted.</string>
@@ -1199,6 +1200,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_crypto_warning_revoked">This message was signed by a <b>revoked key!</b></string>
     <string name="messageview_crypto_warning_expired">This message was signed by an <b>expired key!</b></string>
     <string name="messageview_crypto_warning_insecure">This message was signed by an <b>insecure key!</b></string>
+    <string name="messageview_crypto_warning_old">Signature timestamp differs too much from email timestamp!</string>
     <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature!</b></string>
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="recipient_error_parse_failed">Error parsing address!</string>

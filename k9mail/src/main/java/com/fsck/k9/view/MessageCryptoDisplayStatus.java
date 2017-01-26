@@ -11,6 +11,8 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 
+import java.util.Date;
+
 
 public enum MessageCryptoDisplayStatus {
     LOADING (
@@ -71,6 +73,11 @@ public enum MessageCryptoDisplayStatus {
             R.drawable.status_signature_verified_cutout, R.drawable.status_dots,
             R.string.crypto_msg_signed_error, null
     ),
+    UNENCRYPTED_SIGN_OLD (
+            R.attr.openpgp_red,
+            R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
+            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_old
+    ),
 
     ENCRYPTED_SIGN_UNKNOWN (
             R.attr.openpgp_black,
@@ -107,6 +114,11 @@ public enum MessageCryptoDisplayStatus {
             R.attr.openpgp_red,
             R.drawable.status_lock, R.drawable.status_none_dots_1,
             R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_insecure
+    ),
+    ENCRYPTED_SIGN_OLD (
+            R.attr.openpgp_red,
+            R.drawable.status_lock, R.drawable.status_none_dots_1,
+            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_old
     ),
     ENCRYPTED_UNSIGNED (
             R.attr.openpgp_red, 
@@ -156,6 +168,9 @@ public enum MessageCryptoDisplayStatus {
     @StringRes public final Integer textResTop;
     @StringRes public final Integer textResBottom;
 
+    /** max acceptable time between email timestamp and signature timestamp in millisecs */
+    private static final long MAX_ACCEPTABLE_TIME_DELTA_OF_SIGNATURE = 1000*60*60*24*2; // 2d
+
     MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes, @DrawableRes Integer statusDotsRes,
             @StringRes int textResTop, @StringRes Integer textResBottom) {
         this.colorAttr = colorAttr;
@@ -185,14 +200,14 @@ public enum MessageCryptoDisplayStatus {
     }
 
     @NonNull
-    public static MessageCryptoDisplayStatus fromResultAnnotation(CryptoResultAnnotation cryptoResult) {
+    public static MessageCryptoDisplayStatus fromResultAnnotation(CryptoResultAnnotation cryptoResult, Date messageSentDate) {
         if (cryptoResult == null) {
             return DISABLED;
         }
 
         switch (cryptoResult.getErrorType()) {
             case OPENPGP_OK:
-                return getDisplayStatusForPgpResult(cryptoResult);
+                return getDisplayStatusForPgpResult(cryptoResult, messageSentDate);
 
             case OPENPGP_ENCRYPTED_BUT_INCOMPLETE:
                 return INCOMPLETE_ENCRYPTED;
@@ -219,7 +234,7 @@ public enum MessageCryptoDisplayStatus {
     }
 
     @NonNull
-    private static MessageCryptoDisplayStatus getDisplayStatusForPgpResult(CryptoResultAnnotation cryptoResult) {
+    private static MessageCryptoDisplayStatus getDisplayStatusForPgpResult(CryptoResultAnnotation cryptoResult, Date messageSentDate) {
         OpenPgpSignatureResult signatureResult = cryptoResult.getOpenPgpSignatureResult();
         OpenPgpDecryptionResult decryptionResult = cryptoResult.getOpenPgpDecryptionResult();
         if (decryptionResult == null || signatureResult == null) {
@@ -237,12 +252,15 @@ public enum MessageCryptoDisplayStatus {
             }
         }
 
+        final long delta = signatureResult.getSignatureTimestamp().getTime() - messageSentDate.getTime();
+        final boolean isSignatureTooOld = delta > MAX_ACCEPTABLE_TIME_DELTA_OF_SIGNATURE;
+
         switch (decryptionResult.getResult()) {
             case OpenPgpDecryptionResult.RESULT_NOT_ENCRYPTED:
-                return getStatusForPgpUnencryptedResult(signatureResult);
+                return getStatusForPgpUnencryptedResult(signatureResult, isSignatureTooOld);
 
             case OpenPgpDecryptionResult.RESULT_ENCRYPTED:
-                return getStatusForPgpEncryptedResult(signatureResult);
+                return getStatusForPgpEncryptedResult(signatureResult, isSignatureTooOld);
 
             case OpenPgpDecryptionResult.RESULT_INSECURE:
                 // TODO handle better?
@@ -253,7 +271,7 @@ public enum MessageCryptoDisplayStatus {
     }
 
     @NonNull
-    private static MessageCryptoDisplayStatus getStatusForPgpEncryptedResult(OpenPgpSignatureResult signatureResult) {
+    private static MessageCryptoDisplayStatus getStatusForPgpEncryptedResult(OpenPgpSignatureResult signatureResult, boolean isSignatureTooOld) {
         switch (signatureResult.getResult()) {
             case OpenPgpSignatureResult.RESULT_NO_SIGNATURE:
                 return ENCRYPTED_UNSIGNED;
@@ -262,7 +280,7 @@ public enum MessageCryptoDisplayStatus {
             case OpenPgpSignatureResult.RESULT_VALID_KEY_UNCONFIRMED:
                 switch (signatureResult.getSenderStatusResult()) {
                     case USER_ID_CONFIRMED:
-                        return ENCRYPTED_SIGN_VERIFIED;
+                        return isSignatureTooOld ? ENCRYPTED_SIGN_OLD : ENCRYPTED_SIGN_VERIFIED;
                     case USER_ID_UNCONFIRMED:
                         return ENCRYPTED_SIGN_UNVERIFIED;
                     case USER_ID_MISSING:
@@ -293,7 +311,7 @@ public enum MessageCryptoDisplayStatus {
     }
 
     @NonNull
-    private static MessageCryptoDisplayStatus getStatusForPgpUnencryptedResult(OpenPgpSignatureResult signatureResult) {
+    private static MessageCryptoDisplayStatus getStatusForPgpUnencryptedResult(OpenPgpSignatureResult signatureResult, boolean isSignatureTooOld) {
         switch (signatureResult.getResult()) {
             case OpenPgpSignatureResult.RESULT_NO_SIGNATURE:
                 return DISABLED;
@@ -302,7 +320,7 @@ public enum MessageCryptoDisplayStatus {
             case OpenPgpSignatureResult.RESULT_VALID_KEY_UNCONFIRMED:
                 switch (signatureResult.getSenderStatusResult()) {
                     case USER_ID_CONFIRMED:
-                        return UNENCRYPTED_SIGN_VERIFIED;
+                        return isSignatureTooOld ? UNENCRYPTED_SIGN_OLD : UNENCRYPTED_SIGN_VERIFIED;
                     case USER_ID_UNCONFIRMED:
                         return UNENCRYPTED_SIGN_UNVERIFIED;
                     case USER_ID_MISSING:
