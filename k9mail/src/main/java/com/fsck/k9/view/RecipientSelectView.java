@@ -299,7 +299,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         boolean dragSuccess = startDrag(clipData, dragShadowBuilder, recipient, 0);
         if (!dragSuccess) {
-            Log.e(K9.LOG_TAG, "ono!");
+            Log.e(K9.LOG_TAG, "Failed to start drag operation for Recipient!");
         }
 
         return dragSuccess;
