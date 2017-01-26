@@ -32,7 +32,7 @@ public class AttachmentPresenter {
 
     private static final String LOADER_ARG_ATTACHMENT = "attachment";
     private static final int LOADER_ID_MASK = 1 << 6;
-    private static final int MAX_TOTAL_LOADERS = LOADER_ID_MASK -1;
+    private static final int MAX_TOTAL_LOADERS = LOADER_ID_MASK - 1;
     private static final int REQUEST_CODE_ATTACHMENT_URI = 1;
 
 
@@ -113,7 +113,8 @@ public class AttachmentPresenter {
     }
 
     public void onClickAddAttachment(RecipientPresenter recipientPresenter) {
-        AttachErrorState maybeAttachErrorState = recipientPresenter.getCurrentCryptoStatus().getAttachErrorStateOrNull();
+        AttachErrorState maybeAttachErrorState =
+                recipientPresenter.getCurrentCryptoStatus().getAttachErrorStateOrNull();
         if (maybeAttachErrorState != null) {
             recipientPresenter.showPgpAttachError(maybeAttachErrorState);
             return;

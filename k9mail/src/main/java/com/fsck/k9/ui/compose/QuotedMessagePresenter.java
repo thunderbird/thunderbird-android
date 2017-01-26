@@ -381,5 +381,4 @@ public class QuotedMessagePresenter {
     public boolean isQuotedTextText() {
         return quotedTextFormat == SimpleMessageFormat.TEXT;
     }
-
 }
