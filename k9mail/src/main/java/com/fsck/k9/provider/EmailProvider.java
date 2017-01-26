@@ -388,7 +388,7 @@ public class EmailProvider extends ContentProvider {
 
                     query.append(" FROM (");
 
-                    createThreadedSubQuery(projection, selection, selectionArgs, query);
+                    createThreadedSubQuery(projection, selection, query);
 
                     query.append(") a ");
 
@@ -424,9 +424,7 @@ public class EmailProvider extends ContentProvider {
         }
     }
 
-    private void createThreadedSubQuery(String[] projection, String selection, String[] selectionArgs,
-            StringBuilder query) {
-
+    private void createThreadedSubQuery(String[] projection, String selection, StringBuilder query) {
         query.append("SELECT t." + ThreadColumns.ROOT + " AS thread_root");
         for (String columnName : projection) {
             String aggregationFunc = THREAD_AGGREGATION_FUNCS.get(columnName);
