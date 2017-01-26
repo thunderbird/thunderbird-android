@@ -27,7 +27,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.cache.TemporaryAttachmentStore;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
@@ -97,7 +97,7 @@ public class AttachmentController {
         LocalMessage message = localPart.getMessage();
 
         messageViewFragment.showAttachmentLoadingDialog();
-        controller.loadAttachment(account, message, attachment.part, new MessagingListener() {
+        controller.loadAttachment(account, message, attachment.part, new SimpleMessagingListener() {
             @Override
             public void loadAttachmentFinished(Account account, Message message, Part part) {
                 messageViewFragment.hideAttachmentLoadingDialogOnMainThread();

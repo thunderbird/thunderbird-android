@@ -86,7 +86,7 @@ public class MessagingControllerTest {
     @Mock
     private AccountStats accountStats;
     @Mock
-    private MessagingListener listener;
+    private SimpleMessagingListener listener;
     @Mock
     private LocalSearch search;
     @Mock

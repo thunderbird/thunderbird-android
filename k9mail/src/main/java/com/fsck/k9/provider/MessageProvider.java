@@ -45,7 +45,7 @@ import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -79,7 +79,7 @@ public class MessageProvider extends ContentProvider {
             UnreadColumns.UNREAD
     };
 
-    
+
     private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private List<QueryHandler> queryHandlers = new ArrayList<QueryHandler>();
     private MessageHelper messageHelper;
@@ -91,7 +91,7 @@ public class MessageProvider extends ContentProvider {
 
     ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(1);
 
-    
+
     @Override
     public boolean onCreate() {
         messageHelper = MessageHelper.getInstance(getContext());
@@ -105,7 +105,7 @@ public class MessageProvider extends ContentProvider {
             public void initializeComponent(final Application application) {
                 Log.v(K9.LOG_TAG, "Registering content resolver notifier");
 
-                MessagingController.getInstance(application).addListener(new MessagingListener() {
+                MessagingController.getInstance(application).addListener(new SimpleMessagingListener() {
                     @Override
                     public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
                         application.getContentResolver().notifyChange(CONTENT_URI, null);
@@ -242,7 +242,7 @@ public class MessageProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, handler.getPath(), code);
     }
 
-    
+
     public static class ReverseDateComparator implements Comparator<MessageInfoHolder> {
         @Override
         public int compare(MessageInfoHolder object2, MessageInfoHolder object1) {
@@ -1089,7 +1089,7 @@ public class MessageProvider extends ContentProvider {
     /**
      * Synchronized listener used to retrieve {@link MessageInfoHolder}s using a given {@link BlockingQueue}.
      */
-    protected class MessageInfoHolderRetrieverListener extends MessagingListener {
+    protected class MessageInfoHolderRetrieverListener extends SimpleMessagingListener {
         private final BlockingQueue<List<MessageInfoHolder>> queue;
         private List<MessageInfoHolder> holders = new ArrayList<MessageInfoHolder>();
 

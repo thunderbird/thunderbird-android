@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import com.fsck.k9.Account;
 
 
-class MemorizingMessagingListener extends MessagingListener {
+class MemorizingMessagingListener extends SimpleMessagingListener {
     Map<String, Memory> memories = new HashMap<>(31);
 
     synchronized void removeAccount(Account account) {

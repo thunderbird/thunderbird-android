@@ -7,7 +7,7 @@ import android.os.PowerManager;
 import android.util.Log;
 import com.fsck.k9.*;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 
@@ -77,7 +77,7 @@ public class PollService extends CoreService {
         return null;
     }
 
-    class Listener extends MessagingListener {
+    class Listener extends SimpleMessagingListener {
         Map<String, Integer> accountsChecked = new HashMap<String, Integer>();
         private TracingWakeLock wakeLock = null;
         private int startId = -1;
