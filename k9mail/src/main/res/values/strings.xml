@@ -1200,6 +1200,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_crypto_warning_expired">This message was signed by an <b>expired key!</b></string>
     <string name="messageview_crypto_warning_insecure">This message was signed by an <b>insecure key!</b></string>
     <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature!</b></string>
+    <string name="messageview_crypto_warning_unsigned">This message was encrypted, but not signed. It is <b>not end-to-end secure</b>!</string>
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="recipient_error_parse_failed">Error parsing address!</string>
     <string name="account_settings_crypto_support_sign_only">Support signing of unencrypted messages</string>
