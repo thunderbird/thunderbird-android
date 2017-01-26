@@ -45,27 +45,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void listLocalMessagesStarted(Account account, String folder) {
-    }
-
-    @Override
     public void listLocalMessagesAddMessages(Account account, String folder, List<LocalMessage> messages) {
-    }
-
-    @Override
-    public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {
-    }
-
-    @Override
-    public void listLocalMessagesRemoveMessage(Account account, String folder, Message message) {
-    }
-
-    @Override
-    public void listLocalMessagesFinished(Account account, String folder) {
-    }
-
-    @Override
-    public void listLocalMessagesFailed(Account account, String folder, String message) {
     }
 
     @Override
@@ -91,10 +71,6 @@ public abstract class SimpleMessagingListener implements MessagingListener {
 
     @Override
     public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
-    }
-
-    @Override
-    public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {
     }
 
     @Override
@@ -124,10 +100,6 @@ public abstract class SimpleMessagingListener implements MessagingListener {
 
     @Override
     public void checkMailFinished(Context context, Account account) {
-    }
-
-    @Override
-    public void checkMailFailed(Context context, Account account, String reason) {
     }
 
     @Override
@@ -199,19 +171,11 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void remoteSearchAddMessage(String folder, Message message, int numDone, int numTotal) {
-    }
-
-    @Override
     public void remoteSearchFinished(String folder, int numResults, int maxResults, List<Message> extraResults) {
     }
 
     @Override
     public void remoteSearchFailed(String folder, String err) {
-    }
-
-    @Override
-    public void controllerCommandCompleted(boolean moreCommandsToRun) {
     }
 
     @Override

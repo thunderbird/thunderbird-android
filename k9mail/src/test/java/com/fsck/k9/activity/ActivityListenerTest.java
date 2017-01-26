@@ -141,16 +141,6 @@ public class ActivityListenerTest {
     }
 
     @Test
-    public void getOperation__whenSynchronizeMailboxAddOrUpdateMessage() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxAddOrUpdateMessage(account, FOLDER, message);
-
-        String operation = activityListener.getOperation(context);
-
-        assertEquals("Poll account:folder", operation);
-    }
-
-    @Test
     public void getOperation__whenSynchronizeMailboxNewMessage() {
         activityListener.synchronizeMailboxStarted(account, FOLDER);
         activityListener.synchronizeMailboxNewMessage(account, FOLDER, message);

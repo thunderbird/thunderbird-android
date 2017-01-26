@@ -26,12 +26,7 @@ public interface MessagingListener {
     void listFoldersFinished(Account account);
     void listFoldersFailed(Account account, String message);
 
-    void listLocalMessagesStarted(Account account, String folder);
     void listLocalMessagesAddMessages(Account account, String folder, List<LocalMessage> messages);
-    void listLocalMessagesUpdateMessage(Account account, String folder, Message message);
-    void listLocalMessagesRemoveMessage(Account account, String folder, Message message);
-    void listLocalMessagesFinished(Account account, String folder);
-    void listLocalMessagesFailed(Account account, String folder, String message);
 
     void synchronizeMailboxStarted(Account account, String folder);
     void synchronizeMailboxHeadersStarted(Account account, String folder);
@@ -40,7 +35,6 @@ public interface MessagingListener {
             int numNewMessages);
     void synchronizeMailboxProgress(Account account, String folder, int completed, int total);
     void synchronizeMailboxNewMessage(Account account, String folder, Message message);
-    void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message);
     void synchronizeMailboxRemovedMessage(Account account, String folder, Message message);
     void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox, int numNewMessages);
     void synchronizeMailboxFailed(Account account, String folder, String message);
@@ -50,7 +44,6 @@ public interface MessagingListener {
 
     void checkMailStarted(Context context, Account account);
     void checkMailFinished(Context context, Account account);
-    void checkMailFailed(Context context, Account account, String reason);
 
     void sendPendingMessagesStarted(Account account);
     void sendPendingMessagesCompleted(Account account);
@@ -76,20 +69,8 @@ public interface MessagingListener {
 
     void remoteSearchStarted(String folder);
     void remoteSearchServerQueryComplete(String folderName, int numResults, int maxResults);
-    void remoteSearchAddMessage(String folder, Message message, int numDone, int numTotal);
     void remoteSearchFinished(String folder, int numResults, int maxResults, List<Message> extraResults);
     void remoteSearchFailed(String folder, String err);
-
-    /**
-     * General notification messages subclasses can override to be notified that the controller
-     * has completed a command. This is useful for turning off progress indicators that may have
-     * been left over from previous commands.
-     *
-     * @param moreCommandsToRun
-     *         {@code true} if the controller will continue on to another command immediately.
-     *         {@code false} otherwise.
-     */
-    void controllerCommandCompleted(boolean moreCommandsToRun);
 
     void enableProgressIndicator(boolean enable);
 }

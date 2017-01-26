@@ -109,11 +109,6 @@ public class PollService extends CoreService {
         }
 
         @Override
-        public void checkMailFailed(Context context, Account account, String reason) {
-            release();
-        }
-
-        @Override
         public void synchronizeMailboxFinished(
             Account account,
             String folder,

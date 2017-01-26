@@ -223,10 +223,6 @@ public class MessagingController {
                     if (K9.DEBUG) {
                         Log.i(K9.LOG_TAG, " Command '" + command.description + "' completed");
                     }
-
-                    for (MessagingListener l : getListeners(command.listener)) {
-                        l.controllerCommandCompleted(!queuedCommands.isEmpty());
-                    }
                 }
             } catch (Exception e) {
                 Log.e(K9.LOG_TAG, "Error running command '" + commandDescription + "'", e);
@@ -544,24 +540,12 @@ public class MessagingController {
                 }
             };
 
-            // alert everyone the search has started
-            if (listener != null) {
-                listener.listLocalMessagesStarted(account, null);
-            }
-
             // build and do the query in the localstore
             try {
                 LocalStore localStore = account.getLocalStore();
                 localStore.searchForMessages(retrievalListener, search);
             } catch (Exception e) {
-                if (listener != null) {
-                    listener.listLocalMessagesFailed(account, null, e.getMessage());
-                }
                 addErrorMessage(account, null, e);
-            } finally {
-                if (listener != null) {
-                    listener.listLocalMessagesFinished(account, null);
-                }
             }
         }
 
@@ -712,10 +696,6 @@ public class MessagingController {
                 remoteFolder.fetch(Collections.singletonList(message), structure, null);
                 localFolder.appendMessages(Collections.singletonList(message));
                 localMsg = localFolder.getMessage(message.getUid());
-            }
-
-            if (listener != null) {
-                listener.remoteSearchAddMessage(remoteFolder.getName(), localMsg, i, messages.size());
             }
         }
     }
@@ -1316,7 +1296,6 @@ public class MessagingController {
                     localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, message.isSet(Flag.X_DOWNLOADED_PARTIAL));
 
                     for (MessagingListener l : getListeners()) {
-                        l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                         if (!localMessage.isSet(Flag.SEEN)) {
                             l.synchronizeMailboxNewMessage(account, folder, localMessage);
                         }
@@ -1470,7 +1449,6 @@ public class MessagingController {
 
                             // Update the listener with what we've found
                             for (MessagingListener l : getListeners()) {
-                                l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                                 l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
                                 if (!localMessage.isSet(Flag.SEEN)) {
                                     l.synchronizeMailboxNewMessage(account, folder, localMessage);
@@ -1543,7 +1521,6 @@ public class MessagingController {
                 newMessages.incrementAndGet();
             }
             for (MessagingListener l : getListeners()) {
-                l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                 l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
                 if (!localMessage.isSet(Flag.SEEN)) {
                     l.synchronizeMailboxNewMessage(account, folder, localMessage);
@@ -1670,9 +1647,6 @@ public class MessagingController {
                             l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
                         }
                     } else {
-                        for (MessagingListener l : getListeners()) {
-                            l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                        }
                         if (shouldNotifyForMessage(account, localFolder, localMessage)) {
                             shouldBeNotifiedOf = true;
                         }
@@ -2194,9 +2168,6 @@ public class MessagingController {
             for (Message message : messages) {
                 if (!message.isSet(Flag.SEEN)) {
                     message.setFlag(Flag.SEEN, true);
-                    for (MessagingListener l : getListeners()) {
-                        l.listLocalMessagesUpdateMessage(account, folder, message);
-                    }
                 }
             }
 
