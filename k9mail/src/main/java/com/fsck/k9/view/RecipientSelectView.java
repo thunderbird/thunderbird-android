@@ -106,16 +106,18 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         adapter = new RecipientAdapter(context);
         setAdapter(adapter);
 
+        addDragAndDropFunctionality(context);
+    }
+
+    private void addDragAndDropFunctionality(Context context) {
+
         setOnDragListener(new OnDragListener() {
             @Override
             public boolean onDrag(View view, DragEvent dragEvent) {
                 switch (dragEvent.getAction()) {
                     case DragEvent.ACTION_DROP: {
                         allowCollapse(true);
-                        CharSequence text = dragEvent.getClipData().getItemAt(0).getText();
-                        if (dragEvent.getLocalState() instanceof Recipient) {
-                            addObject((Recipient) dragEvent.getLocalState(), text);
-                        }
+                        copyDraggedRecipient(dragEvent);
                         return true;
                     }
                     case DragEvent.ACTION_DRAG_ENTERED: {
@@ -169,6 +171,13 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             }
         });
         gestureDetector.setIsLongpressEnabled(true);
+    }
+
+    private void copyDraggedRecipient(DragEvent dragEvent) {
+        CharSequence text = dragEvent.getClipData().getItemAt(0).getText();
+        if (dragEvent.getLocalState() instanceof Recipient) {
+            addObject((Recipient) dragEvent.getLocalState(), text);
+        }
     }
 
     @Override
@@ -291,7 +300,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         boolean dragSuccess = startDrag(clipData, dragShadowBuilder, recipient, 0);
         if (!dragSuccess) {
-            Log.e(K9.LOG_TAG, "ono!");
+            Log.e(K9.LOG_TAG, "Failed to start drag operation for Recipient!");
         }
 
         return dragSuccess;
