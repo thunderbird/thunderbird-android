@@ -482,11 +482,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 messageLoaderHelper.asyncStartOrResumeLoadingMessage(mMessageReference, cachedDecryptionResult);
             }
 
-            if (mAction != Action.EDIT_DRAFT) {
-                String alwaysBccString = mAccount.getAlwaysBcc();
-                if (!TextUtils.isEmpty(alwaysBccString)) {
-                    recipientPresenter.addBccAddresses(Address.parse(alwaysBccString));
+            String alwaysBccString = mAccount.getAlwaysBcc();
+            if (mAction == Action.EDIT_DRAFT) {
+                Preferences prefs = Preferences.getPreferences(getApplicationContext());
+                Account account = prefs.getAccount(mMessageReference.getAccountUuid());
+                String folderName = mMessageReference.getFolderName();
+                if (folderName.equals(account.getDraftsFolderName())) {
+                    alwaysBccString = null;
                 }
+            }
+            if (!TextUtils.isEmpty(alwaysBccString)) {
+                recipientPresenter.addBccAddresses(Address.parse(alwaysBccString));
             }
         }
 
