@@ -32,8 +32,8 @@ public class AttachmentPresenter {
 
     private static final String LOADER_ARG_ATTACHMENT = "attachment";
     private static final int LOADER_ID_MASK = 1 << 6;
-    public static final int MAX_TOTAL_LOADERS = LOADER_ID_MASK -1;
-    public static final int REQUEST_CODE_ATTACHMENT_URI = 1;
+    private static final int MAX_TOTAL_LOADERS = LOADER_ID_MASK -1;
+    private static final int REQUEST_CODE_ATTACHMENT_URI = 1;
 
 
     // injected state
@@ -126,7 +126,7 @@ public class AttachmentPresenter {
         addAttachment(uri, null);
     }
 
-    public void addAttachment(AttachmentViewInfo attachmentViewInfo) {
+    private void addAttachment(AttachmentViewInfo attachmentViewInfo) {
         if (attachments.containsKey(attachmentViewInfo.internalUri)) {
             throw new IllegalStateException("Received the same attachmentViewInfo twice!");
         }
@@ -286,7 +286,7 @@ public class AttachmentPresenter {
         });
     }
 
-    void performStalledAction() {
+    private void performStalledAction() {
         attachmentMvpView.dismissWaitingForAttachmentDialog();
 
         WaitingAction waitingFor = actionToPerformAfterWaiting;
@@ -305,7 +305,7 @@ public class AttachmentPresenter {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    void addAttachmentsFromResultIntent(Intent data) {
+    private void addAttachmentsFromResultIntent(Intent data) {
         // TODO draftNeedsSaving = true
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             ClipData clipData = data.getClipData();

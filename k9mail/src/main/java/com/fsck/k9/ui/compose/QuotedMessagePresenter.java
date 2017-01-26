@@ -353,19 +353,19 @@ public class QuotedMessagePresenter {
         }
     }
 
-    public void onClickShowQuotedText() {
+    void onClickShowQuotedText() {
         showOrHideQuotedText(QuotedTextMode.SHOW);
         messageCompose.updateMessageFormat();
         messageCompose.saveDraftEventually();
     }
 
-    public void onClickDeleteQuotedText() {
+    void onClickDeleteQuotedText() {
         showOrHideQuotedText(QuotedTextMode.HIDE);
         messageCompose.updateMessageFormat();
         messageCompose.saveDraftEventually();
     }
 
-    public void onClickEditQuotedText() {
+    void onClickEditQuotedText() {
         forcePlainText = true;
         messageCompose.loadQuotedTextForEdit();
     }
