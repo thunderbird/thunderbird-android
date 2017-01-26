@@ -496,8 +496,7 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     private static int recipientTypeToRequestCode(RecipientType type) {
         switch (type) {
-            case TO:
-            default: {
+            case TO: {
                 return CONTACT_PICKER_TO;
             }
             case CC: {
@@ -507,12 +506,13 @@ public class RecipientPresenter implements PermissionPingCallback {
                 return CONTACT_PICKER_BCC;
             }
         }
+        
+        throw new AssertionError("Unhandled case: " + type);
     }
 
     private static RecipientType recipientTypeFromRequestCode(int type) {
         switch (type) {
-            case CONTACT_PICKER_TO:
-            default: {
+            case CONTACT_PICKER_TO: {
                 return RecipientType.TO;
             }
             case CONTACT_PICKER_CC: {
@@ -522,6 +522,8 @@ public class RecipientPresenter implements PermissionPingCallback {
                 return RecipientType.BCC;
             }
         }
+        
+        throw new AssertionError("Unhandled case: " + type);
     }
 
     public void onNonRecipientFieldFocused() {
