@@ -128,30 +128,15 @@ public class MessageProvider extends ContentProvider {
     protected interface QueryHandler {
         /**
          * The path this instance is able to respond to.
-         *
-         * @return Never <code>null</code>.
          */
         String getPath();
 
-        /**
-         * @param uri
-         * @param projection
-         * @param selection
-         * @param selectionArgs
-         * @param sortOrder
-         * @return
-         * @throws Exception
-         * @see {@link ContentProvider#query(Uri, String[], String, String[], String)}
-         */
         Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
                 throws Exception;
     }
 
     /**
      * Extracts a value from an object.
-     *
-     * @param <T>
-     * @param <K>
      */
     public interface FieldExtractor<T, K> {
         K getField(T source);
@@ -276,19 +261,18 @@ public class MessageProvider extends ContentProvider {
     public static class UnreadExtractor implements FieldExtractor<MessageInfoHolder, Boolean> {
         @Override
         public Boolean getField(MessageInfoHolder source) {
-            return Boolean.valueOf(!source.read); // avoid autoboxing
+            return !source.read;
         }
     }
 
     /**
-     * @deprecated having an incremental value has no real interest,
-     * implemented for compatibility only
+     * @deprecated having an incremental value has no real interest, implemented for compatibility only
      */
     @Deprecated
-    // TODO remove
     public static class IncrementExtractor implements FieldExtractor<MessageInfoHolder, Integer> {
         private int count = 0;
 
+        
         @Override
         public Integer getField(MessageInfoHolder source) {
             return count++;
@@ -311,15 +295,6 @@ public class MessageProvider extends ContentProvider {
             return getMessages(projection);
         }
 
-        /**
-         * @param projection
-         *         Projection to use. If <code>null</code>, use the default
-         *         projection.
-         *
-         * @return Never <code>null</code>.
-         *
-         * @throws InterruptedException
-         */
         protected MatrixCursor getMessages(String[] projection) throws InterruptedException {
             BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<List<MessageInfoHolder>>();
 
@@ -328,7 +303,7 @@ public class MessageProvider extends ContentProvider {
             MessagingController msgController = MessagingController.getInstance(getContext());
 
             msgController.searchLocalMessages(integratedInboxAccount.getRelatedSearch(),
-                    new MesssageInfoHolderRetrieverListener(queue));
+                    new MessageInfoHolderRetrieverListener(queue));
 
             List<MessageInfoHolder> holders = queue.take();
 
@@ -364,7 +339,6 @@ public class MessageProvider extends ContentProvider {
             return cursor;
         }
 
-        // returns LinkedHashMap (rather than Map) to emphasize the inner element ordering
         protected LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> resolveMessageExtractors(
                 String[] projection, int count) {
             LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> extractors = 
@@ -421,6 +395,7 @@ public class MessageProvider extends ContentProvider {
         private static final String FIELD_ACCOUNT_UUID = "accountUuid";
         private static final String FIELD_ACCOUNT_COLOR = "accountColor";
 
+        
         @Override
         public String getPath() {
             return "accounts";
@@ -433,17 +408,15 @@ public class MessageProvider extends ContentProvider {
         }
 
         public Cursor getAllAccounts(String[] projection) {
-            // Default projection
             if (projection == null) {
                 projection = new String[] { FIELD_ACCOUNT_NUMBER, FIELD_ACCOUNT_NAME };
             }
 
-            MatrixCursor ret = new MatrixCursor(projection);
+            MatrixCursor cursor = new MatrixCursor(projection);
 
             for (Account account : Preferences.getPreferences(getContext()).getAccounts()) {
                 Object[] values = new Object[projection.length];
 
-                // Build account row
                 int fieldIndex = 0;
                 for (String field : projection) {
                     if (FIELD_ACCOUNT_NUMBER.equals(field)) {
@@ -460,10 +433,10 @@ public class MessageProvider extends ContentProvider {
                     ++fieldIndex;
                 }
 
-                ret.addRow(values);
+                cursor.addRow(values);
             }
 
-            return ret;
+            return cursor;
         }
     }
 
@@ -500,7 +473,7 @@ public class MessageProvider extends ContentProvider {
         private Cursor getAccountUnread(int accountNumber) {
             String[] projection = new String[] { "accountName", "unread" };
 
-            MatrixCursor ret = new MatrixCursor(projection);
+            MatrixCursor cursor = new MatrixCursor(projection);
 
             Account myAccount;
             AccountStats myAccountStats;
@@ -519,7 +492,7 @@ public class MessageProvider extends ContentProvider {
                             values[1] = myAccountStats.unreadMessageCount;
                         }
 
-                        ret.addRow(values);
+                        cursor.addRow(values);
                     } catch (MessagingException e) {
                         Log.e(K9.LOG_TAG, e.getMessage());
                         values[0] = "Unknown";
@@ -528,7 +501,7 @@ public class MessageProvider extends ContentProvider {
                 }
             }
 
-            return ret;
+            return cursor;
         }
     }
 
@@ -548,24 +521,12 @@ public class MessageProvider extends ContentProvider {
 
         private Semaphore semaphore;
 
-        /**
-         * @param cursor
-         *         Never <code>null</code>.
-         * @param semaphore
-         *         The semaphore to release on close. Never
-         *         <code>null</code>.
-         */
+        
         protected MonitoredCursor(CrossProcessCursor cursor, Semaphore semaphore) {
             this.cursor = cursor;
             this.semaphore = semaphore;
         }
 
-        /* (non-Javadoc)
-         *
-         * Close the underlying cursor and dereference it.
-         *
-         * @see android.database.Cursor#close()
-         */
         @Override
         public void close() {
             if (closed.compareAndSet(false, true)) {
@@ -581,12 +542,6 @@ public class MessageProvider extends ContentProvider {
             return closed.get() || cursor.isClosed();
         }
 
-        /* (non-Javadoc)
-         *
-         * Making sure cursor gets closed on garbage collection
-         *
-         * @see java.lang.Object#finalize()
-         */
         @Override
         protected void finalize() throws Throwable {
             close();
@@ -879,7 +834,7 @@ public class MessageProvider extends ContentProvider {
                 }
             }
 
-            /* Android content resolvers can only process CrossProcessCursor instances */
+            // Android content resolvers can only process CrossProcessCursor instances
             if (!(cursor instanceof CrossProcessCursor)) {
                 Log.w(K9.LOG_TAG, "Unsupported cursor, returning null: " + cursor);
                 semaphore.release();
@@ -888,10 +843,10 @@ public class MessageProvider extends ContentProvider {
 
             MonitoredCursor wrapped = new MonitoredCursor((CrossProcessCursor) cursor, semaphore);
 
-            /* use a weak reference not to actively prevent garbage collection */
+            // Use a weak reference not to actively prevent garbage collection
             final WeakReference<MonitoredCursor> weakReference = new WeakReference<MonitoredCursor>(wrapped);
 
-            /* make sure the cursor is closed after 30 seconds */
+            // Make sure the cursor is closed after 30 seconds
             scheduledPool.schedule(new Runnable() {
 
                 @Override
@@ -915,25 +870,17 @@ public class MessageProvider extends ContentProvider {
     /**
      * Synchronized listener used to retrieve {@link MessageInfoHolder}s using a given {@link BlockingQueue}.
      */
-    protected class MesssageInfoHolderRetrieverListener extends MessagingListener {
+    protected class MessageInfoHolderRetrieverListener extends MessagingListener {
         private final BlockingQueue<List<MessageInfoHolder>> queue;
         private List<MessageInfoHolder> holders = new ArrayList<MessageInfoHolder>();
 
-        /**
-         * @param queue
-         *         Never <code>null</code>. The synchronized channel to use
-         *         to retrieve {@link MessageInfoHolder}s.
-         */
-        public MesssageInfoHolderRetrieverListener(BlockingQueue<List<MessageInfoHolder>> queue) {
+
+        public MessageInfoHolderRetrieverListener(BlockingQueue<List<MessageInfoHolder>> queue) {
             this.queue = queue;
         }
 
         @Override
         public void listLocalMessagesAddMessages(Account account, String folderName, List<LocalMessage> messages) {
-            // cache fields into local variables for faster access on JVM without JIT
-            MessageHelper helper = messageHelper;
-            List<MessageInfoHolder> holders = this.holders;
-
             Context context = getContext();
 
             for (LocalMessage message : messages) {
@@ -942,7 +889,7 @@ public class MessageProvider extends ContentProvider {
                 Account messageAccount = message.getAccount();
 
                 FolderInfoHolder folderInfoHolder = new FolderInfoHolder(context, messageFolder, messageAccount);
-                helper.populate(messageInfoHolder, message, folderInfoHolder, messageAccount);
+                messageHelper.populate(messageInfoHolder, message, folderInfoHolder, messageAccount);
 
                 holders.add(messageInfoHolder);
             }
@@ -974,27 +921,15 @@ public class MessageProvider extends ContentProvider {
             MessageColumns.SENDER_ADDRESS
     };
 
-    /**
-     * URI matcher used for
-     * {@link #query(Uri, String[], String, String[], String)}
-     */
     private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-
-    /**
-     * Handlers registered to respond to
-     * {@link #query(Uri, String[], String, String[], String)}
-     */
     private List<QueryHandler> queryHandlers = new ArrayList<QueryHandler>();
-
     private MessageHelper messageHelper;
 
     /**
-     * How many simultaneous cursors we can affort to expose at once
+     * How many simultaneous cursors we can afford to expose at once
      */
-    /* package */
     Semaphore semaphore = new Semaphore(1);
 
-    /* package */
     ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(1);
 
     @Override
@@ -1055,7 +990,6 @@ public class MessageProvider extends ContentProvider {
             Log.e(K9.LOG_TAG, "Could not find account with id " + accountId);
         }
 
-        // launch command to delete the message
         if (myAccount != null) {
             MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderName, msgUid, null);
             MessagingController controller = MessagingController.getInstance(getContext());
@@ -1109,8 +1043,6 @@ public class MessageProvider extends ContentProvider {
 
         Cursor cursor;
         try {
-            // since we used the list index as the UriMatcher code, using it
-            // back to retrieve the handler from the list
             QueryHandler handler = queryHandlers.get(code);
             cursor = handler.query(uri, projection, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
@@ -1139,9 +1071,6 @@ public class MessageProvider extends ContentProvider {
     /**
      * Register a {@link QueryHandler} to handle a certain {@link Uri} for
      * {@link #query(Uri, String[], String, String[], String)}
-     *
-     * @param handler
-     *         Never <code>null</code>.
      */
     protected void registerQueryHandler(QueryHandler handler) {
         if (queryHandlers.contains(handler)) {
@@ -1149,7 +1078,6 @@ public class MessageProvider extends ContentProvider {
         }
         queryHandlers.add(handler);
 
-        // use the index inside the list as the UriMatcher code for that handler
         int code = queryHandlers.indexOf(handler);
         uriMatcher.addURI(AUTHORITY, handler.getPath(), code);
     }
