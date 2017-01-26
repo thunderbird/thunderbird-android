@@ -56,6 +56,197 @@ import com.fsck.k9.search.SearchAccount;
 
 
 public class MessageProvider extends ContentProvider {
+    public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".messageprovider";
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+
+    private static final String[] DEFAULT_MESSAGE_PROJECTION = new String[] {
+            MessageColumns._ID,
+            MessageColumns.SEND_DATE,
+            MessageColumns.SENDER,
+            MessageColumns.SUBJECT,
+            MessageColumns.PREVIEW,
+            MessageColumns.ACCOUNT,
+            MessageColumns.URI,
+            MessageColumns.DELETE_URI,
+            MessageColumns.SENDER_ADDRESS
+    };
+
+    
+    private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    private List<QueryHandler> queryHandlers = new ArrayList<QueryHandler>();
+    private MessageHelper messageHelper;
+
+    /**
+     * How many simultaneous cursors we can afford to expose at once
+     */
+    Semaphore semaphore = new Semaphore(1);
+
+    ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(1);
+
+    
+    @Override
+    public boolean onCreate() {
+        messageHelper = MessageHelper.getInstance(getContext());
+
+        registerQueryHandler(new ThrottlingQueryHandler(new AccountsQueryHandler()));
+        registerQueryHandler(new ThrottlingQueryHandler(new MessagesQueryHandler()));
+        registerQueryHandler(new ThrottlingQueryHandler(new UnreadQueryHandler()));
+
+        K9.registerApplicationAware(new K9.ApplicationAware() {
+            @Override
+            public void initializeComponent(final Application application) {
+                Log.v(K9.LOG_TAG, "Registering content resolver notifier");
+
+                MessagingController.getInstance(application).addListener(new MessagingListener() {
+                    @Override
+                    public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
+                        application.getContentResolver().notifyChange(CONTENT_URI, null);
+                    }
+                });
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public String getType(Uri uri) {
+        if (K9.app == null) {
+            return null;
+        }
+
+        if (K9.DEBUG) {
+            Log.v(K9.LOG_TAG, "MessageProvider/getType: " + uri);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        if (K9.app == null) {
+            return null;
+        }
+
+        if (K9.DEBUG) {
+            Log.v(K9.LOG_TAG, "MessageProvider/query: " + uri);
+        }
+
+        int code = uriMatcher.match(uri);
+        if (code == -1) {
+            throw new IllegalStateException("Unrecognized URI: " + uri);
+        }
+
+        Cursor cursor;
+        try {
+            QueryHandler handler = queryHandlers.get(code);
+            cursor = handler.query(uri, projection, selection, selectionArgs, sortOrder);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "Unable to execute query for URI: " + uri, e);
+            return null;
+        }
+
+        return cursor;
+    }
+
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        if (K9.app == null) {
+            return 0;
+        }
+
+        if (K9.DEBUG) {
+            Log.v(K9.LOG_TAG, "MessageProvider/delete: " + uri);
+        }
+
+        // Note: can only delete a message
+
+        List<String> segments = uri.getPathSegments();
+        int accountId = Integer.parseInt(segments.get(1));
+        String folderName = segments.get(2);
+        String msgUid = segments.get(3);
+
+        // get account
+        Account myAccount = null;
+        for (Account account : Preferences.getPreferences(getContext()).getAccounts()) {
+            if (account.getAccountNumber() == accountId) {
+                myAccount = account;
+                if (!account.isAvailable(getContext())) {
+                    Log.w(K9.LOG_TAG, "not deleting messages because account is unavailable at the moment");
+                    return 0;
+                }
+            }
+        }
+
+        if (myAccount == null) {
+            Log.e(K9.LOG_TAG, "Could not find account with id " + accountId);
+        }
+
+        if (myAccount != null) {
+            MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderName, msgUid, null);
+            MessagingController controller = MessagingController.getInstance(getContext());
+            controller.deleteMessage(messageReference, null);
+        }
+
+        // FIXME return the actual number of deleted messages
+        return 0;
+    }
+
+    @Override
+    public Uri insert(Uri uri, ContentValues values) {
+        if (K9.app == null) {
+            return null;
+        }
+
+        if (K9.DEBUG) {
+            Log.v(K9.LOG_TAG, "MessageProvider/insert: " + uri);
+        }
+
+        return null;
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        if (K9.app == null) {
+            return 0;
+        }
+
+        if (K9.DEBUG) {
+            Log.v(K9.LOG_TAG, "MessageProvider/update: " + uri);
+        }
+
+        // TBD
+
+        return 0;
+    }
+
+    /**
+     * Register a {@link QueryHandler} to handle a certain {@link Uri} for
+     * {@link #query(Uri, String[], String, String[], String)}
+     */
+    protected void registerQueryHandler(QueryHandler handler) {
+        if (queryHandlers.contains(handler)) {
+            return;
+        }
+        queryHandlers.add(handler);
+
+        int code = queryHandlers.indexOf(handler);
+        uriMatcher.addURI(AUTHORITY, handler.getPath(), code);
+    }
+
+    
+    public static class ReverseDateComparator implements Comparator<MessageInfoHolder> {
+        @Override
+        public int compare(MessageInfoHolder object2, MessageInfoHolder object1) {
+            if (object1.compareDate == null) {
+                return (object2.compareDate == null ? 0 : 1);
+            } else if (object2.compareDate == null) {
+                return -1;
+            } else {
+                return object1.compareDate.compareTo(object2.compareDate);
+            }
+        }
+    }
 
     public interface MessageColumns extends BaseColumns {
         /**
@@ -272,7 +463,7 @@ public class MessageProvider extends ContentProvider {
     public static class IncrementExtractor implements FieldExtractor<MessageInfoHolder, Integer> {
         private int count = 0;
 
-        
+
         @Override
         public Integer getField(MessageInfoHolder source) {
             return count++;
@@ -341,7 +532,7 @@ public class MessageProvider extends ContentProvider {
 
         protected LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> resolveMessageExtractors(
                 String[] projection, int count) {
-            LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> extractors = 
+            LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> extractors =
                     new LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>>();
 
             for (String field : projection) {
@@ -395,7 +586,7 @@ public class MessageProvider extends ContentProvider {
         private static final String FIELD_ACCOUNT_UUID = "accountUuid";
         private static final String FIELD_ACCOUNT_COLOR = "accountColor";
 
-        
+
         @Override
         public String getPath() {
             return "accounts";
@@ -521,7 +712,7 @@ public class MessageProvider extends ContentProvider {
 
         private Semaphore semaphore;
 
-        
+
         protected MonitoredCursor(CrossProcessCursor cursor, Semaphore semaphore) {
             this.cursor = cursor;
             this.semaphore = semaphore;
@@ -810,7 +1001,7 @@ public class MessageProvider extends ContentProvider {
     protected class ThrottlingQueryHandler implements QueryHandler {
         private QueryHandler delegate;
 
-        
+
         public ThrottlingQueryHandler(QueryHandler delegate) {
             this.delegate = delegate;
         }
@@ -901,196 +1092,6 @@ public class MessageProvider extends ContentProvider {
                 queue.put(holders);
             } catch (InterruptedException e) {
                 Log.e(K9.LOG_TAG, "Unable to return message list back to caller", e);
-            }
-        }
-    }
-
-    public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".messageprovider";
-
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-
-    private static final String[] DEFAULT_MESSAGE_PROJECTION = new String[] {
-            MessageColumns._ID,
-            MessageColumns.SEND_DATE,
-            MessageColumns.SENDER,
-            MessageColumns.SUBJECT,
-            MessageColumns.PREVIEW,
-            MessageColumns.ACCOUNT,
-            MessageColumns.URI,
-            MessageColumns.DELETE_URI,
-            MessageColumns.SENDER_ADDRESS
-    };
-
-    private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    private List<QueryHandler> queryHandlers = new ArrayList<QueryHandler>();
-    private MessageHelper messageHelper;
-
-    /**
-     * How many simultaneous cursors we can afford to expose at once
-     */
-    Semaphore semaphore = new Semaphore(1);
-
-    ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(1);
-
-    @Override
-    public boolean onCreate() {
-        messageHelper = MessageHelper.getInstance(getContext());
-
-        registerQueryHandler(new ThrottlingQueryHandler(new AccountsQueryHandler()));
-        registerQueryHandler(new ThrottlingQueryHandler(new MessagesQueryHandler()));
-        registerQueryHandler(new ThrottlingQueryHandler(new UnreadQueryHandler()));
-
-        K9.registerApplicationAware(new K9.ApplicationAware() {
-            @Override
-            public void initializeComponent(final Application application) {
-                Log.v(K9.LOG_TAG, "Registering content resolver notifier");
-
-                MessagingController.getInstance(application).addListener(new MessagingListener() {
-                    @Override
-                    public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
-                        application.getContentResolver().notifyChange(CONTENT_URI, null);
-                    }
-                });
-            }
-        });
-
-        return true;
-    }
-
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        if (K9.app == null) {
-            return 0;
-        }
-
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/delete: " + uri);
-        }
-
-        // Note: can only delete a message
-
-        List<String> segments = uri.getPathSegments();
-        int accountId = Integer.parseInt(segments.get(1));
-        String folderName = segments.get(2);
-        String msgUid = segments.get(3);
-
-        // get account
-        Account myAccount = null;
-        for (Account account : Preferences.getPreferences(getContext()).getAccounts()) {
-            if (account.getAccountNumber() == accountId) {
-                myAccount = account;
-                if (!account.isAvailable(getContext())) {
-                    Log.w(K9.LOG_TAG, "not deleting messages because account is unavailable at the moment");
-                    return 0;
-                }
-            }
-        }
-
-        if (myAccount == null) {
-            Log.e(K9.LOG_TAG, "Could not find account with id " + accountId);
-        }
-
-        if (myAccount != null) {
-            MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderName, msgUid, null);
-            MessagingController controller = MessagingController.getInstance(getContext());
-            controller.deleteMessage(messageReference, null);
-        }
-
-        // FIXME return the actual number of deleted messages
-        return 0;
-    }
-
-    @Override
-    public String getType(Uri uri) {
-        if (K9.app == null) {
-            return null;
-        }
-
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/getType: " + uri);
-        }
-
-        return null;
-    }
-
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        if (K9.app == null) {
-            return null;
-        }
-
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/insert: " + uri);
-        }
-
-        return null;
-    }
-
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        if (K9.app == null) {
-            return null;
-        }
-
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/query: " + uri);
-        }
-
-        int code = uriMatcher.match(uri);
-        if (code == -1) {
-            throw new IllegalStateException("Unrecognized URI: " + uri);
-        }
-
-        Cursor cursor;
-        try {
-            QueryHandler handler = queryHandlers.get(code);
-            cursor = handler.query(uri, projection, selection, selectionArgs, sortOrder);
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Unable to execute query for URI: " + uri, e);
-            return null;
-        }
-
-        return cursor;
-    }
-
-    @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (K9.app == null) {
-            return 0;
-        }
-
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/update: " + uri);
-        }
-
-        // TBD
-
-        return 0;
-    }
-
-    /**
-     * Register a {@link QueryHandler} to handle a certain {@link Uri} for
-     * {@link #query(Uri, String[], String, String[], String)}
-     */
-    protected void registerQueryHandler(QueryHandler handler) {
-        if (queryHandlers.contains(handler)) {
-            return;
-        }
-        queryHandlers.add(handler);
-
-        int code = queryHandlers.indexOf(handler);
-        uriMatcher.addURI(AUTHORITY, handler.getPath(), code);
-    }
-
-    public static class ReverseDateComparator implements Comparator<MessageInfoHolder> {
-        @Override
-        public int compare(MessageInfoHolder object2, MessageInfoHolder object1) {
-            if (object1.compareDate == null) {
-                return (object2.compareDate == null ? 0 : 1);
-            } else if (object2.compareDate == null) {
-                return -1;
-            } else {
-                return object1.compareDate.compareTo(object2.compareDate);
             }
         }
     }
