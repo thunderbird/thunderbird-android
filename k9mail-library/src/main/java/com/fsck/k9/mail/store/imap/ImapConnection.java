@@ -384,6 +384,10 @@ class ImapConnection {
         try {
             saslAuthPlain();
         } catch (AuthenticationFailedException e) {
+            if (!isConnected()) {
+                throw e;
+            }
+            
             login();
         }
     }
@@ -405,6 +409,10 @@ class ImapConnection {
         try {
             extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
         } catch (NegativeImapResponseException e) {
+            if (e.wasByeResponseReceived()) {
+                close();
+            }
+            
             throw new AuthenticationFailedException(e.getMessage());
         }
     }
