@@ -363,7 +363,7 @@
                 android:resource="@xml/unread_widget_info"/>
         </receiver>
 
-        <receiver android:name=".provider.MailListViewWidgetProvider"
+        <receiver android:name=".widget.list.MailListViewWidgetProvider"
                   android:icon="@drawable/mail_list_widget_icon"
                   android:label="@string/appwidget_text">
             <intent-filter>
@@ -375,7 +375,7 @@
         </receiver>
 
 
-        <service android:name=".service.MailListViewWidgetService"
+        <service android:name=".widget.list.MailListViewWidgetService"
                  android:enabled="true"
                  android:permission="android.permission.BIND_REMOTEVIEWS"/>
 

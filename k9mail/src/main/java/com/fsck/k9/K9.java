@@ -582,7 +582,9 @@ public class K9 extends Application {
                 try {
                     MailListViewWidgetProvider.updateMailViewList(K9.this);
                 } catch (Exception e) {
-                    if (K9.DEBUG) {
+                    if (BuildConfig.DEBUG) {
+                        throw e;
+                    } else if (K9.DEBUG) {
                         Log.e(LOG_TAG, "Error whiile updating mail list widget", e);
                     }
                 }

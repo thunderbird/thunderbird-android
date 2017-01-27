@@ -1205,6 +1205,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_support_sign_only">Support signing of unencrypted messages</string>
     <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
     <string name="unsigned_text_divider_label">Unsigned Text</string>
-    <string name="appwidget_text">List e-mails</string>
+    <string name="appwidget_text">K-9 Message List</string>
     <string name="mail_list_view_select_account">Select account to list e-mails for</string>
 </resources>

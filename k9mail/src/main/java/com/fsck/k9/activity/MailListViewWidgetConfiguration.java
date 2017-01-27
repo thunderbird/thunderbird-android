@@ -9,25 +9,15 @@ import com.fsck.k9.BaseAccount;
 import com.fsck.k9.R;
 import com.fsck.k9.provider.MailListViewWidgetProvider;
 
-/**
- * Activity to select an account for the mail list view widget.
- */
+
 public class MailListViewWidgetConfiguration extends AccountList {
-    /**
-     * Name of the preference file to store the widget configuration.
-     */
+
     private static final String PREFS_NAME = "mail_list_view_widget_configuration.xml";
 
-    /**
-     * Prefix for the preference keys.
-     */
     private static final String PREF_PREFIX_KEY = "mail_list_view_widget.";
 
 
-    /**
-     * The ID of the widget we are configuring.
-     */
-    private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private static void saveAccountUuid(Context context, int appWidgetId, String accountUuid) {
         SharedPreferences.Editor editor =
@@ -55,11 +45,11 @@ public class MailListViewWidgetConfiguration extends AccountList {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+            appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
         // If they gave us an intent without the widget ID, just bail.
-        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
             return;
         }
@@ -75,14 +65,14 @@ public class MailListViewWidgetConfiguration extends AccountList {
     protected void onAccountSelected(BaseAccount account) {
         // Save widget configuration
         String accountUuid = account.getUuid();
-        saveAccountUuid(this, mAppWidgetId, accountUuid);
+        saveAccountUuid(this, appWidgetId, accountUuid);
         // Update widget
         Context context = getApplicationContext();
-        MailListViewWidgetProvider.updateAppWidget(context, AppWidgetManager.getInstance(context), mAppWidgetId, accountUuid);
+        MailListViewWidgetProvider.updateAppWidget(context, AppWidgetManager.getInstance(context), appWidgetId, accountUuid);
 
         // Let the caller know that the configuration was successful
         Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(RESULT_OK, resultValue);
         finish();
     }

@@ -1,36 +1,22 @@
-package com.fsck.k9.service;
+package com.fsck.k9.widget.list;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.media.Image;
+import android.graphics.*;
 import android.os.Binder;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-import android.widget.TextView;
 import com.fsck.k9.R;
 import com.fsck.k9.provider.MessageProvider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
-/**
- *
- */
-public class MailListViewWidgetService extends RemoteViewsService {
-
-    @Override
-    public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new MailListRemoteViewFactory(this.getApplicationContext(), intent);
-    }
-}
-
-class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
+public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
     private static String [] MAIL_LIST_PROJECTIONS = {
             MessageProvider.MessageColumns._ID,
             MessageProvider.MessageColumns.SENDER,
@@ -42,12 +28,12 @@ class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory
             MessageProvider.MessageColumns.URI
     };
 
-    private Context mContext;
+    private Context context;
     private ArrayList<MailItem> mailItems;
     private int count;
 
-    public MailListRemoteViewFactory(Context context, Intent intent) {
-        mContext = context;
+    public MailListRemoteViewFactory(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -58,24 +44,23 @@ class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory
     @Override
     public void onDataSetChanged() {
         final long identityToken = Binder.clearCallingIdentity();
-        mailItems = new ArrayList<>(25);
-        Cursor cursor = mContext.getContentResolver().query(
+        mailItems.clear();
+        Cursor cursor = context.getContentResolver().query(
                 MessageProvider.CONTENT_URI.buildUpon().appendPath("inbox_messages").build(),
                 MAIL_LIST_PROJECTIONS,
                 null,
                 null,
-                MessageProvider.MessageColumns.SEND_DATE + "DESC");
+                MessageProvider.MessageColumns.SEND_DATE + " DESC");
         while (cursor.moveToNext()) {
-            mailItems.add(new MailItem(
-                        cursor.getString(0), /* id */
-                        cursor.getString(1), /* sender */
-                        cursor.getString(2), /* date */
-                        cursor.getString(3), /* subject */
-                        cursor.getString(4), /* preview */
-                        cursor.getString(5), /* unread */
-                        cursor.getString(6), /* hasAttachment */
-                        cursor.getString(7)) /* uri */
-            );
+            final String id = cursor.getString(0);
+            final String sender = cursor.getString(1);
+            final String date = cursor.getString(2);
+            final String subject = cursor.getString(3);
+            final String preview = cursor.getString(4);
+            final String unread = cursor.getString(5);
+            final String hasAttachment = cursor.getString(6);
+            final String uri = cursor.getString(7);
+            mailItems.add(new MailItem(id, sender, date, subject, preview, unread, hasAttachment, uri));
         }
         count = cursor.getCount();
         cursor.close();
@@ -94,43 +79,44 @@ class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public RemoteViews getViewAt(int position) {
-        RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.mail_list_item);
+        RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.mail_list_item);
         MailItem item = mailItems.get(position);
 
-        rv.setFloat(R.id.sender, "setTextSize", 18f);
-        rv.setTextViewText(R.id.sender, item.sender);
-        rv.setTextColor(R.id.sender, item.getColor());
+        /* Populate the views from the mailItem object */
+        remoteView.setTextViewText(R.id.sender, item.sender);
+        remoteView.setTextViewText(R.id.mail_subject, item.subject);
+        remoteView.setTextViewText(R.id.mail_date, item.getDateFormatted("%d %s"));
+        remoteView.setTextViewText(R.id.mail_preview, item.preview);
 
-        rv.setFloat(R.id.mail_subject, "setTextSize", 15f);
-        rv.setTextViewText(R.id.mail_subject, item.subject);
-        rv.setTextColor(R.id.mail_subject, item.getColor());
+        int textColor = item.getColor();
+        remoteView.setTextColor(R.id.sender, textColor);
+        remoteView.setTextColor(R.id.mail_subject, textColor);
+        remoteView.setTextColor(R.id.mail_date, textColor);
+        remoteView.setTextColor(R.id.mail_preview, textColor);
 
-        rv.setInt(R.id.mail_date, "setTextColor", Color.CYAN);
-        rv.setTextViewText(R.id.mail_date, item.getDateFormatted("%d %s"));
-
-        rv.setFloat(R.id.mail_preview, "setTextSize", 13f);
-        rv.setTextViewText(R.id.mail_preview, item.preview);
-        rv.setTextColor(R.id.mail_preview, item.getColor());
         if (item.hasAttachment()) {
-            rv.setInt(R.id.attachment, "setVisibility", View.VISIBLE);
+            remoteView.setInt(R.id.attachment, "setVisibility", View.VISIBLE);
         } else {
-            rv.setInt(R.id.attachment, "setVisibility", View.GONE);
+            remoteView.setInt(R.id.attachment, "setVisibility", View.GONE);
         }
 
         Intent intent = new Intent();
         intent.putExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, item.uri);
-        rv.setOnClickFillInIntent(R.id.mail_list_item, intent);
-        return rv;
+        remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent);
+        return remoteView;
     }
 
     @Override
     public RemoteViews getLoadingView() {
-        return null;
+        RemoteViews loadingView = new RemoteViews(context.getPackageName(), R.layout.mail_list_loading_view);
+        loadingView.setTextViewText(R.id.loadingText, "Loading emails");
+        loadingView.setViewVisibility(R.id.loadingText, View.VISIBLE);
+        return loadingView;
     }
 
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -169,15 +155,16 @@ class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory
 
         public int getColor() {
             if (Boolean.valueOf(unread)) {
-                return Color.GRAY;
+                return Color.BLACK;
             } else {
-                return Color.WHITE;
+                /* light_black */
+                return Color.parseColor("#444444");
             }
         }
 
         public String getDateFormatted(String format) {
             // set default format if null is passed
-            if (format == null || format.isEmpty()) {
+            if (format.isEmpty()) {
                 format = "%d %s";
             }
             cl.setTimeInMillis(Long.valueOf(date));
