@@ -47,6 +47,7 @@ public class HtmlSanitizer {
         properties.setOmitDoctypeDeclaration(false);
         properties.setTranslateSpecialEntities(false);
         properties.setRecognizeUnicodeChars(false);
+        properties.setAllowHtmlInsideAttributes(true);
 
         return properties;
     }
