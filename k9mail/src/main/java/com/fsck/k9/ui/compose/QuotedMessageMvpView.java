@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
