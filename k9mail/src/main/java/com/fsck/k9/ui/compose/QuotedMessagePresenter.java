@@ -13,6 +13,7 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
+import com.fsck.k9.message.extractors.BodyTextExtractor;
 import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.message.html.QuotedMessageHelper;
 import com.fsck.k9.mail.MessagingException;
@@ -98,7 +99,7 @@ public class QuotedMessagePresenter {
 
         // Handle the original message in the reply
         // If we already have sourceMessageBody, use that.  It's pre-populated if we've got crypto going on.
-        String content = QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.rootPart, quotedTextFormat);
+        String content = BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, quotedTextFormat);
 
         if (quotedTextFormat == SimpleMessageFormat.HTML) {
             // Strip signature.
@@ -117,7 +118,7 @@ public class QuotedMessagePresenter {
 
             // TODO: Also strip the signature from the text/plain part
             view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, messageViewInfo.message,
-                    QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT),
+                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT),
                     quoteStyle, account.getQuotePrefix()));
 
         } else if (quotedTextFormat == SimpleMessageFormat.TEXT) {
@@ -234,7 +235,7 @@ public class QuotedMessagePresenter {
             // composition window. If that's the case, try and convert it to text to
             // match the behavior in text mode.
             view.setMessageContentCharacters(
-                    QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.message, SimpleMessageFormat.TEXT));
+                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.message, SimpleMessageFormat.TEXT));
             forcePlainText = true;
 
             showOrHideQuotedText(quotedMode);

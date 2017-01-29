@@ -20,11 +20,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MessageExtractor;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.message.InsertableHtmlContent;
-import com.fsck.k9.message.SimpleMessageFormat;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
@@ -329,53 +325,6 @@ public class QuotedMessageHelper {
             // Shouldn't ever happen.
             return body;
         }
-    }
-
-    /** Fetch the body text from a messagePart in the desired messagePart format. This method handles
-     * conversions between formats (html to text and vice versa) if necessary.
-     */
-    public static String getBodyTextFromMessage(Part messagePart, SimpleMessageFormat format) {
-        Part part;
-        if (format == SimpleMessageFormat.HTML) {
-            // HTML takes precedence, then text.
-            part = MimeUtility.findFirstPartByMimeType(messagePart, "text/html");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, HTML found.");
-                }
-                return MessageExtractor.getTextFromPart(part);
-            }
-
-            part = MimeUtility.findFirstPartByMimeType(messagePart, "text/plain");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, text found.");
-                }
-                String text = MessageExtractor.getTextFromPart(part);
-                return HtmlConverter.textToHtml(text);
-            }
-        } else if (format == SimpleMessageFormat.TEXT) {
-            // Text takes precedence, then html.
-            part = MimeUtility.findFirstPartByMimeType(messagePart, "text/plain");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, text found.");
-                }
-                return MessageExtractor.getTextFromPart(part);
-            }
-
-            part = MimeUtility.findFirstPartByMimeType(messagePart, "text/html");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, HTML found.");
-                }
-                String text = MessageExtractor.getTextFromPart(part);
-                return HtmlConverter.htmlToText(text);
-            }
-        }
-
-        // If we had nothing interesting, return an empty string.
-        return "";
     }
 
     public static String stripSignatureForHtmlMessage(String content) {
