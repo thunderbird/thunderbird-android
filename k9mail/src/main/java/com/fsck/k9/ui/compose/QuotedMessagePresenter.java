@@ -15,6 +15,7 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
 import com.fsck.k9.message.extractors.BodyTextExtractor;
 import com.fsck.k9.message.html.HtmlConverter;
+import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.message.html.QuotedMessageHelper;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -27,6 +28,7 @@ import com.fsck.k9.message.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.signature.TextSignatureRemover;
 
 
 public class QuotedMessagePresenter {
@@ -105,7 +107,7 @@ public class QuotedMessagePresenter {
             // Strip signature.
             // closing tags such as </div>, </span>, </table>, </pre> will be cut off.
             if (account.isStripSignature() && (action == Action.REPLY || action == Action.REPLY_ALL)) {
-                content = QuotedMessageHelper.stripSignatureForHtmlMessage(content);
+                content = HtmlSignatureRemover.stripSignature(content);
             }
 
             // Add the HTML reply header to the top of the content.
@@ -123,7 +125,7 @@ public class QuotedMessagePresenter {
 
         } else if (quotedTextFormat == SimpleMessageFormat.TEXT) {
             if (account.isStripSignature() && (action == Action.REPLY || action == Action.REPLY_ALL)) {
-                content = QuotedMessageHelper.stripSignatureForTextMessage(content);
+                content = TextSignatureRemover.stripSignature(content);
             }
 
             view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(
