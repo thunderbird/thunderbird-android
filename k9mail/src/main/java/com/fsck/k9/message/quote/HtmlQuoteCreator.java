@@ -1,9 +1,6 @@
-package com.fsck.k9.message.html;
+package com.fsck.k9.message.quote;
 
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,18 +10,14 @@ import android.util.Log;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.message.InsertableHtmlContent;
+import com.fsck.k9.message.html.HtmlConverter;
 
 
-public class QuotedMessageHelper {
-    // amount of extra buffer to allocate to accommodate quoting headers or prefixes
-    private static final int QUOTE_BUFFER_LENGTH = 512;
-
+public class HtmlQuoteCreator {
     // Regular expressions to look for various HTML tags. This is no HTML::Parser, but hopefully it's good enough for
     // our purposes.
     private static final Pattern FIND_INSERTION_POINT_HTML = Pattern.compile("(?si:.*?(<html(?:>|\\s+[^>]*>)).*)");
@@ -32,7 +25,6 @@ public class QuotedMessageHelper {
     private static final Pattern FIND_INSERTION_POINT_BODY = Pattern.compile("(?si:.*?(<body(?:>|\\s+[^>]*>)).*)");
     private static final Pattern FIND_INSERTION_POINT_HTML_END = Pattern.compile("(?si:.*(</html>).*?)");
     private static final Pattern FIND_INSERTION_POINT_BODY_END = Pattern.compile("(?si:.*(</body>).*?)");
-
     // The first group in a Matcher contains the first capture group. We capture the tag found in the above REs so that
     // we can locate the *end* of that tag.
     private static final int FIND_INSERTION_POINT_FIRST_GROUP = 1;
@@ -44,9 +36,7 @@ public class QuotedMessageHelper {
     // Index of the start of the beginning of a String.
     private static final int FIND_INSERTION_POINT_START_OF_STRING = 0;
 
-    private static final int REPLY_WRAP_LINE_WIDTH = 72;
-
-
+    
     /**
      * Add quoting markup to a HTML message.
      * @param originalMessage Metadata for message being quoted.
@@ -59,10 +49,10 @@ public class QuotedMessageHelper {
             String messageBody, QuoteStyle quoteStyle) throws MessagingException {
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
-        String sentDate = getSentDateText(resources, originalMessage);
+        String sentDate = QuoteHelper.getSentDateText(resources, originalMessage);
         String fromAddress = Address.toString(originalMessage.getFrom());
         if (quoteStyle == QuoteStyle.PREFIX) {
-            StringBuilder header = new StringBuilder(QUOTE_BUFFER_LENGTH);
+            StringBuilder header = new StringBuilder(QuoteHelper.QUOTE_BUFFER_LENGTH);
             header.append("<div class=\"gmail_quote\">");
             if (sentDate.length() != 0) {
                 header.append(HtmlConverter.textToHtmlFragment(String.format(
@@ -117,25 +107,6 @@ public class QuotedMessageHelper {
         }
 
         return insertable;
-    }
-
-    /**
-     * Extract the date from a message and convert it into a locale-specific
-     * date string suitable for use in a header for a quoted message.
-     *
-     * @return A string with the formatted date/time
-     */
-    private static String getSentDateText(Resources resources, Message message) {
-        try {
-            final int dateStyle = DateFormat.LONG;
-            final int timeStyle = DateFormat.LONG;
-            Date date = message.getSentDate();
-            Locale locale = resources.getConfiguration().locale;
-            return DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale)
-                    .format(date);
-        } catch (Exception e) {
-            return "";
-        }
     }
 
     /**
@@ -249,69 +220,5 @@ public class QuotedMessageHelper {
         }
 
         return insertable;
-    }
-
-    /**
-     * Add quoting markup to a text message.
-     * @param originalMessage Metadata for message being quoted.
-     * @param messageBody Text of the message to be quoted.
-     * @param quoteStyle Style of quoting.
-     * @return Quoted text.
-     * @throws MessagingException
-     */
-    public static String quoteOriginalTextMessage(Resources resources, Message originalMessage, String messageBody, QuoteStyle quoteStyle, String prefix) throws MessagingException {
-        String body = messageBody == null ? "" : messageBody;
-        String sentDate = QuotedMessageHelper.getSentDateText(resources, originalMessage);
-        if (quoteStyle == QuoteStyle.PREFIX) {
-            StringBuilder quotedText = new StringBuilder(body.length() + QuotedMessageHelper.QUOTE_BUFFER_LENGTH);
-            if (sentDate.length() != 0) {
-                quotedText.append(String.format(
-                        resources.getString(R.string.message_compose_reply_header_fmt_with_date) + "\r\n",
-                        sentDate,
-                        Address.toString(originalMessage.getFrom())));
-            } else {
-                quotedText.append(String.format(
-                        resources.getString(R.string.message_compose_reply_header_fmt) + "\r\n",
-                        Address.toString(originalMessage.getFrom()))
-                );
-            }
-
-            final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
-
-            // "$" and "\" in the quote prefix have to be escaped for
-            // the replaceAll() invocation.
-            final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
-            quotedText.append(wrappedText.replaceAll("(?m)^", escapedPrefix));
-
-            // TODO is this correct?
-            return quotedText.toString().replaceAll("\\\r", "");
-        } else if (quoteStyle == QuoteStyle.HEADER) {
-            StringBuilder quotedText = new StringBuilder(body.length() + QuotedMessageHelper.QUOTE_BUFFER_LENGTH);
-            quotedText.append("\r\n");
-            quotedText.append(resources.getString(R.string.message_compose_quote_header_separator)).append("\r\n");
-            if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_from)).append(" ").append(Address.toString(originalMessage.getFrom())).append("\r\n");
-            }
-            if (sentDate.length() != 0) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_send_date)).append(" ").append(sentDate).append("\r\n");
-            }
-            if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_to)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.TO))).append("\r\n");
-            }
-            if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_cc)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.CC))).append("\r\n");
-            }
-            if (originalMessage.getSubject() != null) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_subject)).append(" ").append(originalMessage.getSubject()).append("\r\n");
-            }
-            quotedText.append("\r\n");
-
-            quotedText.append(body);
-
-            return quotedText.toString();
-        } else {
-            // Shouldn't ever happen.
-            return body;
-        }
     }
 }

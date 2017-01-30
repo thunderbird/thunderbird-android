@@ -15,8 +15,9 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
 import com.fsck.k9.message.extractors.BodyTextExtractor;
 import com.fsck.k9.message.html.HtmlConverter;
+import com.fsck.k9.message.quote.HtmlQuoteCreator;
+import com.fsck.k9.message.quote.TextQuoteCreator;
 import com.fsck.k9.message.signature.HtmlSignatureRemover;
-import com.fsck.k9.message.html.QuotedMessageHelper;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
@@ -24,7 +25,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.IdentityField;
-import com.fsck.k9.message.InsertableHtmlContent;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
@@ -111,7 +112,7 @@ public class QuotedMessagePresenter {
             }
 
             // Add the HTML reply header to the top of the content.
-            quotedHtmlContent = QuotedMessageHelper.quoteOriginalHtmlMessage(
+            quotedHtmlContent = HtmlQuoteCreator.quoteOriginalHtmlMessage(
                     resources, messageViewInfo.message, content, quoteStyle);
 
             // Load the message with the reply header. TODO replace with MessageViewInfo data
@@ -119,7 +120,7 @@ public class QuotedMessagePresenter {
                     AttachmentResolver.createFromPart(messageViewInfo.rootPart));
 
             // TODO: Also strip the signature from the text/plain part
-            view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, messageViewInfo.message,
+            view.setQuotedText(TextQuoteCreator.quoteOriginalTextMessage(resources, messageViewInfo.message,
                     BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT),
                     quoteStyle, account.getQuotePrefix()));
 
@@ -128,7 +129,7 @@ public class QuotedMessagePresenter {
                 content = TextSignatureRemover.stripSignature(content);
             }
 
-            view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(
+            view.setQuotedText(TextQuoteCreator.quoteOriginalTextMessage(
                     resources, messageViewInfo.message, content, quoteStyle, account.getQuotePrefix()));
         }
 

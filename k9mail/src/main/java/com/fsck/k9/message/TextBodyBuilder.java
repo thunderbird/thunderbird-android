@@ -8,6 +8,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 
 
 class TextBodyBuilder {

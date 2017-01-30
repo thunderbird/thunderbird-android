@@ -26,6 +26,7 @@ import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.MessageBuilder.Callback;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
