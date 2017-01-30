@@ -162,6 +162,10 @@ class MigrationTo51 {
     }
 
     private static void cleanUpOldAttachmentDirectory(File attachmentDirOld) {
+        if (!attachmentDirOld.exists()) {
+            Log.d(K9.LOG_TAG, "Old attachment directory doesn't exist: " + attachmentDirOld.getAbsolutePath());
+            return;
+        }
         for (File file : attachmentDirOld.listFiles()) {
             Log.d(K9.LOG_TAG, "deleting stale attachment file: " + file.getName());
             if (file.exists() && !file.delete()) {
