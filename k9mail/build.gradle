@@ -39,6 +39,7 @@ dependencies {
     testCompile "org.robolectric:robolectric:${robolectricVersion}"
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
+    testCompile 'org.jsoup:jsoup:1.10.2'
 }
 
 android {
