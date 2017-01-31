@@ -153,7 +153,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 58;
+    public static final int DB_VERSION = 59;
 
 
     public static String getColumnNameForFlag(Flag flag) {
