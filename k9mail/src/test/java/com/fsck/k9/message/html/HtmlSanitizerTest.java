@@ -1,7 +1,6 @@
 package com.fsck.k9.message.html;
 
 
-import com.fsck.k9.message.html.HtmlSanitizer;
 import org.junit.Before;
 import org.junit.Test;
 
