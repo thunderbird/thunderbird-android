@@ -865,6 +865,43 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
+    public Map<String,Long> getAllMessagesAndEffectiveDates() throws MessagingException {
+        try {
+            return  localStore.database.execute(false, new DbCallback<Map<String, Long>>() {
+                @Override
+                public Map<String, Long> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    Cursor cursor = null;
+                    HashMap<String, Long> result = new HashMap<>();
+
+                    try {
+                        open(OPEN_MODE_RO);
+
+                        cursor = db.rawQuery(
+                                "SELECT uid, date " +
+                                        "FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 0 AND " +
+                                        "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
+
+                        while (cursor.moveToNext()) {
+                            String uid = cursor.getString(0);
+                            Long date = cursor.isNull(1) ? null : cursor.getLong(1);
+                            result.put(uid, date);
+                        }
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return result;
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+    }
+
     public List<LocalMessage> getMessages(MessageRetrievalListener<LocalMessage> listener) throws MessagingException {
         return getMessages(listener, true);
     }
