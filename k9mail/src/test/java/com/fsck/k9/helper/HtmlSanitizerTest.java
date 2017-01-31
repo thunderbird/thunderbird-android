@@ -1,6 +1,8 @@
 package com.fsck.k9.helper;
 
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -98,5 +100,22 @@ public class HtmlSanitizerTest {
                 "</html>";
         assertEquals("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" /></head>" +
                 "<body>Message</body></html>", htmlSanitizer.sanitize(html));
+    }
+
+    @Test
+    public void shouldNotEndAttributeValueWhenEncounteringConditionalComment() {
+        String html = "<html><head></head><body>" +
+                "<div style=\"font-size:18px " +
+                "<!--[if (gte mso 9)|(IE)]>!important;  <![endif]-->" +
+                "mso-line-height-rule:exactly;line-height:20px;\">Text</div>" +
+                "</body></html>";
+
+        String sanitizedHtml = htmlSanitizer.sanitize(html);
+
+        assertEquals("Text", extractText(sanitizedHtml));
+    }
+
+    private String extractText(String html) {
+        return Jsoup.clean(html, Whitelist.none());
     }
 }
