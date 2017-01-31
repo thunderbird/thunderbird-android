@@ -63,6 +63,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private final Context context;
     private final RecipientMvpView recipientMvpView;
     private final ComposePgpInlineDecider composePgpInlineDecider;
+    private final RecipientsChangedListener listener;
     private ReplyToParser replyToParser;
     private Account account;
     private String cryptoProvider;
@@ -81,11 +82,13 @@ public class RecipientPresenter implements PermissionPingCallback {
 
 
     public RecipientPresenter(Context context, LoaderManager loaderManager, RecipientMvpView recipientMvpView,
-            Account account, ComposePgpInlineDecider composePgpInlineDecider, ReplyToParser replyToParser) {
+            Account account, ComposePgpInlineDecider composePgpInlineDecider, ReplyToParser replyToParser,
+            RecipientsChangedListener recipientsChangedListener) {
         this.recipientMvpView = recipientMvpView;
         this.context = context;
         this.composePgpInlineDecider = composePgpInlineDecider;
         this.replyToParser = replyToParser;
+        this.listener = recipientsChangedListener;
 
         recipientMvpView.setPresenter(this);
         recipientMvpView.setLoaderManager(loaderManager);
@@ -384,38 +387,47 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     void onToTokenAdded() {
         updateCryptoStatus();
+        listener.onRecipientsChanged();
     }
 
     void onToTokenRemoved() {
         updateCryptoStatus();
+        listener.onRecipientsChanged();
     }
 
     void onToTokenChanged() {
         updateCryptoStatus();
+        listener.onRecipientsChanged();
     }
 
     void onCcTokenAdded() {
         updateCryptoStatus();
+        listener.onRecipientsChanged();
     }
 
     void onCcTokenRemoved() {
         updateCryptoStatus();
+        listener.onRecipientsChanged();
     }
 
     void onCcTokenChanged() {
         updateCryptoStatus();
+        listener.onRecipientsChanged();
     }
 
     void onBccTokenAdded() {
         updateCryptoStatus();
+        listener.onRecipientsChanged();
     }
 
     void onBccTokenRemoved() {
         updateCryptoStatus();
+        listener.onRecipientsChanged();
     }
 
     void onBccTokenChanged() {
         updateCryptoStatus();
+        listener.onRecipientsChanged();
     }
 
     public void onCryptoModeChanged(CryptoMode cryptoMode) {
@@ -783,5 +795,9 @@ public class RecipientPresenter implements PermissionPingCallback {
         SIGN_ONLY,
         OPPORTUNISTIC,
         PRIVATE,
+    }
+
+    public static interface RecipientsChangedListener {
+        public void onRecipientsChanged();
     }
 }
