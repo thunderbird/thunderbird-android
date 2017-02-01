@@ -189,14 +189,14 @@ public class MessageTopView extends LinearLayout {
         displayViewOnLoadFinished(false);
     }
 
-    public void showNoCryptoProviderConfigured(MessageViewInfo messageViewInfo) {
+    public void showCryptoProviderNotConfigured(final MessageViewInfo messageViewInfo) {
         resetAndPrepareMessageView(messageViewInfo);
         View view = mInflater.inflate(R.layout.message_content_crypto_no_provider, containerView, false);
 
         view.findViewById(R.id.crypto_settings).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO
+                messageCryptoPresenter.onClickConfigureProvider();
             }
         });
 

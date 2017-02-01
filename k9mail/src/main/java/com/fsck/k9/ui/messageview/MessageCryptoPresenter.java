@@ -36,6 +36,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
     // transient state
     private CryptoResultAnnotation cryptoResultAnnotation;
+    private boolean reloadOnResumeWithoutRecreateFlag;
 
 
     public MessageCryptoPresenter(Bundle savedInstanceState, MessageCryptoMvpView messageCryptoMvpView) {
@@ -48,6 +49,13 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("overrideCryptoWarning", overrideCryptoWarning);
+    }
+
+    public void onResume() {
+        if (reloadOnResumeWithoutRecreateFlag) {
+            reloadOnResumeWithoutRecreateFlag = false;
+            messageCryptoMvpView.restartMessageCryptoProcessing();
+        }
     }
 
     public boolean maybeHandleShowMessage(MessageTopView messageView, Account account, MessageViewInfo messageViewInfo) {
@@ -117,7 +125,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             }
 
             case ENCRYPTED_NO_PROVIDER: {
-                messageView.showNoCryptoProviderConfigured(messageViewInfo);
+                messageView.showCryptoProviderNotConfigured(messageViewInfo);
                 break;
             }
 
@@ -237,6 +245,11 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
         }
     }
 
+    public void onClickConfigureProvider() {
+        reloadOnResumeWithoutRecreateFlag = true;
+        messageCryptoMvpView.showCryptoConfigDialog();
+    }
+
     public interface MessageCryptoMvpView {
         void redisplayMessage();
         void restartMessageCryptoProcessing();
@@ -245,5 +258,6 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
                 int flagsMask, int flagValues, int extraFlags) throws IntentSender.SendIntentException;
 
         void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus);
+        void showCryptoConfigDialog();
     }
 }

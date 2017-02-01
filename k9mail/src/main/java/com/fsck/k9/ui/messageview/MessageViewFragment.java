@@ -46,6 +46,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.activity.setup.OpenPgpAppSelectDialog;
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
@@ -132,6 +133,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         messageLoaderHelper =
                 new MessageLoaderHelper(context, getLoaderManager(), getFragmentManager(), messageLoaderCallbacks);
         mInitialized = true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        messageCryptoPresenter.onResume();
     }
 
     @Override
@@ -386,6 +394,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference.toIdentityString());
         startActivityForResult(intent, activity);
+    }
+
+    private void startOpenPgpChooserActivity() {
+        Intent i = new Intent(getActivity(), OpenPgpAppSelectDialog.class);
+        startActivity(i);
     }
 
     public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
@@ -687,6 +700,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         public void restartMessageCryptoProcessing() {
             mMessageView.setToLoadingState();
             messageLoaderHelper.asyncRestartMessageCryptoProcessing();
+        }
+
+        @Override
+        public void showCryptoConfigDialog() {
+            startOpenPgpChooserActivity();
         }
     };
 

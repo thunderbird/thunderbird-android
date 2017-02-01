@@ -1,5 +1,6 @@
 package com.fsck.k9.activity.setup;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +38,6 @@ import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.TimePickerPreference;
-
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
 import org.openintents.openpgp.util.OpenPgpAppPreference;
