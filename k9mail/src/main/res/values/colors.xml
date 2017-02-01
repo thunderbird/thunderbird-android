@@ -3,4 +3,10 @@
     <color name="message_list_item_footer_background">#eeeeee</color>
 
     <color name="light_black">#444</color>
+
+    <!--
+        These are used to tint a pure white image file to match the colors of the rest of the icons.
+        Makes it easier to import Material Icons from Google's site -->
+    <color name="tint_icon_light">#99343434</color>
+    <color name="tint_icon_dark">#CCFFFFFF</color>
 </resources>

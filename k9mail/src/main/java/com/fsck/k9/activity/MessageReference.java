@@ -146,7 +146,7 @@ public class MessageReference implements Parcelable {
 
     public LocalMessage restoreToLocalMessage(Context context) {
         try {
-            Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+            Account account = restoreAccount(context);
             if (account != null) {
                 LocalFolder folder = account.getLocalStore().getFolder(folderName);
                 if (folder != null) {
@@ -167,6 +167,10 @@ public class MessageReference implements Parcelable {
         }
 
         return null;
+    }
+
+    public Account restoreAccount(Context context) {
+        return Preferences.getPreferences(context).getAccount(accountUuid);
     }
 
     public static final Creator<MessageReference> CREATOR = new Creator<MessageReference>() {

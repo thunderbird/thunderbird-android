@@ -8,6 +8,7 @@
         <attr name="iconActionAddAttachment" format="reference" />
         <attr name="iconActionAddCcBcc" format="reference" />
         <attr name="iconActionArchive" format="reference" />
+        <attr name="iconActionSnooze" format="reference" />
         <attr name="iconActionCompose" format="reference" />
         <attr name="iconActionDelete" format="reference" />
         <attr name="iconActionMove" format="reference" />

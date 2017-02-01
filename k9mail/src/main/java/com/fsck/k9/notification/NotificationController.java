@@ -32,6 +32,7 @@ public class NotificationController {
     private final SyncNotifications syncNotifications;
     private final SendFailedNotifications sendFailedNotifications;
     private final NewMailNotifications newMailNotifications;
+    private final SnoozeNotifications snoozeNotifications;
 
 
     public static NotificationController newInstance(Context context) {
@@ -59,6 +60,7 @@ public class NotificationController {
         syncNotifications = new SyncNotifications(this, actionBuilder);
         sendFailedNotifications = new SendFailedNotifications(this, actionBuilder);
         newMailNotifications = NewMailNotifications.newInstance(this, actionBuilder);
+        snoozeNotifications = SnoozeNotifications.newInstance(this, actionBuilder);
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
@@ -111,6 +113,10 @@ public class NotificationController {
 
     public void clearNewMailNotifications(Account account) {
         newMailNotifications.clearNewMailNotifications(account);
+    }
+
+    public void showSnoozeNotification(MessageReference msg) {
+        snoozeNotifications.showSnoozeNotification(msg);
     }
 
     void configureNotification(NotificationCompat.Builder builder, String ringtone, long[] vibrationPattern,

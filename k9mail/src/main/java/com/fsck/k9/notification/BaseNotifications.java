@@ -27,9 +27,17 @@ abstract class BaseNotifications {
 
     protected NotificationCompat.Builder createBigTextStyleNotification(Account account, NotificationHolder holder,
             int notificationId) {
+
+        String groupKey = NotificationGroupKeys.getGroupKey(account);
+        return createBigTextStyleNotification(account, holder, notificationId, groupKey, true);
+    }
+
+
+    protected NotificationCompat.Builder createBigTextStyleNotification(Account account, NotificationHolder holder,
+                                                                        int notificationId, String groupKey,
+                                                                        boolean enableBigStyle) {
         String accountName = controller.getAccountName(account);
         NotificationContent content = holder.content;
-        String groupKey = NotificationGroupKeys.getGroupKey(account);
 
         NotificationCompat.Builder builder = createAndInitializeNotificationBuilder(account)
                 .setTicker(content.summary)
@@ -38,10 +46,12 @@ abstract class BaseNotifications {
                 .setContentText(content.subject)
                 .setSubText(accountName);
 
-        NotificationCompat.BigTextStyle style = createBigTextStyle(builder);
-        style.bigText(content.preview);
+        if (enableBigStyle) {
+            NotificationCompat.BigTextStyle style = createBigTextStyle(builder);
+            style.bigText(content.preview);
 
-        builder.setStyle(style);
+            builder.setStyle(style);
+        }
 
         PendingIntent contentIntent = actionCreator.createViewMessagePendingIntent(
                 content.messageReference, notificationId);

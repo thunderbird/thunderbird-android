@@ -102,6 +102,12 @@
                 android:title="@string/send_alternate_action"/>
         </menu>
     </item>
+    <!-- MessageView -->
+    <item
+        android:id="@+id/snooze"
+        android:icon="?attr/iconActionSnooze"
+        android:showAsAction="always"
+        android:title="@string/snooze_action"/>
 
     <!-- MessageView -->
     <item

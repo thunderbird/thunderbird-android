@@ -17,13 +17,15 @@ public class NotificationIdsTest {
     private static final boolean INCOMING = true;
     private static final boolean OUTGOING = false;
 
+    private static final int NUM_ACCOUNTS = 2;
+
     @Test
     public void getNewMailSummaryNotificationId_withDefaultAccount() throws Exception {
         Account account = createMockAccountWithAccountNumber(0);
 
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
-        assertEquals(6, notificationId);
+        assertEquals(NotificationIds.OFFSET_NEW_MAIL_SUMMARY, notificationId);
     }
 
     @Test
@@ -33,7 +35,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
-        assertEquals(7, notificationId);
+        assertEquals(NotificationIds.OFFSET_NEW_MAIL_STACKED, notificationId);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
@@ -56,7 +58,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
-        assertEquals(21, notificationId);
+        assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * 1 + NotificationIds.OFFSET_NEW_MAIL_SUMMARY, notificationId);
     }
 
     @Test
@@ -66,116 +68,78 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
-        assertEquals(29, notificationId);
+        assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * 1 + NotificationIds.OFFSET_NEW_MAIL_STACKED + notificationIndex, notificationId);
     }
 
     @Test
     public void getFetchingMailNotificationId_withDefaultAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(0);
+        for (int i = 0; i < NUM_ACCOUNTS; i++) {
+            Account account = createMockAccountWithAccountNumber(i);
 
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+            int notificationId = NotificationIds.getFetchingMailNotificationId(account);
 
-        assertEquals(5, notificationId);
-    }
-
-    @Test
-    public void getFetchingMailNotificationId_withSecondAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(1);
-
-        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
-
-        assertEquals(20, notificationId);
+            assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * i + NotificationIds.OFFSET_FETCHING_MAIL, notificationId);
+        }
     }
 
     @Test
     public void getSendFailedNotificationId_withDefaultAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(0);
+        for (int i = 0; i < NUM_ACCOUNTS; i++) {
+            Account account = createMockAccountWithAccountNumber(i);
 
-        int notificationId = NotificationIds.getSendFailedNotificationId(account);
+            int notificationId = NotificationIds.getSendFailedNotificationId(account);
 
-        assertEquals(0, notificationId);
-    }
-
-    @Test
-    public void getSendFailedNotificationId_withSecondAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(1);
-
-        int notificationId = NotificationIds.getSendFailedNotificationId(account);
-
-        assertEquals(15, notificationId);
+            assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * i + NotificationIds.OFFSET_SEND_FAILED_NOTIFICATION, notificationId);
+        }
     }
 
     @Test
     public void getCertificateErrorNotificationId_forIncomingServerWithDefaultAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(0);
+        for (int i = 0; i < NUM_ACCOUNTS; i++) {
+            Account account = createMockAccountWithAccountNumber(i);
 
-        int notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING);
+            int notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING);
 
-        assertEquals(1, notificationId);
-    }
-
-    @Test
-    public void getCertificateErrorNotificationId_forIncomingServerWithSecondAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(1);
-
-        int notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING);
-
-        assertEquals(16, notificationId);
+            assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * i + NotificationIds.OFFSET_CERTIFICATE_ERROR_INCOMING, notificationId);
+        }
     }
 
     @Test
     public void getCertificateErrorNotificationId_forOutgoingServerWithDefaultAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(0);
+        for (int i = 0; i < NUM_ACCOUNTS; i++) {
+            Account account = createMockAccountWithAccountNumber(i);
 
-        int notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING);
 
-        assertEquals(2, notificationId);
-    }
+            int notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING);
 
-    @Test
-    public void getCertificateErrorNotificationId_forOutgoingServerWithSecondAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(1);
-
-        int notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING);
-
-        assertEquals(17, notificationId);
+            assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * i + NotificationIds.OFFSET_CERTIFICATE_ERROR_OUTGOING, notificationId);
+        }
     }
 
     @Test
     public void getAuthenticationErrorNotificationId_forIncomingServerWithDefaultAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(0);
+        for (int i = 0; i < NUM_ACCOUNTS; i++) {
+            Account account = createMockAccountWithAccountNumber(i);
 
-        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING);
 
-        assertEquals(3, notificationId);
-    }
+            int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING);
 
-    @Test
-    public void getAuthenticationErrorNotificationId_forIncomingServerWithSecondAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(1);
-
-        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING);
-
-        assertEquals(18, notificationId);
+            assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * i + NotificationIds.OFFSET_AUTHENTICATION_ERROR_INCOMING, notificationId);
+        }
     }
 
     @Test
     public void getAuthenticationErrorNotificationId_forOutgoingServerWithDefaultAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(0);
+        for (int i = 0; i < NUM_ACCOUNTS; i++) {
+            Account account = createMockAccountWithAccountNumber(i);
 
-        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING);
 
-        assertEquals(4, notificationId);
+            int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING);
+
+            assertEquals(NotificationIds.NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT * i + NotificationIds.OFFSET_AUTHENTICATION_ERROR_OUTGOING, notificationId);
+        }
     }
 
-    @Test
-    public void getAuthenticationErrorNotificationId_forOutgoingServerWithSecondAccount() throws Exception {
-        Account account = createMockAccountWithAccountNumber(1);
-
-        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING);
-
-        assertEquals(19, notificationId);
-    }
 
     private Account createMockAccountWithAccountNumber(int accountNumber) {
         Account account = mock(Account.class);

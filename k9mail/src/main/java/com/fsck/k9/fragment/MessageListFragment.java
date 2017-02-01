@@ -80,6 +80,7 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.SnoozeController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.fragment.MessageListFragmentComparators.ArrivalComparator;
 import com.fsck.k9.fragment.MessageListFragmentComparators.AttachmentComparator;
@@ -183,6 +184,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
+    private static final int ACTIVITY_CHOOSE_SNOOZE = 3;
 
     private static final String ARG_SEARCH = "searchObject";
     private static final String ARG_THREADED_LIST = "threadedList";
@@ -230,6 +232,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private LayoutInflater mInflater;
 
     private MessagingController mController;
+    private SnoozeController snoozeController;
 
     private Account mAccount;
     private String[] mAccountUuids;
@@ -637,6 +640,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             throw new ClassCastException(activity.getClass() +
                     " must implement MessageListFragmentListener");
         }
+
+        snoozeController = SnoozeController.getInstance(activity);
     }
 
     @Override
@@ -1177,6 +1182,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
             break;
         }
+        case ACTIVITY_CHOOSE_SNOOZE: {
+            snoozeController.handleActivityResult(resultCode, data);
+            break;
+        }
         }
     }
 
@@ -1390,6 +1399,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
             case R.id.copy: {
                 onCopy(getMessageAtPosition(adapterPosition));
+                break;
+            }
+            case R.id.snooze: {
+                onSnooze(getMessageAtPosition(adapterPosition));
                 break;
             }
 
@@ -2276,6 +2289,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folderName,
                 messages.get(0).getAccountUuid(), null,
                 messages);
+    }
+
+    private void onSnooze(MessageReference message) {
+        snoozeController.launchSnoozeDialog(this, mAccount, message, ACTIVITY_CHOOSE_SNOOZE);
     }
 
     private void onCopy(MessageReference message) {
