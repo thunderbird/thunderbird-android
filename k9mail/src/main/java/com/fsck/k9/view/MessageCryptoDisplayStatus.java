@@ -136,6 +136,12 @@ public enum MessageCryptoDisplayStatus {
             R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_incomplete
     ),
 
+    ENCRYPTED_NO_PROVIDER (
+            R.attr.openpgp_red,
+            R.drawable.status_lock_error,
+            R.string.crypto_msg_unsupported_encrypted
+    ),
+
     UNSUPPORTED_ENCRYPTED (
             R.attr.openpgp_red,
             R.drawable.status_lock_error,
@@ -214,6 +220,9 @@ public enum MessageCryptoDisplayStatus {
 
             case OPENPGP_ENCRYPTED_API_ERROR:
                 return ENCRYPTED_ERROR;
+
+            case OPENPGP_ENCRYPTED_NO_PROVIDER:
+                return ENCRYPTED_NO_PROVIDER;
         }
         throw new IllegalStateException("Unhandled case!");
     }

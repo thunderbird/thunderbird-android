@@ -189,6 +189,21 @@ public class MessageTopView extends LinearLayout {
         displayViewOnLoadFinished(false);
     }
 
+    public void showNoCryptoProviderConfigured(MessageViewInfo messageViewInfo) {
+        resetAndPrepareMessageView(messageViewInfo);
+        View view = mInflater.inflate(R.layout.message_content_crypto_no_provider, containerView, false);
+
+        view.findViewById(R.id.crypto_settings).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO
+            }
+        });
+
+        containerView.addView(view);
+        displayViewOnLoadFinished(false);
+    }
+
     private void setCryptoProviderIcon(Drawable openPgpApiProviderIcon, View view) {
         ImageView cryptoProviderIcon = (ImageView) view.findViewById(R.id.crypto_error_icon);
         if (openPgpApiProviderIcon != null) {

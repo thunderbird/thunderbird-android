@@ -116,6 +116,11 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
                 break;
             }
 
+            case ENCRYPTED_NO_PROVIDER: {
+                messageView.showNoCryptoProviderConfigured(messageViewInfo);
+                break;
+            }
+
             case INCOMPLETE_SIGNED:
             case UNSUPPORTED_SIGNED:
             default: {
