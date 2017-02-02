@@ -133,4 +133,19 @@ public class MimeUtilityTest {
     public void isSameMimeType_withSecondArgumentBeingNull_shouldReturnFalse() throws Exception {
         assertFalse(MimeUtility.isSameMimeType("text/html", null));
     }
+
+    @Test
+    public void isFormatFlowed_withTextPlainFormatFlowed__shouldReturnTrue() throws Exception {
+        assertTrue(MimeUtility.isFormatFlowed("text/plain; format=flowed"));
+    }
+
+    @Test
+    public void isFormatFlowed_withTextPlain__shouldReturnFalse() throws Exception {
+        assertFalse(MimeUtility.isFormatFlowed("text/plain"));
+    }
+
+    @Test
+    public void isFormatFlowed_withTextHtmlFormatFlowed__shouldReturnFalse() throws Exception {
+        assertFalse(MimeUtility.isFormatFlowed("text/html; format=flowed"));
+    }
 }

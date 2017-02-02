@@ -42,7 +42,8 @@ class AuthenticationErrorNotifications {
                 .setContentText(text)
                 .setContentIntent(editServerSettingsPendingIntent)
                 .setStyle(new BigTextStyle().bigText(text))
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setCategory(NotificationCompat.CATEGORY_ERROR);
 
         controller.configureNotification(builder, null, null,
                 NOTIFICATION_LED_FAILURE_COLOR,

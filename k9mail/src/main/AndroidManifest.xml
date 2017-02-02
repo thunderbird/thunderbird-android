@@ -422,7 +422,17 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/decrypted_file_provider_paths" />
+        </provider>
 
+        <provider
+            android:name=".provider.AttachmentTempFileProvider"
+            android:authorities="${applicationId}.tempfileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/temp_file_provider_paths" />
         </provider>
 
     </application>

@@ -7,11 +7,11 @@
   <string name="shortcuts_title">K-9 账户</string>
   <string name="unread_widget_label">K-9 未读</string>
   <string name="remote_control_label">K-9 Mail 远程控制</string>
-  <string name="remote_control_desc">允许这个程序控制 K-9 Mai l的行为和设置。</string>
+  <string name="remote_control_desc">允许这个程序控制 K-9 Mail 的行为和设置。</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">根据Apache License 2.0 协议授权。</string>
+  <string name="app_license">根据 Apache License 2.0 协议授权。</string>
   <!--Welcome message-->
   <string name="welcome_message_title">欢迎来到 K-9 Mail</string>
   <!--Default signature-->
@@ -59,6 +59,7 @@
   <string name="cancel_action">取消</string>
   <string name="send_action">发送</string>
   <string name="send_again_action">重新发送</string>
+  <string name="empty_subject">主题为空，确认发送请再次点击。</string>
   <string name="select_action">选择</string>
   <string name="deselect_action">取消选择</string>
   <string name="reply_action">回复</string>
@@ -96,6 +97,9 @@
   <string name="select_text_action">选择文本</string>
   <string name="show_headers_action">显示邮件头</string>
   <string name="hide_headers_action">隐藏邮件头</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="other">地址已复制到剪贴板</item>
+  </plurals>
   <string name="message_view_theme_action_dark">切换到深色主题</string>
   <string name="message_view_theme_action_light">切换到明亮主题</string>
   <string name="mark_as_unread_action">标记为未读</string>
@@ -137,6 +141,8 @@
   <string name="notification_action_mark_all_as_read">全部标记为已读</string>
   <string name="notification_action_delete">删除</string>
   <string name="notification_action_delete_all">删除全部</string>
+  <string name="notification_action_archive">归档</string>
+  <string name="notification_action_archive_all">全部归档</string>
   <string name="notification_action_spam">垃圾邮件</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> 认证错误</string>
   <string name="notification_certificate_error_text">请检查您的服务器设置</string>

@@ -69,7 +69,7 @@ public class AttachmentResolver {
                     String contentId = part.getContentId();
                     if (contentId != null) {
                         AttachmentViewInfo attachmentInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
-                        result.put(contentId, attachmentInfo.uri);
+                        result.put(contentId, attachmentInfo.internalUri);
                     }
                 } catch (MessagingException e) {
                     Log.e(K9.LOG_TAG, "Error extracting attachment info", e);

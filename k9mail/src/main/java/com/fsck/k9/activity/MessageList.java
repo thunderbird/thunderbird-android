@@ -241,6 +241,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
+        if (isFinishing()) {
+            return;
+        }
+
         setIntent(intent);
 
         if (mFirstBackStackId >= 0) {
@@ -964,6 +968,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         configureMenu(menu);
         return true;
     }
@@ -1449,6 +1454,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public void displayMessageSubject(String subject) {
         if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
             mActionBarSubject.setText(subject);
+        } else {
+            mActionBarSubject.showSubjectInMessageHeader();
         }
     }
 

@@ -934,6 +934,7 @@
   <string name="crypto_download_complete_message_to_decrypt">Кликните на „Преузми читаву поруку“ да дозволите дешифровање.</string>
   <string name="preview_encrypted">*Шифровано*</string>
   <string name="add_from_contacts">Додај из контаката</string>
+  <string name="crypto_settings_cancel">Одустани</string>
   <string name="crypto_settings_ok">Настави</string>
   <string name="recipient_cc">Цц</string>
   <string name="recipient_bcc">Бцц</string>
@@ -949,10 +950,9 @@
   <string name="compose_error_pgp_error">Грешка ОпенПГП снабдевача. Проверите ваше поставке!</string>
   <string name="compose_error_no_signing_key">Ниједан кључ није подешен за потписивање! Проверите ваше поставке.</string>
   <string name="compose_error_private_missing_keys">Приватни режим је укључен, али неки примаоци немају кључеве!</string>
-  <string name="crypto_mode_disabled">Никад не потписуј и не шифруј.</string>
-  <string name="crypto_mode_sign_only">Увек потписуј, никад не шифруј.</string>
-  <string name="crypto_mode_opportunistic">Увек потписуј, шифруј ако је могуће.</string>
-  <string name="crypto_mode_private">Увек потписуј, увек шифруј.</string>
+  <string name="crypto_mode_disabled">Не шифруј.</string>
+  <string name="crypto_mode_opportunistic">Шифруј ако је могуће</string>
+  <string name="crypto_mode_private">Шифруј</string>
   <string name="error_crypto_provider_connect">Не могу да се повежем са снабдевачем криптографије, проверите ваше поставке или покушајте поново тапом на икону криптографије!</string>
   <string name="error_crypto_provider_ui_required">Приступ снабдевачу криптографије одбијен, тапните икону криптографије да покушате поново!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE режим не подржава прилоге!</string>
@@ -966,6 +966,7 @@
   <string name="openpgp_inline_ok">Важи!</string>
   <string name="openpgp_inline_disable">Искључи</string>
   <string name="openpgp_inline_keep_enabled">Остави укључено</string>
+  <string name="openpgp_sign_only_ok">Важи!</string>
   <string name="crypto_msg_disabled">Порука није шифрована</string>
   <string name="crypto_msg_encrypted_error">Порука је шифрована али је дошло до грешке приликом дешифровања.</string>
   <string name="crypto_msg_signed_error">Порука је потписана али потпис није прошао оверу.</string>
@@ -1004,4 +1005,5 @@
   <string name="messageview_crypto_warning_error">Дошло је до <b>грешке у потпису ове поруке!</b></string>
   <string name="recipient_error_non_ascii">Посебни знакови тренутно нису нису подржани!</string>
   <string name="recipient_error_parse_failed">Грешка прослеђивања адресе!</string>
+  <string name="account_settings_crypto_support_sign_only">Подржавај потписивање нешифрованих порука</string>
 </resources>

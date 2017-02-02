@@ -4,6 +4,7 @@ package com.fsck.k9.mail.internet;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -93,7 +94,14 @@ public class MimeBodyPart extends BodyPart {
     @Override
     public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : MimeUtility.unfoldAndDecode(contentType);
+        if (contentType != null) {
+            return MimeUtility.unfoldAndDecode(contentType);
+        }
+        Multipart parent = getParent();
+        if (parent != null && "multipart/digest".equals(parent.getMimeType())) {
+            return "message/rfc822";
+        }
+        return "text/plain";
     }
 
     @Override

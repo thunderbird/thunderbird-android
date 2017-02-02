@@ -24,7 +24,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
 
-    testCompile 'com.squareup.okio:okio:1.6.0'
+    testCompile "com.squareup.okio:okio:${okioVersion}"
     testCompile "org.robolectric:robolectric:${robolectricVersion}"
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"

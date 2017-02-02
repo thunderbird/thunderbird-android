@@ -58,13 +58,14 @@ import org.openintents.openpgp.util.OpenPgpUtils;
 public class MessageCryptoHelper {
     private static final int INVALID_OPENPGP_RESULT_CODE = -1;
     private static final MimeBodyPart NO_REPLACEMENT_PART = null;
-    public static final int REQUEST_CODE_USER_INTERACTION = 124;
-    public static final int PROGRESS_SIZE_THRESHOLD = 4096;
+    private static final int REQUEST_CODE_USER_INTERACTION = 124;
+    private static final int PROGRESS_SIZE_THRESHOLD = 4096;
 
 
     private final Context context;
     private final String openPgpProviderPackage;
     private final Object callbackLock = new Object();
+    private final Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<>();
 
     @Nullable
     private MessageCryptoCallback callback;
@@ -76,7 +77,6 @@ public class MessageCryptoHelper {
 
 
     private MessageCryptoAnnotations messageAnnotations;
-    private Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<>();
     private CryptoPart currentCryptoPart;
     private Intent currentCryptoResult;
     private Intent userInteractionResultIntent;
@@ -554,8 +554,12 @@ public class MessageCryptoHelper {
     }
 
     private void onCryptoOperationCanceled() {
-        CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpCanceledAnnotation();
-        addCryptoResultAnnotationToMessage(errorPart);
+        // there are weird states that get us here when we're not actually processing any part. just skip in that case
+        // see https://github.com/k9mail/k-9/issues/1878
+        if (currentCryptoPart != null) {
+            CryptoResultAnnotation errorPart = CryptoResultAnnotation.createOpenPgpCanceledAnnotation();
+            addCryptoResultAnnotationToMessage(errorPart);
+        }
         onCryptoFinished();
     }
 
@@ -579,8 +583,17 @@ public class MessageCryptoHelper {
     }
 
     private void onCryptoFinished() {
-        currentCryptoPart = null;
-        partsToDecryptOrVerify.removeFirst();
+        boolean currentPartIsFirstInQueue = partsToDecryptOrVerify.peekFirst() == currentCryptoPart;
+        if (!currentPartIsFirstInQueue) {
+            throw new IllegalStateException(
+                    "Trying to remove part from queue that is not the currently processed one!");
+        }
+        if (currentCryptoPart != null) {
+            partsToDecryptOrVerify.removeFirst();
+            currentCryptoPart = null;
+        } else {
+            Log.e(K9.LOG_TAG, "Got to onCryptoFinished() with no part in processing!", new Throwable());
+        }
         decryptOrVerifyNextPart();
     }
 
@@ -594,7 +607,7 @@ public class MessageCryptoHelper {
     }
 
     private void cleanupAfterProcessingFinished() {
-        partsToDecryptOrVerify = null;
+        partsToDecryptOrVerify.clear();
         openPgpApi = null;
         if (openPgpServiceConnection != null) {
             openPgpServiceConnection.unbindFromService();
@@ -613,11 +626,13 @@ public class MessageCryptoHelper {
             throw new AssertionError("Callback may only be reattached for the same message!");
         }
         synchronized (callbackLock) {
-            if (queuedResult != null) {
-                Log.d(K9.LOG_TAG, "Returning cached result to reattached callback");
-            }
             this.callback = callback;
-            deliverResult();
+
+            boolean hasCachedResult = queuedResult != null || queuedPendingIntent != null;
+            if (hasCachedResult) {
+                Log.d(K9.LOG_TAG, "Returning cached result or pending intent to reattached callback");
+                deliverResult();
+            }
         }
     }
 
@@ -663,6 +678,8 @@ public class MessageCryptoHelper {
             callback.startPendingIntentForCryptoHelper(
                     queuedPendingIntent.getIntentSender(), REQUEST_CODE_USER_INTERACTION, null, 0, 0, 0);
             queuedPendingIntent = null;
+        } else {
+            throw new IllegalStateException("deliverResult() called with no result!");
         }
     }
 

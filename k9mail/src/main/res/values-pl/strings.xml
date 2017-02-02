@@ -729,6 +729,9 @@ Wysłane za pomocą K-9 Mail.</string>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Usuń</string>
   <string name="dialog_confirm_delete_cancel_button">Nie usuwaj</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Czy chcesz oznaczyć wszystkie wiadomości jako przeczytane?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Tak</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Nie</string>
   <string name="dialog_confirm_spam_title">Potwierdź przeniesienie do spamu</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Czy chcesz przenieść tę wiadomość to folderu ze spamem?</item>
@@ -896,12 +899,11 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="address_type_home">Dom</string>
   <string name="address_type_work">Praca</string>
   <string name="address_type_other">Inne</string>
+  <string name="compose_error_no_draft_folder">Folder Szkice nie skonfigurowany dla tego konta.</string>
+  <string name="compose_not_saving_unencrypted">Szkic NIE zapisany bez szyfrowania!</string>
+  <string name="compose_error_pgp_error">Błąd dostawcy OpenPGP. Sprawdź ustawienia!</string>
   <string name="compose_error_no_signing_key">Brak skonfigurowanego klucza do podpisów! Sprawdź swoje ustawienia.</string>
   <string name="compose_error_private_missing_keys">Tryb prywatny jest włączony, ale część odbiorców nie posiada kluczy!</string>
-  <string name="crypto_mode_disabled">Nigdy nie Podpisuj ani Szyfruj.</string>
-  <string name="crypto_mode_sign_only">Zawsze Podpisuj, Nigdy nie Szyfruj.</string>
-  <string name="crypto_mode_opportunistic">Zawsze Podpisuj, Szyfruj jeśli możliwe.</string>
-  <string name="crypto_mode_private">Zawsze Podpisuj, Zawsze Szyfruj.</string>
   <string name="error_crypto_inline_attach">Tryb PGP/INLINE nie obsługuje załączników!</string>
   <string name="enable_inline_pgp">Włącz PGP/INLINE</string>
   <string name="disable_inline_pgp">Wyłącz PGP/INLINE</string>
@@ -911,4 +913,12 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="openpgp_inline_ok">Mam to!</string>
   <string name="openpgp_inline_disable">Wyłącz</string>
   <string name="openpgp_inline_keep_enabled">Utrzymuj Włączone</string>
+  <string name="crypto_msg_disabled">Wiadomość nie jest zaszyfrowana</string>
+  <string name="crypto_msg_encrypted_error">Wiadomość jest zaszyfrowana, ale wystąpił błąd deszyfrowana.</string>
+  <string name="crypto_msg_signed_error">Wiadomość jest podpisana, ale podpis nie mógł być zweryfikowany.</string>
+  <string name="crypto_msg_unsupported_encrypted">Wiadomość jest zaszyfrowana, ale w niewspieranym formacie.</string>
+  <string name="crypto_msg_unsupported_signed">Wiadomość jest podpisana, ale w niewspieranym formacie.</string>
+  <string name="crypto_msg_incomplete_encrypted">Wiadomość jest zaszyfrowana, ale musi być pobrana w całości do odszyfrowania.</string>
+  <string name="crypto_msg_cancelled">Wiadomość jest zaszyfrowana, ale deszyfrowanie zostało przerwane.</string>
+  <string name="crypto_msg_signed_unencrypted">Wiadomość jest podpisana, ale nie zaszyfrowana.</string>
 </resources>

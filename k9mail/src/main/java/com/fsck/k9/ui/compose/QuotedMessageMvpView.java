@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
+import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
@@ -119,7 +120,9 @@ public class QuotedMessageMvpView {
     }
 
     public void setQuotedHtml(String quotedContent, AttachmentResolver attachmentResolver) {
-        mQuotedHTML.displayHtmlContentWithInlineAttachments(quotedContent, attachmentResolver, null);
+        mQuotedHTML.displayHtmlContentWithInlineAttachments(
+                HtmlConverter.wrapMessageContent(quotedContent),
+                attachmentResolver, null);
     }
 
     public void setQuotedText(String quotedText) {

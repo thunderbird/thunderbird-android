@@ -7,10 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
+import android.util.Log;
 
 import com.fsck.k9.Globals;
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.HtmlConverter;
 import com.fsck.k9.helper.HtmlSanitizer;
@@ -21,6 +24,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.Viewable;
+import com.fsck.k9.mail.internet.Viewable.Flowed;
+import com.fsck.k9.mailstore.util.FlowedMessageUtils;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import com.fsck.k9.ui.crypto.MessageCryptoSplitter;
@@ -64,7 +69,7 @@ public class MessageViewInfoExtractor {
     }
 
     @WorkerThread
-    public MessageViewInfo extractMessageForView(Message message, MessageCryptoAnnotations annotations)
+    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations annotations)
             throws MessagingException {
         Part rootPart;
         CryptoResultAnnotation cryptoResultAnnotation;
@@ -76,6 +81,9 @@ public class MessageViewInfoExtractor {
             cryptoResultAnnotation = cryptoMessageParts.contentCryptoAnnotation;
             extraParts = cryptoMessageParts.extraParts;
         } else {
+            if (annotations != null && !annotations.isEmpty()) {
+                Log.e(K9.LOG_TAG, "Got message annotations but no crypto root part!");
+            }
             rootPart = message;
             cryptoResultAnnotation = null;
             extraParts = null;
@@ -224,8 +232,13 @@ public class MessageViewInfoExtractor {
             String t = MessageExtractor.getTextFromPart(part);
             if (t == null) {
                 t = "";
+            } else if (viewable instanceof Flowed) {
+                t = FlowedMessageUtils.deflow(t, false);
+                t = HtmlConverter.textToHtml(t);
             } else if (viewable instanceof Text) {
                 t = HtmlConverter.textToHtml(t);
+            } else if (!(viewable instanceof Html)) {
+                throw new IllegalStateException("unhandled case!");
             }
             html.append(t);
         } else if (viewable instanceof Alternative) {
@@ -257,6 +270,10 @@ public class MessageViewInfoExtractor {
                 t = "";
             } else if (viewable instanceof Html) {
                 t = HtmlConverter.htmlToText(t);
+            } else if (viewable instanceof Flowed) {
+                t = FlowedMessageUtils.deflow(t, false);
+            } else if (!(viewable instanceof Text)) {
+                throw new IllegalStateException("unhandled case!");
             }
             text.append(t);
         } else if (viewable instanceof Alternative) {

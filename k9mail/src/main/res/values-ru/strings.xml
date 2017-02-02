@@ -955,10 +955,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="compose_error_pgp_error">Ошибка провайдера OpenPGP. Проверьте настройки!</string>
   <string name="compose_error_no_signing_key">Не найден ключ для подписания. Проверьте настройки.</string>
   <string name="compose_error_private_missing_keys">Защищенный режим включён, но некоторые адресаты не имеют ключей!</string>
-  <string name="crypto_mode_disabled">Не подписывать и не шифровать.</string>
-  <string name="crypto_mode_sign_only">Подписывать, но не шифровать.</string>
-  <string name="crypto_mode_opportunistic">Подписывать, пытаться шифровать.</string>
-  <string name="crypto_mode_private">Подписывать и шифровать.</string>
   <string name="error_crypto_provider_connect">Нет доступа к криптопровайдеру. Проверьте настройки или нажмите значок шифрования для повтора!</string>
   <string name="error_crypto_provider_ui_required">Нет доступа к криптопровайдеру, нажмите значок шифрования для повтора!</string>
   <string name="error_crypto_inline_attach">Режим PGP/INLINE не поддерживает вложения!</string>

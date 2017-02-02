@@ -49,9 +49,7 @@ public class AttachmentInfoExtractor {
         List<AttachmentViewInfo> attachments = new ArrayList<>();
         for (Part part : attachmentParts) {
             AttachmentViewInfo attachmentViewInfo = extractAttachmentInfo(part);
-            if (!attachmentViewInfo.inlineAttachment) {
-                attachments.add(attachmentViewInfo);
-            }
+            attachments.add(attachmentViewInfo);
         }
 
         return attachments;

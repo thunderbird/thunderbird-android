@@ -942,6 +942,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="crypto_download_complete_message_to_decrypt">Kliknite \'Prenos celotnega sporočila\', za omogočanje dešifriranja.</string>
   <string name="preview_encrypted">*Šifrirano*</string>
   <string name="add_from_contacts">Dodaj iz stikov</string>
+  <string name="crypto_settings_cancel">Prekliči</string>
   <string name="crypto_settings_ok">Nadaljuj</string>
   <string name="recipient_cc">Kp</string>
   <string name="recipient_bcc">Skp</string>
@@ -957,10 +958,6 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="compose_error_pgp_error">Napaka pri ponudniku OpenPGP. Preverite nastavitve!</string>
   <string name="compose_error_no_signing_key">Ni ključa nastavljenega za podpis! Preverite nastavitve.</string>
   <string name="compose_error_private_missing_keys">Omogočen je zasebni način, vendar nekateri prejemniki nimajo ključev!</string>
-  <string name="crypto_mode_disabled">Nikoli podpisati ali šifrirati.</string>
-  <string name="crypto_mode_sign_only">Vedno podpisati, nikoli šifrirati.</string>
-  <string name="crypto_mode_opportunistic">Vedno podpisati, šifrirati če mogoče.</string>
-  <string name="crypto_mode_private">Vedno podpisati, vedno šifrirati.</string>
   <string name="error_crypto_provider_connect">Ni mogoče vzpostaviti povezave s ponudnikom šifracije; preverite nastavitve ali kliknite kripto ikono, za ponovni poskus!</string>
   <string name="error_crypto_provider_ui_required">Dostop do šifrirnega ponudnik zavrnjen, kliknite kripto ikono, da poskusite znova!</string>
   <string name="error_crypto_inline_attach">Način PGP/INLINE ne podpira priponk!</string>

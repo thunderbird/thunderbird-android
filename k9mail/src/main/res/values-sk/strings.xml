@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Autorské práva 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licencované pod licenciou Apache 2.0.</string>
+  <string name="app_license">Licenciované pod licenciou Apache 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Vitajte v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -444,6 +444,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_notify_sync_summary">Oznamovať v stavovej lište, keď je pošta kontrolovaná</string>
   <string name="account_settings_notify_self_label">Zahrnúť odchádzajúcu poštu</string>
   <string name="account_settings_notify_self_summary">Zobraziť oznámenie pre odoslané správy</string>
+  <string name="account_notify_contacts_mail_only_label">Iba kontakty</string>
   <string name="account_notify_contacts_mail_only_summary">Zobraziť upozornenia len pre správy od známych kontaktov</string>
   <string name="account_settings_notification_opens_unread_label">Oznámenie otvorí neprečítané správy</string>
   <string name="account_settings_notification_opens_unread_summary">Po otvorení oznámenia zobraziť neprečítané správy</string>
@@ -933,6 +934,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="crypto_download_complete_message_to_decrypt">Kliknite na \'Stiahnuť kompletnú správu\' pre povolenie dešifrovania.</string>
   <string name="preview_encrypted">*Šifrované*</string>
   <string name="add_from_contacts">Pridať z kontaktov</string>
+  <string name="crypto_settings_cancel">Zrušiť</string>
   <string name="crypto_settings_ok">Pokračovať</string>
   <string name="recipient_cc">Kópia</string>
   <string name="recipient_bcc">Skrytá kópia</string>
@@ -948,15 +950,18 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="compose_error_pgp_error">Chyba poskytovateľa služby pre OpenPGP. Skontroľujte si nastavenia!</string>
   <string name="compose_error_no_signing_key">Nie je nastavený kľúč pre podpis! Prosím, skontroľujte si nastavenia.</string>
   <string name="compose_error_private_missing_keys">Je aktivovaný Súkromný režim, niektorí príjemcovia nemajú kľúče!</string>
-  <string name="crypto_mode_disabled">Nepodpisovať a nešifrovať.</string>
-  <string name="crypto_mode_sign_only">Vždy podpísať, nešifrovať.</string>
-  <string name="crypto_mode_opportunistic">Vždy podpísať, šifrovať ak je to možné.</string>
-  <string name="crypto_mode_private">Vždy podpísať, vždy šifrovať.</string>
+  <string name="crypto_mode_disabled">Nešifrovať</string>
+  <string name="crypto_mode_opportunistic">Ak je možné, šifrovať</string>
+  <string name="crypto_mode_private">Šifrovať</string>
   <string name="error_crypto_provider_connect">Nie je možné pripojenie ku poskytovateľovi šifrovania, skontrolujte svoje nastavenia alebo kliknite na ikonu šifrovania pre ďalší pokus.</string>
   <string name="error_crypto_provider_ui_required">Bol odopretý prístup ku poskytovateľovi šifrovania, kliknite na ikonu šifrovania pre ďalší pokus.</string>
   <string name="error_crypto_inline_attach">V režine PGP/INLINE nie sú prílohy podporované.</string>
+  <string name="error_crypto_inline_sign_only">Pri použití PGP/INLINE nie je možné len podpisovať.</string>
+  <string name="error_crypto_sign_only_inline">Pri použití PGP/INLINE nie je možné len podpisovať.</string>
   <string name="enable_inline_pgp">Povoliť PGP/INLINE</string>
   <string name="disable_inline_pgp">Zakázať PGP/INLINE</string>
+  <string name="enable_sign_only">Povoliť PGP \"len podpis\"</string>
+  <string name="disable_sign_only">Zakázať PGP \"len podpis\"</string>
   <string name="openpgp_inline_title">Režim PGP/INLINE</string>
   <string name="openpgp_inline_text">Odosielate správu vo formáte PGP/INLINE.\nTento formát použite len pre kompatibilitu:</string>
   <string name="openpgp_inline_plus_compat">Niektoré klienty podporujú iba tento formát</string>
@@ -965,6 +970,15 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="openpgp_inline_ok">Rozumiem!</string>
   <string name="openpgp_inline_disable">Zakázať</string>
   <string name="openpgp_inline_keep_enabled">Zachovať povolené</string>
+  <string name="openpgp_sign_only_ok">Rozumiem!</string>
+  <string name="openpgp_sign_only_disable">Zakázať</string>
+  <string name="openpgp_sign_only_keep_enabled">Zachovať povolené</string>
+  <string name="openpgp_dialog_sign_only_title">PGP režim \"len podpis\"</string>
+  <string name="openpgp_dialog_sign_only_text">V tomto režime bude pomocou vášho PGP kľúča vytvorený kryptografický podpis pre nešifrovanú správu.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">E-mail nie je šifrovaný, je však možné overiť, že bola správa podpísaná vaším kľúčom.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Podpisy môžu byť pri odoslaní do diskusných skupín poškodené.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Niektoré e-mailové klienty zobrazujú podpis ako prílohu s názvom \'signature.asc\'</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrované správy vždy obsahujú podpis.</string>
   <string name="crypto_msg_disabled">Správa nie je šifrovaná</string>
   <string name="crypto_msg_encrypted_error">Správa je šifrovaná, chyba dešifrovania správy.</string>
   <string name="crypto_msg_signed_error">Správa je podpísané, nie je možné overiť podpis.</string>
@@ -1003,4 +1017,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="messageview_crypto_warning_error">Vyskytla sa <b>chyba v podpise správy!</b></string>
   <string name="recipient_error_non_ascii">Špeciálne znaky nie sú v súčasnosti podporované!</string>
   <string name="recipient_error_parse_failed">Chyba pri spracovaní adresy!</string>
+  <string name="account_settings_crypto_support_sign_only">Umožniť podpisovanie nešifrovaných správ</string>
+  <string name="error_sign_only_no_encryption">V režime \"len podpis\" nie je možné šifrovať.</string>
 </resources>

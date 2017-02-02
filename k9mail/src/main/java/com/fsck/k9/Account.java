@@ -221,6 +221,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
+    private boolean mCryptoAppIsDeprecatedApg;
     private long mCryptoKey;
     private boolean mCryptoSupportSignOnly;
     private boolean mMarkMessageAsReadOnView;
@@ -1607,11 +1608,17 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public void setCryptoApp(String cryptoApp) {
-        if (cryptoApp == null || cryptoApp.equals("apg")) {
+        boolean isApgCryptoProvider = "apg".equals(cryptoApp);
+        if (cryptoApp == null || isApgCryptoProvider) {
+            mCryptoAppIsDeprecatedApg = isApgCryptoProvider;
             mCryptoApp = NO_OPENPGP_PROVIDER;
         } else {
             mCryptoApp = cryptoApp;
         }
+    }
+
+    public boolean isCryptoAppDeprecatedApg() {
+        return mCryptoAppIsDeprecatedApg;
     }
 
     public long getCryptoKey() {

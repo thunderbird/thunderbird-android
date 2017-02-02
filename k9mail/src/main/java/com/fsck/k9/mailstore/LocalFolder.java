@@ -740,7 +740,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
-                Message innerMessage = new MimeMessage();
+                Message innerMessage = new LocalMimeMessage(getAccountUuid(), message, id);
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
             } else {
@@ -865,6 +865,43 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
+    public Map<String,Long> getAllMessagesAndEffectiveDates() throws MessagingException {
+        try {
+            return  localStore.database.execute(false, new DbCallback<Map<String, Long>>() {
+                @Override
+                public Map<String, Long> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    Cursor cursor = null;
+                    HashMap<String, Long> result = new HashMap<>();
+
+                    try {
+                        open(OPEN_MODE_RO);
+
+                        cursor = db.rawQuery(
+                                "SELECT uid, date " +
+                                        "FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 0 AND " +
+                                        "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
+
+                        while (cursor.moveToNext()) {
+                            String uid = cursor.getString(0);
+                            Long date = cursor.isNull(1) ? null : cursor.getLong(1);
+                            result.put(uid, date);
+                        }
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return result;
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+    }
+
     public List<LocalMessage> getMessages(MessageRetrievalListener<LocalMessage> listener) throws MessagingException {
         return getMessages(listener, true);
     }
@@ -889,6 +926,42 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+    }
+
+    public List<String> getAllMessageUids() throws MessagingException {
+        try {
+            return  localStore.database.execute(false, new DbCallback<List<String>>() {
+                @Override
+                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    Cursor cursor = null;
+                    ArrayList<String> result = new ArrayList<>();
+
+                    try {
+                        open(OPEN_MODE_RO);
+
+                        cursor = db.rawQuery(
+                                "SELECT uid " +
+                                    "FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 0 AND " +
+                                        "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
+
+                        while (cursor.moveToNext()) {
+                            String uid = cursor.getString(0);
+                            result.add(uid);
+                        }
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return result;
                 }
             });
         } catch (WrappedException e) {
@@ -1402,7 +1475,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void multipartToContentValues(ContentValues cv, Multipart multipart) {
-        cv.put("data_location", DataLocation.IN_DATABASE);
+        cv.put("data_location", DataLocation.CHILD_PART_CONTAINS_DATA);
         cv.put("preamble", multipart.getPreamble());
         cv.put("epilogue", multipart.getEpilogue());
         cv.put("boundary", multipart.getBoundary());

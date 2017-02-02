@@ -3,20 +3,20 @@
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 E-post</string>
-  <string name="shortcuts_title">K-9-konton</string>
+  <string name="app_name">K-9 Mail</string>
+  <string name="shortcuts_title">K-9 Konton</string>
   <string name="unread_widget_label">K-9 Olästa</string>
-  <string name="remote_control_label">K-9 E-post fjärrkontroll</string>
-  <string name="remote_control_desc">Tillåter denna applikation att styra aktiviteter och göra inställningar i K-9 E-post.</string>
+  <string name="remote_control_label">K-9 Mail fjärrkontroll</string>
+  <string name="remote_control_desc">Tillåter denna applikation att kontrollera K-9 Mail aktiviteter och inställningar.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Vissa delar Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Vissa delar Copyright 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="app_license">Licensierat under Apache-licensen, version 2.0.</string>
   <!--Welcome message-->
-  <string name="welcome_message_title">Välkommen till K-9 E-post</string>
+  <string name="welcome_message_title">Välkommen till K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Epost är en kraftfull fri epostklient för Android.
+K-9 Mail är en kraftfull fri epostklient för Android.
 </p><p>
 Några av funktionerna som förbättrats är:
 </p>
@@ -44,14 +44,14 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nSkickat från min Android-enhet med K-9 E-post. Ursäkta min fåordighet.</string>
+  <string name="default_signature">-- \nSkickat från min Android-enhet med K-9 Mail. Ursäkta min fåordighet.</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas från K-9 E-post.</string>
+  <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att tas bort från K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alla lokala data för \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas. Kontoinställningar behålls.</string>
   <string name="account_clear_dlg_instructions_fmt">Alla lokalt lagrade meddelanden i \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas. Kontoinställningar behålls.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Installera en filhanterare för att fortsätta med denna import.</string>
-  <string name="open_market">Öppna Play-butiken</string>
+  <string name="open_market">Öppna Play butik</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Upphovsmän: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Revisionsinformation: <xliff:g id="app_revision_url">%s</xliff:g></string>
@@ -79,7 +79,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="status_processing_account">Behandlar <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Nästa kontroll <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_syncing_off">Synk inaktiverat</string>
+  <string name="status_syncing_off">Synkronisering inaktiverad</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valda</string>
   <string name="next_action">Nästa</string>
   <string name="previous_action">Föregående</string>
@@ -118,7 +118,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="remove_account_action">Ta bort konto</string>
   <string name="clear_pending_action">Rensa köade åtgärder (varning!)</string>
   <string name="mark_as_read_action">Markera som läst</string>
-  <string name="send_alternate_action">Dela ut</string>
+  <string name="send_alternate_action">Dela</string>
   <string name="send_alternate_chooser_title">Välj avsändare</string>
   <string name="flag_action">Lägg till stjärna</string>
   <string name="unflag_action">Ta bort stjärna</string>
@@ -173,8 +173,8 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="notification_action_mark_as_read">Markera som läst</string>
   <string name="notification_action_mark_all_as_read">Markera alla som lästa</string>
   <string name="notification_action_delete">Ta bort</string>
-  <string name="notification_action_delete_all">Radera alla</string>
-  <string name="notification_action_archive">Arkiv</string>
+  <string name="notification_action_delete_all">Ta bort alla</string>
+  <string name="notification_action_archive">Arkivera</string>
   <string name="notification_action_archive_all">Arkivera alla</string>
   <string name="notification_action_spam">Skräppost</string>
   <string name="notification_certificate_error_title">Certifikatsfel för <xliff:g id="account">%s</xliff:g></string>
@@ -259,11 +259,11 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="global_settings_folderlist_wrap_folder_names_summary">Använd flera rader för att visa långa mappnamn</string>
   <string name="global_settings_messageview_fixedwidth_label">Teckensnitt med fast bredd</string>
   <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd för att visa brev med enbart text</string>
-  <string name="global_settings_messageview_autofit_width_label">Auto-passa meddelanden</string>
+  <string name="global_settings_messageview_autofit_width_label">Anpassa automatiskt meddelanden</string>
   <string name="global_settings_messageview_autofit_width_summary">Krymp meddelanden så att de får plats på skärmen</string>
   <string name="global_settings_messageview_return_to_list_label">Återvänd till listan efter borttagning</string>
   <string name="global_settings_messageview_return_to_list_summary">Återvänd till meddelandelistan efter att brev tagits bort</string>
-  <string name="global_settings_messageview_show_next_label">Visa nästa meddelande efter att brev tagits bort</string>
+  <string name="global_settings_messageview_show_next_label">Visa nästa meddelande efter ta bort</string>
   <string name="global_settings_messageview_show_next_summary">Visa nästa meddelande som standard efter att brev tagits bort</string>
   <string name="global_settings_confirm_actions_title">Bekräfta åtgärder</string>
   <string name="global_settings_confirm_actions_summary">Visa en dialogruta när du genomför valda åtgärder</string>
@@ -272,7 +272,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="global_settings_confirm_action_spam">Skräp</string>
   <string name="global_settings_confirm_menu_discard">Kasta meddelande?</string>
   <string name="global_settings_confirm_action_delete_notif">Ta bort (från avisering)</string>
-  <string name="global_settings_privacy_hide_useragent">Ta bort K-9 User-Agent från brevhuvudet</string>
+  <string name="global_settings_privacy_hide_useragent">Ta bort K-9 User-Agent från brevrubriker</string>
   <string name="global_settings_privacy_hide_timezone">Använd UTC som tidszon i brevhuvud</string>
   <string name="global_settings_notification_hide_subject_title">Dölj ämne i aviseringar</string>
   <string name="global_settings_notification_hide_subject_never">Aldrig</string>
@@ -307,7 +307,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="account_setup_check_settings_authenticate">Autentiserar\u2026</string>
   <string name="account_setup_check_settings_fetch">Hämtar kontoinställningar\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Avbryter\u2026</string>
-  <string name="account_setup_names_title">Nästan färdig!</string>
+  <string name="account_setup_names_title">Du är nästan färdig!</string>
   <string name="account_setup_names_account_name_label">Ge kontot ett namn (valfritt):</string>
   <string name="account_setup_names_user_name_label">Ange ditt namn (visas på utgående e-post):</string>
   <string name="account_setup_account_type_title">Kontotyp</string>
@@ -543,22 +543,22 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="folder_settings_in_top_group_summary">Visa nära toppen av mapplistan</string>
   <string name="folder_settings_folder_display_mode_label">Visningsklass för mapp</string>
   <string name="folder_settings_folder_display_mode_normal">Ingen</string>
-  <string name="folder_settings_folder_display_mode_first_class">1:a klassen</string>
-  <string name="folder_settings_folder_display_mode_second_class">2:a klassen</string>
+  <string name="folder_settings_folder_display_mode_first_class">1:a klass</string>
+  <string name="folder_settings_folder_display_mode_second_class">2:a klass</string>
   <string name="folder_settings_folder_sync_mode_label">Synkroniseringsklass för mapp</string>
   <string name="folder_settings_folder_sync_mode_normal">Ingen</string>
-  <string name="folder_settings_folder_sync_mode_first_class">1:a klassen</string>
-  <string name="folder_settings_folder_sync_mode_second_class">2:a klassen</string>
+  <string name="folder_settings_folder_sync_mode_first_class">1:a klass</string>
+  <string name="folder_settings_folder_sync_mode_second_class">2:a klass</string>
   <string name="folder_settings_folder_sync_mode_inherited">Samma som visningsklass</string>
   <string name="folder_settings_folder_push_mode_label">Push-klass för mapp</string>
   <string name="folder_settings_folder_push_mode_normal">Ingen</string>
-  <string name="folder_settings_folder_push_mode_first_class">1:a klassen</string>
-  <string name="folder_settings_folder_push_mode_second_class">2:a klassen</string>
+  <string name="folder_settings_folder_push_mode_first_class">1:a klass</string>
+  <string name="folder_settings_folder_push_mode_second_class">2:a klass</string>
   <string name="folder_settings_folder_push_mode_inherited">Samma som synkroniseringsklass</string>
   <string name="folder_settings_folder_notify_mode_label">Aviseringsklass för mapp</string>
   <string name="folder_settings_folder_notify_mode_normal">Inga</string>
-  <string name="folder_settings_folder_notify_mode_first_class">Första klass</string>
-  <string name="folder_settings_folder_notify_mode_second_class">Andra klass</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1:a klass</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2:a klass</string>
   <string name="folder_settings_folder_notify_mode_inherited">Samma som push-klass</string>
   <string name="account_settings_incoming_label">Inkommande server</string>
   <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
@@ -943,15 +943,18 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="compose_error_pgp_error">Fel för OpenPGP leverantör. Granska dina inställningar!</string>
   <string name="compose_error_no_signing_key">Ingen nyckel är konfigurerad för signering! Var god granska dina inställningar.</string>
   <string name="compose_error_private_missing_keys">Privat läge är aktivt, men några mottagare har inte nycklar!</string>
-  <string name="crypto_mode_disabled">Signera eller kryptera aldrig.</string>
-  <string name="crypto_mode_sign_only">Signera alltid, kryptera aldrig.</string>
-  <string name="crypto_mode_opportunistic">Signera alltid, kryptera om möjligt.</string>
-  <string name="crypto_mode_private">Signera alltid, kryptera alltid.</string>
+  <string name="crypto_mode_disabled">Kryptera inte</string>
+  <string name="crypto_mode_opportunistic">Kryptera om möjligt</string>
+  <string name="crypto_mode_private">Kryptera</string>
   <string name="error_crypto_provider_connect">Kan inte ansluta till crypto leverantör, granska dina inställningar eller klicka på crypto ikonen för nytt försök.</string>
   <string name="error_crypto_provider_ui_required">Crypto leverantör tillträde nekad, klicka på crypto ikonen för nytt försök.</string>
   <string name="error_crypto_inline_attach">PGP/INLINE läge stöder inte bilagor!</string>
+  <string name="error_crypto_inline_sign_only">PGP/INLINE läge stöder inte signera-endast läge!</string>
+  <string name="error_crypto_sign_only_inline">Signera-endast läge stöder inte PGP/INLINE!</string>
   <string name="enable_inline_pgp">Aktivera PGP/INLINE</string>
   <string name="disable_inline_pgp">Avaktivera PGP/INLINE</string>
+  <string name="enable_sign_only">Aktivera PGP signera-endast</string>
+  <string name="disable_sign_only">Avaktivera PGP signera-endast</string>
   <string name="openpgp_inline_title">PGP/INLINE läge</string>
   <string name="openpgp_inline_text">Denna e-post sänds i PGP/INLINE format.\nDetta bör endast användas för kompatibilitet:</string>
   <string name="openpgp_inline_plus_compat">Vissa klienter stöder endast detta format</string>
@@ -960,6 +963,15 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="openpgp_inline_ok">Uppfattat!</string>
   <string name="openpgp_inline_disable">Avaktivera</string>
   <string name="openpgp_inline_keep_enabled">Förbli aktiverad</string>
+  <string name="openpgp_sign_only_ok">Uppfattat!</string>
+  <string name="openpgp_sign_only_disable">Avaktivera</string>
+  <string name="openpgp_sign_only_keep_enabled">Bevara aktiverad</string>
+  <string name="openpgp_dialog_sign_only_title">PGP signera-endast läge</string>
+  <string name="openpgp_dialog_sign_only_text">I det här läget kommer din PGP-nyckel användas för att skapa en kryptografisk signatur av en okrypterad e-post.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Detta krypterar inte e-postmeddelandet, men bekräftar att det skickades från din nyckel.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Signaturer kan brytas när de skickas till e-postlistor.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Signaturer kan visas som \'signature.asc\' bilagor i vissa klienter.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Krypterade meddelanden inkluderar alltid en signatur.</string>
   <string name="crypto_msg_disabled">Meddelandet är inte krypterat</string>
   <string name="crypto_msg_encrypted_error">Meddelandet är krypterat, med det finns ett dekrypterings fel</string>
   <string name="crypto_msg_signed_error">Meddelandet är signerat, men signaturen kunde inte verifieras.</string>
@@ -998,4 +1010,6 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="messageview_crypto_warning_error">Det fanns ett <b>fel i det här meddelandets signatur!</b></string>
   <string name="recipient_error_non_ascii">Symboler stöds för närvarande inte.</string>
   <string name="recipient_error_parse_failed">Kan inte tolka adressen!</string>
+  <string name="account_settings_crypto_support_sign_only">Stöd signering av okrypterade meddelanden</string>
+  <string name="error_sign_only_no_encryption">Kryptering otillgänglig i signera-endast läge!</string>
 </resources>

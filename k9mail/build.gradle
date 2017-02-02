@@ -22,12 +22,12 @@ configurations.all {
 
 dependencies {
     compile project(':k9mail-library')
-    compile project(':plugins:Android-PullToRefresh:library')
     compile project(':plugins:HoloColorPicker')
     compile project(':plugins:openpgp-api-lib:openpgp-api')
+    compile "com.squareup.okio:okio:${okioVersion}"
     compile 'commons-io:commons-io:2.4'
     compile "com.android.support:support-v4:${androidSupportLibraryVersion}"
-    compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.16'
+    compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.18'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.splitwise:tokenautocomplete:2.0.7'
@@ -49,8 +49,8 @@ android {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 23113
-        versionName '5.114'
+        versionCode 23114
+        versionName '5.115'
 
         minSdkVersion 15
         targetSdkVersion 22

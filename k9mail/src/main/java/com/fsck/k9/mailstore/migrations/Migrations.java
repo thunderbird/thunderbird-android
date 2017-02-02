@@ -64,6 +64,13 @@ public class Migrations {
                 MigrationTo54.addPreviewTypeColumn(db);
             case 54:
                 MigrationTo55.createFtsSearchTable(db, migrationsHelper);
+            case 55:
+                MigrationTo56.cleanUpFtsTable(db);
+            case 56:
+                MigrationTo57.fixDataLocationForMultipartParts(db);
+            case 57:
+                MigrationTo58.cleanUpOrphanedData(db);
+                MigrationTo58.createDeleteMessageTrigger(db);
         }
     }
 }

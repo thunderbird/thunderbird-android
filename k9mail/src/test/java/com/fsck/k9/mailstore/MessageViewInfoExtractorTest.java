@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore;
 
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.internet.Viewable;
+import com.fsck.k9.mail.internet.Viewable.MessageHeader;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor.ViewableExtractedText;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +47,7 @@ import static org.mockito.Mockito.when;
 public class MessageViewInfoExtractorTest {
     public static final String BODY_TEXT = "K-9 Mail rocks :>";
     public static final String BODY_TEXT_HTML = "K-9 Mail rocks :&gt;";
+    public static final String BODY_TEXT_FLOWED = "K-9 Mail rocks :> \r\nflowed line\r\nnot flowed line";
 
 
     private MessageViewInfoExtractor messageViewInfoExtractor;
@@ -71,6 +74,7 @@ public class MessageViewInfoExtractorTest {
         // Create message
         MimeMessage message = new MimeMessage();
         MimeMessageHelper.setBody(message, body);
+        message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain; format=flowed");
 
         // Prepare fixture
         HtmlSanitizer htmlSanitizer = mock(HtmlSanitizer.class);
@@ -110,6 +114,33 @@ public class MessageViewInfoExtractorTest {
                 "<pre class=\"k9mail\">" +
                 "K-9 Mail rocks :&gt;" +
                 "</pre>";
+
+        assertEquals(expectedText, container.text);
+        assertEquals(expectedHtml, getHtmlBodyText(container.html));
+    }
+
+    @Test
+    public void testTextPlainFormatFlowed() throws MessagingException {
+        // Create text/plain body
+        TextBody body = new TextBody(BODY_TEXT_FLOWED);
+
+        // Create message
+        MimeMessage message = new MimeMessage();
+        MimeMessageHelper.setBody(message, body);
+        message.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain; format=flowed");
+
+        // Extract text
+        List<Part> outputNonViewableParts = new ArrayList<>();
+        ArrayList<Viewable> outputViewableParts = new ArrayList<>();
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+
+        String expectedText = "K-9 Mail rocks :> flowed line\r\n" +
+                "not flowed line";
+        String expectedHtml =
+                "<pre class=\"k9mail\">" +
+                        "K-9 Mail rocks :&gt; flowed line<br />not flowed line" +
+                        "</pre>";
 
         assertEquals(expectedText, container.text);
         assertEquals(expectedHtml, getHtmlBodyText(container.html));
@@ -264,6 +295,71 @@ public class MessageViewInfoExtractorTest {
 
         assertEquals(expectedText, container.text);
         assertEquals(expectedHtml, getHtmlBodyText(container.html));
+    }
+
+    @Test
+    public void testMultipartDigestWithMessages() throws Exception {
+        String data = "Content-Type: multipart/digest; boundary=\"bndry\"\r\n" +
+                "\r\n" +
+                "--bndry\r\n" +
+                "\r\n" +
+                "Content-Type: text/plain\r\n" +
+                "\r\n" +
+                "text body of first message\r\n" +
+                "\r\n" +
+                "--bndry\r\n" +
+                "\r\n" +
+                "Subject: subject of second message\r\n" +
+                "Content-Type: multipart/alternative; boundary=\"bndry2\"\r\n" +
+                "\r\n" +
+                "--bndry2\r\n" +
+                "Content-Type: text/plain\r\n" +
+                "\r\n" +
+                "text part of second message\r\n" +
+                "\r\n" +
+                "--bndry2\r\n" +
+                "Content-Type: text/html\"\r\n" +
+                "\r\n" +
+                "html part of second message\r\n" +
+                "\r\n" +
+                "--bndry2--\r\n" +
+                "\r\n" +
+                "--bndry--\r\n";
+        MimeMessage message = MimeMessage.parseMimeMessage(new ByteArrayInputStream(data.getBytes()), false);
+
+        // Extract text
+        List<Part> outputNonViewableParts = new ArrayList<>();
+        ArrayList<Viewable> outputViewableParts = new ArrayList<>();
+        MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
+
+        String expectedExtractedText = "Subject: (No subject)\r\n" +
+                "\r\n" +
+                "text body of first message\r\n" +
+                "\r\n" +
+                "\r\n" +
+                "------------------------------------------------------------------------\r\n" +
+                "\r\n" +
+                "Subject: subject of second message\r\n" +
+                "\r\n" +
+                "text part of second message\r\n";
+        String expectedHtmlText = "<table style=\"border: 0\">" +
+                "<tr><th style=\"text-align: left; vertical-align: top;\">Subject:</th><td>(No subject)</td></tr>" +
+                "</table>" +
+                "<pre class=\"k9mail\">text body of first message<br /></pre>" +
+                "<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: 1px solid #000\"></p>" +
+                "<table style=\"border: 0\">" +
+                "<tr><th style=\"text-align: left; vertical-align: top;\">Subject:</th><td>subject of second message</td></tr>" +
+                "</table>" +
+                "<pre class=\"k9mail\">text part of second message<br /></pre>";
+
+
+        assertEquals(4, outputViewableParts.size());
+        assertEquals("subject of second message", ((MessageHeader) outputViewableParts.get(2)).getMessage().getSubject());
+
+        ViewableExtractedText firstMessageExtractedText =
+                messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+        assertEquals(expectedExtractedText, firstMessageExtractedText.text);
+        assertEquals(expectedHtmlText, getHtmlBodyText(firstMessageExtractedText.html));
     }
 
     private static String getHtmlBodyText(String htmlText) {

@@ -328,7 +328,7 @@ public class OpenPgpApi {
         }
     }
 
-    private class OpenPgpAsyncTask extends AsyncTask<Void, Integer, Intent> {
+    class OpenPgpAsyncTask extends AsyncTask<Void, Integer, Intent> {
         Intent data;
         InputStream is;
         OutputStream os;
@@ -507,7 +507,7 @@ public class OpenPgpApi {
             return isCancelled;
         }
 
-        private ParcelFileDescriptor startPumpThread() throws IOException {
+        public ParcelFileDescriptor startPumpThread() throws IOException {
             if (writeSidePfd != null) {
                 throw new IllegalStateException("startPumpThread() must only be called once!");
             }

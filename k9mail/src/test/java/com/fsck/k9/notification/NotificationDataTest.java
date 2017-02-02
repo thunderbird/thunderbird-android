@@ -267,6 +267,32 @@ public class NotificationDataTest {
         assertEquals(messageReference8, messageReferences.get(8));
     }
 
+    @Test
+    public void testOverflowNotifications() {
+        MessageReference messageReference0 = createMessageReference("1");
+        MessageReference messageReference1 = createMessageReference("2");
+        MessageReference messageReference2 = createMessageReference("3");
+        MessageReference messageReference3 = createMessageReference("4");
+        MessageReference messageReference4 = createMessageReference("5");
+        MessageReference messageReference5 = createMessageReference("6");
+        MessageReference messageReference6 = createMessageReference("7");
+        MessageReference messageReference7 = createMessageReference("8");
+        MessageReference messageReference8 = createMessageReference("9");
+        
+        notificationData.addNotificationContent(createNotificationContent(messageReference8));
+        notificationData.addNotificationContent(createNotificationContent(messageReference7));
+        notificationData.addNotificationContent(createNotificationContent(messageReference6));
+        notificationData.addNotificationContent(createNotificationContent(messageReference5));
+        notificationData.addNotificationContent(createNotificationContent(messageReference4));
+        notificationData.addNotificationContent(createNotificationContent(messageReference3));
+        notificationData.addNotificationContent(createNotificationContent(messageReference2));
+        notificationData.addNotificationContent(createNotificationContent(messageReference1));
+        notificationData.addNotificationContent(createNotificationContent(messageReference0));
+
+        assertTrue(notificationData.hasSummaryOverflowMessages());
+        assertEquals(4, notificationData.getSummaryOverflowMessagesCount());
+    }
+
     private Account createFakeAccount() {
         Account account = mock(Account.class);
         when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);

@@ -47,17 +47,58 @@
             style="@style/ComposeEditText"
             />
 
-        <ImageView
+        <com.fsck.k9.view.ToolableViewAnimator
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:layout_gravity="center_vertical"
-            android:id="@+id/pgp_inline_indicator"
-            android:src="@drawable/compatibility"
-            android:tint="@color/light_black"
+            android:id="@+id/crypto_special_mode"
             android:visibility="gone"
             tools:visibility="visible"
-            />
+            android:inAnimation="@anim/fade_in"
+            android:outAnimation="@anim/fade_out"
+            custom:previewInitialChild="2">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:src="@drawable/compatibility"
+                android:tint="@color/light_black"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:src="@drawable/status_signature_verified_cutout"
+                android:tint="?attr/openpgp_blue"
+                />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/status_signature_verified_cutout"
+                    android:tint="?attr/openpgp_blue"
+                    />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="right|bottom"
+                    android:src="@drawable/compatibility"
+                    android:tint="@color/light_black"
+                    />
+            </FrameLayout>
+
+        </com.fsck.k9.view.ToolableViewAnimator>
 
 
         <com.fsck.k9.view.ToolableViewAnimator
@@ -205,14 +246,6 @@
 
             </FrameLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/status_signature_verified_cutout"
-                android:tint="?attr/openpgp_blue"
-                />
-
         </com.fsck.k9.view.ToolableViewAnimator>
 
     </LinearLayout>
@@ -279,7 +312,7 @@
                 android:layout_height="match_parent"
                 android:padding="6dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_action_expand_light"
+                android:src="?attr/iconActionExpand"
                 android:id="@+id/recipient_expander"
                 />
 

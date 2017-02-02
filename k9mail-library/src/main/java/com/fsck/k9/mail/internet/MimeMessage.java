@@ -182,7 +182,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public int getSize() {
+    public long getSize() {
         return mSize;
     }
 
@@ -430,7 +430,7 @@ public class MimeMessage extends Message {
 
     @Override
     public InputStream getInputStream() throws MessagingException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
