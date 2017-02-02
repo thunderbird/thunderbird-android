@@ -14,7 +14,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.service.CoreService;
 
 
