@@ -19,15 +19,15 @@ import com.fsck.k9.service.CoreService;
 
 
 public class NotificationActionService extends CoreService {
-    private final static String ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ";
-    private final static String ACTION_DELETE = "ACTION_DELETE";
-    private final static String ACTION_ARCHIVE = "ACTION_ARCHIVE";
-    private final static String ACTION_SPAM = "ACTION_SPAM";
-    private final static String ACTION_DISMISS = "ACTION_DISMISS";
+    private static final String ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ";
+    private static final String ACTION_DELETE = "ACTION_DELETE";
+    private static final String ACTION_ARCHIVE = "ACTION_ARCHIVE";
+    private static final String ACTION_SPAM = "ACTION_SPAM";
+    private static final String ACTION_DISMISS = "ACTION_DISMISS";
 
-    private final static String EXTRA_ACCOUNT_UUID = "accountUuid";
-    private final static String EXTRA_MESSAGE_REFERENCE = "messageReference";
-    private final static String EXTRA_MESSAGE_REFERENCES = "messageReferences";
+    private static final String EXTRA_ACCOUNT_UUID = "accountUuid";
+    private static final String EXTRA_MESSAGE_REFERENCE = "messageReference";
+    private static final String EXTRA_MESSAGE_REFERENCES = "messageReferences";
 
 
     static Intent createMarkMessageAsReadIntent(Context context, MessageReference messageReference) {
