@@ -5,86 +5,61 @@ import java.util.StringTokenizer;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+import android.support.annotation.Nullable;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64;
 
+import static com.fsck.k9.helper.Preconditions.checkNotNull;
+
+
 public class MessageReference implements Parcelable {
+    private static final char IDENTITY_VERSION_1 = '!';
+    private static final String IDENTITY_SEPARATOR = ":";
+
+
     private final String accountUuid;
     private final String folderName;
     private final String uid;
     private final Flag flag;
 
 
-    /**
-     * Initialize a new MessageReference.
-     */
+    @Nullable
+    public static MessageReference parse(String identity) {
+        if (identity == null || identity.length() < 1 || identity.charAt(0) != IDENTITY_VERSION_1) {
+            return null;
+        }
+
+        StringTokenizer tokens = new StringTokenizer(identity.substring(2), IDENTITY_SEPARATOR, false);
+        if (tokens.countTokens() < 3) {
+            return null;
+        }
+
+        String accountUuid = Base64.decode(tokens.nextToken());
+        String folderName = Base64.decode(tokens.nextToken());
+        String uid = Base64.decode(tokens.nextToken());
+
+        if (!tokens.hasMoreTokens()) {
+            return new MessageReference(accountUuid, folderName, uid, null);
+        }
+
+        Flag flag;
+        try {
+            flag = Flag.valueOf(tokens.nextToken());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+
+        return new MessageReference(accountUuid, folderName, uid, flag);
+    }
+
     public MessageReference(String accountUuid, String folderName, String uid, Flag flag) {
-        this.accountUuid = accountUuid;
-        this.folderName = folderName;
-        this.uid = uid;
+        this.accountUuid = checkNotNull(accountUuid);
+        this.folderName = checkNotNull(folderName);
+        this.uid = checkNotNull(uid);
         this.flag = flag;
     }
 
-    // Version identifier for use when serializing. This will allow us to introduce future versions
-    // if we have to rev MessageReference.
-    private static final String IDENTITY_VERSION_1 = "!";
-    private static final String IDENTITY_SEPARATOR = ":";
-
-    /**
-     * Initialize a MessageReference from a serialized identity.
-     * @param identity Serialized identity.
-     * @throws MessagingException On missing or corrupted identity.
-     */
-    public MessageReference(final String identity) throws MessagingException {
-        // Can't be null and must be at least length one so we can check the version.
-        if (identity == null || identity.length() < 1) {
-            throw new MessagingException("Null or truncated MessageReference identity.");
-        }
-
-        String accountUuid = null;
-        String folderName = null;
-        String uid = null;
-        Flag flag = null;
-        // Version check.
-        if (identity.charAt(0) == IDENTITY_VERSION_1.charAt(0)) {
-            // Split the identity, stripping away the first two characters representing the version and delimiter.
-            StringTokenizer tokens = new StringTokenizer(identity.substring(2), IDENTITY_SEPARATOR, false);
-            if (tokens.countTokens() >= 3) {
-                accountUuid = Base64.decode(tokens.nextToken());
-                folderName = Base64.decode(tokens.nextToken());
-                uid = Base64.decode(tokens.nextToken());
-
-                if (tokens.hasMoreTokens()) {
-                    final String flagString = tokens.nextToken();
-                    try {
-                        flag = Flag.valueOf(flagString);
-                    } catch (IllegalArgumentException ie) {
-                        throw new MessagingException("Could not thaw message flag '" + flagString + "'", ie);
-                    }
-                }
-
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Thawed " + toString());
-                }
-            } else {
-                throw new MessagingException("Invalid MessageReference in " + identity + " identity.");
-            }
-        }
-        this.accountUuid = accountUuid;
-        this.folderName = folderName;
-        this.uid = uid;
-        this.flag = flag;
-    }
-
-    /**
-     * Serialize this MessageReference for storing in a K9 identity.  This is a colon-delimited base64 string.
-     *
-     * @return Serialized string.
-     */
     public String toIdentityString() {
         StringBuilder refString = new StringBuilder();
 

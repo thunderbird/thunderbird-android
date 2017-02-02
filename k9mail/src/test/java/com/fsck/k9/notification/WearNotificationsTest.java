@@ -267,7 +267,7 @@ public class WearNotificationsTest {
     }
 
     private MessageReference createMessageReference(int number) {
-        return new MessageReference(null, null, String.valueOf(number), null);
+        return new MessageReference("account", "folder", String.valueOf(number), null);
     }
 
     private PendingIntent createFakePendingIntent(int requestCode) {
