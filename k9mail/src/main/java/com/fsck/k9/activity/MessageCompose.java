@@ -235,7 +235,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         final Intent intent = getIntent();
 
-        relatedMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+        String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
+        relatedMessageReference = MessageReference.parse(messageReferenceString);
 
         final String accountUuid = (relatedMessageReference != null) ?
                 relatedMessageReference.getAccountUuid() :

@@ -135,7 +135,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             MessageReference messageReference) {
         Intent intent = new Intent(context, MessageList.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
         return intent;
     }
 
@@ -437,7 +437,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         if (mMessageReference == null) {
-            mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+            String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
+            mMessageReference = MessageReference.parse(messageReferenceString);
         }
 
         if (mMessageReference != null) {

@@ -16,6 +16,9 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.service.CoreService;
 
+import static com.fsck.k9.activity.MessageReferenceHelper.toMessageReferenceList;
+import static com.fsck.k9.activity.MessageReferenceHelper.toMessageReferenceStringList;
+
 
 public class NotificationActionService extends CoreService {
     private static final String ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ";
@@ -30,18 +33,20 @@ public class NotificationActionService extends CoreService {
 
 
     static Intent createMarkMessageAsReadIntent(Context context, MessageReference messageReference) {
-        String accountUuid = messageReference.getAccountUuid();
-        ArrayList<MessageReference> messageReferences = createSingleItemArrayList(messageReference);
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_MARK_AS_READ);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, createSingleItemArrayList(messageReference));
 
-        return createMarkAllAsReadIntent(context, accountUuid, messageReferences);
+        return intent;
     }
 
     static Intent createMarkAllAsReadIntent(Context context, String accountUuid,
-            ArrayList<MessageReference> messageReferences) {
+            List<MessageReference> messageReferences) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_MARK_AS_READ);
         intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
-        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, toMessageReferenceStringList(messageReferences));
 
         return intent;
     }
@@ -50,7 +55,7 @@ public class NotificationActionService extends CoreService {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_DISMISS);
         intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
 
         return intent;
     }
@@ -64,40 +69,38 @@ public class NotificationActionService extends CoreService {
     }
 
     static Intent createDeleteMessageIntent(Context context, MessageReference messageReference) {
-        String accountUuid = messageReference.getAccountUuid();
-        ArrayList<MessageReference> messageReferences = createSingleItemArrayList(messageReference);
+        Intent intent = new Intent(context, NotificationActionService.class);
+        intent.setAction(ACTION_DELETE);
+        intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, createSingleItemArrayList(messageReference));
 
-        return createDeleteAllMessagesIntent(context, accountUuid, messageReferences);
+        return intent;
     }
 
     public static Intent createDeleteAllMessagesIntent(Context context, String accountUuid,
-            ArrayList<MessageReference> messageReferences) {
-
+            List<MessageReference> messageReferences) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_DELETE);
         intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
-        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, toMessageReferenceStringList(messageReferences));
 
         return intent;
     }
 
     static Intent createArchiveMessageIntent(Context context, MessageReference messageReference) {
-        ArrayList<MessageReference> messageReferences = createSingleItemArrayList(messageReference);
-
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_ARCHIVE);
         intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, createSingleItemArrayList(messageReference));
 
         return intent;
     }
 
-    static Intent createArchiveAllIntent(Context context, Account account,
-            ArrayList<MessageReference> messageReferences) {
+    static Intent createArchiveAllIntent(Context context, Account account, List<MessageReference> messageReferences) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_ARCHIVE);
         intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, toMessageReferenceStringList(messageReferences));
 
         return intent;
     }
@@ -106,16 +109,15 @@ public class NotificationActionService extends CoreService {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_SPAM);
         intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
-        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
 
         return intent;
     }
 
-    private static ArrayList<MessageReference> createSingleItemArrayList(MessageReference messageReference) {
-        ArrayList<MessageReference> messageReferences = new ArrayList<MessageReference>(1);
-        messageReferences.add(messageReference);
-
-        return messageReferences;
+    private static ArrayList<String> createSingleItemArrayList(MessageReference messageReference) {
+        ArrayList<String> messageReferenceStrings = new ArrayList<>(1);
+        messageReferenceStrings.add(messageReference.toIdentityString());
+        return messageReferenceStrings;
     }
 
     @Override
@@ -160,9 +162,12 @@ public class NotificationActionService extends CoreService {
             Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
         }
 
-        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
-            controller.setFlag(account, messageReference.getFolderName(), messageReference.getUid(), Flag.SEEN, true);
+            String folderName = messageReference.getFolderName();
+            String uid = messageReference.getUid();
+            controller.setFlag(account, folderName, uid, Flag.SEEN, true);
         }
     }
 
@@ -171,7 +176,8 @@ public class NotificationActionService extends CoreService {
             Log.i(K9.LOG_TAG, "NotificationActionService deleting messages");
         }
 
-        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         controller.deleteMessages(messageReferences, null);
     }
 
@@ -188,7 +194,8 @@ public class NotificationActionService extends CoreService {
             return;
         }
 
-        List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
             if (controller.isMoveCapable(messageReference)) {
                 String sourceFolderName = messageReference.getFolderName();
@@ -202,11 +209,15 @@ public class NotificationActionService extends CoreService {
             Log.i(K9.LOG_TAG, "NotificationActionService moving messages to spam");
         }
 
-        MessageReference messageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+        String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
+        MessageReference messageReference = MessageReference.parse(messageReferenceString);
+        if (messageReference == null) {
+            Log.w(K9.LOG_TAG, "Invalid message reference: " + messageReferenceString);
+            return;
+        }
 
         String spamFolderName = account.getSpamFolderName();
-        if (spamFolderName != null && !K9.confirmSpam() &&
-                isMovePossible(controller, account, spamFolderName)) {
+        if (spamFolderName != null && !K9.confirmSpam() && isMovePossible(controller, account, spamFolderName)) {
             String sourceFolderName = messageReference.getFolderName();
             controller.moveMessage(account, sourceFolderName, messageReference, spamFolderName);
         }
@@ -214,10 +225,16 @@ public class NotificationActionService extends CoreService {
 
     private void cancelNotifications(Intent intent, Account account, MessagingController controller) {
         if (intent.hasExtra(EXTRA_MESSAGE_REFERENCE)) {
-            MessageReference messageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
-            controller.cancelNotificationForMessage(account, messageReference);
+            String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
+            MessageReference messageReference = MessageReference.parse(messageReferenceString);
+            if (messageReference != null) {
+                controller.cancelNotificationForMessage(account, messageReference);
+            } else {
+                Log.w(K9.LOG_TAG, "Invalid message reference: " + messageReferenceString);
+            }
         } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCES)) {
-            List<MessageReference> messageReferences = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+            List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+            List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
             for (MessageReference messageReference : messageReferences) {
                 controller.cancelNotificationForMessage(account, messageReference);
             }
