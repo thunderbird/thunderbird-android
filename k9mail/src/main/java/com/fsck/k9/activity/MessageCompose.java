@@ -1779,6 +1779,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         REPLY(R.string.compose_title_reply),
         REPLY_ALL(R.string.compose_title_reply_all),
         FORWARD(R.string.compose_title_forward),
+        FORWARD_AS_ATTACHMENT(R.string.compose_title_forward_as_attachment),
         EDIT_DRAFT(R.string.compose_title_compose);
 
         private final int titleResource;
