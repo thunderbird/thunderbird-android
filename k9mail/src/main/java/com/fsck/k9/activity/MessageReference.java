@@ -86,10 +86,7 @@ public class MessageReference {
     }
 
     public boolean equals(String accountUuid, String folderName, String uid) {
-        // noinspection StringEquality, we check for null values here
-        return ((accountUuid == this.accountUuid || (accountUuid != null && accountUuid.equals(this.accountUuid)))
-                && (folderName == this.folderName || (folderName != null && folderName.equals(this.folderName)))
-                && (uid == this.uid || (uid != null && uid.equals(this.uid))));
+        return this.accountUuid.equals(accountUuid) && this.folderName.equals(folderName) && this.uid.equals(uid);
     }
 
     @Override
@@ -97,9 +94,9 @@ public class MessageReference {
         final int MULTIPLIER = 31;
 
         int result = 1;
-        result = MULTIPLIER * result + ((accountUuid == null) ? 0 : accountUuid.hashCode());
-        result = MULTIPLIER * result + ((folderName == null) ? 0 : folderName.hashCode());
-        result = MULTIPLIER * result + ((uid == null) ? 0 : uid.hashCode());
+        result = MULTIPLIER * result + accountUuid.hashCode();
+        result = MULTIPLIER * result + folderName.hashCode();
+        result = MULTIPLIER * result + uid.hashCode();
         return result;
     }
 
