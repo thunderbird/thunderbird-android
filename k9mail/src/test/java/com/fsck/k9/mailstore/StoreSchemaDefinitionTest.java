@@ -3,7 +3,9 @@ package com.fsck.k9.mailstore;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
+import android.app.Application;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,6 +24,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -33,55 +36,45 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class StoreSchemaDefinitionTest {
-    private StoreSchemaDefinition ssd;
-    private LocalStore localStore;
-    private Account account;
-    private LockableDatabase storeDb;
+    private StoreSchemaDefinition storeSchemaDefinition;
 
 
     @Before
-    public void before() throws MessagingException {
+    public void setUp() throws MessagingException {
         ShadowLog.stream = System.out;
-        localStore = mock(LocalStore.class);
-        account = mock(Account.class);
-        storeDb = mock(LockableDatabase.class);
-        when(storeDb.execute(anyBoolean(), any(LockableDatabase.DbCallback.class))).thenReturn(false);
 
-        localStore.database = storeDb;
+        Application application = RuntimeEnvironment.application;
+        K9.app = application;
+        GlobalsHelper.setContext(application);
+        StorageManager.getInstance(application);
 
-        when(localStore.getAccount()).thenReturn(account);
-        when(account.getInboxFolderName()).thenReturn("Inbox");
-        when(account.getLocalStorageProviderId()).thenReturn(StorageManager.InternalStorageProvider.ID);
-        ssd = new StoreSchemaDefinition(localStore);
-        GlobalsHelper.setContext(RuntimeEnvironment.application);
-        K9.app = RuntimeEnvironment.application;
-        StorageManager.getInstance(RuntimeEnvironment.application);
+        storeSchemaDefinition = createStoreSchemaDefinition();
     }
 
     @Test
-    public void getVersion__returnsDBVersion() {
-        int result = ssd.getVersion();
+    public void getVersion_shouldReturnCurrentDatabaseVersion() {
+        int version = storeSchemaDefinition.getVersion();
 
-        assertEquals(LocalStore.DB_VERSION, result);
+        assertEquals(LocalStore.DB_VERSION, version);
     }
 
     @Test
-    public void doDbUpgrade_withEmptyDB_setsDBVersion() {
-        SQLiteDatabase sqliteDb = SQLiteDatabase.create(null);
+    public void doDbUpgrade_withEmptyDatabase_shouldSetsDatabaseVersion() {
+        SQLiteDatabase database = SQLiteDatabase.create(null);
 
-        ssd.doDbUpgrade(sqliteDb);
+        storeSchemaDefinition.doDbUpgrade(database);
 
-        assertEquals(LocalStore.DB_VERSION, sqliteDb.getVersion());
+        assertEquals(LocalStore.DB_VERSION, database.getVersion());
     }
 
     @Test
-    public void doDbUpgrade_withBadDatabase_throwsErrorInDebug() {
+    public void doDbUpgrade_withBadDatabase_shouldThrowInDebugBuild() {
         if (BuildConfig.DEBUG) {
-            SQLiteDatabase sqliteDb = SQLiteDatabase.create(null);
-            sqliteDb.setVersion(29);
+            SQLiteDatabase database = SQLiteDatabase.create(null);
+            database.setVersion(29);
 
             try {
-                ssd.doDbUpgrade(sqliteDb);
+                storeSchemaDefinition.doDbUpgrade(database);
                 fail("Expected Error");
             } catch (Error e) {
                 assertEquals("Exception while upgrading database", e.getMessage());
@@ -90,91 +83,69 @@ public class StoreSchemaDefinitionTest {
     }
 
     @Test
-    public void doDbUpgrade_withV29_upgradesDBToLatestVersion() {
-        SQLiteDatabase sqliteDb = SQLiteDatabase.create(null);
-        createV29Database(sqliteDb);
+    public void doDbUpgrade_withV29_shouldUpgradeDatabaseToLatestVersion() {
+        SQLiteDatabase database = createV29Database();
 
-        ssd.doDbUpgrade(sqliteDb);
+        storeSchemaDefinition.doDbUpgrade(database);
 
-        assertEquals(LocalStore.DB_VERSION, sqliteDb.getVersion());
+        assertEquals(LocalStore.DB_VERSION, database.getVersion());
     }
 
     @Test
-    public void doDbUpgrade_withV29_upgradesDB() {
-        SQLiteDatabase sqliteDb = SQLiteDatabase.create(null);
-        createV29Database(sqliteDb);
-        ContentValues data = new ContentValues();
-        data.put("subject", "Test Email");
+    public void doDbUpgrade_withV29() {
+        SQLiteDatabase database = createV29Database();
+        insertMessageWithSubject(database, "Test Email");
 
-        System.out.println(sqliteDb.getVersion());
+        storeSchemaDefinition.doDbUpgrade(database);
 
-        long returnVal = sqliteDb.insert("messages", null, data);
-
-        if (returnVal == -1) {
-            fail("Error occured");
-        }
-
-        ssd.doDbUpgrade(sqliteDb);
-        Cursor c = sqliteDb.query("messages", new String[] { "subject" }, null, null, null, null, null);
-        boolean isNotEmpty = c.moveToFirst();
-        assertTrue(isNotEmpty);
+        assertMessageWithSubjectExists(database, "Test Email");
     }
 
     @Test
-    public void doDbUpgrade_fromV29_resultsInSameTables() {
-        SQLiteDatabase sqliteDbNew = SQLiteDatabase.create(null);
-        ssd.doDbUpgrade(sqliteDbNew);
-        ArrayList<String> tablesInNewDatabase = tablesInDatabase(sqliteDbNew);
-        Collections.sort(tablesInNewDatabase);
+    public void doDbUpgrade_fromV29_shouldResultInSameTables() {
+        SQLiteDatabase newDatabase = createNewDatabase();
+        SQLiteDatabase upgradedDatabase = createV29Database();
 
-        SQLiteDatabase sqliteDbUpgrade = SQLiteDatabase.create(null);
-        createV29Database(sqliteDbUpgrade);
-        ssd.doDbUpgrade(sqliteDbUpgrade);
-        ArrayList<String> tablesInUpgradedDatabase = tablesInDatabase(sqliteDbUpgrade);
-        Collections.sort(tablesInUpgradedDatabase);
+        storeSchemaDefinition.doDbUpgrade(upgradedDatabase);
 
-        assertEquals(tablesInNewDatabase, tablesInUpgradedDatabase);
+        assertDatabaseTablesEquals(newDatabase, upgradedDatabase);
     }
 
     @Test
-    public void doDbUpgrade_fromV29_resultsInSameTriggers() {
-        SQLiteDatabase sqliteDbNew = SQLiteDatabase.create(null);
-        ssd.doDbUpgrade(sqliteDbNew);
-        ArrayList<String> triggersInNewDatabase = triggersInDatabase(sqliteDbNew);
-        Collections.sort(triggersInNewDatabase);
+    public void doDbUpgrade_fromV29_shouldResultInSameTriggers() {
+        SQLiteDatabase newDatabase = createNewDatabase();
+        SQLiteDatabase upgradedDatabase = createV29Database();
 
-        SQLiteDatabase sqliteDbUpgrade = SQLiteDatabase.create(null);
-        createV29Database(sqliteDbUpgrade);
-        ssd.doDbUpgrade(sqliteDbUpgrade);
-        ArrayList<String> triggersInUpgradedDatabase = triggersInDatabase(sqliteDbUpgrade);
-        Collections.sort(triggersInUpgradedDatabase);
+        storeSchemaDefinition.doDbUpgrade(upgradedDatabase);
 
-        assertEquals(triggersInNewDatabase, triggersInUpgradedDatabase);
+        assertDatabaseTriggersEquals(newDatabase, upgradedDatabase);
     }
 
     @Test
-    public void doDbUpgrade_fromV29_resultsInSameIndexes() {
-        SQLiteDatabase sqliteDbNew = SQLiteDatabase.create(null);
-        ssd.doDbUpgrade(sqliteDbNew);
-        ArrayList<String> indexesInNewDatabase = indexesInDatabase(sqliteDbNew);
-        Collections.sort(indexesInNewDatabase);
+    public void doDbUpgrade_fromV29_shouldResultInSameIndexes() {
+        SQLiteDatabase newDatabase = createNewDatabase();
+        SQLiteDatabase upgradedDatabase = createV29Database();
 
-        SQLiteDatabase sqliteDbUpgrade = SQLiteDatabase.create(null);
-        createV29Database(sqliteDbUpgrade);
-        ssd.doDbUpgrade(sqliteDbUpgrade);
-        ArrayList<String> indexesInUpgradedDatabase = indexesInDatabase(sqliteDbUpgrade);
-        Collections.sort(indexesInUpgradedDatabase);
+        storeSchemaDefinition.doDbUpgrade(upgradedDatabase);
 
-        assertEquals(indexesInNewDatabase, indexesInUpgradedDatabase);
+        assertDatabaseIndexesEquals(newDatabase, upgradedDatabase);
     }
 
-    private void createV29Database(SQLiteDatabase db) {
+
+    private SQLiteDatabase createV29Database() {
+        SQLiteDatabase database = SQLiteDatabase.create(null);
+        initV29Database(database);
+        return database;
+    }
+
+    private void initV29Database(SQLiteDatabase db) {
         /*
          * There is no precise definition of a v29 database. This function approximates it by creating a database
          * that could be upgraded to the latest database as of v58
          */
 
         db.beginTransaction();
+
         db.execSQL("CREATE TABLE folders (" +
                 "id INTEGER PRIMARY KEY," +
                 "name TEXT, " +
@@ -186,7 +157,6 @@ public class StoreSchemaDefinitionTest {
                 "last_pushed INTEGER " +
                 ")");
 
-        db.execSQL("CREATE INDEX folder_name ON folders (name)");
         db.execSQL("CREATE TABLE messages (" +
                 "id INTEGER PRIMARY KEY, " +
                 "folder_id INTEGER, " +
@@ -208,7 +178,8 @@ public class StoreSchemaDefinitionTest {
                 "message_part_id INTEGER" +
                 ")");
 
-        db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, " +
+        db.execSQL("CREATE TABLE attachments (" +
+                "id INTEGER PRIMARY KEY, " +
                 "size INTEGER, " +
                 "name TEXT, " +
                 "mime_type TEXT, " +
@@ -216,13 +187,13 @@ public class StoreSchemaDefinitionTest {
                 "content_uri TEXT, " +
                 "message_id INTEGER" +
                 ")");
-        db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, " +
+
+        db.execSQL("CREATE TABLE headers (" +
+                "id INTEGER PRIMARY KEY, " +
                 "name TEXT, " +
                 "value TEXT, " +
                 "message_id INTEGER" +
                 ")");
-
-        db.execSQL("CREATE INDEX msg_uid ON messages (uid, folder_id)");
 
         db.execSQL("CREATE TABLE threads (" +
                 "id INTEGER PRIMARY KEY, " +
@@ -230,10 +201,17 @@ public class StoreSchemaDefinitionTest {
                 "root INTEGER, " +
                 "parent INTEGER" +
                 ")");
+
+        db.execSQL("CREATE TABLE pending_commands (" +
+                "id INTEGER PRIMARY KEY, " +
+                "command TEXT, " +
+                "arguments TEXT" +
+                ")");
+
+        db.execSQL("CREATE INDEX msg_uid ON messages (uid, folder_id)");
+        db.execSQL("CREATE INDEX folder_name ON folders (name)");
         db.execSQL("CREATE INDEX threads_message_id ON threads (message_id)");
-
         db.execSQL("CREATE INDEX threads_root ON threads (root)");
-
         db.execSQL("CREATE INDEX threads_parent ON threads (parent)");
 
         db.execSQL("CREATE TRIGGER set_thread_root " +
@@ -242,10 +220,11 @@ public class StoreSchemaDefinitionTest {
                 "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
                 "END");
 
-        db.execSQL("CREATE TABLE pending_commands " +
-                "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
-
-        db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
+        db.execSQL("CREATE TRIGGER delete_folder " +
+                "BEFORE DELETE ON folders " +
+                "BEGIN " +
+                "DELETE FROM messages WHERE old.id = folder_id; " +
+                "END;");
 
         db.execSQL("CREATE TRIGGER delete_message " +
                 "BEFORE DELETE ON messages " +
@@ -257,31 +236,112 @@ public class StoreSchemaDefinitionTest {
         db.setVersion(29);
 
         db.setTransactionSuccessful();
-
         db.endTransaction();
     }
 
-    private ArrayList<String> tablesInDatabase(SQLiteDatabase db) {
+    private void assertMessageWithSubjectExists(SQLiteDatabase database, String subject) {
+        Cursor cursor = database.query("messages", new String[] { "subject" }, null, null, null, null, null);
+        try {
+            assertTrue(cursor.moveToFirst());
+            assertEquals(subject, cursor.getString(0));
+        } finally {
+            cursor.close();
+        }
+    }
+
+    private void assertDatabaseTablesEquals(SQLiteDatabase expected, SQLiteDatabase actual) {
+        List<String> tablesInNewDatabase = tablesInDatabase(expected);
+        Collections.sort(tablesInNewDatabase);
+
+        List<String> tablesInUpgradedDatabase = tablesInDatabase(actual);
+        Collections.sort(tablesInUpgradedDatabase);
+
+        assertEquals(tablesInNewDatabase, tablesInUpgradedDatabase);
+    }
+
+    private void assertDatabaseTriggersEquals(SQLiteDatabase expected, SQLiteDatabase actual) {
+        List<String> triggersInNewDatabase = triggersInDatabase(expected);
+        Collections.sort(triggersInNewDatabase);
+
+        List<String> triggersInUpgradedDatabase = triggersInDatabase(actual);
+        Collections.sort(triggersInUpgradedDatabase);
+
+        assertEquals(triggersInNewDatabase, triggersInUpgradedDatabase);
+    }
+
+    private void assertDatabaseIndexesEquals(SQLiteDatabase expected, SQLiteDatabase actual) {
+        List<String> indexesInNewDatabase = indexesInDatabase(expected);
+        Collections.sort(indexesInNewDatabase);
+
+        List<String> indexesInUpgradedDatabase = indexesInDatabase(actual);
+        Collections.sort(indexesInUpgradedDatabase);
+
+        assertEquals(indexesInNewDatabase, indexesInUpgradedDatabase);
+    }
+
+    private List<String> tablesInDatabase(SQLiteDatabase db) {
         return objectsInDatabase(db, "table");
     }
 
-    private ArrayList<String> triggersInDatabase(SQLiteDatabase db) {
+    private List<String> triggersInDatabase(SQLiteDatabase db) {
         return objectsInDatabase(db, "trigger");
     }
 
-    private ArrayList<String> indexesInDatabase(SQLiteDatabase db) {
+    private List<String> indexesInDatabase(SQLiteDatabase db) {
         return objectsInDatabase(db, "index");
     }
 
-    private ArrayList<String> objectsInDatabase(SQLiteDatabase db, String type) {
-        ArrayList<String> tables = new ArrayList<>();
-        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type = '" + type + "'", null);
-        if (c.moveToFirst()) {
-            while (!c.isAfterLast()) {
-                tables.add(c.getString(c.getColumnIndex("name")));
-                c.moveToNext();
+    private List<String> objectsInDatabase(SQLiteDatabase db, String type) {
+        List<String> tables = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type = ?", new String[] { type });
+        try {
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    tables.add(cursor.getString(cursor.getColumnIndex("name")));
+                    cursor.moveToNext();
+                }
             }
+        } finally {
+            cursor.close();
         }
+
         return tables;
+    }
+
+    private void insertMessageWithSubject(SQLiteDatabase database, String subject) {
+        ContentValues data = new ContentValues();
+        data.put("subject", subject);
+        long rowId = database.insert("messages", null, data);
+        assertNotEquals(-1, rowId);
+    }
+
+    private StoreSchemaDefinition createStoreSchemaDefinition() throws MessagingException {
+        Account account = createAccount();
+        LockableDatabase lockableDatabase = createLockableDatabase();
+
+        LocalStore localStore = mock(LocalStore.class);
+        localStore.database = lockableDatabase;
+        when(localStore.getAccount()).thenReturn(account);
+
+        return new StoreSchemaDefinition(localStore);
+    }
+
+    private LockableDatabase createLockableDatabase() throws MessagingException {
+        LockableDatabase lockableDatabase = mock(LockableDatabase.class);
+        when(lockableDatabase.execute(anyBoolean(), any(LockableDatabase.DbCallback.class))).thenReturn(false);
+        return lockableDatabase;
+    }
+
+    private Account createAccount() {
+        Account account = mock(Account.class);
+        when(account.getInboxFolderName()).thenReturn("Inbox");
+        when(account.getLocalStorageProviderId()).thenReturn(StorageManager.InternalStorageProvider.ID);
+        return account;
+    }
+
+    private SQLiteDatabase createNewDatabase() {
+        SQLiteDatabase database = SQLiteDatabase.create(null);
+        storeSchemaDefinition.doDbUpgrade(database);
+        return database;
     }
 }
