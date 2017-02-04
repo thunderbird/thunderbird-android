@@ -1,4 +1,4 @@
-package com.fsck.k9.message;
+package com.fsck.k9.message.quote;
 
 import java.io.Serializable;
 

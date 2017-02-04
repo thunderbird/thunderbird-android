@@ -1,4 +1,4 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.message.html;
 
 
 import java.io.BufferedWriter;
@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.fsck.k9.message.html.HtmlConverter;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;

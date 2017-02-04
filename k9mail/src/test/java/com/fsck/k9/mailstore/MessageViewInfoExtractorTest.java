@@ -12,8 +12,8 @@ import android.app.Application;
 
 import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.activity.K9ActivityCommon;
-import com.fsck.k9.helper.HtmlSanitizer;
-import com.fsck.k9.helper.HtmlSanitizerHelper;
+import com.fsck.k9.message.html.HtmlSanitizer;
+import com.fsck.k9.message.html.HtmlSanitizerHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;

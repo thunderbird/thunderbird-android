@@ -13,8 +13,11 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
-import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.helper.QuotedMessageHelper;
+import com.fsck.k9.message.extractors.BodyTextExtractor;
+import com.fsck.k9.message.html.HtmlConverter;
+import com.fsck.k9.message.quote.HtmlQuoteCreator;
+import com.fsck.k9.message.quote.TextQuoteCreator;
+import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
@@ -22,10 +25,11 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.IdentityField;
-import com.fsck.k9.message.InsertableHtmlContent;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.signature.TextSignatureRemover;
 
 
 public class QuotedMessagePresenter {
@@ -98,17 +102,17 @@ public class QuotedMessagePresenter {
 
         // Handle the original message in the reply
         // If we already have sourceMessageBody, use that.  It's pre-populated if we've got crypto going on.
-        String content = QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.rootPart, quotedTextFormat);
+        String content = BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, quotedTextFormat);
 
         if (quotedTextFormat == SimpleMessageFormat.HTML) {
             // Strip signature.
             // closing tags such as </div>, </span>, </table>, </pre> will be cut off.
             if (account.isStripSignature() && (action == Action.REPLY || action == Action.REPLY_ALL)) {
-                content = QuotedMessageHelper.stripSignatureForHtmlMessage(content);
+                content = HtmlSignatureRemover.stripSignature(content);
             }
 
             // Add the HTML reply header to the top of the content.
-            quotedHtmlContent = QuotedMessageHelper.quoteOriginalHtmlMessage(
+            quotedHtmlContent = HtmlQuoteCreator.quoteOriginalHtmlMessage(
                     resources, messageViewInfo.message, content, quoteStyle);
 
             // Load the message with the reply header. TODO replace with MessageViewInfo data
@@ -116,16 +120,16 @@ public class QuotedMessagePresenter {
                     AttachmentResolver.createFromPart(messageViewInfo.rootPart));
 
             // TODO: Also strip the signature from the text/plain part
-            view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(resources, messageViewInfo.message,
-                    QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT),
+            view.setQuotedText(TextQuoteCreator.quoteOriginalTextMessage(resources, messageViewInfo.message,
+                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT),
                     quoteStyle, account.getQuotePrefix()));
 
         } else if (quotedTextFormat == SimpleMessageFormat.TEXT) {
             if (account.isStripSignature() && (action == Action.REPLY || action == Action.REPLY_ALL)) {
-                content = QuotedMessageHelper.stripSignatureForTextMessage(content);
+                content = TextSignatureRemover.stripSignature(content);
             }
 
-            view.setQuotedText(QuotedMessageHelper.quoteOriginalTextMessage(
+            view.setQuotedText(TextQuoteCreator.quoteOriginalTextMessage(
                     resources, messageViewInfo.message, content, quoteStyle, account.getQuotePrefix()));
         }
 
@@ -234,7 +238,7 @@ public class QuotedMessagePresenter {
             // composition window. If that's the case, try and convert it to text to
             // match the behavior in text mode.
             view.setMessageContentCharacters(
-                    QuotedMessageHelper.getBodyTextFromMessage(messageViewInfo.message, SimpleMessageFormat.TEXT));
+                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.message, SimpleMessageFormat.TEXT));
             forcePlainText = true;
 
             showOrHideQuotedText(quotedMode);

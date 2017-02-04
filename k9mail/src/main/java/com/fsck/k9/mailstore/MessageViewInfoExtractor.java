@@ -15,8 +15,8 @@ import android.util.Log;
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.helper.HtmlConverter;
-import com.fsck.k9.helper.HtmlSanitizer;
+import com.fsck.k9.message.html.HtmlConverter;
+import com.fsck.k9.message.html.HtmlSanitizer;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -211,7 +211,7 @@ public class MessageViewInfoExtractor {
      * Use the contents of a {@link com.fsck.k9.mail.internet.Viewable} to create the HTML to be displayed.
      *
      * <p>
-     * This will use {@link com.fsck.k9.helper.HtmlConverter#textToHtml(String)} to convert plain text parts
+     * This will use {@link HtmlConverter#textToHtml(String)} to convert plain text parts
      * to HTML if necessary.
      * </p>
      *
