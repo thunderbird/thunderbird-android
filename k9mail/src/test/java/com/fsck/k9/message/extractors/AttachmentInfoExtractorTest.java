@@ -46,14 +46,14 @@ public class AttachmentInfoExtractorTest {
     @Before
     public void setUp() throws Exception {
         context = RuntimeEnvironment.application;
-        attachmentInfoExtractor = new AttachmentInfoExtractor(context);
+        attachmentInfoExtractor = new AttachmentInfoExtractor();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void extractInfo__withGenericPart_shouldThrow() throws Exception {
         Part part = mock(Part.class);
 
-        attachmentInfoExtractor.extractAttachmentInfo(part);
+        attachmentInfoExtractor.extractAttachmentInfo(part, context);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class AttachmentInfoExtractorTest {
         LocalBodyPart part = new LocalBodyPart(TEST_ACCOUNT_UUID, null, TEST_ID, TEST_SIZE);
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, TEST_MIME_TYPE);
 
-        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part, context);
 
         assertEquals(AttachmentProvider.getAttachmentUri(TEST_ACCOUNT_UUID, TEST_ID), attachmentViewInfo.internalUri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
@@ -184,10 +184,10 @@ public class AttachmentInfoExtractorTest {
 
     @Test
     public void extractInfo__withDeferredFileBody() throws Exception {
-        attachmentInfoExtractor = new AttachmentInfoExtractor(context) {
+        attachmentInfoExtractor = new AttachmentInfoExtractor() {
             @Nullable
             @Override
-            protected Uri getDecryptedFileProviderUri(DeferredFileBody decryptedTempFileBody, String mimeType) {
+            protected Uri getDecryptedFileProviderUri(DeferredFileBody decryptedTempFileBody, String mimeType, Context context) {
                 return TEST_URI;
             }
         };
@@ -200,7 +200,7 @@ public class AttachmentInfoExtractorTest {
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, TEST_MIME_TYPE);
 
 
-        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part, context);
 
 
         assertEquals(TEST_URI, attachmentViewInfo.internalUri);

@@ -47,29 +47,26 @@ public class MessageViewInfoExtractor {
     private static final String FILENAME_SUFFIX = " ";
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
 
-
-    private final Context context;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
     private final HtmlSanitizer htmlSanitizer;
 
 
     public static MessageViewInfoExtractor getInstance() {
-        Context context = Globals.getContext();
-        AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
+        AttachmentInfoExtractor attachmentInfoExtractor = new AttachmentInfoExtractor();
         HtmlSanitizer htmlSanitizer = HtmlSanitizer.getInstance();
-        return new MessageViewInfoExtractor(context, attachmentInfoExtractor, htmlSanitizer);
+        return new MessageViewInfoExtractor(attachmentInfoExtractor, htmlSanitizer);
     }
 
     @VisibleForTesting
-    MessageViewInfoExtractor(Context context, AttachmentInfoExtractor attachmentInfoExtractor,
+    MessageViewInfoExtractor(AttachmentInfoExtractor attachmentInfoExtractor,
             HtmlSanitizer htmlSanitizer) {
-        this.context = context;
         this.attachmentInfoExtractor = attachmentInfoExtractor;
         this.htmlSanitizer = htmlSanitizer;
     }
 
     @WorkerThread
-    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations annotations)
+    public MessageViewInfo extractMessageForView(
+            Message message, @Nullable MessageCryptoAnnotations annotations, Context context)
             throws MessagingException {
         Part rootPart;
         CryptoResultAnnotation cryptoResultAnnotation;
@@ -91,17 +88,17 @@ public class MessageViewInfoExtractor {
 
         List<AttachmentViewInfo> attachmentInfos = new ArrayList<>();
         ViewableExtractedText viewable = extractViewableAndAttachments(
-                Collections.singletonList(rootPart), attachmentInfos);
+                Collections.singletonList(rootPart), attachmentInfos, context);
 
         List<AttachmentViewInfo> extraAttachmentInfos = new ArrayList<>();
         String extraViewableText = null;
         if (extraParts != null) {
             ViewableExtractedText extraViewable =
-                    extractViewableAndAttachments(extraParts, extraAttachmentInfos);
+                    extractViewableAndAttachments(extraParts, extraAttachmentInfos, context);
             extraViewableText = extraViewable.text;
         }
 
-        AttachmentResolver attachmentResolver = AttachmentResolver.createFromPart(rootPart);
+        AttachmentResolver attachmentResolver = AttachmentResolver.createFromPart(rootPart, context);
 
         boolean isMessageIncomplete = !message.isSet(Flag.X_DOWNLOADED_FULL) ||
                 MessageExtractor.hasMissingParts(message);
@@ -111,7 +108,7 @@ public class MessageViewInfoExtractor {
     }
 
     private ViewableExtractedText extractViewableAndAttachments(List<Part> parts,
-            List<AttachmentViewInfo> attachmentInfos) throws MessagingException {
+            List<AttachmentViewInfo> attachmentInfos, Context context) throws MessagingException {
         ArrayList<Viewable> viewableParts = new ArrayList<>();
         ArrayList<Part> attachments = new ArrayList<>();
 
@@ -119,8 +116,8 @@ public class MessageViewInfoExtractor {
             MessageExtractor.findViewablesAndAttachments(part, viewableParts, attachments);
         }
 
-        attachmentInfos.addAll(attachmentInfoExtractor.extractAttachmentInfoForView(attachments));
-        return extractTextFromViewables(viewableParts);
+        attachmentInfos.addAll(attachmentInfoExtractor.extractAttachmentInfoForView(attachments, context));
+        return extractTextFromViewables(viewableParts, context);
     }
 
     /**
@@ -133,7 +130,7 @@ public class MessageViewInfoExtractor {
      *          In case of an error.
      */
     @VisibleForTesting
-    ViewableExtractedText extractTextFromViewables(List<Viewable> viewables)
+    ViewableExtractedText extractTextFromViewables(List<Viewable> viewables, Context context)
             throws MessagingException {
         try {
             // Collect all viewable parts
@@ -161,10 +158,10 @@ public class MessageViewInfoExtractor {
                     Message innerMessage =  header.getMessage();
 
                     addTextDivider(text, containerPart, !hideDivider);
-                    addMessageHeaderText(text, innerMessage);
+                    addMessageHeaderText(text, innerMessage, context);
 
                     addHtmlDivider(html, containerPart, !hideDivider);
-                    addMessageHeaderHtml(html, innerMessage);
+                    addMessageHeaderHtml(html, innerMessage, context);
 
                     hideDivider = true;
                 } else if (viewable instanceof Alternative) {
@@ -378,7 +375,7 @@ public class MessageViewInfoExtractor {
      * @throws com.fsck.k9.mail.MessagingException
      *          In case of an error.
      */
-    private void addMessageHeaderText(StringBuilder text, Message message)
+    private void addMessageHeaderText(StringBuilder text, Message message, Context context)
             throws MessagingException {
         // From: <sender>
         Address[] from = message.getFrom();
@@ -439,7 +436,7 @@ public class MessageViewInfoExtractor {
      * @throws com.fsck.k9.mail.MessagingException
      *          In case of an error.
      */
-    private void addMessageHeaderHtml(StringBuilder html, Message message)
+    private void addMessageHeaderHtml(StringBuilder html, Message message, Context context)
             throws MessagingException {
 
         html.append("<table style=\"border: 0\">");
