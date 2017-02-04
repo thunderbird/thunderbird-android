@@ -158,6 +158,57 @@ public class MessageReferenceTest {
         assertEqualsReturnsFalseSymmetrically(messageReferenceOne, messageReferenceTwo);
     }
 
+    @Test
+    public void alternativeEquals() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
+
+        boolean equalsResult = messageReference.equals("account", "folder", "uid");
+
+        assertTrue(equalsResult);
+    }
+
+    @Test
+    public void equals_withNullAccount_shouldReturnFalse() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
+
+        boolean equalsResult = messageReference.equals(null, "folder", "uid");
+
+        assertFalse(equalsResult);
+    }
+
+    @Test
+    public void equals_withNullFolder_shouldReturnFalse() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
+
+        boolean equalsResult = messageReference.equals("account", null, "uid");
+
+        assertFalse(equalsResult);
+    }
+
+    @Test
+    public void equals_withNullUid_shouldReturnFalse() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
+
+        boolean equalsResult = messageReference.equals("account", "folder", null);
+
+        assertFalse(equalsResult);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void constructor_withNullAccount_shouldThrow() throws Exception {
+        createMessageReference(null, "folder", "uid");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void constructor_withNullFolder_shouldThrow() throws Exception {
+        createMessageReference("account", null, "uid");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void constructor_withNullUid_shouldThrow() throws Exception {
+        createMessageReference("account", "folder", null);
+    }
+
     private MessageReference createMessageReference(String accountUuid, String folderName, String uid) {
         return new MessageReference(accountUuid, folderName, uid, null);
     }
