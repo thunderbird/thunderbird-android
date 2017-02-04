@@ -1840,7 +1840,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     private void excludeSpecialFolder(LocalSearch search, String folderName) {
-        if (!K9.FOLDER_NONE.equals(folderName)) {
+        if (folderName != null && !K9.FOLDER_NONE.equals(folderName)) {
             search.and(SearchField.FOLDER, folderName, Attribute.NOT_EQUALS);
         }
     }
