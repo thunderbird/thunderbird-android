@@ -31,7 +31,7 @@ public class EmailProviderCacheCursor extends CursorWrapper {
     public EmailProviderCacheCursor(String accountUuid, Cursor cursor, Context context) {
         super(cursor);
 
-        mCache = EmailProviderCache.getCache(accountUuid, context);
+        mCache = EmailProviderCache.getCache(accountUuid);
 
         mMessageIdColumn = cursor.getColumnIndex(MessageColumns.ID);
         mFolderIdColumn = cursor.getColumnIndex(MessageColumns.FOLDER_ID);

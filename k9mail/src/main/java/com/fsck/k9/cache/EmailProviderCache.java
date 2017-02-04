@@ -21,15 +21,10 @@ import com.fsck.k9.provider.EmailProvider;
 public class EmailProviderCache {
     public static final String ACTION_CACHE_UPDATED = "EmailProviderCache.ACTION_CACHE_UPDATED";
 
-    private static Context sContext;
     private static Map<String, EmailProviderCache> sInstances =
             new HashMap<String, EmailProviderCache>();
 
-    public static synchronized EmailProviderCache getCache(String accountUuid, Context context) {
-
-        if (sContext == null) {
-            sContext = context.getApplicationContext();
-        }
+    public static synchronized EmailProviderCache getCache(String accountUuid) {
 
         EmailProviderCache instance = sInstances.get(accountUuid);
         if (instance == null) {
@@ -65,7 +60,7 @@ public class EmailProviderCache {
         }
     }
 
-    public void setValueForMessages(List<Long> messageIds, String columnName, String value) {
+    public void setValueForMessages(List<Long> messageIds, String columnName, String value, Context context) {
         synchronized (mMessageCache) {
             for (Long messageId : messageIds) {
                 Map<String, String> map = mMessageCache.get(messageId);
@@ -77,10 +72,10 @@ public class EmailProviderCache {
             }
         }
 
-        notifyChange();
+        notifyChange(context);
     }
 
-    public void setValueForThreads(List<Long> threadRootIds, String columnName, String value) {
+    public void setValueForThreads(List<Long> threadRootIds, String columnName, String value, Context context) {
         synchronized (mThreadCache) {
             for (Long threadRootId : threadRootIds) {
                 Map<String, String> map = mThreadCache.get(threadRootId);
@@ -92,7 +87,7 @@ public class EmailProviderCache {
             }
         }
 
-        notifyChange();
+        notifyChange(context);
     }
 
     public void removeValueForMessages(List<Long> messageIds, String columnName) {
@@ -123,7 +118,7 @@ public class EmailProviderCache {
         }
     }
 
-    public void hideMessages(List<LocalMessage> messages) {
+    public void hideMessages(List<LocalMessage> messages, Context context) {
         synchronized (mHiddenMessageCache) {
             for (LocalMessage message : messages) {
                 long messageId = message.getId();
@@ -131,7 +126,7 @@ public class EmailProviderCache {
             }
         }
 
-        notifyChange();
+        notifyChange(context);
     }
 
     public boolean isMessageHidden(Long messageId, long folderId) {
@@ -167,11 +162,11 @@ public class EmailProviderCache {
      * {@code MessageListFragment} can update the view without reloading the cursor.
      * </p>
      */
-    private void notifyChange() {
-        LocalBroadcastManager.getInstance(sContext).sendBroadcast(new Intent(ACTION_CACHE_UPDATED));
+    private void notifyChange(Context context) {
+        LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(ACTION_CACHE_UPDATED));
 
         Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + mAccountUuid +
                 "/messages");
-        sContext.getContentResolver().notifyChange(uri, null);
+        context.getContentResolver().notifyChange(uri, null);
     }
 }
