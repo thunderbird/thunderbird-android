@@ -153,7 +153,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 58;
+    public static final int DB_VERSION = 59;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -256,6 +256,10 @@ public class LocalStore extends Store implements Serializable {
 
     public void switchLocalStorage(final String newStorageProviderId) throws MessagingException {
         database.switchProvider(newStorageProviderId);
+    }
+
+    Context getContext() {
+        return context;
     }
 
     protected Account getAccount() {

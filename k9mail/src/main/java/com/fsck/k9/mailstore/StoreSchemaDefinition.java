@@ -238,7 +238,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
         @Override
         public Context getContext() {
-            return localStore.context;
+            return localStore.getContext();
         }
 
         @Override
