@@ -69,7 +69,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private LayoutInflater mInflater;
     private AttachmentViewCallback attachmentCallback;
     private SavedState mSavedState;
-    private ClipboardManager mClipboardManager;
     private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
     private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
     private boolean hasHiddenExternalImages;
@@ -100,7 +99,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
         Context context = getContext();
         mInflater = LayoutInflater.from(context);
-        mClipboardManager = ClipboardManager.getInstance(context);
     }
 
     @Override
@@ -139,7 +137,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                             case MENU_ITEM_LINK_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_link_clipboard_label);
-                                mClipboardManager.setText(label, url);
+                                ClipboardManager.setText(MessageContainerView.this.getContext(), label, url);
                                 break;
                             }
                         }
@@ -198,7 +196,8 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                             case MENU_ITEM_IMAGE_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_image_clipboard_label);
-                                mClipboardManager.setText(label, uri.toString());
+                                ClipboardManager.setText(
+                                        MessageContainerView.this.getContext(), label, uri.toString());
                                 break;
                             }
                         }
@@ -247,7 +246,9 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                             case MENU_ITEM_PHONE_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_phone_clipboard_label);
-                                mClipboardManager.setText(label, phoneNumber);
+                                ClipboardManager.setText(
+                                        MessageContainerView.this.getContext(),
+                                        label, phoneNumber);
                                 break;
                             }
                         }
@@ -292,7 +293,8 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                             case MENU_ITEM_EMAIL_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_email_clipboard_label);
-                                mClipboardManager.setText(label, email);
+                                ClipboardManager.setText(MessageContainerView.this.getContext(),
+                                        label, email);
                                 break;
                             }
                         }

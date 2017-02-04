@@ -197,8 +197,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private void onAddAddressesToClipboard(Address[] addresses) {
         String addressList = Address.toString(addresses);
 
-        ClipboardManager clipboardManager = ClipboardManager.getInstance(mContext);
-        clipboardManager.setText("addresses", addressList);
+        ClipboardManager.setText(mContext, "addresses", addressList);
 
         Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();
     }
