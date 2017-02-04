@@ -1,6 +1,9 @@
 package com.fsck.k9.mailstore;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,8 +13,6 @@ import com.fsck.k9.BuildConfig;
 import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
-import com.google.common.collect.Ordering;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,15 +21,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-
-import edu.emory.mathcs.backport.java.util.Collections;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -36,27 +29,22 @@ import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest= Config.NONE)
-public class StoreSchemaDefinitionTest {
 
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
+public class StoreSchemaDefinitionTest {
     private StoreSchemaDefinition ssd;
     private LocalStore localStore;
     private Account account;
     private LockableDatabase storeDb;
-    private Comparator<? super String> byToString = new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-            return o1.compareTo(o2);
-        }
-    };
+
 
     @Before
     public void before() throws MessagingException {
         ShadowLog.stream = System.out;
         localStore = mock(LocalStore.class);
         account = mock(Account.class);
-        storeDb =  mock(LockableDatabase.class);
+        storeDb = mock(LockableDatabase.class);
         when(storeDb.execute(anyBoolean(), any(LockableDatabase.DbCallback.class))).thenReturn(false);
 
         localStore.database = storeDb;
@@ -116,17 +104,18 @@ public class StoreSchemaDefinitionTest {
         SQLiteDatabase sqliteDb = SQLiteDatabase.create(null);
         createV29Database(sqliteDb);
         ContentValues data = new ContentValues();
-        data.put("subject","Test Email");
+        data.put("subject", "Test Email");
 
         System.out.println(sqliteDb.getVersion());
 
         long returnVal = sqliteDb.insert("messages", null, data);
 
-        if (returnVal == -1)
+        if (returnVal == -1) {
             fail("Error occured");
+        }
 
         ssd.doDbUpgrade(sqliteDb);
-        Cursor c = sqliteDb.query("messages", new String[]{"subject"}, null, null, null, null, null);
+        Cursor c = sqliteDb.query("messages", new String[] { "subject" }, null, null, null, null, null);
         boolean isNotEmpty = c.moveToFirst();
         assertTrue(isNotEmpty);
     }
@@ -180,7 +169,7 @@ public class StoreSchemaDefinitionTest {
     }
 
     private void createV29Database(SQLiteDatabase db) {
-        /**
+        /*
          * There is no precise definition of a v29 database. This function approximates it by creating a database
          * that could be upgraded to the latest database as of v58
          */
@@ -286,10 +275,10 @@ public class StoreSchemaDefinitionTest {
 
     private ArrayList<String> objectsInDatabase(SQLiteDatabase db, String type) {
         ArrayList<String> tables = new ArrayList<>();
-        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type = '"+type+"'", null);
+        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type = '" + type + "'", null);
         if (c.moveToFirst()) {
-            while ( !c.isAfterLast() ) {
-                tables.add( c.getString( c.getColumnIndex("name")) );
+            while (!c.isAfterLast()) {
+                tables.add(c.getString(c.getColumnIndex("name")));
                 c.moveToNext();
             }
         }
