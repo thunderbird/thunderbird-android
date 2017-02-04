@@ -291,6 +291,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_additional_headers_retrieval_failed">The retrieval of additional headers from the database or mail server failed.</string>
 
     <string name="from_same_sender">More from this sender</string>
+    <string name="debug_delete_local_body">Debug / Clear message body</string>
 
     <string name="message_discarded_toast">Message discarded</string>
     <string name="message_saved_toast">Message saved as draft</string>
@@ -1201,6 +1202,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_crypto_warning_insecure">This message was signed by an <b>insecure key!</b></string>
     <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature!</b></string>
     <string name="messageview_crypto_warning_unsigned">This message was encrypted, but not signed. It is <b>not end-to-end secure</b>!</string>
+    <string name="messageview_crypto_warning_show_anyway">Show message anyway</string>
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="recipient_error_parse_failed">Error parsing address!</string>
     <string name="account_settings_crypto_support_sign_only">Support signing of unencrypted messages</string>
