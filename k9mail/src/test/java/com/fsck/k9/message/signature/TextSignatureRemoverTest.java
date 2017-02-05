@@ -1,7 +1,6 @@
 package com.fsck.k9.message.signature;
 
 
-import com.fsck.k9.message.signature.TextSignatureRemover;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,10 +1,10 @@
 package com.fsck.k9.activity;
 
 
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.Flag;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
@@ -14,8 +14,8 @@ import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class MessageReferenceTest {
 
     @Test

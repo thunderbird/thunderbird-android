@@ -2,16 +2,16 @@ package com.fsck.k9.crypto;
 
 
 import com.fsck.k9.Identity;
+import com.fsck.k9.K9RobolectricTestRunner;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class OpenPgpApiHelperTest {
 
     @Test

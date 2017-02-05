@@ -7,13 +7,12 @@ import android.support.v4.app.NotificationManagerCompat;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mailstore.LocalMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -26,8 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
 public class NewMailNotificationsTest {
     private static final int ACCOUNT_NUMBER = 23;
 
