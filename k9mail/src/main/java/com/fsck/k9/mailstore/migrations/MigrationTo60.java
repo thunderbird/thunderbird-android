@@ -13,8 +13,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.VisibleForTesting;
 
-import com.fsck.k9.controller.MessagingControllerCommands;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptyTrash;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.PendingCommandSerializer;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
@@ -112,11 +117,11 @@ class MigrationTo60 {
 
     private static PendingCommand migrateCommandExpunge(OldPendingCommand command) {
         String folder = command.arguments[0];
-        return MessagingControllerCommands.createExpunge(folder);
+        return PendingExpunge.create(folder);
     }
 
     private static PendingCommand migrateCommandEmptyTrash() {
-        return MessagingControllerCommands.createEmptyTrash();
+        return PendingEmptyTrash.create();
     }
 
     private static PendingCommand migrateCommandMoveOrCopy(OldPendingCommand command) {
@@ -125,7 +130,7 @@ class MigrationTo60 {
         String destFolder = command.arguments[2];
         boolean isCopy = Boolean.parseBoolean(command.arguments[3]);
 
-        return MessagingControllerCommands.createMoveOrCopyBulk(srcFolder, destFolder, isCopy, singletonList(uid));
+        return PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, singletonList(uid));
     }
 
     private static PendingCommand migrateCommandMoveOrCopyBulkNew(OldPendingCommand command) {
@@ -141,12 +146,12 @@ class MigrationTo60 {
                 uidMap.put(command.arguments[i], command.arguments[i + offset]);
             }
 
-            return MessagingControllerCommands.createMoveOrCopyBulk(srcFolder, destFolder, isCopy, uidMap);
+            return PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, uidMap);
         } else {
             List<String> uids = new ArrayList<>(command.arguments.length - 4);
             uids.addAll(Arrays.asList(command.arguments).subList(4, command.arguments.length));
 
-            return MessagingControllerCommands.createMoveOrCopyBulk(srcFolder, destFolder, isCopy, uids);
+            return PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, uids);
         }
     }
 
@@ -166,7 +171,7 @@ class MigrationTo60 {
     }
 
     private static PendingCommand migrateCommandMarkAllAsRead(OldPendingCommand command) {
-        return MessagingControllerCommands.createMarkAllAsRead(command.arguments[0]);
+        return PendingMarkAllAsRead.create(command.arguments[0]);
     }
 
     private static PendingCommand migrateCommandSetFlag(OldPendingCommand command) {
@@ -175,7 +180,7 @@ class MigrationTo60 {
         boolean newState = Boolean.parseBoolean(command.arguments[2]);
         Flag flag = Flag.valueOf(command.arguments[3]);
 
-        return MessagingControllerCommands.createSetFlag(folder, newState, flag, singletonList(uid));
+        return PendingSetFlag.create(folder, newState, flag, singletonList(uid));
     }
 
     private static PendingCommand migrateCommandSetFlagBulk(OldPendingCommand command) {
@@ -186,13 +191,13 @@ class MigrationTo60 {
         List<String> uids = new ArrayList<>(command.arguments.length - 3);
         uids.addAll(Arrays.asList(command.arguments).subList(3, command.arguments.length));
 
-        return MessagingControllerCommands.createSetFlag(folder, newState, flag, uids);
+        return PendingSetFlag.create(folder, newState, flag, uids);
     }
 
     private static PendingCommand migrateCommandAppend(OldPendingCommand command) {
         String folder = command.arguments[0];
         String uid = command.arguments[1];
-        return MessagingControllerCommands.createAppend(folder, uid);
+        return PendingAppend.create(folder, uid);
     }
 
     private static List<OldPendingCommand> getPendingCommands(SQLiteDatabase db) {

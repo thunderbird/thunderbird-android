@@ -32,7 +32,7 @@ public class PendingCommandSerializerTest {
 
     @Test
     public void testSerializeDeserialize__withoutArguments() {
-        PendingCommand pendingCommand = MessagingControllerCommands.createEmptyTrash();
+        PendingCommand pendingCommand = PendingEmptyTrash.create();
 
         String serializedCommand = pendingCommandSerializer.serialize(pendingCommand);
         PendingEmptyTrash unserializedCommand = (PendingEmptyTrash) pendingCommandSerializer.unserialize(
@@ -43,7 +43,7 @@ public class PendingCommandSerializerTest {
 
     @Test
     public void testSerializeDeserialize__withArguments() {
-        PendingCommand pendingCommand = MessagingControllerCommands.createAppend(SOURCE_FOLDER, UID);
+        PendingCommand pendingCommand = PendingAppend.create(SOURCE_FOLDER, UID);
 
         String serializedCommand = pendingCommandSerializer.serialize(pendingCommand);
         PendingAppend unserializedCommand = (PendingAppend) pendingCommandSerializer.unserialize(
@@ -56,7 +56,7 @@ public class PendingCommandSerializerTest {
 
     @Test
     public void testSerializeDeserialize__withComplexArguments() {
-        PendingCommand pendingCommand = MessagingControllerCommands.createMoveOrCopyBulk(
+        PendingCommand pendingCommand = PendingMoveOrCopy.create(
                 SOURCE_FOLDER, DEST_FOLDER, IS_COPY, UID_MAP);
 
         String serializedCommand = pendingCommandSerializer.serialize(pendingCommand);
@@ -71,7 +71,7 @@ public class PendingCommandSerializerTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testDeserialize__withUnknownCommandName__shouldFail() {
-        PendingCommand pendingCommand = MessagingControllerCommands.createEmptyTrash();
+        PendingCommand pendingCommand = PendingEmptyTrash.create();
 
         String serializedCommand = pendingCommandSerializer.serialize(pendingCommand);
         pendingCommandSerializer.unserialize(DATABASE_ID,  "BAD_COMMAND_NAME", serializedCommand);

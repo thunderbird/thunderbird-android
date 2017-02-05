@@ -1736,19 +1736,8 @@ public class MessagingController {
                  * other command processes. This maintains the order of the commands.
                  */
                 try {
-                    if (command instanceof PendingAppend) {
-                        processPendingAppend((PendingAppend) command, account);
-                    } else if (command instanceof PendingSetFlag) {
-                        processPendingSetFlag((PendingSetFlag) command, account);
-                    } else if (command instanceof PendingMarkAllAsRead) {
-                        processPendingMarkAllAsRead((PendingMarkAllAsRead) command, account);
-                    } else if (command instanceof PendingMoveOrCopy) {
-                        processPendingMoveOrCopy((PendingMoveOrCopy) command, account);
-                    } else if (command instanceof PendingEmptyTrash) {
-                        processPendingEmptyTrash((PendingEmptyTrash) command, account);
-                    } else if (command instanceof PendingExpunge) {
-                        processPendingExpunge((PendingExpunge) command, account);
-                    }
+                    command.execute(this, account);
+
                     localStore.removePendingCommand(command);
                     if (K9.DEBUG) {
                         Log.d(K9.LOG_TAG, "Done processing pending command '" + command + "'");
@@ -1789,7 +1778,7 @@ public class MessagingController {
      * created.
      * TODO update the local message UID instead of deleteing it
      */
-    private void processPendingAppend(PendingAppend command, Account account) throws MessagingException {
+    void processPendingAppend(PendingAppend command, Account account) throws MessagingException {
         Folder remoteFolder = null;
         LocalFolder localFolder = null;
         try {
@@ -1915,7 +1904,7 @@ public class MessagingController {
         if (account.getErrorFolderName().equals(srcFolder)) {
             return;
         }
-        PendingCommand command = MessagingControllerCommands.createMoveOrCopyBulk(srcFolder, destFolder, isCopy, uids);
+        PendingCommand command = PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, uids);
         queuePendingCommand(account, command);
     }
 
@@ -1927,12 +1916,12 @@ public class MessagingController {
             if (account.getErrorFolderName().equals(srcFolder)) {
                 return;
             }
-            PendingCommand command = MessagingControllerCommands.createMoveOrCopyBulk(srcFolder, destFolder, isCopy, uidMap);
+            PendingCommand command = PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, uidMap);
             queuePendingCommand(account, command);
         }
     }
 
-    private void processPendingMoveOrCopy(PendingMoveOrCopy command, Account account) throws MessagingException {
+    void processPendingMoveOrCopy(PendingMoveOrCopy command, Account account) throws MessagingException {
         Folder remoteSrcFolder = null;
         Folder remoteDestFolder = null;
         LocalFolder localDestFolder;
@@ -2031,7 +2020,7 @@ public class MessagingController {
         putBackground("queueSetFlag " + account.getDescription() + ":" + folderName, null, new Runnable() {
             @Override
             public void run() {
-                PendingCommand command = MessagingControllerCommands.createSetFlag(folderName, newState, flag, uids);
+                PendingCommand command = PendingSetFlag.create(folderName, newState, flag, uids);
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
             }
@@ -2040,7 +2029,7 @@ public class MessagingController {
     /**
      * Processes a pending mark read or unread command.
      */
-    private void processPendingSetFlag(PendingSetFlag command, Account account) throws MessagingException {
+    void processPendingSetFlag(PendingSetFlag command, Account account) throws MessagingException {
         String folder = command.folder;
 
         if (account.getErrorFolderName().equals(folder) || account.getOutboxFolderName().equals(folder)) {
@@ -2081,13 +2070,13 @@ public class MessagingController {
         putBackground("queueExpunge " + account.getDescription() + ":" + folderName, null, new Runnable() {
             @Override
             public void run() {
-                PendingCommand command = MessagingControllerCommands.createExpunge(folderName);
+                PendingCommand command = PendingExpunge.create(folderName);
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
             }
         });
     }
-    private void processPendingExpunge(PendingExpunge command, Account account) throws MessagingException {
+    void processPendingExpunge(PendingExpunge command, Account account) throws MessagingException {
         String folder = command.folder;
 
         if (account.getErrorFolderName().equals(folder)) {
@@ -2114,7 +2103,7 @@ public class MessagingController {
         }
     }
 
-    private void processPendingMarkAllAsRead(PendingMarkAllAsRead command, Account account) throws MessagingException {
+    void processPendingMarkAllAsRead(PendingMarkAllAsRead command, Account account) throws MessagingException {
         String folder = command.folder;
         Folder remoteFolder = null;
         LocalFolder localFolder = null;
@@ -2238,7 +2227,7 @@ public class MessagingController {
         if (K9.DEBUG) {
             Log.i(K9.LOG_TAG, "Marking all messages in " + account.getDescription() + ":" + folder + " as read");
         }
-        PendingCommand command = MessagingControllerCommands.createMarkAllAsRead(folder);
+        PendingCommand command = PendingMarkAllAsRead.create(folder);
         queuePendingCommand(account, command);
         processPendingCommands(account);
     }
@@ -2821,7 +2810,7 @@ public class MessagingController {
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
 
-                            PendingCommand command = MessagingControllerCommands.createAppend(localSentFolder.getName(), message.getUid());
+                            PendingCommand command = PendingAppend.create(localSentFolder.getName(), message.getUid());
                             queuePendingCommand(account, command);
                             processPendingCommands(account);
                         }
@@ -3420,7 +3409,7 @@ public class MessagingController {
                 for (Message message : messages) {
                     // If the message was in the Outbox, then it has been copied to local Trash, and has
                     // to be copied to remote trash
-                    PendingCommand command = MessagingControllerCommands.createAppend(account.getTrashFolderName(), message.getUid());
+                    PendingCommand command = PendingAppend.create(account.getTrashFolderName(), message.getUid());
                     queuePendingCommand(account, command);
                 }
                 processPendingCommands(account);
@@ -3461,8 +3450,7 @@ public class MessagingController {
         return uids;
     }
 
-    @SuppressWarnings("UnusedParameters") // for consistency with other PendingCommand methods
-    private void processPendingEmptyTrash(PendingEmptyTrash command, Account account) throws MessagingException {
+    void processPendingEmptyTrash(Account account) throws MessagingException {
         Store remoteStore = account.getRemoteStore();
 
         Folder remoteFolder = remoteStore.getFolder(account.getTrashFolderName());
@@ -3508,7 +3496,7 @@ public class MessagingController {
                     }
 
                     if (!isTrashLocalOnly) {
-                        PendingCommand command = MessagingControllerCommands.createEmptyTrash();
+                        PendingCommand command = PendingEmptyTrash.create();
                         queuePendingCommand(account, command);
                         processPendingCommands(account);
                     }
@@ -4001,7 +3989,7 @@ public class MessagingController {
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
 
             if (saveRemotely) {
-                PendingCommand command = MessagingControllerCommands.createAppend(localFolder.getName(), localMessage.getUid());
+                PendingCommand command = PendingAppend.create(localFolder.getName(), localMessage.getUid());
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
             }
