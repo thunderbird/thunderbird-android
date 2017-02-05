@@ -302,7 +302,7 @@ public class PgpMessageBuilderTest {
 
         BodyPart encryptedBodyPart = multipart.getBodyPart(1);
         Assert.assertEquals("second part must be octet-stream of encrypted data",
-                "application/octet-stream", encryptedBodyPart.getContentType());
+                "application/octet-stream; name=\"encrypted.asc\"", encryptedBodyPart.getContentType());
         Assert.assertTrue("message body must be BinaryTempFileBody",
                 encryptedBodyPart.getBody() instanceof BinaryTempFileBody);
         Assert.assertEquals(MimeUtil.ENC_7BIT, ((BinaryTempFileBody) encryptedBodyPart.getBody()).getEncoding());

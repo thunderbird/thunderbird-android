@@ -308,7 +308,9 @@ public class PgpMessageBuilder extends MessageBuilder {
         MimeMultipart multipartEncrypted = createMimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         multipartEncrypted.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));
-        multipartEncrypted.addBodyPart(new MimeBodyPart(encryptedBodyPart, "application/octet-stream"));
+        MimeBodyPart encryptedPart = new MimeBodyPart(encryptedBodyPart, "application/octet-stream; name=\"encrypted.asc\"");
+        encryptedPart.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, "inline; filename=\"encrypted.asc\"");
+        multipartEncrypted.addBodyPart(encryptedPart);
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartEncrypted);
 
         String contentType = String.format(
