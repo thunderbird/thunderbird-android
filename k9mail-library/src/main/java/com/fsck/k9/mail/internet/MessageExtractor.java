@@ -20,11 +20,13 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.Viewable.Flowed;
 import org.apache.commons.io.input.BoundedInputStream;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
+import static com.fsck.k9.mail.internet.MimeUtility.isFormatFlowed;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Html;
@@ -47,17 +49,17 @@ public class MessageExtractor {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
                 if (body instanceof TextBody) {
-                    return ((TextBody)body).getText();
+                    return ((TextBody) body).getRawText();
                 }
                 final String mimeType = part.getMimeType();
                 if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*") ||
                         part.isMimeType("application/pgp")) {
                     return getTextFromTextPart(part, body, mimeType, textSizeLimit);
                 } else {
-                    throw new MessagingException("Provided non-text part: " + part);
+                    throw new MessagingException("Provided non-text part: " + mimeType);
                 }
             } else {
-                throw new MessagingException("Provided invalid part: " + part);
+                throw new MessagingException("Provided invalid part");
             }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Unable to getTextFromPart", e);
@@ -188,13 +190,17 @@ public class MessageExtractor {
                 return;
             }
             String mimeType = part.getMimeType();
+            Viewable viewable;
             if (isSameMimeType(mimeType, "text/plain")) {
-                Text text = new Text(part);
-                outputViewableParts.add(text);
+                if (isFormatFlowed(part.getContentType())) {
+                    viewable = new Flowed(part);
+                } else {
+                    viewable = new Text(part);
+                }
             } else {
-                Html html = new Html(part);
-                outputViewableParts.add(html);
+                viewable = new Html(part);
             }
+            outputViewableParts.add(viewable);
         } else if (isSameMimeType(part.getMimeType(), "application/pgp-signature")) {
             // ignore this type explicitly
         } else {

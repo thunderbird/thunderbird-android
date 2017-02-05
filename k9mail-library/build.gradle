@@ -1,7 +1,13 @@
 apply plugin: 'com.android.library'
-apply from: '../gradle/plugins/checkstyle-android.gradle'
-apply from: '../gradle/plugins/findbugs-android.gradle'
-apply plugin: 'jacoco'
+
+if (!rootProject.optimizeForDevelopment) {
+    apply from: '../gradle/plugins/checkstyle-android.gradle'
+    apply from: '../gradle/plugins/findbugs-android.gradle'
+}
+
+if (rootProject.testCoverage) {
+    apply plugin: 'jacoco'
+}
 
 repositories {
     jcenter()
@@ -13,20 +19,20 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.jcraft:jzlib:1.0.7'
     compile 'com.beetstra.jutf7:jutf7:1.0.0'
-    compile 'com.android.support:support-annotations:23.3.0'
+    compile "com.android.support:support-annotations:${androidSupportLibraryVersion}"
 
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
 
-    testCompile 'com.squareup.okio:okio:1.6.0'
-    testCompile 'org.robolectric:robolectric:3.0'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile "com.squareup.okio:okio:${okioVersion}"
+    testCompile "org.robolectric:robolectric:${robolectricVersion}"
+    testCompile "junit:junit:${junitVersion}"
+    testCompile "org.mockito:mockito-core:${mockitoVersion}"
 }
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdkVersion androidCompileSdkVersion.toInteger()
+    buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
         minSdkVersion 15

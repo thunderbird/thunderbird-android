@@ -1050,7 +1050,7 @@ public class FolderList extends K9ListActivity {
                         createUnreadSearch(mAccount, folder));
                 holder.newMessageCountWrapper.setVisibility(View.VISIBLE);
                 holder.newMessageCountIcon.setBackgroundDrawable(
-                        mAccount.generateColorChip(false, false, false, false, false).drawable());
+                        mAccount.generateColorChip(false, false).drawable());
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
             }
@@ -1072,7 +1072,7 @@ public class FolderList extends K9ListActivity {
                         createFlaggedSearch(mAccount, folder));
                 holder.flaggedMessageCountWrapper.setVisibility(View.VISIBLE);
                 holder.flaggedMessageCountIcon.setBackgroundDrawable(
-                        mAccount.generateColorChip(false, false, false, false,true).drawable());
+                        mAccount.generateColorChip(false, true).drawable());
             } else {
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
             }

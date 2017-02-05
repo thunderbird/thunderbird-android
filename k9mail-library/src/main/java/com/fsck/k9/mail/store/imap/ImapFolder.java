@@ -496,7 +496,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public void delete(boolean recurse) throws MessagingException {
-        throw new Error("ImapStore.delete() not yet implemented");
+        throw new Error("ImapFolder.delete() not yet implemented");
     }
 
     @Override
@@ -986,7 +986,7 @@ class ImapFolder extends Folder<ImapMessage> {
             /*
              * This is a multipart/*
              */
-            MimeMultipart mp = new MimeMultipart();
+            MimeMultipart mp = MimeMultipart.newInstance();
             for (int i = 0, count = bs.size(); i < count; i++) {
                 if (bs.get(i) instanceof ImapList) {
                     /*

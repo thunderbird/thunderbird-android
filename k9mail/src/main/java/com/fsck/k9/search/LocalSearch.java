@@ -144,10 +144,8 @@ public class LocalSearch implements SearchSpecification {
      * clause to this node.
      *
      * @param field Message table field to match against.
-     * @param string Value to look for.
-     * @param contains Attribute to use when matching.
-     *
-     * @throws IllegalConditionException
+     * @param value Value to look for.
+     * @param attribute Attribute to use when matching.
      */
     public void and(SearchField field, String value, Attribute attribute) {
         and(new SearchCondition(field, attribute, value));

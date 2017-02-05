@@ -41,20 +41,6 @@ public interface Part {
 
     void writeHeaderTo(OutputStream out) throws IOException, MessagingException;
 
-    /**
-     * Called just prior to transmission, once the type of transport is known to
-     * be 7bit.
-     * <p>
-     * All bodies that are 8bit will be converted to 7bit and recursed if of
-     * type {@link CompositeBody}, or will be converted to quoted-printable in all other
-     * cases. Bodies with encodings other than 8bit remain unchanged.
-     *
-     * @throws MessagingException
-     *
-     */
-    //TODO perhaps it would be clearer to use a flag "force7bit" in writeTo
-    void setUsing7bitTransport() throws MessagingException;
-
     String getServerExtra();
 
     void setServerExtra(String serverExtra);

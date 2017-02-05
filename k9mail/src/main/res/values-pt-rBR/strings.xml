@@ -14,6 +14,34 @@
   <string name="app_license">Licenciado sob a Apache License, Versão 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bem-vindo ao K-9 Mail</string>
+  <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail é um poderoso cliente gratuito de email para Android.
+</p><p>
+Suas funcionalidades melhoradas incluem:
+</p>
+<ul>
+  <li>Push de email usando IMAP IDLE</li>
+  <li>Melhor performance</li>
+  <li>Realocação de mensagens</li>
+  <li>Assinaturas de email</li>
+  <li>Cópia oculta para si mesmo</li>
+  <li>Assinatura de pastas</li>
+  <li>Sincronização completa de pasta</li>
+  <li>Configuração de endereço de retorno</li>
+  <li>Atalhos de teclado</li>
+  <li>Suporte IMAP aprimorado</li>
+  <li>Salvar anexos para cartão SD</li>
+  <li>Esvaziar lixeira</li>
+  <li>Ordenação de mensagens</li>
+  <li>… e mais</li>
+</ul>
+<p>
+Saiba que o K-9 não suporta a maioria das contas gratuitas de Hotamil e, como muitos clientes de email, tem problemas para conversar com  Microsoft Exchange.
+</p><p>
+Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dúvidas em <a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
+</p>
+]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nEnviado de meu dispositivo Android com K-9 mail. Desculpe-me pela brevidade.</string>
   <!--General strings that include the app name-->
@@ -48,7 +76,7 @@
   <string name="status_loading_account_folder_headers">Buscando cabeçalhos <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Enviando <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Nova verif. <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Sincronização desabilitada</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionadas</string>
@@ -59,6 +87,7 @@
   <string name="cancel_action">Cancelar</string>
   <string name="send_action">Enviar</string>
   <string name="send_again_action">Reenviar</string>
+  <string name="empty_subject">Assunto está vazio, clique novamente para enviar mesmo assim</string>
   <string name="select_action">Selecionar</string>
   <string name="deselect_action">Desselecionar</string>
   <string name="reply_action">Responder</string>
@@ -96,6 +125,10 @@
   <string name="select_text_action">Selecionar texto</string>
   <string name="show_headers_action">Exibir cabeçalhos</string>
   <string name="hide_headers_action">Ocultar cabeçalhos</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Endereço copiado para área de transferência</item>
+    <item quantity="other">Endereços copiados para área de transferência</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Mudar para o tema escuro</string>
   <string name="message_view_theme_action_light">Mudar para o tema claro</string>
   <string name="mark_as_unread_action">Marcar como não lida</string>
@@ -135,11 +168,16 @@
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> em <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Lido</string>
+  <string name="notification_action_mark_all_as_read">Marcar Todas Como Lidas</string>
   <string name="notification_action_delete">Excluir</string>
+  <string name="notification_action_delete_all">Excluir Todas</string>
   <string name="notification_action_archive">Arquivo</string>
+  <string name="notification_action_archive_all">Arquivar Todas</string>
   <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_title">Erro no certificado de <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Verifique suas configurações de servidor</string>
+  <string name="notification_authentication_error_title">Autenticação falhou</string>
+  <string name="notification_authentication_error_text">Autenticação falhou para <xliff:g id="account">%s</xliff:g>. Atualize suas configurações de servidor.</string>
   <string name="notification_bg_sync_ticker">Verificando e-mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Verificando e-mail</string>
   <string name="notification_bg_send_ticker">Enviando e-mail: <xliff:g id="account">%s</xliff:g></string>
@@ -177,6 +215,7 @@
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escreveu:</string>
   <string name="message_compose_reply_header_fmt_with_date">Em <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> escreveu:</string>
   <string name="message_compose_error_no_recipients">Você deve incluir ao menos um destinatário.</string>
+  <string name="compose_error_incomplete_recipient">Campo destinatário está incompleto!</string>
   <string name="error_contact_address_not_found">Não foi possível encontrar o endereço de e-mail.</string>
   <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram inclusos na mensagem.</string>
   <string name="message_compose_show_quoted_text_action">Mensagem citada</string>
@@ -192,6 +231,7 @@
   <string name="message_view_show_more_attachments_action">Mais…</string>
   <string name="message_view_no_viewer">Não foi possível encontrar um visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Transferir mensagem completa</string>
+  <string name="message_view_toast_unable_to_display_message">Não foi possível mostrar mensagem</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Todos os cabeçalhos foram baixados, mas não há descrições adicionais a serem mostradas.</string>
   <string name="message_additional_headers_retrieval_failed">A recuperação de cabeçalhos adicionais do banco de dados ou servidor de e-mail falharam.</string>
@@ -227,6 +267,7 @@
   <string name="global_settings_confirm_action_delete">Excluir</string>
   <string name="global_settings_confirm_action_delete_starred">Excluir marcados com estrela (visualização apenas)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Descartar mensagem</string>
   <string name="global_settings_confirm_action_delete_notif">Excluir (pela notificação)</string>
   <string name="global_settings_privacy_hide_useragent">Remover o User-Agent do K-9 dos cabeçalhos dos emails</string>
   <string name="global_settings_privacy_hide_timezone">Usar horário UTC em todos cabeçalhos de email</string>
@@ -626,7 +667,7 @@
   <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>
   <string name="settings_message_theme_selection_summary_off">Selecionar o tema de visualização ao visualizar a mensagem</string>
   <string name="settings_message_theme_selection_summary_on">Usar um tema fixo para visualizar mensagens</string>
-  <string name="setting_language_system">Padrões de sistema</string>
+  <string name="setting_language_system">Padrão do sistema</string>
   <string name="background_ops_label">Sincronização em segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
@@ -661,6 +702,7 @@
   <string name="search_all_messages_detail">Todas as mensagens em pastas pesquisáveis</string>
   <string name="integrated_inbox_title">Entrada Unificada</string>
   <string name="integrated_inbox_detail">Todas as mensagens nas pastas unificadas</string>
+  <string name="tap_hint">Toque círculo ou estrela para mensagens não lidas ou destacadas</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Todas as mensagens são mostradas na caixa de entrada unificada</string>
   <string name="account_settings_searchable_label">Pasta para pesquisar</string>
@@ -702,6 +744,7 @@
   <string name="font_size_larger">Grande</string>
   <string name="miscellaneous_preferences">Diversos</string>
   <string name="error_activity_not_found">Nenhum aplicativo adequado para esta ação foi encontrado.</string>
+  <string name="send_failed_reason">Falha no envio: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Salvar mensagem de rascunho?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Salvar ou descartar esta mensagem?</string>
   <string name="confirm_discard_draft_message_title">Descartar mensagens?</string>
@@ -715,6 +758,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Excluir</string>
   <string name="dialog_confirm_delete_cancel_button">Não excluir</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Sim</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Não</string>
   <string name="dialog_confirm_spam_title">Mover para a pasta de spam</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Deseja mesmo mover esta mensagem para a pasta de spam?</item>
@@ -765,7 +810,7 @@
   <string name="settings_import_use_incoming_server_password">Usar a senha do servidor de entrada</string>
   <string name="activate_account_action">Ativar</string>
   <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" está indisponível; verifique o armazenamento</string>
-  <string name="settings_attachment_default_path">Salvar anexos para…</string>
+  <string name="settings_attachment_default_path">Salvar anexos em…</string>
   <string name="attachment_save_title">Salvar anexo</string>
   <string name="attachment_save_desc">Nenhum explorador de arquivos encontrado. Deseja salvar este anexo?</string>
   <string name="manage_accounts_move_up_action">Mover para cima</string>
@@ -845,16 +890,20 @@
   <string name="fetching_attachment_dialog_message">Buscando anexo…</string>
   <string name="auth_external_error">Não foi possível autenticar. O servidor não informa sobre as capacidades de SASL EXTERNAS. Isto pode decorrer de problemas com o certificado do cliente (expirado, autoridade certificadora desconhecida) ou algum outro problema de configuração.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decryption_failed">Falha ao decifrar: %s</string>
   <string name="openpgp_unknown_error">Erro desconhecido do OpenPGP</string>
+  <string name="openpgp_canceled_by_user">Cancelado pelo usuário</string>
   <string name="openpgp_result_no_signature">Não assinado</string>
   <string name="openpgp_result_invalid_signature">Assinatura inválida</string>
   <string name="openpgp_result_signature_uncertified">Assinado por (não certificado)</string>
   <string name="openpgp_result_signature_certified">Assinado por</string>
   <string name="openpgp_result_signature_expired_key">Chave expirada!</string>
   <string name="openpgp_result_signature_revoked_key">Chave cancelada!</string>
+  <string name="openpgp_result_signature_insecure">Inseguro!</string>
   <string name="openpgp_result_signature_missing_key">Chave pública desconhecida</string>
   <string name="openpgp_result_encrypted">Encriptado</string>
   <string name="openpgp_result_not_encrypted">Não encriptado</string>
+  <string name="openpgp_result_decryption_insecure">Inseguro</string>
   <string name="openpgp_result_action_show">Mostrar</string>
   <string name="openpgp_result_action_lookup">Buscar</string>
   <string name="openpgp_result_no_name">Sem nome</string>
@@ -869,4 +918,34 @@
   <string name="crypto_incomplete_message">Mensagem incompleta</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="crypto_download_complete_message_to_decrypt">Clique em \"Baixar mensagem completa\" para permitir desencriptação.</string>
+  <string name="preview_encrypted">*Criptografado\"</string>
+  <string name="add_from_contacts">Adicionar dos Contatos</string>
+  <string name="crypto_settings_cancel">Cancelar</string>
+  <string name="crypto_settings_ok">Seguinte</string>
+  <string name="recipient_cc">Cc</string>
+  <string name="recipient_bcc">Cco</string>
+  <string name="recipient_to">Para</string>
+  <string name="recipient_from">De</string>
+  <string name="unknown_recipient"><![CDATA[<Destinatário Desconhecido>]]></string>
+  <string name="address_type_home">Casa</string>
+  <string name="address_type_work">Trabalho</string>
+  <string name="address_type_other">Outro</string>
+  <string name="address_type_mobile">Móvel</string>
+  <string name="compose_error_no_draft_folder">Não foi configurada pasta Rascunhos para esta conta!</string>
+  <string name="compose_not_saving_unencrypted">Rascunho NÃO foi salvo sem criptografia!</string>
+  <string name="compose_error_pgp_error">Erro com provedor OpenPGP. Verifique suas configurações!</string>
+  <string name="compose_error_no_signing_key">Não foi configurada chave para assinatura! Por favor verifique suas configurações.</string>
+  <string name="compose_error_private_missing_keys">Modo privado está habilitado, mas alguns destinatários não possuem chaves!</string>
+  <string name="crypto_mode_disabled">Não criptografar</string>
+  <string name="crypto_mode_opportunistic">Criptografar se for possível</string>
+  <string name="crypto_mode_private">Criptografar</string>
+  <string name="error_crypto_provider_connect">Não foi possível conectar com provedor de criptografia, verifique suas configurações ou clique no ícone de criptografia para tentar novamente!</string>
+  <string name="error_crypto_provider_ui_required">Acesso negado ao provedor de criptografia, clique no ícone de criptografia para tentar novamente!</string>
+  <string name="enable_inline_pgp">Ativar PGP/INLINE</string>
+  <string name="disable_inline_pgp">Desativar PGP/INLINE</string>
+  <string name="openpgp_sign_only_disable">Desativar</string>
+  <string name="crypto_info_ok">OK</string>
+  <string name="locked_attach_unlock">Desbloquear</string>
+  <string name="message_progress_text">Carregando...</string>
+  <string name="messageview_crypto_warning_title">Aviso de segurança</string>
 </resources>

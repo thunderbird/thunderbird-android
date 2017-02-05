@@ -3,6 +3,7 @@ package com.fsck.k9.message;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.mail.internet.TextBody;
 
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.junit.Ignore;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
@@ -109,10 +110,10 @@ public class TextBodyBuilderTest {
         TextBody textBody = textBodyBuilder.buildTextPlain();
 
         assertThat(textBody, instanceOf(TextBody.class));
-        assertThat(textBody.getText(), is(expectedText));
+        assertThat(textBody.getRawText(), is(expectedText));
         assertThat(textBody.getComposedMessageLength(), is(expectedMessageLength));
         assertThat(textBody.getComposedMessageOffset(), is(expectedMessagePosition));
-        assertThat(textBody.getText().substring(expectedMessagePosition, expectedMessagePosition + expectedMessageLength),
+        assertThat(textBody.getRawText().substring(expectedMessagePosition, expectedMessagePosition + expectedMessageLength),
                 is("message content"));
     }
 
@@ -285,7 +286,7 @@ public class TextBodyBuilderTest {
         TextBody textBody = textBodyBuilder.buildTextHtml();
 
         assertThat(textBody, instanceOf(TextBody.class));
-        assertThat(textBody.getText(), is(expectedText));
+        assertThat(textBody.getRawText(), is(expectedText));
         assertThat(textBody.getComposedMessageLength(), is(expectedMessageLength));
         assertThat(textBody.getComposedMessageOffset(), is(expectedMessagePosition));
         assertThat(insertableHtmlContent.toDebugString(), is(expectedHtmlContent));

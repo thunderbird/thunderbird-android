@@ -6,8 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
+import com.fsck.k9.view.ThemeUtils;
 
 
 public class RecipientAdapter extends BaseAdapter implements Filterable {
@@ -97,28 +99,26 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         switch (cryptoStatus) {
             case AVAILABLE_TRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_dots_3;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_green);
+                cryptoStatusColor = ThemeUtils.getStyledColor(context, R.attr.openpgp_green);
                 break;
             }
             case AVAILABLE_UNTRUSTED: {
                 cryptoStatusRes = R.drawable.status_lock_dots_2;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_orange);
+                cryptoStatusColor = ThemeUtils.getStyledColor(context, R.attr.openpgp_orange);
                 break;
             }
             case UNAVAILABLE: {
                 cryptoStatusRes = R.drawable.status_lock_disabled_dots_1;
-                cryptoStatusColor = context.getResources().getColor(R.color.openpgp_red);
+                cryptoStatusColor = ThemeUtils.getStyledColor(context, R.attr.openpgp_red);
                 break;
             }
         }
 
         if (cryptoStatusRes != null) {
-            // noinspection deprecation, we could do this easier with setImageTintList, but that's API level 21
-            Drawable drawable = context.getResources().getDrawable(cryptoStatusRes);
-            // noinspection ConstantConditions, we know the resource exists!
-            drawable.mutate();
-            drawable.setColorFilter(cryptoStatusColor, Mode.SRC_ATOP);
-            holder.cryptoStatus.setImageDrawable(drawable);
+            Drawable drawable = ContextCompat.getDrawable(context, cryptoStatusRes);
+            DrawableCompat.wrap(drawable);
+            DrawableCompat.setTint(drawable.mutate(), cryptoStatusColor);
+            holder.cryptoStatusIcon.setImageDrawable(drawable);
             holder.cryptoStatus.setVisibility(View.VISIBLE);
         } else {
             holder.cryptoStatus.setVisibility(View.GONE);
@@ -166,14 +166,16 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         public final TextView name;
         public final TextView email;
         public final ImageView photo;
-        public final ImageView cryptoStatus;
+        public final View cryptoStatus;
+        public final ImageView cryptoStatusIcon;
 
 
         public RecipientTokenHolder(View view) {
             name = (TextView) view.findViewById(R.id.text1);
             email = (TextView) view.findViewById(R.id.text2);
             photo = (ImageView) view.findViewById(R.id.contact_photo);
-            cryptoStatus = (ImageView) view.findViewById(R.id.contact_crypto_status);
+            cryptoStatus = view.findViewById(R.id.contact_crypto_status);
+            cryptoStatusIcon = (ImageView) view.findViewById(R.id.contact_crypto_status_icon);
         }
     }
 

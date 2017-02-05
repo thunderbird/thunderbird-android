@@ -229,14 +229,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     public void performCompletion() {
         if (getListSelection() == ListView.INVALID_POSITION && enoughToFilter()) {
-            Object bestGuess;
-            if (getAdapter().getCount() > 0) {
-                bestGuess = getAdapter().getItem(0);
-            } else {
-                bestGuess = defaultObject(currentCompletionText());
-            }
-            if (bestGuess != null) {
-                replaceText(convertSelectionToString(bestGuess));
+            Object recipientText = defaultObject(currentCompletionText());
+            if (recipientText != null) {
+                replaceText(convertSelectionToString(recipientText));
             }
         } else {
             super.performCompletion();
@@ -401,8 +396,16 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     @Override
-    public void onRecipientChange(Recipient currentRecipient, Recipient alternateAddress) {
+    public void onRecipientChange(Recipient recipientToReplace, Recipient alternateAddress) {
         alternatesPopup.dismiss();
+
+        List<Recipient> currentRecipients = getObjects();
+        int indexOfRecipient = currentRecipients.indexOf(recipientToReplace);
+        if (indexOfRecipient == -1) {
+            Log.e(K9.LOG_TAG, "Tried to refresh invalid view token!");
+            return;
+        }
+        Recipient currentRecipient = currentRecipients.get(indexOfRecipient);
 
         currentRecipient.address = alternateAddress.address;
         currentRecipient.addressLabel = alternateAddress.addressLabel;
@@ -548,6 +551,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             }
 
             return address.getAddress();
+        }
+
+        public boolean isValidEmailAddress() {
+            return (address.getAddress() != null);
         }
 
         public String getDisplayNameOrUnknown(Context context) {

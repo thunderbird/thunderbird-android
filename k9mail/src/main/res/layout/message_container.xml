@@ -22,6 +22,7 @@
         >
 
         <LinearLayout
+            android:id="@+id/message_unsigned_divider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -41,7 +42,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:text="Unsigned Text"
+                android:text="@string/unsigned_text_divider_label"
                 android:textColor="#d55"
                 />
 

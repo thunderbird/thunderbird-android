@@ -41,6 +41,12 @@ public interface Viewable {
         }
     }
 
+    class Flowed extends Textual {
+        public Flowed(Part part) {
+            super(part);
+        }
+    }
+
     /**
      * Class representing a {@code text/html} part of a message.
      */

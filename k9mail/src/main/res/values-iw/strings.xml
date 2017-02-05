@@ -5,6 +5,7 @@
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">חשבונות K-9</string>
+  <string name="unread_widget_label">K-9 לא נקרא</string>
   <string name="remote_control_label">K-9 Mail שליטה מרחוק</string>
   <string name="remote_control_desc">אפשר לK-9 לשלוט בהגדרות פעילות הדואר.</string>
   <!--Used in the about dialog-->
@@ -12,15 +13,21 @@
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
   <!--Welcome message-->
+  <string name="welcome_message_title">ברוך הבא אל דואר K-9</string>
   <!--Default signature-->
+  <string name="default_signature">-- \nנשלח ממכשיר האנדרואיד שלי בעזרת אפליקציית הדואר K-9. סלח לי על הקצרנות.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
   <string name="account_recreate_dlg_instructions_fmt">על הנתונים עבור \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
   <string name="account_clear_dlg_instructions_fmt">כל ההודעות ב \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
   <!--=== App Store-specific strings =======================================================-->
+  <string name="import_dialog_error_message">התקן מנהל קבצים כדי לבצע את הייבוא.</string>
+  <string name="open_market">פתח את חנות האפליקציות</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">מפתחים: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="app_revision_fmt">מידע על גירסאות: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">אנחנו משתמשים בספריות הבאות של ספקים חיצוניים: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="app_emoji_icons">אמוג\'ים: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
   <string name="read_attachment_label">קרא הקבצים המצורפים לדוא\"ל</string>
   <string name="read_attachment_desc">אפשר ליישום זה לקרוא את קבצים המצורפים לדוא\"ל שלך.</string>
   <string name="read_messages_label">קרא אימיילים</string>
@@ -29,13 +36,22 @@
   <string name="delete_messages_desc">אפשר ליישום זה למחוק את האימיילים שלכם.</string>
   <string name="about_title_fmt">אודות <xliff:g id="app_name">%s</xliff:g></string>
   <string name="accounts_title">חשבונות</string>
+  <string name="folders_title">תיקיות</string>
   <string name="advanced">מתקדם</string>
   <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
   <string name="compose_title_compose">חבר</string>
+  <string name="compose_title_reply">השב</string>
+  <string name="compose_title_reply_all">השב לכולם</string>
+  <string name="compose_title_forward">העבר</string>
   <string name="choose_folder_title">בחר תיקייה</string>
+  <string name="status_loading_account_folder">דגום <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_loading_account_folder_headers">מאחזר כותרות <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">שולח… <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="status_processing_account">מעבד <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
+  <string name="status_next_poll">המדגם הבא <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">הסנכרון מושבת</string>
+  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
   <string name="next_action">הבא</string>
   <string name="previous_action">הקודם</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
@@ -43,6 +59,7 @@
   <string name="cancel_action">ביטול</string>
   <string name="send_action">שלח</string>
   <string name="send_again_action">שלח שוב</string>
+  <string name="empty_subject">הנושא ריק, הקש שוב כדי לשלוח בכל זאת.</string>
   <string name="select_action">בחר</string>
   <string name="deselect_action">בטל בחירה</string>
   <string name="reply_action">השב</string>
@@ -52,12 +69,15 @@
   <string name="spam_action">דואר זבל</string>
   <string name="forward_action">קדימה</string>
   <string name="move_action">העבר</string>
+  <string name="single_message_options_action">שלח</string>
+  <string name="refile_action">תייק מחדש...</string>
   <string name="done_action">סיום</string>
   <string name="discard_action">השלך</string>
   <string name="save_draft_action">שמור כטיוטה</string>
   <string name="check_mail_action">בדוק דואר</string>
   <string name="send_messages_action">שלח הודעות</string>
   <string name="refresh_folders_action">רענן תיקיות</string>
+  <string name="filter_folders_action">מצא תיקייה</string>
   <string name="add_account_action">הוסף חשבון</string>
   <string name="compose_action">חבר</string>
   <string name="search_action">חפש</string>
@@ -75,6 +95,14 @@
   <string name="unflag_action">מחק כוכב</string>
   <string name="copy_action">העתק</string>
   <string name="select_text_action">בחר טקסט</string>
+  <string name="show_headers_action">הצג כותרות</string>
+  <string name="hide_headers_action">הסתר כותרות</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">כתובת הועתקה ללוח ההעתקה</item>
+    <item quantity="other">כתובות הועתקו ללוח ההעתקה</item>
+  </plurals>
+  <string name="message_view_theme_action_dark">עבור לאערכת נושא אפלה</string>
+  <string name="message_view_theme_action_light">עבור לערכת נושא בהירה</string>
   <string name="mark_as_unread_action">סמן כלא נקרא</string>
   <string name="read_receipt">אישור קריאה</string>
   <string name="read_receipt_enabled">נדרש אישור לקריאה</string>
@@ -89,19 +117,41 @@
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(ללא כותרת)</string>
   <string name="general_no_sender">ללא שולח</string>
+  <string name="status_loading">מאחזר</string>
   <string name="status_loading_more">טוען הודעות</string>
   <string name="status_network_error">שגיאת חיבור</string>
   <string name="status_invalid_id_error">לא נמצאו הודעות</string>
   <string name="status_loading_more_failed">נסה שוב לטעון הודעות נוספות</string>
+  <string name="load_more_messages_fmt">טען
+עד <xliff:g id="messages_to_load">%d</xliff:g> נוספים</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
   <string name="abbrev_kilobytes">KB</string>
   <string name="abbrev_bytes">B</string>
-  <string name="compacting_account">דחיסת חשבון</string>
+  <string name="account_size_changed">החשבון \"<xliff:g id="account">%s</xliff:g>\" כווץ מ- <xliff:g id="oldSize">%s</xliff:g> אל-<xliff:g id="newSize">%s</xliff:g></string>
   <string name="clearing_account">מנקה חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">יוצר מחדש חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">מייל חדש</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה
+</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> לא נקראו (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> עוד בקבוצה <xliff:g id="account">%2$s</xliff:g></string>
+  <string name="notification_action_reply">השב</string>
+  <string name="notification_action_mark_as_read">סמן כנקרא</string>
+  <string name="notification_action_mark_all_as_read">סמן הכל כנקרא</string>
+  <string name="notification_action_delete">מחק</string>
+  <string name="notification_action_delete_all">מחק הכל</string>
+  <string name="notification_action_archive">העבר לארכיון</string>
+  <string name="notification_action_archive_all">העבר הכל לארכיון</string>
+  <string name="notification_action_spam">דואר זבל</string>
+  <string name="notification_certificate_error_title">בעיה בתעודה עבור <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_certificate_error_text">בדוק את הגדרות השרת</string>
+  <string name="notification_authentication_error_title">נכשל באימות</string>
+  <string name="notification_authentication_error_text">האימות נכשל עבור <xliff:g id="account">%s</xliff:g>. 
+עדכן את הגדרות השרת.</string>
   <string name="notification_bg_sync_ticker">בודק דוא"ל: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">בודק דוא\"ל</string>
   <string name="notification_bg_send_ticker">שולח דוא"ל: <xliff:g id="account">%s</xliff:g></string>
@@ -129,6 +179,7 @@
   <string name="message_to_fmt">ל:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">נושא</string>
   <string name="message_compose_content_hint">הודעת טקסט</string>
+  <string name="message_compose_signature_hint">חתימה</string>
   <string name="message_compose_quote_header_separator">-------- ההודעה המורית --------</string>
   <string name="message_compose_quote_header_subject">נושא:</string>
   <string name="message_compose_quote_header_send_date">נשלח:</string>
@@ -147,8 +198,10 @@
   <string name="message_view_attachment_download_action">שמור</string>
   <string name="message_view_status_attachment_not_saved">אין אפשרות לשמור את הקובץ המצורף לכרטיס ה SD.</string>
   <string name="message_view_show_pictures_action">הצג תמונות</string>
+  <string name="message_view_show_more_attachments_action">עוד...</string>
   <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
+  <string name="message_view_toast_unable_to_display_message">לא ניתן להציג את ההודעה</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">כל הכותרות הורדו, אבל אין כותרות נוספות להצגה.</string>
   <string name="message_additional_headers_retrieval_failed">שליפה של כותרות נוספות מהשרת של מסד הנתונים או מהדואר נכשל.</string>
@@ -175,7 +228,16 @@
   <string name="global_settings_messageview_show_next_summary">הצג את הודעה הבאה כברירת מחדל לאחר מחיקת הודעה</string>
   <string name="global_settings_confirm_actions_title">אישור פעולות</string>
   <string name="global_settings_confirm_actions_summary">הצג דו שיח בכל פעם שאתה מבצע את פעולות הנבחרות</string>
+  <string name="global_settings_confirm_action_delete">מחק</string>
+  <string name="global_settings_confirm_action_delete_starred">מחק הודעות שמסומנות בכוכב (בתצוגת הודעה)</string>
   <string name="global_settings_confirm_action_spam">דואר זבל</string>
+  <string name="global_settings_confirm_menu_discard">מחק הודעה</string>
+  <string name="global_settings_notification_hide_subject_never">אף פעם</string>
+  <string name="global_settings_notification_hide_subject_when_locked">כשהמכשיר נעול</string>
+  <string name="global_settings_notification_hide_subject_always">תמיד</string>
+  <string name="global_settings_notification_quick_delete_title">הצג את הכפתור \'מחק\'</string>
+  <string name="global_settings_notification_quick_delete_never">אף פעם</string>
+  <string name="global_settings_notification_quick_delete_always">תמיד</string>
   <string name="quiet_time">שעות שקט</string>
   <string name="quiet_time_description">השבת צלצול, זמזום והבהוב בלילה</string>
   <string name="quiet_time_starts">התחלת שעות שקט</string>

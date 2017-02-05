@@ -238,12 +238,14 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                 }
             }
 
-            Uri photoUri = cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
             Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey);
-            recipient.photoThumbnailUri = photoUri;
+            if (recipient.isValidEmailAddress()) {
+                Uri photoUri = cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
 
-            recipientMap.put(email, recipient);
-            recipients.add(recipient);
+                recipient.photoThumbnailUri = photoUri;
+                recipientMap.put(email, recipient);
+                recipients.add(recipient);
+            }
         }
 
         cursor.close();

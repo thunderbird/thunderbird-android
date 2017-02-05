@@ -2,8 +2,8 @@ apply plugin: 'com.android.library'
 // apply plugin: 'bintray-release' // must be applied after your artifact generating plugin (eg. java / com.android.library)
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdkVersion androidCompileSdkVersion.toInteger()
+    buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
         versionCode 8

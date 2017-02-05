@@ -791,11 +791,7 @@ public class MessagingController {
             final LocalFolder localFolder = tLocalFolder;
             localFolder.open(Folder.OPEN_MODE_RW);
             localFolder.updateLastUid();
-            List<? extends Message> localMessages = localFolder.getMessages(null);
-            Map<String, Message> localUidMap = new HashMap<>();
-            for (Message message : localMessages) {
-                localUidMap.put(message.getUid(), message);
-            }
+            Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
 
             if (providedRemoteFolder != null) {
                 if (K9.DEBUG)
@@ -865,6 +861,7 @@ public class MessagingController {
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " + remoteMessageCount);
             final Date earliestDate = account.getEarliestPollDate();
+            long earliestTimestamp = earliestDate != null ? earliestDate.getTime() : 0L;
 
 
             int remoteStart = 1;
@@ -894,8 +891,8 @@ public class MessagingController {
                     for (MessagingListener l : getListeners(listener)) {
                         l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
                     }
-                    Message localMessage = localUidMap.get(thisMess.getUid());
-                    if (localMessage == null || !localMessage.olderThan(earliestDate)) {
+                    Long localMessageTimestamp = localUidMap.get(thisMess.getUid());
+                    if (localMessageTimestamp == null || localMessageTimestamp >= earliestTimestamp) {
                         remoteMessages.add(thisMess);
                         remoteUidMap.put(thisMess.getUid(), thisMess);
                     }
@@ -916,14 +913,15 @@ public class MessagingController {
              */
             MoreMessages moreMessages = localFolder.getMoreMessages();
             if (account.syncRemoteDeletions()) {
-                List<Message> destroyMessages = new ArrayList<>();
-                for (Message localMessage : localMessages) {
-                    if (remoteUidMap.get(localMessage.getUid()) == null) {
-                        destroyMessages.add(localMessage);
+                List<String> destroyMessageUids = new ArrayList<>();
+                for (String localMessageUid : localUidMap.keySet()) {
+                    if (remoteUidMap.get(localMessageUid) == null) {
+                        destroyMessageUids.add(localMessageUid);
                     }
                 }
 
-                if (!destroyMessages.isEmpty()) {
+                List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(destroyMessageUids);
+                if (!destroyMessageUids.isEmpty()) {
                     moreMessages = MoreMessages.UNKNOWN;
 
                     localFolder.destroyMessages(destroyMessages);
@@ -936,7 +934,7 @@ public class MessagingController {
                 }
             }
             // noinspection UnusedAssignment, free memory early? (better break up the method!)
-            localMessages = null;
+            localUidMap = null;
 
             if (moreMessages == MoreMessages.UNKNOWN) {
                 updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
@@ -1248,6 +1246,8 @@ public class MessagingController {
                                             final List<Message> syncFlagMessages,
                                             boolean flagSyncOnly) throws MessagingException {
         if (message.isSet(Flag.DELETED)) {
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is marked as deleted");
             syncFlagMessages.add(message);
             return;
         }
@@ -1298,6 +1298,9 @@ public class MessagingController {
                 }
                 syncFlagMessages.add(message);
             }
+        } else {
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "Local copy of message with uid " + message.getUid() + " is marked as deleted");
         }
     }
 
@@ -2040,7 +2043,7 @@ public class MessagingController {
     private void processPendingSetFlag(PendingSetFlag command, Account account) throws MessagingException {
         String folder = command.folder;
 
-        if (account.getErrorFolderName().equals(folder)) {
+        if (account.getErrorFolderName().equals(folder) || account.getOutboxFolderName().equals(folder)) {
             return;
         }
 

@@ -17,7 +17,7 @@
         android:layout_gravity="left|center_vertical"
         android:id="@+id/crypto_status_dots_bg"
         android:src="@drawable/status_dots"
-        android:tint="@color/openpgp_grey"
+        android:tint="?attr/openpgp_grey"
         />
 
     <ImageView
@@ -26,7 +26,7 @@
         android:layout_gravity="left|center_vertical"
         android:id="@+id/crypto_status_combined_2"
         tools:src="@drawable/status_none_dots_1"
-        tools:tint="@color/openpgp_blue"
+        tools:tint="?attr/openpgp_blue"
         />
 
     <ImageView
@@ -35,7 +35,7 @@
         android:layout_gravity="left|center_vertical"
         android:id="@+id/crypto_status_combined_1"
         tools:src="@drawable/status_signature_verified_cutout"
-        tools:tint="@color/openpgp_blue"
+        tools:tint="?attr/openpgp_blue"
         />
 
     <ImageView
@@ -45,7 +45,7 @@
         android:id="@+id/crypto_status_single"
         android:visibility="gone"
         tools:src="@drawable/status_signature_verified_cutout"
-        tools:tint="@color/openpgp_blue"
+        tools:tint="?attr/openpgp_blue"
         />
 
 </com.fsck.k9.view.MessageCryptoStatusView>

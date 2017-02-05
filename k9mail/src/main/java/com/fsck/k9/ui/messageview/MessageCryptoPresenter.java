@@ -59,6 +59,11 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             return false;
         }
 
+        boolean suppressSignOnlyMessages = !account.getCryptoSupportSignOnly();
+        if (suppressSignOnlyMessages && displayStatus.isUnencryptedSigned()) {
+            return false;
+        }
+
         messageView.getMessageHeaderView().setCryptoStatus(displayStatus);
 
         switch (displayStatus) {
@@ -84,6 +89,11 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             case ENCRYPTED_SIGN_ERROR: {
                 showMessageCryptoWarning(messageView, account, messageViewInfo,
                         R.string.messageview_crypto_warning_error);
+                break;
+            }
+            case ENCRYPTED_UNSIGNED: {
+                showMessageCryptoWarning(messageView, account, messageViewInfo,
+                        R.string.messageview_crypto_warning_unsigned);
                 break;
             }
 
@@ -183,7 +193,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
     public void onClickShowCryptoKey() {
         try {
-            PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpPendingIntent();
+            PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpSigningKeyIntentIfAny();
             if (pendingIntent != null) {
                 messageCryptoMvpView.startPendingIntentForCryptoPresenter(
                         pendingIntent.getIntentSender(), null, null, 0, 0, 0);

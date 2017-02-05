@@ -72,13 +72,16 @@ public class MessageExtractorTest {
         assertNull(result);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void getTextFromPart_withUnknownEncoding_shouldThrowRuntimeException() throws Exception {
+    @Test
+    public void getTextFromPart_withUnknownEncoding_shouldReturnUnmodifiedBodyContents() throws Exception {
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
-        BinaryMemoryBody body = new BinaryMemoryBody("Sample text body".getBytes(), "unknown encoding");
+        String bodyText = "Sample text body";
+        BinaryMemoryBody body = new BinaryMemoryBody(bodyText.getBytes(), "unknown encoding");
         part.setBody(body);
 
-        MessageExtractor.getTextFromPart(part);
+        String result = MessageExtractor.getTextFromPart(part);
+        
+        assertEquals(bodyText, result);
     }
 
     @Test

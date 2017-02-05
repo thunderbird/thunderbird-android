@@ -78,7 +78,7 @@
   <string name="status_loading_account_folder_headers">Ανάγνωση επικεφαλίδων <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Αποστολή <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Επεξεργασία <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Επόμενος έλεγχος στις <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Συγχρονισμός απενεργοποιημένος</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> επιλέχθηκαν</string>
@@ -89,6 +89,7 @@
   <string name="cancel_action">Άκυρο</string>
   <string name="send_action">Αποστολή</string>
   <string name="send_again_action">Αποστολή πάλι</string>
+  <string name="empty_subject">Το θέμα είναι κενό, πατήστε επανάληψη για αποστολή</string>
   <string name="select_action">Επιλογή</string>
   <string name="deselect_action">Απο-επιλογή</string>
   <string name="reply_action">Απάντηση</string>
@@ -126,6 +127,10 @@
   <string name="select_text_action">Επιλογή κειμένου</string>
   <string name="show_headers_action">Προβολή επικεφαλίδων</string>
   <string name="hide_headers_action">Απόκρυψη επικεφαλίδων</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Η διεύθυνση αντιγράφηκε στο πρόχειρο</item>
+    <item quantity="other">Οι διευθύνσεις αντιγράφηκαν στο πρόχειρο </item>
+  </plurals>
   <string name="message_view_theme_action_dark">Εφαρμογή σκούρας εμφάνισης</string>
   <string name="message_view_theme_action_light">Εφαρμογή φωτεινής εμφάνισης</string>
   <string name="mark_as_unread_action">Σήμανση ως μη αναγνωσμένο</string>
@@ -146,6 +151,7 @@
   <string name="status_loading_more">Φόρτωση μηνυμάτων\u2026</string>
   <string name="status_network_error">Σφάλμα σύνδεσης</string>
   <string name="status_invalid_id_error">Δεν βρέθηκε το μήνυμα</string>
+  <string name="status_loading_error">Σφάλμα φόρτωση μηνύματος</string>
   <string name="status_loading_more_failed">Επανάληψη φόρτωσης περισσότερων μηνυμάτων</string>
   <string name="load_more_messages_fmt">Φόρτωση
     έως <xliff:g id="messages_to_load">%d</xliff:g> περισσότερων</string>
@@ -174,6 +180,8 @@
   <string name="notification_action_spam">Σκουπίδια</string>
   <string name="notification_certificate_error_title">Σφάλμα πιστοποιητικού για <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Ελέγξτε τις ρυθμίσεις του εξυπηρετητή</string>
+  <string name="notification_authentication_error_title">Αποτυχία πιστοποίησης</string>
+  <string name="notification_authentication_error_text">Αποτυχία πιστοποίησης <xliff:g id="account">%s</xliff:g>. Αναβαθμίστε τις ρυθμ,ίσεις του διακομιστή.</string>
   <string name="notification_bg_sync_ticker">Έλεγχος μηνύματος: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Έλεγχος μηνύματος</string>
   <string name="notification_bg_send_ticker">Αποστολή μηνύματος: <xliff:g id="account">%s</xliff:g></string>
@@ -211,6 +219,7 @@
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> έγραψε:</string>
   <string name="message_compose_reply_header_fmt_with_date">Στις <xliff:g id="sent_date">%1$s</xliff:g>, ο/η <xliff:g id="sender">%2$s</xliff:g> έγραψε:</string>
   <string name="message_compose_error_no_recipients">Πρέπει να συμπεριλάβετε τουλάχιστον έναν παραλήπτη.</string>
+  <string name="compose_error_incomplete_recipient">Το πεδίο παραλήπτη περιέχει ελλιπή στοιχεία!</string>
   <string name="error_contact_address_not_found">Δεν βρέθηκαν διευθύνσεις ηλεκτρονικού ταχυδρομείου.</string>
   <string name="message_compose_attachments_skipped_toast">Μερικά συνημμένα δεν μπορούν να προωθηθούν γιατί δεν έχουν κατεβεί.</string>
   <string name="message_compose_show_quoted_text_action">Παράθεση μηνύματος</string>
@@ -226,6 +235,7 @@
   <string name="message_view_show_more_attachments_action">Περισσότερα…</string>
   <string name="message_view_no_viewer">Δεν υπάρχει πρόγραμμα προβολής για <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Κατέβασμα πλήρους μηνύματος</string>
+  <string name="message_view_toast_unable_to_display_message">Αδυναμία προβολής μηνύματος</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Όλες οι επικεφαλίδες έχουν κατεβεί, αλλά δεν υπάρχουν πρόσθετες επικεφαλίδες για να προβληθούν.</string>
   <string name="message_additional_headers_retrieval_failed">Η ανάσυρση πρόσθετων επικεφαλίδων από τη βάση δεδομένων ή τον εξυπηρέτη ταχυδρομείου απέτυχε.</string>
@@ -262,7 +272,7 @@
   <string name="global_settings_confirm_action_delete_starred">Διαγραφή με αστέρι (προβολή μηνύματος μόνον)</string>
   <string name="global_settings_confirm_action_spam">Σκουπίδια</string>
   <string name="global_settings_confirm_menu_discard">Απόρριψη μηνύματος</string>
-  <string name="global_settings_confirm_action_delete_notif">Διαγραφή (από ειδιοποίηση)</string>
+  <string name="global_settings_confirm_action_delete_notif">Διαγραφή (από ειδοποίηση)</string>
   <string name="global_settings_privacy_hide_useragent">Αφαίρεση του User-Agent K-9 από την κεφαλίδα του mail</string>
   <string name="global_settings_privacy_hide_timezone">Χρήση της UTC σαν ζώνη ώρας στην κεφαλίδα του mail</string>
   <string name="global_settings_notification_hide_subject_title">Απόκρυψη θέματος στις ειδοποιήσεις</string>
@@ -433,6 +443,8 @@
   <string name="account_settings_notify_sync_summary">Ειδοποίηση στη γραμμή κατάστασης όσο ελέγχεται το γραμματοκιβώτιο</string>
   <string name="account_settings_notify_self_label">Συμπερίληψη εξερχόμενου ταχυδρομείου</string>
   <string name="account_settings_notify_self_summary">Προβολή ειδοποίησης για μηνύματα που απέστειλα</string>
+  <string name="account_notify_contacts_mail_only_label">Μόνο οι επαφές</string>
+  <string name="account_notify_contacts_mail_only_summary">Προβολή ειδοποιήσεων μόνο για μηνύματα από τις επαφές μου</string>
   <string name="account_settings_notification_opens_unread_label">Η ειδοποίηση ανοίγει μη αναγνωσμένα μηνύματα</string>
   <string name="account_settings_notification_opens_unread_summary">Αναζητά μη αναγνωσμένα μηνύματα όταν ανοίγεται η ειδοποίηση</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Σημείωση ως αναγνωσμένου με την ανάγνωση</string>
@@ -696,6 +708,7 @@
   <string name="search_all_messages_detail">Όλα τα μηνύματα σε φακέλους αναζήτησης</string>
   <string name="integrated_inbox_title">Ενιαία Εισερχόμενα</string>
   <string name="integrated_inbox_detail">Όλα τα μηνύματα στους ενοποιημένους φακέλους</string>
+  <string name="tap_hint">Πατήστε τον κύκλο ή το αστέρι για μη αναγνωσμένα μηνύματα ή μηνύματα με σήμανση</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Ενιαία Εισερχόμενα</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Όλα τα μηνύματα προβάλλονται στα Ενιαία Εισερχόμενα.</string>
   <string name="account_settings_searchable_label">Φάκελοι αναζήτησης</string>
@@ -737,6 +750,7 @@
   <string name="font_size_larger">Μεγαλύτερο</string>
   <string name="miscellaneous_preferences">Διάφορα</string>
   <string name="error_activity_not_found">Δεν βρέθηκε κατάλληλη εφαρμογή για αυτή την ενέργεια.</string>
+  <string name="send_failed_reason">Αποστολή απέτυχε: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Αποθήκευση πρόχειρου μηνύματος;</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Αποθήκευση ή απόρριψη αυτού του μηνύματος;</string>
   <string name="confirm_discard_draft_message_title">Απόρριψη μηνύματος;</string>
@@ -750,6 +764,10 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Διαγραφή</string>
   <string name="dialog_confirm_delete_cancel_button">Άκυρο</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Επιβεβαίωση σήμανσης όλων ως αναγνωσμένα</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Θέλετε να σημανθούν όλα τα μηνύματα ως αναγνωσμένα;</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Ναι</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Όχι</string>
   <string name="dialog_confirm_spam_title">Επιβεβαίωση μετακίνησης στο φάκελο σκουπιδιών</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Θέλετε πράγματι να μετακινήσετε αυτό το μήνυμα στο φάκελο σκουπιδιών;</item>
@@ -880,6 +898,7 @@
   <string name="fetching_attachment_dialog_message">Ανάκληση συνημμένων…</string>
   <string name="auth_external_error">Αδύνατη η πιστοποίηση. Ο διακομιστής δεν διαφημίζει την ικανότητα SASL EXTERNAL. Αυτό μπορεί να συμβαίνει λόγω κάποιου προβληματος με το πιστοποιητικό του πελάτη (ληγμένο, άγνωστη αρχή πιστοποίησης) ή κάποιο άλλο πρόβλημα ρυθμίσεων.</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_decryption_failed">Η αποκρυπτογράφηση απέτυχε: %s</string>
   <string name="openpgp_unknown_error">Άγνωστο OpenPGP Σφάλμα</string>
   <string name="openpgp_canceled_by_user">Ακυρωμένο από το χρήστη</string>
   <string name="openpgp_result_no_signature">Δεν υπογράφθηκε</string>
@@ -907,4 +926,74 @@
   <string name="crypto_incomplete_message">Ημιτελής μήνυμα</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="crypto_download_complete_message_to_decrypt">Κάντε κλικ στο \"Λήψη πλήρους μηνύματος» για να επιτραπεί η κρυπτογράφηση.</string>
+  <string name="preview_encrypted">*Κρυπτογραφημένο*</string>
+  <string name="add_from_contacts">Προσθήκη από τις Επαφές</string>
+  <string name="crypto_settings_cancel">Άκυρο</string>
+  <string name="crypto_settings_ok">Προχώρησε</string>
+  <string name="recipient_cc">Κοιν:</string>
+  <string name="recipient_bcc">Κρυφή Κοιν:</string>
+  <string name="recipient_to">Προς</string>
+  <string name="recipient_from">Από:</string>
+  <string name="unknown_recipient"><![CDATA[<Άγνωστος Παραλήπτης>]]></string>
+  <string name="address_type_home">Οικία</string>
+  <string name="address_type_work">Εργασία</string>
+  <string name="address_type_other">\'Αλλο</string>
+  <string name="address_type_mobile">Κινητό</string>
+  <string name="compose_error_no_draft_folder">Δεν υπάρχει φάκελος Πρόχειρα για αυτόν τον λογαριασμό!</string>
+  <string name="compose_not_saving_unencrypted">Το πρόχειρο ΔΕΝ αποθηκεύεται χωρίς κρυπτογράφηση!</string>
+  <string name="compose_error_pgp_error">Σφάλμα παρόχου OpenPGP. Ελέγξτε τις ρυθμίσεις!</string>
+  <string name="compose_error_no_signing_key">Δεν έχει ρυθμιστεί κλειδί για την Υπογραφή! Παρακαλούμε ελένξτε τι ρυθμίσεις.</string>
+  <string name="compose_error_private_missing_keys">Η ιδιωτική λειτουργία είναι ενεργοποιημένη, αλλά ορισμένοι αποδέκτες δεν έχουν τα κλειδιά!</string>
+  <string name="error_crypto_provider_connect">Δεν είναι δυνατή η σύνδεση με τον πάροχο κρυπτογράφησης, ελέγξτε τις ρυθμίσεις σας ή πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
+  <string name="error_crypto_provider_ui_required">Δεν επιτρέπεται η πρόσβαση στον πάροχο κρυπτογράφησης, πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
+  <string name="error_crypto_inline_attach">Η λειτουργία σε PGP/INLINE δεν υποστιρίχει συνημμένα αρχεία!</string>
+  <string name="enable_inline_pgp">Ενεργοποίηση PGP/INLINE</string>
+  <string name="disable_inline_pgp">Απενεργοποίηση PGP/INLINE</string>
+  <string name="openpgp_inline_title">Λειτουργία σε PGP/INLINE</string>
+  <string name="openpgp_inline_text">Το μήνυμα αποστέλλεται σε PGP/INLINE μορφοποίηση.\n Αυτό πρέπει να χρησιμοποιείται μόνο για λόγους συμβατότητας:</string>
+  <string name="openpgp_inline_plus_compat">Κάποιες εφαρμογές υποστηρίχουν μόνο αυτή τη μπργοποίηση</string>
+  <string name="openpgp_inline_minus_transit">Οι υπογραφές μπορεί να καταστραφούν κατά την μετακίνηση</string>
+  <string name="openpgp_inline_minus_attach">Τα συνημμένα αρχεία δεν υποστηρίζονται!</string>
+  <string name="openpgp_inline_ok">Το\' πιασα!</string>
+  <string name="openpgp_inline_disable">Απενεργοποίηση</string>
+  <string name="openpgp_inline_keep_enabled">Να μείνει Ενεργοποιημένο</string>
+  <string name="crypto_msg_disabled">Το μήνυμα δεν είναι κρυπτογραφημένο</string>
+  <string name="crypto_msg_encrypted_error">Το μήνυμα είναι κρυπτογραφημένο, αλλα υπήρχε σφάλμα κατά την αποκρυπτογράφηση.</string>
+  <string name="crypto_msg_signed_error">Το μήνυμα είναι υπογεγραμμένο, αλλά η υπογραφή δεν μπορεί να πιστοποιηθεί.</string>
+  <string name="crypto_msg_unsupported_encrypted">Το μήνυμα είναι κρυπτογραφημένο σε μη υποστηριζόμενη μορφοποίηση</string>
+  <string name="crypto_msg_unsupported_signed">Το μήνυμα είναι υπογεγραμμένο σε μη υποστηριζόμενη μορφοποίηση</string>
+  <string name="crypto_msg_incomplete_encrypted">Το μήνυμα είναι κρυπτογραφημένο, αλλά πρέπει να κατέβει πλήρως για να αποκρυπτογραφηθεί</string>
+  <string name="crypto_msg_cancelled">Το μήνυμα είναι κρυπτογραφημένο, αλλά η αποκρυπτογράφηση ακυρώθηκε.</string>
+  <string name="crypto_msg_signed_unencrypted">Το μήνυμα είναι υπογεγραμμένο, αλλά όχι κρυπτογραφημένο</string>
+  <string name="crypto_msg_encrypted_unsigned">Το μήνυμα ήτανκρυπτογραφημένο, αλλά όχι υπογεγραμμένο.</string>
+  <string name="crypto_msg_sign_unknown">Η υπογραφή έγινε με άγνωστο κλειδί.</string>
+  <string name="crypto_msg_sign_verified">Η υπογραφή έγινε με έμπιστο κλειδί.</string>
+  <string name="crypto_msg_sign_unverified">Η υπογραφή έγινε με μη έμπιστο κλειδί!</string>
+  <string name="crypto_msg_sign_error">Η υπογραφή περιέχει σφάλμα.</string>
+  <string name="crypto_msg_sign_mismatch">Η υπογραφή έγινε με λάθος κλειδί.</string>
+  <string name="crypto_msg_sign_expired">Η υπογραφή έγινε με κλειδί που έχει λήξει.</string>
+  <string name="crypto_msg_sign_revoked">Η υπογραφή έγινε με κλειδί που έχει ανακληθεί.</string>
+  <string name="crypto_msg_sign_insecure">Η υπογραφή έγινε με μη ασφαλές κλειδί.</string>
+  <string name="crypto_msg_sign_incomplete">Το μήνυμα πρέπει να κατέβει πλήρως για να πιστοποιηθεί η υπογραφή του.</string>
+  <string name="crypto_msg_signed_encrypted">Το μήνυμα είναι υπογεγραμμένο και κρυπτογραφημένο.</string>
+  <string name="crypto_msg_unsigned_encrypted">Δεν υπάρχει καμία υπογραφή, το μήνυμα αυτό μπορεί να έχουν υποκλαπεί.</string>
+  <string name="crypto_info_ok">Εντάξει</string>
+  <string name="crypto_info_view_key">Προβολή Υπογράφοντα</string>
+  <string name="locked_attach_unlock">Ξεκλείδωσε</string>
+  <string name="locked_attach_unsigned">Αυτό το τμήμα δεν ήταν υπογεγραμμένο και μπορεί να μην είναι ασφαλή.</string>
+  <string name="locked_attach_unencrypted">Αυτό το τμήμα δεν ήταν κρυπτογραφημένο και μπορεί να μην είναι ασφαλή.</string>
+  <string name="locked_attach_title">Το συνημμένο αρχείο δεν είναι προστατευμένο </string>
+  <string name="message_progress_text">Φόρτωση...</string>
+  <string name="messageview_decrypt_cancelled">Αποκρυπτογράφηση ακυρώθηκε.</string>
+  <string name="messageview_decrypt_retry">Επανάληψη</string>
+  <string name="messageview_decrypt_incomplete">Το κρυπτογραφημένο μήνυμα πρέπει να έχει κατέβει για να αποκρυπτογραφηθεί.</string>
+  <string name="messageview_crypto_error_title">Σφάλμα αποκρυπτογράφησης μηνύματος</string>
+  <string name="messageview_crypto_warning_title">Προειδοποίηση Ασφαλείας</string>
+  <string name="messageview_crypto_warning_revoked">Αυτό το μήνυμα έχει υπογραφεί από <b>κλειδί που έχει ανακληθεί!</b></string>
+  <string name="messageview_crypto_warning_expired">Αυτό το μήνυμα έχει υπογραφεί από <b>κλειδί που έχει λήξει!</b></string>
+  <string name="messageview_crypto_warning_insecure">Αυτό το μήνυμα έχει υπογραφεί από <b>κλειδί που δεν είναι σφαλές!</b></string>
+  <string name="messageview_crypto_warning_error">Υπήρχε ένα <b>σφάλμα στην υπογραφή του μηνύματος!</b></string>
+  <string name="recipient_error_non_ascii">Δεν υποστηρίζονται ειδικοί χαρακτήρες!</string>
+  <string name="recipient_error_parse_failed">Σφάλμα στη διεύθυνση!</string>
+  <string name="account_settings_crypto_support_sign_only">Υποστήριξη υπογραφής μη κρυπρογραφημένων μηνυμάτων</string>
 </resources>

@@ -221,7 +221,7 @@ public class PgpMimeMessageTest  {
         InputStream messageInputStream = new ByteArrayInputStream(messageSource.getBytes());
         MimeMessage message;
         try {
-            message = new MimeMessage(messageInputStream, true);
+            message = MimeMessage.parseMimeMessage(messageInputStream, true);
         } finally {
             messageInputStream.close();
         }

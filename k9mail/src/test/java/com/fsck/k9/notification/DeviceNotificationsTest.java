@@ -128,7 +128,7 @@ public class DeviceNotificationsTest {
         verify(builder).setTicker(SUMMARY);
         verify(builder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(builder).setSubText(ACCOUNT_NAME);
-        verify(builder).setGroup("newMailNotifications");
+        verify(builder).setGroup("newMailNotifications-" + ACCOUNT_NUMBER);
         verify(builder).setGroupSummary(true);
         verify(builder).setPriority(NotificationCompat.PRIORITY_HIGH);
         verify(builder).setStyle(notifications.inboxStyle);
@@ -147,8 +147,8 @@ public class DeviceNotificationsTest {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
         K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
         when(notificationData.isSingleMessageNotification()).thenReturn(false);
-        when(notificationData.hasAdditionalMessages()).thenReturn(true);
-        when(notificationData.getAdditionalMessagesCount()).thenReturn(23);
+        when(notificationData.hasSummaryOverflowMessages()).thenReturn(true);
+        when(notificationData.getSummaryOverflowMessagesCount()).thenReturn(23);
 
         notifications.buildSummaryNotification(account, notificationData, false);
 

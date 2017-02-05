@@ -1,22 +1,10 @@
 package com.fsck.k9.provider;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.fsck.k9.Account;
-import com.fsck.k9.BuildConfig;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.cache.EmailProviderCacheCursor;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mailstore.LockableDatabase;
-import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
-import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
-import com.fsck.k9.mailstore.UnavailableStorageException;
-import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.search.SqlQueryBuilder;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -28,6 +16,20 @@ import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.cache.EmailProviderCacheCursor;
+import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LockableDatabase;
+import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
+import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import com.fsck.k9.mailstore.UnavailableStorageException;
+import com.fsck.k9.search.SqlQueryBuilder;
+
 
 /**
  * Content Provider used to display the message list etc.
@@ -42,9 +44,9 @@ import android.text.TextUtils;
  * - add support for account list and folder list
  */
 public class EmailProvider extends ContentProvider {
-    private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
-    public static final String AUTHORITY = BuildConfig.APPLICATION_ID +".provider.email";
+    public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".provider.email";
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
@@ -75,42 +77,42 @@ public class EmailProvider extends ContentProvider {
     }
 
     private static final String[] FIXUP_MESSAGES_COLUMNS = {
-        MessageColumns.ID
+            MessageColumns.ID
     };
 
     private static final String[] FIXUP_AGGREGATED_MESSAGES_COLUMNS = {
-        MessageColumns.DATE,
-        MessageColumns.INTERNAL_DATE,
-        MessageColumns.ATTACHMENT_COUNT,
-        MessageColumns.READ,
-        MessageColumns.FLAGGED,
-        MessageColumns.ANSWERED,
-        MessageColumns.FORWARDED
+            MessageColumns.DATE,
+            MessageColumns.INTERNAL_DATE,
+            MessageColumns.ATTACHMENT_COUNT,
+            MessageColumns.READ,
+            MessageColumns.FLAGGED,
+            MessageColumns.ANSWERED,
+            MessageColumns.FORWARDED
     };
 
     private static final String FOLDERS_TABLE = "folders";
 
     private static final String[] FOLDERS_COLUMNS = {
-        FolderColumns.ID,
-        FolderColumns.NAME,
-        FolderColumns.LAST_UPDATED,
-        FolderColumns.UNREAD_COUNT,
-        FolderColumns.VISIBLE_LIMIT,
-        FolderColumns.STATUS,
-        FolderColumns.PUSH_STATE,
-        FolderColumns.LAST_PUSHED,
-        FolderColumns.FLAGGED_COUNT,
-        FolderColumns.INTEGRATE,
-        FolderColumns.TOP_GROUP,
-        FolderColumns.POLL_CLASS,
-        FolderColumns.PUSH_CLASS,
-        FolderColumns.DISPLAY_CLASS
+            FolderColumns.ID,
+            FolderColumns.NAME,
+            FolderColumns.LAST_UPDATED,
+            FolderColumns.UNREAD_COUNT,
+            FolderColumns.VISIBLE_LIMIT,
+            FolderColumns.STATUS,
+            FolderColumns.PUSH_STATE,
+            FolderColumns.LAST_PUSHED,
+            FolderColumns.FLAGGED_COUNT,
+            FolderColumns.INTEGRATE,
+            FolderColumns.TOP_GROUP,
+            FolderColumns.POLL_CLASS,
+            FolderColumns.PUSH_CLASS,
+            FolderColumns.DISPLAY_CLASS
     };
 
     private static final String THREADS_TABLE = "threads";
 
     static {
-        UriMatcher matcher = sUriMatcher;
+        UriMatcher matcher = URI_MATCHER;
 
         matcher.addURI(AUTHORITY, "account/*/messages", MESSAGES);
         matcher.addURI(AUTHORITY, "account/*/messages/threaded", MESSAGES_THREADED);
@@ -120,70 +122,70 @@ public class EmailProvider extends ContentProvider {
     }
 
     public interface SpecialColumns {
-        public static final String ACCOUNT_UUID = "account_uuid";
+        String ACCOUNT_UUID = "account_uuid";
 
-        public static final String THREAD_COUNT = "thread_count";
+        String THREAD_COUNT = "thread_count";
 
-        public static final String FOLDER_NAME = "name";
-        public static final String INTEGRATE = "integrate";
+        String FOLDER_NAME = "name";
+        String INTEGRATE = "integrate";
     }
 
     public interface MessageColumns {
-        public static final String ID = "id";
-        public static final String UID = "uid";
-        public static final String INTERNAL_DATE = "internal_date";
-        public static final String SUBJECT = "subject";
-        public static final String DATE = "date";
-        public static final String MESSAGE_ID = "message_id";
-        public static final String SENDER_LIST = "sender_list";
-        public static final String TO_LIST = "to_list";
-        public static final String CC_LIST = "cc_list";
-        public static final String BCC_LIST = "bcc_list";
-        public static final String REPLY_TO_LIST = "reply_to_list";
-        public static final String FLAGS = "flags";
-        public static final String ATTACHMENT_COUNT = "attachment_count";
-        public static final String FOLDER_ID = "folder_id";
-        public static final String PREVIEW_TYPE = "preview_type";
-        public static final String PREVIEW = "preview";
-        public static final String READ = "read";
-        public static final String FLAGGED = "flagged";
-        public static final String ANSWERED = "answered";
-        public static final String FORWARDED = "forwarded";
+        String ID = "id";
+        String UID = "uid";
+        String INTERNAL_DATE = "internal_date";
+        String SUBJECT = "subject";
+        String DATE = "date";
+        String MESSAGE_ID = "message_id";
+        String SENDER_LIST = "sender_list";
+        String TO_LIST = "to_list";
+        String CC_LIST = "cc_list";
+        String BCC_LIST = "bcc_list";
+        String REPLY_TO_LIST = "reply_to_list";
+        String FLAGS = "flags";
+        String ATTACHMENT_COUNT = "attachment_count";
+        String FOLDER_ID = "folder_id";
+        String PREVIEW_TYPE = "preview_type";
+        String PREVIEW = "preview";
+        String READ = "read";
+        String FLAGGED = "flagged";
+        String ANSWERED = "answered";
+        String FORWARDED = "forwarded";
     }
 
     private interface InternalMessageColumns extends MessageColumns {
-        public static final String DELETED = "deleted";
-        public static final String EMPTY = "empty";
-        public static final String MIME_TYPE = "mime_type";
+        String DELETED = "deleted";
+        String EMPTY = "empty";
+        String MIME_TYPE = "mime_type";
     }
 
     public interface FolderColumns {
-        public static final String ID = "id";
-        public static final String NAME = "name";
-        public static final String LAST_UPDATED = "last_updated";
-        public static final String UNREAD_COUNT = "unread_count";
-        public static final String VISIBLE_LIMIT = "visible_limit";
-        public static final String STATUS = "status";
-        public static final String PUSH_STATE = "push_state";
-        public static final String LAST_PUSHED = "last_pushed";
-        public static final String FLAGGED_COUNT = "flagged_count";
-        public static final String INTEGRATE = "integrate";
-        public static final String TOP_GROUP = "top_group";
-        public static final String POLL_CLASS = "poll_class";
-        public static final String PUSH_CLASS = "push_class";
-        public static final String DISPLAY_CLASS = "display_class";
+        String ID = "id";
+        String NAME = "name";
+        String LAST_UPDATED = "last_updated";
+        String UNREAD_COUNT = "unread_count";
+        String VISIBLE_LIMIT = "visible_limit";
+        String STATUS = "status";
+        String PUSH_STATE = "push_state";
+        String LAST_PUSHED = "last_pushed";
+        String FLAGGED_COUNT = "flagged_count";
+        String INTEGRATE = "integrate";
+        String TOP_GROUP = "top_group";
+        String POLL_CLASS = "poll_class";
+        String PUSH_CLASS = "push_class";
+        String DISPLAY_CLASS = "display_class";
     }
 
     public interface ThreadColumns {
-        public static final String ID = "id";
-        public static final String MESSAGE_ID = "message_id";
-        public static final String ROOT = "root";
-        public static final String PARENT = "parent";
+        String ID = "id";
+        String MESSAGE_ID = "message_id";
+        String ROOT = "root";
+        String PARENT = "parent";
     }
 
     public interface StatsColumns {
-        public static final String UNREAD_COUNT = "unread_count";
-        public static final String FLAGGED_COUNT = "flagged_count";
+        String UNREAD_COUNT = "unread_count";
+        String FLAGGED_COUNT = "flagged_count";
     }
 
     private static final String[] STATS_DEFAULT_PROJECTION = {
@@ -206,10 +208,8 @@ public class EmailProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-            String sortOrder) {
-
-        int match = sUriMatcher.match(uri);
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        int match = URI_MATCHER.match(uri);
         if (match < 0) {
             throw new IllegalArgumentException("Unknown URI: " + uri);
         }
@@ -236,11 +236,9 @@ public class EmailProvider extends ContentProvider {
                 String[] dbProjection = dbColumnNames.toArray(new String[0]);
 
                 if (match == MESSAGES) {
-                    cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs,
-                            sortOrder);
+                    cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
                 } else if (match == MESSAGES_THREADED) {
-                    cursor = getThreadedMessages(accountUuid, dbProjection, selection,
-                            selectionArgs, sortOrder);
+                    cursor = getThreadedMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
                 } else if (match == MESSAGES_THREAD) {
                     String threadId = segments.get(3);
                     cursor = getThread(accountUuid, dbProjection, threadId, sortOrder);
@@ -248,13 +246,10 @@ public class EmailProvider extends ContentProvider {
                     throw new RuntimeException("Not implemented");
                 }
 
-                Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid +
-                        "/messages");
+                Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid + "/messages");
                 cursor.setNotificationUri(contentResolver, notificationUri);
 
-                cursor = new SpecialColumnsCursor(new IdTrickeryCursor(cursor), projection,
-                        specialColumns);
-
+                cursor = new SpecialColumnsCursor(new IdTrickeryCursor(cursor), projection, specialColumns);
                 cursor = new EmailProviderCacheCursor(accountUuid, cursor, getContext());
                 break;
             }
@@ -264,8 +259,7 @@ public class EmailProvider extends ContentProvider {
 
                 cursor = getAccountStats(accountUuid, projection, selection, selectionArgs);
 
-                Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid +
-                        "/messages");
+                Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid + "/messages");
 
                 cursor.setNotificationUri(contentResolver, notificationUri);
                 break;
@@ -290,8 +284,8 @@ public class EmailProvider extends ContentProvider {
         throw new RuntimeException("not implemented yet");
     }
 
-    protected Cursor getMessages(String accountUuid, final String[] projection,
-            final String selection, final String[] selectionArgs, final String sortOrder) {
+    protected Cursor getMessages(String accountUuid, final String[] projection, final String selection,
+            final String[] selectionArgs, final String sortOrder) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);
@@ -304,12 +298,10 @@ public class EmailProvider extends ContentProvider {
 
                     String where;
                     if (TextUtils.isEmpty(selection)) {
-                        where = InternalMessageColumns.DELETED + " = 0 AND " +
-                                InternalMessageColumns.EMPTY + " = 0";
+                        where = InternalMessageColumns.DELETED + " = 0 AND " + InternalMessageColumns.EMPTY + " = 0";
                     } else {
                         where = "(" + selection + ") AND " +
-                                InternalMessageColumns.DELETED + " = 0 AND " +
-                                InternalMessageColumns.EMPTY + " = 0";
+                                InternalMessageColumns.DELETED + " = 0 AND " + InternalMessageColumns.EMPTY + " = 0";
                     }
 
                     final Cursor cursor;
@@ -338,16 +330,13 @@ public class EmailProvider extends ContentProvider {
                                 "JOIN threads t ON (t.message_id = m.id) " +
                                 "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                                 "WHERE ");
-                        query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
-                                "m.", where));
+                        query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS, "m.", where));
                         query.append(" ORDER BY ");
-                        query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
-                                "m.", sortOrder));
+                        query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS, "m.", sortOrder));
 
                         cursor = db.rawQuery(query.toString(), selectionArgs);
                     } else {
-                        cursor = db.query(MESSAGES_TABLE, projection, where, selectionArgs, null,
-                                null, sortOrder);
+                        cursor = db.query(MESSAGES_TABLE, projection, where, selectionArgs, null, null, sortOrder);
                     }
 
                     return cursor;
@@ -360,8 +349,8 @@ public class EmailProvider extends ContentProvider {
         }
     }
 
-    protected Cursor getThreadedMessages(String accountUuid, final String[] projection,
-            final String selection, final String[] selectionArgs, final String sortOrder) {
+    protected Cursor getThreadedMessages(String accountUuid, final String[] projection, final String selection,
+            final String[] selectionArgs, final String sortOrder) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);
@@ -399,7 +388,7 @@ public class EmailProvider extends ContentProvider {
 
                     query.append(" FROM (");
 
-                    createThreadedSubQuery(projection, selection, selectionArgs, query);
+                    createThreadedSubQuery(projection, selection, query);
 
                     query.append(") a ");
 
@@ -414,8 +403,7 @@ public class EmailProvider extends ContentProvider {
 
                     if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
                         query.append("JOIN " + FOLDERS_TABLE + " f " +
-                                "ON (m." + MessageColumns.FOLDER_ID + " = f." + FolderColumns.ID +
-                                ") ");
+                                "ON (m." + MessageColumns.FOLDER_ID + " = f." + FolderColumns.ID + ") ");
                     }
 
                     query.append(" GROUP BY " + ThreadColumns.ROOT);
@@ -436,16 +424,13 @@ public class EmailProvider extends ContentProvider {
         }
     }
 
-    private void createThreadedSubQuery(String[] projection, String selection,
-            String[] selectionArgs, StringBuilder query) {
-
+    private void createThreadedSubQuery(String[] projection, String selection, StringBuilder query) {
         query.append("SELECT t." + ThreadColumns.ROOT + " AS thread_root");
         for (String columnName : projection) {
             String aggregationFunc = THREAD_AGGREGATION_FUNCS.get(columnName);
 
             if (SpecialColumns.THREAD_COUNT.equals(columnName)) {
-                query.append(",COUNT(t." + ThreadColumns.ROOT + ") AS " +
-                        SpecialColumns.THREAD_COUNT);
+                query.append(",COUNT(t." + ThreadColumns.ROOT + ") AS " + SpecialColumns.THREAD_COUNT);
             } else if (aggregationFunc != null) {
                 query.append(",");
                 query.append(aggregationFunc);
@@ -465,8 +450,7 @@ public class EmailProvider extends ContentProvider {
 
         if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
             query.append(" JOIN " + FOLDERS_TABLE + " f " +
-                    "ON (m." + MessageColumns.FOLDER_ID + " = f." + FolderColumns.ID +
-                    ")");
+                    "ON (m." + MessageColumns.FOLDER_ID + " = f." + FolderColumns.ID + ")");
         }
 
         query.append(" WHERE (t." + ThreadColumns.ROOT + " IN (" +
@@ -487,8 +471,7 @@ public class EmailProvider extends ContentProvider {
 
         query.append(
                 ") AND " +
-                InternalMessageColumns.DELETED + " = 0 AND " +
-                InternalMessageColumns.EMPTY + " = 0");
+                InternalMessageColumns.DELETED + " = 0 AND " + InternalMessageColumns.EMPTY + " = 0");
 
         query.append(" GROUP BY t." + ThreadColumns.ROOT);
     }
@@ -523,23 +506,19 @@ public class EmailProvider extends ContentProvider {
                     }
 
                     query.append(" FROM " + THREADS_TABLE + " t JOIN " + MESSAGES_TABLE + " m " +
-                            "ON (m." + MessageColumns.ID + " = t." + ThreadColumns.MESSAGE_ID +
-                            ") ");
+                            "ON (m." + MessageColumns.ID + " = t." + ThreadColumns.MESSAGE_ID + ") ");
 
                     if (Utility.arrayContainsAny(projection, (Object[]) FOLDERS_COLUMNS)) {
                         query.append("LEFT JOIN " + FOLDERS_TABLE + " f " +
-                                "ON (m." + MessageColumns.FOLDER_ID +  " = f." + FolderColumns.ID +
-                                ") ");
+                                "ON (m." + MessageColumns.FOLDER_ID + " = f." + FolderColumns.ID + ") ");
                     }
 
                     query.append("WHERE " +
                             ThreadColumns.ROOT + " = ? AND " +
-                            InternalMessageColumns.DELETED + " = 0 AND " +
-                            InternalMessageColumns.EMPTY + " = 0");
+                            InternalMessageColumns.DELETED + " = 0 AND " + InternalMessageColumns.EMPTY + " = 0");
 
                     query.append(" ORDER BY ");
-                    query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS,
-                            "m.", sortOrder));
+                    query.append(SqlQueryBuilder.addPrefixToSelection(FIXUP_MESSAGES_COLUMNS, "m.", sortOrder));
 
                     return db.rawQuery(query.toString(), new String[] { threadId });
                 }
@@ -549,11 +528,10 @@ public class EmailProvider extends ContentProvider {
         } catch (MessagingException e) {
             throw new RuntimeException("messaging exception", e);
         }
-
     }
 
-    private Cursor getAccountStats(String accountUuid, String[] columns,
-            final String selection, final String[] selectionArgs) {
+    private Cursor getAccountStats(String accountUuid, String[] columns, final String selection,
+            final String[] selectionArgs) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);
@@ -605,16 +583,14 @@ public class EmailProvider extends ContentProvider {
                 @Override
                 public Cursor doDbWork(SQLiteDatabase db) throws WrappedException,
                         UnavailableStorageException {
-
                     return db.rawQuery(sql.toString(), selectionArgs);
                 }
             });
-        }  catch (UnavailableStorageException e) {
+        } catch (UnavailableStorageException e) {
             throw new RuntimeException("Storage not available", e);
         } catch (MessagingException e) {
             throw new RuntimeException("messaging exception", e);
         }
-
     }
 
     private Account getAccount(String accountUuid) {
@@ -684,16 +660,13 @@ public class EmailProvider extends ContentProvider {
         private String[] mSpecialColumnValues;
         private String[] mColumnNames;
 
-        public SpecialColumnsCursor(Cursor cursor, String[] allColumnNames,
-                Map<String, String> specialColumns) {
+        public SpecialColumnsCursor(Cursor cursor, String[] allColumnNames, Map<String, String> specialColumns) {
             super(cursor);
 
             mColumnNames = allColumnNames;
             mColumnMapping = new int[allColumnNames.length];
             mSpecialColumnValues = new String[specialColumns.size()];
-            for (int i = 0, columnIndex = 0, specialColumnCount = 0, len = allColumnNames.length;
-                    i < len; i++) {
-
+            for (int i = 0, columnIndex = 0, specialColumnCount = 0, len = allColumnNames.length; i < len; i++) {
                 String columnName = allColumnNames[i];
 
                 if (specialColumns.containsKey(columnName)) {
@@ -738,7 +711,6 @@ public class EmailProvider extends ContentProvider {
         @Override
         public int getColumnIndexOrThrow(String columnName) throws IllegalArgumentException {
             int index = getColumnIndex(columnName);
-
             if (index == -1) {
                 throw new IllegalArgumentException("Unknown column name");
             }

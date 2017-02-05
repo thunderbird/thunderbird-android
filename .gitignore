@@ -5,6 +5,7 @@
 .settings
 .classpath
 bin
+captures
 coverage
 coverage.ec
 coverage.em

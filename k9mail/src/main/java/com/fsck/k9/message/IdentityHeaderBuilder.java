@@ -10,6 +10,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 
 
 public class IdentityHeaderBuilder {
@@ -49,7 +50,7 @@ public class IdentityHeaderBuilder {
             appendValue(IdentityField.OFFSET, body.getComposedMessageOffset());
         } else {
             // If not, calculate it now.
-            appendValue(IdentityField.LENGTH, body.getText().length());
+            appendValue(IdentityField.LENGTH, body.getRawText().length());
             appendValue(IdentityField.OFFSET, 0);
         }
 
@@ -66,7 +67,7 @@ public class IdentityHeaderBuilder {
                 appendValue(IdentityField.PLAIN_OFFSET, composedMessageOffset);
             } else {
                 // If not, calculate it now.
-                appendValue(IdentityField.PLAIN_LENGTH, body.getText().length());
+                appendValue(IdentityField.PLAIN_LENGTH, body.getRawText().length());
                 appendValue(IdentityField.PLAIN_OFFSET, 0);
             }
         }

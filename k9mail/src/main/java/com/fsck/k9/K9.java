@@ -1,6 +1,7 @@
 
 package com.fsck.k9;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +34,12 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.UnreadWidgetProvider;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -167,6 +167,7 @@ public class K9 extends Application {
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmDeleteFromNotification = true;
+    private static boolean mConfirmMarkAllRead = true;
 
     private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
 
@@ -254,6 +255,9 @@ public class K9 extends Application {
     private static boolean sMessageViewMoveActionVisible = false;
     private static boolean sMessageViewCopyActionVisible = false;
     private static boolean sMessageViewSpamActionVisible = false;
+
+    private static int sPgpInlineDialogCounter;
+    private static int sPgpSignOnlyDialogCounter;
 
 
     /**
@@ -472,6 +476,7 @@ public class K9 extends Application {
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmDeleteFromNotification", mConfirmDeleteFromNotification);
+        editor.putBoolean("confirmMarkAllRead", mConfirmMarkAllRead);
 
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
@@ -491,6 +496,9 @@ public class K9 extends Application {
         editor.putBoolean("messageViewMoveActionVisible", sMessageViewMoveActionVisible);
         editor.putBoolean("messageViewCopyActionVisible", sMessageViewCopyActionVisible);
         editor.putBoolean("messageViewSpamActionVisible", sMessageViewSpamActionVisible);
+
+        editor.putInt("pgpInlineDialogCounter", sPgpInlineDialogCounter);
+        editor.putInt("pgpSignOnlyDialogCounter", sPgpSignOnlyDialogCounter);
 
         fontSizes.save(editor);
     }
@@ -680,6 +688,7 @@ public class K9 extends Application {
         mConfirmDeleteStarred = storage.getBoolean("confirmDeleteStarred", false);
         mConfirmSpam = storage.getBoolean("confirmSpam", false);
         mConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true);
+        mConfirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true);
 
         try {
             String value = storage.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
@@ -738,6 +747,8 @@ public class K9 extends Application {
         sMessageViewCopyActionVisible = storage.getBoolean("messageViewCopyActionVisible", false);
         sMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false);
 
+        sPgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0);
+        sPgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0);
 
         K9.setK9Language(storage.getString("language", ""));
 
@@ -1164,6 +1175,14 @@ public class K9 extends Application {
         mConfirmDeleteFromNotification = confirm;
     }
 
+    public static boolean confirmMarkAllRead() {
+        return mConfirmMarkAllRead;
+    }
+
+    public static void setConfirmMarkAllRead(final boolean confirm) {
+        mConfirmMarkAllRead = confirm;
+    }
+
     public static NotificationHideSubject getNotificationHideSubject() {
         return sNotificationHideSubject;
     }
@@ -1314,6 +1333,22 @@ public class K9 extends Application {
 
     public static void setMessageViewSpamActionVisible(boolean visible) {
         sMessageViewSpamActionVisible = visible;
+    }
+
+    public static int getPgpInlineDialogCounter() {
+        return sPgpInlineDialogCounter;
+    }
+
+    public static void setPgpInlineDialogCounter(int pgpInlineDialogCounter) {
+        K9.sPgpInlineDialogCounter = pgpInlineDialogCounter;
+    }
+
+    public static int getPgpSignOnlyDialogCounter() {
+        return sPgpSignOnlyDialogCounter;
+    }
+
+    public static void setPgpSignOnlyDialogCounter(int pgpSignOnlyDialogCounter) {
+        K9.sPgpSignOnlyDialogCounter = pgpSignOnlyDialogCounter;
     }
 
     /**

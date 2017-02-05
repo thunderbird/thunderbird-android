@@ -100,25 +100,14 @@ public class NonLockingScrollView extends ScrollView {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        excludeChildrenFromInterceptions(this);
+        setupDelegationOfTouchAndHierarchyChangeEvents();
     }
-
-    /**
-     * Traverses the view tree for {@link WebView}s so they can be excluded from touch
-     * interceptions and receive all events.
-     */
-    private void excludeChildrenFromInterceptions(View node) {
-        // If additional types of children should be excluded (e.g. horizontal scrolling banners),
-        // this needs to be modified accordingly.
-        if (node instanceof WebView) {
-            mChildrenNeedingAllTouches.add(node);
-        } else if (node instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) node;
-            final int childCount = viewGroup.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                final View child = viewGroup.getChildAt(i);
-                excludeChildrenFromInterceptions(child);
-            }
+    
+    private void setupDelegationOfTouchAndHierarchyChangeEvents() {
+        OnHierarchyChangeListener listener = new HierarchyTreeChangeListener();
+        setOnHierarchyChangeListener(listener);
+        for (int i = 0, childCount = getChildCount(); i < childCount; i++) {
+            listener.onChildViewAdded(this, getChildAt(i));
         }
     }
 
@@ -165,6 +154,34 @@ public class NonLockingScrollView extends ScrollView {
             }
         } else {
             super.requestChildFocus(child, focused);
+        }
+    }
+
+    class HierarchyTreeChangeListener implements OnHierarchyChangeListener {
+        @Override
+        public void onChildViewAdded(View parent, View child) {
+            if (child instanceof WebView) {
+                mChildrenNeedingAllTouches.add(child);                
+            } else if (child instanceof ViewGroup) {
+                ViewGroup childGroup = (ViewGroup) child;
+                childGroup.setOnHierarchyChangeListener(this);
+                for (int i = 0, childCount = childGroup.getChildCount(); i < childCount; i++) {
+                    onChildViewAdded(childGroup, childGroup.getChildAt(i));
+                }
+            }
+        }
+
+        @Override
+        public void onChildViewRemoved(View parent, View child) {
+            if (child instanceof WebView) {
+                mChildrenNeedingAllTouches.remove(child);
+            } else if (child instanceof ViewGroup) {
+                ViewGroup childGroup = (ViewGroup) child;
+                for (int i = 0, childCount = childGroup.getChildCount(); i < childCount; i++) {
+                    onChildViewRemoved(childGroup, childGroup.getChildAt(i));
+                }
+                childGroup.setOnHierarchyChangeListener(null);
+            }
         }
     }
 }

@@ -45,7 +45,7 @@ class ImapResponseParser {
             }
 
             if (exception != null) {
-                throw new RuntimeException("readResponse(): Exception in callback method", exception);
+                throw new ImapResponseParserException("readResponse(): Exception in callback method", exception);
             }
 
             return response;
@@ -109,7 +109,7 @@ class ImapResponseParser {
                 continue;
             }
 
-            if (untaggedHandler != null) {
+            if (response.getTag() == null && untaggedHandler != null) {
                 untaggedHandler.handleAsyncUntaggedResponse(response);
             }
 
@@ -118,8 +118,7 @@ class ImapResponseParser {
 
         if (response.size() < 1 || !equalsIgnoreCase(response.get(0), Responses.OK)) {
             String message = "Command: " + commandToLog + "; response: " + response.toString();
-            String alertText = AlertResponse.getAlertText(response);
-            throw new NegativeImapResponseException(message, alertText);
+            throw new NegativeImapResponseException(message, responses);
         }
 
         return responses;
@@ -194,8 +193,7 @@ class ImapResponseParser {
         expect(' ');
         parseList(response, '(', ')');
         expect(' ');
-        //TODO: Add support for NIL
-        String delimiter = parseQuoted();
+        String delimiter = parseQuotedOrNil();
         response.add(delimiter);
         expect(' ');
         String name = parseString();
@@ -354,26 +352,32 @@ class ImapResponseParser {
         if (response.getCallback() != null) {
             FixedLengthInputStream fixed = new FixedLengthInputStream(inputStream, size);
 
+            Exception callbackException = null;
             Object result = null;
             try {
                 result = response.getCallback().foundLiteral(response, fixed);
             } catch (IOException e) {
-                // Pass IOExceptions through
                 throw e;
             } catch (Exception e) {
-                // Catch everything else and save it for later.
-                exception = e;
+                callbackException = e;
             }
 
-            // Check if only some of the literal data was read
-            int available = fixed.available();
-            if (available > 0 && available != size) {
-                // If so, skip the rest
-                while (fixed.available() > 0) {
-                    fixed.skip(fixed.available());
+            boolean someDataWasRead = fixed.available() != size;
+            if (someDataWasRead) {
+                if (result == null && callbackException == null) {
+                    throw new AssertionError("Callback consumed some data but returned no result");
                 }
+
+                fixed.skipRemaining();
             }
 
+            if (callbackException != null) {
+                if (exception == null) {
+                    exception = callbackException;
+                }
+                return "EXCEPTION";
+            }
+            
             if (result != null) {
                 return result;
             }
@@ -410,6 +414,22 @@ class ImapResponseParser {
             }
         }
         throw new IOException("parseQuoted(): end of stream reached");
+    }
+
+    private String parseQuotedOrNil() throws IOException {
+        int peek = inputStream.peek();
+        if (peek == '"') {
+            return parseQuoted();
+        } else {
+            parseNil();
+            return null;
+        }
+    }
+    
+    private void parseNil() throws IOException {
+        expect('N');
+        expect('I');
+        expect('L');
     }
 
     private String readStringUntil(char end) throws IOException {

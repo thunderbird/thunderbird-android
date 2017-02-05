@@ -17,19 +17,10 @@ public class CheckBoxListPreference extends DialogPreference {
      */
     private boolean[] mPendingItems;
 
-    /**
-     * @param context
-     * @param attrs
-     * @param defStyle
-     */
     public CheckBoxListPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    /**
-     * @param context
-     * @param attrs
-     */
     public CheckBoxListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

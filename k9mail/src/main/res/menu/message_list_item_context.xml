@@ -58,6 +58,6 @@
         android:title="@string/from_same_sender" />
     <item
         android:id="@+id/debug_delete_locally"
-        android:title="Debug / Clear message body"
+        android:title="@string/debug_delete_local_body"
         />
 </menu>

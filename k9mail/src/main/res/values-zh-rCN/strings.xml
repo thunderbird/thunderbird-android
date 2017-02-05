@@ -7,11 +7,11 @@
   <string name="shortcuts_title">K-9 账户</string>
   <string name="unread_widget_label">K-9 未读</string>
   <string name="remote_control_label">K-9 Mail 远程控制</string>
-  <string name="remote_control_desc">允许这个程序控制 K-9 Mai l的行为和设置。</string>
+  <string name="remote_control_desc">允许这个程序控制 K-9 Mail 的行为和设置。</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">根据Apache License 2.0 协议授权。</string>
+  <string name="app_license">根据 Apache License 2.0 协议授权。</string>
   <!--Welcome message-->
   <string name="welcome_message_title">欢迎来到 K-9 Mail</string>
   <!--Default signature-->
@@ -48,7 +48,7 @@
   <string name="status_loading_account_folder_headers">正在接收邮件头: <xliff:g id="folder">%s</xliff:g>: <xliff:g id="progress">%s</xliff:g>, <xliff:g id="account">%s</xliff:g></string>
   <string name="status_sending_account">正在发送 <xliff:g id="progress">%s</xliff:g>: <xliff:g id="account">%s</xliff:g></string>
   <string name="status_processing_account">正在处理 <xliff:g id="command">%s</xliff:g>: <xliff:g id="progress">%s</xliff:g>: <xliff:g id="account">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">下次接收 <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">同步已禁用</string>
   <string name="actionbar_selected">已选择 <xliff:g id="selection_count">%d</xliff:g> 个</string>
@@ -59,6 +59,7 @@
   <string name="cancel_action">取消</string>
   <string name="send_action">发送</string>
   <string name="send_again_action">重新发送</string>
+  <string name="empty_subject">主题为空，确认发送请再次点击。</string>
   <string name="select_action">选择</string>
   <string name="deselect_action">取消选择</string>
   <string name="reply_action">回复</string>
@@ -96,6 +97,9 @@
   <string name="select_text_action">选择文本</string>
   <string name="show_headers_action">显示邮件头</string>
   <string name="hide_headers_action">隐藏邮件头</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="other">地址已复制到剪贴板</item>
+  </plurals>
   <string name="message_view_theme_action_dark">切换到深色主题</string>
   <string name="message_view_theme_action_light">切换到明亮主题</string>
   <string name="mark_as_unread_action">标记为未读</string>
@@ -116,6 +120,7 @@
   <string name="status_loading_more">正在加载邮件\u2026</string>
   <string name="status_network_error">连接错误</string>
   <string name="status_invalid_id_error">邮件未找到</string>
+  <string name="status_loading_error">消息加载错误</string>
   <string name="status_loading_more_failed">再次尝试加载更多邮件</string>
   <string name="load_more_messages_fmt">再加载<xliff:g id="messages_to_load">%d</xliff:g>封邮件</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -133,9 +138,15 @@
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string>
   <string name="notification_action_reply">回复</string>
   <string name="notification_action_mark_as_read">标记为已读</string>
+  <string name="notification_action_mark_all_as_read">全部标记为已读</string>
   <string name="notification_action_delete">删除</string>
+  <string name="notification_action_delete_all">删除全部</string>
+  <string name="notification_action_archive">归档</string>
+  <string name="notification_action_archive_all">全部归档</string>
+  <string name="notification_action_spam">垃圾邮件</string>
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> 认证错误</string>
   <string name="notification_certificate_error_text">请检查您的服务器设置</string>
+  <string name="notification_authentication_error_title">身份验证失败</string>
   <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在检查邮件</string>
   <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
@@ -705,6 +716,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">删除</string>
   <string name="dialog_confirm_delete_cancel_button">不要删除</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">是</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">否</string>
   <string name="dialog_confirm_spam_title">确认移动到垃圾邮件文件夹</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="other">您确定要移动 <xliff:g id="message_count">%1$d</xliff:g> 条消息到垃圾箱吗?</item>
@@ -831,6 +844,15 @@
   <string name="fetching_attachment_dialog_message">正在获取附件…</string>
   <string name="auth_external_error">无法认证。服务器未公告SASL EXTERNAL。这可能是由于客户端证书有问题（已过期，或者未知的认证机构），或者是由于其它的配置问题。</string>
   <!--=== OpenPGP specific ==================================================================-->
+  <string name="openpgp_result_invalid_signature">无效的签名！</string>
+  <string name="openpgp_result_signature_certified">签名由</string>
+  <string name="openpgp_result_signature_insecure">不安全！</string>
+  <string name="openpgp_result_signature_missing_key">未知的公钥</string>
+  <string name="openpgp_result_encrypted">已加密</string>
+  <string name="openpgp_result_not_encrypted">未加密</string>
+  <string name="openpgp_result_decryption_insecure">不安全</string>
+  <string name="openpgp_result_action_show">显示</string>
+  <string name="openpgp_result_action_lookup">查找</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">使用客户端证书</string>
   <string name="client_certificate_spinner_empty">无客户端证书</string>
@@ -839,4 +861,5 @@
   <string name="client_certificate_advanced_options">高级选项</string>
   <string name="client_certificate_expired">客户端证书 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 已经过期，或者尚未开始生效。 (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
+  <string name="preview_encrypted">*已加密*</string>
 </resources>

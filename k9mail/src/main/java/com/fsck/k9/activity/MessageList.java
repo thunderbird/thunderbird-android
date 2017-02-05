@@ -86,6 +86,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private static final String STATE_DISPLAY_MODE = "displayMode";
     private static final String STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed";
+    private static final String STATE_FIRST_BACK_STACK_ID = "firstBackstackId";
 
     // Used for navigating to next/previous message
     private static final int PREVIOUS = 1;
@@ -239,6 +240,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
+        if (isFinishing()) {
+            return;
+        }
 
         setIntent(intent);
 
@@ -516,11 +521,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         outState.putSerializable(STATE_DISPLAY_MODE, mDisplayMode);
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, mMessageListWasDisplayed);
+        outState.putInt(STATE_FIRST_BACK_STACK_ID, mFirstBackStackId);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         mMessageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED);
+        mFirstBackStackId = savedInstanceState.getInt(STATE_FIRST_BACK_STACK_ID);
     }
 
     private void initializeActionBar() {
@@ -723,6 +730,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
                 toast.show();
                 return true;
+            }
+            case KeyEvent.KEYCODE_DPAD_LEFT: {
+                if (mMessageViewFragment != null && mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+                    return showPreviousMessage();
+                }
+                return false;
+            }
+            case KeyEvent.KEYCODE_DPAD_RIGHT: {
+                if (mMessageViewFragment != null && mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+                    return showNextMessage();
+                }
+                return false;
             }
 
         }
@@ -945,6 +964,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         configureMenu(menu);
         return true;
     }
@@ -1420,6 +1440,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public void displayMessageSubject(String subject) {
         if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
             mActionBarSubject.setText(subject);
+        } else {
+            mActionBarSubject.showSubjectInMessageHeader();
         }
     }
 

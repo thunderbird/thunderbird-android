@@ -63,7 +63,7 @@ public class AttachmentInfoExtractorTest {
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
 
-        assertEquals(AttachmentProvider.getAttachmentUri(TEST_ACCOUNT_UUID, TEST_ID), attachmentViewInfo.uri);
+        assertEquals(AttachmentProvider.getAttachmentUri(TEST_ACCOUNT_UUID, TEST_ID), attachmentViewInfo.internalUri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
     }
@@ -74,7 +74,7 @@ public class AttachmentInfoExtractorTest {
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
 
-        assertEquals(Uri.EMPTY, attachmentViewInfo.uri);
+        assertEquals(Uri.EMPTY, attachmentViewInfo.internalUri);
         assertEquals(AttachmentViewInfo.UNKNOWN_SIZE, attachmentViewInfo.size);
         assertEquals("noname.txt", attachmentViewInfo.displayName);
         assertEquals("text/plain", attachmentViewInfo.mimeType);
@@ -100,7 +100,7 @@ public class AttachmentInfoExtractorTest {
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
 
-        assertEquals(Uri.EMPTY, attachmentViewInfo.uri);
+        assertEquals(Uri.EMPTY, attachmentViewInfo.internalUri);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
         assertEquals("filename.ext", attachmentViewInfo.displayName);
         assertFalse(attachmentViewInfo.inlineAttachment);
@@ -125,7 +125,7 @@ public class AttachmentInfoExtractorTest {
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
 
-        assertEquals(Uri.EMPTY, attachmentViewInfo.uri);
+        assertEquals(Uri.EMPTY, attachmentViewInfo.internalUri);
         assertEquals("filename.ext", attachmentViewInfo.displayName);
         assertFalse(attachmentViewInfo.inlineAttachment);
     }
@@ -203,7 +203,7 @@ public class AttachmentInfoExtractorTest {
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
 
 
-        assertEquals(TEST_URI, attachmentViewInfo.uri);
+        assertEquals(TEST_URI, attachmentViewInfo.internalUri);
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
         assertFalse(attachmentViewInfo.inlineAttachment);

@@ -126,15 +126,16 @@ class DeviceNotifications extends BaseNotifications {
         String accountName = controller.getAccountName(account);
         String title = context.getResources().getQuantityString(R.plurals.notification_new_messages_title,
                 newMessagesCount, newMessagesCount);
-        String summary = (notificationData.hasAdditionalMessages()) ?
+        String summary = (notificationData.hasSummaryOverflowMessages()) ?
                 context.getString(R.string.notification_additional_messages,
-                        notificationData.getAdditionalMessagesCount(), accountName) :
+                        notificationData.getSummaryOverflowMessagesCount(), accountName) :
                 accountName;
+        String groupKey = NotificationGroupKeys.getGroupKey(account);
 
         NotificationCompat.Builder builder = createAndInitializeNotificationBuilder(account)
                 .setNumber(unreadMessageCount)
                 .setTicker(latestNotification.content.summary)
-                .setGroup(NOTIFICATION_GROUP_KEY)
+                .setGroup(groupKey)
                 .setGroupSummary(true)
                 .setContentTitle(title)
                 .setSubText(accountName);
