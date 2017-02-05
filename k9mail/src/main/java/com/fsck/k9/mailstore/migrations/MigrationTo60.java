@@ -1,9 +1,9 @@
 package com.fsck.k9.mailstore.migrations;
 
+
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,10 @@ import com.fsck.k9.controller.PendingCommandSerializer;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 
+import static java.util.Collections.singletonList;
 
-public class MigrationTo60 {
+
+class MigrationTo60 {
     private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.fsck.k9.MessagingController.moveOrCopy";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.fsck.k9.MessagingController.moveOrCopyBulk";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW = "com.fsck.k9.MessagingController.moveOrCopyBulkNew";
@@ -33,21 +35,24 @@ public class MigrationTo60 {
 
 
     public static void migratePendingCommands(SQLiteDatabase db) {
-        List<PendingCommand> pendingCommmands = new ArrayList<>();
+        List<PendingCommand> pendingCommands = new ArrayList<>();
 
         if (columnExists(db, "pending_commands", "arguments")) {
             for (OldPendingCommand oldPendingCommand : getPendingCommands(db)) {
                 PendingCommand newPendingCommand = migratePendingCommand(oldPendingCommand);
-                pendingCommmands.add(newPendingCommand);
+                pendingCommands.add(newPendingCommand);
             }
 
             db.execSQL("DROP TABLE IF EXISTS pending_commands");
-            db.execSQL("CREATE TABLE pending_commands " +
-                    "(id INTEGER PRIMARY KEY, command TEXT, data TEXT)");
+            db.execSQL("CREATE TABLE pending_commands (" +
+                    "id INTEGER PRIMARY KEY, " +
+                    "command TEXT, " +
+                    "data TEXT" +
+                    ")");
 
             PendingCommandSerializer pendingCommandSerializer = PendingCommandSerializer.getInstance();
-            for (PendingCommand pendingCommand : pendingCommmands) {
-                final ContentValues cv = new ContentValues();
+            for (PendingCommand pendingCommand : pendingCommands) {
+                ContentValues cv = new ContentValues();
                 cv.put("command", pendingCommand.getCommandName());
                 cv.put("data", pendingCommandSerializer.serialize(pendingCommand));
                 db.insert("pending_commands", "command", cv);
@@ -56,15 +61,14 @@ public class MigrationTo60 {
     }
 
     private static boolean columnExists(SQLiteDatabase db, String table, String columnName) {
-        Cursor columnCursor  = db.rawQuery("PRAGMA table_info("+table+")", null);
-        columnCursor.moveToFirst();
+        Cursor columnCursor = db.rawQuery("PRAGMA table_info(" + table + ")", null);
         boolean foundColumn = false;
-        while (!columnCursor.isAfterLast()) {
-            if(columnCursor.getString(1).equals(columnName)) {
+        while (columnCursor.moveToNext()) {
+            String currentColumnName = columnCursor.getString(1);
+            if (currentColumnName.equals(columnName)) {
                 foundColumn = true;
                 break;
             }
-            columnCursor.moveToNext();
         }
         columnCursor.close();
         return foundColumn;
@@ -73,26 +77,36 @@ public class MigrationTo60 {
     @VisibleForTesting
     static PendingCommand migratePendingCommand(OldPendingCommand oldPendingCommand) {
         switch (oldPendingCommand.command) {
-            case PENDING_COMMAND_APPEND:
+            case PENDING_COMMAND_APPEND: {
                 return migrateCommandAppend(oldPendingCommand);
-            case PENDING_COMMAND_SET_FLAG_BULK:
+            }
+            case PENDING_COMMAND_SET_FLAG_BULK: {
                 return migrateCommandSetFlagBulk(oldPendingCommand);
-            case PENDING_COMMAND_SET_FLAG:
+            }
+            case PENDING_COMMAND_SET_FLAG: {
                 return migrateCommandSetFlag(oldPendingCommand);
-            case PENDING_COMMAND_MARK_ALL_AS_READ:
+            }
+            case PENDING_COMMAND_MARK_ALL_AS_READ: {
                 return migrateCommandMarkAllAsRead(oldPendingCommand);
-            case PENDING_COMMAND_MOVE_OR_COPY_BULK:
+            }
+            case PENDING_COMMAND_MOVE_OR_COPY_BULK: {
                 return migrateCommandMoveOrCopyBulk(oldPendingCommand);
-            case PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW:
+            }
+            case PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW: {
                 return migrateCommandMoveOrCopyBulkNew(oldPendingCommand);
-            case PENDING_COMMAND_MOVE_OR_COPY:
+            }
+            case PENDING_COMMAND_MOVE_OR_COPY: {
                 return migrateCommandMoveOrCopy(oldPendingCommand);
-            case PENDING_COMMAND_EMPTY_TRASH:
+            }
+            case PENDING_COMMAND_EMPTY_TRASH: {
                 return migrateCommandEmptyTrash();
-            case PENDING_COMMAND_EXPUNGE:
+            }
+            case PENDING_COMMAND_EXPUNGE: {
                 return migrateCommandExpunge(oldPendingCommand);
-            default:
+            }
+            default: {
                 throw new IllegalArgumentException("Tried to migrate unknown pending command!");
+            }
         }
     }
 
@@ -111,8 +125,7 @@ public class MigrationTo60 {
         String destFolder = command.arguments[2];
         boolean isCopy = Boolean.parseBoolean(command.arguments[3]);
 
-        return MessagingControllerCommands.createMoveOrCopyBulk(srcFolder, destFolder, isCopy,
-                Collections.singletonList(uid));
+        return MessagingControllerCommands.createMoveOrCopyBulk(srcFolder, destFolder, isCopy, singletonList(uid));
     }
 
     private static PendingCommand migrateCommandMoveOrCopyBulkNew(OldPendingCommand command) {
@@ -130,12 +143,11 @@ public class MigrationTo60 {
 
             return MessagingControllerCommands.createMoveOrCopyBulk(srcFolder, destFolder, isCopy, uidMap);
         } else {
-            List<String> uids = new ArrayList<>(command.arguments.length -4);
+            List<String> uids = new ArrayList<>(command.arguments.length - 4);
             uids.addAll(Arrays.asList(command.arguments).subList(4, command.arguments.length));
 
             return MessagingControllerCommands.createMoveOrCopyBulk(srcFolder, destFolder, isCopy, uids);
         }
-
     }
 
     private static PendingCommand migrateCommandMoveOrCopyBulk(OldPendingCommand command) {
@@ -163,7 +175,7 @@ public class MigrationTo60 {
         boolean newState = Boolean.parseBoolean(command.arguments[2]);
         Flag flag = Flag.valueOf(command.arguments[3]);
 
-        return MessagingControllerCommands.createSetFlag(folder, newState, flag, Collections.singletonList(uid));
+        return MessagingControllerCommands.createSetFlag(folder, newState, flag, singletonList(uid));
     }
 
     private static PendingCommand migrateCommandSetFlagBulk(OldPendingCommand command) {
@@ -171,7 +183,7 @@ public class MigrationTo60 {
         boolean newState = Boolean.parseBoolean(command.arguments[1]);
         Flag flag = Flag.valueOf(command.arguments[2]);
 
-        List<String> uids = new ArrayList<>(command.arguments.length -3);
+        List<String> uids = new ArrayList<>(command.arguments.length - 3);
         uids.addAll(Arrays.asList(command.arguments).subList(3, command.arguments.length));
 
         return MessagingControllerCommands.createSetFlag(folder, newState, flag, uids);
@@ -205,13 +217,6 @@ public class MigrationTo60 {
         }
     }
 
-    @VisibleForTesting
-    static class OldPendingCommand {
-        public String command;
-        public String[] arguments;
-    }
-
-
     private static String fastUrlDecode(String s) {
         byte[] bytes = s.getBytes(Charset.forName("UTF-8"));
         byte ch;
@@ -227,7 +232,7 @@ public class MigrationTo60 {
                 if (l > 9) {
                     l -= 7;
                 }
-                bytes[length] = (byte)((h << 4) | l);
+                bytes[length] = (byte) ((h << 4) | l);
                 i += 2;
             } else if (ch == '+') {
                 bytes[length] = ' ';
@@ -237,5 +242,12 @@ public class MigrationTo60 {
             length++;
         }
         return new String(bytes, 0, length, Charset.forName("UTF-8"));
+    }
+
+
+    @VisibleForTesting
+    static class OldPendingCommand {
+        public String command;
+        public String[] arguments;
     }
 }
