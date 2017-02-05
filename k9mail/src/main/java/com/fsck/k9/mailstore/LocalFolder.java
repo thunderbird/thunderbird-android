@@ -827,7 +827,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     @Override
-    public LocalMessage getMessage(final String uid) throws MessagingException {
+    public LocalMessage getMessage(@NonNull final String uid) throws MessagingException {
         try {
             return this.localStore.database.execute(false, new DbCallback<LocalMessage>() {
                 @Override

@@ -1713,7 +1713,6 @@ public class MessagingController {
     private void processPendingCommandsSynchronous(Account account) throws MessagingException {
         LocalStore localStore = account.getLocalStore();
         List<PendingCommand> commands = localStore.getPendingCommands();
-
         int progress = 0;
         int todo = commands.size();
         if (todo == 0) {
@@ -1957,8 +1956,10 @@ public class MessagingController {
             command.arguments[1] = destFolder;
             command.arguments[2] = Boolean.toString(isCopy);
             command.arguments[3] = Boolean.toString(true);
-            System.arraycopy(uidMap.keySet().toArray(EMPTY_STRING_ARRAY), 0, command.arguments, 4, uidMap.keySet().size());
-            System.arraycopy(uidMap.values().toArray(EMPTY_STRING_ARRAY), 0, command.arguments, 4 + uidMap.keySet().size(), uidMap.values().size());
+            System.arraycopy(uidMap.keySet().toArray(EMPTY_STRING_ARRAY), 0,
+                    command.arguments, 4, uidMap.keySet().size());
+            System.arraycopy(uidMap.values().toArray(EMPTY_STRING_ARRAY), 0,
+                    command.arguments, 4 + uidMap.keySet().size(), uidMap.values().size());
             queuePendingCommand(account, command);
         }
     }
@@ -2022,43 +2023,13 @@ public class MessagingController {
             localDestFolder = (LocalFolder) localStore.getFolder(destFolder);
             List<Message> messages = new ArrayList<>();
 
-            /*
-             * We split up the localUidMap into two parts while sending the command, here we assemble it back.
-             */
             Map<String, String> localUidMap = new HashMap<>();
-            if (hasNewUids) {
-                int offset = (command.arguments.length - 4) / 2;
 
-                for (int i = 4; i < 4 + offset; i++) {
-                    localUidMap.put(command.arguments[i], command.arguments[i + offset]);
+            rebuildMessageListAndUidMap(localUidMap, messages, command, hasNewUids, remoteSrcFolder);
 
-                    String uid = command.arguments[i];
-                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                        messages.add(remoteSrcFolder.getMessage(uid));
-                    }
-                }
+            boolean isCopy = parseIsCopy(isCopyS);
 
-            } else {
-                for (int i = 4; i < command.arguments.length; i++) {
-                    String uid = command.arguments[i];
-                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                        messages.add(remoteSrcFolder.getMessage(uid));
-                    }
-                }
-            }
-
-            boolean isCopy = false;
-            if (isCopyS != null) {
-                isCopy = Boolean.parseBoolean(isCopyS);
-            }
-
-            if (!remoteSrcFolder.exists()) {
-                throw new MessagingException("processingPendingMoveOrCopy: remoteFolder " + srcFolder + " does not exist", true);
-            }
-            remoteSrcFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteSrcFolder.getMode() != Folder.OPEN_MODE_RW) {
-                throw new MessagingException("processingPendingMoveOrCopy: could not open remoteSrcFolder " + srcFolder + " read/write", true);
-            }
+            openRemoteFolder(srcFolder, remoteSrcFolder);
 
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder
@@ -2091,29 +2062,82 @@ public class MessagingController {
                 remoteSrcFolder.expunge();
             }
 
-            /*
-             * This next part is used to bring the local UIDs of the local destination folder
-             * upto speed with the remote UIDs of remote destination folder.
-             */
-            if (!localUidMap.isEmpty() && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-                for (Map.Entry<String, String> entry : remoteUidMap.entrySet()) {
-                    String remoteSrcUid = entry.getKey();
-                    String localDestUid = localUidMap.get(remoteSrcUid);
-                    String newUid = entry.getValue();
+            syncLocalUids(localUidMap, remoteUidMap, localDestFolder, destFolder, account);
 
-                    Message localDestMessage = localDestFolder.getMessage(localDestUid);
-                    if (localDestMessage != null) {
-                        localDestMessage.setUid(newUid);
-                        localDestFolder.changeUid((LocalMessage)localDestMessage);
-                        for (MessagingListener l : getListeners()) {
-                            l.messageUidChanged(account, destFolder, localDestUid, newUid);
-                        }
-                    }
-                }
-            }
         } finally {
             closeFolder(remoteSrcFolder);
             closeFolder(remoteDestFolder);
+        }
+    }
+
+    /**
+     * We split up the localUidMap into two parts while sending the command, here we assemble it back.
+     */
+    private void rebuildMessageListAndUidMap(
+            Map<String, String> localUidMap, List<Message> messages,
+            PendingCommand command, boolean hasNewUids,
+            Folder remoteSrcFolder) throws MessagingException {
+        if (hasNewUids) {
+            int offset = (command.arguments.length - 4) / 2;
+
+            for (int i = 4; i < 4 + offset; i++) {
+                localUidMap.put(command.arguments[i], command.arguments[i + offset]);
+
+                String uid = command.arguments[i];
+                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                    messages.add(remoteSrcFolder.getMessage(uid));
+                }
+            }
+        } else {
+            for (int i = 4; i < command.arguments.length; i++) {
+                String uid = command.arguments[i];
+                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                    messages.add(remoteSrcFolder.getMessage(uid));
+                }
+            }
+        }
+    }
+
+    private boolean parseIsCopy(String isCopyS) {
+        return isCopyS != null && Boolean.parseBoolean(isCopyS);
+    }
+
+    private void openRemoteFolder(String folderName, Folder remoteFolder) throws MessagingException {
+        if (!remoteFolder.exists()) {
+            throw new MessagingException("processingPendingMoveOrCopy: remoteFolder " + folderName + " does not exist", true);
+        }
+        remoteFolder.open(Folder.OPEN_MODE_RW);
+        if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
+            throw new MessagingException("processingPendingMoveOrCopy: could not open remoteSrcFolder " + folderName + " read/write", true);
+        }
+    }
+
+    /*
+     * Bring the local UIDs of the local destination folder
+     * upto speed with the remote UIDs of remote destination folder.
+     */
+    private void syncLocalUids(
+            Map<String, String> localUidMap, Map<String, String> remoteUidMap,
+            LocalFolder localDestFolder, String destFolder,
+            Account account) throws MessagingException {
+        if (!localUidMap.isEmpty() && remoteUidMap != null && !remoteUidMap.isEmpty()) {
+            for (Map.Entry<String, String> entry : remoteUidMap.entrySet()) {
+                String remoteSrcUid = entry.getKey();
+                String localDestUid = localUidMap.get(remoteSrcUid);
+                String newUid = entry.getValue();
+
+                if (localDestUid == null) {
+                    throw new MessagingException("Store returned mapping for message with UID not requested: " + remoteSrcUid);
+                }
+                Message localDestMessage = localDestFolder.getMessage(localDestUid);
+                if (localDestMessage != null) {
+                    localDestMessage.setUid(newUid);
+                    localDestFolder.changeUid((LocalMessage)localDestMessage);
+                    for (MessagingListener l : getListeners()) {
+                        l.messageUidChanged(account, destFolder, localDestUid, newUid);
+                    }
+                }
+            }
         }
     }
 
