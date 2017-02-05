@@ -1,10 +1,15 @@
 package com.fsck.k9.mailstore.migrations;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,12 +23,17 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mailstore.migrations.MigrationTo60.OldPendingCommand;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class MigrationTo60Test {
     private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.fsck.k9.MessagingController.moveOrCopy";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.fsck.k9.MessagingController.moveOrCopyBulk";
@@ -46,6 +56,43 @@ public class MigrationTo60Test {
     static {
         UID_MAP.put("uid_1", "uid_other_1");
         UID_MAP.put("uid_2", "uid_other_2");
+    }
+
+    @Test
+    public void migratePendingCommands_changesTableStructure() {
+        SQLiteDatabase database = SQLiteDatabase.create(null);
+        createV59Table(database);
+        MigrationTo60.migratePendingCommands(database);
+
+        List<String> columns = getColumnList(database, "pending_commands");
+
+        assertArrayEquals(new String[]{"id", "command", "data"}, columns.toArray());
+    }
+
+    @Test
+    public void migratePendingCommands_isMultiRunSafe() {
+        SQLiteDatabase database = SQLiteDatabase.create(null);
+        createV59Table(database);
+        MigrationTo60.migratePendingCommands(database);
+
+        MigrationTo60.migratePendingCommands(database);
+    }
+
+    private List<String> getColumnList(SQLiteDatabase db, String table) {
+        List<String> columns = new ArrayList<>();
+        Cursor columnCursor  = db.rawQuery("PRAGMA table_info("+table+")", null);
+        while (columnCursor.moveToNext()) {
+            columns.add(columnCursor.getString(1));
+        }
+        return columns;
+    }
+
+    private void createV59Table(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE pending_commands (" +
+                "id INTEGER PRIMARY KEY, " +
+                "command TEXT, " +
+                "arguments TEXT" +
+                ")");
     }
 
 
