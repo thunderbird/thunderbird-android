@@ -29,6 +29,8 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.DialogPreference;
+import android.support.annotation.ArrayRes;
+import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.SeekBar;
@@ -110,7 +112,7 @@ public class SliderPreference extends DialogPreference {
     }
 
     @Override
-    public void setSummary(int summaryResId) {
+    public void setSummary(@ArrayRes int summaryResId) {
         try {
             setSummary(getContext().getResources().getStringArray(summaryResId));
         } catch (Exception e) {
