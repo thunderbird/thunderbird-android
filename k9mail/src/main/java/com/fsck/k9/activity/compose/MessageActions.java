@@ -33,7 +33,7 @@ public class MessageActions {
             Context context, MessageReference messageReference, boolean replyAll, Parcelable decryptionResult) {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(MessageCompose.EXTRA_MESSAGE_DECRYPTION_RESULT, decryptionResult);
-        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference);
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
         if (replyAll) {
             i.setAction(MessageCompose.ACTION_REPLY_ALL);
         } else {
@@ -45,7 +45,7 @@ public class MessageActions {
     public static Intent getActionReplyIntent(Context context, MessageReference messageReference) {
         Intent intent = new Intent(context, MessageCompose.class);
         intent.setAction(MessageCompose.ACTION_REPLY);
-        intent.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference);
+        intent.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         return intent;
@@ -65,7 +65,7 @@ public class MessageActions {
      */
     public static void actionForward(Context context, MessageReference messageReference, Parcelable decryptionResult) {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference);
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
         i.putExtra(MessageCompose.EXTRA_MESSAGE_DECRYPTION_RESULT, decryptionResult);
         i.setAction(MessageCompose.ACTION_FORWARD);
         context.startActivity(i);
@@ -79,7 +79,7 @@ public class MessageActions {
      */
     public static void actionEditDraft(Context context, MessageReference messageReference) {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference);
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
         i.setAction(MessageCompose.ACTION_EDIT_DRAFT);
         context.startActivity(i);
     }

@@ -68,7 +68,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         MessageViewFragment fragment = new MessageViewFragment();
 
         Bundle args = new Bundle();
-        args.putParcelable(ARG_REFERENCE, reference);
+        args.putString(ARG_REFERENCE, reference.toIdentityString());
         fragment.setArguments(args);
 
         return fragment;
@@ -192,7 +192,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         super.onActivityCreated(savedInstanceState);
 
         Bundle arguments = getArguments();
-        MessageReference messageReference = arguments.getParcelable(ARG_REFERENCE);
+        String messageReferenceString = arguments.getString(ARG_REFERENCE);
+        MessageReference messageReference = MessageReference.parse(messageReferenceString);
 
         displayMessage(messageReference);
     }
@@ -383,7 +384,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderName());
         intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
+        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference.toIdentityString());
         startActivityForResult(intent, activity);
     }
 
@@ -430,7 +431,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 }
 
                 String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-                MessageReference ref = data.getParcelableExtra(ChooseFolder.EXTRA_MESSAGE);
+                String messageReferenceString = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE);
+                MessageReference ref = MessageReference.parse(messageReferenceString);
                 if (mMessageReference.equals(ref)) {
                     mAccount.setLastSelectedFolderName(destFolderName);
                     switch (requestCode) {
