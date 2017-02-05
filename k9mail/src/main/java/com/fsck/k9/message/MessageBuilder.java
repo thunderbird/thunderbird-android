@@ -183,6 +183,8 @@ public abstract class MessageBuilder {
                 // No attachments to include, just stick the text body in the message and call it good.
                 MimeMessageHelper.setBody(message, body);
             }
+        } else {
+            throw new MessagingException("Unexpected message fomat: " + messageFormat);
         }
 
         // If this is a draft, add metadata for thawing.
