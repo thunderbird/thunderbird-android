@@ -20,12 +20,14 @@ import android.widget.TextView;
 /**
  * Class representing a LinearLayout that can fold and hide it's content when
  * pressed To use just add the following to your xml layout
- * <com.fsck.k9.view.FoldableLinearLayout
- * android:layout_width="wrap_content" android:layout_height="wrap_content"
- * custom:foldedLabel="@string/TEXT_TO_DISPLAY_WHEN_FOLDED"
- * custom:unFoldedLabel="@string/TEXT_TO_DISPLAY_WHEN_UNFOLDED">
- * <include layout="@layout/ELEMENTS_TO_BE_FOLDED"/>
- * </com.fsck.k9.view.FoldableLinearLayout>
+ * <pre>{@code
+ *<com.fsck.k9.view.FoldableLinearLayout
+ *    android:layout_width="wrap_content" android:layout_height="wrap_content"
+ *    custom:foldedLabel="@string/TEXT_TO_DISPLAY_WHEN_FOLDED"
+ *    custom:unFoldedLabel="@string/TEXT_TO_DISPLAY_WHEN_UNFOLDED">
+ *    <include layout="@layout/ELEMENTS_TO_BE_FOLDED"/>
+ *</com.fsck.k9.view.FoldableLinearLayout>}
+ * </pre>
  */
 public class FoldableLinearLayout extends LinearLayout {
 

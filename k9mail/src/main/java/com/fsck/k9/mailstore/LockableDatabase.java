@@ -147,7 +147,7 @@ public class LockableDatabase {
      * @param uUid
      *            Never <code>null</code>.
      * @param schemaDefinition
-     *            Never <code>null</code
+     *            Never <code>null</code>.
      */
     public LockableDatabase(final Context context, final String uUid, final SchemaDefinition schemaDefinition) {
         this.context = context;
