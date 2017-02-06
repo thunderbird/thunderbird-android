@@ -73,6 +73,8 @@ public class Migrations {
                 MigrationTo58.createDeleteMessageTrigger(db);
             case 58:
                 MigrationTo59.addMissingIndexes(db);
+            case 59:
+                MigrationTo60.migratePendingCommands(db);
         }
     }
 }

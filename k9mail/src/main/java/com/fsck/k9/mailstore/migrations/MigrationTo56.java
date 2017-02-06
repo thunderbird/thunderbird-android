@@ -1,6 +1,5 @@
 package com.fsck.k9.mailstore.migrations;
 
-
 import android.database.sqlite.SQLiteDatabase;
 
 
