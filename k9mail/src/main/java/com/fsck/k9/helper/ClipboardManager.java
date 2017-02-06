@@ -8,17 +8,9 @@ import android.content.Context;
  * Access the system clipboard using the new {@link ClipboardManager} introduced with API 11
  */
 public class ClipboardManager {
-
-    private static ClipboardManager sInstance = null;
-
     public static ClipboardManager getInstance(Context context) {
         Context appContext = context.getApplicationContext();
-
-        if (sInstance == null) {
-            sInstance = new ClipboardManager(appContext);
-        }
-
-        return sInstance;
+        return new ClipboardManager(appContext);
     }
 
 
