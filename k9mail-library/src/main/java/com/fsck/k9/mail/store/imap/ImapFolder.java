@@ -322,7 +322,7 @@ class ImapFolder extends Folder<ImapMessage> {
      * </p>
      *
      * @param messages
-     *         The messages to copy to the specfied folder.
+     *         The messages to copy to the specified folder.
      * @param folder
      *         The name of the target folder.
      *

@@ -12,7 +12,7 @@ import com.fsck.k9.K9;
  *
  * <p>
  * It is advised not to statically register (from AndroidManifest.xml) this
- * receiver in order to avoid unecessary K-9 launch (which would defeat the
+ * receiver in order to avoid unnecessary K-9 launch (which would defeat the
  * purpose of that receiver). Using AndroidManifest.xml instructs Android to
  * launch K-9 if not running, defeating the purpose of this receiver. <br>
  * The recommended way is to register this receiver using

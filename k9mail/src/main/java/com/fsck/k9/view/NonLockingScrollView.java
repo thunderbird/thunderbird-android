@@ -35,7 +35,7 @@ import java.util.List;
  *
  * Usually ScrollView will capture all touch events once a drag has begun. In some cases,
  * we want to delegate those touches to children as normal, even in the middle of a drag. This is
- * useful when there are childviews like a WebView tha handles scrolling in the horizontal direction
+ * useful when there are childviews like a WebView that handles scrolling in the horizontal direction
  * even while the ScrollView drags vertically.
  *
  * This is only tested to work for ScrollViews where the content scrolls in one direction.
