@@ -1203,7 +1203,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         // Quote the message and setup the UI.
-        quotedMessagePresenter.initFromReplyToMessage(messageViewInfo, action);
+        quotedMessagePresenter.initFromReplyToMessage(messageViewInfo, action, this);
 
         if (action == Action.REPLY || action == Action.REPLY_ALL) {
             Identity useIdentity = IdentityHelper.getRecipientIdentityFromMessage(account, message);
@@ -1239,7 +1239,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         // Quote the message and setup the UI.
-        quotedMessagePresenter.processMessageToForward(messageViewInfo);
+        quotedMessagePresenter.processMessageToForward(messageViewInfo, this);
         attachmentPresenter.processMessageToForward(messageViewInfo);
     }
 
@@ -1321,7 +1321,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateSignature();
         updateFrom();
 
-        quotedMessagePresenter.processDraftMessage(messageViewInfo, k9identity);
+        quotedMessagePresenter.processDraftMessage(messageViewInfo, k9identity, this);
     }
 
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
@@ -1512,7 +1512,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // part).
         if (relatedMessageProcessed) {
             try {
-                quotedMessagePresenter.populateUIWithQuotedMessage(messageViewInfo, true, action);
+                quotedMessagePresenter.populateUIWithQuotedMessage(messageViewInfo, true, action, this);
             } catch (MessagingException e) {
                 // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
                 quotedMessagePresenter.showOrHideQuotedText(QuotedTextMode.HIDE);

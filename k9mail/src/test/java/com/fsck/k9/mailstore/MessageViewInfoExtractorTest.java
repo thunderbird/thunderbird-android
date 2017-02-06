@@ -62,8 +62,7 @@ public class MessageViewInfoExtractorTest {
 
         HtmlSanitizer dummyHtmlSanitizer = HtmlSanitizerHelper.getDummyHtmlSanitizer();
 
-        messageViewInfoExtractor = new MessageViewInfoExtractor(context,
-                null, dummyHtmlSanitizer);
+        messageViewInfoExtractor = new MessageViewInfoExtractor(null, dummyHtmlSanitizer);
     }
 
     @Test
@@ -79,7 +78,7 @@ public class MessageViewInfoExtractorTest {
         // Prepare fixture
         HtmlSanitizer htmlSanitizer = mock(HtmlSanitizer.class);
         MessageViewInfoExtractor messageViewInfoExtractor =
-                new MessageViewInfoExtractor(context, null, htmlSanitizer);
+                new MessageViewInfoExtractor(null, htmlSanitizer);
         String value = "--sanitized html--";
         when(htmlSanitizer.sanitize(any(String.class))).thenReturn(value);
 
@@ -88,7 +87,7 @@ public class MessageViewInfoExtractorTest {
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
         ViewableExtractedText viewableExtractedText =
-                messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+                messageViewInfoExtractor.extractTextFromViewables(outputViewableParts, context);
 
         assertSame(value, viewableExtractedText.html);
     }
@@ -107,7 +106,7 @@ public class MessageViewInfoExtractorTest {
         List<Part> outputNonViewableParts = new ArrayList<>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
-        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts, context);
 
         String expectedText = BODY_TEXT;
         String expectedHtml =
@@ -133,7 +132,7 @@ public class MessageViewInfoExtractorTest {
         List<Part> outputNonViewableParts = new ArrayList<>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
-        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts, context);
 
         String expectedText = "K-9 Mail rocks :> flowed line\r\n" +
                 "not flowed line";
@@ -162,11 +161,10 @@ public class MessageViewInfoExtractorTest {
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, null);
         assertEquals(outputViewableParts.size(), 1);
-        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts, context);
 
         String expectedText = BODY_TEXT;
-        String expectedHtml =
-                bodyText;
+        String expectedHtml = bodyText;
 
         assertEquals(expectedText, container.text);
         assertEquals(expectedHtml, getHtmlBodyText(container.html));
@@ -196,7 +194,7 @@ public class MessageViewInfoExtractorTest {
         List<Part> outputNonViewableParts = new ArrayList<>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
-        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts, context);
 
         String expectedText =
                 bodyText1 + "\r\n\r\n" +
@@ -255,7 +253,7 @@ public class MessageViewInfoExtractorTest {
         List<Part> outputNonViewableParts = new ArrayList<Part>();
         ArrayList<Viewable> outputViewableParts = new ArrayList<>();
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
-        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+        ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts, context);
 
         String expectedText =
                 BODY_TEXT +
@@ -357,7 +355,7 @@ public class MessageViewInfoExtractorTest {
         assertEquals("subject of second message", ((MessageHeader) outputViewableParts.get(2)).getMessage().getSubject());
 
         ViewableExtractedText firstMessageExtractedText =
-                messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
+                messageViewInfoExtractor.extractTextFromViewables(outputViewableParts, context);
         assertEquals(expectedExtractedText, firstMessageExtractedText.text);
         assertEquals(expectedHtmlText, getHtmlBodyText(firstMessageExtractedText.html));
     }

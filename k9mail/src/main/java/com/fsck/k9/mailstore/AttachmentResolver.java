@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -41,15 +42,15 @@ public class AttachmentResolver {
     }
 
     @WorkerThread
-    public static AttachmentResolver createFromPart(Part part) {
-        AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
-        Map<String, Uri> contentIdToAttachmentUriMap = buildCidToAttachmentUriMap(attachmentInfoExtractor, part);
+    public static AttachmentResolver createFromPart(Part part, Context context) {
+        AttachmentInfoExtractor attachmentInfoExtractor = new AttachmentInfoExtractor();
+        Map<String, Uri> contentIdToAttachmentUriMap = buildCidToAttachmentUriMap(attachmentInfoExtractor, part, context);
         return new AttachmentResolver(contentIdToAttachmentUriMap);
     }
 
     @VisibleForTesting
     static Map<String,Uri> buildCidToAttachmentUriMap(AttachmentInfoExtractor attachmentInfoExtractor,
-            Part rootPart) {
+            Part rootPart, Context context) {
         HashMap<String,Uri> result = new HashMap<>();
 
         Stack<Part> partsToCheck = new Stack<>();
@@ -68,7 +69,7 @@ public class AttachmentResolver {
                 try {
                     String contentId = part.getContentId();
                     if (contentId != null) {
-                        AttachmentViewInfo attachmentInfo = attachmentInfoExtractor.extractAttachmentInfo(part);
+                        AttachmentViewInfo attachmentInfo = attachmentInfoExtractor.extractAttachmentInfo(part, context);
                         result.put(contentId, attachmentInfo.internalUri);
                     }
                 } catch (MessagingException e) {

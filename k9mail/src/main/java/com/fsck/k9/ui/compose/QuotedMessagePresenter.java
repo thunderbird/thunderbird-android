@@ -3,6 +3,7 @@ package com.fsck.k9.ui.compose;
 
 import java.util.Map;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,7 +84,8 @@ public class QuotedMessagePresenter {
      * @param showQuotedText
      *         {@code true} if the quoted text should be shown, {@code false} otherwise.
      */
-    public void populateUIWithQuotedMessage(MessageViewInfo messageViewInfo, boolean showQuotedText, Action action)
+    public void populateUIWithQuotedMessage(MessageViewInfo messageViewInfo,
+                                            boolean showQuotedText, Action action, Context context)
             throws MessagingException {
         MessageFormat origMessageFormat = account.getMessageFormat();
 
@@ -117,7 +119,7 @@ public class QuotedMessagePresenter {
 
             // Load the message with the reply header. TODO replace with MessageViewInfo data
             view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
-                    AttachmentResolver.createFromPart(messageViewInfo.rootPart));
+                    AttachmentResolver.createFromPart(messageViewInfo.rootPart, context));
 
             // TODO: Also strip the signature from the text/plain part
             view.setQuotedText(TextQuoteCreator.quoteOriginalTextMessage(resources, messageViewInfo.message,
@@ -170,17 +172,17 @@ public class QuotedMessagePresenter {
                 (QuotedTextMode) savedInstanceState.getSerializable(STATE_KEY_QUOTED_TEXT_MODE));
     }
 
-    public void processMessageToForward(MessageViewInfo messageViewInfo) throws MessagingException {
+    public void processMessageToForward(MessageViewInfo messageViewInfo, Context context) throws MessagingException {
         quoteStyle = QuoteStyle.HEADER;
-        populateUIWithQuotedMessage(messageViewInfo, true, Action.FORWARD);
+        populateUIWithQuotedMessage(messageViewInfo, true, Action.FORWARD, context);
     }
 
-    public void initFromReplyToMessage(MessageViewInfo messageViewInfo, Action action)
+    public void initFromReplyToMessage(MessageViewInfo messageViewInfo, Action action, Context context)
             throws MessagingException {
-        populateUIWithQuotedMessage(messageViewInfo, account.isDefaultQuotedTextShown(), action);
+        populateUIWithQuotedMessage(messageViewInfo, account.isDefaultQuotedTextShown(), action, context);
     }
 
-    public void processDraftMessage(MessageViewInfo messageViewInfo, Map<IdentityField, String> k9identity) {
+    public void processDraftMessage(MessageViewInfo messageViewInfo, Map<IdentityField, String> k9identity, Context context) {
         quoteStyle = k9identity.get(IdentityField.QUOTE_STYLE) != null
                 ? QuoteStyle.valueOf(k9identity.get(IdentityField.QUOTE_STYLE))
                 : account.getQuoteStyle();
@@ -281,7 +283,7 @@ public class QuotedMessagePresenter {
                     }
                     // TODO replace with MessageViewInfo data
                     view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
-                            AttachmentResolver.createFromPart(messageViewInfo.rootPart));
+                            AttachmentResolver.createFromPart(messageViewInfo.rootPart, context));
                 }
             }
             if (bodyPlainOffset != null && bodyPlainLength != null) {

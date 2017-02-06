@@ -73,7 +73,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
-    private static final AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
+    private static final AttachmentInfoExtractor attachmentInfoExtractor =
+            new AttachmentInfoExtractor();
     static final long INVALID_MESSAGE_PART_ID = -1;
 
     private final LocalStore localStore;
