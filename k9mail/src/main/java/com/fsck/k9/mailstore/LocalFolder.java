@@ -73,10 +73,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
-    private static final AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
     static final long INVALID_MESSAGE_PART_ID = -1;
 
     private final LocalStore localStore;
+    private final AttachmentInfoExtractor attachmentInfoExtractor;
 
     private String mName = null;
     private long mFolderId = -1;
@@ -98,6 +98,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         super();
         this.localStore = localStore;
         this.mName = name;
+        attachmentInfoExtractor = localStore.attachmentInfoExtractor;
 
         if (getAccount().getInboxFolderName().equals(getName())) {
             mSyncClass =  FolderClass.FIRST_CLASS;
@@ -110,6 +111,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         super();
         this.localStore = localStore;
         this.mFolderId = id;
+        attachmentInfoExtractor = localStore.attachmentInfoExtractor;
     }
 
     public long getId() {
