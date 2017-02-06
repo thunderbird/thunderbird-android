@@ -397,6 +397,10 @@ public class Utility {
         }
     }
 
+    public static String stripNewLines(String multiLineString) {
+        return multiLineString.replaceAll("[\\r\\n]", "");
+    }
+
 
     private static final String IMG_SRC_REGEX = "(?is:<img[^>]+src\\s*=\\s*['\"]?([a-z]+)\\:)";
     private static final Pattern IMG_PATTERN = Pattern.compile(IMG_SRC_REGEX);
