@@ -391,7 +391,7 @@ public class K9 extends Application {
     }
 
     /**
-     * Register BroadcastReceivers programmaticaly because doing it from manifest
+     * Register BroadcastReceivers programmatically because doing it from manifest
      * would make K-9 auto-start. We don't want auto-start because the initialization
      * sequence isn't safe while some events occur (SD card unmount).
      */

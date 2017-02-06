@@ -1776,7 +1776,7 @@ public class MessagingController {
      * the local message. Once the local message is successfully processed it is deleted so
      * that the server message will be synchronized down without an additional copy being
      * created.
-     * TODO update the local message UID instead of deleteing it
+     * TODO update the local message UID instead of deleting it
      */
     void processPendingAppend(PendingAppend command, Account account) throws MessagingException {
         Folder remoteFolder = null;

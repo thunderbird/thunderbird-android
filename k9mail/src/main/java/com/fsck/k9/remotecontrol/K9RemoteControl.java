@@ -8,7 +8,7 @@ import android.content.Intent;
 import com.fsck.k9.BuildConfig;
 
 /**
- * Utillity definitions for Android applications to control the behavior of K-9 Mail.  All such applications must declare the following permission:
+ * Utility definitions for Android applications to control the behavior of K-9 Mail.  All such applications must declare the following permission:
  * <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
  * in their AndroidManifest.xml  In addition, all applications sending remote control messages to K-9 Mail must
  *

@@ -1468,7 +1468,7 @@ public class Account implements BaseAccount, StoreConfig {
     /**
      * Are we storing out localStore on the SD-card instead of the local device
      * memory?<br/>
-     * Only to be called durin initial account-setup!<br/>
+     * Only to be called during initial account-setup!<br/>
      * Side-effect: changes {@link #mLocalStorageProviderId}.
      *
      * @param newStorageProviderId

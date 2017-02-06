@@ -17,7 +17,7 @@ import android.os.Parcelable;
  * TODO implement a complete addAllowedFolder method
  * TODO conflicting conditions check on add
  * TODO duplicate condition checking?
- * TODO assign each node a unique id that's used to retrieve it from the leaveset and remove.
+ * TODO assign each node a unique id that's used to retrieve it from the leafset and remove.
  *
  */
 
@@ -51,7 +51,7 @@ public class LocalSearch implements SearchSpecification {
     }
 
     /**
-     * Use this constructor when you know what you'r doing. Normally it's only used
+     * Use this constructor when you know what you're doing. Normally it's only used
      * when restoring these search objects from the database.
      *
      * @param name Name of the search
@@ -119,7 +119,7 @@ public class LocalSearch implements SearchSpecification {
 
     /**
      * Adds all the account uuids in the provided array to
-     * be matched by the seach.
+     * be matched by the search.
      *
      * @param accountUuids
      */

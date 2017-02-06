@@ -130,7 +130,7 @@ public class LockableDatabase {
     private Context context;
 
     /**
-     * {@link ThreadLocal} to check whether a DB transaction is occuring in the
+     * {@link ThreadLocal} to check whether a DB transaction is occurring in the
      * current {@link Thread}.
      *
      * @see #execute(boolean, DbCallback)
@@ -250,7 +250,7 @@ public class LockableDatabase {
      *
      * <p>
      * Can be instructed to start a transaction if none is currently active in
-     * the current thread. Callback will participe in any active transaction (no
+     * the current thread. Callback will participate in any active transaction (no
      * inner transaction created).
      * </p>
      *

@@ -119,7 +119,7 @@ public class OpenPgpApi {
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
      * char[]        EXTRA_PASSPHRASE            (key passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
-     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
+     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default is true)
      */
     public static final String ACTION_ENCRYPT = "org.openintents.openpgp.action.ENCRYPT";
 
@@ -136,7 +136,7 @@ public class OpenPgpApi {
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
      * char[]        EXTRA_PASSPHRASE            (key passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
-     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
+     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default is true)
      */
     public static final String ACTION_SIGN_AND_ENCRYPT = "org.openintents.openpgp.action.SIGN_AND_ENCRYPT";
 

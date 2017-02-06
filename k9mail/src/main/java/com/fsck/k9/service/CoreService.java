@@ -110,7 +110,7 @@ public abstract class CoreService extends Service {
      * @param context
      *         A {@link Context} instance. Never {@code null}.
      * @param intent
-     *         The {@link Intent} to add the wake lock registy ID as extra to. Never {@code null}.
+     *         The {@link Intent} to add the wake lock registry ID as extra to. Never {@code null}.
      * @param wakeLockId
      *         The wake lock registry ID of an existing wake lock or {@code null}.
      * @param createIfNotExists
@@ -140,7 +140,7 @@ public abstract class CoreService extends Service {
      * @param context
      *         A {@link Context} instance. Never {@code null}.
      * @param intent
-     *         The {@link Intent} to add the wake lock registy ID as extra to. Never {@code null}.
+     *         The {@link Intent} to add the wake lock registry ID as extra to. Never {@code null}.
      */
     protected static void addWakeLock(Context context, Intent intent) {
         TracingWakeLock wakeLock = acquireWakeLock(context, "CoreService addWakeLock",

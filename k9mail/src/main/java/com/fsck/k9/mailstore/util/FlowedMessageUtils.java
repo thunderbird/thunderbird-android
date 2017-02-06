@@ -178,7 +178,7 @@ public final class FlowedMessageUtils {
 
     /**
      * Checks whether the char is part of a word.
-     * <p>RFC assert a word cannot be splitted (even if the length is greater than the maximum length).
+     * <p>RFC assert a word cannot be split (even if the length is greater than the maximum length).
      */
     public static boolean isAlphaChar(String text, int index) {
         // Note: a list of chars is available here:
