@@ -13,7 +13,7 @@ public class K9RobolectricTestRunner extends RobolectricTestRunner {
     @Override
     protected Config buildGlobalConfig() {
         return new Config.Builder()
-                .setSdk(21)
+                .setSdk(22)
                 .setManifest("src/main/AndroidManifest.xml")
                 .build();
     }

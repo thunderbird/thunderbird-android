@@ -13,7 +13,7 @@ public class K9LibRobolectricTestRunner extends RobolectricTestRunner {
     @Override
     protected Config buildGlobalConfig() {
         return new Config.Builder()
-                .setSdk(21)
+                .setSdk(22)
                 .setManifest(Config.NONE)
                 .build();
     }
