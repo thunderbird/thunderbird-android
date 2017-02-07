@@ -16,6 +16,10 @@
 
 package org.openintents.openpgp.util;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,9 +29,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.preference.DialogPreference;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -35,9 +37,6 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import org.openintents.openpgp.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Does not extend ListPreference, but is very similar to it!
@@ -49,11 +48,12 @@ public class OpenPgpAppPreference extends DialogPreference {
     private static final Intent MARKET_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse(
             String.format(MARKET_INTENT_URI_BASE, OPENKEYCHAIN_PACKAGE)));
 
-    private static final ArrayList<String> PROVIDER_BLACKLIST = new ArrayList<String>();
+    private static final String PACKAGE_NAME_APG = "org.thialfihar.android.apg";
+    private static final ArrayList<String> PROVIDER_BLACKLIST = new ArrayList<>();
 
     static {
         // Unfortunately, the current released version of APG includes a broken version of the API
-        PROVIDER_BLACKLIST.add("org.thialfihar.android.apg");
+        PROVIDER_BLACKLIST.add(PACKAGE_NAME_APG);
     }
 
     private ArrayList<OpenPgpProviderEntry> mLegacyList = new ArrayList<>();
@@ -79,6 +79,11 @@ public class OpenPgpAppPreference extends DialogPreference {
      */
     public void addLegacyProvider(int position, String packageName, String simpleName, Drawable icon) {
         mLegacyList.add(position, new OpenPgpProviderEntry(packageName, simpleName, icon));
+    }
+
+    public void addLegacyProvider(String packageName, String simpleName, int iconRes) {
+        Drawable icon = getContext().getResources().getDrawable(iconRes);
+        mLegacyList.add(new OpenPgpProviderEntry(packageName, simpleName, icon));
     }
 
     @Override
@@ -262,26 +267,26 @@ public class OpenPgpAppPreference extends DialogPreference {
         mList.addAll(mLegacyList);
 
         // search for OpenPGP providers...
-        ArrayList<OpenPgpProviderEntry> providerList = new ArrayList<>();
         Intent intent = new Intent(OpenPgpApi.SERVICE_INTENT_2);
         List<ResolveInfo> resInfo = getContext().getPackageManager().queryIntentServices(intent, 0);
-        if (!resInfo.isEmpty()) {
-            for (ResolveInfo resolveInfo : resInfo) {
-                if (resolveInfo.serviceInfo == null)
-                    continue;
+        boolean hasNonBlacklistedChoices = false;
+        for (ResolveInfo resolveInfo : resInfo) {
+            if (resolveInfo.serviceInfo == null) {
+                continue;
+            }
 
-                String packageName = resolveInfo.serviceInfo.packageName;
-                String simpleName = String.valueOf(resolveInfo.serviceInfo.loadLabel(getContext()
-                        .getPackageManager()));
-                Drawable icon = resolveInfo.serviceInfo.loadIcon(getContext().getPackageManager());
+            String packageName = resolveInfo.serviceInfo.packageName;
+            String simpleName = String.valueOf(resolveInfo.serviceInfo.loadLabel(getContext()
+                    .getPackageManager()));
+            Drawable icon = resolveInfo.serviceInfo.loadIcon(getContext().getPackageManager());
 
-                if (!PROVIDER_BLACKLIST.contains(packageName)) {
-                    providerList.add(new OpenPgpProviderEntry(packageName, simpleName, icon));
-                }
+            if (!PROVIDER_BLACKLIST.contains(packageName)) {
+                mList.add(new OpenPgpProviderEntry(packageName, simpleName, icon));
+                hasNonBlacklistedChoices = true;
             }
         }
 
-        if (providerList.isEmpty()) {
+        if (!hasNonBlacklistedChoices) {
             // add install links if provider list is empty
             resInfo = getContext().getPackageManager().queryIntentActivities
                     (MARKET_INTENT, 0);
@@ -296,10 +301,11 @@ public class OpenPgpAppPreference extends DialogPreference {
                 mList.add(new OpenPgpProviderEntry(OPENKEYCHAIN_PACKAGE, simpleName,
                         icon, marketIntent));
             }
-        } else {
-            // add provider
-            mList.addAll(providerList);
         }
+    }
+
+    public void show() {
+        showDialog(null);
     }
 
     private static class OpenPgpProviderEntry {
@@ -308,13 +314,13 @@ public class OpenPgpAppPreference extends DialogPreference {
         private Drawable icon;
         private Intent intent;
 
-        public OpenPgpProviderEntry(String packageName, String simpleName, Drawable icon) {
+        OpenPgpProviderEntry(String packageName, String simpleName, Drawable icon) {
             this.packageName = packageName;
             this.simpleName = simpleName;
             this.icon = icon;
         }
 
-        public OpenPgpProviderEntry(String packageName, String simpleName, Drawable icon, Intent intent) {
+        OpenPgpProviderEntry(String packageName, String simpleName, Drawable icon, Intent intent) {
             this(packageName, simpleName, icon);
             this.intent = intent;
         }
@@ -323,5 +329,12 @@ public class OpenPgpAppPreference extends DialogPreference {
         public String toString() {
             return simpleName;
         }
+    }
+
+    public static boolean isApgInstalled(Context context) {
+        Intent intent = new Intent("org.openintents.openpgp.IOpenPgpService");
+        intent.setPackage(PACKAGE_NAME_APG);
+        List<ResolveInfo> resInfo = context.getPackageManager().queryIntentServices(intent, 0);
+        return resInfo != null && !resInfo.isEmpty();
     }
 }
