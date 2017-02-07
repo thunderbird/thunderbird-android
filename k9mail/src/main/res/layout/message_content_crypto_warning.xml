@@ -47,6 +47,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/crypto_warning_override"
-        android:text="Show message anyways"/>
+        android:text="@string/messageview_crypto_warning_show_anyway"/>
 
 </LinearLayout>
