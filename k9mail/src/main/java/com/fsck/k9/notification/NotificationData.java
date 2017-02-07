@@ -109,11 +109,15 @@ class NotificationData {
         return false;
     }
 
-    public boolean hasAdditionalMessages() {
+    public boolean hasSummaryOverflowMessages() {
         return activeNotifications.size() > MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION;
     }
 
-    public int getAdditionalMessagesCount() {
+    public int getSummaryOverflowMessagesCount() {
+        int activeOverflowCount = activeNotifications.size() - MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION;
+        if (activeOverflowCount > 0) {
+            return activeOverflowCount + additionalNotifications.size();
+        }
         return additionalNotifications.size();
     }
 

@@ -147,8 +147,8 @@ public class DeviceNotificationsTest {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
         K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
         when(notificationData.isSingleMessageNotification()).thenReturn(false);
-        when(notificationData.hasAdditionalMessages()).thenReturn(true);
-        when(notificationData.getAdditionalMessagesCount()).thenReturn(23);
+        when(notificationData.hasSummaryOverflowMessages()).thenReturn(true);
+        when(notificationData.getSummaryOverflowMessagesCount()).thenReturn(23);
 
         notifications.buildSummaryNotification(account, notificationData, false);
 
