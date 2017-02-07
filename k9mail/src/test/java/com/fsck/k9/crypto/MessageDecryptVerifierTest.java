@@ -4,6 +4,7 @@ package com.fsck.k9.crypto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -18,7 +19,6 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
@@ -29,8 +29,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class MessageDecryptVerifierTest {
     private static final String MIME_TYPE_MULTIPART_ENCRYPTED = "multipart/encrypted";
     private MessageCryptoAnnotations messageCryptoAnnotations = mock(MessageCryptoAnnotations.class);

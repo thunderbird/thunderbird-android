@@ -13,6 +13,7 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.FetchProfile;
@@ -38,8 +39,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
 import static org.junit.Assert.assertEquals;
@@ -60,8 +59,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
 public class MessagingControllerTest {
     private static final String FOLDER_NAME = "Folder";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;

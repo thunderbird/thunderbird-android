@@ -1,18 +1,19 @@
 package com.fsck.k9.message.signature;
 
 
+import com.fsck.k9.K9RobolectricTestRunner;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static com.fsck.k9.message.html.HtmlHelper.extractText;
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class HtmlSignatureRemoverTest {
     @Test
     public void shouldStripSignatureFromK9StyleHtml() throws Exception {

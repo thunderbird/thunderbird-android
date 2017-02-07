@@ -6,18 +6,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.fsck.k9.message.html.HtmlConverter;
+import com.fsck.k9.K9RobolectricTestRunner;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class HtmlConverterTest {
     // Useful if you want to write stuff to a file for debugging in a browser.
     private static final boolean WRITE_TO_FILE = Boolean.parseBoolean(System.getProperty("k9.htmlConverterTest.writeToFile", "false"));
