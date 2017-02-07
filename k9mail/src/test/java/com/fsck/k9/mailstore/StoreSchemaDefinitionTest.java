@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BuildConfig;
@@ -295,11 +297,12 @@ public class StoreSchemaDefinitionTest {
 
     private List<String> objectsInDatabase(SQLiteDatabase db, String type) {
         List<String> tables = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type = ?", new String[] { type });
+        Cursor cursor = db.rawQuery("SELECT sql FROM sqlite_master WHERE type = ? AND sql IS NOT NULL", new String[] { type });
         try {
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
-                    tables.add(cursor.getString(cursor.getColumnIndex("name")));
+                    String sql = cursor.getString(cursor.getColumnIndex("sql"));
+                    tables.add("table".equals(type) ? sortTableColumns(sql) : sql);
                     cursor.moveToNext();
                 }
             }
@@ -308,6 +311,14 @@ public class StoreSchemaDefinitionTest {
         }
 
         return tables;
+    }
+
+    private String sortTableColumns(String sql) {
+        int posColDef = sql.indexOf('(');
+        String colsStr = sql.substring(posColDef+1, sql.length()-1);
+        String[] cols = colsStr.split(" *, *(?![^\\(]*\\))");
+        Arrays.sort(cols);
+        return sql.substring(0, posColDef+1) + TextUtils.join(", ", cols) + ")";
     }
 
     private void insertMessageWithSubject(SQLiteDatabase database, String subject) {
