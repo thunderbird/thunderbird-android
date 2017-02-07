@@ -204,7 +204,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         db.execSQL("CREATE TRIGGER delete_message " +
                 "BEFORE DELETE ON messages " +
                 "BEGIN " +
-                "DELETE FROM message_parts WHERE root = OLD.message_part_id;" +
+                "DELETE FROM message_parts WHERE root = OLD.message_part_id; " +
+                "DELETE FROM messages_fulltext WHERE docid = OLD.id; " +
                 "END");
 
         db.execSQL("DROP TABLE IF EXISTS messages_fulltext");
