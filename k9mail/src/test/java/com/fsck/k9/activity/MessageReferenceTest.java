@@ -2,7 +2,6 @@ package com.fsck.k9.activity;
 
 
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -12,6 +11,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(RobolectricTestRunner.class)
@@ -34,9 +34,10 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void parseIdentityStringWithoutFlag() throws MessagingException {
-        MessageReference messageReference = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=");
+    public void parseIdentityStringWithoutFlag() {
+        MessageReference messageReference = MessageReference.parse("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=");
 
+        assertNotNull(messageReference);
         assertEquals("o hai!", messageReference.getAccountUuid());
         assertEquals("folder", messageReference.getFolderName());
         assertEquals("10101010", messageReference.getUid());
@@ -44,9 +45,10 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void parseIdentityStringWithFlag() throws MessagingException {
-        MessageReference messageReference = new MessageReference("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
+    public void parseIdentityStringWithFlag() {
+        MessageReference messageReference = MessageReference.parse("!:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
 
+        assertNotNull(messageReference);
         assertEquals("o hai!", messageReference.getAccountUuid());
         assertEquals("folder", messageReference.getFolderName());
         assertEquals("10101010", messageReference.getUid());
@@ -80,25 +82,30 @@ public class MessageReferenceTest {
     }
 
     @Test
-    public void parseIdentityStringContainingBadVersionNumber() throws MessagingException {
-        MessageReference messageReference = new MessageReference("@:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
+    public void parseIdentityStringContainingBadVersionNumber() {
+        MessageReference messageReference = MessageReference.parse("@:byBoYWkh:Zm9sZGVy:MTAxMDEwMTA=:ANSWERED");
 
-        assertNull(messageReference.getAccountUuid());
+        assertNull(messageReference);
     }
 
-    @Test(expected = MessagingException.class)
-    public void parseNullIdentityString() throws MessagingException {
-        new MessageReference(null);
+    @Test
+    public void parseNullIdentityString() {
+        MessageReference messageReference = MessageReference.parse(null);
+
+        assertNull(messageReference);
     }
 
-    @Test(expected = MessagingException.class)
-    public void parseIdentityStringWithCorruptFlag() throws MessagingException {
-        new MessageReference("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
+    @Test
+    public void parseIdentityStringWithCorruptFlag() {
+        MessageReference messageReference =
+                MessageReference.parse("!:%^&%^*$&$by&(BYWkh:Zm9%^@sZGVy:MT-35#$AxMDEwMTA=:ANSWE!RED");
+
+        assertNull(messageReference);
     }
 
     @Test
     public void equalsWithAnObjectShouldReturnFalse() {
-        MessageReference messageReference = new MessageReference(null, null, null, null);
+        MessageReference messageReference = new MessageReference("a", "b", "c", null);
         Object object = new Object();
 
         assertFalse(messageReference.equals(object));
@@ -151,17 +158,64 @@ public class MessageReferenceTest {
         assertEqualsReturnsFalseSymmetrically(messageReferenceOne, messageReferenceTwo);
     }
 
-    private MessageReference createMessageReference(String accountUuid, String folderName, String uid) {
-        MessageReference messageReference = new MessageReference(accountUuid, folderName, uid, null);
+    @Test
+    public void alternativeEquals() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
 
-        return messageReference;
+        boolean equalsResult = messageReference.equals("account", "folder", "uid");
+
+        assertTrue(equalsResult);
+    }
+
+    @Test
+    public void equals_withNullAccount_shouldReturnFalse() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
+
+        boolean equalsResult = messageReference.equals(null, "folder", "uid");
+
+        assertFalse(equalsResult);
+    }
+
+    @Test
+    public void equals_withNullFolder_shouldReturnFalse() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
+
+        boolean equalsResult = messageReference.equals("account", null, "uid");
+
+        assertFalse(equalsResult);
+    }
+
+    @Test
+    public void equals_withNullUid_shouldReturnFalse() {
+        MessageReference messageReference = createMessageReference("account", "folder", "uid");
+
+        boolean equalsResult = messageReference.equals("account", "folder", null);
+
+        assertFalse(equalsResult);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void constructor_withNullAccount_shouldThrow() throws Exception {
+        createMessageReference(null, "folder", "uid");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void constructor_withNullFolder_shouldThrow() throws Exception {
+        createMessageReference("account", null, "uid");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void constructor_withNullUid_shouldThrow() throws Exception {
+        createMessageReference("account", "folder", null);
+    }
+
+    private MessageReference createMessageReference(String accountUuid, String folderName, String uid) {
+        return new MessageReference(accountUuid, folderName, uid, null);
     }
 
     private MessageReference createMessageReferenceWithFlag(String accountUuid, String folderName, String uid,
             Flag flag) {
-        MessageReference messageReference = new MessageReference(accountUuid, folderName, uid, flag);
-
-        return messageReference;
+        return new MessageReference(accountUuid, folderName, uid, flag);
     }
 
     private void assertEqualsReturnsTrueSymmetrically(MessageReference referenceOne, MessageReference referenceTwo) {

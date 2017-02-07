@@ -719,7 +719,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         saveListState(outState);
 
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, mRemoteSearchPerformed);
-        outState.putParcelable(STATE_ACTIVE_MESSAGE, mActiveMessage);
+        if (mActiveMessage != null) {
+            outState.putString(STATE_ACTIVE_MESSAGE, mActiveMessage.toIdentityString());
+        }
     }
 
     /**
@@ -736,7 +738,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         mRemoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
         mSavedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST);
-        mActiveMessage = savedInstanceState.getParcelable(STATE_ACTIVE_MESSAGE);
+        String messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE);
+        mActiveMessage = MessageReference.parse(messageReferenceString);
     }
 
     /**
