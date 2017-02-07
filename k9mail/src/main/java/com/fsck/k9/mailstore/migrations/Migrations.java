@@ -71,6 +71,8 @@ public class Migrations {
             case 57:
                 MigrationTo58.cleanUpOrphanedData(db);
                 MigrationTo58.createDeleteMessageTrigger(db);
+            case 58:
+                MigrationTo59.addMissingIndexes(db);
         }
     }
 }
