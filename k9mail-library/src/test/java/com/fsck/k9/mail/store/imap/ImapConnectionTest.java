@@ -190,6 +190,32 @@ public class ImapConnectionTest {
     }
 
     @Test
+    public void open_authPlainWithByeResponseAndConnectionClose_shouldThrowAuthenticationFailedException()
+            throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server, "AUTH=PLAIN");
+        server.expect("2 AUTHENTICATE PLAIN");
+        server.output("+");
+        server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
+        server.output("* BYE Go away");
+        server.output("2 NO Login Failure");
+        server.closeConnection();
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        try {
+            imapConnection.open();
+            fail("Expected exception");
+        } catch (AuthenticationFailedException e) {
+            //FIXME: improve exception message
+            assertThat(e.getMessage(), containsString("Login Failure"));
+        }
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
     public void open_authPlainWithoutAuthPlainCapability_shouldUseLoginMethod() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
