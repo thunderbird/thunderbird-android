@@ -396,8 +396,16 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     @Override
-    public void onRecipientChange(Recipient currentRecipient, Recipient alternateAddress) {
+    public void onRecipientChange(Recipient recipientToReplace, Recipient alternateAddress) {
         alternatesPopup.dismiss();
+
+        List<Recipient> currentRecipients = getObjects();
+        int indexOfRecipient = currentRecipients.indexOf(recipientToReplace);
+        if (indexOfRecipient == -1) {
+            Log.e(K9.LOG_TAG, "Tried to refresh invalid view token!");
+            return;
+        }
+        Recipient currentRecipient = currentRecipients.get(indexOfRecipient);
 
         currentRecipient.address = alternateAddress.address;
         currentRecipient.addressLabel = alternateAddress.addressLabel;
