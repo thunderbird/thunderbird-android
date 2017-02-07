@@ -291,6 +291,27 @@
             android:positiveButtonText="@android:string/ok"
             android:negativeButtonText="@android:string/cancel" />
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="use_master_password"
+            android:title="@string/use_master_password_cb_label"
+            android:summary="@string/use_master_password_summary" />
+
+        <EditTextPreference
+            android:persistent="false"
+            android:key="master_password"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:title="Password"/>
+        <ListPreference
+            android:persistent="false"
+            android:key="master_password_interval"
+            android:title="@string/master_password_interval_label"
+            android:entries="@array/master_password_interval_entries"
+            android:entryValues="@array/master_password_interval_values"
+            android:dialogTitle="@string/master_password_interval_label"
+            />
+
     </PreferenceScreen>
 
     <PreferenceScreen

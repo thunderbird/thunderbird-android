@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -23,6 +24,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
+import com.fsck.k9.MasterPassword;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ColorPickerDialog;
@@ -99,6 +101,10 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
     private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
 
+    private static final String PREFERENCE_USE_MASTER_PASSWORD = "use_master_password";
+    private static final String PREFERENCE_MASTER_PASSWORD = "master_password";
+    private static final String PREFERENCE_MASTER_PASSWORD_INTERVAL = "master_password_interval";
+
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
     // Named indices for the mVisibleRefileActions field
@@ -155,6 +161,9 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mThreadedView;
     private ListPreference mSplitViewMode;
 
+    private CheckBoxPreference mUseMasterPassword;
+    private EditTextPreference mMasterPassword;
+    private ListPreference mMasterPasswordInterval;
 
     public static void actionPrefs(Context context) {
         Intent i = new Intent(context, Prefs.class);
@@ -212,6 +221,8 @@ public class Prefs extends K9PreferenceActivity {
         mStartIntegratedInbox.setChecked(K9.startIntegratedInbox());
 
         mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
+
+
 
         boolean canDeleteFromNotification = NotificationController.platformSupportsExtendedNotifications();
         CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 6 : 5];
@@ -423,6 +434,24 @@ public class Prefs extends K9PreferenceActivity {
         mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
+
+        mUseMasterPassword = (CheckBoxPreference) findPreference(PREFERENCE_USE_MASTER_PASSWORD);
+        mUseMasterPassword.setChecked(K9.useMasterPassword());
+
+        mMasterPassword = (EditTextPreference) findPreference(PREFERENCE_MASTER_PASSWORD);
+        mMasterPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                String s = (String)o;
+                K9.setMasterPassword(MasterPassword.hash(s));
+                return true;
+            }
+        });
+        mMasterPassword.setText("");
+
+        mMasterPasswordInterval = setupListPreference(PREFERENCE_MASTER_PASSWORD_INTERVAL,
+                Integer.toString(K9.getMasterPasswordInterval()));
+
     }
 
     private static String themeIdToName(K9.Theme theme) {
@@ -523,6 +552,9 @@ public class Prefs extends K9PreferenceActivity {
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         K9.setHideUserAgent(mHideUserAgent.isChecked());
         K9.setHideTimeZone(mHideTimeZone.isChecked());
+
+        K9.setUseMasterPassword(mUseMasterPassword.isChecked());
+        K9.setMasterPasswordInterval(Integer.parseInt(mMasterPasswordInterval.getValue()));
 
         StorageEditor editor = storage.edit();
         K9.save(editor);
