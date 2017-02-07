@@ -48,14 +48,13 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.message.extractors.AttachmentCounter;
+import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
 import com.fsck.k9.preferences.Storage;
@@ -190,6 +189,7 @@ public class LocalStore extends Store implements Serializable {
     private final MessageFulltextCreator messageFulltextCreator;
     private final AttachmentCounter attachmentCounter;
     private final PendingCommandSerializer pendingCommandSerializer;
+    final AttachmentInfoExtractor attachmentInfoExtractor;
 
     /**
      * local://localhost/path/to/database/uuid.db
@@ -209,6 +209,7 @@ public class LocalStore extends Store implements Serializable {
         messageFulltextCreator = MessageFulltextCreator.newInstance();
         attachmentCounter = AttachmentCounter.newInstance();
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
+        attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
 
         database.open();
     }
