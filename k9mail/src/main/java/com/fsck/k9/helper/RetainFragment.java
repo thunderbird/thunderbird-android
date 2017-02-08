@@ -30,6 +30,11 @@ public class RetainFragment<T> extends Fragment {
         this.data = data;
     }
 
+    public static <T> RetainFragment<T> findOrNull(FragmentManager fm, String tag) {
+        // noinspection unchecked, we know this is the the right type
+        return (RetainFragment<T>) fm.findFragmentByTag(tag);
+    }
+
     public static <T> RetainFragment<T> findOrCreate(FragmentManager fm, String tag) {
         // noinspection unchecked, we know this is the the right type
         RetainFragment<T> retainFragment = (RetainFragment<T>) fm.findFragmentByTag(tag);
