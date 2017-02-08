@@ -148,4 +148,13 @@ public class AddressTest {
 
         assertFalse(result);
     }
+
+    @Test
+    public void getHostname_withoutAddress_isNull() throws Exception {
+        Address address = Address.parse("Alice")[0];
+
+        String result = address.getHostname();
+
+        assertNull(result);
+    }
 }
