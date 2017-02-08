@@ -78,6 +78,10 @@ public class Address implements Serializable {
     }
 
     public String getHostname() {
+        if (mAddress == null) {
+            return null;
+        }
+
         int hostIdx = mAddress.lastIndexOf("@");
 
         if (hostIdx == -1) {
