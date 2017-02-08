@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 public class RetainFragment<T> extends Fragment {
     private T data;
+    private boolean cleared;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class RetainFragment<T> extends Fragment {
         // noinspection unchecked, we know this is the the right type
         RetainFragment<T> retainFragment = (RetainFragment<T>) fm.findFragmentByTag(tag);
 
-        if (retainFragment == null) {
+        if (retainFragment == null || retainFragment.cleared) {
             retainFragment = new RetainFragment<>();
             fm.beginTransaction()
                     .add(retainFragment, tag)
@@ -51,6 +52,7 @@ public class RetainFragment<T> extends Fragment {
 
     public void clearAndRemove(FragmentManager fm) {
         data = null;
+        cleared = true;
 
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1 && fm.isDestroyed()) {
             return;
