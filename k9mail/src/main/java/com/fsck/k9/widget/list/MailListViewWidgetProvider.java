@@ -11,7 +11,6 @@ import android.widget.RemoteViews;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.MailListViewWidgetConfiguration;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageList;
 
@@ -37,7 +36,7 @@ public class MailListViewWidgetProvider extends AppWidgetProvider {
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, String acc) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
+        CharSequence widgetText = context.getString(R.string.mail_list_widget_text);
         Account account = Preferences.getPreferences(context).getAccount(acc);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mail_list_view_widget_layout);

@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.widget.list;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.R;
-import com.fsck.k9.provider.MailListViewWidgetProvider;
+import com.fsck.k9.activity.AccountList;
 
 
 public class MailListViewWidgetConfiguration extends AccountList {

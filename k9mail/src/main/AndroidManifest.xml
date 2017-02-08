@@ -277,7 +277,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MailListViewWidgetConfiguration">
+        <activity android:name=".widget.list.MailListViewWidgetConfiguration">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
@@ -365,7 +365,7 @@
 
         <receiver android:name=".widget.list.MailListViewWidgetProvider"
                   android:icon="@drawable/mail_list_widget_icon"
-                  android:label="@string/appwidget_text">
+                  android:label="@string/mail_list_widget_text">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
