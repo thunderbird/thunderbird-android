@@ -38,7 +38,7 @@ public class ContactPictureLoader {
     /**
      * Pattern to extract the letter to be displayed as fallback image.
      */
-    private static final Pattern EXTRACT_LETTER_PATTERN = Pattern.compile("[a-zA-Z]");
+    private static final Pattern EXTRACT_LETTER_PATTERN = Pattern.compile("\\p{L}\\p{M}*");
 
     /**
      * Letter to use when {@link #EXTRACT_LETTER_PATTERN} couldn't find a match.
