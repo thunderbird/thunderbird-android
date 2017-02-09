@@ -17,6 +17,7 @@ import android.os.Bundle;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
@@ -33,7 +34,10 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.MessageBuilder.Callback;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
+
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Assert;
@@ -43,9 +47,7 @@ import org.mockito.ArgumentCaptor;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -58,8 +60,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
 public class PgpMessageBuilderTest {
     private static final long TEST_SIGN_KEY_ID = 123L;
     private static final long TEST_SELF_ENCRYPT_KEY_ID = 234L;
@@ -299,7 +300,7 @@ public class PgpMessageBuilderTest {
 
         BodyPart encryptedBodyPart = multipart.getBodyPart(1);
         Assert.assertEquals("second part must be octet-stream of encrypted data",
-                "application/octet-stream", encryptedBodyPart.getContentType());
+                "application/octet-stream; name=\"encrypted.asc\"", encryptedBodyPart.getContentType());
         Assert.assertTrue("message body must be BinaryTempFileBody",
                 encryptedBodyPart.getBody() instanceof BinaryTempFileBody);
         Assert.assertEquals(MimeUtil.ENC_7BIT, ((BinaryTempFileBody) encryptedBodyPart.getBody()).getEncoding());
@@ -526,7 +527,7 @@ public class PgpMessageBuilderTest {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             InputStream inputStream = MimeUtility.decodeBody(signatureBodyPart.getBody());
             IOUtils.copy(inputStream, bos);
-            Assert.assertEquals(reason, expected, new String(bos.toByteArray()));
+            Assert.assertEquals(reason, expected, new String(bos.toByteArray(), Charsets.UTF_8));
         } catch (IOException | MessagingException e) {
             Assert.fail();
         }

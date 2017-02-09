@@ -4,13 +4,13 @@ package com.fsck.k9.mail.store.webdav;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.List;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
@@ -44,10 +44,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.OngoingStubbing;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
-import java.util.Collections;
 
 import static junit.framework.Assert.assertSame;
 import static org.junit.Assert.assertEquals;
@@ -58,8 +55,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("deprecation")
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class WebDavStoreTest {
     private static final HttpResponse OK_200_RESPONSE = createOkResponse();
     private static final HttpResponse UNAUTHORIZED_401_RESPONSE = createResponse(401);

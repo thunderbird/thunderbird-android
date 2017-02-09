@@ -11,9 +11,10 @@ import java.util.TimeZone;
 import android.app.Application;
 
 import com.fsck.k9.GlobalsHelper;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.K9ActivityCommon;
-import com.fsck.k9.helper.HtmlSanitizer;
-import com.fsck.k9.helper.HtmlSanitizerHelper;
+import com.fsck.k9.message.html.HtmlSanitizer;
+import com.fsck.k9.message.html.HtmlSanitizerHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
@@ -31,9 +32,7 @@ import com.fsck.k9.mailstore.MessageViewInfoExtractor.ViewableExtractedText;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
@@ -42,8 +41,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
 public class MessageViewInfoExtractorTest {
     public static final String BODY_TEXT = "K-9 Mail rocks :>";
     public static final String BODY_TEXT_HTML = "K-9 Mail rocks :&gt;";

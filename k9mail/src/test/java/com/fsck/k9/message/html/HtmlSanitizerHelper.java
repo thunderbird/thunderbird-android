@@ -1,4 +1,4 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.message.html;
 
 
 public class HtmlSanitizerHelper {

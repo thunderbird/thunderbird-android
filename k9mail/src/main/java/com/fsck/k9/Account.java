@@ -221,6 +221,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
+    private boolean mCryptoAppIsDeprecatedApg;
     private long mCryptoKey;
     private boolean mCryptoSupportSignOnly;
     private boolean mMarkMessageAsReadOnView;
@@ -1467,7 +1468,7 @@ public class Account implements BaseAccount, StoreConfig {
     /**
      * Are we storing out localStore on the SD-card instead of the local device
      * memory?<br/>
-     * Only to be called durin initial account-setup!<br/>
+     * Only to be called during initial account-setup!<br/>
      * Side-effect: changes {@link #mLocalStorageProviderId}.
      *
      * @param newStorageProviderId
@@ -1607,11 +1608,17 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public void setCryptoApp(String cryptoApp) {
-        if (cryptoApp == null || cryptoApp.equals("apg")) {
+        boolean isApgCryptoProvider = "apg".equals(cryptoApp);
+        if (cryptoApp == null || isApgCryptoProvider) {
+            mCryptoAppIsDeprecatedApg = isApgCryptoProvider;
             mCryptoApp = NO_OPENPGP_PROVIDER;
         } else {
             mCryptoApp = cryptoApp;
         }
+    }
+
+    public boolean isCryptoAppDeprecatedApg() {
+        return mCryptoAppIsDeprecatedApg;
     }
 
     public long getCryptoKey() {

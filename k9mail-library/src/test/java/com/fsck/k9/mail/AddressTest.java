@@ -3,15 +3,15 @@ package com.fsck.k9.mail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class AddressTest {
     /**
      * test the possibility to parse "From:" fields with no email.
@@ -105,5 +105,56 @@ public class AddressTest {
         assertNull(address.getPersonal());
         
         address.hashCode();
+    }
+
+    @Test
+    public void equals_withoutAddress_matchesSame() throws Exception {
+        Address address = Address.parse("name only")[0];
+        Address address2 = Address.parse("name only")[0];
+        assertNull(address.getAddress());
+
+        boolean result = address.equals(address2);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void equals_withoutAddress_doesNotMatchWithAddress() throws Exception {
+        Address address = Address.parse("name only")[0];
+        Address address2 = Address.parse("name <alice.example.com>")[0];
+
+        boolean result = address.equals(address2);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void equals_withoutPersonal_matchesSame() throws Exception {
+        Address address = Address.parse("alice@example.org")[0];
+        Address address2 = Address.parse("alice@example.org")[0];
+        assertNull(address.getPersonal());
+
+        boolean result = address.equals(address2);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void equals_withoutPersonal_doesNotMatchWithAddress() throws Exception {
+        Address address = Address.parse("alice@example.org")[0];
+        Address address2 = Address.parse("Alice <alice@example.org>")[0];
+
+        boolean result = address.equals(address2);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void getHostname_withoutAddress_isNull() throws Exception {
+        Address address = Address.parse("Alice")[0];
+
+        String result = address.getHostname();
+
+        assertNull(result);
     }
 }

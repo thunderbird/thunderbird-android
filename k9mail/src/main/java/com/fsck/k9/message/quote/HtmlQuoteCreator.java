@@ -1,11 +1,6 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.message.quote;
 
 
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,21 +14,10 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MessageExtractor;
-import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.message.InsertableHtmlContent;
-import com.fsck.k9.message.SimpleMessageFormat;
-import org.htmlcleaner.CleanerProperties;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.SimpleHtmlSerializer;
-import org.htmlcleaner.TagNode;
+import com.fsck.k9.message.html.HtmlConverter;
 
 
-public class QuotedMessageHelper {
-    // amount of extra buffer to allocate to accommodate quoting headers or prefixes
-    private static final int QUOTE_BUFFER_LENGTH = 512;
-
+public class HtmlQuoteCreator {
     // Regular expressions to look for various HTML tags. This is no HTML::Parser, but hopefully it's good enough for
     // our purposes.
     private static final Pattern FIND_INSERTION_POINT_HTML = Pattern.compile("(?si:.*?(<html(?:>|\\s+[^>]*>)).*)");
@@ -41,13 +25,6 @@ public class QuotedMessageHelper {
     private static final Pattern FIND_INSERTION_POINT_BODY = Pattern.compile("(?si:.*?(<body(?:>|\\s+[^>]*>)).*)");
     private static final Pattern FIND_INSERTION_POINT_HTML_END = Pattern.compile("(?si:.*(</html>).*?)");
     private static final Pattern FIND_INSERTION_POINT_BODY_END = Pattern.compile("(?si:.*(</body>).*?)");
-
-    // Regexes to check for signature.
-    private static final Pattern DASH_SIGNATURE_HTML = Pattern.compile("(<br( /)?>|\r?\n)-- <br( /)?>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern BLOCKQUOTE_START = Pattern.compile("<blockquote", Pattern.CASE_INSENSITIVE);
-    private static final Pattern BLOCKQUOTE_END = Pattern.compile("</blockquote>", Pattern.CASE_INSENSITIVE);
-    private static final Pattern DASH_SIGNATURE_PLAIN = Pattern.compile("\r\n-- \r\n.*", Pattern.DOTALL);
-
     // The first group in a Matcher contains the first capture group. We capture the tag found in the above REs so that
     // we can locate the *end* of that tag.
     private static final int FIND_INSERTION_POINT_FIRST_GROUP = 1;
@@ -59,9 +36,7 @@ public class QuotedMessageHelper {
     // Index of the start of the beginning of a String.
     private static final int FIND_INSERTION_POINT_START_OF_STRING = 0;
 
-    private static final int REPLY_WRAP_LINE_WIDTH = 72;
-
-
+    
     /**
      * Add quoting markup to a HTML message.
      * @param originalMessage Metadata for message being quoted.
@@ -74,10 +49,10 @@ public class QuotedMessageHelper {
             String messageBody, QuoteStyle quoteStyle) throws MessagingException {
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
-        String sentDate = getSentDateText(resources, originalMessage);
+        String sentDate = QuoteHelper.getSentDateText(resources, originalMessage);
         String fromAddress = Address.toString(originalMessage.getFrom());
         if (quoteStyle == QuoteStyle.PREFIX) {
-            StringBuilder header = new StringBuilder(QUOTE_BUFFER_LENGTH);
+            StringBuilder header = new StringBuilder(QuoteHelper.QUOTE_BUFFER_LENGTH);
             header.append("<div class=\"gmail_quote\">");
             if (sentDate.length() != 0) {
                 header.append(HtmlConverter.textToHtmlFragment(String.format(
@@ -132,25 +107,6 @@ public class QuotedMessageHelper {
         }
 
         return insertable;
-    }
-
-    /**
-     * Extract the date from a message and convert it into a locale-specific
-     * date string suitable for use in a header for a quoted message.
-     *
-     * @return A string with the formatted date/time
-     */
-    private static String getSentDateText(Resources resources, Message message) {
-        try {
-            final int dateStyle = DateFormat.LONG;
-            final int timeStyle = DateFormat.LONG;
-            Date date = message.getSentDate();
-            Locale locale = resources.getConfiguration().locale;
-            return DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale)
-                    .format(date);
-        } catch (Exception e) {
-            return "";
-        }
     }
 
     /**
@@ -264,190 +220,5 @@ public class QuotedMessageHelper {
         }
 
         return insertable;
-    }
-
-    /**
-     * Add quoting markup to a text message.
-     * @param originalMessage Metadata for message being quoted.
-     * @param messageBody Text of the message to be quoted.
-     * @param quoteStyle Style of quoting.
-     * @return Quoted text.
-     * @throws MessagingException
-     */
-    public static String quoteOriginalTextMessage(Resources resources, Message originalMessage, String messageBody, QuoteStyle quoteStyle, String prefix) throws MessagingException {
-        String body = messageBody == null ? "" : messageBody;
-        String sentDate = QuotedMessageHelper.getSentDateText(resources, originalMessage);
-        if (quoteStyle == QuoteStyle.PREFIX) {
-            StringBuilder quotedText = new StringBuilder(body.length() + QuotedMessageHelper.QUOTE_BUFFER_LENGTH);
-            if (sentDate.length() != 0) {
-                quotedText.append(String.format(
-                        resources.getString(R.string.message_compose_reply_header_fmt_with_date) + "\r\n",
-                        sentDate,
-                        Address.toString(originalMessage.getFrom())));
-            } else {
-                quotedText.append(String.format(
-                        resources.getString(R.string.message_compose_reply_header_fmt) + "\r\n",
-                        Address.toString(originalMessage.getFrom()))
-                );
-            }
-
-            final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
-
-            // "$" and "\" in the quote prefix have to be escaped for
-            // the replaceAll() invocation.
-            final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
-            quotedText.append(wrappedText.replaceAll("(?m)^", escapedPrefix));
-
-            // TODO is this correct?
-            return quotedText.toString().replaceAll("\\\r", "");
-        } else if (quoteStyle == QuoteStyle.HEADER) {
-            StringBuilder quotedText = new StringBuilder(body.length() + QuotedMessageHelper.QUOTE_BUFFER_LENGTH);
-            quotedText.append("\r\n");
-            quotedText.append(resources.getString(R.string.message_compose_quote_header_separator)).append("\r\n");
-            if (originalMessage.getFrom() != null && Address.toString(originalMessage.getFrom()).length() != 0) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_from)).append(" ").append(Address.toString(originalMessage.getFrom())).append("\r\n");
-            }
-            if (sentDate.length() != 0) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_send_date)).append(" ").append(sentDate).append("\r\n");
-            }
-            if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_to)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.TO))).append("\r\n");
-            }
-            if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_cc)).append(" ").append(Address.toString(originalMessage.getRecipients(RecipientType.CC))).append("\r\n");
-            }
-            if (originalMessage.getSubject() != null) {
-                quotedText.append(resources.getString(R.string.message_compose_quote_header_subject)).append(" ").append(originalMessage.getSubject()).append("\r\n");
-            }
-            quotedText.append("\r\n");
-
-            quotedText.append(body);
-
-            return quotedText.toString();
-        } else {
-            // Shouldn't ever happen.
-            return body;
-        }
-    }
-
-    /** Fetch the body text from a messagePart in the desired messagePart format. This method handles
-     * conversions between formats (html to text and vice versa) if necessary.
-     */
-    public static String getBodyTextFromMessage(Part messagePart, SimpleMessageFormat format) {
-        Part part;
-        if (format == SimpleMessageFormat.HTML) {
-            // HTML takes precedence, then text.
-            part = MimeUtility.findFirstPartByMimeType(messagePart, "text/html");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, HTML found.");
-                }
-                return MessageExtractor.getTextFromPart(part);
-            }
-
-            part = MimeUtility.findFirstPartByMimeType(messagePart, "text/plain");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: HTML requested, text found.");
-                }
-                String text = MessageExtractor.getTextFromPart(part);
-                return HtmlConverter.textToHtml(text);
-            }
-        } else if (format == SimpleMessageFormat.TEXT) {
-            // Text takes precedence, then html.
-            part = MimeUtility.findFirstPartByMimeType(messagePart, "text/plain");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, text found.");
-                }
-                return MessageExtractor.getTextFromPart(part);
-            }
-
-            part = MimeUtility.findFirstPartByMimeType(messagePart, "text/html");
-            if (part != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "getBodyTextFromMessage: Text requested, HTML found.");
-                }
-                String text = MessageExtractor.getTextFromPart(part);
-                return HtmlConverter.htmlToText(text);
-            }
-        }
-
-        // If we had nothing interesting, return an empty string.
-        return "";
-    }
-
-    public static String stripSignatureForHtmlMessage(String content) {
-        Matcher dashSignatureHtml = DASH_SIGNATURE_HTML.matcher(content);
-        if (dashSignatureHtml.find()) {
-            Matcher blockquoteStart = BLOCKQUOTE_START.matcher(content);
-            Matcher blockquoteEnd = BLOCKQUOTE_END.matcher(content);
-            List<Integer> start = new ArrayList<>();
-            List<Integer> end = new ArrayList<>();
-
-            while (blockquoteStart.find()) {
-                start.add(blockquoteStart.start());
-            }
-            while (blockquoteEnd.find()) {
-                end.add(blockquoteEnd.start());
-            }
-            if (start.size() != end.size()) {
-                Log.d(K9.LOG_TAG, "There are " + start.size() + " <blockquote> tags, but " +
-                        end.size() + " </blockquote> tags. Refusing to strip.");
-            } else if (start.size() > 0) {
-                // Ignore quoted signatures in blockquotes.
-                dashSignatureHtml.region(0, start.get(0));
-                if (dashSignatureHtml.find()) {
-                    // before first <blockquote>.
-                    content = content.substring(0, dashSignatureHtml.start());
-                } else {
-                    for (int i = 0; i < start.size() - 1; i++) {
-                        // within blockquotes.
-                        if (end.get(i) < start.get(i + 1)) {
-                            dashSignatureHtml.region(end.get(i), start.get(i + 1));
-                            if (dashSignatureHtml.find()) {
-                                content = content.substring(0, dashSignatureHtml.start());
-                                break;
-                            }
-                        }
-                    }
-                    if (end.get(end.size() - 1) < content.length()) {
-                        // after last </blockquote>.
-                        dashSignatureHtml.region(end.get(end.size() - 1), content.length());
-                        if (dashSignatureHtml.find()) {
-                            content = content.substring(0, dashSignatureHtml.start());
-                        }
-                    }
-                }
-            } else {
-                // No blockquotes found.
-                content = content.substring(0, dashSignatureHtml.start());
-            }
-        }
-
-        // Fix the stripping off of closing tags if a signature was stripped,
-        // as well as clean up the HTML of the quoted message.
-        HtmlCleaner cleaner = new HtmlCleaner();
-        CleanerProperties properties = cleaner.getProperties();
-
-        // see http://htmlcleaner.sourceforge.net/parameters.php for descriptions
-        properties.setNamespacesAware(false);
-        properties.setAdvancedXmlEscape(false);
-        properties.setOmitXmlDeclaration(true);
-        properties.setOmitDoctypeDeclaration(false);
-        properties.setTranslateSpecialEntities(false);
-        properties.setRecognizeUnicodeChars(false);
-
-        TagNode node = cleaner.clean(content);
-        SimpleHtmlSerializer htmlSerialized = new SimpleHtmlSerializer(properties);
-        content = htmlSerialized.getAsString(node, "UTF8");
-        return content;
-    }
-
-    public static String stripSignatureForTextMessage(String content) {
-        if (DASH_SIGNATURE_PLAIN.matcher(content).find()) {
-            content = DASH_SIGNATURE_PLAIN.matcher(content).replaceFirst("\r\n");
-        }
-        return content;
     }
 }

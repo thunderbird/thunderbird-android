@@ -1,6 +1,7 @@
 package com.fsck.k9.mail.store.webdav;
 
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
 
 import org.junit.Before;
@@ -8,18 +9,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class WebDavMessageTest {
 
     private WebDavMessage message;

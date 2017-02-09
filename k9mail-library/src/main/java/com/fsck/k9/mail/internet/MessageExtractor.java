@@ -133,7 +133,7 @@ public class MessageExtractor {
     }
 
 
-    /** Traverse the MIME tree of a message an extract viewable parts. */
+    /** Traverse the MIME tree of a message and extract viewable parts. */
     public static void findViewablesAndAttachments(Part part,
                 @Nullable List<Viewable> outputViewableParts, @Nullable List<Part> outputNonViewableParts)
             throws MessagingException {

@@ -16,17 +16,15 @@ import org.junit.Test;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.Multipart;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class MimeMessageParseTest {
     @Before
     public void setup() {
@@ -138,8 +136,8 @@ public class MimeMessageParseTest {
                         "");
     }
 
-    @Test(expected = UnsupportedContentTransferEncodingException.class)
-    public void testSinglePartUnknownEncoding_throwsUnsupportedEncodingException() throws Exception {
+    @Test
+    public void decodeBody_withUnknownEncoding_shouldReturnUnmodifiedBodyContents() throws Exception {
         MimeMessage msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
                         "To: <eva@example.org>\r\n" +
@@ -150,7 +148,9 @@ public class MimeMessageParseTest {
                         "\r\n" +
                         "dGhpcyBpcyBzb21lIG1vcmUgdGVzdCB0ZXh0Lg==\r\n"));
 
-        MimeUtility.decodeBody(msg.getBody());
+        InputStream inputStream = MimeUtility.decodeBody(msg.getBody());
+
+        assertEquals("dGhpcyBpcyBzb21lIG1vcmUgdGVzdCB0ZXh0Lg==\r\n", streamToString(inputStream));
     }
 
     @Test

@@ -322,6 +322,8 @@ public class LocalMessage extends MimeMessage {
                         throw new WrappedException(e);
                     }
 
+                    deleteFulltextIndexEntry(db, mId);
+
                     return null;
                 }
             });

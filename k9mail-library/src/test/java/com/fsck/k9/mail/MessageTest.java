@@ -26,7 +26,6 @@ import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
@@ -34,8 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class MessageTest {
 
     private Context context;

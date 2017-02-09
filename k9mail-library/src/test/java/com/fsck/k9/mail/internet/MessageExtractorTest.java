@@ -2,14 +2,13 @@ package com.fsck.k9.mail.internet;
 
 
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,8 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class MessageExtractorTest {
     private MimeBodyPart part;
 
@@ -73,14 +71,15 @@ public class MessageExtractorTest {
     }
 
     @Test
-    public void getTextFromPart_withUnknownEncoding_shouldReturnNull() throws Exception {
+    public void getTextFromPart_withUnknownEncoding_shouldReturnUnmodifiedBodyContents() throws Exception {
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain");
-        BinaryMemoryBody body = new BinaryMemoryBody("Sample text body".getBytes(), "unknown encoding");
+        String bodyText = "Sample text body";
+        BinaryMemoryBody body = new BinaryMemoryBody(bodyText.getBytes(), "unknown encoding");
         part.setBody(body);
 
         String result = MessageExtractor.getTextFromPart(part);
         
-        assertNull(result);
+        assertEquals(bodyText, result);
     }
 
     @Test

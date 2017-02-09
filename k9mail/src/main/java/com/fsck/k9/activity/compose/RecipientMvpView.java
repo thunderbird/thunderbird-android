@@ -100,51 +100,51 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         toView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
-                presenter.onToTokenAdded(recipient);
+                presenter.onToTokenAdded();
             }
 
             @Override
             public void onTokenRemoved(Recipient recipient) {
-                presenter.onToTokenRemoved(recipient);
+                presenter.onToTokenRemoved();
             }
 
             @Override
             public void onTokenChanged(Recipient recipient) {
-                presenter.onToTokenChanged(recipient);
+                presenter.onToTokenChanged();
             }
         });
 
         ccView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
-                presenter.onCcTokenAdded(recipient);
+                presenter.onCcTokenAdded();
             }
 
             @Override
             public void onTokenRemoved(Recipient recipient) {
-                presenter.onCcTokenRemoved(recipient);
+                presenter.onCcTokenRemoved();
             }
 
             @Override
             public void onTokenChanged(Recipient recipient) {
-                presenter.onCcTokenChanged(recipient);
+                presenter.onCcTokenChanged();
             }
         });
 
         bccView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
-                presenter.onBccTokenAdded(recipient);
+                presenter.onBccTokenAdded();
             }
 
             @Override
             public void onTokenRemoved(Recipient recipient) {
-                presenter.onBccTokenRemoved(recipient);
+                presenter.onBccTokenRemoved();
             }
 
             @Override
             public void onTokenChanged(Recipient recipient) {
-                presenter.onBccTokenChanged(recipient);
+                presenter.onBccTokenChanged();
             }
         });
     }

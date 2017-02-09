@@ -4,12 +4,12 @@ package com.fsck.k9.notification;
 import java.util.List;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.MessageReference;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
@@ -20,8 +20,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class NotificationDataTest {
     private static final String ACCOUNT_UUID = "1-2-3";
     private static final int ACCOUNT_NUMBER = 23;
@@ -265,6 +265,32 @@ public class NotificationDataTest {
         assertEquals(messageReference6, messageReferences.get(6));
         assertEquals(messageReference7, messageReferences.get(7));
         assertEquals(messageReference8, messageReferences.get(8));
+    }
+
+    @Test
+    public void testOverflowNotifications() {
+        MessageReference messageReference0 = createMessageReference("1");
+        MessageReference messageReference1 = createMessageReference("2");
+        MessageReference messageReference2 = createMessageReference("3");
+        MessageReference messageReference3 = createMessageReference("4");
+        MessageReference messageReference4 = createMessageReference("5");
+        MessageReference messageReference5 = createMessageReference("6");
+        MessageReference messageReference6 = createMessageReference("7");
+        MessageReference messageReference7 = createMessageReference("8");
+        MessageReference messageReference8 = createMessageReference("9");
+        
+        notificationData.addNotificationContent(createNotificationContent(messageReference8));
+        notificationData.addNotificationContent(createNotificationContent(messageReference7));
+        notificationData.addNotificationContent(createNotificationContent(messageReference6));
+        notificationData.addNotificationContent(createNotificationContent(messageReference5));
+        notificationData.addNotificationContent(createNotificationContent(messageReference4));
+        notificationData.addNotificationContent(createNotificationContent(messageReference3));
+        notificationData.addNotificationContent(createNotificationContent(messageReference2));
+        notificationData.addNotificationContent(createNotificationContent(messageReference1));
+        notificationData.addNotificationContent(createNotificationContent(messageReference0));
+
+        assertTrue(notificationData.hasSummaryOverflowMessages());
+        assertEquals(4, notificationData.getSummaryOverflowMessagesCount());
     }
 
     private Account createFakeAccount() {

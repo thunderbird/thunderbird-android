@@ -1,6 +1,7 @@
 
 package com.fsck.k9.activity.setup;
 
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Map;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -45,7 +48,7 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
-
+import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
 import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpUtils;
@@ -56,6 +59,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
     private static final int DIALOG_COLOR_PICKER_LED = 2;
+    private static final int DIALOG_APG_DEPRECATION_WARNING = 3;
 
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
@@ -127,6 +131,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
     private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
     private static final String PREFERENCE_ALWAYS_SHOW_CC_BCC = "always_show_cc_bcc";
+    public static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
 
 
     private Account mAccount;
@@ -703,12 +708,21 @@ public class AccountSettings extends K9PreferenceActivity {
             mCryptoSupportSignOnly = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_SUPPORT_SIGN_ONLY);
 
             mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
+            if (OpenPgpAppPreference.isApgInstalled(getApplicationContext())) {
+                mCryptoApp.addLegacyProvider(APG_PROVIDER_PLACEHOLDER, getString(R.string.apg), R.drawable.ic_apg_small);
+            }
             mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     String value = newValue.toString();
-                    mCryptoApp.setValue(value);
+                    if (APG_PROVIDER_PLACEHOLDER.equals(value)) {
+                        mCryptoApp.setValue("");
+                        mCryptoKey.setOpenPgpProvider("");
+                        showDialog(DIALOG_APG_DEPRECATION_WARNING);
+                    } else {
+                        mCryptoApp.setValue(value);
+                        mCryptoKey.setOpenPgpProvider(value);
+                    }
 
-                    mCryptoKey.setOpenPgpProvider(value);
                     return false;
                 }
             });
@@ -937,6 +951,16 @@ public class AccountSettings extends K9PreferenceActivity {
                         },
                         mAccount.getNotificationSetting().getLedColor());
 
+                break;
+            }
+            case DIALOG_APG_DEPRECATION_WARNING: {
+                dialog = new ApgDeprecationWarningDialog(this);
+                dialog.setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        mCryptoApp.show();
+                    }
+                });
                 break;
             }
         }

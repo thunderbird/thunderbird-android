@@ -1,4 +1,4 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.message.html;
 
 
 import android.support.annotation.VisibleForTesting;
@@ -47,6 +47,7 @@ public class HtmlSanitizer {
         properties.setOmitDoctypeDeclaration(false);
         properties.setTranslateSpecialEntities(false);
         properties.setRecognizeUnicodeChars(false);
+        properties.setIgnoreQuestAndExclam(false);
 
         return properties;
     }

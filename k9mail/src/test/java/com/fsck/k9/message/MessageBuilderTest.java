@@ -15,6 +15,7 @@ import android.app.Application;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
@@ -26,14 +27,13 @@ import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.MessageBuilder.Callback;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -45,8 +45,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
 public class MessageBuilderTest {
     public static final String TEST_MESSAGE_TEXT = "soviet message\r\ntext ☭";
     public static final String TEST_ATTACHMENT_TEXT = "text data in attachment";

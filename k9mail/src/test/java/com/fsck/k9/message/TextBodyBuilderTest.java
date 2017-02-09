@@ -3,6 +3,7 @@ package com.fsck.k9.message;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.mail.internet.TextBody;
 
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.junit.Ignore;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;

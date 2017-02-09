@@ -1150,8 +1150,8 @@ public class FolderList extends K9ListActivity {
         }
 
         /**
-         * Filter to search for occurences of the search-expression in any place of the
-         * folder-name instead of doing jsut a prefix-search.
+         * Filter to search for occurrences of the search-expression in any place of the
+         * folder-name instead of doing just a prefix-search.
          *
          * @author Marcus@Wolschon.biz
          */

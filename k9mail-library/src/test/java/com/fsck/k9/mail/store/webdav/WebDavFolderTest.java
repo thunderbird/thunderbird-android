@@ -1,6 +1,7 @@
 package com.fsck.k9.mail.store.webdav;
 
 import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
@@ -22,8 +23,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static java.util.Collections.singletonList;
 
@@ -58,8 +57,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class WebDavFolderTest {
     @Mock
     private MessageRetrievalListener<WebDavMessage> listener;

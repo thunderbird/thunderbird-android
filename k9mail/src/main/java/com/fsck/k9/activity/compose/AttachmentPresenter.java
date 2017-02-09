@@ -32,14 +32,15 @@ public class AttachmentPresenter {
 
     private static final String LOADER_ARG_ATTACHMENT = "attachment";
     private static final int LOADER_ID_MASK = 1 << 6;
-    public static final int MAX_TOTAL_LOADERS = LOADER_ID_MASK -1;
-    public static final int REQUEST_CODE_ATTACHMENT_URI = 1;
+    private static final int MAX_TOTAL_LOADERS = LOADER_ID_MASK - 1;
+    private static final int REQUEST_CODE_ATTACHMENT_URI = 1;
 
 
     // injected state
     private final Context context;
     private final AttachmentMvpView attachmentMvpView;
     private final LoaderManager loaderManager;
+    private final AttachmentsChangedListener listener;
 
     // persistent state
     private LinkedHashMap<Uri, Attachment> attachments;
@@ -47,10 +48,12 @@ public class AttachmentPresenter {
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
 
 
-    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager) {
+    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager,
+                               AttachmentsChangedListener listener) {
         this.context = context;
         this.attachmentMvpView = attachmentMvpView;
         this.loaderManager = loaderManager;
+        this.listener = listener;
 
         attachments = new LinkedHashMap<>();
     }
@@ -113,7 +116,8 @@ public class AttachmentPresenter {
     }
 
     public void onClickAddAttachment(RecipientPresenter recipientPresenter) {
-        AttachErrorState maybeAttachErrorState = recipientPresenter.getCurrentCryptoStatus().getAttachErrorStateOrNull();
+        AttachErrorState maybeAttachErrorState =
+                recipientPresenter.getCurrentCryptoStatus().getAttachErrorStateOrNull();
         if (maybeAttachErrorState != null) {
             recipientPresenter.showPgpAttachError(maybeAttachErrorState);
             return;
@@ -126,7 +130,7 @@ public class AttachmentPresenter {
         addAttachment(uri, null);
     }
 
-    public void addAttachment(AttachmentViewInfo attachmentViewInfo) {
+    private void addAttachment(AttachmentViewInfo attachmentViewInfo) {
         if (attachments.containsKey(attachmentViewInfo.internalUri)) {
             throw new IllegalStateException("Received the same attachmentViewInfo twice!");
         }
@@ -177,6 +181,7 @@ public class AttachmentPresenter {
 
     private void addAttachmentAndStartLoader(Attachment attachment) {
         attachments.put(attachment.uri, attachment);
+        listener.onAttachmentAdded();
         attachmentMvpView.addAttachmentView(attachment);
 
         if (attachment.state == LoadingState.URI_ONLY) {
@@ -286,7 +291,7 @@ public class AttachmentPresenter {
         });
     }
 
-    void performStalledAction() {
+    private void performStalledAction() {
         attachmentMvpView.dismissWaitingForAttachmentDialog();
 
         WaitingAction waitingFor = actionToPerformAfterWaiting;
@@ -305,7 +310,7 @@ public class AttachmentPresenter {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    void addAttachmentsFromResultIntent(Intent data) {
+    private void addAttachmentsFromResultIntent(Intent data) {
         // TODO draftNeedsSaving = true
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             ClipData clipData = data.getClipData();
@@ -337,6 +342,7 @@ public class AttachmentPresenter {
 
         attachmentMvpView.removeAttachmentView(attachment);
         attachments.remove(uri);
+        listener.onAttachmentRemoved();
     }
 
     public void onActivityResult(int resultCode, int requestCode, Intent data) {
@@ -373,5 +379,10 @@ public class AttachmentPresenter {
         void performSaveAfterChecks();
 
         void showMissingAttachmentsPartialMessageWarning();
+    }
+
+    public interface AttachmentsChangedListener {
+        void onAttachmentAdded();
+        void onAttachmentRemoved();
     }
 }

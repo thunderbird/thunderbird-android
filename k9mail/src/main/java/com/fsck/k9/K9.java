@@ -1,6 +1,7 @@
 
 package com.fsck.k9;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +34,12 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.UnreadWidgetProvider;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
@@ -392,7 +392,7 @@ public class K9 extends Application {
     }
 
     /**
-     * Register BroadcastReceivers programmaticaly because doing it from manifest
+     * Register BroadcastReceivers programmatically because doing it from manifest
      * would make K-9 auto-start. We don't want auto-start because the initialization
      * sequence isn't safe while some events occur (SD card unmount).
      */

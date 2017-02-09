@@ -3,7 +3,7 @@ package com.fsck.k9.message.extractors;
 
 import android.support.annotation.NonNull;
 
-import com.fsck.k9.helper.HtmlConverter;
+import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;

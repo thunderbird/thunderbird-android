@@ -73,10 +73,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private static final long serialVersionUID = -1973296520918624767L;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
-    private static final AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
     static final long INVALID_MESSAGE_PART_ID = -1;
 
     private final LocalStore localStore;
+    private final AttachmentInfoExtractor attachmentInfoExtractor;
 
     private String mName = null;
     private long mFolderId = -1;
@@ -98,6 +98,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         super();
         this.localStore = localStore;
         this.mName = name;
+        attachmentInfoExtractor = localStore.attachmentInfoExtractor;
 
         if (getAccount().getInboxFolderName().equals(getName())) {
             mSyncClass =  FolderClass.FIRST_CLASS;
@@ -110,6 +111,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         super();
         this.localStore = localStore;
         this.mFolderId = id;
+        attachmentInfoExtractor = localStore.attachmentInfoExtractor;
     }
 
     public long getId() {
@@ -865,6 +867,43 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
+    public Map<String,Long> getAllMessagesAndEffectiveDates() throws MessagingException {
+        try {
+            return  localStore.database.execute(false, new DbCallback<Map<String, Long>>() {
+                @Override
+                public Map<String, Long> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    Cursor cursor = null;
+                    HashMap<String, Long> result = new HashMap<>();
+
+                    try {
+                        open(OPEN_MODE_RO);
+
+                        cursor = db.rawQuery(
+                                "SELECT uid, date " +
+                                        "FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 0 AND " +
+                                        "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
+
+                        while (cursor.moveToNext()) {
+                            String uid = cursor.getString(0);
+                            Long date = cursor.isNull(1) ? null : cursor.getLong(1);
+                            result.put(uid, date);
+                        }
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return result;
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+    }
+
     public List<LocalMessage> getMessages(MessageRetrievalListener<LocalMessage> listener) throws MessagingException {
         return getMessages(listener, true);
     }
@@ -1438,7 +1477,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void multipartToContentValues(ContentValues cv, Multipart multipart) {
-        cv.put("data_location", DataLocation.IN_DATABASE);
+        cv.put("data_location", DataLocation.CHILD_PART_CONTAINS_DATA);
         cv.put("preamble", multipart.getPreamble());
         cv.put("epilogue", multipart.getEpilogue());
         cv.put("boundary", multipart.getBoundary());

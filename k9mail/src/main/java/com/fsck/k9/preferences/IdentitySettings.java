@@ -1,5 +1,6 @@
 package com.fsck.k9.preferences;
 
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -10,39 +11,43 @@ import java.util.TreeMap;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.preferences.Settings.*;
+import com.fsck.k9.preferences.Settings.BooleanSetting;
+import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
+import com.fsck.k9.preferences.Settings.SettingsDescription;
+import com.fsck.k9.preferences.Settings.SettingsUpgrader;
+import com.fsck.k9.preferences.Settings.V;
 
-public class IdentitySettings {
-    public static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
-    public static final Map<Integer, SettingsUpgrader> UPGRADERS;
+
+class IdentitySettings {
+    static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
+    private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     static {
-        Map<String, TreeMap<Integer, SettingsDescription>> s =
-            new LinkedHashMap<String, TreeMap<Integer, SettingsDescription>>();
+        Map<String, TreeMap<Integer, SettingsDescription>> s = new LinkedHashMap<>();
 
-        /**
+        /*
          * When adding new settings here, be sure to increment {@link Settings.VERSION}
          * and use that for whatever you add here.
          */
 
         s.put("signature", Settings.versions(
                 new V(1, new SignatureSetting())
-            ));
+        ));
         s.put("signatureUse", Settings.versions(
                 new V(1, new BooleanSetting(true))
-            ));
+        ));
         s.put("replyTo", Settings.versions(
                 new V(1, new OptionalEmailAddressSetting())
-            ));
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
-        Map<Integer, SettingsUpgrader> u = new HashMap<Integer, SettingsUpgrader>();
+        // noinspection MismatchedQueryAndUpdateOfCollection, this map intentionally left blank
+        Map<Integer, SettingsUpgrader> u = new HashMap<>();
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
-    public static Map<String, Object> validate(int version, Map<String, String> importedSettings,
-            boolean useDefaultValues) {
+    static Map<String, Object> validate(int version, Map<String, String> importedSettings, boolean useDefaultValues) {
         return Settings.validate(version, SETTINGS, importedSettings, useDefaultValues);
     }
 
@@ -54,9 +59,8 @@ public class IdentitySettings {
         return Settings.convert(settings, SETTINGS);
     }
 
-    public static Map<String, String> getIdentitySettings(Storage storage, String uuid,
-            int identityIndex) {
-        Map<String, String> result = new HashMap<String, String>();
+    static Map<String, String> getIdentitySettings(Storage storage, String uuid, int identityIndex) {
+        Map<String, String> result = new HashMap<>();
         String prefix = uuid + ".";
         String suffix = "." + Integer.toString(identityIndex);
         for (String key : SETTINGS.keySet()) {
@@ -69,61 +73,55 @@ public class IdentitySettings {
     }
 
 
-    public static boolean isEmailAddressValid(String email) {
+    static boolean isEmailAddressValid(String email) {
         return new EmailAddressValidator().isValidAddressOnly(email);
     }
 
-    /**
-     * The message signature setting.
-     */
-    public static class SignatureSetting extends SettingsDescription {
-        public SignatureSetting() {
+    private static class SignatureSetting extends SettingsDescription<String> {
+        SignatureSetting() {
             super(null);
         }
 
         @Override
-        public Object getDefaultValue() {
+        public String getDefaultValue() {
             return K9.app.getResources().getString(R.string.default_signature);
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public String fromString(String value) throws InvalidSettingValueException {
             return value;
         }
     }
 
-    /**
-     * An optional email address setting.
-     */
-    public static class OptionalEmailAddressSetting extends SettingsDescription {
-        private EmailAddressValidator mValidator;
+    private static class OptionalEmailAddressSetting extends SettingsDescription<String> {
+        private EmailAddressValidator validator;
 
-        public OptionalEmailAddressSetting() {
+        OptionalEmailAddressSetting() {
             super(null);
-            mValidator = new EmailAddressValidator();
+            validator = new EmailAddressValidator();
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
-            if (value != null && !mValidator.isValidAddressOnly(value)) {
+        public String fromString(String value) throws InvalidSettingValueException {
+            if (value != null && !validator.isValidAddressOnly(value)) {
                 throw new InvalidSettingValueException();
             }
             return value;
         }
 
         @Override
-        public String toString(Object value) {
-            return (value != null) ? value.toString() : null;
+        public String toString(String value) {
+            return (value != null) ? value : null;
         }
 
         @Override
-        public String toPrettyString(Object value) {
-            return (value == null) ? "" : value.toString();
+        public String toPrettyString(String value) {
+            return (value == null) ? "" : value;
         }
 
         @Override
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
-            return ("".equals(value)) ? null : fromString(value);
+        public String fromPrettyString(String value) throws InvalidSettingValueException {
+            return "".equals(value) ? null : fromString(value);
         }
     }
 }
