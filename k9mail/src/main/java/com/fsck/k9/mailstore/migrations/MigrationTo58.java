@@ -16,7 +16,7 @@ class MigrationTo58 {
 
     private static void cleanUpMessagePartsTable(SQLiteDatabase db) {
         db.execSQL("DELETE FROM message_parts WHERE root NOT IN " +
-                "(SELECT message_part_id FROM messages WHERE deleted = 0)");
+                "(SELECT message_part_id FROM messages WHERE deleted = 0 AND message_part_id IS NOT NULL)");
     }
 
     static void createDeleteMessageTrigger(SQLiteDatabase db) {
