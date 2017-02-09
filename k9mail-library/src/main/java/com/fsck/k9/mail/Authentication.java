@@ -75,7 +75,7 @@ public class Authentication {
             md.update(opad);
             byte[] result = md.digest(firstPass);
 
-            String plainCRAM = username + " " + new String(Hex.encodeHex(result));
+            String plainCRAM = username + " " + Hex.encodeHex(result);
             byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes());
 
             return b64CRAM;
