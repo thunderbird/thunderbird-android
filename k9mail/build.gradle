@@ -35,7 +35,7 @@ dependencies {
     compile 'com.github.amlcurran.showcaseview:library:5.4.1'
     compile 'com.squareup.moshi:moshi:1.2.0'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
 
     testCompile "org.robolectric:robolectric:${robolectricVersion}"
     testCompile "junit:junit:${junitVersion}"

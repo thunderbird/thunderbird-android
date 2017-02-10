@@ -70,6 +70,14 @@ public class MessageProvider extends ContentProvider {
             MessageColumns.DELETE_URI,
             MessageColumns.SENDER_ADDRESS
     };
+    private static final String[] DEFAULT_ACCOUNT_PROJECTION = new String[] {
+            AccountColumns.ACCOUNT_NUMBER,
+            AccountColumns.ACCOUNT_NAME,
+    };
+    private static final String[] UNREAD_PROJECTION = new String[] {
+            UnreadColumns.ACCOUNT_NAME,
+            UnreadColumns.UNREAD
+    };
 
     
     private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -314,6 +322,32 @@ public class MessageProvider extends ContentProvider {
          */
         @Deprecated
         String INCREMENT = "id";
+    }
+
+    public interface AccountColumns {
+        /**
+         * <P>Type: INTEGER</P>
+         */
+        String ACCOUNT_NUMBER = "accountNumber";
+        /**
+         * <P>Type: String</P>
+         */
+        String ACCOUNT_NAME = "accountName";
+
+
+        String ACCOUNT_UUID = "accountUuid";
+        String ACCOUNT_COLOR = "accountColor";
+    }
+
+    public interface UnreadColumns {
+        /**
+         * <P>Type: String</P>
+         */
+        String ACCOUNT_NAME = "accountName";
+        /**
+         * <P>Type: INTEGER</P>
+         */
+        String UNREAD = "unread";
     }
 
     protected interface QueryHandler {
@@ -581,10 +615,6 @@ public class MessageProvider extends ContentProvider {
      * Retrieve the account list.
      */
     protected class AccountsQueryHandler implements QueryHandler {
-        private static final String FIELD_ACCOUNT_NUMBER = "accountNumber";
-        private static final String FIELD_ACCOUNT_NAME = "accountName";
-        private static final String FIELD_ACCOUNT_UUID = "accountUuid";
-        private static final String FIELD_ACCOUNT_COLOR = "accountColor";
 
 
         @Override
@@ -600,7 +630,7 @@ public class MessageProvider extends ContentProvider {
 
         public Cursor getAllAccounts(String[] projection) {
             if (projection == null) {
-                projection = new String[] { FIELD_ACCOUNT_NUMBER, FIELD_ACCOUNT_NAME };
+                projection = DEFAULT_ACCOUNT_PROJECTION;
             }
 
             MatrixCursor cursor = new MatrixCursor(projection);
@@ -610,13 +640,13 @@ public class MessageProvider extends ContentProvider {
 
                 int fieldIndex = 0;
                 for (String field : projection) {
-                    if (FIELD_ACCOUNT_NUMBER.equals(field)) {
+                    if (AccountColumns.ACCOUNT_NUMBER.equals(field)) {
                         values[fieldIndex] = account.getAccountNumber();
-                    } else if (FIELD_ACCOUNT_NAME.equals(field)) {
+                    } else if (AccountColumns.ACCOUNT_NAME.equals(field)) {
                         values[fieldIndex] = account.getDescription();
-                    } else if (FIELD_ACCOUNT_UUID.equals(field)) {
+                    } else if (AccountColumns.ACCOUNT_UUID.equals(field)) {
                         values[fieldIndex] = account.getUuid();
-                    } else if (FIELD_ACCOUNT_COLOR.equals(field)) {
+                    } else if (AccountColumns.ACCOUNT_COLOR.equals(field)) {
                         values[fieldIndex] = account.getChipColor();
                     } else {
                         values[fieldIndex] = null;
@@ -662,9 +692,8 @@ public class MessageProvider extends ContentProvider {
         }
 
         private Cursor getAccountUnread(int accountNumber) {
-            String[] projection = new String[] { "accountName", "unread" };
 
-            MatrixCursor cursor = new MatrixCursor(projection);
+            MatrixCursor cursor = new MatrixCursor(UNREAD_PROJECTION);
 
             Account myAccount;
             AccountStats myAccountStats;
@@ -682,13 +711,12 @@ public class MessageProvider extends ContentProvider {
                         } else {
                             values[1] = myAccountStats.unreadMessageCount;
                         }
-
-                        cursor.addRow(values);
                     } catch (MessagingException e) {
                         Log.e(K9.LOG_TAG, e.getMessage());
                         values[0] = "Unknown";
                         values[1] = 0;
                     }
+                    cursor.addRow(values);
                 }
             }
 
