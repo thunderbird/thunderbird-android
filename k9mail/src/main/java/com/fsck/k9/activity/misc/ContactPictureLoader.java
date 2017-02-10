@@ -22,6 +22,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 import android.widget.ImageView;
@@ -73,6 +74,21 @@ public class ContactPictureLoader {
         0xffFF8800,
         0xffCC0000
     };
+
+    @VisibleForTesting
+    protected static String calcUnknownContactLetter(Address address) {
+        String letter = null;
+        String personal = address.getPersonal();
+        String str = (personal != null) ? personal : address.getAddress();
+
+        Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
+        if (m.find()) {
+            letter = m.group(0).toUpperCase(Locale.US);
+        }
+
+        return (TextUtils.isEmpty(letter)) ?
+                FALLBACK_CONTACT_LETTER : letter;
+    }
 
     /**
      * Constructor.
@@ -158,20 +174,6 @@ public class ContactPictureLoader {
         int val = address.hashCode();
         int colorIndex = (val & Integer.MAX_VALUE) % CONTACT_DUMMY_COLORS_ARGB.length;
         return CONTACT_DUMMY_COLORS_ARGB[colorIndex];
-    }
-
-    private String calcUnknownContactLetter(Address address) {
-        String letter = null;
-        String personal = address.getPersonal();
-        String str = (personal != null) ? personal : address.getAddress();
-
-        Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
-        if (m.find()) {
-            letter = m.group(0).toUpperCase(Locale.US);
-        }
-
-        return (TextUtils.isEmpty(letter)) ?
-                FALLBACK_CONTACT_LETTER : letter.substring(0, 1);
     }
 
     /**
