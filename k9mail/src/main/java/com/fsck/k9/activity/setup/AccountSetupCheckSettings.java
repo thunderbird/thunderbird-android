@@ -238,8 +238,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     if (sha1 != null) {
                         sha1.reset();
                         try {
-                            char[] sha1sum = Hex.encodeHex(sha1.digest(chain[i].getEncoded()));
-                            chainInfo.append("Fingerprint (SHA-1): ").append(new String(sha1sum)).append("\n");
+                            String sha1sum = Hex.encodeHex(sha1.digest(chain[i].getEncoded()));
+                            chainInfo.append("Fingerprint (SHA-1): ").append(sha1sum).append("\n");
                         } catch (CertificateEncodingException e) {
                             Log.e(K9.LOG_TAG, "Error while encoding certificate", e);
                         }

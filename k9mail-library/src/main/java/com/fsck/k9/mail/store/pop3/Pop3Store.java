@@ -459,7 +459,7 @@ public class Pop3Store extends RemoteStore {
                         "MD5 failure during POP3 auth APOP", e);
             }
             byte[] digest = md.digest((timestamp + mPassword).getBytes());
-            String hexDigest = new String(Hex.encodeHex(digest));
+            String hexDigest = Hex.encodeHex(digest);
             try {
                 executeSimpleCommand("APOP " + mUsername + " " + hexDigest, true);
             } catch (Pop3ErrorResponse e) {
