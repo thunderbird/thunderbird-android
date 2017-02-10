@@ -804,8 +804,8 @@
   <string name="account_settings_remote_search_enabled">Habilitar procuras no servidor</string>
   <string name="account_settings_remote_search_enabled_summary">Procurar mensaxes no servidor ademais de no teu dispositivo</string>
   <string name="action_remote_search">Procurar mensaxes no servidor</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Toca para buscar servidor...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Liberar para buscar servidor...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Toca para buscar servidor…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Liberar para buscar servidor…</string>
   <string name="remote_search_unavailable_no_network">Requírese unha conexión á rede para procurar no servidor.</string>
   <string name="global_settings_background_as_unread_indicator_label">Oscurece mensaxes despois de ler</string>
   <string name="global_settings_background_as_unread_indicator_summary">O fondo gris mostrará que unha mensaxe foi lida</string>

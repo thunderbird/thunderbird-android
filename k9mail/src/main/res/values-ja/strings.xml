@@ -58,7 +58,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">以下のライブラリを利用しています: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">絵文字アイコン: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">添付ファイルを開く</string>
+  <string name="read_attachment_label">添付ファイルを読む</string>
   <string name="read_attachment_desc">このアプリケーションでは電子メールの添付ファイルを読むことができます</string>
   <string name="read_messages_label">メールを読む</string>
   <string name="read_messages_desc">このアプリケーションがメールを読むことを許可する</string>
@@ -236,6 +236,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="message_no_additional_headers_available">すべてのヘッダをダウンロードしましたが、表示すべき追加ヘッダはありませんでした。</string>
   <string name="message_additional_headers_retrieval_failed">追加ヘッダをデータベースまたはメールサーバから取得できませんでした。</string>
   <string name="from_same_sender">この送信者からのメールを検索</string>
+  <string name="debug_delete_local_body">デバッグ / メッセージ本文をクリア</string>
   <string name="message_discarded_toast">メールを破棄しました</string>
   <string name="message_saved_toast">下書きに保存しました</string>
   <string name="global_settings_flag_label">スターを表示</string>
@@ -268,6 +269,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_confirm_action_delete_starred">スター付きメッセージの削除 (メッセージ表示画面)</string>
   <string name="global_settings_confirm_action_spam">迷惑メール</string>
   <string name="global_settings_confirm_menu_discard">メッセージ破棄</string>
+  <string name="global_settings_confirm_menu_mark_all_read">すべてのメールを既読にする</string>
   <string name="global_settings_confirm_action_delete_notif">削除(通知領域)</string>
   <string name="global_settings_privacy_hide_useragent">メールヘッダからK-9のUser-Agentヘッダを削除する</string>
   <string name="global_settings_privacy_hide_timezone">メールヘッダにUTCタイムゾーンを利用する</string>
@@ -919,8 +921,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="error_crypto_provider_connect">暗号化プロバイダに接続できません。設定を確認するか、暗号化アイコンをクリックして再実行してください!</string>
   <string name="error_crypto_provider_ui_required">暗号化プロバイダのアクセスが拒否されました。暗号化アイコンをクリックして再実行してください!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE モードは添付ファイルをサポートしていません!</string>
-  <string name="error_crypto_inline_sign_only">PGP/INLINE モードは署名専用モードをサポートしていません!</string>
-  <string name="error_crypto_sign_only_inline">署名専用モードは PGP/INLINE をサポートしていません!</string>
   <string name="enable_inline_pgp">PGP/INLINE を有効にする</string>
   <string name="disable_inline_pgp">PGP/INLINE を無効にする</string>
   <string name="enable_sign_only">PGP 署名専用を有効にする</string>
@@ -977,9 +977,19 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="messageview_crypto_warning_expired">このメッセージは <b>期限切れの鍵</b> で署名されました!</string>
   <string name="messageview_crypto_warning_insecure">このメッセージは <b>安全ではない鍵</b> で署名されました!</string>
   <string name="messageview_crypto_warning_error"><b>このメッセージの署名にエラー</b> がありました!</string>
+  <string name="messageview_crypto_warning_unsigned">このメッセージは暗号化されていますが、署名されていません。 <b>エンドツーエンドのセキュリティはありません</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">とにかくメッセージを表示する</string>
   <string name="recipient_error_non_ascii">特殊文字は現在サポートされていません!</string>
   <string name="recipient_error_parse_failed">アドレスの解析時にエラー!</string>
   <string name="account_settings_crypto_support_sign_only">暗号化されていないメッセージの署名をサポートする</string>
   <string name="error_sign_only_no_encryption">署名専用モードでは暗号化を使用できません!</string>
   <string name="unsigned_text_divider_label">未署名のテキスト</string>
+  <string name="apg_deprecated_title">APG廃止の警告</string>
+  <string name="apg_deprecated_1">APGはもはやメンテナンスされていません!</string>
+  <string name="apg_deprecated_2">このため、APG のサポートはK-9 Mail から削除されました。</string>
+  <string name="apg_deprecated_bullet_1">開発は2014年初頭に停止しました</string>
+  <string name="apg_deprecated_bullet_2">未修正のセキュリティ問題が含まれています</string>
+  <string name="apg_learn_more">詳細については <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">ここをクリック</a> してください。</string>
+  <string name="apg_deprecated_ok">了解!</string>
+  <string name="apg">APG</string>
 </resources>

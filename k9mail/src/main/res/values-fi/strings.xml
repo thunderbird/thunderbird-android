@@ -59,7 +59,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="app_emoji_icons">Emoji-kuvakkeet: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
   <string name="read_attachment_label">Lue sähköpostin liitteet</string>
   <string name="read_attachment_desc">Antaa sovellukselle luvan lukea sähköpostisi liitteet.</string>
-  <string name="read_messages_label">lue sähköpostit</string>
+  <string name="read_messages_label">Lue sähköpostit</string>
   <string name="read_messages_desc">Antaa sovellukselle luvan lukea sähköpostisi.</string>
   <string name="delete_messages_label">Poista sähköpostit</string>
   <string name="delete_messages_desc">Antaa sovellukselle luvan poistaa sähköposteja.</string>
@@ -237,6 +237,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="message_no_additional_headers_available">Kaikki otsikkotiedot on ladattu, mutta näytettäviä ei ole enempää.</string>
   <string name="message_additional_headers_retrieval_failed">Lisäotsikkotietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
   <string name="from_same_sender">Lisää samalta lähettäjältä</string>
+  <string name="debug_delete_local_body">Vianjäljitys / Tyhjennä viestin sisältö</string>
   <string name="message_discarded_toast">Viesti peruutettu</string>
   <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
   <string name="global_settings_flag_label">Viestin tähdet</string>
@@ -269,6 +270,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (viestinäkymässä)</string>
   <string name="global_settings_confirm_action_spam">Roskaposti</string>
   <string name="global_settings_confirm_menu_discard">Hylkää viesti</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Merkitse kaikki viestit luetuiksi</string>
   <string name="global_settings_confirm_action_delete_notif">Poista (ilmoituksessa)</string>
   <string name="global_settings_privacy_hide_useragent">Poista K-9-käyttötietue sähköpostin otsikoista</string>
   <string name="global_settings_privacy_hide_timezone">Käytä UTC:tä aikavyöhykkeenä sähköpostin otsikoissa</string>
@@ -921,14 +923,12 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="crypto_mode_opportunistic">Salaa jos mahdollista</string>
   <string name="crypto_mode_private">Salaa</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-tila ei tue liitteitä!</string>
-  <string name="error_crypto_inline_sign_only">PGP/INLINE-tila ei tue pelkkää allekirjoitustilaa!</string>
-  <string name="error_crypto_sign_only_inline">Pelkkä allekirjoitustila ei tue PGP/INLINE-muotoa!</string>
   <string name="enable_inline_pgp">Käytä PGP/INLINE-tilaa</string>
   <string name="disable_inline_pgp">Poista PGP/INLINE käytöstä</string>
   <string name="enable_sign_only">Käytä PGP:n pelkkää allekirjoitusta</string>
   <string name="disable_sign_only">Poista käytöstä PGP:n pelkkä allekirjoitus</string>
   <string name="openpgp_inline_title">PGP/INLINE-tila</string>
-  <string name="openpgp_inline_text">Viesti lähetetään PGP/INLINE-muodossa.\Tätä tulisi käyttää vain yhteensopivuutta varten:</string>
+  <string name="openpgp_inline_text">Viesti lähetetään PGP/INLINE-muodossa.\nTätä tulisi käyttää vain yhteensopivuutta varten:</string>
   <string name="openpgp_inline_plus_compat">Jotkin sovellukset tukevat vain tätä muotoa</string>
   <string name="openpgp_inline_minus_transit">Allekirjoitukset saattavat rikkontua siirron aikana</string>
   <string name="openpgp_inline_minus_attach">Liitteet eivät ole tuettuja</string>
@@ -979,9 +979,19 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="messageview_crypto_warning_expired">Viesti allekirjoitettiin <b>vanhentuneella avaimella!</b></string>
   <string name="messageview_crypto_warning_insecure">Viesti allekirjoitettiin <b>turvattomalla avaimella!</b></string>
   <string name="messageview_crypto_warning_error">Tämän viestin <b>allekirjoituksessa on virhe!</b></string>
+  <string name="messageview_crypto_warning_unsigned">Tämä viesti salattiin, mutta sitä ei allekirjoitettu. Se ei ole <b>\"end-to-end\"-turvallinen</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">Näytä viesti silti</string>
   <string name="recipient_error_non_ascii">Erikoismerkit eivät ole tällä hetkellä tuettuja!</string>
   <string name="recipient_error_parse_failed">Virhe osoitetta jäsennettäessä!</string>
   <string name="account_settings_crypto_support_sign_only">Tue salaamattomien viestien allekirjoitusta</string>
   <string name="error_sign_only_no_encryption">Salaus ei ole käytettävissä pelkässä allekirjoitustilassa!</string>
   <string name="unsigned_text_divider_label">Allekirjoittamaton teksti</string>
+  <string name="apg_deprecated_title">Varoitus APG:n vanhentamisesta</string>
+  <string name="apg_deprecated_1">APG:tä ei enää ylläpidetä!</string>
+  <string name="apg_deprecated_2">Tämän vuoksi APG on poistettu K-9 Mailista.</string>
+  <string name="apg_deprecated_bullet_1">Kehitys loppui alkuvuodesta 2014.</string>
+  <string name="apg_deprecated_bullet_2">Sisältää korjaamattomia tietoturvaongelmia</string>
+  <string name="apg_learn_more">Lisätietoja saat <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">napsauttamalla tästä</a>.</string>
+  <string name="apg_deprecated_ok">Selvä!</string>
+  <string name="apg">APG</string>
 </resources>

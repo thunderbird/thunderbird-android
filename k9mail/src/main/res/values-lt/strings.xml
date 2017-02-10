@@ -27,9 +27,9 @@
   <string name="app_revision_fmt">Laidos informacija: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Mes naudojame šias trečiųjų šalių bibliotekas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji piktogramos: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">žiūrėti el. pašto priedus</string>
+  <string name="read_attachment_label">Žiūrėti el. pašto priedus</string>
   <string name="read_attachment_desc">Leidžia šiai programai peržiūrėti jūsų laiškų priedus.</string>
-  <string name="read_messages_label">skaityti laiškus</string>
+  <string name="read_messages_label">Skaityti laiškus</string>
   <string name="read_messages_desc">Leidžia programai skaityti jūsų laiškus.</string>
   <string name="delete_messages_label">Šalinti laiškus</string>
   <string name="delete_messages_desc">Leidžia programai šalinti jūsų laiškus.</string>

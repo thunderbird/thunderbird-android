@@ -9,7 +9,7 @@
   <string name="remote_control_label">К-9 даљинско управљање</string>
   <string name="remote_control_desc">Дозвољава овој апликацији да управља активностима и поставкама К-9 Поште.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">Гугл, К-9 Шетачи паса.</string>
   <string name="app_copyright_fmt">Ауторска права 2008-<xliff:g>%s</xliff:g> „K-9 Dog Walkers“. Део ауторских права 2006-<xliff:g>%s</xliff:g> Андроид пројекат отвореног ко̂да.</string>
   <string name="app_license">Лиценцирано под Апачи лиценцом, издање 2.0.</string>
   <!--Welcome message-->
@@ -44,7 +44,7 @@
 </p>
 ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nПослато К-9 Поштом са мог Андроид уређаја.</string>
+  <string name="default_signature">-- \nПослато К-9 Поштом са мог Андроид уређаја. Извините због сажетости.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Налог „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњен из К-9 Поште.</string>
   <string name="account_recreate_dlg_instructions_fmt">Сви локални подаци за „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњени. Поставке налога ће остати.</string>
@@ -272,6 +272,7 @@
   <string name="global_settings_confirm_action_delete_starred">Обриши обележено звездицом (у приказу поруке)</string>
   <string name="global_settings_confirm_action_spam">Померања у нежељене</string>
   <string name="global_settings_confirm_menu_discard">Одбаци поруку</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Означи све поруке прочитаним</string>
   <string name="global_settings_confirm_action_delete_notif">Брисања (из обавештења)</string>
   <string name="global_settings_privacy_hide_useragent">Уклони К-9 идентификацију из заглавља поруке</string>
   <string name="global_settings_privacy_hide_timezone">Користи УТЦ за временску зону у заглављу поруке</string>
@@ -934,6 +935,8 @@
   <string name="error_crypto_inline_attach">PGP/INLINE режим не подржава прилоге!</string>
   <string name="enable_inline_pgp">Укључи PGP/INLINE</string>
   <string name="disable_inline_pgp">Искључи PGP/INLINE</string>
+  <string name="enable_sign_only">Укључи ПГП само-потпис</string>
+  <string name="disable_sign_only">Искључи ПГП само-потпис</string>
   <string name="openpgp_inline_title">PGP/INLINE режим</string>
   <string name="openpgp_inline_text">Е-порука је послата у PGP/INLINE формату.\nОво треба да се користи само због компатибилности:</string>
   <string name="openpgp_inline_plus_compat">Неки клијенти подржавају само овај формат</string>
@@ -944,6 +947,13 @@
   <string name="openpgp_inline_keep_enabled">Остави укључено</string>
   <string name="openpgp_sign_only_ok">Важи!</string>
   <string name="openpgp_sign_only_disable">Искључи</string>
+  <string name="openpgp_sign_only_keep_enabled">Остави укључено</string>
+  <string name="openpgp_dialog_sign_only_title">ПГП режим само-потпис</string>
+  <string name="openpgp_dialog_sign_only_text">У овом режиму ваш ПГП кључ се користи за стварање криптографског потписа од нешифроване поруке.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Ово не шифрује поруку већ само потврђује да сте ви пошиљалац.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Потписи могу да се покваре ако се шаље на мејлинг-листе.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Потписи могу бити приказани као „signature.asc“ прилози у неким клијентима.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Шифроване поруке увек укључују потпис.</string>
   <string name="crypto_msg_disabled">Порука није шифрована</string>
   <string name="crypto_msg_encrypted_error">Порука је шифрована али је дошло до грешке приликом дешифровања.</string>
   <string name="crypto_msg_signed_error">Порука је потписана али потпис није прошао оверу.</string>
@@ -979,7 +989,19 @@
   <string name="messageview_crypto_warning_expired">Ова порука је потписана <b>истеклим кључем!</b></string>
   <string name="messageview_crypto_warning_insecure">Ова порука је потписана <b>небезбедним кључем!</b></string>
   <string name="messageview_crypto_warning_error">Дошло је до <b>грешке у потпису ове поруке!</b></string>
+  <string name="messageview_crypto_warning_unsigned">Порука је шифрована али није потписана. Порука <b>није обезбеђена с-краја-на-крај</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">Прикажи поруку свеједно</string>
   <string name="recipient_error_non_ascii">Посебни знакови тренутно нису нису подржани!</string>
   <string name="recipient_error_parse_failed">Грешка прослеђивања адресе!</string>
   <string name="account_settings_crypto_support_sign_only">Подржавај потписивање нешифрованих порука</string>
+  <string name="error_sign_only_no_encryption">Шифровање није могуће у само-потпис режиму!</string>
+  <string name="unsigned_text_divider_label">Непотписан текст</string>
+  <string name="apg_deprecated_title">Упозорење о застарењу АПГ-а</string>
+  <string name="apg_deprecated_1">АПГ се више не одржава!</string>
+  <string name="apg_deprecated_2">Због овога, подршка за АПГ је уклоњена из К-9 поште.</string>
+  <string name="apg_deprecated_bullet_1">Развој је заустављен почетком 2014</string>
+  <string name="apg_deprecated_bullet_2">Садржи непоправљене безбедносне пропусте</string>
+  <string name="apg_learn_more">Кликните <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">овде</a> да сазнате више.</string>
+  <string name="apg_deprecated_ok">Важи!</string>
+  <string name="apg">АПГ</string>
 </resources>

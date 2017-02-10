@@ -21,3 +21,9 @@ perl -i -pe 's/"><\/string>/"\/>/g' $FILE
 
 # Escape single and double quotes (but not in comments or the xml tag)
 perl -i -pe 's/([^\\])'\''/\1\\'\''/g unless /(<!--|xml)/' $FILE
+
+# Fix escaped HTML in 'apg_learn_more'
+perl -i -pe 's/&lt;a href/<a href/g' $FILE
+perl -i -pe 's/"&gt;/">/g' $FILE
+
+perl -i -pe 's/&lt;(\/?[a-z])&gt;/<\1>/g' $FILE

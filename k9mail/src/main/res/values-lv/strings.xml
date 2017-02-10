@@ -57,9 +57,9 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="app_revision_fmt">Revīzijas informācija: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Mēs izmantojam sekojošas trešo pušu bibliotēkas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji ikonas: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">izlasīt e-pasta pielikumus</string>
+  <string name="read_attachment_label">Izlasīt e-pasta pielikumus</string>
   <string name="read_attachment_desc">Ļauj šai aplikācijai lasīt Jūsu e-pasta pielikumus</string>
-  <string name="read_messages_label">izlasīt e-pastus</string>
+  <string name="read_messages_label">Izlasīt e-pastus</string>
   <string name="read_messages_desc">Atļauj šai aplikācijai lasīt Jūsu e-pastus</string>
   <string name="delete_messages_label">Izdzēst e-pastus</string>
   <string name="delete_messages_desc">Atļauj šai aplikācijai izdzēst Jūsu e-pastus</string>
@@ -932,8 +932,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="error_crypto_provider_connect">Nevar savienoties ar kriptogrāfijas nodrošinātāju. Pārbaudiet savus iestatījumus vai nospiediet vēlreiz uz crypto pogas!</string>
   <string name="error_crypto_provider_ui_required">Kriptogrāfijas nodrošinātājs liedzis pieeju. Nospiediet vēlreiz crypto pogu!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE režīms neatbalsta pielikumus!</string>
-  <string name="error_crypto_inline_sign_only">PGP/INLINE režīms neatbalsta \"tikai parakstīt\" režīmu!</string>
-  <string name="error_crypto_sign_only_inline">\"Tikai parakstīt\" režīms neatbalsta PGP/INLINE!</string>
   <string name="enable_inline_pgp">Iestatīt PGP/INLINE</string>
   <string name="disable_inline_pgp">Izslēgt PGP/INLINE</string>
   <string name="enable_sign_only">Iestatīt PGP \"tikai parakstīt\"</string>

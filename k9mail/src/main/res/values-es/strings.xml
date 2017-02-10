@@ -809,7 +809,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="settings_import_incoming_server">Servidor de entrada (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Servidor de salida (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Definir password...</item>
+    <item quantity="one">Definir password…</item>
     <item quantity="other">Estableciendo contraseñas…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Usar la contraseña del Servidor de entrada</string>
@@ -956,7 +956,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="locked_attach_unlock">Desbloquear</string>
   <string name="locked_attach_unencrypted">Esta parte no está cifrada, y puede ser insegura.</string>
   <string name="locked_attach_title">Adjunto desprotegido</string>
-  <string name="message_progress_text">Cargando...</string>
+  <string name="message_progress_text">Cargando…</string>
   <string name="messageview_decrypt_cancelled">Se ha cancelado el descifrado.</string>
   <string name="messageview_decrypt_retry">Reintentar</string>
   <string name="messageview_decrypt_incomplete">El mensaje cifrado debe descargarse para descifrarlo.</string>
