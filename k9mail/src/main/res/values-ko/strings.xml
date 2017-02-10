@@ -440,7 +440,7 @@
   <string name="account_settings_crypto">암호화 방법</string>
   <string name="account_settings_crypto_app">OpenPGP 앱</string>
   <string name="account_settings_crypto_key">내 키</string>
-  <string name="account_settings_no_openpgp_provider_installed">OpenPGP 앱이 설치되지 않음</string>
+  <string name="account_settings_no_openpgp_provider_configured">OpenPGP 앱이 설치되지 않음</string>
   <string name="account_settings_mail_check_frequency_label">폴더 수신 빈도</string>
   <string name="account_settings_storage_title">저장 장치</string>
   <string name="account_settings_color_label">계정 색깔</string>

@@ -479,7 +479,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="account_settings_crypto">Šifrování</string>
   <string name="account_settings_crypto_app">Aplikace OpenPGP</string>
   <string name="account_settings_crypto_key">Můj klíč</string>
-  <string name="account_settings_no_openpgp_provider_installed">Aplikace OpenPGP není nainstalována</string>
+  <string name="account_settings_no_openpgp_provider_configured">Aplikace OpenPGP není nainstalována</string>
   <string name="account_settings_mail_check_frequency_label">Frekvence dotazování složky</string>
   <string name="account_settings_storage_title">Úložiště</string>
   <string name="account_settings_color_label">Barva účtu</string>

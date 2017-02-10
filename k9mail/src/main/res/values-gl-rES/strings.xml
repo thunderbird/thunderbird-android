@@ -427,7 +427,7 @@
   <string name="account_settings_crypto">Cifraxe</string>
   <string name="account_settings_crypto_app">App OpenPGP</string>
   <string name="account_settings_crypto_key">A miña chave</string>
-  <string name="account_settings_no_openpgp_provider_installed">Sen app OpenPGP instalada</string>
+  <string name="account_settings_no_openpgp_provider_configured">Sen app OpenPGP instalada</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>

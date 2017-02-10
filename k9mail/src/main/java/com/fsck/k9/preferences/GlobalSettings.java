@@ -30,6 +30,7 @@ import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
 import com.fsck.k9.preferences.Settings.SettingsUpgrader;
+import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
 import com.fsck.k9.preferences.Settings.WebFontSizeSetting;
 
@@ -288,6 +289,12 @@ public class GlobalSettings {
         ));
         s.put("pgpSignOnlyDialogCounter", Settings.versions(
                 new V(45, new IntegerRangeSetting(0, Integer.MAX_VALUE, 0))
+        ));
+        s.put("openpgpProvider", Settings.versions(
+                new V(46, new StringSetting(K9.NO_OPENPGP_PROVIDER))
+        ));
+        s.put("openpgpSupportSignOnly", Settings.versions(
+                new V(47, new BooleanSetting(false))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);

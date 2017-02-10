@@ -480,7 +480,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_crypto">Криптография</string>
   <string name="account_settings_crypto_app">OpenPGP</string>
   <string name="account_settings_crypto_key">Мой ключ</string>
-  <string name="account_settings_no_openpgp_provider_installed">OpenPGP не установлен</string>
+  <string name="account_settings_no_openpgp_provider_configured">OpenPGP не установлен</string>
   <string name="account_settings_mail_check_frequency_label">Интервал проверки</string>
   <string name="account_settings_storage_title">Хранение</string>
   <string name="account_settings_color_label">Цвет</string>

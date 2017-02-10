@@ -16,6 +16,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 
@@ -66,7 +67,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private final RecipientsChangedListener listener;
     private ReplyToParser replyToParser;
     private Account account;
-    private String cryptoProvider;
+    private String openPgpProvider;
     private Boolean hasContactPicker;
     private ComposeCryptoStatus cachedCryptoStatus;
     private PendingIntent pendingUserInteractionIntent;
@@ -250,7 +251,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         menu.findItem(R.id.openpgp_inline_enable).setVisible(isCryptoConfigured && !cryptoEnablePgpInline);
         menu.findItem(R.id.openpgp_inline_disable).setVisible(isCryptoConfigured && cryptoEnablePgpInline);
 
-        boolean showSignOnly = isCryptoConfigured && account.getCryptoSupportSignOnly();
+        boolean showSignOnly = isCryptoConfigured && K9.getOpenPgpSupportSignOnly();
         boolean isSignOnly = cachedCryptoStatus.isSignOnly();
         menu.findItem(R.id.openpgp_sign_only).setVisible(showSignOnly && !isSignOnly);
         menu.findItem(R.id.openpgp_sign_only_disable).setVisible(showSignOnly && isSignOnly);
@@ -270,8 +271,8 @@ public class RecipientPresenter implements PermissionPingCallback {
             updateRecipientExpanderVisibility();
         }
 
-        String cryptoProvider = account.getOpenPgpProvider();
-        setCryptoProvider(cryptoProvider);
+        // This does not strictly depend on the account, but this is as good a point to set this as any
+        setupCryptoProvider();
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -441,7 +442,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     private void addRecipientsFromAddresses(final RecipientType recipientType, final Address... addresses) {
-        new RecipientLoader(context, cryptoProvider, addresses) {
+        new RecipientLoader(context, openPgpProvider, addresses) {
             @Override
             public void deliverResult(List<Recipient> result) {
                 Recipient[] recipientArray = result.toArray(new Recipient[result.size()]);
@@ -454,7 +455,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     private void addRecipientFromContactUri(final RecipientType recipientType, final Uri uri) {
-        new RecipientLoader(context, cryptoProvider, uri, false) {
+        new RecipientLoader(context, openPgpProvider, uri, false) {
             @Override
             public void deliverResult(List<Recipient> result) {
                 // TODO handle multiple available mail addresses for a contact?
@@ -609,10 +610,14 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
-    private void setCryptoProvider(String cryptoProvider) {
+    private void setupCryptoProvider() {
+        String openPgpProvider = K9.getOpenPgpProvider();
+        if (TextUtils.isEmpty(openPgpProvider)) {
+            openPgpProvider = null;
+        }
 
         boolean providerIsBound = openPgpServiceConnection != null && openPgpServiceConnection.isBound();
-        boolean isSameProvider = cryptoProvider != null && cryptoProvider.equals(this.cryptoProvider);
+        boolean isSameProvider = openPgpProvider != null && openPgpProvider.equals(this.openPgpProvider);
         if (isSameProvider && providerIsBound) {
             cryptoProviderBindOrCheckPermission();
             return;
@@ -623,15 +628,15 @@ public class RecipientPresenter implements PermissionPingCallback {
             openPgpServiceConnection = null;
         }
 
-        this.cryptoProvider = cryptoProvider;
+        this.openPgpProvider = openPgpProvider;
 
-        if (cryptoProvider == null) {
+        if (openPgpProvider == null) {
             cryptoProviderState = CryptoProviderState.UNCONFIGURED;
             return;
         }
 
         cryptoProviderState = CryptoProviderState.UNINITIALIZED;
-        openPgpServiceConnection = new OpenPgpServiceConnection(context, cryptoProvider, new OnBound() {
+        openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProvider, new OnBound() {
             @Override
             public void onBound(IOpenPgpService2 service) {
                 cryptoProviderBindOrCheckPermission();
@@ -644,7 +649,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         });
         cryptoProviderBindOrCheckPermission();
 
-        recipientMvpView.setCryptoProvider(cryptoProvider);
+        recipientMvpView.setCryptoProvider(openPgpProvider);
     }
 
     private void cryptoProviderBindOrCheckPermission() {
@@ -779,7 +784,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     @VisibleForTesting
     void setOpenPgpServiceConnection(OpenPgpServiceConnection openPgpServiceConnection, String cryptoProvider) {
         this.openPgpServiceConnection = openPgpServiceConnection;
-        this.cryptoProvider = cryptoProvider;
+        this.openPgpProvider = cryptoProvider;
     }
 
     public enum CryptoProviderState {

@@ -399,7 +399,7 @@
   <string name="account_settings_crypto">رمزنگاری</string>
   <string name="account_settings_crypto_app">باز کردن برنامه پی جی پی</string>
   <string name="account_settings_crypto_key">کلید من</string>
-  <string name="account_settings_no_openpgp_provider_installed">هیچ برنامه باز پی جی پی نصب نشده است</string>
+  <string name="account_settings_no_openpgp_provider_configured">هیچ برنامه باز پی جی پی نصب نشده است</string>
   <string name="account_settings_mail_check_frequency_label">تکرار نظرسنجی پوشه</string>
   <string name="account_settings_storage_title">نگهدارنده</string>
   <string name="account_settings_color_label">رنگ حساب کاربری</string>

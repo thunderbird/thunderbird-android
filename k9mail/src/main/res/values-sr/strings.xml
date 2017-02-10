@@ -479,7 +479,7 @@
   <string name="account_settings_crypto">Криптографија</string>
   <string name="account_settings_crypto_app">ОпенПГП апликација</string>
   <string name="account_settings_crypto_key">Мој кључ</string>
-  <string name="account_settings_no_openpgp_provider_installed">Нема инсталиране апликације за ОпенПГП</string>
+  <string name="account_settings_no_openpgp_provider_configured">Нема инсталиране апликације за ОпенПГП</string>
   <string name="account_settings_mail_check_frequency_label">Учесталост провере фасцикли</string>
   <string name="account_settings_storage_title">Складиште</string>
   <string name="account_settings_color_label">Боја налога</string>

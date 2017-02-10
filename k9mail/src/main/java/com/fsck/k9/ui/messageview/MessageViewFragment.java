@@ -234,7 +234,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 mMessageView, mAccount, messageViewInfo);
         if (!handledByCryptoPresenter) {
             mMessageView.showMessage(mAccount, messageViewInfo);
-            if (mAccount.isOpenPgpProviderConfigured()) {
+            if (K9.isOpenPgpProviderConfigured()) {
                 mMessageView.getMessageHeaderView().setCryptoStatusDisabled();
             } else {
                 mMessageView.getMessageHeaderView().hideCryptoStatus();
@@ -244,7 +244,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private void displayHeaderForLoadingMessage(LocalMessage message) {
         mMessageView.setHeaders(message, mAccount);
-        if (mAccount.isOpenPgpProviderConfigured()) {
+        if (K9.isOpenPgpProviderConfigured()) {
             mMessageView.getMessageHeaderView().setCryptoStatusLoading();
         }
         displayMessageSubject(getSubjectForMessage(message));

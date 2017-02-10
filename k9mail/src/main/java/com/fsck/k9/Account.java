@@ -157,7 +157,6 @@ public class Account implements BaseAccount, StoreConfig {
 
     public static final SortType DEFAULT_SORT_TYPE = SortType.SORT_DATE;
     public static final boolean DEFAULT_SORT_ASCENDING = false;
-    public static final String NO_OPENPGP_PROVIDER = "";
     public static final long NO_OPENPGP_KEY = 0;
 
     private DeletePolicy mDeletePolicy = DeletePolicy.NEVER;
@@ -220,10 +219,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mReplyAfterQuote;
     private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
-    private String mCryptoApp;
-    private boolean mCryptoAppIsDeprecatedApg;
     private long mCryptoKey;
-    private boolean mCryptoSupportSignOnly;
     private boolean mMarkMessageAsReadOnView;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
@@ -318,9 +314,7 @@ public class Account implements BaseAccount, StoreConfig {
         mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
-        mCryptoApp = NO_OPENPGP_PROVIDER;
         mCryptoKey = NO_OPENPGP_KEY;
-        mCryptoSupportSignOnly = false;
         mAllowRemoteSearch = false;
         mRemoteSearchFullText = false;
         mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
@@ -468,10 +462,7 @@ public class Account implements BaseAccount, StoreConfig {
         mIsSignatureBeforeQuotedText = storage.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(storage);
 
-        String cryptoApp = storage.getString(mUuid + ".cryptoApp", NO_OPENPGP_PROVIDER);
-        setCryptoApp(cryptoApp);
         mCryptoKey = storage.getLong(mUuid + ".cryptoKey", NO_OPENPGP_KEY);
-        mCryptoSupportSignOnly = storage.getBoolean(mUuid + ".cryptoSupportSignOnly", false);
         mAllowRemoteSearch = storage.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = storage.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = storage.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -560,7 +551,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(mUuid + ".showPicturesEnum");
         editor.remove(mUuid + ".replyAfterQuote");
         editor.remove(mUuid + ".stripSignature");
-        editor.remove(mUuid + ".cryptoApp");
+        editor.remove(mUuid + ".cryptoApp"); // this is no longer set, but cleans up legacy values
         editor.remove(mUuid + ".cryptoAutoSignature");
         editor.remove(mUuid + ".cryptoAutoEncrypt");
         editor.remove(mUuid + ".cryptoApp");
@@ -737,9 +728,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".defaultQuotedTextShown", mDefaultQuotedTextShown);
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
-        editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putLong(mUuid + ".cryptoKey", mCryptoKey);
-        editor.putBoolean(mUuid + ".cryptoSupportSignOnly", mCryptoSupportSignOnly);
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1603,38 +1592,12 @@ public class Account implements BaseAccount, StoreConfig {
         mStripSignature = stripSignature;
     }
 
-    public String getCryptoApp() {
-        return mCryptoApp;
-    }
-
-    public void setCryptoApp(String cryptoApp) {
-        boolean isApgCryptoProvider = "apg".equals(cryptoApp);
-        if (cryptoApp == null || isApgCryptoProvider) {
-            mCryptoAppIsDeprecatedApg = isApgCryptoProvider;
-            mCryptoApp = NO_OPENPGP_PROVIDER;
-        } else {
-            mCryptoApp = cryptoApp;
-        }
-    }
-
-    public boolean isCryptoAppDeprecatedApg() {
-        return mCryptoAppIsDeprecatedApg;
-    }
-
     public long getCryptoKey() {
         return mCryptoKey;
     }
 
     public void setCryptoKey(long keyId) {
         mCryptoKey = keyId;
-    }
-
-    public boolean getCryptoSupportSignOnly() {
-        return mCryptoSupportSignOnly;
-    }
-
-    public void setCryptoSupportSignOnly(boolean cryptoSupportSignOnly) {
-        mCryptoSupportSignOnly = cryptoSupportSignOnly;
     }
 
     public boolean allowRemoteSearch() {
@@ -1675,17 +1638,6 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setLastSelectedFolderName(String folderName) {
         lastSelectedFolderName = folderName;
-    }
-
-    public synchronized String getOpenPgpProvider() {
-        if (!isOpenPgpProviderConfigured()) {
-            return null;
-        }
-        return getCryptoApp();
-    }
-
-    public synchronized boolean isOpenPgpProviderConfigured() {
-        return !NO_OPENPGP_PROVIDER.equals(getCryptoApp());
     }
 
     public synchronized NotificationSetting getNotificationSetting() {

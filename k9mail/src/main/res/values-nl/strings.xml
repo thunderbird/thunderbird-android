@@ -472,7 +472,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_crypto">Cryptografie</string>
   <string name="account_settings_crypto_app">OpenPGP app</string>
   <string name="account_settings_crypto_key">Mijn sleutel</string>
-  <string name="account_settings_no_openpgp_provider_installed">Er is geen OpenPGP app geinstalleerd</string>
+  <string name="account_settings_no_openpgp_provider_configured">Er is geen OpenPGP app geinstalleerd</string>
   <string name="account_settings_mail_check_frequency_label">Mappen poll controleer frequentie</string>
   <string name="account_settings_storage_title">Opslag</string>
   <string name="account_settings_color_label">Account kleur</string>

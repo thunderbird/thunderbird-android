@@ -475,7 +475,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_crypto">暗号化</string>
   <string name="account_settings_crypto_app">OpenPGPｱﾌﾟﾘｹｰｼｮﾝ</string>
   <string name="account_settings_crypto_key">マイ キー</string>
-  <string name="account_settings_no_openpgp_provider_installed">OpenPGPｱﾌﾟﾘｹｰｼｮﾝがｲﾝｽﾄｰﾙされていません</string>
+  <string name="account_settings_no_openpgp_provider_configured">OpenPGPｱﾌﾟﾘｹｰｼｮﾝがｲﾝｽﾄｰﾙされていません</string>
   <string name="account_settings_mail_check_frequency_label">同期フォルダの同期間隔</string>
   <string name="account_settings_storage_title">ストレージ</string>
   <string name="account_settings_color_label">アカウントの色</string>

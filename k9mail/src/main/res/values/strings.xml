@@ -579,7 +579,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto">Cryptography</string>
     <string name="account_settings_crypto_app">OpenPGP app</string>
     <string name="account_settings_crypto_key">My Key</string>
-    <string name="account_settings_no_openpgp_provider_installed">No OpenPGP app installed</string>
+    <string name="account_settings_no_openpgp_provider_configured">No OpenPGP app configured</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -1216,5 +1216,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="apg_learn_more">You can <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">click here</a> to learn more.</string>
     <string name="apg_deprecated_ok">Got it!</string>
     <string name="apg">APG</string>
+    <string name="no_crypto_provider_see_global">No OpenPGP app configured, see global settings!</string>
 
 </resources>
