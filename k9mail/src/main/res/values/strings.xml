@@ -1206,6 +1206,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="recipient_error_parse_failed">Error parsing address!</string>
     <string name="account_settings_crypto_support_sign_only">Support signing of unencrypted messages</string>
+    <string name="account_settings_crypto_default_disabled">Disable automatic encryption</string>
     <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
     <string name="unsigned_text_divider_label">Unsigned Text</string>
     <string name="apg_deprecated_title">APG Deprecation Warning</string>

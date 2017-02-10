@@ -76,7 +76,6 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     // persistent state, saved during onSaveInstanceState
     private RecipientType lastFocusedType = RecipientType.TO;
-    // TODO initialize cryptoMode to other values under some circumstances, e.g. if we reply to an encrypted e-mail
     private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
     private boolean cryptoEnablePgpInline = false;
 
@@ -93,6 +92,11 @@ public class RecipientPresenter implements PermissionPingCallback {
         recipientMvpView.setPresenter(this);
         recipientMvpView.setLoaderManager(loaderManager);
         onSwitchAccount(account);
+
+        // TODO initialize cryptoMode to other values under some circumstances, e.g. if we reply to an encrypted e-mail
+        if (account.getCryptoDefaultDisabled()) {
+            currentCryptoMode = CryptoMode.DISABLE;
+        }
     }
 
     public List<Address> getToAddresses() {
