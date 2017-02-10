@@ -58,11 +58,11 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="app_revision_fmt">Informácie o revízii: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Používame tieto knižnice tretích strán: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Ikony Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">čítať prílohy správ</string>
+  <string name="read_attachment_label">Čítať prílohy správ</string>
   <string name="read_attachment_desc">Umožňuje tejto aplikácii čítať prílohy vašich e-mailov.</string>
-  <string name="read_messages_label">čítať správy</string>
+  <string name="read_messages_label">Čítať správy</string>
   <string name="read_messages_desc">Umožňuje tejto aplikácii čítať vaše e-maily.</string>
-  <string name="delete_messages_label">mazať správy</string>
+  <string name="delete_messages_label">Mazať správy</string>
   <string name="delete_messages_desc">Umožňuje tejto aplikácii mazať vaše e-maily.</string>
   <string name="about_title_fmt">O aplikácii <xliff:g id="app_name">%s</xliff:g></string>
   <string name="accounts_title">Účty</string>
@@ -233,7 +233,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="message_view_attachment_download_action">Uložiť</string>
   <string name="message_view_status_attachment_not_saved">Nemožno uložiť prílohu na kartu SD.</string>
   <string name="message_view_show_pictures_action">Zobraziť obrázky</string>
-  <string name="message_view_show_more_attachments_action">Ďalšie…</string>
   <string name="message_view_no_viewer">Nemožno nájsť prehliadač pre <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Stiahnuť kompletnú správu</string>
   <string name="message_view_toast_unable_to_display_message">Správu nie je možné zobraziť</string>
@@ -273,6 +272,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_confirm_action_delete_starred">Vymazať správy s hviezdičkou (v zobrazení správ)</string>
   <string name="global_settings_confirm_action_spam">Nevyžiadaná pošta</string>
   <string name="global_settings_confirm_menu_discard">Zahodiť správu</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Označiť všetky správy ako prečítané</string>
   <string name="global_settings_confirm_action_delete_notif">Vymazať (z oznámení)</string>
   <string name="global_settings_privacy_hide_useragent">Odstrániť používateľského agenta K-9 z hlavičiek správ</string>
   <string name="global_settings_privacy_hide_timezone">Použiť UTC ako časové pásmo v hlavičkách správ</string>
@@ -903,25 +903,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="fetching_attachment_dialog_title_save">Ukladám koncept</string>
   <string name="fetching_attachment_dialog_message">Sťahujem prílohu…</string>
   <string name="auth_external_error">Nie je možné overiť. Server nenaznačil schopnosť SASL EXTERNAL. To sa mohlo stať kvôli problému s klientským certifikátom (vypršal, neznáma certifikačná autorita), alebo kvôli nejakému inému problému konfigurácie.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Dešifrovanie zlyhalo: %s</string>
-  <string name="openpgp_unknown_error">Neznáma chyba OpenPGP</string>
-  <string name="openpgp_canceled_by_user">Zrušené používateľom</string>
-  <string name="openpgp_result_no_signature">Nepodpísané</string>
-  <string name="openpgp_result_invalid_signature">Neplatný podpis!</string>
-  <string name="openpgp_result_signature_uncertified">Podpísané (nie certifikované!)</string>
-  <string name="openpgp_result_signature_certified">Podpísané</string>
-  <string name="openpgp_result_signature_expired_key">Kľúč vypršal!</string>
-  <string name="openpgp_result_signature_revoked_key">Kľúč bol odvolaný!</string>
-  <string name="openpgp_result_signature_insecure">Nezabezpečené!</string>
-  <string name="openpgp_result_signature_missing_key">Neznáma verejný kľúč</string>
-  <string name="openpgp_result_encrypted">Šifrované</string>
-  <string name="openpgp_result_not_encrypted">Nešifrované</string>
-  <string name="openpgp_result_decryption_insecure">Nezabezpečené</string>
-  <string name="openpgp_result_action_show">Zobraziť</string>
-  <string name="openpgp_result_action_lookup">Vyhľadať</string>
-  <string name="openpgp_result_no_name">Žiadne meno</string>
-  <string name="openpgp_result_no_email">Žiadne e-mail</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Použiť klientský certifikát</string>
   <string name="client_certificate_spinner_empty">Žiadny klientský certifikát</string>
@@ -929,9 +910,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="client_certificate_retrieval_failure">Nepodarilo sa získať klientský certifikát pre identitu \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Pokročilé možnosti</string>
   <string name="client_certificate_expired">Klientský certifikát \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" vypršal alebo nie je zatiaľ platný (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Nedokončená správa</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Kliknite na \'Stiahnuť kompletnú správu\' pre povolenie dešifrovania.</string>
   <string name="preview_encrypted">*Šifrované*</string>
   <string name="add_from_contacts">Pridať z kontaktov</string>
   <string name="crypto_settings_cancel">Zrušiť</string>
@@ -946,8 +925,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="address_type_other">Iná</string>
   <string name="address_type_mobile">Mobilná</string>
   <string name="compose_error_no_draft_folder">Pre tento účet nie je zadefinovaný priečinok pre koncepty správ.</string>
-  <string name="compose_not_saving_unencrypted">Koncept NEBOL uložený bez zašifrovania!</string>
-  <string name="compose_error_pgp_error">Chyba poskytovateľa služby pre OpenPGP. Skontroľujte si nastavenia!</string>
   <string name="compose_error_no_signing_key">Nie je nastavený kľúč pre podpis! Prosím, skontroľujte si nastavenia.</string>
   <string name="compose_error_private_missing_keys">Je aktivovaný Súkromný režim, niektorí príjemcovia nemajú kľúče!</string>
   <string name="crypto_mode_disabled">Nešifrovať</string>
@@ -956,8 +933,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="error_crypto_provider_connect">Nie je možné pripojenie ku poskytovateľovi šifrovania, skontrolujte svoje nastavenia alebo kliknite na ikonu šifrovania pre ďalší pokus.</string>
   <string name="error_crypto_provider_ui_required">Bol odopretý prístup ku poskytovateľovi šifrovania, kliknite na ikonu šifrovania pre ďalší pokus.</string>
   <string name="error_crypto_inline_attach">V režine PGP/INLINE nie sú prílohy podporované.</string>
-  <string name="error_crypto_inline_sign_only">Pri použití PGP/INLINE nie je možné len podpisovať.</string>
-  <string name="error_crypto_sign_only_inline">Pri použití PGP/INLINE nie je možné len podpisovať.</string>
   <string name="enable_inline_pgp">Povoliť PGP/INLINE</string>
   <string name="disable_inline_pgp">Zakázať PGP/INLINE</string>
   <string name="enable_sign_only">Povoliť PGP \"len podpis\"</string>
@@ -1002,10 +977,9 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Zobraziť podpisovateľa</string>
   <string name="locked_attach_unlock">Odomknúť</string>
-  <string name="locked_attach_unsigned">Táto časť nebola podpísaná a nemusí byť bezpečná.</string>
   <string name="locked_attach_unencrypted">Táto časť nebola zašifrovaná a nemusí byť bezpečná.</string>
   <string name="locked_attach_title">Nechránená príloha</string>
-  <string name="message_progress_text">Načítavam...</string>
+  <string name="message_progress_text">Načítavam…</string>
   <string name="messageview_decrypt_cancelled">Dešifrovanie bolo zrušené.</string>
   <string name="messageview_decrypt_retry">Skúsiť znova</string>
   <string name="messageview_decrypt_incomplete">Šifrovaná správa musí byť stiahnutá pre dešifrovanie.</string>
@@ -1015,8 +989,18 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="messageview_crypto_warning_expired">Táto správa bola podpísaná <b>neplatným kľúčom!</b></string>
   <string name="messageview_crypto_warning_insecure">Táto správa bola podpísaná <b>nezabezpečeným kľúčom!</b></string>
   <string name="messageview_crypto_warning_error">Vyskytla sa <b>chyba v podpise správy!</b></string>
+  <string name="messageview_crypto_warning_unsigned">Táto správa je šifrovaná, no nie je podpísané. <b>Nie je teda plne dôveryhodná</b>!</string>
   <string name="recipient_error_non_ascii">Špeciálne znaky nie sú v súčasnosti podporované!</string>
   <string name="recipient_error_parse_failed">Chyba pri spracovaní adresy!</string>
   <string name="account_settings_crypto_support_sign_only">Umožniť podpisovanie nešifrovaných správ</string>
   <string name="error_sign_only_no_encryption">V režime \"len podpis\" nie je možné šifrovať.</string>
+  <string name="unsigned_text_divider_label">Nepodpísaný text</string>
+  <string name="apg_deprecated_title">Varovanie o konci podpory APG</string>
+  <string name="apg_deprecated_1">Aplikácia APG už nie je udržiavaná!</string>
+  <string name="apg_deprecated_2">Podpora APG bola z K-9 Mail odstránená.</string>
+  <string name="apg_deprecated_bullet_1">Vývoj je zastavený od roku 2014</string>
+  <string name="apg_deprecated_bullet_2">Obsahuje bezpečnostné problémy</string>
+  <string name="apg_learn_more">Viac informácií nájdete v správe <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">na github.io</a>.</string>
+  <string name="apg_deprecated_ok">Rozumiem!</string>
+  <string name="apg">APG</string>
 </resources>

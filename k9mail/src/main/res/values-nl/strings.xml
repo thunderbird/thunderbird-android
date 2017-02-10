@@ -53,9 +53,9 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="app_revision_fmt">Revisie Informatie: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">De volgende externe bibliotheken worden gebruikt: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Lees bijlage</string>
+  <string name="read_attachment_label">E-mail bijlage lezen</string>
   <string name="read_attachment_desc">Sta deze applicatie toe om bijlagen van e-mails te lezen.</string>
-  <string name="read_messages_label">Lees e-mails</string>
+  <string name="read_messages_label">E-mails lezen</string>
   <string name="read_messages_desc">Sta deze aplicatie toe om je e-mails te lezen.</string>
   <string name="delete_messages_label">Verwijder e-mails</string>
   <string name="delete_messages_desc">Sta deze applicatie toe om je e-mails te verwijderen.</string>
@@ -195,7 +195,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Fout bij verzenden van berichten</string>
   <string name="debug_version_fmt">Versie: <xliff:g id="version">%s</xliff:g></string>
-  <string name="debug_enable_debug_logging_title">Fouten loggen toestaan</string>
+  <string name="debug_enable_debug_logging_title">debug log toestaan</string>
   <string name="debug_enable_debug_logging_summary">Log extra diagnostische informatie</string>
   <string name="debug_enable_sensitive_logging_title">Log gevoelige informatie</string>
   <string name="debug_enable_sensitive_logging_summary">Kan wachtwoorden laten zien in logs.</string>
@@ -226,7 +226,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="message_view_attachment_download_action">Bewaar</string>
   <string name="message_view_status_attachment_not_saved">Opslaan bijlage op SD-kaart mislukt.</string>
   <string name="message_view_show_pictures_action">Laat afbeeldingen zien</string>
-  <string name="message_view_show_more_attachments_action">Meer…</string>
   <string name="message_view_no_viewer">Niet in staat viewer te vinden voor <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Download compleet bericht</string>
   <string name="message_view_toast_unable_to_display_message">Niet mogelijk om bericht te tonen</string>
@@ -266,6 +265,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_confirm_action_delete_starred">Gemarkeerd verwijderen (in bericht-view)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Bericht afbreken</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Markeer alles als gelezen</string>
   <string name="global_settings_confirm_action_delete_notif">Verwijder (van notificaties)</string>
   <string name="global_settings_privacy_hide_useragent">Verwijder K-9 User-Agent van de mail headers</string>
   <string name="global_settings_privacy_hide_timezone">Gebruik UT als tijdzone in mail headers</string>
@@ -387,7 +387,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_options_mail_check_frequency_12hour">Elke 12 uur</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Elke 24 uur</string>
   <string name="push_poll_on_connect_label">Poll bij verbinden voor push</string>
-  <string name="account_setup_options_enable_push_label">Aanzetten push mail voor deze account</string>
+  <string name="account_setup_options_enable_push_label">Push mail voor dit account toestaan</string>
   <string name="account_setup_options_enable_push_summary">Als uw server dit ondersteunt, zullen nieuwe berichten direct verschijnen. Deze optie kan drastisch verbeteringen of verslechteringen van prestaties teweeg brengen.</string>
   <string name="idle_refresh_period_label">Refresh actieve verbinding</string>
   <string name="idle_refresh_period_1min">Elke minuut</string>
@@ -630,9 +630,9 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_delete_dlg_title">Verwijder Account</string>
   <string name="account_recreate_dlg_title">Opnieuw maken Account</string>
   <string name="account_clear_dlg_title">Clear Account</string>
-  <string name="provider_note_auonejp">Zorg ervoor dat IMAP of POP3 in de au one mail instellingen pagina aan staan.</string>
-  <string name="provider_note_naver">Zorg ervoor dat IMAP of POP3 aan staan in de Naver mail instellingen pagina.</string>
-  <string name="provider_note_hanmail">Zorg ervoor dat IMAP of POP3 aan staan in de Hanmail(Daum) installingen pagina.</string>
+  <string name="provider_note_auonejp">Zorg ervoor dat IMAP of POP3 in de au one mail instellingen aan staat.</string>
+  <string name="provider_note_naver">Zorg ervoor dat IMAP of POP3 van de Naver mail instellingen aan staat.</string>
+  <string name="provider_note_hanmail">Zorg ervoor dat IMAP of POP3 van de Hanmail(Daum) installingen aan staan.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Onbekend Certificaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
@@ -684,7 +684,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="animations_title">Animatie</string>
   <string name="animations_summary">Gebruik opzichtige visuele effecten</string>
   <string name="gestures_title">Gebaren</string>
-  <string name="gestures_summary">Accepteer gebaren sturing</string>
+  <string name="gestures_summary">Gebaren sturing toestaan</string>
   <string name="volume_navigation_title">Volume op/neer navigatie</string>
   <string name="volume_navigation_message">Bericht beeld</string>
   <string name="volume_navigation_list">Variabele lijst beelden</string>
@@ -770,7 +770,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="dialog_confirm_spam_confirm_button">Ja</string>
   <string name="dialog_confirm_spam_cancel_button">Nee</string>
   <string name="dialog_attachment_progress_title">Bijlage wordt opgehaald</string>
-  <string name="debug_logging_enabled">Debug logging van Android logging systeem ingeschakeld</string>
+  <string name="debug_logging_enabled">Debug logging toestaan</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="import_export_action">Import &amp; Export instellingen</string>
@@ -812,7 +812,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="settings_import_use_incoming_server_password">Gebruik het inkomende server wachtwoord</string>
   <string name="activate_account_action">Activeer</string>
   <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is niet beschikbaar; controleer opslag</string>
-  <string name="settings_attachment_default_path">Sla bijlagen op in...</string>
+  <string name="settings_attachment_default_path">Sla bijlagen op in…</string>
   <string name="attachment_save_title">Sla bijlage op</string>
   <string name="attachment_save_desc">Geen bestandsverkenner gevonden. Waar wil je deze bijlage opslaan?</string>
   <string name="manage_accounts_move_up_action">Omhoog</string>
@@ -857,7 +857,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="remote_search_downloading_limited">%1$d van %2$d resultaten ophalen</string>
   <string name="remote_search_error">Zoekopdracht mislukt</string>
   <string name="account_settings_search">Zoeken</string>
-  <string name="account_settings_remote_search_enabled">Server gebaseerd zoeken</string>
+  <string name="account_settings_remote_search_enabled">Server zoeken toestaan</string>
   <string name="account_settings_remote_search_enabled_summary">Zoek berichten op de server en op je eigen toestel</string>
   <string name="action_remote_search">Zoek berichten op server</string>
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Duw naar zoekserver…</string>
@@ -891,25 +891,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="fetching_attachment_dialog_title_save">Concept wordt opgeslagen</string>
   <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
   <string name="auth_external_error">Kan niet authenticeren. De server ondersteunt geen SASL EXTERNAL. Dit kan komen door een probleem met het cliënt certificaat (verlopen of onbekende CA) of een ander configuratieprobleem.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Ontsleutelen mislukt: %s</string>
-  <string name="openpgp_unknown_error">Onbekend OpenPGP Fout</string>
-  <string name="openpgp_canceled_by_user">Geannuleerd door gebruiker</string>
-  <string name="openpgp_result_no_signature">Niet Ondertekend</string>
-  <string name="openpgp_result_invalid_signature">Ongeldige handtekening!</string>
-  <string name="openpgp_result_signature_uncertified">Ondertekend door (niet gecertificeerd!)</string>
-  <string name="openpgp_result_signature_certified">Ondertekend door</string>
-  <string name="openpgp_result_signature_expired_key">Sleutel is verlopen!</string>
-  <string name="openpgp_result_signature_revoked_key">Sleutel is ingetrokken!</string>
-  <string name="openpgp_result_signature_insecure">Onveilig!</string>
-  <string name="openpgp_result_signature_missing_key">Onbekende publieke sleutel</string>
-  <string name="openpgp_result_encrypted">Gecodeerd</string>
-  <string name="openpgp_result_not_encrypted">Niet gecodeerd</string>
-  <string name="openpgp_result_decryption_insecure">Onveilig</string>
-  <string name="openpgp_result_action_show">Weergeven</string>
-  <string name="openpgp_result_action_lookup">Zoeken</string>
-  <string name="openpgp_result_no_name">Geen naam</string>
-  <string name="openpgp_result_no_email">Geen email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Gebruik cliënt certificaat</string>
   <string name="client_certificate_spinner_empty">Geen cliënt certificaat</string>
@@ -917,9 +898,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="client_certificate_retrieval_failure">Alias cliënt certificaat niet ontvangen \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Geavanceerde opties</string>
   <string name="client_certificate_expired">Cliënt certificaat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" is verlopen of niet geldig (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Incompleet bericht</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Klik \'Download compleet bericht\' om ontsleuteling toe te staan</string>
   <string name="preview_encrypted">*Versleuteld*</string>
   <string name="add_from_contacts">Toevoegen vanaf contacten</string>
   <string name="crypto_settings_cancel">Annuleren</string>
@@ -934,15 +913,18 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="address_type_other">Anders</string>
   <string name="address_type_mobile">Mobiel</string>
   <string name="compose_error_no_draft_folder">Geen concepten map ingesteld voor dit account!</string>
-  <string name="compose_not_saving_unencrypted">Concept NIET opgeslagen zonder versleuteling!</string>
-  <string name="compose_error_pgp_error">Fout bij de OpenPGP provider. Kijk de instellingen na!</string>
   <string name="compose_error_no_signing_key">Geen sleutel ingesteld voor het ondertekenen! Controleer de instellingen.</string>
   <string name="compose_error_private_missing_keys">Privé instelling is ingeschakeld, maar sommige ontvangers hebben geen sleutels!</string>
+  <string name="crypto_mode_disabled">Niet versleutelen</string>
+  <string name="crypto_mode_opportunistic">Versleutel wanneer mogelijk</string>
+  <string name="crypto_mode_private">Versleutel</string>
   <string name="error_crypto_provider_connect">Kan geen verbinding maken met de crypto provider. Controleer de instellingen of klik op het crypto icoontje om nogmaals te proberen.</string>
   <string name="error_crypto_provider_ui_required">Toegang tot crypto provider geweigerd, klik het crypto icoontje om het nogmaals te proberen!</string>
   <string name="error_crypto_inline_attach">PGP/MIME instelling ondersteund geen bijlagen!</string>
-  <string name="enable_inline_pgp">PGP/INLINE aanzetten</string>
+  <string name="enable_inline_pgp">PGP/INLINE toestaan</string>
   <string name="disable_inline_pgp">PGP/INLINE uitzetten</string>
+  <string name="enable_sign_only">PGP handtekening toestaan</string>
+  <string name="disable_sign_only">PGP handtekening stoppen</string>
   <string name="openpgp_inline_title">PGP/INLINE instellingen</string>
   <string name="openpgp_inline_text">De mail is verzonden in PGP/INLINE formaat.\nDit word alleen gebruikt bij verenigbaarheid:</string>
   <string name="openpgp_inline_plus_compat">Sommige cliënts ondersteunen alleen dit formaat</string>
@@ -950,7 +932,16 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="openpgp_inline_minus_attach">Bijlagen zijn niet ondersteund</string>
   <string name="openpgp_inline_ok">Begrepen!</string>
   <string name="openpgp_inline_disable">Uitzetten</string>
-  <string name="openpgp_inline_keep_enabled">Aan laten staan</string>
+  <string name="openpgp_inline_keep_enabled">Keep toestaan</string>
+  <string name="openpgp_sign_only_ok">Begrepen!</string>
+  <string name="openpgp_sign_only_disable">Uitzetten</string>
+  <string name="openpgp_sign_only_keep_enabled">Keep toestaan</string>
+  <string name="openpgp_dialog_sign_only_title">alleen PGP handtekening modes</string>
+  <string name="openpgp_dialog_sign_only_text">In deze mode wordt je PGP sleutel gebruikt voor een cryptografische handtekening of een ontsleutelde email.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Dit versleuteld niet de E-mail, maar controleerd dat je eigen sleutel gebruikt is.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Handtekening kan bij versturing naar mail groep breken</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Handtekening kan worden weergegeven als  \'signature.asc\' bijlage bij sommige programma\'s</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Versleutelde berichten bevatten altijd de handtekening.</string>
   <string name="crypto_msg_disabled">Bericht is niet versleuteld</string>
   <string name="crypto_msg_encrypted_error">Bericht is versleuteld, maar er was ontsleuteling fout</string>
   <string name="crypto_msg_signed_error">Bericht is ondertekend, maar de handtekening is niet geverifieerd.</string>
@@ -974,7 +965,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Bekijk ondertekenaar</string>
   <string name="locked_attach_unlock">ontsluit</string>
-  <string name="locked_attach_unsigned">Dit onderdeel is niet ondertekend is mogelijk onveilig.</string>
   <string name="locked_attach_unencrypted">Dit onderdeel is niet versleuteld en is mogelijk niet veilig.</string>
   <string name="locked_attach_title">Onbeveiligde Bijlage</string>
   <string name="message_progress_text">Laden…</string>
@@ -989,4 +979,15 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="messageview_crypto_warning_error">Er was een <b>fout in de handtekening!</b></string>
   <string name="recipient_error_non_ascii">Speciale leestekens worden nog niet ondersteund!</string>
   <string name="recipient_error_parse_failed">Fout bij parsen van adres!</string>
+  <string name="account_settings_crypto_support_sign_only">Ondersteun het tekenen van ontsleutelde berichten</string>
+  <string name="error_sign_only_no_encryption">Versleuteling niet mogelijk in sign-only mode!</string>
+  <string name="unsigned_text_divider_label">niet getekende tekst</string>
+  <string name="apg_deprecated_title">APG Deprecation Waarschuwing</string>
+  <string name="apg_deprecated_1">APG is niet langer beheerd!</string>
+  <string name="apg_deprecated_2">Hierdoor is de ondersteuning voor APG verwijderd binnen K-9 mail.</string>
+  <string name="apg_deprecated_bullet_1">De ontwikkeling is gestop in 2014</string>
+  <string name="apg_deprecated_bullet_2">Bevat onveilige items</string>
+  <string name="apg_learn_more">Je kan hier <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikken</a> om meer te leren.</string>
+  <string name="apg_deprecated_ok">Begrepen!</string>
+  <string name="apg">APG</string>
 </resources>

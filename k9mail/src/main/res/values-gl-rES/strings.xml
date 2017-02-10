@@ -188,7 +188,6 @@
   <string name="message_view_attachment_download_action">Gardar</string>
   <string name="message_view_status_attachment_not_saved">Non é posible gardar o anexo na tarxeta SD.</string>
   <string name="message_view_show_pictures_action">Mostrar imaxes</string>
-  <string name="message_view_show_more_attachments_action">Máis…</string>
   <string name="message_view_no_viewer">Non é posible atopar un visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -805,8 +804,8 @@
   <string name="account_settings_remote_search_enabled">Habilitar procuras no servidor</string>
   <string name="account_settings_remote_search_enabled_summary">Procurar mensaxes no servidor ademais de no teu dispositivo</string>
   <string name="action_remote_search">Procurar mensaxes no servidor</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Toca para buscar servidor...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Liberar para buscar servidor...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Toca para buscar servidor…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Liberar para buscar servidor…</string>
   <string name="remote_search_unavailable_no_network">Requírese unha conexión á rede para procurar no servidor.</string>
   <string name="global_settings_background_as_unread_indicator_label">Oscurece mensaxes despois de ler</string>
   <string name="global_settings_background_as_unread_indicator_summary">O fondo gris mostrará que unha mensaxe foi lida</string>
@@ -828,7 +827,6 @@
   <string name="fetching_attachment_dialog_title_send">A enviar mensaxe</string>
   <string name="fetching_attachment_dialog_title_save">A gardar borrador</string>
   <string name="fetching_attachment_dialog_message">Obtendo anexo…</string>
-  <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
 </resources>
