@@ -184,7 +184,6 @@
   <string name="message_view_attachment_download_action">Desa</string>
   <string name="message_view_status_attachment_not_saved">No s\'ha pogut desar l\'adjunt a la SD.</string>
   <string name="message_view_show_pictures_action">Mostra fotos</string>
-  <string name="message_view_show_more_attachments_action">Més…</string>
   <string name="message_view_no_viewer">No ha estat capaç de trobar un visualitzador per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descarrega el missatge complet</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -797,7 +796,6 @@
   <string name="fetching_attachment_dialog_title_send">Enviant missatge</string>
   <string name="fetching_attachment_dialog_title_save">Guardant esborrany</string>
   <string name="fetching_attachment_dialog_message">Recuperant adjunt…</string>
-  <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
 </resources>

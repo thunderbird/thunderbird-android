@@ -28,7 +28,7 @@
   <string name="app_revision_fmt">Parandusteave: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">me kasutame järgnevaid kolmanda osapoole teeke: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emotikonid: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">loe meili manuseid</string>
+  <string name="read_attachment_label">Loe meili manuseid</string>
   <string name="read_attachment_desc">Luba sellel appil lugeda meili manuseid.</string>
   <string name="read_messages_label">Loe meilisõnumeid</string>
   <string name="read_messages_desc">Luba sellel appil lugeda meilisõnumeid.</string>
@@ -193,7 +193,6 @@
   <string name="message_view_attachment_download_action">Salvesta</string>
   <string name="message_view_status_attachment_not_saved">Ei saanud manust salvestada SD kaardile</string>
   <string name="message_view_show_pictures_action">Näita pilte</string>
-  <string name="message_view_show_more_attachments_action">Veel…</string>
   <string name="message_view_no_viewer">Ei leia <xliff:g id="mimetype">%s</xliff:g> käivitamiseks programmi.</string>
   <string name="message_view_download_remainder">Laadi kogu kiri alla</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -798,23 +797,6 @@
   <string name="fetching_attachment_dialog_title_send">Saadab sõnumit</string>
   <string name="fetching_attachment_dialog_title_save">Salvestab mustandit</string>
   <string name="fetching_attachment_dialog_message">Toob manust…</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_canceled_by_user">Kasutaja kustutatud</string>
-  <string name="openpgp_result_no_signature">Ilma allkirjata</string>
-  <string name="openpgp_result_invalid_signature">Vigane allkiri</string>
-  <string name="openpgp_result_signature_uncertified">Allkirjastas (ilma sertifikaadita)</string>
-  <string name="openpgp_result_signature_certified">Allkirjastas</string>
-  <string name="openpgp_result_signature_expired_key">Võti on aegunud!</string>
-  <string name="openpgp_result_signature_revoked_key">Võti on tühistatud</string>
-  <string name="openpgp_result_signature_insecure">Ebaturvaline!</string>
-  <string name="openpgp_result_signature_missing_key">Tundmatu avalik võti</string>
-  <string name="openpgp_result_encrypted">Krüpeeritud</string>
-  <string name="openpgp_result_not_encrypted">Krüpteerimata</string>
-  <string name="openpgp_result_decryption_insecure">Ebaturvaline</string>
-  <string name="openpgp_result_action_show">Näita</string>
-  <string name="openpgp_result_action_lookup">Otsing</string>
-  <string name="openpgp_result_no_name">Ima nimeta</string>
-  <string name="openpgp_result_no_email">Ima ekirjata</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Kasuta kliendi sertifikaati</string>
   <string name="client_certificate_spinner_empty">Kliendi sertifikaati ei ole</string>
@@ -822,9 +804,7 @@
   <string name="client_certificate_retrieval_failure">Sertifikaadi ei õnnestunud saada aliasele \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Täpsemad valikud</string>
   <string name="client_certificate_expired">Kliendi sertifikaat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ei ole veel kehtiv või on aegunud (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Mittetäielik sõnum</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Dekrüpteerimiseks klikka \'Laadi kogu meilisõnim alla\'.</string>
   <string name="preview_encrypted">*Krüpeeritud*</string>
   <string name="add_from_contacts">Lisa kontaktide hulgast</string>
   <string name="crypto_settings_ok">Jätka</string>

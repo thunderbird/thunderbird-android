@@ -89,6 +89,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="cancel_action">Mégse</string>
   <string name="send_action">Küldés</string>
   <string name="send_again_action">Újraküldés</string>
+  <string name="empty_subject">A Tárgy mező üres, kattints újra, ha így szeretnéd elküldeni</string>
   <string name="select_action">Kijelölés</string>
   <string name="deselect_action">Kijelölés törlése</string>
   <string name="reply_action">Válasz</string>
@@ -99,7 +100,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="forward_action">Továbbítás</string>
   <string name="move_action">Áthelyezés</string>
   <string name="single_message_options_action">Küldés…</string>
-  <string name="refile_action">Újratöltés…</string>
+  <string name="refile_action">Rendszerezés…</string>
   <string name="done_action">Kész</string>
   <string name="discard_action">Mégse</string>
   <string name="save_draft_action">Mentés piszkozatként</string>
@@ -146,6 +147,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="status_loading_more">Üzenetek betöltése…</string>
   <string name="status_network_error">Kapcsolódási hiba</string>
   <string name="status_invalid_id_error">Nincs ilyen üzenet</string>
+  <string name="status_loading_error">Üzenetbetöltési hiba</string>
   <string name="status_loading_more_failed">Hibás letöltések újratöltése</string>
   <string name="load_more_messages_fmt">Az utolsó <xliff:g id="messages_to_load">%d</xliff:g> levél frissítése</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -173,6 +175,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_title">Hitelesítései hiba: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Ellenőrizze a kiszolgáló beállításait</string>
+  <string name="notification_authentication_error_title">Nem sikerült a hitelesítés</string>
   <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
   <string name="notification_bg_send_ticker">Küldés a <xliff:g id="account">%s</xliff:g> fiókkal</string>
@@ -222,9 +225,9 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="message_view_attachment_download_action">Mentés</string>
   <string name="message_view_status_attachment_not_saved">Nem lehet a mellékletet az SD kártyára menteni.</string>
   <string name="message_view_show_pictures_action">Képek mutatása</string>
-  <string name="message_view_show_more_attachments_action">Egyéb…</string>
   <string name="message_view_no_viewer">%s nincs társítva semmihez.</string>
   <string name="message_view_download_remainder">Teljes üzenet letöltése</string>
+  <string name="message_view_toast_unable_to_display_message">Nem sikerült megjeleníteni az üzenetet</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Minden fejléc letöltve, de nincs mind megjelenítve.</string>
   <string name="message_additional_headers_retrieval_failed">Nem sikerült betölteni az összes fejlécet adatbázishiba, vagy email szerver hiba miatt.</string>
@@ -432,6 +435,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="account_settings_notify_sync_summary">Értesítés az állapotsoron adatszinkronizálásánál</string>
   <string name="account_settings_notify_self_label">Értesítés küldéskor</string>
   <string name="account_settings_notify_self_summary">Mutassa az állapotsoron ha a küldés sikeres volt</string>
+  <string name="account_notify_contacts_mail_only_label">Csak a névjegyzékből</string>
   <string name="account_settings_notification_opens_unread_label">Értesítés megnyitása</string>
   <string name="account_settings_notification_opens_unread_summary">Értesítésre kattintva megnyitja az olvasatlan üzeneteket</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Üzenet megjelölése olvasottnak megnyitáskor</string>
@@ -736,6 +740,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="font_size_larger">Nagyobb</string>
   <string name="miscellaneous_preferences">Egyéb</string>
   <string name="error_activity_not_found">Nincs megfelelő alkalmazás ehhez a művelethez.</string>
+  <string name="send_failed_reason">A levelet nem sikerült elküldeni: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Menti piszkozatként?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Menti vagy mégsem az üzenetet?</string>
   <string name="confirm_discard_draft_message_title">Üzenet elvetése?</string>
@@ -749,6 +754,8 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Törlés</string>
   <string name="dialog_confirm_delete_cancel_button">Nem törlöm</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Igen</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Nem</string>
   <string name="dialog_confirm_spam_title">Levélszemét mappa áthelyezésének jóváhagyása</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Valóban át akarja helyezni ezt a levelet a spam mappába?</item>
@@ -878,25 +885,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="fetching_attachment_dialog_title_save">Piszkozat mentése</string>
   <string name="fetching_attachment_dialog_message">Melléklet letöltése…</string>
   <string name="auth_external_error">Hitelesítés sikertelen. A szerver nem támogatja a SASL EXTERNAL lehetőséget. Ezt okozhatja valamilyen gond a kliens tanúsítványával (lejárt, ismeretlen hitelesítő), vagy bármi más beállítási probléma.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Titkosítás feloldása sikertelen: %s</string>
-  <string name="openpgp_unknown_error">Ismeretlen OpenPGP Hiba</string>
-  <string name="openpgp_canceled_by_user">Felhasználó által megszakítva</string>
-  <string name="openpgp_result_no_signature">Nincs aláírva</string>
-  <string name="openpgp_result_invalid_signature">Érvénytelen aláírás!</string>
-  <string name="openpgp_result_signature_uncertified">Aláírva általa (nem hitelesített!):</string>
-  <string name="openpgp_result_signature_certified">Aláírva általa:</string>
-  <string name="openpgp_result_signature_expired_key">Kulcs lejárt!</string>
-  <string name="openpgp_result_signature_revoked_key">Kulcs visszavonva!</string>
-  <string name="openpgp_result_signature_insecure">Megbízhatatlan!</string>
-  <string name="openpgp_result_signature_missing_key">Ismeretlen nyilvános kulcs</string>
-  <string name="openpgp_result_encrypted">Titkosított</string>
-  <string name="openpgp_result_not_encrypted">Nem Titkosított</string>
-  <string name="openpgp_result_decryption_insecure">Megbízhatatlan</string>
-  <string name="openpgp_result_action_show">Megjelenítés</string>
-  <string name="openpgp_result_action_lookup">Kikeresés</string>
-  <string name="openpgp_result_no_name">Nincs név</string>
-  <string name="openpgp_result_no_email">Nincs email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Ügyfél tanúsítvány használata</string>
   <string name="client_certificate_spinner_empty">Ügyfél tanúsítvány nem található</string>
@@ -904,11 +892,10 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="client_certificate_retrieval_failure">A klienstanúsítvány letöltése sikertelen a következő alias-nak: \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Haladó beállítások</string>
   <string name="client_certificate_expired">A kliens tanúsítványa \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" lejárt, vagy még nem érvényes (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Befejezetlen üzenet</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Kattintson a \'Teljes üzenet letöltése\'-re a titkosítás feloldásának engedélyezéséhez.</string>
   <string name="preview_encrypted">*Titkosítva*</string>
   <string name="add_from_contacts">Hozzáadás névjegyekből</string>
+  <string name="crypto_settings_cancel">Mégse</string>
   <string name="crypto_settings_ok">Tovább</string>
   <string name="recipient_cc">Másolat</string>
   <string name="recipient_bcc">Titkos másolat</string>
@@ -919,4 +906,11 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="address_type_work">Munka</string>
   <string name="address_type_other">Egyéb</string>
   <string name="address_type_mobile">Mobil</string>
+  <string name="compose_error_no_draft_folder">Ehhez a fiókhoz nincs beállított Piszkozatok mappa!</string>
+  <string name="compose_error_no_signing_key">Nincs beállítva kulcs az aláíráshoz! Ellenőrizd a beállításokat.</string>
+  <string name="crypto_info_ok">OK</string>
+  <string name="locked_attach_unencrypted">Ez a rész nem volt kódolva és lehet, hogy nem biztonságos.</string>
+  <string name="messageview_decrypt_retry">Újra</string>
+  <string name="messageview_crypto_warning_title">Biztonsági figyelmeztetés</string>
+  <string name="recipient_error_non_ascii">A különleges karakterek jelenleg nem támogatottak!</string>
 </resources>

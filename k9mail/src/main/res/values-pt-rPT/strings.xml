@@ -34,7 +34,7 @@ As suas funcionalidades melhoradas incluem:
 <li>Guardar anexos para o cartão SD</li>
 <li>Esvaziar lixo</li>
 <li>Ordenação de mensagens</li>
-<li>...e mais</li>
+<li>…e mais</li>
 </ul>
 <p>
 Por favor note que o K-9 não suporta a maioria das contas gratuitas do Hotmail e, como muitos clientes de email 
@@ -58,9 +58,9 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="app_revision_fmt">Informação da revisão: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Estamos a usar as seguintes bibliotecas de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Ícones emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">ler Anexos de email</string>
+  <string name="read_attachment_label">Ler Anexos de email</string>
   <string name="read_attachment_desc">Permite que esta aplicação leia os seus anexos de email.</string>
-  <string name="read_messages_label">ler Emails</string>
+  <string name="read_messages_label">Ler Emails</string>
   <string name="read_messages_desc">Permite que esta aplicação leia os seus emails.</string>
   <string name="delete_messages_label">Eliminar emails</string>
   <string name="delete_messages_desc">Permite que esta aplicação elimine os seus emails.</string>
@@ -99,8 +99,8 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="spam_action">Spam</string>
   <string name="forward_action">Reencaminhar</string>
   <string name="move_action">Mover</string>
-  <string name="single_message_options_action">Enviar...</string>
-  <string name="refile_action">Relocar...</string>
+  <string name="single_message_options_action">Enviar…</string>
+  <string name="refile_action">Relocar…</string>
   <string name="done_action">Terminado</string>
   <string name="discard_action">Rejeitar</string>
   <string name="save_draft_action">Guardar como rascunho</string>
@@ -231,7 +231,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_view_attachment_download_action">Guardar</string>
   <string name="message_view_status_attachment_not_saved">Não foi possível guardar o anexo para o cartão SD.</string>
   <string name="message_view_show_pictures_action">Mostrar imagens</string>
-  <string name="message_view_show_more_attachments_action">Mais...</string>
   <string name="message_view_no_viewer">Incapaz de encontrar visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Transferir mensagem completa</string>
   <string name="message_view_toast_unable_to_display_message">Incapaz de exibir a mensagem</string>
@@ -624,7 +623,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="sort_unread_last">Mensagens lidas primeiro</string>
   <string name="sort_attach_first">Mensagens com anexos primeiro</string>
   <string name="sort_unattached_first">Mensagens sem anexos primeiro</string>
-  <string name="sort_by">Ordenar por...</string>
+  <string name="sort_by">Ordenar por…</string>
   <string name="sort_by_date">Data</string>
   <string name="sort_by_arrival">Chegada</string>
   <string name="sort_by_subject">Assunto</string>
@@ -644,7 +643,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_list_help_key">Del (ou D) - Eliminar\nR - Responder\nA - Responder a todos\nC - Compor\nF - Reencaminhar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar como (não) lido\nG - Estrela\nO - Tipo de ordenação\nI - Ordem de ordenação\nQ - Voltar às pastas\nS - Selecionar/desselecionar\nJ ou P - Mensagem anterior\nK ou N - Próxima mensagem</string>
   <string name="folder_list_help_key">1 - Exibir apenas pastas de 1ª classe\n2 - Exibir pastas de 1ª e 2ª classe\n3 - Exibir todas excepto pastas de 2ª classe\n4 - Exibir todas as pastas\nQ - Voltar às contas\nS - Editar definições da conta</string>
   <string name="folder_list_filter_hint">o nome da pasta contém</string>
-  <string name="folder_list_display_mode_label">Mostrar pastas...</string>
+  <string name="folder_list_display_mode_label">Mostrar pastas…</string>
   <string name="folder_list_display_mode_all">Todas as pastas</string>
   <string name="folder_list_display_mode_first_class">Pastas de 1ª classe</string>
   <string name="folder_list_display_mode_first_and_second_class">Pastas de 1ª &amp; 2ª classe</string>
@@ -786,9 +785,9 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_import">Importar definições</string>
   <string name="settings_import_selection">Importar seleção</string>
   <string name="settings_import_global_settings">Definições globais</string>
-  <string name="settings_exporting">A exportar definições...</string>
-  <string name="settings_importing">A importar definições...</string>
-  <string name="settings_import_scanning_file">A examinar ficheiro...</string>
+  <string name="settings_exporting">A exportar definições…</string>
+  <string name="settings_importing">A importar definições…</string>
+  <string name="settings_import_scanning_file">A examinar ficheiro…</string>
   <string name="settings_export_success">As definições exportadas foram guardadas em <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">As definições globais foram importadas a partir de <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> a partir de <xliff:g id="filename">%s</xliff:g></string>
@@ -811,19 +810,19 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_import_incoming_server">Servidor de entrada (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Servidor de saída (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">A definir a palavra-passe...</item>
-    <item quantity="other">A definir as palavras-passe...</item>
+    <item quantity="one">A definir a palavra-passe…</item>
+    <item quantity="other">A definir as palavras-passe…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Usar a palavra-passe do servidor de entrada</string>
   <string name="activate_account_action">Ativar</string>
   <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" está indisponível; verifique o armazenamento</string>
-  <string name="settings_attachment_default_path">Guardar anexos para...</string>
+  <string name="settings_attachment_default_path">Guardar anexos para…</string>
   <string name="attachment_save_title">Guardar anexo</string>
   <string name="attachment_save_desc">Não foi encontrado um explorador de ficheiros. Onde gostaria de guardar este anexo?</string>
   <string name="manage_accounts_move_up_action">Mover para cima</string>
   <string name="manage_accounts_move_down_action">Mover para baixo</string>
-  <string name="manage_accounts_moving_message">A mover a conta...</string>
-  <string name="unread_widget_select_account">Mostrar contador de não lidos para...</string>
+  <string name="manage_accounts_moving_message">A mover a conta…</string>
+  <string name="unread_widget_select_account">Mostrar contador de não lidos para…</string>
   <string name="import_dialog_error_title">Aplicação de gestão de ficheiros está em falta</string>
   <string name="close">Fechar</string>
   <string name="webview_empty_message">Sem texto</string>
@@ -865,17 +864,17 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_remote_search_enabled">Ativar pesquisa no servidor</string>
   <string name="account_settings_remote_search_enabled_summary">Pesquisar mensagens no servidor em adição às que se encontram no seu dispositivo</string>
   <string name="action_remote_search">Pesquisar mensagens no servidor</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Puxar para pesquisar no servidor...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Soltar para pesquisar no servidor...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Puxar para pesquisar no servidor…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Soltar para pesquisar no servidor…</string>
   <string name="remote_search_unavailable_no_network">É necessária uma ligação à rede para pesquisar no servidor.</string>
   <string name="global_settings_background_as_unread_indicator_label">Escurecer mensagens depois da leitura</string>
   <string name="global_settings_background_as_unread_indicator_summary">Um fundo cinzento indicará que a mensagem foi lida</string>
   <string name="global_settings_threaded_view_label">Vista de conversação</string>
   <string name="global_settings_threaded_view_summary">Agrupar mensagens por conversação</string>
   <string name="upgrade_databases_title">A atualizar bases de dados</string>
-  <string name="upgrade_databases_unspecified">A atualizar bases de dados...</string>
+  <string name="upgrade_databases_unspecified">A atualizar bases de dados…</string>
   <string name="upgrade_database_format">A atualizar base de dados da conta \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">A carregar...</string>
+  <string name="message_list_loading">A carregar…</string>
   <string name="global_settings_splitview_mode_label">Mostrar ecrã dividido</string>
   <string name="global_settings_splitview_always">Sempre</string>
   <string name="global_settings_splitview_never">Nunca</string>
@@ -891,30 +890,11 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_colorize_missing_contact_pictures_summary">Colorir as fotografias dos contactos em falta</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Ações de mensagem visíveis</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Mostrar as ações selecionadas no menu da vista de mensagem</string>
-  <string name="loading_attachment">A carregar anexo...</string>
+  <string name="loading_attachment">A carregar anexo…</string>
   <string name="fetching_attachment_dialog_title_send">A enviar mensagem</string>
   <string name="fetching_attachment_dialog_title_save">A guardar rascunho</string>
-  <string name="fetching_attachment_dialog_message">A obter anexo...</string>
+  <string name="fetching_attachment_dialog_message">A obter anexo…</string>
   <string name="auth_external_error">Não foi possível autenticar. O servidor não anuncia a capacidade SASL EXTERNAL. Isto pode ser devido a um problema com o certificado de cliente (expirado, autoridade certificadora desconhecida) ou algum outro problema de configuração.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">A desencriptação falhou: %s</string>
-  <string name="openpgp_unknown_error">Erro desconhecido do OpenPGP</string>
-  <string name="openpgp_canceled_by_user">Cancelado pelo utilizador</string>
-  <string name="openpgp_result_no_signature">Não assinado</string>
-  <string name="openpgp_result_invalid_signature">Assinatura inválida!</string>
-  <string name="openpgp_result_signature_uncertified">Assinado por (não certificado!)</string>
-  <string name="openpgp_result_signature_certified">Assinado por</string>
-  <string name="openpgp_result_signature_expired_key">A chave expirou!</string>
-  <string name="openpgp_result_signature_revoked_key">A chave foi revogada!</string>
-  <string name="openpgp_result_signature_insecure">Inseguro!</string>
-  <string name="openpgp_result_signature_missing_key">Chave pública desconhecida</string>
-  <string name="openpgp_result_encrypted">Encriptado</string>
-  <string name="openpgp_result_not_encrypted">Não encriptado</string>
-  <string name="openpgp_result_decryption_insecure">Inseguro</string>
-  <string name="openpgp_result_action_show">Mostrar</string>
-  <string name="openpgp_result_action_lookup">Pesquisar</string>
-  <string name="openpgp_result_no_name">Sem nome</string>
-  <string name="openpgp_result_no_email">Sem email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Usar certificado de cliente</string>
   <string name="client_certificate_spinner_empty">Sem certificado de cliente</string>
@@ -922,11 +902,10 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="client_certificate_retrieval_failure">Falha ao obter certificado de cliente para o alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Opções avançadas</string>
   <string name="client_certificate_expired">O certificado de cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" expirou ou ainda não é válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Mensagem incompleta</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Clique em \'Transferir mensagem completa\' para permitir a desencriptação.</string>
   <string name="preview_encrypted">*Encriptado*</string>
   <string name="add_from_contacts">Adicionar a partir dos Contactos</string>
+  <string name="crypto_settings_cancel">Cancelar</string>
   <string name="crypto_settings_ok">Proceder</string>
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">Bcc</string>
@@ -938,10 +917,10 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="address_type_other">Outro</string>
   <string name="address_type_mobile">Telemóvel</string>
   <string name="compose_error_no_draft_folder">Não foi configurada uma pasta de rascunhos para esta conta!</string>
-  <string name="compose_not_saving_unencrypted">Rascunho NÃO guardado sem encriptação!</string>
-  <string name="compose_error_pgp_error">Erro com o provedor OpenPGP. Verifique as suas definições!</string>
   <string name="compose_error_no_signing_key">Não foi configurada uma chave para assinatura! Por favor verifique as suas definições.</string>
   <string name="compose_error_private_missing_keys">O modo privado está ativado, mas alguns destinatários não possuem chaves!</string>
+  <string name="crypto_mode_disabled">Não encriptar</string>
+  <string name="crypto_mode_opportunistic">Encriptar se possível</string>
   <string name="error_crypto_provider_connect">Não foi possível ligar ao provedor de encriptação, verifique as suas definições ou clique no ícone de encriptação para tentar novamente!</string>
   <string name="error_crypto_provider_ui_required">Acesso negado ao provedor de encriptação, clique no ícone de encriptação para tentar novamente!</string>
   <string name="error_crypto_inline_attach">O modo PGP/INLINE não suporta anexos!</string>
@@ -978,10 +957,9 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Ver assinante</string>
   <string name="locked_attach_unlock">Desbloquear</string>
-  <string name="locked_attach_unsigned">Esta parte não foi assinada, e pode ser insegura.</string>
   <string name="locked_attach_unencrypted">Esta parte não foi encriptada, e pode ser insegura.</string>
   <string name="locked_attach_title">Anexo desprotegido</string>
-  <string name="message_progress_text">A carregar...</string>
+  <string name="message_progress_text">A carregar…</string>
   <string name="messageview_decrypt_cancelled">A desencriptação foi cancelada.</string>
   <string name="messageview_decrypt_retry">Tentar novamente</string>
   <string name="messageview_decrypt_incomplete">A mensagem encriptada deve ser transferida para desencriptação.</string>

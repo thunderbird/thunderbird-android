@@ -57,9 +57,9 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="app_revision_fmt">Revīzijas informācija: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Mēs izmantojam sekojošas trešo pušu bibliotēkas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji ikonas: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">izlasīt e-pasta pielikumus</string>
+  <string name="read_attachment_label">Izlasīt e-pasta pielikumus</string>
   <string name="read_attachment_desc">Ļauj šai aplikācijai lasīt Jūsu e-pasta pielikumus</string>
-  <string name="read_messages_label">izlasīt e-pastus</string>
+  <string name="read_messages_label">Izlasīt e-pastus</string>
   <string name="read_messages_desc">Atļauj šai aplikācijai lasīt Jūsu e-pastus</string>
   <string name="delete_messages_label">Izdzēst e-pastus</string>
   <string name="delete_messages_desc">Atļauj šai aplikācijai izdzēst Jūsu e-pastus</string>
@@ -233,7 +233,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="message_view_attachment_download_action">Saglabāt</string>
   <string name="message_view_status_attachment_not_saved">Nevar saglabāt pielikumu uz SD kartes.</string>
   <string name="message_view_show_pictures_action">Rādīt bildes</string>
-  <string name="message_view_show_more_attachments_action">Vairāk…</string>
   <string name="message_view_no_viewer">Nevar atrast programmu, lai atvērtu <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">lejupielādēt pilnu vēstuli</string>
   <string name="message_view_toast_unable_to_display_message">Nevar parādīt vēstuli</string>
@@ -903,25 +902,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="fetching_attachment_dialog_title_save">Melnraksta saglabāšana</string>
   <string name="fetching_attachment_dialog_message">Pielikuma saņemšana…</string>
   <string name="auth_external_error">Nevar pārbaudīt identitāti. Serveris nepiedāvā SASL EXTERNAL iespējas. Varētu būt kādas problēmas ar klienta sertifikātu (beidzies derīguma termiņš, nezināms sertifikāta izdevējs) vai arī kādas iestatījumu nepilnības.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Atšifrēšana neizdevās: %s</string>
-  <string name="openpgp_unknown_error">Nezināma OpenPGP kļūda</string>
-  <string name="openpgp_canceled_by_user">Lietotājs atcēlis</string>
-  <string name="openpgp_result_no_signature">Nav parakstīts</string>
-  <string name="openpgp_result_invalid_signature">Nederīgs paraksts!</string>
-  <string name="openpgp_result_signature_uncertified">Paraksta īpašnieks (nav sertificēts!)</string>
-  <string name="openpgp_result_signature_certified">Paraksta īpašnieks</string>
-  <string name="openpgp_result_signature_expired_key">Atslēga vairs nav derīga!</string>
-  <string name="openpgp_result_signature_revoked_key">Atslēga ir atsaukta!</string>
-  <string name="openpgp_result_signature_insecure">Nav droši!</string>
-  <string name="openpgp_result_signature_missing_key">Nezināma publiska atslēga</string>
-  <string name="openpgp_result_encrypted">Šifrēts</string>
-  <string name="openpgp_result_not_encrypted">Nav šifrēts</string>
-  <string name="openpgp_result_decryption_insecure">Nedrošs</string>
-  <string name="openpgp_result_action_show">Parādīt</string>
-  <string name="openpgp_result_action_lookup">Meklēt</string>
-  <string name="openpgp_result_no_name">Nav vārda</string>
-  <string name="openpgp_result_no_email">Nav e-pasta</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Izmantot klienta sertifikātu</string>
   <string name="client_certificate_spinner_empty">Nav klienta sertifikāta</string>
@@ -929,11 +909,10 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="client_certificate_retrieval_failure">Neizdevās saņemt klienta sertifikātu aizstājvārdam \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Papildus iespējas</string>
   <string name="client_certificate_expired">Klienta sertifikātam \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" beidzies derīguma termiņš vai arī tas vēl nav derīgs (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Nepabeigta vēstule</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Noklikšķināt \"lejupielādēt pilnu vēstuli\", lai to varētu atšifrēt</string>
   <string name="preview_encrypted">*Šifrēts*</string>
   <string name="add_from_contacts">Pievienot no kontaktiem</string>
+  <string name="crypto_settings_cancel">Atcelt</string>
   <string name="crypto_settings_ok">Turpināt</string>
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">Bcc</string>
@@ -945,15 +924,18 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="address_type_other">Cits</string>
   <string name="address_type_mobile">Mobilais</string>
   <string name="compose_error_no_draft_folder">Šim kontam nav Melnrakstu mapes!</string>
-  <string name="compose_not_saving_unencrypted">Melnraksts bez šifrēšanas nav saglabāts</string>
-  <string name="compose_error_pgp_error">OpenPGP nodrošinātāja kļūda! Pārbaudiet savus iestatījumus!</string>
-  <string name="compose_error_no_signing_key">Pierakstīšanās atslēga nav atrasta! Lūdzu, pārbaudiet savus iestatījumus!</string>
-  <string name="compose_error_private_missing_keys">Darbojas privātais režīms, taču vairākiem saņēmējiem nav atslēgu!</string>
+  <string name="compose_error_no_signing_key">Pierakstīšanās kods nav atrasta! Lūdzu, pārbaudiet savus iestatījumus!</string>
+  <string name="compose_error_private_missing_keys">Darbojas privātais režīms, taču vairākiem saņēmējiem nav pieejas kodu!</string>
+  <string name="crypto_mode_disabled">Nevajag šifrēt</string>
+  <string name="crypto_mode_opportunistic">Var iešifrēt</string>
+  <string name="crypto_mode_private">Iešifrēt</string>
   <string name="error_crypto_provider_connect">Nevar savienoties ar kriptogrāfijas nodrošinātāju. Pārbaudiet savus iestatījumus vai nospiediet vēlreiz uz crypto pogas!</string>
   <string name="error_crypto_provider_ui_required">Kriptogrāfijas nodrošinātājs liedzis pieeju. Nospiediet vēlreiz crypto pogu!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE režīms neatbalsta pielikumus!</string>
   <string name="enable_inline_pgp">Iestatīt PGP/INLINE</string>
   <string name="disable_inline_pgp">Izslēgt PGP/INLINE</string>
+  <string name="enable_sign_only">Iestatīt PGP \"tikai parakstīt\"</string>
+  <string name="disable_sign_only">Atslēgt PGP \"tikai parakstīt\"</string>
   <string name="openpgp_inline_title">PGP/INLINE režīms</string>
   <string name="openpgp_inline_text">Šī vēstule nosūtīta PGP/INLINE formātā.\nTo var izmantot tikai savietojamībai:</string>
   <string name="openpgp_inline_plus_compat">Dažas lietotājprogrammas atbalsta tikai šo formātu</string>
@@ -962,6 +944,15 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="openpgp_inline_ok">Sapratu!</string>
   <string name="openpgp_inline_disable">Atslēgt</string>
   <string name="openpgp_inline_keep_enabled">Atstāt ieslēgtu</string>
+  <string name="openpgp_sign_only_ok">Sapratu!</string>
+  <string name="openpgp_sign_only_disable">Atslēgt</string>
+  <string name="openpgp_sign_only_keep_enabled">Atstāt ieslēgtu</string>
+  <string name="openpgp_dialog_sign_only_title">PGP \"tikai parakstīt\" režīms</string>
+  <string name="openpgp_dialog_sign_only_text">Šajā režīmā izvēlētais PGP pieejas kods tiks izmantots, lai izveidotu šifrētu parakstu nešifrētai vēstulei</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Vēstule netiks šifrēta, bet varēs pārbaudīt, ka tā sūtīta ar Jūsu pieejas kodu</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Paraksti var tikt bojāti, ja vēstuli sūta saņēmēju sarakstam.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Paraksti var parādīties kā \"signature.asc\" pielikums.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrētas vēstules vienmēr ietver parakstu.</string>
   <string name="crypto_msg_disabled">Vēstule nav šifrēta</string>
   <string name="crypto_msg_encrypted_error">Vēstule ir šifrēta, taču radās atšifrēšanas kļūda</string>
   <string name="crypto_msg_signed_error">Vēstule ir parakstīta, taču parakstu nevar pārbaudīt.</string>
@@ -985,7 +976,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="crypto_info_ok">Labi</string>
   <string name="crypto_info_view_key">Apskatīties parakstītāju</string>
   <string name="locked_attach_unlock">Atslēgt</string>
-  <string name="locked_attach_unsigned">Šī daļa nav parakstīta un var būt nedroša.</string>
   <string name="locked_attach_unencrypted">Šī daļa nav šifrēta un var būt nedroša.</string>
   <string name="locked_attach_title">Neaizsargāts pielikums</string>
   <string name="message_progress_text">Ielādē…</string>
@@ -1000,4 +990,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="messageview_crypto_warning_error">Radās <b>kļūda vēstules parakstā!</b></string>
   <string name="recipient_error_non_ascii">Īpaši simboli pagaidām nav atļauti!</string>
   <string name="recipient_error_parse_failed">Kļūda analizējot adresi!</string>
+  <string name="account_settings_crypto_support_sign_only">Var parakstīt nešifrētas vēstules</string>
+  <string name="error_sign_only_no_encryption">Nevar iešifrēt \"tikai parakstīt\" režīmā!</string>
+  <string name="unsigned_text_divider_label">Neparakstīts teksts</string>
 </resources>

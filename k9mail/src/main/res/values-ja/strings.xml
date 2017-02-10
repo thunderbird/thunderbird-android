@@ -58,7 +58,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">以下のライブラリを利用しています: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">絵文字アイコン: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">添付ファイルを開く</string>
+  <string name="read_attachment_label">添付ファイルを読む</string>
   <string name="read_attachment_desc">このアプリケーションでは電子メールの添付ファイルを読むことができます</string>
   <string name="read_messages_label">メールを読む</string>
   <string name="read_messages_desc">このアプリケーションがメールを読むことを許可する</string>
@@ -229,7 +229,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="message_view_attachment_download_action">保存</string>
   <string name="message_view_status_attachment_not_saved">SDカードに添付ファイルを保存できません</string>
   <string name="message_view_show_pictures_action">画像表示</string>
-  <string name="message_view_show_more_attachments_action">他…</string>
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g>のビューワーが見つかりません</string>
   <string name="message_view_download_remainder">すべてダウンロード</string>
   <string name="message_view_toast_unable_to_display_message">メッセージを表示できません</string>
@@ -237,6 +236,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="message_no_additional_headers_available">すべてのヘッダをダウンロードしましたが、表示すべき追加ヘッダはありませんでした。</string>
   <string name="message_additional_headers_retrieval_failed">追加ヘッダをデータベースまたはメールサーバから取得できませんでした。</string>
   <string name="from_same_sender">この送信者からのメールを検索</string>
+  <string name="debug_delete_local_body">デバッグ / メッセージ本文をクリア</string>
   <string name="message_discarded_toast">メールを破棄しました</string>
   <string name="message_saved_toast">下書きに保存しました</string>
   <string name="global_settings_flag_label">スターを表示</string>
@@ -269,6 +269,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_confirm_action_delete_starred">スター付きメッセージの削除 (メッセージ表示画面)</string>
   <string name="global_settings_confirm_action_spam">迷惑メール</string>
   <string name="global_settings_confirm_menu_discard">メッセージ破棄</string>
+  <string name="global_settings_confirm_menu_mark_all_read">すべてのメールを既読にする</string>
   <string name="global_settings_confirm_action_delete_notif">削除(通知領域)</string>
   <string name="global_settings_privacy_hide_useragent">メールヘッダからK-9のUser-Agentヘッダを削除する</string>
   <string name="global_settings_privacy_hide_timezone">メールヘッダにUTCタイムゾーンを利用する</string>
@@ -890,25 +891,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="fetching_attachment_dialog_title_save">下書き保存</string>
   <string name="fetching_attachment_dialog_message">添付ファイル取得中…</string>
   <string name="auth_external_error">認証できません｡ｻｰﾊﾞｰはSASL EXTERNALが利用できることを示していません｡これはｸﾗｲｱﾝﾄ証明書の問題(期限切れ､未知の認証局)又は何らかの設定の為です｡</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">復号化失敗: %s</string>
-  <string name="openpgp_unknown_error">OpenPGPの不明な異常</string>
-  <string name="openpgp_canceled_by_user">ユーザーがキャンセル</string>
-  <string name="openpgp_result_no_signature">未署名</string>
-  <string name="openpgp_result_invalid_signature">無効な署名!</string>
-  <string name="openpgp_result_signature_uncertified">署名済(証明書なし!)</string>
-  <string name="openpgp_result_signature_certified">署名済</string>
-  <string name="openpgp_result_signature_expired_key">鍵が期限切れです!</string>
-  <string name="openpgp_result_signature_revoked_key">鍵が取り消されています!</string>
-  <string name="openpgp_result_signature_insecure">安全ではありません!</string>
-  <string name="openpgp_result_signature_missing_key">不明な公開鍵</string>
-  <string name="openpgp_result_encrypted">暗号化</string>
-  <string name="openpgp_result_not_encrypted">暗号化されていません</string>
-  <string name="openpgp_result_decryption_insecure">安全ではありません</string>
-  <string name="openpgp_result_action_show">表示</string>
-  <string name="openpgp_result_action_lookup">検索</string>
-  <string name="openpgp_result_no_name">名無し</string>
-  <string name="openpgp_result_no_email">メールなし</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">ｸﾗｲｱﾝﾄ証明書を使う</string>
   <string name="client_certificate_spinner_empty">ｸﾗｲｱﾝﾄ証明書なし</string>
@@ -916,9 +898,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="client_certificate_retrieval_failure">別名 \"<xliff:g id="alias">%s</xliff:g>\" の為のｸﾗｲｱﾝﾄ証明書の取得に失敗しました</string>
   <string name="client_certificate_advanced_options">拡張設定</string>
   <string name="client_certificate_expired">ｸﾗｲｱﾝﾄ証明書 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" が、期限切れまたは不正です (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">不完全なメッセージ</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">復号化するために「すべてダウンロード」をクリックしてください。</string>
   <string name="preview_encrypted">*暗号化*</string>
   <string name="add_from_contacts">連絡先から追加</string>
   <string name="crypto_settings_cancel">キャンセル</string>
@@ -933,8 +913,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="address_type_other">その他</string>
   <string name="address_type_mobile">携帯端末</string>
   <string name="compose_error_no_draft_folder">このアカウントに下書きフォルダは設定されていません!</string>
-  <string name="compose_not_saving_unencrypted">暗号化しないと下書きは保存されません!</string>
-  <string name="compose_error_pgp_error">OpenPGP プロバイダでエラー。設定を確認してください!</string>
   <string name="compose_error_no_signing_key">署名の鍵が設定されていません。設定を確認してください。</string>
   <string name="compose_error_private_missing_keys">プライベートモードが有効になっていますが、一部の受信者の鍵がありません!</string>
   <string name="crypto_mode_disabled">暗号化しない</string>
@@ -943,8 +921,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="error_crypto_provider_connect">暗号化プロバイダに接続できません。設定を確認するか、暗号化アイコンをクリックして再実行してください!</string>
   <string name="error_crypto_provider_ui_required">暗号化プロバイダのアクセスが拒否されました。暗号化アイコンをクリックして再実行してください!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE モードは添付ファイルをサポートしていません!</string>
-  <string name="error_crypto_inline_sign_only">PGP/INLINE モードは署名専用モードをサポートしていません!</string>
-  <string name="error_crypto_sign_only_inline">署名専用モードは PGP/INLINE をサポートしていません!</string>
   <string name="enable_inline_pgp">PGP/INLINE を有効にする</string>
   <string name="disable_inline_pgp">PGP/INLINE を無効にする</string>
   <string name="enable_sign_only">PGP 署名専用を有効にする</string>
@@ -989,7 +965,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">署名者を表示</string>
   <string name="locked_attach_unlock">ロック解除</string>
-  <string name="locked_attach_unsigned">この部分は署名されていません。安全ではない可能性があります。</string>
   <string name="locked_attach_unencrypted">この部分は暗号化されていません。安全ではない可能性があります。</string>
   <string name="locked_attach_title">保護されていない添付ファイル</string>
   <string name="message_progress_text">読み込み中…</string>
@@ -1002,8 +977,19 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="messageview_crypto_warning_expired">このメッセージは <b>期限切れの鍵</b> で署名されました!</string>
   <string name="messageview_crypto_warning_insecure">このメッセージは <b>安全ではない鍵</b> で署名されました!</string>
   <string name="messageview_crypto_warning_error"><b>このメッセージの署名にエラー</b> がありました!</string>
+  <string name="messageview_crypto_warning_unsigned">このメッセージは暗号化されていますが、署名されていません。 <b>エンドツーエンドのセキュリティはありません</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">とにかくメッセージを表示する</string>
   <string name="recipient_error_non_ascii">特殊文字は現在サポートされていません!</string>
   <string name="recipient_error_parse_failed">アドレスの解析時にエラー!</string>
   <string name="account_settings_crypto_support_sign_only">暗号化されていないメッセージの署名をサポートする</string>
   <string name="error_sign_only_no_encryption">署名専用モードでは暗号化を使用できません!</string>
+  <string name="unsigned_text_divider_label">未署名のテキスト</string>
+  <string name="apg_deprecated_title">APG廃止の警告</string>
+  <string name="apg_deprecated_1">APGはもはやメンテナンスされていません!</string>
+  <string name="apg_deprecated_2">このため、APG のサポートはK-9 Mail から削除されました。</string>
+  <string name="apg_deprecated_bullet_1">開発は2014年初頭に停止しました</string>
+  <string name="apg_deprecated_bullet_2">未修正のセキュリティ問題が含まれています</string>
+  <string name="apg_learn_more">詳細については <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">ここをクリック</a> してください。</string>
+  <string name="apg_deprecated_ok">了解!</string>
+  <string name="apg">APG</string>
 </resources>
