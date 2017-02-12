@@ -13,6 +13,7 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Contacts;
@@ -26,6 +27,7 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
 import org.junit.After;
@@ -51,6 +53,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -79,6 +82,8 @@ public class MessagingControllerTest {
     private LocalSearch search;
     @Mock
     private LocalFolder localFolder;
+    @Mock
+    private LocalFolder errorFolder;
     @Mock
     private Folder remoteFolder;
     @Mock
@@ -128,6 +133,62 @@ public class MessagingControllerTest {
     @After
     public void tearDown() throws Exception {
         controller.stop();
+    }
+
+    @Test
+    public void clearFolderSynchronous_shouldOpenFolderForWriting() throws MessagingException {
+        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+
+        verify(localFolder).open(Folder.OPEN_MODE_RW);
+    }
+
+    @Test
+    public void clearFolderSynchronous_shouldClearAllMessagesInTheFolder() throws MessagingException {
+        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+
+        verify(localFolder).clearAllMessages();
+    }
+
+    @Test
+    public void clearFolderSynchronous_shouldCloseTheFolder() throws MessagingException {
+        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+
+        verify(localFolder, atLeastOnce()).close();
+    }
+
+    @Test(expected = UnavailableAccountException.class)
+    public void clearFolderSynchronous_whenStorageUnavailable_shouldThrowUnavailableAccountException() throws MessagingException {
+        doThrow(new UnavailableStorageException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
+
+        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+    }
+
+    @Test()
+    public void clearFolderSynchronous_whenExceptionThrown_shouldAddErrorMessage() throws MessagingException {
+        doThrow(new RuntimeException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
+
+        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+
+        verify(errorFolder).appendMessages(any(List.class));
+    }
+
+    @Test()
+    public void clearFolderSynchronous_whenExceptionThrown_shouldStillCloseFolder() throws MessagingException {
+        doThrow(new RuntimeException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
+
+        try {
+            controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+        } catch (Exception ignored){
+        }
+
+        verify(localFolder, atLeastOnce()).close();
+    }
+
+    @Test()
+    public void clearFolderSynchronous_shouldListFolders() throws MessagingException {
+        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+
+        verify(listener, atLeastOnce()).listFoldersStarted(account);
     }
 
     @Test
@@ -758,11 +819,15 @@ public class MessagingControllerTest {
         when(account.getLocalStore()).thenReturn(localStore);
         when(account.getStats(any(Context.class))).thenReturn(accountStats);
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
+        when(account.getErrorFolderName()).thenReturn(K9.ERROR_FOLDER_NAME);
+        when(account.getEmail()).thenReturn("user@host.com");
     }
 
-    private void configureLocalStore() {
+    private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localFolder.getName()).thenReturn(FOLDER_NAME);
+        when(localStore.getFolder(K9.ERROR_FOLDER_NAME)).thenReturn(errorFolder);
+        when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
     }
 
     private void configureRemoteStoreWithFolder() throws MessagingException {

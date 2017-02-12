@@ -3518,28 +3518,29 @@ public class MessagingController {
         putBackground("clearFolder", listener, new Runnable() {
             @Override
             public void run() {
-                LocalFolder localFolder = null;
-                try {
-                    Store localStore = account.getLocalStore();
-                    localFolder = (LocalFolder) localStore.getFolder(account.getTrashFolderName());
-                    localFolder.open(Folder.OPEN_MODE_RW);
-
-                    localFolder = account.getLocalStore().getFolder(folderName);
-                    localFolder.open(Folder.OPEN_MODE_RW);
-                    localFolder.clearAllMessages();
-                } catch (UnavailableStorageException e) {
-                    Log.i(K9.LOG_TAG, "Failed to clear folder because storage is not available - trying again later.");
-                    throw new UnavailableAccountException(e);
-                } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "clearFolder failed", e);
-                    addErrorMessage(account, null, e);
-                } finally {
-                    closeFolder(localFolder);
-                }
-
-                listFoldersSynchronous(account, false, listener);
+                clearFolderSynchronous(account, folderName, listener);
             }
         });
+    }
+
+    @VisibleForTesting
+    protected void clearFolderSynchronous(Account account, String folderName, MessagingListener listener) {
+        LocalFolder localFolder = null;
+        try {
+            localFolder = account.getLocalStore().getFolder(folderName);
+            localFolder.open(Folder.OPEN_MODE_RW);
+            localFolder.clearAllMessages();
+        } catch (UnavailableStorageException e) {
+            Log.i(K9.LOG_TAG, "Failed to clear folder because storage is not available - trying again later.");
+            throw new UnavailableAccountException(e);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "clearFolder failed", e);
+            addErrorMessage(account, null, e);
+        } finally {
+            closeFolder(localFolder);
+        }
+
+        listFoldersSynchronous(account, false, listener);
     }
 
 
