@@ -296,13 +296,14 @@ public class StoreSchemaDefinitionTest {
     }
 
     private List<String> objectsInDatabase(SQLiteDatabase db, String type) {
-        List<String> tables = new ArrayList<>();
+        List<String> databaseObjects = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT sql FROM sqlite_master WHERE type = ? AND sql IS NOT NULL", new String[] { type });
         try {
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     String sql = cursor.getString(cursor.getColumnIndex("sql"));
-                    tables.add("table".equals(type) ? sortTableColumns(sql) : sql);
+                    String resortedSql = "table".equals(type) ? sortTableColumns(sql) : sql;
+                    databaseObjects.add(resortedSql);
                     cursor.moveToNext();
                 }
             }
@@ -310,15 +311,15 @@ public class StoreSchemaDefinitionTest {
             cursor.close();
         }
 
-        return tables;
+        return databaseObjects;
     }
 
     private String sortTableColumns(String sql) {
-        int posColDef = sql.indexOf('(');
-        String colsStr = sql.substring(posColDef+1, sql.length()-1);
+        int positionOfColumnDefinitions = sql.indexOf('(');
+        String colsStr = sql.substring(positionOfColumnDefinitions+1, sql.length()-1);
         String[] cols = colsStr.split(" *, *(?![^\\(]*\\))");
         Arrays.sort(cols);
-        return sql.substring(0, posColDef+1) + TextUtils.join(", ", cols) + ")";
+        return sql.substring(0, positionOfColumnDefinitions+1) + TextUtils.join(", ", cols) + ")";
     }
 
     private void insertMessageWithSubject(SQLiteDatabase database, String subject) {
