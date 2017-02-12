@@ -297,15 +297,13 @@ public class StoreSchemaDefinitionTest {
 
     private List<String> objectsInDatabase(SQLiteDatabase db, String type) {
         List<String> databaseObjects = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT sql FROM sqlite_master WHERE type = ? AND sql IS NOT NULL", new String[] { type });
+        Cursor cursor = db.rawQuery("SELECT sql FROM sqlite_master WHERE type = ? AND sql IS NOT NULL",
+                new String[] { type });
         try {
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    String sql = cursor.getString(cursor.getColumnIndex("sql"));
-                    String resortedSql = "table".equals(type) ? sortTableColumns(sql) : sql;
-                    databaseObjects.add(resortedSql);
-                    cursor.moveToNext();
-                }
+            while (cursor.moveToNext()) {
+                String sql = cursor.getString(cursor.getColumnIndex("sql"));
+                String resortedSql = "table".equals(type) ? sortTableColumns(sql) : sql;
+                databaseObjects.add(resortedSql);
             }
         } finally {
             cursor.close();
@@ -316,10 +314,13 @@ public class StoreSchemaDefinitionTest {
 
     private String sortTableColumns(String sql) {
         int positionOfColumnDefinitions = sql.indexOf('(');
-        String colsStr = sql.substring(positionOfColumnDefinitions+1, sql.length()-1);
-        String[] cols = colsStr.split(" *, *(?![^\\(]*\\))");
-        Arrays.sort(cols);
-        return sql.substring(0, positionOfColumnDefinitions+1) + TextUtils.join(", ", cols) + ")";
+        String columnDefinitionsSql = sql.substring(positionOfColumnDefinitions + 1, sql.length() - 1);
+        String[] columnDefinitions = columnDefinitionsSql.split(" *, *(?![^(]*\\))");
+        Arrays.sort(columnDefinitions);
+
+        String sqlPrefix = sql.substring(0, positionOfColumnDefinitions + 1);
+        String sortedColumnDefinitionsSql = TextUtils.join(", ", columnDefinitions);
+        return sqlPrefix + sortedColumnDefinitionsSql + ")";
     }
 
     private void insertMessageWithSubject(SQLiteDatabase database, String subject) {
