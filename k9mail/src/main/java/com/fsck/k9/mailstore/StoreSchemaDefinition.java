@@ -12,6 +12,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.migrations.Migrations;
 import com.fsck.k9.mailstore.migrations.MigrationsHelper;
 import com.fsck.k9.preferences.Storage;
@@ -89,7 +90,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 "poll_class TEXT, " +
                 "push_class TEXT, " +
                 "display_class TEXT, " +
-                "notify_class TEXT, " +
+                "notify_class TEXT default '"+ Folder.FolderClass.INHERITED.name() + "', " +
                 "more_messages TEXT default \"unknown\"" +
                 ")");
 
