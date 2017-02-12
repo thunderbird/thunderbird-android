@@ -23,6 +23,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -314,6 +315,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         alternatesPopup.show();
         ListView listView = alternatesPopup.getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+        alternatesPopup.dismiss();
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
