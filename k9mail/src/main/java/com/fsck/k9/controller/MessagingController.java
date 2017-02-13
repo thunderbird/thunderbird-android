@@ -82,6 +82,7 @@ import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
@@ -140,6 +141,7 @@ public class MessagingController {
     private final ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
+    private final TransportProvider transportProvider;
 
 
     private MessagingListener checkMailListener = null;
@@ -151,17 +153,20 @@ public class MessagingController {
             Context appContext = context.getApplicationContext();
             NotificationController notificationController = NotificationController.newInstance(appContext);
             Contacts contacts = Contacts.getInstance(context);
-            inst = new MessagingController(appContext, notificationController, contacts);
+            TransportProvider transportProvider = TransportProvider.getInstance();
+            inst = new MessagingController(appContext, notificationController, contacts, transportProvider);
         }
         return inst;
     }
 
 
     @VisibleForTesting
-    MessagingController(Context context, NotificationController notificationController, Contacts contacts) {
+    MessagingController(Context context, NotificationController notificationController,
+                        Contacts contacts, TransportProvider transportProvider) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
+        this.transportProvider = transportProvider;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -2717,7 +2722,8 @@ public class MessagingController {
     /**
      * Attempt to send any messages that are sitting in the Outbox.
      */
-    private void sendPendingMessagesSynchronous(final Account account) {
+    @VisibleForTesting
+    protected void sendPendingMessagesSynchronous(final Account account) {
         LocalFolder localFolder = null;
         Exception lastFailure = null;
         boolean wasPermanentFailure = false;
@@ -2726,6 +2732,9 @@ public class MessagingController {
             localFolder = localStore.getFolder(
                               account.getOutboxFolderName());
             if (!localFolder.exists()) {
+                if (K9.DEBUG) {
+                    Log.v(K9.LOG_TAG, "Outbox does not exist");
+                }
                 return;
             }
             for (MessagingListener l : getListeners()) {
@@ -2748,9 +2757,11 @@ public class MessagingController {
             fp.add(FetchProfile.Item.BODY);
 
             if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + localFolder.getId() + ") for messages to send");
+                Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName()
+                        + "' (" + localFolder.getId() + ") for messages to send");
 
-            Transport transport = Transport.getInstance(K9.app, account);
+            Transport transport = transportProvider.getInstance(K9.app, account);
+
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
                     message.destroy();
@@ -2762,30 +2773,24 @@ public class MessagingController {
                     if (oldCount != null) {
                         count = oldCount;
                     }
-
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Send count for message " + message.getUid() + " is " + count.get());
 
                     if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS) {
-                        Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() + " can't be delivered after " + K9.MAX_SEND_ATTEMPTS + " attempts.  Giving up until the user restarts the device");
+                        Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() + " can't be delivered after "
+                                + K9.MAX_SEND_ATTEMPTS + " attempts.  Giving up until the user restarts the device");
                         notificationController.showSendFailedNotification(account,
                                 new MessagingException(message.getSubject()));
                         continue;
                     }
 
-
-
                     localFolder.fetch(Collections.singletonList(message), fp, null);
                     try {
-
-
                         if (message.getHeader(K9.IDENTITY_HEADER).length > 0) {
                             Log.v(K9.LOG_TAG, "The user has set the Outbox and Drafts folder to the same thing. " +
                                   "This message appears to be a draft, so K-9 will not send it");
                             continue;
-
                         }
-
 
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
                         if (K9.DEBUG)
@@ -2797,24 +2802,7 @@ public class MessagingController {
                         for (MessagingListener l : getListeners()) {
                             l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
                         }
-                        if (!account.hasSentFolder()) {
-                            if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Account does not have a sent mail folder; deleting sent message");
-                            message.setFlag(Flag.DELETED, true);
-                        } else {
-                            LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
-                            if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
-
-                            localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
-
-                            if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
-
-                            PendingCommand command = PendingAppend.create(localSentFolder.getName(), message.getUid());
-                            queuePendingCommand(account, command);
-                            processPendingCommands(account);
-                        }
+                        moveOrDeleteSentMessage(account, localStore, localFolder, message);
                     } catch (AuthenticationFailedException e) {
                         lastFailure = e;
                         wasPermanentFailure = false;
@@ -2841,9 +2829,7 @@ public class MessagingController {
                 } catch (Exception e) {
                     lastFailure = e;
                     wasPermanentFailure = false;
-
                     Log.e(K9.LOG_TAG, "Failed to fetch message for sending", e);
-
                     addErrorMessage(account, "Failed to fetch message for sending", e);
                     notifySynchronizeMailboxFailed(account, localFolder, e);
                 }
@@ -2864,6 +2850,9 @@ public class MessagingController {
             Log.i(K9.LOG_TAG, "Failed to send pending messages because storage is not available - trying again later.");
             throw new UnavailableAccountException(e);
         } catch (Exception e) {
+            if (K9.DEBUG) {
+                Log.v(K9.LOG_TAG, "Failed to send pending messages", e);
+            }
             for (MessagingListener l : getListeners()) {
                 l.sendPendingMessagesFailed(account);
             }
@@ -2874,6 +2863,28 @@ public class MessagingController {
                 notificationController.clearSendFailedNotification(account);
             }
             closeFolder(localFolder);
+        }
+    }
+
+    private void moveOrDeleteSentMessage(Account account, LocalStore localStore,
+                        LocalFolder localFolder, LocalMessage message) throws MessagingException {
+        if (!account.hasSentFolder()) {
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "Account does not have a sent mail folder; deleting sent message");
+            message.setFlag(Flag.DELETED, true);
+        } else {
+            LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+
+            localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
+
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+
+            PendingCommand command = PendingAppend.create(localSentFolder.getName(), message.getUid());
+            queuePendingCommand(account, command);
+            processPendingCommands(account);
         }
     }
 

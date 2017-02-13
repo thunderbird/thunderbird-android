@@ -17,6 +17,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -24,6 +26,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -36,12 +40,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowLog;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -54,10 +60,12 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 
@@ -65,6 +73,7 @@ import static org.mockito.Mockito.when;
 @RunWith(K9RobolectricTestRunner.class)
 public class MessagingControllerTest {
     private static final String FOLDER_NAME = "Folder";
+    private static final String SENT_FOLDER_NAME = "Sent";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
     private static final String MESSAGE_UID1 = "message-uid1";
 
@@ -85,6 +94,8 @@ public class MessagingControllerTest {
     @Mock
     private LocalFolder errorFolder;
     @Mock
+    private LocalFolder sentFolder;
+    @Mock
     private Folder remoteFolder;
     @Mock
     private LocalStore localStore;
@@ -92,6 +103,10 @@ public class MessagingControllerTest {
     private Store remoteStore;
     @Mock
     private NotificationController notificationController;
+    @Mock
+    private TransportProvider transportProvider;
+    @Mock
+    private Transport transport;
     @Captor
     private ArgumentCaptor<List<Message>> messageListCaptor;
     @Captor
@@ -116,15 +131,18 @@ public class MessagingControllerTest {
     private LocalMessage localNewMessage1;
     @Mock
     private LocalMessage localNewMessage2;
+    @Mock
+    private LocalMessage localMessageToSend1;
     private volatile boolean hasFetchedMessage = false;
 
 
     @Before
     public void setUp() throws MessagingException {
+        ShadowLog.stream = System.out;
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
-        controller = new MessagingController(appContext, notificationController, contacts);
+        controller = new MessagingController(appContext, notificationController, contacts, transportProvider);
 
         configureAccount();
         configureLocalStore();
@@ -164,12 +182,14 @@ public class MessagingControllerTest {
     }
 
     @Test()
-    public void clearFolderSynchronous_whenExceptionThrown_shouldAddErrorMessage() throws MessagingException {
-        doThrow(new RuntimeException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
+    public void clearFolderSynchronous_whenExceptionThrown_shouldAddErrorMessageInDebug() throws MessagingException {
+        if (K9.DEBUG) {
+            doThrow(new RuntimeException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
 
-        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+            controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
 
-        verify(errorFolder).appendMessages(any(List.class));
+            verify(errorFolder).appendMessages(any(List.class));
+        }
     }
 
     @Test()
@@ -532,6 +552,112 @@ public class MessagingControllerTest {
         verify(listener).remoteSearchFinished(FOLDER_NAME, 0, 50, Collections.<Message>emptyList());
     }
 
+    @Test
+    public void sendPendingMessagesSynchronous_withNonExistentOutbox_shouldNotStartSync() throws MessagingException {
+        when(account.getOutboxFolderName()).thenReturn(FOLDER_NAME);
+        when(localFolder.exists()).thenReturn(false);
+        controller.addListener(listener);
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verifyZeroInteractions(listener);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_shouldCallListenerOnStart() throws MessagingException {
+        setupAccountWithMessageToSend();
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(listener).sendPendingMessagesStarted(account);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_shouldSetProgress() throws MessagingException {
+        setupAccountWithMessageToSend();
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(listener).synchronizeMailboxProgress(account, "Sent", 0, 1);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_shouldSendMessageUsingTransport() throws MessagingException {
+        setupAccountWithMessageToSend();
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(transport).sendMessage(localMessageToSend1);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_shouldSetAndRemoveSendInProgressFlag() throws MessagingException {
+        setupAccountWithMessageToSend();
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        InOrder ordering = inOrder(localMessageToSend1, transport);
+        ordering.verify(localMessageToSend1).setFlag(Flag.X_SEND_IN_PROGRESS, true);
+        ordering.verify(transport).sendMessage(localMessageToSend1);
+        ordering.verify(localMessageToSend1).setFlag(Flag.X_SEND_IN_PROGRESS, false);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_shouldMarkSentMessageAsSeen() throws MessagingException {
+        setupAccountWithMessageToSend();
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(localMessageToSend1).setFlag(Flag.SEEN, true);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_whenMessageSentSuccesfully_shouldUpdateProgress() throws MessagingException {
+        setupAccountWithMessageToSend();
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(listener).synchronizeMailboxProgress(account, "Sent", 1, 1);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_shouldUpdateProgress() throws MessagingException {
+        setupAccountWithMessageToSend();
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(listener).synchronizeMailboxProgress(account, "Sent", 1, 1);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_withAuthenticationFailure_shouldNotify() throws MessagingException {
+        setupAccountWithMessageToSend();
+        doThrow(new AuthenticationFailedException("Test")).when(transport).sendMessage(localMessageToSend1);
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(notificationController).showAuthenticationErrorNotification(account, false);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_withCertificateFailure_shouldNotify() throws MessagingException {
+        setupAccountWithMessageToSend();
+        doThrow(new CertificateValidationException("Test")).when(transport).sendMessage(localMessageToSend1);
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(notificationController).showCertificateErrorNotification(account, false);
+    }
+
+    @Test
+    public void sendPendingMessagesSynchronous_shouldCallListenerOnCompletion() throws MessagingException {
+        setupAccountWithMessageToSend();
+
+        controller.sendPendingMessagesSynchronous(account);
+
+        verify(listener).sendPendingMessagesCompleted(account);
+    }
+
 
     @Test
     public void synchronizeMailboxSynchronous_withOneMessageInRemoteFolder_shouldFinishWithoutError()
@@ -756,6 +882,20 @@ public class MessagingControllerTest {
         assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(2).get(0));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
         assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
+    }
+
+    private void setupAccountWithMessageToSend() throws MessagingException {
+        when(account.getOutboxFolderName()).thenReturn(FOLDER_NAME);
+        when(account.hasSentFolder()).thenReturn(true);
+        when(account.getSentFolderName()).thenReturn(SENT_FOLDER_NAME);
+        when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
+        when(sentFolder.getId()).thenReturn(1L);
+        when(localFolder.exists()).thenReturn(true);
+        when(transportProvider.getInstance(appContext, account)).thenReturn(transport);
+        when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
+        when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
+        when(localMessageToSend1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});
+        controller.addListener(listener);
     }
 
     private void respondToFetchEnvelopesWithMessage(final Message message) throws MessagingException {

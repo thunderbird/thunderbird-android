@@ -15,23 +15,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public abstract class Transport {
+
     protected static final int SOCKET_CONNECT_TIMEOUT = 10000;
 
     // RFC 1047
     protected static final int SOCKET_READ_TIMEOUT = 300000;
-
-    public static synchronized Transport getInstance(Context context, StoreConfig storeConfig) 
-            throws MessagingException {
-        String uri = storeConfig.getTransportUri();
-        if (uri.startsWith("smtp")) {
-            OAuth2TokenProvider oauth2TokenProvider = null;
-            return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context), oauth2TokenProvider);
-        } else if (uri.startsWith("webdav")) {
-            return new WebDavTransport(storeConfig);
-        } else {
-            throw new MessagingException("Unable to locate an applicable Transport for " + uri);
-        }
-    }
 
     /**
      * Decodes the contents of transport-specific URIs and puts them into a {@link ServerSettings}
