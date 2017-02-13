@@ -476,30 +476,8 @@ public class FolderList extends K9ListActivity {
     }
 
     private void onClearFolder(Account account, String folderName) {
-        // There has to be a cheaper way to get at the localFolder object than this
-        LocalFolder localFolder = null;
-        try {
-            if (account == null || folderName == null || !account.isAvailable(FolderList.this)) {
-                Log.i(K9.LOG_TAG, "not clear folder of unavailable account");
-                return;
-            }
-            localFolder = account.getLocalStore().getFolder(folderName);
-            localFolder.open(Folder.OPEN_MODE_RW);
-            localFolder.clearAllMessages();
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Exception while clearing folder", e);
-        } finally {
-            if (localFolder != null) {
-                localFolder.close();
-            }
-        }
-
-        onRefresh(!REFRESH_REMOTE);
+        MessagingController.getInstance(getApplication()).clearFolder(account, folderName, mAdapter.mListener);
     }
-
-
-
-
 
     private void sendMail(Account account) {
         MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);

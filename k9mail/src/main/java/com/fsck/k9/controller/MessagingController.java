@@ -53,6 +53,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -3512,6 +3513,36 @@ public class MessagingController {
             }
         });
     }
+
+    public void clearFolder(final Account account, final String folderName, final ActivityListener listener) {
+        putBackground("clearFolder", listener, new Runnable() {
+            @Override
+            public void run() {
+                clearFolderSynchronous(account, folderName, listener);
+            }
+        });
+    }
+
+    @VisibleForTesting
+    protected void clearFolderSynchronous(Account account, String folderName, MessagingListener listener) {
+        LocalFolder localFolder = null;
+        try {
+            localFolder = account.getLocalStore().getFolder(folderName);
+            localFolder.open(Folder.OPEN_MODE_RW);
+            localFolder.clearAllMessages();
+        } catch (UnavailableStorageException e) {
+            Log.i(K9.LOG_TAG, "Failed to clear folder because storage is not available - trying again later.");
+            throw new UnavailableAccountException(e);
+        } catch (Exception e) {
+            Log.e(K9.LOG_TAG, "clearFolder failed", e);
+            addErrorMessage(account, null, e);
+        } finally {
+            closeFolder(localFolder);
+        }
+
+        listFoldersSynchronous(account, false, listener);
+    }
+
 
     /**
      * Find out whether the account type only supports a local Trash folder.
