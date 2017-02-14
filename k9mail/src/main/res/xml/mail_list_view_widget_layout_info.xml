@@ -4,6 +4,8 @@
     android:initialLayout="@layout/mail_list_view_widget_layout"
     android:minHeight="180dp"
     android:minWidth="250dp"
+    android:minResizeWidth="180dp"
+    android:minResizeHeight="110dp"
     android:previewImage="@drawable/mail_list_widget_icon"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
