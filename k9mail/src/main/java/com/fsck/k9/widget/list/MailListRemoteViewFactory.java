@@ -137,7 +137,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
     @Override
     public RemoteViews getLoadingView() {
         RemoteViews loadingView = new RemoteViews(context.getPackageName(), R.layout.mail_list_loading_view);
-        loadingView.setTextViewText(R.id.loadingText, "Loading emails");
+        loadingView.setTextViewText(R.id.loadingText, context.getString(R.string.mail_list_widget_loading));
         loadingView.setViewVisibility(R.id.loadingText, View.VISIBLE);
         return loadingView;
     }
