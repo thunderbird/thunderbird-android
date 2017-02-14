@@ -9,10 +9,10 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Binder;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.View;
@@ -40,6 +40,8 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
     private final Calendar calendar;
     private final ArrayList<MailItem> mailItems = new ArrayList<>(25);
     private boolean senderAboveSubject;
+    private int readTextColor;
+    private int unreadTextColor;
 
 
     public MailListRemoteViewFactory(Context context) {
@@ -50,6 +52,8 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
     @Override
     public void onCreate() {
         senderAboveSubject = K9.messageListSenderAboveSubject();
+        readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read);
+        unreadTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_unread);
     }
 
     @Override
@@ -116,7 +120,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         remoteView.setTextViewText(R.id.mail_date, item.getDateFormatted("%d %s"));
         remoteView.setTextViewText(R.id.mail_preview, item.preview);
 
-        int textColor = item.getColor();
+        int textColor = item.getTextColor();
         remoteView.setTextColor(R.id.sender, textColor);
         remoteView.setTextColor(R.id.mail_subject, textColor);
         remoteView.setTextColor(R.id.mail_date, textColor);
@@ -189,8 +193,8 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
             this.hasAttachment = hasAttachment;
         }
 
-        int getColor() {
-            return unread ? Color.BLACK : Color.parseColor("#444444");
+        int getTextColor() {
+            return unread ? unreadTextColor : readTextColor;
         }
 
         String getDateFormatted(String format) {
