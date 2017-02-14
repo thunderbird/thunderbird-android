@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -133,7 +132,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         }
 
         Intent intent = new Intent();
-        intent.putExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, item.uri);
+        intent.setData(item.uri);
         remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent);
         return remoteView;
     }

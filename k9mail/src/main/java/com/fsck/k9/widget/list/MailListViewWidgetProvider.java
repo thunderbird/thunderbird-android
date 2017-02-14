@@ -16,8 +16,6 @@ import com.fsck.k9.activity.MessageList;
 
 
 public class MailListViewWidgetProvider extends AppWidgetProvider {
-    private static String ACTION_VIEW_MAIL_ITEM = "VIEW_MAIL_ITEM";
-    private static String ACTION_COMPOSE_EMAIL = "COMPOSE_EMAIL";
     private static String ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST";
 
 
@@ -68,36 +66,20 @@ public class MailListViewWidgetProvider extends AppWidgetProvider {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
-        } else if (action.equals(ACTION_VIEW_MAIL_ITEM)) {
-            String messageUri = intent.getStringExtra(AppWidgetManager.EXTRA_CUSTOM_INFO);
-            Intent viewMessageIntent = new Intent(context, MessageList.class);
-            viewMessageIntent.setAction(Intent.ACTION_VIEW);
-            viewMessageIntent.setData(Uri.parse(messageUri));
-            startActivity(context, viewMessageIntent);
-        } else if (action.equals(ACTION_COMPOSE_EMAIL)) {
-            Intent composeIntent = new Intent(context, MessageCompose.class);
-            composeIntent.setAction(MessageCompose.ACTION_COMPOSE);
-            startActivity(context, composeIntent);
         }
     }
 
-    private void startActivity(Context context, Intent intent) {
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
     private PendingIntent viewActionTemplatePendingIntent(Context context) {
-        Intent intent = new Intent(context, MailListViewWidgetProvider.class);
-        intent.setAction(ACTION_VIEW_MAIL_ITEM);
+        Intent intent = new Intent(context, MessageList.class);
+        intent.setAction(Intent.ACTION_VIEW);
 
-        return PendingIntent.getBroadcast(context, MessageList.REQUEST_MASK_PENDING_INTENT, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent composeActionPendingIntent(Context context) {
-        Intent intent = new Intent(context, MailListViewWidgetProvider.class);
-        intent.setAction(ACTION_COMPOSE_EMAIL);
+        Intent intent = new Intent(context, MessageCompose.class);
+        intent.setAction(MessageCompose.ACTION_COMPOSE);
 
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
