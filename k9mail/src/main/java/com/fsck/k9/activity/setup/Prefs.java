@@ -56,12 +56,12 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_LANGUAGE = "language";
     private static final String PREFERENCE_THEME = "theme";
     private static final String PREFERENCE_MESSAGE_VIEW_THEME = "messageViewTheme";
-    private static final String PREFERENCE_FIXED_MESSAGE_THEME = "fixedMessageViewTheme";
-    private static final String PREFERENCE_COMPOSER_THEME = "messageComposeTheme";
+    private static final String PREFERENCE_FIXED_MESSAGE_THEME = "fixed_message_view_theme";
+    private static final String PREFERENCE_COMPOSER_THEME = "message_compose_theme";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
     private static final String PREFERENCE_ANIMATIONS = "animations";
     private static final String PREFERENCE_GESTURES = "gestures";
-    private static final String PREFERENCE_VOLUME_NAVIGATION = "volumeNavigation";
+    private static final String PREFERENCE_VOLUME_NAVIGATION = "volume_navigation";
     private static final String PREFERENCE_START_INTEGRATED_INBOX = "start_integrated_inbox";
     private static final String PREFERENCE_CONFIRM_ACTIONS = "confirm_actions";
     private static final String PREFERENCE_NOTIFICATION_HIDE_SUBJECT = "notification_hide_subject";
