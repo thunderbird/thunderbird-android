@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.provider.MessageProvider;
 
@@ -35,6 +36,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
     private Context context;
     private ArrayList<MailItem> mailItems;
     private int count;
+    private boolean senderAboveSubject;
 
 
     public MailListRemoteViewFactory(Context context) {
@@ -44,6 +46,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
     @Override
     public void onCreate() {
         mailItems = new ArrayList<>(25);
+        senderAboveSubject = K9.messageListSenderAboveSubject();
     }
 
     @Override
@@ -88,8 +91,13 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         MailItem item = mailItems.get(position);
 
         /* Populate the views from the mailItem object */
-        remoteView.setTextViewText(R.id.sender, item.sender);
-        remoteView.setTextViewText(R.id.mail_subject, item.subject);
+        if (senderAboveSubject) {
+            remoteView.setTextViewText(R.id.sender, item.sender);
+            remoteView.setTextViewText(R.id.mail_subject, item.subject);
+        } else {
+            remoteView.setTextViewText(R.id.sender, item.subject);
+            remoteView.setTextViewText(R.id.mail_subject, item.sender);
+        }
         remoteView.setTextViewText(R.id.mail_date, item.getDateFormatted("%d %s"));
         remoteView.setTextViewText(R.id.mail_preview, item.preview);
 
