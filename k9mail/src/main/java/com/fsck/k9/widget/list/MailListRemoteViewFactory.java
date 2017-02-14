@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Binder;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -25,7 +26,6 @@ import com.fsck.k9.provider.MessageProvider;
 
 public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
     private static String[] MAIL_LIST_PROJECTIONS = {
-            MessageProvider.MessageColumns._ID,
             MessageProvider.MessageColumns.SENDER,
             MessageProvider.MessageColumns.SEND_DATE,
             MessageProvider.MessageColumns.SUBJECT,
@@ -36,47 +36,57 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
     };
 
 
-    private Context context;
-    private ArrayList<MailItem> mailItems;
-    private int count;
+    private final Context context;
+    private final Calendar calendar;
+    private final ArrayList<MailItem> mailItems = new ArrayList<>(25);
     private boolean senderAboveSubject;
 
 
     public MailListRemoteViewFactory(Context context) {
         this.context = context;
+        calendar = Calendar.getInstance();
     }
 
     @Override
     public void onCreate() {
-        mailItems = new ArrayList<>(25);
         senderAboveSubject = K9.messageListSenderAboveSubject();
     }
 
     @Override
     public void onDataSetChanged() {
-        final long identityToken = Binder.clearCallingIdentity();
-        mailItems.clear();
-        Cursor cursor = context.getContentResolver().query(
-                MessageProvider.CONTENT_URI.buildUpon().appendPath("inbox_messages").build(),
-                MAIL_LIST_PROJECTIONS,
-                null,
-                null,
-                MessageProvider.MessageColumns.SEND_DATE + " DESC");
-        while (cursor.moveToNext()) {
-            final String id = cursor.getString(0);
-            final String sender = cursor.getString(1);
-            final String date = cursor.getString(2);
-            final String subject = cursor.getString(3);
-            final String preview = cursor.getString(4);
-            final String unread = cursor.getString(5);
-            final String hasAttachment = cursor.getString(6);
-            final String uri = cursor.getString(7);
-            mailItems.add(new MailItem(id, sender, date, subject, preview, unread, hasAttachment, uri));
+        long identityToken = Binder.clearCallingIdentity();
+        try {
+            loadMessageList();
+        } finally {
+            Binder.restoreCallingIdentity(identityToken);
         }
-        count = cursor.getCount();
-        cursor.close();
+    }
 
-        Binder.restoreCallingIdentity(identityToken);
+    private void loadMessageList() {
+        mailItems.clear();
+
+        Uri unifiedInboxUri = MessageProvider.CONTENT_URI.buildUpon().appendPath("inbox_messages").build();
+        Cursor cursor = context.getContentResolver().query(unifiedInboxUri, MAIL_LIST_PROJECTIONS, null, null, null);
+
+        if (cursor == null) {
+            return;
+        }
+
+        try {
+            while (cursor.moveToNext()) {
+                String sender = cursor.getString(0);
+                long date = cursor.isNull(1) ? 0L : cursor.getLong(1);
+                String subject = cursor.getString(2);
+                String preview = cursor.getString(3);
+                boolean unread = toBoolean(cursor.getString(4));
+                boolean hasAttachment = toBoolean(cursor.getString(5));
+                Uri viewUri = Uri.parse(cursor.getString(6));
+
+                mailItems.add(new MailItem(sender, date, subject, preview, unread, hasAttachment, viewUri));
+            }
+        } finally {
+            cursor.close();
+        }
     }
 
     @Override
@@ -85,7 +95,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
 
     @Override
     public int getCount() {
-        return count;
+        return mailItems.size();
     }
 
     @Override
@@ -93,10 +103,9 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.mail_list_item);
         MailItem item = mailItems.get(position);
 
-        CharSequence sender = Boolean.valueOf(item.unread) ? bold(item.sender) : item.sender;
-        CharSequence subject = Boolean.valueOf(item.unread) ? bold(item.subject) : item.subject;
+        CharSequence sender = item.unread ? bold(item.sender) : item.sender;
+        CharSequence subject = item.unread ? bold(item.subject) : item.subject;
 
-        /* Populate the views from the mailItem object */
         if (senderAboveSubject) {
             remoteView.setTextViewText(R.id.sender, sender);
             remoteView.setTextViewText(R.id.mail_subject, subject);
@@ -113,7 +122,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         remoteView.setTextColor(R.id.mail_date, textColor);
         remoteView.setTextColor(R.id.mail_preview, textColor);
 
-        if (item.hasAttachment()) {
+        if (item.hasAttachment) {
             remoteView.setInt(R.id.attachment, "setVisibility", View.VISIBLE);
         } else {
             remoteView.setInt(R.id.attachment, "setVisibility", View.GONE);
@@ -154,54 +163,42 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         return spannableString;
     }
 
-    private static class MailItem {
-        private static Calendar cl = Calendar.getInstance();
+    private boolean toBoolean(String value) {
+        return Boolean.valueOf(value);
+    }
 
 
-        private String id;
-        private String date;
-        private String sender;
-        private String preview;
-        private String subject;
-        private String unread;
-        private String hasAttachment;
-        private String uri;
+    private class MailItem {
+        final long date;
+        final String sender;
+        final String preview;
+        final String subject;
+        final boolean unread;
+        final boolean hasAttachment;
+        final Uri uri;
 
 
-        public MailItem(String id, String sender, String date, String subject, String preview, String unread,
-                String hasAttachment, String uri) {
-            this.id = id;
+        MailItem(String sender, long date, String subject, String preview, boolean unread, boolean hasAttachment,
+                Uri viewUri) {
             this.sender = sender;
             this.date = date;
             this.preview = preview;
             this.subject = subject;
             this.unread = unread;
-            this.uri = uri;
+            this.uri = viewUri;
             this.hasAttachment = hasAttachment;
         }
 
-        public int getColor() {
-            if (Boolean.valueOf(unread)) {
-                return Color.BLACK;
-            } else {
-                /* light_black */
-                return Color.parseColor("#444444");
-            }
+        int getColor() {
+            return unread ? Color.BLACK : Color.parseColor("#444444");
         }
 
-        public String getDateFormatted(String format) {
-            // set default format if null is passed
-            if (format.isEmpty()) {
-                format = "%d %s";
-            }
-            cl.setTimeInMillis(Long.valueOf(date));
+        String getDateFormatted(String format) {
+            calendar.setTimeInMillis(date);
+
             return String.format(format,
-                    cl.get(Calendar.DAY_OF_MONTH),
-                    cl.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
-        }
-
-        public boolean hasAttachment() {
-            return Boolean.valueOf(hasAttachment);
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault()));
         }
     }
 }
