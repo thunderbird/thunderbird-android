@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.widget.RemoteViewsService;
 
 
-public class MailListViewWidgetService extends RemoteViewsService {
+public class MessageListWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new MailListRemoteViewFactory(this.getApplicationContext());
+        return new MessageListRemoteViewFactory(this.getApplicationContext());
     }
 }

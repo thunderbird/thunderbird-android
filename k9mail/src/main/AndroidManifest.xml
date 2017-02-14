@@ -357,19 +357,19 @@
         </receiver>
 
         <receiver
-            android:name=".widget.list.MailListViewWidgetProvider"
-            android:icon="@drawable/mail_list_widget_icon"
+            android:name=".widget.list.MessageListWidgetProvider"
+            android:icon="@drawable/message_list_widget_preview"
             android:label="@string/mail_list_widget_text">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/mail_list_view_widget_layout_info" />
+                android:resource="@xml/message_list_widget_info" />
         </receiver>
 
         <service
-            android:name=".widget.list.MailListViewWidgetService"
+            android:name=".widget.list.MessageListWidgetService"
             android:enabled="true"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 

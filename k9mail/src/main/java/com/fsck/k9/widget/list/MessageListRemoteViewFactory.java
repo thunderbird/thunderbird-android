@@ -23,7 +23,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.provider.MessageProvider;
 
 
-public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
+public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
     private static String[] MAIL_LIST_PROJECTIONS = {
             MessageProvider.MessageColumns.SENDER,
             MessageProvider.MessageColumns.SEND_DATE,
@@ -43,7 +43,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
     private int unreadTextColor;
 
 
-    public MailListRemoteViewFactory(Context context) {
+    public MessageListRemoteViewFactory(Context context) {
         this.context = context;
         calendar = Calendar.getInstance();
     }
@@ -103,7 +103,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
 
     @Override
     public RemoteViews getViewAt(int position) {
-        RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.mail_list_item);
+        RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.message_list_widget_list_item);
         MailItem item = mailItems.get(position);
 
         CharSequence sender = item.unread ? bold(item.sender) : item.sender;
@@ -139,7 +139,7 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
 
     @Override
     public RemoteViews getLoadingView() {
-        RemoteViews loadingView = new RemoteViews(context.getPackageName(), R.layout.mail_list_loading_view);
+        RemoteViews loadingView = new RemoteViews(context.getPackageName(), R.layout.message_list_widget_loading);
         loadingView.setTextViewText(R.id.loadingText, context.getString(R.string.mail_list_widget_loading));
         loadingView.setViewVisibility(R.id.loadingText, View.VISIBLE);
         return loadingView;

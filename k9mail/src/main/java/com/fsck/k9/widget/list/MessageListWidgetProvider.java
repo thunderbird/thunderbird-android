@@ -15,17 +15,17 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageList;
 
 
-public class MailListViewWidgetProvider extends AppWidgetProvider {
+public class MessageListWidgetProvider extends AppWidgetProvider {
     private static String ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST";
 
 
     public static void updateMailViewList(Context context) {
         Context appContext = context.getApplicationContext();
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(appContext);
-        ComponentName widget = new ComponentName(appContext, MailListViewWidgetProvider.class);
+        ComponentName widget = new ComponentName(appContext, MessageListWidgetProvider.class);
         int[] widgetIds = widgetManager.getAppWidgetIds(widget);
 
-        Intent intent = new Intent(context, MailListViewWidgetProvider.class);
+        Intent intent = new Intent(context, MessageListWidgetProvider.class);
         intent.setAction(ACTION_UPDATE_MESSAGE_LIST);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds);
         context.sendBroadcast(intent);
@@ -39,11 +39,11 @@ public class MailListViewWidgetProvider extends AppWidgetProvider {
     }
 
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.mail_list_view_widget_layout);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.message_list_widget_layout);
 
         views.setTextViewText(R.id.folder, context.getString(R.string.integrated_inbox_title));
 
-        Intent intent = new Intent(context, MailListViewWidgetService.class);
+        Intent intent = new Intent(context, MessageListWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         views.setRemoteAdapter(R.id.listView, intent);
