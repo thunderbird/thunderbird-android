@@ -11,6 +11,7 @@ import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mailstore.LocalMessage;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 /**
  * Handle notifications for new messages.
@@ -60,6 +61,9 @@ class NewMailNotifications {
                 cancelNotification(notificationId);
             }
 
+            if(K9.app != null)
+                ShortcutBadger.applyCount(K9.app, unreadMessageCount);
+
             createStackedNotification(account, result.getNotificationHolder());
             createSummaryNotification(account, notificationData, false);
         }
@@ -78,6 +82,9 @@ class NewMailNotifications {
             }
 
             cancelNotification(result.getNotificationId());
+
+            if(K9.app != null)
+                ShortcutBadger.removeCount(K9.app);
 
             if (result.shouldCreateNotification()) {
                 createStackedNotification(account, result.getNotificationHolder());
