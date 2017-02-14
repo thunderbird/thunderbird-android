@@ -10,7 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Binder;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -90,13 +93,16 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.mail_list_item);
         MailItem item = mailItems.get(position);
 
+        CharSequence sender = Boolean.valueOf(item.unread) ? bold(item.sender) : item.sender;
+        CharSequence subject = Boolean.valueOf(item.unread) ? bold(item.subject) : item.subject;
+
         /* Populate the views from the mailItem object */
         if (senderAboveSubject) {
-            remoteView.setTextViewText(R.id.sender, item.sender);
-            remoteView.setTextViewText(R.id.mail_subject, item.subject);
+            remoteView.setTextViewText(R.id.sender, sender);
+            remoteView.setTextViewText(R.id.mail_subject, subject);
         } else {
-            remoteView.setTextViewText(R.id.sender, item.subject);
-            remoteView.setTextViewText(R.id.mail_subject, item.sender);
+            remoteView.setTextViewText(R.id.sender, subject);
+            remoteView.setTextViewText(R.id.mail_subject, sender);
         }
         remoteView.setTextViewText(R.id.mail_date, item.getDateFormatted("%d %s"));
         remoteView.setTextViewText(R.id.mail_preview, item.preview);
@@ -142,6 +148,11 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         return true;
     }
 
+    private CharSequence bold(String text) {
+        SpannableString spannableString = new SpannableString(text);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length(), 0);
+        return spannableString;
+    }
 
     private static class MailItem {
         private static Calendar cl = Calendar.getInstance();
