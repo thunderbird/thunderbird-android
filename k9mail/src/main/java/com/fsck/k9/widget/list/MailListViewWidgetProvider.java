@@ -1,5 +1,6 @@
 package com.fsck.k9.widget.list;
 
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -17,7 +19,6 @@ import com.fsck.k9.activity.MessageList;
 
 public class MailListViewWidgetProvider extends AppWidgetProvider {
     public static final String PACKAGE_NAME = "com.fsck.k9";
-
     public static String ACTION_VIEW_MAIL_ITEM = PACKAGE_NAME + ".provider.ACTION_VIEW_MAIL_ITEM";
     public static String ACTION_COMPOSE_EMAIL = PACKAGE_NAME + ".provider.ACTION_COMPOSE_EMAIL";
 
@@ -26,7 +27,7 @@ public class MailListViewWidgetProvider extends AppWidgetProvider {
         Context appContext = context.getApplicationContext();
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(appContext);
         ComponentName widget = new ComponentName(appContext, MailListViewWidgetProvider.class);
-        int [] widgetIds = widgetManager.getAppWidgetIds(widget);
+        int[] widgetIds = widgetManager.getAppWidgetIds(widget);
 
         Intent intent = new Intent(context, MailListViewWidgetProvider.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
@@ -34,7 +35,8 @@ public class MailListViewWidgetProvider extends AppWidgetProvider {
         context.sendBroadcast(intent);
     }
 
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, String acc) {
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId,
+            String acc) {
 
         CharSequence widgetText = context.getString(R.string.mail_list_widget_text);
         Account account = Preferences.getPreferences(context).getAccount(acc);
@@ -78,7 +80,6 @@ public class MailListViewWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         // an intent from an item on the listview. get the uri and launch the MessageList activity
         if (intent.getAction().equals(ACTION_VIEW_MAIL_ITEM)) {
             Intent viewMailIntent = new Intent(context, MessageList.class);
@@ -87,9 +88,8 @@ public class MailListViewWidgetProvider extends AppWidgetProvider {
             viewMailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(viewMailIntent);
         } else if (intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
-            AppWidgetManager.getInstance(context)
-                    .notifyAppWidgetViewDataChanged(intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS),
-                                                    R.id.listView);
+            AppWidgetManager.getInstance(context).notifyAppWidgetViewDataChanged(
+                    intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS), R.id.listView);
         } else if (intent.getAction().equals(ACTION_COMPOSE_EMAIL)) {
             Intent newMessage = new Intent(context, MessageCompose.class)
                     .putExtra(MessageCompose.EXTRA_ACCOUNT, intent.getStringExtra(MessageCompose.EXTRA_ACCOUNT))
@@ -98,7 +98,7 @@ public class MailListViewWidgetProvider extends AppWidgetProvider {
             context.startActivity(newMessage);
         }
     }
-    
+
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         for (int widgId : appWidgetIds) {
@@ -106,4 +106,3 @@ public class MailListViewWidgetProvider extends AppWidgetProvider {
         }
     }
 }
-

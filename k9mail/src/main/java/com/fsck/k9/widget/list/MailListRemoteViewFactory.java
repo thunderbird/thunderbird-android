@@ -1,23 +1,26 @@
 package com.fsck.k9.widget.list;
 
-import android.appwidget.AppWidgetManager;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.*;
-import android.os.Binder;
-import android.view.View;
-import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
-import com.fsck.k9.R;
-import com.fsck.k9.provider.MessageProvider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.os.Binder;
+import android.view.View;
+import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
+
+import com.fsck.k9.R;
+import com.fsck.k9.provider.MessageProvider;
+
+
 public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
-    private static String [] MAIL_LIST_PROJECTIONS = {
+    private static String[] MAIL_LIST_PROJECTIONS = {
             MessageProvider.MessageColumns._ID,
             MessageProvider.MessageColumns.SENDER,
             MessageProvider.MessageColumns.SEND_DATE,
@@ -28,9 +31,11 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
             MessageProvider.MessageColumns.URI
     };
 
+
     private Context context;
     private ArrayList<MailItem> mailItems;
     private int count;
+
 
     public MailListRemoteViewFactory(Context context) {
         this.context = context;
@@ -129,7 +134,11 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         return true;
     }
 
+
     private static class MailItem {
+        private static Calendar cl = Calendar.getInstance();
+
+
         private String id;
         private String date;
         private String sender;
@@ -139,10 +148,9 @@ public class MailListRemoteViewFactory implements RemoteViewsService.RemoteViews
         private String hasAttachment;
         private String uri;
 
-        private static Calendar cl = Calendar.getInstance();
 
-        public MailItem(String id, String sender, String date, String subject,
-                        String preview, String unread, String hasAttachment, String uri) {
+        public MailItem(String id, String sender, String date, String subject, String preview, String unread,
+                String hasAttachment, String uri) {
             this.id = id;
             this.sender = sender;
             this.date = date;
