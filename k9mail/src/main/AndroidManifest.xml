@@ -277,13 +277,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".widget.list.MailListViewWidgetConfiguration">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
-            </intent-filter>
-        </activity>
-
-
         <activity
             android:name=".activity.UpgradeDatabases"
             android:label="@string/upgrade_databases_title"/>

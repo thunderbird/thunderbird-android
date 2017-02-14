@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="com.fsck.k9.widget.list.MailListViewWidgetConfiguration"
     android:initialKeyguardLayout="@layout/mail_list_view_widget_layout"
     android:initialLayout="@layout/mail_list_view_widget_layout"
     android:minHeight="180dp"
