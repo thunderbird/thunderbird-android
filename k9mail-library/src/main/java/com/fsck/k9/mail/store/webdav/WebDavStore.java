@@ -830,7 +830,7 @@ public class WebDavStore extends RemoteStore {
         return mHttpClient;
     }
 
-    private InputStream sendRequest(String url, String method, StringEntity messageBody,
+    protected InputStream sendRequest(String url, String method, StringEntity messageBody,
                                     Map<String, String> headers, boolean tryAuth)
             throws MessagingException {
         if (url == null || method == null) {
