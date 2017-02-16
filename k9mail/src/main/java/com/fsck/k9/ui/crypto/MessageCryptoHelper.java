@@ -355,7 +355,6 @@ public class MessageCryptoHelper {
         OpenPgpDataSource dataSource = getDataSourceForSignedData(currentCryptoPart.part);
 
         byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentCryptoPart.part);
-        //May be null, trusting openPgpAPI will respond appropriately.?
         if (signatureData != null)
             intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
 
