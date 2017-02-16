@@ -290,9 +290,7 @@ public class MessageCryptoHelper {
 
             @Override
             public void onReturn(Intent result, MimeBodyPart bodyPart) {
-                cancelableBackgroundOperation = null;
-                currentCryptoResult = result;
-                onCryptoOperationReturned(bodyPart);
+                onCryptoOpReturnHandler(result, bodyPart);
             }
         });
     }
@@ -331,9 +329,7 @@ public class MessageCryptoHelper {
                 new IOpenPgpSinkResultCallback<MimeBodyPart>() {
             @Override
             public void onReturn(Intent result, MimeBodyPart decryptedPart) {
-                cancelableBackgroundOperation = null;
-                currentCryptoResult = result;
-                onCryptoOperationReturned(decryptedPart);
+                onCryptoOpReturnHandler(result, decryptedPart);
             }
 
             @Override
@@ -344,18 +340,28 @@ public class MessageCryptoHelper {
         });
     }
 
+    /**
+     * Common operations preceding {@link #onCryptoOperationReturned(MimeBodyPart)}
+     * @param result null will be treated as an internal error.
+     * @param decryptedPart plain text, ideally.
+     */
+    private void onCryptoOpReturnHandler(Intent result, MimeBodyPart decryptedPart) {
+        cancelableBackgroundOperation = null;
+        currentCryptoResult = result;
+        onCryptoOperationReturned(decryptedPart);
+    }
+
     private void callAsyncDetachedVerify(Intent intent) throws IOException, MessagingException {
         OpenPgpDataSource dataSource = getDataSourceForSignedData(currentCryptoPart.part);
 
         byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentCryptoPart.part);
+        //May be null, trusting openPgpAPI will respond appropriately.?
         intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
 
         openPgpApi.executeApiAsync(intent, dataSource, new IOpenPgpSinkResultCallback<Void>() {
             @Override
             public void onReturn(Intent result, Void dummy) {
-                cancelableBackgroundOperation = null;
-                currentCryptoResult = result;
-                onCryptoOperationReturned(null);
+                onCryptoOpReturnHandler(result, null);
             }
 
             @Override
