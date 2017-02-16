@@ -2805,7 +2805,7 @@ public class MessagingController {
                         + "' (" + localFolder.getId() + ") for messages to send");
             }
 
-            Transport transport = transportProvider.getInstance(K9.app, account);
+            Transport transport = transportProvider.getTransport(K9.app, account);
 
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
