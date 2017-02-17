@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -20,6 +19,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
+import timber.log.Timber;
 
 
 public class MessageCryptoPresenter implements OnCryptoClickListener {
@@ -120,7 +120,12 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             case ENCRYPTED_ERROR:
             case UNSUPPORTED_ENCRYPTED: {
                 Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext());
-                messageView.showMessageCryptoErrorView(messageViewInfo, providerIcon);
+                if (messageViewInfo.cryptoResultAnnotation.hasReplacementData()) {
+                    showMessageCryptoWarning(messageView, account, messageViewInfo,
+                            R.string.messageview_crypto_warning_insecure);
+                } else {
+                    messageView.showMessageCryptoErrorView(messageViewInfo, providerIcon);
+                }
                 break;
             }
 
@@ -151,9 +156,9 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             return;
         }
         Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext());
-        messageView.showMessageCryptoWarning(messageViewInfo, providerIcon, warningStringRes);
+        boolean showDetailButton = cryptoResultAnnotation.getOpenPgpInsecureWarningPendingIntent() != null;
+        messageView.showMessageCryptoWarning(messageViewInfo, providerIcon, warningStringRes, showDetailButton);
     }
-
 
     @Override
     public void onCryptoClick() {
@@ -223,6 +228,18 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
     public void onClickShowMessageOverrideWarning() {
         overrideCryptoWarning = true;
         messageCryptoMvpView.redisplayMessage();
+    }
+
+    public void onClickShowCryptoWarningDetails() {
+        try {
+            PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpInsecureWarningPendingIntent();
+            if (pendingIntent != null) {
+                messageCryptoMvpView.startPendingIntentForCryptoPresenter(
+                        pendingIntent.getIntentSender(), null, null, 0, 0, 0);
+            }
+        } catch (IntentSender.SendIntentException e) {
+            Timber.e(e, "SendIntentException");
+        }
     }
 
     public Parcelable getDecryptionResultForReply() {

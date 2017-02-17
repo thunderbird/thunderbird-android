@@ -254,7 +254,6 @@ public enum MessageCryptoDisplayStatus {
                 return getStatusForPgpEncryptedResult(signatureResult);
 
             case OpenPgpDecryptionResult.RESULT_INSECURE:
-                // TODO handle better?
                 return ENCRYPTED_ERROR;
         }
 

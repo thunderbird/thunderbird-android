@@ -514,9 +514,10 @@ public class MessageCryptoHelper {
         OpenPgpSignatureResult signatureResult =
                 currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
         PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+        PendingIntent insecureWarningPendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INSECURE_DETAIL_INTENT);
 
         CryptoResultAnnotation resultAnnotation = CryptoResultAnnotation.createOpenPgpResultAnnotation(
-                decryptionResult, signatureResult, pendingIntent, outputPart);
+                decryptionResult, signatureResult, pendingIntent, insecureWarningPendingIntent, outputPart);
 
         onCryptoOperationSuccess(resultAnnotation);
     }
