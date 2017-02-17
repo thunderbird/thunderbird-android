@@ -1208,6 +1208,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_support_sign_only">Support signing of unencrypted messages</string>
     <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
     <string name="unsigned_text_divider_label">Unsigned Text</string>
+    <string name="mail_list_widget_text">K-9 Message List</string>
+    <string name="mail_list_view_select_account">Select account to list e-mails for</string>
     <string name="apg_deprecated_title">APG Deprecation Warning</string>
     <string name="apg_deprecated_1">APG is no longer maintained!</string>
     <string name="apg_deprecated_2">Because of this, support for APG has been removed from K-9 Mail.</string>
@@ -1217,5 +1219,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="apg_deprecated_ok">Got it!</string>
     <string name="apg">APG</string>
     <string name="no_crypto_provider_see_global">No OpenPGP app configured, see global settings!</string>
+
 
 </resources>

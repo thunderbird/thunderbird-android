@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <RelativeLayout
+            android:id="@+id/top_controls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/widget_padding"
+            android:background="@color/light_grey">
+
+        <TextView android:id="@+id/folder"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:layout_alignParentLeft="true"
+                  android:layout_alignParentStart="true"/>
+
+        <TextView android:id="@+id/mail_address"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="15sp"
+                  android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/folder"/>
+
+        <ImageButton android:id="@+id/new_message"
+                     android:layout_width="50dp"
+                     android:layout_height="wrap_content"
+                     android:src="@drawable/ic_action_compose_dark"
+                     android:layout_alignParentRight="true"
+                     android:layout_alignParentEnd="true"
+                     android:layout_alignBottom="@+id/mail_address"
+                     style="?android:attr/borderlessButtonStyle"/>
+    </RelativeLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+        <ListView android:id="@+id/listView"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:dividerHeight="1dp"
+                  android:divider="@color/light_grey"/>
+    </LinearLayout>
+</LinearLayout>
