@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mail_list_item"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="@dimen/widget_padding">
 
     <TextView
-        android:id="@+id/sender"
+        android:id="@+id/mail_date"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="start"
-        android:textSize="16sp" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        tools:text="25 May" />
 
     <ImageView
         android:id="@+id/attachment"
@@ -22,19 +22,28 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/mail_date"
         android:layout_centerInParent="true"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:layout_toLeftOf="@+id/mail_date"
         android:layout_toStartOf="@+id/mail_date"
         android:src="@drawable/ic_email_attachment_small"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/mail_date"
+        android:id="@+id/sender"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignBaseline="@+id/sender"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="start"
+        android:layout_toLeftOf="@id/attachment"
+        android:layout_toStartOf="@id/attachment"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="16sp"
+        tools:text="Kinda long subject that should be long enough to exceed the available display space" />
 
     <TextView
         android:id="@+id/mail_subject"
@@ -43,18 +52,21 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/sender"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:paddingBottom="2dp"
-        android:singleLine="true"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        tools:text="Wikipedia" />
 
     <TextView
         android:id="@+id/mail_preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/mail_subject"
-        android:singleLine="true"
-        android:textSize="13sp" />
+        android:maxLines="1"
+        android:textSize="13sp"
+        tools:text="Towel Day is celebrated every year on 25 May as a tribute to the author Douglas Adams by his fans." />
 
 </RelativeLayout>
