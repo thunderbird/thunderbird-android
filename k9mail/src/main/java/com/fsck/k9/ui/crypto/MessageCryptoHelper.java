@@ -95,7 +95,7 @@ public class MessageCryptoHelper {
     }
 
     public void asyncStartOrResumeProcessingMessage(LocalMessage message, MessageCryptoCallback callback,
-            OpenPgpDecryptionResult cachedDecryptionResult) {
+                                                    OpenPgpDecryptionResult cachedDecryptionResult) {
         if (this.currentMessage != null) {
             reattachCallback(message, callback);
             return;
@@ -282,19 +282,17 @@ public class MessageCryptoHelper {
 
         cancelableBackgroundOperation = openPgpApi.executeApiAsync(intent, dataSource, dataSink,
                 new IOpenPgpSinkResultCallback<MimeBodyPart>() {
-            @Override
-            public void onProgress(int current, int max) {
-                Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
-                callbackProgress(current, max);
-            }
+                    @Override
+                    public void onProgress(int current, int max) {
+                        Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
+                        callbackProgress(current, max);
+                    }
 
-            @Override
-            public void onReturn(Intent result, MimeBodyPart bodyPart) {
-                cancelableBackgroundOperation = null;
-                currentCryptoResult = result;
-                onCryptoOperationReturned(bodyPart);
-            }
-        });
+                    @Override
+                    public void onReturn(Intent result, MimeBodyPart bodyPart) {
+                        onCryptoOpReturnHandler(result, bodyPart);
+                    }
+                });
     }
 
     public void cancelIfRunning() {
@@ -329,33 +327,41 @@ public class MessageCryptoHelper {
 
         cancelableBackgroundOperation = openPgpApi.executeApiAsync(intent, dataSource, openPgpDataSink,
                 new IOpenPgpSinkResultCallback<MimeBodyPart>() {
-            @Override
-            public void onReturn(Intent result, MimeBodyPart decryptedPart) {
-                cancelableBackgroundOperation = null;
-                currentCryptoResult = result;
-                onCryptoOperationReturned(decryptedPart);
-            }
+                    @Override
+                    public void onReturn(Intent result, MimeBodyPart decryptedPart) {
+                        onCryptoOpReturnHandler(result, decryptedPart);
+                    }
 
-            @Override
-            public void onProgress(int current, int max) {
-                Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
-                callbackProgress(current, max);
-            }
-        });
+                    @Override
+                    public void onProgress(int current, int max) {
+                        Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
+                        callbackProgress(current, max);
+                    }
+                });
+    }
+
+    /**
+     * Common operations preceding {@link #onCryptoOperationReturned(MimeBodyPart)}
+     * @param result null will be treated as an internal error.
+     * @param decryptedPart plain text, ideally.
+     */
+    private void onCryptoOpReturnHandler(Intent result, MimeBodyPart decryptedPart) {
+        cancelableBackgroundOperation = null;
+        currentCryptoResult = result;
+        onCryptoOperationReturned(decryptedPart);
     }
 
     private void callAsyncDetachedVerify(Intent intent) throws IOException, MessagingException {
         OpenPgpDataSource dataSource = getDataSourceForSignedData(currentCryptoPart.part);
 
         byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentCryptoPart.part);
-        intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
+        if (signatureData != null)
+            intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
 
         openPgpApi.executeApiAsync(intent, dataSource, new IOpenPgpSinkResultCallback<Void>() {
             @Override
             public void onReturn(Intent result, Void dummy) {
-                cancelableBackgroundOperation = null;
-                currentCryptoResult = result;
-                onCryptoOperationReturned(null);
+                onCryptoOpReturnHandler(result, null);
             }
 
             @Override
