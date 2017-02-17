@@ -27,6 +27,7 @@ import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
 import java.security.cert.CertificateException;
@@ -475,7 +476,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             if (!(account.getRemoteStore() instanceof WebDavStore)) {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
-            Transport transport = Transport.getInstance(K9.app, account);
+            Transport transport = TransportProvider.getInstance().getTransport(K9.app, account);
             transport.close();
             try {
                 transport.open();
