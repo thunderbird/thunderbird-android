@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
@@ -32,7 +33,7 @@ import org.xmlpull.v1.XmlSerializer;
 
 
 public class SettingsExporter {
-    private static final String EXPORT_FILENAME = "settings.k9s";
+    public static final String EXPORT_FILENAME = "settings.k9s";
 
     /**
      * File format version number.
@@ -108,7 +109,28 @@ public class SettingsExporter {
         }
     }
 
-    static void exportPreferences(Context context, OutputStream os, boolean includeGlobals, Set<String> accountUuids)
+    public static void exportToUri(Context context, boolean includeGlobals, Set<String> accountUuids, Uri uri)
+            throws SettingsImportExportException {
+
+        OutputStream os = null;
+        String filename = null;
+        try {
+            os = context.getContentResolver().openOutputStream(uri);
+            exportPreferences(context, os, includeGlobals, accountUuids);
+        } catch (Exception e) {
+            throw new SettingsImportExportException(e);
+        } finally {
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException ioe) {
+                    Log.w(K9.LOG_TAG, "Couldn't close exported settings file: " + filename);
+                }
+            }
+        }
+    }
+
+   static void exportPreferences(Context context, OutputStream os, boolean includeGlobals, Set<String> accountUuids)
             throws SettingsImportExportException {
 
         try {
