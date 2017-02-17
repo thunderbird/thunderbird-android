@@ -793,7 +793,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="settings_exporting">Eksportē iestatījumus…</string>
   <string name="settings_importing">Importē iestatījumus…</string>
   <string name="settings_import_scanning_file">Skenē datni…</string>
-  <string name="settings_export_success">Eksportētie iestatījumi saglabāti <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Eksportētie iestatījumi saglabāti <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importēti vispārīgie iestatījumi no <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importēts <xliff:g id="accounts">%s</xliff:g> no <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

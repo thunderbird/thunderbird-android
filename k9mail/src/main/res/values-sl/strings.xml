@@ -798,7 +798,7 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="settings_exporting">Izvažanje nastavitev …</string>
   <string name="settings_importing">Uvažanje nastavitev …</string>
   <string name="settings_import_scanning_file">Preverjanje datoteke ...</string>
-  <string name="settings_export_success">Izvožene nastavitve shranjene v <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Izvožene nastavitve shranjene v <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Uvožene splošne nastavitve iz <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Uvoženo <xliff:g id="accounts">%s</xliff:g> iz <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

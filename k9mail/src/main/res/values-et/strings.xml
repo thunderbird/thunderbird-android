@@ -709,7 +709,7 @@
   <string name="settings_exporting">Ekspordib sätteid…</string>
   <string name="settings_importing">Impordib sätteid…</string>
   <string name="settings_import_scanning_file">Skanneerib faili…</string>
-  <string name="settings_export_success">Salvestas eksporditud sätted <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Salvestas eksporditud sätted <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Impordi üldised sätted <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_failure">Sätete eksportimine ebaõnnestus</string>
   <string name="settings_import_failure">Sätete importimine  <xliff:g id="filename">%s</xliff:g> ebaõnnestus</string>

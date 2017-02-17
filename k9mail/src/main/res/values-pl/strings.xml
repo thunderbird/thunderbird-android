@@ -755,7 +755,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="settings_exporting">Eksportowanie ustawień…</string>
   <string name="settings_importing">Importowanie ustawień…</string>
   <string name="settings_import_scanning_file">Skanowanie pliku…</string>
-  <string name="settings_export_success">Zapisano ustawienia do <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Zapisano ustawienia do <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importowano ustawienia z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importowano <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

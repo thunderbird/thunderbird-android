@@ -788,7 +788,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="settings_exporting">Exportando ajustes…</string>
   <string name="settings_importing">Importando ajustes…</string>
   <string name="settings_import_scanning_file">Buscando archivo…</string>
-  <string name="settings_export_success">Ajustes guardados en <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Ajustes guardados en <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Ajustes globales importados desde <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> desde <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

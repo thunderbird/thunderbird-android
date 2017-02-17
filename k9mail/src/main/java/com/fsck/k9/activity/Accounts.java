@@ -1967,7 +1967,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                             mAccountUuids);
                 } else {
                     SettingsExporter.exportToUri(mContext, mIncludeGlobals, mAccountUuids, mUri);
-                    mFileName = mUri.toString();
                 }
 
             } catch (SettingsImportExportException e) {
@@ -1987,8 +1986,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             removeProgressDialog();
 
             if (success) {
-                activity.showSimpleDialog(R.string.settings_export_success_header,
-                                          R.string.settings_export_success, mFileName);
+                if (mFileName != null) {
+                    activity.showSimpleDialog(R.string.settings_export_success_header,
+                            R.string.settings_export_success_path, mFileName);
+                } else {
+                    activity.showSimpleDialog(R.string.settings_export_success_header,
+                            R.string.settings_export_success);
+                }
             } else {
                 //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_export_failed_header,

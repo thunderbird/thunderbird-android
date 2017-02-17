@@ -789,7 +789,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_exporting">A exportar definições...</string>
   <string name="settings_importing">A importar definições...</string>
   <string name="settings_import_scanning_file">A examinar ficheiro...</string>
-  <string name="settings_export_success">As definições exportadas foram guardadas em <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">As definições exportadas foram guardadas em <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">As definições globais foram importadas a partir de <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> a partir de <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

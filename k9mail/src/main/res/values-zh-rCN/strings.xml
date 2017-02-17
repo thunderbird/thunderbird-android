@@ -739,7 +739,7 @@
   <string name="settings_exporting">正在导出设置…</string>
   <string name="settings_importing">正在导入设置…</string>
   <string name="settings_import_scanning_file">正在扫描文件…</string>
-  <string name="settings_export_success">设置已导出到<xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">设置已导出到<xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">全局设置已自<xliff:g id="filename">%s</xliff:g>导入</string>
   <string name="settings_import_success">账户<xliff:g id="accounts">%s</xliff:g>已自<xliff:g id="filename">%s</xliff:g>导入</string>
   <plurals name="settings_import_accounts">

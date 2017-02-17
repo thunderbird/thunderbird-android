@@ -788,7 +788,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="settings_exporting">Настройки на изнсянето...</string>
   <string name="settings_importing">Настройки на внасянето...</string>
   <string name="settings_import_scanning_file">Сканиране на файл...</string>
-  <string name="settings_export_success">Изнесенети настройки са запазени като <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Изнесенети настройки са запазени като <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Внесени настройки от <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Внесени <xliff:g id="accounts">%s</xliff:g> от <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

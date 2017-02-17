@@ -796,7 +796,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="settings_exporting">Экспорт настроек…</string>
   <string name="settings_importing">Импорт настроек…</string>
   <string name="settings_import_scanning_file">Проверка файла…</string>
-  <string name="settings_export_success">Настройки сохранены в <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Настройки сохранены в <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Настройки K-9 импортированы из <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Импортировано: <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

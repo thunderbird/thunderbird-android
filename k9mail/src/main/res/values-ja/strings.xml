@@ -786,7 +786,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="settings_exporting">設定をエクスポートしています…</string>
   <string name="settings_importing">設定をインポートしています…</string>
   <string name="settings_import_scanning_file">ファイルを調べています…</string>
-  <string name="settings_export_success">設定を <xliff:g id="filename">%s</xliff:g> に保存しました。</string>
+  <string name="settings_export_success_path">設定を <xliff:g id="filename">%s</xliff:g> に保存しました。</string>
   <string name="settings_import_global_settings_success">グローバル設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
   <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> の設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
   <plurals name="settings_import_accounts">

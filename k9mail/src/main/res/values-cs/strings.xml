@@ -793,7 +793,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="settings_exporting">Exportování nastavení…</string>
   <string name="settings_importing">Importování nastavení…</string>
   <string name="settings_import_scanning_file">Skenuji soubor…</string>
-  <string name="settings_export_success">Export nastavení uložen do <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Export nastavení uložen do <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importováno globální nastaveni z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importováno <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

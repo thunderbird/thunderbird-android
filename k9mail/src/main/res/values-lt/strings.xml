@@ -681,7 +681,7 @@
   <string name="settings_exporting">Eksportuojami nustatymai…</string>
   <string name="settings_importing">Importuojami nustatymai…</string>
   <string name="settings_import_scanning_file">Skenuojamas failas…</string>
-  <string name="settings_export_success">Eksportuoti nustatymai išsaugoti <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Eksportuoti nustatymai išsaugoti <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importuoti globalius nustatymus iš <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importuota <xliff:g id="accounts">%s</xliff:g> iš <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_failure">Eksportuoti nustatymų nepavyko</string>

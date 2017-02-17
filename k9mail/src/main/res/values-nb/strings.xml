@@ -790,7 +790,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="settings_exporting">Eksporterer innstillnger …</string>
   <string name="settings_importing">Importerer innstillinger …</string>
   <string name="settings_import_scanning_file">Skanner fil …</string>
-  <string name="settings_export_success">Lagret eksporterte innstillinger til <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Lagret eksporterte innstillinger til <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importerte globale innstillinger fra <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importerte <xliff:g id="accounts">%s</xliff:g> fra <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

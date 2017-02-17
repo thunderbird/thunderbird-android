@@ -762,7 +762,7 @@ Send venligst fejlrapporter, forslag til nye funktioner samt spørgsmål på:
   <string name="settings_exporting">Ekporterer indstillinger…</string>
   <string name="settings_importing">Importerer indstillinger…</string>
   <string name="settings_import_scanning_file">Skanner fil…</string>
-  <string name="settings_export_success">Indstillinger gemt som <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Indstillinger gemt som <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importerede globale indstillinger fra <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importerede <xliff:g id="accounts">%s</xliff:g> fra <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

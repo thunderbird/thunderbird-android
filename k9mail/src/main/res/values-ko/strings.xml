@@ -744,7 +744,7 @@
   <string name="settings_exporting">설정 내보내는 중…</string>
   <string name="settings_importing">설정 가져오는 중…</string>
   <string name="settings_import_scanning_file">파일 스캔 중…</string>
-  <string name="settings_export_success">설정을 파일 <xliff:g id="filename">%s</xliff:g>로 내보냄</string>
+  <string name="settings_export_success_path">설정을 파일 <xliff:g id="filename">%s</xliff:g>로 내보냄</string>
   <string name="settings_import_global_settings_success">설정을 <xliff:g id="filename">%s</xliff:g>로부터 가져옴</string>
   <string name="settings_import_success"><xliff:g id="filename">%s</xliff:g>에서 <xliff:g id="accounts">%s</xliff:g>를 가져옴</string>
   <plurals name="settings_import_accounts">
