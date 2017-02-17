@@ -146,6 +146,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
 
     private static final int ACTIVITY_REQUEST_PICK_SETTINGS_FILE = 1;
+    private static final int ACTIVITY_REQUEST_SAVE_SETTINGS_FILE = 2;
 
     class AccountsHandler extends Handler {
         private void setViewTitle() {
@@ -1290,7 +1291,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                               getString(R.string.app_revision_url) +
                               "</a>"))
         .append("</p><hr/><p>")
-        .append(String.format(getString(R.string.app_copyright_fmt), year, year))
+        .append(String.format(getString(R.string.app_copyright_fmt), Integer.toString(year), Integer.toString(year)))
         .append("</p><hr/><p>")
         .append(getString(R.string.app_license))
         .append("</p><hr/><p>");
@@ -1418,9 +1419,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             return;
         }
         switch (requestCode) {
-        case ACTIVITY_REQUEST_PICK_SETTINGS_FILE:
-            onImport(data.getData());
-            break;
+            case ACTIVITY_REQUEST_PICK_SETTINGS_FILE:
+                onImport(data.getData());
+                break;
+            case ACTIVITY_REQUEST_SAVE_SETTINGS_FILE:
+                onExport(data);
+                break;
         }
     }
 
@@ -1883,16 +1887,47 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     }
 
-    public void onExport(final boolean includeGlobals, final Account account) {
+    public static final String EXTRA_INC_GLOBALS = "include_globals";
+    public static final String EXTRA_ACCOUNTS = "accountUuids";
 
+    public void onExport(final boolean includeGlobals, final Account account) {
         // TODO, prompt to allow a user to choose which accounts to export
-        Set<String> accountUuids = null;
+        ArrayList<String> accountUuids = null;
         if (account != null) {
-            accountUuids = new HashSet<String>();
+            accountUuids = new ArrayList<>();
             accountUuids.add(account.getUuid());
         }
 
-        ExportAsyncTask asyncTask = new ExportAsyncTask(this, includeGlobals, accountUuids);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TITLE, SettingsExporter.EXPORT_FILENAME);
+            intent.putStringArrayListExtra(EXTRA_ACCOUNTS, accountUuids);
+            intent.putExtra(EXTRA_INC_GLOBALS, includeGlobals);
+
+            PackageManager packageManager = getPackageManager();
+            List<ResolveInfo> infos = packageManager.queryIntentActivities(intent, 0);
+
+            if (infos.size() > 0) {
+                startActivityForResult(Intent.createChooser(intent, null), ACTIVITY_REQUEST_SAVE_SETTINGS_FILE);
+            } else {
+                showDialog(DIALOG_NO_FILE_MANAGER);
+            }
+        } else {
+            //Pre-Kitkat
+            ExportAsyncTask asyncTask = new ExportAsyncTask(this, includeGlobals, accountUuids, null);
+            setNonConfigurationInstance(asyncTask);
+            asyncTask.execute();
+        }
+    }
+
+    public void onExport(Intent intent) {
+        boolean includeGlobals = intent.getBooleanExtra(EXTRA_INC_GLOBALS, false);
+        ArrayList<String> accountUuids = intent.getStringArrayListExtra(EXTRA_ACCOUNTS);
+
+        ExportAsyncTask asyncTask = new ExportAsyncTask(this, includeGlobals, accountUuids, intent.getData());
         setNonConfigurationInstance(asyncTask);
         asyncTask.execute();
     }
@@ -1904,13 +1939,17 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         private boolean mIncludeGlobals;
         private Set<String> mAccountUuids;
         private String mFileName;
+        private Uri mUri;
 
 
         private ExportAsyncTask(Accounts activity, boolean includeGlobals,
-                                Set<String> accountUuids) {
+                                List<String> accountUuids, Uri uri) {
             super(activity);
             mIncludeGlobals = includeGlobals;
-            mAccountUuids = accountUuids;
+            mUri = uri;
+            if (accountUuids != null) {
+                mAccountUuids = new HashSet<>(accountUuids);
+            }
         }
 
         @Override
@@ -1923,8 +1962,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
+                if (mUri == null) {
+                    mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
                             mAccountUuids);
+                } else {
+                    SettingsExporter.exportToUri(mContext, mIncludeGlobals, mAccountUuids, mUri);
+                }
+
             } catch (SettingsImportExportException e) {
                 Timber.w(e, "Exception during export");
                 return false;
@@ -1942,8 +1986,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             removeProgressDialog();
 
             if (success) {
-                activity.showSimpleDialog(R.string.settings_export_success_header,
-                                          R.string.settings_export_success, mFileName);
+                if (mFileName != null) {
+                    activity.showSimpleDialog(R.string.settings_export_success_header,
+                            R.string.settings_export_success, mFileName);
+                } else {
+                    activity.showSimpleDialog(R.string.settings_export_success_header,
+                            R.string.settings_export_success_generic);
+                }
             } else {
                 //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_export_failed_header,
