@@ -587,12 +587,12 @@ public class K9 extends Application {
 
             private void updateMailListWidget() {
                 try {
-                    MessageListWidgetProvider.updateMailViewList(K9.this);
-                } catch (Exception e) {
+                    MessageListWidgetProvider.triggerMessageListWidgetUpdate(K9.this);
+                } catch (RuntimeException e) {
                     if (BuildConfig.DEBUG) {
                         throw e;
                     } else if (K9.DEBUG) {
-                        Log.e(LOG_TAG, "Error whiile updating mail list widget", e);
+                        Log.e(LOG_TAG, "Error while updating message list widget", e);
                     }
                 }
             }

@@ -94,6 +94,7 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
 
     @Override
     public void onDestroy() {
+        // Implement interface
     }
 
     @Override

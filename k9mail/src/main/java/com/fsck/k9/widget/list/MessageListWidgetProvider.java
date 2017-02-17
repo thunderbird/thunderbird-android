@@ -19,7 +19,7 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
     private static String ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST";
 
 
-    public static void updateMailViewList(Context context) {
+    public static void triggerMessageListWidgetUpdate(Context context) {
         Context appContext = context.getApplicationContext();
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(appContext);
         ComponentName widget = new ComponentName(appContext, MessageListWidgetProvider.class);
