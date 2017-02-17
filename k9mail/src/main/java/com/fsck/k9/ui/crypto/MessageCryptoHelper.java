@@ -95,7 +95,7 @@ public class MessageCryptoHelper {
     }
 
     public void asyncStartOrResumeProcessingMessage(LocalMessage message, MessageCryptoCallback callback,
-                                                    OpenPgpDecryptionResult cachedDecryptionResult) {
+            OpenPgpDecryptionResult cachedDecryptionResult) {
         if (this.currentMessage != null) {
             reattachCallback(message, callback);
             return;
@@ -282,17 +282,17 @@ public class MessageCryptoHelper {
 
         cancelableBackgroundOperation = openPgpApi.executeApiAsync(intent, dataSource, dataSink,
                 new IOpenPgpSinkResultCallback<MimeBodyPart>() {
-                    @Override
-                    public void onProgress(int current, int max) {
-                        Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
-                        callbackProgress(current, max);
-                    }
+            @Override
+            public void onProgress(int current, int max) {
+                Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
+                callbackProgress(current, max);
+            }
 
-                    @Override
-                    public void onReturn(Intent result, MimeBodyPart bodyPart) {
-                        onCryptoOpReturnHandler(result, bodyPart);
-                    }
-                });
+            @Override
+            public void onReturn(Intent result, MimeBodyPart bodyPart) {
+                onCryptoOpReturnedPreops(result, bodyPart);
+            }
+        });
     }
 
     public void cancelIfRunning() {
@@ -327,25 +327,25 @@ public class MessageCryptoHelper {
 
         cancelableBackgroundOperation = openPgpApi.executeApiAsync(intent, dataSource, openPgpDataSink,
                 new IOpenPgpSinkResultCallback<MimeBodyPart>() {
-                    @Override
-                    public void onReturn(Intent result, MimeBodyPart decryptedPart) {
-                        onCryptoOpReturnHandler(result, decryptedPart);
-                    }
+            @Override
+            public void onReturn(Intent result, MimeBodyPart decryptedPart) {
+                onCryptoOpReturnedPreops(result, decryptedPart);
+            }
 
-                    @Override
-                    public void onProgress(int current, int max) {
-                        Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
-                        callbackProgress(current, max);
-                    }
-                });
+            @Override
+            public void onProgress(int current, int max) {
+                Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
+                callbackProgress(current, max);
+            }
+        });
     }
 
     /**
      * Common operations preceding {@link #onCryptoOperationReturned(MimeBodyPart)}
-     * @param result null will be treated as an internal error.
-     * @param decryptedPart plain text, ideally.
+     * @param result
+     * @param decryptedPart
      */
-    private void onCryptoOpReturnHandler(Intent result, MimeBodyPart decryptedPart) {
+    private void onCryptoOpReturnedPreops(Intent result, MimeBodyPart decryptedPart) {
         cancelableBackgroundOperation = null;
         currentCryptoResult = result;
         onCryptoOperationReturned(decryptedPart);
@@ -357,11 +357,12 @@ public class MessageCryptoHelper {
         byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentCryptoPart.part);
         if (signatureData != null)
             intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
+        intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
 
         openPgpApi.executeApiAsync(intent, dataSource, new IOpenPgpSinkResultCallback<Void>() {
             @Override
             public void onReturn(Intent result, Void dummy) {
-                onCryptoOpReturnHandler(result, null);
+                onCryptoOpReturnedPreops(result, null);
             }
 
             @Override

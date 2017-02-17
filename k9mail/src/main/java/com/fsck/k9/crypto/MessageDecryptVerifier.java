@@ -73,7 +73,7 @@ public class MessageDecryptVerifier {
         if (multipart.getCount() == 0) {
             return null;
         }
-
+        
         BodyPart firstBodyPart = multipart.getBodyPart(0);
 
         Part foundPart;
@@ -99,7 +99,7 @@ public class MessageDecryptVerifier {
             if (multipart.getCount() == 0) {
                 return null;
             }
-
+            
             BodyPart firstBodyPart = multipart.getBodyPart(0);
             if (isPartPgpInlineEncryptedOrSigned(firstBodyPart)) {
                 return firstBodyPart;
@@ -195,10 +195,8 @@ public class MessageDecryptVerifier {
     }
 
     /**
-     * @param part the part with signature data.
+     * @param part potentially with signature data.
      * @return may be null if no valid signature data found.
-     * @throws IOException
-     * @throws MessagingException
      */
     public static byte[] getSignatureData(Part part) throws IOException, MessagingException {
         if (isPartMultipartSigned(part)) {
