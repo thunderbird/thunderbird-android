@@ -8,4 +8,7 @@ android:
 
 jdk: oraclejdk8
 
-script: ./gradlew testDebug
+script: echo "1"
+
+after_success:
+   - python sputnik-ci.py

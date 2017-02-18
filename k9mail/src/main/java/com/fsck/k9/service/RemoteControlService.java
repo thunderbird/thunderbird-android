@@ -38,7 +38,7 @@ public class RemoteControlService extends CoreService {
     @Override
     public int startService(final Intent intent, final int startId) {
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "RemoteControlService started with startId = " + startId);
+            Log.i(K9.LOG_TAG, "RemoteControlService started with startId = " +startId);
         final Preferences preferences = Preferences.getPreferences(this);
 
         if (RESCHEDULE_ACTION.equals(intent.getAction())) {
