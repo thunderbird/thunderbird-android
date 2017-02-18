@@ -73,11 +73,16 @@ class ImapConnection {
     private OutputStream outputStream;
     private ImapResponseParser responseParser;
     private int nextCommandTag;
-    private Set<String> capabilities = new HashSet<String>();
+    private Set<String> preTlsCapabilities = new HashSet<>();
+    private Set<String> preAuthCapabilities = new HashSet<>();
+    private Set<String> postAuthCapabilities = new HashSet<>();
+    private ConnectionState state = ConnectionState.PRE_TLS;
     private ImapSettings settings;
     private Exception stacktraceForClose;
     private boolean open = false;
     private boolean retryXoauth2WithNewToken = true;
+
+    private enum ConnectionState { PRE_TLS, PRE_AUTH, POST_AUTH};
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
@@ -141,6 +146,7 @@ class ImapConnection {
             throw new MessagingException("Unable to open connection to IMAP server due to security error.", e);
         } finally {
             if (!authSuccess) {
+                switchState(ConnectionState.PRE_TLS);
                 Log.e(LOG_TAG, "Failed to login, closing connection for " + getLogId());
                 close();
             }
@@ -258,16 +264,28 @@ class ImapConnection {
             Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
 
             if (K9MailLib.isDebug()) {
-                Log.d(LOG_TAG, "Saving " + receivedCapabilities + " capabilities for " + getLogId());
+                Log.d(LOG_TAG, "Saving "+ receivedCapabilities + " " +state+ " capabilities for " + getLogId());
             }
 
-            capabilities = receivedCapabilities;
+            switch (state) {
+                case PRE_TLS:
+                    preTlsCapabilities = receivedCapabilities;
+                    break;
+                case PRE_AUTH:
+                    preAuthCapabilities = receivedCapabilities;
+                    break;
+                case POST_AUTH:
+                    postAuthCapabilities = receivedCapabilities;
+                    break;
+            }
         }
 
         return responses;
     }
 
     private void requestCapabilitiesIfNecessary() throws IOException, MessagingException {
+        Set<String> capabilities = selectCapabilities();
+
         if (!capabilities.isEmpty()) {
             return;
         }
@@ -289,6 +307,10 @@ class ImapConnection {
     private void upgradeToTlsIfNecessary() throws IOException, MessagingException, GeneralSecurityException {
         if (settings.getConnectionSecurity() == STARTTLS_REQUIRED) {
             upgradeToTls();
+        } else {
+            switchState(ConnectionState.PRE_AUTH);
+            //If we aren't doing a TLS upgrade capabilities will be the same.
+            preAuthCapabilities = new HashSet<>(preTlsCapabilities);
         }
     }
 
@@ -319,11 +341,16 @@ class ImapConnection {
         setUpStreamsAndParserFromSocket();
 
         // Per RFC 2595 (3.1):  Once TLS has been started, reissue CAPABILITY command
+        switchState(ConnectionState.PRE_AUTH);
         if (K9MailLib.isDebug()) {
             Log.i(LOG_TAG, "Updating capabilities after STARTTLS for " + getLogId());
         }
-
         requestCapabilities();
+    }
+
+    private void switchState(ConnectionState newState) throws IOException, MessagingException {
+        Log.v(LOG_TAG, "Switching state from: " + state + " to " + newState);
+        state = newState;
     }
 
     @SuppressWarnings("EnumSwitchStatementWhichMissesCases")
@@ -454,6 +481,8 @@ class ImapConnection {
         outputStream.write('\n');
         outputStream.flush();
 
+        switchState(ConnectionState.POST_AUTH);
+
         try {
             extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
         } catch (NegativeImapResponseException e) {
@@ -487,6 +516,8 @@ class ImapConnection {
         outputStream.write('\n');
         outputStream.flush();
 
+        switchState(ConnectionState.POST_AUTH);
+
         try {
             extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
         } catch (NegativeImapResponseException e) {
@@ -511,6 +542,8 @@ class ImapConnection {
         String username = p.matcher(settings.getUsername()).replaceAll(replacement);
         String password = p.matcher(settings.getPassword()).replaceAll(replacement);
 
+        switchState(ConnectionState.POST_AUTH);
+
         try {
             String command = String.format(Commands.LOGIN + " \"%s\" \"%s\"", username, password);
             extractCapabilities(executeSimpleCommand(command, true));
@@ -522,6 +555,7 @@ class ImapConnection {
     private void saslAuthExternal() throws IOException, MessagingException {
         try {
             String command = Commands.AUTHENTICATE_EXTERNAL + " " + Base64.encode(settings.getUsername());
+            switchState(ConnectionState.POST_AUTH);
             extractCapabilities(executeSimpleCommand(command, false));
         } catch (NegativeImapResponseException e) {
             /*
@@ -664,16 +698,29 @@ class ImapConnection {
         return isListResponse && hierarchyDelimiterValid;
     }
 
+    private Set<String> selectCapabilities() {
+        switch (state) {
+            case PRE_TLS:
+                return preTlsCapabilities;
+            case PRE_AUTH:
+                return preAuthCapabilities;
+            case POST_AUTH:
+                return postAuthCapabilities;
+            default:
+                throw new AssertionError();
+        }
+    }
+
     protected boolean hasCapability(String capability) {
-        return capabilities.contains(capability.toUpperCase(Locale.US));
+        return selectCapabilities().contains(capability.toUpperCase(Locale.US));
     }
 
     protected boolean isIdleCapable() {
         if (K9MailLib.isDebug()) {
-            Log.v(LOG_TAG, "Connection " + getLogId() + " has " + capabilities.size() + " capabilities");
+            Log.v(LOG_TAG, "Connection " + getLogId() + " has " + selectCapabilities().size() + " capabilities");
         }
 
-        return capabilities.contains(Capabilities.IDLE);
+        return selectCapabilities().contains(Capabilities.IDLE);
     }
 
     public void close() {
