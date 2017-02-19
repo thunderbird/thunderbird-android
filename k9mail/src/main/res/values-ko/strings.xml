@@ -405,6 +405,7 @@
   <string name="account_settings_notify_sync_summary">동기화 중일 때 상태 바에 표시합니다</string>
   <string name="account_settings_notify_self_label">보낸 편지함 포함</string>
   <string name="account_settings_notify_self_summary">내가 보낸 메시지에 대해 알림 보기</string>
+  <string name="account_notify_contacts_mail_only_label">연락처 만</string>
   <string name="account_notify_contacts_mail_only_summary">아는 사람이 보낸 메시지만 알림 보기</string>
   <string name="account_settings_notification_opens_unread_label">읽지 않은 메일에 대해 알림</string>
   <string name="account_settings_notification_opens_unread_summary">알림을 열 때 읽지 않은 메일을 찾습니다</string>
@@ -719,6 +720,7 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">삭제함</string>
   <string name="dialog_confirm_delete_cancel_button">삭제하지 않음</string>
+  <string name="dialog_confirm_mark_all_as_read_title">모두 읽었다는 것을 확인하기</string>
   <string name="dialog_confirm_mark_all_as_read_message">모든 메시지를 읽은 것으로 하겠습니까?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">예</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">아니오</string>
@@ -763,7 +765,7 @@
   <string name="settings_import_incoming_server">수신 서버 (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">발신 서버 (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="other">암호 설정 중...</item>
+    <item quantity="other">암호 설정 중…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">수신 서버 비밀번호 사용</string>
   <string name="activate_account_action">활성화</string>
@@ -855,7 +857,9 @@
   <string name="client_certificate_expired">클라이언트 인증서 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 이(가) 만료되었거나 올바르지 않습니다 (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">\"암호화됨\"</string>
+  <string name="add_from_contacts">연락처 목록에서 추가하기</string>
   <string name="crypto_settings_cancel">취소</string>
+  <string name="crypto_settings_ok">계속</string>
   <string name="recipient_cc">참조</string>
   <string name="recipient_bcc">숨은 참조</string>
   <string name="recipient_to">받는 사람</string>
@@ -865,6 +869,10 @@
   <string name="address_type_other">기타</string>
   <string name="address_type_mobile">모바일</string>
   <string name="compose_error_no_draft_folder">이 계정은 임시보관함 폴더가 없습니다!</string>
+  <string name="compose_error_no_signing_key">서명을 위한 키가 없습니다! 확정자를 확인하십시오.</string>
+  <string name="crypto_mode_disabled">서명이나 암호화 하지 않음</string>
+  <string name="crypto_mode_opportunistic">가능하면 암호화</string>
+  <string name="crypto_mode_private">암호화</string>
   <string name="error_crypto_inline_attach">PGP/INLINE 모드는 첨부를 지원하지 않습니다!</string>
   <string name="enable_inline_pgp">PGP/INLINE 활성화</string>
   <string name="disable_inline_pgp">PGP/INLINE 비활성화</string>
@@ -872,7 +880,7 @@
   <string name="openpgp_inline_keep_enabled">활성 상태 유지</string>
   <string name="crypto_msg_disabled">메시지가 암호화되지 않았습니다</string>
   <string name="crypto_msg_encrypted_error">메시지가 암호화되었지만, 복호화에 에러가 있습니다.</string>
-  <string name="message_progress_text">로딩 중...</string>
+  <string name="message_progress_text">로딩 중…</string>
   <string name="messageview_decrypt_cancelled">복호화가 취소되었습니다.</string>
   <string name="messageview_decrypt_retry">재시도</string>
   <string name="messageview_crypto_warning_title">보안 경고</string>

@@ -932,8 +932,6 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="error_crypto_provider_connect">Nelze se spojit se službou šifrování, zkontrolujte své nastavení nebo ťukněte na ikonu šifrování pro nový pokus.</string>
   <string name="error_crypto_provider_ui_required">Přístup ke službě šifrování zamítnut, ťuknout na ikonu šifrování pro nový pokus!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE mód nepodporuje přílohy!</string>
-  <string name="error_crypto_inline_sign_only">PGP/INLINE mód nepodporuje podpisový mód!</string>
-  <string name="error_crypto_sign_only_inline">Podpisový mód není podporován v PGP/INLINE!</string>
   <string name="enable_inline_pgp">Povolit PGP/INLINE</string>
   <string name="disable_inline_pgp">Zakázat PGP/INLINE</string>
   <string name="enable_sign_only">Povolit PGP podpisový mód</string>
@@ -980,7 +978,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="locked_attach_unlock">Odemknout</string>
   <string name="locked_attach_unencrypted">Tato část nebyla zašifrována a nemusí být bezpečná.</string>
   <string name="locked_attach_title">Nechráněná příloha</string>
-  <string name="message_progress_text">Načítání...</string>
+  <string name="message_progress_text">Načítání…</string>
   <string name="messageview_decrypt_cancelled">Dešifrování zrušeno.</string>
   <string name="messageview_decrypt_retry">Opakovat</string>
   <string name="messageview_decrypt_incomplete">Zašifrovaná zpráva musí být stažena pro dešifrování.</string>

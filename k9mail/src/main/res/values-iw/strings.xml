@@ -70,7 +70,7 @@
   <string name="forward_action">קדימה</string>
   <string name="move_action">העבר</string>
   <string name="single_message_options_action">שלח</string>
-  <string name="refile_action">תייק מחדש...</string>
+  <string name="refile_action">תייק מחדש…</string>
   <string name="done_action">סיום</string>
   <string name="discard_action">השלך</string>
   <string name="save_draft_action">שמור כטיוטה</string>

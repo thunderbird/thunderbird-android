@@ -28,9 +28,9 @@
   <string name="app_revision_fmt">Informacije Revizije: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Mi koristimo slijedeće biblioteke treće strane: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji ikone: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">čitanje privitaka E-Pošte</string>
+  <string name="read_attachment_label">Čitanje privitaka E-Pošte</string>
   <string name="read_attachment_desc">Dopušta ovoj aplikaciji čitanje vaših privitaka E-Pošte.</string>
-  <string name="read_messages_label">čitanje E-Pošte</string>
+  <string name="read_messages_label">Čitanje E-Pošte</string>
   <string name="read_messages_desc">Dopušta ovoj aplikaciji čitanje vaše E-Pošte</string>
   <string name="delete_messages_label">Brisanje E-Pošte</string>
   <string name="delete_messages_desc">Dopušta ovoj aplikaciji brisanje vaše E-Pošte.</string>

@@ -58,9 +58,9 @@ Vennligst send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
   <string name="app_revision_fmt">Revisjonsinformasjon: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Vi bruker følgende tredjepartsbiblioteker: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji-ikoner: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">les e-postvedlegg</string>
+  <string name="read_attachment_label">Les e-postvedlegg</string>
   <string name="read_attachment_desc">Tillater denne applikasjon å lese dine e-postvedlegg.</string>
-  <string name="read_messages_label">les e-poster</string>
+  <string name="read_messages_label">Les e-poster</string>
   <string name="read_messages_desc">Tillater denne applikasjonen å lese dine e-poster.</string>
   <string name="delete_messages_label">Slett e-poster</string>
   <string name="delete_messages_desc">Tillater denne applikasjon å slette dine e-poster.</string>
@@ -926,8 +926,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="error_crypto_provider_connect">Kan koble til krypteringsleverandør, sjekk innstillinger eller klikk krypteringsikonet for å prøve igjen!</string>
   <string name="error_crypto_provider_ui_required">Krypteringsleverandør nektet tilgang, klikk krypteringsikonet for å prøve igjen!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-modus støtter ikke vedlegg!</string>
-  <string name="error_crypto_inline_sign_only">PGP/INLINE-modus støtter ikke Bare-Signer-modus!</string>
-  <string name="error_crypto_sign_only_inline">Bare-Signer-modus støtter ikke PGP/INLINE!</string>
   <string name="enable_inline_pgp">Aktiver PGP/INLINE</string>
   <string name="disable_inline_pgp">Deaktiver PGP/INLINE</string>
   <string name="enable_sign_only">Aktiver PGP Bare-Signer</string>
@@ -974,7 +972,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="locked_attach_unlock">Lås opp</string>
   <string name="locked_attach_unencrypted">Denne delen bar ikke krypter, og kan derfor være usikker.</string>
   <string name="locked_attach_title">Usikret vedlegg</string>
-  <string name="message_progress_text">Laster...</string>
+  <string name="message_progress_text">Laster…</string>
   <string name="messageview_decrypt_cancelled">Dekryptering ble avbrutt.</string>
   <string name="messageview_decrypt_retry">Prøv på nytt</string>
   <string name="messageview_decrypt_incomplete">Kryptert melding må lastes ned for dekryptering.</string>

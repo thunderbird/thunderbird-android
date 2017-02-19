@@ -28,7 +28,7 @@
   <string name="app_revision_fmt">Parandusteave: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">me kasutame järgnevaid kolmanda osapoole teeke: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emotikonid: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">loe meili manuseid</string>
+  <string name="read_attachment_label">Loe meili manuseid</string>
   <string name="read_attachment_desc">Luba sellel appil lugeda meili manuseid.</string>
   <string name="read_messages_label">Loe meilisõnumeid</string>
   <string name="read_messages_desc">Luba sellel appil lugeda meilisõnumeid.</string>

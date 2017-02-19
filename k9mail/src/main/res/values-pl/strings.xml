@@ -58,9 +58,9 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="app_revision_fmt">Historia zmian: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">K-9 mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Ikony Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Odczyt załączników</string>
+  <string name="read_attachment_label">Czytaj załączniki</string>
   <string name="read_attachment_desc">Zezwalaj tej aplikacji na czytanie załaczników z Twoich wiadomości.</string>
-  <string name="read_messages_label">Odczytaj wiadomości</string>
+  <string name="read_messages_label">Czytaj pocztę</string>
   <string name="read_messages_desc">Zezwalaj tej aplikacji na czytanie Twoich wiadomości</string>
   <string name="delete_messages_label">Usuń wiadomości</string>
   <string name="delete_messages_desc">Zezwalaj tej aplikacji na usuwanie Twoich wiadomości.</string>
@@ -238,12 +238,12 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="message_view_toast_unable_to_display_message">Nie można wyświetlić wiadomości</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Wszystkie nagłówki pobrano, niemniej nie znaleziono żadnych dodatkowych do wyświetlenia.</string>
-  <string name="message_additional_headers_retrieval_failed">Pobieranie nagłówkow nie powiodło się.</string>
+  <string name="message_additional_headers_retrieval_failed">Pobieranie nagłówków nie powiodło się.</string>
   <string name="from_same_sender">Więcej od tego nadawcy</string>
   <string name="message_discarded_toast">Wiadomość usunięta</string>
   <string name="message_saved_toast">Wiadomość zapisana jako szkic</string>
   <string name="global_settings_flag_label">Oznaczaj gwiazdkami</string>
-  <string name="global_settings_flag_summary">Gwiazka wskazuje oznakowane wiadomości</string>
+  <string name="global_settings_flag_summary">Gwiazdki wskazują oznakowane wiadomości</string>
   <string name="global_settings_checkbox_label">Zaznaczanie wielu</string>
   <string name="global_settings_checkbox_summary">Opcja zaznaczania wielu wiadomości dostępna zawsze w trybie wielokrotnego wyboru</string>
   <string name="global_settings_preview_lines_label">Podglądaj linie</string>
@@ -272,6 +272,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="global_settings_confirm_action_delete_starred">Usuń oznacz. gwiazkdą (tylko widok wiadomości)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Odrzuć wiadomość</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Oznacz wszystkie wiadomości jako przeczytane</string>
   <string name="global_settings_confirm_action_delete_notif">Usuń (powiadomienie)</string>
   <string name="global_settings_privacy_hide_useragent">Usuń User-Agent K-9 z nagłówka wiadomości</string>
   <string name="global_settings_privacy_hide_timezone">Użyj UTC jako strefy czasowej w nagłówku wiadomości</string>
@@ -279,7 +280,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="global_settings_notification_hide_subject_never">Nigdy</string>
   <string name="global_settings_notification_hide_subject_when_locked">Gdy urządzenie jest zablokowane</string>
   <string name="global_settings_notification_hide_subject_always">Zawsze</string>
-  <string name="global_settings_notification_quick_delete_title">Pokazuj przycisk \'Usuń\'</string>
+  <string name="global_settings_notification_quick_delete_title">Pokazuj przycisk „Usuń”</string>
   <string name="global_settings_notification_quick_delete_never">Nigdy</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Dla powiadomień o pojedynczych wiadomościach</string>
   <string name="global_settings_notification_quick_delete_always">Zawsze</string>
@@ -727,7 +728,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="font_size_message_list_subject">Temat</string>
   <string name="font_size_message_list_sender">Nadawca</string>
   <string name="font_size_message_list_date">Data wiadomości</string>
-  <string name="font_size_message_list_preview">Pogdląd</string>
+  <string name="font_size_message_list_preview">Podgląd</string>
   <string name="font_size_message_view">Wiadomości</string>
   <string name="font_size_message_view_sender">Nadawca</string>
   <string name="font_size_message_view_to">Adresat (Do:)</string>
@@ -816,9 +817,9 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="settings_import_incoming_server">Serwer przychodzący (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Serwer wychodzący (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Ustawianie hasła...</item>
-    <item quantity="few">Ustawianie haseł...</item>
-    <item quantity="other">Ustawianie haseł...</item>
+    <item quantity="one">Ustawianie hasła…</item>
+    <item quantity="few">Ustawianie haseł…</item>
+    <item quantity="other">Ustawianie haseł…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Użyj hasła serwera przychodzącego</string>
   <string name="activate_account_action">Aktywuj</string>
@@ -932,8 +933,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="error_crypto_provider_connect">Nie można połączyć się z dostawcą kryptografii, sprawdź ustawienia lub kliknij ikonę kryptografii, aby spróbować ponownie!</string>
   <string name="error_crypto_provider_ui_required">Odmowa dostępu do dostawcy kryptografii, kliknij ikonę kryptografii, aby spróbować ponownie!</string>
   <string name="error_crypto_inline_attach">Tryb PGP/INLINE nie obsługuje załączników!</string>
-  <string name="error_crypto_inline_sign_only">Tryb PGP/INLINE nie obsługuje trybu sign-only!</string>
-  <string name="error_crypto_sign_only_inline">Tryb sign-only nie obsługuje PGP/INLINE!</string>
   <string name="enable_inline_pgp">Włącz PGP/INLINE</string>
   <string name="disable_inline_pgp">Wyłącz PGP/INLINE</string>
   <string name="enable_sign_only">Włącz PGP Sign-Only</string>
@@ -980,7 +979,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="locked_attach_unlock">Odblokuj</string>
   <string name="locked_attach_unencrypted">Ta część nie została zaszyfrowana i może nie być zabezpieczona.</string>
   <string name="locked_attach_title">Niechroniony załącznik</string>
-  <string name="message_progress_text">Ładowanie...</string>
+  <string name="message_progress_text">Ładowanie…</string>
   <string name="messageview_decrypt_cancelled">Anulowano odszyfrowywanie.</string>
   <string name="messageview_decrypt_retry">Spróbuj ponownie</string>
   <string name="messageview_decrypt_incomplete">Aby dokonać odszyfrowania, należy pobrać zaszyfrowane wiadomości.</string>
@@ -990,9 +989,18 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="messageview_crypto_warning_expired">Wiadomość została podpisana z wykorzystaniem <b>klucza, który wygasł!</b></string>
   <string name="messageview_crypto_warning_insecure">Wiadomość została podpisana z wykorzystaniem <b>niezabezpieczonego klucza!</b></string>
   <string name="messageview_crypto_warning_error">W <b>podpisie wiadomości wystąpił błąd!</b></string>
+  <string name="messageview_crypto_warning_unsigned">Ta wiadomość została zaszyfrowana lecz nie podpisana. To <b>nie jest bezpieczne</b>!</string>
   <string name="recipient_error_non_ascii">Znaki specjalne nie są obecnie obsługiwane!</string>
   <string name="recipient_error_parse_failed">Błąd analizowania adresu!</string>
   <string name="account_settings_crypto_support_sign_only">Obsługa podpisywania niezaszyfrowanych wiadomości</string>
   <string name="error_sign_only_no_encryption">Szyfrowanie nie jest dostępne w trybie sign-only!</string>
   <string name="unsigned_text_divider_label">Niepodpisany tekst</string>
+  <string name="apg_deprecated_title">Ostrzeżenie o przestarzałości APG</string>
+  <string name="apg_deprecated_1">APG nie jest już rozwijany!</string>
+  <string name="apg_deprecated_2">Z tego powodu wsparcie dla APG zostało usunięte z K-9 Mail.</string>
+  <string name="apg_deprecated_bullet_1">Rozwój zakończył się na początku 2014 roku.</string>
+  <string name="apg_deprecated_bullet_2">Zawiera nienaprawione błędy bezpieczeństwa.</string>
+  <string name="apg_learn_more">Możesz <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">kliknąć tu</a> by dowiedzieć się więcej.</string>
+  <string name="apg_deprecated_ok">Rozumiem!</string>
+  <string name="apg">APG</string>
 </resources>

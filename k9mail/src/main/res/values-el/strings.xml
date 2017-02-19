@@ -958,7 +958,7 @@
   <string name="locked_attach_unlock">Ξεκλείδωσε</string>
   <string name="locked_attach_unencrypted">Αυτό το τμήμα δεν ήταν κρυπτογραφημένο και μπορεί να μην είναι ασφαλή.</string>
   <string name="locked_attach_title">Το συνημμένο αρχείο δεν είναι προστατευμένο </string>
-  <string name="message_progress_text">Φόρτωση...</string>
+  <string name="message_progress_text">Φόρτωση…</string>
   <string name="messageview_decrypt_cancelled">Αποκρυπτογράφηση ακυρώθηκε.</string>
   <string name="messageview_decrypt_retry">Επανάληψη</string>
   <string name="messageview_decrypt_incomplete">Το κρυπτογραφημένο μήνυμα πρέπει να έχει κατέβει για να αποκρυπτογραφηθεί.</string>

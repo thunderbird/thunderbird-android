@@ -200,7 +200,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Nachrichten konnten nicht gesendet werden</string>
   <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
-  <string name="debug_enable_debug_logging_title">Debugprotokollierung aktivieren</string>
+  <string name="debug_enable_debug_logging_title">Fehlersuchprotokollierung aktivieren</string>
   <string name="debug_enable_debug_logging_summary">Zusätzliche Diagnose-Informationen protokollieren</string>
   <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen protokollieren</string>
   <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau protokollieren.</string>
@@ -238,6 +238,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="message_no_additional_headers_available">Alle Kopfzeilen wurden heruntergeladen, es sind allerdings keine neuen Kopfzeilen vorhanden.</string>
   <string name="message_additional_headers_retrieval_failed">Die weiteren Kopfzeilen konnten nicht aus der Datenbank oder vom Mailserver geladen werden.</string>
   <string name="from_same_sender">Mehr von diesem Absender</string>
+  <string name="debug_delete_local_body">Fehlersuche / Nachrichtentext löschen</string>
   <string name="message_discarded_toast">Nachricht wurde verworfen</string>
   <string name="message_saved_toast">Nachricht wurde als Entwurf gespeichert</string>
   <string name="global_settings_flag_label">Wichtige Nachrichten</string>
@@ -270,6 +271,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Nachricht verwerfen</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Alle Nachrichten als gelesen markieren</string>
   <string name="global_settings_confirm_action_delete_notif">Löschen (aus Benachrichtigung)</string>
   <string name="global_settings_privacy_hide_useragent">K-9 nicht als Mailprogramm in Kopfzeilen eintragen</string>
   <string name="global_settings_privacy_hide_timezone">UTC als Zeitzone in Kopfzeilen verwenden</string>
@@ -656,7 +658,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="setting_theme_light">Hell</string>
   <string name="display_preferences">Anzeige</string>
   <string name="global_preferences">Globale Einstellungen</string>
-  <string name="debug_preferences">Fehlerdiagnose</string>
+  <string name="debug_preferences">Fehlersuchvorgang</string>
   <string name="privacy_preferences">Datenschutz</string>
   <string name="network_preferences">Netzwerk</string>
   <string name="interaction_preferences">Interaktion</string>
@@ -774,7 +776,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="dialog_confirm_spam_confirm_button">Ja</string>
   <string name="dialog_confirm_spam_cancel_button">Nein</string>
   <string name="dialog_attachment_progress_title">Anhang wird heruntergeladen</string>
-  <string name="debug_logging_enabled">Debug-Meldungen werden mit Hilfe des Android-Logging-Systems aufgezeichnet.</string>
+  <string name="debug_logging_enabled">Fehlersuchprotokollierung aktiviert</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="import_export_action">Einstellungen im- &amp; exportieren</string>
@@ -810,7 +812,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_import_incoming_server">Posteingangsserver (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Postausgangsserver (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Passwort setzen...</item>
+    <item quantity="one">Passwort setzen…</item>
     <item quantity="other">Passwörter setzen…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Passwort des Posteingangsservers verwenden</string>
@@ -925,8 +927,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="error_crypto_provider_connect">Verbindung zu Verschlüsselungsdienst fehlgeschlagen. Überprüfen Sie die Einstellungen oder tippen Sie auf das Verschlüsselungs-Symbol um es erneut zu versuchen.</string>
   <string name="error_crypto_provider_ui_required">Zugang zu Verschlüsselungsdienst verweigert. Tippen Sie auf das Verschlüsselungs-Symbol um es erneut zu versuchen.</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-Modus unterstützt keine Anhänge!</string>
-  <string name="error_crypto_inline_sign_only">PGP/INLINE-Modus unterstützt keinen Nur-Signieren-Modus!</string>
-  <string name="error_crypto_sign_only_inline">Nur-Signieren-Modus unterstützt kein PGP/INLINE!</string>
   <string name="enable_inline_pgp">PGP/INLINE aktivieren</string>
   <string name="disable_inline_pgp">PGP/INLINE deaktivieren</string>
   <string name="enable_sign_only">PGP Nur-Signieren aktivieren</string>
@@ -964,7 +964,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="crypto_msg_sign_mismatch">Signatur mit falschem Schlüssel gemacht.</string>
   <string name="crypto_msg_sign_expired">Signatur mit abgelaufenem Schlüssel gemacht.</string>
   <string name="crypto_msg_sign_revoked">Signatur mit zurückgezogenem Schlüssel gemacht.</string>
-  <string name="crypto_msg_sign_insecure">Signatur mit unicherem Schlüssel gemacht.</string>
+  <string name="crypto_msg_sign_insecure">Signatur mit unsicherem Schlüssel gemacht.</string>
   <string name="crypto_msg_sign_incomplete">Nachricht muss zum Verfizieren der Signatur vollständig heruntergeladen werden.</string>
   <string name="crypto_msg_signed_encrypted">Nachricht ist signiert und verschlüsselt.</string>
   <string name="crypto_msg_unsigned_encrypted">Es gibt keine Signatur, diese Nachricht könnte abgefangen worden sein.</string>
@@ -979,13 +979,23 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="messageview_decrypt_incomplete">Verschlüsselte Nachricht muss für die Entschlüsselung heruntergeladen werden.</string>
   <string name="messageview_crypto_error_title">Fehler beim Entschlüsseln der E-Mail</string>
   <string name="messageview_crypto_warning_title">Sicherheitswarnung</string>
-  <string name="messageview_crypto_warning_revoked">Diese Nachricht wurde mit einem <b>zurückgezogenem Schlüssel</b> signiert!</string>
-  <string name="messageview_crypto_warning_expired">Diese Nachricht wurde mit einem <b>abgelaufenem Schlüssel</b> signiert!</string>
-  <string name="messageview_crypto_warning_insecure">Diese Nachricht wurde mit einem <b>unsicherem Schlüssel</b> signiert!</string>
+  <string name="messageview_crypto_warning_revoked">Diese Nachricht wurde mit einem <b>zurückgezogenen Schlüssel</b> signiert!</string>
+  <string name="messageview_crypto_warning_expired">Diese Nachricht wurde mit einem <b>abgelaufenen Schlüssel</b> signiert!</string>
+  <string name="messageview_crypto_warning_insecure">Diese Nachricht wurde mit einem <b>unsicheren Schlüssel</b> signiert!</string>
   <string name="messageview_crypto_warning_error">Es gab einen Fehler in der Signatur dieser Nachricht!</string>
+  <string name="messageview_crypto_warning_unsigned">Diese Nachricht wurde verschlüsselt, aber nicht signiert. Sie ist <b>nicht Ende-zu-Ende sicher</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">Nachricht trotzdem anzeigen</string>
   <string name="recipient_error_non_ascii">Sonderzeichen werden derzeit nicht unterstützt!</string>
   <string name="recipient_error_parse_failed">Fehler beim Einlesen der Adresse!</string>
   <string name="account_settings_crypto_support_sign_only">Signatur von unverschlüsselten Nachrichten unterstützen</string>
   <string name="error_sign_only_no_encryption">Verschlüsselung ist im Nur-Signieren-Modus nicht verfügbar!</string>
   <string name="unsigned_text_divider_label">Unsignierter Text</string>
+  <string name="apg_deprecated_title">APG Veraltungswarnung</string>
+  <string name="apg_deprecated_1">APG wird nicht mehr gepflegt!</string>
+  <string name="apg_deprecated_2">Aus diesem Grund wurde die Unterstützung für APG aus K-9 Mail entfernt.</string>
+  <string name="apg_deprecated_bullet_1">Entwicklung wurde Anfang 2014 eingestellt</string>
+  <string name="apg_deprecated_bullet_2">Enthält ungelöste Sicherheitsprobleme</string>
+  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Klicken Sie hier</a>, um mehr zu erfahren.</string>
+  <string name="apg_deprecated_ok">Verstanden!</string>
+  <string name="apg">APG</string>
 </resources>
