@@ -62,6 +62,7 @@ public class MessageCryptoHelper {
 
 
     private final Context context;
+    private final String openPgpProviderPackage;
     private final Object callbackLock = new Object();
     private final Deque<CryptoPart> partsToDecryptOrVerify = new ArrayDeque<>();
 
@@ -92,6 +93,12 @@ public class MessageCryptoHelper {
         if (!K9.isOpenPgpProviderConfigured()) {
             throw new IllegalStateException("MessageCryptoHelper must only be called with a openpgp provider!");
         }
+
+        openPgpProviderPackage = K9.getOpenPgpProvider();
+    }
+
+    public boolean isConfiguredForOutdatedCryptoProvider() {
+        return !openPgpProviderPackage.equals(K9.getOpenPgpProvider());
     }
 
     public void asyncStartOrResumeProcessingMessage(LocalMessage message, MessageCryptoCallback callback,
@@ -207,7 +214,6 @@ public class MessageCryptoHelper {
     }
 
     private void connectToCryptoProviderService() {
-        String openPgpProviderPackage = K9.getOpenPgpProvider();
         openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProviderPackage,
                 new OnBound() {
                     @Override

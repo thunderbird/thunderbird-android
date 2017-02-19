@@ -157,6 +157,10 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+
+        <item name="tintColorBulletPointPositive">#77aa22</item>
+        <item name="tintColorBulletPointNegative">#dd2222</item>
+        <item name="tintColorBulletPointNeutral">#bbb</item>
     </style>
 
     <style name="Theme.K9.Dialog.Translucent.Light" parent="@android:style/Theme.Holo.Light.Dialog">
@@ -166,6 +170,11 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+
+        <item name="tintColorBulletPointPositive">#77aa22</item>
+        <item name="tintColorBulletPointNegative">#dd2222</item>
+        <item name="tintColorBulletPointNeutral">#bbb</item>
     </style>
 
+    <style name="Theme.K9.Transparent" parent="@android:style/Theme.NoDisplay" />
 </resources>

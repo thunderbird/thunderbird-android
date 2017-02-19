@@ -159,5 +159,6 @@ public final class CryptoResultAnnotation {
         OPENPGP_ENCRYPTED_BUT_INCOMPLETE,
         SIGNED_BUT_UNSUPPORTED,
         ENCRYPTED_BUT_UNSUPPORTED,
+        OPENPGP_ENCRYPTED_NO_PROVIDER,
     }
 }

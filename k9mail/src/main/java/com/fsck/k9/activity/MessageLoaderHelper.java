@@ -126,7 +126,11 @@ public class MessageLoaderHelper {
     public void asyncRestartMessageCryptoProcessing() {
         cancelAndClearCryptoOperation();
         cancelAndClearDecodeLoader();
-        startOrResumeCryptoOperation();
+        if (K9.isOpenPgpProviderConfigured()) {
+            startOrResumeCryptoOperation();
+        } else {
+            startOrResumeDecodeMessage();
+        }
     }
 
     /** Cancels all loading processes, prevents future callbacks, and destroys all loading state. */
@@ -261,7 +265,8 @@ public class MessageLoaderHelper {
         RetainFragment<MessageCryptoHelper> retainCryptoHelperFragment = getMessageCryptoHelperRetainFragment(true);
         if (retainCryptoHelperFragment.hasData()) {
             messageCryptoHelper = retainCryptoHelperFragment.getData();
-        } else {
+        }
+        if (messageCryptoHelper == null || messageCryptoHelper.isConfiguredForOutdatedCryptoProvider()) {
             messageCryptoHelper = new MessageCryptoHelper(context);
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
