@@ -43,6 +43,7 @@ import org.apache.james.mime4j.stream.MimeConfig;
 public class MimeMessage extends Message {
     private MimeHeader mHeader = new MimeHeader();
     protected Address[] mFrom;
+    protected Address[] mSender;
     protected Address[] mTo;
     protected Address[] mCc;
     protected Address[] mBcc;
@@ -281,6 +282,23 @@ public class MimeMessage extends Message {
             };
         } else {
             this.mFrom = null;
+        }
+    }
+
+    @Override
+    public Address[] getSender() {
+        return Address.parse(MimeUtility.unfold(getFirstHeader("Sender")));
+    }
+
+    @Override
+    public void setSender(Address sender) {
+        if (sender != null) {
+            setHeader("Sender", sender.toEncodedString());
+            this.mSender = new Address[] {
+                    sender
+            };
+        } else {
+            this.mSender = null;
         }
     }
 

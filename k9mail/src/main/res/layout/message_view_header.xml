@@ -109,6 +109,23 @@
                         android:text="@string/general_no_sender"
                         android:gravity="center_vertical"
                         />
+
+                    <!-- Sender -->
+                    <TextView
+                        android:id="@+id/sender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/status_icon_strip"
+                        android:paddingTop="0dp"
+                        android:layout_below="@+id/from"
+                        android:ellipsize="end"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:gravity="center_vertical"
+                        />
                     
                     <!-- To -->
                     <TextView
@@ -129,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/to_label"
-                        android:layout_below="@+id/from"
+                        android:layout_below="@+id/sender"
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:paddingTop="2dp"
