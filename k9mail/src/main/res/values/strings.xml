@@ -285,6 +285,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>
     <string name="message_view_toast_unable_to_display_message">Unable to display message</string>
+    <string name="message_view_sender_label">%1$s on behalf of %2$s</string>
 
     <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>

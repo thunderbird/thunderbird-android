@@ -1,6 +1,7 @@
 package com.fsck.k9.view;
 
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -258,9 +259,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public void populate(final Message message, final Account account) {
         final Contacts contacts = K9.showContactName() ? mContacts : null;
-        final CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
+        CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
         final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
+        if (shouldShowSender(message)) {
+            from = getResources().getString(R.string.message_view_sender_label,
+                    MessageHelper.toFriendly(message.getSender(), contacts), from.toString());
+        }
 
         Address[] fromAddrs = message.getFrom();
         Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
@@ -340,6 +345,16 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         } else {
             hideAdditionalHeaders();
         }
+    }
+
+    public boolean shouldShowSender(Message message) {
+        Address[] from = message.getFrom();
+        Address[] sender = message.getSender();
+
+        if (sender == null || sender.length == 0) {
+            return false;
+        }
+        return !Arrays.equals(from, sender);
     }
 
     public void hideCryptoStatus() {
