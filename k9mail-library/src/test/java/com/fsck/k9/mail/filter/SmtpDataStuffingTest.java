@@ -1,57 +1,50 @@
 package com.fsck.k9.mail.filter;
 
+
 import java.io.IOException;
-import java.io.ByteArrayOutputStream;
 
+import okio.Buffer;
 import okio.ByteString;
-
+import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
+
 public class SmtpDataStuffingTest {
-    @Test
-    public void smtpDotStuffing_stuffingOnlyDotTest() throws IOException {
-        String expectedMessageAfterStuffing = "Hello dot\r\n..";
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        SmtpDataStuffing smtpDataStuffingStream = new SmtpDataStuffing(byteArrayOutputStream);
-        byte[] data = ByteString.encodeUtf8("Hello dot\r\n.").toByteArray();
+    private Buffer buffer;
+    private SmtpDataStuffing smtpDataStuffing;
 
-        smtpDataStuffingStream.write(data);
-        smtpDataStuffingStream.close();
-        byteArrayOutputStream.close();
-        String actualMessageAfterStuffing = ByteString.of(byteArrayOutputStream.toByteArray()).utf8();
-
-        assertEquals(expectedMessageAfterStuffing, actualMessageAfterStuffing);
+    @Before
+    public void setUp() throws Exception {
+        buffer = new Buffer();
+        smtpDataStuffing = new SmtpDataStuffing(buffer.outputStream());
     }
 
     @Test
-    public void smtpDotStuffing_noStuffingDotTest() throws IOException {
-        String expectedMessageAfterStuffing = "...Hello .. dots.";
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        SmtpDataStuffing smtpDataStuffingStream = new SmtpDataStuffing(byteArrayOutputStream);
-        byte[] data = ByteString.encodeUtf8("...Hello .. dots.").toByteArray();
+    public void dotAtStartOfLine() throws IOException {
+        smtpDataStuffing.write(bytesFor("Hello dot\r\n."));
 
-        smtpDataStuffingStream.write(data);
-        smtpDataStuffingStream.close();
-        byteArrayOutputStream.close();
-        String actualMessageAfterStuffing = ByteString.of(byteArrayOutputStream.toByteArray()).utf8();
-
-        assertEquals(expectedMessageAfterStuffing, actualMessageAfterStuffing);
+        assertEquals("Hello dot\r\n..", buffer.readUtf8());
     }
 
     @Test
-    public void smtpDotStuffing_stuffingAndNoStuffingDotTest() throws IOException {
-        String expectedMessageAfterStuffing = "\r\n..Hello . dots.\r\n...\r\n..\r\n....";
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        SmtpDataStuffing smtpDataStuffingStream = new SmtpDataStuffing(byteArrayOutputStream);
-        byte[] data = ByteString.encodeUtf8("\r\n.Hello . dots.\r\n..\r\n.\r\n...").toByteArray();
+    public void dotAtStartOfStream() throws IOException {
+        smtpDataStuffing.write(bytesFor("...Hello .. dots."));
 
-        smtpDataStuffingStream.write(data);
-        smtpDataStuffingStream.close();
-        byteArrayOutputStream.close();
-        String actualMessageAfterStuffing = ByteString.of(byteArrayOutputStream.toByteArray()).utf8();
+        //FIXME: The first line is a line, too. So This should be dot stuffed.
+        // See https://tools.ietf.org/html/rfc5321#section-4.5.2
+        assertEquals("...Hello .. dots.", buffer.readUtf8());
+    }
 
-        assertEquals(expectedMessageAfterStuffing, actualMessageAfterStuffing);
+    @Test
+    public void dotsThatNeedStuffingMixedWithOnesThatDoNot() throws IOException {
+        smtpDataStuffing.write(bytesFor("\r\n.Hello . dots.\r\n..\r\n.\r\n..."));
+
+        assertEquals("\r\n..Hello . dots.\r\n...\r\n..\r\n....", buffer.readUtf8());
+    }
+
+    private byte[] bytesFor(String input) {
+        return ByteString.encodeUtf8(input).toByteArray();
     }
 }
