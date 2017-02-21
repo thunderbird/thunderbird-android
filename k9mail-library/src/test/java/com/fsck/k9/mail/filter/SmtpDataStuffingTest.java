@@ -30,11 +30,16 @@ public class SmtpDataStuffingTest {
 
     @Test
     public void dotAtStartOfStream() throws IOException {
-        smtpDataStuffing.write(bytesFor("...Hello .. dots."));
+        smtpDataStuffing.write(bytesFor(".Hello dots"));
 
-        //FIXME: The first line is a line, too. So This should be dot stuffed.
-        // See https://tools.ietf.org/html/rfc5321#section-4.5.2
-        assertEquals("...Hello .. dots.", buffer.readUtf8());
+        assertEquals("..Hello dots", buffer.readUtf8());
+    }
+
+    @Test
+    public void linesNotStartingWithDot() throws IOException {
+        smtpDataStuffing.write(bytesFor("Hello\r\nworld\r\n"));
+
+        assertEquals("Hello\r\nworld\r\n", buffer.readUtf8());
     }
 
     @Test
