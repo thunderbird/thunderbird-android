@@ -241,7 +241,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             }
         }
 
-        return gestureDetector.onTouchEvent(event);
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -293,10 +294,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public boolean startDrag(Recipient recipient) {
+    private boolean startDrag(Recipient recipient) {
         ClipData clipData = ClipData.newPlainText(recipient.address.getPersonal(), recipient.address.getAddress());
         View view = getTokenViewForRecipient(recipient);
         DragShadowBuilder dragShadowBuilder = new DragShadowBuilder(view);
+        onRecipientRemove(recipient);
 
         boolean dragSuccess = startDrag(clipData, dragShadowBuilder, recipient, 0);
         if (!dragSuccess) {
