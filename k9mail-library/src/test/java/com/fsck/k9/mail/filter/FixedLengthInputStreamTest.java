@@ -1,230 +1,154 @@
 package com.fsck.k9.mail.filter;
 
-import org.junit.Assert;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import okio.Buffer;
+
+import static org.junit.Assert.assertEquals;
+
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class FixedLengthInputStreamTest {
-    private FixedLengthInputStream fixedLengthInputStream;
-    private final int LENGTH_LIMIT1 = 5000;
-    private final int LENGTH_LIMIT2 = 20000;
-    private int STR_LENGTH;
-    private String string;
+    private static final int UNDERSIZED_LIMIT = 200;
+    private static final int LARGE_LIMIT = 1000;
+    private static int strLength;
+    private static String string;
+    private InputStream inputStream;
+
+    @BeforeClass
+    public static void setUp() {
+        string =
+                "MEnASSKHcqghDICuZtxZPtVHuIFHNtNFBFBfrDWJhnzVoPdZuNXvuXgPAhOJLKEoGkzWiMlCZKKMJfbWcwzgSWEzHlIpSxFoMALb" +
+                        "bYEmStiGGKBhiIPfQikVsOnBkdfXuMJVOmMYeIBrpMMhExSndzYQcbczqCnhFJanfnTbsyFrIYLdpEcyYQBzirKRYrWvBqzjJJXN" +
+                        "mgEWthlQjdUvaxrhmKcsyQyMxTUNOgGBhWjyGQwtsxsLzcSHvtJbXXYHYDsnHEFPDRVpTtHdbahaoKFgZPLYiiNOmYqxzNcXmJTQ" +
+                        "AbPjqeTumnrStJcWmnexWhouoyaVwVnGmiGpIvAyuHNomOaPUTxxfYeoGfGWCxjGiEorNQpCESRxzrGrFlsWQzSIIVBFPSLHZwhz" +
+                        "nGLzFPszsoPWHAfMUpsqcqqCFeWyOlfkFElGXiKUQeaAWibIFczowqJThbqEmOZdAugggzlJwnbRzEVRtkKCSoMyppiMsTGYqbZV";
+        strLength = string.length();
+    }
 
     @Before
-    public void setUp() {
-        // the length of this is 10000
-        string = "MEnASSKHcqghDICuZtxZPtVHuIFHNtNFBFBfrDWJhnzVoPdZuNXvuXgPAhOJLKEoGkzWiMlCZKKMJfbWcwzgSWEzHlIpSxFoMALb" +
-                "bYEmStiGGKBhiIPfQikVsOnBkdfXuMJVOmMYeIBrpMMhExSndzYQcbczqCnhFJanfnTbsyFrIYLdpEcyYQBzirKRYrWvBqzjJJXN" +
-                "mgEWthlQjdUvaxrhmKcsyQyMxTUNOgGBhWjyGQwtsxsLzcSHvtJbXXYHYDsnHEFPDRVpTtHdbahaoKFgZPLYiiNOmYqxzNcXmJTQ" +
-                "AbPjqeTumnrStJcWmnexWhouoyaVwVnGmiGpIvAyuHNomOaPUTxxfYeoGfGWCxjGiEorNQpCESRxzrGrFlsWQzSIIVBFPSLHZwhz" +
-                "nGLzFPszsoPWHAfMUpsqcqqCFeWyOlfkFElGXiKUQeaAWibIFczowqJThbqEmOZdAugggzlJwnbRzEVRtkKCSoMyppiMsTGYqbZV" +
-                "YClrRYAHlNBSMeoSIrYZEQRSXEDiLVkcHiZGRuVfoReelRhIlyvHnVymjweJlawyZtWMICAWkuJYwcawePzBwcMzvEwBJBqFSdPw" +
-                "DmHBseRrCgOksxqUycbuhKivOsMcSyNjuuoBjrSImAzlPYDxhEgdAUmzWmHDoYqdAiZOGyPYhnmvHxrierMSEpfurztHLvzANzXV" +
-                "fjjjuRCcJqXKLzhOUlHFPGzSyuBfoyzhbmJnAZQegdOdleIpTgSXnMWBWeYtGoAzYrEODFZyaMUQnNowDJmvACKxKTlSaBZQHeVY" +
-                "HlQRbPaFnvjojRQvHkKbQkMOZRyolgjpXsFxPjcCdIgJLfeksfjPZRnZdKaFgKwUWfAueJzoifKFPOwfkZASFdizVBqkpwUBxGPy" +
-                "QesNflOdjsIGaUIBuQpmhlPRceSqonXVgXYQRHgmBitxUxxiURWYkyEyXYvvhjvHnJSatxSxkXIruANXWdeUgolZgCpojffSUFFM" +
-                "dIkbQCVtIfVngnWVlKdOTinrlUTxKbDleupGPZxVDiGzzyrVvTiLqCReRfKFWBxAZfhChFJfZIAMxsKoSiSmBJKlcvwhahbyQaIp" +
-                "sIjlPIgtzNopKGBpKQWryLSWEZaUJvBNtllFGVkgcEJAbueLbTzodPehMLdUrkYPEvhElsPfuAgnrlDfcVwZTfCZIfgzrdPyCUGa" +
-                "hkItuezhSjbrqCFtaNFwSZwNEOnLgWCcipcVmVgfMyyuMihorOPSlLEBnxDAFlRAOtqhKSOWZmZPxVbLLekDKRVtUorNWEhYypsf" +
-                "lRlVwyHpHCetlnnsHwbAJFMDBTefCOyPycOmppTjamRIAjbCMAGunjfCYQAjECinPwuDICyOJZRCfIXTcFiFmStMSgrGDcYnwiTL" +
-                "RiTHGVwXbZpqbGTCEQsSvOwlraLXbUwDbJaFMDHczpxcVwpdxWGKgkNnTpmIWnOGyeksbQRAfTjNpiEjFCMCvuKOTkYYacmFTbKo" +
-                "ERENhuJRggCsFhpVetmjtsahBgniNTdmxYTLueVAExBDpPhgByuuYcMHEzDfZpLwDNeIOYQDNDNdPDzncmcmMcHEhBzCjURitfgW" +
-                "YmBsDQjJBkqYidbDPooOgNJQmIjrrFGKvRkUKyVoIuiBqBuJNsqRRsWlYxRQNmJPHsAMguXEbVsOtYZaQecxcZSTVLzKiBwCkJDL" +
-                "VkFUvgxbBokTxBgjEdfWkXkBXHMkNnRnzzOCXGtIVQLHtmEUwKMWXitJQNVHjFJCHUfGURHleMIwzagiHvKypgSMjlfqUjSTfQmo" +
-                "SerrwofvbLJadMlbnVztXwyuDZspaHXXWzrChlbTCtAHkitdthqcrvpvgrpZVXfTUAbRtxuioyRSvAIrsIGeExbwUjbnVPWSRcTk" +
-                "AXejsXDFtCdIncQzVqteeiWuzyDCwCvNNvYJKtRLtmmKjUHXDSEqHhmcSVOcvLwHLpuLLzbwHohGyYgWuYcIKlePRWgsjYKZezbW" +
-                "hDiwfQsjTNWQwlmqzYPvlDMAgynZwbUHHwDMHCSTIzBhgGrpHQCsveSaVBJbRGsRaMjDjBLOQjliftemKkrIjIQbZXZLZvnxsDYO" +
-                "rYWprbmUZgPXjgpzZdqBjglWOGmqMzkinwcjiHyRqIOcuXYVMtomYKRsQgohmxqvGVySGMFQiqbcsbUVKrFBoecpHYkuQqKyWaXB" +
-                "fQYKLLGNwPetStfyXfJPebQNwILaLozOfYLJOgnwDjjGbAswTbOwvzZypLlRFgEevkMBrMvPIiauIojiXBUfVfyWZLwCSDPDCCdL" +
-                "ROpGaSyjURqmZaaBAKhbScEtpIFRIlPcaDUlLQTpHZTZnwsPomWvaYNmkPVzgGBsPxAMEAyjaSZZgpPRbjEpyKGNWlruXFGyaFlE" +
-                "KWkVEfMYtuRZHHIbOiSgkCOQUhXqaZYbhQIGUeoityHcysGGOISZwdUSLqDrlcLTpLHUKBnueOpahtRjwAFKQFDQWMhfRePSJMUT" +
-                "IvHILbbqdFsWqimlZTjIkoqLuUeRHMouAXpnmvBqdBwLRbHcEyqHtzqplYJMhCaPfdufjzeavpNYiwpPEVcSQMFeOFuDhCzklbRy" +
-                "zMPksdjlKJPZGEaSCPvNFYnpmGZDVuaTwNOrcHeQpDlcCprdBQzdRjSfFcFebacFQAIctgzgevkygxdYoHwCFBysTPATTLBUCvdb" +
-                "oekFPjTWxHxrdyLpnrwOcXLoYfmODfnHsfFKRSQgIhMDNjFJJTGBKYKtipsGqfLtmEXBvyUHYVcEMAAsyjFPJbKngNfndUBhpjke" +
-                "STRSPrREYqXTtbdjWLgxkZBVqWVJZyRxSWXurobRUnmZYumanQtDFxPPqdVBODenqUjXuFKFLrTvxGfoKMnXJpdBwdlMwOXmzIsa" +
-                "rxpjoOzWsiZzlyODfOZazqucbzXawmZtCMZYjgyUlYNXlLNQzVlDSVMCntkERTJgzZpyjEHSLvmlUvmRwbmCSilEEbWCcbDZHlyM" +
-                "qrLDInIJdjZfgKvZRoqcRgpaAUkfCpuBGcPuOGizsTaMyzVtYvSkmXEsnSzndWfQLJQGFVKimmMzrrMjwemgZJXxyDwoANwBeuzU" +
-                "QWiuRkMWVhmtHYRuQpnuZJcGnHsdZlwiGZJKPTMUQwttInsIAqGcGjNGExwhUSjUELhsiuhHiIAixqAKDXVjnpizvSBuLjaFoGEG" +
-                "yIYWcRmAxeQhjuTYQBUIJmPrinVkSpaLUSDeFXsXOweKxuMJyiUxGAXZvJcKMnVCfaLUTYMiRVnxsmKdnaLOdOgyxfZGKBWhSPcB" +
-                "cKTBFvLbgigzwaxqIbqefiboMLNxKTkQbEeLfecxVeeDjvZkDyZRtQnyKdvTEeLNNWjbDVuMGjDrRDWmDhKOCaMfePYYtQXAKDYn" +
-                "RhbfQgOxtqsizhaTBgPpbwpUGaODnERDUAxxoeUdKqWQOmtiqxcwFmkoEoxCMoJiCNnJWNcXBuNTEBRYNyiPpiSuilHtafArZvJI" +
-                "qAyDCMbntwqLOTWrVAOBSeGCsRYJNQsmTYUTdMKOyhYwrwcepDDOGmKTwljUjuvJYAPjgMaMovGNCfKLvLtOMBCmtcxEeNaHwyVJ" +
-                "KKREyJsvJCtJFSDsWiRgdcTFNJBiQKHPuquiVvZpxsTiyXzaGbZRwaLSrVpArJfQOnoZcJnbfYokGBHjxEgQrzdVnNFTIQXqdlkO" +
-                "TQcedkDBICqshQebZcCgPpcxymbeHpbvPcpZbmxsyavwhdUbVmDgKQcfvzXtVDLQLFpmIlkbHEgqodlstRRcdnSkIFmlPLFeDNWP" +
-                "qZAifWfYPFeDpvHvmXtpMTPuHdsVQvRarrKRiuNgereFLTZqWQspOBRzssosjOSaVrCJtDXgmiLqfpOiaiabkFcTwoRdYiITVeeM" +
-                "nzQOyMiGFBdJaRLyyWDWnBYaZdroHFyfXaNKICBssZWrcwMnCVJmgZqZlgMyTAhNpFcJOJfzDwpHvFpSoHjIHwsgjLtAmoqSWfZO" +
-                "DKLlZxQcKZdLgbKmKREGKAVWqpxVRrROpPuStNKNeUCftKkWMaIOvYTbjTuJNULXfAENRwhWllaFDeBrpfkSFwWNqJmQIUFoskFI" +
-                "RGrkQlPzTWJBVnAIOriDIGIpwMAILqCDEKWplOMGYyEnXsdXqfwQXlknvztgdfUYvObbuGKgvrLlBgEGMoSMdsxGSjpcViPRaTJf" +
-                "TqJvxrQToJGYNWDfMfefpQSTWxMLwVZUWzpNUKLffAympuVbpWGZLFqJhRlwZBMmaUEyuVjuguBHmrUUxDIaxjQQKlTgvHvShzHB" +
-                "pfdGjsTGhUjeBLxocaKoQtmIoPMqpWEXYVdvrkkTgsSBsbRZZSccDnCSwgtyqGPdqMnlwvzYlBTZMSsGxORBjldFYfrYdjGsTKXf" +
-                "jiLZrwRxyARdOumsImJbgNgBIMXuRyIkKbTNUEfItxjBGpwjCvQMZsNdQIdSKAjpUlPNgJLrWstNKQnqlKNvULiQvcjUwAuOCzvF" +
-                "WZcMuPlpYQNXpjMJkkhRvVVmOUtLNlUnOoXKfsNvPJkGpkjOihYmctLGtNCmeSfOCWPAHPZaUqPXFddJeyXDpkXYgxAJjaDHbJph" +
-                "StttbevAbcXhSnJLdELkNnBiCkQrpEoCiLVagxQqvjQfRMxQXnnGECwfaVuvszxqMFzKsDbQnUYnTeELEvSHcSmbXNcHtIVRbZnj" +
-                "WQwklyWYTZnWhnNslDnjkCFIAKAtVwLZRGbGGQmmBsXaTMCUcRSxSbpMFOLUhUnzFBoAmMbHGKBNBbYxsEdAUWjLCKxkTFaJAlBK" +
-                "HzhSocGGExHzMotlcVRQpHcpYhQuvFnLFfvYRpYbruFlemYVjzBUXlHdgawtZPxOrRDowTztLxUNWbHUbdxwWOFlYkNabmORHoxk" +
-                "TTKVaTojoLIHzvtEvozlkEaDPUIvMbwjfdDeLsUKPoupCZhtKMfcgtTghvMArOchYSZqpilxwYokZpLqqhUNBoihkklOqPrbUvYL" +
-                "VRobifzyuRZdbnSQMkDOrutEeEMBhezKXfSRKMxDcCfiCTmPefTeEFuRXJoJYSMaplnrizLVbQpngsNxypFPifMnAHYOVJHtpxZB" +
-                "gbfdgDyjgDuNoYLqiFnmzCJbRJheQaiEHsGKgwnELTQUEQdKvtcmxnnLHwpKsawIhNYQXHpOPIpErffLtYBtPUclPzObvILoZHal" +
-                "eMCKrmDheDRBsYZdHfMANrtMbhYKiwhQJsHUKEMxYMwZHxhzrnZyShLuHSRaNgdOtIZMiHClsSOTleWQxGLWQqFNiKeZeBcZeQhN" +
-                "rIiPQGuPSckzzdyljxtLuhjEwwaTplMwLzOnctrPfWPYRcwTJHCSMAjOdZPRJsdCaMXDrIVpJQuzuKmSkmDUgihoirxVeYsofcQh" +
-                "uuRSmYxsFbDWsxMASiDqtqLiyGaPKesqllKoYfBWmTjIsgaxzFRLXZZkFAzerhMGvLQhsQoxlbHJqaORYjbtVUSgBlfdYZTQSlKV" +
-                "ztwnQpgEybjhYHtaYAlSPuHtIBbaPgHyLUmzyzLAwWBpLVYOLAYWOiIYFJcaiJekroOoXBHcdfAChYutOXYSWYzZoKbtRplyYlox" +
-                "VVoRoJDNQfNoVOXmRtVOgErrvMgSsYoLuXnSrOCgQNqaBLEwkynXfxMHxGewGMZtIVtRssYgfpPGeQzcIiSUxlykVqbDSgHjGVQi" +
-                "KmlNedCfmOCFtcyVreqckXoqzzvKHeLaKFDwJhHkpFLdbNXFOLDCBYIURdTVoPqOingIcaYltldOZDhSgbiCCUKByOiZqdfgJOkH" +
-                "QtReGsSzjDBeeBBnJoSqnrAQVrnGgYgXYMrksizAAblCYefrlEtnPXisxvTeKUQbGNjkNZibGqIYJlufYrfvpDePYaiyyGovawrK" +
-                "oYlrwRPjlSHciHaqBGOIPiyCstxqpJUkOUWIJznOeQcCPzIEugfxJbDoyokuveyxpXErFviWtwRlZsbniUylfaLMElQtMHiDbxVA" +
-                "arSAXgOUyGkoDtRRGNyNLdbePsIlApQYRpNLAbijePGtwVLmYhtJcQvRRKFEXfoUzLeQwHgjUvAnFlOTaQVVXnXPZidSPmGBQNMt" +
-                "ZKLlNfaViScSIxozhaDfGZnYFSypFJwLpyMyQchrDroxkrYqENHnwzzjaKcnVUIRWOuBJOiMAscWBeIFSyDjlJOLYelGRdXFREiT" +
-                "DegZQxUwIDZyXmlwcqaEpNNFyglwbYkICOhdyBsHBYXVJaeCGKfOveltqpYJcAElKcknJoFPDESseLlHgQWYJqCqRPLPgINVDIaF" +
-                "dDJSPhKeuLVTvbUgSyACIIeNrxQryWZEdqLBPIWHuvFXrNFKeLaLbYASbvYtRQEzdPMNOkCxgxbrgERVfcEHSiBpzKhQtqiVbTSO" +
-                "hGtksTjPTOAELACjTkdAuOUibPSQrHDhaVZMCbQYyXLoThAvETgIvILTyYhNtQnmdsdLrCZZVeHNZHslwsObIFugSkFIAylExwKI" +
-                "exskGIUBlxgHIHLeqZqNEIEFGpSgslfMKDYhZLoLfIIrgviaPBGdZKSOMduRNPWqMvSYlpiYgzyZdNhHoaurBWkTYwoIazIEjQuA" +
-                "boetzxGzVYGnqvOJRsieqStvUjzRSitgWKBRFMwJsedRbQIjJirhFNVnBnIEqseCCYwqNrBxbttEvcqmhbIWaiOwBZpDPDQSeCtO" +
-                "oMMDBgtUPvkHDfYepGfsgvbHLThtGJlnNthWiOMKtMsfAPZMmgiElZAInVTWVQpANhhsbMByHPXvDRxHPiFeuaKNhFeHrCsLKNjA" +
-                "rqJeGGRzFEjrknOzazIJhSzAgTSZeSVRrTLcBqEaNmpqAhdJIanxUAxclGDYohrMrfBgnUEmkwsdJWzyzzqMDwbUzCUSsoEFehxO" +
-                "jLFcciTIbsLOfVwJIFitjvqnxijsjvNjFjyNnEkLwewGhUBBITCQiOwKPEGTqdwJfqqKNTSPCzQRufpbGkuJTRdLzNmLRxaonqLk" +
-                "GowVbroezSkpegEAskXhbMJTCCYydMavlqvmFdMLQqUSxVURjLMDIDEXWFMstyTIxFeOJLsYYIzAUJXflPhtGNDlCkhAgqQSXGGf" +
-                "uIgVYqKJiKIoGjgefXBuPNSxQCHMuippkwQxXjqjtMEXkGPYYhQLETPrEzywBxVTxvDtQvkJkOpeStceOYUtdBWuymCakvvCFYPo" +
-                "MbBISEHSbuFkfzNSZdppEytfUcMhUZpENOfIuUpHAMFYMfBVWsjMxkNAgBpvHCmnTAGTXVueKUFeKXyKrtqVztKjCjyGoarZHTwR" +
-                "FSwiLLvMkHulmrAGXSPVdCoiaJoxmsppYfwbwhDAoLGnzfUnqtNyCbyUHpyUItEjfqrLizMTcFeEeioiLbdObCiWXBSfqRzZidBZ" +
-                "XvhsuvdNyBNherItFJQnPfyzCpNEQraKccegNMWWmPXEvUphaKDDsEsbuZYmLUFWhBupUolODQDYJoxaleAJOcfoBQAMQfqqINYp" +
-                "FbZIoTLAuYySuCrXdFzvWFMiobUXyCPIaIzzFIxnIovovFQRzMHxEFlkPIoLwnuqnFQnRRgmlMHUssBdBDapvnUuhifmoCmuaBsP" +
-                "IaaTTnajqsIsXpDyGQNQISxfSsczuDtZGeXEJQTRUVeeCviweEghQyKZmpmHzBYTKtUlSaxNooMprukQSFqMeUgwyUgTsMqSmkzW" +
-                "DQzbFjzUJDVlfKNYWISOxPiAIrRvweUFbMRYHJvjskZwemcdoKBiCBwIqOpYrVwrEthvdXgijCtONcTlicKGtYORRhZEJiUIPTSY" +
-                "MEzQrUETaHqkknZFwBKQJJwgZaceaXFmEBLKBoCzcTXayTIEOlGngzfzvkSrDmoOcZroyQSyukxxbJdlaEzDEDJOaSIszGkHeomY" +
-                "KipWsMrKHIYpXaqvstsBlaFRhHyvuwtCdYsjWBtVPDNwTtOuPYklKIHAkvoDceSqonrwWtORQrcZKpiNKzFLqbWgfmnhCcKCeXng" +
-                "uexijkkVShZXIvcYgZdljYyIOQCrlLtHcGMZNJFhCcWJqcriZLRZctrrESxxKZWkGeVcKLFMTHcMwidbiAchSpjQBvCwMXpAlpSt" +
-                "seWUSbdfGQqdadWczKVrEYaiDrhNeepPFDllynREhXUBspdOsRPkVMVaNbcmJEwQkoMeWlsfvRpdAuBZYTzfKVDKQGDoDVDhJyeA" +
-                "BnzjGEEoiGrOiLGoViHpiLCBOLBiLCtfxSWKYuKuixEAJOBiMZFbHGBVDJmUNoeXfxXKNabolkDTCwcPohDrsvvinNCHDSOYnfXp" +
-                "olFRYTClufMizjJMzgBYApgrhOFZpAmmJaTadOgIVVafWvEFKOefUILvQNLaxdWuDVmzOxsSIZiWvYWbpfpIqEMgmfaUpHVdxHOu" +
-                "xbYPqezLbQPjXwULNznEyHYpyCpAFOawJpMmHfluqsSNMzNVlyafSPLDywjvEMIqcYWSmDdcfUQMHbzkECgkrYJuinAWYUPjoJRZ" +
-                "QkxcfkTlhhoFnmbZyvLSrIVcNYdLIDUsqCLQAXEJIJVegUJPfzssOmWHDAPZyLtylUUgFyxvwxLFgAnehydWWXnXIVmnqZEeXeAh" +
-                "cANnXpHqMcAtNXgmBkELyqrYemyPsnlvWMNFJsjJcYNoaAwFiAKVxebtwLLvodQFtuJxasxTcQvsiwSRjWanjWnMDoJKoQtwOcCK" +
-                "mKxHxyUuggufOjgJGvUoUooMBpMXDGrNohNzJbQmnCuFVHxulXEircCYtezkVeEkJKFRDXUlwvOSrfhTmnoytjeQbBcIaRZYsRAn" +
-                "isNlMSHqEXQIDirVGicrcOUxQzYhZlnHqwbKslxGkAjIPesZeQKSgbDMnFaAmVLOOrONYuszgMCNCvNGYJFOWGpZUmNvWvTWFoEX" +
-                "QrPSvEmhxyYmFuIfJppvJSDlggOwcXYiXdtgoFfRZyTQbQmdnhoVHvQffkcMSqHDGRpwSLRbqDWwHJOkVJSMFzHdttJwyVpWuTDa" +
-                "uFXOuHfpoXkHStuKkreyWLsasXTRVchqRaEYjUmcTuNZYlcVPFezKqIaDiRcRxuuYFtMzJqOIwMNmITofhdQiXTIfUHGfsYnPYgM" +
-                "wpVdzGoyIrSSKJjWMnGdhmJHwHoFCqNtXOnbltOMnlCuzBsNUIlrKgfHRTAzAoFAlMvxgIrGffqCLtpAdbCbxzxMuivOctNDhuXy" +
-                "iTuSYUvHnxZxklJDuMbMeGqQddtmAMVAhGNPVfdBaNQiDNxrRqLqFuYMjkDwekzDSgkFbCEiHPwmAqAuoRDrtnwXQfkhyKLNlhRE" +
-                "ZxDybKsCrrQPcrNFKskrvceHPGjvyBtVgaHTSmtzdMSVwNyMIlmsMIgZqpVCNVBmwPVYkEfuenVdGeQcSdGSEMuJGOdWXyMbVQiN" +
-                "hKKwnoffMoKJEbfgSLOMsSVUwEBRGFBPFhhsKLZrmPIdSMKwxhPOvzGywVCamswfIspSUHXyvtQrWGNUkyVyYWwjwumRSVfDFepT" +
-                "JnNHLfbAdkCfHsEbUQCHBlSlgpYExOjYyuYbLjCjBYdNXcfdShRRGhzcdsxmsbAnHunqzIeVsOrlJRfdhaDYtmeIOUBCqFZBpLXT" +
-                "jkvAhXYTjLCmcKebgCUFWCLgYnfxYIrTnbLuEyNPeIlyNIWefQrpYKHtEaUVESWrHYFWGHObaKnpspDilNhkfrWdFXUyZEgkbBPC" +
-                "DSUAsUKPpFNyrWPZCPHzVARrspCJbXNCkotJGtgrDdLMMGIPLEPirRZzRxYgDiefAsUvCTnQXGHTOXTCRgjZCegPBxXTblJVFepV" +
-                "YzPbwggNJDRgrHbtLvEQilSMnHSmeJahMUjJXXHFwZXQlMRVrPolpogKooCqIYErEiNnaWrbOaQhLRVxGCGHVnSaHyqaFQwdaSUF" +
-                "JRjJWyDvRjwIAVYTEghKdtdHnATaBxrExrpBmIdbZciYLtZszlxmziScLwdJWaXVycSAdubKkZGlozHnjBVRqllIzFufoSLgxExE";
-
-        STR_LENGTH = string.length();
-    }
-
-    // Test the cases that fixed length is smaller than the length of bytes array
-
-    @Test
-    public void testLongInput() throws IOException {
-        fixedLengthInputStream = new FixedLengthInputStream(new ByteArrayInputStream(string.getBytes()), LENGTH_LIMIT1);
-
-        final int LENGTH = 10000;   // LENGTH > LENGTH_LIMIT1
-        byte[] bytes = new byte[LENGTH_LIMIT1];
-
-        Assert.assertEquals(fixedLengthInputStream.read(bytes, 0, LENGTH), LENGTH_LIMIT1);
-        Assert.assertArrayEquals(bytes, string.substring(0, LENGTH_LIMIT1).getBytes());
+    public void initInputStream() {
+        inputStream = new Buffer().writeUtf8(string).inputStream();
     }
 
     @Test
-    public void testLengthLimit() throws IOException {
-        fixedLengthInputStream = new FixedLengthInputStream(new ByteArrayInputStream(string.getBytes()), LENGTH_LIMIT1);
+    public void testLongInputWithUnderSizedLimit() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+        byte[] bytes = new byte[UNDERSIZED_LIMIT];
 
-        fixedLengthInputStream.read(new byte[LENGTH_LIMIT1], 0, LENGTH_LIMIT1);
+        fixedLengthInputStream.read(bytes, 0, 500);
+
+        assertEquals(new String(bytes), string.substring(0, UNDERSIZED_LIMIT));
+    }
+
+    @Test
+    public void testLengthLimitWithUndersizedLimit() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+
+        fixedLengthInputStream.read(new byte[UNDERSIZED_LIMIT], 0, UNDERSIZED_LIMIT);
 
         int b = fixedLengthInputStream.read();
-        Assert.assertEquals(b, -1);
+        assertEquals(-1, b);
+    }
+
+    @Test
+    public void testMultiReadWithUndersizedLimit() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+        byte[] bytes = new byte[UNDERSIZED_LIMIT];
+
+        fixedLengthInputStream.read(bytes, 0, 99);
+        fixedLengthInputStream.read(bytes, 99, 301);
+
+        final String expected = string.substring(0, UNDERSIZED_LIMIT);
+        assertEquals(expected, new String(bytes));
+    }
+
+
+    @Test
+    public void testLongInputWithLargeLimit() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, LARGE_LIMIT);
+        byte[] bytes = new byte[LARGE_LIMIT];
+
+        fixedLengthInputStream.read(bytes, 0, 700);
+
+        assertEquals(string, new String(bytes).substring(0, strLength));
+    }
+
+    @Test
+    public void testLengthLimitWithLargeLimit() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, LARGE_LIMIT);
+
+        fixedLengthInputStream.read(new byte[LARGE_LIMIT], 0, LARGE_LIMIT);
+
+        int b = fixedLengthInputStream.read();
+        assertEquals(-1, b);
+    }
+
+    @Test
+    public void testMultiReadWithLargeLimit() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, LARGE_LIMIT);
+        byte[] bytes = new byte[700];
+
+        fixedLengthInputStream.read(bytes, 0, 399);
+        fixedLengthInputStream.read(bytes, 399, 301);
+
+        final String actual = new String(bytes).substring(0, strLength);
+        assertEquals(string, actual);
+    }
+
+    @Test
+    public void testAvailable() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+
+        fixedLengthInputStream.read();
+
+        int actual = fixedLengthInputStream.available();
+        assertEquals(UNDERSIZED_LIMIT - 1, actual);
+    }
+
+    @Test
+    public void testSkip() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, LARGE_LIMIT);
+
+        fixedLengthInputStream.skip(250);
+
+        int actual = fixedLengthInputStream.available();
+        assertEquals(LARGE_LIMIT - 250, actual);
+    }
+
+    @Test
+    public void testSkipRemaining() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+
+        fixedLengthInputStream.skipRemaining();
+
+        assertEquals(-1, fixedLengthInputStream.read());
     }
 
     @Test
     public void testRead() throws IOException {
-        fixedLengthInputStream = new FixedLengthInputStream(new ByteArrayInputStream(string.getBytes()), LENGTH_LIMIT1);
-
-        final int INDEX = 888;
-        final int ARRAY_LEN = 10000;
-
-        fixedLengthInputStream.read(new byte[ARRAY_LEN], 0, INDEX);
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+        fixedLengthInputStream.skip(100);
 
         int b = fixedLengthInputStream.read();
-        Assert.assertEquals(b, string.charAt(INDEX));
+
+        assertEquals(string.charAt(100), b);
     }
 
     @Test
-    public void testMultiRead() throws IOException {
-        fixedLengthInputStream = new FixedLengthInputStream(new ByteArrayInputStream(string.getBytes()), LENGTH_LIMIT1);
+    public void testReadBytes() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+        final byte[] bytes = new byte[150];
 
-        final int LENGTH1 = 2999, LENGTH2 = 3001;   // LENGTH1 + LENGTH2 > LENGTH_LIMIT1
+        fixedLengthInputStream.read(bytes);
 
-        byte[] bytes = new byte[LENGTH_LIMIT1];
-        fixedLengthInputStream.read(bytes, 0, LENGTH1);
-        fixedLengthInputStream.read(bytes, LENGTH1, LENGTH2);
-        final byte[] bytes1 = string.substring(0, LENGTH_LIMIT1).getBytes();
-        Assert.assertArrayEquals(bytes, bytes1);
+        assertEquals(string.substring(0, 150), new String(bytes));
     }
 
-
-    
-    // Test the cases that fixed length is larger than the length of bytes array
-
-    @Test
-    public void testLongInput2() throws IOException {
-        fixedLengthInputStream = new FixedLengthInputStream(new ByteArrayInputStream(string.getBytes()), LENGTH_LIMIT2);
-
-        final int LENGTH = 15000;   // LENGTH_LIMIT2 > LENGTH > STR_LENGTH
-        byte[] bytes = new byte[LENGTH_LIMIT2];
-
-        Assert.assertEquals(fixedLengthInputStream.read(bytes, 0, LENGTH), STR_LENGTH);
-        Assert.assertArrayEquals(bytes, concatByteArrays(string.getBytes(), new byte[LENGTH_LIMIT2 - STR_LENGTH]));
-    }
-
-    @Test
-    public void testLengthLimit2() throws IOException {
-        fixedLengthInputStream = new FixedLengthInputStream(new ByteArrayInputStream(string.getBytes()), LENGTH_LIMIT2);
-
-        fixedLengthInputStream.read(new byte[LENGTH_LIMIT2], 0, LENGTH_LIMIT2);
-
-        int b = fixedLengthInputStream.read();
-        Assert.assertEquals(b, -1);
-    }
-
-    @Test
-    public void testMultiRead2() throws IOException {
-        fixedLengthInputStream = new FixedLengthInputStream(new ByteArrayInputStream(string.getBytes()), LENGTH_LIMIT2);
-
-        final int LENGTH1 = 8999, LENGTH2 = 3001;       // LENGTH1 + LENGTH2 > STR_LENGTH > LENGTH1
-
-        byte[] bytes = new byte[LENGTH_LIMIT2];
-        fixedLengthInputStream.read(bytes, 0, LENGTH1);
-        fixedLengthInputStream.read(bytes, LENGTH1, LENGTH2);
-        final byte[] bytes1 = concatByteArrays(string.getBytes(), new byte[LENGTH_LIMIT2 - STR_LENGTH]);
-        Assert.assertArrayEquals(bytes, bytes1);
-    }
-
-    private byte[] concatByteArrays(byte[]... byteArrays) {
-        int totalLen = 0;
-        for (byte[] bytes : byteArrays) {
-            totalLen += bytes.length;
-        }
-
-        byte[] res = new byte[totalLen];
-
-        int start = 0;
-        for (byte[] bytes : byteArrays) {
-
-            System.arraycopy(bytes, 0, res, start, bytes.length);
-
-            start += bytes.length;
-        }
-
-        return res;
-    }
 }
