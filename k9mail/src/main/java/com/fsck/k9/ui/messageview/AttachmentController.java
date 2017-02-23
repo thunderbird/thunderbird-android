@@ -123,6 +123,12 @@ public class AttachmentController {
             return;
         }
 
+        if (attachment.size > directory.getFreeSpace()) {
+            String message = context.getString(R.string.message_view_status_no_space);
+            displayMessageToUser(message);
+            return;
+        }
+
         if (!attachment.isContentAvailable) {
             downloadAndSaveAttachmentTo((LocalPart) attachment.part, directory);
         } else {
