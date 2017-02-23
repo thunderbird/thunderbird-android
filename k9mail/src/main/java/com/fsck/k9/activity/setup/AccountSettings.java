@@ -26,6 +26,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.CryptoDefaultMode;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.Account.FolderMode;
@@ -715,7 +716,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
             cryptoMenu.setOnPreferenceClickListener(null);
 
-            mCryptoDefaultDisabled.setChecked(mAccount.getCryptoDefaultDisabled());
+            mCryptoDefaultDisabled.setChecked(mAccount.getCryptoDefaultMode() == CryptoDefaultMode.DISABLE);
         } else {
             cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
             cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -793,10 +794,11 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
         if (mHasCrypto) {
             mAccount.setCryptoKey(mCryptoKey.getValue());
-            mAccount.setCryptoDefaultDisabled(mCryptoDefaultDisabled.isChecked());
+            mAccount.setCryptoDefaultMode(mCryptoDefaultDisabled.isChecked() ?
+                    CryptoDefaultMode.DISABLE : CryptoDefaultMode.DEFAULT);
         } else {
             mAccount.setCryptoKey(Account.NO_OPENPGP_KEY);
-            mAccount.setCryptoDefaultDisabled(false);
+            mAccount.setCryptoDefaultMode(CryptoDefaultMode.DEFAULT);
         }
 
         // In webdav account we use the exact folder name also for inbox,
