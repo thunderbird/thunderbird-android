@@ -5,6 +5,14 @@
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.204" versioncode="23240">
+        <change>Fixed bug where not all data was removed for deleted messages</change>
+        <change>Improved support for messages that didn't display correctly</change>
+        <change>Fixed bug with notification actions sometimes not working</change>
+        <change>Use "encrypted.asc" as filename for PGP/MIME emails</change>
+        <change>Updated translations</change>
+        <change>Many more bug fixes</change>
+    </release>
     <release version="5.203" versioncode="23230">
         <change>Fixed bug with pinch to zoom gesture</change>
         <change>Added setting for disabling 'mark all as read' confirmation dialog</change>
