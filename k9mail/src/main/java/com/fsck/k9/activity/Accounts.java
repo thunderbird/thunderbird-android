@@ -68,6 +68,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.MessageActions;
+import com.fsck.k9.activity.license.OssLicenseListActivity;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSettings;
@@ -1238,6 +1239,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         case R.id.about:
             onAbout();
             break;
+            case R.id.oss_license:
+                startActivity(new Intent(this, OssLicenseListActivity.class));
+                break;
         case R.id.search:
             onSearchRequested();
             break;
