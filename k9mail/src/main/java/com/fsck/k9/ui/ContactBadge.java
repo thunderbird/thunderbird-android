@@ -6,7 +6,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,17 +29,17 @@ import android.widget.ImageView;
  * https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/widget/QuickContactBadge.java
  */
 public class ContactBadge extends ImageView implements OnClickListener {
-    static final private int TOKEN_EMAIL_LOOKUP = 0;
-    static final private int TOKEN_EMAIL_LOOKUP_AND_TRIGGER = 1;
+    private static final int TOKEN_EMAIL_LOOKUP = 0;
+    private static final int TOKEN_EMAIL_LOOKUP_AND_TRIGGER = 1;
 
-    static final private String EXTRA_URI_CONTENT = "uri_content";
+    private static final String EXTRA_URI_CONTENT = "uri_content";
 
-    static final String[] EMAIL_LOOKUP_PROJECTION = new String[] {
+    private static final String[] EMAIL_LOOKUP_PROJECTION = new String[] {
             RawContacts.CONTACT_ID,
             Contacts.LOOKUP_KEY,
     };
-    static final int EMAIL_ID_COLUMN_INDEX = 0;
-    static final int EMAIL_LOOKUP_STRING_COLUMN_INDEX = 1;
+    private static final int EMAIL_ID_COLUMN_INDEX = 0;
+    private static final int EMAIL_LOOKUP_STRING_COLUMN_INDEX = 1;
 
 
     private Uri contactUri;
@@ -61,23 +60,6 @@ public class ContactBadge extends ImageView implements OnClickListener {
         super(context, attrs, defStyle);
         queryHandler = new QueryHandler(context.getContentResolver());
         setOnClickListener(this);
-    }
-
-    @Override
-    protected void drawableStateChanged() {
-        super.drawableStateChanged();
-    }
-
-    /**
-     * This call has no effect anymore, as there is only one QuickContact mode
-     */
-    @SuppressWarnings("unused")
-    public void setMode(int size) {
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
     }
 
     /**
@@ -154,7 +136,7 @@ public class ContactBadge extends ImageView implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        // If contact has been assigned, mExtras should no longer be null, but do a null check
+        // If contact has been assigned, extras should no longer be null, but do a null check
         // anyway just in case assignContactFromPhone or Email was called with a null bundle or
         // wasn't assigned previously.
         final Bundle extras = (this.extras == null) ? new Bundle() : this.extras;
