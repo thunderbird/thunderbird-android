@@ -49,6 +49,7 @@ import com.fsck.k9.ui.messageview.OnCryptoClickListener;
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private Context mContext;
     private TextView mFromView;
+    private TextView mSenderView;
     private TextView mDateView;
     private TextView mToView;
     private TextView mToLabel;
@@ -103,6 +104,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mAnsweredIcon = findViewById(R.id.answered);
         mForwardedIcon = findViewById(R.id.forwarded);
         mFromView = (TextView) findViewById(R.id.from);
+        mSenderView = (TextView) findViewById(R.id.sender);
         mToView = (TextView) findViewById(R.id.to);
         mToLabel = (TextView) findViewById(R.id.to_label);
         mCcView = (TextView) findViewById(R.id.cc);
@@ -259,13 +261,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public void populate(final Message message, final Account account) {
         final Contacts contacts = K9.showContactName() ? mContacts : null;
-        CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
+        final CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
         final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
-        if (shouldShowSender(message)) {
-            from = getResources().getString(R.string.message_view_sender_label,
-                    MessageHelper.toFriendly(message.getSender(), contacts), from.toString());
-        }
 
         Address[] fromAddrs = message.getFrom();
         Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
@@ -298,6 +296,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             mContactsPictureLoader = ContactPicture.getContactPictureLoader(mContext);
         }  else {
             mContactBadge.setVisibility(View.GONE);
+        }
+
+        if (shouldShowSender(message)) {
+            mSenderView.setVisibility(VISIBLE);
+            String sender = getResources().getString(R.string.message_view_sender_label,
+                    MessageHelper.toFriendly(message.getSender(), contacts));
+            mSenderView.setText(sender);
         }
 
         final String subject = message.getSubject();
