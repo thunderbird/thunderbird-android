@@ -1,154 +1,273 @@
 package com.fsck.k9.mail.filter;
 
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.io.InputStream;
 
 import okio.Buffer;
+import okio.ByteString;
+import okio.Okio;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
 public class FixedLengthInputStreamTest {
-    private static final int UNDERSIZED_LIMIT = 200;
-    private static final int LARGE_LIMIT = 1000;
-    private static int strLength;
-    private static String string;
-    private InputStream inputStream;
+    @Test
+    public void readingStream_shouldReturnDataUpToLimit() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello world"), 5);
 
-    @BeforeClass
-    public static void setUp() {
-        string =
-                "MEnASSKHcqghDICuZtxZPtVHuIFHNtNFBFBfrDWJhnzVoPdZuNXvuXgPAhOJLKEoGkzWiMlCZKKMJfbWcwzgSWEzHlIpSxFoMALb" +
-                        "bYEmStiGGKBhiIPfQikVsOnBkdfXuMJVOmMYeIBrpMMhExSndzYQcbczqCnhFJanfnTbsyFrIYLdpEcyYQBzirKRYrWvBqzjJJXN" +
-                        "mgEWthlQjdUvaxrhmKcsyQyMxTUNOgGBhWjyGQwtsxsLzcSHvtJbXXYHYDsnHEFPDRVpTtHdbahaoKFgZPLYiiNOmYqxzNcXmJTQ" +
-                        "AbPjqeTumnrStJcWmnexWhouoyaVwVnGmiGpIvAyuHNomOaPUTxxfYeoGfGWCxjGiEorNQpCESRxzrGrFlsWQzSIIVBFPSLHZwhz" +
-                        "nGLzFPszsoPWHAfMUpsqcqqCFeWyOlfkFElGXiKUQeaAWibIFczowqJThbqEmOZdAugggzlJwnbRzEVRtkKCSoMyppiMsTGYqbZV";
-        strLength = string.length();
-    }
+        String readString = readStreamAsUtf8String(fixedLengthInputStream);
 
-    @Before
-    public void initInputStream() {
-        inputStream = new Buffer().writeUtf8(string).inputStream();
+        assertEquals("Hello", readString);
     }
 
     @Test
-    public void testLongInputWithUnderSizedLimit() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
-        byte[] bytes = new byte[UNDERSIZED_LIMIT];
+    public void readingStream_shouldNotConsumeMoreThanLimitFromUnderlyingInputStream() throws Exception {
+        InputStream inputStream = inputStream("Hello world");
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, 5);
 
-        fixedLengthInputStream.read(bytes, 0, 500);
+        exhaustStream(fixedLengthInputStream);
 
-        assertEquals(new String(bytes), string.substring(0, UNDERSIZED_LIMIT));
+        assertRemainingInputStreamEquals(" world", inputStream);
     }
 
     @Test
-    public void testLengthLimitWithUndersizedLimit() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+    //TODO: Maybe this should throw. The underlying stream delivering less bytes than expected is most likely an error.
+    public void readingStream_withLimitGreaterThanNumberOfBytesInUnderlyingInputStream() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 100);
 
-        fixedLengthInputStream.read(new byte[UNDERSIZED_LIMIT], 0, UNDERSIZED_LIMIT);
+        String readString = readStreamAsUtf8String(fixedLengthInputStream);
 
-        int b = fixedLengthInputStream.read();
-        assertEquals(-1, b);
+        assertEquals("Hello World", readString);
     }
 
     @Test
-    public void testMultiReadWithUndersizedLimit() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
-        byte[] bytes = new byte[UNDERSIZED_LIMIT];
+    public void read_withOverSizedByteArray_shouldReturnDataUpToLimit() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 6);
 
-        fixedLengthInputStream.read(bytes, 0, 99);
-        fixedLengthInputStream.read(bytes, 99, 301);
+        byte[] data = new byte[100];
+        int numberOfBytesRead = fixedLengthInputStream.read(data);
 
-        final String expected = string.substring(0, UNDERSIZED_LIMIT);
-        assertEquals(expected, new String(bytes));
-    }
-
-
-    @Test
-    public void testLongInputWithLargeLimit() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, LARGE_LIMIT);
-        byte[] bytes = new byte[LARGE_LIMIT];
-
-        fixedLengthInputStream.read(bytes, 0, 700);
-
-        assertEquals(string, new String(bytes).substring(0, strLength));
+        assertEquals(6, numberOfBytesRead);
+        assertEquals("Hello ", ByteString.of(data, 0, numberOfBytesRead).utf8());
     }
 
     @Test
-    public void testLengthLimitWithLargeLimit() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, LARGE_LIMIT);
+    public void read_withOverSizedByteArray_shouldNotConsumeMoreThanLimitFromUnderlyingStream() throws Exception {
+        InputStream inputStream = inputStream("Hello World");
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, 6);
 
-        fixedLengthInputStream.read(new byte[LARGE_LIMIT], 0, LARGE_LIMIT);
+        //noinspection ResultOfMethodCallIgnored
+        fixedLengthInputStream.read(new byte[100]);
 
-        int b = fixedLengthInputStream.read();
-        assertEquals(-1, b);
+        assertRemainingInputStreamEquals("World", inputStream);
     }
 
     @Test
-    public void testMultiReadWithLargeLimit() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, LARGE_LIMIT);
-        byte[] bytes = new byte[700];
+    public void read_withByteArraySmallerThanLimit_shouldConsumeSizeOfByteArray() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 6);
 
-        fixedLengthInputStream.read(bytes, 0, 399);
-        fixedLengthInputStream.read(bytes, 399, 301);
+        byte[] data = new byte[5];
+        int numberOfBytesRead = fixedLengthInputStream.read(data);
 
-        final String actual = new String(bytes).substring(0, strLength);
-        assertEquals(string, actual);
+        assertEquals(5, numberOfBytesRead);
+        assertEquals("Hello", ByteString.of(data).utf8());
     }
 
     @Test
-    public void testAvailable() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+    public void read_withOverSizedByteArrayInMiddleOfStream_shouldReturnDataUpToLimit() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 6);
+        consumeBytes(fixedLengthInputStream, 5);
 
+        byte[] data = new byte[10];
+        int numberOfBytesRead = fixedLengthInputStream.read(data);
+
+        assertEquals(1, numberOfBytesRead);
+        assertEquals(" ", ByteString.of(data, 0, numberOfBytesRead).utf8());
+    }
+
+    @Test
+    public void read_withOverSizedByteArrayInMiddleOfStream_shouldNotConsumeMoreThanLimitFromUnderlyingStream()
+            throws Exception {
+        InputStream inputStream = inputStream("Hello World");
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, 6);
+        consumeBytes(fixedLengthInputStream, 5);
+
+        //noinspection ResultOfMethodCallIgnored
+        fixedLengthInputStream.read(new byte[10]);
+
+        assertRemainingInputStreamEquals("World", inputStream);
+    }
+
+    @Test
+    public void read_atStartOfStream() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Word"), 2);
+
+        int readByte = fixedLengthInputStream.read();
+
+        assertEquals('W', (char) readByte);
+    }
+
+    @Test
+    public void read_inMiddleOfStream() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Word"), 2);
+        consumeBytes(fixedLengthInputStream, 1);
+
+        int readByte = fixedLengthInputStream.read();
+
+        assertEquals('o', (char) readByte);
+    }
+
+    @Test
+    public void read_atEndOfStream_shouldReturnMinusOne() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello world"), 5);
+        exhaustStream(fixedLengthInputStream);
+
+        int readByte = fixedLengthInputStream.read();
+
+        assertEquals(-1, readByte);
+    }
+
+    @Test
+    public void readArray_atEndOfStream_shouldReturnMinusOne() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello world"), 5);
+        exhaustStream(fixedLengthInputStream);
+
+        int numberOfBytesRead = fixedLengthInputStream.read(new byte[2]);
+
+        assertEquals(-1, numberOfBytesRead);
+    }
+
+    @Test
+    public void readArrayWithOffset_atEndOfStream_shouldReturnMinusOne() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello world"), 5);
+        exhaustStream(fixedLengthInputStream);
+
+        int numberOfBytesRead = fixedLengthInputStream.read(new byte[2], 0, 2);
+
+        assertEquals(-1, numberOfBytesRead);
+    }
+
+    @Test
+    public void available_atStartOfStream() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
+
+        int available = fixedLengthInputStream.available();
+
+        assertEquals(5, available);
+    }
+
+    @Test
+    public void available_afterPartialRead() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
+        //noinspection ResultOfMethodCallIgnored
         fixedLengthInputStream.read();
 
-        int actual = fixedLengthInputStream.available();
-        assertEquals(UNDERSIZED_LIMIT - 1, actual);
+        int available = fixedLengthInputStream.available();
+
+        assertEquals(4, available);
     }
 
     @Test
-    public void testSkip() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, LARGE_LIMIT);
+    public void available_afterPartialReadArray() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
+        consumeBytes(fixedLengthInputStream, 2);
 
-        fixedLengthInputStream.skip(250);
+        int available = fixedLengthInputStream.available();
 
-        int actual = fixedLengthInputStream.available();
-        assertEquals(LARGE_LIMIT - 250, actual);
+        assertEquals(3, available);
     }
 
     @Test
-    public void testSkipRemaining() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
+    public void available_afterStreamHasBeenExhausted() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
+        exhaustStream(fixedLengthInputStream);
+
+        int available = fixedLengthInputStream.available();
+
+        assertEquals(0, available);
+    }
+
+    @Test
+    public void available_afterSkip() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
+        guaranteedSkip(fixedLengthInputStream, 2);
+
+        int available = fixedLengthInputStream.available();
+
+        assertEquals(3, available);
+    }
+
+    @Test
+    public void available_afterSkipRemaining() throws Exception {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
+        fixedLengthInputStream.skipRemaining();
+
+        int available = fixedLengthInputStream.available();
+
+        assertEquals(0, available);
+    }
+
+    @Test
+    public void skip_shouldConsumeBytes() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
+
+        guaranteedSkip(fixedLengthInputStream, 2);
+
+        assertRemainingInputStreamEquals("llo", fixedLengthInputStream);
+    }
+
+    @Test
+    public void skipRemaining_shouldExhaustStream() throws IOException {
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream("Hello World"), 5);
 
         fixedLengthInputStream.skipRemaining();
 
-        assertEquals(-1, fixedLengthInputStream.read());
+        assertInputStreamExhausted(fixedLengthInputStream);
     }
 
     @Test
-    public void testRead() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
-        fixedLengthInputStream.skip(100);
+    public void skipRemaining_shouldNotConsumeMoreThanLimitFromUnderlyingInputStream() throws IOException {
+        InputStream inputStream = inputStream("Hello World");
+        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, 6);
 
-        int b = fixedLengthInputStream.read();
+        fixedLengthInputStream.skipRemaining();
 
-        assertEquals(string.charAt(100), b);
+        assertRemainingInputStreamEquals("World", inputStream);
     }
 
-    @Test
-    public void testReadBytes() throws IOException {
-        FixedLengthInputStream fixedLengthInputStream = new FixedLengthInputStream(inputStream, UNDERSIZED_LIMIT);
-        final byte[] bytes = new byte[150];
 
-        fixedLengthInputStream.read(bytes);
-
-        assertEquals(string.substring(0, 150), new String(bytes));
+    private String readStreamAsUtf8String(InputStream inputStream) throws IOException {
+        return Okio.buffer(Okio.source(inputStream)).readUtf8();
     }
 
+    private void exhaustStream(InputStream inputStream) throws IOException {
+        Okio.buffer(Okio.source(inputStream)).readAll(Okio.blackhole());
+    }
+
+    private void consumeBytes(InputStream inputStream, int numberOfBytes) throws IOException {
+        int read = inputStream.read(new byte[numberOfBytes]);
+        assertEquals(numberOfBytes, read);
+    }
+
+    private void guaranteedSkip(InputStream inputStream, int numberOfBytesToSkip) throws IOException {
+        int remaining = numberOfBytesToSkip;
+        while (remaining > 0) {
+            remaining -= inputStream.skip(remaining);
+        }
+        assertEquals(0, remaining);
+    }
+
+    private void assertRemainingInputStreamEquals(String expected, InputStream inputStream) throws IOException {
+        assertEquals(expected, readStreamAsUtf8String(inputStream));
+    }
+
+    private void assertInputStreamExhausted(InputStream inputStream) throws IOException {
+        assertEquals(-1, inputStream.read());
+    }
+
+    private InputStream inputStream(String data) {
+        return new Buffer().writeUtf8(data).inputStream();
+    }
 }
