@@ -34,6 +34,8 @@ public class MailService extends CoreService {
     private static long nextCheck = -1;
     private static boolean pushingRequested = false;
     private static boolean pollingRequested = false;
+    private static boolean syncNoBackground = false;
+    private static boolean syncNoConnectivity = false;
     private static boolean syncBlocked = false;
 
     public static void actionReset(Context context, Integer wakeLockId) {
@@ -106,6 +108,8 @@ public class MailService extends CoreService {
                 break;
         }
 
+        syncNoBackground = !doBackground;
+        syncNoConnectivity = !hasConnectivity;
         syncBlocked = !(doBackground && hasConnectivity);
 
         if (K9.DEBUG)
@@ -313,6 +317,22 @@ public class MailService extends CoreService {
 
     public static boolean isSyncDisabled() {
         return  syncBlocked || (!pollingRequested && !pushingRequested);
+    }
+
+    public static boolean hasNoConnectivity() {
+        return syncNoConnectivity;
+    }
+
+    public static boolean isSyncNoBackground() {
+        return syncNoBackground;
+    }
+
+    public static boolean isSyncBlocked() {
+        return syncBlocked;
+    }
+
+    public static boolean isPollAndPushDisabled() {
+        return (!pollingRequested && !pushingRequested);
     }
 
     private void stopPushers() {

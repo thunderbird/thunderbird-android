@@ -8,6 +8,7 @@ import android.text.format.DateUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.service.MailService;
@@ -44,6 +45,18 @@ public class ActivityListener extends MessagingListener {
                 return context.getString(R.string.status_next_poll,
                         DateUtils.getRelativeTimeSpanString(nextPollTime, System.currentTimeMillis(),
                                 DateUtils.MINUTE_IN_MILLIS, 0));
+            } else if (K9.DEBUG && MailService.isSyncDisabled()) {
+                if (MailService.hasNoConnectivity()) {
+                    return context.getString(R.string.status_no_network);
+                } else if (MailService.isSyncNoBackground()) {
+                    return context.getString(R.string.status_no_background);
+                } else if (MailService.isSyncBlocked()) {
+                    return context.getString(R.string.status_syncing_blocked);
+                } else if (MailService.isPollAndPushDisabled()) {
+                    return context.getString(R.string.status_poll_and_push_disabled);
+                } else {
+                    return context.getString(R.string.status_syncing_off);
+                }
             } else if (MailService.isSyncDisabled()) {
                 return context.getString(R.string.status_syncing_off);
             } else {
