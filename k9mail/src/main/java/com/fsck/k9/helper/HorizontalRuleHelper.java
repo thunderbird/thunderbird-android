@@ -14,7 +14,7 @@ public class HorizontalRuleHelper {
 	snips aligned in different directions and replaces them with <hr />
 
 	Usage - 
-	String replaced = HorizontalRuleHelper.replaceHorizontalRule(stringToReplcaeFrom);
+	String replaced = HorizontalRuleHelper.replaceHorizontalRule(stringToReplaceFrom);
 	*/
 
 	private String pattern = "[-=_]{4,}|(-|=){2,}-|(-| )+ *>8 *(-| )+|(-| )+ *8< *(-| )+";
