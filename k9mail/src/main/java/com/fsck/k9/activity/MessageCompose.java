@@ -27,6 +27,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -92,9 +93,12 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
+
+import static com.fsck.k9.R.id.folder;
 
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
@@ -970,7 +974,22 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void goBack() {
-        onBackPressed();
+        if (changesMadeSinceLastSave && draftIsNotEmpty()) {
+            if (!account.hasDraftsFolder()) {
+                showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+            } else {
+                showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+            }
+        } else {
+            // Check if editing an existing draft.
+            if (draftId == INVALID_DRAFT_ID) {
+                onDiscard();
+            } else {
+                String inbox = account.getInboxFolderName();
+                LocalSearch localSearch = new LocalSearch(inbox);
+                MessageList.actionDisplaySearch(this, localSearch, false, false);
+            }
+        }
     }
 
     @Override
