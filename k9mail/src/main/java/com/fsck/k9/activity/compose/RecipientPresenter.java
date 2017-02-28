@@ -37,6 +37,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.PgpMessageBuilder;
+import com.fsck.k9.view.RecipientSelectView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -45,7 +46,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
-public class RecipientPresenter implements PermissionPingCallback {
+public class RecipientPresenter implements PermissionPingCallback, RecipientSelectView.DragListener {
     private static final String STATE_KEY_CC_SHOWN = "state:ccShown";
     private static final String STATE_KEY_BCC_SHOWN = "state:bccShown";
     private static final String STATE_KEY_LAST_FOCUSED_TYPE = "state:lastFocusedType";
@@ -313,6 +314,11 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     void onClickBccLabel() {
         recipientMvpView.requestFocusOnBccField();
+    }
+
+    @Override
+    public void onDragStart() {
+        onClickRecipientExpander();
     }
 
     void onClickRecipientExpander() {

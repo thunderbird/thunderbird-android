@@ -67,6 +67,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Nullable
     private LoaderManager loaderManager;
 
+    private DragListener dragListener;
     private ListPopupWindow alternatesPopup;
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
@@ -107,6 +108,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         setAdapter(adapter);
 
         addDragAndDropFunctionality(context);
+    }
+
+    public void setDragListener(DragListener listener) {
+        dragListener = listener;
     }
 
     private void addDragAndDropFunctionality(Context context) {
@@ -298,10 +303,14 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         ClipData clipData = ClipData.newPlainText(recipient.address.getPersonal(), recipient.address.getAddress());
         View view = getTokenViewForRecipient(recipient);
         DragShadowBuilder dragShadowBuilder = new DragShadowBuilder(view);
-        onRecipientRemove(recipient);
 
+        if (dragListener != null) {
+            dragListener.onDragStart();
+        }
         boolean dragSuccess = startDrag(clipData, dragShadowBuilder, recipient, 0);
-        if (!dragSuccess) {
+        if (dragSuccess) {
+            onRecipientRemove(recipient);
+        } else {
             Log.e(K9.LOG_TAG, "Failed to start drag operation for Recipient!");
         }
 
@@ -731,5 +740,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 photoThumbnailUri = Uri.parse(uriString);
             }
         }
+    }
+
+    public interface DragListener {
+        void onDragStart();
     }
 }

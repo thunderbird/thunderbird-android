@@ -6,7 +6,10 @@ import java.util.List;
 
 import android.app.LoaderManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -97,6 +100,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             return;
         }
 
+        toView.setDragListener(presenter);
         toView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
@@ -114,6 +118,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             }
         });
 
+        ccView.setDragListener(presenter);
         ccView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
@@ -131,6 +136,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             }
         });
 
+        bccView.setDragListener(presenter);
         bccView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
