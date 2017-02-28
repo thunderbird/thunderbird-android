@@ -1,6 +1,6 @@
 package com.fsck.k9.activity;
 
-
+import android.support.v4.app.NavUtils;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -231,6 +231,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             setContentView(R.layout.message_compose);
         }
+	getActionBar().setDisplayHomeAsUpEnabled(true);
 	android.support.v7.app.ActionBar actionBar=getSupportActionBar();
 	actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -929,8 +930,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 	    case android.R.id.home:
-	        onBackPressed();
-		return true;
+	        navigateUp();
+		break;
             case R.id.send:
                 checkToSendMessage();
                 break;
@@ -968,6 +969,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
         return true;
     }
+    public void navigateUp() {
+    final Intent upIntent = NavUtils.getParentActivityIntent(this);
+    if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {
+        
+        TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+    } else {
+        NavUtils.navigateUpTo(this, upIntent);
+    }
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
