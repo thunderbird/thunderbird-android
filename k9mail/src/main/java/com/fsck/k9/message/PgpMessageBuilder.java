@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.Globals;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
@@ -327,6 +328,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         this.cryptoStatus = cryptoStatus;
     }
 
+    @WorkerThread
     public CryptoProviderDryRunStatus retrieveCryptoProviderRecipientStatus() {
         boolean shouldSign = cryptoStatus.isSigningEnabled();
         boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled();
