@@ -22,27 +22,20 @@ public class MessageHeaderTest {
     private static final Address FROM_ADDRESS = Address.parse("from@example1.com")[0];
     private static final Address SENDER_ADDRESS = Address.parse("sender@example2.com")[0];
 
-    private MessageHeader messageHeader;
-
-    @Before
-    public void setUp() throws Exception {
-        messageHeader = new MessageHeader(RuntimeEnvironment.application, mock(AttributeSet.class));
-    }
-
     @Test
-    public void withSender_shouldShowSender_shouldReturnTrue() {
+    public void shouldShowSender_withSender_shouldReturnTrue() {
         Message message = createMessage(FROM_ADDRESS, SENDER_ADDRESS);
 
-        boolean showSender = messageHeader.shouldShowSender(message);
+        boolean showSender = MessageHeader.shouldShowSender(message);
 
         assertTrue(showSender);
     }
 
     @Test
-    public void withoutSender_shouldShowSender_shouldReturnFalse() {
+    public void shouldShowSender_withoutSender_shouldReturnFalse() {
         Message message = createMessage(FROM_ADDRESS, null);
 
-        boolean showSender = messageHeader.shouldShowSender(message);
+        boolean showSender = MessageHeader.shouldShowSender(message);
 
         assertFalse(showSender);
     }

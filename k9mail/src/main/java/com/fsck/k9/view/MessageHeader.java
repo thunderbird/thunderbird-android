@@ -354,7 +354,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
     }
 
-    public boolean shouldShowSender(Message message) {
+    public static boolean shouldShowSender(Message message) {
         Address[] from = message.getFrom();
         Address[] sender = message.getSender();
 
