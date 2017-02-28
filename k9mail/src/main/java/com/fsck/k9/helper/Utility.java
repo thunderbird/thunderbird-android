@@ -14,10 +14,10 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.mail.Address;
 
 import org.apache.james.mime4j.util.MimeUtil;
@@ -483,7 +483,7 @@ public class Utility {
      * @param contactBadge the badge to the set the contact for
      * @param address the address to look for a contact for.
      */
-    public static void setContactForBadge(QuickContactBadge contactBadge,
+    public static void setContactForBadge(ContactBadge contactBadge,
                                           Address address) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             Bundle extraContactInfo = new Bundle();

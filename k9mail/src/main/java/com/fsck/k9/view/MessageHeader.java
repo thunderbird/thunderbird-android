@@ -24,7 +24,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +43,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.ui.messageview.OnCryptoClickListener;
+import com.fsck.k9.ui.ContactBadge;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
@@ -72,7 +72,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private MessageHelper mMessageHelper;
     private ContactPictureLoader mContactsPictureLoader;
-    private QuickContactBadge mContactBadge;
+    private ContactBadge mContactBadge;
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
     private OnCryptoClickListener onCryptoClickListener;
@@ -110,7 +110,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mCcView = (TextView) findViewById(R.id.cc);
         mCcLabel = (TextView) findViewById(R.id.cc_label);
 
-        mContactBadge = (QuickContactBadge) findViewById(R.id.contact_badge);
+        mContactBadge = (ContactBadge) findViewById(R.id.contact_badge);
 
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
