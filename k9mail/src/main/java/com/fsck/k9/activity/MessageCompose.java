@@ -279,7 +279,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
         recipientPresenter = new RecipientPresenter(getApplicationContext(), getLoaderManager(), recipientMvpView,
                 account, composePgpInlineDecider, new ReplyToParser(), this);
-        recipientPresenter.updateCryptoStatus();
+        recipientPresenter.asyncUpdateCryptoStatus();
 
 
         subjectView = (EditText) findViewById(R.id.subject);
@@ -630,8 +630,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private MessageBuilder createMessageBuilder(boolean isDraft) {
         MessageBuilder builder;
 
-        recipientPresenter.updateCryptoStatus();
-        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
+        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
+        if (cryptoStatus == null) {
+            return null;
+        }
+
         // TODO encrypt drafts for storage
         if (!isDraft && cryptoStatus.shouldUsePgpMessageBuilder()) {
             SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
@@ -641,13 +644,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             PgpMessageBuilder pgpBuilder = PgpMessageBuilder.newInstance();
-            recipientPresenter.builderSetProperties(pgpBuilder);
+            recipientPresenter.builderSetProperties(pgpBuilder, cryptoStatus);
             builder = pgpBuilder;
         } else {
             builder = SimpleMessageBuilder.newInstance();
+            recipientPresenter.builderSetProperties(builder);
         }
-
-        recipientPresenter.builderSetProperties(builder);
 
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
                 .setSentDate(new Date())
@@ -1484,8 +1486,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 message.setUid(relatedMessageReference.getUid());
             }
 
-            // TODO more appropriate logic here? not sure
-            boolean saveRemotely = !recipientPresenter.getCurrentCryptoStatus().shouldUsePgpMessageBuilder();
+            boolean saveRemotely = recipientPresenter.shouldSaveRemotely();
             new SaveMessageTask(getApplicationContext(), account, contacts, internalMessageHandler,
                     message, draftId, saveRemotely).execute();
             if (finishAfterDraftSaved) {

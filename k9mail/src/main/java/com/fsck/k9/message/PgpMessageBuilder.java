@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import timber.log.Timber;
+import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.Globals;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
@@ -35,6 +35,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
+import timber.log.Timber;
 
 
 public class PgpMessageBuilder extends MessageBuilder {
@@ -327,6 +328,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         this.cryptoStatus = cryptoStatus;
     }
 
+    @WorkerThread
     public CryptoProviderDryRunStatus retrieveCryptoProviderRecipientStatus() {
         boolean shouldSign = cryptoStatus.isSigningEnabled();
         boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled();
