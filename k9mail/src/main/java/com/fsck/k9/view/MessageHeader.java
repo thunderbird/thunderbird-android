@@ -303,6 +303,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             String sender = getResources().getString(R.string.message_view_sender_label,
                     MessageHelper.toFriendly(message.getSender(), contacts));
             mSenderView.setText(sender);
+        } else {
+            mSenderView.setVisibility(View.GONE);
         }
 
         final String subject = message.getSubject();
