@@ -4,6 +4,8 @@
         <Package name="~com\.fsck\.k9.*" />
         <Not>
             <Bug pattern="VA_FORMAT_STRING_USES_NEWLINE" />
+            <Bug pattern="MS_CANNOT_BE_FINAL" />
+            <Bug pattern="SF_SWITCH_NO_DEFAULT" />
         </Not>
     </Match>
 </FindBugsFilter>
