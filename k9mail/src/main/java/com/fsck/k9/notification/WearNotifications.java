@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat.WearableExtender;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9UICommon;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
@@ -23,6 +24,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     public Notification buildStackedNotification(Account account, NotificationHolder holder) {
+        K9UICommon.setLanguage(context, K9.getK9Language());
         int notificationId = holder.notificationId;
         NotificationContent content = holder.content;
         NotificationCompat.Builder builder = createBigTextStyleNotification(account, holder, notificationId);
@@ -38,6 +40,7 @@ class WearNotifications extends BaseNotifications {
 
 
     public void addSummaryActions(Builder builder, NotificationData notificationData) {
+        K9UICommon.setLanguage(context, K9.getK9Language());
         NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
         addMarkAllAsReadAction(wearableExtender, notificationData);

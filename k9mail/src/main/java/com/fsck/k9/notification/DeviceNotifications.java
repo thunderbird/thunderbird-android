@@ -16,6 +16,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9UICommon;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
@@ -44,6 +45,7 @@ class DeviceNotifications extends BaseNotifications {
 
     public Notification buildSummaryNotification(Account account, NotificationData notificationData,
             boolean silent) {
+        K9UICommon.setLanguage(context, K9.getK9Language());
         int unreadMessageCount = notificationData.getUnreadMessageCount();
 
         NotificationCompat.Builder builder;

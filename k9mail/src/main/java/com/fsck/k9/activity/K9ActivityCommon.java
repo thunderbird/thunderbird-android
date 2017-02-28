@@ -12,6 +12,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.K9UICommon;
 import com.fsck.k9.activity.misc.SwipeGestureDetector;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 
@@ -36,23 +37,6 @@ public class K9ActivityCommon {
         return new K9ActivityCommon(activity);
     }
 
-    public static void setLanguage(Context context, String language) {
-        Locale locale;
-        if (TextUtils.isEmpty(language)) {
-            locale = Locale.getDefault();
-        } else if (language.length() == 5 && language.charAt(2) == '_') {
-            // language is in the form: en_US
-            locale = new Locale(language.substring(0, 2), language.substring(3));
-        } else {
-            locale = new Locale(language);
-        }
-
-        Configuration config = new Configuration();
-        config.locale = locale;
-        Resources resources = context.getResources();
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
-    }
-
 
     /**
      * Base activities need to implement this interface.
@@ -71,7 +55,7 @@ public class K9ActivityCommon {
 
     private K9ActivityCommon(Activity activity) {
         mActivity = activity;
-        setLanguage(mActivity, K9.getK9Language());
+        K9UICommon.setLanguage(mActivity, K9.getK9Language());
         mActivity.setTheme(K9.getK9ThemeResourceId());
     }
 
