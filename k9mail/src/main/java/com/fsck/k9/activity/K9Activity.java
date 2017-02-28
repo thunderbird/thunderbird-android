@@ -3,12 +3,12 @@ package com.fsck.k9.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.support.v7.app.AppCompatActivity;
+
 import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 
 
-public abstract class K9Activity extends AppCompatActivity implements K9ActivityMagic {
+public abstract class K9Activity extends Activity implements K9ActivityMagic {
 
     private K9ActivityCommon mBase;
 
