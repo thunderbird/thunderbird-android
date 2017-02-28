@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -91,6 +92,7 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
@@ -230,6 +232,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             setContentView(R.layout.message_compose);
         }
+
+        initializeActionBar();
 
         // on api level 15, setContentView() shows the progress bar for some reason...
         setProgressBarIndeterminateVisibility(false);
@@ -726,14 +730,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private void onDiscard() {
+    private void onDiscard(boolean navigateUp) {
         if (draftId != INVALID_DRAFT_ID) {
             MessagingController.getInstance(getApplication()).deleteDraft(account, draftId);
             draftId = INVALID_DRAFT_ID;
         }
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         changesMadeSinceLastSave = false;
-        finish();
+        if (navigateUp) {
+            openInboxFolder();
+        } else {
+            finish();
+        }
     }
 
     private void onReadReceipt() {
@@ -917,13 +925,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (K9.confirmDiscardMessage()) {
             showDialog(DIALOG_CONFIRM_DISCARD);
         } else {
-            onDiscard();
+            onDiscard(false);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                prepareToFinish(true);
+                break;
             case R.id.send:
                 checkToSendMessage();
                 break;
@@ -991,6 +1002,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public void onBackPressed() {
+        prepareToFinish(false);
+    }
+
+    private void prepareToFinish(boolean navigateUp) {
         if (changesMadeSinceLastSave && draftIsNotEmpty()) {
             if (!account.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
@@ -1000,11 +1015,23 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             // Check if editing an existing draft.
             if (draftId == INVALID_DRAFT_ID) {
-                onDiscard();
+                onDiscard(navigateUp);
             } else {
-                super.onBackPressed();
+                if (navigateUp) {
+                    openInboxFolder();
+                } else {
+                    super.onBackPressed();
+                }
             }
         }
+    }
+
+    private void openInboxFolder() {
+        String folder = account.getAutoExpandFolderName();
+        LocalSearch search = new LocalSearch(folder);
+        search.addAccountUuid(account.getUuid());
+        search.addAllowedFolder(folder);
+        MessageList.actionDisplaySearch(this, search, false, false);
     }
 
     private boolean draftIsNotEmpty() {
@@ -1048,7 +1075,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                             @Override
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-                                onDiscard();
+                                onDiscard(false);
                             }
                         })
                         .create();
@@ -1069,7 +1096,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                                 Toast.makeText(MessageCompose.this,
                                         getString(R.string.message_discarded_toast),
                                         Toast.LENGTH_LONG).show();
-                                onDiscard();
+                                onDiscard(false);
                             }
                         })
                         .create();
@@ -1097,7 +1124,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         .setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        onDiscard();
+                                        onDiscard(false);
                                     }
                                 })
                         .setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
@@ -1586,6 +1613,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             });
         }
     };
+
+    private void initializeActionBar() {
+        ActionBar actionBar = getActionBar();
+
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.actionbar_custom);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
 
     // TODO We miss callbacks for this listener if they happens while we are paused!
     public MessagingListener messagingListener = new MessagingListener() {
