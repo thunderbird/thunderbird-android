@@ -669,11 +669,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema della vista dei messaggi</string>
   <string name="settings_compose_theme_label">Tema del compositore</string>
-  <string name="settings_language_label">Lingua</string>
   <string name="settings_message_theme_selection_label">Tema fisso del messaggio</string>
   <string name="settings_message_theme_selection_summary_off">Seleziona il tema della vista dei messaggi durante la visualizzazione del messaggio</string>
   <string name="settings_message_theme_selection_summary_on">Usa un tema fisso nella vista dei messaggi</string>
-  <string name="setting_language_system">Impostazioni predefinite di sistema</string>
   <string name="background_ops_label">Sincronizzazione in background</string>
   <string name="background_ops_never">Mai</string>
   <string name="background_ops_always">Sempre</string>

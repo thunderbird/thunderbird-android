@@ -629,11 +629,9 @@
   <string name="settings_theme_label">테마</string>
   <string name="settings_message_theme_label">메시지 보기 테마</string>
   <string name="settings_compose_theme_label">메시지 쓰기 테마</string>
-  <string name="settings_language_label">언어</string>
   <string name="settings_message_theme_selection_label">별도의 메시지 보기 테마</string>
   <string name="settings_message_theme_selection_summary_off">메시지 보기에 별도의 테마를 사용</string>
   <string name="settings_message_theme_selection_summary_on">고정 테마 사용</string>
-  <string name="setting_language_system">시스템 기본값</string>
   <string name="background_ops_label">백그라운드 동기화</string>
   <string name="background_ops_never">하지 않음</string>
   <string name="background_ops_always">항상</string>

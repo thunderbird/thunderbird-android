@@ -656,11 +656,9 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="settings_theme_label">Téma</string>
   <string name="settings_message_theme_label">Üzenetmegjelenítés témája</string>
   <string name="settings_compose_theme_label">Író témája</string>
-  <string name="settings_language_label">Nyelv</string>
   <string name="settings_message_theme_selection_label">Rögzített üzenet téma</string>
   <string name="settings_message_theme_selection_summary_off">Válassza az üzenetmegtekintési témát amikor az üzenetet nézi</string>
   <string name="settings_message_theme_selection_summary_on">Rögzített üzenetmegtekintési téma használata</string>
-  <string name="setting_language_system">Alapértelmezett</string>
   <string name="background_ops_label">Háttérszinkronizálás</string>
   <string name="background_ops_never">Soha</string>
   <string name="background_ops_always">Mindig</string>

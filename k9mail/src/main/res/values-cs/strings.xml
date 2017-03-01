@@ -670,11 +670,9 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="settings_theme_label">Vzhled</string>
   <string name="settings_message_theme_label">Vzhled náhledu zprávy</string>
   <string name="settings_compose_theme_label">Vzhled psaní zprávy</string>
-  <string name="settings_language_label">Jazyk</string>
   <string name="settings_message_theme_selection_label">Neměnný vzhled zpráv</string>
   <string name="settings_message_theme_selection_summary_off">Lze vybrat vzhled při prohlížení zprávy</string>
   <string name="settings_message_theme_selection_summary_on">Použít neměnný vzhled při prohlížení zprávy</string>
-  <string name="setting_language_system">Výchozí nastavení systému</string>
   <string name="background_ops_label">Synchronizace na pozadí</string>
   <string name="background_ops_never">Nikdy</string>
   <string name="background_ops_always">Vždy</string>

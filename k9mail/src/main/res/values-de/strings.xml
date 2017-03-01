@@ -668,11 +668,9 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_theme_label">Design</string>
   <string name="settings_message_theme_label">Nachrichten-Design</string>
   <string name="settings_compose_theme_label">Editor-Design</string>
-  <string name="settings_language_label">Sprache</string>
   <string name="settings_message_theme_selection_label">Festes Nachrichten-Design</string>
   <string name="settings_message_theme_selection_summary_off">Nachrichten-Design während des Ansehens der Nachricht auswählen</string>
   <string name="settings_message_theme_selection_summary_on">Immer das ausgewählte Nachrichten-Design verwenden</string>
-  <string name="setting_language_system">Systemvorgabe</string>
   <string name="background_ops_label">Hintergrund-Synchronisierung</string>
   <string name="background_ops_never">Nie</string>
   <string name="background_ops_always">Immer</string>

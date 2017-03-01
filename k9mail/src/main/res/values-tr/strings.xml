@@ -638,11 +638,9 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Mesaj teması</string>
   <string name="settings_compose_theme_label">Composer teması</string>
-  <string name="settings_language_label">Dil</string>
   <string name="settings_message_theme_selection_label">Sabit mesaj teması</string>
   <string name="settings_message_theme_selection_summary_off">Mesaj izlerken mesaj görünüm temasını seçin</string>
   <string name="settings_message_theme_selection_summary_on">Sabit mesaj için bir tema kullanın</string>
-  <string name="setting_language_system">Sistem Varsayılanları</string>
   <string name="background_ops_label">Arkaplan senkronizasyonu</string>
   <string name="background_ops_never">Hiçbir zaman</string>
   <string name="background_ops_always">Her zaman</string>

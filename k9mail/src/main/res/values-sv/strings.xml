@@ -668,11 +668,9 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema för meddelandelista</string>
   <string name="settings_compose_theme_label">Tema för skriv-vy</string>
-  <string name="settings_language_label">Språk</string>
   <string name="settings_message_theme_selection_label">Fast meddelandetema</string>
   <string name="settings_message_theme_selection_summary_off">Välj tema för meddelandevyn medan meddelandet visas</string>
   <string name="settings_message_theme_selection_summary_on">Använd ett fast tema för meddelandevyn</string>
-  <string name="setting_language_system">Systemstandard</string>
   <string name="background_ops_label">Bakgrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
   <string name="background_ops_always">Alltid</string>
