@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
@@ -66,7 +66,7 @@ public class Settings {
 
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
-                Log.v(K9.LOG_TAG, "Key \"" + key + "\" wasn't found in the imported file." +
+                Timber.v("Key \"" + key + "\" wasn't found in the imported file." +
                         ((useDefaultValues) ? " Using default value." : ""));
                 useDefaultValue = useDefaultValues;
             } else {
@@ -76,7 +76,7 @@ public class Settings {
                     validatedSettings.put(key, internalValue);
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
-                    Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + prettyValue +
+                    Timber.v("Key \"" + key + "\" has invalid value \"" + prettyValue +
                             "\" in imported file. " +
                             ((useDefaultValues) ? "Using default value." : "Skipping."));
                     useDefaultValue = useDefaultValues;
@@ -164,7 +164,7 @@ public class Settings {
 
         if (K9.DEBUG) {
             String prettyValue = setting.toPrettyString(defaultValue);
-            Log.v(K9.LOG_TAG, "Added new setting \"" + settingName + "\" with default value \"" + prettyValue + "\"");
+            Timber.v("Added new setting \"" + settingName + "\" with default value \"" + prettyValue + "\"");
         }
     }
 
@@ -174,7 +174,7 @@ public class Settings {
         deletedSettingsMutable.add(settingName);
 
         if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "Removed setting \"" + settingName + "\"");
+            Timber.v("Removed setting \"" + settingName + "\"");
         }
     }
 
@@ -208,7 +208,7 @@ public class Settings {
                 serializedSettings.put(settingName, stringValue);
             } else {
                 if (K9.DEBUG) {
-                    Log.w(K9.LOG_TAG, "Settings.serialize() called with a setting that should " +
+                    Timber.w("Settings.serialize() called with a setting that should " +
                             "have been removed: " + settingName);
                 }
             }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import org.htmlcleaner.CleanerProperties;
@@ -36,7 +36,7 @@ public class HtmlSignatureRemover {
                 end.add(blockquoteEnd.start());
             }
             if (start.size() != end.size()) {
-                Log.d(K9.LOG_TAG, "There are " + start.size() + " <blockquote> tags, but " +
+                Timber.d("There are " + start.size() + " <blockquote> tags, but " +
                         end.size() + " </blockquote> tags. Refusing to strip.");
             } else if (start.size() > 0) {
                 // Ignore quoted signatures in blockquotes.

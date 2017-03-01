@@ -5,7 +5,7 @@ import java.util.Map;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
@@ -190,7 +190,7 @@ public class QuotedMessagePresenter {
             try {
                 cursorPosition = Integer.parseInt(k9identity.get(IdentityField.CURSOR_POSITION));
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Could not parse cursor position for MessageCompose; continuing.", e);
+                Timber.e("Could not parse cursor position for MessageCompose; continuing.", e);
             }
         }
 
@@ -251,13 +251,13 @@ public class QuotedMessagePresenter {
                 quotedTextFormat = SimpleMessageFormat.HTML;
                 String text = MessageExtractor.getTextFromPart(part);
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength +
+                    Timber.d("Loading message with offset " + bodyOffset + ", length " + bodyLength +
                             ". Text length is " + text.length() + ".");
                 }
 
                 if (bodyOffset + bodyLength > text.length()) {
                     // The draft was edited outside of K-9 Mail?
-                    Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid LENGTH/OFFSET");
+                    Timber.d("The identity field from the draft contains an invalid LENGTH/OFFSET");
                     bodyOffset = 0;
                     bodyLength = 0;
                 }
@@ -291,14 +291,14 @@ public class QuotedMessagePresenter {
             quotedTextFormat = SimpleMessageFormat.TEXT;
             processSourceMessageText(messageViewInfo.rootPart, bodyOffset, bodyLength, true);
         } else {
-            Log.e(K9.LOG_TAG, "Unhandled message format.");
+            Timber.e("Unhandled message format.");
         }
 
         // Set the cursor position if we have it.
         try {
             view.setMessageContentCursorPosition(cursorPosition);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not set cursor position in MessageCompose; ignoring.", e);
+            Timber.e("Could not set cursor position in MessageCompose; ignoring.", e);
         }
 
         showOrHideQuotedText(quotedMode);
@@ -320,7 +320,7 @@ public class QuotedMessagePresenter {
 
         String messageText = MessageExtractor.getTextFromPart(textPart);
         if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Loading message with offset " + bodyOffset + ", length " + bodyLength +
+            Timber.d("Loading message with offset " + bodyOffset + ", length " + bodyLength +
                     ". Text length is " + messageText.length() + ".");
         }
 
@@ -348,7 +348,7 @@ public class QuotedMessagePresenter {
                 messageText = messageText.substring(bodyOffset, bodyOffset + bodyLength);
             } catch (IndexOutOfBoundsException e) {
                 // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
-                Log.d(K9.LOG_TAG, "The identity field from the draft contains an invalid bodyOffset/bodyLength");
+                Timber.d("The identity field from the draft contains an invalid bodyOffset/bodyLength");
             }
         }
 

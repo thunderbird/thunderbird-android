@@ -19,7 +19,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
@@ -760,7 +760,7 @@ public class Account implements BaseAccount, StoreConfig {
         try {
             getLocalStore().resetVisibleLimits(getDisplayCount());
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
+            Timber.e("Unable to reset visible limits", e);
         }
 
     }
@@ -953,8 +953,8 @@ public class Account implements BaseAccount, StoreConfig {
                 switchLocalStorage(id);
                 successful = true;
             } catch (MessagingException e) {
-                Log.e(K9.LOG_TAG, "Switching local storage provider from " +
-                      mLocalStorageProviderId + " to " + id + " failed.", e);
+                Timber.e("Switching local storage provider from " +
+                        mLocalStorageProviderId + " to " + id + " failed.", e);
             }
 
             // if migration to/from SD-card failed once, it will fail again.

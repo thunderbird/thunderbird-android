@@ -8,7 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.power.TracingPowerManager;
@@ -31,7 +31,7 @@ public class CoreReceiver extends BroadcastReceiver {
         Integer tmpWakeLockId = wakeLockSeq.getAndIncrement();
         wakeLocks.put(tmpWakeLockId, wakeLock);
         if (K9.DEBUG)
-            Log.v(K9.LOG_TAG, "CoreReceiver Created wakeLock " + tmpWakeLockId);
+            Timber.v("CoreReceiver Created wakeLock " + tmpWakeLockId);
         return tmpWakeLockId;
     }
 
@@ -40,10 +40,10 @@ public class CoreReceiver extends BroadcastReceiver {
             TracingWakeLock wl = wakeLocks.remove(wakeLockId);
             if (wl != null) {
                 if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "CoreReceiver Releasing wakeLock " + wakeLockId);
+                    Timber.v("CoreReceiver Releasing wakeLock " + wakeLockId);
                 wl.release();
             } else {
-                Log.w(K9.LOG_TAG, "BootReceiver WakeLock " + wakeLockId + " doesn't exist");
+                Timber.w("BootReceiver WakeLock " + wakeLockId + " doesn't exist");
             }
         }
     }
@@ -53,12 +53,12 @@ public class CoreReceiver extends BroadcastReceiver {
         Integer tmpWakeLockId = CoreReceiver.getWakeLock(context);
         try {
             if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "CoreReceiver.onReceive" + intent);
+                Timber.i("CoreReceiver.onReceive" + intent);
             if (CoreReceiver.WAKE_LOCK_RELEASE.equals(intent.getAction())) {
                 Integer wakeLockId = intent.getIntExtra(WAKE_LOCK_ID, -1);
                 if (wakeLockId != -1) {
                     if (K9.DEBUG)
-                        Log.v(K9.LOG_TAG, "CoreReceiver Release wakeLock " + wakeLockId);
+                        Timber.v("CoreReceiver Release wakeLock " + wakeLockId);
                     CoreReceiver.releaseWakeLock(wakeLockId);
                 }
             } else {
@@ -75,7 +75,7 @@ public class CoreReceiver extends BroadcastReceiver {
 
     public static void releaseWakeLock(Context context, int wakeLockId) {
         if (K9.DEBUG)
-            Log.v(K9.LOG_TAG, "CoreReceiver Got request to release wakeLock " + wakeLockId);
+            Timber.v("CoreReceiver Got request to release wakeLock " + wakeLockId);
         Intent i = new Intent();
         i.setClass(context, CoreReceiver.class);
         i.setAction(WAKE_LOCK_RELEASE);

@@ -4,7 +4,7 @@ package com.fsck.k9.mailstore.migrations;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -38,11 +38,11 @@ class MigrationTo41 {
                     String name = cursor.getString(1);
                     update41Metadata(db, migrationsHelper, id, name);
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, " error trying to ugpgrade a folder class", e);
+                    Timber.e(" error trying to ugpgrade a folder class", e);
                 }
             }
         } catch (SQLiteException e) {
-            Log.e(K9.LOG_TAG, "Exception while upgrading database to v41. folder classes may have vanished", e);
+            Timber.e("Exception while upgrading database to v41. folder classes may have vanished", e);
         } finally {
             Utility.closeQuietly(cursor);
         }
@@ -73,7 +73,7 @@ class MigrationTo41 {
             inTopGroup = storage.getBoolean(accountUuid + "." + name + ".inTopGroup", inTopGroup);
             integrate = storage.getBoolean(accountUuid + "." + name + ".integrate", integrate);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, " Throwing away an error while trying to upgrade folder metadata", e);
+            Timber.e(" Throwing away an error while trying to upgrade folder metadata", e);
         }
 
         if (displayClass == Folder.FolderClass.NONE) {

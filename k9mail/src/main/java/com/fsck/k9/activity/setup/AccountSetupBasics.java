@@ -17,7 +17,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -232,7 +232,7 @@ public class AccountSetupBasics extends K9Activity
         try {
             name = getDefaultAccountName();
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not get default account name", e);
+            Timber.e("Could not get default account name", e);
         }
 
         if (name == null) {
@@ -496,7 +496,7 @@ public class AccountSetupBasics extends K9Activity
                 }
             }
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Error while trying to load provider settings.", e);
+            Timber.e("Error while trying to load provider settings.", e);
         }
         return null;
     }

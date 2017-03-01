@@ -3,7 +3,7 @@ package com.fsck.k9.message;
 
 import android.net.Uri;
 import android.net.Uri.Builder;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -98,7 +98,7 @@ public class IdentityHeaderBuilder {
         String k9identity = IdentityField.IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
 
         if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Generated identity: " + k9identity);
+            Timber.d("Generated identity: " + k9identity);
         }
 
         return k9identity;

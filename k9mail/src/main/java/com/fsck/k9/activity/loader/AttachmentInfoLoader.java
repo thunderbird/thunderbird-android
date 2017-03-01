@@ -8,7 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.Attachment;
@@ -87,16 +87,16 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
         if (size <= 0) {
             String uriString = uri.toString();
             if (uriString.startsWith("file://")) {
-                Log.v(K9.LOG_TAG, uriString.substring("file://".length()));
+                Timber.v(uriString.substring("file://".length()));
                 File f = new File(uriString.substring("file://".length()));
                 size = f.length();
             } else {
-                Log.v(K9.LOG_TAG, "Not a file: " + uriString);
+                Timber.v("Not a file: " + uriString);
             }
         } else {
-            Log.v(K9.LOG_TAG, "old attachment.size: " + size);
+            Timber.v("old attachment.size: " + size);
         }
-        Log.v(K9.LOG_TAG, "new attachment.size: " + size);
+        Timber.v("new attachment.size: " + size);
 
         cachedResultAttachment = sourceAttachment.deriveWithMetadataLoaded(usableContentType, name, size);
         return cachedResultAttachment;

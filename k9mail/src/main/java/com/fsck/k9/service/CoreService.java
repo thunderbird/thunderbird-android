@@ -11,7 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.util.Log;
+import timber.log.Timber;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.power.TracingPowerManager;
@@ -191,7 +191,7 @@ public abstract class CoreService extends Service {
     @Override
     public void onCreate() {
         if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "CoreService: " + className + ".onCreate()");
+            Timber.i("CoreService: " + className + ".onCreate()");
         }
 
         mThreadPool = Executors.newFixedThreadPool(1);  // Must be single threaded
@@ -218,7 +218,7 @@ public abstract class CoreService extends Service {
                 K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
 
         if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "CoreService: " + className + ".onStart(" + intent + ", " + startId + ")");
+            Timber.i("CoreService: " + className + ".onStart(" + intent + ", " + startId + ")");
         }
 
         // If we were started by BootReceiver, release the wake lock acquired there.
@@ -232,7 +232,7 @@ public abstract class CoreService extends Service {
         int coreWakeLockId = intent.getIntExtra(WAKE_LOCK_ID, -1);
         if (coreWakeLockId != -1) {
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Got core wake lock id " + coreWakeLockId);
+                Timber.d("Got core wake lock id " + coreWakeLockId);
             }
 
             // Remove wake lock from the registry
@@ -241,7 +241,7 @@ public abstract class CoreService extends Service {
             // Release wake lock
             if (coreWakeLock != null) {
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Found core wake lock with id " + coreWakeLockId +
+                    Timber.d("Found core wake lock with id " + coreWakeLockId +
                             ", releasing");
                 }
                 coreWakeLock.release();
@@ -307,7 +307,7 @@ public abstract class CoreService extends Service {
                     boolean oldIsSyncDisabled = MailService.isSyncDisabled();
 
                     if (K9.DEBUG) {
-                        Log.d(K9.LOG_TAG, "CoreService (" + className + ") running Runnable " +
+                        Timber.d("CoreService (" + className + ") running Runnable " +
                                 runner.hashCode() + " with startId " + startId);
                     }
 
@@ -323,7 +323,7 @@ public abstract class CoreService extends Service {
                     // Making absolutely sure stopSelf() will be called
                     try {
                         if (K9.DEBUG) {
-                            Log.d(K9.LOG_TAG, "CoreService (" + className + ") completed " +
+                            Timber.d("CoreService (" + className + ") completed " +
                                     "Runnable " + runner.hashCode() + " with startId " + startId);
                         }
                         wakeLock.release();
@@ -338,7 +338,7 @@ public abstract class CoreService extends Service {
 
         // TODO: remove this. we never set mThreadPool to null
         if (mThreadPool == null) {
-            Log.e(K9.LOG_TAG, "CoreService.execute (" + className + ") called with no thread " +
+            Timber.e("CoreService.execute (" + className + ") called with no thread " +
                     "pool available; running Runnable " + runner.hashCode() +
                     " in calling thread");
 
@@ -348,7 +348,7 @@ public abstract class CoreService extends Service {
             }
         } else {
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "CoreService (" + className + ") queueing Runnable " +
+                Timber.d("CoreService (" + className + ") queueing Runnable " +
                         runner.hashCode() + " with startId " + startId);
             }
 
@@ -362,7 +362,7 @@ public abstract class CoreService extends Service {
                     throw e;
                 }
 
-                Log.i(K9.LOG_TAG, "CoreService: " + className + " is shutting down, ignoring " +
+                Timber.i("CoreService: " + className + " is shutting down, ignoring " +
                         "rejected execution exception: " + e.getMessage());
             }
         }
@@ -391,7 +391,7 @@ public abstract class CoreService extends Service {
 
     @Override
     public void onLowMemory() {
-        Log.w(K9.LOG_TAG, "CoreService: " + className + ".onLowMemory() - Running low on memory");
+        Timber.w("CoreService: " + className + ".onLowMemory() - Running low on memory");
     }
 
     /**
@@ -400,7 +400,7 @@ public abstract class CoreService extends Service {
     @Override
     public void onDestroy() {
         if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "CoreService: " + className + ".onDestroy()");
+            Timber.i("CoreService: " + className + ".onDestroy()");
         }
 
         // Shut down thread pool

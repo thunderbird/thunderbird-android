@@ -20,7 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
@@ -80,7 +80,7 @@ public class DecryptedFileProvider extends FileProvider {
             if (lastModified < deletionThreshold) {
                 boolean fileDeleted = tempFile.delete();
                 if (!fileDeleted) {
-                    Log.e(K9.LOG_TAG, "Failed to delete temporary file");
+                    Timber.e("Failed to delete temporary file");
                     // TODO really do this? might cause our service to stay up indefinitely if a file can't be deleted
                     allFilesDeleted = false;
                 }
@@ -88,7 +88,7 @@ public class DecryptedFileProvider extends FileProvider {
                 if (K9.DEBUG) {
                     String timeLeftStr = String.format(
                             Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
-                    Log.e(K9.LOG_TAG, "Not deleting temp file (for another " + timeLeftStr + " minutes)");
+                    Timber.e("Not deleting temp file (for another " + timeLeftStr + " minutes)");
                 }
                 allFilesDeleted = false;
             }
@@ -101,7 +101,7 @@ public class DecryptedFileProvider extends FileProvider {
         File directory = new File(context.getCacheDir(), DECRYPTED_CACHE_DIRECTORY);
         if (!directory.exists()) {
             if (!directory.mkdir()) {
-                Log.e(K9.LOG_TAG, "Error creating directory: " + directory.getAbsolutePath());
+                Timber.e("Error creating directory: " + directory.getAbsolutePath());
             }
         }
 
@@ -133,7 +133,7 @@ public class DecryptedFileProvider extends FileProvider {
             decodedInputStream = new QuotedPrintableInputStream(inputStream);
         } else { // no or unknown encoding
             if (K9.DEBUG && !TextUtils.isEmpty(encoding)) {
-                Log.e(K9.LOG_TAG, "unsupported encoding, returning raw stream");
+                Timber.e("unsupported encoding, returning raw stream");
             }
             return pfd;
         }
@@ -174,7 +174,7 @@ public class DecryptedFileProvider extends FileProvider {
             }
 
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Unregistering temp file cleanup receiver");
+                Timber.d("Unregistering temp file cleanup receiver");
             }
             context.unregisterReceiver(cleanupReceiver);
             cleanupReceiver = null;
@@ -187,7 +187,7 @@ public class DecryptedFileProvider extends FileProvider {
                 return;
             }
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Registering temp file cleanup receiver");
+                Timber.d("Registering temp file cleanup receiver");
             }
             cleanupReceiver = new DecryptedFileProviderCleanupReceiver();
 
@@ -206,7 +206,7 @@ public class DecryptedFileProvider extends FileProvider {
             }
 
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Cleaning up temp files");
+                Timber.d("Cleaning up temp files");
             }
 
             boolean allFilesDeleted = deleteOldTemporaryFiles(context);

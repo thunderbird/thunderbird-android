@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import android.net.Uri;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.filter.Base64;
@@ -25,7 +25,7 @@ public class IdentityHeaderParser {
         Map<IdentityField, String> identity = new HashMap<IdentityField, String>();
 
         if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Decoding identity: " + identityString);
+            Timber.d("Decoding identity: " + identityString);
         }
 
         if (identityString == null || identityString.length() < 1) {
@@ -45,7 +45,7 @@ public class IdentityHeaderParser {
             }
 
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Decoded identity: " + identity.toString());
+                Timber.d("Decoded identity: " + identity.toString());
             }
 
             // Sanity check our Integers so that recipients of this result don't have to.
@@ -54,7 +54,7 @@ public class IdentityHeaderParser {
                     try {
                         Integer.parseInt(identity.get(key));
                     } catch (NumberFormatException e) {
-                        Log.e(K9.LOG_TAG, "Invalid " + key.name() + " field in identity: " + identity.get(key));
+                        Timber.e("Invalid " + key.name() + " field in identity: " + identity.get(key));
                     }
                 }
             }
@@ -62,7 +62,7 @@ public class IdentityHeaderParser {
             // Legacy identity
 
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Got a saved legacy identity: " + identityString);
+                Timber.d("Got a saved legacy identity: " + identityString);
             }
             StringTokenizer tokenizer = new StringTokenizer(identityString, ":", false);
 
@@ -72,7 +72,7 @@ public class IdentityHeaderParser {
                 try {
                     identity.put(IdentityField.LENGTH, Integer.valueOf(bodyLengthS).toString());
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Unable to parse bodyLength '" + bodyLengthS + "'");
+                    Timber.e("Unable to parse bodyLength '" + bodyLengthS + "'");
                 }
             }
             if (tokenizer.hasMoreTokens()) {

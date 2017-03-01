@@ -29,7 +29,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -249,7 +249,7 @@ public class LocalStore extends Store implements Serializable {
         try {
             removeInstance(account);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to reset local store for account " + account.getUuid(), e);
+            Timber.e("Failed to reset local store for account " + account.getUuid(), e);
         }
     }
 
@@ -302,7 +302,7 @@ public class LocalStore extends Store implements Serializable {
 
     public void compact() throws MessagingException {
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "Before compaction size = " + getSize());
+            Timber.i("Before compaction size = " + getSize());
 
         database.execute(false, new DbCallback<Void>() {
             @Override
@@ -312,22 +312,22 @@ public class LocalStore extends Store implements Serializable {
             }
         });
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "After compaction size = " + getSize());
+            Timber.i("After compaction size = " + getSize());
     }
 
 
     public void clear() throws MessagingException {
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "Before prune size = " + getSize());
+            Timber.i("Before prune size = " + getSize());
 
         deleteAllMessageDataFromDisk();
         if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "After prune / before compaction size = " + getSize());
+            Timber.i("After prune / before compaction size = " + getSize());
 
-            Log.i(K9.LOG_TAG, "Before clear folder count = " + getFolderCount());
-            Log.i(K9.LOG_TAG, "Before clear message count = " + getMessageCount());
+            Timber.i("Before clear folder count = " + getFolderCount());
+            Timber.i("Before clear message count = " + getMessageCount());
 
-            Log.i(K9.LOG_TAG, "After prune / before clear size = " + getSize());
+            Timber.i("After prune / before clear size = " + getSize());
         }
 
         database.execute(false, new DbCallback<Void>() {
@@ -350,9 +350,9 @@ public class LocalStore extends Store implements Serializable {
         compact();
 
         if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "After clear message count = " + getMessageCount());
+            Timber.i("After clear message count = " + getMessageCount());
 
-            Log.i(K9.LOG_TAG, "After clear size = " + getSize());
+            Timber.i("After clear size = " + getSize());
         }
     }
 
@@ -583,7 +583,7 @@ public class LocalStore extends Store implements Serializable {
                 " ORDER BY date DESC";
 
         if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Query = " + sqlQuery);
+            Timber.d("Query = " + sqlQuery);
         }
 
         return getMessages(retrievalListener, null, sqlQuery, selectionArgs);
@@ -631,7 +631,7 @@ public class LocalStore extends Store implements Serializable {
                         i++;
                     }
                 } catch (Exception e) {
-                    Log.d(K9.LOG_TAG, "Got an exception", e);
+                    Timber.d("Got an exception", e);
                 } finally {
                     Utility.closeQuietly(cursor);
                 }

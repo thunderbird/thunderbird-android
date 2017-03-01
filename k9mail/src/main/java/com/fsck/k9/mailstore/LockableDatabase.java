@@ -10,11 +10,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Build;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
+
+import static java.lang.System.currentTimeMillis;
+
 
 public class LockableDatabase {
 
@@ -73,7 +76,8 @@ public class LockableDatabase {
             }
 
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "LockableDatabase: Closing DB " + uUid + " due to unmount event on StorageProvider: " + providerId);
+                Timber.d("LockableDatabase: Closing DB " + uUid + " due to unmount event on StorageProvider: " +
+                        providerId);
             }
 
             try {
@@ -84,7 +88,7 @@ public class LockableDatabase {
                     unlockWrite();
                 }
             } catch (UnavailableStorageException e) {
-                Log.w(K9.LOG_TAG, "Unable to writelock on unmount", e);
+                Timber.w("Unable to writelock on unmount", e);
             }
         }
 
@@ -95,13 +99,14 @@ public class LockableDatabase {
             }
 
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "LockableDatabase: Opening DB " + uUid + " due to mount event on StorageProvider: " + providerId);
+                Timber.d("LockableDatabase: Opening DB " + uUid + " due to mount event on StorageProvider: " +
+                        providerId);
             }
 
             try {
                 openOrCreateDataspace();
             } catch (UnavailableStorageException e) {
-                Log.e(K9.LOG_TAG, "Unable to open DB on mount", e);
+                Timber.e("Unable to open DB on mount", e);
             }
         }
     }
@@ -288,7 +293,9 @@ public class LockableDatabase {
                     // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
                     mDb.endTransaction();
                     if (debug) {
-                        Log.v(K9.LOG_TAG, "LockableDatabase: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms / " + new Exception().getStackTrace()[1].toString());
+                        Timber.v("LockableDatabase: Transaction ended, took " +
+                                Long.toString(currentTimeMillis() - begin) + "ms / " +
+                                new Exception().getStackTrace()[1].toString());
                     }
                 }
             }
@@ -307,7 +314,7 @@ public class LockableDatabase {
      */
     public void switchProvider(final String newProviderId) throws MessagingException {
         if (newProviderId.equals(mStorageProviderId)) {
-            Log.v(K9.LOG_TAG, "LockableDatabase: Ignoring provider switch request as they are equal: " + newProviderId);
+            Timber.v("LockableDatabase: Ignoring provider switch request as they are equal: " + newProviderId);
             return;
         }
 
@@ -319,7 +326,7 @@ public class LockableDatabase {
                 try {
                     mDb.close();
                 } catch (Exception e) {
-                    Log.i(K9.LOG_TAG, "Unable to close DB on local store migration", e);
+                    Timber.i("Unable to close DB on local store migration", e);
                 }
 
                 final StorageManager storageManager = getStorageManager();
@@ -371,9 +378,9 @@ public class LockableDatabase {
                 doOpenOrCreateDb(databaseFile);
             } catch (SQLiteException e) {
                 // TODO handle this error in a better way!
-                Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
+                Timber.w("Unable to open DB " + databaseFile + " - removing file and retrying", e);
                 if (databaseFile.exists() && !databaseFile.delete()) {
-                    Log.d(K9.LOG_TAG, "Failed to remove " + databaseFile + " that couldn't be opened");
+                    Timber.d("Failed to remove " + databaseFile + " that couldn't be opened");
                 }
                 doOpenOrCreateDb(databaseFile);
             }
@@ -459,7 +466,7 @@ public class LockableDatabase {
                 mDb.close();
             } catch (Exception e) {
                 if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Exception caught in DB close: " + e.getMessage());
+                    Timber.d("Exception caught in DB close: " + e.getMessage());
             }
             final StorageManager storageManager = getStorageManager();
             try {
@@ -469,24 +476,24 @@ public class LockableDatabase {
                     if (attachment.exists()) {
                         boolean attachmentWasDeleted = attachment.delete();
                         if (!attachmentWasDeleted && K9.DEBUG) {
-                            Log.d(K9.LOG_TAG, "Attachment was not deleted!");
+                            Timber.d("Attachment was not deleted!");
                         }
                     }
                 }
                 if (attachmentDirectory.exists()) {
                     boolean attachmentDirectoryWasDeleted = attachmentDirectory.delete();
                     if (!attachmentDirectoryWasDeleted && K9.DEBUG) {
-                        Log.d(K9.LOG_TAG, "Attachment directory was not deleted!");
+                        Timber.d("Attachment directory was not deleted!");
                     }
                 }
             } catch (Exception e) {
                 if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Exception caught in clearing attachments: " + e.getMessage());
+                    Timber.d("Exception caught in clearing attachments: " + e.getMessage());
             }
             try {
                 deleteDatabase(storageManager.getDatabase(uUid, mStorageProviderId));
             } catch (Exception e) {
-                Log.i(K9.LOG_TAG, "LockableDatabase: delete(): Unable to delete backing DB file", e);
+                Timber.i("LockableDatabase: delete(): Unable to delete backing DB file", e);
             }
 
             if (recreate) {
@@ -510,8 +517,7 @@ public class LockableDatabase {
             deleted |= new File(database.getPath() + "-journal").delete();
         }
         if (!deleted) {
-            Log.i(K9.LOG_TAG,
-                    "LockableDatabase: deleteDatabase(): No files deleted.");
+            Timber.i("LockableDatabase: deleteDatabase(): No files deleted.");
         }
     }
 }

@@ -15,7 +15,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
@@ -180,20 +180,20 @@ public class SettingsImporter {
                     if (imported.globalSettings != null) {
                         importGlobalSettings(storage, editor, imported.contentVersion, imported.globalSettings);
                     } else {
-                        Log.w(K9.LOG_TAG, "Was asked to import global settings but none found.");
+                        Timber.w("Was asked to import global settings but none found.");
                     }
                     if (editor.commit()) {
                         if (K9.DEBUG) {
-                            Log.v(K9.LOG_TAG, "Committed global settings to the preference storage.");
+                            Timber.v("Committed global settings to the preference storage.");
                         }
                         globalSettingsImported = true;
                     } else {
                         if (K9.DEBUG) {
-                            Log.v(K9.LOG_TAG, "Failed to commit global settings to the preference storage");
+                            Timber.v("Failed to commit global settings to the preference storage");
                         }
                     }
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Exception while importing global settings", e);
+                    Timber.e("Exception while importing global settings", e);
                 }
             }
 
@@ -210,7 +210,7 @@ public class SettingsImporter {
 
                                 if (editor.commit()) {
                                     if (K9.DEBUG) {
-                                        Log.v(K9.LOG_TAG, "Committed settings for account \"" +
+                                        Timber.v("Committed settings for account \"" +
                                                 importResult.imported.name + "\" to the settings database.");
                                     }
 
@@ -237,23 +237,23 @@ public class SettingsImporter {
                                     importedAccounts.add(importResult);
                                 } else {
                                     if (K9.DEBUG) {
-                                        Log.w(K9.LOG_TAG, "Error while committing settings for account \"" +
+                                        Timber.w("Error while committing settings for account \"" +
                                                 importResult.original.name + "\" to the settings database.");
                                     }
                                     erroneousAccounts.add(importResult.original);
                                 }
                             } catch (InvalidSettingValueException e) {
                                 if (K9.DEBUG) {
-                                    Log.e(K9.LOG_TAG, "Encountered invalid setting while " +
+                                    Timber.e("Encountered invalid setting while " +
                                             "importing account \"" + account.name + "\"", e);
                                 }
                                 erroneousAccounts.add(new AccountDescription(account.name, account.uuid));
                             } catch (Exception e) {
-                                Log.e(K9.LOG_TAG, "Exception while importing account \"" + account.name + "\"", e);
+                                Timber.e("Exception while importing account \"" + account.name + "\"", e);
                                 erroneousAccounts.add(new AccountDescription(account.name, account.uuid));
                             }
                         } else {
-                            Log.w(K9.LOG_TAG, "Was asked to import account with UUID " + accountUuid +
+                            Timber.w("Was asked to import account with UUID " + accountUuid +
                                     ". But this account wasn't found.");
                         }
                     }
@@ -269,7 +269,7 @@ public class SettingsImporter {
                         throw new SettingsImportExportException("Failed to set default account");
                     }
                 } else {
-                    Log.w(K9.LOG_TAG, "Was asked to import at least one account but none found.");
+                    Timber.w("Was asked to import at least one account but none found.");
                 }
             }
 
@@ -622,7 +622,7 @@ public class SettingsImporter {
             if (!K9.DEBUG_SENSITIVE && (key.endsWith(".transportUri") || key.endsWith(".storeUri"))) {
                 outputValue = "*sensitive*";
             }
-            Log.v(K9.LOG_TAG, "Setting " + key + "=" + outputValue);
+            Timber.v("Setting " + key + "=" + outputValue);
         }
         editor.putString(key, value);
     }
@@ -650,7 +650,7 @@ public class SettingsImporter {
                     if (SettingsExporter.ROOT_ELEMENT.equals(xpp.getName())) {
                         imported = parseRoot(xpp, globalSettings, accountUuids, overview);
                     } else {
-                        Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                        Timber.w("Unexpected start tag: " + xpp.getName());
                     }
                 }
                 eventType = xpp.next();
@@ -707,20 +707,20 @@ public class SettingsImporter {
                             }
                         } else {
                             skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
-                            Log.w(K9.LOG_TAG, "More than one global settings element. Only using the first one!");
+                            Timber.w("More than one global settings element. Only using the first one!");
                         }
                     } else {
                         skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
-                        Log.i(K9.LOG_TAG, "Skipping global settings");
+                        Timber.i("Skipping global settings");
                     }
                 } else if (SettingsExporter.ACCOUNTS_ELEMENT.equals(element)) {
                     if (result.accounts == null) {
                         result.accounts = parseAccounts(xpp, accountUuids, overview);
                     } else {
-                        Log.w(K9.LOG_TAG, "More than one accounts element. Only using the first one!");
+                        Timber.w("More than one accounts element. Only using the first one!");
                     }
                 } else {
-                    Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                    Timber.w("Unexpected start tag: " + xpp.getName());
                 }
             }
             eventType = xpp.next();
@@ -786,12 +786,12 @@ public class SettingsImporter {
                     }
 
                     if (result.settings.containsKey(key)) {
-                        Log.w(K9.LOG_TAG, "Already read key \"" + key + "\". Ignoring value \"" + value + "\"");
+                        Timber.w("Already read key \"" + key + "\". Ignoring value \"" + value + "\"");
                     } else {
                         result.settings.put(key, value);
                     }
                 } else {
-                    Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                    Timber.w("Unexpected start tag: " + xpp.getName());
                 }
             }
             eventType = xpp.next();
@@ -821,10 +821,10 @@ public class SettingsImporter {
                     } else if (!accounts.containsKey(account.uuid)) {
                         accounts.put(account.uuid, account);
                     } else {
-                        Log.w(K9.LOG_TAG, "Duplicate account entries with UUID " + account.uuid + ". Ignoring!");
+                        Timber.w("Duplicate account entries with UUID " + account.uuid + ". Ignoring!");
                     }
                 } else {
-                    Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                    Timber.w("Unexpected start tag: " + xpp.getName());
                 }
             }
             eventType = xpp.next();
@@ -842,7 +842,7 @@ public class SettingsImporter {
             UUID.fromString(uuid);
         } catch (Exception e) {
             skipToEndTag(xpp, SettingsExporter.ACCOUNT_ELEMENT);
-            Log.w(K9.LOG_TAG, "Skipping account with invalid UUID " + uuid);
+            Timber.w("Skipping account with invalid UUID " + uuid);
             return null;
         }
 
@@ -883,14 +883,14 @@ public class SettingsImporter {
                             account.folders = parseFolders(xpp);
                         }
                     } else {
-                        Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                        Timber.w("Unexpected start tag: " + xpp.getName());
                     }
                 }
                 eventType = xpp.next();
             }
         } else {
             skipToEndTag(xpp, SettingsExporter.ACCOUNT_ELEMENT);
-            Log.i(K9.LOG_TAG, "Skipping account with UUID " + uuid);
+            Timber.i("Skipping account with UUID " + uuid);
         }
 
         // If we couldn't find an account name use the UUID
@@ -929,7 +929,7 @@ public class SettingsImporter {
                 } else if (SettingsExporter.EXTRA_ELEMENT.equals(element)) {
                     server.extras = parseSettings(xpp, SettingsExporter.EXTRA_ELEMENT);
                 } else {
-                    Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                    Timber.w("Unexpected start tag: " + xpp.getName());
                 }
             }
             eventType = xpp.next();
@@ -954,7 +954,7 @@ public class SettingsImporter {
                     ImportedIdentity identity = parseIdentity(xpp);
                     identities.add(identity);
                 } else {
-                    Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                    Timber.w("Unexpected start tag: " + xpp.getName());
                 }
             }
             eventType = xpp.next();
@@ -980,7 +980,7 @@ public class SettingsImporter {
                 } else if (SettingsExporter.SETTINGS_ELEMENT.equals(element)) {
                     identity.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT);
                 } else {
-                    Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                    Timber.w("Unexpected start tag: " + xpp.getName());
                 }
             }
             eventType = xpp.next();
@@ -1004,7 +1004,7 @@ public class SettingsImporter {
                     ImportedFolder folder = parseFolder(xpp);
                     folders.add(folder);
                 } else {
-                    Log.w(K9.LOG_TAG, "Unexpected start tag: " + xpp.getName());
+                    Timber.w("Unexpected start tag: " + xpp.getName());
                 }
             }
             eventType = xpp.next();

@@ -8,7 +8,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 
@@ -109,7 +109,7 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
             mListener = (ConfirmationDialogFragmentListener) activity;
         } catch (ClassCastException e) {
             if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, activity.toString() + " did not implement ConfirmationDialogFragmentListener");
+                Timber.d(activity.toString() + " did not implement ConfirmationDialogFragmentListener");
         }
     }
 

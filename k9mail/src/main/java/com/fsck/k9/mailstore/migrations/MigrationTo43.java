@@ -7,7 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -16,6 +16,8 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
+
+import static com.fsck.k9.Account.OUTBOX;
 
 
 class MigrationTo43 {
@@ -32,7 +34,7 @@ class MigrationTo43 {
                 ContentValues cv = new ContentValues();
                 cv.put("name", Account.OUTBOX);
                 db.update("folders", cv, "name = ?", new String[] { "OUTBOX" });
-                Log.i(K9.LOG_TAG, "Renamed folder OUTBOX to " + Account.OUTBOX);
+                Timber.i("Renamed folder OUTBOX to " + OUTBOX);
             }
 
             // Check if old (pre v3.800) localized outbox folder exists
@@ -54,7 +56,7 @@ class MigrationTo43 {
                 obsoleteOutbox.delete(true);
             }
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Error trying to fix the outbox folders", e);
+            Timber.e("Error trying to fix the outbox folders", e);
         }
     }
 }

@@ -13,7 +13,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -111,7 +111,7 @@ public class MessageLoaderHelper {
             if (cachedDecryptionResult instanceof OpenPgpDecryptionResult) {
                 this.cachedDecryptionResult = (OpenPgpDecryptionResult) cachedDecryptionResult;
             } else {
-                Log.e(K9.LOG_TAG, "Got decryption result of unknown type - ignoring");
+                Timber.e("Got decryption result of unknown type - ignoring");
             }
         }
 
@@ -182,12 +182,12 @@ public class MessageLoaderHelper {
         boolean isLoaderStale = (loader == null) || !loader.isCreatedFor(messageReference);
 
         if (isLoaderStale) {
-            Log.d(K9.LOG_TAG, "Creating new local message loader");
+            Timber.d("Creating new local message loader");
             cancelAndClearCryptoOperation();
             cancelAndClearDecodeLoader();
             loaderManager.restartLoader(LOCAL_MESSAGE_LOADER_ID, null, localMessageLoaderCallback);
         } else {
-            Log.d(K9.LOG_TAG, "Reusing local message loader");
+            Timber.d("Reusing local message loader");
             loaderManager.initLoader(LOCAL_MESSAGE_LOADER_ID, null, localMessageLoaderCallback);
         }
     }
@@ -336,10 +336,10 @@ public class MessageLoaderHelper {
         boolean isLoaderStale = (loader == null) || !loader.isCreatedFor(localMessage, messageCryptoAnnotations);
 
         if (isLoaderStale) {
-            Log.d(K9.LOG_TAG, "Creating new decode message loader");
+            Timber.d("Creating new decode message loader");
             loaderManager.restartLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
         } else {
-            Log.d(K9.LOG_TAG, "Reusing decode message loader");
+            Timber.d("Reusing decode message loader");
             loaderManager.initLoader(DECODE_MESSAGE_LOADER_ID, null, decodeMessageLoaderCallback);
         }
     }

@@ -16,11 +16,14 @@
 
 package com.fsck.k9;
 
-import android.os.Handler;
-import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import android.os.Handler;
+
+import timber.log.Timber;
+
 
 /**
  * This class used to "throttle" a flow of events.
@@ -94,7 +97,7 @@ public class Throttle {
     }
 
     private void debugLog(String message) {
-        Log.d(K9.LOG_TAG, "Throttle: [" + mName + "] " + message);
+        Timber.d("Throttle: [" + mName + "] " + message);
     }
 
     private boolean isCallbackScheduled() {

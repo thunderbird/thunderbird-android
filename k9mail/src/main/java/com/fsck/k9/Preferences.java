@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.Storage;
+import timber.log.Timber;
+
 
 public class Preferences {
 
@@ -40,7 +42,7 @@ public class Preferences {
         mStorage = Storage.getStorage(context);
         mContext = context;
         if (mStorage.isEmpty()) {
-            Log.i(K9.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
+            Timber.i("Preferences storage is zero-size, importing from Android-style preferences");
             StorageEditor editor = mStorage.edit();
             editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
             editor.commit();
@@ -128,7 +130,7 @@ public class Preferences {
         try {
             RemoteStore.removeInstance(account);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to reset remote store for account " + account.getUuid(), e);
+            Timber.e("Failed to reset remote store for account " + account.getUuid(), e);
         }
         LocalStore.removeAccount(account);
 
@@ -176,7 +178,7 @@ public class Preferences {
             try {
                 return Enum.valueOf(defaultEnum.getDeclaringClass(), stringPref);
             } catch (IllegalArgumentException ex) {
-                Log.w(K9.LOG_TAG, "Unable to convert preference key [" + key +
+                Timber.w("Unable to convert preference key [" + key +
                         "] value [" + stringPref + "] to enum of type " + defaultEnum.getDeclaringClass(), ex);
 
                 return defaultEnum;

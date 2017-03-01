@@ -19,7 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -479,7 +479,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
 
         if (mSingleAccountMode && (mAccount == null || !mAccount.isAvailable(this))) {
-            Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
+            Timber.i("not opening MessageList of unavailable account");
             onAccountUnavailable();
             return false;
         }
@@ -758,7 +758,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         if (K9.useVolumeKeysForListNavigationEnabled()) {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
                 if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "Swallowed key up.");
+                    Timber.v("Swallowed key up.");
                 return true;
             }
         }

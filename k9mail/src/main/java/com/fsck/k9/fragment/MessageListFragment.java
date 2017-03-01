@@ -43,7 +43,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
+import timber.log.Timber;
 import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.ContextMenu;
@@ -1164,7 +1164,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                         LocalFolder firstMsgFolder = getFolder(firstMsg.getFolderName(), account);
                         firstMsgFolder.setLastSelectedFolderName(destFolderName);
                     } catch (MessagingException e) {
-                        Log.e(K9.LOG_TAG, "Error getting folder for setLastSelectedFolderName()", e);
+                        Timber.e("Error getting folder for setLastSelectedFolderName()", e);
                     }
                 }
 
@@ -2814,11 +2814,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         // If we represent a remote search, then kill that before going back.
         if (isRemoteSearch() && mRemoteSearchFuture != null) {
             try {
-                Log.i(K9.LOG_TAG, "Remote search in progress, attempting to abort...");
+                Timber.i("Remote search in progress, attempting to abort...");
                 // Canceling the future stops any message fetches in progress.
                 final boolean cancelSuccess = mRemoteSearchFuture.cancel(true);   // mayInterruptIfRunning = true
                 if (!cancelSuccess) {
-                    Log.e(K9.LOG_TAG, "Could not cancel remote search future.");
+                    Timber.e("Could not cancel remote search future.");
                 }
                 // Closing the folder will kill off the connection if we're mid-search.
                 final Account searchAccount = mAccount;
@@ -2828,7 +2828,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 mListener.remoteSearchFinished(mCurrentFolder.name, 0, searchAccount.getRemoteSearchNumResults(), null);
             } catch (Exception e) {
                 // Since the user is going back, log and squash any exceptions.
-                Log.e(K9.LOG_TAG, "Could not abort remote search before going back", e);
+                Timber.e("Could not abort remote search before going back", e);
             }
         }
         super.onStop();

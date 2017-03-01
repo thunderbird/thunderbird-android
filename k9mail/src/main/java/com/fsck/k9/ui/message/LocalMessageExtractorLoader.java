@@ -5,7 +5,7 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
@@ -54,7 +54,7 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
         try {
             return messageViewInfoExtractor.extractMessageForView(message, annotations);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Error while decoding message", e);
+            Timber.e("Error while decoding message", e);
             return null;
         }
     }

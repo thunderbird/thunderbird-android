@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences;
 
-import android.util.Log;
+import timber.log.Timber;
 import com.fsck.k9.K9;
 
 import java.util.ArrayList;
@@ -30,12 +30,12 @@ public class StorageEditor {
             Object value = entry.getValue();
             if (key != null && value != null) {
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Copying key '" + key + "', value '" + value + "'");
+                    Timber.d("Copying key '" + key + "', value '" + value + "'");
                 }
                 changes.put(key, "" + value);
             } else {
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Skipping copying key '" + key + "', value '" + value + "'");
+                    Timber.d("Skipping copying key '" + key + "', value '" + value + "'");
                 }
             }
         }
@@ -46,14 +46,14 @@ public class StorageEditor {
             commitChanges();
             return true;
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to save preferences", e);
+            Timber.e("Failed to save preferences", e);
             return false;
         }
     }
 
     private void commitChanges() {
         long startTime = System.currentTimeMillis();
-        Log.i(K9.LOG_TAG, "Committing preference changes");
+        Timber.i("Committing preference changes");
         Runnable committer = new Runnable() {
             public void run() {
                 for (String removeKey : removals) {
@@ -73,7 +73,7 @@ public class StorageEditor {
         };
         storage.doInTransaction(committer);
         long endTime = System.currentTimeMillis();
-        Log.i(K9.LOG_TAG, "Preferences commit took " + (endTime - startTime) + "ms");
+        Timber.i("Preferences commit took " + (endTime - startTime) + "ms");
 
     }
 

@@ -17,7 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.Menu;
 
 import com.fsck.k9.Account;
@@ -548,7 +548,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     void onClickCryptoStatus() {
         switch (cryptoProviderState) {
             case UNCONFIGURED:
-                Log.e(K9.LOG_TAG, "click on crypto status while unconfigured - this should not really happen?!");
+                Timber.e("click on crypto status while unconfigured - this should not really happen?!");
                 return;
             case OK:
                 if (cachedCryptoStatus.isSignOnly()) {
@@ -678,7 +678,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         // TODO handle error case better
         recipientMvpView.showErrorOpenPgpConnection();
         cryptoProviderState = CryptoProviderState.ERROR;
-        Log.e(K9.LOG_TAG, "error connecting to crypto provider!", e);
+        Timber.e("error connecting to crypto provider!", e);
         updateCryptoStatus();
     }
 
@@ -714,7 +714,7 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     private OpenPgpApi getOpenPgpApi() {
         if (openPgpServiceConnection == null || !openPgpServiceConnection.isBound()) {
-            Log.e(K9.LOG_TAG, "obtained openpgpapi object, but service is not bound! inconsistent state?");
+            Timber.e("obtained openpgpapi object, but service is not bound! inconsistent state?");
         }
         return new OpenPgpApi(context, openPgpServiceConnection.getService());
     }

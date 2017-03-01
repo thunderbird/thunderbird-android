@@ -1,7 +1,7 @@
 package com.fsck.k9.controller;
 
 import android.content.Context;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -41,7 +41,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
 
     public void syncFolder(Folder folder) {
         if (K9.DEBUG)
-            Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ")");
+            Timber.v("syncFolder(" + folder.getName() + ")");
         final CountDownLatch latch = new CountDownLatch(1);
         controller.synchronizeMailbox(account, folder.getName(), new SimpleMessagingListener() {
             @Override
@@ -58,13 +58,13 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         }, folder);
 
         if (K9.DEBUG)
-            Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") about to await latch release");
+            Timber.v("syncFolder(" + folder.getName() + ") about to await latch release");
         try {
             latch.await();
             if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") got latch release");
+                Timber.v("syncFolder(" + folder.getName() + ") got latch release");
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Interrupted while awaiting latch release", e);
+            Timber.e("Interrupted while awaiting latch release", e);
         }
     }
 
@@ -96,8 +96,8 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             localFolder.open(Folder.OPEN_MODE_RW);
             return localFolder.getPushState();
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Unable to get push state from account " + account.getDescription()
-                  + ", folder " + folderName, e);
+            Timber.e("Unable to get push state from account " + account.getDescription()
+                    + ", folder " + folderName, e);
             return null;
         } finally {
             if (localFolder != null) {

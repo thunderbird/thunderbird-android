@@ -33,7 +33,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import timber.log.Timber;
 import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -256,12 +256,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             try {
                 AccountStats stats = account.getStats(Accounts.this);
                 if (stats == null) {
-                    Log.w(K9.LOG_TAG, "Unable to get account stats");
+                    Timber.w("Unable to get account stats");
                 } else {
                     accountStatusChanged(account, stats);
                 }
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Unable to get account stats", e);
+                Timber.e("Unable to get account stats", e);
             }
         }
         @Override
@@ -652,7 +652,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
                 toast.show();
 
-                Log.i(K9.LOG_TAG, "refusing to open account that is not available");
+                Timber.i("refusing to open account that is not available");
                 return false;
             }
             if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName())) {
@@ -995,7 +995,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 // Get list of folders from remote server
                 MessagingController.getInstance(mApplication).listFolders(mAccount, true, null);
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Something went while setting account passwords", e);
+                Timber.e("Something went while setting account passwords", e);
             }
             return null;
         }
@@ -1411,7 +1411,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(K9.LOG_TAG, "onActivityResult requestCode = " + requestCode + ", resultCode = " + resultCode + ", data = " + data);
+        Timber.i("onActivityResult requestCode = " + requestCode + ", resultCode = " + resultCode + ", data = " + data);
         if (resultCode != RESULT_OK)
             return;
         if (data == null) {
@@ -1926,7 +1926,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
                             mAccountUuids);
             } catch (SettingsImportExportException e) {
-                Log.w(K9.LOG_TAG, "Exception during export", e);
+                Timber.w("Exception during export", e);
                 return false;
             }
             return true;
@@ -1993,13 +1993,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     }
                 }
             } catch (SettingsImportExportException e) {
-                Log.w(K9.LOG_TAG, "Exception during import", e);
+                Timber.w("Exception during import", e);
                 return false;
             } catch (FileNotFoundException e) {
-                Log.w(K9.LOG_TAG, "Couldn't open import file", e);
+                Timber.w("Couldn't open import file", e);
                 return false;
             } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Unknown error", e);
+                Timber.w("Unknown error", e);
                 return false;
             }
             return true;
@@ -2066,10 +2066,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     }
                 }
             } catch (SettingsImportExportException e) {
-                Log.w(K9.LOG_TAG, "Exception during export", e);
+                Timber.w("Exception during export", e);
                 return false;
             } catch (FileNotFoundException e) {
-                Log.w(K9.LOG_TAG, "Couldn't read content from URI " + mUri);
+                Timber.w("Couldn't read content from URI " + mUri);
                 return false;
             }
             return true;

@@ -4,7 +4,7 @@ package com.fsck.k9.service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -19,7 +19,7 @@ public class RemoteControlReceiver extends CoreReceiver {
     @Override
     public Integer receive(Context context, Intent intent, Integer tmpWakeLockId) {
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "RemoteControlReceiver.onReceive" + intent);
+            Timber.i("RemoteControlReceiver.onReceive" + intent);
 
         if (K9RemoteControl.K9_SET.equals(intent.getAction())) {
             RemoteControlService.set(context, intent, tmpWakeLockId);
@@ -41,7 +41,7 @@ public class RemoteControlReceiver extends CoreReceiver {
                 bundle.putStringArray(K9_ACCOUNT_UUIDS, uuids);
                 bundle.putStringArray(K9_ACCOUNT_DESCRIPTIONS, descriptions);
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Could not handle K9_RESPONSE_INTENT", e);
+                Timber.e("Could not handle K9_RESPONSE_INTENT", e);
             }
 
         }

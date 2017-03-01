@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.UrlEncodingHelper;
@@ -41,7 +41,7 @@ public class Storage {
         SQLiteDatabase mDb = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
 
         if (mDb.getVersion() == 1) {
-            Log.i(K9.LOG_TAG, "Updating preferences to urlencoded username/password");
+            Timber.i("Updating preferences to urlencoded username/password");
 
             String accountUuids = readValue(mDb, "accountUuids");
             if (accountUuids != null && accountUuids.length() != 0) {
@@ -119,7 +119,7 @@ public class Storage {
                             writeValue(mDb, uuid + ".storeUri", newStoreUriStr);
                         }
                     } catch (Exception e) {
-                        Log.e(K9.LOG_TAG, "ooops", e);
+                        Timber.e("ooops", e);
                     }
                 }
             }
@@ -128,7 +128,7 @@ public class Storage {
         }
 
         if (mDb.getVersion() != DB_VERSION) {
-            Log.i(K9.LOG_TAG, "Creating Storage database");
+            Timber.i("Creating Storage database");
             mDb.execSQL("DROP TABLE IF EXISTS preferences_storage");
             mDb.execSQL("CREATE TABLE preferences_storage " +
                         "(primkey TEXT PRIMARY KEY ON CONFLICT REPLACE, value TEXT)");
@@ -142,23 +142,23 @@ public class Storage {
         Storage tmpStorage = storages.get(context);
         if (tmpStorage != null) {
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Returning already existing Storage");
+                Timber.d("Returning already existing Storage");
             }
             return tmpStorage;
         } else {
             if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Creating provisional storage");
+                Timber.d("Creating provisional storage");
             }
             tmpStorage = new Storage(context);
             Storage oldStorage = storages.putIfAbsent(context, tmpStorage);
             if (oldStorage != null) {
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Another thread beat us to creating the Storage, returning that one");
+                    Timber.d("Another thread beat us to creating the Storage, returning that one");
                 }
                 return oldStorage;
             } else {
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Returning the Storage we created");
+                    Timber.d("Returning the Storage we created");
                 }
                 return tmpStorage;
             }
@@ -167,7 +167,7 @@ public class Storage {
 
     private void loadValues() {
         long startTime = System.currentTimeMillis();
-        Log.i(K9.LOG_TAG, "Loading preferences from DB into Storage");
+        Timber.i("Loading preferences from DB into Storage");
         Cursor cursor = null;
         SQLiteDatabase mDb = null;
         try {
@@ -178,7 +178,7 @@ public class Storage {
                 String key = cursor.getString(0);
                 String value = cursor.getString(1);
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Loading key '" + key + "', value = '" + value + "'");
+                    Timber.d("Loading key '" + key + "', value = '" + value + "'");
                 }
                 storage.put(key, value);
             }
@@ -188,7 +188,7 @@ public class Storage {
                 mDb.close();
             }
             long endTime = System.currentTimeMillis();
-            Log.i(K9.LOG_TAG, "Preferences load took " + (endTime - startTime) + "ms");
+            Timber.i("Preferences load took " + (endTime - startTime) + "ms");
         }
     }
 
@@ -294,7 +294,7 @@ public class Storage {
         try {
             return Integer.parseInt(val);
         } catch (NumberFormatException nfe) {
-            Log.e(K9.LOG_TAG, "Could not parse int", nfe);
+            Timber.e("Could not parse int", nfe);
             return defValue;
         }
     }
@@ -307,7 +307,7 @@ public class Storage {
         try {
             return Long.parseLong(val);
         } catch (NumberFormatException nfe) {
-            Log.e(K9.LOG_TAG, "Could not parse long", nfe);
+            Timber.e("Could not parse long", nfe);
             return defValue;
         }
     }
@@ -336,7 +336,7 @@ public class Storage {
             if (cursor.moveToNext()) {
                 value = cursor.getString(0);
                 if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Loading key '" + key + "', value = '" + value + "'");
+                    Timber.d("Loading key '" + key + "', value = '" + value + "'");
                 }
             }
         } finally {
@@ -354,7 +354,7 @@ public class Storage {
         long result = mDb.insert("preferences_storage", "primkey", cv);
 
         if (result == -1) {
-            Log.e(K9.LOG_TAG, "Error writing key '" + key + "', value = '" + value + "'");
+            Timber.e("Error writing key '" + key + "', value = '" + value + "'");
         }
     }
 }

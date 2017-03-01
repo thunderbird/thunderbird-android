@@ -18,7 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
+import timber.log.Timber;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -181,7 +181,7 @@ public class AttachmentController {
         try {
             intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(context, attachment.internalUri);
         } catch (IOException e) {
-            Log.e(K9.LOG_TAG, "Error creating temp file for attachment!", e);
+            Timber.e("Error creating temp file for attachment!", e);
             return null;
         }
 
@@ -212,7 +212,7 @@ public class AttachmentController {
                 viewIntent = createViewIntentForFileUri(resolvedIntentInfo.getMimeType(), Uri.fromFile(tempFile));
             } catch (IOException e) {
                 if (K9.DEBUG) {
-                    Log.e(K9.LOG_TAG, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent", e);
+                    Timber.e("Error while saving attachment to use file:// URI with ACTION_VIEW Intent", e);
                 }
                 viewIntent = createViewIntentForAttachmentProviderUri(intentDataUri, MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
             }
@@ -332,7 +332,7 @@ public class AttachmentController {
             try {
                 context.startActivity(intent);
             } catch (ActivityNotFoundException e) {
-                Log.e(K9.LOG_TAG, "Could not display attachment of type " + attachment.mimeType, e);
+                Timber.e("Could not display attachment of type " + attachment.mimeType, e);
 
                 String message = context.getString(R.string.message_view_no_viewer, attachment.mimeType);
                 displayMessageToUser(message);
@@ -354,7 +354,7 @@ public class AttachmentController {
                 return saveAttachmentWithUniqueFileName(directory);
             } catch (IOException e) {
                 if (K9.DEBUG) {
-                    Log.e(K9.LOG_TAG, "Error saving attachment", e);
+                    Timber.e("Error saving attachment", e);
                 }
                 return null;
             }

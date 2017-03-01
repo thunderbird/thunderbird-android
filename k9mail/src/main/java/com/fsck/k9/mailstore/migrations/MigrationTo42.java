@@ -3,7 +3,7 @@ package com.fsck.k9.mailstore.migrations;
 
 import java.util.List;
 
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Folder;
@@ -32,10 +32,10 @@ class MigrationTo42 {
 
             editor.commit();
             long endTime = System.currentTimeMillis();
-            Log.i(K9.LOG_TAG, "Putting folder preferences for " + folders.size() +
+            Timber.i("Putting folder preferences for " + folders.size() +
                     " folders back into Preferences took " + (endTime - startTime) + " ms");
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not replace Preferences in upgrade from DB_VERSION 41", e);
+            Timber.e("Could not replace Preferences in upgrade from DB_VERSION 41", e);
         }
     }
 }

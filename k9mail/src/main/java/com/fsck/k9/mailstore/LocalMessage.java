@@ -10,7 +10,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BuildConfig;
@@ -77,7 +77,7 @@ public class LocalMessage extends MimeMessage {
 
                 catch (Exception e) {
                     if (!"X_BAD_FLAG".equals(flag)) {
-                        Log.w(K9.LOG_TAG, "Unable to parse flag " + flag);
+                        Timber.w("Unable to parse flag " + flag);
                     }
                 }
             }
@@ -129,7 +129,7 @@ public class LocalMessage extends MimeMessage {
         if (header != null) {
             MessageHeaderParser.parse(this, new ByteArrayInputStream(header));
         } else {
-            Log.d(K9.LOG_TAG, "No headers available for this message!");
+            Timber.d("No headers available for this message!");
         }
         
         headerNeedsUpdating = false;

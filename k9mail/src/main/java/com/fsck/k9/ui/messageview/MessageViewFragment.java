@@ -18,7 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -209,7 +209,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private void displayMessage(MessageReference messageReference) {
         mMessageReference = messageReference;
         if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
+            Timber.d("MessageView displaying message " + mMessageReference);
         }
 
         mAccount = Preferences.getPreferences(getApplicationContext()).getAccount(mMessageReference.getAccountUuid());
@@ -789,7 +789,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 getActivity().startIntentSenderForResult(
                         si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
             } catch (SendIntentException e) {
-                Log.e(K9.LOG_TAG, "Irrecoverable error calling PendingIntent!", e);
+                Timber.e("Irrecoverable error calling PendingIntent!", e);
             }
         }
     };

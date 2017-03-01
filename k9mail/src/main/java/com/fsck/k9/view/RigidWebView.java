@@ -20,7 +20,7 @@ package com.fsck.k9.view;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
+import timber.log.Timber;
 import android.webkit.WebView;
 
 import com.fsck.k9.Clock;
@@ -83,7 +83,7 @@ public class RigidWebView extends WebView {
             mIgnoreNext = false;
             if (recentlySized) {
                 if (K9.DEBUG) {
-                    Log.w(K9.LOG_TAG, "Supressing size change in RigidWebView");
+                    Timber.w("Supressing size change in RigidWebView");
                 }
                 return;
             }
