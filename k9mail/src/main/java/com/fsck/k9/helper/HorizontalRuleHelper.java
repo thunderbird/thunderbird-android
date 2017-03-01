@@ -11,11 +11,11 @@ public class HorizontalRuleHelper {
 	String replaced = HorizontalRuleHelper.replaceHorizontalRule(stringToReplaceFrom);
 	*/
 
-	private String pattern = "[-=_]{4,}|(-=){2,}-|(-| )+ *>8 *(-| )+|(-| )+ *8< *(-| )+";
+	private String pattern;
 
-	public void HorizontalRuleHelper(){
-		// Empty constructor
-	}
+	public HorizontalRuleHelper(){
+        pattern = "[-=_]{4,}|(-=){2,}-|(-| )+ *>8 *(-| )+|(-| )+ *8< *(-| )+";
+    }
 
 	public String replaceHorizontalRule(String text){
 		return text.replaceAll(pattern, "<hr />");
