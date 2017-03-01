@@ -78,7 +78,8 @@ public class MessageBuilderTest {
     
     public static final String MESSAGE_CONTENT = "" +
             "Content-Type: text/plain;\r\n" +
-            " charset=utf-8\r\n" +
+            " charset=utf-8;\r\n" +
+            "  format=flowed\r\n" +
             "Content-Transfer-Encoding: quoted-printable\r\n" +
             "\r\n" +
             "soviet message\r\n" +
@@ -90,7 +91,8 @@ public class MessageBuilderTest {
             "\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: text/plain;\r\n" +
-            " charset=utf-8\r\n" +
+            " charset=utf-8;\r\n" +
+            "  format=flowed\r\n" +
             "Content-Transfer-Encoding: quoted-printable\r\n" +
             "\r\n" +
             "soviet message\r\n" +
@@ -113,7 +115,8 @@ public class MessageBuilderTest {
             "\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: text/plain;\r\n" +
-            " charset=utf-8\r\n" +
+            " charset=utf-8;\r\n" +
+            "  format=flowed\r\n" +
             "Content-Transfer-Encoding: quoted-printable\r\n" +
             "\r\n" +
             "soviet message\r\n" +
