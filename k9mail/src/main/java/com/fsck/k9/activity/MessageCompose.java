@@ -208,6 +208,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean isInSubActivity = false;
 
+    private boolean navigateUp;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -730,7 +732,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private void onDiscard(boolean navigateUp) {
+    private void onDiscard() {
         if (draftId != INVALID_DRAFT_ID) {
             MessagingController.getInstance(getApplication()).deleteDraft(account, draftId);
             draftId = INVALID_DRAFT_ID;
@@ -925,7 +927,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (K9.confirmDiscardMessage()) {
             showDialog(DIALOG_CONFIRM_DISCARD);
         } else {
-            onDiscard(false);
+            onDiscard();
         }
     }
 
@@ -933,7 +935,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                prepareToFinish(true);
+                navigateUp = true;
+                prepareToFinish();
                 break;
             case R.id.send:
                 checkToSendMessage();
@@ -1002,10 +1005,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public void onBackPressed() {
-        prepareToFinish(false);
+        navigateUp = false;
+        prepareToFinish();
     }
 
-    private void prepareToFinish(boolean navigateUp) {
+    private void prepareToFinish() {
         if (changesMadeSinceLastSave && draftIsNotEmpty()) {
             if (!account.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
@@ -1015,7 +1019,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             // Check if editing an existing draft.
             if (draftId == INVALID_DRAFT_ID) {
-                onDiscard(navigateUp);
+                onDiscard();
             } else {
                 if (navigateUp) {
                     openInboxFolder();
@@ -1075,7 +1079,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                             @Override
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-                                onDiscard(false);
+                                onDiscard();
                             }
                         })
                         .create();
@@ -1096,7 +1100,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                                 Toast.makeText(MessageCompose.this,
                                         getString(R.string.message_discarded_toast),
                                         Toast.LENGTH_LONG).show();
-                                onDiscard(false);
+                                onDiscard();
                             }
                         })
                         .create();
@@ -1124,7 +1128,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         .setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        onDiscard(false);
+                                        onDiscard();
                                     }
                                 })
                         .setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
