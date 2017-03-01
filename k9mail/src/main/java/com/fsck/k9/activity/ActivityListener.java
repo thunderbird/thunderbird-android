@@ -10,10 +10,10 @@ import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.service.MailService;
 
-public class ActivityListener extends MessagingListener {
+public class ActivityListener extends SimpleMessagingListener {
     private Account mAccount = null;
     private String mLoadingFolderName = null;
     private String mLoadingHeaderFolderName = null;

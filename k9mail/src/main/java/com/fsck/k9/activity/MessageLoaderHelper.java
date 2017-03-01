@@ -20,6 +20,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.RetainFragment;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -430,7 +431,7 @@ public class MessageLoaderHelper {
         }
     }
 
-    MessagingListener downloadMessageListener = new MessagingListener() {
+    MessagingListener downloadMessageListener = new SimpleMessagingListener() {
         @Override
         public void loadMessageRemoteFinished(Account account, String folder, String uid) {
             if (!messageReference.equals(account.getUuid(), folder, uid)) {

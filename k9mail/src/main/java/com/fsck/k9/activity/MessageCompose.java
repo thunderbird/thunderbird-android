@@ -67,6 +67,7 @@ import com.fsck.k9.activity.compose.SaveMessageTask;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
 import com.fsck.k9.helper.Contacts;
@@ -1588,7 +1589,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     };
 
     // TODO We miss callbacks for this listener if they happens while we are paused!
-    public MessagingListener messagingListener = new MessagingListener() {
+    public MessagingListener messagingListener = new SimpleMessagingListener() {
 
         @Override
         public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
