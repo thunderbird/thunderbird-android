@@ -90,7 +90,8 @@
             android:configChanges="locale"
             android:excludeFromRecents="true"
             android:label="@string/prefs_title"
-            android:taskAffinity="${applicationId}.activity.setup.Prefs"/>
+            android:taskAffinity="${applicationId}.activity.setup.Prefs"
+            android:parentActivityName=".activity.EmailAddressList"/>
 
         <activity
             android:name=".activity.setup.WelcomeMessage"
@@ -106,7 +107,8 @@
         <activity
             android:name=".activity.setup.FontSizeSettings"
             android:configChanges="locale"
-            android:label="@string/font_size_settings_title"/>
+            android:label="@string/font_size_settings_title"
+            />
 
         <activity
             android:name=".activity.setup.AccountSetupBasics"
@@ -136,7 +138,8 @@
         <activity
             android:name=".activity.setup.AccountSetupOptions"
             android:configChanges="locale"
-            android:label="@string/account_setup_options_title"/>
+            android:label="@string/account_setup_options_title"
+            android:parentActivityName=".activity.MessageList"/>
 
         <activity
             android:name=".activity.setup.AccountSetupNames"
@@ -148,7 +151,8 @@
             android:configChanges="locale"
             android:label="@string/choose_folder_title"
             android:noHistory="true"
-            android:theme="@style/Theme.K9Dialog"/>
+            android:theme="@style/Theme.K9Dialog"
+            />
 
         <activity
             android:name=".activity.ChooseIdentity"
@@ -183,13 +187,15 @@
         <activity
             android:name=".activity.setup.AccountSettings"
             android:configChanges="locale"
-            android:label="@string/account_settings_title_fmt"/>
+            android:label="@string/account_settings_title_fmt"
+            android:parentActivityName=".activity.EmailAddressList"/>
 
         <activity
             android:name=".activity.setup.FolderSettings"
             android:configChanges="locale"
             android:label="@string/folder_settings_title"
-            android:theme="@android:style/Theme.Dialog"/>
+            android:theme="@android:style/Theme.Dialog"
+            android:parentActivityName=".activity.EmailAddressList"/>
 
         <activity
             android:name=".activity.FolderList"
