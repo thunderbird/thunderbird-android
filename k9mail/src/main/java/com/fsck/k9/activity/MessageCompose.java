@@ -736,7 +736,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void onDiscard() {
-        onDiscardGoUp();
+        onDiscardChanges();
         finish();
     }
 
@@ -973,7 +973,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (changesMadeSinceLastSave && draftIsNotEmpty()) {
             showDialogDraft();
         } else {
-            onDiscardGoUp();
+            onDiscardChanges();
             String inbox = account.getInboxFolderName();
             LocalSearch localSearch = new LocalSearch(inbox);
             localSearch.addAccountUuid(account.getUuid());
@@ -982,7 +982,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private void onDiscardGoUp() {
+    private void onDiscardChanges() {
         if (draftId != INVALID_DRAFT_ID) {
             MessagingController.getInstance(getApplication()).deleteDraft(account, draftId);
             draftId = INVALID_DRAFT_ID;
