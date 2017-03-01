@@ -133,16 +133,16 @@
     	<incoming uri="imap+ssl+://imap.zoho.com" username="$email" />
     	<outgoing uri="smtp+tls+://smtp.zoho.com" username="$email" />
     </provider>
-    <provider id="mail.com" label="Mail.com" domain="mail.com">
-        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
-        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
-    </provider>
     <provider id="gnu" label="GNU" domain="gnu.org">
     	<incoming uri="pop3+ssl+://fencepost.gnu.org" username="$user" />
     	<outgoing uri="smtp+tls+://fencepost.gnu.org" username="$user" />
     </provider>
 
     <!-- Mail.com Variants -->
+    <provider id="mail.com" label="Mail.com" domain="mail.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
     <provider id="email.com" label="Mail.com" domain="email.com">
         <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
