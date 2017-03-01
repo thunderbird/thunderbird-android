@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import android.support.annotation.NonNull;
@@ -31,6 +33,8 @@ public class MimeUtility {
     private static final String TEXT_PLAIN = "text/plain";
     private static final String HEADER_PARAM_FORMAT = "format";
     private static final String HEADER_FORMAT_FLOWED = "flowed";
+
+    private static int filledBytes = 0;
 
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
@@ -993,11 +997,13 @@ public class MimeUtility {
     public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
             throws IOException {
 
+        filledBytes = 0;
+
         if (contentTransferEncoding != null) {
             contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);
         }
 
-        BinaryTempFileBody tempBody;
+        final BinaryTempFileBody tempBody;
         if (MimeUtil.isMessage(contentType)) {
             tempBody = new BinaryTempFileMessageBody(contentTransferEncoding);
         } else {
@@ -1005,9 +1011,18 @@ public class MimeUtility {
         }
 
         OutputStream out = tempBody.getOutputStream();
+        Timer timer = null;
         try {
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    filledBytes = (int) tempBody.getSize();
+                }
+            }, 0, 50);
             IOUtils.copy(in, out);
         } finally {
+            timer.cancel();
             out.close();
         }
 
@@ -1153,4 +1168,9 @@ public class MimeUtility {
         }
         return false;
     }
+
+    public static int getFilledBytes(){
+        return filledBytes;
+    }
+
 }
