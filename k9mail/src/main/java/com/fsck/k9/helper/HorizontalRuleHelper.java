@@ -18,6 +18,15 @@ public class HorizontalRuleHelper {
     }
 
 	public String replaceHorizontalRule(String text){
-		return text.replaceAll(pattern, "<hr />");
+
+		if (text != null && !text.isEmpty()) {
+			return text.replaceAll(pattern, "<hr />");
+		}
+
+		else {
+			return "";
+		}
+
+
 	}
 }

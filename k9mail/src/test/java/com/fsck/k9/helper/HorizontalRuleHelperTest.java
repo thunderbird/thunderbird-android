@@ -29,10 +29,17 @@ public class HorizontalRuleHelperTest {
 	}
 
     @Test
-    public void replaceHorizontalRule_withLessNumberOfEquals_shouldReturnWithoutReplacement() {
-        String result = new HorizontalRuleHelper().replaceHorizontalRule("===");
+	public void replaceHorizontalRule_withLessNumberOfEquals_shouldReturnWithoutReplacement() {
+		String result = new HorizontalRuleHelper().replaceHorizontalRule("===");
 
-        assertEquals("===", result);
+		assertEquals("===", result);
+	}
+
+    @Test
+    public void replaceHorizontalRule_withDoubleEquals_shouldReturnWithoutReplacement() {
+        String result = new HorizontalRuleHelper().replaceHorizontalRule("==");
+
+        assertEquals("==", result);
     }
 
 	@Test
@@ -47,6 +54,13 @@ public class HorizontalRuleHelperTest {
         String result = new HorizontalRuleHelper().replaceHorizontalRule("-=-");
 
         assertEquals("-=-", result);
+    }
+
+    @Test
+    public void replaceHorizontalRule_withLMinusEquals_shouldReturnWithoutReplacement() {
+        String result = new HorizontalRuleHelper().replaceHorizontalRule("-=");
+
+        assertEquals("-=", result);
     }
 
 	@Test
@@ -96,6 +110,20 @@ public class HorizontalRuleHelperTest {
         String result = new HorizontalRuleHelper().replaceHorizontalRule(" 8< ");
 
         assertEquals("<hr />", result);
+    }
+
+    @Test
+    public void replaceHorizontalRule_withEmptyString_shouldReturnEmptyString() {
+        String result = new HorizontalRuleHelper().replaceHorizontalRule("");
+
+        assertEquals("", result);
+    }
+
+    @Test
+    public void replaceHorizontalRule_withNull_shouldReturnEmptyString() {
+        String result = new HorizontalRuleHelper().replaceHorizontalRule(null);
+
+        assertEquals("", result);
     }
 
 }
