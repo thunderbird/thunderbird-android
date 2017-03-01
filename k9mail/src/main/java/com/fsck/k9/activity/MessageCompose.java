@@ -99,6 +99,7 @@ import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 
 import static com.fsck.k9.R.id.folder;
+import static com.fsck.k9.R.id.search;
 
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
@@ -735,12 +736,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void onDiscard() {
-        if (draftId != INVALID_DRAFT_ID) {
-            MessagingController.getInstance(getApplication()).deleteDraft(account, draftId);
-            draftId = INVALID_DRAFT_ID;
-        }
-        internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
-        changesMadeSinceLastSave = false;
+        onDiscardGoUp();
         finish();
     }
 
@@ -975,21 +971,24 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void goBack() {
         if (changesMadeSinceLastSave && draftIsNotEmpty()) {
-            if (!account.hasDraftsFolder()) {
-                showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
-            } else {
-                showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-            }
+            showDialogDraft();
         } else {
-            // Check if editing an existing draft.
-            if (draftId == INVALID_DRAFT_ID) {
-                onDiscard();
-            } else {
-                String inbox = account.getInboxFolderName();
-                LocalSearch localSearch = new LocalSearch(inbox);
-                MessageList.actionDisplaySearch(this, localSearch, false, false);
-            }
+            onDiscardGoUp();
+            String inbox = account.getInboxFolderName();
+            LocalSearch localSearch = new LocalSearch(inbox);
+            localSearch.addAccountUuid(account.getUuid());
+            localSearch.addAllowedFolder(inbox);
+            MessageList.actionDisplaySearch(this, localSearch, false, false);
         }
+    }
+
+    private void onDiscardGoUp() {
+        if (draftId != INVALID_DRAFT_ID) {
+            MessagingController.getInstance(getApplication()).deleteDraft(account, draftId);
+            draftId = INVALID_DRAFT_ID;
+        }
+        internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
+        changesMadeSinceLastSave = false;
     }
 
     @Override
@@ -1022,11 +1021,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onBackPressed() {
         if (changesMadeSinceLastSave && draftIsNotEmpty()) {
-            if (!account.hasDraftsFolder()) {
-                showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
-            } else {
-                showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-            }
+            showDialogDraft();
         } else {
             // Check if editing an existing draft.
             if (draftId == INVALID_DRAFT_ID) {
@@ -1034,6 +1029,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             } else {
                 super.onBackPressed();
             }
+        }
+    }
+
+    private void showDialogDraft() {
+        if (!account.hasDraftsFolder()) {
+            showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+        } else {
+            showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
         }
     }
 
