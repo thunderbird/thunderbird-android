@@ -11,7 +11,7 @@ public class HorizontalRuleHelper {
 	String replaced = HorizontalRuleHelper.replaceHorizontalRule(stringToReplaceFrom);
 	*/
 
-	private String pattern = "[-=_]{4,}|(-|=){2,}-|(-| )+ *>8 *(-| )+|(-| )+ *8< *(-| )+";
+	private String pattern = "[-=_]{4,}|(-=){2,}-|(-| )+ *>8 *(-| )+|(-| )+ *8< *(-| )+";
 
 	public void HorizontalRuleHelper(){
 		// Empty constructor
