@@ -5,13 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * HorizontalRuleHelperTest
- * author - Sayan Goswami (goswami.sayan47@gmail.com)
- * date - 02/28/2017
- * issue - https://github.com/k9mail/k-9/issues/2259
- */
-
 public class HorizontalRuleHelperTest {
 
 	@Test
