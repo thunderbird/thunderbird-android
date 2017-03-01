@@ -576,7 +576,7 @@ public class MimeMessage extends Message {
         @Override
         public void body(BodyDescriptor bd, InputStream in) throws IOException, MimeException {
             expect(Part.class);
-            Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType());
+            Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType(), null);
             ((Part)stack.peek()).setBody(body);
         }
 

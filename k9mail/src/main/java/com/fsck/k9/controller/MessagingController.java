@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -63,8 +65,10 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
+import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.AttachmentProgressCallback;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
@@ -149,6 +153,8 @@ public class MessagingController {
 
     private MessagingListener checkMailListener = null;
     private volatile boolean stopped = false;
+
+    private MessagingListener attachmentDownloadProgressListener = null;
 
 
     public static synchronized MessagingController getInstance(Context context) {
@@ -257,6 +263,10 @@ public class MessagingController {
             }
         }
         throw new Error(e);
+    }
+
+    public void addDownloadProgressListener(MessagingListener messagingListener){
+        attachmentDownloadProgressListener = messagingListener;
     }
 
     public void addListener(MessagingListener listener) {
@@ -1483,7 +1493,7 @@ public class MessagingController {
          * Now download the parts we're interested in storing.
          */
         for (Part part : viewables) {
-            remoteFolder.fetchPart(message, part, null);
+            remoteFolder.fetchPart(message, part, null, null);
         }
         // Store the updated message locally
         localFolder.appendMessages(Collections.singletonList(message));
@@ -2551,8 +2561,15 @@ public class MessagingController {
                     remoteFolder = remoteStore.getFolder(folderName);
                     remoteFolder.open(Folder.OPEN_MODE_RW);
 
+                    AttachmentProgressCallback attachmentProgressCallback = new AttachmentProgressCallback() {
+                        @Override
+                        public void onUpdate(int progress) {
+                            attachmentDownloadProgressListener.updateProgress(progress);
+                        }
+                    };
+
                     Message remoteMessage = remoteFolder.getMessage(message.getUid());
-                    remoteFolder.fetchPart(remoteMessage, part, null);
+                    remoteFolder.fetchPart(remoteMessage, part, null, attachmentProgressCallback);
 
                     localFolder.addPartToMessage(message, part);
 

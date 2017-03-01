@@ -934,7 +934,7 @@ public class ImapFolderTest {
         Part part = createPart("TEXT");
         when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
 
-        folder.fetchPart(message, part, null);
+        folder.fetchPart(message, part, null, null);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[TEXT]<0.4096>)", false);
     }
@@ -948,7 +948,7 @@ public class ImapFolderTest {
         Part part = createPart("1.1");
         when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
 
-        folder.fetchPart(message, part, null);
+        folder.fetchPart(message, part, null, null);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[1.1])", false);
     }
@@ -962,7 +962,7 @@ public class ImapFolderTest {
         Part part = createPlainTextPart("1.1");
         setupSingleFetchResponseToCallback();
 
-        folder.fetchPart(message, part, null);
+        folder.fetchPart(message, part, null, null);
 
         ArgumentCaptor<Body> bodyArgumentCaptor = ArgumentCaptor.forClass(Body.class);
         verify(part).setBody(bodyArgumentCaptor.capture());
