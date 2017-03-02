@@ -625,11 +625,9 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema pregleda poruke</string>
   <string name="settings_compose_theme_label">Tema sastavljanja poruke</string>
-  <string name="settings_language_label">Jezik</string>
   <string name="settings_message_theme_selection_label">Popravljena tema poruke</string>
   <string name="settings_message_theme_selection_summary_off">Pdaberite temu poruke prilikom pregledavanja poruke</string>
   <string name="settings_message_theme_selection_summary_on">Koristi popravljenu temu pregleda poruke</string>
-  <string name="setting_language_system">Sistemski zadano</string>
   <string name="background_ops_label">Pozadinska sinhronizacija</string>
   <string name="background_ops_never">Nikada</string>
   <string name="background_ops_always">Uvijek</string>

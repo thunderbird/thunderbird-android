@@ -670,11 +670,9 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="settings_theme_label">Тема</string>
   <string name="settings_message_theme_label">Перегляд теми повідомлень</string>
   <string name="settings_compose_theme_label">Написати тему</string>
-  <string name="settings_language_label">Мова</string>
   <string name="settings_message_theme_selection_label">Встановити тему повідомлення</string>
   <string name="settings_message_theme_selection_summary_off">Виберіть перегляд теми повідомлення під час перегляду повідомлення</string>
   <string name="settings_message_theme_selection_summary_on">Використовувати тему з фіксованою шириною повідомлення</string>
-  <string name="setting_language_system">Системна по замовчуванню</string>
   <string name="background_ops_label">Фонова синхронізація</string>
   <string name="background_ops_never">Ніколи</string>
   <string name="background_ops_always">Завжди</string>

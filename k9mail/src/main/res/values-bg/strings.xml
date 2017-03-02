@@ -667,11 +667,9 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="settings_theme_label">Тема</string>
   <string name="settings_message_theme_label">Тема при преглед на съобщенията</string>
   <string name="settings_compose_theme_label">Тема на композитора</string>
-  <string name="settings_language_label">Език</string>
   <string name="settings_message_theme_selection_label">Тема на фиксирани съобщения</string>
   <string name="settings_message_theme_selection_summary_off">Задава тема за изглед на съобщенията, в режим преглед</string>
   <string name="settings_message_theme_selection_summary_on">Използване на тема с фиксиран размр на съобщението</string>
-  <string name="setting_language_system">Системни настройки</string>
   <string name="background_ops_label">Синхронизиране на заден план</string>
   <string name="background_ops_never">Никога</string>
   <string name="background_ops_always">Винаги</string>

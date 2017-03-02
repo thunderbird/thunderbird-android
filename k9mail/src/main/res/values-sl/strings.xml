@@ -673,11 +673,9 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema pogleda sporočila</string>
   <string name="settings_compose_theme_label">Tema pisanja sporočila</string>
-  <string name="settings_language_label">Jezik</string>
   <string name="settings_message_theme_selection_label">Tema fiksnega sporočila</string>
   <string name="settings_message_theme_selection_summary_off">Izberite tema pogleda sporočilo za gledanje sporočila</string>
   <string name="settings_message_theme_selection_summary_on">Uporaba tema pogleda fiksnega sporočila</string>
-  <string name="setting_language_system">Sistemsko privzeto</string>
   <string name="background_ops_label">SInhronizaciaj v ozadju</string>
   <string name="background_ops_never">Nikoli</string>
   <string name="background_ops_always">Vedno</string>

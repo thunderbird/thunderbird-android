@@ -589,11 +589,9 @@
   <string name="settings_theme_label">Itxura</string>
   <string name="settings_message_theme_label">Mezua ikusteko itxura</string>
   <string name="settings_compose_theme_label">Mezua idazteko itxura</string>
-  <string name="settings_language_label">Hizkuntza</string>
   <string name="settings_message_theme_selection_label">Mezu finkoaren itxura</string>
   <string name="settings_message_theme_selection_summary_off">Mezua ikusten deneran itxura hautatu</string>
   <string name="settings_message_theme_selection_summary_on">Mezua ikusteko itxura finkoa erabili</string>
-  <string name="setting_language_system">Sistemako defektuzkoa</string>
   <string name="background_ops_label">Atzeko planoko sinkronizazioa</string>
   <string name="background_ops_never">Inoiz ez</string>
   <string name="background_ops_always">Beti</string>

@@ -663,11 +663,9 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema da visualização de mensagens</string>
   <string name="settings_compose_theme_label">Tema do editor</string>
-  <string name="settings_language_label">Idioma</string>
   <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>
   <string name="settings_message_theme_selection_summary_off">Selecionar o tema de visualização ao visualizar a mensagem</string>
   <string name="settings_message_theme_selection_summary_on">Usar um tema fixo para visualizar mensagens</string>
-  <string name="setting_language_system">Padrão do sistema</string>
   <string name="background_ops_label">Sincronização em segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>

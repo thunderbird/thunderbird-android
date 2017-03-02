@@ -666,11 +666,9 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="settings_theme_label">テーマ</string>
   <string name="settings_message_theme_label">メッセージ表示画面のテーマ</string>
   <string name="settings_compose_theme_label">メッセージ作成画面のテーマ</string>
-  <string name="settings_language_label">言語</string>
   <string name="settings_message_theme_selection_label">メッセージ表示画面のテーマを固定する</string>
   <string name="settings_message_theme_selection_summary_off">メッセージを表示するテーマを選択する</string>
   <string name="settings_message_theme_selection_summary_on">メッセージを表示するテーマを固定する</string>
-  <string name="setting_language_system">システム設定</string>
   <string name="background_ops_label">バックグラウンド同期</string>
   <string name="background_ops_never">使用しない</string>
   <string name="background_ops_always">常時利用</string>

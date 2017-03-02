@@ -624,11 +624,9 @@
   <string name="settings_theme_label">主题</string>
   <string name="settings_message_theme_label">消息查看主题</string>
   <string name="settings_compose_theme_label">编辑器主题</string>
-  <string name="settings_language_label">语言</string>
   <string name="settings_message_theme_selection_label">固定消息主题</string>
   <string name="settings_message_theme_selection_summary_off">在查看消息时选择消息查看主题</string>
   <string name="settings_message_theme_selection_summary_on">使用固定消息查看主题</string>
-  <string name="setting_language_system">系统默认值</string>
   <string name="background_ops_label">后台同步</string>
   <string name="background_ops_never">从不</string>
   <string name="background_ops_always">总是</string>

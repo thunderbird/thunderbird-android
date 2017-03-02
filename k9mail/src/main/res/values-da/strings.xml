@@ -649,11 +649,9 @@ Send venligst fejlrapporter, forslag til nye funktioner samt spørgsmål på:
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Meddelelsesvisnings theme</string>
   <string name="settings_compose_theme_label">Editor theme</string>
-  <string name="settings_language_label">Sprog</string>
   <string name="settings_message_theme_selection_label">Fixed meddelelses theme</string>
   <string name="settings_message_theme_selection_summary_off">Benyt meddelelsesvisnings theme når meddelelser læses</string>
   <string name="settings_message_theme_selection_summary_on">Benyt et fixed meddelelsesvisnings theme</string>
-  <string name="setting_language_system">System standard</string>
   <string name="background_ops_label">Baggrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
   <string name="background_ops_always">Altid</string>

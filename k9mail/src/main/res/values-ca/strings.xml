@@ -578,11 +578,9 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de missatge</string>
   <string name="settings_compose_theme_label">Tema de vista del redactor</string>
-  <string name="settings_language_label">Llengua</string>
   <string name="settings_message_theme_selection_label">Tema de missatge fix</string>
   <string name="settings_message_theme_selection_summary_off">Selecciona el tema de la vista de missatge al mostrar-lo.</string>
   <string name="settings_message_theme_selection_summary_on">Utilitza un tema fix per a tots els missatges.</string>
-  <string name="setting_language_system">Per defecte del sistema</string>
   <string name="background_ops_label">Sincronització 2n pla</string>
   <string name="background_ops_never">Mai</string>
   <string name="background_ops_always">Sempre</string>

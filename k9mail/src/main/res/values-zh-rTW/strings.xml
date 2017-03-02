@@ -569,11 +569,9 @@
   <string name="settings_theme_label">主題</string>
   <string name="settings_message_theme_label">訊息檢視主題</string>
   <string name="settings_compose_theme_label">新郵件主題</string>
-  <string name="settings_language_label">語系</string>
   <string name="settings_message_theme_selection_label">固定訊息主題</string>
   <string name="settings_message_theme_selection_summary_off">讀取訊息內容時顯示訊息檢視主題</string>
   <string name="settings_message_theme_selection_summary_on">使用固定訊息檢視主題</string>
-  <string name="setting_language_system">系統預設值</string>
   <string name="background_ops_label">背景同步</string>
   <string name="background_ops_never">不要</string>
   <string name="background_ops_always">預設</string>
