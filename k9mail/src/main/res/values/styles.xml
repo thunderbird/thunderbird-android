@@ -19,7 +19,7 @@
     </style>
 
     <style name="TextAppearance.StatusBar.EventContent.Emphasized" parent="@android:style/TextAppearance.StatusBar.EventContent">
-        <item name="android:textColor">#cccccc</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="UnreadWidgetContainer">
