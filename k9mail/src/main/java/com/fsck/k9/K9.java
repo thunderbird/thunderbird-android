@@ -45,6 +45,7 @@ import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 import com.fsck.k9.widget.list.MessageListWidgetProvider;
 import timber.log.Timber;
+import timber.log.Timber.DebugTree;
 
 
 public class K9 extends Application {
@@ -521,6 +522,10 @@ public class K9 extends Application {
         super.onCreate();
         app = this;
         Globals.setContext(this);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new DebugTree());
+        }
 
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
             @Override public boolean enabled() {
