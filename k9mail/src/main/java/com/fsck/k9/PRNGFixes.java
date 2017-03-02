@@ -247,7 +247,7 @@ public final class PRNGFixes {
             ByteArrayOutputStream seedBuffer = new ByteArrayOutputStream();
             DataOutputStream seedBufferOut =
                     new DataOutputStream(seedBuffer);
-            seedBufferOut.writeLong(System.currentTimeMillis());
+            seedBufferOut.writeLong(SystemClock.elapsedRealtime());
             seedBufferOut.writeLong(System.nanoTime());
             seedBufferOut.writeInt(Process.myPid());
             seedBufferOut.writeInt(Process.myUid());

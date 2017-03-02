@@ -34,7 +34,7 @@ public class SleepService extends CoreService {
         Intent i = new Intent(context, SleepService.class);
         i.putExtra(LATCH_ID, id);
         i.setAction(ALARM_FIRED + "." + id);
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealtime();
         long nextTime = startTime + sleepTime;
         BootReceiver.scheduleIntent(context, nextTime, i);
         if (wakeLock != null) {
@@ -67,7 +67,7 @@ public class SleepService extends CoreService {
             reacquireWakeLock(releaseDatum);
         }
 
-        long endTime = System.currentTimeMillis();
+        long endTime = SystemClock.elapsedRealtime();
         long actualSleep = endTime - startTime;
 
         if (actualSleep < sleepTime) {

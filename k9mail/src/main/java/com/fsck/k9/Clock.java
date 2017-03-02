@@ -27,6 +27,6 @@ public class Clock {
     }
 
     public long getTime() {
-        return System.currentTimeMillis();
+        return SystemClock.elapsedRealtime();
     }
 }

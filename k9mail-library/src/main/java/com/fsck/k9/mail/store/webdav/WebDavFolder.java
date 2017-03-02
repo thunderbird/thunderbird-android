@@ -675,7 +675,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 if (!messageURL.endsWith("/")) {
                     messageURL += "/";
                 }
-                messageURL += encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
+                messageURL += encodeUtf8(message.getUid() + ":" + SystemClock.elapsedRealtime() + ".eml");
 
                 Log.i(LOG_TAG, "Uploading message as " + messageURL);
 
