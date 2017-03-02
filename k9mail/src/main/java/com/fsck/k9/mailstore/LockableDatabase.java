@@ -76,8 +76,8 @@ public class LockableDatabase {
             }
 
             if (K9.DEBUG) {
-                Timber.d("LockableDatabase: Closing DB " + uUid + " due to unmount event on StorageProvider: " +
-                        providerId);
+                Timber.d("LockableDatabase: Closing DB %s due to unmount event on StorageProvider: %s",
+                        uUid, providerId);
             }
 
             try {
@@ -99,8 +99,8 @@ public class LockableDatabase {
             }
 
             if (K9.DEBUG) {
-                Timber.d("LockableDatabase: Opening DB " + uUid + " due to mount event on StorageProvider: " +
-                        providerId);
+                Timber.d("LockableDatabase: Opening DB %s due to mount event on StorageProvider: %s",
+                        uUid, providerId);
             }
 
             try {
@@ -293,9 +293,9 @@ public class LockableDatabase {
                     // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
                     mDb.endTransaction();
                     if (debug) {
-                        Timber.v("LockableDatabase: Transaction ended, took " +
-                                Long.toString(currentTimeMillis() - begin) + "ms / " +
-                                new Exception().getStackTrace()[1].toString());
+                        Timber.v("LockableDatabase: Transaction ended, took %d ms / %s",
+                                currentTimeMillis() - begin,
+                                new Exception().getStackTrace()[1]);
                     }
                 }
             }
@@ -314,7 +314,7 @@ public class LockableDatabase {
      */
     public void switchProvider(final String newProviderId) throws MessagingException {
         if (newProviderId.equals(mStorageProviderId)) {
-            Timber.v("LockableDatabase: Ignoring provider switch request as they are equal: " + newProviderId);
+            Timber.v("LockableDatabase: Ignoring provider switch request as they are equal: %s", newProviderId);
             return;
         }
 
@@ -378,9 +378,9 @@ public class LockableDatabase {
                 doOpenOrCreateDb(databaseFile);
             } catch (SQLiteException e) {
                 // TODO handle this error in a better way!
-                Timber.w(e, "Unable to open DB " + databaseFile + " - removing file and retrying");
+                Timber.w(e, "Unable to open DB %s - removing file and retrying", databaseFile);
                 if (databaseFile.exists() && !databaseFile.delete()) {
-                    Timber.d("Failed to remove " + databaseFile + " that couldn't be opened");
+                    Timber.d("Failed to remove %s that couldn't be opened", databaseFile);
                 }
                 doOpenOrCreateDb(databaseFile);
             }
@@ -466,7 +466,7 @@ public class LockableDatabase {
                 mDb.close();
             } catch (Exception e) {
                 if (K9.DEBUG)
-                    Timber.d("Exception caught in DB close: " + e.getMessage());
+                    Timber.d("Exception caught in DB close: %s", e.getMessage());
             }
             final StorageManager storageManager = getStorageManager();
             try {
@@ -488,7 +488,7 @@ public class LockableDatabase {
                 }
             } catch (Exception e) {
                 if (K9.DEBUG)
-                    Timber.d("Exception caught in clearing attachments: " + e.getMessage());
+                    Timber.d("Exception caught in clearing attachments: %s", e.getMessage());
             }
             try {
                 deleteDatabase(storageManager.getDatabase(uUid, mStorageProviderId));

@@ -59,7 +59,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
             file.deleteOnExit();
 
             if (K9.DEBUG) {
-                Timber.v("Saving attachment to " + file.getAbsolutePath());
+                Timber.v("Saving attachment to %s", file.getAbsolutePath());
             }
 
             SafeContentResolver safeContentResolver = SafeContentResolverCompat.newInstance(context);

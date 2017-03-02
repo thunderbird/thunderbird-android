@@ -66,8 +66,10 @@ public class Settings {
 
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
-                Timber.v("Key \"" + key + "\" wasn't found in the imported file." +
-                        ((useDefaultValues) ? " Using default value." : ""));
+                Timber.v("Key \"%s\" wasn't found in the imported file.%s",
+                        key,
+                        (useDefaultValues) ? " Using default value." : "");
+
                 useDefaultValue = useDefaultValues;
             } else {
                 String prettyValue = importedSettings.get(key);
@@ -76,9 +78,11 @@ public class Settings {
                     validatedSettings.put(key, internalValue);
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
-                    Timber.v("Key \"" + key + "\" has invalid value \"" + prettyValue +
-                            "\" in imported file. " +
-                            ((useDefaultValues) ? "Using default value." : "Skipping."));
+                    Timber.v("Key \"%s\" has invalid value \"%s\" in imported file. %s",
+                            key,
+                            prettyValue,
+                            (useDefaultValues) ? "Using default value." : "Skipping.");
+
                     useDefaultValue = useDefaultValues;
                 }
             }
@@ -164,7 +168,7 @@ public class Settings {
 
         if (K9.DEBUG) {
             String prettyValue = setting.toPrettyString(defaultValue);
-            Timber.v("Added new setting \"" + settingName + "\" with default value \"" + prettyValue + "\"");
+            Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue);
         }
     }
 
@@ -174,7 +178,7 @@ public class Settings {
         deletedSettingsMutable.add(settingName);
 
         if (K9.DEBUG) {
-            Timber.v("Removed setting \"" + settingName + "\"");
+            Timber.v("Removed setting \"%s\"", settingName);
         }
     }
 
@@ -208,8 +212,7 @@ public class Settings {
                 serializedSettings.put(settingName, stringValue);
             } else {
                 if (K9.DEBUG) {
-                    Timber.w("Settings.serialize() called with a setting that should " +
-                            "have been removed: " + settingName);
+                    Timber.w("Settings.convert() called with a setting that should have been removed: %s", settingName);
                 }
             }
         }

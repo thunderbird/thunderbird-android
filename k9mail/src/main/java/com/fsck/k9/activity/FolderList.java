@@ -939,8 +939,7 @@ public class FolderList extends K9ListActivity {
             if (position <= getCount()) {
                 return  getItemView(position, convertView, parent);
             } else {
-                Timber.e("getView with illegal positon=" + position
-                        + " called! count is only " + getCount());
+                Timber.e("getView with illegal position=%d called! count is only %d", position, getCount());
                 return null;
             }
         }
@@ -1019,8 +1018,7 @@ public class FolderList extends K9ListActivity {
                 try {
                     folder.unreadMessageCount  = folder.folder.getUnreadMessageCount();
                 } catch (Exception e) {
-                    Timber.e("Unable to get unreadMessageCount for " + mAccount.getDescription() + ":"
-                            + folder.name);
+                    Timber.e("Unable to get unreadMessageCount for %s:%s", mAccount.getDescription(), folder.name);
                 }
             }
             if (folder.unreadMessageCount > 0) {
@@ -1039,11 +1037,9 @@ public class FolderList extends K9ListActivity {
                 try {
                     folder.flaggedMessageCount = folder.folder.getFlaggedMessageCount();
                 } catch (Exception e) {
-                    Timber.e("Unable to get flaggedMessageCount for " + mAccount.getDescription() + ":"
-                            + folder.name);
+                    Timber.e("Unable to get flaggedMessageCount for %s:%s", mAccount.getDescription(), folder.name);
                 }
-
-                    }
+            }
 
             if (K9.messageListStars() && folder.flaggedMessageCount > 0) {
                 holder.flaggedMessageCount.setText(String.format("%d", folder.flaggedMessageCount));

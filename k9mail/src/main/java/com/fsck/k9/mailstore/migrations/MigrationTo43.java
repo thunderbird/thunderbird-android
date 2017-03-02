@@ -34,7 +34,7 @@ class MigrationTo43 {
                 ContentValues cv = new ContentValues();
                 cv.put("name", Account.OUTBOX);
                 db.update("folders", cv, "name = ?", new String[] { "OUTBOX" });
-                Timber.i("Renamed folder OUTBOX to " + OUTBOX);
+                Timber.i("Renamed folder OUTBOX to %s", OUTBOX);
             }
 
             // Check if old (pre v3.800) localized outbox folder exists

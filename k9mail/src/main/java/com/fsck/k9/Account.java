@@ -953,8 +953,7 @@ public class Account implements BaseAccount, StoreConfig {
                 switchLocalStorage(id);
                 successful = true;
             } catch (MessagingException e) {
-                Timber.e(e, "Switching local storage provider from " +
-                        mLocalStorageProviderId + " to " + id + " failed.");
+                Timber.e(e, "Switching local storage provider from %s to %s failed.", mLocalStorageProviderId, id);
             }
 
             // if migration to/from SD-card failed once, it will fail again.

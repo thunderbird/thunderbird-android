@@ -88,7 +88,7 @@ public class DecryptedFileProvider extends FileProvider {
                 if (K9.DEBUG) {
                     String timeLeftStr = String.format(
                             Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
-                    Timber.e("Not deleting temp file (for another " + timeLeftStr + " minutes)");
+                    Timber.e("Not deleting temp file (for another %s minutes)", timeLeftStr);
                 }
                 allFilesDeleted = false;
             }
@@ -101,7 +101,7 @@ public class DecryptedFileProvider extends FileProvider {
         File directory = new File(context.getCacheDir(), DECRYPTED_CACHE_DIRECTORY);
         if (!directory.exists()) {
             if (!directory.mkdir()) {
-                Timber.e("Error creating directory: " + directory.getAbsolutePath());
+                Timber.e("Error creating directory: %s", directory.getAbsolutePath());
             }
         }
 

@@ -150,7 +150,7 @@ public class HtmlQuoteCreator {
         }
 
         if (K9.DEBUG) {
-            Timber.d("Open: hasHtmlTag:" + hasHtmlTag + " hasHeadTag:" + hasHeadTag + " hasBodyTag:" + hasBodyTag);
+            Timber.d("Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
         }
 
         // Given our inspections, let's figure out where to start our content.
@@ -203,7 +203,7 @@ public class HtmlQuoteCreator {
         }
 
         if (K9.DEBUG) {
-            Timber.d("Close: hasHtmlEndTag:" + hasHtmlEndTag + " hasBodyEndTag:" + hasBodyEndTag);
+            Timber.d("Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
         }
 
         // Now figure out where to put our footer.

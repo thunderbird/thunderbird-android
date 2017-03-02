@@ -1411,7 +1411,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Timber.i("onActivityResult requestCode = " + requestCode + ", resultCode = " + resultCode + ", data = " + data);
+        Timber.i("onActivityResult requestCode = %d, resultCode = %s, data = %s", requestCode, resultCode, data);
         if (resultCode != RESULT_OK)
             return;
         if (data == null) {
@@ -2069,7 +2069,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 Timber.w(e, "Exception during export");
                 return false;
             } catch (FileNotFoundException e) {
-                Timber.w("Couldn't read content from URI " + mUri);
+                Timber.w("Couldn't read content from URI %s", mUri);
                 return false;
             }
             return true;

@@ -17,7 +17,7 @@ public class MessageReferenceHelper {
             if (messageReference != null) {
                 messageReferences.add(messageReference);
             } else {
-                Timber.w("Invalid message reference: " + messageReferenceString);
+                Timber.w("Invalid message reference: %s", messageReferenceString);
             }
         }
 

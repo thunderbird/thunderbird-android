@@ -200,8 +200,10 @@ public class MessagingController {
                     commandDescription = command.description;
 
                     if (K9.DEBUG) {
-                        Timber.i("Running command '" + command.description + "', seq = " + command.sequence +
-                                "(" + (command.isForegroundPriority ? "foreground" : "background") + "priority)");
+                        Timber.i("Running command '%s', seq = %s (%s priority)",
+                                command.description,
+                                command.sequence,
+                                command.isForegroundPriority ? "foreground" : "background");
                     }
 
                     try {
@@ -215,20 +217,19 @@ public class MessagingController {
                                     sleep(30 * 1000);
                                     queuedCommands.put(command);
                                 } catch (InterruptedException e) {
-                                    Timber.e("interrupted while putting a pending command for"
-                                            + " an unavailable account back into the queue."
-                                            + " THIS SHOULD NEVER HAPPEN.");
+                                    Timber.e("Interrupted while putting a pending command for an unavailable account " +
+                                            "back into the queue. THIS SHOULD NEVER HAPPEN.");
                                 }
                             }
                         }.start();
                     }
 
                     if (K9.DEBUG) {
-                        Timber.i(" Command '" + command.description + "' completed");
+                        Timber.i(" Command '%s' completed", command.description);
                     }
                 }
             } catch (Exception e) {
-                Timber.e(e, "Error running command '" + commandDescription + "'");
+                Timber.e(e, "Error running command '%s'", commandDescription);
             }
         }
     }
@@ -561,12 +562,7 @@ public class MessagingController {
     public Future<?> searchRemoteMessages(final String acctUuid, final String folderName, final String query,
             final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags, final MessagingListener listener) {
         if (K9.DEBUG) {
-            String msg = "searchRemoteMessages ("
-                    + "acct=" + acctUuid
-                    + ", folderName = " + folderName
-                    + ", query = " + query
-                    + ")";
-            Timber.i(msg);
+            Timber.i("searchRemoteMessages (acct = %s, folderName = %s, query = %s)", acctUuid, folderName, query);
         }
 
         return threadPool.submit(new Runnable() {
@@ -604,7 +600,7 @@ public class MessagingController {
             List<Message> messages = remoteFolder.search(query, requiredFlags, forbiddenFlags);
 
             if (K9.DEBUG) {
-                Timber.i("Remote search got " + messages.size() + " results");
+                Timber.i("Remote search got %d results", messages.size());
             }
 
             // There's no need to fetch messages already completely downloaded
@@ -669,7 +665,7 @@ public class MessagingController {
 
                     loadSearchResultsSynchronous(messages, localFolder, remoteFolder, listener);
                 } catch (MessagingException e) {
-                    Timber.e("Exception in loadSearchResults: " + e);
+                    Timber.e(e, "Exception in loadSearchResults");
                     addErrorMessage(account, null, e);
                 } finally {
                     if (listener != null) {
@@ -745,7 +741,7 @@ public class MessagingController {
         LocalFolder tLocalFolder = null;
 
         if (K9.DEBUG) {
-            Timber.i("Synchronizing folder " + account.getDescription() + ":" + folder);
+            Timber.i("Synchronizing folder %s:%s", account.getDescription(), folder);
         }
 
         for (MessagingListener l : getListeners(listener)) {
@@ -765,7 +761,7 @@ public class MessagingController {
         Exception commandException = null;
         try {
             if (K9.DEBUG) {
-                Timber.d("SYNC: About to process pending commands for account " + account.getDescription());
+                Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
             }
 
             try {
@@ -782,7 +778,7 @@ public class MessagingController {
              * the uids within the list.
              */
             if (K9.DEBUG) {
-                Timber.v("SYNC: About to get local folder " + folder);
+                Timber.v("SYNC: About to get local folder %s", folder);
             }
 
             final LocalStore localStore = account.getLocalStore();
@@ -794,14 +790,14 @@ public class MessagingController {
 
             if (providedRemoteFolder != null) {
                 if (K9.DEBUG) {
-                    Timber.v("SYNC: using providedRemoteFolder " + folder);
+                    Timber.v("SYNC: using providedRemoteFolder %s", folder);
                 }
                 remoteFolder = providedRemoteFolder;
             } else {
                 Store remoteStore = account.getRemoteStore();
 
                 if (K9.DEBUG) {
-                    Timber.v("SYNC: About to get remote folder " + folder);
+                    Timber.v("SYNC: About to get remote folder %s", folder);
                 }
                 remoteFolder = remoteStore.getFolder(folder);
 
@@ -832,13 +828,13 @@ public class MessagingController {
                  * Open the remote folder. This pre-loads certain metadata like message count.
                  */
                 if (K9.DEBUG) {
-                    Timber.v("SYNC: About to open remote folder " + folder);
+                    Timber.v("SYNC: About to open remote folder %s", folder);
                 }
 
                 remoteFolder.open(Folder.OPEN_MODE_RW);
                 if (Expunge.EXPUNGE_ON_POLL == account.getExpungePolicy()) {
                     if (K9.DEBUG) {
-                        Timber.d("SYNC: Expunging folder " + account.getDescription() + ":" + folder);
+                        Timber.d("SYNC: Expunging folder %s:%s", account.getDescription(), folder);
                     }
                     remoteFolder.expunge();
                 }
@@ -862,7 +858,7 @@ public class MessagingController {
             Map<String, Message> remoteUidMap = new HashMap<>();
 
             if (K9.DEBUG) {
-                Timber.v("SYNC: Remote message count for folder " + folder + " is " + remoteMessageCount);
+                Timber.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount);
             }
             final Date earliestDate = account.getEarliestPollDate();
             long earliestTimestamp = earliestDate != null ? earliestDate.getTime() : 0L;
@@ -878,8 +874,8 @@ public class MessagingController {
                 }
 
                 if (K9.DEBUG) {
-                    Timber.v("SYNC: About to get messages " + remoteStart + " through " + remoteMessageCount +
-                            " for folder " + folder);
+                    Timber.v("SYNC: About to get messages %d through %d for folder %s",
+                            remoteStart, remoteMessageCount, folder);
                 }
 
                 final AtomicInteger headerProgress = new AtomicInteger(0);
@@ -905,7 +901,7 @@ public class MessagingController {
                     }
                 }
                 if (K9.DEBUG) {
-                    Timber.v("SYNC: Got " + remoteUidMap.size() + " messages for folder " + folder);
+                    Timber.v("SYNC: Got %d messages for folder %s", remoteUidMap.size(), folder);
                 }
 
                 for (MessagingListener l : getListeners(listener)) {
@@ -964,8 +960,11 @@ public class MessagingController {
             localFolder.setStatus(null);
 
             if (K9.DEBUG) {
-                Timber.d("Done synchronizing folder " + account.getDescription() + ":" + folder +
-                        " @ " + new Date() + " with " + newMessages + " new messages");
+                Timber.d("Done synchronizing folder %s:%s @ %tc with %d new messages",
+                        account.getDescription(),
+                        folder,
+                        System.currentTimeMillis(),
+                        newMessages);
             }
 
             for (MessagingListener l : getListeners(listener)) {
@@ -975,8 +974,8 @@ public class MessagingController {
 
             if (commandException != null) {
                 String rootMessage = getRootCauseMessage(commandException);
-                Timber.e("Root cause failure in " + account.getDescription() + ":" +
-                        tLocalFolder.getName() + " was '" + rootMessage + "'");
+                Timber.e("Root cause failure in %s:%s was '%s'",
+                        account.getDescription(), tLocalFolder.getName(), rootMessage);
                 localFolder.setStatus(rootMessage);
                 for (MessagingListener l : getListeners(listener)) {
                     l.synchronizeMailboxFailed(account, folder, rootMessage);
@@ -984,7 +983,7 @@ public class MessagingController {
             }
 
             if (K9.DEBUG) {
-                Timber.i("Done synchronizing folder " + account.getDescription() + ":" + folder);
+                Timber.i("Done synchronizing folder %s:%s", account.getDescription(), folder);
             }
 
         } catch (AuthenticationFailedException e) {
@@ -1003,8 +1002,8 @@ public class MessagingController {
                     tLocalFolder.setStatus(rootMessage);
                     tLocalFolder.setLastChecked(System.currentTimeMillis());
                 } catch (MessagingException me) {
-                    Timber.e(e, "Could not set last checked on folder " + account.getDescription() + ":" +
-                            tLocalFolder.getName());
+                    Timber.e(e, "Could not set last checked on folder %s:%s",
+                            account.getDescription(), tLocalFolder.getName());
                 }
             }
 
@@ -1013,7 +1012,8 @@ public class MessagingController {
             }
             notifyUserIfCertificateProblem(account, e, true);
             addErrorMessage(account, null, e);
-            Timber.e("Failed synchronizing folder " + account.getDescription() + ":" + folder + " @ " + new Date());
+            Timber.e("Failed synchronizing folder %s:%s @ %tc", account.getDescription(), folder,
+                    System.currentTimeMillis());
 
         } finally {
             if (providedRemoteFolder == null) {
@@ -1066,7 +1066,7 @@ public class MessagingController {
                         l.synchronizeMailboxFinished(account, folder, 0, 0);
                     }
                     if (K9.DEBUG) {
-                        Timber.i("Done synchronizing folder " + folder);
+                        Timber.i("Done synchronizing folder %s", folder);
                     }
 
                     return false;
@@ -1106,7 +1106,7 @@ public class MessagingController {
 
         if (earliestDate != null) {
             if (K9.DEBUG) {
-                Timber.d("Only syncing messages after " + earliestDate);
+                Timber.d("Only syncing messages after %s", earliestDate);
             }
         }
         final String folder = remoteFolder.getName();
@@ -1117,7 +1117,7 @@ public class MessagingController {
             unreadBeforeStart = stats.unreadMessageCount;
 
         } catch (MessagingException e) {
-            Timber.e(e, "Unable to getUnreadMessageCount for account: " + account);
+            Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
         }
 
         List<Message> syncFlagMessages = new ArrayList<>();
@@ -1138,7 +1138,7 @@ public class MessagingController {
         }
 
         if (K9.DEBUG) {
-            Timber.d("SYNC: Have " + unsyncedMessages.size() + " unsynced messages");
+            Timber.d("SYNC: Have %d unsynced messages", unsyncedMessages.size());
         }
 
         messages.clear();
@@ -1165,7 +1165,7 @@ public class MessagingController {
             fp.add(FetchProfile.Item.ENVELOPE);
 
             if (K9.DEBUG) {
-                Timber.d("SYNC: About to fetch " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
+                Timber.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size(), folder);
             }
 
             fetchUnsyncedMessages(account, remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress, todo,
@@ -1181,14 +1181,12 @@ public class MessagingController {
             localFolder.setPushState(updatedPushState);
 
             if (K9.DEBUG) {
-                Timber.d("SYNC: Synced unsynced messages for folder " + folder);
+                Timber.d("SYNC: Synced unsynced messages for folder %s", folder);
             }
         }
         if (K9.DEBUG) {
-            Timber.d("SYNC: Have "
-                    + largeMessages.size() + " large messages and "
-                    + smallMessages.size() + " small messages out of "
-                    + unsyncedMessages.size() + " unsynced messages");
+            Timber.d("SYNC: Have %d large messages and %d small messages out of %d unsynced messages",
+                    largeMessages.size(), smallMessages.size(), unsyncedMessages.size());
         }
 
         unsyncedMessages.clear();
@@ -1222,7 +1220,7 @@ public class MessagingController {
         refreshLocalMessageFlags(account, remoteFolder, localFolder, syncFlagMessages, progress, todo);
 
         if (K9.DEBUG) {
-            Timber.d("SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
+            Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get());
         }
 
         if (purgeToVisibleLimit) {
@@ -1266,7 +1264,7 @@ public class MessagingController {
             boolean flagSyncOnly) throws MessagingException {
         if (message.isSet(Flag.DELETED)) {
             if (K9.DEBUG) {
-                Timber.v("Message with uid " + message.getUid() + " is marked as deleted");
+                Timber.v("Message with uid %s is marked as deleted", message.getUid());
             }
             syncFlagMessages.add(message);
             return;
@@ -1278,13 +1276,13 @@ public class MessagingController {
             if (!flagSyncOnly) {
                 if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
                     if (K9.DEBUG) {
-                        Timber.v("Message with uid " + message.getUid() + " has not yet been downloaded");
+                        Timber.v("Message with uid %s has not yet been downloaded", message.getUid());
                     }
 
                     unsyncedMessages.add(message);
                 } else {
                     if (K9.DEBUG) {
-                        Timber.v("Message with uid " + message.getUid() + " is partially or fully downloaded");
+                        Timber.v("Message with uid %s is partially or fully downloaded", message.getUid());
                     }
 
                     // Store the updated message locally
@@ -1304,13 +1302,12 @@ public class MessagingController {
             }
         } else if (!localMessage.isSet(Flag.DELETED)) {
             if (K9.DEBUG) {
-                Timber.v("Message with uid " + message.getUid() + " is present in the local store");
+                Timber.v("Message with uid %s is present in the local store", message.getUid());
             }
 
             if (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
                 if (K9.DEBUG) {
-                    Timber.v("Message with uid " + message.getUid()
-                            + " is not downloaded, even partially; trying again");
+                    Timber.v("Message with uid %s is not downloaded, even partially; trying again", message.getUid());
                 }
 
                 unsyncedMessages.add(message);
@@ -1323,7 +1320,7 @@ public class MessagingController {
             }
         } else {
             if (K9.DEBUG) {
-                Timber.v("Local copy of message with uid " + message.getUid() + " is marked as deleted");
+                Timber.v("Local copy of message with uid %s is marked as deleted", message.getUid());
             }
         }
     }
@@ -1346,12 +1343,11 @@ public class MessagingController {
                             if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
                                 if (K9.DEBUG) {
                                     if (message.isSet(Flag.DELETED)) {
-                                        Timber.v("Newly downloaded message " + account + ":" + folder + ":" +
-                                                message.getUid()
-                                                + " was marked deleted on server, skipping");
+                                        Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, " +
+                                                "skipping", account, folder, message.getUid());
                                     } else {
-                                        Timber.d("Newly downloaded message " + message.getUid() + " is older than "
-                                                + earliestDate + ", skipping");
+                                        Timber.d("Newly downloaded message %s is older than %s, skipping",
+                                                message.getUid(), earliestDate);
                                     }
                                 }
                                 progress.incrementAndGet();
@@ -1391,8 +1387,7 @@ public class MessagingController {
 
         if (account.isSearchByDateCapable() && message.olderThan(earliestDate)) {
             if (K9.DEBUG) {
-                Timber.d("Message " + message.getUid() + " is older than "
-                        + earliestDate + ", hence not saving");
+                Timber.d("Message %s is older than %s, hence not saving", message.getUid(), earliestDate);
             }
             return false;
         }
@@ -1412,7 +1407,7 @@ public class MessagingController {
         final Date earliestDate = account.getEarliestPollDate();
 
         if (K9.DEBUG) {
-            Timber.d("SYNC: Fetching " + smallMessages.size() + " small messages for folder " + folder);
+            Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size(), folder);
         }
 
         remoteFolder.fetch(smallMessages,
@@ -1442,8 +1437,8 @@ public class MessagingController {
                             }
 
                             if (K9.DEBUG) {
-                                Timber.v("About to notify listeners that we got a new small message "
-                                        + account + ":" + folder + ":" + message.getUid());
+                                Timber.v("About to notify listeners that we got a new small message %s:%s:%s",
+                                        account, folder, message.getUid());
                             }
 
                             // Update the listener with what we've found
@@ -1476,7 +1471,7 @@ public class MessagingController {
                 });
 
         if (K9.DEBUG) {
-            Timber.d("SYNC: Done fetching small messages for folder " + folder);
+            Timber.d("SYNC: Done fetching small messages for folder %s", folder);
         }
     }
 
@@ -1491,7 +1486,7 @@ public class MessagingController {
         final String folder = remoteFolder.getName();
         final Date earliestDate = account.getEarliestPollDate();
         if (K9.DEBUG) {
-            Timber.d("SYNC: Fetching large messages for folder " + folder);
+            Timber.d("SYNC: Fetching large messages for folder %s", folder);
         }
         remoteFolder.fetch(largeMessages, fp, null);
         for (T message : largeMessages) {
@@ -1507,8 +1502,8 @@ public class MessagingController {
                 downloadPartial(remoteFolder, localFolder, message);
             }
             if (K9.DEBUG) {
-                Timber.v("About to notify listeners that we got a new large message "
-                        + account + ":" + folder + ":" + message.getUid());
+                Timber.v("About to notify listeners that we got a new large message %s:%s:%s",
+                        account, folder, message.getUid());
             }
             // Update the listener with what we've found
             progress.incrementAndGet();
@@ -1532,7 +1527,7 @@ public class MessagingController {
             }
         }
         if (K9.DEBUG) {
-            Timber.d("SYNC: Done fetching large messages for folder " + folder);
+            Timber.d("SYNC: Done fetching large messages for folder %s", folder);
         }
 
     }
@@ -1621,8 +1616,8 @@ public class MessagingController {
         final String folder = remoteFolder.getName();
         if (remoteFolder.supportsFetchingFlags()) {
             if (K9.DEBUG) {
-                Timber.d("SYNC: About to sync flags for "
-                        + syncFlagMessages.size() + " remote messages for folder " + folder);
+                Timber.d("SYNC: About to sync flags for %d remote messages for folder %s",
+                        syncFlagMessages.size(), folder);
             }
 
             FetchProfile fp = new FetchProfile();
@@ -1724,8 +1719,8 @@ public class MessagingController {
                 try {
                     processPendingCommandsSynchronous(account);
                 } catch (UnavailableStorageException e) {
-                    Timber.i(
-                            "Failed to process pending command because storage is not available - trying again later.");
+                    Timber.i("Failed to process pending command because storage is not available - " +
+                            "trying again later.");
                     throw new UnavailableAccountException(e);
                 } catch (MessagingException me) {
                     Timber.e(me, "processPendingCommands");
@@ -1761,7 +1756,7 @@ public class MessagingController {
             for (PendingCommand command : commands) {
                 processingCommand = command;
                 if (K9.DEBUG) {
-                    Timber.d("Processing pending command '" + command + "'");
+                    Timber.d("Processing pending command '%s'", command);
                 }
                 for (MessagingListener l : getListeners()) {
                     l.pendingCommandStarted(account, command.getCommandName());
@@ -1776,12 +1771,12 @@ public class MessagingController {
 
                     localStore.removePendingCommand(command);
                     if (K9.DEBUG) {
-                        Timber.d("Done processing pending command '" + command + "'");
+                        Timber.d("Done processing pending command '%s'", command);
                     }
                 } catch (MessagingException me) {
                     if (me.isPermanentFailure()) {
                         addErrorMessage(account, null, me);
-                        Timber.e("Failure of command '" + command + "' was permanent, removing command from queue");
+                        Timber.e("Failure of command '%s' was permanent, removing command from queue", command);
                         localStore.removePendingCommand(processingCommand);
                     } else {
                         throw me;
@@ -1797,7 +1792,7 @@ public class MessagingController {
         } catch (MessagingException me) {
             notifyUserIfCertificateProblem(account, me, true);
             addErrorMessage(account, null, me);
-            Timber.e(me, "Could not process command '" + processingCommand + "'");
+            Timber.e(me, "Could not process command '%s'", processingCommand);
             throw me;
         } finally {
             for (MessagingListener l : getListeners()) {
@@ -1853,15 +1848,13 @@ public class MessagingController {
 
             if (remoteMessage == null) {
                 if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
-                    Timber.w("Local message with uid " + localMessage.getUid() +
-                            " has flag " + X_REMOTE_COPY_STARTED +
-                            " already set, checking for remote message with " +
-                            " same message id");
+                    Timber.w("Local message with uid %s has flag %s  already set, checking for remote message with " +
+                            "same message id", localMessage.getUid(), X_REMOTE_COPY_STARTED);
                     String rUid = remoteFolder.getUidFromMessageId(localMessage);
                     if (rUid != null) {
-                        Timber.w("Local message has flag " + X_REMOTE_COPY_STARTED +
-                                " already set, and there is a remote message with uid " +
-                                rUid + ", assuming message was already copied and aborting this copy");
+                        Timber.w("Local message has flag %s already set, and there is a remote message with uid %s, " +
+                                "assuming message was already copied and aborting this copy",
+                                X_REMOTE_COPY_STARTED, rUid);
 
                         String oldUid = localMessage.getUid();
                         localMessage.setUid(rUid);
@@ -1998,9 +1991,8 @@ public class MessagingController {
             }
 
             if (K9.DEBUG) {
-                Timber.d("processingPendingMoveOrCopy: source folder = " + srcFolder
-                        + ", " + messages.size() + " messages, destination folder = " + destFolder + ", isCopy = " +
-                        isCopy);
+                Timber.d("processingPendingMoveOrCopy: source folder = %s, %d messages, destination folder = %s, " +
+                        "isCopy = %s", srcFolder, messages.size(), destFolder, isCopy);
             }
 
             Map<String, String> remoteUidMap = null;
@@ -2026,8 +2018,8 @@ public class MessagingController {
             }
             if (!isCopy && Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
                 if (K9.DEBUG) {
-                    Timber.i("processingPendingMoveOrCopy expunging folder " + account.getDescription() + ":" +
-                            srcFolder);
+                    Timber.i("processingPendingMoveOrCopy expunging folder %s:%s",
+                            account.getDescription(), srcFolder);
                 }
 
                 remoteSrcFolder.expunge();
@@ -2132,7 +2124,7 @@ public class MessagingController {
             return;
         }
         if (K9.DEBUG) {
-            Timber.d("processPendingExpunge: folder = " + folder);
+            Timber.d("processPendingExpunge: folder = %s", folder);
         }
 
         Store remoteStore = account.getRemoteStore();
@@ -2147,7 +2139,7 @@ public class MessagingController {
             }
             remoteFolder.expunge();
             if (K9.DEBUG) {
-                Timber.d("processPendingExpunge: complete for folder = " + folder);
+                Timber.d("processPendingExpunge: complete for folder = %s", folder);
             }
         } finally {
             closeFolder(remoteFolder);
@@ -2226,7 +2218,7 @@ public class MessagingController {
 
             addErrorMessage(account, subject, baos.toString());
         } catch (Throwable it) {
-            Timber.e(it, "Could not save error message to " + account.getErrorFolderName());
+            Timber.e(it, "Could not save error message to %s", account.getErrorFolderName());
         }
     }
 
@@ -2263,7 +2255,7 @@ public class MessagingController {
             localFolder.clearMessagesOlderThan(nowTime - (15 * 60 * 1000));
 
         } catch (Throwable it) {
-            Timber.e(it, "Could not save error message to " + account.getErrorFolderName());
+            Timber.e(it, "Could not save error message to %s", account.getErrorFolderName());
         } finally {
             loopCatch.set(false);
         }
@@ -2273,7 +2265,7 @@ public class MessagingController {
     public void markAllMessagesRead(final Account account, final String folder) {
 
         if (K9.DEBUG) {
-            Timber.i("Marking all messages in " + account.getDescription() + ":" + folder + " as read");
+            Timber.i("Marking all messages in %s:%s as read", account.getDescription(), folder);
         }
         PendingCommand command = PendingMarkAllAsRead.create(folder);
         queuePendingCommand(account, command);
@@ -2352,7 +2344,7 @@ public class MessagingController {
                     l.folderStatusChanged(account, folderName, unreadMessageCount);
                 }
             } catch (MessagingException e) {
-                Timber.w(e, "Couldn't get unread count for folder: " + folderName);
+                Timber.w(e, "Couldn't get unread count for folder: %s", folderName);
             }
 
             // The error folder is always a local folder
@@ -2801,8 +2793,8 @@ public class MessagingController {
             fp.add(FetchProfile.Item.BODY);
 
             if (K9.DEBUG) {
-                Timber.i("Scanning folder '" + account.getOutboxFolderName()
-                        + "' (" + localFolder.getId() + ") for messages to send");
+                Timber.i("Scanning folder '%s' (%d) for messages to send",
+                        account.getOutboxFolderName(), localFolder.getId());
             }
 
             Transport transport = transportProvider.getTransport(K9.app, account);
@@ -2819,12 +2811,12 @@ public class MessagingController {
                         count = oldCount;
                     }
                     if (K9.DEBUG) {
-                        Timber.i("Send count for message " + message.getUid() + " is " + count.get());
+                        Timber.i("Send count for message %s is %d", message.getUid(), count.get());
                     }
 
                     if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS) {
-                        Timber.e("Send count for message " + message.getUid() + " can't be delivered after "
-                                + MAX_SEND_ATTEMPTS + " attempts.  Giving up until the user restarts the device");
+                        Timber.e("Send count for message %s can't be delivered after %d attempts. " +
+                                "Giving up until the user restarts the device", message.getUid(), MAX_SEND_ATTEMPTS);
                         notificationController.showSendFailedNotification(account,
                                 new MessagingException(message.getSubject()));
                         continue;
@@ -2840,7 +2832,7 @@ public class MessagingController {
 
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
                         if (K9.DEBUG) {
-                            Timber.i("Sending message with UID " + message.getUid());
+                            Timber.i("Sending message with UID %s", message.getUid());
                         }
                         transport.sendMessage(message);
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
@@ -2923,15 +2915,15 @@ public class MessagingController {
         } else {
             LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
             if (K9.DEBUG) {
-                Timber.i("Moving sent message to folder '" + account.getSentFolderName() + "' (" +
-                        localSentFolder.getId() + ") ");
+                Timber.i("Moving sent message to folder '%s' (%d)",
+                        account.getSentFolderName(), localSentFolder.getId());
             }
 
             localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
 
             if (K9.DEBUG) {
-                Timber.i("Moved sent message to folder '" + account.getSentFolderName() + "' (" +
-                        localSentFolder.getId() + ") ");
+                Timber.i("Moved sent message to folder '%s' (%d)",
+                        account.getSentFolderName(), localSentFolder.getId());
             }
 
             PendingCommand command = PendingAppend.create(localSentFolder.getName(), message.getUid());
@@ -2979,8 +2971,7 @@ public class MessagingController {
                     AccountStats stats = account.getStats(context);
                     listener.accountStatusChanged(account, stats);
                 } catch (MessagingException me) {
-                    Timber.e(me, "Count not get unread count for account " +
-                            account.getDescription());
+                    Timber.e(me, "Count not get unread count for account %s", account.getDescription());
                 }
 
             }
@@ -3077,7 +3068,7 @@ public class MessagingController {
                     Folder localFolder = account.getLocalStore().getFolder(folderName);
                     unreadMessageCount = localFolder.getUnreadMessageCount();
                 } catch (MessagingException me) {
-                    Timber.e(me, "Count not get unread count for account " + account.getDescription());
+                    Timber.e(me, "Count not get unread count for account %s", account.getDescription());
                 }
                 l.folderStatusChanged(account, folderName, unreadMessageCount);
             }
@@ -3243,9 +3234,8 @@ public class MessagingController {
                 }
 
                 if (K9.DEBUG) {
-                    Timber.i("moveOrCopyMessageSynchronous: source folder = " + srcFolder
-                            + ", " + messages.size() + " messages, " + ", destination folder = " + destFolder +
-                            ", isCopy = " + isCopy);
+                    Timber.i("moveOrCopyMessageSynchronous: source folder = %s, %d messages, " +
+                            "destination folder = %s, isCopy = %s", srcFolder, messages.size(), destFolder, isCopy);
                 }
 
                 Map<String, String> uidMap;
@@ -3477,7 +3467,7 @@ public class MessagingController {
             }
 
             if (K9.DEBUG) {
-                Timber.d("Delete policy for account " + account.getDescription() + " is " + account.getDeletePolicy());
+                Timber.d("Delete policy for account %s is %s", account.getDescription(), account.getDeletePolicy());
             }
 
             if (folder.equals(account.getOutboxFolderName())) {
@@ -3500,7 +3490,7 @@ public class MessagingController {
                 processPendingCommands(account);
             } else {
                 if (K9.DEBUG) {
-                    Timber.d("Delete policy " + account.getDeletePolicy() + " prevents delete from server");
+                    Timber.d("Delete policy %s prevents delete from server", account.getDeletePolicy());
                 }
             }
 
@@ -3640,8 +3630,8 @@ public class MessagingController {
 
     public void sendAlternate(Context context, Account account, LocalMessage message) {
         if (K9.DEBUG) {
-            Timber.d("Got message " + account.getDescription() + ":" + message.getFolder()
-                    + ":" + message.getUid() + " for sendAlternate");
+            Timber.d("Got message %s:%s:%s for sendAlternate",
+                    account.getDescription(), message.getFolder(), message.getUid());
         }
 
         Intent msg = new Intent(Intent.ACTION_SEND);
@@ -3759,20 +3749,20 @@ public class MessagingController {
             final MessagingListener listener) {
         if (!account.isAvailable(context)) {
             if (K9.DEBUG) {
-                Timber.i("Skipping synchronizing unavailable account " + account.getDescription());
+                Timber.i("Skipping synchronizing unavailable account %s", account.getDescription());
             }
             return;
         }
         final long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
         if (!ignoreLastCheckedTime && accountInterval <= 0) {
             if (K9.DEBUG) {
-                Timber.i("Skipping synchronizing account " + account.getDescription());
+                Timber.i("Skipping synchronizing account %s", account.getDescription());
             }
             return;
         }
 
         if (K9.DEBUG) {
-            Timber.i("Synchronizing account " + account.getDescription());
+            Timber.i("Synchronizing account %s", account.getDescription());
         }
 
         account.setRingNotified(false);
@@ -3816,14 +3806,14 @@ public class MessagingController {
                 synchronizeFolder(account, folder, ignoreLastCheckedTime, accountInterval, listener);
             }
         } catch (MessagingException e) {
-            Timber.e(e, "Unable to synchronize account " + account.getName());
+            Timber.e(e, "Unable to synchronize account %s", account.getName());
             addErrorMessage(account, null, e);
         } finally {
             putBackground("clear notification flag for " + account.getDescription(), null, new Runnable() {
                         @Override
                         public void run() {
                             if (K9.DEBUG) {
-                                Timber.v("Clearing notification flag for " + account.getDescription());
+                                Timber.v("Clearing notification flag for %s", account.getDescription());
                             }
                             account.setRingNotified(false);
                             try {
@@ -3832,7 +3822,7 @@ public class MessagingController {
                                     notificationController.clearNewMailNotifications(account);
                                 }
                             } catch (MessagingException e) {
-                                Timber.e(e, "Unable to getUnreadMessageCount for account: " + account);
+                                Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
                             }
                         }
                     }
@@ -3852,16 +3842,14 @@ public class MessagingController {
 
 
         if (K9.DEBUG) {
-            Timber.v("Folder " + folder.getName() + " was last synced @ " +
-                    new Date(folder.getLastChecked()));
+            Timber.v("Folder %s was last synced @ %tc", folder.getName(), folder.getLastChecked());
         }
 
         if (!ignoreLastCheckedTime && folder.getLastChecked() >
                 (System.currentTimeMillis() - accountInterval)) {
             if (K9.DEBUG) {
-                Timber.v("Not syncing folder " + folder.getName()
-                        + ", previously synced @ " + new Date(folder.getLastChecked())
-                        + " which would be too recent for the account period");
+                Timber.v("Not syncing folder %s, previously synced @ %tc which would be too recent for the account " +
+                        "period", folder.getName(), folder.getLastChecked());
             }
 
             return;
@@ -3880,9 +3868,9 @@ public class MessagingController {
                             if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
                                     (System.currentTimeMillis() - accountInterval)) {
                                 if (K9.DEBUG) {
-                                    Timber.v("Not running Command for folder " + folder.getName()
-                                            + ", previously synced @ " + new Date(folder.getLastChecked())
-                                            + " which would be too recent for the account period");
+                                    Timber.v("Not running Command for folder %s, previously synced @ %tc which would " +
+                                            "be too recent for the account period",
+                                            folder.getName(), folder.getLastChecked());
                                 }
                                 return;
                             }
@@ -3894,8 +3882,8 @@ public class MessagingController {
                             }
                         } catch (Exception e) {
 
-                            Timber.e(e, "Exception while processing folder " +
-                                    account.getDescription() + ":" + folder.getName());
+                            Timber.e(e, "Exception while processing folder %s:%s",
+                                    account.getDescription(), folder.getName());
                             addErrorMessage(account, null, e);
                         } finally {
                             closeFolder(tLocalFolder);
@@ -3936,7 +3924,7 @@ public class MessagingController {
                     Timber.i("Failed to compact account because storage is not available - trying again later.");
                     throw new UnavailableAccountException(e);
                 } catch (Exception e) {
-                    Timber.e(e, "Failed to compact account " + account.getDescription());
+                    Timber.e(e, "Failed to compact account %s", account.getDescription());
                 }
             }
         });
@@ -3964,7 +3952,7 @@ public class MessagingController {
                     Timber.i("Failed to clear account because storage is not available - trying again later.");
                     throw new UnavailableAccountException(e);
                 } catch (Exception e) {
-                    Timber.e(e, "Failed to clear account " + account.getDescription());
+                    Timber.e(e, "Failed to clear account %s", account.getDescription());
                 }
             }
         });
@@ -3992,7 +3980,7 @@ public class MessagingController {
                     Timber.i("Failed to recreate an account because storage is not available - trying again later.");
                     throw new UnavailableAccountException(e);
                 } catch (Exception e) {
-                    Timber.e(e, "Failed to recreate account " + account.getDescription());
+                    Timber.e(e, "Failed to recreate account %s", account.getDescription());
                 }
             }
         });
@@ -4053,8 +4041,8 @@ public class MessagingController {
                 Integer messageUid = Integer.parseInt(message.getUid());
                 if (messageUid <= localFolder.getLastUid()) {
                     if (K9.DEBUG) {
-                        Timber.d("Message uid is " + messageUid + ", max message uid is " +
-                                localFolder.getLastUid() + ".  Skipping notification.");
+                        Timber.d("Message uid is %s, max message uid is %s. Skipping notification.",
+                                messageUid, localFolder.getLastUid());
                     }
                     return false;
                 }
@@ -4243,7 +4231,7 @@ public class MessagingController {
                     continue;
                 }
                 if (K9.DEBUG) {
-                    Timber.i("Starting pusher for " + account.getDescription() + ":" + folder.getName());
+                    Timber.i("Starting pusher for %s:%s", account.getDescription(), folder.getName());
                 }
 
                 names.add(folder.getName());
@@ -4255,9 +4243,8 @@ public class MessagingController {
 
                 if (names.size() > maxPushFolders) {
                     if (K9.DEBUG) {
-                        Timber.i("Count of folders to push for account " + account.getDescription() + " is " +
-                                names.size()
-                                + ", greater than limit of " + maxPushFolders + ", truncating");
+                        Timber.i("Count of folders to push for account %s is %d, greater than limit of %d, truncating",
+                                account.getDescription(), names.size(), maxPushFolders);
                     }
 
                     names = names.subList(0, maxPushFolders);
@@ -4267,7 +4254,7 @@ public class MessagingController {
                     Store store = account.getRemoteStore();
                     if (!store.isPushCapable()) {
                         if (K9.DEBUG) {
-                            Timber.i("Account " + account.getDescription() + " is not push capable, skipping");
+                            Timber.i("Account %s is not push capable, skipping", account.getDescription());
                         }
 
                         return false;
@@ -4287,7 +4274,7 @@ public class MessagingController {
                 return true;
             } else {
                 if (K9.DEBUG) {
-                    Timber.i("No folders are configured for pushing in account " + account.getDescription());
+                    Timber.i("No folders are configured for pushing in account %s", account.getDescription());
                 }
                 return false;
             }
@@ -4314,8 +4301,8 @@ public class MessagingController {
     public void messagesArrived(final Account account, final Folder remoteFolder, final List<Message> messages,
             final boolean flagSyncOnly) {
         if (K9.DEBUG) {
-            Timber.i("Got new pushed email messages for account " + account.getDescription()
-                    + ", folder " + remoteFolder.getName());
+            Timber.i("Got new pushed email messages for account %s, folder %s",
+                    account.getDescription(), remoteFolder.getName());
         }
 
         final CountDownLatch latch = new CountDownLatch(1);
@@ -4338,7 +4325,7 @@ public class MessagingController {
                     localFolder.setStatus(null);
 
                     if (K9.DEBUG) {
-                        Timber.i("messagesArrived newCount = " + newCount + ", unread count = " + unreadMessageCount);
+                        Timber.i("messagesArrived newCount = %d, unread count = %d", newCount, unreadMessageCount);
                     }
 
                     if (unreadMessageCount == 0) {

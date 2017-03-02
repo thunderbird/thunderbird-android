@@ -265,7 +265,7 @@ public class Contacts {
             Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
             return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
         } catch (Exception e) {
-            Timber.e(e, "Couldn't fetch photo for contact with email " + address);
+            Timber.e(e, "Couldn't fetch photo for contact with email %s", address);
             return null;
         }
     }

@@ -46,7 +46,7 @@ public class PollService extends CoreService {
     public int startService(Intent intent, int startId) {
         if (START_SERVICE.equals(intent.getAction())) {
             if (K9.DEBUG)
-                Timber.i("PollService started with startId = " + startId);
+                Timber.i("PollService started with startId = %d", startId);
 
             MessagingController controller = MessagingController.getInstance(getApplication());
             Listener listener = (Listener)controller.getCheckMailListener();
@@ -132,7 +132,7 @@ public class PollService extends CoreService {
             MailService.actionReschedulePoll(PollService.this, null);
             wakeLockRelease();
             if (K9.DEBUG)
-                Timber.i("PollService stopping with startId = " + startId);
+                Timber.i("PollService stopping with startId = %d", startId);
 
             stopSelf(startId);
         }

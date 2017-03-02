@@ -27,8 +27,7 @@ public class SleepService extends CoreService {
     public static void sleep(Context context, long sleepTime, TracingWakeLock wakeLock, long wakeLockTimeout) {
         Integer id = latchId.getAndIncrement();
         if (K9.DEBUG)
-            Timber.d("SleepService Preparing CountDownLatch with id = " + id + ", thread " +
-                    currentThread().getName());
+            Timber.d("SleepService Preparing CountDownLatch with id = %d, thread %s", id, currentThread().getName());
         SleepDatum sleepDatum = new SleepDatum();
         CountDownLatch latch = new CountDownLatch(1);
         sleepDatum.latch = latch;
@@ -50,8 +49,7 @@ public class SleepService extends CoreService {
             boolean countedDown = latch.await(sleepTime, TimeUnit.MILLISECONDS);
             if (!countedDown) {
                 if (K9.DEBUG)
-                    Timber.d("SleepService latch timed out for id = " + id + ", thread " +
-                            currentThread().getName());
+                    Timber.d("SleepService latch timed out for id = %d, thread %s", id, currentThread().getName());
             }
         } catch (InterruptedException ie) {
             Timber.e(ie, "SleepService Interrupted while awaiting latch");
@@ -60,14 +58,14 @@ public class SleepService extends CoreService {
         if (releaseDatum == null) {
             try {
                 if (K9.DEBUG)
-                    Timber.d("SleepService waiting for reacquireLatch for id = " + id + ", thread " +
-                            currentThread().getName());
+                    Timber.d("SleepService waiting for reacquireLatch for id = %d, thread %s",
+                            id, currentThread().getName());
                 if (!sleepDatum.reacquireLatch.await(5000, TimeUnit.MILLISECONDS)) {
-                    Timber.w("SleepService reacquireLatch timed out for id = " + id + ", thread " +
-                            currentThread().getName());
+                    Timber.w("SleepService reacquireLatch timed out for id = %d, thread %s",
+                            id, currentThread().getName());
                 } else if (K9.DEBUG)
-                    Timber.d("SleepService reacquireLatch finished for id = " + id + ", thread " +
-                            currentThread().getName());
+                    Timber.d("SleepService reacquireLatch finished for id = %d, thread %s",
+                            id, currentThread().getName());
             } catch (InterruptedException ie) {
                 Timber.e(ie, "SleepService Interrupted while awaiting reacquireLatch");
             }
@@ -79,10 +77,10 @@ public class SleepService extends CoreService {
         long actualSleep = endTime - startTime;
 
         if (actualSleep < sleepTime) {
-            Timber.w("SleepService sleep time too short: requested was " + sleepTime + ", actual was " + actualSleep);
+            Timber.w("SleepService sleep time too short: requested was %d, actual was %d", sleepTime, actualSleep);
         } else {
             if (K9.DEBUG)
-                Timber.d("SleepService requested sleep time was " + sleepTime + ", actual was " + actualSleep);
+                Timber.d("SleepService requested sleep time was %d, actual was %d", sleepTime, actualSleep);
         }
     }
 
@@ -92,17 +90,17 @@ public class SleepService extends CoreService {
             if (sleepDatum != null) {
                 CountDownLatch latch = sleepDatum.latch;
                 if (latch == null) {
-                    Timber.e("SleepService No CountDownLatch available with id = " + id);
+                    Timber.e("SleepService No CountDownLatch available with id = %s", id);
                 } else {
                     if (K9.DEBUG)
-                        Timber.d("SleepService Counting down CountDownLatch with id = " + id);
+                        Timber.d("SleepService Counting down CountDownLatch with id = %d", id);
                     latch.countDown();
                 }
                 reacquireWakeLock(sleepDatum);
                 sleepDatum.reacquireLatch.countDown();
             } else {
                 if (K9.DEBUG)
-                    Timber.d("SleepService Sleep for id " + id + " already finished");
+                    Timber.d("SleepService Sleep for id %d already finished", id);
             }
         }
     }
@@ -113,7 +111,7 @@ public class SleepService extends CoreService {
             synchronized (wakeLock) {
                 long timeout = sleepDatum.timeout;
                 if (K9.DEBUG)
-                    Timber.d("SleepService Acquiring wakeLock for " + timeout + "ms");
+                    Timber.d("SleepService Acquiring wakeLock for %d ms", timeout);
                 wakeLock.acquire(timeout);
             }
         }

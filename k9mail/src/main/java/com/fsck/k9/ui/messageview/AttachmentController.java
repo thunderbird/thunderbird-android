@@ -332,7 +332,7 @@ public class AttachmentController {
             try {
                 context.startActivity(intent);
             } catch (ActivityNotFoundException e) {
-                Timber.e(e, "Could not display attachment of type " + attachment.mimeType);
+                Timber.e(e, "Could not display attachment of type %s", attachment.mimeType);
 
                 String message = context.getString(R.string.message_view_no_viewer, attachment.mimeType);
                 displayMessageToUser(message);

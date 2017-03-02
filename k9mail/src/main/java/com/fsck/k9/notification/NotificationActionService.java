@@ -123,7 +123,7 @@ public class NotificationActionService extends CoreService {
     @Override
     public int startService(Intent intent, int startId) {
         if (K9.DEBUG) {
-            Timber.i("NotificationActionService started with startId = " + startId);
+            Timber.i("NotificationActionService started with startId = %d", startId);
         }
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID);
@@ -212,7 +212,7 @@ public class NotificationActionService extends CoreService {
         String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
         MessageReference messageReference = MessageReference.parse(messageReferenceString);
         if (messageReference == null) {
-            Timber.w("Invalid message reference: " + messageReferenceString);
+            Timber.w("Invalid message reference: %s", messageReferenceString);
             return;
         }
 
@@ -230,7 +230,7 @@ public class NotificationActionService extends CoreService {
             if (messageReference != null) {
                 controller.cancelNotificationForMessage(account, messageReference);
             } else {
-                Timber.w("Invalid message reference: " + messageReferenceString);
+                Timber.w("Invalid message reference: %s", messageReferenceString);
             }
         } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCES)) {
             List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);

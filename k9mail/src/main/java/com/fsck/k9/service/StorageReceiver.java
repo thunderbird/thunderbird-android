@@ -24,7 +24,7 @@ public class StorageReceiver extends BroadcastReceiver {
         }
 
         if (K9.DEBUG) {
-            Timber.v("StorageReceiver: " + intent.toString());
+            Timber.v("StorageReceiver: %s", intent);
         }
 
         final String path = uri.getPath();

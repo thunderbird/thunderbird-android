@@ -73,7 +73,7 @@ class MigrationTo51 {
                 new String[] { "id", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
                 null, null, null, null, null);
         try {
-            Timber.d("migrating " + msgCursor.getCount() + " messages");
+            Timber.d("migrating %d messages", msgCursor.getCount());
             ContentValues cv = new ContentValues();
             while (msgCursor.moveToNext()) {
                 long messageId = msgCursor.getLong(0);
@@ -163,19 +163,19 @@ class MigrationTo51 {
 
     private static void cleanUpOldAttachmentDirectory(File attachmentDirOld) {
         if (!attachmentDirOld.exists()) {
-            Timber.d("Old attachment directory doesn't exist: " + attachmentDirOld.getAbsolutePath());
+            Timber.d("Old attachment directory doesn't exist: %s", attachmentDirOld.getAbsolutePath());
             return;
         }
         for (File file : attachmentDirOld.listFiles()) {
-            Timber.d("deleting stale attachment file: " + file.getName());
+            Timber.d("deleting stale attachment file: %s", file.getName());
             if (file.exists() && !file.delete()) {
-                Timber.d("Failed to delete stale attachement file: " + file.getAbsolutePath());
+                Timber.d("Failed to delete stale attachement file: %s", file.getAbsolutePath());
             }
         }
 
         Timber.d("deleting old attachment directory");
         if (attachmentDirOld.exists() && !attachmentDirOld.delete()) {
-            Timber.d("Failed to delete old attachement directory: " + attachmentDirOld.getAbsolutePath());
+            Timber.d("Failed to delete old attachement directory: %s", attachmentDirOld.getAbsolutePath());
         }
     }
 
@@ -283,8 +283,8 @@ class MigrationTo51 {
             String firstPartContentUriString = cursor.getString(5);
 
             if (!MimeUtil.isSameMimeType(firstPartMimeType, "application/pgp-encrypted")) {
-                Timber.e(
-                        "First part in multipart/encrypted wasn't application/pgp-encrypted, not handling as pgp/mime");
+                Timber.e("First part in multipart/encrypted wasn't application/pgp-encrypted, " +
+                        "not handling as pgp/mime");
                 return null;
             }
 
@@ -451,8 +451,12 @@ class MigrationTo51 {
             File attachmentDirNew, MimeStructureState structureState, long id, int size, String name, String mimeType,
             String storeData, String contentUriString, String contentId, String contentDisposition) {
         if (K9.DEBUG) {
-            Timber.d("processing attachment " + id + ", " + name + ", "
-                    + mimeType + ", " + storeData + ", " + contentUriString);
+            Timber.d("processing attachment %d, %s, %s, %s, %s",
+                    id,
+                    name,
+                    mimeType,
+                    storeData,
+                    contentUriString);
         }
 
         if (contentDisposition == null) {

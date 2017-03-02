@@ -36,8 +36,8 @@ public class HtmlSignatureRemover {
                 end.add(blockquoteEnd.start());
             }
             if (start.size() != end.size()) {
-                Timber.d("There are " + start.size() + " <blockquote> tags, but " +
-                        end.size() + " </blockquote> tags. Refusing to strip.");
+                Timber.d("There are %d <blockquote> tags, but %d </blockquote> tags. Refusing to strip.",
+                        start.size(), end.size());
             } else if (start.size() > 0) {
                 // Ignore quoted signatures in blockquotes.
                 dashSignatureHtml.region(0, start.get(0));

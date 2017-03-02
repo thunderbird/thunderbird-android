@@ -178,7 +178,7 @@ public class Storage {
                 String key = cursor.getString(0);
                 String value = cursor.getString(1);
                 if (K9.DEBUG) {
-                    Timber.d("Loading key '" + key + "', value = '" + value + "'");
+                    Timber.d("Loading key '%s', value = '%s'", key, value);
                 }
                 storage.put(key, value);
             }
@@ -188,7 +188,7 @@ public class Storage {
                 mDb.close();
             }
             long endTime = System.currentTimeMillis();
-            Timber.i("Preferences load took " + (endTime - startTime) + "ms");
+            Timber.i("Preferences load took %d ms", endTime - startTime);
         }
     }
 
@@ -336,7 +336,7 @@ public class Storage {
             if (cursor.moveToNext()) {
                 value = cursor.getString(0);
                 if (K9.DEBUG) {
-                    Timber.d("Loading key '" + key + "', value = '" + value + "'");
+                    Timber.d("Loading key '%s', value = '%s'", key, value);
                 }
             }
         } finally {
@@ -354,7 +354,7 @@ public class Storage {
         long result = mDb.insert("preferences_storage", "primkey", cv);
 
         if (result == -1) {
-            Timber.e("Error writing key '" + key + "', value = '" + value + "'");
+            Timber.e("Error writing key '%s', value = '%s'", key, value);
         }
     }
 }

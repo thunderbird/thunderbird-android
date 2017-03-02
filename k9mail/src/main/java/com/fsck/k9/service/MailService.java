@@ -115,8 +115,8 @@ public class MailService extends CoreService {
         syncBlocked = !(doBackground && hasConnectivity);
 
         if (K9.DEBUG)
-            Timber.i("MailService.onStart(" + intent + ", " + startId
-                    + "), hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
+            Timber.i("MailService.onStart(%s, %d), hasConnectivity = %s, doBackground = %s",
+                    intent, startId, hasConnectivity, doBackground);
 
         // MessagingController.getInstance(getApplication()).addListener(mListener);
         if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
@@ -147,8 +147,8 @@ public class MailService extends CoreService {
         } else if (CONNECTIVITY_CHANGE.equals(intent.getAction())) {
             rescheduleAllInBackground(hasConnectivity, doBackground, startId);
             if (K9.DEBUG)
-                Timber.i("Got connectivity action with hasConnectivity = " + hasConnectivity + ", doBackground = " +
-                        doBackground);
+                Timber.i("Got connectivity action with hasConnectivity = %s, doBackground = %s",
+                        hasConnectivity, doBackground);
         } else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction())) {
             /* do nothing */
         }
@@ -158,7 +158,7 @@ public class MailService extends CoreService {
         }
 
         if (K9.DEBUG)
-            Timber.i("MailService.onStart took " + (currentTimeMillis() - startTime) + "ms");
+            Timber.i("MailService.onStart took %d ms", currentTimeMillis() - startTime);
 
         return START_NOT_STICKY;
     }
@@ -183,7 +183,7 @@ public class MailService extends CoreService {
     public static void saveLastCheckEnd(Context context) {
         long lastCheckEnd = System.currentTimeMillis();
         if (K9.DEBUG)
-            Timber.i("Saving lastCheckEnd = " + new Date(lastCheckEnd));
+            Timber.i("Saving lastCheckEnd = %tc", lastCheckEnd);
         Preferences prefs = Preferences.getPreferences(context);
         Storage storage = prefs.getStorage();
         StorageEditor editor = storage.edit();
@@ -241,8 +241,7 @@ public class MailService extends CoreService {
 
         if (!(hasConnectivity && doBackground)) {
             if (K9.DEBUG) {
-                Timber.i("No connectivity, canceling check for " +
-                        getApplication().getPackageName());
+                Timber.i("No connectivity, canceling check for %s", getApplication().getPackageName());
             }
 
             nextCheck = -1;
@@ -256,11 +255,12 @@ public class MailService extends CoreService {
         int previousInterval = storage.getInt(PREVIOUS_INTERVAL, -1);
         long lastCheckEnd = storage.getLong(LAST_CHECK_END, -1);
 
-        if (lastCheckEnd > System.currentTimeMillis()) {
-            Timber.i("The database claims that the last time mail was checked was in " +
-                    "the future (" + lastCheckEnd + "). To try to get things back to normal, " +
-                    "the last check time has been reset to: " + currentTimeMillis());
-            lastCheckEnd = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
+        if (lastCheckEnd > now) {
+            Timber.i("The database claims that the last time mail was checked was in the future (%tc). To try to get " +
+                    "things back to normal, the last check time has been reset to: %tc", lastCheckEnd, now);
+
+            lastCheckEnd = now;
         }
 
         int shortestInterval = -1;
@@ -278,8 +278,7 @@ public class MailService extends CoreService {
 
         if (shortestInterval == -1) {
             if (K9.DEBUG) {
-                Timber.i("No next check scheduled for package " +
-                        getApplication().getPackageName());
+                Timber.i("No next check scheduled for package %s", getApplication().getPackageName());
             }
 
             nextCheck = -1;
@@ -292,10 +291,11 @@ public class MailService extends CoreService {
             long nextTime = base + delay;
 
             if (K9.DEBUG) {
-                Timber.i("previousInterval = " + previousInterval +
-                        ", shortestInterval = " + shortestInterval +
-                        ", lastCheckEnd = " + new Date(lastCheckEnd) +
-                        ", considerLastCheckEnd = " + considerLastCheckEnd);
+                Timber.i("previousInterval = %d, shortestInterval = %d, lastCheckEnd = %tc, considerLastCheckEnd = %tc",
+                        previousInterval,
+                        shortestInterval,
+                        lastCheckEnd,
+                        considerLastCheckEnd);
             }
 
             nextCheck = nextTime;
@@ -303,9 +303,8 @@ public class MailService extends CoreService {
 
             try {
                 if (K9.DEBUG) {
-                    Timber.i("Next check for package " +
-                            getApplication().getPackageName() + " scheduled for " +
-                            new Date(nextTime));
+                    Timber.i("Next check for package %s scheduled for %tc",
+                            getApplication().getPackageName(), nextTime);
                 }
             } catch (Exception e) {
                 // I once got a NullPointerException deep in new Date();
@@ -352,8 +351,8 @@ public class MailService extends CoreService {
 
         if (!(hasConnectivity && doBackground)) {
             if (K9.DEBUG) {
-                Timber.i("Not scheduling pushers:  connectivity? " + hasConnectivity +
-                        " -- doBackground? " + doBackground);
+                Timber.i("Not scheduling pushers:  connectivity? %s -- doBackground? %s",
+                        hasConnectivity, doBackground);
             }
             return;
         }
@@ -367,7 +366,7 @@ public class MailService extends CoreService {
         boolean pushing = false;
         for (Account account : Preferences.getPreferences(MailService.this).getAccounts()) {
             if (K9.DEBUG)
-                Timber.i("Setting up pushers for account " + account.getDescription());
+                Timber.i("Setting up pushers for account %s", account.getDescription());
             if (account.isEnabled() && account.isAvailable(getApplicationContext())) {
                 pushing |= MessagingController.getInstance(getApplication()).setupPushing(account);
             } else {
@@ -392,17 +391,23 @@ public class MailService extends CoreService {
                 long sinceLast = nowTime - lastRefresh;
                 if (sinceLast + 10000 > refreshInterval) { // Add 10 seconds to keep pushers in sync, avoid drift
                     if (K9.DEBUG) {
-                        Timber.d("PUSHREFRESH: refreshing lastRefresh = " + lastRefresh + ", interval = " +
-                                refreshInterval
-                                + ", nowTime = " + nowTime + ", sinceLast = " + sinceLast);
+                        Timber.d("PUSHREFRESH: refreshing lastRefresh = %d, interval = %d, nowTime = %d, " +
+                                "sinceLast = %d",
+                                lastRefresh,
+                                refreshInterval,
+                                nowTime,
+                                sinceLast);
                     }
                     pusher.refresh();
                     pusher.setLastRefresh(nowTime);
                 } else {
                     if (K9.DEBUG) {
-                        Timber.d("PUSHREFRESH: NOT refreshing lastRefresh = " + lastRefresh + ", interval = " +
-                                refreshInterval
-                                + ", nowTime = " + nowTime + ", sinceLast = " + sinceLast);
+                        Timber.d("PUSHREFRESH: NOT refreshing lastRefresh = %d, interval = %d, nowTime = %d, " +
+                                "sinceLast = %d",
+                                lastRefresh,
+                                refreshInterval,
+                                nowTime,
+                                sinceLast);
                     }
                 }
             }
@@ -429,12 +434,12 @@ public class MailService extends CoreService {
             }
         }
         if (K9.DEBUG) {
-            Timber.v("Pusher refresh interval = " + minInterval);
+            Timber.v("Pusher refresh interval = %d", minInterval);
         }
         if (minInterval > 0) {
             long nextTime = System.currentTimeMillis() + minInterval;
             if (K9.DEBUG)
-                Timber.d("Next pusher refresh scheduled for " + new Date(nextTime));
+                Timber.d("Next pusher refresh scheduled for %tc", nextTime);
             Intent i = new Intent(this, MailService.class);
             i.setAction(ACTION_REFRESH_PUSHERS);
             BootReceiver.scheduleIntent(MailService.this, nextTime, i);

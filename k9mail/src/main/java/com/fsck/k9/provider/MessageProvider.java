@@ -124,7 +124,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (K9.DEBUG) {
-            Timber.v("MessageProvider/getType: " + uri);
+            Timber.v("MessageProvider/getType: %s", uri);
         }
 
         return null;
@@ -137,7 +137,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (K9.DEBUG) {
-            Timber.v("MessageProvider/query: " + uri);
+            Timber.v("MessageProvider/query: %s", uri);
         }
 
         int code = uriMatcher.match(uri);
@@ -150,7 +150,7 @@ public class MessageProvider extends ContentProvider {
             QueryHandler handler = queryHandlers.get(code);
             cursor = handler.query(uri, projection, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
-            Timber.e(e, "Unable to execute query for URI: " + uri);
+            Timber.e(e, "Unable to execute query for URI: %s", uri);
             return null;
         }
 
@@ -164,7 +164,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (K9.DEBUG) {
-            Timber.v("MessageProvider/delete: " + uri);
+            Timber.v("MessageProvider/delete: %s", uri);
         }
 
         // Note: can only delete a message
@@ -187,7 +187,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (myAccount == null) {
-            Timber.e("Could not find account with id " + accountId);
+            Timber.e("Could not find account with id %d", accountId);
         }
 
         if (myAccount != null) {
@@ -207,7 +207,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (K9.DEBUG) {
-            Timber.v("MessageProvider/insert: " + uri);
+            Timber.v("MessageProvider/insert: %s", uri);
         }
 
         return null;
@@ -220,7 +220,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (K9.DEBUG) {
-            Timber.v("MessageProvider/update: " + uri);
+            Timber.v("MessageProvider/update: %s", uri);
         }
 
         // TBD
@@ -1055,7 +1055,7 @@ public class MessageProvider extends ContentProvider {
 
             // Android content resolvers can only process CrossProcessCursor instances
             if (!(cursor instanceof CrossProcessCursor)) {
-                Timber.w("Unsupported cursor, returning null: " + cursor);
+                Timber.w("Unsupported cursor, returning null: %s", cursor);
                 semaphore.release();
                 return null;
             }

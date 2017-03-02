@@ -98,7 +98,7 @@ public class IdentityHeaderBuilder {
         String k9identity = IdentityField.IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
 
         if (K9.DEBUG) {
-            Timber.d("Generated identity: " + k9identity);
+            Timber.d("Generated identity: %s", k9identity);
         }
 
         return k9identity;

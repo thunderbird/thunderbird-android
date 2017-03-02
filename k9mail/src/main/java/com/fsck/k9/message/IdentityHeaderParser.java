@@ -25,7 +25,7 @@ public class IdentityHeaderParser {
         Map<IdentityField, String> identity = new HashMap<IdentityField, String>();
 
         if (K9.DEBUG) {
-            Timber.d("Decoding identity: " + identityString);
+            Timber.d("Decoding identity: %s", identityString);
         }
 
         if (identityString == null || identityString.length() < 1) {
@@ -45,7 +45,7 @@ public class IdentityHeaderParser {
             }
 
             if (K9.DEBUG) {
-                Timber.d("Decoded identity: " + identity.toString());
+                Timber.d("Decoded identity: %s", identity.toString());
             }
 
             // Sanity check our Integers so that recipients of this result don't have to.
@@ -54,7 +54,7 @@ public class IdentityHeaderParser {
                     try {
                         Integer.parseInt(identity.get(key));
                     } catch (NumberFormatException e) {
-                        Timber.e("Invalid " + key.name() + " field in identity: " + identity.get(key));
+                        Timber.e("Invalid %s field in identity: %s", key.name(), identity.get(key));
                     }
                 }
             }
@@ -62,7 +62,7 @@ public class IdentityHeaderParser {
             // Legacy identity
 
             if (K9.DEBUG) {
-                Timber.d("Got a saved legacy identity: " + identityString);
+                Timber.d("Got a saved legacy identity: %s", identityString);
             }
             StringTokenizer tokenizer = new StringTokenizer(identityString, ":", false);
 
@@ -72,7 +72,7 @@ public class IdentityHeaderParser {
                 try {
                     identity.put(IdentityField.LENGTH, Integer.valueOf(bodyLengthS).toString());
                 } catch (Exception e) {
-                    Timber.e("Unable to parse bodyLength '" + bodyLengthS + "'");
+                    Timber.e("Unable to parse bodyLength '%s'", bodyLengthS);
                 }
             }
             if (tokenizer.hasMoreTokens()) {

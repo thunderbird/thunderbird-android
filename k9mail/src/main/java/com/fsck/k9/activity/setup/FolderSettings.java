@@ -62,7 +62,7 @@ public class FolderSettings extends K9PreferenceActivity {
             mFolder = localStore.getFolder(folderName);
             mFolder.open(Folder.OPEN_MODE_RW);
         } catch (MessagingException me) {
-            Timber.e(me, "Unable to edit folder " + folderName + " preferences");
+            Timber.e(me, "Unable to edit folder %s preferences", folderName);
             return;
         }
 

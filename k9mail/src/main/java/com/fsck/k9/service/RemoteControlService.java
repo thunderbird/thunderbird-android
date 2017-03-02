@@ -38,7 +38,7 @@ public class RemoteControlService extends CoreService {
     @Override
     public int startService(final Intent intent, final int startId) {
         if (K9.DEBUG)
-            Timber.i("RemoteControlService started with startId = " + startId);
+            Timber.i("RemoteControlService started with startId = %d", startId);
         final Preferences preferences = Preferences.getPreferences(this);
 
         if (RESCHEDULE_ACTION.equals(intent.getAction())) {
@@ -64,7 +64,7 @@ public class RemoteControlService extends CoreService {
                             if (allAccounts) {
                                 Timber.i("RemoteControlService changing settings for all accounts");
                             } else {
-                                Timber.i("RemoteControlService changing settings for account with UUID " + uuid);
+                                Timber.i("RemoteControlService changing settings for account with UUID %s", uuid);
                             }
                         }
                         List<Account> accounts = preferences.getAccounts();
@@ -73,7 +73,7 @@ public class RemoteControlService extends CoreService {
                             if (allAccounts || account.getUuid().equals(uuid)) {
 
                                 if (K9.DEBUG)
-                                    Timber.i("RemoteControlService changing settings for account " +
+                                    Timber.i("RemoteControlService changing settings for account %s",
                                             account.getDescription());
 
                                 String notificationEnabled = intent.getStringExtra(K9_NOTIFICATION_ENABLED);

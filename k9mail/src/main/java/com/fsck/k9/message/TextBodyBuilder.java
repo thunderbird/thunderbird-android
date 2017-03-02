@@ -48,7 +48,7 @@ class TextBodyBuilder {
             InsertableHtmlContent quotedHtmlContent = getQuotedTextHtml();
 
             if (K9.DEBUG) {
-                Timber.d("insertable: " + quotedHtmlContent.toDebugString());
+                Timber.d("insertable: %s", quotedHtmlContent.toDebugString());
             }
 
             if (mAppendSignature) {

@@ -204,7 +204,7 @@ public class StorageManager {
                 return isMountPoint(root)
                        && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
             } catch (IOException e) {
-                Timber.w(e, "Specified root isn't ready: " + mRoot);
+                Timber.w(e, "Specified root isn't ready: %s", mRoot);
                 return false;
             }
         }
@@ -608,7 +608,7 @@ public class StorageManager {
     public boolean isReady(final String providerId) {
         StorageProvider provider = getProvider(providerId);
         if (provider == null) {
-            Timber.w("Storage-Provider \"" + providerId + "\" does not exist");
+            Timber.w("Storage-Provider \"%s\" does not exist", providerId);
             return false;
         }
         return provider.isReady(context);
@@ -632,7 +632,7 @@ public class StorageManager {
      * @param path
      */
     public void onBeforeUnmount(final String path) {
-        Timber.i("storage path \"" + path + "\" unmounting");
+        Timber.i("storage path \"%s\" unmounting", path);
         final StorageProvider provider = resolveProvider(path);
         if (provider == null) {
             return;
@@ -651,7 +651,7 @@ public class StorageManager {
     }
 
     public void onAfterUnmount(final String path) {
-        Timber.i("storage path \"" + path + "\" unmounted");
+        Timber.i("storage path \"%s\" unmounted", path);
         final StorageProvider provider = resolveProvider(path);
         if (provider == null) {
             return;
@@ -669,7 +669,7 @@ public class StorageManager {
      * @param readOnly
      */
     public void onMount(final String path, final boolean readOnly) {
-        Timber.i("storage path \"" + path + "\" mounted readOnly=" + readOnly);
+        Timber.i("storage path \"%s\" mounted readOnly=%s", path, readOnly);
         if (readOnly) {
             return;
         }

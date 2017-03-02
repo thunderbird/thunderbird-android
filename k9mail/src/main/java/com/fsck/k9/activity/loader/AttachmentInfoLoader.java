@@ -87,16 +87,15 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
         if (size <= 0) {
             String uriString = uri.toString();
             if (uriString.startsWith("file://")) {
-                Timber.v(uriString.substring("file://".length()));
                 File f = new File(uriString.substring("file://".length()));
                 size = f.length();
             } else {
-                Timber.v("Not a file: " + uriString);
+                Timber.v("Not a file: %s", uriString);
             }
         } else {
-            Timber.v("old attachment.size: " + size);
+            Timber.v("old attachment.size: %d", size);
         }
-        Timber.v("new attachment.size: " + size);
+        Timber.v("new attachment.size: %d", size);
 
         cachedResultAttachment = sourceAttachment.deriveWithMetadataLoaded(usableContentType, name, size);
         return cachedResultAttachment;

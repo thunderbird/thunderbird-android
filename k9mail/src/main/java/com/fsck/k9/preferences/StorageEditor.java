@@ -30,12 +30,12 @@ public class StorageEditor {
             Object value = entry.getValue();
             if (key != null && value != null) {
                 if (K9.DEBUG) {
-                    Timber.d("Copying key '" + key + "', value '" + value + "'");
+                    Timber.d("Copying key '%s', value '%s'", key, value);
                 }
                 changes.put(key, "" + value);
             } else {
                 if (K9.DEBUG) {
-                    Timber.d("Skipping copying key '" + key + "', value '" + value + "'");
+                    Timber.d("Skipping copying key '%s', value '%s'", key, value);
                 }
             }
         }
@@ -73,7 +73,7 @@ public class StorageEditor {
         };
         storage.doInTransaction(committer);
         long endTime = System.currentTimeMillis();
-        Timber.i("Preferences commit took " + (endTime - startTime) + "ms");
+        Timber.i("Preferences commit took %d ms", endTime - startTime);
 
     }
 

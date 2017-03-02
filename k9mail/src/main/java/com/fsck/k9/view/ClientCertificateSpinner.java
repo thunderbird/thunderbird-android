@@ -103,7 +103,7 @@ public class ClientCertificateSpinner extends LinearLayout {
             @Override
             public void alias(String alias) {
                 if (K9.DEBUG)
-                    Timber.d("User has selected client certificate alias: " + alias);
+                    Timber.d("User has selected client certificate alias: %s", alias);
 
                 setAlias(alias);
             }

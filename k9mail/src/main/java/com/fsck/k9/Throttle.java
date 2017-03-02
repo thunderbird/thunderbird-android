@@ -97,7 +97,7 @@ public class Throttle {
     }
 
     private void debugLog(String message) {
-        Timber.d("Throttle: [" + mName + "] " + message);
+        Timber.d("Throttle: [%s] %s", mName, message);
     }
 
     private boolean isCallbackScheduled() {

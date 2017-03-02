@@ -111,7 +111,7 @@ abstract class K9WebViewClient extends WebViewClient {
 
             return new WebResourceResponse(mimeType, null, inputStream);
         } catch (Exception e) {
-            Timber.e(e, "Error while intercepting URI: " + uri);
+            Timber.e(e, "Error while intercepting URI: %s", uri);
             return RESULT_DUMMY_RESPONSE;
         }
     }

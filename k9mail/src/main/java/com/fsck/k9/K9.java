@@ -418,7 +418,7 @@ public class K9 extends Application {
                 try {
                     queue.put(new Handler());
                 } catch (InterruptedException e) {
-                    Timber.e(e, "");
+                    Timber.e(e);
                 }
                 Looper.loop();
             }
@@ -572,10 +572,8 @@ public class K9 extends Application {
                 intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
                 K9.this.sendBroadcast(intent);
                 if (K9.DEBUG)
-                    Timber.d("Broadcasted: action=" + action
-                            + " account=" + account.getDescription()
-                            + " folder=" + folder
-                            + " message uid=" + message.getUid());
+                    Timber.d("Broadcasted: action=%s account=%s folder=%s message uid=%s",
+                            action, account.getDescription(), folder, message.getUid());
             }
 
             private void updateUnreadWidget() {
@@ -805,12 +803,12 @@ public class K9 extends Application {
         synchronized (observers) {
             for (final ApplicationAware aware : observers) {
                 if (K9.DEBUG) {
-                    Timber.v("Initializing observer: " + aware);
+                    Timber.v("Initializing observer: %s", aware);
                 }
                 try {
                     aware.initializeComponent(this);
                 } catch (Exception e) {
-                    Timber.w(e, "Failure when notifying " + aware);
+                    Timber.w(e, "Failure when notifying %s", aware);
                 }
             }
 

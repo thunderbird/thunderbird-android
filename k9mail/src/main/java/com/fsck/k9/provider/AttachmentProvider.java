@@ -96,13 +96,13 @@ public class AttachmentProvider extends ContentProvider {
             final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
             attachmentInfo = LocalStore.getInstance(account, getContext()).getAttachmentInfo(id);
         } catch (MessagingException e) {
-            Timber.e(e, "Unable to retrieve attachment info from local store for ID: " + id);
+            Timber.e(e, "Unable to retrieve attachment info from local store for ID: %s", id);
             return null;
         }
 
         if (attachmentInfo == null) {
             if (K9.DEBUG) {
-                Timber.d("No attachment info for ID: " + id);
+                Timber.d("No attachment info for ID: %s", id);
             }
             return null;
         }
@@ -154,7 +154,7 @@ public class AttachmentProvider extends ContentProvider {
                 type = attachmentInfo.type;
             }
         } catch (MessagingException e) {
-            Timber.e(e, "Unable to retrieve LocalStore for " + account);
+            Timber.e(e, "Unable to retrieve LocalStore for %s", account);
             type = MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE;
         }
 

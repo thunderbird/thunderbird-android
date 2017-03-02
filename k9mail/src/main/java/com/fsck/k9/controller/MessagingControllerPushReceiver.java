@@ -41,7 +41,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
 
     public void syncFolder(Folder folder) {
         if (K9.DEBUG)
-            Timber.v("syncFolder(" + folder.getName() + ")");
+            Timber.v("syncFolder(%s)", folder.getName());
         final CountDownLatch latch = new CountDownLatch(1);
         controller.synchronizeMailbox(account, folder.getName(), new SimpleMessagingListener() {
             @Override
@@ -58,11 +58,11 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         }, folder);
 
         if (K9.DEBUG)
-            Timber.v("syncFolder(" + folder.getName() + ") about to await latch release");
+            Timber.v("syncFolder(%s) about to await latch release", folder.getName());
         try {
             latch.await();
             if (K9.DEBUG)
-                Timber.v("syncFolder(" + folder.getName() + ") got latch release");
+                Timber.v("syncFolder(%s) got latch release", folder.getName());
         } catch (Exception e) {
             Timber.e(e, "Interrupted while awaiting latch release");
         }
@@ -96,8 +96,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             localFolder.open(Folder.OPEN_MODE_RW);
             return localFolder.getPushState();
         } catch (Exception e) {
-            Timber.e(e, "Unable to get push state from account " + account.getDescription()
-                    + ", folder " + folderName);
+            Timber.e(e, "Unable to get push state from account %s, folder %s", account.getDescription(), folderName);
             return null;
         } finally {
             if (localFolder != null) {

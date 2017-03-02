@@ -32,8 +32,8 @@ class MigrationTo42 {
 
             editor.commit();
             long endTime = System.currentTimeMillis();
-            Timber.i("Putting folder preferences for " + folders.size() +
-                    " folders back into Preferences took " + (endTime - startTime) + " ms");
+            Timber.i("Putting folder preferences for %d folders back into Preferences took %d ms",
+                    folders.size(), endTime - startTime);
         } catch (Exception e) {
             Timber.e(e, "Could not replace Preferences in upgrade from DB_VERSION 41");
         }

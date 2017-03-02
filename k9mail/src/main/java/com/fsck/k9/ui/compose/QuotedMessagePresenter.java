@@ -251,8 +251,8 @@ public class QuotedMessagePresenter {
                 quotedTextFormat = SimpleMessageFormat.HTML;
                 String text = MessageExtractor.getTextFromPart(part);
                 if (K9.DEBUG) {
-                    Timber.d("Loading message with offset " + bodyOffset + ", length " + bodyLength +
-                            ". Text length is " + text.length() + ".");
+                    Timber.d("Loading message with offset %d, length %d. Text length is %d.",
+                            bodyOffset, bodyLength, text.length());
                 }
 
                 if (bodyOffset + bodyLength > text.length()) {
@@ -320,8 +320,8 @@ public class QuotedMessagePresenter {
 
         String messageText = MessageExtractor.getTextFromPart(textPart);
         if (K9.DEBUG) {
-            Timber.d("Loading message with offset " + bodyOffset + ", length " + bodyLength +
-                    ". Text length is " + messageText.length() + ".");
+            Timber.d("Loading message with offset %d, length %d. Text length is %d.",
+                    bodyOffset, bodyLength, messageText.length());
         }
 
         // If we had a body length (and it was valid), separate the composition from the quoted text

@@ -290,7 +290,7 @@ public class MessageCryptoHelper {
                 new IOpenPgpSinkResultCallback<MimeBodyPart>() {
             @Override
             public void onProgress(int current, int max) {
-                Timber.d("received progress status: " + current + " / " + max);
+                Timber.d("received progress status: %d / %d", current, max);
                 callbackProgress(current, max);
             }
 
@@ -344,7 +344,7 @@ public class MessageCryptoHelper {
 
             @Override
             public void onProgress(int current, int max) {
-                Timber.d("received progress status: " + current + " / " + max);
+                Timber.d("received progress status: %d / %d", current, max);
                 callbackProgress(current, max);
             }
         });
@@ -366,7 +366,7 @@ public class MessageCryptoHelper {
 
             @Override
             public void onProgress(int current, int max) {
-                Timber.d("received progress status: " + current + " / " + max);
+                Timber.d("received progress status: %d / %d", current, max);
                 callbackProgress(current, max);
             }
         });
@@ -379,7 +379,7 @@ public class MessageCryptoHelper {
                 try {
                     Multipart multipartSignedMultipart = (Multipart) signedPart.getBody();
                     BodyPart signatureBodyPart = multipartSignedMultipart.getBodyPart(0);
-                    Timber.d("signed data type: " + signatureBodyPart.getMimeType());
+                    Timber.d("signed data type: %s", signatureBodyPart.getMimeType());
                     signatureBodyPart.writeTo(os);
                 } catch (MessagingException e) {
                     Timber.e(e, "Exception while writing message to crypto provider");
@@ -471,7 +471,7 @@ public class MessageCryptoHelper {
     private void handleCryptoOperationResult(MimeBodyPart outputPart) {
         int resultCode = currentCryptoResult.getIntExtra(OpenPgpApi.RESULT_CODE, INVALID_OPENPGP_RESULT_CODE);
         if (K9.DEBUG) {
-            Timber.d("OpenPGP API decryptVerify result code: " + resultCode);
+            Timber.d("OpenPGP API decryptVerify result code: %d", resultCode);
         }
 
         switch (resultCode) {
@@ -506,7 +506,7 @@ public class MessageCryptoHelper {
     private void handleCryptoOperationError() {
         OpenPgpError error = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
         if (K9.DEBUG) {
-            Timber.w("OpenPGP API error: " + error.getMessage());
+            Timber.w("OpenPGP API error: %s", error.getMessage());
         }
 
         onCryptoOperationFailed(error);
