@@ -74,7 +74,7 @@ public class DecryptedFileProvider extends FileProvider {
     public static boolean deleteOldTemporaryFiles(Context context) {
         File tempDirectory = getDecryptedTempDirectory(context);
         boolean allFilesDeleted = true;
-        long deletionThreshold = new Date().getTime() - FILE_DELETE_THRESHOLD_MILLISECONDS;
+        long deletionThreshold = System.currentTimeMillis() - FILE_DELETE_THRESHOLD_MILLISECONDS;
         for (File tempFile : tempDirectory.listFiles()) {
             long lastModified = tempFile.lastModified();
             if (lastModified < deletionThreshold) {
