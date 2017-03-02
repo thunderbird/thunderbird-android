@@ -54,7 +54,7 @@ abstract class BaseNotifications {
         return controller.createNotificationBuilder()
                 .setSmallIcon(getNewMailNotificationIcon())
                 .setColor(account.getChipColor())
-                .setWhen(System.currentTimeMillis())
+                .setWhen(SystemClock.elapsedRealtime())
                 .setAutoCancel(true)
                 .setCategory(NotificationCompat.CATEGORY_EMAIL);
     }

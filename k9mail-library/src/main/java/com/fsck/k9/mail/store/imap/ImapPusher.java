@@ -99,6 +99,6 @@ class ImapPusher implements Pusher {
     }
 
     long currentTimeMillis() {
-        return System.currentTimeMillis();
+        return SystemClock.elapsedRealtime();
     }
 }

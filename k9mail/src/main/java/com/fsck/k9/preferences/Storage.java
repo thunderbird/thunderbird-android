@@ -166,7 +166,7 @@ public class Storage {
     }
 
     private void loadValues() {
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealtime();
         Log.i(K9.LOG_TAG, "Loading preferences from DB into Storage");
         Cursor cursor = null;
         SQLiteDatabase mDb = null;
@@ -187,7 +187,7 @@ public class Storage {
             if (mDb != null) {
                 mDb.close();
             }
-            long endTime = System.currentTimeMillis();
+            long endTime = SystemClock.elapsedRealtime();
             Log.i(K9.LOG_TAG, "Preferences load took " + (endTime - startTime) + "ms");
         }
     }

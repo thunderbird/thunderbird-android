@@ -35,7 +35,7 @@ class AuthenticationErrorNotifications {
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.notification_icon_warning)
-                .setWhen(System.currentTimeMillis())
+                .setWhen(SystemClock.elapsedRealtime())
                 .setAutoCancel(true)
                 .setTicker(title)
                 .setContentTitle(title)

@@ -34,7 +34,7 @@ class CertificateErrorNotifications {
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(getCertificateErrorNotificationIcon())
-                .setWhen(System.currentTimeMillis())
+                .setWhen(SystemClock.elapsedRealtime())
                 .setAutoCancel(true)
                 .setTicker(title)
                 .setContentTitle(title)

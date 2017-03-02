@@ -35,7 +35,7 @@ class SendFailedNotifications {
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(getSendFailedNotificationIcon())
-                .setWhen(System.currentTimeMillis())
+                .setWhen(SystemClock.elapsedRealtime())
                 .setAutoCancel(true)
                 .setTicker(title)
                 .setContentTitle(title)

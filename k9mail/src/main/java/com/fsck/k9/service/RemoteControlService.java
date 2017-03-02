@@ -136,13 +136,13 @@ public class RemoteControlService extends CoreService {
                         if (needsReschedule) {
                             Intent i = new Intent(RemoteControlService.this, RemoteControlService.class);
                             i.setAction(RESCHEDULE_ACTION);
-                            long nextTime = System.currentTimeMillis() + 10000;
+                            long nextTime = SystemClock.elapsedRealtime() + 10000;
                             BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
                         }
                         if (needsPushRestart) {
                             Intent i = new Intent(RemoteControlService.this, RemoteControlService.class);
                             i.setAction(PUSH_RESTART_ACTION);
-                            long nextTime = System.currentTimeMillis() + 10000;
+                            long nextTime = SystemClock.elapsedRealtime() + 10000;
                             BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
                         }
                     } catch (Exception e) {

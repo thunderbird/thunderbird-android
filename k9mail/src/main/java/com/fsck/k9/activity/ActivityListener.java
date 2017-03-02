@@ -43,7 +43,7 @@ public class ActivityListener extends SimpleMessagingListener {
             long nextPollTime = MailService.getNextPollTime();
             if (nextPollTime != -1) {
                 return context.getString(R.string.status_next_poll,
-                        DateUtils.getRelativeTimeSpanString(nextPollTime, System.currentTimeMillis(),
+                        DateUtils.getRelativeTimeSpanString(nextPollTime, SystemClock.elapsedRealtime(),
                                 DateUtils.MINUTE_IN_MILLIS, 0));
             } else if (K9.DEBUG && MailService.isSyncDisabled()) {
                 if (MailService.hasNoConnectivity()) {

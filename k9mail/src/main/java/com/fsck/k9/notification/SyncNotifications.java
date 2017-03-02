@@ -39,7 +39,7 @@ class SyncNotifications {
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
-                .setWhen(System.currentTimeMillis())
+                .setWhen(SystemClock.elapsedRealtime())
                 .setOngoing(true)
                 .setTicker(tickerText)
                 .setContentTitle(title)
@@ -77,7 +77,7 @@ class SyncNotifications {
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
-                .setWhen(System.currentTimeMillis())
+                .setWhen(SystemClock.elapsedRealtime())
                 .setOngoing(true)
                 .setTicker(tickerText)
                 .setContentTitle(title)
