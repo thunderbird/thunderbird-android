@@ -166,7 +166,7 @@ public class Settings {
         T defaultValue = setting.getDefaultValue();
         validatedSettingsMutable.put(settingName, defaultValue);
 
-        if (K9.DEBUG) {
+        if (K9.isDebug()) {
             String prettyValue = setting.toPrettyString(defaultValue);
             Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue);
         }

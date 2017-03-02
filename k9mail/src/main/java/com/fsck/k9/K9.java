@@ -137,7 +137,7 @@ public class K9 extends Application {
      * Log.d, including protocol dumps.
      * Controlled by Preferences at run-time
      */
-    public static boolean DEBUG = false;
+    private static boolean DEBUG = false;
 
     /**
      * If this is enabled than logging that normally hides sensitive information
@@ -523,10 +523,6 @@ public class K9 extends Application {
         app = this;
         Globals.setContext(this);
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new DebugTree());
-        }
-
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
             @Override public boolean enabled() {
                 return DEBUG;
@@ -675,7 +671,7 @@ public class K9 extends Application {
      */
     public static void loadPrefs(Preferences prefs) {
         Storage storage = prefs.getStorage();
-        DEBUG = storage.getBoolean("enableDebugLogging", BuildConfig.DEVELOPER_MODE);
+        setDebug(storage.getBoolean("enableDebugLogging", BuildConfig.DEVELOPER_MODE));
         DEBUG_SENSITIVE = storage.getBoolean("enableSensitiveLogging", false);
         mAnimations = storage.getBoolean("animations", true);
         mGesturesEnabled = storage.getBoolean("gesturesEnabled", false);
@@ -1020,7 +1016,14 @@ public class K9 extends Application {
         return false;
     }
 
+    public static void setDebug(boolean debug) {
+        K9.DEBUG = debug;
+        updateLoggingStatus();
+    }
 
+    public static boolean isDebug() {
+        return DEBUG;
+    }
 
     public static boolean startIntegratedInbox() {
         return mStartIntegratedInbox;
@@ -1422,4 +1425,13 @@ public class K9 extends Application {
             editor.commit();
         }
     }
+
+    private static void updateLoggingStatus() {
+        Timber.uprootAll();
+        boolean enableDebugLogging = BuildConfig.DEBUG || DEBUG;
+        if (enableDebugLogging) {
+            Timber.plant(new DebugTree());
+        }
+    }
+
 }

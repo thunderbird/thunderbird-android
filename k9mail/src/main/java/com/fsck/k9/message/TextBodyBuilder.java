@@ -47,7 +47,7 @@ class TextBodyBuilder {
         if (mIncludeQuotedText) {
             InsertableHtmlContent quotedHtmlContent = getQuotedTextHtml();
 
-            if (K9.DEBUG) {
+            if (K9.isDebug()) {
                 Timber.d("insertable: %s", quotedHtmlContent.toDebugString());
             }
 

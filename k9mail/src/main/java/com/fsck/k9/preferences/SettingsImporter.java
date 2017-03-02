@@ -609,7 +609,7 @@ public class SettingsImporter {
      *         The new value for the preference.
      */
     private static void putString(StorageEditor editor, String key, String value) {
-        if (K9.DEBUG) {
+        if (K9.isDebug()) {
             String outputValue = value;
             if (!K9.DEBUG_SENSITIVE && (key.endsWith(".transportUri") || key.endsWith(".storeUri"))) {
                 outputValue = "*sensitive*";

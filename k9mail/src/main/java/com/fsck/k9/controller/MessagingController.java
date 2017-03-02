@@ -1287,7 +1287,7 @@ public class MessagingController {
                     public void messageFinished(T message, int number, int ofTotal) {
                         try {
                             if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
-                                if (K9.DEBUG) {
+                                if (K9.isDebug()) {
                                     if (message.isSet(Flag.DELETED)) {
                                         Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, " +
                                                 "skipping", account, folder, message.getUid());
@@ -2146,7 +2146,7 @@ public class MessagingController {
     private static AtomicBoolean loopCatch = new AtomicBoolean();
 
     private void addErrorMessage(Account account, String subject, String body) {
-        if (!K9.DEBUG) {
+        if (!K9.isDebug()) {
             return;
         }
         if (!loopCatch.compareAndSet(false, true)) {
