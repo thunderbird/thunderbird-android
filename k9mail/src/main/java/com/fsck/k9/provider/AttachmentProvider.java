@@ -96,7 +96,7 @@ public class AttachmentProvider extends ContentProvider {
             final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
             attachmentInfo = LocalStore.getInstance(account, getContext()).getAttachmentInfo(id);
         } catch (MessagingException e) {
-            Timber.e("Unable to retrieve attachment info from local store for ID: " + id, e);
+            Timber.e(e, "Unable to retrieve attachment info from local store for ID: " + id);
             return null;
         }
 
@@ -154,7 +154,7 @@ public class AttachmentProvider extends ContentProvider {
                 type = attachmentInfo.type;
             }
         } catch (MessagingException e) {
-            Timber.e("Unable to retrieve LocalStore for " + account, e);
+            Timber.e(e, "Unable to retrieve LocalStore for " + account);
             type = MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE;
         }
 
@@ -171,10 +171,10 @@ public class AttachmentProvider extends ContentProvider {
             }
             return openPgpDataSource.startPumpThread();
         } catch (MessagingException e) {
-            Timber.e("Error getting InputStream for attachment", e);
+            Timber.e(e, "Error getting InputStream for attachment");
             return null;
         } catch (IOException e) {
-            Timber.e("Error creating ParcelFileDescriptor", e);
+            Timber.e(e, "Error creating ParcelFileDescriptor");
             return null;
         }
     }

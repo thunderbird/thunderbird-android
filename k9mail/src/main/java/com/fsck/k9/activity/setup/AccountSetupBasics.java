@@ -232,7 +232,7 @@ public class AccountSetupBasics extends K9Activity
         try {
             name = getDefaultAccountName();
         } catch (Exception e) {
-            Timber.e("Could not get default account name", e);
+            Timber.e(e, "Could not get default account name");
         }
 
         if (name == null) {
@@ -496,7 +496,7 @@ public class AccountSetupBasics extends K9Activity
                 }
             }
         } catch (Exception e) {
-            Timber.e("Error while trying to load provider settings.", e);
+            Timber.e(e, "Error while trying to load provider settings.");
         }
         return null;
     }

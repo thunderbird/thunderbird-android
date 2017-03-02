@@ -261,7 +261,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     accountStatusChanged(account, stats);
                 }
             } catch (Exception e) {
-                Timber.e("Unable to get account stats", e);
+                Timber.e(e, "Unable to get account stats");
             }
         }
         @Override
@@ -995,7 +995,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 // Get list of folders from remote server
                 MessagingController.getInstance(mApplication).listFolders(mAccount, true, null);
             } catch (Exception e) {
-                Timber.e("Something went while setting account passwords", e);
+                Timber.e(e, "Something went while setting account passwords");
             }
             return null;
         }
@@ -1926,7 +1926,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
                             mAccountUuids);
             } catch (SettingsImportExportException e) {
-                Timber.w("Exception during export", e);
+                Timber.w(e, "Exception during export");
                 return false;
             }
             return true;
@@ -1993,13 +1993,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     }
                 }
             } catch (SettingsImportExportException e) {
-                Timber.w("Exception during import", e);
+                Timber.w(e, "Exception during import");
                 return false;
             } catch (FileNotFoundException e) {
-                Timber.w("Couldn't open import file", e);
+                Timber.w(e, "Couldn't open import file");
                 return false;
             } catch (Exception e) {
-                Timber.w("Unknown error", e);
+                Timber.w(e, "Unknown error");
                 return false;
             }
             return true;
@@ -2066,7 +2066,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     }
                 }
             } catch (SettingsImportExportException e) {
-                Timber.w("Exception during export", e);
+                Timber.w(e, "Exception during export");
                 return false;
             } catch (FileNotFoundException e) {
                 Timber.w("Couldn't read content from URI " + mUri);

@@ -24,7 +24,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.text.format.Time;
-import timber.log.Timber;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
@@ -46,9 +45,6 @@ import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 import com.fsck.k9.widget.list.MessageListWidgetProvider;
 import timber.log.Timber;
-
-import static timber.log.Timber.i;
-import static timber.log.Timber.v;
 
 
 public class K9 extends Application {
@@ -421,7 +417,7 @@ public class K9 extends Application {
                 try {
                     queue.put(new Handler());
                 } catch (InterruptedException e) {
-                    Timber.e("", e);
+                    Timber.e(e, "");
                 }
                 Looper.loop();
             }
@@ -431,13 +427,13 @@ public class K9 extends Application {
         try {
             final Handler storageGoneHandler = queue.take();
             registerReceiver(receiver, filter, null, storageGoneHandler);
-            i("Registered: unmount receiver");
+            Timber.i("Registered: unmount receiver");
         } catch (InterruptedException e) {
-            Timber.e("Unable to register unmount receiver", e);
+            Timber.e(e, "Unable to register unmount receiver");
         }
 
         registerReceiver(new ShutdownReceiver(), new IntentFilter(Intent.ACTION_SHUTDOWN));
-        i("Registered: shutdown receiver");
+        Timber.i("Registered: shutdown receiver");
     }
 
     public static void save(StorageEditor editor) {
@@ -582,7 +578,7 @@ public class K9 extends Application {
                     UnreadWidgetProvider.updateUnreadCount(K9.this);
                 } catch (Exception e) {
                     if (K9.DEBUG) {
-                        Timber.e("Error while updating unread widget(s)", e);
+                        Timber.e(e, "Error while updating unread widget(s)");
                     }
                 }
             }
@@ -594,7 +590,7 @@ public class K9 extends Application {
                     if (BuildConfig.DEBUG) {
                         throw e;
                     } else if (K9.DEBUG) {
-                        Timber.e("Error while updating message list widget", e);
+                        Timber.e(e, "Error while updating message list widget");
                     }
                 }
             }
@@ -804,12 +800,12 @@ public class K9 extends Application {
         synchronized (observers) {
             for (final ApplicationAware aware : observers) {
                 if (K9.DEBUG) {
-                    v("Initializing observer: " + aware);
+                    Timber.v("Initializing observer: " + aware);
                 }
                 try {
                     aware.initializeComponent(this);
                 } catch (Exception e) {
-                    Timber.w("Failure when notifying " + aware, e);
+                    Timber.w(e, "Failure when notifying " + aware);
                 }
             }
 

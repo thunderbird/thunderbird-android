@@ -72,7 +72,7 @@ public class AttachmentResolver {
                         result.put(contentId, attachmentInfo.internalUri);
                     }
                 } catch (MessagingException e) {
-                    Timber.e("Error extracting attachment info", e);
+                    Timber.e(e, "Error extracting attachment info");
                 }
             }
         }

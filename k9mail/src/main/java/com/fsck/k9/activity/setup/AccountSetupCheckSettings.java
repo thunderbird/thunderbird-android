@@ -101,7 +101,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     }
 
     private void handleCertificateValidationException(CertificateValidationException cve) {
-        Timber.e("Error while testing settings", cve);
+        Timber.e(cve, "Error while testing settings");
 
         X509Certificate[] chain = cve.getCertChain();
         // Avoid NullPointerException in acceptKeyDialog()
@@ -155,7 +155,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 try {
                     sha1 = MessageDigest.getInstance("SHA-1");
                 } catch (NoSuchAlgorithmException e) {
-                    Timber.e("Error while initializing MessageDigest", e);
+                    Timber.e(e, "Error while initializing MessageDigest");
                 }
 
                 final X509Certificate[] chain = ex.getCertChain();
@@ -232,7 +232,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         }
                     } catch (Exception e1) {
                         // don't fail just because of subjectAltNames
-                        Timber.w("cannot display SubjectAltNames in dialog", e1);
+                        Timber.w(e1, "cannot display SubjectAltNames in dialog");
                     }
 
                     chainInfo.append("Issuer: ").append(chain[i].getIssuerDN().toString()).append("\n");
@@ -242,7 +242,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             String sha1sum = Hex.encodeHex(sha1.digest(chain[i].getEncoded()));
                             chainInfo.append("Fingerprint (SHA-1): ").append(sha1sum).append("\n");
                         } catch (CertificateEncodingException e) {
-                            Timber.e("Error while encoding certificate", e);
+                            Timber.e(e, "Error while encoding certificate");
                         }
                     }
                 }
@@ -429,14 +429,14 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 finish();
 
             } catch (AuthenticationFailedException afe) {
-                Timber.e("Error while testing settings", afe);
+                Timber.e(afe, "Error while testing settings");
                 showErrorDialog(
                         R.string.account_setup_failed_dlg_auth_message_fmt,
                         afe.getMessage() == null ? "" : afe.getMessage());
             } catch (CertificateValidationException cve) {
                 handleCertificateValidationException(cve);
             } catch (Exception e) {
-                Timber.e("Error while testing settings", e);
+                Timber.e(e, "Error while testing settings");
                 String message = e.getMessage() == null ? "" : e.getMessage();
                 showErrorDialog(R.string.account_setup_failed_dlg_server_message_fmt, message);
             }

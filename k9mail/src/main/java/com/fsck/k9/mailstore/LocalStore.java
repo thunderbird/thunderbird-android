@@ -249,7 +249,7 @@ public class LocalStore extends Store implements Serializable {
         try {
             removeInstance(account);
         } catch (Exception e) {
-            Timber.e("Failed to reset local store for account " + account.getUuid(), e);
+            Timber.e(e, "Failed to reset local store for account " + account.getUuid());
         }
     }
 
@@ -631,7 +631,7 @@ public class LocalStore extends Store implements Serializable {
                         i++;
                     }
                 } catch (Exception e) {
-                    Timber.d("Got an exception", e);
+                    Timber.d(e, "Got an exception");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }

@@ -115,7 +115,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
             Store store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
         } catch (Exception e) {
-            Timber.e("Could not get remote store", e);
+            Timber.e(e, "Could not get remote store");
         }
 
 

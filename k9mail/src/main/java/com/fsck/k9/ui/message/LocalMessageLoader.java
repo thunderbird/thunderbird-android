@@ -49,7 +49,7 @@ public class LocalMessageLoader extends AsyncTaskLoader<LocalMessage> {
         try {
             return loadMessageFromDatabase();
         } catch (Exception e) {
-            Timber.e("Error while loading message from database", e);
+            Timber.e(e, "Error while loading message from database");
             return null;
         }
     }

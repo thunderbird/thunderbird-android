@@ -119,7 +119,7 @@ public class Storage {
                             writeValue(mDb, uuid + ".storeUri", newStoreUriStr);
                         }
                     } catch (Exception e) {
-                        Timber.e("ooops", e);
+                        Timber.e(e, "ooops");
                     }
                 }
             }
@@ -294,7 +294,7 @@ public class Storage {
         try {
             return Integer.parseInt(val);
         } catch (NumberFormatException nfe) {
-            Timber.e("Could not parse int", nfe);
+            Timber.e(nfe, "Could not parse int");
             return defValue;
         }
     }
@@ -307,7 +307,7 @@ public class Storage {
         try {
             return Long.parseLong(val);
         } catch (NumberFormatException nfe) {
-            Timber.e("Could not parse long", nfe);
+            Timber.e(nfe, "Could not parse long");
             return defValue;
         }
     }

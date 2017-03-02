@@ -612,7 +612,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             prefHolder.displayClass = FolderClass.valueOf(storage.getString(id + ".displayMode",
                                       prefHolder.displayClass.name()));
         } catch (Exception e) {
-            Timber.e("Unable to load displayMode for " + getName(), e);
+            Timber.e(e, "Unable to load displayMode for " + getName());
         }
         if (prefHolder.displayClass == FolderClass.NONE) {
             prefHolder.displayClass = FolderClass.NO_CLASS;
@@ -622,7 +622,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             prefHolder.syncClass = FolderClass.valueOf(storage.getString(id  + ".syncMode",
                                    prefHolder.syncClass.name()));
         } catch (Exception e) {
-            Timber.e("Unable to load syncMode for " + getName(), e);
+            Timber.e(e, "Unable to load syncMode for " + getName());
 
         }
         if (prefHolder.syncClass == FolderClass.NONE) {
@@ -633,7 +633,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             prefHolder.notifyClass = FolderClass.valueOf(storage.getString(id  + ".notifyMode",
                                    prefHolder.notifyClass.name()));
         } catch (Exception e) {
-            Timber.e("Unable to load notifyMode for " + getName(), e);
+            Timber.e(e, "Unable to load notifyMode for " + getName());
         }
         if (prefHolder.notifyClass == FolderClass.NONE) {
             prefHolder.notifyClass = FolderClass.INHERITED;
@@ -643,7 +643,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             prefHolder.pushClass = FolderClass.valueOf(storage.getString(id  + ".pushMode",
                                    prefHolder.pushClass.name()));
         } catch (Exception e) {
-            Timber.e("Unable to load pushMode for " + getName(), e);
+            Timber.e(e, "Unable to load pushMode for " + getName());
         }
         if (prefHolder.pushClass == FolderClass.NONE) {
             prefHolder.pushClass = FolderClass.INHERITED;
@@ -1661,7 +1661,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 try {
                     updateOrInsertMessagePart(db, new ContentValues(), part, messagePartId);
                 } catch (Exception e) {
-                    Timber.e("Error writing message part", e);
+                    Timber.e(e, "Error writing message part");
                 }
 
                 return null;
@@ -1709,7 +1709,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         try {
                             message.setFlags(flags, value);
                         } catch (MessagingException e) {
-                            Timber.e("Something went wrong while setting flag", e);
+                            Timber.e(e, "Something went wrong while setting flag");
                         }
                     }
 
@@ -1925,7 +1925,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         return cursor.getInt(0);
                     }
                 } catch (Exception e) {
-                    Timber.e("Unable to updateLastUid: ", e);
+                    Timber.e(e, "Unable to updateLastUid: ");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }
@@ -1950,7 +1950,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         return cursor.getLong(0);
                     }
                 } catch (Exception e) {
-                    Timber.e("Unable to fetch oldest message date: ", e);
+                    Timber.e(e, "Unable to fetch oldest message date: ");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }

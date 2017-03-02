@@ -35,7 +35,7 @@ class MigrationTo42 {
             Timber.i("Putting folder preferences for " + folders.size() +
                     " folders back into Preferences took " + (endTime - startTime) + " ms");
         } catch (Exception e) {
-            Timber.e("Could not replace Preferences in upgrade from DB_VERSION 41", e);
+            Timber.e(e, "Could not replace Preferences in upgrade from DB_VERSION 41");
         }
     }
 }

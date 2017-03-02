@@ -46,7 +46,7 @@ public class StorageEditor {
             commitChanges();
             return true;
         } catch (Exception e) {
-            Timber.e("Failed to save preferences", e);
+            Timber.e(e, "Failed to save preferences");
             return false;
         }
     }

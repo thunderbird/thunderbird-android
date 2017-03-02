@@ -13,7 +13,7 @@ class MigrationTo35 {
         try {
             db.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
         } catch (SQLiteException e) {
-            Timber.e("Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
+            Timber.e(e, "Unable to get rid of obsolete flag X_NO_SEEN_INFO");
         }
     }
 }

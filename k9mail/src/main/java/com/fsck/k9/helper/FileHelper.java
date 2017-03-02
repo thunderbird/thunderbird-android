@@ -82,7 +82,7 @@ public class FileHelper {
                 }
             }
         } catch (Exception e) {
-            Timber.d("Unable to touch file: " + file.getAbsolutePath(), e);
+            Timber.d(e, "Unable to touch file: " + file.getAbsolutePath());
         }
     }
 
@@ -150,7 +150,7 @@ public class FileHelper {
             }
             return true;
         } catch (Exception e) {
-            Timber.w("cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
+            Timber.w(e, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath());
             return false;
         }
     }

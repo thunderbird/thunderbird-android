@@ -309,7 +309,7 @@ public class MailService extends CoreService {
                 }
             } catch (Exception e) {
                 // I once got a NullPointerException deep in new Date();
-                Timber.e("Exception while logging", e);
+                Timber.e(e, "Exception while logging");
             }
 
             Intent i = new Intent(this, MailService.class);
@@ -414,7 +414,7 @@ public class MailService extends CoreService {
             MessagingController.getInstance(getApplication()).sendPendingMessages(null);
 
         } catch (Exception e) {
-            Timber.e("Exception while refreshing pushers", e);
+            Timber.e(e, "Exception while refreshing pushers");
         }
     }
 

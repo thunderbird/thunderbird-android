@@ -99,7 +99,7 @@ public class AttachmentInfoExtractor {
             uri = DecryptedFileProvider.getUriForProvidedFile(
                     context, file, decryptedTempFileBody.getEncoding(), mimeType);
         } catch (IOException e) {
-            Timber.e("Decrypted temp file (no longer?) exists!", e);
+            Timber.e(e, "Decrypted temp file (no longer?) exists!");
             uri = null;
         }
         return uri;

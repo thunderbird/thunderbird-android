@@ -50,7 +50,7 @@ class MigrationTo55 {
                 }
             }
         } catch (MessagingException e) {
-            Timber.e("error indexing fulltext - skipping rest, fts index is incomplete!", e);
+            Timber.e(e, "error indexing fulltext - skipping rest, fts index is incomplete!");
         }
     }
 }

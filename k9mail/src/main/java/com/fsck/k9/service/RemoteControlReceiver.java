@@ -41,7 +41,7 @@ public class RemoteControlReceiver extends CoreReceiver {
                 bundle.putStringArray(K9_ACCOUNT_UUIDS, uuids);
                 bundle.putStringArray(K9_ACCOUNT_DESCRIPTIONS, descriptions);
             } catch (Exception e) {
-                Timber.e("Could not handle K9_RESPONSE_INTENT", e);
+                Timber.e(e, "Could not handle K9_RESPONSE_INTENT");
             }
 
         }

@@ -190,7 +190,7 @@ public class QuotedMessagePresenter {
             try {
                 cursorPosition = Integer.parseInt(k9identity.get(IdentityField.CURSOR_POSITION));
             } catch (Exception e) {
-                Timber.e("Could not parse cursor position for MessageCompose; continuing.", e);
+                Timber.e(e, "Could not parse cursor position for MessageCompose; continuing.");
             }
         }
 
@@ -298,7 +298,7 @@ public class QuotedMessagePresenter {
         try {
             view.setMessageContentCursorPosition(cursorPosition);
         } catch (Exception e) {
-            Timber.e("Could not set cursor position in MessageCompose; ignoring.", e);
+            Timber.e(e, "Could not set cursor position in MessageCompose; ignoring.");
         }
 
         showOrHideQuotedText(quotedMode);

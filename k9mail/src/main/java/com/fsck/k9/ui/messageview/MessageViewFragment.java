@@ -789,7 +789,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 getActivity().startIntentSenderForResult(
                         si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);
             } catch (SendIntentException e) {
-                Timber.e("Irrecoverable error calling PendingIntent!", e);
+                Timber.e(e, "Irrecoverable error calling PendingIntent!");
             }
         }
     };

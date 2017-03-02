@@ -204,7 +204,7 @@ public class StorageManager {
                 return isMountPoint(root)
                        && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
             } catch (IOException e) {
-                Timber.w("Specified root isn't ready: " + mRoot, e);
+                Timber.w(e, "Specified root isn't ready: " + mRoot);
                 return false;
             }
         }
@@ -641,7 +641,7 @@ public class StorageManager {
             try {
                 listener.onUnmount(provider.getId());
             } catch (Exception e) {
-                Timber.w("Error while notifying StorageListener", e);
+                Timber.w(e, "Error while notifying StorageListener");
             }
         }
         final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
@@ -682,7 +682,7 @@ public class StorageManager {
             try {
                 listener.onMount(provider.getId());
             } catch (Exception e) {
-                Timber.w("Error while notifying StorageListener", e);
+                Timber.w(e, "Error while notifying StorageListener");
             }
         }
 

@@ -188,7 +188,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 final Address senderEmail = mMessage.getFrom()[0];
                 mContacts.createContact(senderEmail);
             } catch (Exception e) {
-                Timber.e("Couldn't create contact", e);
+                Timber.e(e, "Couldn't create contact");
             }
         }
     }

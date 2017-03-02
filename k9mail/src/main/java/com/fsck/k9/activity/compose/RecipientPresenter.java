@@ -678,7 +678,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         // TODO handle error case better
         recipientMvpView.showErrorOpenPgpConnection();
         cryptoProviderState = CryptoProviderState.ERROR;
-        Timber.e("error connecting to crypto provider!", e);
+        Timber.e(e, "error connecting to crypto provider!");
         updateCryptoStatus();
     }
 

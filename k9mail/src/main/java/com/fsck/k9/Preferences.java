@@ -130,7 +130,7 @@ public class Preferences {
         try {
             RemoteStore.removeInstance(account);
         } catch (Exception e) {
-            Timber.e("Failed to reset remote store for account " + account.getUuid(), e);
+            Timber.e(e, "Failed to reset remote store for account " + account.getUuid());
         }
         LocalStore.removeAccount(account);
 
@@ -178,8 +178,8 @@ public class Preferences {
             try {
                 return Enum.valueOf(defaultEnum.getDeclaringClass(), stringPref);
             } catch (IllegalArgumentException ex) {
-                Timber.w("Unable to convert preference key [" + key +
-                        "] value [" + stringPref + "] to enum of type " + defaultEnum.getDeclaringClass(), ex);
+                Timber.w(ex, "Unable to convert preference key [" + key +
+                        "] value [" + stringPref + "] to enum of type " + defaultEnum.getDeclaringClass());
 
                 return defaultEnum;
             }

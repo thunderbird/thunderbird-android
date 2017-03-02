@@ -124,7 +124,7 @@ class MigrationTo51 {
                     cv.put("attachment_count", attachmentCount);
                     db.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
                 } catch (IOException e) {
-                    Timber.e("error inserting into database", e);
+                    Timber.e(e, "error inserting into database");
                 }
             }
 

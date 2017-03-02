@@ -44,7 +44,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 throw new Error("Exception while upgrading database", e);
             }
 
-            Timber.e("Exception while upgrading database. Resetting the DB to v0", e);
+            Timber.e(e, "Exception while upgrading database. Resetting the DB to v0");
             db.setVersion(0);
             upgradeDatabase(db);
         }

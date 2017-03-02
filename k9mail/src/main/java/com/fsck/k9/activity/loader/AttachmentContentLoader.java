@@ -78,7 +78,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
             cachedResultAttachment = sourceAttachment.deriveWithLoadComplete(file.getAbsolutePath());
             return cachedResultAttachment;
         } catch (IOException e) {
-            Timber.e("Error saving attachment!", e);
+            Timber.e(e, "Error saving attachment!");
         }
 
         cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();

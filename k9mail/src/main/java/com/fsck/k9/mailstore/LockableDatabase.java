@@ -88,7 +88,7 @@ public class LockableDatabase {
                     unlockWrite();
                 }
             } catch (UnavailableStorageException e) {
-                Timber.w("Unable to writelock on unmount", e);
+                Timber.w(e, "Unable to writelock on unmount");
             }
         }
 
@@ -106,7 +106,7 @@ public class LockableDatabase {
             try {
                 openOrCreateDataspace();
             } catch (UnavailableStorageException e) {
-                Timber.e("Unable to open DB on mount", e);
+                Timber.e(e, "Unable to open DB on mount");
             }
         }
     }
@@ -326,7 +326,7 @@ public class LockableDatabase {
                 try {
                     mDb.close();
                 } catch (Exception e) {
-                    Timber.i("Unable to close DB on local store migration", e);
+                    Timber.i(e, "Unable to close DB on local store migration");
                 }
 
                 final StorageManager storageManager = getStorageManager();
@@ -378,7 +378,7 @@ public class LockableDatabase {
                 doOpenOrCreateDb(databaseFile);
             } catch (SQLiteException e) {
                 // TODO handle this error in a better way!
-                Timber.w("Unable to open DB " + databaseFile + " - removing file and retrying", e);
+                Timber.w(e, "Unable to open DB " + databaseFile + " - removing file and retrying");
                 if (databaseFile.exists() && !databaseFile.delete()) {
                     Timber.d("Failed to remove " + databaseFile + " that couldn't be opened");
                 }
@@ -493,7 +493,7 @@ public class LockableDatabase {
             try {
                 deleteDatabase(storageManager.getDatabase(uUid, mStorageProviderId));
             } catch (Exception e) {
-                Timber.i("LockableDatabase: delete(): Unable to delete backing DB file", e);
+                Timber.i(e, "LockableDatabase: delete(): Unable to delete backing DB file");
             }
 
             if (recreate) {

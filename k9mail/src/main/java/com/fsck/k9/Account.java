@@ -760,7 +760,7 @@ public class Account implements BaseAccount, StoreConfig {
         try {
             getLocalStore().resetVisibleLimits(getDisplayCount());
         } catch (MessagingException e) {
-            Timber.e("Unable to reset visible limits", e);
+            Timber.e(e, "Unable to reset visible limits");
         }
 
     }
@@ -953,8 +953,8 @@ public class Account implements BaseAccount, StoreConfig {
                 switchLocalStorage(id);
                 successful = true;
             } catch (MessagingException e) {
-                Timber.e("Switching local storage provider from " +
-                        mLocalStorageProviderId + " to " + id + " failed.", e);
+                Timber.e(e, "Switching local storage provider from " +
+                        mLocalStorageProviderId + " to " + id + " failed.");
             }
 
             // if migration to/from SD-card failed once, it will fail again.

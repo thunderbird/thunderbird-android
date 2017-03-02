@@ -150,7 +150,7 @@ public class MessageProvider extends ContentProvider {
             QueryHandler handler = queryHandlers.get(code);
             cursor = handler.query(uri, projection, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
-            Timber.e("Unable to execute query for URI: " + uri, e);
+            Timber.e(e, "Unable to execute query for URI: " + uri);
             return null;
         }
 
@@ -1076,7 +1076,7 @@ public class MessageProvider extends ContentProvider {
                         try {
                             monitored.close();
                         } catch (Exception e) {
-                            Timber.w("Exception while forcibly closing cursor", e);
+                            Timber.w(e, "Exception while forcibly closing cursor");
                         }
                     }
                 }
@@ -1119,7 +1119,7 @@ public class MessageProvider extends ContentProvider {
             try {
                 queue.put(holders);
             } catch (InterruptedException e) {
-                Timber.e("Unable to return message list back to caller", e);
+                Timber.e(e, "Unable to return message list back to caller");
             }
         }
     }

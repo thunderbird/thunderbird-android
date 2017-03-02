@@ -56,7 +56,7 @@ class MigrationTo43 {
                 obsoleteOutbox.delete(true);
             }
         } catch (Exception e) {
-            Timber.e("Error trying to fix the outbox folders", e);
+            Timber.e(e, "Error trying to fix the outbox folders");
         }
     }
 }

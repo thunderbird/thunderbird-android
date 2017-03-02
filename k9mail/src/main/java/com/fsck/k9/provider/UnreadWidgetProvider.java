@@ -100,7 +100,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
             }
         } catch (Exception e) {
             if (K9.DEBUG) {
-                Timber.e("Error getting widget configuration", e);
+                Timber.e(e, "Error getting widget configuration");
             }
         }
 

@@ -181,7 +181,7 @@ public class AttachmentController {
         try {
             intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(context, attachment.internalUri);
         } catch (IOException e) {
-            Timber.e("Error creating temp file for attachment!", e);
+            Timber.e(e, "Error creating temp file for attachment!");
             return null;
         }
 
@@ -212,7 +212,7 @@ public class AttachmentController {
                 viewIntent = createViewIntentForFileUri(resolvedIntentInfo.getMimeType(), Uri.fromFile(tempFile));
             } catch (IOException e) {
                 if (K9.DEBUG) {
-                    Timber.e("Error while saving attachment to use file:// URI with ACTION_VIEW Intent", e);
+                    Timber.e(e, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent");
                 }
                 viewIntent = createViewIntentForAttachmentProviderUri(intentDataUri, MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
             }
@@ -332,7 +332,7 @@ public class AttachmentController {
             try {
                 context.startActivity(intent);
             } catch (ActivityNotFoundException e) {
-                Timber.e("Could not display attachment of type " + attachment.mimeType, e);
+                Timber.e(e, "Could not display attachment of type " + attachment.mimeType);
 
                 String message = context.getString(R.string.message_view_no_viewer, attachment.mimeType);
                 displayMessageToUser(message);
@@ -354,7 +354,7 @@ public class AttachmentController {
                 return saveAttachmentWithUniqueFileName(directory);
             } catch (IOException e) {
                 if (K9.DEBUG) {
-                    Timber.e("Error saving attachment", e);
+                    Timber.e(e, "Error saving attachment");
                 }
                 return null;
             }

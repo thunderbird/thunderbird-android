@@ -57,7 +57,7 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
 
             return fileName;
         } catch (Exception e) {
-            Timber.e("Error while downloading image", e);
+            Timber.e(e, "Error while downloading image");
             return null;
         }
     }

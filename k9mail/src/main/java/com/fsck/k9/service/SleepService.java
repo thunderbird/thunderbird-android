@@ -54,7 +54,7 @@ public class SleepService extends CoreService {
                             currentThread().getName());
             }
         } catch (InterruptedException ie) {
-            Timber.e("SleepService Interrupted while awaiting latch", ie);
+            Timber.e(ie, "SleepService Interrupted while awaiting latch");
         }
         SleepDatum releaseDatum = sleepData.remove(id);
         if (releaseDatum == null) {
@@ -69,7 +69,7 @@ public class SleepService extends CoreService {
                     Timber.d("SleepService reacquireLatch finished for id = " + id + ", thread " +
                             currentThread().getName());
             } catch (InterruptedException ie) {
-                Timber.e("SleepService Interrupted while awaiting reacquireLatch", ie);
+                Timber.e(ie, "SleepService Interrupted while awaiting reacquireLatch");
             }
         } else {
             reacquireWakeLock(releaseDatum);

@@ -125,7 +125,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     }
 
     private void failure(Exception use) {
-        Timber.e("Failure", use);
+        Timber.e(use, "Failure");
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
 
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);

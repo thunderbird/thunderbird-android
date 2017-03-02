@@ -494,7 +494,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     Store store = mAccount.getRemoteStore();
                     isPushCapable = store.isPushCapable();
                 } catch (Exception e) {
-                    Timber.e("Could not get remote store", e);
+                    Timber.e(e, "Could not get remote store");
                 }
                 if (isPushCapable && mAccount.getFolderPushMode() != FolderMode.NONE) {
                     MailService.actionRestartPushers(this, null);
@@ -602,7 +602,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void failure(Exception use) {
-        Timber.e("Failure", use);
+        Timber.e(use, "Failure");
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
 
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);

@@ -64,7 +64,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             if (K9.DEBUG)
                 Timber.v("syncFolder(" + folder.getName() + ") got latch release");
         } catch (Exception e) {
-            Timber.e("Interrupted while awaiting latch release", e);
+            Timber.e(e, "Interrupted while awaiting latch release");
         }
     }
 
@@ -96,8 +96,8 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             localFolder.open(Folder.OPEN_MODE_RW);
             return localFolder.getPushState();
         } catch (Exception e) {
-            Timber.e("Unable to get push state from account " + account.getDescription()
-                    + ", folder " + folderName, e);
+            Timber.e(e, "Unable to get push state from account " + account.getDescription()
+                    + ", folder " + folderName);
             return null;
         } finally {
             if (localFolder != null) {

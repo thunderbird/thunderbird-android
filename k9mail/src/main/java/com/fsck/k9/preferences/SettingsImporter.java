@@ -193,7 +193,7 @@ public class SettingsImporter {
                         }
                     }
                 } catch (Exception e) {
-                    Timber.e("Exception while importing global settings", e);
+                    Timber.e(e, "Exception while importing global settings");
                 }
             }
 
@@ -244,12 +244,12 @@ public class SettingsImporter {
                                 }
                             } catch (InvalidSettingValueException e) {
                                 if (K9.DEBUG) {
-                                    Timber.e("Encountered invalid setting while " +
-                                            "importing account \"" + account.name + "\"", e);
+                                    Timber.e(e, "Encountered invalid setting while " +
+                                            "importing account \"" + account.name + "\"");
                                 }
                                 erroneousAccounts.add(new AccountDescription(account.name, account.uuid));
                             } catch (Exception e) {
-                                Timber.e("Exception while importing account \"" + account.name + "\"", e);
+                                Timber.e(e, "Exception while importing account \"" + account.name + "\"");
                                 erroneousAccounts.add(new AccountDescription(account.name, account.uuid));
                             }
                         } else {

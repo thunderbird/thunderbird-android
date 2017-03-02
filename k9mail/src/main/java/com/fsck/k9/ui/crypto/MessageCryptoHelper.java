@@ -226,7 +226,7 @@ public class MessageCryptoHelper {
                     @Override
                     public void onError(Exception e) {
                         // TODO actually handle (hand to ui, offer retry?)
-                        Timber.e("Couldn't connect to OpenPgpService", e);
+                        Timber.e(e, "Couldn't connect to OpenPgpService");
                     }
                 });
         openPgpServiceConnection.bindToService();
@@ -276,9 +276,9 @@ public class MessageCryptoHelper {
 
             throw new IllegalStateException("Unknown crypto part type: " + cryptoPartType);
         } catch (IOException e) {
-            Timber.e("IOException", e);
+            Timber.e(e, "IOException");
         } catch (MessagingException e) {
-            Timber.e("MessagingException", e);
+            Timber.e(e, "MessagingException");
         }
     }
 
@@ -321,7 +321,7 @@ public class MessageCryptoHelper {
                     TextBody body = new TextBody(new String(decryptedByteOutputStream.toByteArray()));
                     return new MimeBodyPart(body, "text/plain");
                 } catch (MessagingException e) {
-                    Timber.e("MessagingException", e);
+                    Timber.e(e, "MessagingException");
                 }
 
                 return null;
@@ -382,7 +382,7 @@ public class MessageCryptoHelper {
                     Timber.d("signed data type: " + signatureBodyPart.getMimeType());
                     signatureBodyPart.writeTo(os);
                 } catch (MessagingException e) {
-                    Timber.e("Exception while writing message to crypto provider", e);
+                    Timber.e(e, "Exception while writing message to crypto provider");
                 }
             }
         };
@@ -431,7 +431,7 @@ public class MessageCryptoHelper {
                         throw new IllegalStateException("part to stream must be encrypted or inline!");
                     }
                 } catch (MessagingException e) {
-                    Timber.e("MessagingException while writing message to crypto provider", e);
+                    Timber.e(e, "MessagingException while writing message to crypto provider");
                 }
             }
         };
@@ -447,7 +447,7 @@ public class MessageCryptoHelper {
                             DecryptedFileProvider.getFileFactory(context);
                     return MimePartStreamParser.parse(fileFactory, is);
                 } catch (MessagingException e) {
-                    Timber.e("Something went wrong while parsing the decrypted MIME part", e);
+                    Timber.e(e, "Something went wrong while parsing the decrypted MIME part");
                     //TODO: pass error to main thread and display error message to user
                     return null;
                 }
@@ -596,7 +596,7 @@ public class MessageCryptoHelper {
             partsToDecryptOrVerify.removeFirst();
             currentCryptoPart = null;
         } else {
-            Timber.e("Got to onCryptoFinished() with no part in processing!", new Throwable());
+            Timber.e(new Throwable(), "Got to onCryptoFinished() with no part in processing!");
         }
         decryptOrVerifyNextPart();
     }
@@ -726,7 +726,7 @@ public class MessageCryptoHelper {
             }
             return new MimeBodyPart(new TextBody(replacementText), "text/plain");
         } catch (MessagingException e) {
-            Timber.e("failed to create clearsigned text replacement part", e);
+            Timber.e(e, "failed to create clearsigned text replacement part");
             return NO_REPLACEMENT_PART;
         }
     }

@@ -219,7 +219,7 @@ public class AccountSettings extends K9PreferenceActivity {
             mIsExpungeCapable = store.isExpungeCapable();
             mIsSeenFlagSupported = store.isSeenFlagSupported();
         } catch (Exception e) {
-            Timber.e("Could not get remote store", e);
+            Timber.e(e, "Could not get remote store");
         }
 
         addPreferencesFromResource(R.xml.account_settings_preferences);

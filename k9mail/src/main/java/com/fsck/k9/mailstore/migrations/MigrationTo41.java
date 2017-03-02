@@ -38,11 +38,11 @@ class MigrationTo41 {
                     String name = cursor.getString(1);
                     update41Metadata(db, migrationsHelper, id, name);
                 } catch (Exception e) {
-                    Timber.e(" error trying to ugpgrade a folder class", e);
+                    Timber.e(e, " error trying to ugpgrade a folder class");
                 }
             }
         } catch (SQLiteException e) {
-            Timber.e("Exception while upgrading database to v41. folder classes may have vanished", e);
+            Timber.e(e, "Exception while upgrading database to v41. folder classes may have vanished");
         } finally {
             Utility.closeQuietly(cursor);
         }
@@ -73,7 +73,7 @@ class MigrationTo41 {
             inTopGroup = storage.getBoolean(accountUuid + "." + name + ".inTopGroup", inTopGroup);
             integrate = storage.getBoolean(accountUuid + "." + name + ".integrate", integrate);
         } catch (Exception e) {
-            Timber.e(" Throwing away an error while trying to upgrade folder metadata", e);
+            Timber.e(e, " Throwing away an error while trying to upgrade folder metadata");
         }
 
         if (displayClass == Folder.FolderClass.NONE) {

@@ -813,7 +813,7 @@ public class FolderList extends K9ListActivity {
                         }
                     }
                 } catch (Exception e) {
-                    Timber.e("Exception while populating folder", e);
+                    Timber.e(e, "Exception while populating folder");
                 } finally {
                     if (localFolder != null) {
                         localFolder.close();

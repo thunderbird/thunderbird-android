@@ -54,7 +54,7 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
         try {
             return messageViewInfoExtractor.extractMessageForView(message, annotations);
         } catch (Exception e) {
-            Timber.e("Error while decoding message", e);
+            Timber.e(e, "Error while decoding message");
             return null;
         }
     }
