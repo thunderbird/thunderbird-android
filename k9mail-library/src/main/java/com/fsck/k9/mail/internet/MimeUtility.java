@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.fsck.k9.mail.AttachmentProgressCallback;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -33,8 +34,6 @@ public class MimeUtility {
     private static final String TEXT_PLAIN = "text/plain";
     private static final String HEADER_PARAM_FORMAT = "format";
     private static final String HEADER_FORMAT_FLOWED = "flowed";
-
-    private static int filledBytes = 0;
 
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
@@ -997,7 +996,29 @@ public class MimeUtility {
     public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
             throws IOException {
 
-        filledBytes = 0;
+        if (contentTransferEncoding != null) {
+            contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);
+        }
+
+        final BinaryTempFileBody tempBody;
+        if (MimeUtil.isMessage(contentType)) {
+            tempBody = new BinaryTempFileMessageBody(contentTransferEncoding);
+        } else {
+            tempBody = new BinaryTempFileBody(contentTransferEncoding);
+        }
+
+        OutputStream out = tempBody.getOutputStream();
+        try {
+            IOUtils.copy(in, out);
+        } finally {
+            out.close();
+        }
+
+        return tempBody;
+    }
+
+    public static Body createBodyWithProgressCallback(InputStream in, String contentTransferEncoding, String contentType, final AttachmentProgressCallback attachmentProgressCallback)
+            throws IOException {
 
         if (contentTransferEncoding != null) {
             contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);
@@ -1017,7 +1038,7 @@ public class MimeUtility {
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    filledBytes = (int) tempBody.getSize();
+                    attachmentProgressCallback.onUpdate((int) tempBody.getSize());
                 }
             }, 0, 50);
             IOUtils.copy(in, out);
@@ -1167,10 +1188,6 @@ public class MimeUtility {
             return HEADER_FORMAT_FLOWED.equalsIgnoreCase(formatParameter);
         }
         return false;
-    }
-
-    public static int getFilledBytes(){
-        return filledBytes;
     }
 
 }

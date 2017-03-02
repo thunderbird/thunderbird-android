@@ -68,6 +68,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.AttachmentProgressCallback;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
@@ -2544,7 +2545,6 @@ public class MessagingController {
             public void run() {
                 Folder remoteFolder = null;
                 LocalFolder localFolder = null;
-                Timer timer = null;
                 try {
                     String folderName = message.getFolder().getName();
 
@@ -2555,16 +2555,15 @@ public class MessagingController {
                     remoteFolder = remoteStore.getFolder(folderName);
                     remoteFolder.open(Folder.OPEN_MODE_RW);
 
-                    timer = new Timer();
-                    timer.scheduleAtFixedRate(new TimerTask() {
+                    AttachmentProgressCallback attachmentProgressCallback = new AttachmentProgressCallback() {
                         @Override
-                        public void run() {
-                            AttachmentDownloadDialogFragment.updateProgress(MimeUtility.getFilledBytes());
+                        public void onUpdate(int progress) {
+                            AttachmentDownloadDialogFragment.updateProgress(progress);
                         }
-                    }, 0, 60);
+                    };
 
                     Message remoteMessage = remoteFolder.getMessage(message.getUid());
-                    remoteFolder.fetchPart(remoteMessage, part, null);
+                    remoteFolder.fetchPartWithProgressCallback(remoteMessage, part, null, attachmentProgressCallback);
 
                     localFolder.addPartToMessage(message, part);
 
@@ -2581,7 +2580,6 @@ public class MessagingController {
                     addErrorMessage(account, null, me);
 
                 } finally {
-                    timer.cancel();
                     closeFolder(localFolder);
                     closeFolder(remoteFolder);
                 }

@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fsck.k9.mail.AttachmentProgressCallback;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
@@ -841,6 +842,85 @@ class ImapFolder extends Folder<ImapMessage> {
                             String contentType = part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
                             MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
                                     contentType));
+                        } else {
+                            // This shouldn't happen
+                            throw new MessagingException("Got FETCH response with bogus parameters");
+                        }
+                    }
+
+                    if (listener != null) {
+                        listener.messageFinished(message, messageNumber, 1);
+                    }
+                } else {
+                    handleUntaggedResponse(response);
+                }
+
+            } while (response.getTag() == null);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
+    }
+
+    @Override
+    public void fetchPartWithProgressCallback(Message message, Part part, MessageRetrievalListener<Message> listener, AttachmentProgressCallback progressCallback) throws MessagingException {
+        checkOpen();
+
+        String partId = part.getServerExtra();
+
+        String fetch;
+        if ("TEXT".equalsIgnoreCase(partId)) {
+            int maximumAutoDownloadMessageSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
+            fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>", maximumAutoDownloadMessageSize);
+        } else {
+            fetch = String.format("BODY.PEEK[%s]", partId);
+        }
+
+        try {
+            String command = String.format("UID FETCH %s (UID %s)", message.getUid(), fetch);
+            connection.sendCommand(command, false);
+
+            ImapResponse response;
+            int messageNumber = 0;
+
+            ImapResponseCallback callback = new FetchPartCallback(part, progressCallback);
+
+            do {
+                response = connection.readResponse(callback);
+
+                if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
+                    ImapList fetchList = (ImapList) response.getKeyedValue("FETCH");
+                    String uid = fetchList.getKeyedString("UID");
+
+                    if (!message.getUid().equals(uid)) {
+                        if (K9MailLib.isDebug()) {
+                            Log.d(LOG_TAG, "Did not ask for UID " + uid + " for " + getLogId());
+                        }
+
+                        handleUntaggedResponse(response);
+                        continue;
+                    }
+
+                    if (listener != null) {
+                        listener.messageStarted(uid, messageNumber++, 1);
+                    }
+
+                    ImapMessage imapMessage = (ImapMessage) message;
+
+                    Object literal = handleFetchResponse(imapMessage, fetchList);
+
+                    if (literal != null) {
+                        if (literal instanceof Body) {
+                            // Most of the work was done in FetchAttchmentCallback.foundLiteral()
+                            MimeMessageHelper.setBody(part, (Body) literal);
+                        } else if (literal instanceof String) {
+                            String bodyString = (String) literal;
+                            InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
+
+                            String contentTransferEncoding =
+                                    part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                            String contentType = part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
+                            MimeMessageHelper.setBody(part, MimeUtility.createBodyWithProgressCallback(bodyStream, contentTransferEncoding,
+                                    contentType, progressCallback));
                         } else {
                             // This shouldn't happen
                             throw new MessagingException("Got FETCH response with bogus parameters");
