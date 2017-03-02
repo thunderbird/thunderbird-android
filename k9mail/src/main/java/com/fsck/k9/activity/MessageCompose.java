@@ -740,7 +740,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         changesMadeSinceLastSave = false;
         if (navigateUp) {
-            openInboxFolder();
+            openAutoExpandFolder();
         } else {
             finish();
         }
@@ -935,8 +935,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                navigateUp = true;
-                prepareToFinish();
+                prepareToFinish(true);
                 break;
             case R.id.send:
                 checkToSendMessage();
@@ -1005,11 +1004,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public void onBackPressed() {
-        navigateUp = false;
-        prepareToFinish();
+        prepareToFinish(false);
     }
 
-    private void prepareToFinish() {
+    private void prepareToFinish(boolean shouldNavigateUp) {
+        navigateUp = shouldNavigateUp;
+
         if (changesMadeSinceLastSave && draftIsNotEmpty()) {
             if (!account.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
@@ -1022,7 +1022,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onDiscard();
             } else {
                 if (navigateUp) {
-                    openInboxFolder();
+                    openAutoExpandFolder();
                 } else {
                     super.onBackPressed();
                 }
@@ -1030,12 +1030,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private void openInboxFolder() {
+    private void openAutoExpandFolder() {
         String folder = account.getAutoExpandFolderName();
         LocalSearch search = new LocalSearch(folder);
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folder);
-        MessageList.actionDisplaySearch(this, search, false, false);
+        MessageList.actionDisplaySearch(this, search, false, true);
+        finish();
     }
 
     private boolean draftIsNotEmpty() {
@@ -1620,9 +1621,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void initializeActionBar() {
         ActionBar actionBar = getActionBar();
-
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.actionbar_custom);
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
