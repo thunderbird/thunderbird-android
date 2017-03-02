@@ -101,9 +101,7 @@ public class AttachmentProvider extends ContentProvider {
         }
 
         if (attachmentInfo == null) {
-            if (K9.DEBUG) {
-                Timber.d("No attachment info for ID: %s", id);
-            }
+            Timber.d("No attachment info for ID: %s", id);
             return null;
         }
 

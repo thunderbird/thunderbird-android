@@ -45,27 +45,23 @@ public class PollService extends CoreService {
     @Override
     public int startService(Intent intent, int startId) {
         if (START_SERVICE.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Timber.i("PollService started with startId = %d", startId);
+            Timber.i("PollService started with startId = %d", startId);
 
             MessagingController controller = MessagingController.getInstance(getApplication());
             Listener listener = (Listener)controller.getCheckMailListener();
             if (listener == null) {
-                if (K9.DEBUG)
-                    Timber.i("***** PollService *****: starting new check");
+                Timber.i("***** PollService *****: starting new check");
                 mListener.setStartId(startId);
                 mListener.wakeLockAcquire();
                 controller.setCheckMailListener(mListener);
                 controller.checkMail(this, null, false, false, mListener);
             } else {
-                if (K9.DEBUG)
-                    Timber.i("***** PollService *****: renewing WakeLock");
+                Timber.i("***** PollService *****: renewing WakeLock");
                 listener.setStartId(startId);
                 listener.wakeLockAcquire();
             }
         } else if (STOP_SERVICE.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Timber.i("PollService stopping");
+            Timber.i("PollService stopping");
             stopSelf();
         }
 
@@ -131,17 +127,14 @@ public class PollService extends CoreService {
 
             MailService.actionReschedulePoll(PollService.this, null);
             wakeLockRelease();
-            if (K9.DEBUG)
-                Timber.i("PollService stopping with startId = %d", startId);
 
+            Timber.i("PollService stopping with startId = %d", startId);
             stopSelf(startId);
         }
 
         @Override
         public void checkMailFinished(Context context, Account account) {
-
-            if (K9.DEBUG)
-                Timber.v("***** PollService *****: checkMailFinished");
+            Timber.v("***** PollService *****: checkMailFinished");
             release();
         }
         public int getStartId() {

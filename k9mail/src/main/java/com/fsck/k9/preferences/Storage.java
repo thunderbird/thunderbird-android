@@ -141,25 +141,17 @@ public class Storage {
     public static Storage getStorage(Context context) {
         Storage tmpStorage = storages.get(context);
         if (tmpStorage != null) {
-            if (K9.DEBUG) {
-                Timber.d("Returning already existing Storage");
-            }
+            Timber.d("Returning already existing Storage");
             return tmpStorage;
         } else {
-            if (K9.DEBUG) {
-                Timber.d("Creating provisional storage");
-            }
+            Timber.d("Creating provisional storage");
             tmpStorage = new Storage(context);
             Storage oldStorage = storages.putIfAbsent(context, tmpStorage);
             if (oldStorage != null) {
-                if (K9.DEBUG) {
-                    Timber.d("Another thread beat us to creating the Storage, returning that one");
-                }
+                Timber.d("Another thread beat us to creating the Storage, returning that one");
                 return oldStorage;
             } else {
-                if (K9.DEBUG) {
-                    Timber.d("Returning the Storage we created");
-                }
+                Timber.d("Returning the Storage we created");
                 return tmpStorage;
             }
         }
@@ -177,9 +169,7 @@ public class Storage {
             while (cursor.moveToNext()) {
                 String key = cursor.getString(0);
                 String value = cursor.getString(1);
-                if (K9.DEBUG) {
-                    Timber.d("Loading key '%s', value = '%s'", key, value);
-                }
+                Timber.d("Loading key '%s', value = '%s'", key, value);
                 storage.put(key, value);
             }
         } finally {
@@ -335,9 +325,7 @@ public class Storage {
 
             if (cursor.moveToNext()) {
                 value = cursor.getString(0);
-                if (K9.DEBUG) {
-                    Timber.d("Loading key '%s', value = '%s'", key, value);
-                }
+                Timber.d("Loading key '%s', value = '%s'", key, value);
             }
         } finally {
             Utility.closeQuietly(cursor);

@@ -187,10 +187,7 @@ public class SettingsExporter {
                             "This shouldn't happen!", key, valueString);
                 }
             } else {
-                if (K9.DEBUG) {
-                    Timber.d("Couldn't find key \"%s\" in preference storage. Using default value.", key);
-                }
-
+                Timber.d("Couldn't find key \"%s\" in preference storage. Using default value.", key);
                 writeKeyAndDefaultValueFromSetting(serializer, key, setting);
             }
         }

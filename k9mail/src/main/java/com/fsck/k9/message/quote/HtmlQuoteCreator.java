@@ -149,9 +149,7 @@ public class HtmlQuoteCreator {
             hasBodyTag = true;
         }
 
-        if (K9.DEBUG) {
-            Timber.d("Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
-        }
+        Timber.d("Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
 
         // Given our inspections, let's figure out where to start our content.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just after it.
@@ -202,9 +200,7 @@ public class HtmlQuoteCreator {
             hasBodyEndTag = true;
         }
 
-        if (K9.DEBUG) {
-            Timber.d("Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
-        }
+        Timber.d("Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
 
         // Now figure out where to put our footer.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just before it.

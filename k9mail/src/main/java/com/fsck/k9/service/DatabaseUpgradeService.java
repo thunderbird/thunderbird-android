@@ -120,10 +120,7 @@ public class DatabaseUpgradeService extends Service {
         boolean success = mRunning.compareAndSet(false, true);
         if (success) {
             // The service wasn't running yet.
-
-            if (K9.DEBUG) {
-                Timber.i("DatabaseUpgradeService started");
-            }
+            Timber.i("DatabaseUpgradeService started");
 
             acquireWakelock();
 
@@ -159,10 +156,7 @@ public class DatabaseUpgradeService extends Service {
      */
     private void stopService() {
         stopSelf();
-
-        if (K9.DEBUG) {
-            Timber.i("DatabaseUpgradeService stopped");
-        }
+        Timber.i("DatabaseUpgradeService stopped");
 
         releaseWakelock();
         mRunning.set(false);

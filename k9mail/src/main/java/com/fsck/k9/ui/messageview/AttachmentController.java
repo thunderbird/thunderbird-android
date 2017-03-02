@@ -211,9 +211,7 @@ public class AttachmentController {
                 writeAttachmentToStorage(tempFile);
                 viewIntent = createViewIntentForFileUri(resolvedIntentInfo.getMimeType(), Uri.fromFile(tempFile));
             } catch (IOException e) {
-                if (K9.DEBUG) {
-                    Timber.e(e, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent");
-                }
+                Timber.e(e, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent");
                 viewIntent = createViewIntentForAttachmentProviderUri(intentDataUri, MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
             }
         } else {
@@ -353,9 +351,7 @@ public class AttachmentController {
                 File directory = params[0];
                 return saveAttachmentWithUniqueFileName(directory);
             } catch (IOException e) {
-                if (K9.DEBUG) {
-                    Timber.e(e, "Error saving attachment");
-                }
+                Timber.e(e, "Error saving attachment");
                 return null;
             }
         }

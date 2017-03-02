@@ -1036,14 +1036,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
                             String oldUID = message.getUid();
 
-                            if (K9.DEBUG) {
-                                Timber.d("Updating folder_id to %s for message with UID %s, " +
-                                        "id %d currently in folder %s",
-                                        lDestFolder.getId(),
-                                        message.getUid(),
-                                        lMessage.getId(),
-                                        getName());
-                            }
+                            Timber.d("Updating folder_id to %s for message with UID %s, " +
+                                    "id %d currently in folder %s",
+                                    lDestFolder.getId(),
+                                    message.getUid(),
+                                    lMessage.getId(),
+                                    getName());
 
                             String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
                             message.setUid(newUid);
@@ -1935,8 +1933,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 return null;
             }
         });
-        if (K9.DEBUG)
-            Timber.d("Updated last UID for folder %s to %s", mName, lastUid);
+
+        Timber.d("Updated last UID for folder %s to %s", mName, lastUid);
         mLastUid = lastUid;
     }
 

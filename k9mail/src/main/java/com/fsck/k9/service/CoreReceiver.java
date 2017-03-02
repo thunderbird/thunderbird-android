@@ -30,8 +30,7 @@ public class CoreReceiver extends BroadcastReceiver {
         wakeLock.acquire(K9.BOOT_RECEIVER_WAKE_LOCK_TIMEOUT);
         Integer tmpWakeLockId = wakeLockSeq.getAndIncrement();
         wakeLocks.put(tmpWakeLockId, wakeLock);
-        if (K9.DEBUG)
-            Timber.v("CoreReceiver Created wakeLock %d", tmpWakeLockId);
+        Timber.v("CoreReceiver Created wakeLock %d", tmpWakeLockId);
         return tmpWakeLockId;
     }
 
@@ -39,8 +38,7 @@ public class CoreReceiver extends BroadcastReceiver {
         if (wakeLockId != null) {
             TracingWakeLock wl = wakeLocks.remove(wakeLockId);
             if (wl != null) {
-                if (K9.DEBUG)
-                    Timber.v("CoreReceiver Releasing wakeLock %d", wakeLockId);
+                Timber.v("CoreReceiver Releasing wakeLock %d", wakeLockId);
                 wl.release();
             } else {
                 Timber.w("BootReceiver WakeLock %d doesn't exist", wakeLockId);
@@ -52,13 +50,12 @@ public class CoreReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Integer tmpWakeLockId = CoreReceiver.getWakeLock(context);
         try {
-            if (K9.DEBUG)
-                Timber.i("CoreReceiver.onReceive %s", intent);
+            Timber.i("CoreReceiver.onReceive %s", intent);
+
             if (CoreReceiver.WAKE_LOCK_RELEASE.equals(intent.getAction())) {
                 Integer wakeLockId = intent.getIntExtra(WAKE_LOCK_ID, -1);
                 if (wakeLockId != -1) {
-                    if (K9.DEBUG)
-                        Timber.v("CoreReceiver Release wakeLock %d", wakeLockId);
+                    Timber.v("CoreReceiver Release wakeLock %d", wakeLockId);
                     CoreReceiver.releaseWakeLock(wakeLockId);
                 }
             } else {
@@ -74,8 +71,8 @@ public class CoreReceiver extends BroadcastReceiver {
     }
 
     public static void releaseWakeLock(Context context, int wakeLockId) {
-        if (K9.DEBUG)
-            Timber.v("CoreReceiver Got request to release wakeLock %d", wakeLockId);
+        Timber.v("CoreReceiver Got request to release wakeLock %d", wakeLockId);
+
         Intent i = new Intent();
         i.setClass(context, CoreReceiver.class);
         i.setAction(WAKE_LOCK_RELEASE);

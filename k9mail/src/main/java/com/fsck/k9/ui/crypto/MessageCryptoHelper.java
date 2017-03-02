@@ -470,9 +470,7 @@ public class MessageCryptoHelper {
 
     private void handleCryptoOperationResult(MimeBodyPart outputPart) {
         int resultCode = currentCryptoResult.getIntExtra(OpenPgpApi.RESULT_CODE, INVALID_OPENPGP_RESULT_CODE);
-        if (K9.DEBUG) {
-            Timber.d("OpenPGP API decryptVerify result code: %d", resultCode);
-        }
+        Timber.d("OpenPGP API decryptVerify result code: %d", resultCode);
 
         switch (resultCode) {
             case INVALID_OPENPGP_RESULT_CODE: {
@@ -505,9 +503,7 @@ public class MessageCryptoHelper {
 
     private void handleCryptoOperationError() {
         OpenPgpError error = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-        if (K9.DEBUG) {
-            Timber.w("OpenPGP API error: %s", error.getMessage());
-        }
+        Timber.w("OpenPGP API error: %s", error.getMessage());
 
         onCryptoOperationFailed(error);
     }

@@ -28,9 +28,7 @@ public class StorageGoneReceiver extends BroadcastReceiver {
             return;
         }
 
-        if (K9.DEBUG) {
-            Timber.v("StorageGoneReceiver: %s", intent);
-        }
+        Timber.v("StorageGoneReceiver: %s", intent);
 
         final String path = uri.getPath();
 

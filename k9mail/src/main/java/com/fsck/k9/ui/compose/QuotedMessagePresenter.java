@@ -250,10 +250,9 @@ public class QuotedMessagePresenter {
             if (part != null) { // Shouldn't happen if we were the one who saved it.
                 quotedTextFormat = SimpleMessageFormat.HTML;
                 String text = MessageExtractor.getTextFromPart(part);
-                if (K9.DEBUG) {
-                    Timber.d("Loading message with offset %d, length %d. Text length is %d.",
-                            bodyOffset, bodyLength, text.length());
-                }
+
+                Timber.d("Loading message with offset %d, length %d. Text length is %d.",
+                        bodyOffset, bodyLength, text.length());
 
                 if (bodyOffset + bodyLength > text.length()) {
                     // The draft was edited outside of K-9 Mail?
@@ -319,10 +318,9 @@ public class QuotedMessagePresenter {
         }
 
         String messageText = MessageExtractor.getTextFromPart(textPart);
-        if (K9.DEBUG) {
-            Timber.d("Loading message with offset %d, length %d. Text length is %d.",
-                    bodyOffset, bodyLength, messageText.length());
-        }
+
+        Timber.d("Loading message with offset %d, length %d. Text length is %d.",
+                bodyOffset, bodyLength, messageText.length());
 
         // If we had a body length (and it was valid), separate the composition from the quoted text
         // and put them in their respective places in the UI.

@@ -177,9 +177,7 @@ public class Settings {
         validatedSettingsMutable.remove(settingName);
         deletedSettingsMutable.add(settingName);
 
-        if (K9.DEBUG) {
-            Timber.v("Removed setting \"%s\"", settingName);
-        }
+        Timber.v("Removed setting \"%s\"", settingName);
     }
 
     /**
@@ -211,9 +209,7 @@ public class Settings {
 
                 serializedSettings.put(settingName, stringValue);
             } else {
-                if (K9.DEBUG) {
-                    Timber.w("Settings.convert() called with a setting that should have been removed: %s", settingName);
-                }
+                Timber.w("Settings.convert() called with a setting that should have been removed: %s", settingName);
             }
         }
 

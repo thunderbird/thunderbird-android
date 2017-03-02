@@ -99,9 +99,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
                 unreadCount = stats.unreadMessageCount;
             }
         } catch (Exception e) {
-            if (K9.DEBUG) {
-                Timber.e(e, "Error getting widget configuration");
-            }
+            Timber.e(e, "Error getting widget configuration");
         }
 
         if (unreadCount <= 0) {

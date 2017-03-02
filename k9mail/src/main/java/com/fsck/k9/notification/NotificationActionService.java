@@ -122,9 +122,7 @@ public class NotificationActionService extends CoreService {
 
     @Override
     public int startService(Intent intent, int startId) {
-        if (K9.DEBUG) {
-            Timber.i("NotificationActionService started with startId = %d", startId);
-        }
+        Timber.i("NotificationActionService started with startId = %d", startId);
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID);
         Preferences preferences = Preferences.getPreferences(this);
@@ -147,9 +145,7 @@ public class NotificationActionService extends CoreService {
         } else if (ACTION_SPAM.equals(action)) {
             markMessageAsSpam(intent, account, controller);
         } else if (ACTION_DISMISS.equals(action)) {
-            if (K9.DEBUG) {
-                Timber.i("Notification dismissed");
-            }
+            Timber.i("Notification dismissed");
         }
 
         cancelNotifications(intent, account, controller);
@@ -158,9 +154,7 @@ public class NotificationActionService extends CoreService {
     }
 
     private void markMessagesAsRead(Intent intent, Account account, MessagingController controller) {
-        if (K9.DEBUG) {
-            Timber.i("NotificationActionService marking messages as read");
-        }
+        Timber.i("NotificationActionService marking messages as read");
 
         List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
@@ -172,9 +166,7 @@ public class NotificationActionService extends CoreService {
     }
 
     private void deleteMessages(Intent intent, MessagingController controller) {
-        if (K9.DEBUG) {
-            Timber.i("NotificationActionService deleting messages");
-        }
+        Timber.i("NotificationActionService deleting messages");
 
         List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
@@ -182,9 +174,7 @@ public class NotificationActionService extends CoreService {
     }
 
     private void archiveMessages(Intent intent, Account account, MessagingController controller) {
-        if (K9.DEBUG) {
-            Timber.i("NotificationActionService archiving messages");
-        }
+        Timber.i("NotificationActionService archiving messages");
 
         String archiveFolderName = account.getArchiveFolderName();
         if (archiveFolderName == null ||
@@ -205,9 +195,7 @@ public class NotificationActionService extends CoreService {
     }
 
     private void markMessageAsSpam(Intent intent, Account account, MessagingController controller) {
-        if (K9.DEBUG) {
-            Timber.i("NotificationActionService moving messages to spam");
-        }
+        Timber.i("NotificationActionService moving messages to spam");
 
         String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
         MessageReference messageReference = MessageReference.parse(messageReferenceString);

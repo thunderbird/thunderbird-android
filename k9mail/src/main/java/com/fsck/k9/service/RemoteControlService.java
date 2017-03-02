@@ -37,22 +37,18 @@ public class RemoteControlService extends CoreService {
 
     @Override
     public int startService(final Intent intent, final int startId) {
-        if (K9.DEBUG)
-            Timber.i("RemoteControlService started with startId = %d", startId);
+        Timber.i("RemoteControlService started with startId = %d", startId);
         final Preferences preferences = Preferences.getPreferences(this);
 
         if (RESCHEDULE_ACTION.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Timber.i("RemoteControlService requesting MailService poll reschedule");
+            Timber.i("RemoteControlService requesting MailService poll reschedule");
             MailService.actionReschedulePoll(this, null);
         }
         if (PUSH_RESTART_ACTION.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Timber.i("RemoteControlService requesting MailService push restart");
+            Timber.i("RemoteControlService requesting MailService push restart");
             MailService.actionRestartPushers(this, null);
         } else if (RemoteControlService.SET_ACTION.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Timber.i("RemoteControlService got request to change settings");
+            Timber.i("RemoteControlService got request to change settings");
             execute(getApplication(), new Runnable() {
                 public void run() {
                     try {
@@ -60,21 +56,20 @@ public class RemoteControlService extends CoreService {
                         boolean needsPushRestart = false;
                         String uuid = intent.getStringExtra(K9_ACCOUNT_UUID);
                         boolean allAccounts = intent.getBooleanExtra(K9_ALL_ACCOUNTS, false);
-                        if (K9.DEBUG) {
-                            if (allAccounts) {
-                                Timber.i("RemoteControlService changing settings for all accounts");
-                            } else {
-                                Timber.i("RemoteControlService changing settings for account with UUID %s", uuid);
-                            }
+
+                        if (allAccounts) {
+                            Timber.i("RemoteControlService changing settings for all accounts");
+                        } else {
+                            Timber.i("RemoteControlService changing settings for account with UUID %s", uuid);
                         }
+
                         List<Account> accounts = preferences.getAccounts();
                         for (Account account : accounts) {
                             //warning: account may not be isAvailable()
                             if (allAccounts || account.getUuid().equals(uuid)) {
 
-                                if (K9.DEBUG)
-                                    Timber.i("RemoteControlService changing settings for account %s",
-                                            account.getDescription());
+                                Timber.i("RemoteControlService changing settings for account %s",
+                                        account.getDescription());
 
                                 String notificationEnabled = intent.getStringExtra(K9_NOTIFICATION_ENABLED);
                                 String ringEnabled = intent.getStringExtra(K9_RING_ENABLED);
@@ -110,8 +105,8 @@ public class RemoteControlService extends CoreService {
                                 account.save(Preferences.getPreferences(RemoteControlService.this));
                             }
                         }
-                        if (K9.DEBUG)
-                            Timber.i("RemoteControlService changing global settings");
+
+                        Timber.i("RemoteControlService changing global settings");
 
                         String backgroundOps = intent.getStringExtra(K9_BACKGROUND_OPERATIONS);
                         if (K9RemoteControl.K9_BACKGROUND_OPERATIONS_ALWAYS.equals(backgroundOps)

@@ -53,9 +53,7 @@ public class TemporaryAttachmentStore {
         for (File file : files) {
             if (file.lastModified() < cutOffTime) {
                 if (file.delete()) {
-                    if (K9.DEBUG) {
-                        Timber.d("Deleted from temporary attachment store: %s", file.getName());
-                    }
+                    Timber.d("Deleted from temporary attachment store: %s", file.getName());
                 } else {
                     Timber.w("Couldn't delete from temporary attachment store: %s", file.getName());
                 }

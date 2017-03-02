@@ -24,9 +24,7 @@ public class IdentityHeaderParser {
     public static Map<IdentityField, String> parse(final String identityString) {
         Map<IdentityField, String> identity = new HashMap<IdentityField, String>();
 
-        if (K9.DEBUG) {
-            Timber.d("Decoding identity: %s", identityString);
-        }
+        Timber.d("Decoding identity: %s", identityString);
 
         if (identityString == null || identityString.length() < 1) {
             return identity;
@@ -44,9 +42,7 @@ public class IdentityHeaderParser {
                 }
             }
 
-            if (K9.DEBUG) {
-                Timber.d("Decoded identity: %s", identity.toString());
-            }
+            Timber.d("Decoded identity: %s", identity);
 
             // Sanity check our Integers so that recipients of this result don't have to.
             for (IdentityField key : IdentityField.getIntegerFields()) {
@@ -61,9 +57,8 @@ public class IdentityHeaderParser {
         } else {
             // Legacy identity
 
-            if (K9.DEBUG) {
-                Timber.d("Got a saved legacy identity: %s", identityString);
-            }
+            Timber.d("Got a saved legacy identity: %s", identityString);
+
             StringTokenizer tokenizer = new StringTokenizer(identityString, ":", false);
 
             // First item is the body length. We use this to separate the composed reply from the quoted text.

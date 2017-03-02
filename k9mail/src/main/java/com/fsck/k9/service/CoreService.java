@@ -190,9 +190,7 @@ public abstract class CoreService extends Service {
 
     @Override
     public void onCreate() {
-        if (K9.DEBUG) {
-            Timber.i("CoreService: %s.onCreate()", className);
-        }
+        Timber.i("CoreService: %s.onCreate()", className);
 
         mThreadPool = Executors.newFixedThreadPool(1);  // Must be single threaded
     }
@@ -217,9 +215,7 @@ public abstract class CoreService extends Service {
         TracingWakeLock wakeLock = acquireWakeLock(this, "CoreService onStart",
                 K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
 
-        if (K9.DEBUG) {
-            Timber.i("CoreService: %s.onStart(%s, %d)", className, intent, startId);
-        }
+        Timber.i("CoreService: %s.onStart(%s, %d)", className, intent, startId);
 
         // If we were started by BootReceiver, release the wake lock acquired there.
         int wakeLockId = intent.getIntExtra(BootReceiver.WAKE_LOCK_ID, -1);
@@ -231,18 +227,14 @@ public abstract class CoreService extends Service {
         // release it.
         int coreWakeLockId = intent.getIntExtra(WAKE_LOCK_ID, -1);
         if (coreWakeLockId != -1) {
-            if (K9.DEBUG) {
-                Timber.d("Got core wake lock id %d", coreWakeLockId);
-            }
+            Timber.d("Got core wake lock id %d", coreWakeLockId);
 
             // Remove wake lock from the registry
             TracingWakeLock coreWakeLock = sWakeLocks.remove(coreWakeLockId);
 
             // Release wake lock
             if (coreWakeLock != null) {
-                if (K9.DEBUG) {
-                    Timber.d("Found core wake lock with id %d, releasing", coreWakeLockId);
-                }
+                Timber.d("Found core wake lock with id %d, releasing", coreWakeLockId);
                 coreWakeLock.release();
             }
         }
@@ -305,10 +297,8 @@ public abstract class CoreService extends Service {
                     // Get the sync status
                     boolean oldIsSyncDisabled = MailService.isSyncDisabled();
 
-                    if (K9.DEBUG) {
-                        Timber.d("CoreService (%s) running Runnable %d with startId %d",
-                                className, runner.hashCode(), startId);
-                    }
+                    Timber.d("CoreService (%s) running Runnable %d with startId %d",
+                            className, runner.hashCode(), startId);
 
                     // Run the supplied code
                     runner.run();
@@ -321,10 +311,9 @@ public abstract class CoreService extends Service {
                 } finally {
                     // Making absolutely sure stopSelf() will be called
                     try {
-                        if (K9.DEBUG) {
-                            Timber.d("CoreService (%s) completed Runnable %d with startId %d",
-                                    className, runner.hashCode(), startId);
-                        }
+                        Timber.d("CoreService (%s) completed Runnable %d with startId %d",
+                                className, runner.hashCode(), startId);
+
                         wakeLock.release();
                     } finally {
                         if (autoShutdown && startId != null) {
@@ -345,10 +334,7 @@ public abstract class CoreService extends Service {
                 serviceShutdownScheduled = startId != null;
             }
         } else {
-            if (K9.DEBUG) {
-                Timber.d("CoreService (%s) queueing Runnable %d with startId %d",
-                        className, runner.hashCode(), startId);
-            }
+            Timber.d("CoreService (%s) queueing Runnable %d with startId %d", className, runner.hashCode(), startId);
 
             try {
                 mThreadPool.execute(myRunner);
@@ -397,9 +383,7 @@ public abstract class CoreService extends Service {
      */
     @Override
     public void onDestroy() {
-        if (K9.DEBUG) {
-            Timber.i("CoreService: %s.onDestroy()", className);
-        }
+        Timber.i("CoreService: %s.onDestroy()", className);
 
         // Shut down thread pool
         mShutdown = true;

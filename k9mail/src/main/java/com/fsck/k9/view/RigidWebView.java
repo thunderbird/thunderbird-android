@@ -82,9 +82,7 @@ public class RigidWebView extends WebView {
         if (mIgnoreNext) {
             mIgnoreNext = false;
             if (recentlySized) {
-                if (K9.DEBUG) {
-                    Timber.w("Supressing size change in RigidWebView");
-                }
+                Timber.w("Supressing size change in RigidWebView");
                 return;
             }
         }

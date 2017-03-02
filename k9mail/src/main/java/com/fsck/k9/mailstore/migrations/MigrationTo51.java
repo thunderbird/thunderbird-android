@@ -450,14 +450,13 @@ class MigrationTo51 {
     private static MimeStructureState insertMimeAttachmentPart(SQLiteDatabase db, File attachmentDirOld,
             File attachmentDirNew, MimeStructureState structureState, long id, int size, String name, String mimeType,
             String storeData, String contentUriString, String contentId, String contentDisposition) {
-        if (K9.DEBUG) {
-            Timber.d("processing attachment %d, %s, %s, %s, %s",
-                    id,
-                    name,
-                    mimeType,
-                    storeData,
-                    contentUriString);
-        }
+
+        Timber.d("processing attachment %d, %s, %s, %s, %s",
+                id,
+                name,
+                mimeType,
+                storeData,
+                contentUriString);
 
         if (contentDisposition == null) {
             contentDisposition = "attachment";
@@ -501,7 +500,7 @@ class MigrationTo51 {
         } else {
             attachmentFileToMove = null;
         }
-        if (K9.DEBUG && attachmentFileToMove == null) {
+        if (attachmentFileToMove == null) {
             Timber.d("matching attachment is in local cache");
         }
 

@@ -132,7 +132,7 @@ public class DecryptedFileProvider extends FileProvider {
             InputStream inputStream = new ParcelFileDescriptor.AutoCloseInputStream(pfd);
             decodedInputStream = new QuotedPrintableInputStream(inputStream);
         } else { // no or unknown encoding
-            if (K9.DEBUG && !TextUtils.isEmpty(encoding)) {
+            if (!TextUtils.isEmpty(encoding)) {
                 Timber.e("unsupported encoding, returning raw stream");
             }
             return pfd;
@@ -173,9 +173,7 @@ public class DecryptedFileProvider extends FileProvider {
                 return;
             }
 
-            if (K9.DEBUG) {
-                Timber.d("Unregistering temp file cleanup receiver");
-            }
+            Timber.d("Unregistering temp file cleanup receiver");
             context.unregisterReceiver(cleanupReceiver);
             cleanupReceiver = null;
         }
@@ -186,9 +184,8 @@ public class DecryptedFileProvider extends FileProvider {
             if (cleanupReceiver != null) {
                 return;
             }
-            if (K9.DEBUG) {
-                Timber.d("Registering temp file cleanup receiver");
-            }
+
+            Timber.d("Registering temp file cleanup receiver");
             cleanupReceiver = new DecryptedFileProviderCleanupReceiver();
 
             IntentFilter intentFilter = new IntentFilter();
@@ -205,9 +202,7 @@ public class DecryptedFileProvider extends FileProvider {
                 throw new IllegalArgumentException("onReceive called with action that isn't screen off!");
             }
 
-            if (K9.DEBUG) {
-                Timber.d("Cleaning up temp files");
-            }
+            Timber.d("Cleaning up temp files");
 
             boolean allFilesDeleted = deleteOldTemporaryFiles(context);
             if (allFilesDeleted) {

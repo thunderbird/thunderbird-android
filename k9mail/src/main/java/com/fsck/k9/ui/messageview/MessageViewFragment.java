@@ -208,9 +208,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private void displayMessage(MessageReference messageReference) {
         mMessageReference = messageReference;
-        if (K9.DEBUG) {
-            Timber.d("MessageView displaying message %s", mMessageReference);
-        }
+        Timber.d("MessageView displaying message %s", mMessageReference);
 
         mAccount = Preferences.getPreferences(getApplicationContext()).getAccount(mMessageReference.getAccountUuid());
         messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference, null);

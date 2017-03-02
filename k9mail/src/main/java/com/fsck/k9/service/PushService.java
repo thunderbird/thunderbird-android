@@ -30,11 +30,9 @@ public class PushService extends CoreService {
     public int startService(Intent intent, int startId) {
         int startFlag = START_STICKY;
         if (START_SERVICE.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Timber.i("PushService started with startId = %d", startId);
+            Timber.i("PushService started with startId = %d", startId);
         } else if (STOP_SERVICE.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Timber.i("PushService stopping with startId = %d", startId);
+            Timber.i("PushService stopping with startId = %d", startId);
             stopSelf(startId);
             startFlag = START_NOT_STICKY;
         }

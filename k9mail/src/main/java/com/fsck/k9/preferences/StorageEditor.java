@@ -29,14 +29,10 @@ public class StorageEditor {
             String key = entry.getKey();
             Object value = entry.getValue();
             if (key != null && value != null) {
-                if (K9.DEBUG) {
-                    Timber.d("Copying key '%s', value '%s'", key, value);
-                }
+                Timber.d("Copying key '%s', value '%s'", key, value);
                 changes.put(key, "" + value);
             } else {
-                if (K9.DEBUG) {
-                    Timber.d("Skipping copying key '%s', value '%s'", key, value);
-                }
+                Timber.d("Skipping copying key '%s', value '%s'", key, value);
             }
         }
     }

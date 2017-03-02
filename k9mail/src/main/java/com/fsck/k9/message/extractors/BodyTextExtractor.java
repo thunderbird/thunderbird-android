@@ -22,17 +22,13 @@ public class BodyTextExtractor {
             // HTML takes precedence, then text.
             part = MimeUtility.findFirstPartByMimeType(messagePart, "text/html");
             if (part != null) {
-                if (K9.DEBUG) {
-                    Timber.d("getBodyTextFromMessage: HTML requested, HTML found.");
-                }
+                Timber.d("getBodyTextFromMessage: HTML requested, HTML found.");
                 return MessageExtractor.getTextFromPart(part);
             }
 
             part = MimeUtility.findFirstPartByMimeType(messagePart, "text/plain");
             if (part != null) {
-                if (K9.DEBUG) {
-                    Timber.d("getBodyTextFromMessage: HTML requested, text found.");
-                }
+                Timber.d("getBodyTextFromMessage: HTML requested, text found.");
                 String text = MessageExtractor.getTextFromPart(part);
                 return HtmlConverter.textToHtml(text);
             }
@@ -40,17 +36,13 @@ public class BodyTextExtractor {
             // Text takes precedence, then html.
             part = MimeUtility.findFirstPartByMimeType(messagePart, "text/plain");
             if (part != null) {
-                if (K9.DEBUG) {
-                    Timber.d("getBodyTextFromMessage: Text requested, text found.");
-                }
+                Timber.d("getBodyTextFromMessage: Text requested, text found.");
                 return MessageExtractor.getTextFromPart(part);
             }
 
             part = MimeUtility.findFirstPartByMimeType(messagePart, "text/html");
             if (part != null) {
-                if (K9.DEBUG) {
-                    Timber.d("getBodyTextFromMessage: Text requested, HTML found.");
-                }
+                Timber.d("getBodyTextFromMessage: Text requested, HTML found.");
                 String text = MessageExtractor.getTextFromPart(part);
                 return HtmlConverter.htmlToText(text);
             }

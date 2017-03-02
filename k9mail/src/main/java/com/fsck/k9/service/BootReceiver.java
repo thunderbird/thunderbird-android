@@ -25,8 +25,7 @@ public class BootReceiver extends CoreReceiver {
 
     @Override
     public Integer receive(Context context, Intent intent, Integer tmpWakeLockId) {
-        if (K9.DEBUG)
-            Timber.i("BootReceiver.onReceive %s", intent);
+        Timber.i("BootReceiver.onReceive %s", intent);
 
         final String action = intent.getAction();
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
@@ -50,16 +49,14 @@ public class BootReceiver extends CoreReceiver {
         } else if (FIRE_INTENT.equals(action)) {
             Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
             String alarmedAction = alarmedIntent.getAction();
-            if (K9.DEBUG)
-                Timber.i("BootReceiver Got alarm to fire alarmedIntent %s", alarmedAction);
+            Timber.i("BootReceiver Got alarm to fire alarmedIntent %s", alarmedAction);
             alarmedIntent.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
             tmpWakeLockId = null;
             context.startService(alarmedIntent);
         } else if (SCHEDULE_INTENT.equals(action)) {
             long atTime = intent.getLongExtra(AT_TIME, -1);
             Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
-            if (K9.DEBUG)
-                Timber.i("BootReceiver Scheduling intent %s for %tc", alarmedIntent, atTime);
+            Timber.i("BootReceiver Scheduling intent %s for %tc", alarmedIntent, atTime);
 
             PendingIntent pi = buildPendingIntent(context, intent);
             K9AlarmManager alarmMgr = K9AlarmManager.getAlarmManager(context);
@@ -67,8 +64,7 @@ public class BootReceiver extends CoreReceiver {
             alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi);
         } else if (CANCEL_INTENT.equals(action)) {
             Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
-            if (K9.DEBUG)
-                Timber.i("BootReceiver Canceling alarmedIntent %s", alarmedIntent);
+            Timber.i("BootReceiver Canceling alarmedIntent %s", alarmedIntent);
 
             PendingIntent pi = buildPendingIntent(context, intent);
 
@@ -94,8 +90,8 @@ public class BootReceiver extends CoreReceiver {
     }
 
     public static void scheduleIntent(Context context, long atTime, Intent alarmedIntent) {
-        if (K9.DEBUG)
-            Timber.i("BootReceiver Got request to schedule alarmedIntent %s", alarmedIntent.getAction());
+        Timber.i("BootReceiver Got request to schedule alarmedIntent %s", alarmedIntent.getAction());
+
         Intent i = new Intent();
         i.setClass(context, BootReceiver.class);
         i.setAction(SCHEDULE_INTENT);
@@ -105,8 +101,8 @@ public class BootReceiver extends CoreReceiver {
     }
 
     public static void cancelIntent(Context context, Intent alarmedIntent) {
-        if (K9.DEBUG)
-            Timber.i("BootReceiver Got request to cancel alarmedIntent %s", alarmedIntent.getAction());
+        Timber.i("BootReceiver Got request to cancel alarmedIntent %s", alarmedIntent.getAction());
+
         Intent i = new Intent();
         i.setClass(context, BootReceiver.class);
         i.setAction(CANCEL_INTENT);

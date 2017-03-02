@@ -381,15 +381,12 @@ public class Utility {
         while (imgMatches.find()) {
             String uriScheme = imgMatches.group(1);
             if (uriScheme.equals("http") || uriScheme.equals("https")) {
-                if (K9.DEBUG) {
-                    Timber.d("External images found");
-                }
+                Timber.d("External images found");
                 return true;
             }
         }
-        if (K9.DEBUG) {
-            Timber.d("No external images.");
-        }
+
+        Timber.d("No external images.");
         return false;
     }
 

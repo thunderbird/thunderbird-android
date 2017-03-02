@@ -108,8 +108,7 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
         try {
             mListener = (ConfirmationDialogFragmentListener) activity;
         } catch (ClassCastException e) {
-            if (K9.DEBUG)
-                Timber.d("%s did not implement ConfirmationDialogFragmentListener", activity);
+            Timber.d("%s did not implement ConfirmationDialogFragmentListener", activity);
         }
     }
 

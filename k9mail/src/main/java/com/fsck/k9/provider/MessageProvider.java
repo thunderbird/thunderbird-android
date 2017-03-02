@@ -123,9 +123,7 @@ public class MessageProvider extends ContentProvider {
             return null;
         }
 
-        if (K9.DEBUG) {
-            Timber.v("MessageProvider/getType: %s", uri);
-        }
+        Timber.v("MessageProvider/getType: %s", uri);
 
         return null;
     }
@@ -136,9 +134,7 @@ public class MessageProvider extends ContentProvider {
             return null;
         }
 
-        if (K9.DEBUG) {
-            Timber.v("MessageProvider/query: %s", uri);
-        }
+        Timber.v("MessageProvider/query: %s", uri);
 
         int code = uriMatcher.match(uri);
         if (code == -1) {
@@ -163,9 +159,7 @@ public class MessageProvider extends ContentProvider {
             return 0;
         }
 
-        if (K9.DEBUG) {
-            Timber.v("MessageProvider/delete: %s", uri);
-        }
+        Timber.v("MessageProvider/delete: %s", uri);
 
         // Note: can only delete a message
 
@@ -206,9 +200,7 @@ public class MessageProvider extends ContentProvider {
             return null;
         }
 
-        if (K9.DEBUG) {
-            Timber.v("MessageProvider/insert: %s", uri);
-        }
+        Timber.v("MessageProvider/insert: %s", uri);
 
         return null;
     }
@@ -219,9 +211,7 @@ public class MessageProvider extends ContentProvider {
             return 0;
         }
 
-        if (K9.DEBUG) {
-            Timber.v("MessageProvider/update: %s", uri);
-        }
+        Timber.v("MessageProvider/update: %s", uri);
 
         // TBD
 

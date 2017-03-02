@@ -58,9 +58,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
             File file = File.createTempFile(FILENAME_PREFIX, null, context.getCacheDir());
             file.deleteOnExit();
 
-            if (K9.DEBUG) {
-                Timber.v("Saving attachment to %s", file.getAbsolutePath());
-            }
+            Timber.v("Saving attachment to %s", file.getAbsolutePath());
 
             SafeContentResolver safeContentResolver = SafeContentResolverCompat.newInstance(context);
             InputStream in = safeContentResolver.openInputStream(sourceAttachment.uri);
