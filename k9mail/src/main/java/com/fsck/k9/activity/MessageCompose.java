@@ -71,6 +71,7 @@ import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
+import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment.AttachmentDownloadCancelListener;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.IdentityHelper;
