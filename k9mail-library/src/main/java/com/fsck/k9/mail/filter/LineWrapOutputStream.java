@@ -22,8 +22,9 @@ public class LineWrapOutputStream extends FilterOutputStream {
     public void write(int oneByte) throws IOException {
         // Buffer full?
         if (lineLength == buffer.length) {
+            // Can skip the char if end of word
             // Usable word-boundary found earlier?
-            if (endOfLastWord > 0) {
+            if (endOfLastWord > 0 && oneByte != ' ') {
                 // Yes, so output everything up to that word-boundary
                 out.write(buffer, bufferStart, endOfLastWord - bufferStart);
                 out.write(CRLF);
@@ -45,6 +46,8 @@ public class LineWrapOutputStream extends FilterOutputStream {
                 lineLength = 0;
                 bufferStart = 0;
             }
+            if (oneByte == ' ')
+                return;
         }
 
         if ((oneByte == '\n') || (oneByte == '\r')) {
