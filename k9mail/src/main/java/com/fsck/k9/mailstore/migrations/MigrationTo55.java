@@ -1,7 +1,8 @@
 package com.fsck.k9.mailstore.migrations;
 
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -19,6 +20,8 @@ import com.fsck.k9.message.extractors.MessageFulltextCreator;
 
 
 class MigrationTo55 {
+    private static final int BATCH_SIZE = 20;
+
     static void createFtsSearchTable(SQLiteDatabase db, MigrationsHelper migrationsHelper) {
         db.execSQL("CREATE VIRTUAL TABLE messages_fulltext USING fts4 (fulltext)");
 
@@ -31,25 +34,50 @@ class MigrationTo55 {
             FetchProfile fp = new FetchProfile();
             fp.add(FetchProfile.Item.BODY);
             for (LocalFolder folder : folders) {
-                List<String> messageUids = folder.getAllMessageUids();
-                for (String messageUid : messageUids) {
-                    LocalMessage localMessage = folder.getMessage(messageUid);
-                    folder.fetch(Collections.singletonList(localMessage), fp, null);
+                Iterator<String> messageUidIterator = folder.getAllMessageUids().iterator();
+                ArrayList<LocalMessage> batch = new ArrayList<>(BATCH_SIZE);
+                while (messageUidIterator.hasNext()) {
+                    readBatchFromIterator(messageUidIterator, folder, batch);
 
-                    String fulltext = fulltextCreator.createFulltext(localMessage);
-                    if (!TextUtils.isEmpty(fulltext)) {
-                        Log.d(K9.LOG_TAG, "fulltext for msg id " + localMessage.getId() + " is " + fulltext.length() + " chars long");
-                        cv.clear();
-                        cv.put("docid", localMessage.getId());
-                        cv.put("fulltext", fulltext);
-                        db.insert("messages_fulltext", null, cv);
-                    } else {
-                        Log.d(K9.LOG_TAG, "no fulltext for msg id " + localMessage.getId() + " :(");
+                    folder.fetch(batch, fp, null);
+                    for (LocalMessage localMessage : batch) {
+                        writeMessageFulltextIntoDatabase(db, fulltextCreator, cv, localMessage);
                     }
+
+                    batch.clear();
                 }
             }
         } catch (MessagingException e) {
             Log.e(K9.LOG_TAG, "error indexing fulltext - skipping rest, fts index is incomplete!", e);
+        }
+    }
+
+    private static void writeMessageFulltextIntoDatabase(SQLiteDatabase db, MessageFulltextCreator fulltextCreator,
+            ContentValues cv, LocalMessage localMessage) {
+        String fulltext = fulltextCreator.createFulltext(localMessage);
+        if (!TextUtils.isEmpty(fulltext)) {
+            Log.d(K9.LOG_TAG,
+                    "fulltext for msg id " + localMessage.getId() + " is " + fulltext.length() +
+                            " chars long");
+            cv.clear();
+            cv.put("docid", localMessage.getId());
+            cv.put("fulltext", fulltext);
+            db.insert("messages_fulltext", null, cv);
+        } else {
+            Log.d(K9.LOG_TAG, "no fulltext for msg id " + localMessage.getId() + " :(");
+        }
+    }
+
+    private static void readBatchFromIterator(Iterator<String> messageUidIterator, LocalFolder folder,
+            ArrayList<LocalMessage> batch) throws MessagingException {
+        for (int i = 0; i < BATCH_SIZE; i++) {
+            if (!messageUidIterator.hasNext()) {
+                break;
+            }
+
+            String messageUid = messageUidIterator.next();
+            LocalMessage localMessage = folder.getMessage(messageUid);
+            batch.add(localMessage);
         }
     }
 }
