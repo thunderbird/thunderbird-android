@@ -30,6 +30,7 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.Search;
 import com.fsck.k9.helper.FileHelper;
@@ -74,6 +75,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private static final long serialVersionUID = -1973296520918624767L;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     static final long INVALID_MESSAGE_PART_ID = -1;
+    private static final char KEY_NAME_SEPARATOR = ':';
+    private static final String KEY_PREFIX_UIDVALIDITY = "uidvalidity";
 
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
@@ -2059,6 +2062,21 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         return new ThreadInfo(threadId, msgId, messageId, rootId, parentId);
+    }
+
+    public long getLastUidValidity(String accountUuid, String folderName) {
+        Storage storage = Preferences.getPreferences(K9.app).getStorage();
+        String[] keyParts = {KEY_PREFIX_UIDVALIDITY, accountUuid, folderName};
+        String key = Utility.combine(keyParts, KEY_NAME_SEPARATOR);
+        return storage.getLong(key, -1L);
+    }
+
+    public void saveUidValidity(long newUidValidity, String accountUuid, String folderName) {
+        StorageEditor editor = Preferences.getPreferences(K9.app).getStorage().edit();
+        String[] keyParts = {KEY_PREFIX_UIDVALIDITY, accountUuid, folderName};
+        String key = Utility.combine(keyParts, KEY_NAME_SEPARATOR);
+        editor.putLong(key, newUidValidity);
+        editor.commit();
     }
 
     public List<Message> extractNewMessages(final List<Message> messages)

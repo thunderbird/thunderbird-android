@@ -28,6 +28,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
+import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -76,7 +77,8 @@ public class MessagingControllerTest {
     private static final String SENT_FOLDER_NAME = "Sent";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
     private static final String MESSAGE_UID1 = "message-uid1";
-
+    private static final long OLD_UIDVALIDITY = 20L;
+    private static final long NEW_UIDVALIDITY = 21L;
 
     private MessagingController controller;
     @Mock
@@ -97,6 +99,8 @@ public class MessagingControllerTest {
     private LocalFolder sentFolder;
     @Mock
     private Folder remoteFolder;
+    @Mock
+    private ImapFolder remoteImapFolder;
     @Mock
     private LocalStore localStore;
     @Mock
@@ -851,6 +855,40 @@ public class MessagingControllerTest {
         assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
     }
 
+    @Test
+    public void synchronizeMailboxSynchronous_withInvalidUidValidity_shouldDeleteAllLocalMessagesAndDownloadThemAgain()
+            throws Exception {
+        when(account.getStoreUri()).thenReturn("imap");
+        when(remoteImapFolder.getCurrentUidValidity()).thenReturn(NEW_UIDVALIDITY);
+        messageCountInRemoteFolder(1);
+        LocalMessage localMessage = localMessageWithCopyOnServer();
+        when(account.syncRemoteDeletions()).thenReturn(false);
+        when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
+        when(localFolder.getMessagesByUids(any(List.class))).thenReturn(Collections.singletonList(localMessage));
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteImapFolder);
+
+        verify(localFolder).destroyMessages(messageListCaptor.capture());
+        verify(remoteImapFolder, atLeast(1)).fetch(any(List.class), fetchProfileCaptor.capture(),
+                any(MessageRetrievalListener.class));
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withValidUidValidity_shouldNotDeleteAllLocalMessages()
+            throws Exception {
+        when(account.getStoreUri()).thenReturn("imap");
+        when(remoteImapFolder.getCurrentUidValidity()).thenReturn(OLD_UIDVALIDITY);
+        messageCountInRemoteFolder(1);
+        LocalMessage localMessage = localMessageWithCopyOnServer();
+        when(account.syncRemoteDeletions()).thenReturn(false);
+        when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
+        when(localFolder.getMessagesByUids(any(List.class))).thenReturn(Collections.singletonList(localMessage));
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteImapFolder);
+
+        verify(localFolder, never()).destroyMessages(messageListCaptor.capture());
+    }
+
     private void setupAccountWithMessageToSend() throws MessagingException {
         when(account.getOutboxFolderName()).thenReturn(FOLDER_NAME);
         when(account.hasSentFolder()).thenReturn(true);
@@ -928,11 +966,13 @@ public class MessagingControllerTest {
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
         when(account.getErrorFolderName()).thenReturn(K9.ERROR_FOLDER_NAME);
         when(account.getEmail()).thenReturn("user@host.com");
+        when(account.getStoreUri()).thenReturn("pop3");
     }
 
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localFolder.getName()).thenReturn(FOLDER_NAME);
+        when(localFolder.getLastUidValidity(anyString(), anyString())).thenReturn(OLD_UIDVALIDITY);
         when(localStore.getFolder(K9.ERROR_FOLDER_NAME)).thenReturn(errorFolder);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
     }

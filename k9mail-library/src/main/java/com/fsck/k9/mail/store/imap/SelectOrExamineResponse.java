@@ -3,6 +3,8 @@ package com.fsck.k9.mail.store.imap;
 
 import com.fsck.k9.mail.Folder;
 
+import java.util.List;
+
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 
@@ -36,6 +38,24 @@ class SelectOrExamineResponse {
         }
 
         return noOpenModeInResponse();
+    }
+
+    public static long extractUidValidity(List<ImapResponse> responses) {
+        for(ImapResponse response : responses) {
+            int index = 0;
+            while (index < response.size()) {
+                if (response.isList(index)) {
+                    ImapList listResponse = response.getList(index);
+                    if (listResponse.isString(0) && listResponse.getString(0).equals("UIDVALIDITY")) {
+                        return Long.parseLong(listResponse.getString(1));
+                    }
+                }
+                index++;
+            }
+        }
+
+        //UIDVALIDITY was not found
+        return -1L;
     }
 
     private static SelectOrExamineResponse noOpenModeInResponse() {

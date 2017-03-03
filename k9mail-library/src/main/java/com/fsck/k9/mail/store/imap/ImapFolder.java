@@ -39,7 +39,7 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
-class ImapFolder extends Folder<ImapMessage> {
+public class ImapFolder extends Folder<ImapMessage> {
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -161,6 +161,19 @@ class ImapFolder extends Folder<ImapMessage> {
             return responses;
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
+        } catch (MessagingException me) {
+            Log.e(LOG_TAG, "Unable to open connection for " + getLogId(), me);
+            throw me;
+        }
+    }
+
+    public long getCurrentUidValidity() throws MessagingException {
+        if (isOpen()) {
+            close();
+        }
+        try {
+            List<ImapResponse> responses = internalOpen(OPEN_MODE_RO);
+            return SelectOrExamineResponse.extractUidValidity(responses);
         } catch (MessagingException me) {
             Log.e(LOG_TAG, "Unable to open connection for " + getLogId(), me);
             throw me;
