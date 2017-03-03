@@ -1,14 +1,15 @@
 package com.fsck.k9.cache;
 
 
-import java.io.File;
-import java.io.IOException;
-
 import android.content.Context;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class TemporaryAttachmentStore {
@@ -49,7 +50,7 @@ public class TemporaryAttachmentStore {
             return;
         }
 
-        long cutOffTime = System.currentTimeMillis() - MAX_FILE_AGE;
+        long cutOffTime = SystemClock.elapsedRealtime() - MAX_FILE_AGE;
         for (File file : files) {
             if (file.lastModified() < cutOffTime) {
                 if (file.delete()) {

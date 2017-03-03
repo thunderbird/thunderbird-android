@@ -1,24 +1,25 @@
 
 package com.fsck.k9.service;
 
-import java.util.Collection;
-import java.util.Date;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
+
+import java.util.Collection;
+import java.util.Date;
 
 
 public class MailService extends CoreService {
@@ -87,7 +88,7 @@ public class MailService extends CoreService {
 
     @Override
     public int startService(Intent intent, int startId) {
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealtime();
         boolean oldIsSyncDisabled = isSyncDisabled();
         boolean doBackground = true;
 
@@ -155,7 +156,7 @@ public class MailService extends CoreService {
         }
 
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "MailService.onStart took " + (System.currentTimeMillis() - startTime) + "ms");
+            Log.i(K9.LOG_TAG, "MailService.onStart took " + (SystemClock.elapsedRealtime() - startTime) + "ms");
 
         return START_NOT_STICKY;
     }
