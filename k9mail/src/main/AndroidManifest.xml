@@ -224,6 +224,12 @@
             android:configChanges="locale"
             android:enabled="false"
             android:label="@string/app_name">
+	<activity
+             android:label="@string/app_name"
+             android:parentActivityName=".activity.MessageList">
+             <meta-data
+                 android:name="android.support.PARENT_ACTIVITY"
+                 android:value=".activity.MessageList" />
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO"/>
                 <data android:scheme="mailto"/>
