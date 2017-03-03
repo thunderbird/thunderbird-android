@@ -4,6 +4,7 @@ package com.fsck.k9.mail.store.imap;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.fsck.k9.mail.K9MailLib;
@@ -99,6 +100,6 @@ class ImapPusher implements Pusher {
     }
 
     long currentTimeMillis() {
-        return System.currentTimeMillis();
+        return SystemClock.elapsedRealtime();
     }
 }

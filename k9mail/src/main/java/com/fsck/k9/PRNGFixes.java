@@ -12,6 +12,7 @@ package com.fsck.k9;
 
 import android.os.Build;
 import android.os.Process;
+import android.os.SystemClock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -247,7 +248,7 @@ public final class PRNGFixes {
             ByteArrayOutputStream seedBuffer = new ByteArrayOutputStream();
             DataOutputStream seedBufferOut =
                     new DataOutputStream(seedBuffer);
-            seedBufferOut.writeLong(System.currentTimeMillis());
+            seedBufferOut.writeLong(SystemClock.elapsedRealtime());
             seedBufferOut.writeLong(System.nanoTime());
             seedBufferOut.writeInt(Process.myPid());
             seedBufferOut.writeInt(Process.myUid());

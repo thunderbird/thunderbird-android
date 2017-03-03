@@ -16,8 +16,10 @@
 
 package com.fsck.k9;
 
+import android.os.SystemClock;
+
 /**
- * A class provide the current time (like {@link System#currentTimeMillis()}).
+ * A class provide the current time (like {@link SystemClock#elapsedRealtime()}).
  * It's intended to be mocked out for unit tests.
  */
 public class Clock {
@@ -27,6 +29,6 @@ public class Clock {
     }
 
     public long getTime() {
-        return System.currentTimeMillis();
+        return SystemClock.elapsedRealtime();
     }
 }
