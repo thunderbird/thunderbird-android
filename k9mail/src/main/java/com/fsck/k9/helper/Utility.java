@@ -7,11 +7,13 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -26,6 +28,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.mail.Address;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 
 import java.io.File;
@@ -469,34 +472,42 @@ public class Utility {
         return null;
     }
 
-    public static Uri getResizedImageUri(Context context, Uri uri, float multiplier){
+    public static String getResizedImageUri(Context context, Uri uri, float multiplier){
         File cacheDir = context.getCacheDir();
         File tempAttachmentsDirectory = new File(cacheDir.getPath() + "/tempAttachments/");
         tempAttachmentsDirectory.mkdirs();
-        final File tempFile = new File(tempAttachmentsDirectory, String.valueOf(System.currentTimeMillis()));
+        final File tempFile = new File(tempAttachmentsDirectory, String.valueOf(System.currentTimeMillis()) + ".tmp");
 
-        Glide.with(context)
-                .load(new File(uri.getPath()))
-                .asBitmap()
-                .thumbnail(multiplier)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        try {
-                            FileOutputStream out = new FileOutputStream(tempFile);
-                            resource.compress(Bitmap.CompressFormat.PNG, 100, out);
-                            out.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+        Bitmap bitmap = null;
+        Bitmap resized = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+            resized = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * multiplier), (int) (bitmap.getHeight() * multiplier), true);
+            FileOutputStream out = new FileOutputStream(tempFile);
+            resized.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
 
-        return Uri.fromFile(tempFile);
+        return tempFile.getAbsolutePath();
     }
 
-    public static void clearCache(){
+    public static void clearTemporaryAttachmentsCache(Context context){
+        File cacheDir = context.getCacheDir();
+        File tempAttachmentsDirectory = new File(cacheDir.getPath() + "/tempAttachments/");
+        if(tempAttachmentsDirectory.exists()){
+            try {
+                FileUtils.cleanDirectory(tempAttachmentsDirectory);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
+    public static boolean isImage(Context context, Uri uri){
+        return context.getContentResolver().getType(uri).contains("image");
     }
 
 

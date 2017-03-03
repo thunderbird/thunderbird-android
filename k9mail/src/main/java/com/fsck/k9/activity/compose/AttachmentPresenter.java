@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +16,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
+import com.fsck.k9.Account;
+import com.fsck.k9.ImageResizeCallback;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.Attachment.LoadingState;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
 
@@ -39,6 +44,7 @@ public class AttachmentPresenter {
     // injected state
     private final Context context;
     private final AttachmentMvpView attachmentMvpView;
+    private final Account account;
     private final LoaderManager loaderManager;
     private final AttachmentsChangedListener listener;
 
@@ -48,10 +54,11 @@ public class AttachmentPresenter {
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
 
 
-    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager,
+    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, Account account, LoaderManager loaderManager,
                                AttachmentsChangedListener listener) {
         this.context = context;
         this.attachmentMvpView = attachmentMvpView;
+        this.account = account;
         this.loaderManager = loaderManager;
         this.listener = listener;
 
@@ -60,7 +67,7 @@ public class AttachmentPresenter {
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(STATE_KEY_WAITING_FOR_ATTACHMENTS, actionToPerformAfterWaiting.name());
-        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, createAttachmentList());
+        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, createAttachmentListWithoutResizing());
         outState.putInt(STATE_KEY_NEXT_LOADER_ID, nextLoaderId);
     }
 
@@ -107,10 +114,44 @@ public class AttachmentPresenter {
         return false;
     }
 
-    public ArrayList<Attachment> createAttachmentList() {
+    public ArrayList<Attachment> createAttachmentListWithoutResizing(){
         ArrayList<Attachment> result = new ArrayList<>();
         for (Attachment attachment : attachments.values()) {
             result.add(attachment);
+        }
+        return result;
+    }
+
+    public ArrayList<Attachment> createAttachmentList() {
+        ArrayList<Attachment> result = new ArrayList<>();
+        for (Attachment attachment : attachments.values()) {
+            if(account.getResizeEnabled() && !attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
+                float factor = 1.0f / account.getResizeFactor();
+                String newFilename = "";
+                if(factor != 1.0f) {
+                    newFilename = Utility.getResizedImageUri(context, attachment.uri, factor);
+                }
+                if(!newFilename.equals("")) {
+                    Attachment newAttachment = attachment.createResizedCopy(newFilename);
+                    result.add(newAttachment);
+                } else {
+                    result.add(attachment);
+                }
+            } else if(attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
+                float factor = attachment.resizeFactor;
+                String newFilename = "";
+                if(factor != 1.0f) {
+                    newFilename = Utility.getResizedImageUri(context, attachment.uri, factor);
+                }
+                if(!newFilename.equals("")) {
+                    Attachment newAttachment = attachment.createResizedCopy(newFilename);
+                    result.add(newAttachment);
+                } else {
+                    result.add(attachment);
+                }
+            } else {
+                result.add(attachment);
+            }
         }
         return result;
     }
@@ -343,6 +384,12 @@ public class AttachmentPresenter {
         attachmentMvpView.removeAttachmentView(attachment);
         attachments.remove(uri);
         listener.onAttachmentRemoved();
+    }
+
+    public void updateAttachmentsList(Attachment attachment){
+        Attachment originalAttachment = attachments.get(attachment.uri);
+        originalAttachment.updateResizeInfo(attachment.resizeFactor, attachment.overrideDefault);
+        Log.d("ATTACH","Yes : " + attachments.size());
     }
 
     public void onActivityResult(int resultCode, int requestCode, Intent data) {

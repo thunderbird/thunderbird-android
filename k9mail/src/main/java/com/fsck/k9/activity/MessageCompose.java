@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -107,6 +108,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
     private static final int DIALOG_CHOOSE_IDENTITY = 3;
     private static final int DIALOG_CONFIRM_DISCARD = 4;
+    private static final int DIALOG_CHOOSE_RESIZE_VALUE = 5;
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
 
@@ -158,6 +160,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private AttachmentPresenter attachmentPresenter;
 
     private Contacts contacts;
+
+    private int resizeDialogSelectedFactor = 1;
 
     /**
      * The account used for message composition.
@@ -281,7 +285,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
-        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView, getLoaderManager(), this);
+        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView, account, getLoaderManager(), this);
 
         messageContentView = (EolConvertingEditText) findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
@@ -1007,7 +1011,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (messageContentView.getText().length() != 0) {
             return true;
         }
-        if (!attachmentPresenter.createAttachmentList().isEmpty()) {
+        if (!attachmentPresenter.createAttachmentListWithoutResizing().isEmpty()) {
             return true;
         }
         if (subjectView.getText().length() != 0) {
@@ -1105,6 +1109,48 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         }
         return super.onCreateDialog(id);
+    }
+
+    public void showResizeFactorDialog(final Attachment attachment){
+        final CharSequence[] resizeOptions = {
+                getString(R.string.account_settings_attachments_resize_factor_entry_original),
+                getString(R.string.account_settings_attachments_resize_factor_entry_half),
+                getString(R.string.account_settings_attachments_resize_factor_entry_one_fourth)};
+
+        int selectedChoice = -1;
+        if(attachment.overrideDefault){
+            if(attachment.resizeFactor == 1.0f){
+                selectedChoice = 0;
+            } else if (attachment.resizeFactor == 0.5f){
+                selectedChoice = 1;
+            } else {
+                selectedChoice = 2;
+            }
+        }
+
+        AlertDialog.Builder builder =  new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.account_settings_attachment_resize_factor_label))
+                .setSingleChoiceItems(resizeOptions, selectedChoice, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch(which) {
+                            case 0:
+                                attachment.updateResizeInfo(1.0f, true);
+                                attachmentPresenter.updateAttachmentsList(attachment);
+                                break;
+                            case 1:
+                                attachment.updateResizeInfo(0.5f, true);
+                                attachmentPresenter.updateAttachmentsList(attachment);
+                                break;
+                            case 2:
+                                attachment.updateResizeInfo(0.25f, true);
+                                attachmentPresenter.updateAttachmentsList(attachment);
+                                break;
+                        }
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
     }
 
     public void saveDraftEventually() {
@@ -1353,6 +1399,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Utility.clearTemporaryAttachmentsCache(context);
         }
 
         /**
@@ -1661,6 +1713,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 @Override
                 public void onClick(View view) {
                     attachmentPresenter.onClickRemoveAttachment(attachment.uri);
+                }
+            });
+
+            View resizeButton = view.findViewById(R.id.attachment_resize);
+            resizeButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showResizeFactorDialog(attachment);
                 }
             });
 
