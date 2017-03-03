@@ -74,6 +74,7 @@ public class Prefs extends K9PreferenceActivity {
             "messagelist_colorize_missing_contact_pictures";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
     private static final String PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS = "messageview_visible_refile_actions";
+    private static final String PREFERENCE_MESSAGEVIEW_DISPLAY_FORMAT = "messageview_html_or_plaintext";
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
     private static final String PREFERENCE_MESSAGEVIEW_SHOW_NEXT = "messageview_show_next";
@@ -140,6 +141,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
     private CheckBoxPreference mAutofitWidth;
+    private CheckBoxPreference mDisplayAsPlainText;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
@@ -294,6 +296,8 @@ public class Prefs extends K9PreferenceActivity {
             }
         });
 
+        mDisplayAsPlainText =(CheckBoxPreference)findPreference(PREFERENCE_MESSAGEVIEW_DISPLAY_FORMAT);
+        mDisplayAsPlainText.setChecked(K9.displayAsPlaintText());
         mFixedWidth = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGEVIEW_FIXEDWIDTH);
         mFixedWidth.setChecked(K9.messageViewFixedWidthFont());
 
@@ -497,6 +501,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setUseBackgroundAsUnreadIndicator(mBackgroundAsUnreadIndicator.isChecked());
         K9.setThreadedViewEnabled(mThreadedView.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
+        K9.setDisplayAsPlainText(mDisplayAsPlainText.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
         K9.setMessageViewShowNext(mShowNext.isChecked());

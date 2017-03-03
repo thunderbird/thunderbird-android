@@ -224,6 +224,7 @@ public class K9 extends Application {
     private static int mContactNameColor = 0xff00008f;
     private static boolean sShowContactPicture = true;
     private static boolean mMessageViewFixedWidthFont = false;
+    private static boolean mDisplayFormatPlainText = false;
     private static boolean mMessageViewReturnToList = false;
     private static boolean mMessageViewShowNext = false;
 
@@ -698,6 +699,7 @@ public class K9 extends Application {
         sShowContactPicture = storage.getBoolean("showContactPicture", true);
         mChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false);
         mContactNameColor = storage.getInt("registeredNameColor", 0xff00008f);
+        mDisplayFormatPlainText = storage.getBoolean("DisplayFormatPlainText",false);
         mMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false);
         mMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false);
         mMessageViewShowNext = storage.getBoolean("messageViewShowNext", false);
@@ -1102,6 +1104,14 @@ public class K9 extends Application {
 
     public static void setContactNameColor(int contactNameColor) {
         mContactNameColor = contactNameColor;
+    }
+
+    public static boolean displayAsPlaintText(){
+        return mDisplayFormatPlainText;
+    }
+
+    public static void setDisplayAsPlainText(boolean displayFormat){
+        mDisplayFormatPlainText = displayFormat;
     }
 
     public static boolean messageViewFixedWidthFont() {

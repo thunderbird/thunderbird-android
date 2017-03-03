@@ -212,6 +212,12 @@
         <PreferenceCategory
             android:title="@string/messageview_preferences"
             android:key="messageview_preferences">
+            <CheckBoxPreference
+                android:persistent = "false"
+                android:key = "messageview_html_or_plaintext"
+                android:title ="@string/global_settings_messageview_display_in_plaintext_title"
+                android:summary="@string/global_settings_messageview_display_in_plaintext_summary"
+                />
 
             <CheckBoxPreference
                 android:persistent="false"

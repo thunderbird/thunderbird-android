@@ -1101,6 +1101,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>
 
+    <string name="global_settings_messageview_display_in_plaintext_title">Switch to Plain Text mode</string>
+    <string name="global_settings_messageview_display_in_plaintext_summary">Check option to display messages in plain text instead of html</string>
+
     <string name="loading_attachment">Loading attachment…</string>
     <string name="fetching_attachment_dialog_title_send">Sending message</string>
     <string name="fetching_attachment_dialog_title_save">Saving draft</string>

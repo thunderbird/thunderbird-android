@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
@@ -388,7 +389,10 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
             mSavedState = null;
         }
 
-        String textToDisplay = messageViewInfo.text;
+        String textToDisplay = K9.displayAsPlaintText()
+                ? HtmlConverter.htmlToText(messageViewInfo.text)
+                : messageViewInfo.text;
+
         if (textToDisplay != null && !isShowingPictures()) {
             if (Utility.hasExternalImages(textToDisplay)) {
                 if (automaticallyLoadPictures) {
