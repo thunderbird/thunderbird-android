@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -191,6 +192,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private Action action;
 
+    private ActionBar mActionBar;
+
     private boolean requestReadReceipt = false;
 
     private TextView chooseIdentityButton;
@@ -234,6 +237,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         // on api level 15, setContentView() shows the progress bar for some reason...
         setProgressBarIndeterminateVisibility(false);
+
+        mActionBar = getActionBar();
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
         final Intent intent = getIntent();
 
@@ -920,6 +927,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onAccounts();
+                break;
             case R.id.send:
                 checkToSendMessage();
                 break;
@@ -1401,6 +1411,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         currentMessageFormat = format;
     }
+
+    private void onAccounts() {
+        Accounts.listAccounts(this);
+        finish();
+    }
+
+
 
     public void updateMessageFormat() {
         MessageFormat origMessageFormat = account.getMessageFormat();
