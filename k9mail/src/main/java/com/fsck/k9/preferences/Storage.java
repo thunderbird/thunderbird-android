@@ -1,5 +1,6 @@
 package com.fsck.k9.preferences;
 
+import android.os.SystemClock;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

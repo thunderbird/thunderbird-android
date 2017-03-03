@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import android.os.SystemClock;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 

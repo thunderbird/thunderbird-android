@@ -1,6 +1,7 @@
 package com.fsck.k9.mail.store.webdav;
 
 import android.util.Log;
+import android.os.SystemClock;
 
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;

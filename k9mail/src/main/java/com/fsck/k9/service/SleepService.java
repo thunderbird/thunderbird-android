@@ -1,5 +1,7 @@
 package com.fsck.k9.service;
 
+import android.os.SystemClock;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;

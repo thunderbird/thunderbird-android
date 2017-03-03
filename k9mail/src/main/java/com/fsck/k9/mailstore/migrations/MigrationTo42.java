@@ -12,6 +12,7 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 
+import android.os.SystemClock;
 
 class MigrationTo42 {
     public static void from41MoveFolderPreferences(MigrationsHelper migrationsHelper) {

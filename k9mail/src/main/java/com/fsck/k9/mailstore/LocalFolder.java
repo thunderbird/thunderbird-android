@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore;
 
+import android.os.SystemClock;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

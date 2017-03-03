@@ -4,6 +4,8 @@ package com.fsck.k9.service;
 import java.util.Collection;
 import java.util.Date;
 
+import android.os.SystemClock;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;

@@ -1,5 +1,7 @@
 package com.fsck.k9.service;
 
+import android.os.SystemClock;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.preferences.Storage;

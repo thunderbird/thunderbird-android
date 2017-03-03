@@ -12,6 +12,7 @@ package com.fsck.k9;
 
 import android.os.Build;
 import android.os.Process;
+import android.os.SystemClock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
