@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -77,7 +78,7 @@ public class FileHelper {
                     Log.d(K9.LOG_TAG, "Unable to create file: " + file.getAbsolutePath());
                 }
             } else {
-                if (!file.setLastModified(System.currentTimeMillis())) {
+                if (!file.setLastModified(SystemClock.elapsedRealtime())) {
                     Log.d(K9.LOG_TAG, "Unable to change last modification date: " + file.getAbsolutePath());
                 }
             }

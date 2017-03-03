@@ -1,5 +1,6 @@
 package com.fsck.k9.preferences;
 
+import android.os.SystemClock;
 import android.util.Log;
 import com.fsck.k9.K9;
 
@@ -52,7 +53,7 @@ public class StorageEditor {
     }
 
     private void commitChanges() {
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealtime();
         Log.i(K9.LOG_TAG, "Committing preference changes");
         Runnable committer = new Runnable() {
             public void run() {
@@ -72,7 +73,7 @@ public class StorageEditor {
             }
         };
         storage.doInTransaction(committer);
-        long endTime = System.currentTimeMillis();
+        long endTime = SystemClock.elapsedRealtime();
         Log.i(K9.LOG_TAG, "Preferences commit took " + (endTime - startTime) + "ms");
 
     }

@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -87,7 +88,7 @@ public class MailService extends CoreService {
 
     @Override
     public int startService(Intent intent, int startId) {
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealtime();
         boolean oldIsSyncDisabled = isSyncDisabled();
         boolean doBackground = true;
 
@@ -155,7 +156,7 @@ public class MailService extends CoreService {
         }
 
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "MailService.onStart took " + (System.currentTimeMillis() - startTime) + "ms");
+            Log.i(K9.LOG_TAG, "MailService.onStart took " + (SystemClock.elapsedRealtime() - startTime) + "ms");
 
         return START_NOT_STICKY;
     }
@@ -178,7 +179,7 @@ public class MailService extends CoreService {
     private final static String LAST_CHECK_END = "MailService.lastCheckEnd";
 
     public static void saveLastCheckEnd(Context context) {
-        long lastCheckEnd = System.currentTimeMillis();
+        long lastCheckEnd = SystemClock.elapsedRealtime();
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "Saving lastCheckEnd = " + new Date(lastCheckEnd));
         Preferences prefs = Preferences.getPreferences(context);
@@ -253,11 +254,11 @@ public class MailService extends CoreService {
         int previousInterval = storage.getInt(PREVIOUS_INTERVAL, -1);
         long lastCheckEnd = storage.getLong(LAST_CHECK_END, -1);
 
-        if (lastCheckEnd > System.currentTimeMillis()) {
+        if (lastCheckEnd > SystemClock.elapsedRealtime()) {
             Log.i(K9.LOG_TAG, "The database claims that the last time mail was checked was in " +
                     "the future (" + lastCheckEnd + "). To try to get things back to normal, " +
-                    "the last check time has been reset to: " + System.currentTimeMillis());
-            lastCheckEnd = System.currentTimeMillis();
+                    "the last check time has been reset to: " + SystemClock.elapsedRealtime());
+            lastCheckEnd = SystemClock.elapsedRealtime();
         }
 
         int shortestInterval = -1;
@@ -285,7 +286,7 @@ public class MailService extends CoreService {
         } else {
             long delay = (shortestInterval * (60 * 1000));
             long base = (previousInterval == -1 || lastCheckEnd == -1 ||
-                    !considerLastCheckEnd ? System.currentTimeMillis() : lastCheckEnd);
+                    !considerLastCheckEnd ? SystemClock.elapsedRealtime() : lastCheckEnd);
             long nextTime = base + delay;
 
             if (K9.DEBUG) {
@@ -379,7 +380,7 @@ public class MailService extends CoreService {
 
     private void refreshPushers() {
         try {
-            long nowTime = System.currentTimeMillis();
+            long nowTime = SystemClock.elapsedRealtime();
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Refreshing pushers");
             Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
@@ -427,7 +428,7 @@ public class MailService extends CoreService {
             Log.v(K9.LOG_TAG, "Pusher refresh interval = " + minInterval);
         }
         if (minInterval > 0) {
-            long nextTime = System.currentTimeMillis() + minInterval;
+            long nextTime = SystemClock.elapsedRealtime() + minInterval;
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "Next pusher refresh scheduled for " + new Date(nextTime));
             Intent i = new Intent(this, MailService.class);

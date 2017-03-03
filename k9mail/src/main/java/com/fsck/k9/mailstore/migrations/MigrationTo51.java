@@ -13,6 +13,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -140,7 +141,7 @@ class MigrationTo51 {
     @NonNull
     private static File renameOldAttachmentDirAndCreateNew(Account account, File attachmentDirNew) {
         File attachmentDirOld = new File(attachmentDirNew.getParent(),
-                account.getUuid() + ".old_attach-" + System.currentTimeMillis());
+                account.getUuid() + ".old_attach-" + SystemClock.elapsedRealtime());
         boolean moveOk = attachmentDirNew.renameTo(attachmentDirOld);
         if (!moveOk) {
             // TODO escalate?

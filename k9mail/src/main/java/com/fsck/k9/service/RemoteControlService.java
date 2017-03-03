@@ -14,6 +14,7 @@ import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -136,13 +137,13 @@ public class RemoteControlService extends CoreService {
                         if (needsReschedule) {
                             Intent i = new Intent(RemoteControlService.this, RemoteControlService.class);
                             i.setAction(RESCHEDULE_ACTION);
-                            long nextTime = System.currentTimeMillis() + 10000;
+                            long nextTime = SystemClock.elapsedRealtime() + 10000;
                             BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
                         }
                         if (needsPushRestart) {
                             Intent i = new Intent(RemoteControlService.this, RemoteControlService.class);
                             i.setAction(PUSH_RESTART_ACTION);
-                            long nextTime = System.currentTimeMillis() + 10000;
+                            long nextTime = SystemClock.elapsedRealtime() + 10000;
                             BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
                         }
                     } catch (Exception e) {

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Build;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.fsck.k9.K9;
@@ -281,14 +282,14 @@ public class LockableDatabase {
                 if (doTransaction) {
                     final long begin;
                     if (debug) {
-                        begin = System.currentTimeMillis();
+                        begin = SystemClock.elapsedRealtime();
                     } else {
                         begin = 0L;
                     }
                     // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
                     mDb.endTransaction();
                     if (debug) {
-                        Log.v(K9.LOG_TAG, "LockableDatabase: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms / " + new Exception().getStackTrace()[1].toString());
+                        Log.v(K9.LOG_TAG, "LockableDatabase: Transaction ended, took " + Long.toString(SystemClock.elapsedRealtime() - begin) + "ms / " + new Exception().getStackTrace()[1].toString());
                     }
                 }
             }

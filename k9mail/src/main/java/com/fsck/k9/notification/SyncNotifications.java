@@ -3,6 +3,7 @@ package com.fsck.k9.notification;
 
 import android.app.PendingIntent;
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
@@ -39,7 +40,7 @@ class SyncNotifications {
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
-                .setWhen(System.currentTimeMillis())
+                .setWhen(SystemClock.elapsedRealtime())
                 .setOngoing(true)
                 .setTicker(tickerText)
                 .setContentTitle(title)
@@ -77,7 +78,7 @@ class SyncNotifications {
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
-                .setWhen(System.currentTimeMillis())
+                .setWhen(SystemClock.elapsedRealtime())
                 .setOngoing(true)
                 .setTicker(tickerText)
                 .setContentTitle(title)
