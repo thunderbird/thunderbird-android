@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -232,6 +233,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             setContentView(R.layout.message_compose);
         }
 
+        ActionBar actionBar=getActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         // on api level 15, setContentView() shows the progress bar for some reason...
         setProgressBarIndeterminateVisibility(false);
 
@@ -429,6 +434,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             currentMessageBuilder.reattachCallback(this);
         }
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -920,6 +927,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
             case R.id.send:
                 checkToSendMessage();
                 break;
