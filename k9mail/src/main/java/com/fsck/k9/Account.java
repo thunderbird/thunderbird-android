@@ -107,6 +107,9 @@ public class Account implements BaseAccount, StoreConfig {
     public static final boolean DEFAULT_STRIP_SIGNATURE = true;
     public static final int DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25;
 
+    public static final boolean DEFAULT_RESIZE_ENABLED = false;
+    public static final int DEFAULT_RESIZE_FACTOR = 1;
+
     public static final String ACCOUNT_DESCRIPTION_KEY = "description";
     public static final String STORE_URI_KEY = "storeUri";
     public static final String TRANSPORT_URI_KEY = "transportUri";
@@ -226,6 +229,9 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mRemoteSearchFullText;
     private int mRemoteSearchNumResults;
 
+    private boolean mResizeEnabled;
+    private int mResizeFactor;
+
     private ColorChip mUnreadColorChip;
     private ColorChip mReadColorChip;
 
@@ -318,6 +324,8 @@ public class Account implements BaseAccount, StoreConfig {
         mAllowRemoteSearch = false;
         mRemoteSearchFullText = false;
         mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
+        mResizeEnabled = DEFAULT_RESIZE_ENABLED;
+        mResizeFactor = DEFAULT_RESIZE_FACTOR;
         mEnabled = true;
         mMarkMessageAsReadOnView = true;
         mAlwaysShowCcBcc = false;
@@ -466,6 +474,9 @@ public class Account implements BaseAccount, StoreConfig {
         mAllowRemoteSearch = storage.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = storage.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = storage.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
+
+        mResizeEnabled = storage.getBoolean(mUuid + ".resizeEnabled", false);
+        mResizeFactor = storage.getInt(mUuid + ".resizeFactor", DEFAULT_RESIZE_FACTOR);
 
         mEnabled = storage.getBoolean(mUuid + ".enabled", true);
         mMarkMessageAsReadOnView = storage.getBoolean(mUuid + ".markMessageAsReadOnView", true);
@@ -732,6 +743,8 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
+        editor.putBoolean(mUuid + ".resizeEnabled", mResizeEnabled);
+        editor.putInt(mUuid + ".resizeFactor", mResizeFactor);
         editor.putBoolean(mUuid + ".enabled", mEnabled);
         editor.putBoolean(mUuid + ".markMessageAsReadOnView", mMarkMessageAsReadOnView);
         editor.putBoolean(mUuid + ".alwaysShowCcBcc", mAlwaysShowCcBcc);
@@ -1613,6 +1626,22 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setRemoteSearchNumResults(int val) {
         mRemoteSearchNumResults = (val >= 0 ? val : 0);
+    }
+
+    public boolean getResizeEnabled() {
+        return mResizeEnabled;
+    }
+
+    public void setResizeEnabled(boolean mResizeEnabled) {
+        this.mResizeEnabled = mResizeEnabled;
+    }
+
+    public int getResizeFactor() {
+        return mResizeFactor;
+    }
+
+    public void setResizeFactor(int mResizeFactor) {
+        this.mResizeFactor = mResizeFactor;
     }
 
     public String getInboxFolderName() {
