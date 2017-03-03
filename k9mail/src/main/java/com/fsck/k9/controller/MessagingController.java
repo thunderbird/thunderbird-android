@@ -154,6 +154,8 @@ public class MessagingController {
     private MessagingListener checkMailListener = null;
     private volatile boolean stopped = false;
 
+    private MessagingListener attachmentDownloadProgressListener = null;
+
 
     public static synchronized MessagingController getInstance(Context context) {
         if (inst == null) {
@@ -261,6 +263,10 @@ public class MessagingController {
             }
         }
         throw new Error(e);
+    }
+
+    public void addDownloadProgressListener(MessagingListener messagingListener){
+        attachmentDownloadProgressListener = messagingListener;
     }
 
     public void addListener(MessagingListener listener) {
@@ -2558,7 +2564,7 @@ public class MessagingController {
                     AttachmentProgressCallback attachmentProgressCallback = new AttachmentProgressCallback() {
                         @Override
                         public void onUpdate(int progress) {
-                            AttachmentDownloadDialogFragment.updateProgress(progress);
+                            attachmentDownloadProgressListener.updateProgress(progress);
                         }
                     };
 

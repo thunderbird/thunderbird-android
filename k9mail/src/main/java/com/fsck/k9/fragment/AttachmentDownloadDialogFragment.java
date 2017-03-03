@@ -7,11 +7,17 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
+
 public class AttachmentDownloadDialogFragment extends DialogFragment {
 
     static ProgressDialog dialog;
 
     static int progress = 0;
+
+    static MessagingListener messagingListener;
 
     protected static final String ARG_SIZE = "size";
     protected static final String ARG_MESSAGE = "message";
@@ -29,7 +35,7 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
         return attachmentDownloadDialogFragment;
     }
 
-    public static void updateProgress(int newProgress) {
+    public void updateDownloadProgress(int newProgress) {
         progress = newProgress;
         for (int i = progress; i <= newProgress; i++) {
             dialog.setProgress(i);
@@ -41,6 +47,15 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         int size = args.getInt(ARG_SIZE);
         String message = args.getString(ARG_MESSAGE);
+
+        messagingListener = new SimpleMessagingListener(){
+            @Override
+            public void updateProgress(int progress) {
+                updateDownloadProgress(progress);
+            }
+        };
+
+        MessagingController.getInstance(getActivity()).addDownloadProgressListener(messagingListener);
 
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage(message);
