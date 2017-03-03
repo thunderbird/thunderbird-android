@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
@@ -95,7 +96,7 @@ public class AttachmentTempFileProvider extends FileProvider {
     public static boolean deleteOldTemporaryFiles(Context context) {
         File tempDirectory = getTempFileDirectory(context);
         boolean allFilesDeleted = true;
-        long deletionThreshold = new Date().getTime() - FILE_DELETE_THRESHOLD_MILLISECONDS;
+        long deletionThreshold = SystemClock.elapsedRealtime() - FILE_DELETE_THRESHOLD_MILLISECONDS;
         for (File tempFile : tempDirectory.listFiles()) {
             long lastModified = tempFile.lastModified();
             if (lastModified < deletionThreshold) {

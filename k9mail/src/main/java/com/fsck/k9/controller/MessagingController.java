@@ -1,6 +1,5 @@
 package com.fsck.k9.controller;
 
-
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -957,7 +956,7 @@ public class MessagingController {
 
             /* Notify listeners that we're finally done. */
 
-            localFolder.setLastChecked(System.currentTimeMillis());
+            localFolder.setLastChecked(SystemClock.elapsedRealtime());
             localFolder.setStatus(null);
 
             if (K9.DEBUG) {
@@ -998,7 +997,7 @@ public class MessagingController {
             if (tLocalFolder != null) {
                 try {
                     tLocalFolder.setStatus(rootMessage);
-                    tLocalFolder.setLastChecked(System.currentTimeMillis());
+                    tLocalFolder.setLastChecked(SystemClock.elapsedRealtime());
                 } catch (MessagingException me) {
                     Log.e(K9.LOG_TAG, "Could not set last checked on folder " + account.getDescription() + ":" +
                             tLocalFolder.getName(), e);
@@ -2254,7 +2253,7 @@ public class MessagingController {
             message.setFlag(Flag.X_DOWNLOADED_FULL, true);
             message.setSubject(subject);
 
-            long nowTime = System.currentTimeMillis();
+            long nowTime = SystemClock.elapsedRealtime();
             Date nowDate = new Date(nowTime);
             message.setInternalDate(nowDate);
             message.addSentDate(nowDate, K9.hideTimeZone());
@@ -3860,7 +3859,7 @@ public class MessagingController {
         }
 
         if (!ignoreLastCheckedTime && folder.getLastChecked() >
-                (System.currentTimeMillis() - accountInterval)) {
+                (SystemClock.elapsedRealtime() - accountInterval)) {
             if (K9.DEBUG) {
                 Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName()
                         + ", previously synced @ " + new Date(folder.getLastChecked())
@@ -3881,7 +3880,7 @@ public class MessagingController {
                             tLocalFolder.open(Folder.OPEN_MODE_RW);
 
                             if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
-                                    (System.currentTimeMillis() - accountInterval)) {
+                                    (SystemClock.elapsedRealtime() - accountInterval)) {
                                 if (K9.DEBUG) {
                                     Log.v(K9.LOG_TAG, "Not running Command for folder " + folder.getName()
                                             + ", previously synced @ " + new Date(folder.getLastChecked())
@@ -4339,7 +4338,7 @@ public class MessagingController {
 
                     int unreadMessageCount = localFolder.getUnreadMessageCount();
 
-                    localFolder.setLastPush(System.currentTimeMillis());
+                    localFolder.setLastPush(SystemClock.elapsedRealtime());
                     localFolder.setStatus(null);
 
                     if (K9.DEBUG) {

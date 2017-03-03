@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.os.PowerManager;
 import android.text.TextUtils.TruncateAt;
 import android.text.format.DateUtils;
@@ -986,7 +987,7 @@ public class FolderList extends K9ListActivity {
             } else if (folder.status != null) {
                 folderStatus = folder.status;
             } else if (folder.lastChecked != 0) {
-                long now = System.currentTimeMillis();
+                long now = SystemClock.elapsedRealtime();
                 int flags = DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR;
                 CharSequence formattedDate;
 
