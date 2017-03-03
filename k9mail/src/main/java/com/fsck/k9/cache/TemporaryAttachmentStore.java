@@ -50,7 +50,7 @@ public class TemporaryAttachmentStore {
             return;
         }
 
-        long cutOffTime = SystemClock.elapsedRealtime() - MAX_FILE_AGE;
+        long cutOffTime = System.currentTimeMillis() - MAX_FILE_AGE;
         for (File file : files) {
             if (file.lastModified() < cutOffTime) {
                 if (file.delete()) {
