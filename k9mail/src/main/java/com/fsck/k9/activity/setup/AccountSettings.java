@@ -22,7 +22,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
-import android.util.Log;
+import timber.log.Timber;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -219,7 +219,7 @@ public class AccountSettings extends K9PreferenceActivity {
             mIsExpungeCapable = store.isExpungeCapable();
             mIsSeenFlagSupported = store.isSeenFlagSupported();
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not get remote store", e);
+            Timber.e(e, "Could not get remote store");
         }
 
         addPreferencesFromResource(R.xml.account_settings_preferences);

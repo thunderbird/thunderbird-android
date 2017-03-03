@@ -6,7 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -122,16 +122,14 @@ public class NotificationActionService extends CoreService {
 
     @Override
     public int startService(Intent intent, int startId) {
-        if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "NotificationActionService started with startId = " + startId);
-        }
+        Timber.i("NotificationActionService started with startId = %d", startId);
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID);
         Preferences preferences = Preferences.getPreferences(this);
         Account account = preferences.getAccount(accountUuid);
 
         if (account == null) {
-            Log.w(K9.LOG_TAG, "Could not find account for notification action.");
+            Timber.w("Could not find account for notification action.");
             return START_NOT_STICKY;
         }
 
@@ -147,9 +145,7 @@ public class NotificationActionService extends CoreService {
         } else if (ACTION_SPAM.equals(action)) {
             markMessageAsSpam(intent, account, controller);
         } else if (ACTION_DISMISS.equals(action)) {
-            if (K9.DEBUG) {
-                Log.i(K9.LOG_TAG, "Notification dismissed");
-            }
+            Timber.i("Notification dismissed");
         }
 
         cancelNotifications(intent, account, controller);
@@ -158,9 +154,7 @@ public class NotificationActionService extends CoreService {
     }
 
     private void markMessagesAsRead(Intent intent, Account account, MessagingController controller) {
-        if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "NotificationActionService marking messages as read");
-        }
+        Timber.i("NotificationActionService marking messages as read");
 
         List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
@@ -172,9 +166,7 @@ public class NotificationActionService extends CoreService {
     }
 
     private void deleteMessages(Intent intent, MessagingController controller) {
-        if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "NotificationActionService deleting messages");
-        }
+        Timber.i("NotificationActionService deleting messages");
 
         List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
@@ -182,15 +174,13 @@ public class NotificationActionService extends CoreService {
     }
 
     private void archiveMessages(Intent intent, Account account, MessagingController controller) {
-        if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "NotificationActionService archiving messages");
-        }
+        Timber.i("NotificationActionService archiving messages");
 
         String archiveFolderName = account.getArchiveFolderName();
         if (archiveFolderName == null ||
                 (archiveFolderName.equals(account.getSpamFolderName()) && K9.confirmSpam()) ||
                 !isMovePossible(controller, account, archiveFolderName)) {
-            Log.w(K9.LOG_TAG, "Can not archive messages");
+            Timber.w("Can not archive messages");
             return;
         }
 
@@ -205,14 +195,12 @@ public class NotificationActionService extends CoreService {
     }
 
     private void markMessageAsSpam(Intent intent, Account account, MessagingController controller) {
-        if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "NotificationActionService moving messages to spam");
-        }
+        Timber.i("NotificationActionService moving messages to spam");
 
         String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
         MessageReference messageReference = MessageReference.parse(messageReferenceString);
         if (messageReference == null) {
-            Log.w(K9.LOG_TAG, "Invalid message reference: " + messageReferenceString);
+            Timber.w("Invalid message reference: %s", messageReferenceString);
             return;
         }
 
@@ -230,7 +218,7 @@ public class NotificationActionService extends CoreService {
             if (messageReference != null) {
                 controller.cancelNotificationForMessage(account, messageReference);
             } else {
-                Log.w(K9.LOG_TAG, "Invalid message reference: " + messageReferenceString);
+                Timber.w("Invalid message reference: %s", messageReferenceString);
             }
         } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCES)) {
             List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);

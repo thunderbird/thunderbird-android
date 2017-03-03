@@ -16,7 +16,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
@@ -226,7 +226,7 @@ public class MessageCryptoHelper {
                     @Override
                     public void onError(Exception e) {
                         // TODO actually handle (hand to ui, offer retry?)
-                        Log.e(K9.LOG_TAG, "Couldn't connect to OpenPgpService", e);
+                        Timber.e(e, "Couldn't connect to OpenPgpService");
                     }
                 });
         openPgpServiceConnection.bindToService();
@@ -276,9 +276,9 @@ public class MessageCryptoHelper {
 
             throw new IllegalStateException("Unknown crypto part type: " + cryptoPartType);
         } catch (IOException e) {
-            Log.e(K9.LOG_TAG, "IOException", e);
+            Timber.e(e, "IOException");
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "MessagingException", e);
+            Timber.e(e, "MessagingException");
         }
     }
 
@@ -290,7 +290,7 @@ public class MessageCryptoHelper {
                 new IOpenPgpSinkResultCallback<MimeBodyPart>() {
             @Override
             public void onProgress(int current, int max) {
-                Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
+                Timber.d("received progress status: %d / %d", current, max);
                 callbackProgress(current, max);
             }
 
@@ -321,7 +321,7 @@ public class MessageCryptoHelper {
                     TextBody body = new TextBody(new String(decryptedByteOutputStream.toByteArray()));
                     return new MimeBodyPart(body, "text/plain");
                 } catch (MessagingException e) {
-                    Log.e(K9.LOG_TAG, "MessagingException", e);
+                    Timber.e(e, "MessagingException");
                 }
 
                 return null;
@@ -344,7 +344,7 @@ public class MessageCryptoHelper {
 
             @Override
             public void onProgress(int current, int max) {
-                Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
+                Timber.d("received progress status: %d / %d", current, max);
                 callbackProgress(current, max);
             }
         });
@@ -366,7 +366,7 @@ public class MessageCryptoHelper {
 
             @Override
             public void onProgress(int current, int max) {
-                Log.d(K9.LOG_TAG, "received progress status: " + current + " / " + max);
+                Timber.d("received progress status: %d / %d", current, max);
                 callbackProgress(current, max);
             }
         });
@@ -379,10 +379,10 @@ public class MessageCryptoHelper {
                 try {
                     Multipart multipartSignedMultipart = (Multipart) signedPart.getBody();
                     BodyPart signatureBodyPart = multipartSignedMultipart.getBodyPart(0);
-                    Log.d(K9.LOG_TAG, "signed data type: " + signatureBodyPart.getMimeType());
+                    Timber.d("signed data type: %s", signatureBodyPart.getMimeType());
                     signatureBodyPart.writeTo(os);
                 } catch (MessagingException e) {
-                    Log.e(K9.LOG_TAG, "Exception while writing message to crypto provider", e);
+                    Timber.e(e, "Exception while writing message to crypto provider");
                 }
             }
         };
@@ -431,7 +431,7 @@ public class MessageCryptoHelper {
                         throw new IllegalStateException("part to stream must be encrypted or inline!");
                     }
                 } catch (MessagingException e) {
-                    Log.e(K9.LOG_TAG, "MessagingException while writing message to crypto provider", e);
+                    Timber.e(e, "MessagingException while writing message to crypto provider");
                 }
             }
         };
@@ -447,7 +447,7 @@ public class MessageCryptoHelper {
                             DecryptedFileProvider.getFileFactory(context);
                     return MimePartStreamParser.parse(fileFactory, is);
                 } catch (MessagingException e) {
-                    Log.e(K9.LOG_TAG, "Something went wrong while parsing the decrypted MIME part", e);
+                    Timber.e(e, "Something went wrong while parsing the decrypted MIME part");
                     //TODO: pass error to main thread and display error message to user
                     return null;
                 }
@@ -457,7 +457,7 @@ public class MessageCryptoHelper {
 
     private void onCryptoOperationReturned(MimeBodyPart decryptedPart) {
         if (currentCryptoResult == null) {
-            Log.e(K9.LOG_TAG, "Internal error: we should have a result here!");
+            Timber.e("Internal error: we should have a result here!");
             return;
         }
 
@@ -470,13 +470,11 @@ public class MessageCryptoHelper {
 
     private void handleCryptoOperationResult(MimeBodyPart outputPart) {
         int resultCode = currentCryptoResult.getIntExtra(OpenPgpApi.RESULT_CODE, INVALID_OPENPGP_RESULT_CODE);
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "OpenPGP API decryptVerify result code: " + resultCode);
-        }
+        Timber.d("OpenPGP API decryptVerify result code: %d", resultCode);
 
         switch (resultCode) {
             case INVALID_OPENPGP_RESULT_CODE: {
-                Log.e(K9.LOG_TAG, "Internal error: no result code!");
+                Timber.e("Internal error: no result code!");
                 break;
             }
             case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
@@ -505,9 +503,7 @@ public class MessageCryptoHelper {
 
     private void handleCryptoOperationError() {
         OpenPgpError error = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-        if (K9.DEBUG) {
-            Log.w(K9.LOG_TAG, "OpenPGP API error: " + error.getMessage());
-        }
+        Timber.w("OpenPGP API error: %s", error.getMessage());
 
         onCryptoOperationFailed(error);
     }
@@ -596,7 +592,7 @@ public class MessageCryptoHelper {
             partsToDecryptOrVerify.removeFirst();
             currentCryptoPart = null;
         } else {
-            Log.e(K9.LOG_TAG, "Got to onCryptoFinished() with no part in processing!", new Throwable());
+            Timber.e(new Throwable(), "Got to onCryptoFinished() with no part in processing!");
         }
         decryptOrVerifyNextPart();
     }
@@ -634,7 +630,7 @@ public class MessageCryptoHelper {
 
             boolean hasCachedResult = queuedResult != null || queuedPendingIntent != null;
             if (hasCachedResult) {
-                Log.d(K9.LOG_TAG, "Returning cached result or pending intent to reattached callback");
+                Timber.d("Returning cached result or pending intent to reattached callback");
                 deliverResult();
             }
         }
@@ -673,7 +669,7 @@ public class MessageCryptoHelper {
         }
 
         if (callback == null) {
-            Log.d(K9.LOG_TAG, "Keeping crypto helper result in queue for later delivery");
+            Timber.d("Keeping crypto helper result in queue for later delivery");
             return;
         }
         if (queuedResult != null) {
@@ -721,12 +717,12 @@ public class MessageCryptoHelper {
             String clearsignedText = MessageExtractor.getTextFromPart(part);
             String replacementText = OpenPgpUtils.extractClearsignedMessage(clearsignedText);
             if (replacementText == null) {
-                Log.e(K9.LOG_TAG, "failed to extract clearsigned text for replacement part");
+                Timber.e("failed to extract clearsigned text for replacement part");
                 return NO_REPLACEMENT_PART;
             }
             return new MimeBodyPart(new TextBody(replacementText), "text/plain");
         } catch (MessagingException e) {
-            Log.e(K9.LOG_TAG, "failed to create clearsigned text replacement part", e);
+            Timber.e(e, "failed to create clearsigned text replacement part");
             return NO_REPLACEMENT_PART;
         }
     }

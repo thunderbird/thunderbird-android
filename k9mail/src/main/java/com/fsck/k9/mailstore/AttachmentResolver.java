@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
@@ -72,7 +72,7 @@ public class AttachmentResolver {
                         result.put(contentId, attachmentInfo.internalUri);
                     }
                 } catch (MessagingException e) {
-                    Log.e(K9.LOG_TAG, "Error extracting attachment info", e);
+                    Timber.e(e, "Error extracting attachment info");
                 }
             }
         }

@@ -75,7 +75,7 @@ public class ActivityListenerTest {
 
         String operation = activityListener.getOperation(context);
 
-        if (K9.DEBUG) {
+        if (K9.isDebug()) {
             assertEquals("Polling and pushing disabled", operation);
         } else {
             assertEquals("Syncing disabled", operation);
@@ -90,7 +90,7 @@ public class ActivityListenerTest {
 
         String operation = activityListener.getOperation(context);
 
-        if (K9.DEBUG) {
+        if (K9.isDebug()) {
             assertEquals("Polling and pushing disabled", operation);
         } else {
             assertEquals("Syncing disabled", operation);
@@ -104,7 +104,7 @@ public class ActivityListenerTest {
 
         String operation = activityListener.getOperation(context);
 
-        if (K9.DEBUG) {
+        if (K9.isDebug()) {
             assertEquals("Polling and pushing disabled", operation);
         } else {
             assertEquals("Syncing disabled", operation);

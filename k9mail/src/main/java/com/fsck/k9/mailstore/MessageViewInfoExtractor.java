@@ -10,7 +10,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
@@ -82,7 +82,7 @@ public class MessageViewInfoExtractor {
             extraParts = cryptoMessageParts.extraParts;
         } else {
             if (annotations != null && !annotations.isEmpty()) {
-                Log.e(K9.LOG_TAG, "Got message annotations but no crypto root part!");
+                Timber.e("Got message annotations but no crypto root part!");
             }
             rootPart = message;
             cryptoResultAnnotation = null;

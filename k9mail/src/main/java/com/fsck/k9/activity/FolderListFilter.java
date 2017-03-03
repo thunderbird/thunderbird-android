@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.util.Log;
+import timber.log.Timber;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
@@ -113,7 +113,7 @@ public class FolderListFilter<T> extends Filter {
                     }
                 }
             } else {
-                Log.w(K9.LOG_TAG, "FolderListFilter.publishResults - null search-result ");
+                Timber.w("FolderListFilter.publishResults - null search-result ");
             }
 
             // Send notification that the data set changed now

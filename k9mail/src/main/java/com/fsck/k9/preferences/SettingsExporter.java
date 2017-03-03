@@ -16,7 +16,7 @@ import java.util.TreeMap;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
+import timber.log.Timber;
 import android.util.Xml;
 
 import com.fsck.k9.Account;
@@ -84,7 +84,7 @@ public class SettingsExporter {
         try {
             File dir = new File(Environment.getExternalStorageDirectory() + File.separator + context.getPackageName());
             if (!dir.mkdirs()) {
-                Log.d(K9.LOG_TAG, "Unable to create directory: " + dir.getAbsolutePath());
+                Timber.d("Unable to create directory: %s", dir.getAbsolutePath());
             }
 
             File file = FileHelper.createUniqueFile(dir, EXPORT_FILENAME);
@@ -102,7 +102,7 @@ public class SettingsExporter {
                 try {
                     os.close();
                 } catch (IOException ioe) {
-                    Log.w(K9.LOG_TAG, "Couldn't close exported settings file: " + filename);
+                    Timber.w("Couldn't close exported settings file: %s", filename);
                 }
             }
         }
@@ -124,7 +124,7 @@ public class SettingsExporter {
             serializer.attribute(null, VERSION_ATTRIBUTE, Integer.toString(Settings.VERSION));
             serializer.attribute(null, FILE_FORMAT_ATTRIBUTE, Integer.toString(FILE_FORMAT_VERSION));
 
-            Log.i(K9.LOG_TAG, "Exporting preferences");
+            Timber.i("Exporting preferences");
 
             Preferences preferences = Preferences.getPreferences(context);
             Storage storage = preferences.getStorage();
@@ -183,14 +183,11 @@ public class SettingsExporter {
                 try {
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, valueString);
                 } catch (InvalidSettingValueException e) {
-                    Log.w(K9.LOG_TAG, "Global setting \"" + key + "\" has invalid value \"" +
-                            valueString + "\" in preference storage. This shouldn't happen!");
+                    Timber.w("Global setting \"%s\" has invalid value \"%s\" in preference storage. " +
+                            "This shouldn't happen!", key, valueString);
                 }
             } else {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Couldn't find key \"" + key + "\" in preference storage. Using default value.");
-                }
-
+                Timber.d("Couldn't find key \"%s\" in preference storage. Using default value.", key);
                 writeKeyAndDefaultValueFromSetting(serializer, key, setting);
             }
         }
@@ -331,9 +328,8 @@ public class SettingsExporter {
                     try {
                         writeKeyAndPrettyValueFromSetting(serializer, keyPart, setting, valueString);
                     } catch (InvalidSettingValueException e) {
-                        Log.w(K9.LOG_TAG, "Account setting \"" + keyPart + "\" (" +
-                                account.getDescription() + ") has invalid value \"" + valueString +
-                                "\" in preference storage. This shouldn't happen!");
+                        Timber.w("Account setting \"%s\" (%s) has invalid value \"%s\" in preference storage. " +
+                                "This shouldn't happen!", keyPart, account.getDescription(), valueString);
                     }
                 }
             }
@@ -423,8 +419,8 @@ public class SettingsExporter {
                     try {
                         writeKeyAndPrettyValueFromSetting(serializer, identityKey, setting, valueString);
                     } catch (InvalidSettingValueException e) {
-                        Log.w(K9.LOG_TAG, "Identity setting \"" + identityKey + "\" has invalid value \"" +
-                                valueString + "\" in preference storage. This shouldn't happen!");
+                        Timber.w("Identity setting \"%s\" has invalid value \"%s\" in preference storage. " +
+                                "This shouldn't happen!", identityKey, valueString);
                     }
                 }
             }
@@ -472,8 +468,8 @@ public class SettingsExporter {
                     try {
                         writeKeyAndPrettyValueFromSetting(serializer, folderKey, setting, valueString);
                     } catch (InvalidSettingValueException e) {
-                        Log.w(K9.LOG_TAG, "Folder setting \"" + folderKey + "\" has invalid value \"" + valueString +
-                                "\" in preference storage. This shouldn't happen!");
+                        Timber.w("Folder setting \"%s\" has invalid value \"%s\" in preference storage. " +
+                                "This shouldn't happen!", folderKey, valueString);
                     }
                 }
             }

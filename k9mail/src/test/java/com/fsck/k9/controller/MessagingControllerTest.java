@@ -183,7 +183,7 @@ public class MessagingControllerTest {
 
     @Test()
     public void clearFolderSynchronous_whenExceptionThrown_shouldAddErrorMessageInDebug() throws MessagingException {
-        if (K9.DEBUG) {
+        if (K9.isDebug()) {
             doThrow(new RuntimeException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
 
             controller.clearFolderSynchronous(account, FOLDER_NAME, listener);

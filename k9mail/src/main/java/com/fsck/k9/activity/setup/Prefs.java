@@ -357,7 +357,7 @@ public class Prefs extends K9PreferenceActivity {
         mHideUserAgent = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_USERAGENT);
         mHideTimeZone = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_TIMEZONE);
 
-        mDebugLogging.setChecked(K9.DEBUG);
+        mDebugLogging.setChecked(K9.isDebug());
         mSensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
         mHideUserAgent.setChecked(K9.hideUserAgent());
         mHideTimeZone.setChecked(K9.hideTimeZone());
@@ -529,10 +529,10 @@ public class Prefs extends K9PreferenceActivity {
         K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
 
-        if (!K9.DEBUG && mDebugLogging.isChecked()) {
+        if (!K9.isDebug() && mDebugLogging.isChecked()) {
             Toast.makeText(this, R.string.debug_logging_enabled, Toast.LENGTH_LONG).show();
         }
-        K9.DEBUG = mDebugLogging.isChecked();
+        K9.setDebug(mDebugLogging.isChecked());
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         K9.setHideUserAgent(mHideUserAgent.isChecked());
         K9.setHideTimeZone(mHideTimeZone.isChecked());

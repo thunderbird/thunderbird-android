@@ -12,7 +12,7 @@ import android.os.Looper;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
+import timber.log.Timber;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -381,15 +381,12 @@ public class Utility {
         while (imgMatches.find()) {
             String uriScheme = imgMatches.group(1);
             if (uriScheme.equals("http") || uriScheme.equals("https")) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "External images found");
-                }
+                Timber.d("External images found");
                 return true;
             }
         }
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "No external images.");
-        }
+
+        Timber.d("No external images.");
         return false;
     }
 

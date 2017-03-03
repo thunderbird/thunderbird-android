@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import timber.log.Timber;
 
 class AccountReceiver extends BroadcastReceiver {
     K9AccountReceptor receptor = null;
@@ -18,7 +18,7 @@ class AccountReceiver extends BroadcastReceiver {
         if (K9RemoteControl.K9_REQUEST_ACCOUNTS.equals(intent.getAction())) {
             Bundle bundle = getResultExtras(false);
             if (bundle == null) {
-                Log.w(K9RemoteControl.LOG_TAG, "Response bundle is empty");
+                Timber.w("Response bundle is empty");
                 return;
             }
             receptor.accounts(bundle.getStringArray(K9RemoteControl.K9_ACCOUNT_UUIDS), bundle.getStringArray(K9RemoteControl.K9_ACCOUNT_DESCRIPTIONS));

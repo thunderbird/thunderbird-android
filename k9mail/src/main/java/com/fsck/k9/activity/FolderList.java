@@ -15,7 +15,7 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.text.TextUtils.TruncateAt;
 import android.text.format.DateUtils;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -379,7 +379,7 @@ public class FolderList extends K9ListActivity {
         super.onResume();
 
         if (!mAccount.isAvailable(this)) {
-            Log.i(K9.LOG_TAG, "account unavaliabale, not showing folder-list but account-list");
+            Timber.i("account unavaliabale, not showing folder-list but account-list");
             Accounts.listAccounts(this);
             finish();
             return;
@@ -800,7 +800,7 @@ public class FolderList extends K9ListActivity {
                 try {
                     if (account != null && folderName != null) {
                         if (!account.isAvailable(FolderList.this)) {
-                            Log.i(K9.LOG_TAG, "not refreshing folder of unavailable account");
+                            Timber.i("not refreshing folder of unavailable account");
                             return;
                         }
                         localFolder = account.getLocalStore().getFolder(folderName);
@@ -813,7 +813,7 @@ public class FolderList extends K9ListActivity {
                         }
                     }
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Exception while populating folder", e);
+                    Timber.e(e, "Exception while populating folder");
                 } finally {
                     if (localFolder != null) {
                         localFolder.close();
@@ -939,8 +939,7 @@ public class FolderList extends K9ListActivity {
             if (position <= getCount()) {
                 return  getItemView(position, convertView, parent);
             } else {
-                Log.e(K9.LOG_TAG, "getView with illegal positon=" + position
-                      + " called! count is only " + getCount());
+                Timber.e("getView with illegal position=%d called! count is only %d", position, getCount());
                 return null;
             }
         }
@@ -1019,8 +1018,7 @@ public class FolderList extends K9ListActivity {
                 try {
                     folder.unreadMessageCount  = folder.folder.getUnreadMessageCount();
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Unable to get unreadMessageCount for " + mAccount.getDescription() + ":"
-                          + folder.name);
+                    Timber.e("Unable to get unreadMessageCount for %s:%s", mAccount.getDescription(), folder.name);
                 }
             }
             if (folder.unreadMessageCount > 0) {
@@ -1039,11 +1037,9 @@ public class FolderList extends K9ListActivity {
                 try {
                     folder.flaggedMessageCount = folder.folder.getFlaggedMessageCount();
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Unable to get flaggedMessageCount for " + mAccount.getDescription() + ":"
-                          + folder.name);
+                    Timber.e("Unable to get flaggedMessageCount for %s:%s", mAccount.getDescription(), folder.name);
                 }
-
-                    }
+            }
 
             if (K9.messageListStars() && folder.flaggedMessageCount > 0) {
                 holder.flaggedMessageCount.setText(String.format("%d", folder.flaggedMessageCount));

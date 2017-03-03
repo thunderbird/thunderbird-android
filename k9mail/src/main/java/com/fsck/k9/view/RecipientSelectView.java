@@ -22,7 +22,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -409,7 +409,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         List<Recipient> currentRecipients = getObjects();
         int indexOfRecipient = currentRecipients.indexOf(recipientToReplace);
         if (indexOfRecipient == -1) {
-            Log.e(K9.LOG_TAG, "Tried to refresh invalid view token!");
+            Timber.e("Tried to refresh invalid view token!");
             return;
         }
         Recipient currentRecipient = currentRecipients.get(indexOfRecipient);
@@ -420,7 +420,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         View recipientTokenView = getTokenViewForRecipient(currentRecipient);
         if (recipientTokenView == null) {
-            Log.e(K9.LOG_TAG, "Tried to refresh invalid view token!");
+            Timber.e("Tried to refresh invalid view token!");
             return;
         }
 
