@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -26,6 +27,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import timber.log.Timber;
@@ -92,9 +94,13 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
+
+import static com.fsck.k9.R.id.folder;
+import static com.fsck.k9.R.id.search;
 
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
@@ -231,6 +237,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             setContentView(R.layout.message_compose);
         }
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // on api level 15, setContentView() shows the progress bar for some reason...
         setProgressBarIndeterminateVisibility(false);
@@ -728,12 +737,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void onDiscard() {
-        if (draftId != INVALID_DRAFT_ID) {
-            MessagingController.getInstance(getApplication()).deleteDraft(account, draftId);
-            draftId = INVALID_DRAFT_ID;
-        }
-        internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
-        changesMadeSinceLastSave = false;
+        onDiscardChanges();
         finish();
     }
 
@@ -920,6 +924,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                goBack();
+                return true;
             case R.id.send:
                 checkToSendMessage();
                 break;
@@ -958,6 +965,28 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return true;
     }
 
+    private void goBack() {
+        if (changesMadeSinceLastSave && draftIsNotEmpty()) {
+            showDialogDraft();
+        } else {
+            onDiscardChanges();
+            String inbox = account.getInboxFolderName();
+            LocalSearch localSearch = new LocalSearch(inbox);
+            localSearch.addAccountUuid(account.getUuid());
+            localSearch.addAllowedFolder(inbox);
+            MessageList.actionDisplaySearch(this, localSearch, false, false);
+        }
+    }
+
+    private void onDiscardChanges() {
+        if (draftId != INVALID_DRAFT_ID) {
+            MessagingController.getInstance(getApplication()).deleteDraft(account, draftId);
+            draftId = INVALID_DRAFT_ID;
+        }
+        internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
+        changesMadeSinceLastSave = false;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -988,11 +1017,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onBackPressed() {
         if (changesMadeSinceLastSave && draftIsNotEmpty()) {
-            if (!account.hasDraftsFolder()) {
-                showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
-            } else {
-                showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-            }
+            showDialogDraft();
         } else {
             // Check if editing an existing draft.
             if (draftId == INVALID_DRAFT_ID) {
@@ -1000,6 +1025,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             } else {
                 super.onBackPressed();
             }
+        }
+    }
+
+    private void showDialogDraft() {
+        if (!account.hasDraftsFolder()) {
+            showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+        } else {
+            showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
         }
     }
 
