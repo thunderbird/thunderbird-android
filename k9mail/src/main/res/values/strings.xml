@@ -97,6 +97,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="compose_title_reply">Reply</string>
     <string name="compose_title_reply_all">Reply all</string>
     <string name="compose_title_forward">Forward</string>
+    <string name="compose_title_forward_as_attachment">Forward as attachment</string>
 
     <string name="choose_folder_title">Choose Folder</string>
 
@@ -130,6 +131,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="archive_action">Archive</string>
     <string name="spam_action">Spam</string>
     <string name="forward_action">Forward</string>
+    <string name="forward_as_attachment_action">Forward as attachment</string>
     <string name="move_action">Move</string>
     <string name="single_message_options_action">Send…</string>
     <string name="refile_action">Refile…</string>
@@ -275,6 +277,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="compose_error_incomplete_recipient">Recipient field contains incomplete input!</string>
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
+    <string name="message_compose_attachments_forward_toast">The message cannot be forwarded because some attachments have not been downloaded.</string>
     <string name="message_compose_show_quoted_text_action">Quote message</string>
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>

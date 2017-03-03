@@ -1,6 +1,9 @@
 package com.fsck.k9.activity.compose;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -21,6 +24,7 @@ import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.Attachment.LoadingState;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
 
@@ -156,6 +160,10 @@ public class AttachmentPresenter {
     }
 
     public boolean loadNonInlineAttachments(MessageViewInfo messageViewInfo) {
+        return allPartsAvailable(messageViewInfo, true);
+    }
+
+    private boolean allPartsAvailable(MessageViewInfo messageViewInfo, boolean loadNonInlineAttachments) {
         boolean allPartsAvailable = true;
 
         for (AttachmentViewInfo attachmentViewInfo : messageViewInfo.attachments) {
@@ -166,7 +174,9 @@ public class AttachmentPresenter {
                 allPartsAvailable = false;
                 continue;
             }
-            addAttachment(attachmentViewInfo);
+            if (loadNonInlineAttachments) {
+                addAttachment(attachmentViewInfo);
+            }
         }
 
         return allPartsAvailable;
@@ -176,6 +186,27 @@ public class AttachmentPresenter {
         boolean isMissingParts = !loadNonInlineAttachments(messageViewInfo);
         if (isMissingParts) {
             attachmentMvpView.showMissingAttachmentsPartialMessageWarning();
+        }
+    }
+
+    public void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws IOException, MessagingException {
+        boolean isMissingParts = !allPartsAvailable(messageViewInfo, false);
+        if (isMissingParts) {
+            attachmentMvpView.showMissingAttachmentsPartialMessageForwardWarning();
+        } else {
+            File tempFile = File.createTempFile("pre", ".tmp");
+            tempFile.deleteOnExit();
+            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
+            messageViewInfo.message.writeTo(fileOutputStream);
+            fileOutputStream.close();
+
+            int loaderId = getNextFreeLoaderId();
+            Attachment attachment = Attachment.createAttachment(null, loaderId, "message/rfc822")
+                    .deriveWithMetadataLoaded("message/rfc822", messageViewInfo.message.getSubject(), tempFile.length())
+                    .deriveWithLoadComplete(tempFile.getAbsolutePath());
+
+            attachments.put(attachment.uri, attachment);
+            attachmentMvpView.addAttachmentView(attachment);
         }
     }
 
@@ -379,6 +410,7 @@ public class AttachmentPresenter {
         void performSaveAfterChecks();
 
         void showMissingAttachmentsPartialMessageWarning();
+        void showMissingAttachmentsPartialMessageForwardWarning();
     }
 
     public interface AttachmentsChangedListener {

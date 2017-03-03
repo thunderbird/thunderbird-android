@@ -336,6 +336,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
+    public void onForwardAsAttachment() {
+        if (mMessage != null) {
+            mFragmentListener.onForwardAsAttachment(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
+        }
+    }
+
     public void onToggleFlagged() {
         if (mMessage != null) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
@@ -715,6 +721,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public interface MessageViewFragmentListener {
         void onForward(MessageReference messageReference, Parcelable decryptionResultForReply);
+        void onForwardAsAttachment(MessageReference messageReference, Parcelable decryptionResultForReply);
         void disableDeleteAction();
         void onReplyAll(MessageReference messageReference, Parcelable decryptionResultForReply);
         void onReply(MessageReference messageReference, Parcelable decryptionResultForReply);

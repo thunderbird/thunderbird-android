@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -114,6 +115,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
     public static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
     public static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
+    public static final String ACTION_FORWARD_AS_ATTACHMENT = "com.fsck.k9.intent.action.FORWARD_AS_ATTACHMENT";
     public static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
 
     public static final String EXTRA_ACCOUNT = "account";
@@ -341,6 +343,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 this.action = Action.REPLY_ALL;
             } else if (ACTION_FORWARD.equals(action)) {
                 this.action = Action.FORWARD;
+            } else if (ACTION_FORWARD_AS_ATTACHMENT.equals(action)) {
+                this.action = Action.FORWARD_AS_ATTACHMENT;
             } else if (ACTION_EDIT_DRAFT.equals(action)) {
                 this.action = Action.EDIT_DRAFT;
             } else {
@@ -374,7 +378,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         if (!relatedMessageProcessed) {
             if (action == Action.REPLY || action == Action.REPLY_ALL ||
-                    action == Action.FORWARD || action == Action.EDIT_DRAFT) {
+                    action == Action.FORWARD || action == Action.FORWARD_AS_ATTACHMENT || 
+                    action == Action.EDIT_DRAFT) {
                 messageLoaderHelper = new MessageLoaderHelper(this, getLoaderManager(), getFragmentManager(),
                         messageLoaderCallbacks);
                 internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_ON);
@@ -404,7 +409,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             recipientMvpView.requestFocusOnToField();
         }
 
-        if (action == Action.FORWARD) {
+        if (action == Action.FORWARD || action == Action.FORWARD_AS_ATTACHMENT) {
             relatedMessageReference = relatedMessageReference.withModifiedFlag(Flag.FORWARDED);
         }
 
@@ -1140,7 +1145,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 }
                 case FORWARD: {
-                    processMessageToForward(messageViewInfo);
+                    processMessageToForward(messageViewInfo, false);
+                    break;
+                }
+                case FORWARD_AS_ATTACHMENT: {
+                    processMessageToForward(messageViewInfo, true);
                     break;
                 }
                 case EDIT_DRAFT: {
@@ -1152,6 +1161,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 }
             }
+        } catch (IOException ioe) {
+            /**
+             * Let the user continue composing their message even if we have a problem processing
+             * the source message. Log it as an error, though.
+             */
+            Log.e(K9.LOG_TAG, "Error while processing source message: ", ioe);
         } catch (MessagingException me) {
             /*
              * Let the user continue composing their message even if we have a problem processing
@@ -1198,10 +1213,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 referencedMessageIds = repliedToMessageId;
             }
 
-        } else {
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "could not get Message-ID.");
-            }
+        } else if (K9.DEBUG) {
+            Log.d(K9.LOG_TAG, "could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
@@ -1217,7 +1230,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     }
 
-    private void processMessageToForward(MessageViewInfo messageViewInfo) throws MessagingException {
+    private void processMessageToForward(MessageViewInfo messageViewInfo, boolean asAttachment) throws IOException, MessagingException {
         Message message = messageViewInfo.message;
 
         String subject = message.getSubject();
@@ -1241,8 +1254,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         // Quote the message and setup the UI.
-        quotedMessagePresenter.processMessageToForward(messageViewInfo);
-        attachmentPresenter.processMessageToForward(messageViewInfo);
+        if (asAttachment) {
+            attachmentPresenter.processMessageToForwardAsAttachment(messageViewInfo);
+        } else {
+            quotedMessagePresenter.processMessageToForward(messageViewInfo);
+            attachmentPresenter.processMessageToForward(messageViewInfo);
+        }
     }
 
     private void processDraftMessage(MessageViewInfo messageViewInfo) {
@@ -1720,6 +1737,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             Toast.makeText(MessageCompose.this,
                     getString(R.string.message_compose_attachments_skipped_toast), Toast.LENGTH_LONG).show();
         }
+
+        @Override
+        public void showMissingAttachmentsPartialMessageForwardWarning() {
+            Toast.makeText(MessageCompose.this,
+                    getString(R.string.message_compose_attachments_forward_toast), Toast.LENGTH_LONG).show();
+        }
     };
 
     private Handler internalMessageHandler = new Handler() {
@@ -1757,6 +1780,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         REPLY(R.string.compose_title_reply),
         REPLY_ALL(R.string.compose_title_reply_all),
         FORWARD(R.string.compose_title_forward),
+        FORWARD_AS_ATTACHMENT(R.string.compose_title_forward_as_attachment),
         EDIT_DRAFT(R.string.compose_title_compose);
 
         private final int titleResource;
