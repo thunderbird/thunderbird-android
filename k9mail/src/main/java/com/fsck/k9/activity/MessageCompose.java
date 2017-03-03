@@ -706,7 +706,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         finishAfterDraftSaved = true;
-        performSaveAfterChecks();
+        performSaveAfterChecksWithoutResizing();
     }
 
     private void checkToSaveDraftImplicitly() {
@@ -719,12 +719,29 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         finishAfterDraftSaved = false;
-        performSaveAfterChecks();
+        performSaveAfterChecksWithoutResizing();
+    }
+
+    private void performSaveAfterChecksWithoutResizing(){
+        currentMessageBuilder = createMessageBuilder(true, attachmentPresenter.createAttachmentListWithoutResizing());
+        if (currentMessageBuilder != null) {
+            setProgressBarIndeterminateVisibility(true);
+            currentMessageBuilder.buildAsync(MessageCompose.this);
+        }
     }
 
     private void performSaveAfterChecks() {
         ResizeImageAttachments resizeImageAttachments = new ResizeImageAttachments();
         resizeImageAttachments.execute(true);
+    }
+
+    public void performSendAfterChecksWithoutResizing(){
+        currentMessageBuilder = createMessageBuilder(false, attachmentPresenter.createAttachmentListWithoutResizing());
+        if (currentMessageBuilder != null) {
+            changesMadeSinceLastSave = false;
+            setProgressBarIndeterminateVisibility(true);
+            currentMessageBuilder.buildAsync(MessageCompose.this);
+        }
     }
 
     public void performSendAfterChecks() {
@@ -1797,12 +1814,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         @Override
         public void performSendAfterChecks() {
-            MessageCompose.this.performSendAfterChecks();
+            MessageCompose.this.performSendAfterChecksWithoutResizing();
         }
 
         @Override
         public void performSaveAfterChecks() {
-            MessageCompose.this.performSaveAfterChecks();
+            MessageCompose.this.performSaveAfterChecksWithoutResizing();
         }
 
         @Override
