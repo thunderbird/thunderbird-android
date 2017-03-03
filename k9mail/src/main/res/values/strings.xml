@@ -1067,6 +1067,16 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>
     <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>
 
+    <string name="account_settings_attachments">Attachments</string>
+    <string name="account_settings_resize_attachments_enabled">Enable automatic resize of image attachments</string>
+    <string name="account_settings_resize_attachments_enabled_summary">Automatically resize all image attachments while sending an email</string>
+    <string name="account_settings_attachments_resize_factor_entry_original">Original Size</string>
+    <string name="account_settings_attachments_resize_factor_entry_half"><![CDATA[&#189; Size]]></string>
+    <string name="account_settings_attachments_resize_factor_entry_one_fourth"><![CDATA[&#188; Size]]></string>
+    <string name="account_settings_attachment_resize_factor_label">Resize Factor</string>
+    <string name="account_settings_attachment_resize_factor_summary_default">Images will be not be resized.</string>
+    <string name="account_settings_attachment_resize_factor_summary">Images will be resized to 1 /  <xliff:g id="resize_factor">%s</xliff:g> of original size.</string>
+
     <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>
     <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>
 

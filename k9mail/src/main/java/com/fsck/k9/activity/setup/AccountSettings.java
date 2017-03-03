@@ -116,6 +116,8 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
+    private static final String PREFERENCE_RESIZE_ENABLED = "resize_enabled";
+    private static final String PREFERENCE_RESIZE_FACTOR = "account_attachment_resize_factor";
 
     private static final String PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider";
     private static final String PREFERENCE_CATEGORY_FOLDERS = "folders";
@@ -184,6 +186,10 @@ public class AccountSettings extends K9PreferenceActivity {
     private PreferenceScreen mSearchScreen;
     private CheckBoxPreference mCloudSearchEnabled;
     private ListPreference mRemoteSearchNumResults;
+
+    private CheckBoxPreference mResizeEnabled;
+    private ListPreference mResizeFactor;
+
     /*
      * Temporarily removed because search results aren't displayed to the user.
      * So this feature is useless.
@@ -516,6 +522,17 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             }
         );
+
+        mResizeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_RESIZE_ENABLED);
+        mResizeFactor = (ListPreference) findPreference(PREFERENCE_RESIZE_FACTOR);
+        mResizeFactor.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                updateResizeFactor((String) newValue);
+                return true;
+            }
+        });
+
         //mRemoteSearchFullText = (CheckBoxPreference) findPreference(PREFERENCE_REMOTE_SEARCH_FULL_TEXT);
 
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
@@ -817,6 +834,10 @@ public class AccountSettings extends K9PreferenceActivity {
             //mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
         }
 
+        // Setting image attachment resize preferences.
+        mAccount.setResizeEnabled(mResizeEnabled.isChecked());
+        mAccount.setResizeFactor(Integer.parseInt(mResizeFactor.getValue()));
+
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(FolderMode.valueOf(mSyncMode.getValue()));
 
@@ -997,6 +1018,14 @@ public class AccountSettings extends K9PreferenceActivity {
             }
 
             mRemoteSearchNumResults.setSummary(String.format(getString(R.string.account_settings_remote_search_num_summary), maxResults));
+        }
+    }
+
+    private void updateResizeFactor(String factor){
+        if(!factor.equals("1")){
+            mResizeFactor.setSummary(String.format(getString(R.string.account_settings_attachment_resize_factor_summary), factor));
+        } else {
+            mResizeFactor.setSummary(getString(R.string.account_settings_attachment_resize_factor_summary));
         }
     }
 
