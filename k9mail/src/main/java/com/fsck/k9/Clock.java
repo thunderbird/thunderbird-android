@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import android.os.SystemClock;
 package com.fsck.k9;
-
+import android.os.SystemClock;
 /**
  * A class provide the current time (like {@link System#currentTimeMillis()}).
  * It's intended to be mocked out for unit tests.
