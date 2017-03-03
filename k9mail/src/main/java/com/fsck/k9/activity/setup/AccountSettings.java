@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioTrack;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -525,10 +526,22 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mResizeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_RESIZE_ENABLED);
         mResizeFactor = (ListPreference) findPreference(PREFERENCE_RESIZE_FACTOR);
+        mResizeEnabled.setChecked(mAccount.getResizeEnabled());
+
+        int resizeFactor = mAccount.getResizeFactor();
+        if(resizeFactor == 1){
+            mResizeFactor.setValueIndex(0);
+        } else if(resizeFactor == 2){
+            mResizeFactor.setValueIndex(1);
+        } else {
+            mResizeFactor.setValueIndex(2);
+        }
+        updateResizeFactor(mAccount.getResizeFactor());
+
         mResizeFactor.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                updateResizeFactor((String) newValue);
+                updateResizeFactor(Integer.parseInt((String)newValue));
                 return true;
             }
         });
@@ -838,6 +851,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setResizeEnabled(mResizeEnabled.isChecked());
         mAccount.setResizeFactor(Integer.parseInt(mResizeFactor.getValue()));
 
+
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(FolderMode.valueOf(mSyncMode.getValue()));
 
@@ -1021,11 +1035,11 @@ public class AccountSettings extends K9PreferenceActivity {
         }
     }
 
-    private void updateResizeFactor(String factor){
-        if(!factor.equals("1")){
-            mResizeFactor.setSummary(String.format(getString(R.string.account_settings_attachment_resize_factor_summary), factor));
+    private void updateResizeFactor(int factor){
+        if(factor != 1){
+            mResizeFactor.setSummary(String.format(getString(R.string.account_settings_attachment_resize_factor_summary), String.valueOf(factor)));
         } else {
-            mResizeFactor.setSummary(getString(R.string.account_settings_attachment_resize_factor_summary));
+            mResizeFactor.setSummary(getString(R.string.account_settings_attachment_resize_factor_summary_default));
         }
     }
 
