@@ -2,6 +2,7 @@ package com.fsck.k9.activity;
 
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -622,8 +624,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Nullable
-    private MessageBuilder createMessageBuilder(boolean isDraft) {
+    private MessageBuilder createMessageBuilder(boolean isDraft, ArrayList<Attachment> attachments) {
         MessageBuilder builder;
+
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Resizing Image Attachments");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         recipientPresenter.updateCryptoStatus();
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCryptoStatus();
@@ -654,7 +662,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setIdentity(identity)
                 .setMessageFormat(currentMessageFormat)
                 .setText(messageContentView.getCharacters())
-                .setAttachments(attachmentPresenter.createAttachmentList())
+                .setAttachments(attachments)
                 .setSignature(signatureView.getCharacters())
                 .setSignatureBeforeQuotedText(account.isSignatureBeforeQuotedText())
                 .setIdentityChanged(identityChanged)
@@ -715,19 +723,51 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void performSaveAfterChecks() {
-        currentMessageBuilder = createMessageBuilder(true);
-        if (currentMessageBuilder != null) {
-            setProgressBarIndeterminateVisibility(true);
-            currentMessageBuilder.buildAsync(this);
-        }
+        ResizeImageAttachments resizeImageAttachments = new ResizeImageAttachments();
+        resizeImageAttachments.execute(true);
     }
 
     public void performSendAfterChecks() {
-        currentMessageBuilder = createMessageBuilder(false);
-        if (currentMessageBuilder != null) {
-            changesMadeSinceLastSave = false;
-            setProgressBarIndeterminateVisibility(true);
-            currentMessageBuilder.buildAsync(this);
+        ResizeImageAttachments resizeImageAttachments = new ResizeImageAttachments();
+        resizeImageAttachments.execute(false);
+    }
+
+    public class ResizeImageAttachments extends AsyncTask<Boolean, Void, ArrayList<Attachment>> {
+        ProgressDialog progressDialog;
+        boolean isDraft = false;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(MessageCompose.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Resizing image attachments");
+            progressDialog.show();
+        }
+
+        @Override
+        protected ArrayList<Attachment> doInBackground(Boolean... params) {
+            isDraft = params[0];
+            return attachmentPresenter.createAttachmentList(progressDialog);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Attachment> attachments) {
+            progressDialog.dismiss();
+            if(isDraft){
+                currentMessageBuilder = createMessageBuilder(true, attachments);
+                if (currentMessageBuilder != null) {
+                    setProgressBarIndeterminateVisibility(true);
+                    currentMessageBuilder.buildAsync(MessageCompose.this);
+                }
+            } else {
+                currentMessageBuilder = createMessageBuilder(false, attachments);
+                if (currentMessageBuilder != null) {
+                    changesMadeSinceLastSave = false;
+                    setProgressBarIndeterminateVisibility(true);
+                    currentMessageBuilder.buildAsync(MessageCompose.this);
+                }
+            }
         }
     }
 

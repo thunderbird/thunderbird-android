@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -122,7 +123,7 @@ public class AttachmentPresenter {
         return result;
     }
 
-    public ArrayList<Attachment> createAttachmentList() {
+    public ArrayList<Attachment> createAttachmentList(ProgressDialog progressDialog) {
         ArrayList<Attachment> result = new ArrayList<>();
         for (Attachment attachment : attachments.values()) {
             if(account.getResizeEnabled() && !attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
