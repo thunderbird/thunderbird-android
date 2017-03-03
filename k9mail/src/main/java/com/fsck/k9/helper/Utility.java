@@ -3,25 +3,35 @@ package com.fsck.k9.helper;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import timber.log.Timber;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.fsck.k9.K9;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.mail.Address;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -458,6 +468,37 @@ public class Utility {
 
         return null;
     }
+
+    public static Uri getResizedImageUri(Context context, Uri uri, float multiplier){
+        File cacheDir = context.getCacheDir();
+        File tempAttachmentsDirectory = new File(cacheDir.getPath() + "/tempAttachments/");
+        tempAttachmentsDirectory.mkdirs();
+        final File tempFile = new File(tempAttachmentsDirectory, String.valueOf(System.currentTimeMillis()));
+
+        Glide.with(context)
+                .load(new File(uri.getPath()))
+                .asBitmap()
+                .thumbnail(multiplier)
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        try {
+                            FileOutputStream out = new FileOutputStream(tempFile);
+                            resource.compress(Bitmap.CompressFormat.PNG, 100, out);
+                            out.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+        return Uri.fromFile(tempFile);
+    }
+
+    public static void clearCache(){
+
+    }
+
 
     /**
      * @return a {@link Handler} tied to the main thread.
