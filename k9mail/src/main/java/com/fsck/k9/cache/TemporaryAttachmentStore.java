@@ -2,7 +2,6 @@ package com.fsck.k9.cache;
 
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.fsck.k9.K9;
