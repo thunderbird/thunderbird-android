@@ -1,6 +1,7 @@
 package com.fsck.k9.mail.store.webdav;
 
 import android.util.Log;
+import android.os.SystemClock;
 
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
@@ -675,7 +676,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 if (!messageURL.endsWith("/")) {
                     messageURL += "/";
                 }
-                messageURL += encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
+                messageURL += encodeUtf8(message.getUid() + ":" + SystemClock.elapsedRealtime() + ".eml");
 
                 Log.i(LOG_TAG, "Uploading message as " + messageURL);
 

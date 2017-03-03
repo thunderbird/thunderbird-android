@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore;
 
+import android.os.SystemClock;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -1341,7 +1342,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             cv.put("subject", message.getSubject());
             cv.put("sender_list", Address.pack(message.getFrom()));
             cv.put("date", message.getSentDate() == null
-                    ? System.currentTimeMillis() : message.getSentDate().getTime());
+                    ? SystemClock.elapsedRealtime() : message.getSentDate().getTime());
             cv.put("flags", this.localStore.serializeFlags(message.getFlags()));
             cv.put("deleted", message.isSet(Flag.DELETED) ? 1 : 0);
             cv.put("read", message.isSet(Flag.SEEN) ? 1 : 0);
@@ -1355,7 +1356,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             cv.put("reply_to_list", Address.pack(message.getReplyTo()));
             cv.put("attachment_count", attachmentCount);
             cv.put("internal_date", message.getInternalDate() == null
-                    ? System.currentTimeMillis() : message.getInternalDate().getTime());
+                    ? SystemClock.elapsedRealtime() : message.getInternalDate().getTime());
             cv.put("mime_type", message.getMimeType());
             cv.put("empty", 0);
 

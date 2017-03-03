@@ -9,6 +9,7 @@ import android.util.Log;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
+import android.os.SystemClock;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
@@ -99,6 +100,6 @@ class ImapPusher implements Pusher {
     }
 
     long currentTimeMillis() {
-        return System.currentTimeMillis();
+        return SystemClock.elapsedRealtime();
     }
 }

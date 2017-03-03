@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.text.format.DateUtils;
 
+import android.os.SystemClock;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
@@ -43,7 +45,7 @@ public class ActivityListener extends SimpleMessagingListener {
             long nextPollTime = MailService.getNextPollTime();
             if (nextPollTime != -1) {
                 return context.getString(R.string.status_next_poll,
-                        DateUtils.getRelativeTimeSpanString(nextPollTime, System.currentTimeMillis(),
+                        DateUtils.getRelativeTimeSpanString(nextPollTime, SystemClock.elapsedRealtime(),
                                 DateUtils.MINUTE_IN_MILLIS, 0));
             } else if (K9.DEBUG && MailService.isSyncDisabled()) {
                 if (MailService.hasNoConnectivity()) {

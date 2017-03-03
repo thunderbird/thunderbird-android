@@ -1,6 +1,6 @@
 package com.fsck.k9.notification;
 
-
+import android.os.SystemClock;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +35,7 @@ class AuthenticationErrorNotifications {
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.notification_icon_warning)
-                .setWhen(System.currentTimeMillis())
+                .setWhen(SystemClock.elapsedRealtime())
                 .setAutoCancel(true)
                 .setTicker(title)
                 .setContentTitle(title)
