@@ -73,7 +73,7 @@ public class MessageDecryptVerifier {
         if (multipart.getCount() == 0) {
             return null;
         }
-        
+
         BodyPart firstBodyPart = multipart.getBodyPart(0);
 
         Part foundPart;
@@ -99,7 +99,7 @@ public class MessageDecryptVerifier {
             if (multipart.getCount() == 0) {
                 return null;
             }
-            
+
             BodyPart firstBodyPart = multipart.getBodyPart(0);
             if (isPartPgpInlineEncryptedOrSigned(firstBodyPart)) {
                 return firstBodyPart;
@@ -194,16 +194,24 @@ public class MessageDecryptVerifier {
         return inlineParts;
     }
 
+    /**
+     * @param part the part with signature data.
+     * @return may be null if no valid signature data found.
+     * @throws IOException
+     * @throws MessagingException
+     */
     public static byte[] getSignatureData(Part part) throws IOException, MessagingException {
         if (isPartMultipartSigned(part)) {
             Body body = part.getBody();
             if (body instanceof Multipart) {
                 Multipart multi = (Multipart) body;
-                BodyPart signatureBody = multi.getBodyPart(1);
-                if (isSameMimeType(signatureBody.getMimeType(), APPLICATION_PGP_SIGNATURE)) {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    signatureBody.getBody().writeTo(bos);
-                    return bos.toByteArray();
+                if (multi.getCount() > 1) {//Bug #2225 mailing list strips part out
+                    BodyPart signatureBody = multi.getBodyPart(1);
+                    if (isSameMimeType(signatureBody.getMimeType(), APPLICATION_PGP_SIGNATURE)) {
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        signatureBody.getBody().writeTo(bos);
+                        return bos.toByteArray();
+                    }
                 }
             }
         }
