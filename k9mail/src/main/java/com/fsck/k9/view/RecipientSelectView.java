@@ -10,6 +10,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Loader;
 import android.graphics.Rect;
@@ -19,10 +20,13 @@ import android.os.Handler;
 import android.provider.ContactsContract.Contacts;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GestureDetectorCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -66,6 +70,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
     private TokenListener<Recipient> listener;
+    private GestureDetectorCompat gestureDetector;
 
 
     public RecipientSelectView(Context context) {
@@ -100,7 +105,78 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         adapter = new RecipientAdapter(context);
         setAdapter(adapter);
 
-        setLongClickable(true);
+        addDragAndDropFunctionality(context);
+    }
+
+    private void addDragAndDropFunctionality(Context context) {
+
+        setOnDragListener(new OnDragListener() {
+            @Override
+            public boolean onDrag(View view, DragEvent dragEvent) {
+                switch (dragEvent.getAction()) {
+                    case DragEvent.ACTION_DROP: {
+                        allowCollapse(true);
+                        copyDraggedRecipient(dragEvent);
+                        return true;
+                    }
+                    case DragEvent.ACTION_DRAG_ENTERED: {
+                        requestFocus();
+                        return true;
+                    }
+                    case DragEvent.ACTION_DRAG_LOCATION: {
+                        int offset = getOffsetForPosition(dragEvent.getX(), dragEvent.getY());
+                        setSelection(offset);
+                        return true;
+                    }
+                    case DragEvent.ACTION_DRAG_STARTED: {
+                        allowCollapse(false);
+                        performCollapse(true);
+                        return true;
+                    }
+                    case DragEvent.ACTION_DRAG_ENDED: {
+                        allowCollapse(true);
+                        if (!isFocused()) {
+                            performCollapse(false);
+                        }
+                        return false;
+                    }
+                    default: {
+                        return true;
+                    }
+                }
+            }
+        });
+
+        gestureDetector = new GestureDetectorCompat(context, new SimpleOnGestureListener() {
+            @Override
+            public void onLongPress(MotionEvent event) {
+                Editable text = getText();
+
+                if (text != null) {
+                    int offset = getOffsetForPosition(event.getX(), event.getY());
+
+                    if (offset != -1) {
+                        TokenImageSpan[] links = text.getSpans(offset, offset, RecipientTokenSpan.class);
+                        if (links.length > 0) {
+                            startDrag(links[0].getToken());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+        });
+        gestureDetector.setIsLongpressEnabled(true);
+    }
+
+    private void copyDraggedRecipient(DragEvent dragEvent) {
+        CharSequence text = dragEvent.getClipData().getItemAt(0).getText();
+        if (dragEvent.getLocalState() instanceof Recipient) {
+            addObject((Recipient) dragEvent.getLocalState(), text);
+        }
     }
 
     @Override
@@ -121,7 +197,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         return layoutInflater.inflate(R.layout.recipient_token_item, null, false);
     }
 
-    private void bindObjectView(Recipient recipient, View view) {
+    private void bindObjectView(final Recipient recipient, View view) {
         RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
 
         holder.vName.setText(recipient.getDisplayNameOrAddress());
@@ -152,7 +228,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         int action = event.getActionMasked();
         Editable text = getText();
-
         if (text != null && action == MotionEvent.ACTION_UP) {
             int offset = getOffsetForPosition(event.getX(), event.getY());
 
@@ -165,7 +240,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             }
         }
 
-        return super.onTouchEvent(event);
+        return gestureDetector.onTouchEvent(event);
     }
 
     @Override
@@ -215,6 +290,19 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             return;
         }
         imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public boolean startDrag(Recipient recipient) {
+        ClipData clipData = ClipData.newPlainText(recipient.address.getPersonal(), recipient.address.getAddress());
+        View view = getTokenViewForRecipient(recipient);
+        DragShadowBuilder dragShadowBuilder = new DragShadowBuilder(view);
+
+        boolean dragSuccess = startDrag(clipData, dragShadowBuilder, recipient, 0);
+        if (!dragSuccess) {
+            Log.e(K9.LOG_TAG, "Failed to start drag operation for Recipient!");
+        }
+
+        return dragSuccess;
     }
 
     @Override
