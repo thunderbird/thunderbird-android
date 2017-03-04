@@ -508,7 +508,7 @@ public class SmtpTransportTest {
         server.output("250-ENHANCEDSTATUSCODES");
         server.output("250 AUTH XOAUTH2");
         server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
-        server.output("334 "+ XOAuth2ChallengeParserTest.STATUS_401_RESPONSE);
+        server.output("334 " + XOAuth2ChallengeParserTest.STATUS_401_RESPONSE);
         server.expect("");
         server.output("535-5.7.1 Username and Password not accepted. Learn more at");
         server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
@@ -530,7 +530,29 @@ public class SmtpTransportTest {
         inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
         server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
+    }
 
+    @Test
+    public void open_withManyExtensions_shouldParseAll() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 smtp.gmail.com ESMTP x25sm19117693wrx.27 - gsmtp");
+        server.expect("EHLO localhost");
+        server.output("250-smtp.gmail.com at your service, [86.147.34.216]");
+        server.output("250-SIZE 35882577");
+        server.output("250-8BITMIME");
+        server.output("250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH");
+        server.output("250-ENHANCEDSTATUSCODES");
+        server.output("250-PIPELINING");
+        server.output("250-CHUNKING");
+        server.output("250 SMTPUTF8");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
+        server.output("235 2.7.0 Authentication successful");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
     }
 
     @Test
@@ -572,6 +594,30 @@ public class SmtpTransportTest {
     public void sendMessage_with8BitEncoding() throws Exception {
         Message message = getDefaultMessage();
         MockSmtpServer server = createServerAndSetupForPlainAuthentication("8BITMIME");
+        server.expect("MAIL FROM:<user@localhost> BODY=8BITMIME");
+        server.output("250 OK");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.output("250 OK");
+        server.expect("DATA");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect("[message data]");
+        server.expect(".");
+        server.output("250 OK: queued as 12345");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        transport.sendMessage(message);
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void sendMessage_with8BitEncodingExtensionNotCaseSensitive() throws Exception {
+        Message message = getDefaultMessage();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("8bitmime");
         server.expect("MAIL FROM:<user@localhost> BODY=8BITMIME");
         server.output("250 OK");
         server.expect("RCPT TO:<user2@localhost>");
