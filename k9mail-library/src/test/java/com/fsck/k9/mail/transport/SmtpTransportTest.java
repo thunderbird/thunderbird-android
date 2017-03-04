@@ -227,7 +227,8 @@ public class SmtpTransportTest {
             fail("Exception expected");
         } catch (AuthenticationFailedException e) {
             assertEquals(
-                    "Negative SMTP reply: 535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
+                    "5.7.1 Username and Password not accepted. Learn more at " +
+                    "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
                     e.getMessage());
         }
 
@@ -343,7 +344,8 @@ public class SmtpTransportTest {
             fail("Exception expected");
         } catch (AuthenticationFailedException e) {
             assertEquals(
-                "Negative SMTP reply: 535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
+                "5.7.1 Username and Password not accepted. Learn more at " +
+                "5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
                 e.getMessage());
         }
 
@@ -373,7 +375,6 @@ public class SmtpTransportTest {
         server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
-
 
     @Test
     public void open_withoutXoauth2Extension_shouldThrow() throws Exception {
@@ -495,6 +496,41 @@ public class SmtpTransportTest {
 
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withSupportWithEnhancedStatusCodesOnAuthFailure_shouldThrowEncodedMessage()
+            throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250-ENHANCEDSTATUSCODES");
+        server.output("250 AUTH XOAUTH2");
+        server.expect("AUTH XOAUTH2 dXNlcj11c2VyAWF1dGg9QmVhcmVyIG9sZFRva2VuAQE=");
+        server.output("334 "+ XOAuth2ChallengeParserTest.STATUS_401_RESPONSE);
+        server.expect("");
+        server.output("535-5.7.1 Username and Password not accepted. Learn more at");
+        server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
+
+        try {
+            transport.open();
+            fail("Exception expected");
+        } catch (AuthenticationFailedException e) {
+            assertEquals(
+                    "Username and Password not accepted. Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
+                    e.getMessage());
+        }
+
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+
     }
 
     @Test

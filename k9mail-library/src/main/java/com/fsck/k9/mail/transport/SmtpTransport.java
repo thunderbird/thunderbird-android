@@ -49,12 +49,27 @@ import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import javax.net.ssl.SSLException;
+import org.apache.commons.io.IOUtils;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_SMTP;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public class SmtpTransport extends Transport {
+
+    public static String join(List<String> strings, String separator) {
+        if (strings == null) {
+            return "";
+        }
+        StringBuilder builtString = new StringBuilder();
+        for (int i = 0; i < strings.size(); i++) {
+            builtString.append(strings.get(i));
+            if (i + 1 < strings.size())
+                builtString.append(separator);
+        }
+        return builtString.toString();
+    }
+
     public static final int SMTP_CONTINUE_REQUEST = 334;
     public static final int SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535;
 
@@ -211,6 +226,7 @@ public class SmtpTransport extends Transport {
     private PeekableInputStream mIn;
     private OutputStream mOut;
     private boolean m8bitEncodingAllowed;
+    private boolean mEnhancedStatusCodesProvided;
     private int mLargestAcceptableMessage;
     private boolean retryXoauthWithNewToken;
 
@@ -269,7 +285,7 @@ public class SmtpTransport extends Transport {
             mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
 
             // Eat the banner
-            executeSimpleCommand(null);
+            executeSimpleCommand(null, false);
 
             InetAddress localAddress = mSocket.getLocalAddress();
             String localHost = getCanonicalHostName(localAddress);
@@ -293,11 +309,11 @@ public class SmtpTransport extends Transport {
             Map<String, String> extensions = sendHello(localHost);
 
             m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
-
+            mEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES");
 
             if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                 if (extensions.containsKey("STARTTLS")) {
-                    executeSimpleCommand("STARTTLS");
+                    executeSimpleCommand("STARTTLS", false);
 
                     mSocket = mTrustedSocketFactory.createSocket(
                             mSocket,
@@ -488,10 +504,10 @@ public class SmtpTransport extends Transport {
      * @throws MessagingException
      *          In case of a malformed response.
      */
-    private Map<String,String> sendHello(String host) throws IOException, MessagingException {
+    private Map<String, String> sendHello(String host) throws IOException, MessagingException {
         Map<String, String> extensions = new HashMap<String, String>();
         try {
-            List<String> results = executeSimpleCommand("EHLO " + host);
+            List<String> results = executeSimpleCommand("EHLO " + host, false).results;
             // Remove the EHLO greeting response
             results.remove(0);
             for (String result : results) {
@@ -504,7 +520,7 @@ public class SmtpTransport extends Transport {
             }
 
             try {
-                executeSimpleCommand("HELO " + host);
+                executeSimpleCommand("HELO " + host, false);
             } catch (NegativeSmtpReplyException e2) {
                 Log.w(LOG_TAG, "Server doesn't support the HELO command. Continuing anyway.");
             }
@@ -564,11 +580,11 @@ public class SmtpTransport extends Transport {
         Address[] from = message.getFrom();
         try {
             executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
-                    + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""));
+                    + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""), false);
             for (String address : addresses) {
-                executeSimpleCommand("RCPT TO:" + "<" + address + ">");
+                executeSimpleCommand("RCPT TO:" + "<" + address + ">", false);
             }
-            executeSimpleCommand("DATA");
+            executeSimpleCommand("DATA", false);
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                     new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
@@ -577,7 +593,7 @@ public class SmtpTransport extends Transport {
             msgOut.endWithCrLfAndFlush();
 
             entireMessageSent = true; // After the "\r\n." is attempted, we may have sent the message
-            executeSimpleCommand(".");
+            executeSimpleCommand(".", false);
         } catch (NegativeSmtpReplyException e) {
             throw e;
         } catch (Exception e) {
@@ -594,25 +610,13 @@ public class SmtpTransport extends Transport {
     @Override
     public void close() {
         try {
-            executeSimpleCommand("QUIT");
+            executeSimpleCommand("QUIT", false);
         } catch (Exception e) {
 
         }
-        try {
-            mIn.close();
-        } catch (Exception e) {
-
-        }
-        try {
-            mOut.close();
-        } catch (Exception e) {
-
-        }
-        try {
-            mSocket.close();
-        } catch (Exception e) {
-
-        }
+        IOUtils.closeQuietly(mIn);
+        IOUtils.closeQuietly(mOut);
+        IOUtils.closeQuietly(mSocket);
         mIn = null;
         mOut = null;
         mSocket = null;
@@ -660,74 +664,19 @@ public class SmtpTransport extends Transport {
         mOut.flush();
     }
 
-    private void checkLine(String line) throws MessagingException {
-        int length = line.length();
-        if (length < 1) {
-            throw new MessagingException("SMTP response is 0 length");
-        }
-
-        char c = line.charAt(0);
-        if ((c == '4') || (c == '5')) {
-            int replyCode = -1;
-            String message = line;
-            if (length >= 3) {
-                try {
-                    replyCode = Integer.parseInt(line.substring(0, 3));
-                } catch (NumberFormatException e) { /* ignore */ }
-
-                if (length > 4) {
-                    message = line.substring(4);
-                } else {
-                    message = "";
-                }
-            }
-
-            throw new NegativeSmtpReplyException(replyCode, message);
-        }
-
-    }
-    @Deprecated
-    private List<String> executeSimpleCommand(String command) throws IOException, MessagingException {
-        return executeSimpleCommand(command, false);
-    }
-
-    /**
-     * TODO:  All responses should be checked to confirm that they start with a valid
-     * reply code, and that the reply code is appropriate for the command being executed.
-     * That means it should either be a 2xx code (generally) or a 3xx code in special cases
-     * (e.g., DATA & AUTH LOGIN commands).  Reply codes should be made available as part of
-     * the returned object.
-     *
-     * This should be done using the non-deprecated API below.
-     */
-    @Deprecated
-    private List<String> executeSimpleCommand(String command, boolean sensitive)
-    throws IOException, MessagingException {
-        List<String> results = new ArrayList<>();
-        if (command != null) {
-            writeLine(command, sensitive);
-        }
-
-        String line = readCommandResponseLine(results);
-
-        // Check if the reply code indicates an error.
-        checkLine(line);
-
-        return results;
-    }
-
     private static class CommandResponse {
 
         private final int replyCode;
-        private final String message;
+        private final List<String> results;
 
-        public CommandResponse(int replyCode, String message) {
+        public CommandResponse(int replyCode, List<String> results) {
             this.replyCode = replyCode;
-            this.message = message;
+            this.results = results;
         }
     }
 
-    private CommandResponse executeSimpleCommandWithResponse(String command, boolean sensitive) throws IOException, MessagingException {
+    private CommandResponse executeSimpleCommand(String command, boolean sensitive)
+            throws IOException, MessagingException {
         List<String> results = new ArrayList<>();
         if (command != null) {
             writeLine(command, sensitive);
@@ -741,25 +690,42 @@ public class SmtpTransport extends Transport {
         }
 
         int replyCode = -1;
-        String message = line;
         if (length >= 3) {
             try {
                 replyCode = Integer.parseInt(line.substring(0, 3));
             } catch (NumberFormatException e) { /* ignore */ }
-
-            if (length > 4) {
-                message = line.substring(4);
-            } else {
-                message = "";
-            }
         }
 
         char c = line.charAt(0);
         if ((c == '4') || (c == '5')) {
-            throw new NegativeSmtpReplyException(replyCode, message);
+            if (mEnhancedStatusCodesProvided) {
+                throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
+            } else {
+                throw new NegativeSmtpReplyException(replyCode, join(results, " "));
+            }
         }
 
-        return new CommandResponse(replyCode, message);
+        return new CommandResponse(replyCode, results);
+    }
+
+    private MessagingException buildEnhancedNegativeSmtpReplyException(int replyCode, List<String> results) {
+        SmtpEnhancedStatusCodeClass escClass = null;
+        SmtpEnhancedStatusCodeSubject escSubject = null;
+        SmtpEnhancedStatusCodeDetail escDetail = null;
+
+        String message = "";
+        for (String resultLine: results) {
+            message += resultLine.split(" ", 2)[1] + " ";
+        }
+        if (results.size() > 0) {
+            String[] esc = results.get(0).split(" ", 2)[0].split("\\.");
+
+            escClass = SmtpEnhancedStatusCodeClass.parse(esc[0]);
+            escSubject = SmtpEnhancedStatusCodeSubject.parse(esc[1]);
+            escDetail = SmtpEnhancedStatusCodeDetail.parse(escSubject, esc[2]);
+        }
+
+        return new EnhancedNegativeSmtpReplyException(replyCode, escClass, escSubject, escDetail, message.trim());
     }
 
 
@@ -805,7 +771,7 @@ public class SmtpTransport extends Transport {
     private void saslAuthLogin(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
         try {
-            executeSimpleCommand("AUTH LOGIN");
+            executeSimpleCommand("AUTH LOGIN", false);
             executeSimpleCommand(Base64.encode(username), true);
             executeSimpleCommand(Base64.encode(password), true);
         } catch (NegativeSmtpReplyException exception) {
@@ -838,7 +804,7 @@ public class SmtpTransport extends Transport {
     private void saslAuthCramMD5(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
 
-        List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
+        List<String> respList = executeSimpleCommand("AUTH CRAM-MD5", false).results;
         if (respList.size() != 1) {
             throw new MessagingException("Unable to negotiate CRAM-MD5");
         }
@@ -911,13 +877,13 @@ public class SmtpTransport extends Transport {
     private void attemptXoauth2(String username) throws MessagingException, IOException {
         String token = oauthTokenProvider.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT);
         String authString = Authentication.computeXoauth(username, token);
-        CommandResponse response = executeSimpleCommandWithResponse("AUTH XOAUTH2 " + authString, true);
+        CommandResponse response = executeSimpleCommand("AUTH XOAUTH2 " + authString, true);
 
         if (response.replyCode == SMTP_CONTINUE_REQUEST) {
-            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(response.message, mHost);
+            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(join(response.results, ""), mHost);
 
             //Per Google spec, respond to challenge with empty response
-            executeSimpleCommandWithResponse("", false);
+            executeSimpleCommand("", false);
         }
     }
 
@@ -942,7 +908,9 @@ public class SmtpTransport extends Transport {
         private final String mReplyText;
 
         public NegativeSmtpReplyException(int replyCode, String replyText) {
-            super("Negative SMTP reply: " + replyCode + " " + replyText, isPermanentSmtpError(replyCode));
+            super((replyText != null && !replyText.isEmpty()) ?
+                    replyText : ("Negative SMTP reply: " + replyCode),
+                    isPermanentSmtpError(replyCode));
             mReplyCode = replyCode;
             mReplyText = replyText;
         }
@@ -957,6 +925,138 @@ public class SmtpTransport extends Transport {
 
         public String getReplyText() {
             return mReplyText;
+        }
+    }
+
+    static class EnhancedNegativeSmtpReplyException extends NegativeSmtpReplyException {
+
+        private final SmtpEnhancedStatusCodeClass escClass;
+        private final SmtpEnhancedStatusCodeSubject escSubject;
+        private final SmtpEnhancedStatusCodeDetail escDetail;
+
+        public EnhancedNegativeSmtpReplyException(int replyCode, SmtpEnhancedStatusCodeClass escClass,
+                SmtpEnhancedStatusCodeSubject escSubject, SmtpEnhancedStatusCodeDetail escDetail, String replyText) {
+            super(replyCode, replyText);
+            this.escClass = escClass;
+            this.escSubject = escSubject;
+            this.escDetail = escDetail;
+        }
+    }
+
+    enum SmtpEnhancedStatusCodeClass {
+        Success(2), PersistentTransientFailure(4), PermanentFailure(5);
+
+        private final int codeClass;
+
+        public static SmtpEnhancedStatusCodeClass parse(String s) {
+            int value = Integer.parseInt(s);
+            for (SmtpEnhancedStatusCodeClass classEnum: SmtpEnhancedStatusCodeClass.values()) {
+                if (classEnum.codeClass == value) {
+                    return classEnum;
+                }
+            }
+            return  null;
+        }
+
+        SmtpEnhancedStatusCodeClass(int codeClass) {
+            this.codeClass = codeClass;
+        }
+    }
+
+    enum SmtpEnhancedStatusCodeSubject {
+        Undefined(0), Addressing(1), Mailbox(2), MailSystem(3), NetworkRouting(4),
+        MailDeliveryProtocol(5), MessageContentOrMedia(6), SecurityOrPolicyStatus(7);
+
+        private final int codeSubject;
+
+        public static SmtpEnhancedStatusCodeSubject parse(String s) {
+            int value = Integer.parseInt(s);
+            for (SmtpEnhancedStatusCodeSubject classEnum: SmtpEnhancedStatusCodeSubject.values()) {
+                if (classEnum.codeSubject == value) {
+                    return classEnum;
+                }
+            }
+            return null;
+        }
+
+        SmtpEnhancedStatusCodeSubject(int codeSubject) {
+            this.codeSubject = codeSubject;
+        }
+    }
+
+    enum SmtpEnhancedStatusCodeDetail {
+        Undefined(SmtpEnhancedStatusCodeSubject.Undefined, 0),
+        OtherAddressStatus(SmtpEnhancedStatusCodeSubject.Addressing, 0),
+        BadDestinationMailboxAddress(SmtpEnhancedStatusCodeSubject.Addressing, 1),
+        BadDestinationSystemAddress(SmtpEnhancedStatusCodeSubject.Addressing, 2),
+        BadDestinationMailboxAddressSyntax(SmtpEnhancedStatusCodeSubject.Addressing, 3),
+        DestinationMailboxAddressAmbiguous(SmtpEnhancedStatusCodeSubject.Addressing, 4),
+        DestinationAddressValid(SmtpEnhancedStatusCodeSubject.Addressing, 5),
+        DestinationMailboxMoved(SmtpEnhancedStatusCodeSubject.Addressing, 6),
+        BadSenderMailboxSyntax(SmtpEnhancedStatusCodeSubject.Addressing, 7),
+        BadSenderSystemAddress(SmtpEnhancedStatusCodeSubject.Addressing, 8),
+
+        OtherMailboxStatus(SmtpEnhancedStatusCodeSubject.Mailbox,0),
+        MailboxDisabled(SmtpEnhancedStatusCodeSubject.Mailbox,1),
+        MailboxFull(SmtpEnhancedStatusCodeSubject.Mailbox,2),
+        MessageLengthExceeded(SmtpEnhancedStatusCodeSubject.Mailbox,3),
+        MailingListExpansionProblem(SmtpEnhancedStatusCodeSubject.Mailbox,4),
+
+        OtherMailSystemStatus(SmtpEnhancedStatusCodeSubject.MailSystem,0),
+        MailSystemFull(SmtpEnhancedStatusCodeSubject.MailSystem,1),
+        SystemNotAcceptingMessages(SmtpEnhancedStatusCodeSubject.MailSystem,2),
+        SystemIncapableOfFeature(SmtpEnhancedStatusCodeSubject.MailSystem,3),
+        MessageTooBig(SmtpEnhancedStatusCodeSubject.MailSystem,4),
+        SystemIncorrectlyConfigured(SmtpEnhancedStatusCodeSubject.MailSystem,5),
+
+        OtherNetworkRouting(SmtpEnhancedStatusCodeSubject.NetworkRouting,0),
+        NoAnswerFromHost(SmtpEnhancedStatusCodeSubject.NetworkRouting,1),
+        BadConnection(SmtpEnhancedStatusCodeSubject.NetworkRouting,2),
+        DirectoryServerFailure(SmtpEnhancedStatusCodeSubject.NetworkRouting,3),
+        UnableToRoute(SmtpEnhancedStatusCodeSubject.NetworkRouting,4),
+        MailSystemCongestion(SmtpEnhancedStatusCodeSubject.NetworkRouting,5),
+        RoutingLoopDetected(SmtpEnhancedStatusCodeSubject.NetworkRouting,6),
+        DeliveryTimeExpired(SmtpEnhancedStatusCodeSubject.NetworkRouting,7),
+
+        OtherMailDeliveryProtocol(SmtpEnhancedStatusCodeSubject.MailDeliveryProtocol,0),
+        InvalidCommand(SmtpEnhancedStatusCodeSubject.MailDeliveryProtocol,1),
+        SyntaxError(SmtpEnhancedStatusCodeSubject.MailDeliveryProtocol,2),
+        TooManyRecipients(SmtpEnhancedStatusCodeSubject.MailDeliveryProtocol,3),
+        InvalidCommandArguments(SmtpEnhancedStatusCodeSubject.MailDeliveryProtocol,4),
+        WrongProtocolVersion(SmtpEnhancedStatusCodeSubject.MailDeliveryProtocol,5),
+
+        OtherMessageContentOrMedia(SmtpEnhancedStatusCodeSubject.MessageContentOrMedia,0),
+        MediaNotSupported(SmtpEnhancedStatusCodeSubject.MessageContentOrMedia,1),
+        ConversionRequiredAndProhibited(SmtpEnhancedStatusCodeSubject.MessageContentOrMedia,2),
+        ConversionRequiredButUnsupported(SmtpEnhancedStatusCodeSubject.MessageContentOrMedia,3),
+        ConversionWithLossPerformed(SmtpEnhancedStatusCodeSubject.MessageContentOrMedia,4),
+        ConversionFailed(SmtpEnhancedStatusCodeSubject.MessageContentOrMedia,5),
+
+        OtherSecurityOrPolicyStatus(SmtpEnhancedStatusCodeSubject.SecurityOrPolicyStatus, 0),
+        DeliveryNotAuthorized(SmtpEnhancedStatusCodeSubject.SecurityOrPolicyStatus, 1),
+        MailingListExpansionProhibited(SmtpEnhancedStatusCodeSubject.SecurityOrPolicyStatus, 2),
+        SecurityConversionRequired(SmtpEnhancedStatusCodeSubject.SecurityOrPolicyStatus, 3),
+        SecurityFeaturesUnsupported(SmtpEnhancedStatusCodeSubject.SecurityOrPolicyStatus, 4),
+        CryptographicFailure(SmtpEnhancedStatusCodeSubject.SecurityOrPolicyStatus, 5),
+        CryptographicAlgorithmUnsupported(SmtpEnhancedStatusCodeSubject.SecurityOrPolicyStatus, 6),
+        MessageIntegrityFailure(SmtpEnhancedStatusCodeSubject.SecurityOrPolicyStatus, 7);
+
+        private final SmtpEnhancedStatusCodeSubject subject;
+        private final int detail;
+
+        SmtpEnhancedStatusCodeDetail(SmtpEnhancedStatusCodeSubject subject, int detail) {
+            this.subject = subject;
+            this.detail = detail;
+        }
+
+        public static SmtpEnhancedStatusCodeDetail parse(SmtpEnhancedStatusCodeSubject subject, String s) {
+            int value = Integer.parseInt(s);
+            for (SmtpEnhancedStatusCodeDetail detailEnum: SmtpEnhancedStatusCodeDetail.values()) {
+                if (detailEnum.subject == subject && detailEnum.detail == value) {
+                    return detailEnum;
+                }
+            }
+            return null;
         }
     }
 }
