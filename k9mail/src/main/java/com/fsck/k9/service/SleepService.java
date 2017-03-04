@@ -2,19 +2,16 @@ package com.fsck.k9.service;
 
 import android.content.Context;
 import android.content.Intent;
-<<<<<<< HEAD
 import android.os.SystemClock;
-import android.util.Log;
-=======
-import timber.log.Timber;
->>>>>>> refs/remotes/k9mail/master
-import com.fsck.k9.K9;
+
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import timber.log.Timber;
 
 import static java.lang.Thread.currentThread;
 

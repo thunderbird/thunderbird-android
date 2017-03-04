@@ -1,18 +1,12 @@
 package com.fsck.k9.preferences;
 
-<<<<<<< HEAD
-import android.os.SystemClock;
-import android.util.Log;
-=======
-import timber.log.Timber;
->>>>>>> refs/remotes/k9mail/master
-import com.fsck.k9.K9;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import timber.log.Timber;
 
 
 public class StorageEditor {
@@ -53,13 +47,8 @@ public class StorageEditor {
     }
 
     private void commitChanges() {
-<<<<<<< HEAD
-        long startTime = SystemClock.elapsedRealtime();
-        Log.i(K9.LOG_TAG, "Committing preference changes");
-=======
         long startTime = System.currentTimeMillis();
         Timber.i("Committing preference changes");
->>>>>>> refs/remotes/k9mail/master
         Runnable committer = new Runnable() {
             public void run() {
                 for (String removeKey : removals) {
@@ -78,13 +67,8 @@ public class StorageEditor {
             }
         };
         storage.doInTransaction(committer);
-<<<<<<< HEAD
-        long endTime = SystemClock.elapsedRealtime();
-        Log.i(K9.LOG_TAG, "Preferences commit took " + (endTime - startTime) + "ms");
-=======
         long endTime = System.currentTimeMillis();
         Timber.i("Preferences commit took %d ms", endTime - startTime);
->>>>>>> refs/remotes/k9mail/master
 
     }
 

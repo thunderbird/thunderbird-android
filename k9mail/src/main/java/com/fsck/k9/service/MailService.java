@@ -5,12 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-<<<<<<< HEAD
 import android.os.SystemClock;
-import android.util.Log;
-=======
-import timber.log.Timber;
->>>>>>> refs/remotes/k9mail/master
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
@@ -22,12 +17,11 @@ import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 
-<<<<<<< HEAD
 import java.util.Collection;
-import java.util.Date;
-=======
+
+import timber.log.Timber;
+
 import static java.lang.System.currentTimeMillis;
->>>>>>> refs/remotes/k9mail/master
 
 
 public class MailService extends CoreService {
@@ -156,12 +150,7 @@ public class MailService extends CoreService {
             MessagingController.getInstance(getApplication()).systemStatusChanged();
         }
 
-<<<<<<< HEAD
-        if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "MailService.onStart took " + (SystemClock.elapsedRealtime() - startTime) + "ms");
-=======
         Timber.i("MailService.onStart took %d ms", currentTimeMillis() - startTime);
->>>>>>> refs/remotes/k9mail/master
 
         return START_NOT_STICKY;
     }

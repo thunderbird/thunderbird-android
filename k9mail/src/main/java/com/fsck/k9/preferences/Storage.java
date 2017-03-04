@@ -5,14 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-<<<<<<< HEAD
-import android.os.SystemClock;
-import android.util.Log;
-=======
-import timber.log.Timber;
->>>>>>> refs/remotes/k9mail/master
 
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.filter.Base64;
@@ -23,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import timber.log.Timber;
 
 public class Storage {
     private static ConcurrentMap<Context, Storage> storages =
@@ -163,13 +158,8 @@ public class Storage {
     }
 
     private void loadValues() {
-<<<<<<< HEAD
-        long startTime = SystemClock.elapsedRealtime();
-        Log.i(K9.LOG_TAG, "Loading preferences from DB into Storage");
-=======
         long startTime = System.currentTimeMillis();
         Timber.i("Loading preferences from DB into Storage");
->>>>>>> refs/remotes/k9mail/master
         Cursor cursor = null;
         SQLiteDatabase mDb = null;
         try {
@@ -187,13 +177,8 @@ public class Storage {
             if (mDb != null) {
                 mDb.close();
             }
-<<<<<<< HEAD
-            long endTime = SystemClock.elapsedRealtime();
-            Log.i(K9.LOG_TAG, "Preferences load took " + (endTime - startTime) + "ms");
-=======
             long endTime = System.currentTimeMillis();
             Timber.i("Preferences load took %d ms", endTime - startTime);
->>>>>>> refs/remotes/k9mail/master
         }
     }
 

@@ -2,15 +2,7 @@ package com.fsck.k9.cache;
 
 
 import android.content.Context;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import android.os.SystemClock;
-=======
->>>>>>> origin/master
-import android.util.Log;
-=======
 import timber.log.Timber;
->>>>>>> refs/remotes/k9mail/master
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
