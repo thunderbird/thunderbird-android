@@ -1774,6 +1774,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             });
 
             View resizeButton = view.findViewById(R.id.attachment_resize);
+            if(!Utility.isImage(MessageCompose.this, attachment.uri)){
+                resizeButton.setVisibility(View.GONE);
+            }
             resizeButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
