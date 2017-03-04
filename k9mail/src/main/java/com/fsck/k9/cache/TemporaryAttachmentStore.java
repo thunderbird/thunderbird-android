@@ -3,7 +3,10 @@ package com.fsck.k9.cache;
 
 import android.content.Context;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import android.os.SystemClock;
+=======
+>>>>>>> origin/master
 import android.util.Log;
 =======
 import timber.log.Timber;
