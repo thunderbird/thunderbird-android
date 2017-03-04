@@ -1,7 +1,11 @@
 package com.fsck.k9.preferences;
 
+<<<<<<< HEAD
 import android.os.SystemClock;
 import android.util.Log;
+=======
+import timber.log.Timber;
+>>>>>>> refs/remotes/k9mail/master
 import com.fsck.k9.K9;
 
 import java.util.ArrayList;
@@ -30,14 +34,10 @@ public class StorageEditor {
             String key = entry.getKey();
             Object value = entry.getValue();
             if (key != null && value != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Copying key '" + key + "', value '" + value + "'");
-                }
+                Timber.d("Copying key '%s', value '%s'", key, value);
                 changes.put(key, "" + value);
             } else {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Skipping copying key '" + key + "', value '" + value + "'");
-                }
+                Timber.d("Skipping copying key '%s', value '%s'", key, value);
             }
         }
     }
@@ -47,14 +47,19 @@ public class StorageEditor {
             commitChanges();
             return true;
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to save preferences", e);
+            Timber.e(e, "Failed to save preferences");
             return false;
         }
     }
 
     private void commitChanges() {
+<<<<<<< HEAD
         long startTime = SystemClock.elapsedRealtime();
         Log.i(K9.LOG_TAG, "Committing preference changes");
+=======
+        long startTime = System.currentTimeMillis();
+        Timber.i("Committing preference changes");
+>>>>>>> refs/remotes/k9mail/master
         Runnable committer = new Runnable() {
             public void run() {
                 for (String removeKey : removals) {
@@ -73,8 +78,13 @@ public class StorageEditor {
             }
         };
         storage.doInTransaction(committer);
+<<<<<<< HEAD
         long endTime = SystemClock.elapsedRealtime();
         Log.i(K9.LOG_TAG, "Preferences commit took " + (endTime - startTime) + "ms");
+=======
+        long endTime = System.currentTimeMillis();
+        Timber.i("Preferences commit took %d ms", endTime - startTime);
+>>>>>>> refs/remotes/k9mail/master
 
     }
 

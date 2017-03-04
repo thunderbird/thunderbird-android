@@ -24,7 +24,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.text.format.Time;
-import android.util.Log;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
@@ -45,6 +44,9 @@ import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 import com.fsck.k9.widget.list.MessageListWidgetProvider;
+import timber.log.Timber;
+import timber.log.Timber.DebugTree;
+
 
 public class K9 extends Application {
     /**
@@ -135,7 +137,7 @@ public class K9 extends Application {
      * Log.d, including protocol dumps.
      * Controlled by Preferences at run-time
      */
-    public static boolean DEBUG = false;
+    private static boolean DEBUG = false;
 
     /**
      * If this is enabled than logging that normally hides sensitive information
@@ -416,7 +418,7 @@ public class K9 extends Application {
                 try {
                     queue.put(new Handler());
                 } catch (InterruptedException e) {
-                    Log.e(K9.LOG_TAG, "", e);
+                    Timber.e(e);
                 }
                 Looper.loop();
             }
@@ -426,13 +428,13 @@ public class K9 extends Application {
         try {
             final Handler storageGoneHandler = queue.take();
             registerReceiver(receiver, filter, null, storageGoneHandler);
-            Log.i(K9.LOG_TAG, "Registered: unmount receiver");
+            Timber.i("Registered: unmount receiver");
         } catch (InterruptedException e) {
-            Log.e(K9.LOG_TAG, "Unable to register unmount receiver", e);
+            Timber.e(e, "Unable to register unmount receiver");
         }
 
         registerReceiver(new ShutdownReceiver(), new IntentFilter(Intent.ACTION_SHUTDOWN));
-        Log.i(K9.LOG_TAG, "Registered: shutdown receiver");
+        Timber.i("Registered: shutdown receiver");
     }
 
     public static void save(StorageEditor editor) {
@@ -565,21 +567,19 @@ public class K9 extends Application {
                 intent.putExtra(K9.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
                 intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
                 K9.this.sendBroadcast(intent);
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Broadcasted: action=" + action
-                          + " account=" + account.getDescription()
-                          + " folder=" + folder
-                          + " message uid=" + message.getUid()
-                         );
+
+                Timber.d("Broadcasted: action=%s account=%s folder=%s message uid=%s",
+                        action,
+                        account.getDescription(),
+                        folder,
+                        message.getUid());
             }
 
             private void updateUnreadWidget() {
                 try {
                     UnreadWidgetProvider.updateUnreadCount(K9.this);
                 } catch (Exception e) {
-                    if (K9.DEBUG) {
-                        Log.e(LOG_TAG, "Error while updating unread widget(s)", e);
-                    }
+                    Timber.e(e, "Error while updating unread widget(s)");
                 }
             }
 
@@ -589,8 +589,8 @@ public class K9 extends Application {
                 } catch (RuntimeException e) {
                     if (BuildConfig.DEBUG) {
                         throw e;
-                    } else if (K9.DEBUG) {
-                        Log.e(LOG_TAG, "Error while updating message list widget", e);
+                    } else {
+                        Timber.e(e, "Error while updating message list widget");
                     }
                 }
             }
@@ -671,7 +671,7 @@ public class K9 extends Application {
      */
     public static void loadPrefs(Preferences prefs) {
         Storage storage = prefs.getStorage();
-        DEBUG = storage.getBoolean("enableDebugLogging", BuildConfig.DEVELOPER_MODE);
+        setDebug(storage.getBoolean("enableDebugLogging", BuildConfig.DEVELOPER_MODE));
         DEBUG_SENSITIVE = storage.getBoolean("enableSensitiveLogging", false);
         mAnimations = storage.getBoolean("animations", true);
         mGesturesEnabled = storage.getBoolean("gesturesEnabled", false);
@@ -799,13 +799,12 @@ public class K9 extends Application {
     protected void notifyObservers() {
         synchronized (observers) {
             for (final ApplicationAware aware : observers) {
-                if (K9.DEBUG) {
-                    Log.v(K9.LOG_TAG, "Initializing observer: " + aware);
-                }
+                Timber.v("Initializing observer: %s", aware);
+
                 try {
                     aware.initializeComponent(this);
                 } catch (Exception e) {
-                    Log.w(K9.LOG_TAG, "Failure when notifying " + aware, e);
+                    Timber.w(e, "Failure when notifying %s", aware);
                 }
             }
 
@@ -1017,7 +1016,14 @@ public class K9 extends Application {
         return false;
     }
 
+    public static void setDebug(boolean debug) {
+        K9.DEBUG = debug;
+        updateLoggingStatus();
+    }
 
+    public static boolean isDebug() {
+        return DEBUG;
+    }
 
     public static boolean startIntegratedInbox() {
         return mStartIntegratedInbox;
@@ -1419,4 +1425,13 @@ public class K9 extends Application {
             editor.commit();
         }
     }
+
+    private static void updateLoggingStatus() {
+        Timber.uprootAll();
+        boolean enableDebugLogging = BuildConfig.DEBUG || DEBUG;
+        if (enableDebugLogging) {
+            Timber.plant(new DebugTree());
+        }
+    }
+
 }

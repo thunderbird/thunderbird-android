@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -494,7 +494,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     Store store = mAccount.getRemoteStore();
                     isPushCapable = store.isPushCapable();
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Could not get remote store", e);
+                    Timber.e(e, "Could not get remote store");
                 }
                 if (isPushCapable && mAccount.getFolderPushMode() != FolderMode.NONE) {
                     MailService.actionRestartPushers(this, null);
@@ -602,7 +602,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void failure(Exception use) {
-        Log.e(K9.LOG_TAG, "Failure", use);
+        Timber.e(use, "Failure");
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
 
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);

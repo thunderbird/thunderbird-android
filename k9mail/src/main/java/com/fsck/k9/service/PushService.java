@@ -3,7 +3,7 @@ package com.fsck.k9.service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
+import timber.log.Timber;
 import com.fsck.k9.K9;
 
 public class PushService extends CoreService {
@@ -30,11 +30,9 @@ public class PushService extends CoreService {
     public int startService(Intent intent, int startId) {
         int startFlag = START_STICKY;
         if (START_SERVICE.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "PushService started with startId = " + startId);
+            Timber.i("PushService started with startId = %d", startId);
         } else if (STOP_SERVICE.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "PushService stopping with startId = " + startId);
+            Timber.i("PushService stopping with startId = %d", startId);
             stopSelf(startId);
             startFlag = START_NOT_STICKY;
         }

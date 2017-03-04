@@ -2,7 +2,7 @@ package com.fsck.k9.search;
 
 import java.util.List;
 
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -78,7 +78,7 @@ public class SqlQueryBuilder {
                 case MESSAGE_CONTENTS: {
                     String fulltextQueryString = condition.value;
                     if (condition.attribute != Attribute.CONTAINS) {
-                        Log.e(K9.LOG_TAG, "message contents can only be matched!");
+                        Timber.e("message contents can only be matched!");
                     }
                     query.append("(EXISTS (SELECT docid FROM messages_fulltext WHERE docid = id AND fulltext MATCH ?))");
                     selectionArgs.add(fulltextQueryString);

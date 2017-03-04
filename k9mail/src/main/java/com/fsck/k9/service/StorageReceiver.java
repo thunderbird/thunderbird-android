@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.StorageManager;
@@ -23,9 +23,7 @@ public class StorageReceiver extends BroadcastReceiver {
             return;
         }
 
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "StorageReceiver: " + intent.toString());
-        }
+        Timber.v("StorageReceiver: %s", intent);
 
         final String path = uri.getPath();
 

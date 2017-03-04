@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Address;
@@ -265,7 +265,7 @@ public class Contacts {
             Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
             return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Couldn't fetch photo for contact with email " + address, e);
+            Timber.e(e, "Couldn't fetch photo for contact with email %s", address);
             return null;
         }
     }

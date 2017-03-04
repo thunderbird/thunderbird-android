@@ -45,7 +45,7 @@ public class ActivityListener extends SimpleMessagingListener {
                 return context.getString(R.string.status_next_poll,
                         DateUtils.getRelativeTimeSpanString(nextPollTime, System.currentTimeMillis(),
                                 DateUtils.MINUTE_IN_MILLIS, 0));
-            } else if (K9.DEBUG && MailService.isSyncDisabled()) {
+            } else if (K9.isDebug() && MailService.isSyncDisabled()) {
                 if (MailService.hasNoConnectivity()) {
                     return context.getString(R.string.status_no_network);
                 } else if (MailService.isSyncNoBackground()) {

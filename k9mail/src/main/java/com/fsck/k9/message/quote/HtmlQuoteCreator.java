@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.res.Resources;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.K9;
@@ -149,9 +149,7 @@ public class HtmlQuoteCreator {
             hasBodyTag = true;
         }
 
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Open: hasHtmlTag:" + hasHtmlTag + " hasHeadTag:" + hasHeadTag + " hasBodyTag:" + hasBodyTag);
-        }
+        Timber.d("Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
 
         // Given our inspections, let's figure out where to start our content.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just after it.
@@ -202,9 +200,7 @@ public class HtmlQuoteCreator {
             hasBodyEndTag = true;
         }
 
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Close: hasHtmlEndTag:" + hasHtmlEndTag + " hasBodyEndTag:" + hasBodyEndTag);
-        }
+        Timber.d("Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
 
         // Now figure out where to put our footer.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just before it.

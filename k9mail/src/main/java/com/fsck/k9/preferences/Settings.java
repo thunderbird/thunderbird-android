@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
@@ -66,8 +66,10 @@ public class Settings {
 
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
-                Log.v(K9.LOG_TAG, "Key \"" + key + "\" wasn't found in the imported file." +
-                        ((useDefaultValues) ? " Using default value." : ""));
+                Timber.v("Key \"%s\" wasn't found in the imported file.%s",
+                        key,
+                        (useDefaultValues) ? " Using default value." : "");
+
                 useDefaultValue = useDefaultValues;
             } else {
                 String prettyValue = importedSettings.get(key);
@@ -76,9 +78,11 @@ public class Settings {
                     validatedSettings.put(key, internalValue);
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
-                    Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + prettyValue +
-                            "\" in imported file. " +
-                            ((useDefaultValues) ? "Using default value." : "Skipping."));
+                    Timber.v("Key \"%s\" has invalid value \"%s\" in imported file. %s",
+                            key,
+                            prettyValue,
+                            (useDefaultValues) ? "Using default value." : "Skipping.");
+
                     useDefaultValue = useDefaultValues;
                 }
             }
@@ -162,9 +166,9 @@ public class Settings {
         T defaultValue = setting.getDefaultValue();
         validatedSettingsMutable.put(settingName, defaultValue);
 
-        if (K9.DEBUG) {
+        if (K9.isDebug()) {
             String prettyValue = setting.toPrettyString(defaultValue);
-            Log.v(K9.LOG_TAG, "Added new setting \"" + settingName + "\" with default value \"" + prettyValue + "\"");
+            Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue);
         }
     }
 
@@ -173,9 +177,7 @@ public class Settings {
         validatedSettingsMutable.remove(settingName);
         deletedSettingsMutable.add(settingName);
 
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "Removed setting \"" + settingName + "\"");
-        }
+        Timber.v("Removed setting \"%s\"", settingName);
     }
 
     /**
@@ -207,10 +209,7 @@ public class Settings {
 
                 serializedSettings.put(settingName, stringValue);
             } else {
-                if (K9.DEBUG) {
-                    Log.w(K9.LOG_TAG, "Settings.serialize() called with a setting that should " +
-                            "have been removed: " + settingName);
-                }
+                Timber.w("Settings.convert() called with a setting that should have been removed: %s", settingName);
             }
         }
 

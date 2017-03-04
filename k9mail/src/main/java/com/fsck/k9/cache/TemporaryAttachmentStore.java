@@ -2,8 +2,12 @@ package com.fsck.k9.cache;
 
 
 import android.content.Context;
+<<<<<<< HEAD
 import android.os.SystemClock;
 import android.util.Log;
+=======
+import timber.log.Timber;
+>>>>>>> refs/remotes/k9mail/master
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
@@ -54,11 +58,9 @@ public class TemporaryAttachmentStore {
         for (File file : files) {
             if (file.lastModified() < cutOffTime) {
                 if (file.delete()) {
-                    if (K9.DEBUG) {
-                        Log.d(K9.LOG_TAG, "Deleted from temporary attachment store: " + file.getName());
-                    }
+                    Timber.d("Deleted from temporary attachment store: %s", file.getName());
                 } else {
-                    Log.w(K9.LOG_TAG, "Couldn't delete from temporary attachment store: " + file.getName());
+                    Timber.w("Couldn't delete from temporary attachment store: %s", file.getName());
                 }
             }
         }

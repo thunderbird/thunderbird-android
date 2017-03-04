@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -200,7 +200,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
                         pendingIntent.getIntentSender(), REQUEST_CODE_UNKNOWN_KEY, null, 0, 0, 0);
             }
         } catch (IntentSender.SendIntentException e) {
-            Log.e(K9.LOG_TAG, "SendIntentException", e);
+            Timber.e(e, "SendIntentException");
         }
     }
 
@@ -212,7 +212,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
                         pendingIntent.getIntentSender(), null, null, 0, 0, 0);
             }
         } catch (IntentSender.SendIntentException e) {
-            Log.e(K9.LOG_TAG, "SendIntentException", e);
+            Timber.e(e, "SendIntentException");
         }
     }
 
