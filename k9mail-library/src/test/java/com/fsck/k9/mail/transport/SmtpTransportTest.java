@@ -133,6 +133,8 @@ public class SmtpTransportTest {
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH");
+        server.expect("QUIT");
+        server.output("221 BYE");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
 
         try {
@@ -172,6 +174,8 @@ public class SmtpTransportTest {
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH PLAIN LOGIN");
+        server.expect("QUIT");
+        server.output("221 BYE");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.CRAM_MD5, ConnectionSecurity.NONE);
 
         try {
@@ -181,7 +185,7 @@ public class SmtpTransportTest {
             assertEquals("Authentication method CRAM-MD5 is unavailable.", e.getMessage());
         }
 
-        server.verifyConnectionStillOpen();
+        server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
 
@@ -214,6 +218,8 @@ public class SmtpTransportTest {
         server.expect("");
         server.output("535-5.7.1 Username and Password not accepted. Learn more at");
         server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
+        server.expect("QUIT");
+        server.output("221 BYE");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
 
         try {
@@ -228,7 +234,7 @@ public class SmtpTransportTest {
         InOrder inOrder = inOrder(oAuth2TokenProvider);
         inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
         inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
-        server.verifyConnectionStillOpen();
+        server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
 
@@ -327,6 +333,9 @@ public class SmtpTransportTest {
         server.expect("");
         server.output("535-5.7.1 Username and Password not accepted. Learn more at");
         server.output("535 5.7.1 http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68");
+        server.expect("QUIT");
+        server.output("221 BYE");
+
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
 
         try {
@@ -338,7 +347,7 @@ public class SmtpTransportTest {
                 e.getMessage());
         }
 
-        server.verifyConnectionStillOpen();
+        server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
 
@@ -349,6 +358,8 @@ public class SmtpTransportTest {
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH XOAUTH2");
+        server.expect("QUIT");
+        server.output("221 BYE");
         when(oAuth2TokenProvider.getToken(anyString(), anyInt())).thenThrow(new AuthenticationFailedException("Failed to fetch token"));
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
 
@@ -359,7 +370,7 @@ public class SmtpTransportTest {
             assertEquals("Failed to fetch token", e.getMessage());
         }
 
-        server.verifyConnectionStillOpen();
+        server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
 
@@ -371,6 +382,8 @@ public class SmtpTransportTest {
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH PLAIN LOGIN");
+        server.expect("QUIT");
+        server.output("221 BYE");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
 
         try {
@@ -380,7 +393,7 @@ public class SmtpTransportTest {
             assertEquals("Authentication method XOAUTH2 is unavailable.", e.getMessage());
         }
 
-        server.verifyConnectionStillOpen();
+        server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
 
@@ -408,6 +421,8 @@ public class SmtpTransportTest {
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH");
+        server.expect("QUIT");
+        server.output("221 BYE");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.EXTERNAL, ConnectionSecurity.NONE);
 
         try {
@@ -417,7 +432,7 @@ public class SmtpTransportTest {
             assertEquals(CertificateValidationException.Reason.MissingCapability, e.getReason());
         }
 
-        server.verifyConnectionStillOpen();
+        server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
 
@@ -449,6 +464,8 @@ public class SmtpTransportTest {
         server.expect("EHLO localhost");
         server.output("250-localhost Hello client.localhost");
         server.output("250 AUTH PLAIN LOGIN");
+        server.expect("QUIT");
+        server.output("221 BYE");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.AUTOMATIC,
                 ConnectionSecurity.NONE);
 
@@ -460,7 +477,7 @@ public class SmtpTransportTest {
                     e.getMessage());
         }
 
-        server.verifyConnectionStillOpen();
+        server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
 

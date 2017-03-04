@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -92,6 +93,7 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
@@ -207,6 +209,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean isInSubActivity = false;
 
+    private boolean navigateUp;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -231,6 +235,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             setContentView(R.layout.message_compose);
         }
+
+        initializeActionBar();
 
         // on api level 15, setContentView() shows the progress bar for some reason...
         setProgressBarIndeterminateVisibility(false);
@@ -734,7 +740,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         changesMadeSinceLastSave = false;
-        finish();
+        if (navigateUp) {
+            openAutoExpandFolder();
+        } else {
+            finish();
+        }
     }
 
     private void onReadReceipt() {
@@ -920,6 +930,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                prepareToFinish(true);
+                break;
             case R.id.send:
                 checkToSendMessage();
                 break;
@@ -987,6 +1000,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public void onBackPressed() {
+        prepareToFinish(false);
+    }
+
+    private void prepareToFinish(boolean shouldNavigateUp) {
+        navigateUp = shouldNavigateUp;
+
         if (changesMadeSinceLastSave && draftIsNotEmpty()) {
             if (!account.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
@@ -998,9 +1017,22 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (draftId == INVALID_DRAFT_ID) {
                 onDiscard();
             } else {
-                super.onBackPressed();
+                if (navigateUp) {
+                    openAutoExpandFolder();
+                } else {
+                    super.onBackPressed();
+                }
             }
         }
+    }
+
+    private void openAutoExpandFolder() {
+        String folder = account.getAutoExpandFolderName();
+        LocalSearch search = new LocalSearch(folder);
+        search.addAccountUuid(account.getUuid());
+        search.addAllowedFolder(folder);
+        MessageList.actionDisplaySearch(this, search, false, true);
+        finish();
     }
 
     private boolean draftIsNotEmpty() {
@@ -1577,6 +1609,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             });
         }
     };
+
+    private void initializeActionBar() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
 
     // TODO We miss callbacks for this listener if they happens while we are paused!
     public MessagingListener messagingListener = new SimpleMessagingListener() {
