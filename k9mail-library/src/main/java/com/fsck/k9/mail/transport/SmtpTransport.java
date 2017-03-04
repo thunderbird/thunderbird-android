@@ -290,7 +290,7 @@ public class SmtpTransport extends Transport {
                 }
             }
 
-            Map<String,String> extensions = sendHello(localHost);
+            Map<String, String> extensions = sendHello(localHost);
 
             m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
 
@@ -306,7 +306,7 @@ public class SmtpTransport extends Transport {
                             mClientCertificateAlias);
 
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
-                                                  1024));
+                            1024));
                     mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
                     /*
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
@@ -344,8 +344,8 @@ public class SmtpTransport extends Transport {
 
             if (!TextUtils.isEmpty(mUsername)
                     && (!TextUtils.isEmpty(mPassword) ||
-                        AuthType.EXTERNAL == mAuthType ||
-                        AuthType.XOAUTH2 == mAuthType)) {
+                    AuthType.EXTERNAL == mAuthType ||
+                    AuthType.XOAUTH2 == mAuthType)) {
 
                 switch (mAuthType) {
 
@@ -354,36 +354,37 @@ public class SmtpTransport extends Transport {
                  * but it still may exist in a user's settings from a previous
                  * version, or it may have been imported.
                  */
-                case LOGIN:
-                case PLAIN:
-                    // try saslAuthPlain first, because it supports UTF-8 explicitly
-                    if (authPlainSupported) {
-                        saslAuthPlain(mUsername, mPassword);
-                    } else if (authLoginSupported) {
-                        saslAuthLogin(mUsername, mPassword);
-                    } else {
-                        throw new MessagingException("Authentication methods SASL PLAIN and LOGIN are unavailable.");
-                    }
-                    break;
+                    case LOGIN:
+                    case PLAIN:
+                        // try saslAuthPlain first, because it supports UTF-8 explicitly
+                        if (authPlainSupported) {
+                            saslAuthPlain(mUsername, mPassword);
+                        } else if (authLoginSupported) {
+                            saslAuthLogin(mUsername, mPassword);
+                        } else {
+                            throw new MessagingException(
+                                    "Authentication methods SASL PLAIN and LOGIN are unavailable.");
+                        }
+                        break;
 
-                case CRAM_MD5:
-                    if (authCramMD5Supported) {
-                        saslAuthCramMD5(mUsername, mPassword);
-                    } else {
-                        throw new MessagingException("Authentication method CRAM-MD5 is unavailable.");
-                    }
-                    break;
-                case XOAUTH2:
-                    if (authXoauth2Supported && oauthTokenProvider != null) {
-                        saslXoauth2(mUsername);
-                    } else {
-                        throw new MessagingException("Authentication method XOAUTH2 is unavailable.");
-                    }
-                    break;
-                case EXTERNAL:
-                    if (authExternalSupported) {
-                        saslAuthExternal(mUsername);
-                    } else {
+                    case CRAM_MD5:
+                        if (authCramMD5Supported) {
+                            saslAuthCramMD5(mUsername, mPassword);
+                        } else {
+                            throw new MessagingException("Authentication method CRAM-MD5 is unavailable.");
+                        }
+                        break;
+                    case XOAUTH2:
+                        if (authXoauth2Supported && oauthTokenProvider != null) {
+                            saslXoauth2(mUsername);
+                        } else {
+                            throw new MessagingException("Authentication method XOAUTH2 is unavailable.");
+                        }
+                        break;
+                    case EXTERNAL:
+                        if (authExternalSupported) {
+                            saslAuthExternal(mUsername);
+                        } else {
                         /*
                          * Some SMTP servers are known to provide no error
                          * indication when a client certificate fails to
@@ -394,53 +395,60 @@ public class SmtpTransport extends Transport {
                          * EXTERNAL when using client certificates. That way, the
                          * user can be notified of a problem during account setup.
                          */
-                        throw new CertificateValidationException(MissingCapability);
-                    }
-                    break;
+                            throw new CertificateValidationException(MissingCapability);
+                        }
+                        break;
 
                 /*
                  * AUTOMATIC is an obsolete option which is unavailable to users,
                  * but it still may exist in a user's settings from a previous
                  * version, or it may have been imported.
                  */
-                case AUTOMATIC:
-                    if (secureConnection) {
-                        // try saslAuthPlain first, because it supports UTF-8 explicitly
-                        if (authPlainSupported) {
-                            saslAuthPlain(mUsername, mPassword);
-                        } else if (authLoginSupported) {
-                            saslAuthLogin(mUsername, mPassword);
-                        } else if (authCramMD5Supported) {
-                            saslAuthCramMD5(mUsername, mPassword);
+                    case AUTOMATIC:
+                        if (secureConnection) {
+                            // try saslAuthPlain first, because it supports UTF-8 explicitly
+                            if (authPlainSupported) {
+                                saslAuthPlain(mUsername, mPassword);
+                            } else if (authLoginSupported) {
+                                saslAuthLogin(mUsername, mPassword);
+                            } else if (authCramMD5Supported) {
+                                saslAuthCramMD5(mUsername, mPassword);
+                            } else {
+                                throw new MessagingException("No supported authentication methods available.");
+                            }
                         } else {
-                            throw new MessagingException("No supported authentication methods available.");
-                        }
-                    } else {
-                        if (authCramMD5Supported) {
-                            saslAuthCramMD5(mUsername, mPassword);
-                        } else {
+                            if (authCramMD5Supported) {
+                                saslAuthCramMD5(mUsername, mPassword);
+                            } else {
                             /*
                              * We refuse to insecurely transmit the password
                              * using the obsolete AUTOMATIC setting because of
                              * the potential for a MITM attack. Affected users
                              * must choose a different setting.
                              */
-                            throw new MessagingException(
-                                    "Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable.");
+                                throw new MessagingException(
+                                        "Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable.");
+                            }
                         }
-                    }
-                    break;
+                        break;
 
-                default:
-                    throw new MessagingException("Unhandled authentication method found in the server settings (bug).");
+                    default:
+                        throw new MessagingException(
+                                "Unhandled authentication method found in the server settings (bug).");
                 }
             }
+        } catch (MessagingException e) {
+            close();
+            throw e;
         } catch (SSLException e) {
+            close();
             throw new CertificateValidationException(e.getMessage(), e);
         } catch (GeneralSecurityException gse) {
+            close();
             throw new MessagingException(
                 "Unable to open connection to SMTP server due to security error.", gse);
         } catch (IOException ioe) {
+            close();
             throw new MessagingException("Unable to open connection to SMTP server.", ioe);
         }
     }
