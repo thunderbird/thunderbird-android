@@ -917,9 +917,14 @@ public class MimeUtility {
         return decode(unfold(s), message);
     }
 
-    // TODO implement proper foldAndEncode
     public static String foldAndEncode(String s) {
-        return s;
+        String folded="";
+        while (s.length() > 998){
+            folded+=s.substring(0,998)+"\r\n ";
+            s = s.substring(999, s.length() - 1);
+        }
+        folded+=s;
+        return folded;
     }
 
     /**
