@@ -276,7 +276,7 @@ public class MailService extends CoreService {
                     !considerLastCheckEnd ? System.currentTimeMillis() : lastCheckEnd);
             long nextTime = base + delay;
 
-            Timber.i("previousInterval = %d, shortestInterval = %d, lastCheckEnd = %tc, considerLastCheckEnd = %tc",
+            Timber.i("previousInterval = %d, shortestInterval = %d, lastCheckEnd = %tc, considerLastCheckEnd = %b",
                     previousInterval,
                     shortestInterval,
                     lastCheckEnd,
