@@ -26,6 +26,7 @@ import org.apache.commons.io.input.BoundedInputStream;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
+import static com.fsck.k9.mail.internet.MimeUtility.isDelSp;
 import static com.fsck.k9.mail.internet.MimeUtility.isFormatFlowed;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
@@ -193,7 +194,7 @@ public class MessageExtractor {
             Viewable viewable;
             if (isSameMimeType(mimeType, "text/plain")) {
                 if (isFormatFlowed(part.getContentType())) {
-                    viewable = new Flowed(part);
+                    viewable = new Flowed(part,isDelSp(part.getContentType()));
                 } else {
                     viewable = new Text(part);
                 }

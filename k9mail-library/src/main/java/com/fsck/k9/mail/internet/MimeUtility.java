@@ -31,6 +31,8 @@ public class MimeUtility {
     private static final String TEXT_PLAIN = "text/plain";
     private static final String HEADER_PARAM_FORMAT = "format";
     private static final String HEADER_FORMAT_FLOWED = "flowed";
+    private static final String HEADER_PARAM_DELSP = "delsp";
+    private static final String HEADER_DELSP_YES = "yes";
 
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
@@ -1152,5 +1154,13 @@ public class MimeUtility {
             return HEADER_FORMAT_FLOWED.equalsIgnoreCase(formatParameter);
         }
         return false;
+    }
+
+    static boolean isDelSp(String contentType){
+        if(isFormatFlowed(contentType)){
+           String delspParameter = getHeaderParameter(contentType,HEADER_PARAM_DELSP);
+            return HEADER_DELSP_YES.equalsIgnoreCase(delspParameter);
+        }
+        return false ;
     }
 }
