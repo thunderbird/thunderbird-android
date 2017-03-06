@@ -840,13 +840,8 @@ class ImapFolder extends Folder<ImapMessage> {
                             String contentTransferEncoding =
                                     part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
                             String contentType = part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
-                            if(progressCallback != null) {
-                                MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
-                                        contentType, progressCallback));
-                            } else {
-                                MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
-                                        contentType, null));
-                            }
+                            MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
+                                    contentType, progressCallback));
                         } else {
                             // This shouldn't happen
                             throw new MessagingException("Got FETCH response with bogus parameters");
