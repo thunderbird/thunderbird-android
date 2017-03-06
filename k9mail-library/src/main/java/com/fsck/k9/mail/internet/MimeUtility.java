@@ -920,8 +920,8 @@ public class MimeUtility {
     public static String foldAndEncode(String s) {
         String folded="";
         while (s.length() > 998){
-            folded+=s.substring(0,998)+"\r\n ";
-            s = s.substring(999, s.length() - 1);
+            folded+=s.substring(0,998)+"\r\n";
+            s = " " + s.substring(999, s.length() - 1);
         }
         folded+=s;
         return folded;
