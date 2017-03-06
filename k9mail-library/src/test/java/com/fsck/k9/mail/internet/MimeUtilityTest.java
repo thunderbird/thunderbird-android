@@ -148,4 +148,6 @@ public class MimeUtilityTest {
     public void isFormatFlowed_withTextHtmlFormatFlowed__shouldReturnFalse() throws Exception {
         assertFalse(MimeUtility.isFormatFlowed("text/html; format=flowed"));
     }
+
+
 }

@@ -42,8 +42,14 @@ public interface Viewable {
     }
 
     class Flowed extends Textual {
+        private boolean delSp;
         public Flowed(Part part) {
             super(part);
+            this.delSp = FlowedMessageUtils.isDelSp(part.getContentType());
+        }
+
+        public boolean isDelSp() {
+            return delSp;
         }
     }
 
