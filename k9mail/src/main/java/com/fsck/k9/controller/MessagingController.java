@@ -30,6 +30,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -53,6 +55,7 @@ import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ActivityListener;
+import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -64,6 +67,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.K9AlarmManager;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -108,6 +112,7 @@ import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
+import com.fsck.k9.service.BootReceiver;
 
 
 /**
@@ -2591,7 +2596,11 @@ public class MessagingController {
             Message localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
             localFolder.close();
-            sendPendingMessages(account, listener);
+            if (message.isScheduled()) {
+                scheduleOutboxMessages(account, message);
+            } else {
+                sendPendingMessages(account, listener);
+            }
         } catch (Exception e) {
             /*
             for (MessagingListener l : getListeners())
@@ -2651,7 +2660,7 @@ public class MessagingController {
     }
 
     private boolean messagesPendingSend(final Account account) {
-        Folder localFolder = null;
+        LocalFolder localFolder = null;
         try {
             localFolder = account.getLocalStore().getFolder(
                     account.getOutboxFolderName());
@@ -2661,7 +2670,7 @@ public class MessagingController {
 
             localFolder.open(Folder.OPEN_MODE_RW);
 
-            if (localFolder.getMessageCount() > 0) {
+            if (localFolder.getMessagesToSendCount() > 0) {
                 return true;
             }
         } catch (Exception e) {
@@ -2715,6 +2724,9 @@ public class MessagingController {
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
                     message.destroy();
+                    continue;
+                }
+                if (message.isScheduled()) {
                     continue;
                 }
                 try {
@@ -2813,6 +2825,58 @@ public class MessagingController {
                 notificationController.clearSendFailedNotification(account);
             }
             closeFolder(localFolder);
+        }
+    }
+
+    public void scheduleOutboxMessages(final Account account, final Message messageToSchedule) {
+        putBackground("scheduleMessages", null, new Runnable() {
+            @Override
+            public void run() {
+                scheduleOutboxMessagesSynchronous(account, messageToSchedule);
+            }
+        });
+    }
+
+    /**
+     * Schedules the provided message to be sent at a later date
+     * If messageToSchedule is null, all outbox messages in the provided account's outbox
+     * will be checked and scheduled
+     */
+    public void scheduleOutboxMessagesSynchronous(Account account, Message messageToSchedule) {
+        List<Message> messagesToSchedule = new ArrayList<>();
+        K9AlarmManager alarmManager = K9AlarmManager.getAlarmManager(K9.app);
+        if (messageToSchedule != null && messageToSchedule.isScheduled()) {
+            messagesToSchedule.add(messageToSchedule);
+        } else {
+            LocalFolder localFolder = null;
+            try {
+                LocalStore localStore = account.getLocalStore();
+                localFolder = localStore.getFolder(account.getOutboxFolderName());
+                if (!localFolder.exists()) {
+                    Timber.v("Outbox does not exist");
+                    return;
+                }
+                localFolder.open(Folder.OPEN_MODE_RW);
+                List<LocalMessage> localMessages = localFolder.getMessages(null);
+                for (LocalMessage message : localMessages) {
+                    if (message.isScheduled()) {
+                        messagesToSchedule.add(message);
+                    }
+                }
+            } catch (MessagingException e) {
+                Timber.e(e, "Failed to retrieve messages to be scheduled");
+            } finally {
+                closeFolder(localFolder);
+            }
+        }
+
+        for (Message message : messagesToSchedule) {
+            long sendTime = message.getSentDate().getTime();
+            Intent i = new Intent(context, BootReceiver.class);
+            i.setAction(BootReceiver.SEND_SCHEDULED_MAIL_INTENT);
+            i.putExtra(MessageCompose.EXTRA_ACCOUNT, account.getUuid());
+            PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, sendTime, pi);
         }
     }
 

@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -65,6 +66,7 @@ import com.fsck.k9.activity.compose.RecipientMvpView;
 import com.fsck.k9.activity.compose.RecipientPresenter;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.SaveMessageTask;
+import com.fsck.k9.preferences.ScheduleMailPrefs;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
@@ -121,6 +123,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public static final String EXTRA_ACCOUNT = "account";
     public static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
     public static final String EXTRA_MESSAGE_DECRYPTION_RESULT = "message_decryption_result";
+    public static final String EXTRA_SEND_DATE = "send_date";
 
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
             "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
@@ -146,6 +149,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int REQUEST_MASK_LOADER_HELPER = (1 << 9);
     private static final int REQUEST_MASK_ATTACHMENT_PRESENTER = (1 << 10);
     private static final int REQUEST_MASK_MESSAGE_BUILDER = (1 << 11);
+    private static final int REQUEST_SCHEDULE_MAIL = 123;
 
     /**
      * Regular expression to remove the first localized "Re:" prefix in subjects.
@@ -177,6 +181,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * have already been added from the restore of the view state.
      */
     private boolean relatedMessageProcessed = false;
+    private long sendDate = 0L;
 
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
@@ -645,7 +650,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
-                .setSentDate(new Date())
+                .setSentDate(sendDate == 0L ? new Date() : new Date(sendDate))
                 .setHideTimeZone(K9.hideTimeZone())
                 .setTo(recipientPresenter.getToAddresses())
                 .setCc(recipientPresenter.getCcAddresses())
@@ -675,6 +680,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (subjectView.getText().length() == 0 && !alreadyNotifiedUserOfEmptySubject) {
             Toast.makeText(this, R.string.empty_subject, Toast.LENGTH_LONG).show();
             alreadyNotifiedUserOfEmptySubject = true;
+            return;
+        }
+
+        if (sendDate < System.currentTimeMillis()) {
+            Toast.makeText(this, R.string.invalid_send_date, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -797,6 +807,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if ((requestCode & REQUEST_MASK_ATTACHMENT_PRESENTER) == REQUEST_MASK_ATTACHMENT_PRESENTER) {
             requestCode ^= REQUEST_MASK_ATTACHMENT_PRESENTER;
             attachmentPresenter.onActivityResult(resultCode, requestCode, data);
+        }
+
+        if (requestCode == REQUEST_SCHEDULE_MAIL) {
+            if (resultCode == Activity.RESULT_OK) {
+                sendDate = data.getLongExtra(EXTRA_SEND_DATE, 0L);
+            } else if (resultCode == RESULT_CANCELED) {
+                sendDate = 0L;
+            }
         }
     }
 
@@ -927,6 +945,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
+    private void goToScheduleMessageSettings() {
+        Intent i = new Intent(this, ScheduleMailPrefs.class);
+        i.putExtra(MessageCompose.EXTRA_SEND_DATE, sendDate);
+        startActivityForResult(i, REQUEST_SCHEDULE_MAIL);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -941,6 +965,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 break;
             case R.id.discard:
                 askBeforeDiscard();
+                break;
+            case R.id.schedule:
+                goToScheduleMessageSettings();
                 break;
             case R.id.add_from_contacts:
                 recipientPresenter.onMenuAddFromContacts();

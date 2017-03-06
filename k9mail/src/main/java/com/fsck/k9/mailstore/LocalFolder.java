@@ -305,6 +305,34 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
+    public int getMessagesToSendCount() throws MessagingException {
+        try {
+            return this.localStore.database.execute(false, new DbCallback<Integer>() {
+                @Override
+                public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
+                    try {
+                        open(OPEN_MODE_RW);
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    }
+                    Cursor cursor = null;
+                    try {
+                        cursor = db.rawQuery(
+                                "SELECT COUNT(id) FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 0 AND date <= ? AND folder_id = ?",
+                                new String[] { Long.toString(new Date().getTime()), Long.toString(mFolderId) });
+                        cursor.moveToFirst();
+                        return cursor.getInt(0);   //messagecount
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+                }
+            });
+        } catch (WrappedException e) {
+            throw (MessagingException) e.getCause();
+        }
+    }
+
     @Override
     public int getUnreadMessageCount() throws MessagingException {
         if (mFolderId == -1) {

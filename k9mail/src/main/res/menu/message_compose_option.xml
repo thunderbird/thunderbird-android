@@ -32,6 +32,12 @@
         android:icon="?attr/iconActionCancel"
     />
     <item
+        android:id="@+id/schedule"
+        android:alphabeticShortcut="m"
+        android:title="@string/schedule_action"
+        android:icon="?attr/iconActionSchedule"
+        />
+    <item
         android:id="@+id/read_receipt"
         android:alphabeticShortcut="r"
         android:title="@string/read_receipt"

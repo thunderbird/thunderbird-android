@@ -248,6 +248,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".preferences.ScheduleMailPrefs"
+            android:configChanges="locale"
+            android:excludeFromRecents="true"
+            android:label="@string/schedule_mail_prefs_title" />
+
         <!-- Search Activity - searchable -->
         <activity
             android:name=".activity.Search"

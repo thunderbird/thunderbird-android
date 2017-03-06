@@ -122,6 +122,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="send_action">Send</string>
     <string name="send_again_action">Send Again</string>
     <string name="empty_subject">Subject is empty, click again to send anyway</string>
+    <string name="invalid_send_date">The scheduled send date cannot be in the past</string>
     <string name="select_action">Select</string>
     <string name="deselect_action">Deselect</string>
     <string name="reply_action">Reply</string>
@@ -135,6 +136,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="refile_action">Refile…</string>
     <string name="done_action">Done</string>
     <string name="discard_action">Discard</string>
+    <string name="schedule_action">Schedule</string>
     <string name="save_draft_action">Save as draft</string>
     <string name="check_mail_action">Check mail</string>
     <string name="send_messages_action">Send messages</string>
@@ -365,6 +367,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="quiet_time_notification_description">Completely disable notifications during Quiet Time</string>
     <string name="quiet_time_starts">Quiet Time starts</string>
     <string name="quiet_time_ends">Quiet Time ends</string>
+
+    <string name="schedule_mail_prefs_title">Schedule Mail</string>
+    <string name="schedule_mail">Schedule Mail</string>
+    <string name="schedule_mail_description">Send this email at a future time</string>
+    <string name="schedule_mail_date">Send mail on</string>
+    <string name="schedule_mail_time">Send mail at</string>
 
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_email_hint">Email address</string>

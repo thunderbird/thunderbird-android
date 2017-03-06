@@ -862,6 +862,7 @@ public class MessagingControllerTest {
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
         when(localMessageToSend1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});
+        when(localMessageToSend1.getSentDate()).thenReturn(new Date());
         controller.addListener(listener);
     }
 

@@ -33,6 +33,7 @@
         <attr name="iconActionUpload" format="reference" />
         <attr name="iconActionSelectAll" format="reference" />
         <attr name="iconActionSave" format="reference" />
+        <attr name="iconActionSchedule" format="reference" />
         <attr name="iconActionCancel" format="reference" />
         <attr name="iconActionRequestReadReceipt" format="reference" />
         <attr name="iconActionExpand" format="reference" />

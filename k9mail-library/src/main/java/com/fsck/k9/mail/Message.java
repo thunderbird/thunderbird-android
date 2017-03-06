@@ -215,6 +215,10 @@ public abstract class Message implements Part, Body {
         return 0;
     }
 
+    public boolean isScheduled() {
+        return getSentDate().getTime() > System.currentTimeMillis();
+    }
+
     /**
      * Copy the contents of this object into another {@code Message} object.
      *

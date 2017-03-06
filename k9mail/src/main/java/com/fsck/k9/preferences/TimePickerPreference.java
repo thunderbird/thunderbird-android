@@ -4,6 +4,7 @@
 
 package com.fsck.k9.preferences;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import android.content.Context;
@@ -172,5 +173,9 @@ public class TimePickerPreference extends DialogPreference implements
         return getPersistedString(this.defaultValue);
     }
 
+    public void copyTime(Calendar calendar) {
+        calendar.set(Calendar.HOUR, getHour());
+        calendar.set(Calendar.MINUTE, getMinute());
+    }
 }
 

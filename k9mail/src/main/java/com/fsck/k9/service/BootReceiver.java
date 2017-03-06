@@ -2,6 +2,7 @@
 package com.fsck.k9.service;
 
 import java.util.Date;
+import java.util.List;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -11,7 +12,11 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import timber.log.Timber;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.activity.MessageCompose;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.K9AlarmManager;
 
 public class BootReceiver extends CoreReceiver {
@@ -21,6 +26,7 @@ public class BootReceiver extends CoreReceiver {
     public static final String CANCEL_INTENT = "com.fsck.k9.service.BroadcastReceiver.cancelIntent";
 
     public static final String ALARMED_INTENT = "com.fsck.k9.service.BroadcastReceiver.pendingIntent";
+    public static final String SEND_SCHEDULED_MAIL_INTENT = "com.fsck.k9.service.BroadcastReceiver.sendScheduledMailIntent";
     public static final String AT_TIME = "com.fsck.k9.service.BroadcastReceiver.atTime";
 
     @Override
@@ -31,6 +37,7 @@ public class BootReceiver extends CoreReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
             //K9.setServicesEnabled(context, tmpWakeLockId);
             //tmpWakeLockId = null;
+            rescheduleOutboxMessages(context);
         } else if (Intent.ACTION_DEVICE_STORAGE_LOW.equals(action)) {
             MailService.actionCancel(context, tmpWakeLockId);
             tmpWakeLockId = null;
@@ -70,10 +77,21 @@ public class BootReceiver extends CoreReceiver {
 
             K9AlarmManager alarmMgr = K9AlarmManager.getAlarmManager(context);
             alarmMgr.cancel(pi);
+        } else if (SEND_SCHEDULED_MAIL_INTENT.equals(action)) {
+            String accountUuid = intent.getStringExtra(MessageCompose.EXTRA_ACCOUNT);
+            Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+            MessagingController.getInstance(context).sendPendingMessages(account, null);
         }
 
 
         return tmpWakeLockId;
+    }
+
+    private void rescheduleOutboxMessages(Context context) {
+        List<Account> accounts = Preferences.getPreferences(context).getAccounts();
+        for (Account account : accounts) {
+            MessagingController.getInstance(context).scheduleOutboxMessages(account, null);
+        }
     }
 
     private PendingIntent buildPendingIntent(Context context, Intent intent) {
