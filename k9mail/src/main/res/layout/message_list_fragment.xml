@@ -6,10 +6,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/message_list"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="5" />
+        android:layout_weight="5"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/empty_view_icon"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:src="?attr/iconFolderEmpty" />
+
+            <TextView
+                android:id="@+id/empty_view_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/empty_view_icon"
+                android:gravity="center_horizontal"
+                android:text="@string/message_list_empty"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?android:attr/textColorPrimary" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/empty_view_inbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/empty_view_inbox_icon"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:src="?attr/iconInboxEmpty" />
+
+            <TextView
+                android:id="@+id/empty_view_inbox_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/empty_view_inbox_icon"
+                android:gravity="center_horizontal"
+                android:text="@string/message_list_inbox_empty"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?android:attr/textColorPrimary" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/message_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

@@ -45,6 +45,8 @@
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_light</item>
         <item name="iconActionExpand">@drawable/ic_action_expand_light</item>
         <item name="iconActionCollapse">@drawable/ic_action_collapse_light</item>
+        <item name="iconFolderEmpty">@drawable/ic_inbox_light</item>
+        <item name="iconInboxEmpty">@drawable/ic_sunny_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -110,6 +112,8 @@
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_dark</item>
         <item name="iconActionExpand">@drawable/ic_action_expand_dark</item>
         <item name="iconActionCollapse">@drawable/ic_action_collapse_dark</item>
+        <item name="iconFolderEmpty">@drawable/ic_inbox_dark</item>
+        <item name="iconInboxEmpty">@drawable/ic_sunny_dark</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>

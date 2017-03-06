@@ -1078,6 +1078,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="message_list_loading">Loading…</string>
+    <string name="message_list_empty">There are no messages in this folder.</string>
+    <string name="message_list_inbox_empty">Your inbox is empty. Have a nice day!</string>
 
     <string name="global_settings_splitview_mode_label">Show split-screen</string>
     <string name="global_settings_splitview_always">Always</string>

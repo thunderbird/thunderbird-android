@@ -217,6 +217,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private ListView mListView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private View mEmptyView;
+    private View mEmptyViewInbox;
     private Parcelable mSavedListState;
 
     private int mPreviewLines = 0;
@@ -948,6 +950,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void initializePullToRefresh(View layout) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
         mListView = (ListView) layout.findViewById(R.id.message_list);
+        mEmptyViewInbox = layout.findViewById(R.id.empty_view_inbox);
+        mEmptyView = layout.findViewById(R.id.empty_view);
 
         if (isRemoteSearchAllowed()) {
             mSwipeRefreshLayout.setOnRefreshListener(
@@ -979,6 +983,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(false);
         mListView.setOnItemClickListener(this);
+
+        if (mFolderName != null && mAccount != null && mFolderName.equals(mAccount.getInboxFolderName())) {
+            mListView.setEmptyView(mEmptyViewInbox);
+        } else {
+            mListView.setEmptyView(mEmptyView);
+        }
 
         registerForContextMenu(mListView);
     }
