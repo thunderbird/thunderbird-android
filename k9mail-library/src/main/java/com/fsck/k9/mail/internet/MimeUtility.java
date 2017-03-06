@@ -993,31 +993,7 @@ public class MimeUtility {
         return isSameMimeType(mimeType, DEFAULT_ATTACHMENT_MIME_TYPE);
     }
 
-    public static Body createBody(InputStream in, String contentTransferEncoding, String contentType)
-            throws IOException {
-
-        if (contentTransferEncoding != null) {
-            contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);
-        }
-
-        final BinaryTempFileBody tempBody;
-        if (MimeUtil.isMessage(contentType)) {
-            tempBody = new BinaryTempFileMessageBody(contentTransferEncoding);
-        } else {
-            tempBody = new BinaryTempFileBody(contentTransferEncoding);
-        }
-
-        OutputStream out = tempBody.getOutputStream();
-        try {
-            IOUtils.copy(in, out);
-        } finally {
-            out.close();
-        }
-
-        return tempBody;
-    }
-
-    public static Body createBodyWithProgressCallback(InputStream in, String contentTransferEncoding, String contentType, final AttachmentProgressCallback attachmentProgressCallback)
+    public static Body createBody(InputStream in, String contentTransferEncoding, String contentType, final AttachmentProgressCallback progressCallback)
             throws IOException {
 
         if (contentTransferEncoding != null) {
@@ -1034,16 +1010,20 @@ public class MimeUtility {
         OutputStream out = tempBody.getOutputStream();
         Timer timer = null;
         try {
-            timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    attachmentProgressCallback.onUpdate((int) tempBody.getSize());
-                }
-            }, 0, 50);
+            if(progressCallback != null){
+                timer = new Timer();
+                timer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        progressCallback.onUpdate((int) tempBody.getSize());
+                    }
+                }, 0, 50);
+            }
             IOUtils.copy(in, out);
         } finally {
-            timer.cancel();
+            if(timer != null){
+                timer.cancel();
+            }
             out.close();
         }
 

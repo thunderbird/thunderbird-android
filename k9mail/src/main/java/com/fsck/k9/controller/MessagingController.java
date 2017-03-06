@@ -1493,7 +1493,7 @@ public class MessagingController {
          * Now download the parts we're interested in storing.
          */
         for (Part part : viewables) {
-            remoteFolder.fetchPart(message, part, null);
+            remoteFolder.fetchPart(message, part, null, null);
         }
         // Store the updated message locally
         localFolder.appendMessages(Collections.singletonList(message));
@@ -2569,7 +2569,7 @@ public class MessagingController {
                     };
 
                     Message remoteMessage = remoteFolder.getMessage(message.getUid());
-                    remoteFolder.fetchPartWithProgressCallback(remoteMessage, part, null, attachmentProgressCallback);
+                    remoteFolder.fetchPart(remoteMessage, part, null, attachmentProgressCallback);
 
                     localFolder.addPartToMessage(message, part);
 

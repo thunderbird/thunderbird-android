@@ -129,18 +129,7 @@ public abstract class Folder<T extends Message> {
                                MessageRetrievalListener<T> listener) throws MessagingException;
 
     public void fetchPart(Message message, Part part,
-                          MessageRetrievalListener<Message> listener) throws MessagingException {
-        // This is causing trouble. Disabled for now. See issue 1733
-        //throw new RuntimeException("fetchPart() not implemented.");
-
-        if (K9MailLib.isDebug())
-            Log.d(LOG_TAG, "fetchPart() not implemented.");
-    }
-
-    public void fetchPartWithProgressCallback(Message message, Part part,
-                                              MessageRetrievalListener<Message> listener, AttachmentProgressCallback progressCallback) throws MessagingException {
-        // Used while fetching attachment. progressCallback is used to transmit progress from library to view.
-
+                          MessageRetrievalListener<Message> listener, AttachmentProgressCallback progressCallback) throws MessagingException {
         // This is causing trouble. Disabled for now. See issue 1733
         //throw new RuntimeException("fetchPart() not implemented.");
 

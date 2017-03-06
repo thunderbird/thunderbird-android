@@ -36,9 +36,9 @@ class FetchPartCallback implements ImapResponseCallback {
                     .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
 
             if(attachmentProgressCallback != null)
-                return MimeUtility.createBodyWithProgressCallback(literal, contentTransferEncoding, contentType, attachmentProgressCallback);
+                return MimeUtility.createBody(literal, contentTransferEncoding, contentType, attachmentProgressCallback);
 
-            return MimeUtility.createBody(literal, contentTransferEncoding, contentType);
+            return MimeUtility.createBody(literal, contentTransferEncoding, contentType, null);
         }
         return null;
     }
