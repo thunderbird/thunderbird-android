@@ -18,7 +18,7 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 public abstract class Message implements Part, Body {
 
     public enum RecipientType {
-        TO, CC, BCC,
+        TO, CC, BCC,X_ORIGINAL_TO,DELIVERED_TO,X_ENVELOPE_TO
     }
 
     protected String mUid;

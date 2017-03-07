@@ -48,6 +48,9 @@ public class MimeMessage extends Message {
     protected Address[] mCc;
     protected Address[] mBcc;
     protected Address[] mReplyTo;
+    protected Address[] mX_OriginalTo;
+    protected Address[] mDeliveredTo;
+    protected Address[] mX_EnvelopeTo;
 
     protected String mMessageId;
     private String[] mReferences;
@@ -85,6 +88,9 @@ public class MimeMessage extends Message {
         mCc = null;
         mBcc = null;
         mReplyTo = null;
+        mX_OriginalTo = null;
+        mDeliveredTo = null;
+        mX_EnvelopeTo = null;
 
         mMessageId = null;
         mReferences = null;
@@ -212,6 +218,24 @@ public class MimeMessage extends Message {
                 }
                 return mBcc;
             }
+            case X_ORIGINAL_TO: {
+                if(mX_OriginalTo == null){
+                    mX_OriginalTo = Address.parse(MimeUtility.unfold(getFirstHeader("X-Original-To")));
+                }
+                return mX_OriginalTo;
+            }
+            case DELIVERED_TO: {
+                if(mDeliveredTo == null){
+                    mDeliveredTo = Address.parse(MimeUtility.unfold(getFirstHeader("Delivered-To")));
+                }
+                return mDeliveredTo;
+            }
+            case X_ENVELOPE_TO: {
+                if(mX_EnvelopeTo == null) {
+                    mX_EnvelopeTo = Address.parse(MimeUtility.unfold(getFirstHeader("X-Envelope-To")));
+                }
+                return mX_EnvelopeTo;
+            }
         }
 
         throw new IllegalArgumentException("Unrecognized recipient type.");
@@ -242,6 +266,30 @@ public class MimeMessage extends Message {
             } else {
                 setHeader("BCC", Address.toEncodedString(addresses));
                 this.mBcc = addresses;
+            }
+        } else if (type == RecipientType.X_ORIGINAL_TO){
+            if (addresses == null || addresses.length == 0) {
+                removeHeader("X-Original-To");
+                this.mX_OriginalTo = null;
+            } else {
+                setHeader("X-Original-To", Address.toEncodedString(addresses));
+                this.mX_OriginalTo = addresses;
+            }
+        } else if (type == RecipientType.DELIVERED_TO){
+            if (addresses == null || addresses.length == 0) {
+                removeHeader("Delivered-To");
+                this.mX_OriginalTo = null;
+            } else {
+                setHeader("Delivered-To", Address.toEncodedString(addresses));
+                this.mDeliveredTo = addresses;
+            }
+        } else if (type == RecipientType.X_ENVELOPE_TO){
+            if (addresses == null || addresses.length == 0) {
+                removeHeader("X-Envelope-To");
+                this.mX_EnvelopeTo = null;
+            } else {
+                setHeader("X-Envelope-To", Address.toEncodedString(addresses));
+                this.mX_EnvelopeTo = addresses;
             }
         } else {
             throw new IllegalStateException("Unrecognized recipient type.");
@@ -624,6 +672,9 @@ public class MimeMessage extends Message {
         destination.mReplyTo = mReplyTo;
         destination.mReferences = mReferences;
         destination.mInReplyTo = mInReplyTo;
+        destination.mX_OriginalTo = mX_OriginalTo;
+        destination.mDeliveredTo = mDeliveredTo;
+        destination.mX_EnvelopeTo = mX_EnvelopeTo;
     }
 
     @Override
