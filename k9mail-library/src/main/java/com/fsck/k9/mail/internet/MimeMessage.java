@@ -278,7 +278,7 @@ public class MimeMessage extends Message {
         } else if (type == RecipientType.DELIVERED_TO){
             if (addresses == null || addresses.length == 0) {
                 removeHeader("Delivered-To");
-                this.mX_OriginalTo = null;
+                this.mDeliveredTo = null;
             } else {
                 setHeader("Delivered-To", Address.toEncodedString(addresses));
                 this.mDeliveredTo = addresses;
