@@ -33,7 +33,7 @@ public class MimeHeader implements Cloneable {
     }
 
     public void addHeader(String name, String value) {
-        Field field = Field.newNameValueField(name, MimeUtility.foldAndEncode(value));
+        Field field = Field.newNameValueField(name, MimeUtility.fold(value));
         mFields.add(field);
     }
 
