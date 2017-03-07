@@ -1,26 +1,24 @@
 package com.fsck.k9.activity.compose;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager;
-import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.ImageResizeCallback;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
@@ -123,17 +121,19 @@ public class AttachmentPresenter {
         return result;
     }
 
-    public ArrayList<Attachment> createAttachmentList(ProgressDialog progressDialog) {
+    public ArrayList<Attachment> createAttachmentList() {
         ArrayList<Attachment> result = new ArrayList<>();
         for (Attachment attachment : attachments.values()) {
             if(account.getResizeEnabled() && !attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
                 float factor = 1.0f / account.getResizeFactor();
                 String newFilename = "";
+                long size = 0;
                 if(factor != 1.0f) {
-                    newFilename = Utility.getResizedImageUri(context, attachment.uri, factor);
+                    newFilename = Utility.getResizedImageFile(context, attachment.uri, factor);
+                    size = (new File(newFilename)).length();
                 }
                 if(!newFilename.equals("")) {
-                    Attachment newAttachment = attachment.createResizedCopy(newFilename);
+                    Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
                     result.add(newAttachment);
                 } else {
                     result.add(attachment);
@@ -141,11 +141,13 @@ public class AttachmentPresenter {
             } else if(attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
                 float factor = attachment.resizeFactor;
                 String newFilename = "";
+                long size = 0;
                 if(factor != 1.0f) {
-                    newFilename = Utility.getResizedImageUri(context, attachment.uri, factor);
+                    newFilename = Utility.getResizedImageFile(context, attachment.uri, factor);
+                    size = (new File(newFilename)).length();
                 }
                 if(!newFilename.equals("")) {
-                    Attachment newAttachment = attachment.createResizedCopy(newFilename);
+                    Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
                     result.add(newAttachment);
                 } else {
                     result.add(attachment);

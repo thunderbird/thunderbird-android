@@ -472,7 +472,7 @@ public class Utility {
         return null;
     }
 
-    public static String getResizedImageUri(Context context, Uri uri, float multiplier){
+    public static String getResizedImageFile(Context context, Uri uri, float multiplier){
         File cacheDir = context.getCacheDir();
         File tempAttachmentsDirectory = new File(cacheDir.getPath() + "/tempAttachments/");
         tempAttachmentsDirectory.mkdirs();

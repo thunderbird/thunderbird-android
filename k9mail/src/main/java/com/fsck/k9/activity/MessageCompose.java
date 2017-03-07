@@ -765,7 +765,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         @Override
         protected ArrayList<Attachment> doInBackground(Boolean... params) {
             isDraft = params[0];
-            return attachmentPresenter.createAttachmentList(progressDialog);
+            return attachmentPresenter.createAttachmentList();
         }
 
         @Override
